@@ -1,0 +1,8 @@
+data/
+bin/
+lib/
+.settings/
+src.rar
+DropEditorVenicillio.exe
+Newtonsoft.Json.dll
+Newtonsoft.Json.xml

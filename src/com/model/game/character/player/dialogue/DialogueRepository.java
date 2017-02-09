@@ -1,0 +1,128 @@
+package com.model.game.character.player.dialogue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.model.game.character.player.dialogue.impl.Imbue;
+import com.model.game.character.player.dialogue.impl.MaxCape;
+import com.model.game.character.player.dialogue.impl.SigmundTheMerchant;
+import com.model.game.character.player.dialogue.impl.WeirdOldMan;
+import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue;
+import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue2;
+import com.model.game.character.player.dialogue.impl.chat.EmblemTraderDialogue;
+import com.model.game.character.player.dialogue.impl.chat.RunescapeGuide;
+import com.model.game.character.player.dialogue.impl.minigames.BarrowsTunnel;
+import com.model.game.character.player.dialogue.impl.pets.Olmlet;
+import com.model.game.character.player.dialogue.impl.slayer.ChaeldarDialogue;
+import com.model.game.character.player.dialogue.impl.slayer.DuradelDialogue;
+import com.model.game.character.player.dialogue.impl.slayer.EnchantedGem;
+import com.model.game.character.player.dialogue.impl.slayer.EnchantedGemTeleport;
+import com.model.game.character.player.dialogue.impl.slayer.Mandrith;
+import com.model.game.character.player.dialogue.impl.slayer.MazchnaDialogue;
+import com.model.game.character.player.dialogue.impl.slayer.NieveDialogue;
+import com.model.game.character.player.dialogue.impl.slayer.TuraelDialogue;
+import com.model.game.character.player.dialogue.impl.slayer.VannakaDialogue;
+import com.model.game.character.player.dialogue.impl.teleport.AgilityTeleports;
+import com.model.game.character.player.dialogue.impl.teleport.MiningTeleports;
+
+/**
+ * A repository to contain all of the dialogues
+ *
+ * @author Erik Eide
+ */
+public class DialogueRepository {
+
+	/**
+	 * A {@link HashMap} to store all of the dialogue classes in
+	 */
+	private static final Map<String, Class<? extends Dialogue>> dialogues = new HashMap<>();
+
+	static {
+		
+		/**
+		 * Pets
+		 */
+		dialogues.put("OLMLET", Olmlet.class);
+		
+		/**
+		 * Shop dialogues
+		 */
+		dialogues.put("SIGMUND_THE_MERCHANT", SigmundTheMerchant.class);
+		dialogues.put("MANDRITH", Mandrith.class);
+		
+		/**
+		 * Imbue
+		 */
+		dialogues.put("IMBUE", Imbue.class);
+		
+		/**
+		 * Barrows
+		 */
+		dialogues.put("BARROWS", WeirdOldMan.class);
+		dialogues.put("BARROWS_TUNNEL", BarrowsTunnel.class);
+		/**
+		 * Max cape
+		 */
+		dialogues.put("MAXCAPE", MaxCape.class);
+		
+		/**
+		 * Teleports
+		 */
+		dialogues.put("AGILITY_TELEPORTS", AgilityTeleports.class);
+		dialogues.put("MINING_TELEPORTS", MiningTeleports.class);
+		
+		/**
+		 * Starter dialogue
+		 */
+		dialogues.put("STARTER", RunescapeGuide.class);
+		
+		/**
+		 * Slayer masters
+		 */
+		dialogues.put("TURAEL_DIALOGUE", TuraelDialogue.class);
+		dialogues.put("MAZCHNA_DIALOGUE", MazchnaDialogue.class);
+		dialogues.put("VANNAKA_DIALOGUE", VannakaDialogue.class);
+		dialogues.put("CHAELDAR_DIALOGUE", ChaeldarDialogue.class);
+		dialogues.put("NIEVE_DIALOGUE", NieveDialogue.class);
+		dialogues.put("DURADEL_DIALOGUE", DuradelDialogue.class);
+		
+		/**
+		 * Enchanted gem
+		 */
+		dialogues.put("ENCHANTED_GEM_TELEPORT", EnchantedGemTeleport.class);
+		dialogues.put("ENCHANTED_GEM", EnchantedGem.class);
+		
+		/**
+		 * Death store
+		 */
+		dialogues.put("DEATH_SHOP_DIALOGUE", DeathShopDialogue.class);
+		dialogues.put("DEATH_SHOP_DIALOGUE2", DeathShopDialogue2.class);
+		
+		/**
+		 * Bounty hunter
+		 */
+		dialogues.put("emblem_trader_dialogue", EmblemTraderDialogue.class);
+	}
+
+	/**
+	 * Gets a dialogue based on the provided {@link String} key
+	 * 
+	 * @param name
+	 *            The key to the dialogue
+	 * @return The dialogue based on the provided {@link String} key
+	 */
+	protected static Dialogue getDialogue(final String name) {
+		Class<? extends Dialogue> dialogue = dialogues.get(name);
+
+		if (dialogue != null) {
+			try {
+				return dialogue.newInstance();
+			} catch (InstantiationException | IllegalAccessException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		return null;
+	}
+
+}

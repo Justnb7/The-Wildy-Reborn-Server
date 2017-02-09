@@ -17,7 +17,7 @@ public class ArmadylGodsword implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-
+// jak was here xxx
 		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(7061));

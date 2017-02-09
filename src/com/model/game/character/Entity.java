@@ -335,7 +335,6 @@ public abstract class Entity {
 
 	public Hit take_hit(Entity attacker, int damage, CombatType combat_type) {
 		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED);
-		// Now code here that would otherwies have to be written 500 times in each special attack implementation
 		
 		// This Entity is an npc taking damage from a player. 
 		if (this.isNPC() && attacker.isPlayer()) {

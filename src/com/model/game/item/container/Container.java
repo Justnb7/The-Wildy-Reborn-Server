@@ -110,14 +110,11 @@ public class Container implements Iterable<Item> {
      * @return {@code true} if the item was added, {@code false} otherwise.
      */
     public boolean add(Item item, int slot) {
-    	System.out.println("enter");
     	if(!canAdd(item, slot)) {
-    		System.out.println("Can't add");
     		return false;
     	}
         if (!Item.valid(item) || item.getAmount() > Integer.MAX_VALUE) {
             listeners.forEach(l -> l.onAdd(Container.this, item, false));
-            System.out.println("Invalid item");
             return false;
         }
         int newSlot = (slot > -1) ? slot : freeSlot();
@@ -128,7 +125,6 @@ public class Container implements Iterable<Item> {
         }
         if (newSlot == -1) {
             listeners.forEach(l -> l.onAdd(Container.this, item, false));
-            System.out.println("Incorrect slot");
             return false;
         }
         if (get(newSlot) != null) {
@@ -139,18 +135,15 @@ public class Container implements Iterable<Item> {
                 if (items[i] != null && items[i].getId() == item.getId()) {
                     set(i, new Item(items[i].getId(), items[i].getAmount() + item.getAmount()));
                     listeners.forEach(l -> l.onAdd(Container.this, item, true));
-                    System.out.println("Can add");
                     return true;
                 }
             }
             if (newSlot == -1) {
                 listeners.forEach(l -> l.onAdd(Container.this, item, false));
-                System.out.println("Slot invalid");
                 return false;
             }
             set(slot > -1 ? newSlot : freeSlot(), item);
             listeners.forEach(l -> l.onAdd(Container.this, item, true));
-            System.out.println("Can set item in slot");
             return true;
         }
         int remainingSlots = remaining();
@@ -161,7 +154,6 @@ public class Container implements Iterable<Item> {
             set(slot > -1 ? newSlot : freeSlot(), new Item(item.getId(), 1));
         }
         listeners.forEach(l -> l.onAdd(Container.this, item, true));
-        System.out.println("Adding items");
         return true;
     }
 

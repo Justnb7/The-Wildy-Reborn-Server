@@ -18,14 +18,7 @@ import com.model.task.ScheduledTask;
  * @author Omicron
  */
 public abstract class Entity {
-	// yh removing Entity is gna be a semi big job
-	 // used in all those places sec i've already deleted the previous entity watch
-	//before like yesterday and today i combined into that and then i renamed Mobilechar to Entity AHH very nice
-	//ok gd so and my questin then yto you was, did i do the right thing cuz moblile char was a super class everything in here said.
-	
-	//.super and i changed it to .this that's correct yes we want to put all code from entity into MobileChar, delete entity
-	// then rename mob to the new entity, which sounds like what you've done correct just didnt nderstand functions of this. and super.
-	// gotcha so first thing
+
 	public int absX;
 	public int absY;
 	public int lastX;
@@ -40,7 +33,7 @@ public abstract class Entity {
 	public Hit secondary;
 	public boolean hitUpdateRequired;
 	public boolean hitUpdateRequired2;
-// nice ok haha 
+
 	/**
 	 * The characters combat type, MELEE by default
 	 */
@@ -58,14 +51,7 @@ public abstract class Entity {
 		result = prime * result + this.getIndex();
 		return result;
 	}
-// ite what we doin now basicly u said to better keep one entity based main class
-	//otherwise its to overcomplicated
-	//so i've combined them into one but appearntly mobilechar was a super class
-	//i just made all the super. to this. is that even correct ?
-	// have we chosen to delete Entity or MobileChar? i choose to delete Entity and made MobileChar > Entity
-	// good yeah entity was tiny .. so this is the last issue? basicly this and then the groundItem idk who decided to make it Entity based lol it is now looking weird asf kk
-	//my main concern is did i the converting right cuz before this shit all was super. okok i get u
-	
+
 	@Override
 	public final boolean equals(Object obj) {
 		if (this == obj)
@@ -79,8 +65,6 @@ public abstract class Entity {
 			return false;
 		return true;
 	}
-	
-	//So before all those this. were super. is it right to make them this.?
 
 	/**
 	 * The mobile character is visible

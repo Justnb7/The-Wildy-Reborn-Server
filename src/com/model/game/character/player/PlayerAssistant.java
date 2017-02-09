@@ -25,7 +25,6 @@ import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.packets.encode.impl.SendInterfaceModel;
 import com.model.game.character.player.packets.encode.impl.SendItemOnInterface;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
 import com.model.game.character.walking.PathFinder;
@@ -106,27 +105,35 @@ public class PlayerAssistant {
     }
     
     public void restorePlayerAttributes() {
-    	player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
-    	player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevelForExperience(Skills.HITPOINTS));
-		player.setSpecialAmount(100);
+		requestUpdates();
+		resetAnimation();
+		resetTb();
+		resetFollow();
+		player.write(new SendClearScreen());
+		player.getWeaponInterface().restoreWeaponAttributes();
 		PrayerHandler.resetAllPrayers(player);
+		for (int i = 0; i < 20; i++) {
+        	player.getSkills().setLevel(i, player.getSkills().getLevelForExperience(i));
+        }
+		player.setSpecialAmount(100);
 		player.setVengeance(false);
 		player.setUsingSpecial(false);
 		player.lastVeng.reset();
-		player.setVengeance(false);
 		player.setPoisonDamage((byte) 0);
 		player.infection = 0;
 		player.infected = false;
-		player.write(new SendClearScreen());
-		player.write(new SendSidebarInterface(0, 5855));
-		player.write(new SendString("Unarmed", 5857));
-		player.freezeTimer = 1;
-		player.getPA().resetFollow();
-		Combat.resetCombat(player);
 		player.poisonDamage = 0;
 		player.venomDamage = 0;
+		player.freezeTimer = 0;
+		player.killerId = -1;
+		player.isSkulled = false;
+		player.skullIcon = -1;
+		player.skullTimer = -1;
 		player.attackedPlayers.clear();
-		requestUpdates();
+		Combat.resetCombat(player);
+		player.resetDamageReceived();
+		player.playAnimation(Animation.create(65535));
+		PlayerSerialization.saveGame(player);
     }
         
     public void resetTb() {

@@ -5,9 +5,6 @@ import java.util.Objects;
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
-import com.model.game.character.Animation;
-import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayer;
 import com.model.game.character.combat.effect.PKHandler;
 import com.model.game.character.player.account_type.Account;
@@ -20,7 +17,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.encode.impl.CreatePlayerHint;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.serialize.PlayerSerialization;
@@ -106,14 +102,11 @@ public class PlayerDeath {
 		player.faceUpdate(0);
 		player.stopMovement();
 		player.setPoisonDamage((byte) 0);
-		player.getPA().restorePlayerAttributes();
 	}
 	
 	public void giveLife() {
 		player.setDead(false);
 		player.faceUpdate(-1);
-		player.freezeTimer = 0;
-		player.write(new SendClearScreen());
 		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (!player.getController().isSafe() && duelSession == null) {
@@ -154,10 +147,6 @@ public class PlayerDeath {
 			player.getItems().resetKeepItems();
 		}
 
-		 PrayerHandler.resetAllPrayers(player);
-		 for (int i = 0; i < 20; i++) {
-	        	player.getSkills().setLevel(i, player.getSkills().getLevelForExperience(i));
-	        }
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() == MultiplayerSessionStage.FURTHER_INTERACTION) {
 				Player opponent = duelSession.getWinner().get();
@@ -172,22 +161,7 @@ public class PlayerDeath {
 				player.getPA().movePlayer(player.getController().getRespawnLocation(player));
 			}
 		}
-		player.isSkulled = false;
-		player.skullTimer = 0;
-		player.attackedPlayers.clear();
-		PlayerSerialization.saveGame(player);
-		Combat.resetCombat(player);
-		player.getPA().resetAnimation();
-		player.playAnimation(Animation.create(65535));
-		player.getPA().resetTb();
-		player.isSkulled = false;
-		player.attackedPlayers.clear();
-		player.skullIcon = -1;
-		player.skullTimer = -1;
-		player.killerId = -1;
-		player.resetDamageReceived();
-		player.getPA().requestUpdates();
-		player.write(new SendString("" + player.getSpecialAmount(), 12001));
+		player.getPA().restorePlayerAttributes();
 	}
 	
 	public void resetTzhaar() {

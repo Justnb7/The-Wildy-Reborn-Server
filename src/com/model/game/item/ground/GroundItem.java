@@ -1,19 +1,17 @@
 package com.model.game.item.ground;
 
-import com.model.game.character.Entity;
-import com.model.game.character.EntityType;
-import com.model.game.character.Hit;
-import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
 
-public final class GroundItem extends Entity {
+// nice nice ok lets make groundItem its own thing, nothing to do with entity
+public final class GroundItem {
 
 	public enum State {
 		PRIVATE, GLOBAL
 	}
 
+	// so it's gonna need a couple of its own things tthat Entity used to have, coords
 	private final Item item;
 	private final Player owner;
 
@@ -29,12 +27,18 @@ public final class GroundItem extends Entity {
 	}
 
 	public GroundItem(Item item, Location location, Player owner) {
-		super(EntityType.GROUND_ITEM);
 		this.item = item;
 		this.setLocation(location);
 		this.owner = owner;
 	}
 
+	private Location location;
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	public Location getLocation() {
+		return location;
+	}
 
 	public Item getItem() {
 		return item;
@@ -91,21 +95,6 @@ public final class GroundItem extends Entity {
 	@Override
 	public String toString() {
 		return "GroundItem [item=" + item + ", owner=" + owner + ", removed=" + removed + ", timer=" + timer + ", state=" + state + "]";
-	}
-
-	@Override
-	public Hit decrementHP(Hit hit) {
-		return null;
-	}
-
-	@Override
-	public void process() {
-		
-	}
-
-	@Override
-	public ActionSender getActionSender() {
-		return null;
 	}
 
 }

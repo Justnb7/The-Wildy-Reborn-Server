@@ -1508,7 +1508,6 @@ public class Player extends Entity {
 		outStream.writeWordBigEndianA(getIndex());
 		flushOutStream();
 		pouches = new int[4];
-		this.write(new SendString(""+this.getSpecialAmount(), 12001));
 		combatLevel = getSkills().getCombatLevel();
 		totalLevel = getSkills().getTotalLevel();
 		this.getPA().serverReset();
@@ -3391,6 +3390,9 @@ public class Player extends Entity {
 	public int[] fletchSprites = { -1, -1, -1, -1, -1 };
 	public int objectDistance, teleHeight;
 	
+	/**
+	 * Booleans
+	 */
 	public boolean playerHasAlreadyDecided, playerIsWoodcutting, expLock, wasFrozen = false, petBonus = false, attackSkill = false, strengthSkill = false, defenceSkill = false, mageSkill = false, rangeSkill = false, prayerSkill = false, healthSkill = false;
 	public boolean[] unlocked = new boolean[382];
 	private boolean mask100update = false;

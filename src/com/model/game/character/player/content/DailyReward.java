@@ -36,23 +36,12 @@ public class DailyReward {
 	}
 
 	/**
-	 * Reward the player with a free gamble.
+	 * Reward the player with a free daily reward.
 	 */
 	public void dailyReward() {
-		//basicly how do i reset a varialbe daily like this boolean dailyReward
-		// do you want it to reset every day at a certain time like 12pm or do you want the plr
-		// to have 24h unique to them.. say they do it at 7pm it resets 7pm next day
-		//yeah basicly player unique like they login @ different times so cant relaly make it server based
-		// yh cool oki
-		
 		if (getDay() != player.dayOfWeek) {
-			// player.write(new SendMessagePacket("@dre@It's a new day, you've been awared with a ... for logging in today."));
 			player.dayOfWeek = getDay();
-			// since we're doing by day not hour we dont need to track hours, just the day
-			// lets change it from a boolean to an Int.. the Int can be the day ID (0-365)
-			
 			reward();
-			// TODO reward with a random reward
 		}
 	}
 	
@@ -79,7 +68,6 @@ public class DailyReward {
 			itemReceived = Utility.randomElement(COMMON);
 		}
 		player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
-		// do the msg thingy pls
 		player.write(new SendMessagePacket("You've recieved "+itemReceived.amount+" x "+itemReceived.getName()+" for playing, thanks!"));
 		
 		if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 10_000_000) {
@@ -90,16 +78,16 @@ public class DailyReward {
 	/**
 	 * Common rewards
 	 */
-	private Item[] COMMON = { new Item(537, 15) };
+	private Item[] COMMON = { new Item(537, 15), new Item(4151), new Item(989), new Item(6585), new Item(4153), new Item(13307, 5) };
 	
 	/**
 	 * Uncommon rewards
 	 */
-	private Item[] UNCOMMON = { new Item(4151), new Item(6585) };
+	private Item[] UNCOMMON = { new Item(4716), new Item(4718), new Item(4720), new Item(4722), new Item(11804), new Item(11806), new Item(11808) };
 	
 	/**
 	 * Rare rewards
 	 */
-	private Item[] RARE = { new Item(22000) };
+	private Item[] RARE = { new Item(11802), new Item(21999), new Item(22000), new Item(22002), new Item(22003), new Item(22004), new Item(22005) };
 
 }

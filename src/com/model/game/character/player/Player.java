@@ -1507,7 +1507,6 @@ public class Player extends Entity {
 		outStream.putByteA(0);
 		outStream.writeWordBigEndianA(getIndex());
 		flushOutStream();
-		this.getDailyReward().setDayOfWeek();
 		pouches = new int[4];
 		this.write(new SendString(""+this.getSpecialAmount(), 12001));
 		combatLevel = getSkills().getCombatLevel();
@@ -1586,9 +1585,7 @@ public class Player extends Entity {
 				
 				player.write(new SendMessagePacket("Welcome back to " + Constants.SERVER_NAME + "."));
 				
-				if(!player.dailyReward) {
-					player.getDailyReward().dailyReward();
-				}
+				player.getDailyReward().dailyReward();
 				
 				if (isMuted()) {
 					player.write(new SendMessagePacket("You are currently muted. Other players will not see your chat messages."));
@@ -3394,11 +3391,6 @@ public class Player extends Entity {
 	public int[] fletchSprites = { -1, -1, -1, -1, -1 };
 	public int objectDistance, teleHeight;
 	
-	
-	/**
-	 * Booleans
-	 */
-	public boolean dailyReward = false;
 	public boolean playerHasAlreadyDecided, playerIsWoodcutting, expLock, wasFrozen = false, petBonus = false, attackSkill = false, strengthSkill = false, defenceSkill = false, mageSkill = false, rangeSkill = false, prayerSkill = false, healthSkill = false;
 	public boolean[] unlocked = new boolean[382];
 	private boolean mask100update = false;
@@ -3492,4 +3484,5 @@ public class Player extends Entity {
 	
 	public ArrayList<String> lastKilledList = new ArrayList<String>();
 	public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
+
 }

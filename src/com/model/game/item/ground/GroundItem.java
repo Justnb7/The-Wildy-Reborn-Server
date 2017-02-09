@@ -10,7 +10,7 @@ public final class GroundItem {
 	public enum State {
 		PRIVATE, GLOBAL
 	}
-
+// cool next thing ?
 	// so it's gonna need a couple of its own things tthat Entity used to have, coords
 	private final Item item;
 	private final Player owner;

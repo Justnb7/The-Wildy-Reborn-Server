@@ -131,8 +131,6 @@ public class PlayerSerialization {
     						p.setRecovAnswer(value);
     					} else if (key.equals("character-was-reseted")) {
     						p.ecoReset = Boolean.parseBoolean(value);
-    					} else if (key.equals("daily-reward-received")) {
-    						p.dailyReward = Boolean.parseBoolean(value);
     					} else if (key.equals("dayofweek")) {
                             p.dayOfWeek = Integer.parseInt(value);
                         }
@@ -528,9 +526,6 @@ public class PlayerSerialization {
 	        writer.newLine();
 	        writer.write("character-was-reseted = ");
 	        writer.write(Boolean.toString(p.ecoReset));
-	        writer.newLine();
-	        writer.write("daily-reward-received = ");
-	        writer.write(Boolean.toString(p.dailyReward));
 	        writer.newLine();
 	        writer.write("dayofweek = ");
 	        writer.write(Integer.toString(p.dayOfWeek));

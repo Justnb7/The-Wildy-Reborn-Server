@@ -152,8 +152,6 @@ public class PlayerVsNpcCombat {
 			damage = npc.currentHealth;
 		}
 
-		// also shit using getNpcs().get MULTIPLE TIMES in the same method is just stressing the game
-		// loop 2k online players 5 times in the same method = lag lag lag 
 		npc.underAttack = true;
 		attacker.killingNpcIndex = attacker.npcIndex;
 		attacker.lastNpcAttacked = npc.getIndex(); // PI junk
@@ -162,35 +160,6 @@ public class PlayerVsNpcCombat {
 			npc.addDamageReceived(attacker.getRealUsername(), damage);
 		}
 		npc.damage(new Hit(damage));
-	}
-
-	/**
-	 * Applies npc melee damage to an npc
-	 * 
-	 * @param player
-	 *            The {@link Player} attacking the {@link Npc}
-	 * @param npc
-	 *            The {@link Npc} thats being attacked
-	 * @param damageMask
-	 *            The damage mask of the attack
-	 * @param damage 
-	 * 			  The damage to deal
-	 */
-	public static void applyNpcMeleeDamage(Player player, Npc npc, int damageMask, int[] damages) {
-
-		if (World.getWorld().getNpcs().get(npc.getIndex()).npcId == 2267 || World.getWorld().getNpcs().get(npc.getIndex()).npcId == 2266 && player.playerEquipment[3] == 14484) {
-			player.write(new SendMessagePacket("All your hits missed because this npc is irresistible to melee attacks."));
-			return;
-		}
-		
-		Hit[] hits = new Hit[damages.length];
-		@SuppressWarnings("unused")
-		int total = 0;
-		for (int i = 0; i < hits.length; i++) {
-			hits[i] = new Hit(damages[i]);
-			total += damages[i];
-		}
-		World.getWorld().getNpcs().get(npc.getIndex()).damage(hits);
 	}
 
 	/**

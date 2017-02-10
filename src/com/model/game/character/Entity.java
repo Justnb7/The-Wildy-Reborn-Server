@@ -18,6 +18,10 @@ import com.model.task.ScheduledTask;
  * @author Omicron
  */
 public abstract class Entity {
+	
+	public enum EntityType {
+		PLAYER, NPC,
+	}
 
 	public int absX;
 	public int absY;
@@ -33,6 +37,8 @@ public abstract class Entity {
 	public Hit secondary;
 	public boolean hitUpdateRequired;
 	public boolean hitUpdateRequired2;
+	public Graphic gfx;
+	public boolean gfxUpdateRequired;
 
 	/**
 	 * The characters combat type, MELEE by default
@@ -317,16 +323,9 @@ public abstract class Entity {
 		return take_hit(attacker, damage, null);
 	}
 
+	// Since damage gets reduced you need to add XP after this method.
 	public Hit take_hit(Entity attacker, int damage, CombatType combat_type) {
-		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED);
-		
-		// This Entity is an npc taking damage from a player. 
-		if (this.isNPC() && attacker.isPlayer()) {
-			Player attacker_player = (Player)attacker;
-			Npc victim_npc = (Npc) this;
-			((Npc)this).addDamageReceived(attacker_player.getRealUsername(), damage);
-			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
-		}
+		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type);
 		
 		// The entity taking damage is a player. 
 		if (this.isPlayer()) {
@@ -345,8 +344,10 @@ public abstract class Entity {
 					damage = (int) (damage * 0.6);
 				}
 			}
+			
+			// TODO special reduction effects can go here, like Ely
 
-			// Trigger veng on whichever fuck is attacking us.
+			// Trigger veng once the damage has been reduced by effects/protection prayers
 			if (player_me.hasVengeance()) {
 				player_me.getCombat().vengeance(attacker, damage, 1);
 			}
@@ -358,18 +359,18 @@ public abstract class Entity {
 			}
 		}
 		
-		
-		// Attacker is a player. give them XP.
-		if (attacker.isPlayer()) {
-			Player attacking_player = (Player) attacker;
-			if (combat_type != null) {
-				// TODO will need rigourus testing to make sure nothing fucks up/you get double xp if its called
-				// elsewhere too
-				//CombatExperience.handleCombatExperience(attacking_player, damage, combat_type);
-			}
+		// At this point damage accurately reduced by stuff like prots/ely. 
+		// Now we can use it to give XP/add to npcs damage tracker.
+
+		// This Entity is an npc taking damage from a player. 
+		if (this.isNPC() && attacker.isPlayer()) {
+			Player attacker_player = (Player)attacker;
+			Npc victim_npc = (Npc) this;
+			((Npc)this).addDamageReceived(attacker_player.getRealUsername(), damage);
+			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		}
-		// Returning hit is pointless.. but it might be helpful in the future. For chaining. Such as hit.x().y()..
-		// might help if we make the Hit actually app,ly :PPP
+		
+		// Returning hit: might be helpful in the future. For chaining. Such as hit.x().y()..
 		
 		this.damage(new Hit(damage));
 		return hit;

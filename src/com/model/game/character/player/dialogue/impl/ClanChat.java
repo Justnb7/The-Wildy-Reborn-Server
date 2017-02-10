@@ -53,12 +53,9 @@ public class ClanChat extends Dialogue {
 	public void select(int index) {
 		if (index == 1) {
 			player.lastClanChat = "patrick";
-			player.playerHasAlreadyDecided = true;
 			stop();
 		} else {
-			
 			player.lastClanChat = "matthew";
-			player.playerHasAlreadyDecided = true;
 			stop();
 		}
 	}

@@ -104,7 +104,6 @@ public class Firemaking extends SkillHandler {
 						time[1] = 2;
 					}
 					player.playerIsFiremaking = true;
-					player.playerIsWoodcutting = false;
 					final GroundItem logItem = new GroundItem(new Item(log), coords[0], coords[1], coords[2], player);
 					GroundItemHandler.createGroundItem(logItem);
 

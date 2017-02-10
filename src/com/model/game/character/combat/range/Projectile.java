@@ -2,7 +2,7 @@ package com.model.game.character.combat.range;
 
 import com.model.game.World;
 import com.model.game.character.Entity;
-import com.model.game.character.EntityType;
+import com.model.game.character.Entity.EntityType;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;

@@ -14,7 +14,6 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.EntityType;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
@@ -3393,8 +3392,7 @@ public class Player extends Entity {
 	/**
 	 * Booleans
 	 */
-	public boolean playerHasAlreadyDecided, playerIsWoodcutting, expLock, wasFrozen = false, petBonus = false, attackSkill = false, strengthSkill = false, defenceSkill = false, mageSkill = false, rangeSkill = false, prayerSkill = false, healthSkill = false;
-	public boolean[] unlocked = new boolean[382];
+	public boolean wasFrozen = false, attackSkill = false, strengthSkill = false, defenceSkill = false, mageSkill = false, rangeSkill = false, prayerSkill = false, healthSkill = false;
 	private boolean mask100update = false;
 	public boolean magicDef;
 	public boolean smeltInterface, stopPlayerSkill;

@@ -8,10 +8,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import com.google.common.collect.Sets;
 import com.model.Server;
 import com.model.game.character.Entity;
-import com.model.game.character.EntityType;
+import com.model.game.character.Entity.EntityType;
 import com.model.game.character.MobileCharacterList;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.NpcUpdating;

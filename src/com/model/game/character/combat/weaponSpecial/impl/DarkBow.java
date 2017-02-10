@@ -70,11 +70,14 @@ public class DarkBow implements SpecialAttack {
 			if (second < 4)
 				second = 4;
 		} else {
+			// Minimum hit without pray range is 8/8
 			if (first < 8)
 				first = 8;
 			if (second < 8)
 				second = 8;
 		}
+		// Dark bow is a special type where there is minimum damage of 4/4 or 8/8
+		// So we can't use the take_hit method - we need to put veng in here.. 
 		
 		// Cast target to a type which supports the damage() method -- damage is in MobileChar not Entity
 		Entity targ = (Entity) target;

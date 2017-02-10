@@ -3,19 +3,13 @@ package com.model.game.character.player.content.music;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.actions.buttons.ActionButton;
 import com.model.game.character.player.packets.actions.buttons.ActionButtonEvent;
 import com.model.game.character.player.packets.actions.buttons.ActionButtonEventListener;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
 import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.packets.encode.impl.SendSongPacket;
-import com.model.task.ScheduledTask;
-import com.model.task.Stackable;
-import com.model.task.Walkable;
 
 /**
  *
@@ -391,50 +385,6 @@ public class MusicTab {
 
 	};
 
-	/**
-	 *
-	 * @param player
-	 */
-	public static void loadMusicTab(final Player player) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(player, 1, Walkable.WALKABLE, Stackable.STACKABLE) {
-			int length = 0;
-
-			@Override
-			public void execute() {
-				int end = length + 100 > MusicData.songs.length ? MusicData.songs.length : length + 100;
-				for (int i = length; i < end; i++) {
-					if (player.unlocked[MusicData.songs[i].array]) {
-						MusicData.updateList(player, MusicData.songs[i].tabId);
-					}
-				}
-				if (end >= MusicData.songs.length) {
-					length += 100;
-				} else {
-					stop();
-				}
-
-			}
-		});
-		player.write(new SendSidebarInterface(13, 962));
-		player.write(new SendConfig(18, 1));
-		player.write(new SendConfig(19, 0));
-
-	}
-
-	/**
-	 * Sets the boolean for each music id for the first time.
-	 * @param player
-	 */
-	public static void initializeMusicBooleanFirstTime(Player player) {
-		for (int i = 0; i < player.unlocked.length; i++) {
-			player.unlocked[i] = false;
-			if (i > 350) {
-				// (quests music etc)
-				player.unlocked[i] = true;
-			}
-		}
-	}
-
 	public static void setToManual(Player player) {
 		player.setAttribute("AUTO_MUSIC_DISABLED", Boolean.TRUE);
 		player.write(new SendConfig(18, 0));
@@ -478,10 +428,6 @@ public class MusicTab {
 				}
 				for (MusicTab element : music) {
 					if (button.getId() == element.buttonId) { //Disabled unlocking for now.
-						if (player.unlocked[element.array] == false) {
-							player.write(new SendMessagePacket("You need to unlock this song first!"));
-							return;
-						}
 						player.write(new SendString(element.songName, 4439));
 						player.write(new SendSongPacket(element.songId));
 						setToManual(player);

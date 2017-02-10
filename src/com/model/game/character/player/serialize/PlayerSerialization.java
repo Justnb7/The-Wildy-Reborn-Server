@@ -365,13 +365,6 @@ public class PlayerSerialization {
                             p.setAttribute("music_volume", Integer.parseInt(value));
                         } else if (key.equals("sound_volume")) {
                             p.setAttribute("sound_volume", Integer.parseInt(value));
-                        } else if (key.equals("music-unlocked")) {
-                            for (int j = 0; j < values.length; j++) {
-                                p.unlocked[j] = Boolean.parseBoolean(values[j]);
-                                if (p.unlocked[j]) {
-                                    p.musicAmountUnlocked++;
-                                }
-                            }
                         }
                     	break;
                     	

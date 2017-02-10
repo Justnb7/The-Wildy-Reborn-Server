@@ -12,7 +12,6 @@ import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
-import com.model.game.character.EntityType;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
@@ -410,7 +409,9 @@ public class Npc extends Entity {
 	public int mask80var2 = 0;
 	private boolean mask80update = false;
 	
-	public void playGraphics(Graphic graphic) {
+	public void playGraphics(Graphic graphic) {//isn't this method and playANim in entity in hyperion?
+		// correct. they're the same thing. so we can put em in entity.. carefully though
+		// cos npc and player update packet need to be handled correctly
 		mask80var1 = graphic.getId();
 		mask80var2 = graphic.getDelay() + (65536 * graphic.getHeight());
 		setMask80update(true);

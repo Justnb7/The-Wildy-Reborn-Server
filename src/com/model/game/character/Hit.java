@@ -1,5 +1,9 @@
 package com.model.game.character;
 
+import com.model.game.character.combat.combat_data.CombatExperience;
+import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.player.Player;
+
 /**
  * The container class that represents a hit.
  * 
@@ -75,4 +79,18 @@ public final class Hit {
     public HitType getType() {
         return type;
     }
+    
+    public Hit giveXP(Player attacker) {
+    	if (cbType != null) {
+			CombatExperience.handleCombatExperience(attacker, damage, cbType);
+		}
+		return this;
+    }
+    
+    private CombatType cbType;
+
+	public Hit type(CombatType combat_type) {
+		this.cbType = combat_type;
+		return this;
+	}
 }

@@ -109,10 +109,6 @@ public class UseItem {
 		
 		for (int ref : Fletching.refItems) {
 			if (itemUsed == ref || useWith == ref) {
-				if (player.playerIsWoodcutting) {
-					player.playerIsWoodcutting = false;
-					return;
-				}
 				FletchingHandler.appendType(player, itemUsed, useWith);
 
 			}

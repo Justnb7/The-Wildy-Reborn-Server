@@ -33,7 +33,22 @@ public class DragonDagger implements SpecialAttack {
 		player.playAnimation(Animation.create(1062));
 		player.playGraphics(Graphic.highGraphic(252));
 		
-		if (target instanceof Player) {
+		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missed)
+			damage1 = 0;
+		
+		target.take_hit(player, damage1, CombatType.MELEE).giveXP(player);
+		
+		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+
+			@Override
+			public void execute() {
+				target.take_hit(player, finalDamage, CombatType.MELEE).giveXP(player);
+				this.stop();
+			}
+		});
+		
+		/*if (target instanceof Player) {
 			Player targPlayer = (Player) target;
 			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				damage1 = 0;
@@ -85,7 +100,7 @@ public class DragonDagger implements SpecialAttack {
 					this.stop();
 				}
 			});
-		}
+		}*/
 	}
 
 	@Override

@@ -1,9 +1,8 @@
 package com.model.game.character.player.content.music;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSongPacket;
+import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendStringColor;
 import com.model.utility.Utility;
 
@@ -53,16 +52,6 @@ public class MusicData {
 		}
 		if (!player.getAttribute("AUTO_MUSIC_DISABLED", Boolean.FALSE)) {
 			player.write(new SendSongPacket(song.music));
-		}
-		for (int i = 0; i < songs.length; i++) {
-			if (player.unlocked[songs[i].array] == false && which == songs[i]) {
-				player.write(new SendMessagePacket("@gre@You have unlocked the song: " + songs[i].name));
-				player.unlocked[songs[i].array] = true;
-				updateList(player, songs[i].tabId);
-			}
-			if (which == songs[i]) {
-				player.write(new SendString(songs[i].name, 4439));
-			}
 		}
 	}
 

@@ -27,19 +27,15 @@ public class KorasiSword implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		double hitMultiplier = r.nextDouble() + 0.5;
-		int damage = (int) (Utility.random((int) (player.getCombat().calculateMeleeMaxHit() * hitMultiplier)));
+		int damage = Utility.random(70);
 		player.playAnimation(Animation.create(1058));
 		
 		if(player instanceof Player) {
 			
 			Player targPlayer = (Player) target;
 			
-			int resistance = (int) (targPlayer.playerBonus[8] * 4);
-
-			damage -= resistance;
-			if (damage < 7) {
-				damage = 7;
+			if (damage > 70) {
+				damage = 70;
 			}
 			
 			targPlayer.playGraphics(Graphic.create(1213));

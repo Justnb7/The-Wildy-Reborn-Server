@@ -29,14 +29,11 @@ public class DragonScimitar implements SpecialAttack {
 		player.playAnimation(Animation.create(1872));
 		player.playGraphics(Graphic.create(347, (100 << 16)));
 		
-		if(player instanceof Player) {
-			
+		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missed)
+			damage = 0;
+		if(target instanceof Player) {
 			Player targPlayer = (Player) target;
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			
 			boolean hasProtection = false;
 			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
 				hasProtection = true;
@@ -45,7 +42,7 @@ public class DragonScimitar implements SpecialAttack {
 			} else if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
 				hasProtection = true;
 			}
-			
+
 			if (hasProtection && damage > 0) {
 				targPlayer.setPrayerIcon(-1);
 				targPlayer.getPA().requestUpdates();
@@ -53,22 +50,10 @@ public class DragonScimitar implements SpecialAttack {
 				targPlayer.write(new SendMessagePacket("Your protection prayer has been cancelled by " + player.getName()));
 				targPlayer.cannotUsePrayer.reset();
 			}
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
-				damage = (int) (damage * 0.6);
-			}
-			if (targPlayer.hasVengeance()) {
-				targPlayer.getCombat().vengeance(player, damage, 1);
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		} else {
-			Npc targNpc = (Npc) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 		}
+		
+		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+		
 	}
 
 	@Override

@@ -26,33 +26,13 @@ public class AbyssalBludgeon implements SpecialAttack {
 		
 		int damage = (int) ((player.getSkills().getLevelForExperience(Skills.PRAYER) - player.getSkills().getLevel(Skills.PRAYER)) * .5);
 		player.playAnimation(Animation.create(3299));
-
-		if (target instanceof Player) {
-			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			targPlayer.playGraphics(Graphic.create(1284, 0, 0));
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
-				damage = (int) (damage * 0.6);
-			}
-			
-			if (targPlayer.hasVengeance()) {
-				targPlayer.getCombat().vengeance(player, damage, 1);
-			}
-			
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		} else {
-			Npc targNpc = (Npc) target;
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			targNpc.playGraphics(Graphic.create(1284, 0, 0));
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		}
+        target.playGraphics(Graphic.create(1284, 0, 0));
+		
+		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missed)
+			damage = 0;
+		
+		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
 		
 	}
 

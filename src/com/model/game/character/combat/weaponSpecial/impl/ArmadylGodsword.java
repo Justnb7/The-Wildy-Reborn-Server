@@ -3,7 +3,6 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
-import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatFormulas;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;

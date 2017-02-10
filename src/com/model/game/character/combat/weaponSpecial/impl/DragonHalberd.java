@@ -30,57 +30,25 @@ public class DragonHalberd implements SpecialAttack {
 		final int finalDamage = secondHit;
 		player.playAnimation(Animation.create(1203));
 		player.playGraphics(Graphic.create(1172, 0, 0));
-		if(target instanceof Player) {
-			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				firstHit = 0;
-			}
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				secondHit = 0;
-			}
-			
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
-				firstHit = (int) (firstHit * 0.6);
-				secondHit = (int) (finalDamage * 0.6);
-			}
-			if (player.hasVengeance()) {
-				targPlayer.getCombat().vengeance(targPlayer, firstHit, 1);
-			}
-			targPlayer.damage(new Hit(firstHit, firstHit > 0 ? HitType.NORMAL : HitType.BLOCKED));
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-
-				@Override
-				public void execute() {
-					
-					targPlayer.damage(new Hit(finalDamage, finalDamage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-					this.stop();
-				}
-			});
-		} else {
-            Npc targNpc = (Npc) target;
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				firstHit = 0;
-			}
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				secondHit = 0;
-			}
-			CombatExperience.handleCombatExperience(player, firstHit, CombatType.MELEE);
-			targNpc.damage(new Hit(firstHit, firstHit > 0 ? HitType.NORMAL : HitType.BLOCKED));
-			
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-
-				@Override
-				public void execute() {
-					CombatExperience.handleCombatExperience(player, finalDamage, CombatType.MELEE);
-					targNpc.damage(new Hit(finalDamage, finalDamage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-					this.stop();
-				}
-			});
-		}
 		
+		boolean missedFirstHit = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missedFirstHit)
+			firstHit = 0;
+		
+		boolean missedSecondHit = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missedSecondHit)
+			secondHit = 0;
+		
+		target.take_hit(player, firstHit, CombatType.MELEE).giveXP(player);
+		
+		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+
+			@Override
+			public void execute() {
+				target.take_hit(player, finalDamage, CombatType.MELEE).giveXP(player);
+				this.stop();
+			}
+		});
 	}
 
 	@Override

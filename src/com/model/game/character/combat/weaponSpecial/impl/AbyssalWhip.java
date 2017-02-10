@@ -26,32 +26,13 @@ public class AbyssalWhip implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1658));
-
-		if (target instanceof Player) {
-			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
-				damage = (int) (damage * 0.6);
-			}
-			if (targPlayer.hasVengeance()) {
-				targPlayer.getCombat().vengeance(player, damage, 1);
-			}
-			
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			player.playGraphics(Graphic.highGraphic(341));
-			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		} else {
-			Npc targNpc = (Npc) target;
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targNpc.playGraphics(Graphic.highGraphic(341));
-			targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		}
+        target.playGraphics(Graphic.highGraphic(341));
+		
+		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missed)
+			damage = 0;
+		
+		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
 	}
 
 	@Override

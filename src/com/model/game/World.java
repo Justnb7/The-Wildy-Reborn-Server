@@ -35,7 +35,6 @@ import com.model.task.impl.NPCMovementTask;
 import com.model.task.impl.RestoreSpecialStats;
 import com.model.task.impl.RestoreStats;
 import com.model.task.impl.SavePlayers;
-import com.model.task.impl.UpdateQuestInfo;
 
 /**
  * Represents a 'World' where we can update entities
@@ -115,7 +114,6 @@ public class World implements Service {
 	public void init() {
 		schedule(new RestoreStats());
 		schedule(new NPCMovementTask());
-		schedule(new UpdateQuestInfo());
 		schedule(new RestoreSpecialStats());
 		schedule(new SavePlayers());
 		schedule(new GearPointsTask());

@@ -10,6 +10,8 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
+import com.model.game.character.Entity;
+import com.model.game.character.Entity.EntityType;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;

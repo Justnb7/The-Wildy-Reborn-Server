@@ -1160,6 +1160,14 @@ public class Player extends Entity {
 		super.clear();
 	}
 	
+	public void setAppearanceUpdateRequired(boolean appearanceUpdateRequired) {
+		this.appearanceUpdateRequired = appearanceUpdateRequired;
+	}
+
+	public boolean isAppearanceUpdateRequired() {
+		return appearanceUpdateRequired;
+	}
+	
 	
 	/**
 	 * Animations

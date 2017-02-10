@@ -39,6 +39,9 @@ public abstract class Entity {
 	public boolean hitUpdateRequired2;
 	public Graphic gfx;
 	public boolean gfxUpdateRequired;
+	public boolean forcedChatUpdateRequired;
+	public boolean updateRequired = true;
+	public boolean appearanceUpdateRequired = true;
 
 	/**
 	 * The characters combat type, MELEE by default
@@ -509,16 +512,6 @@ public abstract class Entity {
 		return location;
 	}
 	
-	public void setAppearanceUpdateRequired(boolean appearanceUpdateRequired) {
-		this.appearanceUpdateRequired = appearanceUpdateRequired;
-	}
-
-	public boolean isAppearanceUpdateRequired() {
-		return appearanceUpdateRequired;
-	}
-	
-	public boolean forcedChatUpdateRequired, updateRequired = true, appearanceUpdateRequired = true;
-	
 	/**
 	 * The text to display with the force chat mask.
 	 */
@@ -533,7 +526,6 @@ public abstract class Entity {
 		forcedChat = message;
 		forcedChatUpdateRequired = true;
 		updateRequired = true;
-		setAppearanceUpdateRequired(true);
 	}
 	
 	/**
@@ -553,12 +545,13 @@ public abstract class Entity {
 	public String getForcedChatMessage() {
 		return forcedChat;
 	}
-	// mobilecharacter looked massive yesterday doesnt look big at all now interesting but no errors so 
-	// i guess it works xd it does work i just tested everything but yeah look @ groundItems looks messy asf now
-	
+
 	public void playGraphics(Graphic graphic) {
 		gfx = graphic;
 		this.gfxUpdateRequired = true;
 		updateRequired = true;
 	}
+	
+	//TODO add forchat in entity
+	
 }

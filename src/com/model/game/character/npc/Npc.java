@@ -715,7 +715,6 @@ public class Npc extends Entity {
 	
 	public void requestUpdates() {
         this.updateRequired = true;
-        this.setAppearanceUpdateRequired(true);
     }
 
 	private Entity following_target;

@@ -3,14 +3,9 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
-import com.model.game.character.Hit;
-import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
-import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
-import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.utility.Utility;
@@ -31,31 +26,14 @@ public class SaradominGodsword implements SpecialAttack {
 		player.playAnimation(Animation.create(7058));
 		player.playGraphics(Graphic.create(1209, 0, 0));
 		
+		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missed)
+			damage = 0;
+		
 		player.getSkills().increaseLevelToMaximum(Skills.HITPOINTS, hitpointsHeal);
 		player.getSkills().increaseLevelToMaximum(Skills.PRAYER, prayerHeal);
 		
-		if (target instanceof Player) {
-			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
-				damage = (int) (damage * 0.6);
-			}
-			if (targPlayer.hasVengeance()) {
-				targPlayer.getCombat().vengeance(player, damage, 1);
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		} else {
-			Npc targNpc = (Npc) target;
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		}
+		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
@@ -13,7 +12,6 @@ import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
-import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 public class DragonClaws implements SpecialAttack {
@@ -29,74 +27,60 @@ public class DragonClaws implements SpecialAttack {
 		int second = first / 2;
 		int third = second / 2;
 		int fourth = second / 2;
-		
+
 		final int damage = third;
 		final int finalDmg = fourth;
-		
+
 		player.playAnimation(Animation.create(5283));
 		player.playGraphics(Graphic.highGraphic(1171));
-		
-		if(target instanceof Player) {
+
+		if (target instanceof Player) {
 			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
+			if (!(CombatFormulas.getAccuracy((Entity) player, (Entity) target, 0, getAccuracyMultiplier()))) {
 				first = 0;
 				second = 0;
 				third = 0;
 				fourth = 0;
 			}
-			
+
 			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
 				first = (int) (first * 0.6);
 				second = (int) (second * 0.6);
 				third = (int) (damage * 0.6);
 				fourth = (int) (finalDmg * 0.6);
 			}
-			
+
 			if (targPlayer.hasVengeance()) {
 				targPlayer.getCombat().vengeance(player, damage, 1);
 			}
-			
+
 			CombatExperience.handleCombatExperience(player, first, CombatType.MELEE);
 			CombatExperience.handleCombatExperience(player, second, CombatType.MELEE);
-			targPlayer.damage(new Hit(first, first > 0 ? HitType.NORMAL : HitType.BLOCKED));
-			targPlayer.damage(new Hit(second, second > 0 ? HitType.NORMAL : HitType.BLOCKED));
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, finalDmg, CombatType.MELEE);
 
-				@Override
-				public void execute() {
-					CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-					targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-					
-					CombatExperience.handleCombatExperience(player, finalDmg, CombatType.MELEE);
-					targPlayer.damage(new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));
-					this.stop();
-				}
-			});
+			targPlayer.damage(new Hit(first, first > 0 ? HitType.NORMAL : HitType.BLOCKED),
+					new Hit(second, second > 0 ? HitType.NORMAL : HitType.BLOCKED),
+					new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED),
+					new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));
+
 		} else {
-			 Npc targNpc = (Npc) target;
-				
-			 if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-					first = 0;
-					second = 0;
-					third = 0;
-					fourth = 0;
-				}
-				CombatExperience.handleCombatExperience(player, first, CombatType.MELEE);
-				CombatExperience.handleCombatExperience(player, second, CombatType.MELEE);
-				targNpc.damage(new Hit(first, first > 0 ? HitType.NORMAL : HitType.BLOCKED));
-				targNpc.damage(new Hit(second, second > 0 ? HitType.NORMAL : HitType.BLOCKED));
-				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+			Npc targNpc = (Npc) target;
 
-					@Override
-					public void execute() {
-						CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-						targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-						
-						CombatExperience.handleCombatExperience(player, finalDmg, CombatType.MELEE);
-						targNpc.damage(new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));
-						this.stop();
-					}
-				});
+			if (!(CombatFormulas.getAccuracy((Entity) player, (Entity) target, 0, getAccuracyMultiplier()))) {
+				first = 0;
+				second = 0;
+				third = 0;
+				fourth = 0;
+			}
+			CombatExperience.handleCombatExperience(player, first, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, second, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, finalDmg, CombatType.MELEE);
+			targNpc.damage(new Hit(first, first > 0 ? HitType.NORMAL : HitType.BLOCKED),
+					new Hit(second, second > 0 ? HitType.NORMAL : HitType.BLOCKED),
+					new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED),
+					new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));
 		}
 	}
 

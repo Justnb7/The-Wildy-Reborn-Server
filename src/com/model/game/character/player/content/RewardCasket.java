@@ -33,9 +33,9 @@ public class RewardCasket {
 	public final static Item[] RARE_ARMOUR_CASKET_REWARDS = { new Item(11832), new Item(11834) };
 	public final static Item[] COMMON_ARMOUR_CASKET_REWARDS = { new Item(6586, 5), new Item(10551), new Item(10548), new Item(11836) };
 	
-	public final static Item[] UNCOMMON_WEAPON_CASKET_REWARDS = { new Item(11907), new Item(10887), new Item(11804), new Item(11806), new Item(11808) };
-	public final static Item[] RARE_WEAPON_CASKET_REWARDS = { new Item(11802), new Item(11791), new Item(12006) };
-	public final static Item[] COMMON_WEAPON_CASKET_REWARDS = { new Item(4152, 5), new Item(4154, 5), new Item(3205, 5) };
+	public final static Item[] UNCOMMON_WEAPON_CASKET_REWARDS = { new Item(11907), new Item(12006) };
+	public final static Item[] RARE_WEAPON_CASKET_REWARDS = { new Item(11802), new Item(11791), new Item(13652) };
+	public final static Item[] COMMON_WEAPON_CASKET_REWARDS = { new Item(4152, 5), new Item(4154, 5), new Item(3205, 5), new Item(10887), new Item(11804), new Item(11806), new Item(11808)};
 	
 	public final static Item[] UNCOMMON_PET_CASKET_REWARDS = { new Item(13178), new Item(12647), new Item(12648), new Item(12649), new Item(12650), new Item(12651), new Item(12652), new Item(13323), new Item(13322), new Item(13321), new Item(20661) };
 	public final static Item[] RARE_PET_CASKET_REWARDS = { new Item(13262), new Item(13247), new Item(12921), new Item(13181), new Item(13225), new Item(13177), new Item(13179), new Item(20663) };
@@ -54,7 +54,7 @@ public class RewardCasket {
 	public final static Item[] COMMON_ZENYTE_CASKET_REWARDS = { new Item(19550), new Item(19544) };
 	
 	public final static Item[] UNCOMMON_ADVANCED_ITEMS_CASKET_REWARDS = { new Item(11785), new Item(12899), new Item(19550), new Item(19544), new Item(19547), new Item(6586, 15), new Item(4152, 15), new Item(10548), new Item(11836) };
-	public final static Item[] RARE_ADVANCED_ITEMS_CASKET_REWARDS = { new Item(19481), new Item(13576), new Item(11802), new Item(11791), new Item(12006), new Item(12926), new Item(12904), new Item(19550), new Item(19544) };
+	public final static Item[] RARE_ADVANCED_ITEMS_CASKET_REWARDS = { new Item(12817), new Item(19481), new Item(13576), new Item(11802), new Item(11791), new Item(12006), new Item(12926), new Item(12904), new Item(19550), new Item(19544), new Item(13652) };
 	public final static Item[] COMMON_ADVANCED_ITEMS_CASKET_REWARDS = { new Item(4152, 15), new Item(4154, 15), new Item(3205, 15), new Item(12931), new Item(6586, 5), new Item(10551), new Item(10548), new Item(11836), new Item(11832), new Item(11834), new Item(11907), new Item(10887), new Item(11804), new Item(11806), new Item(11808) };
 	
 	/**

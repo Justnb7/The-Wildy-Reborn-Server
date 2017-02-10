@@ -1151,7 +1151,7 @@ public class Player extends Entity {
 		hitUpdateRequired2 = false;
 		forcedChatUpdateRequired = false;
 		this.gfxUpdateRequired = false;
-		animationRequest = -1;
+		this.animUpdateRequired = false;
 		FocusPointX = -1;
 		FocusPointY = -1;
 		setFaceUpdateRequired(false);
@@ -1168,24 +1168,6 @@ public class Player extends Entity {
 		return appearanceUpdateRequired;
 	}
 	
-	
-	/**
-	 * Animations
-	 *
-	 * @param animId
-	 *            The animation id.
-	 */
-
-	public void playAnimation(Animation animation) {
-		animationRequest = animation.getId();
-		animationWaitCycles = animation.getDelay();
-		updateRequired = true;
-	}
-
-	public void appendAnimationRequest(GameBuffer str) {
-		str.writeWordBigEndian((animationRequest == -1) ? 65535 : animationRequest);
-		str.writeByteC(animationWaitCycles);
-	}
 
 	public void stopMovement() {
 		getMovementHandler().reset();
@@ -2417,10 +2399,9 @@ public class Player extends Entity {
 		return thieving;
 	}
 
+	// The client knows that anim -1 means you want to stop/reset the animation being played atm.
 	public void stopAnimation() {
-		animationRequest = 65535;
-		animationWaitCycles = 0;
-		updateRequired = true;
+		this.playAnimation(Animation.create(-1));
 	}
 	
 	private long lastContainerSearch;
@@ -3360,7 +3341,7 @@ public class Player extends Entity {
 			oldPlayerIndex, lastWeaponUsed, crystalBowArrowCount, playerPrayerAltar = 0, rangeItemUsed, killingNpcIndex,
 			oldNpcIndex, attackDelay, npcIndex, npcClickIndex, npcType, castingSpellId, oldSpellId, hitDelay,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
-			animationRequest = -1, animationWaitCycles, wearId, wearSlot, interfaceId, walkTutorial = 15,
+			wearId, wearSlot, interfaceId, walkTutorial = 15,
 			skullIcon = -1, reduceSpellId, bountyPoints;
 	public int playerHat = 0;
 	public int playerCape = 1;

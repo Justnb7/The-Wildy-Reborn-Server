@@ -97,13 +97,6 @@ public class CommandPacketHandler implements PacketType {
     	
     	String message;
     	switch (cmd[0]) {
-    	
-    	case "smite":
-    		int damage = 9;
-    		int reduce = damage / 4;
-    		player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevel(Skills.PRAYER) - reduce);
-    		player.write(new SendMessagePacket("reduced prayer level with: "+reduce));
-    		return true;
     
     	case "players":
 			player.write(new SendMessagePacket("There are currently @red@" + Utility.format(World.getWorld().getActivePlayers()) + "</col> players online."));

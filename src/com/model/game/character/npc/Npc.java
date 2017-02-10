@@ -175,10 +175,10 @@ public class Npc extends Entity {
 	 */
 	public int followTargetIndex;
 	
-	public int attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth, animNumber, freezeTimer,
+	public int attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth,  freezeTimer,
 			attackTimer, killerId, killedBy, oldIndex, underAttackBy, walking_type;
 	
-	public boolean noDeathEmote, isDead, walkingHome, underAttack, randomWalk, dirUpdateRequired, animUpdateRequired,
+	public boolean noDeathEmote, isDead, walkingHome, underAttack, randomWalk, dirUpdateRequired, 
 			forcedChatRequired;
 
 	public boolean aggressive;
@@ -402,20 +402,6 @@ public class Npc extends Entity {
 		return true;
 	}
 	
-	/**
-	 * Animates the entity.
-	 * 
-	 * @param animation
-	 *            The animation.
-	 */
-	public void playAnimation(Animation animation) {
-		if (transformUpdateRequired) {
-			return;
-		}
-		animNumber = animation.getId();
-		animUpdateRequired = true;
-		updateRequired = true;
-	}
 
 	/**
 	 * 

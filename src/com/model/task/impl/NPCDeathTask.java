@@ -2,6 +2,7 @@ package com.model.task.impl;
 
 import com.model.Server;
 import com.model.game.World;
+import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.GroupRespawn;
@@ -139,12 +140,11 @@ public class NPCDeathTask extends ScheduledTask {
         npc.currentHealth = npc.maximumHealth;
 		
         if (!npc.noDeathEmote) {
-            npc.animNumber = 0x328;
-            npc.animUpdateRequired = true;
+            npc.playAnimation(Animation.create(808));
         }
         
         npc.poisonDamage = 0;
-        npc.animUpdateRequired = true;
+        npc.animUpdateRequired = true; // might not be needed but leave incase it breaks somet
         npc.resetDamageReceived();
 
         if (npc.npcId == 492 && npc.isDead) {
@@ -218,8 +218,8 @@ public class NPCDeathTask extends ScheduledTask {
         	}
         }
 		
-        if (npc.npcId != 6611)
-			npc.animNumber = NPCCombatData.getDeadEmote(npc); // dead emote
+        if (npc.npcId != 6611) // vetion or somet
+			npc.playAnimation(Animation.create(NPCCombatData.getDeadEmote(npc))); // dead emote
         if (npc.transformId == 6612) {
 			npc.forcedText = "Got'em";
 			npc.forcedChatRequired = true;
@@ -228,8 +228,7 @@ public class NPCDeathTask extends ScheduledTask {
 		}
        
         if (!npc.noDeathEmote) {
-            npc.animNumber = NPCCombatData.getDeadEmote(npc); // dead
-            npc.animUpdateRequired = true;
+            npc.playAnimation(Animation.create(NPCCombatData.getDeadEmote(npc))); // dead
         }
         
         if (killer != null) {

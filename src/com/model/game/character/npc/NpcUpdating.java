@@ -195,8 +195,8 @@ public class NpcUpdating {
 	}
 
 	private static void appendAnimUpdate(Npc npc, GameBuffer str) {
-		str.writeWordBigEndian(npc.animNumber);
-		str.writeByte(1);
+		str.writeWordBigEndian(npc.anim.getId());
+		str.writeByte(npc.anim.getDelay());
 	}
 
 	private static void appendMask80Update(Npc npc, GameBuffer str) {

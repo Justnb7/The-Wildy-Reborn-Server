@@ -37,6 +37,8 @@ public abstract class Entity {
 	public Hit secondary;
 	public boolean hitUpdateRequired;
 	public boolean hitUpdateRequired2;
+	public Animation anim;
+	public boolean animUpdateRequired;
 	public Graphic gfx;
 	public boolean gfxUpdateRequired;
 	public boolean forcedChatUpdateRequired;
@@ -552,6 +554,22 @@ public abstract class Entity {
 		updateRequired = true;
 	}
 	
-	//TODO add forchat in entity
+	/**
+	 * Animations
+	 *
+	 * @param animId
+	 *            The animation id.
+	 */
+	public void playAnimation(Animation animation) {
+		// Purpose: anims are unique to npcs to this shops the npc deforming after transforming.
+		if (this.isNPC() && ((Npc)this).transformUpdateRequired) { 
+			// not too sure this will work we'll see
+			// its not that important tho
+			return;
+		}
+		anim = animation;
+		this.animUpdateRequired = true;
+		updateRequired = true;
+	}
 	
 }

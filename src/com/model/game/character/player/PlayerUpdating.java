@@ -228,7 +228,7 @@ public class PlayerUpdating {
 		if (player.gfxUpdateRequired) {
 			updateMask |= 0x100;
 		}
-		if (player.animationRequest != -1) {
+		if (player.animUpdateRequired) {
 			updateMask |= 0x8;
 		}
 		if (player.forcedChatUpdateRequired) {
@@ -269,7 +269,7 @@ public class PlayerUpdating {
 		if (player.gfxUpdateRequired) {
 			appendMask100Update(player, updateBlock);
 		}
-		if (player.animationRequest != -1) {
+		if (player.animUpdateRequired) {
 			appendAnimationRequest(player, updateBlock);
 		}
 		if (player.forcedChatUpdateRequired) {
@@ -591,8 +591,8 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data on
 	 */
 	private static void appendAnimationRequest(Player player, GameBuffer str) {
-		str.writeWordBigEndian((player.animationRequest == -1) ? 65535 : player.animationRequest);
-		str.writeByteC(player.animationWaitCycles);
+		str.writeWordBigEndian((player.anim.getId() == -1) ? 65535 : player.anim.getId());
+		str.writeByteC(player.anim.getDelay());
 	}
 
 	/**

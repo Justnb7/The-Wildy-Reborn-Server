@@ -225,7 +225,7 @@ public class PlayerUpdating {
 			buffer.writeBytes(player.getUpdateBlock().buffer, player.getUpdateBlock().offset);
 			return;
 		}
-		if (player.isMask100update()) {
+		if (player.gfxUpdateRequired) {
 			updateMask |= 0x100;
 		}
 		if (player.animationRequest != -1) {
@@ -266,7 +266,7 @@ public class PlayerUpdating {
 
 		// now writing the various update blocks itself - note that their order
 		// crucial
-		if (player.isMask100update()) {
+		if (player.gfxUpdateRequired) {
 			appendMask100Update(player, updateBlock);
 		}
 		if (player.animationRequest != -1) {
@@ -409,8 +409,9 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data on
 	 */
 	private static void appendMask100Update(Player player, GameBuffer str) {
-		str.writeWordBigEndian(player.mask100var1);
-		str.putInt(player.mask100var2);
+		str.writeWordBigEndian(player.gfx.getId());
+		str.putInt(player.gfx.getDelay() + (65536 * player.gfx.getHeight()));
+
 	}
 
 	/**

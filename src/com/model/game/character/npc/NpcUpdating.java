@@ -99,7 +99,7 @@ public class NpcUpdating {
 			updateMask |= 0x10;
 		if (npc.hitUpdateRequired2)
 			updateMask |= 8;
-		if (npc.isMask80update())
+		if (npc.gfxUpdateRequired)
 			updateMask |= 0x80;
 		if (npc.dirUpdateRequired)
 			updateMask |= 0x20;
@@ -118,7 +118,7 @@ public class NpcUpdating {
 			appendAnimUpdate(npc, buffer);
 		if (npc.hitUpdateRequired2)
 			appendHitUpdate2(npc, buffer);
-		if (npc.isMask80update())
+		if (npc.gfxUpdateRequired)
 			appendMask80Update(npc, buffer);
 		if (npc.dirUpdateRequired)
 			appendFaceEntity(npc, buffer);
@@ -200,8 +200,8 @@ public class NpcUpdating {
 	}
 
 	private static void appendMask80Update(Npc npc, GameBuffer str) {
-		str.writeShort(npc.mask80var1);
-		str.putInt(npc.mask80var2);
+		str.writeShort(npc.gfx.getId());
+		str.putInt(npc.gfx.getDelay() + (65536 * npc.gfx.getHeight()));
 	}
 
 	private static void appendHitUpdate2(Npc npc, GameBuffer str) {

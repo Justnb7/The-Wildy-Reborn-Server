@@ -556,4 +556,9 @@ public abstract class Entity {
 	// mobilecharacter looked massive yesterday doesnt look big at all now interesting but no errors so 
 	// i guess it works xd it does work i just tested everything but yeah look @ groundItems looks messy asf now
 	
+	public void playGraphics(Graphic graphic) {
+		gfx = graphic;
+		this.gfxUpdateRequired = true;
+		updateRequired = true;
+	}
 }

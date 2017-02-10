@@ -29,40 +29,13 @@ public class KorasiSword implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		int damage = Utility.random(70);
 		player.playAnimation(Animation.create(1058));
+		target.playGraphics(Graphic.create(1213));
 		
-		if(player instanceof Player) {
-			
-			Player targPlayer = (Player) target;
-			
-			if (damage > 70) {
-				damage = 70;
-			}
-			
-			targPlayer.playGraphics(Graphic.create(1213));
-			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
-				damage = (int)damage * 5 / 10;
-			}
-			
-			if (targPlayer.hasVengeance()) {
-				targPlayer.getCombat().vengeance(player, damage, 1);
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		} else {
-			Npc targNpc = (Npc) target;
-			
-			targNpc.playGraphics(Graphic.create(1213));
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-				damage = 0;
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		}
+		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		if (missed)
+			damage = 0;
+		
+		target.take_hit(player, damage, CombatType.MAGIC).giveXP(player);
 	}
 
 	@Override

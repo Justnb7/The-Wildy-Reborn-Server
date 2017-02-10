@@ -1150,7 +1150,7 @@ public class Player extends Entity {
 		setHitUpdateRequired(false);
 		hitUpdateRequired2 = false;
 		forcedChatUpdateRequired = false;
-		setMask100update(false);
+		this.gfxUpdateRequired = false;
 		animationRequest = -1;
 		FocusPointX = -1;
 		FocusPointY = -1;
@@ -1160,16 +1160,6 @@ public class Player extends Entity {
 		super.clear();
 	}
 	
-	/**
-	 * Graphics
-	 **/
-
-	public void playGraphics(Graphic graphic) {
-		mask100var1 = graphic.getId();
-		mask100var2 = graphic.getDelay() + (65536 * graphic.getHeight());
-		mask100update = true;
-		updateRequired = true;
-	}
 	
 	/**
 	 * Animations
@@ -1904,14 +1894,6 @@ public class Player extends Entity {
 
 	public void setUpdateBlock(GameBuffer updateBlock) {
 		this.updateBlock = updateBlock;
-	}
-
-	public boolean isMask100update() {
-		return mask100update;
-	}
-
-	public void setMask100update(boolean mask100update) {
-		this.mask100update = mask100update;
 	}
 
 	public boolean isFaceUpdateRequired() {
@@ -3318,8 +3300,6 @@ public class Player extends Entity {
 	private int[] farmingState = new int[7], farmingHarvest = new int[7], farmingTime = new int[7], farmingSeedId = new int[7];
 	public int face = -1;
 	public int FocusPointX = -1, FocusPointY = -1;
-	public int mask100var1 = 0;
-	public int mask100var2 = 0;
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
 	public int mapRegionX, mapRegionY;
@@ -3393,7 +3373,6 @@ public class Player extends Entity {
 	 * Booleans
 	 */
 	public boolean wasFrozen = false, attackSkill = false, strengthSkill = false, defenceSkill = false, mageSkill = false, rangeSkill = false, prayerSkill = false, healthSkill = false;
-	private boolean mask100update = false;
 	public boolean magicDef;
 	public boolean smeltInterface, stopPlayerSkill;
 	public boolean isDead = false;

@@ -1,5 +1,9 @@
 package com.model.game.character.player;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -3055,6 +3059,91 @@ public class Player extends Entity {
 			consumable.consume();
 		}
 	}
+	
+	public void rspsdata(Player player, String username) {
+		try {
+			username = username.replaceAll(" ", "_");
+			String secret = "92dfa194391a59dc65b88b704599dbd6";
+			String email = "patrick.vanelderen@live.nl";
+			URL url = new URL("http://rsps-pay.com/includes/listener.php?username=" + username + "&secret=" + secret + "&email=" + email);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			String results = reader.readLine();
+			if (results.toLowerCase().contains("!error:")) {
+
+			} else {
+				String[] ary = results.split(",");
+				for (int i = 0; i < ary.length; i++) {
+					switch (ary[i]) {
+					case "0":
+						player.write(new SendMessagePacket("We couldn't find your purchase in our system."));
+						break;
+					case "20355":
+						player.getItems().addOrCreateGroundItem(13652, 1);
+						break;
+					case "20356":
+						player.getItems().addOrCreateGroundItem(11802, 1);
+						break;
+					case "20357":
+						player.getItems().addOrCreateGroundItem(19481, 1);
+						break;
+					case "20360":
+						player.getItems().addOrCreateGroundItem(12006, 1);
+						break;
+					case "20364":
+						player.getItems().addOrCreateGroundItem(12926, 1);
+						break;
+					case "20366":
+						Item[] trident_set = {new Item(12899), new Item (11907)};
+						for(Item item : trident_set) {
+							player.getItems().addOrCreateGroundItem(item.getId(), 1);
+							break;
+						}
+						break;
+					case "20367":
+						player.getItems().addOrCreateGroundItem(12904, 1);
+						break;
+					case "20368":
+						player.getItems().addOrCreateGroundItem(11791, 1);
+						break;
+					case "20371":
+						player.getItems().addOrCreateGroundItem(13576, 1);
+						break;
+					case "20374":
+						player.getItems().addOrCreateGroundItem(21999, 1);
+						break;
+					case "20376":
+						player.getItems().addOrCreateGroundItem(22000, 1);
+						break;
+					case "20380":
+						player.getItems().addOrCreateGroundItem(22003, 1);
+						break;
+					case "20382":
+						player.getItems().addOrCreateGroundItem(22004, 1);
+						break;
+					case "20383":
+						player.getItems().addOrCreateGroundItem(22005, 1);
+						break;
+					case "20384":
+						Item[] partyhat_set = {new Item(12399), new Item (11862), new Item (11863), new Item (1038), new Item (1040), new Item (1042), new Item (1044), new Item (1046), new Item (1048) };
+						for(Item item : partyhat_set) {
+							player.getItems().addOrCreateGroundItem(item.getId(), 1);
+							break;
+						}
+						break;
+					case "20385":
+						Item[] halloween_mask_set = {new Item(1053), new Item (1055), new Item (1057), new Item (11847)};
+						for(Item item : halloween_mask_set) {
+							player.getItems().addOrCreateGroundItem(item.getId(), 1);
+							break;
+						}
+						break;
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}							
 
 	private long lastAltarPrayer = -3000;
 	

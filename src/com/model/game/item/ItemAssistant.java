@@ -2121,8 +2121,10 @@ public class ItemAssistant {
 		} else if ((amount > 1) && (!ItemDefinition.forId(id).isStackable())) {
 			for (int i = 0; i < amount; i++)
 			    GroundItemHandler.createGroundItem(new GroundItem(new Item(id, amount), player.getX(), player.getY(), player.getZ(), player));
+			player.write(new SendMessagePacket("Invntory full item placed underneath you."));
 		} else {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(id, amount), player.getX(), player.getY(), player.getZ(), player));
+			player.write(new SendMessagePacket("Invntory full item placed underneath you."));
 		}
 	}
 

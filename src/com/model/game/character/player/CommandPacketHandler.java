@@ -96,6 +96,14 @@ public class CommandPacketHandler implements PacketType {
     	String message;
     	switch (cmd[0]) {
     	
+		case "claimreward":
+			try {
+				player.rspsdata(player, player.getName());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return true;
+    	
     	case "setlevel":
     		int stat = Integer.parseInt(cmd[1]);
     		int level = Integer.parseInt(cmd[2]);

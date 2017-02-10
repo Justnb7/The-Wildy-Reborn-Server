@@ -15,7 +15,8 @@ import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
 /**
- * @author Omicron
+ * @author Patrick van Elderen
+ * @author Jak
  */
 public abstract class Entity {
 	

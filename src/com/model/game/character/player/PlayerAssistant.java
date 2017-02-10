@@ -480,7 +480,7 @@ public class PlayerAssistant {
 
     public void requestUpdates() {
         player.updateRequired = true;
-        player.setAppearanceUpdateRequired(true);
+        player.appearanceUpdateRequired = true;
     }
     
     public void removeWeb(int x, int y) {

@@ -11,115 +11,40 @@ public class SkillInterfaceButtons {
 		switch (button) {
 		
 		case 33206:
-			if (player.getGameMode() == "PKER") {
-				player.outStream.writeFrame(27);
-				player.attackSkill = true;
-				player.strengthSkill = false;
-				player.mageSkill = false;
-				player.rangeSkill = false;
-				player.defenceSkill = false;
-				player.prayerSkill = false;
-				player.healthSkill = false;
-			} else {
-				player.getSI().attackComplex(1);
-				player.getSI().selected = 0;
-			}
+			player.getSI().attackComplex(1);
+			player.getSI().selected = 0;
 			break;
-			
+
 		case 33209:
-			if (player.getGameMode() == "PKER") {
-				player.outStream.writeFrame(27);
-				player.strengthSkill = true;
-				player.attackSkill = false;
-				player.mageSkill = false;
-				player.rangeSkill = false;
-				player.defenceSkill = false;
-				player.prayerSkill = false;
-				player.healthSkill = false;
-			} else {
-				player.getSI().strengthComplex(1);
-				player.getSI().selected = 1;
-			}
+			player.getSI().strengthComplex(1);
+			player.getSI().selected = 1;
 			break;
-			
+
 		case 33212:
-			if (player.getGameMode() == "PKER") {
-				player.outStream.writeFrame(27);
-				player.defenceSkill = true;
-				player.attackSkill = false;
-				player.strengthSkill = false;
-				player.mageSkill = false;
-				player.rangeSkill = false;
-				player.prayerSkill = false;
-				player.healthSkill = false;
-			} else {
-				player.getSI().defenceComplex(1);
-				player.getSI().selected = 2;
-			}
+			player.getSI().defenceComplex(1);
+			player.getSI().selected = 2;
 			break;
-			
+
 		case 33215:
-			if (player.getGameMode() == "PKER") {
-				player.outStream.writeFrame(27);
-				player.rangeSkill = true;
-				player.attackSkill = false;
-				player.strengthSkill = false;
-				player.mageSkill = false;
-				player.defenceSkill = false;
-				player.prayerSkill = false;
-				player.healthSkill = false;
-			} else {
-				player.getSI().rangedComplex(1);
-				player.getSI().selected = 3;
-			}
+			player.getSI().rangedComplex(1);
+			player.getSI().selected = 3;
 			break;
 
 		case 33218:
-			if (player.getGameMode() == "PKER") {
-				player.outStream.writeFrame(27);
-				player.prayerSkill = true;
-				player.attackSkill = false;
-				player.strengthSkill = false;
-				player.mageSkill = false;
-				player.rangeSkill = false;
-				player.defenceSkill = false;
-				player.healthSkill = false;
-			} else {
-				player.getSI().prayerComplex(1);
-				player.getSI().selected = 4;
-			}
+
+			player.getSI().prayerComplex(1);
+			player.getSI().selected = 4;
 			break;
 
 		case 33221:
-			if (player.getGameMode() == "PKER") {
-				player.outStream.writeFrame(27);
-				player.mageSkill = true;
-				player.attackSkill = false;
-				player.strengthSkill = false;
-				player.rangeSkill = false;
-				player.defenceSkill = false;
-				player.prayerSkill = false;
-				player.healthSkill = false;
-			} else {
-				player.getSI().magicComplex(1);
-				player.getSI().selected = 5;
-			}
+			player.getSI().magicComplex(1);
+			player.getSI().selected = 5;
+
 			break;
 
 		case 33207:
-			if (player.getGameMode() == "PKER") {
-				player.outStream.writeFrame(27);
-				player.healthSkill = true;
-				player.attackSkill = false;
-				player.strengthSkill = false;
-				player.mageSkill = false;
-				player.rangeSkill = false;
-				player.defenceSkill = false;
-				player.prayerSkill = false;
-			} else {
-				player.getSI().hitpointsComplex(1);
-				player.getSI().selected = 7;
-			}
+			player.getSI().hitpointsComplex(1);
+			player.getSI().selected = 7;
 			break;
 
 		case 33224: // runecrafting

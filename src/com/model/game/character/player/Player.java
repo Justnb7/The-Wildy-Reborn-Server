@@ -14,10 +14,9 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.Graphic;
+import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
-import com.model.game.character.Entity;
 import com.model.game.character.combat.CombatAssistant;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.PrayerHandler;
@@ -57,13 +56,13 @@ import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.encode.PacketEncoder;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendInteractionOption;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendMultiWay;
 import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
+import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.Skilling;
@@ -1145,8 +1144,8 @@ public class Player extends Entity {
 	public void clearUpdateFlags() {
 		forceMovementUpdateRequired = false;
 		updateRequired = false;
-		setChatTextUpdateRequired(false);
-		setAppearanceUpdateRequired(false);
+		chatTextUpdateRequired = false;
+		appearanceUpdateRequired = false;
 		setHitUpdateRequired(false);
 		hitUpdateRequired2 = false;
 		forcedChatUpdateRequired = false;
@@ -1158,10 +1157,6 @@ public class Player extends Entity {
 		face = 65535;
 		setUpdateBlock(null);
 		super.clear();
-	}
-	
-	public void setAppearanceUpdateRequired(boolean appearanceUpdateRequired) {
-		this.appearanceUpdateRequired = appearanceUpdateRequired;
 	}
 
 	public boolean isAppearanceUpdateRequired() {
@@ -1223,10 +1218,6 @@ public class Player extends Entity {
 
 	public byte getChatTextSize() {
 		return chatTextSize;
-	}
-
-	public void setChatTextUpdateRequired(boolean chatTextUpdateRequired) {
-		this.chatTextUpdateRequired = chatTextUpdateRequired;
 	}
 
 	public boolean isChatTextUpdateRequired() {
@@ -1563,7 +1554,7 @@ public class Player extends Entity {
 				
 				player.write(new SendMessagePacket("Welcome back to " + Constants.SERVER_NAME + "."));
 				
-				player.getDailyReward().dailyReward();
+				//player.getDailyReward().dailyReward();
 				
 				if (isMuted()) {
 					player.write(new SendMessagePacket("You are currently muted. Other players will not see your chat messages."));
@@ -3361,11 +3352,11 @@ public class Player extends Entity {
 	/**
 	 * Booleans
 	 */
-	public boolean wasFrozen = false, attackSkill = false, strengthSkill = false, defenceSkill = false, mageSkill = false, rangeSkill = false, prayerSkill = false, healthSkill = false;
+	public boolean wasFrozen = false;
 	public boolean magicDef;
 	public boolean smeltInterface, stopPlayerSkill;
 	public boolean isDead = false;
-	private boolean chatTextUpdateRequired = false;
+	public boolean chatTextUpdateRequired = false;
 	private boolean faceUpdateRequired = false;
 	public boolean walkingToObject;
 	public boolean[] canUseReducingSpell = { true, true, true, true, true, true };

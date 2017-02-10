@@ -202,8 +202,10 @@ public class Skills {
 			player.write(new SendMessagePacket("<col=8b0000>Well done! You've achieved the highest possible level in this skill!</col>"));
 		}
 		if (skill.getSkillId() < 7 || skill.getSkillId() == 21) {
+			player.combatLevel = getCombatLevel();
 			getCombatLevel();
 			player.write(new SendString("Combat Level: " + player.getSkills().getCombatLevel(), 3983));
+			player.getPA().requestUpdates();
 		}
 	}
 	
@@ -296,8 +298,6 @@ public class Skills {
 		player.write(new SendSkillPacket(skill));
 		int newLvl = getLevelForExperience(skill);
 		if (oldLvl != newLvl) {
-			player.updateRequired = true;
-    		player.appearanceUpdateRequired = true;
 			player.getPA().requestUpdates();
 		}
 	}
@@ -458,8 +458,6 @@ public class Skills {
         int levelDiff = newLevel - oldLevel;
         if (levelDiff > 0) {
             levels[skillId] += levelDiff;
-            player.updateRequired = true;
-    		player.appearanceUpdateRequired = true;
 			player.getPA().requestUpdates();
 			player.playGraphics(Graphic.highGraphic(199));
 			handleLevelUp(skillId);

@@ -17,7 +17,7 @@ public class SendMultiWay implements PacketEncoder {
             player.outStream.writeFrame(OPCODE);
             player.outStream.writeByte(icon);
             player.updateRequired = true;
-            player.setAppearanceUpdateRequired(true);
+            player.appearanceUpdateRequired = true;
         }
 	}
 

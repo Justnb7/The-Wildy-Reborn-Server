@@ -955,7 +955,7 @@ public class ItemAssistant {
 		player.getItems().writeBonus();
 		CombatAnimation.itemAnimations(player);
 		player.updateRequired = true;
-		player.setAppearanceUpdateRequired(true);
+		player.appearanceUpdateRequired = true;
 	}
 
 	public void updateSlot(int slot) {
@@ -994,7 +994,7 @@ public class ItemAssistant {
 					player.getOutStream().writeByte(0);
 					player.flushOutStream();
 					player.updateRequired = true;
-					player.setAppearanceUpdateRequired(true);
+					player.appearanceUpdateRequired = true;
 				}
 			}
 		}
@@ -1359,7 +1359,7 @@ public class ItemAssistant {
 		player.playerEquipment[targetSlot] = wearID;
 		player.playerEquipmentN[targetSlot] = amount;
 		player.updateRequired = true;
-		player.setAppearanceUpdateRequired(true);
+		player.appearanceUpdateRequired = true;
 	}
 
 	/**
@@ -1495,7 +1495,7 @@ public class ItemAssistant {
 		getBonus();
 		writeBonus();
 		player.updateRequired = true;
-		player.setAppearanceUpdateRequired(true);
+		player.appearanceUpdateRequired = true;
 	}
 
 	public void deleteItem(final int id, int amount) {
@@ -1606,7 +1606,7 @@ public class ItemAssistant {
 			player.playerEquipmentN[player.getEquipment().getQuiverId()] -= 1;
 		}
 		player.updateRequired = true;
-		player.setAppearanceUpdateRequired(true);
+		player.appearanceUpdateRequired = true;
 	 }
 
 	 public void deleteEquipment() {
@@ -1630,7 +1630,7 @@ public class ItemAssistant {
 			 player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
 		 }
 		 player.updateRequired = true;
-		 player.setAppearanceUpdateRequired(true);
+		 player.appearanceUpdateRequired = true;
 	 }
 
 	 public void removeEquipment() {
@@ -1654,7 +1654,7 @@ public class ItemAssistant {
 			 player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
 		 }
 		 player.updateRequired = true;
-		 player.setAppearanceUpdateRequired(true);
+		 player.appearanceUpdateRequired = true;
 	 }
 
 	 /**
@@ -2145,7 +2145,7 @@ public class ItemAssistant {
 					player.getOutStream().writeByte(0);
 					player.flushOutStream();
 					player.updateRequired = true;
-					player.setAppearanceUpdateRequired(true);
+					player.appearanceUpdateRequired = true;
 				}
 			}
 		}

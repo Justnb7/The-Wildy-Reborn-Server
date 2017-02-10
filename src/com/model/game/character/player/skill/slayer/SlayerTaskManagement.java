@@ -225,6 +225,8 @@ public class SlayerTaskManagement {
 				player.setSlayerTask(0);
 				player.setSlayerTaskAmount(0);
 				player.setSlayerTasksCompleted(player.getSlayerTasksCompleted() + 1);
+				player.write(new SendString("<img=28><col=FFFFFF>Task: <col=00CC00>None", 29511));
+				player.write(new SendString("<img=28><col=FFFFFF>tasks completed: <col=00CC00>"+ player.getSlayerTasksCompleted(), 29512));
 				
 				/**
 				 * Beginner task (Turael).

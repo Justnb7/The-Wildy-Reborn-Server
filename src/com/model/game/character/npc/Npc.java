@@ -10,9 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.model.Server;
 import com.model.game.World;
-import com.model.game.character.Animation;
 import com.model.game.character.Entity;
-import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.combat_data.CombatType;

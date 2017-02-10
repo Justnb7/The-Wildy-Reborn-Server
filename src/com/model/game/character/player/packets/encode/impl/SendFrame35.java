@@ -24,7 +24,7 @@ public class SendFrame35 implements PacketEncoder {
 		player.getOutStream().writeByte(i3);
 		player.getOutStream().writeByte(i4);
 		player.updateRequired = true;
-		player.setAppearanceUpdateRequired(true);
+		player.appearanceUpdateRequired = true;
 	}
 
 }

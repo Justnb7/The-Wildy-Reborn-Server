@@ -3,14 +3,9 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
-import com.model.game.character.Hit;
-import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
-import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
-import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
@@ -33,7 +28,8 @@ public class AbyssalTentacle implements SpecialAttack {
 			damage = 0;
 		
 		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
-		target.freezeTimer = 5;
+		
+		target.freeze(8);
 	}
 
 	@Override

@@ -737,8 +737,8 @@ public class NpcVsPlayerCombat {
 							damage = Utility.getRandom(3);
 							player.write(new SendMessagePacket("Your shield absorbs most of the dragon's icy breath!"));
 						}
-						if (player.freezeTimer <= 0 && damage > 0) {
-							player.freezeTimer = 20;
+						if (player.frozen() && damage > 0) {
+							player.freeze(33);
 							player.write(new SendMessagePacket("You have been frozen!"));
 							player.stopMovement();
 						}

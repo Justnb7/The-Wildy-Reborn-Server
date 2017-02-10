@@ -364,7 +364,7 @@ public final class NPCHandler {
 			npc.facePlayer(playerId);
 			//return;
 		}
-		if (npc.freezeTimer > 0) {
+		if (npc.frozen()) {
 			return;
 		}
 

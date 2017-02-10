@@ -173,7 +173,7 @@ public class Npc extends Entity {
 	 */
 	public int followTargetIndex;
 	
-	public int attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth,  freezeTimer,
+	public int attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth,
 			attackTimer, killerId, killedBy, oldIndex, underAttackBy, walking_type;
 	
 	public boolean noDeathEmote, isDead, walkingHome, underAttack, randomWalk, dirUpdateRequired, 
@@ -495,9 +495,7 @@ public class Npc extends Entity {
 		try {
 			follow();
 			
-			if (freezeTimer > 0) {
-				freezeTimer--;
-			}
+			super.frozen_process();
 
 			Player player = World.getWorld().getPlayers().get(spawnedBy);
 			if (isPet && ownerId > 0) {
@@ -714,7 +712,7 @@ public class Npc extends Entity {
 	
 	// Actual following, called every cycle. This method supports both player and NPC types while PI didn't
 	public void follow() {
-		if (this.freezeTimer > 0) {
+		if (super.frozen()) { // TODO 
 			return;
 		}
 		if (following_target != null) {

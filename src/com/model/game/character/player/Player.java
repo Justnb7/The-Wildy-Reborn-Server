@@ -1046,15 +1046,6 @@ public class Player extends Entity {
 		return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
 	}
 
-	public int distanceToPoint(int pointX, int pointY) {
-		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
-	}
-
-	public boolean goodDistance(int objectX, int objectY, int playerX, int playerY, int distance) {
-		return ((objectX - playerX <= distance && objectX - playerX >= -distance)
-				&& (objectY - playerY <= distance && objectY - playerY >= -distance));
-	}
-
 	public boolean destinationReached() {
 		Location player = new Location(absX, absY, heightLevel);
 		Location object = new Location(objectX, objectY, heightLevel);
@@ -1639,12 +1630,12 @@ public class Player extends Entity {
 	@Override
 	public void process() {
 		try {
-			tick();
+			refresh_inventory();
 			PrayerHandler.handlePrayerDraining(this);
 			//Server.getGlobalObjects().pulse();
 			if (clickObjectType > 0 && destinationReached())
 				handleObjectAction();
-			miscProcessing();
+			process_following();
 			combatProcessing();
 			farming.farmingProcess();
 			controller.tick(this);
@@ -1702,7 +1693,7 @@ public class Player extends Entity {
 		return actionHandler;
 	}
 	
-	public void miscProcessing() {
+	public void process_following() {
 		if (followId > 0) {
 			getPA().followPlayer(/* !getLastCombatAction().elapsed(5000) || inCombat() || */playerIndex > 0);
 		} else if (followId2 > 0) {
@@ -1732,27 +1723,15 @@ public class Player extends Entity {
 				}
 			}
 
-			if (freezeTimer > -6) {
-				freezeTimer--;
-				if (frozenBy > 0) {
-					if (World.getWorld().getPlayers().get(frozenBy) == null) {
-						freezeTimer = -1;
-						frozenBy = -1;
-						freezeDelay = 0;
-					} else
-						if (!goodDistance(getX(), getY(), World.getWorld().getPlayers().get(frozenBy).getX(),
-								World.getWorld().getPlayers().get(frozenBy).getY(), 20)) {
-						freezeTimer = -1;
-						frozenBy = -1;
-						freezeDelay = 0;
-					}
-				} else {
-					if (freezeTimer == 0) {
-						freezeTimer = -6;
-						freezeDelay = 0;
-					}
-				}
-			}
+			// freezing is a timer that belongs in the main process, we can however
+			// add an entity process which can share between both npc/players
+			//Lets start here btw, idk why PI has this in the processing
+			//Shouldnt be rite?/
+			//Alrite well the freezeTimer shit is pi i've added
+			//isnt thi already npc and player process? it'll be in both but it can be in
+			// entity only just to reduce duplicate code like same code in both classes plr/npc
+			//then you mgith need to show me i don't fully understand that entity processing kk
+			super.frozen_process();
 			if (hitDelay > 0) {
 				hitDelay--;
 			}
@@ -3033,7 +3012,10 @@ public class Player extends Entity {
 		return kraken;
 	}
 
-	public void tick() {
+	public void refresh_inventory() {
+		// Makes switching faster .. send our inventory straight after packets (switching items)
+		// is processed rather than maybe a couple milliseconds later after other processing like
+		// combat, following, npc agro etc etc. those couple MS make a big diff w/ lots of plrs. 
 		this.getItems().resetItems(3214);
 	}
 	
@@ -3328,7 +3310,7 @@ public class Player extends Entity {
 			lastChatId = 1, privateChat, specBarId, attackLevelReq, rangeLevelReq, skullTimer, nextChat,
 			talkingNpc = -1, dialogueAction, followDistance, npcFollowIndex, barrageCount, delayedDamage,
 			delayedDamage2, lastArrowUsed = -1, xInterfaceId, xRemoveId, xRemoveSlot, waveId, frozenBy, lastNpcAttacked,
-			underAttackBy, underAttackBy2, wildLevel, teleTimer, freezeDelay, freezeTimer = -6, killerId, playerIndex,
+			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
 			oldPlayerIndex, lastWeaponUsed, crystalBowArrowCount, playerPrayerAltar = 0, rangeItemUsed, killingNpcIndex,
 			oldNpcIndex, attackDelay, npcIndex, npcClickIndex, npcType, castingSpellId, oldSpellId, hitDelay,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,

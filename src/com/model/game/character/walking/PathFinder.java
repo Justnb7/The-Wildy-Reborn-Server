@@ -18,7 +18,7 @@ public class PathFinder {
 	}
 
 	public void findRoute(Player player, int destX, int destY, boolean moveNear, int xLength, int yLength) {
-		if (player.freezeTimer > 0)
+		if (player.frozen())
 			return;
 		final int regionX = ((player.getX() >> 3) - 6) << 3;
 		final int regionY = ((player.getY() >> 3) - 6) << 3;

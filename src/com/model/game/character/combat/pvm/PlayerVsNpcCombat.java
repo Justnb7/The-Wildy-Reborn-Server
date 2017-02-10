@@ -291,8 +291,8 @@ public class PlayerVsNpcCombat {
 		}
 		if (!magicFailed) {
 			int freezeDelay = player.getCombat().getFreezeTime();// freeze
-			if (freezeDelay > 0 && npc.freezeTimer == 0) {
-				npc.freezeTimer = freezeDelay;
+			if (freezeDelay > 0 && npc.refreezeTicks == 0) {
+				npc.refreezeTicks = freezeDelay;
 				//player.write(new SendGameMessage("Freeze timer: "+npc.freezeTimer+ " Freezedelay: "+freezeDelay));
 			}
 			switch (player.MAGIC_SPELLS[player.oldSpellId][0]) {

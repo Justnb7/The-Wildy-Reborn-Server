@@ -117,7 +117,7 @@ public class MovementHandler {
 				return;
 			}
 
-			if (player.freezeDelay > 0) {
+			if (player.frozen()) {
 				reset();
 				return;
 			}

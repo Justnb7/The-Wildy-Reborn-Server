@@ -1,6 +1,5 @@
 package com.model.game.character.combat.magic;
 
-import com.model.game.World;
 import com.model.game.character.player.Player;
 
 public class MagicData {
@@ -9,7 +8,7 @@ public class MagicData {
 	public static int getMagicGraphic(Player c, int i) {
 		switch (c.MAGIC_SPELLS[c.oldSpellId][0]) {
 		case 12891:
-			return World.getWorld().getPlayers().get(i).freezeTimer > 0 ? 369 : 369;
+			return 369;
 		}
 		return c.MAGIC_SPELLS[c.oldSpellId][5];
 	}
@@ -168,7 +167,7 @@ public class MagicData {
 		switch (c.MAGIC_SPELLS[c.oldSpellId][0]) {
 		case 1572:
 		case 12861: // ice rush
-			return 10;
+			return 8;
 
 		case 1582:
 		case 12881: // ice burst

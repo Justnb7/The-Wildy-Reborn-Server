@@ -10,8 +10,6 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.Entity;
-import com.model.game.character.Entity.EntityType;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
@@ -97,6 +95,27 @@ public class CommandPacketHandler implements PacketType {
     	
     	String message;
     	switch (cmd[0]) {
+    	
+    	case "setlevel":
+    		int stat = Integer.parseInt(cmd[1]);
+    		int level = Integer.parseInt(cmd[2]);
+    		if(player.getGameMode() == "TRAINED" || player.getArea().inWild()) {
+    			return false;
+    		}
+    		if (stat > 6) {
+    			player.write(new SendMessagePacket("You're only allowed to change combat."));
+    			return false;
+    		}
+    		if(level > 99 || stat == 3 && level < 10) {
+    			player.write(new SendMessagePacket("Invalid entry."));
+    			return false;
+    		}
+    		player.getSkills().setExperience(stat, player.getSkills().getXPForLevel(level) + 1);
+			player.getSkills().setLevel(stat, level);
+			player.write(new SendMessagePacket(Skills.SKILL_NAME[stat] + " level is now " + level + "."));
+			player.combatLevel = player.getSkills().getCombatLevel();
+    		player.getPA().requestUpdates();
+    		return true;
     
     	case "players":
 			player.write(new SendMessagePacket("There are currently @red@" + Utility.format(World.getWorld().getActivePlayers()) + "</col> players online."));
@@ -771,10 +790,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
     	case "setstat":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		try {
 				if(Integer.parseInt(cmd[2]) < 1 || Integer.parseInt(cmd[2]) > 99) {
 					player.write(new SendMessagePacket("Invalid entry: level must be between 1-99."));

@@ -523,7 +523,7 @@ public class PlayerVsPlayerCombat {
 					if (attacker.barrageCount >= 9)
 						break;
 					if (attacker.goodDistance(defender.getX(), defender.getY(), World.getWorld().getPlayers().get(j).getX(), World.getWorld().getPlayers().get(j).getY(), 1)) {
-						World.getWorld().getPlayers().get(j).wasFrozen = World.getWorld().getPlayers().get(j).freezeTimer > -3;
+						World.getWorld().getPlayers().get(j).wasFrozen = World.getWorld().getPlayers().get(j).refreezeTicks > -3;
 					}
 						attacker.getCombat().appendMultiBarrage(j, attacker.magicFailed);
 				}
@@ -588,7 +588,7 @@ public class PlayerVsPlayerCombat {
 
 		boolean sameSpot = player.getX() == defender.getX() && player.getY() == defender.getY();
 		if (sameSpot) {
-			if (player.freezeTimer > 0) {
+			if (player.frozen()) {
 				Combat.resetCombat(player);
 				return;
 			}
@@ -916,16 +916,19 @@ public class PlayerVsPlayerCombat {
 			}
 
 			player.magicFailed = !CombatFormulas.getAccuracy(player, defender, 2, 1.0);
-			defender.wasFrozen = defender.freezeTimer > -3;
-			int freezeDelay = player.getCombat().getFreezeTime();
-			if (freezeDelay > 0 && defender.freezeTimer <= -3 && !player.magicFailed) {
-				defender.freezeTimer = freezeDelay;
+			// Purpose: even though barrage is a 20s freeze, there is actually 3 ticks of freeze immunity straight after
+			// Allowing the target to run for a few steps before being recubed.
+			defender.wasFrozen = defender.refreezeTicks > -3;
+			int spellFreezeTime = player.getCombat().getFreezeTime();
+			if (spellFreezeTime > 0 && defender.frozen() && !player.magicFailed) {
+				defender.freeze(spellFreezeTime);
 				defender.resetWalkingQueue();
 				defender.write(new SendMessagePacket("You have been frozen."));
 				defender.frozenBy = player.getIndex();
 			}
 			if (!player.autoCast && player.spellId <= 0)
 				player.playerIndex = 0;
+			
 		}
 	}
 
@@ -991,7 +994,7 @@ public class PlayerVsPlayerCombat {
 			Combat.resetCombat(player);
 			return false;
 		}
-		if (player.freezeTimer > 0 && !CombatData.isWithinAttackDistanceForStopFollow(player, target)) {
+		if (player.frozen() && !CombatData.isWithinAttackDistanceForStopFollow(player, target)) {
 			return false;
 		}
 

@@ -124,7 +124,7 @@ public class PlayerAssistant {
 		player.infected = false;
 		player.poisonDamage = 0;
 		player.venomDamage = 0;
-		player.freezeTimer = 0;
+		player.freeze(0);
 		player.killerId = -1;
 		player.isSkulled = false;
 		player.skullIcon = -1;
@@ -182,7 +182,7 @@ public class PlayerAssistant {
             resetFollow();
             return;
         }
-        if (player.freezeTimer > 0) {
+        if (player.frozen()) {
             return;
         }
 
@@ -330,7 +330,7 @@ public class PlayerAssistant {
     }
 
     public static void stopDiagonal(Player player, int otherX, int otherY) {
-        if (player.freezeDelay > 0) {
+    	if (player.frozen()) {
             return;
         }
         player.getMovementHandler().reset();
@@ -350,7 +350,7 @@ public class PlayerAssistant {
             player.npcFollowIndex = 0;
             return;
         }
-        if (player.freezeTimer > 0) {
+        if (player.frozen()) {
             return;
         }
         if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0)

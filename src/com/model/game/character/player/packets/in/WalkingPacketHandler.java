@@ -119,7 +119,7 @@ public class WalkingPacketHandler implements PacketType {
 			return;
 		}
 
-		if (player.freezeTimer > 0) {
+		if (player.frozen()) {
 			if (World.getWorld().getPlayers().get(player.playerIndex) != null) {
 				if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 1) && packetType != 98) {
 					player.playerIndex = 0;

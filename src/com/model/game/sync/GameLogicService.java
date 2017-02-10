@@ -66,7 +66,7 @@ public final class GameLogicService implements Runnable {
 			if (player != null) {
 				player.getSession().processSubQueuedPackets();
 				player.getSession().processQueuedPackets();
-				player.tick();
+				player.refresh_inventory();
 			}
 		}
 	}

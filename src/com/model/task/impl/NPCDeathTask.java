@@ -241,7 +241,7 @@ public class NPCDeathTask extends ScheduledTask {
     public static void reset(Npc npc) {
     	npc.infected = false;
         npc.appearanceUpdateRequired = true;
-        npc.freezeTimer = 0;
+        npc.freeze(0);
         npc.killerId = 0;
         npc.underAttack = false;
         npc.poisonDamage = 0;

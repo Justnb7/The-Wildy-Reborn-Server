@@ -572,4 +572,60 @@ public abstract class Entity {
 		updateRequired = true;
 	}
 	
+	public int frozenForTicks, refreezeTicks;
+	public Entity frozenBy;
+	
+	// example: barrage = freeze(20s/.6 ticks = 33 ticks)
+	public void freeze(int ticks) {
+		if (this.refreezeTicks > 0) // we're immune
+			return;
+		this.frozenForTicks = ticks;
+		this.refreezeTicks = ticks + 3; // 3 ticks of immuity
+	}
+	
+	public void frozenBy(Entity mager) {
+		frozenBy = mager;
+	}
+
+	public void frozen_process() {
+		// Reduce timers
+		if (frozenForTicks > 0)
+			this.frozenForTicks--;
+		if (this.refreezeTicks > 0)
+			this.refreezeTicks--;
+		
+		check_should_unfreeze();
+		
+	}
+
+	private void check_should_unfreeze() {
+		// Purpose: if whoever froze you is off screen (or null, they logged off) you get unfrozen.
+		
+		if (frozenBy == null)
+			return;
+		int opX = frozenBy.absX;
+		int opY = frozenBy.absY;
+		
+		boolean out_of_dist = !goodDistance(getX(), getY(), opX, opY, 20);
+		
+		if (!frozenBy.registered || out_of_dist) {
+			this.frozenForTicks = 0;
+			this.refreezeTicks = 0;
+			frozenBy = null;
+		}
+	}
+
+	public boolean frozen() {
+		return this.frozenForTicks > 0;
+	}
+
+
+	public int distanceToPoint(int pointX, int pointY) {
+		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
+	}
+
+	public boolean goodDistance(int objectX, int objectY, int playerX, int playerY, int distance) {
+		return ((objectX - playerX <= distance && objectX - playerX >= -distance) && (objectY - playerY <= distance && objectY - playerY >= -distance));
+	}
+	
 }

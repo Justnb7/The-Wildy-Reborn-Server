@@ -384,11 +384,6 @@ public class CommandPacketHandler implements PacketType {
 			player.forceChat("My Kill/Death ratio is "+player.getKillCount()+"/"+player.getDeathCount()+"; "+KDR);
     		return true;
     		
-    	case "lockexp":
-    		player.expLock =! player.expLock;
-			player.write(new SendMessagePacket("@red@Your experience is now: " + (player.expLock ? "@gre@Unlocked" : "@red@Locked")));
-    		return true;
-    		
     	case "redskull":
     		if (player.redSkull > 0)
 				return false;

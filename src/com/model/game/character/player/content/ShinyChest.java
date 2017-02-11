@@ -59,8 +59,5 @@ public class ShinyChest {
 			
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 3_500_000) {
-				PlayerUpdating.executeGlobalMessage("@red@<img=12>[Server]:@blu@ "+player.getName()+ " was lucky and received an "+ItemDefinition.forId(itemReceived.getId()).getName()+ " from the shiny chest.");
-			}
 		}
 }

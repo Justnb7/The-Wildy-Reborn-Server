@@ -457,7 +457,7 @@ public class PlayerVsPlayerCombat {
 				if (attacker.getSkills().getLevel(Skills.HITPOINTS) + heal > attacker.getMaximumHealth()) {
 					attacker.getSkills().setLevel(Skills.HITPOINTS, attacker.getMaximumHealth());
 				} else {
-					attacker.getSkills().setLevel(Skills.HITPOINTS, + heal);
+					attacker.getSkills().setLevel(Skills.HITPOINTS, attacker.getSkills().getLevel(Skills.HITPOINTS) + heal);
 				}
 				break;
 

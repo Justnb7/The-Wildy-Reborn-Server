@@ -115,7 +115,7 @@ public class MagicExtras {
 			if(player.getSkills().getLevel(Skills.HITPOINTS) + heal >= player.getMaximumHealth()) {
 				player.getSkills().setLevel(Skills.HITPOINTS, player.getMaximumHealth());
 			} else {
-				player.getSkills().setLevel(Skills.HITPOINTS, + heal);
+				player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + heal);
 			}
 			break;
 		case 12891:

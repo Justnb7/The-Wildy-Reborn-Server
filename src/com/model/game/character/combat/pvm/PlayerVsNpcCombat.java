@@ -304,7 +304,7 @@ public class PlayerVsNpcCombat {
 				if (player.getSkills().getLevel(Skills.HITPOINTS) + heal >= player.getSkills().getLevelForExperience(Skills.HITPOINTS)) {
 					player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevelForExperience(Skills.HITPOINTS));
 				} else {
-					player.getSkills().setLevel(Skills.HITPOINTS, + heal);
+					player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + heal);
 				}
 				break;
 			}

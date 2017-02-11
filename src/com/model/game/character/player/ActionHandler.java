@@ -7,6 +7,7 @@ import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.BrimhavenVines;
 import com.model.game.character.player.content.CrystalChest;
+import com.model.game.character.player.content.ShinyChest;
 import com.model.game.character.player.content.WildernessDitch;
 import com.model.game.character.player.content.teleport.Obelisks;
 import com.model.game.character.player.content.teleport.Teleport;
@@ -131,24 +132,18 @@ public class ActionHandler {
 		}
 		switch (def.name.toLowerCase()) {
 		
-		case "closed chest":
-			if (player.getX() == 3085) {
-				if (player.getItems().playerHasItem(989)) {
-					CrystalChest.searchChest(player, x, y);
-				} else {
-					player.write(new SendMessagePacket("You need a key to open this chest."));
-				}
+		case "open chest":
+			if (player.getItems().playerHasItem(85)) {
+				ShinyChest.searchChest(player, x, y);
+			} else if(player.getItems().playerHasItem(989)) {
+				CrystalChest.searchChest(player, x, y);
+			} else {
+				player.write(new SendMessagePacket("You need a key to open this chest."));
 			}
 			break;
 		
 		case "magic chest":
-			if (player.getItems().playerHasItem(85)) {
-				player.getGamble().shinyKeyChest();
-			} else if(player.getItems().playerHasItem(1547)) {
-				player.getGamble().magicKeyChest();
-			} else {
-				player.write(new SendMessagePacket("You need an magic key or a shiny key to open this locked chest."));
-			}
+
 			break;
 		
 		case "ladder":

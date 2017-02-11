@@ -129,7 +129,7 @@ public class ItemActionPacketHandler implements PacketType {
 			break;
 		
 		case 6199:
-			player.getGamble().mysteryBox();
+			
 			break;
 
 		case 4155: //Enchanted Gem

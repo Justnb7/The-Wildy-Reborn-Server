@@ -19,11 +19,6 @@ public class CrystalChest {
 	 * Ids of key halves
 	 */
 	public static final Item[] KEY_HALVES = { new Item(985), new Item(987) };
-
-	/**
-	 * Crystal key Id
-	 */
-	public static final Item KEY = new Item(989);
 	
 	/**
 	 * Creates the key
@@ -34,7 +29,7 @@ public class CrystalChest {
 		if (player.getItems().playerHasItems(KEY_HALVES)) {
 			player.getItems().remove(KEY_HALVES[0]);
 			player.getItems().remove(KEY_HALVES[1]);
-			player.getItems().addItem(KEY);
+			player.getItems().addOrCreateGroundItem(989, 1);;
 			player.getDialogueHandler().sendStatement(player, "You have combined the two parts to form a key.");
 		}
 	}
@@ -56,9 +51,8 @@ public class CrystalChest {
 	 * @param y
 	 */
 	public static void searchChest(final Player player, final int x, final int y) {
-		if (player.getItems().playerHasItem(KEY)) {
 			player.write(new SendMessagePacket("You unlock the chest with your key."));
-			player.getItems().remove(KEY);
+			player.getItems().deleteItem(989);
 			player.playAnimation(Animation.create(881));
 			Item itemReceived;
 			switch (Utility.getRandom(50)) {
@@ -84,32 +78,5 @@ public class CrystalChest {
 
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			if (itemReceived.getDefinition().getShopValue() < 100_000) {
-				switch (Utility.getRandom(50)) {
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-				case 5:
-				case 6:
-				case 7:
-				case 8:
-				case 9:
-				case 10:
-					itemReceived = Utility.randomElement(UNCOMMON_CHEST_REWARDS);
-					break;
-				case 25:
-					itemReceived = Utility.randomElement(RARE_CHEST_REWARDS);
-					break;
-				default:
-					itemReceived = Utility.randomElement(COMMON_CHEST_REWARDS);
-				}
-				player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
-				player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			}
-		} else {
-			player.write(new SendMessagePacket("You need a key to open this chest."));
 		}
-	}
 }

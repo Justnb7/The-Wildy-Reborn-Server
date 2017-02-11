@@ -40,7 +40,6 @@ import com.model.game.character.npc.pet.PetCombat;
 import com.model.game.character.player.account_type.Account;
 import com.model.game.character.player.content.DailyReward;
 import com.model.game.character.player.content.FriendAndIgnoreList;
-import com.model.game.character.player.content.Gamble;
 import com.model.game.character.player.content.TradeState;
 import com.model.game.character.player.content.clan.ClanMember;
 import com.model.game.character.player.content.consumable.Consumable;
@@ -682,12 +681,6 @@ public class Player extends Entity {
 	 */
 	public RunePouchContainer getRunePouchContainer() {
 		return runePouchContainer;
-	}
-	
-	private Gamble gamble = new Gamble(this);
-	
-	public Gamble getGamble() {
-		return gamble;
 	}
 	
 	private PetCombat petCombat = new PetCombat(this);

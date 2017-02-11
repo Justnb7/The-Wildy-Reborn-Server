@@ -1,11 +1,9 @@
 package com.model.game.character.player.content;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * A class handled for the 'custom' reward caskets.
@@ -139,9 +137,6 @@ public class RewardCasket {
 			}
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 10_000_000) {
-				PlayerUpdating.executeGlobalMessage("@red@<img=12>[Server]:@blu@ "+player.getName()+ " was lucky and received an "+ItemDefinition.forId(itemReceived.getId()).getName()+ " from a casket.");
-			}
 		}
 	}
 	
@@ -178,9 +173,6 @@ public class RewardCasket {
 			}
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 10_000_000) {
-				PlayerUpdating.executeGlobalMessage("@red@<img=12>[Server]:@blu@ "+player.getName()+ " was lucky and received an "+ItemDefinition.forId(itemReceived.getId()).getName()+ " from a casket.");
-			}
 		}
 	}
 	
@@ -218,9 +210,6 @@ public class RewardCasket {
 			}
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 10_000_000) {
-				PlayerUpdating.executeGlobalMessage("@red@<img=12>[Server]:@blu@ "+player.getName()+ " was lucky and received an "+ItemDefinition.forId(itemReceived.getId()).getName()+ " from a casket.");
-			}
 		}
 	}
 	
@@ -258,9 +247,6 @@ public class RewardCasket {
 			}
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 10_000_000) {
-				PlayerUpdating.executeGlobalMessage("@red@<img=12>[Server]:@blu@ "+player.getName()+ " was lucky and received an "+ItemDefinition.forId(itemReceived.getId()).getName()+ " from a casket.");
-			}
 		}
 	}
 	
@@ -298,9 +284,6 @@ public class RewardCasket {
 			}
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
-			if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 10_000_000) {
-				PlayerUpdating.executeGlobalMessage("@red@<img=12>[Server]:@blu@ "+player.getName()+ " was lucky and received an "+ItemDefinition.forId(itemReceived.getId()).getName()+ " from a casket.");
-			}
 		}
 	}
 	
@@ -340,9 +323,6 @@ public class RewardCasket {
 			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
 			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
 			//player.sendMessage(player.getUsername()+" has rolled "+roll+" on the drop table. (25, 30, 21 and 23 are rare rolls.)");
-			if(ItemDefinition.forId(itemReceived.getId()).getShopValue() > 10_000_000) {
-				PlayerUpdating.executeGlobalMessage("@red@<img=12>[Server]:@blu@ "+player.getName()+ " was lucky and received an "+ItemDefinition.forId(itemReceived.getId()).getName()+ " from a casket.");
-			}
 		}
 	}
 

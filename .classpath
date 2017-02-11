@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3-3.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/gson-2.2.4.jar"/>
-	<classpathentry kind="lib" path="lib/GTLVote.jar"/>
 	<classpathentry kind="lib" path="lib/guava-18.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/json-lib-2.4-jdk15.jar"/>
 	<classpathentry kind="lib" path="lib/mchange-commons-java-0.2.8.jar"/>
@@ -15,7 +14,7 @@
 	<classpathentry kind="lib" path="lib/mysql.jar"/>
 	<classpathentry kind="lib" path="lib/netty-all-4.0.27.Final.jar"/>
 	<classpathentry kind="lib" path="lib/spark-pebble-plugin-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/Motivote-server.jar"/>
+	<classpathentry kind="lib" path="lib/motiservice-api-1-0-2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

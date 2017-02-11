@@ -6,7 +6,12 @@ import java.util.logging.Logger;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
+import com.model.game.character.player.Player;
+import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionListener;
+import com.model.game.character.player.content.questtab.QuestTabPageHandler;
+import com.model.game.character.player.content.questtab.QuestTabPages;
+import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.item.ItemHandler;
 import com.model.game.object.GlobalObjects;
 import com.model.game.sync.GameDataLoader;
@@ -16,6 +21,8 @@ import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.handshake.HandshakeDecoder;
 import com.model.task.TaskScheduler;
 import com.model.utility.Stopwatch;
+import com.model.utility.Utility;
+import com.motiservice.Motivote;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -41,6 +48,8 @@ public class Server {
 	 */
 	private static final Logger logger = Logger.getLogger(Server.class.getName());
 
+	public static final Motivote MOTIVOTE = new Motivote("luzoxpk", "c01d05751b28441cfbbd1ff1f87add95");
+	
 	/**
 	 * The elapsed time the server has been running for.
 	 */
@@ -105,20 +114,39 @@ public class Server {
 				Thread.sleep(20);
 			}
 
-			if (isLive()) {
-				// CharacterBackup.start(FileUtils.normalize("data/characters/"),  12, TimeUnit.HOURS);
-			}
 			GameLogicService.initialize();
 			World.getWorld().init();
-			//new Motivote(new RewardHandler(), "http://luzoxpk.biz/vote", "c74f2eb9").start();
-			//StoreDatabase.init();
 			globalObjects.pulse();
 			globalObjects.loadGlobalObjectFile();
 			globalObjects.pulse();
 			ResourceLeakDetector.setLevel(io.netty.util.ResourceLeakDetector.Level.PARANOID);
 			bind(Constants.SERVER_PORT);
+			
 			logger.info(Constants.SERVER_NAME + " has been Succesfully started.");
-
+			MOTIVOTE.checkUnredeemedPeriodically((result) -> {
+				result.votes().forEach((vote) -> {
+					boolean online = vote.username() != null && PlayerUpdating.isPlayerOn(vote.username());
+					
+					if (online) {
+						Player player = World.getWorld().getPlayer(vote.username());
+						
+						if (player != null && player.isActive() == true) {
+							MOTIVOTE.redeemFuture(vote).thenAccept((r2) -> {
+								if (r2.success()) {
+									int mystery_box_roll = Utility.random(10);
+									if(mystery_box_roll == 8) {
+										player.getItems().addOrCreateGroundItem(6199, 1);
+									}
+									player.write(new SendMessagePacket("You've received your vote reward! Congratulations!"));
+									player.setTotalVotes(player.getTotalVotes() + 1);
+									player.setVotePoints(player.getVotePoints() + 1);
+									QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
+								}
+							});
+						}
+					}
+				});
+			});
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("A fatal exception has been thrown!");

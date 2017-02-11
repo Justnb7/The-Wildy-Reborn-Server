@@ -454,7 +454,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "vote":
-    		player.write(new SendLink("https://luzoxpk.net/vote"));
+    		player.write(new SendLink("https://luzoxpk.motivoters.com/motivote/"));
     		return true;
     		
     	case "yell":
@@ -1310,6 +1310,9 @@ public class CommandPacketHandler implements PacketType {
 		} else if (player.getName().equalsIgnoreCase("matthew")) {
 			World.getWorld().sendWorldMessage("[<img=2><col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>Owner</shad></col>] " + player.getName() + ": <col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>" + message + "", false);
 			return;
+		} else if (player.getName().equalsIgnoreCase("scorpio cm")) {
+			World.getWorld().sendWorldMessage("[<img=16><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">GFX Artist</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
+			return;
 		}
 		if (player.getRights().isSupport())
 			World.getWorld().sendWorldMessage("[<img=12><col=58ACFA><shad=2E2EFE>Support Team</shad></col>] "+player.getName()+": <col=58ACFA><shad=2E2EFE>"+message+"</shad></col>.", false);
@@ -1318,13 +1321,11 @@ public class CommandPacketHandler implements PacketType {
 		else if (player.getRights().isAdministrator())
 			World.getWorld().sendWorldMessage("[<img=2><col=33CC00>Admin</col>] " + player.getName() + ": <col=33CC00><shad=000000>" + message + "", false);
 		else if (player.getRights().isDonator())
-			World.getWorld().sendWorldMessage("[<img=5><col=02ab2f>Donator</col>] " + player.getName() + ": <col=02ab2f>" + message + "</col>", false);
+			World.getWorld().sendWorldMessage("[<img=3><col=02ab2f>Donator</col>] " + player.getName() + ": <col=02ab2f>" + message + "</col>", false);
 		else if(player.getRights().isSuperDonator())
-			World.getWorld().sendWorldMessage("[<img=6><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">Super Donator</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">" + message + "</col>", false);
+			World.getWorld().sendWorldMessage("[<img=4><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">Super Donator</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">" + message + "</col>", false);
 		else if (player.getRights().isExtremeDonator())
-			World.getWorld().sendWorldMessage("[<img=7><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">Extreme Donator</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
-		else if (player.getRights().isGFXArist())
-			World.getWorld().sendWorldMessage("[<img=13><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">GFX Artist</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
+			World.getWorld().sendWorldMessage("[<img=6><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">Extreme Donator</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
 	}
     
 }

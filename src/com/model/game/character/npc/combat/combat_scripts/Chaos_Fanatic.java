@@ -50,7 +50,7 @@ public class Chaos_Fanatic extends Boss {
 			player.playGraphics(Graphic.create(552, 0, 100));
 			int itemToRemove = r.nextInt(player.playerEquipment().length - 1);
 			if (player.playerEquipment()[itemToRemove] > 0 && player.getItems().getFreeSlots() > 0) {
-				player.getItems().deleteEquipmentSlot(player.playerEquipment()[itemToRemove], itemToRemove);
+				player.getItems().removeEquipment(player.playerEquipment()[itemToRemove], itemToRemove);
 			}
 		}
 	}

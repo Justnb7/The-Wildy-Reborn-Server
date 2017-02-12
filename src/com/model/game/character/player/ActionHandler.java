@@ -135,8 +135,10 @@ public class ActionHandler {
 		case "open chest":
 			if (player.getItems().playerHasItem(85)) {
 				ShinyChest.searchChest(player, x, y);
+				return;
 			} else if(player.getItems().playerHasItem(989)) {
 				CrystalChest.searchChest(player, x, y);
+				return;
 			} else {
 				player.write(new SendMessagePacket("You need a key to open this chest."));
 			}

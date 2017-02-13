@@ -199,15 +199,10 @@ public class Boundary {
 	public static final Boundary QUARANTINE = new Boundary(2441, 4760, 2481, 4795);
 	public static final Boundary ZULRAH = new Boundary(2251, 3058, 2281, 3088);
 	public static final Boundary SCORPIA_PIT = new Boundary(3219, 10331, 3247, 10352);
+	public static final Boundary DARK_FORTRESS = new  Boundary(3020, 3623, 3038, 3641);
 	
-	
-	private static final Boundary CANIFIS = new  Boundary(3480, 3470, 3520, 3510);
 	private static final Boundary VARROCK_BANK = new  Boundary(3180, 3433, 3186, 3448);
-	private static final Boundary SHOPS = new  Boundary(2744, 3482, 2774, 3520);
 	private static final Boundary CAMELOT = new  Boundary(2731, 3486, 2781, 3498);
-	private static final Boundary LUMBRIDGE = new  Boundary(3200, 3200, 3230, 3233);
-	private static final Boundary FALADOR = new  Boundary(2937, 3314, 3063, 3395);
-	private static final Boundary DARK_FORTRESS = new  Boundary(3020, 3623, 3038, 3641);
 	private static final Boundary MAGE_BANK = new  Boundary(2540, 3433, 3186, 3447);
 	public static final Boundary EDGEVILLE = new Boundary(3069, 3464, 3129, 3518);
 	
@@ -215,11 +210,7 @@ public class Boundary {
 	public static final Boundary[] SAFE_AREAS = {
 		EDGEVILLE,
 		VARROCK_BANK,
-		CANIFIS,
-		SHOPS,
 		CAMELOT,
-		LUMBRIDGE,
-		FALADOR,
 		DARK_FORTRESS,
 		MAGE_BANK
 	};

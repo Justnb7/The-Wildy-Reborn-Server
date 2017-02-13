@@ -16,6 +16,9 @@ public class Area {
 	}
 	
 	public boolean inWild() {
+		if(Boundary.isIn(player, Boundary.DARK_FORTRESS)) {
+			return false;
+		}
 		if(((player.getX() > 2941 && player.getX() < 3392 && player.getY() > 3524 && player.getY() < 3968 || player.getX() > 2941 && player.getX() < 3392 && player.getY() > 9918 && player.getY() < 10366))){
 			return true;
 		}

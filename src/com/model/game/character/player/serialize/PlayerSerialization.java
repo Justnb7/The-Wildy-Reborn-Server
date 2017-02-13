@@ -173,6 +173,10 @@ public class PlayerSerialization {
                             p.setSlayerTask(Integer.parseInt(value));
                         } else if (key.equals("task-amount")) {
                         	p.setSlayerTaskAmount(Integer.parseInt(value));
+                        } else if (key.equals("first-slayer-task-completed")) {
+                             p.setFirstSlayerTask(Boolean.parseBoolean(value));
+                        } else if (key.equals("first-boss-slayer-task-completed")) {
+                            p.setFirstBossSlayerTask(Boolean.parseBoolean(value));
                         } else if (key.equals("lastClanChat")) {
                             p.setTempKey(value);
                         } else if (key.equals("clanChatPunishment")) {
@@ -550,6 +554,10 @@ public class PlayerSerialization {
             writer.newLine();
             writer.write("task-amount = ");
             writer.write(Integer.toString(p.getSlayerTaskAmount()));
+            writer.newLine();
+            writer.write("first-slayer-task-completed = "+p.getFirstSlayerTask());
+            writer.newLine();
+            writer.write("first-boss-slayer-task-completed = "+p.getFirstBossSlayerTask());
             writer.newLine();
             writer.write("lastClanChat = ");
             writer.write(p.getClanMembership() == null ? "" : p.getClanMembership().getClanOwner());

@@ -423,24 +423,23 @@ public class NpcVsPlayerCombat {
 						player.playGraphics(Graphic.create(85, 0, 0));
 					}
 				}
+			}
+			if (npc.attackStyle == 3) {
+				if (wearingAntiShield(player)) {
+					player.write(new SendMessagePacket("The shield absorbs most of the dragons' fire."));
+				}
 
-				if (npc.attackStyle == MobAttackType.DRAGON_FIRE) {
-					if (wearingAntiShield(player)) {
-						player.write(new SendMessagePacket("The shield absorbs most of the dragons' fire."));
-					}
+				if (fireProtectionAmount(player) == 1) {
+					damage = Utility.getRandom(10);
+				} else if (fireProtectionAmount(player) == 2) {
+					damage = Utility.getRandom(5);
+				} else if (fireProtectionAmount(player) == 3) {
+					damage = 0;
+				}
 
-					if (fireProtectionAmount(player) == 1) {
-						damage = Utility.getRandom(10);
-					} else if (fireProtectionAmount(player) == 2) {
-						damage = Utility.getRandom(5);
-					} else if (fireProtectionAmount(player) == 3) {
-						damage = 0;
-					}
-
-					if (Utility.getRandom(player.getCombat().calculateMagicDefence()) > Utility
-							.getRandom(npc.getDefinition().getAttackBonus())) {
-						damage = 0;
-					}
+				if (Utility.getRandom(player.getCombat().calculateMagicDefence()) > Utility
+						.getRandom(npc.getDefinition().getAttackBonus())) {
+					damage = 0;
 				}
 			}
 			if (npc.attackStyle == MobAttackType.SPECIAL_ATTACK) {
@@ -572,9 +571,7 @@ public class NpcVsPlayerCombat {
 		if (poisonDamage > 0 && player.isSusceptibleToPoison() && Utility.getRandom(10) == 1) {
 			player.setPoisonDamage((byte) poisonDamage);
 		}
-		// code below here is code you need to call for all damage ever delt by any weapon ever.. so
-		//a system should be built where this code is always called, but the code should be duplicated everywhere
-		// in each special class... do like entity.post_hit(info required...) and have this in
+
 		// logout delay
 		player.logoutDelay.reset();
 

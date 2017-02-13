@@ -49,7 +49,7 @@ public class Dragon extends Boss {
 
 	@Override
 	public int getHitDelay(Npc npc) {
-		return npc.attackStyle == 0 ? 2 : 4;
+		return npc.attackStyle == 0 ? 2 : 1;
 	}
 
 	@Override

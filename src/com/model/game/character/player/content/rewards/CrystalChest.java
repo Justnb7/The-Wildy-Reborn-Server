@@ -51,32 +51,35 @@ public class CrystalChest {
 	 * @param y
 	 */
 	public static void searchChest(final Player player, final int x, final int y) {
-			player.write(new SendMessagePacket("You unlock the chest with your key."));
-			player.getItems().deleteItem(989);
-			player.playAnimation(Animation.create(881));
-			Item itemReceived;
-			switch (Utility.getRandom(50)) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-			case 10:
-				itemReceived = Utility.randomElement(UNCOMMON_CHEST_REWARDS);
-				break;
-			case 25:
-				itemReceived = Utility.randomElement(RARE_CHEST_REWARDS);
-				break;
-			default:
-				itemReceived = Utility.randomElement(COMMON_CHEST_REWARDS);
-			}
-
-			player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+		if (!player.getItems().playerHasItem(989)) {
+			return;
 		}
+		player.write(new SendMessagePacket("You unlock the chest with your key."));
+		player.getItems().deleteItem(989);
+		player.playAnimation(Animation.create(881));
+		Item itemReceived;
+		switch (Utility.getRandom(50)) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+			itemReceived = Utility.randomElement(UNCOMMON_CHEST_REWARDS);
+			break;
+		case 25:
+			itemReceived = Utility.randomElement(RARE_CHEST_REWARDS);
+			break;
+		default:
+			itemReceived = Utility.randomElement(COMMON_CHEST_REWARDS);
+		}
+
+		player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
+		player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+	}
 }

@@ -107,7 +107,7 @@ public class Teleports {
 			return false;
 		}
 
-		if (player.getArea().inWild() && player.wildLevel > 20 && !player.usingGlory && !player.usingObelisk) {
+		if (player.getArea().inWild() && player.wildLevel > 20) {
 			player.write(new SendMessagePacket("You cannot teleport above level 20 wilderness."));
 			return false;
 		}
@@ -142,32 +142,32 @@ public class Teleports {
 			return false;
 		}
 		
-		if (buttonId == 4171 || buttonId == 50056 || buttonId == 75010 || buttonId == 84237) {
+		if (buttonId == 75010 || buttonId == 84237) {
 			castHomeTeleport(player);
-		} else {
-			for (MagicBookTeleportData data : MagicBookTeleportData.values()) {
-				if (data.getButton() == buttonId) {
-					if (player.getSkills().getExperience(Skills.MAGIC) < data.getMagicLevelRequirement()) {
-						player.write(new SendMessagePacket("You need atleast level "+data.getMagicLevelRequirement()+" magic to teleport to "+data.getTeleportName()+"."));
-					}
-					else if (Arrays.asList(data.getRequiredRunes()).stream().filter(i -> player.getItems().playerHasItems(i)).toArray().length == data.getRequiredRunes().length) {
-					     TeleportExecutor.teleport(player, new Location(data.getX(), data.getY(), data.getHeight()));
-					     player.getSkills().addExperience(Skills.MAGIC, data.getExperience());
-					     Arrays.asList(data.getRequiredRunes()).stream().forEach(i -> player.getItems().remove(i));
-					     return true;
-					} else {
-					     player.write(new SendMessagePacket("You do not have the correct teleporting materials."));
-					     return false;
-					}
-					break;
+			return false;
+		}
+		
+		for (MagicBookTeleportData data : MagicBookTeleportData.values()) {
+			if (data.getButton() == buttonId) {
+				if (player.getSkills().getExperience(Skills.MAGIC) < data.getMagicLevelRequirement()) {
+					player.write(new SendMessagePacket("You need atleast level " + data.getMagicLevelRequirement() + " magic to teleport to " + data.getTeleportName() + "."));
+				} else if (Arrays.asList(data.getRequiredRunes()).stream().filter(i -> player.getItems().playerHasItems(i)).toArray().length == data.getRequiredRunes().length) {
+					TeleportExecutor.teleport(player, new Location(data.getX(), data.getY(), data.getHeight()));
+					player.getSkills().addExperience(Skills.MAGIC, data.getExperience());
+					Arrays.asList(data.getRequiredRunes()).stream().forEach(i -> player.getItems().remove(i));
+					return true;
+				} else {
+					player.write(new SendMessagePacket("You do not have the correct teleporting materials."));
+					return false;
 				}
+				break;
 			}
 		}
 		return false;
 	}
 	
 	public static final int[] teleport_button_ids = new int[] {
-		4171, 50056, 4140, 4143, 4146, 4150, 6004, 6005, 29031, 72038, 50235, 50245, 50253, 51005, 51013, 51023, 51031, 51039, 117112, 117154, 117162, 117123, 117131
+			75010, 84237, 4171, 50056, 4140, 4143, 4146, 4150, 6004, 6005, 29031, 72038, 50235, 50245, 50253, 51005, 51013, 51023, 51031, 51039, 117112, 117154, 117162, 117123, 117131
 	};
 
 	public static boolean isTeleportButton(Player player, int button) {

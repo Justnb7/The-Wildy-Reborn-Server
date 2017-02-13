@@ -176,38 +176,7 @@ public class GlobalObjects {
 	 * @param player	the player
 	 */
 	private void loadCustomObjects(Player player) {
-		player.getFarming().updateObjects();
-		/*player.getPA().checkObjectSpawn(-1, 2543, 10143, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2545, 10145, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2545, 10141, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2750, 3509, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2759, 3513, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2750, 3510, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2756, 3508, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2759, 3507, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2761, 3509, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2761, 3511, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2758, 3513, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2757, 3513, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2755, 3511, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2755, 3509, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2757, 3507, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2757, 3499, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2758, 3499, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2758, 3498, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2757, 3498, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2763, 3498, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2763, 3500, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2762, 3499, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2753, 3498, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2753, 3499, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2753, 3500, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2757, 3504, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2758, 3504, 0, 10);
-		player.getPA().checkObjectSpawn(-1, 2757, 3503, 0, 0);
-		player.getPA().checkObjectSpawn(-1, 2758, 3503, 0, 0);
-		player.getPA().checkObjectSpawn(-1, 3253, 3267, 0, 0);
-		player.getPA().checkObjectSpawn(-1, 3253, 3266, 0, 0);*/
+		
 	}
 	
 	/**

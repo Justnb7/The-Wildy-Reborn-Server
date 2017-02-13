@@ -19,9 +19,9 @@ import com.model.game.character.npc.NpcUpdating;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.content.FriendAndIgnoreList;
-import com.model.game.character.player.content.Trading;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.clan.ClanManager;
+import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.packets.encode.impl.SendFriendStatus;
@@ -560,7 +560,7 @@ public class World implements Service {
 		int amount = 0;
 		for (Player players : World.getWorld().getPlayers()) {
 			if (players != null) {
-				if (Constants.isStaff(players)) {
+				if (players.getRights().isStaff()) {
 					amount++;
 				}
 			}

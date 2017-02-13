@@ -1,19 +1,12 @@
 package com.model.game.item;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.CrystalChest;
 import com.model.game.character.player.content.PotionCombinating;
+import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.skill.crafting.gem.GemCutting;
-import com.model.game.character.player.skill.crafting.jewelry.JewelleryMaking;
-import com.model.game.character.player.skill.crafting.leather.LeatherMaking;
-import com.model.game.character.player.skill.fletching.Fletching;
-import com.model.game.character.player.skill.fletching.FletchingHandler;
-import com.model.game.character.player.skill.fletching.FletchingHandler.Bolts;
 import com.model.game.character.player.skill.impl.Cooking;
 import com.model.game.character.player.skill.impl.Cooking.Cookables;
 import com.model.game.character.player.skill.impl.Firemaking;
-import com.model.game.character.player.skill.impl.Runecrafting;
 import com.model.utility.Utility;
 import com.model.utility.cache.ObjectDefinition;
 
@@ -42,7 +35,7 @@ public class UseItem {
 			player.getSkills().getPrayer().bonesOnAltar(item);
 			return;
 		}
-		player.getFarming().patchObjectInteraction(object, item, objectX, objectY);
+		
 		switch (def.name.toLowerCase()) {
 			
 		case "range":
@@ -56,24 +49,7 @@ public class UseItem {
 			break;
 		}
 		
-		if (item == 1438 && object == 2452) {
-			Runecrafting.enterAirAltar(player);
-		} else if (item == 1440 && object == 2455) {
-			Runecrafting.enterEarthAltar(player);
-		} else if (item == 1442 && object == 2456) {
-			Runecrafting.enterFireAltar(player);
-		} else if (item == 1444 && object == 2454) {
-			Runecrafting.enterWaterAltar(player);
-		} else if (item == 1446 && object == 2457) {
-			Runecrafting.enterBodyAltar(player);
-		} else if (item == 1448 && object == 2453) {
-			Runecrafting.enterMindAltar(player);
-		}
 		switch (object) {
-		
-		case 2097:
-			player.getSmithingInt().showSmithInterface(item);
-			break;
 			
 		default:
 			if (player.in_debug_mode())
@@ -105,33 +81,6 @@ public class UseItem {
 				player.write(new SendMessagePacket("You cannot combine two potions of different types."));
 			}
 			return;
-		}
-		
-		for (int ref : Fletching.refItems) {
-			if (itemUsed == ref || useWith == ref) {
-				FletchingHandler.appendType(player, itemUsed, useWith);
-
-			}
-		}
-		
-		for (final Bolts bolt : Bolts.values()) {
-			if (itemUsed == bolt.getInput1() || useWith == bolt.getInput1()) {
-				FletchingHandler.appendType(player, itemUsed, useWith);
-				return;
-			}
-		}
-		
-		if (itemUsed == 1755 || useWith == 1755) {
-			GemCutting.attemptGemCutting(player, itemUsed, useWith);
-			return;
-		}
-		
-		if (itemUsed == 1733 || useWith == 1733) {
-			LeatherMaking.craftLeatherInterface(player, itemUsed, useWith);
-		}
-		
-		if (itemUsed == 1759 || useWith == 1759) {
-			JewelleryMaking.mouldItem(player, itemUsed, useWith);
 		}
 		
 		if (Firemaking.playerLogs(itemUsed, useWith)) {

@@ -17,7 +17,6 @@ import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.account_type.Account;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
@@ -38,8 +37,6 @@ import com.model.game.shop.Currency;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.Requirements;
-import com.model.utility.logging.PlayerLogging;
-import com.model.utility.logging.PlayerLogging.LogType;
 
 public class ItemAssistant {
 
@@ -387,21 +384,6 @@ public class ItemAssistant {
 			 * point.
 			 */
 			Player killer = ((player.killerId != -1 && player.killerId != player.getIndex()) ? World.getWorld().getPlayers().get(player.killerId) : null);
-			
-			if (killer != null) {
-				if (player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
-					player.write(new SendMessagePacket("<col=ff0033>You was killed by " + killer.getName() + ", This means you can only loot your untradables."));
-					PlayerLogging.write(LogType.IRON_KILLED_PLAYER, player, "Killed by " + killer.getName());
-				}
-			}
-			
-			if (Objects.nonNull(killer)) {
-                if (killer.getAccount() != null && player.getAccount() != null && !killer.getAccount().getType().attackableTypes().contains(
-                    player.getAccount().getType().alias())) {
-                    killer.write(new SendMessagePacket("You do not receive drops from this player."));
-                    return;
-                }
-            }
 			
 			/*
              * Handle giving the emblem to the killer
@@ -760,59 +742,59 @@ public class ItemAssistant {
 					.getMultiplayerSessionListener().getMultiplayerSession(
 							player, MultiplayerSessionType.DUEL);
 			if (!Objects.isNull(session)) {
-				if (targetSlot == player.playerHat
+				if (targetSlot == player.playerEquipment[player.getEquipment().getHelmetId()]
 						&& session.getRules().contains(Rule.NO_HELM)) {
 					player.write(new SendMessagePacket("Wearing helmets has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerAmulet
+				if (targetSlot == player.playerEquipment[player.getEquipment().getAmuletId()]
 						&& session.getRules().contains(Rule.NO_AMULET)) {
 					player.write(new SendMessagePacket("Wearing amulets has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerArrows
+				if (targetSlot == player.playerEquipment[player.getEquipment().getQuiverId()]
 						&& session.getRules().contains(Rule.NO_ARROWS)) {
 					player.write(new SendMessagePacket("Wearing arrows has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerChest
+				if (targetSlot == player.playerEquipment[player.getEquipment().getChestId()]
 						&& session.getRules().contains(Rule.NO_BODY)) {
 					player.write(new SendMessagePacket("Wearing platebodies has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerFeet
+				if (targetSlot == player.playerEquipment[player.getEquipment().getBootsId()]
 						&& session.getRules().contains(Rule.NO_BOOTS)) {
 					player.write(new SendMessagePacket("Wearing boots has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerHands
+				if (targetSlot == player.playerEquipment[player.getEquipment().getGlovesId()]
 						&& session.getRules().contains(Rule.NO_GLOVES)) {
 					player.write(new SendMessagePacket("Wearing gloves has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerCape
+				if (targetSlot == player.playerEquipment[player.getEquipment().getCapeId()]
 						&& session.getRules().contains(Rule.NO_CAPE)) {
 					player.write(new SendMessagePacket("Wearing capes has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerLegs
+				if (targetSlot == player.playerEquipment[player.getEquipment().getLegsId()]
 						&& session.getRules().contains(Rule.NO_LEGS)) {
 					player.write(new SendMessagePacket("Wearing platelegs has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerRing
+				if (targetSlot == player.playerEquipment[player.getEquipment().getRingId()]
 						&& session.getRules().contains(Rule.NO_RINGS)) {
 					player.write(new SendMessagePacket("Wearing a ring has been disabled for this duel."));
 					return false;
 				}
-				if (targetSlot == player.playerWeapon
+				if (targetSlot == player.playerEquipment[player.getEquipment().getWeaponId()]
 						&& session.getRules().contains(Rule.NO_WEAPON)) {
 					player.write(new SendMessagePacket("Wearing weapons has been disabled for this duel."));
 					return false;
 				}
 				if (session.getRules().contains(Rule.NO_SHIELD)) {
-					if (targetSlot == player.playerShield
-							|| targetSlot == player.playerWeapon
+					if (targetSlot == player.playerEquipment[player.getEquipment().getShieldId()]
+							|| targetSlot == player.playerEquipment[player.getEquipment().getWeaponId()]
 							&& player.getItems().is2handed(
 									getItemName(id).toLowerCase(),
 									id)) {

@@ -1,4 +1,4 @@
-package com.model.game.character.player.content;
+package com.model.game.character.player.content.trade;
 
 /**
  * Defines the different states of the trade

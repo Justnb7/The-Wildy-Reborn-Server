@@ -64,30 +64,30 @@ public class LoginSession extends Session {
 		
 		if (ConnectionHandler.isNamedBanned(player.getName())) {
 			sendReturnCode(ctx.channel(), 4);
-			System.out.println("4yfgtregfgfdgdfgfdx");
+			System.out.println("Name banned");
 			return;
 		}
 		if(ConnectionHandler.isMacBanned(player.getMacAddress())) {
 			sendReturnCode(ctx.channel(), 4);
-			System.out.println("xzfdsfcxfdsfd");
+			System.out.println("Mac banned");
 		}
 		if (ConnectionHandler.isIpBanned((player.connectedFrom))) {
 			sendReturnCode(ctx.channel(), 4);
-			System.out.println("1212323232343434324");
+			System.out.println("Ip banned");
 			return;
 		}
 		if (PlayerUpdating.getPlayerCount() >= World.getWorld().getPlayers().capacity()) {
-			System.out.println("122323");
+			System.out.println("Too many players online");
 			sendReturnCode(ctx.channel(), 7);
 			return;
 		}
 		if (World.updateRunning) {
-			System.out.println("asasas");
+			System.out.println("Update running");
 			sendReturnCode(ctx.channel(), 14);
 			return;
 		}
 		if (credential.getClientHash() == 0 || credential.getClientHash() == 99735086 || credential.getClientHash() == 69) {
-			System.out.println("Don't know what this is but its invalid.");
+			System.out.println("Invalid client hash.");
 			sendReturnCode(ctx.channel(), 18);
 			return;
 		}
@@ -97,7 +97,7 @@ public class LoginSession extends Session {
 			return;
 		}
 		if (ConnectionHandler.isIdBanned(player.getIdentity())) {
-			System.out.println("fgfdgf8fg9f8dg9df8g");
+			System.out.println("Identity banned");
 			sendReturnCode(ctx.channel(), 4);
 			return;
 		}

@@ -152,6 +152,6 @@ public class MiningEvent extends CycleEvent {
 		if (player == null) {
 			return;
 		}
-		player.stopAnimation();
+		player.playAnimation(Animation.create(-1));
 	}
 }

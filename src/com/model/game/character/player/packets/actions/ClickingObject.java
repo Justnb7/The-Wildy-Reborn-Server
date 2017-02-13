@@ -4,7 +4,6 @@ import com.model.Server;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.skill.farming.FarmingConstants;
 import com.model.utility.Utility;
 
 /**
@@ -83,9 +82,6 @@ public class ClickingObject implements PacketType {
 			case 2563:
 			case 2564:
 			case 2565:
-			case FarmingConstants.GRASS_OBJECT:
-			case FarmingConstants.HERB_OBJECT:
-			case FarmingConstants.HERB_PATCH_DEPLETED:
 				player.objectDistance = 6;
 				break;
 			case 11833:

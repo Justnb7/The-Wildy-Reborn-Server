@@ -4,14 +4,11 @@ import java.util.Objects;
 
 import com.model.Server;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.Skills;
-import com.model.game.character.player.content.Trading;
 import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.skill.crafting.jewelry.JewelleryMaking;
-import com.model.game.character.player.skill.smithing.Smithing;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.RunePouchContainer;
@@ -93,26 +90,6 @@ public class Withdraw5Action implements PacketType {
 				session.removeItem(player, removeSlot, new GameItem(removeId, 5));
 			}
 			break;
-			
-		case 4233:
-			JewelleryMaking.mouldItem(player, removeId, 5);
-			break;
-			
-		case 4239:
-			JewelleryMaking.mouldItem(player, removeId, 5);
-			break;
-			
-		case 4245:
-			JewelleryMaking.mouldItem(player, removeId, 5);
-			break;
-			
-		case 1119:
-        case 1120:
-        case 1121:
-        case 1122:
-        case 1123:
-        	Smithing.readInput(player, player.getSkills().getLevel(Skills.SMITHING), Integer.toString(removeId), 5);
-            break;
 
         }
     }

@@ -4,14 +4,13 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
 
-// nice nice ok lets make groundItem its own thing, nothing to do with entity
+
 public final class GroundItem {
 
 	public enum State {
 		PRIVATE, GLOBAL
 	}
-// cool next thing ?
-	// so it's gonna need a couple of its own things tthat Entity used to have, coords
+
 	private final Item item;
 	private final Player owner;
 

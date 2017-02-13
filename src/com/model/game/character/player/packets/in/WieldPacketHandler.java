@@ -12,7 +12,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.SubPacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.skill.impl.Runecrafting;
 import com.model.utility.json.definitions.ItemDefinition;
 
 /**
@@ -50,25 +49,6 @@ public class WieldPacketHandler implements SubPacketType {
 		}
 		if ((player.playerIndex > 0 || player.npcIndex > 0) && player.wearId != 4153) {
 			Combat.resetCombat(player);
-		}
-	
-		if (player.wearId >= 5509 && player.wearId <= 5514) {
-			int pouch = -1;
-			if (player.wearId == 5509) {
-				pouch = 0;
-			}
-			if (player.wearId == 5510) {
-				pouch = 1;
-			}
-			if (player.wearId == 5512) {
-				pouch = 2;
-			}
-			if (player.wearId == 5514) {
-				pouch = 3;
-			}
-			Runecrafting.emptyPouch(player, pouch);
-			player.stopAll(false);
-			return;
 		}
 		player.getItems().wearItem(player.wearId, player.wearSlot);
 	}

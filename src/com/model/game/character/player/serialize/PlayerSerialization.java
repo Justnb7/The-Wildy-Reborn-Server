@@ -125,15 +125,9 @@ public class PlayerSerialization {
 							p.teleHeight = Integer.parseInt(value);
     					} else if (key.equals("character-special-amount")) {
                             p.setSpecialAmount(Integer.parseInt(value));
-    					} else if (key.equals("character-recquestion")) {
-    						p.setRecovQuestion(value);
-    					} else if (key.equals("character-recanswer")) {
-    						p.setRecovAnswer(value);
     					} else if (key.equals("character-was-reseted")) {
     						p.ecoReset = Boolean.parseBoolean(value);
-    					} else if (key.equals("dayofweek")) {
-                            p.dayOfWeek = Integer.parseInt(value);
-                        }
+    					}
 						break;
 						
 					//Character	
@@ -183,11 +177,6 @@ public class PlayerSerialization {
                             p.setTempKey(value);
                         } else if (key.equals("clanChatPunishment")) {
                             p.isClanMuted = Boolean.parseBoolean(value);
-						} else if (key.equals("farming-patch-0")) {
-							p.setFarmingState(0, Integer.parseInt(values[0]));
-							p.setFarmingSeedId(0, Integer.parseInt(values[1]));
-							p.setFarmingTime(0, Integer.parseInt(values[2]));
-							p.setFarmingHarvest(0, Integer.parseInt(values[3]));
 						} else if(key.equals("gear-points")) {
 							p.setGearPoints(Integer.parseInt(value));
 						} else if(key.equals("max-cape-claimed")) {
@@ -271,8 +260,6 @@ public class PlayerSerialization {
 					case 11:
 						if (key.startsWith("last-killed")) {
 							p.lastKilledList.add(value);
-						} else if (line.startsWith("highestLootValue")) {
-							p.highestLootValue = Integer.parseInt(value);
 						} else if (line.startsWith("killCount")) {
 							p.setKillCount(Integer.parseInt(value));
 						} else if (line.startsWith("deathCount")) {
@@ -513,15 +500,8 @@ public class PlayerSerialization {
 	        writer.write("character-special-amount = ");
 	        writer.write(Integer.toString(p.getSpecialAmount()));
 	        writer.newLine();
-	        writer.write("character-recquestion = " + p.getRecovQuestion());
-	        writer.newLine();
-	        writer.write("character-recanswer = " + p.getRecovAnswer());
-	        writer.newLine();
 	        writer.write("character-was-reseted = ");
 	        writer.write(Boolean.toString(p.ecoReset));
-	        writer.newLine();
-	        writer.write("dayofweek = ");
-	        writer.write(Integer.toString(p.dayOfWeek));
 	        writer.newLine();
 			writer.newLine();
 			
@@ -575,8 +555,6 @@ public class PlayerSerialization {
             writer.write(p.getClanMembership() == null ? "" : p.getClanMembership().getClanOwner());
             writer.newLine();
 			writer.write("clanChatPunishment = " + p.getClanPunishment());
-            writer.newLine();
-            writer.write("farming-patch-0 = "+p.getFarmingState(0)+"\t"+p.getFarmingSeedId(0)+"\t"+p.getFarmingTime(0)+"\t"+p.getFarmingHarvest(0));
             writer.newLine();
             writer.write("gear-points = " + p.getGearPoints());
 			writer.newLine();
@@ -705,9 +683,6 @@ public class PlayerSerialization {
                     writer.newLine();
                 }
             }
-            writer.newLine();
-            writer.write("highestLootValue = ");
-            writer.write(Integer.toString(p.highestLootValue));
             writer.newLine();
             writer.write("killCount = " + p.getKillCount());
             writer.newLine();

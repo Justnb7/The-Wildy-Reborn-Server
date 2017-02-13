@@ -2,8 +2,6 @@ package com.model.game.item;
 
 import com.model.game.character.player.EmotesManager;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.account_type.Account;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.utility.json.definitions.ItemDefinition;
 
 public class ItemConstants {
@@ -72,15 +70,6 @@ public class ItemConstants {
 	public static boolean canWear(Item id, Player player) {
 		if(player.getRights().isAdministrator() && player.in_debug_mode())
 			return true;
-		/**
-		 * Ironmen armour
-		 */
-		if (id.getId() == 12810 || id.getId() == 12811 || id.getId() == 12812) {
-            if (player.getAccount().getType().equals(Account.REGULAR_TYPE)) {
-                player.write(new SendMessagePacket("You need to be an Iron man to wear this armour."));
-                return false;
-            }
-        }
 		
         /**
          * Skill Capes
@@ -101,17 +90,22 @@ public class ItemConstants {
 		return true;
 	}
 	
-	public static boolean specialUntradeable(int item) {
+	/**
+	 * Check if we have a special item such as Korasi's sword
+	 * @param item
+	 *        The special item.
+	 * @return
+	 */
+	public static boolean specialItem(int item) {
 		switch(item) {
 		case 19780:
-		case 7462:
 			return true;
 		}
 		return false;
 	}
 	
 	/**
-	 * Items that are untradable that turn into dust on death.
+	 * Items that are special and turn into dust on death.
 	 * @param item
 	 *        The item that turns to dust.
 	 * @return
@@ -119,9 +113,7 @@ public class ItemConstants {
 	public static int turnsToDust(int item) {
 		switch(item) {
 		case 19780:
-			return 250_000;
-		case 7462:
-			return 75_000;
+			return 50;
 		}
 		return 0;
 	}

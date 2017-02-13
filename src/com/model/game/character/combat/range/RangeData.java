@@ -18,7 +18,7 @@ public class RangeData {
 				int offX = (pY - nY) * -1;
 				int offY = (pX - nX) * -1;
 				player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, player.oldNpcIndex + 1, player.getCombat().getProjectileShowDelay());
-				// well shit that's convinient
+
 				if (player.getCombat().usingDbow())
 					player.getProjectile().createPlayersProjectile2(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 60, 31, player.oldNpcIndex + 1, player.getCombat().getProjectileShowDelay(), 35);
 			}

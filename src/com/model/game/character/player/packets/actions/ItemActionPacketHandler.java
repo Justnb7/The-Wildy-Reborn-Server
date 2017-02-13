@@ -1,16 +1,14 @@
 package com.model.game.character.player.packets.actions;
 
 import com.model.Server;
-import com.model.game.Constants;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.RewardCasket;
 import com.model.game.character.player.content.consumable.potion.PotionData;
+import com.model.game.character.player.content.rewards.RewardCasket;
 import com.model.game.character.player.content.teleport.TeleTabs;
 import com.model.game.character.player.content.teleport.TeleTabs.TabData;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.skill.impl.Runecrafting;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
@@ -60,7 +58,6 @@ public class ItemActionPacketHandler implements PacketType {
 			player.getFood().eat(item, slot);
 		}
 
-		player.isSkilling = false;
 		TabData tabData = TabData.forId(item);
 		if (tabData != null) {
 			TeleTabs.useTeleTab(player, slot, tabData);
@@ -81,19 +78,7 @@ public class ItemActionPacketHandler implements PacketType {
 		}
 
 		player.getHerblore().clean(item);
-		if (item >= 5509 && item <= 5514) {
-			int pouch = -1;
-			if (item == 5509)
-				pouch = 0;
-			if (item == 5510)
-				pouch = 1;
-			if (item == 5512)
-				pouch = 2;
-			if (item == 5514)
-				pouch = 3;
-			Runecrafting.fillPouch(player, pouch);
-			return;
-		}
+
 		switch (item) {
 		
 		case 21999:
@@ -102,14 +87,6 @@ public class ItemActionPacketHandler implements PacketType {
 
 		case 22000:
 			RewardCasket.weaponCasket(player);
-			break;
-
-		case 22001:
-			if(Constants.BETA) {
-				player.write(new SendMessagePacket("Pet caskets are crashing the server. We have blocked them untill further notice."));
-				return;
-			}
-			RewardCasket.petCasket(player);
 			break;
 
 		case 22002:

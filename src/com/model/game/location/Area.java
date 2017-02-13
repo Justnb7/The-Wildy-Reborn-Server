@@ -50,11 +50,8 @@ public class Area {
 	public boolean inDuelArena() {
 		if ((player.getX() > 3322 && player.getY() < 3394 && player.getY() > 3195 && player.getY() < 3291)
 				|| (player.getX() > 3311 && player.getX() < 3323 && player.getY() > 3223 && player.getY() < 3248)) {
-			//System.out.println("yas");
 			return true;
 		}
-
-		//System.out.println("nah");
 		return false;
 	}
 	

@@ -1,12 +1,10 @@
 package com.model.game.character.player.packets.in;
 
-import com.model.game.Constants;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.account_type.Account;
-import com.model.game.character.player.content.Trading;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
+import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
@@ -50,13 +48,6 @@ public class DropItemPacketHandler implements PacketType {
 			player.getBankPin().open(2);
 			return;
 		}
-
-		if(player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
-			player.droppedItem = itemId;
-			player.getItems().deleteItem(itemId, slot, player.playerItemsN[slot]);
-			player.write(new SendMessagePacket("Your " + ItemDefinition.forId(itemId).getName() + " vanishes as you drop it on the ground."));
-			return;
-		}
 		
 		if(!ItemDefinition.forId(itemId).isTradable()) {
 			player.getPA().destroyItem(itemId);
@@ -65,11 +56,6 @@ public class DropItemPacketHandler implements PacketType {
 		}
 		
 		boolean droppable = true;
-		for (int i : Constants.UNDROPABLE) {
-			if (i == itemId) {
-				droppable = false;
-			}
-		}
 		if (player.playerItemsN[slot] != 0 && itemId != -1 && player.playerItems[slot] == itemId + 1) {
 			if (droppable) {
 				if (player.underAttackBy > 0) {

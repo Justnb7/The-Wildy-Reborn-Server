@@ -893,16 +893,6 @@ public class Utility {
 		return String.format("<col=75C934>%d<col=ff9040>Day <col=75C934>%d<col=ff9040>Hour <col=75C934>%d<col=ff9040>Min", days, hours, minutes);
 	}
 	
-	public static String formatTotalTimePlayed(Player player) {
-		long totalSeconds = player.getTotalTimePlayed();		
-		long totalMinutes = totalSeconds / 60;
-		long minutes = totalSeconds / 60 % 60;
-		long totalHours = totalMinutes / 60;
-		long hours = totalMinutes / 60 % 60;
-		long days = totalHours / 24 % 24;
-		return String.format("<col=75C934>%d<col=ff9040>Day <col=75C934>%d<col=ff9040>Hour <col=75C934>%d<col=ff9040>Min", days, hours, minutes);
-	}
-	
 	public static String formatTime(long time) {
 		final int sec = (int) (time / 1000), h = sec / 3600, m = sec / 60 % 60, s = sec % 60;
 		return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);	    

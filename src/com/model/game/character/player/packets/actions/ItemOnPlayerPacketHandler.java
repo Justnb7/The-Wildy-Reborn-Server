@@ -18,7 +18,6 @@ public class ItemOnPlayerPacketHandler implements PacketType {
 		}
 		player.walkingToObject = false;
 
-		player.isSkilling = false;
 		if (player.getBankPin().requiresUnlock()) {
 			player.isBanking = false;
 			player.getBankPin().open(2);

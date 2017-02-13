@@ -4,7 +4,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.skill.impl.Runecrafting;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 
 /**
@@ -28,18 +27,6 @@ public class SecondItemOption implements PacketType {
 			player.isBanking = false;
 			player.getBankPin().open(2);
 			return;
-		}
-		if (itemId >= 5509 && itemId <= 5514) {
-			int pouch = -1;
-			if (itemId == 5509)
-				pouch = 0;
-			if (itemId == 5510)
-				pouch = 1;
-			if (itemId == 5512)
-				pouch = 2;
-			if (itemId == 5514)
-				pouch = 3;
-			Runecrafting.checkPouch(player, pouch);
 		}
 		switch (itemId) {
 		

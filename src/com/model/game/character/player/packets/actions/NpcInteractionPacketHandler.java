@@ -21,7 +21,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 		player.npcClickIndex = 0;
 		player.playerIndex = 0;
 		player.clickNpcType = 0;
-		player.isSkilling = false;
 		player.walkingToObject = false;
 		player.getPA().resetFollow();
 		if (player.isPlayerTransformed() || player.teleporting) {

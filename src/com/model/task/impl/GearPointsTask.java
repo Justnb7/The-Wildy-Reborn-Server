@@ -1,6 +1,5 @@
 package com.model.task.impl;
 
-import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -14,9 +13,6 @@ public class GearPointsTask extends ScheduledTask {
 
 	@Override
 	public void execute() {
-		if (Constants.ecoMode) {
-			return;
-		}
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player != null) {
 				player.setGearPoints(2500);

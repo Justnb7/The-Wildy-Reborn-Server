@@ -34,7 +34,6 @@ public class MagicExtras {
 	}
 
 	public static boolean checkMultiBarrageReqs(Player player, int i) {
-		Player target = World.getWorld().getPlayers().get(i);
 		if (World.getWorld().getPlayers().get(i) == null) {
 			return false;
 		}
@@ -43,9 +42,7 @@ public class MagicExtras {
 		if (!World.getWorld().getPlayers().get(i).getArea().inWild()) {
 			return false;
 		}
-		if (!player.getAccount().getType().attackableTypes().contains(target.getAccount().getType())) {
-			return false;
-		}
+
 		int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, World.getWorld().getPlayers().get(i).combatLevel);
 		if (combatDif1 > player.wildLevel || combatDif1 > World.getWorld().getPlayers().get(i).wildLevel) {
 			player.write(new SendMessagePacket("Your combat level difference is too great to attack that player here."));

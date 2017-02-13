@@ -4,11 +4,11 @@ import java.util.Objects;
 
 import com.model.Server;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.Trading;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 

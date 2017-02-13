@@ -23,9 +23,7 @@ public class NPCDropAnnouncement {
 	public void announce(Player player, int itemId, int amount) {
 		if (this.npc == null)
 			return;
-		if (!player.getAccount().getType().dropAnnouncementVisible())
-			return;
-		
+
 		NPCName npc = NPCName.get(Npc.getName(this.npc.npcId).replaceAll("_", " "));
 		
 		if (npc != null) {
@@ -33,7 +31,7 @@ public class NPCDropAnnouncement {
 				if (regionalPlayer == null) {
 					continue;
 				}
-				if (regionalPlayer.distanceToPoint(this.npc.getX(), this.npc.getY()) < 40 && regionalPlayer.getAccount().getType().dropAnnouncementVisible()) {
+				if (regionalPlayer.distanceToPoint(this.npc.getX(), this.npc.getY()) < 40) {
 					regionalPlayer.write(new SendMessagePacket("<col=0B6121>" + Utility.capitalize(player.getName()) + " has received " + amount + " x " + player.getItems().getItemName(itemId) + "</col>."));
 				}
 			}

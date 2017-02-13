@@ -10,7 +10,6 @@ public class SecondGroundOption implements PacketType {
 		player.getInStream().readSignedWordBigEndian();
 		player.getInStream().readUnsignedWord();
 		player.getInStream().readSignedWordBigEndian();
-		player.isSkilling = false;
 		if (player.getBankPin().requiresUnlock()) {
 			player.isBanking = false;
 			player.getBankPin().open(2);

@@ -15,8 +15,8 @@ import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
-import com.model.game.character.player.content.CrystalChest;
 import com.model.game.character.player.content.clan.ClanManager;
+import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
@@ -130,8 +130,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 	
 		case "veng":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -144,8 +142,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 
 		case "barrage":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -158,8 +154,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
 		case "runes":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -178,8 +172,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 
 		case "pots":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -193,8 +185,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
 		case "food":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -221,8 +211,6 @@ public class CommandPacketHandler implements PacketType {
 		case "sbrew":
 		case "sarabrew":
 		case "sara":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -236,8 +224,6 @@ public class CommandPacketHandler implements PacketType {
 		case "rest":
 		case "pray":
 		case "srest":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -248,8 +234,6 @@ public class CommandPacketHandler implements PacketType {
 		return true;
 		
 		case "mage":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -262,8 +246,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
 		case "range":
-			if (!player.getAccount().getType().canSpawn())
-				return false;
 			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
@@ -291,34 +273,6 @@ public class CommandPacketHandler implements PacketType {
     		if (player.getRights().isDonator() || player.getRights().isSuperDonator() || player.getRights().isExtremeDonator() || player.getRights().isAdministrator())
     		TeleportExecutor.teleport(player, new Location(2721, 4912, 0));
     		return true;
-    	
-    	case "recanswer":
-			if (player.getRecovQuestion() == null) {
-				player.write(new SendMessagePacket("Please set your recovery question first."));
-				return true;
-			}
-			if (player.getRecovAnswer() != null && player.getRights().getValue() < 2) {
-				player.write(new SendMessagePacket("You can only set recovery answer once."));
-				return true;
-			}
-			message = "";
-			for (int i = 1; i < cmd.length; i++)
-				message += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-			player.setRecovAnswer(message);
-			player.write(new SendMessagePacket("Your recovery answer has been set to - " + Utility.fixChatMessage(player.getRecovAnswer())));
-			return true; 
-
-		case "recquestion":
-			if (player.getRecovQuestion() != null && player.getRights().getValue() < 2) {
-				player.write(new SendMessagePacket("You already have a recovery question set."));
-				return true;
-			}
-			message = "";
-			for (int i = 1; i < cmd.length; i++)
-				message += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-			player.setRecovQuestion(message);
-			player.write(new SendMessagePacket("Your recovery question has been set to - " + Utility.fixChatMessage(player.getRecovQuestion())));
-			return true; 
     	
     	case "owner":
 			if (player.getName().equalsIgnoreCase("mod patrick") || player.getName().equalsIgnoreCase("matthew")) {
@@ -582,10 +536,6 @@ public class CommandPacketHandler implements PacketType {
       		return true;
       		
     	case "kick":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
              try {
             	 name = "";
       			for (int i = 1; i < cmd.length; i++)
@@ -814,50 +764,30 @@ public class CommandPacketHandler implements PacketType {
     		break;
     		
     	case "setkc":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int kc = Integer.parseInt(cmd[1]);
     		player.setKillCount(kc);
     		player.write(new SendMessagePacket("You have set your killcount to: "+kc+"."));
     		return true;
     		
     	case "sethstreak":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int hstreak = Integer.parseInt(cmd[1]);
     		player.setHighestKillStreak(hstreak);
     		player.write(new SendMessagePacket("You have set your highest killstreak to: "+hstreak+"."));
     		return true;
     		
     	case "setvotepoints":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int vp = Integer.parseInt(cmd[1]);
     		player.setVotePoints(vp);
     		player.write(new SendMessagePacket("You have set your vote points to: "+vp+"."));
     		break;
     		
     	case "settargetpoints":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int tp = Integer.parseInt(cmd[1]);
     		player.setTargetPoints(tp);
     		player.write(new SendMessagePacket("You have set your target points to: "+tp+"."));
     		break;
     		
     	case "givepkp":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		String n = cmd[1];
     		int pkp = Integer.parseInt(cmd[2]);
     		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
@@ -901,10 +831,6 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
     	case "master":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
 				player.getSkills().setLevel(i, 99);
 				player.getSkills().setExperience(i, 13034431);
@@ -961,10 +887,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
 		case "setpoints":
-			if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
 			try {
 				Optional<Player> name = World.getWorld().getOptionalPlayer(cmd[1]);
 				String pointsName = cmd[2];
@@ -985,10 +907,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
     	
     	case "interface":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int interfaceId = Integer.parseInt(cmd[1]);
     		player.write(new SendInterface(interfaceId));
     		return true;
@@ -1004,45 +922,25 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "invincible":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		player.setInvincible(!player.isInvincible());
 			player.write(new SendMessagePacket("You are " + (player.isInvincible() ? "now invulnerable" : " no longer invulnerable") + " to damage."));
     		return true;
     		
     	case "debugmode":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		player.set_debug_mode(!player.in_debug_mode());
 			player.write(new SendMessagePacket("You are " + (player.in_debug_mode() ? "now using" : " no longer using") + " debug mode."));
     		return true;
     		
     	case "attackable":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		player.setUnattackable(!player.isUnattackable());
 			player.write(new SendMessagePacket("You are now " + (player.isUnattackable() ? " unattackable" : "attackable") + "."));
     		return true;
     		
     	case "openbank":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		player.getPA().openBank();
     		return true;
     		
     	case "demote":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
         	Optional<Player> optionalPlayer = World.getWorld().getOptionalPlayer(cmd[1]);
 			if (optionalPlayer.isPresent()) {
 				Player demote = optionalPlayer.get();
@@ -1053,10 +951,6 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "givemod":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
         	Optional<Player> op = World.getWorld().getOptionalPlayer(cmd[1]);
 			if (op.isPresent()) {
 				Player c2 = op.get();
@@ -1135,19 +1029,11 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "visible":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
 			player.setVisible(!player.isVisible());
 			player.write(new SendMessagePacket("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + "."));
     		return true;
     		
     	case "visibility":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		player.setVisible(!player.isVisible());
 			player.write(new SendMessagePacket("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + "."));
     		return true;
@@ -1165,10 +1051,6 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "object":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int object = Integer.parseInt(cmd[1]);
 			player.getPA().object(object, player.absX, player.absY, 0, 10);
     		return true;
@@ -1225,10 +1107,6 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
 		case "npc":
-			if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
 			try {
 				int id = Integer.parseInt(cmd[1]);
 				if (id > 0) {
@@ -1247,23 +1125,14 @@ public class CommandPacketHandler implements PacketType {
 			return true;
     		
     	case "anim":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int animation = Integer.parseInt(cmd[1]);
 			player.playAnimation(Animation.create(animation));
 			player.getPA().requestUpdates();
     		return true;
     		
     	case "gfx":
-    		if(Constants.BETA && !player.getName().equalsIgnoreCase("patrick")) {
-    			player.write(new SendMessagePacket("This command is unavailable at the moment."));
-    			return false;
-    		}
     		int gfx = Integer.parseInt(cmd[1]);
 			player.playGraphics(Graphic.create(gfx));
-			player.loopAt = gfx;
     		return true;
     		
     	case "stillgfx":

@@ -1,4 +1,4 @@
-package com.model.game.character.player.content;
+package com.model.game.character.player.content.rewards;
 
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;

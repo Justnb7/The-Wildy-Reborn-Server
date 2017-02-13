@@ -1,6 +1,5 @@
 package com.model.game;
 
-import com.model.game.character.player.Player;
 import com.model.game.location.Location;
 
 public class Constants {
@@ -53,11 +52,6 @@ public class Constants {
 	public static final int SKILL_MODIFIER = 125;
 	
 	/**
-	 * Server is in beta mode
-	 */
-	public static boolean BETA = false;
-	
-	/**
 	 * Strings that can not be used in a username
 	 */
 	public static final String BAD_USERNAMES[] = { "m o d", "a d m i n", "mod", "admin", "moderator", "administrator", "owner", "m0d", "adm1n", "0wner", "retard", "Nigga", "nigger", "n1gger", "n1gg3r", "nigg3r", "n1gga", "cock", "faggot", "fag", "anus", "arse", "fuck", "bastard", "bitch", "cunt", "chode", "damn", "dick", "faggit", "gay", "homo", "jizz", "lesbian", "negro", "pussy", "penis", "queef", "twat", "titty", "whore", "b1tch" };
@@ -86,21 +80,6 @@ public class Constants {
 	public static final int SERVER_PORT = 43594;
 	
 	/**
-	 * Is the server live
-	 */
-	public static boolean HOSTED = false;
-	
-	/**
-	 * Sets the server on ECO mode or PK mode.
-	 */
-	public static boolean ecoMode = false;
-	
-	/**
-	 * Is bounty hunter activated
-	 */
-	public static boolean bountyHunterActive = true;
-	
-	/**
 	 * the speed of world in ms
 	 */
 	public static final int WORLD_CYCLE_TIME = 600;
@@ -123,7 +102,7 @@ public class Constants {
 	/**
 	 * Starting location
 	 */
-	public static final Location START_PLAYER_LOCATION = new Location(1803, 3779, 0);
+	public static final Location START_PLAYER_LOCATION = new Location(3087, 3499, 0);
 	
 	/**
 	 * Donator zone location
@@ -133,7 +112,7 @@ public class Constants {
 	/**
 	 * Respawn location
 	 */
-	public static final Location RESPAWN_PLAYER_LOCATION = new Location(1803, 3779, 0);
+	public static final Location RESPAWN_PLAYER_LOCATION = new Location(3099, 3503, 0);
 	
 	/**
 	 * The maximum time for a player skull with an extension in the length.
@@ -181,14 +160,6 @@ public class Constants {
 	public static final int MAX_PLAYERS = 2000;
 	
 	/**
-	 * An array of undropable items
-	 */
-	public static final int[] UNDROPABLE = { 6570, 7462, 7461, 7460, 7459,
-			7458, 7457, 7456, 7455, 7454, 12806, 12807, 2528, 10499, 8844,
-			8845, 8846, 8847, 8848, 8849, 8850, 12954, 10551, 10548, 6, 8, 10,
-			12, 12810, 12811, 12812, 13280, 13281, 13329, 13330, 13331, 13332, 13334, 13335, 13336, 13337, 13338 };
-	
-	/**
 	 * Valid chacters that can be used in the friends chat
 	 */
 	public static final char VALID_CHARS[] = { '_', 'a', 'b', 'c', 'd', 'e',
@@ -197,12 +168,5 @@ public class Constants {
 			'5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&', '*',
 			'(', ')', '-', '+', '=', ':', ';', '.', '>', '<', ',', '"', '[',
 			']', '|', '?', '/', '`' };
-
-	public static boolean isStaff(Player player) {
-		if (player.getRights().getValue() == 1 || player.getRights().getValue() == 2 || player.getRights().getValue() == 3) {
-			return true;
-		}
-		return false;
-	}
     
 }

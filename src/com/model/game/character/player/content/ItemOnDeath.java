@@ -13,8 +13,6 @@ import com.model.utility.json.definitions.ItemDefinition;
 public class ItemOnDeath {
 
 	public static void activateItemsOnDeath(Player player) {
-		if (!player.inItemOnDeath) {
-			player.inItemOnDeath = true;
 			StartBestItemScan(player);
 			player.EquipStatus = 0;
 
@@ -78,7 +76,6 @@ public class ItemOnDeath {
 			}
 			ResetKeepItems(player);
 			player.write(new SendInterface(17100));
-		}
 	}
 
 	public static void ResetKeepItems(Player player) {

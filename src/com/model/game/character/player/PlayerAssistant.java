@@ -16,7 +16,7 @@ import com.model.game.character.combat.effect.impl.DragonfireShieldEffect;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.BossTracker;
-import com.model.game.character.player.content.Trading;
+import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
@@ -151,7 +151,6 @@ public class PlayerAssistant {
 			player.write(new SendMessagePacket("You're trying to move too fast."));
 			return;
 		}
-        player.isSkilling = false;
         player.getMovementHandler().reset();
         player.teleportToX = x;
         player.teleportToY = y;
@@ -559,10 +558,6 @@ public class PlayerAssistant {
         if (player.getBankPin().isLocked() && player.getBankPin().getPin().trim().length() > 0) {
             player.getBankPin().open(2);
             player.isBanking = false;
-            return;
-        }
-        
-        if (player.isSkilling) {
             return;
         }
         

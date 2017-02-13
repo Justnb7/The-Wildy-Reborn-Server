@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.Trading;
+import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 

@@ -7,7 +7,6 @@ import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayer;
 import com.model.game.character.combat.effect.PKHandler;
-import com.model.game.character.player.account_type.Account;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
@@ -20,7 +19,6 @@ import com.model.game.character.player.packets.encode.impl.CreatePlayerHint;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.game.location.Location;
 import com.model.utility.Utility;
 
 public class PlayerDeath {
@@ -164,14 +162,8 @@ public class PlayerDeath {
 		player.getPA().restorePlayerAttributes();
 	}
 	
-	public void resetTzhaar() {
-        player.waveId = -1;
-        player.getPA().movePlayer(new Location(2438, 5168, 0));
-    }
-	
 	private int trainedBonus;
 	private void killedPlayer(Player player, Player killer) {
-		if (!player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias())) {
 
 			long wealth = player.getItems().getWealth();
 			int memberBonus = 0;
@@ -239,7 +231,6 @@ public class PlayerDeath {
 				sendKillMessage(killer, player);
 				player.write(new SendMessagePacket(message_to_player[new java.util.Random().nextInt(message_to_player.length)]));
 			}
-		}
 	}
 	
 	/**

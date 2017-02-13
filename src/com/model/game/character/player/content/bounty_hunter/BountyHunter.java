@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.model.Server;
-import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.player.Player;
@@ -12,8 +11,8 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.packets.encode.impl.CreatePlayerHint;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendStringColor;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
@@ -47,10 +46,7 @@ public class BountyHunter extends ScheduledTask {
 		 * Write the interface since we are in the wilderness
 		 */
 		if (player.getArea().inWild()) {
-			
-			if (Constants.bountyHunterActive) {
-				writeInterface(player);
-			}
+			writeInterface(player);
 
 			/*
 			 * If we dont' have a target, find one
@@ -165,7 +161,7 @@ public class BountyHunter extends ScheduledTask {
 	 */
 	public static void teleportToTarget(Player player) {
 		int index = player.getAttribute(BountyHunterConstants.BOUNTY_TARGET, 0);
-		World.getWorld();
+
 		Player target = World.getWorld().getPlayers().get(index);
 		if (!player.spellAccessible) {
 			player.write(new SendMessagePacket("You do not have access to this spell, you must learn about it first."));
@@ -297,7 +293,7 @@ public class BountyHunter extends ScheduledTask {
 	 *            The {@link Player} to determine the wealth for
 	 */
 	public static void determineWealth(Player player) {
-		World.getWorld();
+
 		Player target = World.getWorld().getPlayers().get(player.getAttribute(BountyHunterConstants.BOUNTY_TARGET, 0));
 
 		if (target == null) {

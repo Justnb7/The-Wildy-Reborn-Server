@@ -35,11 +35,6 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.packets.encode.impl.SendSongPacket;
 import com.model.game.character.player.skill.SkillInterfaceButtons;
-import com.model.game.character.player.skill.crafting.CraftingData.tanningData;
-import com.model.game.character.player.skill.crafting.leather.LeatherMaking;
-import com.model.game.character.player.skill.crafting.leather.Tanning;
-import com.model.game.character.player.skill.fletching.Fletching;
-import com.model.game.character.player.skill.smithing.Smelting;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankPin;
 import com.model.game.item.bank.BankTab;
@@ -79,27 +74,13 @@ public class ActionButtonPacketHandler implements PacketType {
 		if (player != null) {
 			EmoteData.useBookEmote(player, button);
 		}
-
-		for (tanningData t : tanningData.values()) {
-			if (button == t.getButtonId(button)) {
-				Tanning.tanHide(player, button);
-				return;
-			}
-		}
-
-		for (int l = 0; l < Fletching.otherButtons.length; l++) {
-			if (button == Fletching.otherButtons[l][0]) {
-				Fletching.handleFletchingClick(player, button);
-				return;
-			}
-		}
 		
 		// First verify this button is something even remotely related to teleports
 		if(Teleports.isTeleportButton(player, button)) {
 			// Activate a teleport for that button
 			Teleports.startTeleport(player, button);
 			return;
-		}//Thats because of the client right the button thing yh well its better to write like this anyway, alrite good to know then thanks for explaining that
+		}
 		
 		if (SpecialAttackHandler.handleButtons(player, button)) {
 			return;
@@ -116,8 +97,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		/*Obelisks.chooseTeleport(player, button);*/
 		SkillInterfaceButtons.buttonClick(player, button);
 		PrayerHandler.togglePrayer(player, button);
-		Smelting.getBar(player, button);
-		LeatherMaking.craftLeather(player, button);
 		player.getLunarSpell().processLunarSpell(button);
 		QuestTabPage page = player.getAttribute(QuestTabPageHandler.QUEST_TAB_PAGE, QuestTabPages.HOME_PAGE).getPage();
 		page.onButtonClick(player, button);
@@ -229,10 +208,6 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		case 108020:
 			player.getPets().callPet(player);
-			break;
-
-		case 5809:
-			Tanning.sendTanningInterface(player);
 			break;
 
 		case 42210:

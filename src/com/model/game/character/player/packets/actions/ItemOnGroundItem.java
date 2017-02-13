@@ -23,7 +23,7 @@ public class ItemOnGroundItem implements PacketType {
 			player.getBankPin().open(2);
 			return;
 		}
-		player.isSkilling = false;
+
 		switch (itemUsed) {
 
 		default:

@@ -1,4 +1,4 @@
-package com.model.game.character.player.content;
+package com.model.game.character.player.content.trade;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -143,15 +143,6 @@ public class Trading {
 			if (player.openInterface != 39500) {
 				player.getBankPin().open(2);
 			}
-			return false;
-		}
-		
-		if (!player.getAccount().getType().tradingPermitted()) {
-			player.write(new SendMessagePacket("You are not permitted to trade beacuse of a restriction on your account."));
-			return false;
-		}
-		if (!target.getAccount().getType().tradingPermitted()) {
-			player.write(new SendMessagePacket("This player is not permitted to trade beacuse of a restriction on their account."));
 			return false;
 		}
 		
@@ -420,14 +411,6 @@ public class Trading {
 	 * @return If the player can trade the item
 	 */
 	private static boolean cannotTrade(Player player, Player target, int id) {
-		if (!player.getAccount().getType().tradingPermitted()) {
-			player.write(new SendMessagePacket("You are not permitted to trade beacuse of a restriction on your account."));
-			return false;
-		}
-		if (!target.getAccount().getType().tradingPermitted()) {
-			player.write(new SendMessagePacket("This player is not permitted to trade beacuse of a restriction on their account."));
-			return false;
-		}
 		if (!ItemDefinition.forId(id).isTradable()) {
 			player.write(new SendMessagePacket("That item isn't tradeable."));
 			return false;

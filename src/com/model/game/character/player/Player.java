@@ -1,5 +1,7 @@
 package com.model.game.character.player;
 
+import io.netty.buffer.Unpooled;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -37,19 +40,21 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.npc.pet.PetCombat;
-import com.model.game.character.player.account_type.Account;
-import com.model.game.character.player.content.DailyReward;
 import com.model.game.character.player.content.FriendAndIgnoreList;
-import com.model.game.character.player.content.TradeState;
 import com.model.game.character.player.content.clan.ClanMember;
 import com.model.game.character.player.content.consumable.Consumable;
 import com.model.game.character.player.content.consumable.food.FoodConsumable;
 import com.model.game.character.player.content.consumable.potion.PotionData;
 import com.model.game.character.player.content.consumable.potion.Potions;
+import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
+import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
+import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.Duel;
+import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportHandler.TeleportationTypes;
+import com.model.game.character.player.content.trade.TradeState;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.controller.ControllerManager;
 import com.model.game.character.player.dialogue.DialogueHandler;
@@ -57,7 +62,6 @@ import com.model.game.character.player.dialogue.DialogueManager;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.encode.PacketEncoder;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
 import com.model.game.character.player.packets.encode.impl.SendInteractionOption;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -69,12 +73,9 @@ import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.Skilling;
-import com.model.game.character.player.skill.farming.Farming;
 import com.model.game.character.player.skill.herblore.Herblore;
 import com.model.game.character.player.skill.impl.Thieving;
 import com.model.game.character.player.skill.mining.Mining;
-import com.model.game.character.player.skill.smithing.Smithing;
-import com.model.game.character.player.skill.smithing.SmithingInterface;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
@@ -100,44 +101,12 @@ import com.model.task.impl.DistancedActionTask;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 
-import io.netty.buffer.Unpooled;
-
 public class Player extends Entity {
 	
 	private Duel duelSession = new Duel(this);
 	
 	public Duel getDuel() {
 		return duelSession;
-	}
-	
-	private DailyReward dr = new DailyReward(this);
-	
-	public DailyReward getDailyReward() {
-		return dr;
-	}
-	
-	/**
-	 * Reference for unlocking pets, there are currently 30 pets.
-	 */
-	public boolean unlockedPets[] = new boolean[30];
-	
-	private long totalTimePlayed;
-	private Stopwatch timeActive = new Stopwatch();
-	
-	public Stopwatch getTimePlayed() {
-		return timeActive;
-	}
-	
-	public void setTimePlayed(Stopwatch timePlayed) {
-		this.timeActive = timePlayed;
-	}
-
-	public long getTotalTimePlayed() {
-		return totalTimePlayed;
-	}
-
-	public void setTotalTimePlayed(long totalTimePlayed) {
-		this.totalTimePlayed = totalTimePlayed;
 	}
 	
 	/**
@@ -724,11 +693,6 @@ public class Player extends Entity {
 	 * The player is in debug mode
 	 */
 	private boolean debugMode;
-	
-	/**
-	 * Are we skilling?
-	 */
-	public boolean isSkilling;
 
 	/**
 	 * The shop that you currently have open.
@@ -1303,8 +1267,8 @@ public class Player extends Entity {
 		playerEquipment[getEquipment().getQuiverId()] = -1;
 		playerEquipment[getEquipment().getWeaponId()] = -1;
 		heightLevel = 0;
-		teleportToX = 1803;
-		teleportToY = 3779;
+		teleportToX = 3087;
+		teleportToY = 3499;
 		absX = absY = -1;
 		mapRegionX = mapRegionY = -1;
 		currentX = currentY = 0;
@@ -1465,7 +1429,7 @@ public class Player extends Entity {
 		outStream.putByteA(0);
 		outStream.writeWordBigEndianA(getIndex());
 		flushOutStream();
-		pouches = new int[4];
+
 		combatLevel = getSkills().getCombatLevel();
 		totalLevel = getSkills().getTotalLevel();
 		this.getPA().serverReset();
@@ -1475,7 +1439,6 @@ public class Player extends Entity {
 		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
 			this.write(new SendSkillPacket(i));
 		}
-		
 		PrayerHandler.resetAllPrayers(this);
 
 		if (teleportRequired) {
@@ -1542,8 +1505,6 @@ public class Player extends Entity {
 				
 				player.write(new SendMessagePacket("Welcome back to " + Constants.SERVER_NAME + "."));
 				
-				//player.getDailyReward().dailyReward();
-				
 				if (isMuted()) {
 					player.write(new SendMessagePacket("You are currently muted. Other players will not see your chat messages."));
 				}
@@ -1590,6 +1551,9 @@ public class Player extends Entity {
 					stop();
 					return;
 				}
+				/*if(player.getArea().inDuelArena()) {
+					player.getPA().movePlayer(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0);
+				}*/
 				ControllerManager.setControllerOnWalk(player);
 				controller.onControllerInit(player);
 				stop();
@@ -1606,7 +1570,12 @@ public class Player extends Entity {
 		this.infection = 0;
 		this.infected = false;
 		this.poisonDamage = 0;
-
+		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(this, MultiplayerSessionType.DUEL);
+		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
+			duelSession.getOther(this).write(new SendMessagePacket("The challenger has left the duel."));
+			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
+			return;
+		}
 		if (this.petId > 0)
 			getPets().pickupPet(this, false, World.getWorld().getNpcs().get(this.petNpcIndex));
 		if (logoutDelay.elapsed(10000) && getLastCombatAction().elapsed(600)) {
@@ -1634,7 +1603,6 @@ public class Player extends Entity {
 				handleObjectAction();
 			process_following();
 			combatProcessing();
-			farming.farmingProcess();
 			controller.tick(this);
 			NPCAggression.process(this);
 			if (!getArea().inWild()) {
@@ -2365,16 +2333,8 @@ public class Player extends Entity {
 	public Thieving getThieving() {
 		return thieving;
 	}
-
-	// The client knows that anim -1 means you want to stop/reset the animation being played atm.
-	public void stopAnimation() {
-		this.playAnimation(Animation.create(-1));
-	}
 	
 	private long lastContainerSearch;
-
-	public int teleportsLeft = 0;
-	public long jailEnd;
 	
 	public long getLastContainerSearch() {
 		return lastContainerSearch;
@@ -2385,6 +2345,7 @@ public class Player extends Entity {
 	}
 	
 	private boolean trading;
+	
 	public void setTrading(boolean trading) {
 		this.trading = trading;
 	}
@@ -2392,7 +2353,6 @@ public class Player extends Entity {
 	public boolean isTrading() {
 		return this.trading;
 	}
-	
 	
 	public long lastCast;
 	public int projectileStage;
@@ -2405,63 +2365,6 @@ public class Player extends Entity {
 		}
 		return base;
 	}
-	
-	public void updateRank() {
-		if (amountDonated >= 10 && amountDonated < 30 && !getRights().isStaff()) {
-			setRights(Rights.DONATOR);
-		}
-		if (amountDonated >= 30 && amountDonated < 100 && !getRights().isStaff()) {
-			setRights(Rights.SUPER_DONATOR);
-		}
-		if (amountDonated >= 100 && !getRights().isStaff()) {
-			setRights(Rights.EXTREME_DONATOR);
-		}
-	}
-	
-	/**
-	 * Farming refferences
-	 */
-	public int getFarmingSeedId(int index) {
-		return farmingSeedId[index];
-	}
-
-	public void setFarmingSeedId(int index, int farmingSeedId) {
-		this.farmingSeedId[index] = farmingSeedId;
-	}
-
-	public int getFarmingTime(int index) {
-		return this.farmingTime[index];
-	}
-
-	public void setFarmingTime(int index, int farmingTime) {
-		this.farmingTime[index] = farmingTime;
-	}
-
-	public int getFarmingState(int index) {
-		return farmingState[index];
-	}
-
-	public void setFarmingState(int index, int farmingState) {
-		this.farmingState[index] = farmingState;
-	}
-
-	public int getFarmingHarvest(int index) {
-		return farmingHarvest[index];
-	}
-
-	public void setFarmingHarvest(int index, int farmingHarvest) {
-		this.farmingHarvest[index] = farmingHarvest;
-	}
-	
-	public Farming getFarming() {
-		return farming;
-	}
-	
-	private Farming farming = new Farming(this);
-	
-	/**
-	 * End of farming refferences
-	 */
 	
 	/**
 	 * Combat refferences
@@ -2700,7 +2603,6 @@ public class Player extends Entity {
 	
 	private boolean yellOff;
 
-
 	public int combatLevel = 3;
 	
 	public boolean isYellOff() {
@@ -2711,26 +2613,6 @@ public class Player extends Entity {
 		this.yellOff = yellOff;
 	}
 
-	// Recovery ques. & ans.
-	private String recovQuestion;
-	private String recovAnswer;
-	
-	public String getRecovQuestion() {
-		return recovQuestion;
-	}
-
-	public void setRecovQuestion(String recovQuestion) {
-		this.recovQuestion = recovQuestion;
-	}
-
-	public String getRecovAnswer() {
-		return recovAnswer;
-	}
-
-	public void setRecovAnswer(String recovAnswer) {
-		this.recovAnswer = recovAnswer;
-	}
-
 	private transient long boneDelay;
 	
 	public long getBoneDelay() {
@@ -2739,85 +2621,6 @@ public class Player extends Entity {
 	
 	public void addBoneDelay(long time) {
 		boneDelay = time + Utility.currentTimeMillis();
-	}
-
-	public void useStairs(int emoteId, final Location dest, int useDelay, int totalDelay) {
-		useStairs(emoteId, dest, useDelay, totalDelay, null);
-	}
-
-	public void useStairs(int emoteId, final Location dest, int useDelay, int totalDelay, final String message) {
-		stopAll();
-		lock(totalDelay);
-		if (emoteId != -1)
-			playAnimation(Animation.create(emoteId));
-		if (useDelay == 0)
-			getPA().movePlayer(dest);
-		else {
-			Server.getTaskScheduler().schedule(new ScheduledTask(useDelay - 1) {
-				@Override
-				public void execute() {
-					if (isDead())
-						return;
-					getPA().movePlayer(dest);
-					this.stop();
-					if (message != null)
-						write(new SendMessagePacket(message));
-					this.stop();
-				}
-			});
-		}
-	}
-
-	public void stopAll() {
-		stopAll(true);
-	}
-	
-	public void stopAll(boolean stopWalk) {
-		stopAll(stopWalk, true);
-	}
-	
-	public void stopAll(boolean stopWalk, boolean stopInterface) {
-		stopAll(stopWalk, stopInterface, true);
-	}
-	
-	public void stopAll(boolean stopWalk, boolean stopInterfaces, boolean stopActions) {
-		if (stopInterfaces)
-			closeInterfaces();
-		if (stopWalk)
-			resetWalkingQueue();
-		if (stopActions)
-			forceStopActions();
-	}
-
-	public void closeInterfaces() {
-		write(new SendClearScreen());
-	}
-	
-	public void forceStopActions() {
-		//TODO add actions that can be stopped
-	}
-	
-	private transient long lockDelay;
-	
-	public long getLockDelay() {
-		return lockDelay;
-	}
-	
-	public void lock() {
-		lockDelay = Long.MAX_VALUE;
-	}
-
-	public void lock(long time) {
-		lockDelay = Utility.currentTimeMillis() + (time * 600);
-	}
-
-	public void unlock() {
-		lockDelay = 0;
-	}
-
-	private int[] pouches;
-	public int[] getPouches() {
-		return pouches;
 	}
 	
 	/**
@@ -2838,18 +2641,6 @@ public class Player extends Entity {
 	
 	public SkillInterfaces getSI() {
 		return skillInterfaces;
-	}
-	
-	private Smithing smith = new Smithing();
-	
-	public Smithing getSmithing() {
-		return smith;
-	}
-	
-	private SmithingInterface smithInt = new SmithingInterface(this);
-	
-	public SmithingInterface getSmithingInt() {
-		return smithInt;
 	}
 
 	private boolean running = true;
@@ -2950,30 +2741,10 @@ public class Player extends Entity {
 		return weaponInterface;
 	}
 	
-	private Account account;
-	
-	public Account getAccount() {
-		if (account == null)
-			account = new Account(this);
-		return account;
-	}
-	
 	private Projectile projectile = new Projectile(this);
 	
 	public Projectile getProjectile() {
 		return projectile;
-	}
-
-	private boolean completedFightCaves;
-	
-	public boolean hasCompletedFightCaves() {
-		return completedFightCaves;
-	}
-
-	public void setCompletedFightCaves() {
-		if(!completedFightCaves) {
-			completedFightCaves = true;
-		}
 	}
 	
 	private Skilling skilling = new Skilling(this);
@@ -3331,17 +3102,12 @@ public class Player extends Entity {
     /**
      * Integers
      */
-	public int dayOfWeek;
 	public int playerAppearance[] = new int[13];
-	public int openInterface = -1, droppedItem = -1, highestLootValue, redSkull;
+	public int openInterface = -1, droppedItem = -1, redSkull;
 	public int petNpcIndex;
-	public int musicAmountUnlocked;
-	public int[][] playerSkillProp = new int[20][15];
-	public int loopAt;
 	public int countdown;
 	public int combatCountdown = 10;
-	public int smeltType, smeltTimer = 0, smeltAmount = 0, petId, distance, yellMute;
-	private int[] farmingState = new int[7], farmingHarvest = new int[7], farmingTime = new int[7], farmingSeedId = new int[7];
+	public int petId, distance, yellMute;
 	public int face = -1;
 	public int FocusPointX = -1, FocusPointY = -1;
 	private int chatTextColor = 0;
@@ -3388,29 +3154,16 @@ public class Player extends Entity {
 	public int[] playerBonus = new int[14];
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
-	public int leatherType, totalLevel, doAmount, lastX, lastY, playerKilled, totalPlayerDamageDealt, killedBy,
+	public int totalLevel, doAmount, lastX, lastY, playerKilled, totalPlayerDamageDealt, killedBy,
 			lastChatId = 1, privateChat, specBarId, attackLevelReq, rangeLevelReq, skullTimer, nextChat,
 			talkingNpc = -1, dialogueAction, followDistance, npcFollowIndex, barrageCount, delayedDamage,
-			delayedDamage2, lastArrowUsed = -1, xInterfaceId, xRemoveId, xRemoveSlot, waveId, frozenBy, lastNpcAttacked,
+			delayedDamage2, lastArrowUsed = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, lastNpcAttacked,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
-			oldPlayerIndex, lastWeaponUsed, crystalBowArrowCount, playerPrayerAltar = 0, rangeItemUsed, killingNpcIndex,
+			oldPlayerIndex, lastWeaponUsed, crystalBowArrowCount, rangeItemUsed, killingNpcIndex,
 			oldNpcIndex, attackDelay, npcIndex, npcClickIndex, npcType, castingSpellId, oldSpellId, hitDelay,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
 			wearId, wearSlot, interfaceId, walkTutorial = 15,
 			skullIcon = -1, reduceSpellId, bountyPoints;
-	public int playerHat = 0;
-	public int playerCape = 1;
-	public int playerAmulet = 2;
-	public int playerWeapon = 3;
-	public int playerChest = 4;
-	public int playerShield = 5;
-	public int playerLegs = 7;
-	public int playerHands = 9;
-	public int playerFeet = 10;
-	public int playerRing = 12;
-	public int playerArrows = 13;
-	public int fletchDelay = -1, fletchAmount = -1, arrowShaft = 52, fletchItem = -1, fletchIndex = -1;
-	public int[] fletchSprites = { -1, -1, -1, -1, -1 };
 	public int objectDistance, teleHeight;
 	
 	/**
@@ -3436,9 +3189,7 @@ public class Player extends Entity {
 	public boolean usingArrows;
 	public boolean usingCross;
 	public boolean multiAttacking;
-	public boolean playerisSmelting;
-	public boolean isFletching = false, needsFletchDelay = false;
-	public boolean usingGlory, inItemOnDeath, isMuted, isClanMuted,
+	public boolean usingGlory, isMuted, isClanMuted,
 	isSkulled, newPlayer,
 	hasMultiSign, saveCharacter, mageFollow, dbowSpec, acbSpec, blowpipe_special,
 	properLogout, msbSpec, stopPlayerPacket, playerIsFiremaking,
@@ -3461,7 +3212,7 @@ public class Player extends Entity {
      * Longs
      */
 	public long usernameHash;
-	public long lastAntifirePotion, antifireDelay, farmingDelay;
+	public long lastAntifirePotion, antifireDelay;
 	private long lastVenomCure;
 	private long venomImmunity;
 	private long lastPoisonHit;
@@ -3470,7 +3221,6 @@ public class Player extends Entity {
 	public long[] reduceSpellDelay = new long[6];
 	private long lastDragonfireShieldAttack;
 	public long lastAction, godSpellDelay, reduceStat, lastFire;
-	public long lastFletch = 0;
 
 	/**
 	 * Bytes

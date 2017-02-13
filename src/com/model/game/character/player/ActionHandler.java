@@ -6,9 +6,9 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.BrimhavenVines;
-import com.model.game.character.player.content.CrystalChest;
-import com.model.game.character.player.content.ShinyChest;
 import com.model.game.character.player.content.WildernessDitch;
+import com.model.game.character.player.content.rewards.CrystalChest;
+import com.model.game.character.player.content.rewards.ShinyChest;
 import com.model.game.character.player.content.teleport.Obelisks;
 import com.model.game.character.player.content.teleport.Teleport;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
@@ -17,10 +17,8 @@ import com.model.game.character.player.packets.encode.impl.SendInterface;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.skill.agility.Shortcut;
-import com.model.game.character.player.skill.crafting.leather.Tanning;
 import com.model.game.character.player.skill.fishing.FishableSpot;
 import com.model.game.character.player.skill.fishing.Fishing;
-import com.model.game.character.player.skill.impl.Runecrafting;
 import com.model.game.character.player.skill.impl.Thieving.Pickpocket;
 import com.model.game.character.player.skill.impl.Thieving.Stall;
 import com.model.game.character.player.skill.woodcutting.Tree;
@@ -72,55 +70,6 @@ public class ActionHandler {
 			return;
 		}
 
-		if (id == 14897) {
-			Runecrafting.craftEssence(player, 556, 1, 5, false, 11, 2, 22, 3, 34, 4, 44, 5, 55, 6, 66, 7, 77, 88, 9, 99, 10);
-		} else if (id == 14897) {
-			Runecrafting.craftEssence(player, 556, 1, 5, false, 11, 2, 22, 3, 34, 4, 44, 5, 55, 6, 66, 7, 77, 88, 9, 99, 10);
-		} else if (id == 2479) {
-			Runecrafting.craftEssence(player, 558, 2, 5.5, false, 14, 2, 28, 3, 42, 4, 56, 5, 70, 6, 84, 7, 98, 8);
-		} else if (id == 2480) {
-			Runecrafting.craftEssence(player, 555, 5, 6, false, 19, 2, 38, 3, 57, 4, 76, 5, 95, 6);
-		} else if (id == 2481) {
-			Runecrafting.craftEssence(player, 557, 9, 6.5, false, 26, 2, 52, 3, 78, 4);
-		} else if (id == 2482) {
-			Runecrafting.craftEssence(player, 554, 14, 7, false, 35, 2, 70, 3);
-		} else if (id == 2483) {
-			Runecrafting.craftEssence(player, 559, 20, 7.5, false, 46, 2, 92, 3);
-		} else if (id == 2484) {
-			Runecrafting.craftEssence(player, 564, 27, 8, true, 59, 2);
-		} else if (id == 2487) {
-			Runecrafting.craftEssence(player, 562, 35, 8.5, true, 74, 2);
-		} else if (id == 17010) {
-			Runecrafting.craftEssence(player, 9075, 40, 8.7, true, 82, 2);
-		} else if (id == 2486) {
-			Runecrafting.craftEssence(player, 561, 45, 9, true, 91, 2);
-		} else if (id == 2485) {
-			Runecrafting.craftEssence(player, 563, 50, 9.5, true);
-		} else if (id == 2488) {
-			Runecrafting.craftEssence(player, 560, 65, 10, true);
-		} else if (id == 30624) {
-			Runecrafting.craftEssence(player, 565, 77, 10.5, true);
-		} else if (id == 2452) {
-			int hatId = player.getEquipment().getHelmetId();
-			if (hatId == Runecrafting.AIR_TIARA || player.getItems().playerHasItem(1438, 1)) Runecrafting.enterAirAltar(player);
-		} else if (id == 2455) {
-			int hatId = player.getEquipment().getHelmetId();
-			if (hatId == Runecrafting.EARTH_TIARA || player.getItems().playerHasItem(1440, 1)) Runecrafting.enterEarthAltar(player);
-		} else if (id == 2456) {
-			int hatId = player.getEquipment().getHelmetId();
-			if (hatId == Runecrafting.FIRE_TIARA || player.getItems().playerHasItem(1442, 1)) Runecrafting.enterFireAltar(player);
-		} else if (id == 2454) {
-			int hatId = player.getEquipment().getHelmetId();
-			if (hatId == Runecrafting.WATER_TIARA || player.getItems().playerHasItem(1444, 1)) Runecrafting.enterWaterAltar(player);
-		} else if (id == 2457) {
-			int hatId = player.getEquipment().getHelmetId();
-			if (hatId == Runecrafting.BODY_TIARA || player.getItems().playerHasItem(1446, 1)) Runecrafting.enterBodyAltar(player);
-		} else if (id == 2453) {
-			int hatId = player.getEquipment().getHelmetId();
-			if (hatId == Runecrafting.MIND_TIARA || player.getItems().playerHasItem(1448, 1)) Runecrafting.enterMindAltar(player);
-		}
-		
-		player.getFarming().patchObjectInteraction(id, -1, x, y);
 		/*Obelisks.get().activate(player, id);*/
 		player.getMining().mine(id, new Location3D(x, y, player.heightLevel));
 		if (def.name == null || def.name.length() == 0) {
@@ -583,8 +532,6 @@ public class ActionHandler {
 		
 		player.clickObjectType = 0;
 		
-		player.getFarming().patchObjectInteraction(objectType, -1, obX, obY);
-		
 		new Location3D(obX, obY, player.heightLevel);
 		ObjectDefinition objectDef = ObjectDefinition.getObjectDef(objectType);
 		switch (objectDef.name.toLowerCase()) {
@@ -596,9 +543,6 @@ public class ActionHandler {
 			player.getPA().openBank();
 			break;
 			
-		case "furnace":
-			player.getSmithing().sendSmelting(player);
-			break;
 		}
 		
 		Location3D location = new Location3D(obX, obY, player.heightLevel);
@@ -790,13 +734,6 @@ public class ActionHandler {
 				player.write(new SendInterface(3559));
 				player.canChangeAppearance = true;
 			}
-			break;
-
-		/**
-		 * Tanning npc
-		 */
-		case 5809:
-			Tanning.sendTanningInterface(player);
 			break;
 
 		/**

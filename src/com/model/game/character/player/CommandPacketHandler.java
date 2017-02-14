@@ -96,6 +96,38 @@ public class CommandPacketHandler implements PacketType {
     	String message;
     	switch (cmd[0]) {
     	
+    	/*case "changename":
+    	 //TODO ask Jak for help, we need to kick the player, change his name and delete the old playerfile.
+    		if(player.getTotalAmountDonated() >= 100 || player.getRights().isAdministrator()) {
+    			String newName = cmd[1];
+    			if (newName.length() > 12) {
+    				player.write(new SendMessagePacket("You're name can only be 12 characters long."));
+    				return false;
+    			}
+    			if (PlayerSerialization.playerExists(newName)) {
+    				player.write(new SendMessagePacket("That username was already taken."));
+    				return false;
+    			}
+    			player.setUsername(newName);
+    			World.getWorld().queueLogout(player);
+    			PlayerSerialization.saveGame(player);
+    		} else {
+    			player.write(new SendMessagePacket("You do not have the ability to perform this command."));
+    			return false;
+    		}
+    		return true;*/
+    	
+    	case "yellcolor":
+    		if(player.getTotalAmountDonated() >= 30 || player.getRights().isAdministrator()) {
+    			String yellColor = cmd[1];
+    			player.setYellColor(yellColor);
+    			player.write(new SendMessagePacket("Your yell color now looks like <col="+yellColor+">this</col>."));
+    		} else {
+    			player.write(new SendMessagePacket("You do not have the ability to perform this command."));
+    			return false;
+    		}
+    		return true;
+    	
 		case "claimreward":
 			try {
 				player.rspsdata(player, player.getName());
@@ -190,19 +222,19 @@ public class CommandPacketHandler implements PacketType {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
 			}
-			if (player.getRights().isBetween(0, 4) && !player.getRights().isAdministrator() && player.getTotalAmountDonated() != 30) {
+			if (player.getTotalAmountDonated() < 10) {
 				player.getItems().addItem(385, 28);
 				player.write(new SendMessagePacket("You receive 28 Sharks."));
 				player.write(new SendMessagePacket("Become a Donator today to receive Manta rays instead!"));
 			}
-			if (player.getRights().getValue() == 5) {
+			if (player.getTotalAmountDonated() >= 10 && player.getTotalAmountDonated() < 30) {
 				player.getItems().addItem(391, 28);
 				player.write(new SendMessagePacket("You receive 28 Manta rays."));
-				player.write(new SendMessagePacket("Become a super Donator today to receive Anglerfish instead!"));
+				player.write(new SendMessagePacket("Become a super Donator today to receive Dark crabs instead!"));
 			}
-			if (player.getRights().getValue() == 6 || player.getRights().isAdministrator() || player.getTotalAmountDonated() >= 30) {
-				player.getItems().addItem(13441, 28);
-				player.write(new SendMessagePacket("You receive 28 Anglerfish."));
+			if (player.getTotalAmountDonated() >= 30) {
+				player.getItems().addItem(11936, 28);
+				player.write(new SendMessagePacket("You receive 28 Dark crabs."));
 				player.write(new SendMessagePacket("Thanks for being a super Donator!"));
 			}
 			return true;

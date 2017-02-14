@@ -445,6 +445,8 @@ public class Skills {
         int multi = combatSkill ? Constants.EXP_MODIFIER : Constants.EXP_MODIFIER;
         int oldLevel = getLevelForExperience(skillId);
         
+
+        //TODO add 1.25 and 1.50 exp additional for extreme/gold donator
         exps[skillId] += experience * multi;
         expCounter += experience*multi;
         player.write(new SendExperienceCounter(skillId, (int) (experience*multi)));

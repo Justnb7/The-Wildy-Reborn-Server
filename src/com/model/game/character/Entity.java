@@ -372,7 +372,7 @@ public abstract class Entity {
 		if (this.isNPC() && attacker.isPlayer()) {
 			Player attacker_player = (Player)attacker;
 			Npc victim_npc = (Npc) this;
-			((Npc)this).addDamageReceived(attacker_player.getRealUsername(), damage);
+			((Npc)this).addDamageReceived(attacker_player.getName(), damage);
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		}
 		

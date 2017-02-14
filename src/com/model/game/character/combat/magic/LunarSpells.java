@@ -69,7 +69,7 @@ public class LunarSpells {
 		}
 		
 		//Runes check
-		if (!checkRunes(player, true, new Item(ASTRAL_RUNE, 4), new Item(DEATH_RUNE, 2), new Item(EARTH_RUNE, 10))) {
+		if (!checkRunes(player, true, new Item(ASTRAL_RUNE, 4), new Item(DEATH_RUNE, 2), new Item(EARTH_RUNE, 10)) && player.getTotalAmountDonated() < 100) {
 			return false;
 		}
 		

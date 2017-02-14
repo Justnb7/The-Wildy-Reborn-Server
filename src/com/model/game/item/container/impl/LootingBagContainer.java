@@ -50,7 +50,7 @@ public final class LootingBagContainer extends Container {
 		if(id != 11941) {
 			return false;
 		}
-		player.write(new SendSidebarInterface(3, 44000));
+		//player.write(new SendSidebarInterface(3, 44000));
 		//player.getPA().sendInterfaceWithInventoryOverlay(26700, 26800);
 		return true;
 	}

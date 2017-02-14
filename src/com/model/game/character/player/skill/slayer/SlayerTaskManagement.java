@@ -5,6 +5,8 @@ import com.model.game.World;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.character.player.content.questtab.QuestTabPageHandler;
+import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
@@ -225,8 +227,7 @@ public class SlayerTaskManagement {
 				player.setSlayerTask(0);
 				player.setSlayerTaskAmount(0);
 				player.setSlayerTasksCompleted(player.getSlayerTasksCompleted() + 1);
-				player.write(new SendString("<img=28><col=FFFFFF>Task: <col=00CC00>None", 29511));
-				player.write(new SendString("<img=28><col=FFFFFF>tasks completed: <col=00CC00>"+ player.getSlayerTasksCompleted(), 29512));
+				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 				
 				/**
 				 * Beginner task (Turael).

@@ -8,6 +8,8 @@ import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.character.player.content.questtab.QuestTabPageHandler;
+import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.packets.encode.impl.CreatePlayerHint;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
@@ -395,6 +397,7 @@ public class BountyHunter extends ScheduledTask {
 			killer.setTotalTargetsKilled(killer.getTotalTargetsKilled() + 1);
 			killer.write(new SendMessagePacket("@blu@You have killed your target, and received @mag@1@blu@ target point."));
 			killer.write(new SendMessagePacket("@blu@You now have @mag@"+killer.getTargetPoints()+ "@blu@ target points, and you have killed @mag@"+killer.getTotalTargetsKilled()+"@blu@ targets."));
+			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
 		} else {
 			int current = killer.getAttribute(BountyHunterConstants.ROGUE_CURRENT, 0);
 			killer.setAttribute(BountyHunterConstants.ROGUE_CURRENT, current + 1);

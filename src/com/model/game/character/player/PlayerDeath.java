@@ -15,6 +15,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.character.player.content.questtab.QuestTabPageHandler;
+import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.packets.encode.impl.CreatePlayerHint;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
@@ -230,6 +232,8 @@ public class PlayerDeath {
 				killer.write(new SendString(""+killer.getSpecialAmount(), 12001));
 				sendKillMessage(killer, player);
 				player.write(new SendMessagePacket(message_to_player[new java.util.Random().nextInt(message_to_player.length)]));
+				QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
+				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 			}
 	}
 	

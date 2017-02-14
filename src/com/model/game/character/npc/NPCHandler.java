@@ -309,6 +309,11 @@ public final class NPCHandler {
 		if (player.playerEquipment[player.getEquipment().getRingId()] == 12785) {
 			yourIncrease += 5;
 		}
+		if(player.getTotalAmountDonated() > 100 && player.getTotalAmountDonated() < 200) {
+			yourIncrease += 10;
+		} else if(player.getTotalAmountDonated() > 200) {
+			yourIncrease += 15;
+		}
 		NpcDropSystem.get().drop(player, npc, yourIncrease);
 	}
 

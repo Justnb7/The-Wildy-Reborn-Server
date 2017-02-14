@@ -152,6 +152,8 @@ public class PlayerSerialization {
                         	p.setTotalVotes(Integer.parseInt(value));
                         } else if (key.equals("pkPoints")) {
                         	p.setPkPoints(Integer.parseInt(value));
+                        } else if (key.equals("slayerPoints")) {
+                        	p.setSlayerPoints(Integer.parseInt(value));
                         } else if (key.equals("triviaPoints")) {
                         	p.setTriviaPoints(Integer.parseInt(value));
                         } else if (key.equals("dp")) {
@@ -268,6 +270,10 @@ public class PlayerSerialization {
 							p.setKillCount(Integer.parseInt(value));
 						} else if (line.startsWith("deathCount")) {
 							p.setDeathCount(Integer.parseInt(value));
+						} else if (line.startsWith("targets-killed")) {
+							p.setTotalTargetsKilled(Integer.parseInt(value));
+						} else if (line.startsWith("target-points")) {
+							p.setTargetPoints(Integer.parseInt(value));
 						}
 						break;
 						
@@ -461,7 +467,7 @@ public class PlayerSerialization {
      *            The {@link Player} to write the data for
      */
     public static void writeData(Player p) {
-        String username = p.getRealUsername().toLowerCase();
+        String username = p.getName().toLowerCase();
         final int time = p.teleblock.isStopped() ? 0 : (int) (p.teleblockLength - p.teleblock.elapsedTime());
         final int tbTime = time > 300000 || time < 0 ? 0 : time;
         //spellBook = p.getSpellBook();
@@ -526,6 +532,8 @@ public class PlayerSerialization {
             writer.write("totalVotes = " + p.getTotalVotes());
             writer.newLine();
             writer.write("pkPoints = " + p.getPkPoints());
+            writer.newLine();
+            writer.write("slayerPoints = " + p.getSlayerPoints());
             writer.newLine();
             writer.write("triviaPoints = ");
             writer.write(Integer.toString(p.getTriviaPoints()));
@@ -695,6 +703,10 @@ public class PlayerSerialization {
             writer.write("killCount = " + p.getKillCount());
             writer.newLine();
             writer.write("deathCount = " + p.getDeathCount());
+            writer.newLine();
+            writer.write("targets-killed = " + p.getTotalTargetsKilled());
+            writer.newLine();
+            writer.write("target-points = " + p.getTargetPoints());
             writer.newLine();
             writer.newLine();
             

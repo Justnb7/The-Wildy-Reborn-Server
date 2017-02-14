@@ -11,6 +11,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
+import com.model.utility.Utility;
 
 /**
  * For prayer related activities.
@@ -37,6 +38,17 @@ public class Prayer {
 	 *         The location of the alter
 	 */
 	public void prayAltar(Location loc) {
+		if (player.getRights().isBetween(1, 7)) {
+			if (player.getLastAltarPrayer() < 120000) {
+				player.write(new SendMessagePacket("You can only use the altar to restore your special attack every 2 minutes"));
+			} else {
+				player.setSpecialAmount(100);
+				player.setLastAltarPrayer(System.currentTimeMillis());
+				player.getSkills().increaseLevelToMaximum(Skills.HITPOINTS, player.getSkills().getLevelForExperience(Skills.HITPOINTS));
+			}
+        } else if (Utility.random(4) == 0) {
+        	player.write(new SendMessagePacket("Did you know if you were a donator you'd restore special energy and hitpoints?"));
+        }
 		if (player.getPrayerPoint() >= player.getSkills().getLevelForExperience(Skills.PRAYER)) {
 			player.write(new SendMessagePacket("You already have full prayer points."));
 			return;

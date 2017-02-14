@@ -85,7 +85,7 @@ public class MagicExtras {
 					if (n.currentHealth - damage < 0) {
 						damage = n.currentHealth;
 					}
-					n.addDamageReceived(player.getRealUsername(), damage);
+					n.addDamageReceived(player.getName(), damage);
 					n.damage(new Hit(damage));
 					player.totalPlayerDamageDealt += damage;
 					player.getCombat().multiSpellEffectNPC(npcId, damage);

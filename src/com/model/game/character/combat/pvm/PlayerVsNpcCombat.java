@@ -157,7 +157,7 @@ public class PlayerVsNpcCombat {
 		attacker.lastNpcAttacked = npc.getIndex(); // PI junk
 		
 		if (damage > 0) {
-			npc.addDamageReceived(attacker.getRealUsername(), damage);
+			npc.addDamageReceived(attacker.getName(), damage);
 		}
 		npc.damage(new Hit(damage));
 	}
@@ -312,7 +312,7 @@ public class PlayerVsNpcCombat {
 		npc.underAttack = true;
 		if (MagicCalculations.magicMaxHitModifier(player) != 0) {
 			if (!player.multiAttacking) {
-				npc.addDamageReceived(player.getRealUsername(), damage);
+				npc.addDamageReceived(player.getName(), damage);
 				npc.damage(new Hit(damage));
 			}
 		}
@@ -482,11 +482,11 @@ public class PlayerVsNpcCombat {
 
 		if (!player.multiAttacking) {
 			npc.underAttack = true;
-			npc.addDamageReceived(player.getRealUsername(), damage);
+			npc.addDamageReceived(player.getName(), damage);
 			npc.damage(new Hit(damage));
 			if (damage2 > -1) {
 				CombatExperience.handleCombatExperience(player, damage2, CombatType.RANGED);
-				npc.addDamageReceived(player.getRealUsername(), damage2);
+				npc.addDamageReceived(player.getName(), damage2);
 				npc.damage(new Hit(damage2));
 			}
 		}

@@ -1907,10 +1907,6 @@ public class Player extends Entity {
 		this.xlogDelay = delay;
 	}
 
-	public String getRealUsername() {
-		return username;
-	}
-
 	public String getName() {
 		return Utility.formatPlayerName(username);
 	}
@@ -1929,7 +1925,7 @@ public class Player extends Entity {
 
 	@Override
 	public String toString() {
-		return "Player [username=" + getRealUsername() + ", index: " + getIndex() + "]";
+		return "Player [username=" + getName() + ", index: " + getIndex() + "]";
 	}
 
 	public TradeState getTradeState() {

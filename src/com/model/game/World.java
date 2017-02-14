@@ -149,7 +149,7 @@ public class World implements Service {
 	}
 
 	public Optional<Player> getPlayerByRealName(String realName) {
-		return PLAYERS.search(player -> player.getRealUsername().equalsIgnoreCase(realName));
+		return PLAYERS.search(player -> player.getName().equalsIgnoreCase(realName));
 	}
 
 	/**

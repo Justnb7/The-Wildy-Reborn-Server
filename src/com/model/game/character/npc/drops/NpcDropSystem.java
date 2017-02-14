@@ -206,7 +206,7 @@ public class NpcDropSystem {
 					Location location = null;
 					
 					for(GameItem item : items) {
-						if(npc.getId() == 2042 || npc.getId() == 2043 || npc.getId() == 2044) {
+						if(npc.getId() == 2042 || npc.getId() == 2043 || npc.getId() == 2044 || npc.getId() == 494 || npc.getId() == 492) {
 							location = new Location(player.getX(), player.getY(), player.getZ());
 						}
 						else { 

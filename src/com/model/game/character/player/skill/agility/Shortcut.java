@@ -3,7 +3,6 @@ package com.model.game.character.player.skill.agility;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.task.ScheduledTask;
@@ -239,11 +238,6 @@ public class Shortcut {
 		if (player.stopPlayerPacket) {
 			return;
 		}
-		if (player.getSkills().getLevel(Skills.AGILITY) < 12) {
-			player.getDialogueHandler().sendStatement(player, "You need 12 agility to use these stepping stones");
-			player.nextChat = 0;
-			return;
-		}
 		player.stopPlayerPacket = true;
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			@Override
@@ -276,7 +270,6 @@ public class Shortcut {
 
 			@Override
 			public void onStop() {
-				player.getSkills().addExperience(Skills.AGILITY, 300);
 				setAnimationBack(player);
 				player.stopPlayerPacket = false;
 			}

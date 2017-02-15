@@ -38,12 +38,12 @@ public class CombatAssistant {
 					player.write(new SendMessagePacket("You need a slayer level of " + slayerRequirements[j][1] + " to harm this NPC."));
 					return false;
 				}
-				if(npcId == 5534 && player.getSlayerTask() != 496) {
+				if(npcId == 5534 && player.getSlayerTask() != 494) {
 					player.write(new SendMessagePacket("You must have Kraken's as a slayer-task to disturb these whirlpools."));
 					return false;
 				}
-				if (npcId == 493 && player.getSlayerTask() != 493 || npcId == 496 && player.getSlayerTask() != 496) {
-					player.write(new SendMessagePacket("You must have this npc as a slayer-task to attack"));
+				if (npcId == 493 && player.getSlayerTask() != 492 || npcId == 496 && player.getSlayerTask() != 494) {
+					player.write(new SendMessagePacket("You must have cave krakens as a slayer-task to attack"));
 					return false;
 				}
 			}

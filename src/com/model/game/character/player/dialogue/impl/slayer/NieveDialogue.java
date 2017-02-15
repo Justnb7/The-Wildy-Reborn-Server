@@ -93,7 +93,7 @@ public class NieveDialogue extends Dialogue {
 													stop();
 												} else {
 													if (getPhase() == 15) {
-														Shop.SHOPS.get("Slayer Shop").openShop(player);
+														Shop.SHOPS.get("Slayer Rewards").openShop(player);
 													} else {
 														if (getPhase() == 16) {
 															send(Type.NPC, NPC_ID, Expression.DEFAULT, "Social-Slayer is like normal slayer", "except you can complete the task with a friend.", "The points are divided between both players", "and the experience too.");

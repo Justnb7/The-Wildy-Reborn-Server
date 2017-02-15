@@ -226,6 +226,7 @@ public class SlayerTaskManagement {
 				
 				player.setSlayerTask(0);
 				player.setSlayerTaskAmount(0);
+				player.setSlayerTaskDifficulty(0);
 				player.setSlayerTasksCompleted(player.getSlayerTasksCompleted() + 1);
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 				

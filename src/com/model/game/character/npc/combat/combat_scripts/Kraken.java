@@ -31,7 +31,7 @@ public class Kraken extends Boss {
 
 	@Override
 	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		return 0;
+		return damage / 2;
 	}
 
 	@Override

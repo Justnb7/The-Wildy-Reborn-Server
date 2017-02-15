@@ -14,7 +14,8 @@ public enum Duradel implements Task {
 	COMMANDER_ZILYANA(2205, 1), 
 	GENERAL_GRAARDOR(2215, 1), 
 	SCORPIA(6615, 1), 
-	CALLISTO(6609, 1);
+	CALLISTO(6609, 1),
+	KRAKENS(494, 87);
 	
 	/**
 	 * The slayer npc ID

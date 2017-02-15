@@ -175,6 +175,8 @@ public class PlayerSerialization {
                             p.setSlayerTask(Integer.parseInt(value));
                         } else if (key.equals("task-amount")) {
                         	p.setSlayerTaskAmount(Integer.parseInt(value));
+                        } else if (key.equals("task-difficulity")) {
+                        	p.setSlayerTaskDifficulty(Integer.parseInt(value));
                         } else if (key.equals("first-slayer-task-completed")) {
                              p.setFirstSlayerTask(Boolean.parseBoolean(value));
                         } else if (key.equals("first-boss-slayer-task-completed")) {
@@ -562,6 +564,9 @@ public class PlayerSerialization {
             writer.newLine();
             writer.write("task-amount = ");
             writer.write(Integer.toString(p.getSlayerTaskAmount()));
+            writer.newLine();
+            writer.write("task-difficulity = ");
+            writer.write(Integer.toString(p.getSlayerTaskDifficulty()));
             writer.newLine();
             writer.write("first-slayer-task-completed = "+p.getFirstSlayerTask());
             writer.newLine();

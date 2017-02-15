@@ -574,9 +574,8 @@ public class CommandPacketHandler implements PacketType {
       				name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
          		 optionalPlayer = World.getWorld().getOptionalPlayer(name);
          		if (optionalPlayer.isPresent()) {
-     				Player c2 = optionalPlayer.get();
-     				World.getWorld().queueLogout(c2);
-                    PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getName()) + " Has just kicked " + c2);
+     				Player kick = optionalPlayer.get();
+     				kick.logout();
          		}
              } catch (Exception e) {
                  e.printStackTrace();

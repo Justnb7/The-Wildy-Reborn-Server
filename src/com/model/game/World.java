@@ -369,7 +369,8 @@ public class World implements Service {
 					if (player != null) {
 						player.getOutStream().writeFrame(109);
 						player.flushOutStream();
-						unregister(player);
+						//unregister(player);
+						player.logout();
 						System.exit(1);
 					}
 				}

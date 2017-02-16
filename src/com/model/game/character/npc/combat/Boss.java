@@ -53,9 +53,5 @@ public abstract class Boss {
 	public abstract int offSet(Npc npc);
 	
 	public abstract boolean damageUsesOwnImplementation();
-	
-	public void onDeath(Player Player, Npc npc) {
-
-	}
 
 }

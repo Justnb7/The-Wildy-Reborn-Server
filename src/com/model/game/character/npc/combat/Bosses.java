@@ -33,6 +33,7 @@ import com.model.game.character.npc.combat.combat_scripts.Venenatis;
 import com.model.game.character.npc.combat.combat_scripts.Vetion;
 import com.model.game.character.npc.combat.combat_scripts.Wingman_Skree;
 import com.model.game.character.npc.combat.combat_scripts.Zakln_Gritch;
+import com.model.game.character.npc.combat.combat_scripts.Zombie_Champion;
 
 
 /**
@@ -73,6 +74,7 @@ public class Bosses {
 	private static final Growler GROWLER = new Growler(2207);
 	private static final King_Black_Dragon King_Black_Dragon = new King_Black_Dragon(239);
 	private static final Barrelchest BARRELCHEST = new Barrelchest(6342);
+	private static final Zombie_Champion ZOMBIES_CHAMPION = new Zombie_Champion(3359);
 	
 	private static final Dragon RED_DRAGON_247 = new Dragon(247);
 	private static final Dragon RED_DRAGON_248 = new Dragon(248);
@@ -134,6 +136,7 @@ public class Bosses {
 		bosses.put(GROWLER.npcId, GROWLER);
 		bosses.put(King_Black_Dragon.npcId, King_Black_Dragon);
 		bosses.put(BARRELCHEST.npcId, BARRELCHEST);
+		bosses.put(ZOMBIES_CHAMPION.npcId, ZOMBIES_CHAMPION);
 		/**
 		 * Dragons
 		 */

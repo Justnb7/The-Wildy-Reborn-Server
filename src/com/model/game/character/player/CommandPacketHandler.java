@@ -146,7 +146,7 @@ public class CommandPacketHandler implements PacketType {
     			player.write(new SendMessagePacket("You're only allowed to change combat."));
     			return false;
     		}
-    		if(level > 99 || stat == 3 && level < 10) {
+    		if(level > 99 && !player.getRights().isAdministrator() || stat == 3 && level < 10 && !player.getRights().isAdministrator()) {
     			player.write(new SendMessagePacket("Invalid entry."));
     			return false;
     		}
@@ -780,10 +780,6 @@ public class CommandPacketHandler implements PacketType {
 			
     	case "setstat":
     		try {
-				if(Integer.parseInt(cmd[2]) < 1 || Integer.parseInt(cmd[2]) > 99) {
-					player.write(new SendMessagePacket("Invalid entry: level must be between 1-99."));
-					return false;
-				}
 				player.getSkills().setExperience(Integer.parseInt(cmd[1]), player.getSkills().getXPForLevel(Integer.parseInt(cmd[2])) + 1);
 				player.getSkills().setLevel(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
 				player.write(new SendMessagePacket(Skills.SKILL_NAME[Integer.parseInt(cmd[1])] + " level is now " + Integer.parseInt(cmd[2]) + "."));	

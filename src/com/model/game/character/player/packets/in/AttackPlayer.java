@@ -34,6 +34,7 @@ public class AttackPlayer implements PacketType {
 			}
 			
 			if (player.getIndex() < 0 || player.isDead()) {
+				System.out.println("index or npc dead");
 				return;
 			}
 			

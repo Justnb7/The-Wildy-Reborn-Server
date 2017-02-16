@@ -1,5 +1,6 @@
 package com.model.game.character.npc.pet;
 
+import com.model.game.World;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.npc.Npc;
@@ -71,8 +72,8 @@ public class PetCombat {
 	public void handlePetDamage(Player defender) {
 		if(player.petId < 1)
 			return;
-		if(player.getPets().getPet(player) != null){
-			Npc pet = player.getPets().getPet(player);
+		if(player.getPets().getPet(player, World.getWorld().getNpcs().get(player.petNpcIndex)) != null){
+			Npc pet = player.getPets().getPet(player, World.getWorld().getNpcs().get(player.petNpcIndex));
 			if(!pet.getDelay().elapsed(30_000)){
 				return;
 			}

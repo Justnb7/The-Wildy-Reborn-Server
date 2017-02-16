@@ -49,11 +49,11 @@ public class CombatExperience {
 			break;
 		case RANGED:
 			switch (player.getAttackStyle()) {
-			case AttackStyle.RANGE_ACCURATE:
-			case AttackStyle.RANGE_RAPID:
+			case AttackStyle.ACCURATE:
+			case AttackStyle.AGGRESSIVE:
 				player.getSkills().addExperience(Skills.RANGE, (4 * damage));
 				break;
-			case AttackStyle.RANGE_LONGRANGE:
+			case AttackStyle.CONTROLLED:
 				player.getSkills().addExperience(Skills.RANGE, (4 * damage));
 				player.getSkills().addExperience(Skills.DEFENCE, (4 * damage));
 				break;

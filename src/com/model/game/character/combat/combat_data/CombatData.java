@@ -48,10 +48,10 @@ public class CombatData {
 		
 		if (weapon.contains("blowpipe")) {
 			if (player.playerIndex > 0) { // we're attacking a player
-				return player.getAttackStyle() == AttackStyle.RANGE_RAPID ? 3 : 4;
+				return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? 3 : 4;
 			} else if (player.npcIndex > 0) { // we're attacking an npc
 				// accurate = 4, rapid = accurate-1
-				return player.getAttackStyle() == AttackStyle.RANGE_RAPID ? 2 : 3;
+				return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? 2 : 3;
 			}
 			return 4;
 		}

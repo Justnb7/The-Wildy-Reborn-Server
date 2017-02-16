@@ -92,10 +92,7 @@ public class King_Black_Dragon extends Boss {
 
 	@Override
 	public boolean canMultiAttack(Npc npc) {
-		if (npc.attackStyle == 0)
-			return false;
-		else
-			return true;
+		return false;
 	}
 
 	@Override

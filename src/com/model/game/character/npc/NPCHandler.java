@@ -11,7 +11,6 @@ import java.util.List;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.npc.combat.Bosses;
 import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Boundary;
@@ -288,12 +287,6 @@ public final class NPCHandler {
 			player.getBossDeathTracker().add(npc);
 			if (npc.npcId == player.getSlayerTask())
 				player.getSlayerDeathTracker().add(npc);
-		}
-		
-		boolean isBoss = Bosses.isBoss(npc.npcId);
-
-		if (isBoss) {
-			Bosses.get(npc.npcId).onDeath(player, npc);
 		}
 		
 		int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];

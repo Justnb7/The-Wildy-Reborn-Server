@@ -65,11 +65,6 @@ public class Corporeal_Beast extends Boss {
 			}
 		}
 	}
-	
-	@Override
-	public void onDeath(Player killer, Npc npc) {
-
-	}
 
 	private void createSplatter(Player player, Npc npc) {
 		int splatters = 4 + Utility.getRandom(3);

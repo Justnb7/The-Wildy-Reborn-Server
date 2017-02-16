@@ -3,6 +3,7 @@ package com.model.game.character.player.packets.actions;
 import java.util.Objects;
 
 import com.model.Server;
+import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.PrayerHandler;
@@ -207,7 +208,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 108020:
-			player.getPets().callPet(player);
+			player.getPets().callPet(player, World.getWorld().getNpcs().get(player.petNpcIndex));
 			break;
 
 		case 42210:

@@ -251,9 +251,7 @@ public class BountyHunter extends ScheduledTask {
 			 * a target
 			 */
 			if (target.getIdentity().equalsIgnoreCase(player.getIdentity()) || target.getMacAddress().equalsIgnoreCase(player.getMacAddress())) {
-				if (Server.isLive()) {
-					continue;
-				}
+				continue;
 			}
 			
 			if (System.currentTimeMillis() - target.getAttribute("login_delay", 0L) < BountyHunterConstants.LOGIN_DELAY_WAIT) {

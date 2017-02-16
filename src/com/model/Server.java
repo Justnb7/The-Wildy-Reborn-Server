@@ -67,17 +67,6 @@ public class Server {
 	private static final TaskScheduler scheduler = new TaskScheduler();
 
 	/**
-	 * Server updating.
-	 */
-	public static boolean UpdateServer = false;
-
-	/**
-	 * Determines if the server is live, mysql queries are disabled while not
-	 * live
-	 */
-	private static boolean live;
-
-	/**
 	 * The state of the server
 	 */
 	public static ServerState state = ServerState.STARTED;
@@ -95,14 +84,6 @@ public class Server {
 		stopwatch = new Stopwatch();
 		try {
 
-			if (args.length < 1) {
-				logger.info("The server will start without live mode!");
-				live = false;
-			} else {
-				live = Boolean.parseBoolean(args[0]);
-				logger.info("The server will start " + (live ? "in" : "without") + " live mode!");
-			}
-
 			logger.info("Starting up " + Constants.SERVER_NAME + "!");
 
 			state = ServerState.LOADING;
@@ -117,7 +98,6 @@ public class Server {
 			GameLogicService.initialize();
 			World.getWorld().init();
 			globalObjects.pulse();
-			globalObjects.loadGlobalObjectFile();
 			globalObjects.pulse();
 			ResourceLeakDetector.setLevel(io.netty.util.ResourceLeakDetector.Level.PARANOID);
 			bind(Constants.SERVER_PORT);
@@ -189,15 +169,6 @@ public class Server {
 
 	public static TaskScheduler getTaskScheduler() {
 		return scheduler;
-	}
-
-	/**
-	 * Returns if the server is live
-	 * 
-	 * @return If the server is live
-	 */
-	public static boolean isLive() {
-		return live;
 	}
 
 	private static GlobalObjects globalObjects = new GlobalObjects();

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import com.model.Server;
+import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.multiplayer.Multiplayer;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
@@ -24,7 +25,7 @@ public class Duel extends Multiplayer {
 			player.write(new SendMessagePacket("You have already sent a request to this player."));
 			return false;
 		}
-		if (Server.UpdateServer) {
+		if (World.updateRunning) {
 			player.write(new SendMessagePacket("You cannot request or accept a duel request at this time."));
 			player.write(new SendMessagePacket("The server is currently being updated."));
 			return false;

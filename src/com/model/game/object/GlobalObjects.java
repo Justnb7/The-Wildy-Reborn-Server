@@ -1,9 +1,5 @@
 package com.model.game.object;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -168,60 +164,6 @@ public class GlobalObjects {
 		objects.stream().filter(Objects::nonNull).filter(object -> player.distanceToPoint(
 			object.getX(), object.getY()) <= 60 && object.getHeight() == player.heightLevel).forEach(object -> player.getPA().object(
 				object.getObjectId(), object.getX(), object.getY(), object.getFace(), object.getType()));
-		loadCustomObjects(player);
-	}
-	
-	/**
-	 * Used for spawning objects that cannot be inserted into the file
-	 * @param player	the player
-	 */
-	private void loadCustomObjects(Player player) {
-		
-	}
-	
-	/**
-	 * Loads all object information from a simple text file
-	 * @throws IOException	an exception likely to occur from file non-existence or during reading protocol
-	 */
-	public void loadGlobalObjectFile() throws IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(new File("./Data/cfg/global-objects.cfg")))) {
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				if (line.isEmpty() || line.startsWith("//")) {
-					continue;
-				}
-				String[] data = line.split("\t");
-				if (data.length != 6) {
-					continue;
-				}
-				int id, x, y, height, face, type;
-				try {
-					id = Integer.parseInt(data[0]);
-					x = Integer.parseInt(data[1]);
-					y = Integer.parseInt(data[2]);
-					height = Integer.parseInt(data[3]);
-					face = Integer.parseInt(data[4]);
-					type = Integer.parseInt(data[5]);
-				} catch (NumberFormatException nfe) {
-					continue;
-				} catch (NullPointerException ne) {
-					continue;
-				}
-				add(new GlobalObject(id, x, y, height, face, type, -1));
-			}
-		}
-	}
-	
-	/**
-	 * This is a convenience method that should only be referenced when
-	 * testing game content on a private host. This should not be referenced
-	 * during the active game. 
-	 * @throws IOException 
-	 */
-	public void reloadObjectFile(Player player) throws IOException {
-		objects.clear();
-		loadGlobalObjectFile();
-		updateRegionObjects(player);
 	}
 
 }

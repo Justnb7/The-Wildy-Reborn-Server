@@ -893,12 +893,7 @@ public class CommandPacketHandler implements PacketType {
 					player.write(new SendMessagePacket("Succesfully reloaded the spawns"));
 					break;
 				case 3:
-					try {
-						Server.getGlobalObjects().reloadObjectFile(player);
-						player.write(new SendMessagePacket("The object file has been reloaded."));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+
 					break;
 				case 4:
 					new ShopLoader().load();

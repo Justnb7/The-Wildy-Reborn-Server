@@ -169,11 +169,6 @@ public class LoginSession extends Session {
 			return;
 		}
 
-		if (!Server.isLive()) {
-			// since we aren't live, auto admin the account
-			//player.playerRights = 5;
-		}
-
 		LoginResponse response = new LoginResponse(returnCode, player.getRights().getValue(), 0);
 
 		ChannelFuture future = ctx.writeAndFlush(response);

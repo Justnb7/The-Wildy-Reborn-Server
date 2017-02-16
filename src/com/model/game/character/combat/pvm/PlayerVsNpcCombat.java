@@ -292,8 +292,8 @@ public class PlayerVsNpcCombat {
 		if (!magicFailed) {
 			int freezeDelay = player.getCombat().getFreezeTime();// freeze
 			if (freezeDelay > 0 && npc.refreezeTicks == 0) {
-				npc.refreezeTicks = freezeDelay;
-				//player.write(new SendGameMessage("Freeze timer: "+npc.freezeTimer+ " Freezedelay: "+freezeDelay));
+				npc.freeze(freezeDelay);
+				System.out.println("Freeze timer: "+npc.refreezeTicks+ " Freezedelay: "+freezeDelay);
 			}
 			switch (player.MAGIC_SPELLS[player.oldSpellId][0]) {
 			case 12901:
@@ -392,11 +392,9 @@ public class PlayerVsNpcCombat {
 	 *            The {@link Npc} being attacked
 	 */
 	private static void applyNpcRangeDamage(Player player, Npc npc, int i) {
-		//int damage = Utils.getRandom(player.getCombat().rangeMaxHit());
 		int damage = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
 		int damage2 = -1;
-		
-		CombatExperience.handleCombatExperience(player, damage, CombatType.RANGED);
+
 		CombatEffect.slayerHelmetEffect(player, npc, damage);
 
 		if (player.lastWeaponUsed == 11235 || player.bowSpecShot == 1)
@@ -484,7 +482,10 @@ public class PlayerVsNpcCombat {
 			npc.underAttack = true;
 			npc.addDamageReceived(player.getName(), damage);
 			npc.damage(new Hit(damage));
-			if (damage2 > -1) {
+			if(damage > 0) {
+				CombatExperience.handleCombatExperience(player, damage, CombatType.RANGED);
+			}
+			if (damage2 > 0) {
 				CombatExperience.handleCombatExperience(player, damage2, CombatType.RANGED);
 				npc.addDamageReceived(player.getName(), damage2);
 				npc.damage(new Hit(damage2));
@@ -534,14 +535,17 @@ public class PlayerVsNpcCombat {
 	public static void attackNpc(Player player, int index) {
 		Npc npc = World.getWorld().getNpcs().get(index);
 		if (npc == null) {
+			//System.out.println("null");
 			return;
 		}
 		
 		if (player.inTutorial()) {
+			//System.out.println("tutorial");
 			return;
 		}
 		
 		if (npc.transforming) {
+			//System.out.println("transform");
 			return;
 		}
 		
@@ -577,6 +581,7 @@ public class PlayerVsNpcCombat {
 			player.write(new SendString(Npc.getName(npc.npcId).replaceAll("_", " ")+ "-"+npc.maximumHealth+"-"+npc.currentHealth+ ((attacker != null) ? "-"+attacker.getName() : ""), 35000));
 		}
 		if (!validateAttack(player, npc, true)) {
+			//System.out.println("blocked");
 			//player.write(new SendGameMessage("blocked");
 			return;
 		}
@@ -625,6 +630,7 @@ public class PlayerVsNpcCombat {
 				if (player.playerEquipment[player.getEquipment().getWeaponId()] == bowId && player.switchDelay.elapsed(100)) {
 					player.usingBow = true;
 					player.setCombatType(CombatType.RANGED);
+					//System.out.println("ranged");
 					for (int arrowId : Player.ARROWS) {
 						if (player.playerEquipment[player.getEquipment().getQuiverId()] == arrowId) {
 							player.usingArrows = true;

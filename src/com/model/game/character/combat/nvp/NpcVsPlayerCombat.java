@@ -11,9 +11,7 @@ import com.model.game.character.Hit;
 import com.model.game.character.combat.PrayerHandler.Prayer;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
-import com.model.game.character.combat.range.RangedCalculations;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
@@ -358,8 +356,7 @@ public class NpcVsPlayerCombat {
 			}
 
 			if (npc.attackStyle == MobAttackType.RANGE) {
-				if (Utility.getRandom(player.getCombat().calculateRangeDefence()) > Utility
-						.getRandom(npc.getDefinition().getAttackBonus())) {
+				if (Utility.getRandom(player.getCombat().calculateRangeDefence()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
 					damage = 0;
 				}
 				// overheads check
@@ -652,133 +649,58 @@ public class NpcVsPlayerCombat {
 	 * @param i
 	 */
 	public static void multiAttackDamage(Npc npc) {
+		boolean isBoss = Bosses.isBoss(npc.npcId);
+		Boss boss = Bosses.get(npc.npcId);
 		int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
+		if(isBoss) {
+			damage = Utility.getRandom(boss.getMaximumDamage(npc.attackStyle));
+		}
 		for (int j = 0; j < World.getWorld().getPlayers().capacity(); j++) {
 			if (World.getWorld().getPlayers().get(j) != null) {
 				Player player = World.getWorld().getPlayers().get(j);
 				if (player.isDead || player.heightLevel != npc.heightLevel)
 					continue;
-				if (World.getWorld().getPlayers().get(j).goodDistance(player.absX, player.absY, npc.absX, npc.absY,
-						multiAttackDistance(npc))) {
+				if (World.getWorld().getPlayers().get(j).goodDistance(player.absX, player.absY, npc.absX, npc.absY, multiAttackDistance(npc))) {
 					if (npc.attackStyle == 4) {
 						if (npc.npcId == 6611 || npc.npcId == 6612) {
-							if (!(player.absX > npc.absX - 5 && player.absX < npc.absX + 5 && player.absY > npc.absY - 5
-									&& player.absY < npc.absY + 5)) {
+							if (!(player.absX > npc.absX - 5 && player.absX < npc.absX + 5 && player.absY > npc.absY - 5 && player.absY < npc.absY + 5)) {
 								continue;
 							}
-							player.write(new SendMessagePacket(
-									"Vet'ion pummels the ground sending a shattering earthquake shockwave through you."));
+							player.write(new SendMessagePacket("Vet'ion pummels the ground sending a shattering earthquake shockwave through you."));
 							createVetionEarthquake(player);
 						}
 						player.damage(new Hit(damage));
-					} else if (npc.attackStyle == MobAttackType.DRAGON_FIRE) {// King black  dragon
-						damage = Utility.getRandom(65);
-						int resistance = player.getItems().isWearingItem(1540) || player.getItems().isWearingItem(11283) || player.getItems().isWearingItem(11284) ? 1 : 0;
-						if (System.currentTimeMillis() - player.lastAntifirePotion < player.antifireDelay) {
-							resistance++;
+					}
+					if (npc.attackStyle == MobAttackType.MAGIC) {
+						System.out.println("mage");
+						if (Utility.getRandom(player.getCombat().calculateMagicDefence()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
+							damage = 0;
 						}
-						if (resistance == 0) {
-							player.write(new SendMessagePacket("You are badly burnt by the dragon fire!"));
-						} else if (resistance == 1) {
-							damage = Utility.getRandom(10);
-							player.write(new SendMessagePacket("Your shield absorbs most of the dragon's fiery breath!"));
-						} else if (resistance == 2) {
-							damage = Utility.getRandom(3);
-						}
-						player.damage(new Hit(damage));
-					} else if (npc.attackStyle == MobAttackType.POISON_BREATH) {
-						damage = Utility.getRandom(65);
-						int resistance = player.getItems().isWearingItem(1540) || player.getItems().isWearingItem(11283) || player.getItems().isWearingItem(11284) ? 1 : 0;
-						if (System.currentTimeMillis() - player.lastAntifirePotion < player.antifireDelay) {
-							resistance++;
-						}
-						if (resistance == 0) {
-							player.write(new SendMessagePacket("You are badly burnt by the dragon fire!"));
-						} else if (resistance == 1) {
-							damage = Utility.getRandom(10);
-							player.write(new SendMessagePacket("Your shield absorbs most of the dragon's fiery breath!"));
-						} else if (resistance == 2) {
-							damage = Utility.getRandom(3);
-						}
-						if (player.poisonDamage <= 0 && damage > 0) {
-							player.setPoisonDamage((byte) 13);
-						}
-						player.damage(new Hit(damage));
-					} else if (npc.attackStyle == MobAttackType.SHOCK_BREATH) {
-						damage = Utility.getRandom(65);
-						int resistance = player.getItems().isWearingItem(1540) || player.getItems().isWearingItem(11283) || player.getItems().isWearingItem(11284) ? 1 : 0;
-						if (System.currentTimeMillis() - player.lastAntifirePotion < player.antifireDelay) {
-							resistance++;
-						}
-						if (resistance == 0) {
-							player.write(new SendMessagePacket("You're shocked and weakend!"));
-						} else if (resistance == 1) {
-							damage = Utility.getRandom(10);
-							player.write(new SendMessagePacket("Your shield absorbs most of the dragon's fiery breath!"));
-						} else if (resistance == 2) {
-							damage = Utility.getRandom(3);
-						}
-						player.damage(new Hit(damage));
-					} else if (npc.attackStyle == MobAttackType.ICE_BREATH) {
-						damage = Utility.getRandom(65);
-						int resistance = player.getItems().isWearingItem(1540) || player.getItems().isWearingItem(11283) || player.getItems().isWearingItem(11284) ? 1 : 0;
-						if (System.currentTimeMillis() - player.lastAntifirePotion < player.antifireDelay) {
-							resistance++;
-						}
-						if (resistance == 0) {
-							player.write(new SendMessagePacket("You are badly burnt by the dragon fire!"));
-						} else if (resistance == 1) {
-							damage = Utility.getRandom(10);
-							player.write(new SendMessagePacket("Your shield absorbs most of the dragon's icy breath!"));
-						} else if (resistance == 2) {
-							damage = Utility.getRandom(3);
-							player.write(new SendMessagePacket("Your shield absorbs most of the dragon's icy breath!"));
-						}
-						if (player.frozen() && damage > 0) {
-							player.freeze(33);
-							player.write(new SendMessagePacket("You have been frozen!"));
-							player.stopMovement();
-						}
-						player.damage(new Hit(damage));
-					} else if (npc.attackStyle == 2) {
-						/*
-						 * if (npc.npcId == 6611 || npc.npcId == 6612) { if
-						 * (Vetion.vetionSpellCoordinates.stream().noneMatch(p
-						 * -> p[0] == player.absX && p[1] == player.absY)) {
-						 * continue; } } else if (npc.npcId == 6618) { if
-						 * (Crazy_Archaeologist.spell_coordinates.stream().
-						 * noneMatch(p -> p[0] == player.absX && p[1] ==
-						 * player.absY)) { continue; } } else if (npc.npcId ==
-						 * 6619) { if
-						 * (Chaos_Fanatic.spell_coordinates.stream().noneMatch(p
-						 * -> p[0] == player.absX && p[1] == player.absY)) {
-						 * continue; } }
-						 */
-						if (!player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
-							if (Utility.getRandom(500) + 200 > Utility
-									.getRandom(MagicCalculations.calculateMagicDefence(player))) {
-								player.damage(new Hit(damage));
+						
+						if (player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+							if (isBoss) {
+								damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.MAGE, damage));
 							} else {
-								player.damage(new Hit(damage));
-							}
-						} else {
-							if (npc.npcId == 6610) {
-								damage *= .7;
-								player.damage(new Hit(damage));
-							} else {
-								player.damage(new Hit(damage));
+								damage = 0;
 							}
 						}
-					} else if (npc.attackStyle == 1) {
-						if (!player.isActivePrayer(Prayer.PROTECT_FROM_MISSILE)) {
-							if (Utility.getRandom(500) + 200 > RangedCalculations.calculateRangeDefence(player)) {
-								player.damage(new Hit(damage));
-							} else {
-								player.damage(new Hit(damage));
-							}
-						} else {
-							player.damage(new Hit(damage));
+						player.damage(new Hit(damage));
+					}
+					
+					if (npc.attackStyle == MobAttackType.RANGE) {
+						System.out.println("range");
+						if (Utility.getRandom(player.getCombat().calculateRangeDefence()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
+							damage = 0;
 						}
+						// overheads check
+						if (player.isActivePrayer(Prayer.PROTECT_FROM_MISSILE)) {
+							if (isBoss) {
+								damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.RANGE, damage));
+							} else {
+								damage = 0;
+							}
+						}
+						player.damage(new Hit(damage));
 					}
 					if (npc.endGfx > 0) {
 						player.playGraphics(Graphic.create(npc.endGfx, 0, 0));

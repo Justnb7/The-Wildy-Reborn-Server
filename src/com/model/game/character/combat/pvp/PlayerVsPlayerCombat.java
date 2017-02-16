@@ -920,7 +920,8 @@ public class PlayerVsPlayerCombat {
 			// Allowing the target to run for a few steps before being recubed.
 			defender.wasFrozen = defender.refreezeTicks > -3;
 			int spellFreezeTime = player.getCombat().getFreezeTime();
-			if (spellFreezeTime > 0 && defender.frozen() && !player.magicFailed) {
+			if (spellFreezeTime > 0 && !defender.frozen() && !player.magicFailed) {
+				
 				defender.freeze(spellFreezeTime);
 				defender.resetWalkingQueue();
 				defender.write(new SendMessagePacket("You have been frozen."));

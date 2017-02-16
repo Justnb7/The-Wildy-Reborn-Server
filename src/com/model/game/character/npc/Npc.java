@@ -712,7 +712,8 @@ public class Npc extends Entity {
 	
 	// Actual following, called every cycle. This method supports both player and NPC types while PI didn't
 	public void follow() {
-		if (super.frozen()) { // TODO 
+		if (this.frozen()) {
+			System.out.println("frozen");
 			return;
 		}
 		if (following_target != null) {

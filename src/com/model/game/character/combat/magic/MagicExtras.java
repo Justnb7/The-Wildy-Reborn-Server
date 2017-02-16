@@ -19,7 +19,7 @@ public class MagicExtras {
 		case 12891:
 		case 12881:
 			if (World.getWorld().getNpcs().get(npcId).refreezeTicks < -4) {
-				World.getWorld().getNpcs().get(npcId).refreezeTicks = c.getCombat().getFreezeTime();
+				World.getWorld().getNpcs().get(npcId).freeze(c.getCombat().getFreezeTime());
 			}
 			break;
 		}
@@ -118,7 +118,7 @@ public class MagicExtras {
 		case 12891:
 		case 12881:
 			if (World.getWorld().getPlayers().get(playerId).refreezeTicks < -4) {
-				World.getWorld().getPlayers().get(playerId).refreezeTicks = player.getCombat().getFreezeTime();
+				World.getWorld().getPlayers().get(playerId).freeze(player.getCombat().getFreezeTime());
 				World.getWorld().getPlayers().get(playerId).stopMovement();
 			}
 			break;

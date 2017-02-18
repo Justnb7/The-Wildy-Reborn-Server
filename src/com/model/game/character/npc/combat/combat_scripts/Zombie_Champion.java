@@ -6,7 +6,6 @@ import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.MobAttackType;
 import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.utility.Utility;
 
 public class Zombie_Champion extends Boss {

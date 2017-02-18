@@ -168,10 +168,6 @@ public class Equipment {
 	public static boolean fullDharok(Player player) {
 		return player.playerEquipment[player.getEquipment().getWeaponId()] == 4718 && player.playerEquipment[player.getEquipment().getHelmetId()] == 4716 && player.playerEquipment[player.getEquipment().getChestId()] == 4720 && player.playerEquipment[player.getEquipment().getLegsId()] == 4722;
 	}
-	
-	public boolean wearingBlowpipe(Player player) {
-		return player.playerEquipment[player.getEquipment().getWeaponId()] == 12926;
-	}
 
 	/**
 	 * Obisidian Weapons.
@@ -198,8 +194,132 @@ public class Equipment {
 		return false;
 	}
 
-	public static boolean wearingAnguish(Player player) {
-		return player.playerEquipment[player.getEquipment().getWeaponId()] == 19547;
+	public boolean wearingAnguish(Player player) {
+		return player.playerEquipment[getWeaponId()] == 19547;
+	}
+	
+	public boolean usingCrystalBow(Player player) {
+		return player.playerEquipment[getWeaponId()] == 4222;
+	}
+	
+	public boolean wearingBlowpipe(Player player) {
+		return player.playerEquipment[getWeaponId()] == 12926;
+	}
+	
+	public boolean wearingBallista(Player player) {
+		return player.playerEquipment[getWeaponId()] == 19481;
+	}
+	
+	public boolean isCrossbow(Player player) {
+		switch(player.playerEquipment[getWeaponId()]) {
+		case 11785:
+		case 9185:
+		case 18357:
+		case 21012:
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isThrowingWeapon(Player player) {
+		switch (player.playerEquipment[getWeaponId()]) {
+		// Javalins
+		case 825:
+		case 826:
+		case 827:
+		case 828:
+		case 829:
+		case 830:
+			// Chinchompas
+		case 10033:
+		case 10034:
+			// Thrownaxe
+		case 800:
+		case 801:
+		case 802:
+		case 803:
+		case 804:
+		case 805:
+		case 6522:
+			// Darts
+		case 806:
+		case 807:
+		case 808:
+		case 809:
+		case 810:
+		case 811:
+			// Knives
+		case 863:
+		case 864:
+		case 865:
+		case 866:
+		case 867:
+		case 868:
+		case 869:
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isBow(Player player) {
+		switch (player.playerEquipment[getWeaponId()]) {
+		case 839:
+		case 841:
+		case 843:
+		case 845:
+		case 847:
+		case 849:
+		case 851:
+		case 853:
+		case 855:
+		case 857:
+		case 859:
+		case 861:
+		case 4222:
+		case 9705:
+		case 12424:
+		case 11235:
+		case 6724:
+		case 4734:
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isArrow(Player player) {
+		switch (player.playerEquipment[getQuiverId()]) {
+		case 882:
+		case 884:
+		case 886:
+		case 888:
+		case 890:
+		case 892:
+		case 11212:
+		case 78:
+		case 4740:
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isBolt(Player player) {
+		switch (player.playerEquipment[getQuiverId()]) {
+		case 9140: 
+		case 9141:
+		case 4142: 
+		case 9143: 
+		case 9144: 
+		case 9240: 
+		case 9241: 
+		case 9242: 
+		case 9243:
+		case 9244: 
+		case 9245: 
+		case 9706:
+		return true;
+		}
+		
+		return false;
 	}
 
 }

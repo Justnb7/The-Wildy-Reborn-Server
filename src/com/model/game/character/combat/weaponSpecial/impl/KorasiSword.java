@@ -31,7 +31,7 @@ public class KorasiSword implements SpecialAttack {
 
 	@Override
 	public int amountRequired() {
-		return 55;
+		return 60;
 	}
 
 	@Override

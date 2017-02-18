@@ -29,30 +29,30 @@ public class Pet {
 		 * DO NOT ADD IN RANDOM ORDER, THEY'RE ALL IN ALPHABETIC ORDER!!!
 		 */
 		
-		BABY_MOLE(12646, 6635, -1, new int[] { 5779 }, 500),
-		CHAOS_ELEMENTAL_JR(12694, 2055, -1, new int[] { 2054 }, 1000),
-		CHAOS_FANATIC_Jr(12694, 2055, -1, new int[] { 6619 }, 1000),
+		BABY_MOLE(12646, 6635, -1, new int[] { 5779 }, 1500),
+		CHAOS_ELEMENTAL_JR(12694, 2055, -1, new int[] { 2054 }, 150),
+		CHAOS_FANATIC_Jr(12694, 2055, -1, new int[] { 6619 }, 500),
 		CHOMPY_CHICK(13071, 4001, -1, new int[] {-1}, -1),
-		CALLISTO_CUB(13178, 497, -1, new int[] {6609}, 500),
-		GOMMANDER_ZILYANA_JR(12651, 6633, -1, new int[] { 2205 }, 500),
-		DAGANNOTH_REX(12645, 6630, -1, new int[] { 2267 }, 500), 
-		DAGANNOTH_PRIME(12644, 6629, -1, new int[] { 2266 }, 500), 
-		DAGANNOTH_SUPREME(12643, 6628, -1, new int[] { 2265 }, 500), 
-		DARK_ENERGY_CORE(12816, 388, -1, new int[] {319}, 800),
-		GENERAL_GRAARDOR_JR(12650, 6632, -1, new int[] { 2215 }, 500),
-		KREE_ARRA_JR(12649, 6631, -1, new int[] { 3162 }, 500),
-		KRIL_TSUTSAROTH(12652, 6634, -1, new int[] { 3129 }, 500),
-		KALPHITE_PRINCESS_GREEN(12647, 6638, 6637, new int[] { 4303 }, 500),
-		KALPHITE_PRINCESS_ORANGE(12654, 6637, 6638, new int[] { 4304 }, 500),
-		KRAKEN(12655, 6640, -1, new int[] {494}, 500),
-		PRINCE_BLACK_DRAGON(12653, 6636, -1, new int[] { 239 }, 500),
-		SCORPIAS_OFFSPRING(13181, 4194, -1, new int[] {6615}, 500),
-		SNAKELING_GREEN(12921, 2130, 2131, new int[] { 2043 }, 750),
-		SNAKELING_RED(12921, 2131, 2132, new int[] { 2043 }, 750),
-		SNAKELING_BLUE(12921, 2132, 2130, new int[] { 2043 }, 750),
-		VENENATIS_SPIDERLING(13177, 495, -1, new int[] {6610}, 500),
-		VETION_PURPLE(13179, 5536, 5537, new int[] {6611}, 500),
-		VETION_ORANGE(13180, 5537, 5536, new int[] {6612}, 500),
+		CALLISTO_CUB(13178, 497, -1, new int[] {6609}, 1000),
+		GOMMANDER_ZILYANA_JR(12651, 6633, -1, new int[] { 2205 }, 2500),
+		DAGANNOTH_REX(12645, 6630, -1, new int[] { 2267 }, 2500), 
+		DAGANNOTH_PRIME(12644, 6629, -1, new int[] { 2266 }, 2500), 
+		DAGANNOTH_SUPREME(12643, 6628, -1, new int[] { 2265 }, 2500), 
+		DARK_ENERGY_CORE(12816, 388, -1, new int[] {319}, 2500),
+		GENERAL_GRAARDOR_JR(12650, 6632, -1, new int[] { 2215 }, 2500),
+		KREE_ARRA_JR(12649, 6631, -1, new int[] { 3162 }, 2500),
+		KRIL_TSUTSAROTH(12652, 6634, -1, new int[] { 3129 }, 2500),
+		KALPHITE_PRINCESS_GREEN(12647, 6638, 6637, new int[] { 4303 }, 1500),
+		KALPHITE_PRINCESS_ORANGE(12654, 6637, 6638, new int[] { 4304 }, 1000),
+		KRAKEN(12655, 6640, -1, new int[] {494}, 1500),
+		PRINCE_BLACK_DRAGON(12653, 6636, -1, new int[] { 239 }, 1500),
+		SCORPIAS_OFFSPRING(13181, 4194, -1, new int[] {6615}, 1000),
+		SNAKELING_GREEN(12921, 2130, 2131, new int[] { 2043 }, 2000),
+		SNAKELING_RED(12921, 2131, 2132, new int[] { 2043 }, 2000),
+		SNAKELING_BLUE(12921, 2132, 2130, new int[] { 2043 }, 2000),
+		VENENATIS_SPIDERLING(13177, 495, -1, new int[] {6610}, 1000),
+		VETION_PURPLE(13179, 5536, 5537, new int[] {6611}, 1000),
+		VETION_ORANGE(13180, 5537, 5536, new int[] {6612}, 1000),
 		TZREK_JAD(13225, 5892, -1, new int[] { 3127 }, 100),
 		OLMET(20851, 7519, -1, new int[] { -1 }, -1);
 		
@@ -195,7 +195,7 @@ public class Pet {
 		if (pet.getDropRate() == -1) {
 			return;
 		}
-		if (player.getItems().bankContains(pet.getItemId()) || player.getItems().playerHasItem(pet.getItemId()) || player.petId == pet.getPetID()) {
+		if (player.getItems().bankContains(pet.getItemId()) || player.getItems().playerHasItem(pet.getItemId())) {
 			return;
 		}
 		if (Utility.getRandom(pet.dropRate) == 0) {
@@ -219,13 +219,13 @@ public class Pet {
 	
 	/**
 	 * Checking if the NPC i is a Registered Pet NPC
-	 * @param npc
+	 * @param i
 	 * 			NPCID
 	 * @return if it is a Pet NPC
 	 */
-	public boolean isPetNPC(int npc) {
+	public boolean isPetNPC(int i) {
 		for (Pets pet : Pets.values()) {
-			if (pet.getPetID() == npc) {
+			if (pet.getPetID() == i) {
 				return true;
 			}
 		}
@@ -234,13 +234,13 @@ public class Pet {
 	
 	/**
 	 * Checking if the Item i is a Registered Pet Item
-	 * @param item
+	 * @param i
 	 * 			ItemID
 	 * @return if it is a Pet Item
 	 */
-	public boolean isPetItem(int item) {
+	public boolean isPetItem(int i) {
 		for (Pets pet : Pets.values()) {
-			if (pet.getItemId() == item) {
+			if (pet.getItemId() == i) {
 				return true;
 			}
 		}
@@ -462,29 +462,37 @@ public class Pet {
 	 * @return 
 	 * 			NPC object
 	 */
-	public Npc getPet(Player player, Npc pet) {
-		if(pet != null)
-		if (pet.ownerId == player.getIndex()) {
-			System.out.println("Pet is not null");
-			npc = pet;
+	public Npc getPet(Player player) {
+		Npc npc = null;
+		for (Npc i : World.getWorld().getNpcs()) {
+			if (i == null)
+				continue;
+			if (i.ownerId == player.getIndex()) {
+				//System.out.println("Pet is not null");
+				npc = i;
+			}
 		}
 		return npc;
 	}
 	
-	public void callPet(Player player, Npc pet) {
-		if(pet != null || player != null)
-		if (player.petId < 1) {
-			return;
-		}
-		if (getPet(player, World.getWorld().getNpcs().get(player.petNpcIndex)) == null) {
+	public void callPet(Player player) {
+		if(player.petId < 1){
+		   return;
+		}	
+		if (getPet(player) == null) {
 			spawnPet(player, 0, true);
 		} else {
-			if ((pet.isPet) && (pet.ownerId == player.getIndex())) {
-				pet.absX = pet.absY = 0;
-				pet.ownerId = -1;
-				pet = null;
+			for (Npc i : World.getWorld().getNpcs()) {
+				if (i == null)
+					continue;
+				if ((i.isPet) && (i.ownerId == player.getIndex())) {
+					i.absX = i.absY = 0;
+					i.ownerId = -1;
+					i = null;
+					break;
+				}
 			}
-			callPet(player, pet);
+			callPet(player);
 		}
 	}
 
@@ -499,7 +507,7 @@ public class Pet {
 
 	public boolean handleNextStage(Player player) {
 		if (hasNextStage(player, player.petId)) {
-			Npc npc = getPet(player, World.getWorld().getNpcs().get(player.petNpcIndex));
+			Npc npc = getPet(player);
 			int spawnAt_X = 0;
 			int spawnAt_Y = 0;
 			for (Pets pet : Pets.values()) {

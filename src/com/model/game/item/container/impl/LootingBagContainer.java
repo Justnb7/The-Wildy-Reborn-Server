@@ -1,7 +1,6 @@
 package com.model.game.item.container.impl;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;

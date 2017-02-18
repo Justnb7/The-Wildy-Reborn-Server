@@ -4,8 +4,6 @@ import com.model.utility.json.definitions.ItemDefinition;
 
 public class Item {
 
-    public static final int TROWEL = 5325, RAKE = 5341, SPADE = 952, WEED = 6055, COMPOST = 6032, SUPERCOMPOST = 6034, BUCKET = 1925, SECATEURS = 5329, MAGIC_SECATEURS = 7409, SEED_DIPPER = 5343, PLANT_CURE = 6036, VIAL = 229;
-
 	public int id;
 
 	public int amount;

@@ -3,7 +3,6 @@ package com.model.game.character.player.content.bounty_hunter;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.player.Player;
@@ -391,10 +390,6 @@ public class BountyHunter extends ScheduledTask {
 			killer.setAttribute(BountyHunterConstants.HUNTER_CURRENT, current + 1);
 			BountyTierHandler.upgrade(killer);
 			killer.setAttribute("receive_emblem", handleItemGiving(player, killer));
-			killer.setTargetPoints(killer.getTargetPoints() + 1);
-			killer.setTotalTargetsKilled(killer.getTotalTargetsKilled() + 1);
-			killer.write(new SendMessagePacket("@blu@You have killed your target, and received @mag@1@blu@ target point."));
-			killer.write(new SendMessagePacket("@blu@You now have @mag@"+killer.getTargetPoints()+ "@blu@ target points, and you have killed @mag@"+killer.getTotalTargetsKilled()+"@blu@ targets."));
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
 		} else {
 			int current = killer.getAttribute(BountyHunterConstants.ROGUE_CURRENT, 0);

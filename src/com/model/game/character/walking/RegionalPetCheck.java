@@ -1,6 +1,5 @@
 package com.model.game.character.walking;
  
-import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
@@ -17,11 +16,11 @@ public class RegionalPetCheck extends ScheduledTask {
 	@Override
 	public void execute() {
 		if (player.petId < 1) {
-			//System.out.println(player.getUsername() + " |  Here closing petspawn event");
+			System.out.println(player.getName() + " |  Here closing petspawn event");
 			this.stop();
 		}
-		if (player.getPets().getPet(player, World.getWorld().getNpcs().get(player.petNpcIndex)) == null) {
-			//System.out.println("Respawning pet for "+ player.getUsername());
+		if (player.getPets().getPet(player) == null) {
+			System.out.println("Respawning pet for "+ player.getName());
 			player.getPets().spawnPet(player, 0, true);
 		}
 	}

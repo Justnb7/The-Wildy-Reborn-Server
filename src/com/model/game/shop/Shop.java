@@ -14,6 +14,7 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.encode.impl.SendInterfaceConfig;
 import com.model.game.character.player.packets.encode.impl.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.item.Item;
@@ -126,6 +127,15 @@ public final class Shop {
 	 *            the player to open the shop for.
 	 */
 	public void openShop(Player player) {
+		if (Server.getMultiplayerSessionListener().inAnySession(player)) {
+			return;
+		}
+		if (name.equals("Bounty Hunter Store")) {
+			player.write(new SendInterfaceConfig(0, 28050));
+			player.write(new SendString("Bounties: " + Utility.insertCommas(Integer.toString(player.getBountyPoints())), 28052));
+		} else {
+			player.write(new SendInterfaceConfig(1, 28050));
+		}
 		player.isShopping = true;
 		player.getItems().resetItems(3823);
 		player.getItems().sendItemsOnInterface(3900, container.container(), container.size());
@@ -236,6 +246,14 @@ public final class Shop {
 			player.write(new SendMessagePacket("You need a slayer level of " + slayerLevelReq(item.getId()) + " to buy "+player.getItems().getItemName(item.getId())+""));
 			return;
 		}
+		if (player.getOpenShop().equals("Achievement Rewards")) {
+			if (!player.getAchievements().hasBoughtItem(item.getId())) {
+				player.write(new SendMessagePacket(item.getDefinition().getName() + ": shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " APs. You only need to buy this once."));
+			} else {
+				player.write(new SendMessagePacket(item.getDefinition().getName() + ": shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " coins."));
+			}
+			return;
+		}
 		//player.sendMessage("" + item.getDefinition().getId());
 		if (item.getDefinition() == null) {
 			player.write(new SendMessagePacket("NULLED ITEM: please notify the staff."));
@@ -291,21 +309,17 @@ public final class Shop {
 				|| player.getItems().getFreeSlots() >= 1 && item.getDefinition().isStackable()
 				|| player.getItems().playerHasItem(item.getId()) && item.getDefinition().isStackable()) {
 
-			if (itemCache.containsKey(item.getId()) && !player.getOpenShop().equals("Gear Point Store") && !player.getOpenShop().equals("Donator Ticket Shop")) {
+			if (itemCache.containsKey(item.getId()) && !player.getOpenShop().equals("Gear Point Store") && !player.getOpenShop().equals("Donator Ticket Shop") && !player.getOpenShop().equals("Bounty Hunter Store")) {
 				container.searchItem(item.getId()).ifPresent(i -> i.decrementAmountBy(item.getAmount()));
 			} else if (!itemCache.containsKey(item.getId())) {
 				container.remove(item);
 			}
 			currency.getCurrency().takeCurrency(player, (int)totalCost);
 			player.getItems().addItemtoInventory(item);
-			if (player.getOpenShop().equals("Bounty Hunter store")) {
+			if (player.getOpenShop().equals("Achievement Rewards")) {
+				player.getAchievements().setBoughtItem(item.getId());
+			} else if (player.getOpenShop().equals("Bounty Hunter Store")) {
 				player.write(new SendString("Bounties: " + Utility.insertCommas(Integer.toString(player.getBountyPoints())), 28052));
-			} else if (player.getOpenShop().equals("FireMaking Shop")) {
-				if (item.getId() >= 7329 && item.getId() <= 7331 || item.getId() == 10326 || item.getId() == 10327) {
-					player.getItems().addItem(item.getId(), 15);
-				} else {
-					player.getItems().addItem(item.getId(), 1);
-				}
 			}
 		} else {
 			player.write(new SendMessagePacket("You don't have enough space in your inventory."));
@@ -479,6 +493,12 @@ public final class Shop {
 		if (player.getOpenShop().equals("Death store")) {
 			return Currency.COINS.calculateCurrency(player, item.id) / 3;
 		}
+		if (player.getOpenShop().equals("Achievement Rewards") && !player.getAchievements().hasBoughtItem(item.getId())) {
+			return Currency.ACHIEVEMENT_POINTS.calculateCurrency(player, item.id);
+		} else if (player.getOpenShop().equals("Achievement Rewards")
+				&& player.getAchievements().hasBoughtItem(item.getId())) {
+			return Currency.COINS.calculateCurrency(player, item.id);
+		}
 		return currency.calculateCurrency(player, item.id);
 	}
 
@@ -576,14 +596,18 @@ public final class Shop {
 	
 	public static int getSlayerValue(int id) {// Slayer task points
 		switch (id) {
+		case 6798:
+			return 100;
 		case 85:
-			return 45;
-		case 2572:
 			return 50;
+		case 989:
+			return 35;
+		case 2572:
+			return 150;
 		case 11864:
 			return 500;
 		}
-		return 90;
+		return Integer.MAX_VALUE;
 	}
 	
 	public static int getVoteValue(int id) {// Vote points

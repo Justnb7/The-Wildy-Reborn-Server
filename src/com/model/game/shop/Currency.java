@@ -10,6 +10,32 @@ import com.model.utility.json.definitions.ItemDefinition;
  * @author lare96 <http://github.com/lare96>
  */
 public enum Currency {
+	ACHIEVEMENT_POINTS(new GeneralCurrency() {
+		@Override
+		public void takeCurrency(Player player, int amount) {
+			player.getAchievements().setPoints(player.getAchievements().getPoints() - amount);
+		}
+
+		@Override
+		public void recieveCurrency(Player player, int amount) {
+			player.getAchievements().setPoints(player.getAchievements().getPoints() + amount);
+		}
+
+		@Override
+		public int currencyAmount(Player player) {
+			return player.getAchievements().getPoints();
+		}
+
+		@Override
+		public boolean canRecieveCurrency(Player player) {
+			return true;
+		}
+	}) {
+		@Override
+		public int calculateCurrency(Player player, int id) {
+			return player.getAchievements().getCost(id);
+		}
+	},
 	COINS(new ItemCurrency(995)),
 	TOKKUL(new ItemCurrency(6529)) {
 		@Override
@@ -132,32 +158,6 @@ public enum Currency {
 		@Override
 		public int calculateCurrency(Player player, int id) {
 			return Shop.getPKShopValue(id);
-		}
-	},
-	TARGET_POINTS(new GeneralCurrency() {
-		@Override
-		public void takeCurrency(Player player, int amount) {
-			player.setTargetPoints(player.getTargetPoints() - amount);
-		}
-
-		@Override
-		public void recieveCurrency(Player player, int amount) {
-			player.setTargetPoints(player.getTargetPoints() + amount);
-		}
-
-		@Override
-		public int currencyAmount(Player player) {
-			return player.getTargetPoints();
-		}
-
-		@Override
-		public boolean canRecieveCurrency(Player player) {
-			return true;
-		}
-	}) {
-		@Override
-		public int calculateCurrency(Player player, int id) {
-			return Shop.getTargetValue(id);
 		}
 	},
 	VOTE_POINTS(new GeneralCurrency() {

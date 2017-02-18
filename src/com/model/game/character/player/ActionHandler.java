@@ -616,6 +616,10 @@ public class ActionHandler {
 		}
 		switch (npcType) {
 		
+		case 315:
+			player.dialogue().start("emblem_trader_dialogue", player);
+			break;
+		
 		case 5567:
 			if (!player.deathShopChat) {
 				player.dialogue().start("DEATH_SHOP_DIALOGUE", player);
@@ -769,6 +773,10 @@ public class ActionHandler {
 		}
 
 		switch (npcType) {
+		
+		case 315:
+			Shop.SHOPS.get("Bounty Hunter Store").openShop(player);
+			break;
 		
 		case 5567:
 			if (!player.deathShopChat) {

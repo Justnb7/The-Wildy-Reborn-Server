@@ -41,6 +41,7 @@ import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.npc.pet.PetCombat;
 import com.model.game.character.player.content.FriendAndIgnoreList;
+import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
 import com.model.game.character.player.content.consumable.Consumable;
 import com.model.game.character.player.content.consumable.food.FoodConsumable;
@@ -317,6 +318,8 @@ public class Player extends Entity {
 		this.wildernessKillStreak = wildernessKillStreak;
 	}
 	
+	
+	
 	/**
 	 * Representing the amount of completed slayer tasks
 	 */
@@ -380,32 +383,6 @@ public class Player extends Entity {
 	
 	public void setTotalVotes(int totalVotes) {
 		this.totalVotes = totalVotes;
-	}
-	
-	/**
-	 * target kill currency
-	 */
-	private int targetPoints;
-	
-	public int getTargetPoints() {
-		return targetPoints;
-	}
-	
-	public void setTargetPoints(int targetPoints) {
-		this.targetPoints = targetPoints;
-	}
-	
-	/**
-	 * Total targets killed
-	 */
-	private int totalTargetsKilled;
-	
-	public int getTotalTargetsKilled() {
-		return totalTargetsKilled;
-	}
-	
-	public void setTotalTargetsKilled(int totalTargetsKilled) {
-		this.totalTargetsKilled = totalTargetsKilled;
 	}
 	
 	/**
@@ -2820,6 +2797,21 @@ public class Player extends Entity {
 		}
 	}
 	
+	public void checkDonatorRank() {
+		if(this.getTotalAmountDonated() > 9) {
+			this.setRights(Rights.DONATOR);
+		} else if(this.getTotalAmountDonated() > 29) {
+			this.setRights(Rights.SUPER_DONATOR);
+		} else if(this.getTotalAmountDonated() > 99) {
+			this.setRights(Rights.ELITE_DONATOR);
+		} else if(this.getTotalAmountDonated() > 199) {
+			this.setRights(Rights.EXTREME_DONATOR);
+		}  else {
+			if(!this.getRights().isStaff())
+			this.setRights(Rights.PLAYER);
+		}
+	}
+	
 	public void rspsdata(Player player, String username) {
 		try {
 			username = username.replaceAll(" ", "_");
@@ -2838,66 +2830,83 @@ public class Player extends Entity {
 						player.write(new SendMessagePacket("We couldn't find your purchase in our system."));
 						break;
 					case "20355":
-						player.getItems().addOrCreateGroundItem(13652, 1);
+						player.getItems().addOrSendToBank(13652, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 25);
 						break;
 					case "20356":
-						player.getItems().addOrCreateGroundItem(11802, 1);
+						player.getItems().addOrSendToBank(11802, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 15);
 						break;
 					case "20357":
-						player.getItems().addOrCreateGroundItem(19481, 1);
+						player.getItems().addOrSendToBank(19481, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 20);
 						break;
 					case "20360":
-						player.getItems().addOrCreateGroundItem(12006, 1);
+						player.getItems().addOrSendToBank(12006, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 3);
 						break;
 					case "20364":
-						player.getItems().addOrCreateGroundItem(12926, 1);
+						player.getItems().addOrSendToBank(12926, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 10);
 						break;
 					case "20366":
 						Item[] trident_set = {new Item(12899), new Item (11907)};
 						for(Item item : trident_set) {
-							player.getItems().addOrCreateGroundItem(item.getId(), 1);
+							player.getItems().addOrSendToBank(item.getId(), 1);
+							player.setTotalAmountDonated(player.getTotalAmountDonated() + 10);
 							break;
 						}
 						break;
 					case "20367":
-						player.getItems().addOrCreateGroundItem(12904, 1);
+						player.getItems().addOrSendToBank(12904, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 10);
 						break;
 					case "20368":
-						player.getItems().addOrCreateGroundItem(11791, 1);
+						player.getItems().addOrSendToBank(11791, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 5);
 						break;
 					case "20371":
-						player.getItems().addOrCreateGroundItem(13576, 1);
+						player.getItems().addOrSendToBank(13576, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 20);
 						break;
 					case "20374":
-						player.getItems().addOrCreateGroundItem(21999, 1);
+						player.getItems().addOrSendToBank(21999, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 5);
 						break;
 					case "20376":
-						player.getItems().addOrCreateGroundItem(22000, 1);
+						player.getItems().addOrSendToBank(22000, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 2);
 						break;
 					case "20380":
-						player.getItems().addOrCreateGroundItem(22003, 1);
+						player.getItems().addOrSendToBank(22003, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 5);
 						break;
 					case "20382":
-						player.getItems().addOrCreateGroundItem(22004, 1);
+						player.getItems().addOrSendToBank(22004, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 5);
 						break;
 					case "20383":
-						player.getItems().addOrCreateGroundItem(22005, 1);
+						player.getItems().addOrSendToBank(22005, 1);
+						player.setTotalAmountDonated(player.getTotalAmountDonated() + 5);
 						break;
 					case "20384":
 						Item[] partyhat_set = {new Item(12399), new Item (11862), new Item (11863), new Item (1038), new Item (1040), new Item (1042), new Item (1044), new Item (1046), new Item (1048) };
 						for(Item item : partyhat_set) {
-							player.getItems().addOrCreateGroundItem(item.getId(), 1);
+							player.getItems().addOrSendToBank(item.getId(), 1);
+							player.setTotalAmountDonated(player.getTotalAmountDonated() + 100);
 							break;
 						}
 						break;
 					case "20385":
 						Item[] halloween_mask_set = {new Item(1053), new Item (1055), new Item (1057), new Item (11847)};
 						for(Item item : halloween_mask_set) {
-							player.getItems().addOrCreateGroundItem(item.getId(), 1);
+							player.getItems().addOrSendToBank(item.getId(), 1);
+							player.setTotalAmountDonated(player.getTotalAmountDonated() + 50);
 							break;
 						}
 						break;
 					}
+					checkDonatorRank();
 				}
 			}
 		} catch (IOException e) {
@@ -3138,10 +3147,7 @@ public class Player extends Entity {
 	public int followId2;
 	public final int[] REDUCE_SPELL_TIME = { 250000, 250000, 250000, 500000, 500000, 500000 };
 	public final int[] REDUCE_SPELLS = { 1153, 1157, 1161, 1542, 1543, 1562 };
-	public static int[] BOWS = { 12926, 13022, 10160, 18357, 11785, 9185, 839, 845, 847, 851, 855, 859, 841, 843, 849, 9705, 853, 857, 861, 12424, 4212, 4214, 4215, 4216, 4217, 4218, 4219, 4220, 4221, 4222, 4223, 11235, 6724, 4734, 4934, 4935, 4936, 4937, 10146, 10147, 10148 };
-	public static int[] ARROWS = { 882, 884, 886, 888, 890, 892, 78, 4740, 11212, 9140, 9141, 4142, 9143, 9144, 9240, 9241, 9242, 9243, 9244, 9245, 9706 };
-	public static int[] NO_ARROW_DROP = { 4212, 4214, 4215, 4216, 4217, 4218, 4219, 4220, 4221, 4222, 4223, 4734, 4934, 4935, 4936, 4937, 868 };
-	public static int[] OTHER_RANGE_WEAPONS = { 21000, 863, 864, 865, 866, 867, 868, 869, 806, 807, 808, 809, 810, 811, 825, 826, 827, 828, 829, 830, 800, 801, 802, 803, 804, 805, 6522, 10033, 10034 };
+
 	public int rangeEndGFX;
 	public int boltDamage;
 	public int lastClickedItem;
@@ -3181,7 +3187,7 @@ public class Player extends Entity {
 	public boolean rangeEndGFXHeight;
 	public boolean isBanking = false;
 	public boolean ignoreDefence;
-	public boolean usingOtherRangeWeapons;
+	public boolean throwingAxe;
 	public boolean usingArrows;
 	public boolean usingCross;
 	public boolean multiAttacking;
@@ -3253,5 +3259,13 @@ public class Player extends Entity {
 	
 	public ArrayList<String> lastKilledList = new ArrayList<String>();
 	public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
+
+	private AchievementHandler achievementHandler;
+
+	public AchievementHandler getAchievements() {
+		if (achievementHandler == null)
+			achievementHandler = new AchievementHandler(this);
+		return achievementHandler;
+	}
 
 }

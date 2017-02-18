@@ -263,7 +263,7 @@ public class PlayerAssistant {
             /*
              * Check for other range weapons which require a distance of 4
              */
-            if (player.usingOtherRangeWeapons && rangeWeaponDistance) {
+            if (player.throwingAxe && rangeWeaponDistance) {
                 player.getMovementHandler().stopMovement();
                 return;
             }
@@ -402,7 +402,7 @@ public class PlayerAssistant {
             for (Location Location : npc.getTiles()) {
                 double distance = Location.distance(player.getLocation());
                 boolean magic = player.usingMagic;
-                boolean ranged = !player.usingMagic && (player.usingRangeWeapon || player.usingOtherRangeWeapons);
+                boolean ranged = !player.usingMagic && (player.usingRangeWeapon || player.throwingAxe);
                 boolean melee = !magic && !ranged;
                 if (melee) {
                     if (distance <= 1) {

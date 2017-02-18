@@ -1592,7 +1592,7 @@ public class ItemAssistant {
 	 }
 
 	 public void deleteEquipment() {
-		 if (player.usingOtherRangeWeapons && player.playerEquipment[player.getEquipment().getCapeId()] == 10499 && Utility.getRandom(5) != 1 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111 && Utility.getRandom(5) != 1) {
+		 if (player.throwingAxe && player.playerEquipment[player.getEquipment().getCapeId()] == 10499 && Utility.getRandom(5) != 1 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111 && Utility.getRandom(5) != 1) {
 			 return;
 		 }
 		 if (player.playerEquipmentN[player.getEquipment().getWeaponId()] != 0) {
@@ -2094,6 +2094,15 @@ public class ItemAssistant {
 		}
 		for (int i = 0; i < player.playerItems.length; i++) {
 			player.getItems().deleteItem(player.playerItems[i] - 1, player.getItems().getItemSlot(player.playerItems[i] - 1), player.playerItemsN[i]);
+		}
+	}
+	
+	public void addOrSendToBank(int item, int amount) {
+		if(getFreeSlots() > 0) {
+			addItem(item, amount);
+		} else {
+			addToBank(item, amount, true);
+			player.write(new SendMessagePacket("Invntory full, the item was sent to your bank."));
 		}
 	}
 

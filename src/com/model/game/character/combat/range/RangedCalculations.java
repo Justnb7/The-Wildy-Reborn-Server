@@ -51,7 +51,7 @@ public class RangedCalculations {
         	}
         }
         
-        if(Equipment.wearingAnguish(player)) {
+        if(player.getEquipment().wearingAnguish(player)) {
         	maxHit += 0.5;
         }
 
@@ -108,6 +108,18 @@ public class RangedCalculations {
 
 		if (Equipment.wearingFullVoid(player, 1)) {
 			rangeLevel *= 1.1;
+		}
+		
+		switch(player.playerEquipment[player.getEquipment().getWeaponId()]) {
+		case 11785:
+			rangeLevel *= 2.0;
+			break;
+		case 18357:
+			rangeLevel *= 2.5;
+			break;
+		case 21012:
+			rangeLevel *= 3.0;
+			break;
 		}
 
 		return (int) (rangeLevel + (rangeBonus * 1.95));

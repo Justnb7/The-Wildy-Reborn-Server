@@ -807,27 +807,6 @@ public class CommandPacketHandler implements PacketType {
     		player.setVotePoints(vp);
     		player.write(new SendMessagePacket("You have set your vote points to: "+vp+"."));
     		break;
-    		
-    	case "settargetpoints":
-    		int tp = Integer.parseInt(cmd[1]);
-    		player.setTargetPoints(tp);
-    		player.write(new SendMessagePacket("You have set your target points to: "+tp+"."));
-    		break;
-    		
-    	case "givepkp":
-    		String n = cmd[1];
-    		int pkp = Integer.parseInt(cmd[2]);
-    		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
-                if (World.getWorld().getPlayers().get(i) != null) {
-                    if (World.getWorld().getPlayers().get(i).getName().equalsIgnoreCase(n)) {
-                    	Player player_to_give = World.getWorld().getPlayers().get(i);
-                    	player_to_give.setPkPoints(player_to_give.getPkPoints() + pkp);
-                    	player_to_give.write(new SendMessagePacket("You have been given "+pkp+" pk point(s). By "+player.getName()+"."));
-                    	player.write(new SendMessagePacket("You have given "+player_to_give.getName()+ " "+pkp+" pk point(s)."));
-					}
-				}
-			}
-    		return true;
     	
     	case "dwh":
     		player.playAnimation(Animation.create(1378));

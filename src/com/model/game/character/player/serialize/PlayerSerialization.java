@@ -156,9 +156,9 @@ public class PlayerSerialization {
                         	p.setSlayerPoints(Integer.parseInt(value));
                         } else if (key.equals("triviaPoints")) {
                         	p.setTriviaPoints(Integer.parseInt(value));
-                        } else if (key.equals("dp")) {
+                        } else if (key.equals("amount-donated")) {
                         	p.setAmountDonated(Integer.parseInt(value));
-                        } else if (key.equals("alldp")) {
+                        } else if (key.equals("total-amount-donated")) {
                         	p.setTotalAmountDonated(Integer.parseInt(value));
                         } else if (key.equals("teleblock-length")) {
                             p.teleblock.reset();
@@ -272,10 +272,6 @@ public class PlayerSerialization {
 							p.setKillCount(Integer.parseInt(value));
 						} else if (line.startsWith("deathCount")) {
 							p.setDeathCount(Integer.parseInt(value));
-						} else if (line.startsWith("targets-killed")) {
-							p.setTotalTargetsKilled(Integer.parseInt(value));
-						} else if (line.startsWith("target-points")) {
-							p.setTargetPoints(Integer.parseInt(value));
 						}
 						break;
 						
@@ -540,9 +536,9 @@ public class PlayerSerialization {
             writer.write("triviaPoints = ");
             writer.write(Integer.toString(p.getTriviaPoints()));
             writer.newLine();
-            writer.write("dp = " + p.getAmountDonated());
+            writer.write("amount-donated = " + p.getAmountDonated());
             writer.newLine();
-            writer.write("alldp = " + p.getTotalAmountDonated());
+            writer.write("total-amount-donated = " + p.getTotalAmountDonated());
             writer.newLine();
             writer.write("teleblock-length = ");
             writer.write(Integer.toString(tbTime));
@@ -708,10 +704,6 @@ public class PlayerSerialization {
             writer.write("killCount = " + p.getKillCount());
             writer.newLine();
             writer.write("deathCount = " + p.getDeathCount());
-            writer.newLine();
-            writer.write("targets-killed = " + p.getTotalTargetsKilled());
-            writer.newLine();
-            writer.write("target-points = " + p.getTargetPoints());
             writer.newLine();
             writer.newLine();
             

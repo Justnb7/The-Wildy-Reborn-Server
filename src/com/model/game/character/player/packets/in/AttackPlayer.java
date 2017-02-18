@@ -53,8 +53,8 @@ public class AttackPlayer implements PacketType {
 			}
 
 			player.setSpellId(0);
-			player.mageFollow = player.usingMagic = player.usingBow = player.usingOtherRangeWeapons = player.usingArrows = false;
-			player.usingCross = player.playerEquipment[player.getEquipment().getWeaponId()] == 9185 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 18357;
+			player.mageFollow = player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
+			player.usingCross = player.getEquipment().isCrossbow(player);
 			player.setCombatType(player.usingCross ? CombatType.RANGED : CombatType.MELEE);
 
 			if (player.autocastId > 0) {
@@ -64,61 +64,20 @@ public class AttackPlayer implements PacketType {
 			if (!player.autoCast && player.spellId > 0) {
 				player.spellId = 0;
 			}
-			
-			if (player.getCombatType() != CombatType.MAGIC) {
-				for (int bowId : Player.BOWS) {
-					if (player.playerEquipment[player.getEquipment().getWeaponId()] == bowId) {
-						player.usingBow = true;
-						player.setCombatType(CombatType.RANGED);
-						break;
-					}
-				}
-				if (player.getCombatType() == CombatType.RANGED) {
-					for (int arrowId : Player.ARROWS) {
-						if (player.playerEquipment[player.getEquipment().getQuiverId()] == arrowId) {
-							player.usingArrows = true;
-							break;
-						}
-					}
-				}
-				for (int otherRangeId : Player.OTHER_RANGE_WEAPONS) {
-					if (player.playerEquipment[player.getEquipment().getWeaponId()] == otherRangeId) {
-						player.usingOtherRangeWeapons = true;
-						player.setCombatType(CombatType.RANGED);
-						break;
-					}
-				}
-			}
 
-			if ((!player.usingOtherRangeWeapons && (player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC)) && player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 7)) {
+			if ((!player.throwingAxe && (player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC)) && player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 7)) {
 				player.usingBow = true;
 				player.stopMovement();
 			}
 
-			if (player.usingOtherRangeWeapons && player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 3)) {
+			if (player.throwingAxe && player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 3)) {
 				player.usingRangeWeapon = true;
 				player.stopMovement();
 			}
 
-			if (!player.usingCross && !player.usingArrows && player.usingBow && player.playerEquipment[player.getEquipment().getWeaponId()] < 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] > 4223 && !player.usingCross) {
-				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
-				break;
-			}
-			if(player.getCombat().correctBowAndArrows() < player.playerEquipment[player.getEquipment().getQuiverId()] && player.usingBow && !player.getCombat().usingCrystalBow() && player.playerEquipment[player.getEquipment().getWeaponId()] != 9185 && player.playerEquipment[player.getEquipment().getWeaponId()] != 11785 && player.playerEquipment[player.getEquipment().getWeaponId()] != 18357) {
-				player.write(new SendMessagePacket("You can't use "+player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase()+"s with a "+player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase()+"."));
-				player.stopMovement();
-				player.npcIndex = 0;
-				return;
-			}
-			if ((player.playerEquipment[player.getEquipment().getWeaponId()] == 9185 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 18357) && !player.getCombat().properBolts()) {
-				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
-				player.stopMovement();
-				Combat.resetCombat(player);
-				return;				
-			}
 			if (CombatRequirements.canAttackVictim(player)) {
 				player.followId = player.playerIndex;
-				if (!player.usingMagic && !player.usingBow && !player.usingOtherRangeWeapons) {
+				if (!player.usingMagic && !player.usingBow && !player.throwingAxe) {
 					player.followDistance = 1;
 					player.usingMelee(true);
 					player.getPA().followPlayer(true);

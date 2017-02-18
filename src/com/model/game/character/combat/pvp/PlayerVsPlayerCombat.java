@@ -254,7 +254,7 @@ public class PlayerVsPlayerCombat {
 			//System.out.println("range def");
 			primairy_damage = 0;
 		}
-		if (attacker.playerEquipment[3] == 9185 || attacker.playerEquipment[3] == 11785 || attacker.playerEquipment[3] == 18357) {
+		if (attacker.getEquipment().isCrossbow(attacker)) {
 			if (Utility.getRandom(10) == 1) {
 				if (primairy_damage > 0) {
 					attacker.boltDamage = primairy_damage;
@@ -312,12 +312,11 @@ public class PlayerVsPlayerCombat {
 		}
 		CombatExperience.handleCombatExperience(attacker, primairy_damage, CombatType.RANGED);
 		boolean dropArrows = true;
-		for (int noArrowId : Player.NO_ARROW_DROP) {
-			if (attacker.lastWeaponUsed == noArrowId) {
-				dropArrows = false;
-				break;
-			}
+		
+		if(attacker.lastWeaponUsed == 12926 || attacker.lastWeaponUsed == 4222) {
+			dropArrows = false;
 		}
+		
 		if (dropArrows) {
 			attacker.getItems().dropArrowPlayer();
 		}
@@ -581,9 +580,9 @@ public class PlayerVsPlayerCombat {
 		Player attacker = World.getWorld().PLAYERS.get(defender.underAttackBy);
 		player.write(new SendString(defender.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+defender.getSkills().getLevel(Skills.HITPOINTS)+ ((attacker != null) ? "-"+ attacker.getName() : ""), 35000));
 
-		player.usingBow = player.usingRangeWeapon = player.usingBow = player.usingArrows = player.usingOtherRangeWeapons = false;
+		player.usingBow = player.usingRangeWeapon = player.usingBow = player.usingArrows = player.throwingAxe = false;
 		player.rangeItemUsed = 0;
-		player.usingCross = player.playerEquipment[player.getEquipment().getWeaponId()] == 9185 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 18357;
+		player.usingCross = player.getEquipment().isCrossbow(player);
 		player.setCombatType(player.usingCross ? CombatType.RANGED : CombatType.MELEE);
 
 		boolean sameSpot = player.getX() == defender.getX() && player.getY() == defender.getY();
@@ -615,35 +614,22 @@ public class PlayerVsPlayerCombat {
 		 * Check if we are using ranged
 		 */
 		if (player.getCombatType() != CombatType.MAGIC) {
-			for (int bowId : Player.BOWS) {
-				if (player.playerEquipment[player.getEquipment().getWeaponId()] == bowId && player.switchDelay.elapsed(100)) {
-					player.usingBow = true;
-					player.setCombatType(CombatType.RANGED);
-					for (int arrowId : Player.ARROWS) {
-						if (player.playerEquipment[player.getEquipment().getQuiverId()] == arrowId) {
-							player.usingArrows = true;
-						}
-					}
-				}
-			}
-
-			if(player.lastWeaponUsed > 862 && player.lastWeaponUsed < 877 || player.lastWeaponUsed == 13022) {
-				player.playerIndex = 0;
-			}
-
-			for (int arrowId : Player.ARROWS) {
-				if (player.playerEquipment[player.getEquipment().getQuiverId()] == arrowId) {
-					player.usingArrows = true;
-					break;
-				}
+			player.usingBow = player.getEquipment().isBow(player);
+			player.throwingAxe = player.getEquipment().isThrowingWeapon(player);
+			player.usingCross = player.getEquipment().isCrossbow(player);
+			player.usingArrows = player.getEquipment().isArrow(player);
+			boolean bolt = player.getEquipment().isBolt(player);
+			
+			if(player.throwingAxe || player.usingCross || player.usingBow) {
+				player.setCombatType(CombatType.RANGED);
 			}
 			
-			for (int otherRangeId : Player.OTHER_RANGE_WEAPONS) {
-				if (player.playerEquipment[player.getEquipment().getWeaponId()] == otherRangeId) {
-					player.usingOtherRangeWeapons = true;
-					player.setCombatType(CombatType.RANGED);
-					break;
-				}
+			if(player.throwingAxe) {
+				player.throwingAxe = true;
+			}
+			
+			if(bolt || player.usingArrows) {
+				player.usingArrows = true;
 			}
 		}
 		
@@ -676,25 +662,31 @@ public class PlayerVsPlayerCombat {
 		 */
 		if (player.getCombatType() == CombatType.RANGED) {
 			
-			if(!player.usingCross && !player.usingArrows && player.usingBow && (player.playerEquipment[player.getEquipment().getWeaponId()] < 4212 || player.playerEquipment[player.getEquipment().getWeaponId()] > 4223) && player.playerEquipment[player.getEquipment().getWeaponId()] != 12926) {
+			if (!player.usingCross
+					&& !player.throwingAxe
+					&& !player.usingArrows
+					&& (player.playerEquipment[player.getEquipment().getWeaponId()] < 4212 || player.playerEquipment[player.getEquipment().getWeaponId()] > 4223)
+					&& player.playerEquipment[player.getEquipment().getWeaponId()] != 12926) {
 				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
 				player.stopMovement();
 				player.npcIndex = 0;
 				return;
 			}
-			
-			if(player.getCombat().correctBowAndArrows() < player.playerEquipment[player.getEquipment().getQuiverId()] && player.usingBow && !player.getCombat().usingCrystalBow() && player.playerEquipment[player.getEquipment().getWeaponId()] != 9185 && player.playerEquipment[player.getEquipment().getWeaponId()] != 11785 && player.playerEquipment[player.getEquipment().getWeaponId()] != 18357) {
-				player.write(new SendMessagePacket("You can't use "+player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase()+"s with a "+player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase()+"."));
+
+			if (player.getCombat().correctBowAndArrows() < player.playerEquipment[player.getEquipment().getQuiverId()] 
+					&& player.usingBow
+					&& !player.getEquipment().usingCrystalBow(player)
+					&& !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
+				player.write(new SendMessagePacket("You can't use " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase() + "s with a " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase() + "."));
 				player.stopMovement();
 				player.npcIndex = 0;
 				return;
 			}
-			
-			if ((player.playerEquipment[player.getEquipment().getWeaponId()] == 9185 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 18357) && !player.getCombat().properBolts()) {
-				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
+			if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
+				player.write(new SendMessagePacket("You must use bolts with a crossbow."));
 				player.stopMovement();
 				Combat.resetCombat(player);
-				return;				
+				return;
 			}
 			
 			if (player.playerEquipment[player.getEquipment().getWeaponId()] == 4734 && !player.getCombat().properBoltRacks()) {
@@ -836,7 +828,7 @@ public class PlayerVsPlayerCombat {
 			
 			
 
-		} else if (player.getCombatType() == CombatType.RANGED && !player.usingOtherRangeWeapons) {
+		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
 			if (player.playerEquipment[player.getEquipment().getWeaponId()] >= 4212
 					&& player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223) {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
@@ -858,7 +850,7 @@ public class PlayerVsPlayerCombat {
 			player.oldPlayerIndex = i;
 			player.getCombat().fireProjectilePlayer();
 			
-		} else if (player.getCombatType() == CombatType.RANGED && player.usingOtherRangeWeapons) {
+		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.getItems().deleteEquipment();
 			player.usingRangeWeapon = true;
@@ -870,7 +862,7 @@ public class PlayerVsPlayerCombat {
 				player.attackDelay--;
 			player.oldPlayerIndex = i;
 			player.getCombat().fireProjectilePlayer();
-		} else if(player.playerEquipment[player.getEquipment().getWeaponId()] == 13022 && (!player.usingOtherRangeWeapons && !player.usingMagic)){
+		} else if(player.playerEquipment[player.getEquipment().getWeaponId()] == 13022 && (!player.throwingAxe && !player.usingMagic)){
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 				player.usingRangeWeapon = true;
 				player.usingBow = true;
@@ -1000,7 +992,7 @@ public class PlayerVsPlayerCombat {
 		}
 
 		// Always last
-		if (player.usingRangeWeapon || player.usingMagic || player.usingOtherRangeWeapons) {
+		if (player.usingRangeWeapon || player.usingMagic || player.throwingAxe) {
 			if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation())) {
 				return true;
 			}

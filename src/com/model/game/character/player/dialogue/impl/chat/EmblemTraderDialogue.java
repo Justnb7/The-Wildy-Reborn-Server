@@ -69,7 +69,7 @@ public class EmblemTraderDialogue extends Dialogue {
 	public void select(int index) {
 		if (isPhase(0)) {
 			if (index == 1) {
-				Shop.SHOPS.get("Bounty Hunter Shop").openShop(player);
+				Shop.SHOPS.get("Bounty Hunter Store").openShop(player);
 			} else if (index == 2) {
 				send(Type.PLAYER, Expression.CALM_TALK, "I would like to exchange my emblems.");
 				setPhase(1);
@@ -94,7 +94,6 @@ public class EmblemTraderDialogue extends Dialogue {
 					return;
 				}
 				player.setBountyPoints(player.getBountyPoints() + totalPoints);
-				// TODO: Set bounty points for totalPoints
 				send(Type.NPC, NPC_ID, Expression.HAPPY, "I've traded your emblems for " + Utility.format(totalPoints) + " bounty", "points. You now have a total of " + Utility.format(player.getBountyPoints()), "bounty points.");
 				setPhase(0);
 				totalPoints = 0;

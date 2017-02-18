@@ -2,7 +2,6 @@ package com.model.game.character.player.packets.actions;
 
 import com.model.Server;
 import com.model.game.World;
-import com.model.game.character.combat.Combat;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
@@ -62,49 +61,15 @@ public class NpcInteractionPacketHandler implements PacketType {
 			}
 			player.faceUpdate(player.npcIndex);
 			player.usingMagic = false;
-			boolean usingBow = false;
-			boolean usingOtherRangeWeapons = false;
-			boolean usingArrows = false;
-			boolean usingCross = player.playerEquipment[player.getEquipment().getWeaponId()] == 9185 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 18357;
-			if (player.playerEquipment[player.getEquipment().getWeaponId()] >= 4214 && player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223) {
-				usingBow = true;
-			}
-			for (int bowId : Player.BOWS) {
-				if (player.playerEquipment[player.getEquipment().getWeaponId()] == bowId) {
-					usingBow = true;
-					for (int arrowId : Player.ARROWS) {
-						if (player.playerEquipment[player.getEquipment().getQuiverId()] == arrowId) {
-							usingArrows = true;
-						}
-					}
-				}
-			}
-			for (int otherRangeId : Player.OTHER_RANGE_WEAPONS) {
-				if (player.playerEquipment[player.getEquipment().getWeaponId()] == otherRangeId) {
-					usingOtherRangeWeapons = true;
-				}
-			}
-			if ((usingBow || player.autoCast) && player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 7)) {
+			boolean usingBow = player.getEquipment().isBow(player);
+			boolean throwingWeapon = player.getEquipment().isThrowingWeapon(player);
+			boolean usingCross = player.getEquipment().isCrossbow(player);
+			
+			if ((usingBow || usingCross || player.autoCast) && player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 7)) {
 				player.stopMovement();
 			}
-			if (usingOtherRangeWeapons && player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 4)) {
+			if (throwingWeapon && player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 4)) {
 				player.stopMovement();
-			}
-			if (!usingCross && !usingArrows && usingBow && player.playerEquipment[player.getEquipment().getWeaponId()] < 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] > 4223 && !usingCross) {
-				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
-				break;
-			}
-			if(player.getCombat().correctBowAndArrows() < player.playerEquipment[player.getEquipment().getQuiverId()] && player.usingBow && !player.getCombat().usingCrystalBow() && player.playerEquipment[player.getEquipment().getWeaponId()] != 9185 && player.playerEquipment[player.getEquipment().getWeaponId()] != 11785 && player.playerEquipment[player.getEquipment().getWeaponId()] != 18357) {
-				player.write(new SendMessagePacket("You can't use "+player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase()+"s with a "+player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase()+"."));
-				player.stopMovement();
-				player.npcIndex = 0;
-				return;
-			}
-			if ((player.playerEquipment[player.getEquipment().getWeaponId()] == 9185 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 18357) && !player.getCombat().properBolts()) {
-				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
-				player.stopMovement();
-				Combat.resetCombat(player);
-				return;				
 			}
 
 			if (player.playerFollowIndex > 0) {

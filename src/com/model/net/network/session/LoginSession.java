@@ -3,7 +3,6 @@ package com.model.net.network.session;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.player.Player;
@@ -16,6 +15,7 @@ import com.model.net.network.codec.RS2Decoder;
 import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.login.LoginCredential;
 import com.model.net.network.login.LoginResponse;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;

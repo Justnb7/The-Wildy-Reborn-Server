@@ -242,8 +242,4 @@ public class CombatAssistant {
 	public int getAttackCalculation() {
 		return MeleeCalculations.calculateMeleeAttack(player, false);
 	}
-	
-	public boolean usingCrystalBow() {
-		return player.playerEquipment[player.getEquipment().getWeaponId()] >= 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223;
-	}
 }

@@ -3,7 +3,6 @@ package com.model.game.character.player.packets.actions;
 import java.util.Objects;
 
 import com.model.Server;
-import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.PrayerHandler;
@@ -30,11 +29,11 @@ import com.model.game.character.player.packets.actions.buttons.ActionButtonEvent
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
 import com.model.game.character.player.packets.encode.impl.SendExperienceCounter;
-import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendInterface;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.packets.encode.impl.SendSongPacket;
+import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.skill.SkillInterfaceButtons;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankPin;
@@ -208,7 +207,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 108020:
-			player.getPets().callPet(player, World.getWorld().getNpcs().get(player.petNpcIndex));
+			player.getPets().callPet(player);
 			break;
 
 		case 42210:

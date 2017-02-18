@@ -264,11 +264,11 @@ public class CombatData {
 	 */
 	public static int calculateAttackDistance(Player player, Player victim, boolean follow) {
 		int distance = 1;
-		if (player.usingOtherRangeWeapons && !player.usingBow && !player.usingMagic) {
+		if (player.throwingAxe && !player.usingBow && !player.usingMagic) {
 			distance = 4;
-		} else if (!player.usingOtherRangeWeapons && usingHalberd(player) && !player.usingBow && !player.usingMagic) {
+		} else if (!player.throwingAxe && usingHalberd(player) && !player.usingBow && !player.usingMagic) {
 			distance = 2;
-		} else if (!player.usingOtherRangeWeapons && !usingHalberd(player) && !player.usingBow && !player.usingMagic) {
+		} else if (!player.throwingAxe && !usingHalberd(player) && !player.usingBow && !player.usingMagic) {
 			if (player.getX() != victim.getX() && player.getY() != victim.getY()
 					&& player.distanceToPoint(victim.getX(), victim.getY()) < 2) {
 				distance = 2;

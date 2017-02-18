@@ -164,7 +164,7 @@ public class RangeData {
 		if(castingMagic) {
 			return -1;
 		}
-		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 9185 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 18357)
+		if (player.getEquipment().isCrossbow(player))
 			return 27;
 		
 		int str = -1;
@@ -223,10 +223,6 @@ public class RangeData {
 			c.rangeEndGFXHeight = true;
 		}
 		return str;
-	}
-	
-	public boolean usingCrystalBow(Player player) {
-		return player.playerEquipment[player.getEquipment().getWeaponId()] >= 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223;	
 	}
 
 	public static int correctBowAndArrows(Player c) {

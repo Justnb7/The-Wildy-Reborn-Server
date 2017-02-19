@@ -154,8 +154,8 @@ public class PlayerSerialization {
                         	p.setPkPoints(Integer.parseInt(value));
                         } else if (key.equals("slayerPoints")) {
                         	p.setSlayerPoints(Integer.parseInt(value));
-                        } else if (key.equals("triviaPoints")) {
-                        	p.setTriviaPoints(Integer.parseInt(value));
+                        } else if (key.equals("achievement-points")) {
+							p.getAchievements().setPoints(Integer.parseInt(value));
                         } else if (key.equals("amount-donated")) {
                         	p.setAmountDonated(Integer.parseInt(value));
                         } else if (key.equals("total-amount-donated")) {
@@ -313,19 +313,25 @@ public class PlayerSerialization {
                     	}
 						break;
 						
-					// Achievements Tier 1
+						// Achievements Tier 1
 					case 16:
-                        
+                        if (values.length < 2)
+                            continue;
+                        p.getAchievements().read(key, 0, Integer.parseInt(values[0]), Boolean.parseBoolean(values[1]));
                         break;
                         
                     // Achievements Tier 2
                     case 17:
-                        
+                        if (values.length < 2)
+                            continue;
+                        p.getAchievements().read(key, 1, Integer.parseInt(values[0]), Boolean.parseBoolean(values[1]));
                         break;
                         
                     // Achievements Tier 3
                     case 18:
-                        
+                        if (values.length < 2)
+                            continue;
+                        p.getAchievements().read(key, 2, Integer.parseInt(values[0]), Boolean.parseBoolean(values[1]));
                         break;
                      
                     // Charges
@@ -533,40 +539,31 @@ public class PlayerSerialization {
             writer.newLine();
             writer.write("slayerPoints = " + p.getSlayerPoints());
             writer.newLine();
-            writer.write("triviaPoints = ");
-            writer.write(Integer.toString(p.getTriviaPoints()));
+            writer.write("achievement-points = " + p.getAchievements().getPoints());
             writer.newLine();
             writer.write("amount-donated = " + p.getAmountDonated());
             writer.newLine();
             writer.write("total-amount-donated = " + p.getTotalAmountDonated());
             writer.newLine();
-            writer.write("teleblock-length = ");
-            writer.write(Integer.toString(tbTime));
+            writer.write("teleblock-length = " + tbTime);
             writer.newLine();
-            writer.write("muted = ");
-            writer.write(Boolean.toString(p.isMuted), 0, Boolean.toString(p.isMuted).length());
+            writer.write("muted = " + p.isMuted);
             writer.newLine();
-            writer.write("yellMute = ");
-            writer.write(Integer.toString(p.yellMute));
+            writer.write("yellMute = " + p.yellMute);
             writer.newLine();
-            writer.write("skull-timer = ");
-            writer.write(Integer.toString(p.skullTimer));
+            writer.write("skull-timer = " + p.skullTimer);
             writer.newLine();
-            writer.write("infection-type = ");
-            writer.write(Integer.toString(p.infection));
+            writer.write("infection-type = " + p.infection);
             writer.newLine();
-			writer.write("slayer-task = ");
-            writer.write(Integer.toString(p.getSlayerTask()));
+			writer.write("slayer-task = " + p.getSlayerTask());
             writer.newLine();
-            writer.write("task-amount = ");
-            writer.write(Integer.toString(p.getSlayerTaskAmount()));
+            writer.write("task-amount = " + p.getSlayerTaskAmount());
             writer.newLine();
-            writer.write("task-difficulity = ");
-            writer.write(Integer.toString(p.getSlayerTaskDifficulty()));
+            writer.write("task-difficulity = " + p.getSlayerTaskDifficulty());
             writer.newLine();
-            writer.write("first-slayer-task-completed = "+p.getFirstSlayerTask());
+            writer.write("first-slayer-task-completed = " + p.getFirstSlayerTask());
             writer.newLine();
-            writer.write("first-boss-slayer-task-completed = "+p.getFirstBossSlayerTask());
+            writer.write("first-boss-slayer-task-completed = " + p.getFirstBossSlayerTask());
             writer.newLine();
             writer.write("lastClanChat = ");
             writer.write(p.getClanMembership() == null ? "" : p.getClanMembership().getClanOwner());
@@ -760,12 +757,19 @@ public class PlayerSerialization {
 			writer.newLine();
 
 			/* Achievements */
-
 			writer.write("[ACHIEVEMENTS-TIER-1]");
-			writer.newLine();
-			writer.write("[ACHIEVEMENTS-TIER-2]");
-			writer.newLine();
-			writer.write("[ACHIEVEMENTS-TIER-3]");
+            writer.newLine();
+            p.getAchievements().print(writer, 0);
+            writer.newLine();
+            writer.newLine();
+            writer.write("[ACHIEVEMENTS-TIER-2]");
+            writer.newLine();
+            p.getAchievements().print(writer, 1);
+            writer.newLine();
+            writer.newLine();
+            writer.write("[ACHIEVEMENTS-TIER-3]");
+            writer.newLine();
+            p.getAchievements().print(writer, 2);
 
 			writer.newLine();
 			writer.newLine();

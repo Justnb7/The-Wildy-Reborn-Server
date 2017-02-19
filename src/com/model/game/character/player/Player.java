@@ -241,19 +241,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Representing the trivia points
-	 */
-    private int triviaPoints;
-	
-	public int getTriviaPoints() {
-		return triviaPoints;
-	}
-	
-	public void setTriviaPoints(int triviaPoints) {
-		this.triviaPoints = triviaPoints;
-	}
-	
-	/**
 	 * Represents the players total death amount, (inside the wilderness)
 	 */
 	private int deathCount;

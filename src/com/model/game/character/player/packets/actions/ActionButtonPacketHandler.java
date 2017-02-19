@@ -104,6 +104,22 @@ public class ActionButtonPacketHandler implements PacketType {
 		ActionButtonEventListener.onButtonClick(player, button);
 		switch (button) {
 		
+		case 114220:
+			player.getAchievements().drawInterface(0);
+			break;
+			
+		case 191109:
+			player.getAchievements().drawInterface(0);
+			break;
+			
+		case 191112:
+			player.getAchievements().drawInterface(1);
+			break;
+			
+		case 191115:
+			player.getAchievements().drawInterface(2);
+			break;
+		
 		case 222174:
 			TeleportHandler.open(player, TeleportationTypes.SKILLING);
 			break;

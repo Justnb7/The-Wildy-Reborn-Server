@@ -1,7 +1,7 @@
 package com.model.game.character.player;
 
 import com.model.game.Constants;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.utility.cache.map.Region;
 
 /**
@@ -24,7 +24,7 @@ public final class ProjectilePathFinder {
 	 * @return
 	 * 		if the interaction path is clear from src to dest
 	 */
-	public static boolean isInteractionPathClear(Location src, Location dest) {
+	public static boolean isInteractionPathClear(Position src, Position dest) {
 		int x0 = src.getX();
 		int y0 = src.getY();
 		int z = src.getZ();
@@ -88,7 +88,7 @@ public final class ProjectilePathFinder {
 		return true;
 	}
 	
-	public static boolean isProjectilePathClear(Location src, Location dest) {
+	public static boolean isProjectilePathClear(Position src, Position dest) {
 		int x0 = src.getX();
 		int y0 = src.getY();
 		int z = src.getZ();
@@ -179,7 +179,7 @@ public final class ProjectilePathFinder {
 			return false;
 		}
 
-		return Region.canMove(new Location(x, y, z), dir) && Region.canMove(new Location(px, py, z), dir2);
+		return Region.canMove(new Position(x, y, z), dir) && Region.canMove(new Position(px, py, z), dir2);
 	}
 	
 	/**
@@ -246,7 +246,7 @@ public final class ProjectilePathFinder {
 			return false;
 		}
 
-		return Region.canMove(new Location(x, y, z), dir) && Region.canMove(new Location(px, py, z), dir2) || Region.canShoot(new Location(x, y, z), dir) && Region.canShoot(new Location(px, py, z), dir2);
+		return Region.canMove(new Position(x, y, z), dir) && Region.canMove(new Position(px, py, z), dir2) || Region.canShoot(new Position(x, y, z), dir) && Region.canShoot(new Position(px, py, z), dir2);
 	}
 
 	public static enum Direction {
@@ -345,7 +345,7 @@ public final class ProjectilePathFinder {
 		 * @param l The end Location.
 		 * @return The direction.
 		 */
-		public static Direction getDirection(Location Location, Location l) {
+		public static Direction getDirection(Position Location, Position l) {
 			return getDirection(l.getX() - Location.getX(), l.getY() - Location.getY());
 		}
 		
@@ -418,7 +418,7 @@ public final class ProjectilePathFinder {
 		 * @param l The end Location.
 		 * @return The most logical direction.
 		 */
-		public static Direction getLogicalDirection(Location Location, Location l) {
+		public static Direction getLogicalDirection(Position Location, Position l) {
 			int offsetX = Math.abs(l.getX() - Location.getX());
 			int offsetY = Math.abs(l.getY() - Location.getY());
 			if (offsetX > offsetY) {
@@ -471,7 +471,7 @@ public final class ProjectilePathFinder {
 		 * @param l The Location.
 		 * @return {@code True} if so.
 		 */
-		public boolean canMove(Location l) {
+		public boolean canMove(Position l) {
 			int flag = Region.getClipping(l.getZ(), l.getX(), l.getY());
 			for (int f : traversal) {
 				if ((flag & f) != 0) {

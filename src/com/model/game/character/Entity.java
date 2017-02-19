@@ -12,6 +12,7 @@ import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
 /**
@@ -385,7 +386,7 @@ public abstract class Entity {
 	/**
 	 * The default, i.e. spawn, location.
 	 */
-	public static final Location DEFAULT_LOCATION = Location.create(3087, 3495, 0);
+	public static final Position DEFAULT_LOCATION = new Position(3087, 3495, 0);
 
     /**
      * The index of the entity
@@ -395,17 +396,17 @@ public abstract class Entity {
     /**
 	 * The current location.
 	 */
-	private Location location;
+	private Position location;
 	
 	/**
 	 * The teleportation target.
 	 */
-	private Location teleportTarget = null;
+	private Position teleportTarget = null;
 
 	/**
 	 * The last known map region.
 	 */
-	private Location lastKnownRegion = this.getLocation();
+	private Position lastKnownRegion = this.getLocation();
 	
 	/**
 	 * The face location.
@@ -438,7 +439,7 @@ public abstract class Entity {
 	 * @param lastKnownRegion
 	 *            The last known map region.
 	 */
-	public void setLastKnownRegion(Location lastKnownRegion) {
+	public void setLastKnownRegion(Position lastKnownRegion) {
 		this.lastKnownRegion = lastKnownRegion;
 	}
 
@@ -447,7 +448,7 @@ public abstract class Entity {
 	 * 
 	 * @return The last known map region.
 	 */
-	public Location getLastKnownRegion() {
+	public Position getLastKnownRegion() {
 		return lastKnownRegion;
 	}
     
@@ -475,7 +476,7 @@ public abstract class Entity {
 	 * 
 	 * @return The teleport target.
 	 */
-	public Location getTeleportTarget() {
+	public Position getTeleportTarget() {
 		return teleportTarget;
 	}
 
@@ -485,7 +486,7 @@ public abstract class Entity {
 	 * @param teleportTarget
 	 *            The target location.
 	 */
-	public void setTeleportTarget(Location teleportTarget) {
+	public void setTeleportTarget(Position teleportTarget) {
 		this.teleportTarget = teleportTarget;
 	}
 
@@ -502,7 +503,7 @@ public abstract class Entity {
 	 * @param location
 	 *            The current location.
 	 */
-	public void setLocation(Location location) {
+	public void setLocation(Position location) {
 		this.location = location;
 	}
 
@@ -511,7 +512,7 @@ public abstract class Entity {
 	 * 
 	 * @return The current location.
 	 */
-	public Location getLocation() {
+	public Position getLocation() {
 		return location;
 	}
 	

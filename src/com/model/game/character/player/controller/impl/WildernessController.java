@@ -7,13 +7,13 @@ import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendInteractionOption;
 import com.model.game.character.player.packets.encode.impl.SendWalkableInterface;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 
 
 public class WildernessController extends Controller {
 
-	private final Location WILDERNESS_RESPAWN = new Location(3096, 3503, 0);
+	private final Position WILDERNESS_RESPAWN = new Position(3096, 3503, 0);
 
 	@Override
 	public void tick(Player player) {
@@ -69,7 +69,7 @@ public class WildernessController extends Controller {
 	}
 
 	@Override
-	public Location getRespawnLocation(Player player) {
+	public Position getRespawnLocation(Player player) {
 		return WILDERNESS_RESPAWN;
 	}
 

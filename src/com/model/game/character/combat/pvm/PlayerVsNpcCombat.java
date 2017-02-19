@@ -31,7 +31,7 @@ import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -668,7 +668,7 @@ public class PlayerVsNpcCombat {
 		boolean inside = false;
 		boolean projectiles = player.usingRangeWeapon || player.usingMagic || player.throwingAxe
 				|| player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC;
-		for (Location tile : npc.getTiles()) {
+		for (Position tile : npc.getTiles()) {
 			if (player.absX == tile.getX() && player.absY == tile.getY()) {
 				inside = true;
 				break;
@@ -707,7 +707,7 @@ public class PlayerVsNpcCombat {
 						y3--;
 					}
 
-					Location location = new Location(x3, y3, z);
+					Position location = new Position(x3, y3, z);
 					double d = location.distance(player.getLocation());
 					if (d < lowDist) {
 						if (ignoreClip || !projectiles || projectiles
@@ -794,8 +794,8 @@ public class PlayerVsNpcCombat {
 
 		// if (!inside) {
 		boolean hasDistance = npc.npcId == 5535 ? true : false; // force 5535 tents to always be hittable
-		for (Location Location : npc.getTiles()) {
-			double distance = Location.distance(player.getLocation());
+		for (Position pos : npc.getTiles()) {
+			double distance = pos.distance(player.getLocation());
 			boolean magic = player.usingMagic;
 			boolean ranged = !player.usingMagic
 					&& (player.usingRangeWeapon || player.throwingAxe || player.usingBow || player.usingArrows);
@@ -1044,14 +1044,14 @@ public class PlayerVsNpcCombat {
 			return true;
 		boolean projectile = player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC;
 		if (projectile) {
-			for (Location Location : npc.getBorder()) {
-				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), Location)) {
+			for (Position pos : npc.getBorder()) {
+				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), pos)) {
 					return true;
 				}
 			}
 		} else {
-			for (Location Location : npc.getBorder()) {
-				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), Location)) {
+			for (Position pos : npc.getBorder()) {
+				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), pos)) {
 					//player.write(new SendGameMessage("debug");
 					return true;
 				}

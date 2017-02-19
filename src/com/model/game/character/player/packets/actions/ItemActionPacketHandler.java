@@ -1,8 +1,16 @@
 package com.model.game.character.player.packets.actions;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.content.achievements.AchievementType;
+import com.model.game.character.player.content.achievements.Achievements;
+import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
+import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
+import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
 import com.model.game.character.player.content.consumable.potion.PotionData;
 import com.model.game.character.player.content.rewards.RewardCasket;
 import com.model.game.character.player.content.teleport.TeleTabs;
@@ -10,6 +18,7 @@ import com.model.game.character.player.content.teleport.TeleTabs.TabData;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.task.ScheduledTask;
@@ -78,7 +87,7 @@ public class ItemActionPacketHandler implements PacketType {
 		}
 
 		player.getHerblore().clean(item);
-
+		boolean found = true;
 		switch (item) {
 		
 		case 21999:
@@ -113,7 +122,61 @@ public class ItemActionPacketHandler implements PacketType {
 			player.dialogue().start("ENCHANTED_GEM", player);
 			break;
 			
+		case 2677:
+		case 2678:
+		case 2679:
+		case 2680:
+			if (player.clueContainer == null) {
+				Optional<ClueDifficulty> cd = ClueDifficulty.getDifficulty(item);
+				if (!cd.isPresent())
+					return;
+				player.clueContainer = new ClueScrollContainer(player, ClueScrollHandler.getStages(cd.get()));
+			}
+			player.clueContainer.current(item);
+			break;
+
+		case 2714:
+			
+			if (player.bossDifficulty == null) {
+				player.write(new SendMessagePacket("You have not completed a clue scroll!"));
+				return;
+			}
+			
+			Item[] items = ClueScrollHandler.determineReward(player, player.bossDifficulty);
+
+			if (player.getItems().getFreeSlots() < items.length + 1) {
+				player.write(new SendMessagePacket("You do not have enough space in your inventory!"));
+				return;
+			}
+			if (player.bossDifficulty.equals(ClueDifficulty.EASY)) {
+				player.easyClue += 1;
+				player.write(new SendMessagePacket("<col=009900> You have now completed " + player.easyClue + " easy clues"));
+			}
+			if (player.bossDifficulty.equals(ClueDifficulty.MEDIUM)) {
+				player.mediumClue += 1;
+				player.write(new SendMessagePacket("<col=FF5050> You have now completed " + player.mediumClue + " medium clues"));
+				Achievements.increase(player, AchievementType.MEDIUM_CLUE, 1);
+			}
+			if (player.bossDifficulty.equals(ClueDifficulty.HARD)) {
+				player.hardClue += 1;
+				Achievements.increase(player, AchievementType.HARD_CLUE, 1);
+				player.write(new SendMessagePacket("<col=CC3300> You have now completed " + player.hardClue + " hard clues"));
+			}
+			if (player.bossDifficulty.equals(ClueDifficulty.ELITE)) {
+				player.eliteClue += 1;
+				Achievements.increase(player, AchievementType.ELITE_CLUE, 1);
+				player.write(new SendMessagePacket("<col=5A0000> You have now completed " + player.eliteClue + " elite clues"));
+			}
+			Achievements.increase(player, AchievementType.TREASURE_TRIAL, 1);
+			player.getItems().deleteItem(2714);
+			player.getPA().displayReward(items);
+			Arrays.stream(items).forEach(player.getItems()::addItem);
+			player.write(new SendMessagePacket("You open the casket and obtain your reward!"));
+			player.bossDifficulty = null;
+			break;
+			
 		default:
+			found = false;
 			if (player.in_debug_mode())
 				player.write(new SendMessagePacket("First item option clicked on a: (" + player.getItems().getItemName(item) + ")"));
 			break;

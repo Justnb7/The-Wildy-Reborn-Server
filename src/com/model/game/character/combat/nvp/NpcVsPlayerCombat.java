@@ -28,7 +28,7 @@ import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendFrame107;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendShakeScreen;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -275,14 +275,14 @@ public class NpcVsPlayerCombat {
 
 		// Always last
 		if (npc.getCombatType() != CombatType.MELEE) {
-			for (Location Location : npc.getBorder()) {
-				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), Location)) {
+			for (Position pos : npc.getBorder()) {
+				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), pos)) {
 					return true;
 				}
 			}
 		} else {
-			for (Location Location : npc.getBorder()) {
-				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), Location)) {
+			for (Position pos : npc.getBorder()) {
+				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), pos)) {
 					return true;
 				}
 			}

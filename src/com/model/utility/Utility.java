@@ -20,9 +20,11 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 public class Utility {
 	
+	public static final RandomGen r = new RandomGen();
 	
 	/**
 	 * Random instance, used to generate pseudo-random primitive types.
@@ -282,19 +284,19 @@ public class Utility {
     }
 
     /**
-     * Returns the delta coordinates. Note that the returned Location is not an
-     * actual Location, instead it's values represent the delta values between
-     * the two arguments.
-     * 
-     * @param a
-     *            the first Location.
-     * @param b
-     *            the second Location.
-     * @return the delta coordinates contained within a Location.
-     */
-    public static Location delta(Location a, Location b, Location z) {
-        return new Location(b.getX() - a.getX(), b.getY() - a.getY(), z.getZ());
-    }
+	 * Returns the delta coordinates. Note that the returned Position is not an
+	 * actual position, instead it's values represent the delta values between
+	 * the two arguments.
+	 * 
+	 * @param a
+	 *            the first position.
+	 * @param b
+	 *            the second position.
+	 * @return the delta coordinates contained within a position.
+	 */
+	public static Position delta(Position a, Position b) {
+		return new Position(b.getX() - a.getX(), b.getY() - a.getY());
+	}
 
     public static String md5Hash(String md5) {
         try {
@@ -1004,7 +1006,7 @@ public class Utility {
 	 * @param b
 	 * @return
 	 */
-	public static int getManhattanDistance(Location a, Location b) {
+	public static int getManhattanDistance(Position a, Position b) {
 	return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
 	}
 

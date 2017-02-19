@@ -15,11 +15,10 @@ import com.model.game.character.player.packets.encode.impl.SendConfig;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendStringColor;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
-
 
 
 /**
@@ -202,7 +201,7 @@ public class BountyHunter extends ScheduledTask {
 				}
 			}
 		}
-		TeleportExecutor.teleport(player, new Location(targetX, targetY - 1, target.heightLevel));
+		TeleportExecutor.teleport(player, new Position(targetX, targetY - 1, target.heightLevel));
 		lastTeleport = System.currentTimeMillis();
 	}
 

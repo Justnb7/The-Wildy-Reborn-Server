@@ -7,10 +7,8 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.SingleInstancedArea;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
-
-
 
 
 /**
@@ -34,7 +32,7 @@ public class KrakenInstance {
 
 	public void start(Player player) {
 		instance = (SingleInstancedArea) InstancedAreaManager.getSingleton().createSingleInstancedArea(player, Boundary.KRAKEN);
-		player.getPA().movePlayer(new Location(3696, 5798, instance.getHeight()));
+		player.getPA().movePlayer(new Position(3696, 5798, instance.getHeight()));
 		startUp(player);
 	}
 	

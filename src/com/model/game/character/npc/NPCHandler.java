@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.model.game.Constants;
 import com.model.game.World;
@@ -16,10 +17,11 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
+import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.DrawHeadicon;
 import com.model.game.character.player.packets.encode.impl.SendKillFeed;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.json.NPCDefinitionLoader;
 import com.model.utility.json.definitions.NpcDefinition;
@@ -393,8 +395,8 @@ public final class NPCHandler {
 		/*
 		 * If close enough, stop following
 		 */
-		for (Location Location : npc.getTiles()) {
-			double distance = Location.distance(player.getLocation());
+		for (Position pos : npc.getTiles()) {
+			double distance = pos.distance(player.getLocation());
 			boolean magic = npc.getCombatType() == CombatType.MAGIC;
 			boolean ranged = !magic && npc.getCombatType() == CombatType.RANGED;
 			boolean melee = !magic && !ranged;
@@ -509,5 +511,20 @@ public final class NPCHandler {
 			npcList.add(npc);
 		}
 		return npcList.toArray(new Npc[npcList.size()]);
+	}
+
+	public static Optional<Npc> spawnNpc3(Player c, int npcType, int x, int y, int heightLevel, ClueDifficulty d) {
+		NpcDefinition def = NpcDefinition.getDefinitions()[npcType];
+		if (d == ClueDifficulty.EASY) {
+			////Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 10, 25, 25, 25, 25, true, true));
+		} else if (d == ClueDifficulty.MEDIUM) {
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 15, 50, 25, 25, 25, true, true));
+		} else if (d == ClueDifficulty.HARD) {
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 20, 75, 99, 25, 25, true, true));
+		} else if (d == ClueDifficulty.ELITE) {
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 35, 99, 120, 25, 25, true, true));
+		}
+		return Optional.empty();
 	}
 }

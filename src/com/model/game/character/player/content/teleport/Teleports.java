@@ -7,7 +7,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportHandler.TeleportationTypes;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.item.Item;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 /**
  * 
@@ -99,7 +99,7 @@ public class Teleports {
 	}
 	
 	private static void castHomeTeleport(Player player) {
-		TeleportExecutor.teleport(player, new Location(3096, 3503, 0));
+		TeleportExecutor.teleport(player, new Position(3096, 3503, 0));
 	}
 	
 	public static boolean startTeleport(Player player, int buttonId) {
@@ -152,7 +152,7 @@ public class Teleports {
 				if (player.getSkills().getExperience(Skills.MAGIC) < data.getMagicLevelRequirement()) {
 					player.write(new SendMessagePacket("You need atleast level " + data.getMagicLevelRequirement() + " magic to teleport to " + data.getTeleportName() + "."));
 				} else if (Arrays.asList(data.getRequiredRunes()).stream().filter(i -> player.getItems().playerHasItems(i)).toArray().length == data.getRequiredRunes().length) {
-					TeleportExecutor.teleport(player, new Location(data.getX(), data.getY(), data.getHeight()));
+					TeleportExecutor.teleport(player, new Position(data.getX(), data.getY(), data.getHeight()));
 					player.getSkills().addExperience(Skills.MAGIC, data.getExperience());
 					Arrays.asList(data.getRequiredRunes()).stream().forEach(i -> player.getItems().remove(i));
 					return true;

@@ -17,6 +17,7 @@ import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendInterface;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -168,7 +169,7 @@ public class Obelisks {
 						Obelisk randomObelisk = Obelisk.getRandom(location);
 						int x = randomObelisk.getBoundaries().getMinimumX() + 1;
 						int y = randomObelisk.getBoundaries().getMinimumY() + 1;
-						players.forEach(player -> TeleportExecutor.teleport(player, new Location(x + Utility.getRandom(2), y + Utility.getRandom(2), 0)));
+						players.forEach(player -> TeleportExecutor.teleport(player, new Position(x + Utility.getRandom(2), y + Utility.getRandom(2), 0)));
 						for (Player p : World.getWorld().getPlayers()) {
 							if (p != null) {
 								p.usingObelisk = false;

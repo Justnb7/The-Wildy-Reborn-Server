@@ -20,6 +20,7 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
+import com.model.game.character.player.packets.encode.impl.SendInterface;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.packets.encode.impl.SendInterfaceModel;
@@ -28,7 +29,8 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.location.Location;
+import com.model.game.item.Item;
+import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -155,13 +157,13 @@ public class PlayerAssistant {
         player.teleportToX = x;
         player.teleportToY = y;
         player.teleHeight = h;
-        player.setTeleportTarget(Location.create(x, y, h));
+        player.setTeleportTarget(Position.create(x, y, h));
         requestUpdates();
         player.getSkilling().stop();
         //System.out.println("to "+Arrays.toString(new int[] {x,y,h}));
     }
 
-    public void movePlayer(Location p) {
+    public void movePlayer(Position p) {
         movePlayer(p.getX(), p.getY(), p.getZ());
     }
     
@@ -311,12 +313,12 @@ public class PlayerAssistant {
                 break;
             }
 
-            Location[] locs = { new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
-                    new Location(otherX, otherY - 1, player.getZ()), };
+            Position[] locs = { new Position(otherX + 1, otherY, player.getZ()), new Position(otherX - 1, otherY, player.getZ()), new Position(otherX, otherY + 1, player.getZ()),
+                    new Position(otherX, otherY - 1, player.getZ()), };
 
-            Location followLoc = null;
+            Position followLoc = null;
 
-            for (Location i : locs) {
+            for (Position i : locs) {
                 if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
                     followLoc = i;
                 }
@@ -340,7 +342,7 @@ public class PlayerAssistant {
             yMove = otherY - player.getY();
         }
 
-        player.getMovementHandler().addToPath(new Location(player.getX() + xMove, player.getY() + yMove, 0));
+        player.getMovementHandler().addToPath(new Position(player.getX() + xMove, player.getY() + yMove, 0));
     }
 
     public void followNpc() {
@@ -391,7 +393,7 @@ public class PlayerAssistant {
         Npc npc = World.getWorld().getNpcs().get(player.npcFollowIndex);
 
         boolean inside = false;
-        for (Location tile : npc.getTiles()) {
+        for (Position tile : npc.getTiles()) {
             if (player.absX == tile.getX() && player.absY == tile.getY()) {
                 inside = true;
                 break;
@@ -399,7 +401,7 @@ public class PlayerAssistant {
         }
 
         if (!inside) {
-            for (Location Location : npc.getTiles()) {
+            for (Position Location : npc.getTiles()) {
                 double distance = Location.distance(player.getLocation());
                 boolean magic = player.usingMagic;
                 boolean ranged = !player.usingMagic && (player.usingRangeWeapon || player.throwingAxe);
@@ -437,12 +439,12 @@ public class PlayerAssistant {
                 break;
             }
         } else {
-            Location[] locs = { new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
-                    new Location(otherX, otherY - 1, player.getZ()), };
+        	Position[] locs = { new Position(otherX + 1, otherY, player.getZ()), new Position(otherX - 1, otherY, player.getZ()), new Position(otherX, otherY + 1, player.getZ()),
+                    new Position(otherX, otherY - 1, player.getZ()), };
 
-            Location followLoc = null;
+            Position followLoc = null;
 
-            for (Location i : locs) {
+            for (Position i : locs) {
                 if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
                     followLoc = i;
                 }
@@ -464,7 +466,7 @@ public class PlayerAssistant {
 
     public void walkTo(int i, int j) {
         player.getMovementHandler().reset();
-        player.getMovementHandler().addToPath(new Location(player.getX() + i, player.getY() + j, player.getZ()));
+        player.getMovementHandler().addToPath(new Position(player.getX() + i, player.getY() + j, player.getZ()));
         player.getMovementHandler().finish();
     }
 
@@ -675,6 +677,52 @@ public class PlayerAssistant {
 			}
 			PlayerSerialization.saveGame(player);
 		}
+	}
+
+	public void displayReward(Item... items) {
+		player.outStream.createFrameVarSizeWord(53);
+		player.outStream.writeWord(6963);
+		player.outStream.writeWord(items.length);
+
+		for (Item item : items) {
+			if (item.amount > 254) {
+				player.outStream.writeByte(255);
+				player.outStream.writeDWord_v2(item.amount);
+			} else {
+				player.outStream.writeByte(item.amount);
+			}
+			if (item.id > 0) {
+				player.outStream.writeWordBigEndianA(item.id + 1);
+			} else {
+				player.outStream.writeWordBigEndianA(0);
+			}
+		}
+		player.outStream.endFrameVarSizeWord();
+		player.flushOutStream();
+		player.write(new SendInterface(6960));
+	}
+
+	public void sendItems(Item... items) {
+		player.outStream.createFrameVarSizeWord(53);
+		player.outStream.writeWord(6963);
+		player.outStream.writeWord(items.length);
+
+		for (Item item : items) {
+			if (item.amount > 254) {
+				player.outStream.writeByte(255);
+				player.outStream.writeDWord_v2(item.amount);
+			} else {
+				player.outStream.writeByte(item.amount);
+			}
+			if (item.id > 0) {
+				player.outStream.writeWordBigEndianA(item.id + 1);
+			} else {
+				player.outStream.writeWordBigEndianA(0);
+			}
+		}
+		player.outStream.endFrameVarSizeWord();
+		player.flushOutStream();
+		player.write(new SendInterface(6960));
 	}
 	
 }

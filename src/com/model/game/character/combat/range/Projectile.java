@@ -5,7 +5,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.Entity.EntityType;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 public class Projectile {
 
@@ -155,7 +155,7 @@ public class Projectile {
 		}
 	}
 
-	public void createPlayersProjectile(Location p, Location offset, int angle,
+	public void createPlayersProjectile(Position p, Position offset, int angle,
 			int speed, int gfxMoving, int startHeight, int endHeight,
 			int lockon, int time) {
 		createPlayersProjectile(p.getX(), p.getY(), offset.getX(),

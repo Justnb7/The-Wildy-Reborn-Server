@@ -4,7 +4,7 @@ import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 /**
  * The class which represents functionality for the mining teleports.
@@ -40,7 +40,7 @@ public class MiningTeleports extends Dialogue {
 			if(index == 4) {
 				player.write(new SendClearScreen());
 			} else {
-				TeleportExecutor.teleport(player, new Location(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
+				TeleportExecutor.teleport(player, new Position(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
 			}
 		}
 	}

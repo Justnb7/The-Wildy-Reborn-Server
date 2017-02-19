@@ -43,6 +43,8 @@ import com.model.game.character.npc.pet.PetCombat;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
+import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
+import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
 import com.model.game.character.player.content.consumable.Consumable;
 import com.model.game.character.player.content.consumable.food.FoodConsumable;
 import com.model.game.character.player.content.consumable.potion.PotionData;
@@ -91,6 +93,7 @@ import com.model.game.item.equipment.EquipmentSet;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.game.shop.Currency;
 import com.model.game.shop.Shop;
 import com.model.net.network.Packet;
@@ -725,8 +728,8 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public Location getLocation() {
-		return new Location(absX, absY, heightLevel);
+	public Position getLocation() {
+		return new Position(absX, absY, heightLevel);
 	}
 
 	public long lastBankDeposit;
@@ -972,8 +975,8 @@ public class Player extends Entity {
 	}
 
 	public boolean destinationReached() {
-		Location player = new Location(absX, absY, heightLevel);
-		Location object = new Location(objectX, objectY, heightLevel);
+		Position player = new Position(absX, absY, heightLevel);
+		Position object = new Position(objectX, objectY, heightLevel);
 		if (player.equals(object) || player.withinDistance(object, objectDistance)) {
 			return true;
 		} else {
@@ -3089,6 +3092,34 @@ public class Player extends Entity {
 	
 	public GameBuffer getPlayerProps() {
 		return playerProps;
+	}
+	
+	// clue scroll
+	public ClueScrollContainer clueContainer;
+	public ClueDifficulty bossDifficulty;
+	public int randomClueReward = 0;
+	public int easyClue = 0;
+	public int mediumClue = 0;
+	public int hardClue = 0;
+	public int eliteClue = 0;
+	
+	/**
+	 * Temp solution to clue-scroll bug
+	 * - Allows player to reset his clue status 
+	 * - Allowing them to continue to gather clues
+	 * @param player
+	 */
+	public void resetClueStatus(Player player) {
+		if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds())) {
+			player.write(new SendMessagePacket("It seems you have a clue scroll, please complete it."));
+			return;
+		}
+		if(player.bossDifficulty != null) {
+			player.bossDifficulty = null;
+		}
+		if(player.clueContainer != null) {
+			player.clueContainer = null;
+		}
 	}
 	
     /**

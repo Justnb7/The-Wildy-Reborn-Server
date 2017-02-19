@@ -1,6 +1,7 @@
 package com.model.game.character.player.content.teleport;
 
 import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 /**
  * @author Chris
@@ -12,7 +13,7 @@ public class Teleport {
 	/**
 	 * The {@Link Position} the teleport will end
 	 */
-	private final Location location;
+	private final Position location;
 
 	/**
 	 * The type of teleport this is
@@ -27,7 +28,7 @@ public class Teleport {
 	 * @param type
 	 *            The {@link TeleportType} this is
 	 */
-	public Teleport(Location location, TeleportType type) {
+	public Teleport(Position location, TeleportType type) {
 		this.location = location;
 		this.type = type;
 	}
@@ -37,7 +38,7 @@ public class Teleport {
 	 * 
 	 * @return The {@link Position} this teleport will end
 	 */
-	public Location getLocation() {
+	public Position getLocation() {
 		return location;
 	}
 

@@ -3,7 +3,7 @@ package com.model.game.character.player.dialogue.impl.minigames;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 public class BarrowsTunnel extends Dialogue {
 	
@@ -19,7 +19,7 @@ public class BarrowsTunnel extends Dialogue {
 			switch(index) {
 			case 1:
 				player.write(new SendClearScreen());
-				player.getPA().movePlayer(new Location(3551, 9691, 0));
+				player.getPA().movePlayer(new Position(3551, 9691, 0));
 				break;
 			case 2:
 				player.write(new SendClearScreen());

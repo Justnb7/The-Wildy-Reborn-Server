@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 /**
  * @author blakeman8192
@@ -98,7 +98,7 @@ public class MovementHandler {
 				player.absX = (short) player.teleportToX;
 				player.absY = (short) player.teleportToY;
 				player.heightLevel = player.teleHeight != -1 ? player.teleHeight : player.heightLevel;
-				player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
+				player.setLocation(new Position(player.absX, player.absY, player.heightLevel));
 				player.lastX = player.absX;
 				player.lastY = player.absY + 1;
 				reset();
@@ -177,7 +177,7 @@ public class MovementHandler {
 		player.currentY += DIR[dir][1];
 		player.absX += DIR[dir][0];
 		player.absY += DIR[dir][1];
-		player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
+		player.setLocation(new Position(player.absX, player.absY, player.heightLevel));
 		player.updateWalkEntities();
 	}
 
@@ -187,7 +187,7 @@ public class MovementHandler {
 		player.teleportToX = x;
 		player.teleportToY = y;
 		player.heightLevel = (short) plane;
-		player.setLocation(new Location(x, y, plane));
+		player.setLocation(new Position(x, y, plane));
 	}
 
 	public boolean isMoving() {
@@ -227,7 +227,7 @@ public class MovementHandler {
 	 * @param Location
 	 *            the Location
 	 */
-	public void addToPath(Location Location) {
+	public void addToPath(Position Location) {
 		if (waypoints.size() == 0) {
 			reset();
 		}
@@ -370,7 +370,7 @@ public class MovementHandler {
 	 *
 	 * @author blakeman8192
 	 */
-	private class Point extends Location {
+	private class Point extends Position {
 
 		/**
 		 * the walking direction
@@ -423,7 +423,7 @@ public class MovementHandler {
 	
 	public void walkTo(int x, int y) {
         reset();
-        addToPath(new Location(player.getX() + x, player.getY() + y, player.getZ()));
+        addToPath(new Position(player.getX() + x, player.getY() + y, player.getZ()));
         finish();
     }
 	

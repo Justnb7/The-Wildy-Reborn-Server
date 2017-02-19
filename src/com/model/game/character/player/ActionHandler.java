@@ -23,7 +23,7 @@ import com.model.game.character.player.skill.impl.Thieving.Pickpocket;
 import com.model.game.character.player.skill.impl.Thieving.Stall;
 import com.model.game.character.player.skill.woodcutting.Tree;
 import com.model.game.character.player.skill.woodcutting.Woodcutting;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
 import com.model.utility.Location3D;
@@ -41,7 +41,7 @@ public class ActionHandler {
 	public void firstClickObject(int id, int x, int y) {
 
 		ObjectDefinition def = ObjectDefinition.getObjectDef(id);
-		final Location loc = Location.create(x, y, player.heightLevel);
+		final Position loc = Position.create(x, y, player.heightLevel);
 		if (player.in_debug_mode()) {
 			player.write(new SendMessagePacket("[Debug] First click object - ObjectId: [@red@" + id + "@bla@] objectX:[@red@" + x + "@bla@]@bla@] objectY:[@red@" + y + "@bla@]"));
 		}
@@ -106,7 +106,7 @@ public class ActionHandler {
 					@Override
 					public void execute() {
 						player.getMovementHandler().setForcedMovement(false);
-						player.getPA().movePlayer(new Location(3017, 3850, 0));
+						player.getPA().movePlayer(new Position(3017, 3850, 0));
 						this.stop();
 					}
 				});
@@ -118,7 +118,7 @@ public class ActionHandler {
 					@Override
 					public void execute() {
 						player.getMovementHandler().setForcedMovement(false);
-						player.getPA().movePlayer(new Location(3069, 10255, 0));
+						player.getPA().movePlayer(new Position(3069, 10255, 0));
 						this.stop();
 					}
 				});
@@ -134,29 +134,29 @@ public class ActionHandler {
 			if (player.getY() == 9797) {
 				player.getKraken().start(player);
 			} else if (player.getY() == 5798) {
-				player.getPA().movePlayer(new Location(2486, 9797, 0));
+				player.getPA().movePlayer(new Position(2486, 9797, 0));
 			} else if (player.getX() == 2444) {
-				player.getPA().movePlayer(new Location(2430, 3424, 0));
+				player.getPA().movePlayer(new Position(2430, 3424, 0));
 			}
 			break;
 
 		case "cave":
 			if (player.getX() == 2430) {
-				player.getPA().movePlayer(new Location(2444, 9825, 0));
+				player.getPA().movePlayer(new Position(2444, 9825, 0));
 			}
 			break;
 			
 		case "passage":
 			if (player.getX() == 2970) {
-				player.getPA().movePlayer(new Location(2974, 4384, 2));
+				player.getPA().movePlayer(new Position(2974, 4384, 2));
 			} else if (player.getX() == 2974) {
-				player.getPA().movePlayer(new Location(2970, 4384, 2));
+				player.getPA().movePlayer(new Position(2970, 4384, 2));
 			}
 			break;
 			
 		case "lever":
 			if (player.getX() == 3153)
-			TeleportExecutor.executeLeverTeleport(player, new Teleport(new Location(3090, 3475, player.getZ()), TeleportType.LEVER));
+			TeleportExecutor.executeLeverTeleport(player, new Teleport(new Position(3090, 3475, player.getZ()), TeleportType.LEVER));
 			break;
 		}
 
@@ -287,42 +287,42 @@ public class ActionHandler {
 
 		case 5960:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(3090, 3956, player.getZ()), TeleportType.LEVER));
+					new Position(3090, 3956, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 5959:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(2539, 4712, player.getZ()), TeleportType.LEVER));
+					new Position(2539, 4712, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 1814:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(3158, 3953, player.getZ()), TeleportType.LEVER));
+					new Position(3158, 3953, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 4950:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(3087, 3500, player.getZ()), TeleportType.LEVER));
+					new Position(3087, 3500, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 1816:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(2271, 4680, player.getZ()), TeleportType.LEVER));
+					new Position(2271, 4680, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 1817:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(3067, 10253, player.getZ()), TeleportType.LEVER));
+					new Position(3067, 10253, player.getZ()), TeleportType.LEVER));
 			break;
 			
 		case 26761:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(3153, 3923, player.getZ()), TeleportType.LEVER));
+					new Position(3153, 3923, player.getZ()), TeleportType.LEVER));
 			break;
 			
 		case 1815:
 			TeleportExecutor.executeLeverTeleport(player, new Teleport(
-					new Location(3090, 3475, player.getZ()), TeleportType.LEVER));
+					new Position(3090, 3475, player.getZ()), TeleportType.LEVER));
 			break;
 
 		/**
@@ -507,12 +507,12 @@ public class ActionHandler {
 		 */
 
 		case 9706:
-			TeleportExecutor.teleport(player, new Teleport(new Location(3105,
+			TeleportExecutor.teleport(player, new Teleport(new Position(3105,
 					3951, 0), TeleportType.NORMAL), false);
 			break;
 
 		case 9707:
-			TeleportExecutor.teleport(player, new Teleport(new Location(3105,
+			TeleportExecutor.teleport(player, new Teleport(new Position(3105,
 					3956, 0), TeleportType.NORMAL), false);
 			break;
 

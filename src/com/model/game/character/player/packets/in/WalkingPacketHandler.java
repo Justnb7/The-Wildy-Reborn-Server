@@ -16,7 +16,7 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 /**
  * Walking packet
@@ -152,11 +152,11 @@ public class WalkingPacketHandler implements PacketType {
 
 		player.getMovementHandler().reset();
 		player.getMovementHandler().setRunPath(player.getInStream().readSignedByteC() == 1);
-		player.getMovementHandler().addToPath(new Location(firstStepX, firstStepY, 0));
+		player.getMovementHandler().addToPath(new Position(firstStepX, firstStepY, 0));
 		for (int i = 0; i < steps; i++) {
 			path[i][0] += firstStepX;
 			path[i][1] += firstStepY;
-			player.getMovementHandler().addToPath(new Location(path[i][0], path[i][1], 0));
+			player.getMovementHandler().addToPath(new Position(path[i][0], path[i][1], 0));
 		}
 		player.getMovementHandler().finish();
 	}

@@ -32,7 +32,7 @@ import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
 import com.model.game.character.player.packets.encode.impl.SendWalkableInterface;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.net.ConnectionHandler;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -303,7 +303,7 @@ public class CommandPacketHandler implements PacketType {
     	case "dz":
     	case "donzatorzone":
     		if (player.getRights().isDonator() || player.getRights().isSuperDonator() || player.getRights().isExtremeDonator() || player.getRights().isAdministrator())
-    		TeleportExecutor.teleport(player, new Location(2721, 4912, 0));
+    		TeleportExecutor.teleport(player, new Position(2721, 4912, 0));
     		return true;
     	
     	case "owner":
@@ -605,7 +605,7 @@ public class CommandPacketHandler implements PacketType {
       		return true;
       		
     	 case "staffzone":
-    		 TeleportExecutor.teleport(player, new Location(2912, 5475, 0));
+    		 TeleportExecutor.teleport(player, new Position(2912, 5475, 0));
       		return true;
       		
 		case "teleto":

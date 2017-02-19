@@ -16,6 +16,7 @@ import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
 
@@ -36,7 +37,7 @@ public class TeleportExecutor {
 	 * @param location
 	 *            The {@link Position} the player is teleporting too
 	 */
-	public static void teleport(Player player, Location location) {
+	public static void teleport(Player player, Position location) {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
 			player.write(new SendMessagePacket("You can't teleport while being in a duel."));

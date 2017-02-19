@@ -11,7 +11,7 @@ import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
 public class Chaos_Elemental extends Boss {
@@ -65,7 +65,7 @@ public class Chaos_Elemental extends Boss {
 				}
 				if (attackStyle == 1) {
 					player.playGraphics(Graphic.create(555, 0, 100));
-					Location randomLocation = teleportLocation(npc, player.getX(), player.getY());
+					Position randomLocation = teleportLocation(npc, player.getX(), player.getY());
 					player.getPA().movePlayer(randomLocation.getX(), randomLocation.getY(), 0);
 				}
 				this.stop();
@@ -74,7 +74,7 @@ public class Chaos_Elemental extends Boss {
 		});
 	}
 	
-	public Location teleportLocation(Npc npc, int otherX, int otherY) {
+	public Position teleportLocation(Npc npc, int otherX, int otherY) {
 		int x = npc.absX - otherX;
 		int y = npc.absY - otherY;
 		if (x > 0) {
@@ -87,7 +87,7 @@ public class Chaos_Elemental extends Boss {
 		} else if (y < 0) {
 			otherY -= 5;
 		}
-		return new Location(otherX, otherY, 0);
+		return new Position(otherX, otherY, 0);
 	}
 
 	@Override

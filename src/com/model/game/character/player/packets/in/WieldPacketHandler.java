@@ -12,7 +12,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.SubPacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * Wear Item
@@ -33,11 +32,6 @@ public class WieldPacketHandler implements SubPacketType {
 		if (player.getBankPin().requiresUnlock()) {
 			player.isBanking = false;
 			player.getBankPin().open(2);
-			return;
-		}
-		ItemDefinition def = ItemDefinition.forId(player.wearId);
-		if (def == null || def.getEquipmentSlot() == null) {
-			player.write(new SendMessagePacket(player.wearId + " is unable to be used, if this is an error please report it!"));
 			return;
 		}
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);

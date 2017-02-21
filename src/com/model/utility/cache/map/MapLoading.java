@@ -49,7 +49,7 @@ public class MapLoading {
 				try {
 					loadMaps(regionIds[i], new ByteStream(file1), new ByteStream(file2));
 				} catch (Exception e) {
-					// e.printStackTrace();
+					e.printStackTrace();
 					System.out.println("Error loading map region: " + regionIds[i] + ", ids: " + mapObjectsFileIds[i] + " and " + mapGroundFileIds[i]);
 				}
 			}

@@ -54,6 +54,10 @@ public class PacketHandler {
 	static {
 
 		DefaultPacketHandler u = new DefaultPacketHandler();
+		subPacketId[41] = new WieldPacketHandler();
+		packetId[122] = new ItemActionPacketHandler();
+		packetId[16] = new SecondItemOption();
+		packetId[75] = new ThirdItemOption();
 		packetId[3] = u;
 		packetId[202] = u;
 		packetId[77] = u;
@@ -93,9 +97,6 @@ public class PacketHandler {
 		packetId[17] = cn;
 		packetId[18] = cn;
 		packetId[21] = cn;
-		packetId[16] = new SecondItemOption();
-		packetId[75] = new ThirdItemOption();
-		packetId[122] = new ItemActionPacketHandler();
 		packetId[241] = new ClickingInGame();
 		packetId[4] = new ChatPacketHandler();
 		packetId[236] = new PickupGroundItemPacketHandler();
@@ -113,7 +114,6 @@ public class PacketHandler {
 		packetId[139] = new FollowPlayer();
 		packetId[140] = new WithdrawAllButOneAction();
 		packetId[141] = new BankModifiableX();
-		subPacketId[41] = new WieldPacketHandler();
 		packetId[145] = new Withdraw1Action();
 		packetId[117] = new Withdraw5Action();
 		packetId[43] = new Withdraw10Action();

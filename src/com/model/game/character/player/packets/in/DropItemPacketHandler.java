@@ -4,6 +4,7 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
+import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -49,12 +50,11 @@ public class DropItemPacketHandler implements PacketType {
 			return;
 		}
 		
-		if(!ItemDefinition.forId(itemId).isTradable()) {
+		if(!ItemDefinition.forId(itemId).isTradable() || ClueDifficulty.isClue(itemId)) {
 			player.getPA().destroyItem(itemId);
 			player.setDestroyItem(itemId);
 			return;
 		}
-		
 		boolean droppable = true;
 		if (player.playerItemsN[slot] != 0 && itemId != -1 && player.playerItems[slot] == itemId + 1) {
 			if (droppable) {

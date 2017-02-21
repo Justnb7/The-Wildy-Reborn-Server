@@ -12,6 +12,7 @@ import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
 import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
 import com.model.game.character.player.content.consumable.potion.PotionData;
+import com.model.game.character.player.content.rewards.Mysterybox;
 import com.model.game.character.player.content.rewards.RewardCasket;
 import com.model.game.character.player.content.teleport.TeleTabs;
 import com.model.game.character.player.content.teleport.TeleTabs.TabData;
@@ -21,6 +22,7 @@ import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
 /**
@@ -87,8 +89,12 @@ public class ItemActionPacketHandler implements PacketType {
 		}
 
 		player.getHerblore().clean(item);
-		boolean found = true;
+
 		switch (item) {
+		
+		case 6798:
+			player.dialogue().start("TELEPORT_TO_TASK", player);
+			break;
 		
 		case 21999:
 			RewardCasket.armourCasket(player);
@@ -115,7 +121,7 @@ public class ItemActionPacketHandler implements PacketType {
 			break;
 		
 		case 6199:
-			
+			Mysterybox.open(player);
 			break;
 
 		case 4155: //Enchanted Gem
@@ -123,9 +129,9 @@ public class ItemActionPacketHandler implements PacketType {
 			break;
 			
 		case 2677:
-		case 2678:
-		case 2679:
-		case 2680:
+		case 2801:
+		case 2722:
+		case 12073:
 			if (player.clueContainer == null) {
 				Optional<ClueDifficulty> cd = ClueDifficulty.getDifficulty(item);
 				if (!cd.isPresent())
@@ -176,7 +182,6 @@ public class ItemActionPacketHandler implements PacketType {
 			break;
 			
 		default:
-			found = false;
 			if (player.in_debug_mode())
 				player.write(new SendMessagePacket("First item option clicked on a: (" + player.getItems().getItemName(item) + ")"));
 			break;
@@ -205,6 +210,20 @@ public class ItemActionPacketHandler implements PacketType {
 	}
 
 	private void doShovelActions(Player player) {
-		
+		if (!sendClue(player, player.getItems().search(ClueDifficulty.getClueIds()))) {
+			player.write(new SendMessagePacket("Nothing interesting happens."));
+		}
+	}
+	
+	private boolean sendClue(Player player, int id) {
+		if (player.clueContainer == null || id == -1) {
+			return false;
+		}
+		Location l = player.clueContainer.stages.peek().getLocation();
+		if (player.getPosition().inLocation(l)) {
+			player.clueContainer.next(id);
+			return true;
+		}
+		return false;
 	}
 }

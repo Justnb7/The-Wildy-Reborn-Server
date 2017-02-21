@@ -1,6 +1,5 @@
 package com.model.game.character.player.content.teleport;
 
-import com.model.game.location.Location;
 import com.model.game.location.Position;
 
 /**

@@ -15,7 +15,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.location.Location;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 

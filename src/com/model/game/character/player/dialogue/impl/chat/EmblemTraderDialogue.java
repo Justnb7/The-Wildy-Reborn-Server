@@ -1,5 +1,7 @@
 package com.model.game.character.player.dialogue.impl.chat;
 
+import com.model.game.character.player.content.achievements.AchievementType;
+import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
@@ -94,6 +96,7 @@ public class EmblemTraderDialogue extends Dialogue {
 					return;
 				}
 				player.setBountyPoints(player.getBountyPoints() + totalPoints);
+				Achievements.increase(player, AchievementType.BOUNTIES, totalPoints);
 				send(Type.NPC, NPC_ID, Expression.HAPPY, "I've traded your emblems for " + Utility.format(totalPoints) + " bounty", "points. You now have a total of " + Utility.format(player.getBountyPoints()), "bounty points.");
 				setPhase(0);
 				totalPoints = 0;

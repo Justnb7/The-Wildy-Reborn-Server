@@ -34,7 +34,7 @@ public class AttackPlayer implements PacketType {
 			}
 			
 			if (player.getIndex() < 0 || player.isDead()) {
-				System.out.println("index or npc dead");
+				System.out.println("index below 0 or player dead");
 				return;
 			}
 			
@@ -71,7 +71,7 @@ public class AttackPlayer implements PacketType {
 			}
 
 			if (player.throwingAxe && player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 3)) {
-				player.usingRangeWeapon = true;
+				player.throwingAxe = true;
 				player.stopMovement();
 			}
 

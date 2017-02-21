@@ -19,7 +19,6 @@ import com.model.Server;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.location.Location;
 import com.model.game.location.Position;
 
 public class Utility {
@@ -842,21 +841,6 @@ public class Utility {
 				wasSpace = true;
 		}
 		return newText.toString();
-	}
-
-	/**
-	 * A or an
-	 * 
-	 * @param nextWord
-	 * @return
-	 */
-	public static String getAOrAn(String nextWord) {
-		String s = "a";
-		char c = nextWord.toUpperCase().charAt(0);
-		if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
-			s = "an";
-		}
-		return s;
 	}
 	
 	/**

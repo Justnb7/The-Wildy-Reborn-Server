@@ -4,7 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
+import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Teleports;
 
 /**
  * Item Click 2 Or Alternative Item Option 1
@@ -37,7 +37,7 @@ public class SecondItemOption implements PacketType {
 			break;
 		
 		case 4155:
-			SlayerTaskManagement.teleToTask(player);
+			Teleports.teleport(player);
 			break;
 
 		case 2572:

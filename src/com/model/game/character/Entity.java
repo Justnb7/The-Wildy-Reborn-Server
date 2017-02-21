@@ -406,7 +406,7 @@ public abstract class Entity {
 	/**
 	 * The last known map region.
 	 */
-	private Position lastKnownRegion = this.getLocation();
+	private Position lastKnownRegion = this.getPosition();
 	
 	/**
 	 * The face location.
@@ -512,7 +512,7 @@ public abstract class Entity {
 	 * 
 	 * @return The current location.
 	 */
-	public Position getLocation() {
+	public Position getPosition() {
 		return location;
 	}
 	

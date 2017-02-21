@@ -193,21 +193,17 @@ public class Equipment {
 		}
 		return false;
 	}
-
-	public boolean wearingAnguish(Player player) {
-		return player.playerEquipment[getWeaponId()] == 19547;
-	}
 	
 	public boolean usingCrystalBow(Player player) {
-		return player.playerEquipment[getWeaponId()] == 4222;
+		return player.playerEquipment[3] == 4222;
 	}
 	
 	public boolean wearingBlowpipe(Player player) {
-		return player.playerEquipment[getWeaponId()] == 12926;
+		return player.playerEquipment[3] == 12926;
 	}
 	
 	public boolean wearingBallista(Player player) {
-		return player.playerEquipment[getWeaponId()] == 19481;
+		return player.playerEquipment[3] == 19481;
 	}
 	
 	public boolean isCrossbow(Player player) {

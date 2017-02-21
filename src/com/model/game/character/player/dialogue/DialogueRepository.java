@@ -10,6 +10,7 @@ import com.model.game.character.player.dialogue.impl.WeirdOldMan;
 import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue;
 import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue2;
 import com.model.game.character.player.dialogue.impl.chat.EmblemTraderDialogue;
+import com.model.game.character.player.dialogue.impl.chat.Mandrith;
 import com.model.game.character.player.dialogue.impl.chat.RunescapeGuide;
 import com.model.game.character.player.dialogue.impl.minigames.BarrowsTunnel;
 import com.model.game.character.player.dialogue.impl.pets.Olmlet;
@@ -17,11 +18,11 @@ import com.model.game.character.player.dialogue.impl.slayer.ChaeldarDialogue;
 import com.model.game.character.player.dialogue.impl.slayer.DuradelDialogue;
 import com.model.game.character.player.dialogue.impl.slayer.EnchantedGem;
 import com.model.game.character.player.dialogue.impl.slayer.EnchantedGemTeleport;
-import com.model.game.character.player.dialogue.impl.slayer.Mandrith;
 import com.model.game.character.player.dialogue.impl.slayer.MazchnaDialogue;
 import com.model.game.character.player.dialogue.impl.slayer.NieveDialogue;
 import com.model.game.character.player.dialogue.impl.slayer.TuraelDialogue;
 import com.model.game.character.player.dialogue.impl.slayer.VannakaDialogue;
+import com.model.game.character.player.dialogue.impl.slayer.abilities.TeleportToTask;
 import com.model.game.character.player.dialogue.impl.teleport.AgilityTeleports;
 import com.model.game.character.player.dialogue.impl.teleport.MiningTeleports;
 
@@ -38,6 +39,11 @@ public class DialogueRepository {
 	private static final Map<String, Class<? extends Dialogue>> dialogues = new HashMap<>();
 
 	static {
+		
+		/**
+		 * Slayer abilities
+		 */
+		dialogues.put("TELEPORT_TO_TASK", TeleportToTask.class);
 		
 		/**
 		 * Pets

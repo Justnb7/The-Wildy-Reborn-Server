@@ -21,7 +21,6 @@ public class FollowPlayer implements PacketType {
 		player.npcIndex = 0;
 		player.mageFollow = false;
 		player.usingBow = false;
-		player.usingRangeWeapon = false;
 		player.followDistance = 1;
 		player.followId = followPlayer;
 	}

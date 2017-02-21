@@ -3,7 +3,6 @@ package com.model.game.character.player.content.cluescrolls;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import com.google.common.collect.Iterables;
@@ -25,7 +24,6 @@ import com.model.utility.json.definitions.ItemDefinition;
 public final class ClueScrollHandler {
 
 	public static final int DIG_RADIUS = 2;
-	public static final double CLUE_DROP_RATE = 0.008;
 
 	public static final int[] ELITE_CLUE_DROPS = { 4186, 4972, 2881, 2882, 2883, 4172, 4173, 4174, 4175, 3847, 4291, 6222, 6247, 6260, 6203, 3340, 3200 };
 	public static final IntervalItem[] DUMMY_CLUE_REWARDS = { new IntervalItem(1085), new IntervalItem(1097), new IntervalItem(1094), new IntervalItem(1113), new IntervalItem(1127), new IntervalItem(1147), new IntervalItem(1149), new IntervalItem(1163), new IntervalItem(1185), new IntervalItem(1201), new IntervalItem(1207), new IntervalItem(1213), new IntervalItem(1215), new IntervalItem(1218), new IntervalItem(1224), new IntervalItem(1233), new IntervalItem(1247), new IntervalItem(1239), new IntervalItem(1253),
@@ -35,27 +33,7 @@ public final class ClueScrollHandler {
 	public static final IntervalItem[] HARD_CLUE_REWARDS = { new IntervalItem(7336), new IntervalItem(7342), new IntervalItem(7348), new IntervalItem(7354), new IntervalItem(7360), new IntervalItem(2619), new IntervalItem(2621), new IntervalItem(2617), new IntervalItem(2615), new IntervalItem(3476), new IntervalItem(2627), new IntervalItem(2629), new IntervalItem(2625), new IntervalItem(2623), new IntervalItem(3477), new IntervalItem(2657), new IntervalItem(2659), new IntervalItem(2655), new IntervalItem(2653), new IntervalItem(3478), new IntervalItem(2665), new IntervalItem(2667), new IntervalItem(2577), new IntervalItem(2581), new IntervalItem(2663), new IntervalItem(2661), new IntervalItem(3479), new IntervalItem(2673), new IntervalItem(2675), new IntervalItem(2671), new IntervalItem(2669), new IntervalItem(3480), new IntervalItem(10374), new IntervalItem(10370), new IntervalItem(10372), new IntervalItem(10368), new IntervalItem(10382), new IntervalItem(10378), new IntervalItem(10380), new IntervalItem(10376), new IntervalItem(10390), new IntervalItem(10386), new IntervalItem(10388), new IntervalItem(10384), new IntervalItem(2581), new IntervalItem(2651), new IntervalItem(2639), new IntervalItem(2641), new IntervalItem(2643), new IntervalItem(7400), new IntervalItem(7399), new IntervalItem(7398), new IntervalItem(10440), new IntervalItem(10442), new IntervalItem(10444), new IntervalItem(10446), new IntervalItem(10448), new IntervalItem(10450), new IntervalItem(10362), new IntervalItem(3486), new IntervalItem(3488), new IntervalItem(3483), new IntervalItem(3481), new IntervalItem(3485), new IntervalItem(3831), new IntervalItem(3832), new IntervalItem(3833), new IntervalItem(3834), new IntervalItem(3827), new IntervalItem(3828), new IntervalItem(3829), new IntervalItem(3830), new IntervalItem(3835), new IntervalItem(3836), new IntervalItem(3837), new IntervalItem(3838), new IntervalItem(4561, 10, 50), new IntervalItem(7331), new IntervalItem(7330), new IntervalItem(7329), new IntervalItem(1163), new IntervalItem(1201), new IntervalItem(108), new IntervalItem(1127), new IntervalItem(1093), new IntervalItem(1645), new IntervalItem(1691), new IntervalItem(1700), new IntervalItem(1644), new IntervalItem(990), new IntervalItem(1631), new IntervalItem(892, 50, 200), new IntervalItem(1615), new IntervalItem(1319), new IntervalItem(1333), new IntervalItem(1290), new IntervalItem(1303), new IntervalItem(860), new IntervalItem(862), new IntervalItem(10284), new IntervalItem(565, 10, 200), new IntervalItem(563, 10, 200) };
 	public static final IntervalItem[] ELITE_CLUE_REWARDS = { new IntervalItem(1079), new IntervalItem(1093), new IntervalItem(1113), new IntervalItem(1333), new IntervalItem(1127), new IntervalItem(1359), new IntervalItem(1147), new IntervalItem(1373), new IntervalItem(1163), new IntervalItem(2491), new IntervalItem(1185), new IntervalItem(2497), new IntervalItem(1201), new IntervalItem(2503), new IntervalItem(1275), new IntervalItem(861), new IntervalItem(1303), new IntervalItem(859), new IntervalItem(1319), new IntervalItem(2581), new IntervalItem(2577), new IntervalItem(2651), new IntervalItem(3486), new IntervalItem(3488), new IntervalItem(3483), new IntervalItem(3481), new IntervalItem(3485), new IntervalItem(3831), new IntervalItem(3832), new IntervalItem(3833), new IntervalItem(3834), new IntervalItem(3827), new IntervalItem(3828), new IntervalItem(3829), new IntervalItem(3830), new IntervalItem(3835), new IntervalItem(3836), new IntervalItem(3837), new IntervalItem(3838), new IntervalItem(10374), new IntervalItem(10370), new IntervalItem(10372), new IntervalItem(10368), new IntervalItem(10382), new IntervalItem(10378), new IntervalItem(10380), new IntervalItem(10376), new IntervalItem(10390), new IntervalItem(10386), new IntervalItem(10388), new IntervalItem(10384), new IntervalItem(2581), new IntervalItem(4561, 10, 50), new IntervalItem(7331), new IntervalItem(7330), new IntervalItem(7329), new IntervalItem(1163), new IntervalItem(1201), new IntervalItem(1080), new IntervalItem(1127), new IntervalItem(1093), new IntervalItem(1645), new IntervalItem(1691), new IntervalItem(1700), new IntervalItem(1644), new IntervalItem(990), new IntervalItem(1631), new IntervalItem(1275), new IntervalItem(4587), new IntervalItem(892, 50, 200), new IntervalItem(1615), new IntervalItem(1319) };
 
-	public static final IntervalItem[] ULTRA_RARE = { new IntervalItem(15586), new IntervalItem(10350), new IntervalItem(10348), new IntervalItem(10346), new IntervalItem(10352), new IntervalItem(10342), new IntervalItem(10338), new IntervalItem(10340), new IntervalItem(10344), new IntervalItem(10334), new IntervalItem(10330), new IntervalItem(10332), new IntervalItem(10336), };
-
-	public static boolean calculateDrop(Player player, Npc npc, boolean always) {
-		if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()) || player.bossDifficulty != null)
-			return false;
-		if ((Math.round(Utility.RANDOM.nextDouble() * 100.0) / 100.0) <= CLUE_DROP_RATE || always) {
-			Optional<ClueDifficulty> clueScroll = ClueDifficulty.determineClue(player, npc);
-			if (!clueScroll.isPresent())
-				return false;
-			Item item = new Item(clueScroll.get().clueId);
-			if (npc.npcId == 494) {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
-			} else {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), npc.getX(), npc.getY(), npc.heightLevel, player));
-			}
-			player.write(new SendMessagePacket("<col=255> You see a clue scroll drop on the floor.."));
-			return true;
-		}
-		return false;
-	}
-	
+	public static final IntervalItem[] ULTRA_RARE = { new IntervalItem(10350), new IntervalItem(10348), new IntervalItem(10346), new IntervalItem(10352), new IntervalItem(10342), new IntervalItem(10338), new IntervalItem(10340), new IntervalItem(10344), new IntervalItem(10334), new IntervalItem(10330), new IntervalItem(10332), new IntervalItem(10336), };
 
 	public static Item[] determineReward(Player p, ClueDifficulty c) {
 		int amount = Utility.inclusiveRandom(c.minReward, c.maxReward);

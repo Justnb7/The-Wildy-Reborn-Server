@@ -12,7 +12,7 @@ public class EconomyReset {
 	**	Config
 	**/
 	private static File charDir = new File("Data/characters/");
-	public static int items[] = {11838, 13887, 13893, 13902, 13896, 13884, 13890, 12381, 12383, 12385, 12387, 12417, 12414, 12415, 12416, 12418};
+	public static int items[] = {21003};
 	public static boolean displayAllNames = false;
 	
 	

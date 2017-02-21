@@ -58,12 +58,6 @@ public class PlayerVsPlayerCombat {
 	 */
 	
 	public static void applyPlayerHit(final Player player, Player target, Item item) {
-		if(target.infection != 2 && player.getEquipment().canInfect(player)) {
-			if(Utility.getRandom(3) == 0 && target.isSusceptibleToVenom()) {
-				new Venom(target);
-			}
-		}
-		
 		applyPlayerMeleeDamage(player, target, 1); 
 	}
 	
@@ -142,11 +136,6 @@ public class PlayerVsPlayerCombat {
 		defender.addDamageReceived(attacker.getName(), damage);
 		defender.damage(new Hit(damage));
 		PlayerSounds.sendBlockOrHitSound(defender, damage > 0);
-		if(defender.infection != 2 && attacker.getEquipment().canInfect(attacker)){
-			if(Utility.getRandom(3) == 0 && defender.isSusceptibleToVenom()) {
-				new Venom(defender);
-			}
-		}
 	}
 
 	/**
@@ -201,31 +190,35 @@ public class PlayerVsPlayerCombat {
 	/**
 	 * Applies the damage based on the provided combat type
 	 * 
-	 * @param player
+	 * @param attacker
 	 *            The {@link Player} attacking the opponent
-	 * @param target
+	 * @param defender
 	 *            The {@link Player} being attacked
 	 * @param combatType
 	 *            The {@link CombatType} for the attack
 	 * @param item
 	 *            The {@link Item} the player is holding
 	 */
-	private static void applyCombatDamage(Player player, Player target, CombatType combatType, Item item, int i) {
-		PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), item.getId());
-		if(target.infection != 2 && player.getEquipment().canInfect(player)){
-			if(Utility.getRandom(3) == 0 && target.isSusceptibleToVenom()) {
-				new Venom(target);
+	private static void applyCombatDamage(Player attacker, Player defender, CombatType combatType, Item item, int index) {
+		if(item != null && attacker != null) {
+			PlayerSounds.SendSoundPacketForId(attacker, attacker.isUsingSpecial(), item.getId());
+		}
+		if(defender.infection != 2 && attacker.getEquipment().canInfect(attacker)) {
+			int inflictVenom = Utility.getRandom(5);
+			//System.out.println("Venom roll: "+inflictVenom);
+			if(inflictVenom == 0 && defender.isSusceptibleToVenom()) {
+				new Venom(defender);
 			}
 		}
 		switch (combatType) {
 		case MAGIC:
-			applyPlayerMagicDamage(player, target);
+			applyPlayerMagicDamage(attacker, defender);
 			break;
 		case MELEE:
-			applyPlayerHit(player, target, item);
+			applyPlayerHit(attacker, defender, item);
 			break;
 		case RANGED:
-			applyPlayerRangeDamage(player, target, i);
+			applyPlayerRangeDamage(attacker, defender, index);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
@@ -339,11 +332,6 @@ public class PlayerVsPlayerCombat {
 		if (secondairy_damage != -1) {
 			defender.addDamageReceived(attacker.getName(), secondairy_damage);
 			defender.damage(new Hit(secondairy_damage));
-		}
-		if(defender.infection != 2 && attacker.getEquipment().canInfect(attacker)){
-			if(Utility.getRandom(4) == 0 && defender.isSusceptibleToVenom()) {
-			   new Venom(defender);
-			}
 		}
 		//World.getWorld().getPlayers().get(i).setHitUpdateRequired(true);	
 		defender.updateRequired = true;
@@ -512,22 +500,6 @@ public class PlayerVsPlayerCombat {
 		defender.updateRequired = true;
 		attacker.usingMagic = false;
 		attacker.castingMagic = false;
-		if (defender.getArea().inMulti() && attacker.getCombat().multis()) {
-			attacker.barrageCount = 0;
-			for (int j = 0; j < World.getWorld().getPlayers().capacity(); j++) {
-				World.getWorld();
-				if (World.getWorld().getPlayers().get(j) != null) {
-					if (j == defender.getIndex())
-						continue;
-					if (attacker.barrageCount >= 9)
-						break;
-					if (attacker.goodDistance(defender.getX(), defender.getY(), World.getWorld().getPlayers().get(j).getX(), World.getWorld().getPlayers().get(j).getY(), 1)) {
-						World.getWorld().getPlayers().get(j).wasFrozen = World.getWorld().getPlayers().get(j).refreezeTicks > -3;
-					}
-						attacker.getCombat().appendMultiBarrage(j, attacker.magicFailed);
-				}
-			}
-		}
 		attacker.oldSpellId = 0;
 	}
 
@@ -580,7 +552,7 @@ public class PlayerVsPlayerCombat {
 		Player attacker = World.getWorld().PLAYERS.get(defender.underAttackBy);
 		player.write(new SendString(defender.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+defender.getSkills().getLevel(Skills.HITPOINTS)+ ((attacker != null) ? "-"+ attacker.getName() : ""), 35000));
 
-		player.usingBow = player.usingRangeWeapon = player.usingBow = player.usingArrows = player.throwingAxe = false;
+		player.usingBow = player.usingBow = player.usingArrows = player.throwingAxe = false;
 		player.rangeItemUsed = 0;
 		player.usingCross = player.getEquipment().isCrossbow(player);
 		player.setCombatType(player.usingCross ? CombatType.RANGED : CombatType.MELEE);
@@ -619,8 +591,9 @@ public class PlayerVsPlayerCombat {
 			player.usingCross = player.getEquipment().isCrossbow(player);
 			player.usingArrows = player.getEquipment().isArrow(player);
 			boolean bolt = player.getEquipment().isBolt(player);
+			boolean javalin = player.getCombat().properJavalins();
 			
-			if(player.throwingAxe || player.usingCross || player.usingBow) {
+			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
 				player.setCombatType(CombatType.RANGED);
 			}
 			
@@ -628,28 +601,13 @@ public class PlayerVsPlayerCombat {
 				player.throwingAxe = true;
 			}
 			
-			if(bolt || player.usingArrows) {
+			if(bolt || javalin || player.usingArrows) {
 				player.usingArrows = true;
 			}
 		}
-		
-		/*if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12926) {
-			if (player.getToxicBlowpipeAmmunition() < 0) {
-				player.write(new SendGameMessage("Your toxic blowpipe has no charges left"));
-				Combat.resetCombat(player);
-				return;
-			}
-			player.setToxicBlowpipeAmmunition(player.getToxicBlowpipeAmmunition() - 1);
-			player.setToxicBlowpipeCharges(player.getToxicBlowpipeCharges() - 1);
-		}*/
 
 		if (!player.getController().canAttackPlayer(player, defender) && Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL) == null) {
 			return;
-		}
-		
-		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 22494) {
-			player.setSpellId(54);
-			player.usingMagic = true;
 		}
 		
 		/*
@@ -661,7 +619,6 @@ public class PlayerVsPlayerCombat {
 		 * Verify if we have the proper arrows/bolts
 		 */
 		if (player.getCombatType() == CombatType.RANGED) {
-			
 			if (!player.usingCross
 					&& !player.throwingAxe
 					&& !player.usingArrows
@@ -669,7 +626,7 @@ public class PlayerVsPlayerCombat {
 					&& player.playerEquipment[player.getEquipment().getWeaponId()] != 12926) {
 				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
 				player.stopMovement();
-				player.npcIndex = 0;
+				player.playerIndex = 0;
 				return;
 			}
 
@@ -679,11 +636,18 @@ public class PlayerVsPlayerCombat {
 					&& !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
 				player.write(new SendMessagePacket("You can't use " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase() + "s with a " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase() + "."));
 				player.stopMovement();
-				player.npcIndex = 0;
+				player.playerIndex = 0;
 				return;
 			}
 			if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
 				player.write(new SendMessagePacket("You must use bolts with a crossbow."));
+				player.stopMovement();
+				Combat.resetCombat(player);
+				return;
+			}
+			
+			if(player.getEquipment().wearingBallista(player) && !player.getCombat().properJavalins()) {
+				player.write(new SendMessagePacket("You must use javalins with a ballista."));
 				player.stopMovement();
 				Combat.resetCombat(player);
 				return;
@@ -706,8 +670,6 @@ public class PlayerVsPlayerCombat {
 				return;
 			}
 		}
-
-
 
 		/**
 		 * Since we can attack, lets verify if we're close enough to attack
@@ -744,8 +706,6 @@ public class PlayerVsPlayerCombat {
 				player.attackedPlayers.add(player.playerIndex);
 				player.isSkulled = true;
 				player.skullTimer = 500;
-				if (player.redSkull != 1)
-					player.skullIcon = 0;
 				player.write(new SendClearScreen());
 			}
 		}
@@ -756,20 +716,6 @@ public class PlayerVsPlayerCombat {
 		/*
 		 * Check if we are using a special attack
 		 */
-		/*if (player.isUsingSpecial() && player.getCombatType() != CombatType.MAGIC) {
-			if (player.getCombat().checkSpecAmount(player.playerEquipment[player.getEquipment().getWeaponId()])) {
-				player.lastArrowUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-				player.getCombat().activateSpecial(player.playerEquipment[player.getEquipment().getWeaponId()], i);
-				player.followId = player.playerIndex;
-				return;
-			} else {
-				player.write(new SendGameMessage("You don't have the required special energy to use this attack."));
-				player.setUsingSpecial(false);
-				player.getWeaponInterface().refreshSpecialAttack();
-				player.playerIndex = 0;
-				return;
-			}
-		}*/
 		if (player.isUsingSpecial() && player.getCombatType() != CombatType.MAGIC) {
 			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.lastArrowUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
@@ -853,7 +799,6 @@ public class PlayerVsPlayerCombat {
 		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.getItems().deleteEquipment();
-			player.usingRangeWeapon = true;
 			World.getWorld();
 			player.followId = World.getWorld().getPlayers().get(player.playerIndex).getIndex();
 			player.getPA().followPlayer(true);
@@ -862,18 +807,6 @@ public class PlayerVsPlayerCombat {
 				player.attackDelay--;
 			player.oldPlayerIndex = i;
 			player.getCombat().fireProjectilePlayer();
-		} else if(player.playerEquipment[player.getEquipment().getWeaponId()] == 13022 && (!player.throwingAxe && !player.usingMagic)){
-				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-				player.usingRangeWeapon = true;
-				player.usingBow = true;
-				player.followId = World.getWorld().getPlayers().get(player.playerIndex).getIndex();
-				player.getPA().followPlayer(true);
-				player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-				if (player.getAttackStyle() == 2)
-					player.attackDelay--;
-				player.hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
-				player.oldPlayerIndex = i;
-				player.getCombat().fireProjectilePlayer();
 		} else if (player.getCombatType() == CombatType.MAGIC) {
 			int pX = player.getX();
 			int pY = player.getY();
@@ -992,12 +925,12 @@ public class PlayerVsPlayerCombat {
 		}
 
 		// Always last
-		if (player.usingRangeWeapon || player.usingMagic || player.throwingAxe) {
-			if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation())) {
+		if (player.usingBow || player.usingMagic || player.throwingAxe) {
+			if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), target.getPosition())) {
 				return true;
 			}
 		} else {
-			if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), target.getLocation())) {
+			if (ProjectilePathFinder.isInteractionPathClear(player.getPosition(), target.getPosition())) {
 				return true;
 			}
 		}

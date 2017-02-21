@@ -13,24 +13,6 @@ public class MagicData {
 		return c.MAGIC_SPELLS[c.oldSpellId][5];
 	}
 
-	public static boolean multiSpells(Player c) {
-		if (!c.getController().allowMultiSpells(c)) {
-			return false;
-		}
-		switch (c.MAGIC_SPELLS[c.oldSpellId][0]) {
-		case 12891:
-		case 12881:
-		case 13011:
-		case 13023:
-		case 12919: // blood spells
-		case 12929:
-		case 12963:
-		case 12975:
-			return true;
-		}
-		return false;
-	}
-
 	public static int getStartGfxHeight(Player c) {
 		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 12871:

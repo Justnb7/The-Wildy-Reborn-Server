@@ -34,9 +34,15 @@ public class RangedCalculations {
 
         double rangeBonus = RangeData.getRangeStr(player.usingBow ? player.lastArrowUsed : player.lastWeaponUsed);
 
-        if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12926) {
+        if (player.getEquipment().wearingBlowpipe(player)) {
             rangeBonus = RangeData.getRangeStr(11230);
             player.playerBonus[4] += RangeData.getRangeStr(11230);
+        }
+        
+        if (player.getEquipment().wearingBallista(player)) {
+        	int ammo = player.playerEquipment[player.getEquipment().getQuiverId()];
+            rangeBonus = RangeData.getRangeStr(ammo);
+            player.playerBonus[4] += RangeData.getRangeStr(ammo);
         }
 
         double effectiveStrength = (rangedLevel) + combatStyleBonus;
@@ -51,7 +57,15 @@ public class RangedCalculations {
         	}
         }
         
-        if(player.getEquipment().wearingAnguish(player)) {
+        if(player.getEquipment().wearingBallista(player)) {
+        	if (player.isUsingSpecial()) {
+        		maxHit *= 1.35;
+        	} else {
+        		maxHit *= 1.08;
+        	}
+        }
+        
+        if(player.playerEquipment[player.getEquipment().getAmuletId()] == 19547) {
         	maxHit += 0.5;
         }
 

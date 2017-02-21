@@ -12,24 +12,6 @@ import com.model.utility.Utility;
 
 public class RangeExtras {
 
-	public static void appendMutliChinchompa(Player player, int npcId) {
-		if (World.getWorld().getNpcs().get(npcId) != null) {
-			Npc n = World.getWorld().getNpcs().get(npcId);
-			if (n.isDead) {
-				return;
-			}
-			player.multiAttacking = true;
-			//int damage = Utils.getRandom(c.getCombat().rangeMaxHit());
-			int damage = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
-			if (World.getWorld().getNpcs().get(npcId).currentHealth - damage < 0) {
-				damage = World.getWorld().getNpcs().get(npcId).currentHealth;
-			}
-			World.getWorld().getNpcs().get(npcId).underAttackBy = player.getIndex();
-			World.getWorld().getNpcs().get(npcId).underAttack = true;
-			World.getWorld().getNpcs().get(npcId).damage(new Hit(damage));
-		}
-	}
-
 	private static void createCombatGFX(Player c, int i, int gfx, boolean height100) {
 		Player p = World.getWorld().getPlayers().get(i);
 		Npc n = World.getWorld().getNpcs().get(i);

@@ -6,7 +6,6 @@ import com.model.game.character.Entity;
 import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.MagicData;
-import com.model.game.character.combat.magic.MagicExtras;
 import com.model.game.character.combat.magic.MagicRequirements;
 import com.model.game.character.combat.melee.MeleeCalculations;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
@@ -51,22 +50,6 @@ public class CombatAssistant {
 		return true;
 	}
 
-	public boolean checkMultiBarrageReqs(int i) {
-		return MagicExtras.checkMultiBarrageReqs(player, i);
-	}
-
-	public void multiSpellEffectNPC(int npcId, int damage) {
-		MagicExtras.multiSpellEffectNPC(player, npcId, damage);
-	}
-
-	public boolean checkMultiBarrageReqsNPC(int i) {
-		return MagicExtras.checkMultiBarrageReqsNPC(i);
-	}
-
-	public void appendMultiBarrageNPC(int npcId, boolean splashed) {
-		MagicExtras.appendMultiBarrageNPC(player, npcId, splashed);
-	}
-
 	public void attackNpc(int i) {
 		PlayerVsNpcCombat.attackNpc(player, i);
 	}
@@ -81,18 +64,6 @@ public class CombatAssistant {
 
 	public void playerDelayedHit(final Player c, final int i, Item item) {
 		PlayerVsPlayerCombat.applyPlayerHit(c, i, item);
-	}
-
-	public boolean multis() {
-		return MagicData.multiSpells(player);
-	}
-
-	public void appendMultiBarrage(int playerId, boolean splashed) {
-		MagicExtras.appendMultiBarrage(player, playerId, splashed);
-	}
-
-	public void multiSpellEffect(int playerId, int damage) {
-		MagicExtras.multiSpellEffect(player, playerId, damage);
 	}
 
 	public void applySmite(Player defender, int damage) {
@@ -138,9 +109,9 @@ public class CombatAssistant {
 	public void crossbowSpecial(Player c, int i) {
 		RangeExtras.crossbowSpecial(c, i);
 	}
-
-	public void appendMutliChinchompa(int npcId) {
-		RangeExtras.appendMutliChinchompa(player, npcId);
+	
+	public boolean properJavalins() {
+		return usingJavalins(player.playerEquipment[player.getEquipment().getQuiverId()]);
 	}
 
 	public boolean properBolts() {
@@ -161,6 +132,10 @@ public class CombatAssistant {
 
 	public boolean usingRackBolts(int i) {
 		return (i == 4740);
+	}
+	
+	public boolean usingJavalins(int javalin) {
+		return (javalin >= 825 && javalin <= 830) || javalin == 19484;
 	}
 
 	public boolean usingBolts(int i) {

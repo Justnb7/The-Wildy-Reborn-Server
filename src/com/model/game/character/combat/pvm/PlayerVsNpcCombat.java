@@ -255,22 +255,7 @@ public class PlayerVsNpcCombat {
 		} else if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907 || player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
             Utility.getRandom(npc.getDefinition().getMagicDefence());
 		}
-		for (Npc n : World.getWorld().getNpcs()) {
-			if (n != null && n.maximumHealth > 0) {
-				int nX = n.getX();
-				int nY = n.getY();
-				int pX = npc.getX();
-				int pY = npc.getY();
-				if ((nX - pX == -1 || nX - pX == 0 || nX - pX == 1) && (nY - pY == -1 || nY - pY == 0 || nY - pY == 1)) {
-					if (player.getCombat().multis() && npc.inMulti()) {
-						World.getWorld();
-						Player p = World.getWorld().getPlayers().get(player.getIndex());
-						player.getCombat().appendMultiBarrageNPC(n.getIndex(), player.magicFailed);
-						NpcVsPlayerCombat.attackPlayer(p, n);
-					}
-				}
-			}
-		}
+		
 		if (npc.currentHealth - damage < 0) {
 			damage = npc.currentHealth;
 		}
@@ -455,24 +440,6 @@ public class PlayerVsNpcCombat {
 		if (npc.attackTimer < 5)
 			npc.playAnimation(Animation.create(CombatAnimation.getNPCBlockAnimation(npc.getIndex())));
 		player.rangeEndGFX = RangeData.getRangeEndGFX(player);
-		if ((player.playerEquipment[3] == 10034 || player.playerEquipment[3] == 10033)) {
-			for (Npc n : World.getWorld().getNpcs()) {
-				if (n != null && n.maximumHealth > 0) {
-					int nX = n.getX();
-					int nY = n.getY();
-					int pX = npc.getX();
-					int pY = npc.getY();
-					if ((nX - pX == -1 || nX - pX == 0 || nX - pX == 1)
-							&& (nY - pY == -1 || nY - pY == 0 || nY - pY == 1)) {
-						if (npc.inMulti()) {
-							Player p = World.getWorld().getPlayers().get(player.getIndex());
-							player.getCombat().appendMutliChinchompa(n.getIndex());
-							NpcVsPlayerCombat.attackPlayer(p, n);
-						}
-					}
-				}
-			}
-		}
 
 		if (!player.multiAttacking) {
 			npc.underAttack = true;
@@ -627,8 +594,9 @@ public class PlayerVsNpcCombat {
 			player.usingCross = player.getEquipment().isCrossbow(player);
 			player.usingArrows = player.getEquipment().isArrow(player);
 			boolean bolt = player.getEquipment().isBolt(player);
+			boolean javalin = player.getCombat().properJavalins();
 			
-			if(player.throwingAxe || player.usingCross || player.usingBow) {
+			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
 				player.setCombatType(CombatType.RANGED);
 			}
 			
@@ -636,7 +604,7 @@ public class PlayerVsNpcCombat {
 				player.throwingAxe = true;
 			}
 			
-			if(bolt || player.usingArrows) {
+			if(bolt || javalin || player.usingArrows) {
 				player.usingArrows = true;
 			}
 		}
@@ -666,7 +634,7 @@ public class PlayerVsNpcCombat {
 		player.followId2 = index;
 		player.followId = 0;
 		boolean inside = false;
-		boolean projectiles = player.usingRangeWeapon || player.usingMagic || player.throwingAxe
+		boolean projectiles = player.usingBow || player.usingMagic || player.throwingAxe
 				|| player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC;
 		for (Position tile : npc.getTiles()) {
 			if (player.absX == tile.getX() && player.absY == tile.getY()) {
@@ -708,12 +676,12 @@ public class PlayerVsNpcCombat {
 					}
 
 					Position location = new Position(x3, y3, z);
-					double d = location.distance(player.getLocation());
+					double d = location.distance(player.getPosition());
 					if (d < lowDist) {
 						if (ignoreClip || !projectiles || projectiles
-								&& ProjectilePathFinder.isProjectilePathClear(location, npc.getLocation())) {
+								&& ProjectilePathFinder.isProjectilePathClear(location, npc.getPosition())) {
 							if (ignoreClip || projectiles || !projectiles
-									&& ProjectilePathFinder.isInteractionPathClear(location, npc.getLocation())) {
+									&& ProjectilePathFinder.isInteractionPathClear(location, npc.getPosition())) {
 								lowDist = d;
 								lowX = x3;
 								lowY = y3;
@@ -778,8 +746,9 @@ public class PlayerVsNpcCombat {
 			player.usingCross = player.getEquipment().isCrossbow(player);
 			player.usingArrows = player.getEquipment().isArrow(player);
 			boolean bolt = player.getEquipment().isBolt(player);
+			boolean javalin = player.getCombat().properJavalins();
 			
-			if(player.throwingAxe || player.usingCross || player.usingBow) {
+			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
 				player.setCombatType(CombatType.RANGED);
 			}
 			
@@ -787,7 +756,7 @@ public class PlayerVsNpcCombat {
 				player.throwingAxe = true;
 			}
 			
-			if(bolt || player.usingArrows) {
+			if(bolt || javalin || player.usingArrows) {
 				player.usingArrows = true;
 			}
 		}
@@ -795,10 +764,10 @@ public class PlayerVsNpcCombat {
 		// if (!inside) {
 		boolean hasDistance = npc.npcId == 5535 ? true : false; // force 5535 tents to always be hittable
 		for (Position pos : npc.getTiles()) {
-			double distance = pos.distance(player.getLocation());
+			double distance = pos.distance(player.getPosition());
 			boolean magic = player.usingMagic;
 			boolean ranged = !player.usingMagic
-					&& (player.usingRangeWeapon || player.throwingAxe || player.usingBow || player.usingArrows);
+					&& (player.throwingAxe || player.usingBow || player.usingCross || player.usingArrows);
 			boolean melee = !magic && !ranged;
 			if(CombatData.usingHalberd(player)) {
 				if(distance <= 2) {
@@ -873,6 +842,13 @@ public class PlayerVsNpcCombat {
 			}
 			if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
 				player.write(new SendMessagePacket("You must use bolts with a crossbow."));
+				player.stopMovement();
+				Combat.resetCombat(player);
+				return;
+			}
+			
+			if(player.getEquipment().wearingBallista(player) && !player.getCombat().properJavalins()) {
+				player.write(new SendMessagePacket("You must use javalins with a ballista."));
 				player.stopMovement();
 				Combat.resetCombat(player);
 				return;
@@ -1045,13 +1021,13 @@ public class PlayerVsNpcCombat {
 		boolean projectile = player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC;
 		if (projectile) {
 			for (Position pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), pos)) {
+				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
 					return true;
 				}
 			}
 		} else {
 			for (Position pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), pos)) {
+				if (ProjectilePathFinder.isInteractionPathClear(player.getPosition(), pos)) {
 					//player.write(new SendGameMessage("debug");
 					return true;
 				}

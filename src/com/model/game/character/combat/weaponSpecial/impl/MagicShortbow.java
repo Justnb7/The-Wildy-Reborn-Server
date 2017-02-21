@@ -66,7 +66,7 @@ public class MagicShortbow implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity victim) {
-		if (player.usingRangeWeapon || player.usingBow) {
+		if (player.usingBow) {
 			return true;
 		}
 		return false;

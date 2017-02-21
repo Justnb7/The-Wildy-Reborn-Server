@@ -268,6 +268,16 @@ public class CombatData {
 			distance = 4;
 		} else if (!player.throwingAxe && usingHalberd(player) && !player.usingBow && !player.usingMagic) {
 			distance = 2;
+		} else if (player.usingBow) {
+			distance = 7;
+		} else if(player.playerEquipment[player.getEquipment().getWeaponId()] == 11785) {
+			distance = 9;
+		} else if (player.getEquipment().wearingBallista(player)) {
+			distance = 11;
+		} else if (player.getEquipment().wearingBlowpipe(player)) {
+			distance = 5;
+		} else if (player.usingMagic) {
+			distance = 10;
 		} else if (!player.throwingAxe && !usingHalberd(player) && !player.usingBow && !player.usingMagic) {
 			if (player.getX() != victim.getX() && player.getY() != victim.getY()
 					&& player.distanceToPoint(victim.getX(), victim.getY()) < 2) {
@@ -275,12 +285,7 @@ public class CombatData {
 			} else {
 				distance = CombatRequirements.getRequiredDistance(player);
 			}
-		} else if (player.usingBow) {
-			distance = 7;
-		} else if (player.usingMagic) {
-			distance = 8;
 		}
-
 		if (victim.getMovementHandler().isMoving() && !follow) {
 			distance += 2;
 		}
@@ -294,8 +299,7 @@ public class CombatData {
 	 * @return
 	 */
 	public static boolean isWithinAttackDistance(Player player, Player victim) {
-		return player.goodDistance(player.getX(), player.getY(), victim.getX(), victim.getY(),
-				calculateAttackDistance(player, victim, false));
+		return player.goodDistance(player.getX(), player.getY(), victim.getX(), victim.getY(), calculateAttackDistance(player, victim, false));
 	}
 
 	/**

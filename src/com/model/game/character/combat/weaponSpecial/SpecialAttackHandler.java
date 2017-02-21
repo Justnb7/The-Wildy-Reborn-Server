@@ -11,6 +11,7 @@ import com.model.game.character.combat.weaponSpecial.impl.AbyssalTentacle;
 import com.model.game.character.combat.weaponSpecial.impl.AbyssalWhip;
 import com.model.game.character.combat.weaponSpecial.impl.ArmadylCrossbow;
 import com.model.game.character.combat.weaponSpecial.impl.ArmadylGodsword;
+import com.model.game.character.combat.weaponSpecial.impl.Ballista;
 import com.model.game.character.combat.weaponSpecial.impl.BandosGodsword;
 import com.model.game.character.combat.weaponSpecial.impl.BarrelchestAnchor;
 import com.model.game.character.combat.weaponSpecial.impl.CrystalHalberd;
@@ -97,6 +98,7 @@ public class SpecialAttackHandler {
 		specials.put(4153, new GraniteMaul());
 		specials.put(11785, new ArmadylCrossbow());
 		specials.put(19780, new KorasiSword());
+		specials.put(19481, new Ballista());
 	}
 
 	/**

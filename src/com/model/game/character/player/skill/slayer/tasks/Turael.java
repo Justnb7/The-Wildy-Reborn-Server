@@ -1,8 +1,8 @@
 package com.model.game.character.player.skill.slayer.tasks;
 
 public enum Turael implements Task {
-	 Banshees(414, 15),
-	 BAT(2827, 1),
+	 BANSHEE(414, 15),
+	 BAT(2834, 1),
 	 BIRDS(2692, 1),
 	 BEAR(3423, 1),
 	 CAVE_BUGS(481, 7),

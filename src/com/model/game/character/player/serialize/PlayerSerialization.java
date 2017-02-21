@@ -177,6 +177,8 @@ public class PlayerSerialization {
                             p.skullTimer = Integer.parseInt(value);
 						} else if (key.equals("infection-type")) {
                             p.infection = Integer.parseInt(value);
+						} else if (key.equals("can-teleport-to-slayer-tasks")) {
+							p.setCanTeleportToTask(Boolean.parseBoolean(value));
 						} else if (key.equals("slayer-task")) {
                             p.setSlayerTask(Integer.parseInt(value));
                         } else if (key.equals("task-amount")) {
@@ -585,6 +587,8 @@ public class PlayerSerialization {
             writer.newLine();
 			writer.write("slayer-task = " + p.getSlayerTask());
             writer.newLine();
+            writer.write("can-teleport-to-slayer-tasks = " + p.canTeleportToSlayerTask());
+            writer.newLine();
             writer.write("task-amount = " + p.getSlayerTaskAmount());
             writer.newLine();
             writer.write("task-difficulity = " + p.getSlayerTaskDifficulty());
@@ -813,15 +817,20 @@ public class PlayerSerialization {
 					writer.write(c.name() + "\t");
 			}
 			writer.newLine();
-			writer.write("clue-reward = "+p.bossDifficulty == null ? "null" : p.bossDifficulty.name());
+			writer.write("clue-reward = ");
+			writer.write(p.bossDifficulty == null ? "null" : p.bossDifficulty.name());
 			writer.newLine();
-			writer.write("easy-clue = "+p.easyClue);
+			writer.write("easy-clue = ");
+			writer.write(Integer.toString(p.easyClue));
 			writer.newLine();
-			writer.write("medium-clue = "+p.mediumClue);
+			writer.write("medium-clue = ");
+			writer.write(Integer.toString(p.mediumClue));
 			writer.newLine();
-			writer.write("hard-clue = "+p.hardClue);
+			writer.write("hard-clue = ");
+			writer.write(Integer.toString(p.hardClue));
 			writer.newLine();
-			writer.write("elite-clue = "+p.eliteClue);
+			writer.write("elite-clue = ");
+			writer.write(Integer.toString(p.eliteClue));
 			writer.newLine();
 			writer.newLine();
 

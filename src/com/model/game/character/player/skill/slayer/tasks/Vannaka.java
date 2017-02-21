@@ -5,7 +5,7 @@ public enum Vannaka implements Task {
 	 ABYSSAL_DEMON(415, 85),
 	 Banshees(414, 15),
 	 BASILISK(417, 40),
-	 BLUE_DRAGON(265, 1),
+	 BLUE_DRAGON(268, 1),
 	 BLOODVELD(484, 50),
 	 BRONZE_DRAGON(270, 1),
 	 CAVE_BUGS(481, 7),

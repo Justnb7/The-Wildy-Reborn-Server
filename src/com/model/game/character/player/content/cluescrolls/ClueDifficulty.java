@@ -25,19 +25,19 @@ public enum ClueDifficulty {
 			return npc.combatLevel >= 0 && npc.combatLevel <= 40;
 		}
 	},
-	MEDIUM(2678, 2, 4, 2, 4, ClueScrollHandler.MEDIUM_CLUE_REWARDS, new int[] { 393, 394, 427, 428, 415, 416, 440, 441 }) {
+	MEDIUM(2801, 2, 4, 2, 4, ClueScrollHandler.MEDIUM_CLUE_REWARDS, new int[] { 393, 394, 427, 428, 415, 416, 440, 441 }) {
 		@Override
 		public boolean dropClue(Player player, Npc npc) {
 			return npc.combatLevel > 40 && npc.combatLevel <= 100;
 		}
 	},
-	HARD(2679, 4, 6, 3, 5, ClueScrollHandler.HARD_CLUE_REWARDS, new int[] { 395, 396, 429, 430, 417, 418, 442, 443 }) {
+	HARD(2722, 4, 6, 3, 5, ClueScrollHandler.HARD_CLUE_REWARDS, new int[] { 395, 396, 429, 430, 417, 418, 442, 443 }) {
 		@Override
 		public boolean dropClue(Player player, Npc npc) {
 			return npc.combatLevel > 100 && !Arrays.stream(ClueScrollHandler.ELITE_CLUE_DROPS).anyMatch(id -> id == npc.npcId);
 		}
 	},
-	ELITE(2680, 7, 10, 5, 9, ClueScrollHandler.ELITE_CLUE_REWARDS, new int[] { 4172, 4173, 4174, 4175 }) {
+	ELITE(12073, 7, 10, 5, 9, ClueScrollHandler.ELITE_CLUE_REWARDS, new int[] { 4172, 4173, 4174, 4175 }) {
 		@Override
 		public boolean dropClue(Player player, Npc npc) {
 			return Arrays.stream(ClueScrollHandler.ELITE_CLUE_DROPS).anyMatch(id -> id == npc.npcId);

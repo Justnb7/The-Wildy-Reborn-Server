@@ -1,9 +1,7 @@
 package com.model.game.character.player;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import com.model.Server;
@@ -16,7 +14,7 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.clan.ClanManager;
-import com.model.game.character.player.content.rewards.CrystalChest;
+import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
@@ -392,21 +390,8 @@ public class CommandPacketHandler implements PacketType {
 			player.forceChat("My Kill/Death ratio is "+player.getKillCount()+"/"+player.getDeathCount()+"; "+KDR);
     		return true;
     		
-    	case "redskull":
-    		if (player.redSkull > 0)
-				return false;
-			player.isSkulled = true;
-			player.skullTimer = 500;
-			player.skullIcon = 1;
-			player.redSkull = 1;
-			player.getPA().requestUpdates();
-			player.write(new SendMessagePacket("@red@You are now red skulled. This means you lose ALL items while in dangerous areas."));
-			player.write(new SendMessagePacket("@red@Note! @bla@You receive extra PK Points when red skulled."));
-    		return true;
     		
     	case "skull":
-    		if (player.redSkull > 0)
-				return false;
 			player.isSkulled = true;
 			player.skullTimer = 500;
 			player.skullIcon = 0;
@@ -433,14 +418,9 @@ public class CommandPacketHandler implements PacketType {
 			player.isSkulled = false;
 			player.skullTimer = -1;
 			player.skullIcon = -1;
-			player.redSkull = 0;
 			player.getPA().requestUpdates();
 			player.attackedPlayers.clear();
 			player.write(new SendMessagePacket("@blu@You are now unskulled."));
-    		return true;
-    		
-    	case "vote":
-    		player.write(new SendLink("https://luzoxpk.motivoters.com/motivote/"));
     		return true;
     		
     	case "yell":
@@ -702,6 +682,38 @@ public class CommandPacketHandler implements PacketType {
     	
     	switch(cmd[0]) {
     	
+    	case "clue":
+			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
+				return false;
+			Optional<ClueDifficulty> clueScroll = Optional.of(ClueDifficulty.EASY);
+			Item item = new Item(clueScroll.get().clueId);
+			player.getItems().addItem(item);
+			return true;
+			
+    	case "clue2":
+			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
+				return false;
+			clueScroll = Optional.of(ClueDifficulty.MEDIUM);
+			item = new Item(clueScroll.get().clueId);
+			player.getItems().addItem(item);
+			return true;
+			
+    	case "clue3":
+			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
+				return false;
+			clueScroll = Optional.of(ClueDifficulty.HARD);
+			item = new Item(clueScroll.get().clueId);
+			player.getItems().addItem(item);
+			return true;
+			
+		case "clue4":
+			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
+				return false;
+			clueScroll = Optional.of(ClueDifficulty.ELITE);
+			item = new Item(clueScroll.get().clueId);
+			player.getItems().addItem(item);
+		return true;
+    	
     	case "song":
     		int song = Integer.parseInt(cmd[1]);
     		player.write(new SendSongPacket(song));
@@ -732,51 +744,6 @@ public class CommandPacketHandler implements PacketType {
     		player.write(new SendMessagePacket("Magic max: "+MagicCalculations.magicMaxHitModifier(player)));
     		player.write(new SendMessagePacket("Range max: "+player.getCombat().calculateRangeMaxHit()));
     		return true;
-    	
-    	case "cr":
-				int trials = Integer.parseInt(cmd[1]);
-				List<Item> items = new ArrayList<>();
-				for (int i = 0; i < trials; i++) {
-					Item itemReceived;
-					switch (Utility.getRandom(25)) {
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-					case 5:
-						itemReceived = Utility.randomElement(CrystalChest.UNCOMMON_CHEST_REWARDS);
-						break;
-					case 25:
-						itemReceived = Utility.randomElement(CrystalChest.RARE_CHEST_REWARDS);
-						break;
-					default:
-						itemReceived = Utility.randomElement(CrystalChest.COMMON_CHEST_REWARDS);
-					}
-					items.add(itemReceived);
-					if (itemReceived.getDefinition().getShopValue() < 100_000) {
-						switch (Utility.getRandom(25)) {
-						case 1:
-						case 2:
-						case 3:
-						case 4:
-						case 5:
-							itemReceived = Utility.randomElement(CrystalChest.UNCOMMON_CHEST_REWARDS);
-							break;
-						case 25:
-							itemReceived = Utility.randomElement(CrystalChest.RARE_CHEST_REWARDS);
-							break;
-						default:
-							itemReceived = Utility.randomElement(CrystalChest.COMMON_CHEST_REWARDS);
-						}
-						items.add(itemReceived);
-					}
-				}
-				for (Item item : items) {
-					player.getItems().sendItemToAnyTab(item.getId(), item.getAmount());
-				}
-				items.clear();
-				player.write(new SendMessagePacket("Simulated " + trials + " crystal chests."));
-			return true;
 			
     	case "setstat":
     		try {
@@ -922,11 +889,6 @@ public class CommandPacketHandler implements PacketType {
 			player.write(new SendChatBoxInterface(interfaceId));
     		return true;
     		
-    	case "invincible":
-    		player.setInvincible(!player.isInvincible());
-			player.write(new SendMessagePacket("You are " + (player.isInvincible() ? "now invulnerable" : " no longer invulnerable") + " to damage."));
-    		return true;
-    		
     	case "debugmode":
     		player.set_debug_mode(!player.in_debug_mode());
 			player.write(new SendMessagePacket("You are " + (player.in_debug_mode() ? "now using" : " no longer using") + " debug mode."));
@@ -1040,12 +1002,12 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
     	case "item":
-    		int item = Integer.parseInt(cmd[1]);
+    		int spawnItem = Integer.parseInt(cmd[1]);
 			if (cmd.length == 3) {
 				int amount = Integer.parseInt(cmd[2]);
-				player.getItems().addItem(new Item(item, amount));
+				player.getItems().addItem(new Item(spawnItem, amount));
 			} else if (cmd.length == 2) {
-				player.getItems().addItem(new Item(item, 1));
+				player.getItems().addItem(new Item(spawnItem, 1));
 			} else {
 				player.write(new SendMessagePacket("Invalid Format - ::item <id> <amount>"));
 			}

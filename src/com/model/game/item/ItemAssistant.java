@@ -389,7 +389,7 @@ public class ItemAssistant {
              * Handle giving the emblem to the killer
              */
             if (killer != null && killer.getAttribute("receive_emblem", false)) {
-                GroundItemHandler.createGroundItem(new GroundItem(new Item(BountyHunterEmblem.TIER_1.getItemId()), player.getLocation(), killer));
+                GroundItemHandler.createGroundItem(new GroundItem(new Item(BountyHunterEmblem.TIER_1.getItemId()), player.getPosition(), killer));
                 killer.setAttribute("receive_emblem", false);
             }
 			for (int i = 0; i < player.playerItems.length; i++) {
@@ -2142,6 +2142,13 @@ public class ItemAssistant {
 				}
 			}
 		}
+	}
+
+	public int search(int... ids) {
+		for (int id : ids)
+			if (playerHasItem(id))
+				return id;
+		return -1;
 	}
 	
 }

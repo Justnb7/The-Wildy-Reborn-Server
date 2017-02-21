@@ -320,6 +320,12 @@ public final class Shop {
 				player.getAchievements().setBoughtItem(item.getId());
 			} else if (player.getOpenShop().equals("Bounty Hunter Store")) {
 				player.write(new SendString("Bounties: " + Utility.insertCommas(Integer.toString(player.getBountyPoints())), 28052));
+			} else if (player.getOpenShop().equals("Blood money rewards")) {
+				if (item.getId() == 19484) {
+					player.getItems().addItem(item.getId(), 10);
+				} else {
+					player.getItems().addItem(item.getId(), 1);
+				}
 			}
 		} else {
 			player.write(new SendMessagePacket("You don't have enough space in your inventory."));
@@ -888,6 +894,8 @@ public final class Shop {
 	
 	public static int getBMShopValue(int id) {
 		switch (id) {
+		case 19484:
+			return 10;
 		case 12006:
 			return 525;
 		case 4151:

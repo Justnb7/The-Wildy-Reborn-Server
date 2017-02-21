@@ -1,7 +1,5 @@
 package com.model.game.character.player;
 
-import io.netty.buffer.Unpooled;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -92,7 +90,6 @@ import com.model.game.item.equipment.Equipment;
 import com.model.game.item.equipment.EquipmentSet;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
-import com.model.game.location.Location;
 import com.model.game.location.Position;
 import com.model.game.shop.Currency;
 import com.model.game.shop.Shop;
@@ -104,6 +101,8 @@ import com.model.task.ScheduledTask;
 import com.model.task.impl.DistancedActionTask;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
+
+import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
 	
@@ -192,7 +191,7 @@ public class Player extends Entity {
 		this.maxCape = maxCape;
 	}
 	
-	public boolean usingBow, usingRangeWeapon, usingMagic, castingMagic, magicFailed;
+	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	
 	private boolean usingMelee;
 	
@@ -308,7 +307,18 @@ public class Player extends Entity {
 		this.wildernessKillStreak = wildernessKillStreak;
 	}
 	
+	/**
+	 * Teleport to slayer task abilitie
+	 */
+	private boolean canTeleToTask;
 	
+	public boolean canTeleportToSlayerTask() {
+		return canTeleToTask;
+	}
+	
+	public void setCanTeleportToTask(boolean able_to_tele) {
+		this.canTeleToTask = able_to_tele;
+	}
 	
 	/**
 	 * Representing the amount of completed slayer tasks
@@ -728,7 +738,7 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public Position getLocation() {
+	public Position getPosition() {
 		return new Position(absX, absY, heightLevel);
 	}
 
@@ -846,7 +856,7 @@ public class Player extends Entity {
 																					// of
 																					// zammy
 
-			{ 12445, 85, 1819, 0, 344, 345, 0, 65, 563, 1, 562, 1, 560, 1, 0, 0, 0 }, // teleblock
+			{ 12445, 85, 1819, 0, 0, 1299, 0, 65, 563, 1, 562, 1, 560, 1, 0, 0, 0 }, // teleblock
 
 			// Ancient Spells
 			{ 12939, 50, 1978, 0, 384, 385, 13, 30, 560, 2, 562, 2, 554, 1, 556, 1, 0 }, // smoke
@@ -1245,19 +1255,24 @@ public class Player extends Entity {
 		inStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		inStream.offset = 0;
 	}
-
+	
 	@Override
 	public Hit decrementHP(Hit hit) {
 		int damage = hit.getDamage();
-		if (damage > this.getSkills().getLevel(3))
-			damage = this.getSkills().getLevel(3);
-
-		if (!isInvincible()) {
-			this.getSkills().setLevel(3, getSkills().getLevel(3) - damage);
-			//System.out.println("Health "+getSkills().getLevel(Skills.HITPOINTS)+ " damage taken: "+damage);
+		int health = getSkills().getLevel(Skills.HITPOINTS);
+		System.out.println("dmg="+damage);
+		System.out.println("currentHealth="+health);
+		if (damage > health) {
+			getSkills().setLevel(Skills.HITPOINTS, health = damage);
+			System.out.println("higher");
+		} else {
+			getSkills().setLevel(Skills.HITPOINTS, health - damage);
+			System.out.println("currentHealth="+health);
+			System.out.println("dmg");
 		}
-		int difference = getSkills().getLevel(Skills.HITPOINTS) - damage;
-		if (difference <= this.getSkills().getLevelForExperience(Skills.HITPOINTS) / 10 && difference > 0) {
+
+		int difference = health -= damage;
+		if (difference <= getSkills().getLevelForExperience(Skills.HITPOINTS) / 10 && difference > 0) {
 			getPrayerHandler().appendRedemption(this);
 		}
 
@@ -1265,7 +1280,7 @@ public class Player extends Entity {
 		 * Check if our player has died, if so start the death task
 		 * 
 		 */
-		if (getSkills().getLevel(3) < 1 && !isDead()) {
+		if (health <= 0 && !isDead()) {
 			setDead(true);
 			hasDied();
 		}
@@ -1533,7 +1548,6 @@ public class Player extends Entity {
 		if (!controller.canLogOut(this)) {
 			return;
 		}
-		this.redSkull = 0;
 		this.infection = 0;
 		this.infected = false;
 		this.poisonDamage = 0;
@@ -1650,19 +1664,10 @@ public class Player extends Entity {
 					attackedPlayers.clear();
 					skullIcon = -1;
 					skullTimer = -1;
-					redSkull = -1;
 					getPA().requestUpdates();
 				}
 			}
 
-			// freezing is a timer that belongs in the main process, we can however
-			// add an entity process which can share between both npc/players
-			//Lets start here btw, idk why PI has this in the processing
-			//Shouldnt be rite?/
-			//Alrite well the freezeTimer shit is pi i've added
-			//isnt thi already npc and player process? it'll be in both but it can be in
-			// entity only just to reduce duplicate code like same code in both classes plr/npc
-			//then you mgith need to show me i don't fully understand that entity processing kk
 			super.frozen_process();
 			if (hitDelay > 0) {
 				hitDelay--;
@@ -1813,10 +1818,6 @@ public class Player extends Entity {
 	 */
 	private boolean isActive;
 
-	public boolean isInvincible() {
-		return invincible;
-	}
-
 	/**
 	 * Gets the shop that you currently have open.
 	 *
@@ -1842,10 +1843,6 @@ public class Player extends Entity {
 			s.getPlayers().remove(this);
 		}
 		this.openShop = openShop;
-	}
-
-	public void setInvincible(boolean b) {
-		this.invincible = b;
 	}
 
 	public boolean isUnattackable() {
@@ -2188,7 +2185,7 @@ public class Player extends Entity {
 	 * @return	true of they can be infected by venom.
 	 */
 	public boolean isSusceptibleToVenom() {
-		return System.currentTimeMillis() - lastVenomCure > venomImmunity && !getItems().isWearingItem(12931) || !getItems().isWearingItem(13197) || !getItems().isWearingItem(13199);
+		return System.currentTimeMillis() - lastVenomCure > venomImmunity && !getItems().isWearingItem(12931) && !getItems().isWearingItem(13197) && !getItems().isWearingItem(13199);
 	}
 	
 	/**
@@ -3126,7 +3123,7 @@ public class Player extends Entity {
      * Integers
      */
 	public int playerAppearance[] = new int[13];
-	public int openInterface = -1, droppedItem = -1, redSkull;
+	public int openInterface = -1, droppedItem = -1;
 	public int petNpcIndex;
 	public int countdown;
 	public int combatCountdown = 10;

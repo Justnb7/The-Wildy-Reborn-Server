@@ -8,6 +8,7 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
@@ -183,7 +184,7 @@ public class DuelSession extends MultiplayerSession {
 			player.write(new SendMessagePacket("You cannot stake this item, it is deemed as untradable."));
 			return false;
 		}
-		if (item.id == 12926 || item.id == 12931 || item.id == 12904) {
+		if (item.id == 12926 || item.id == 12931 || item.id == 12904 || ClueDifficulty.isClue(item.id)) {
 			player.write(new SendMessagePacket("You cannot stake this item, it is deemed as untradable."));
 			return false;
 		}

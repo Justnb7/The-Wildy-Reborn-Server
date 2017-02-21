@@ -17,10 +17,12 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
+import com.model.game.character.player.content.achievements.AchievementType;
+import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.DrawHeadicon;
 import com.model.game.character.player.packets.encode.impl.SendKillFeed;
+import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.json.NPCDefinitionLoader;
@@ -289,7 +291,58 @@ public final class NPCHandler {
 			player.getBossDeathTracker().add(npc);
 			if (npc.npcId == player.getSlayerTask())
 				player.getSlayerDeathTracker().add(npc);
+			switch(npc.npcId) {
+			case 6610:
+				Achievements.increase(player, AchievementType.VENENATIS, 1);
+				break;
+			case 2054:
+				Achievements.increase(player, AchievementType.CHAOS_ELEMENTAL, 1);
+				break;
+			case 6619:
+				Achievements.increase(player, AchievementType.CHAOS_FANATIC, 1);
+				break;
+			case 319:
+				Achievements.increase(player, AchievementType.CORPOREAL_BEAST, 1);
+				break;
+			case 6609:
+				Achievements.increase(player, AchievementType.CALLISTO, 1);
+				break;
+			case 6611:
+				Achievements.increase(player, AchievementType.VETION, 1);
+				break;
+			case 6615:
+				Achievements.increase(player, AchievementType.SCORPIA, 1);
+				break;
+			case 494:
+				Achievements.increase(player, AchievementType.KRAKEN, 1);
+				break;
+			case 3162:
+				Achievements.increase(player, AchievementType.KREE_ARRA, 1);
+				break;
+			case 3131:
+				Achievements.increase(player, AchievementType.KRIL_TSUTSAROTH, 1);
+				break;
+			case 2205:
+				Achievements.increase(player, AchievementType.COMMANDER_ZILYANA, 1);
+				break;
+			case 2215:
+				Achievements.increase(player, AchievementType.GENERAL_GRAARDOR, 1);
+				break;
+			case 239:
+				Achievements.increase(player, AchievementType.KING_BLACK_DRAGON, 1);
+				break;
+			case 6342:
+				Achievements.increase(player, AchievementType.BARRELCHEST, 1);
+				break;
+			case 3359:
+				Achievements.increase(player, AchievementType.ZOMBIE_CHAMPION, 1);
+				break;
+			case 6618:
+				Achievements.increase(player, AchievementType.CRAZY_ARCHAEOLOGIST, 1);
+				break;
+			}
 		}
+	
 		
 		int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
 		player.write(new SendKillFeed(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
@@ -309,7 +362,12 @@ public final class NPCHandler {
 		} else if(player.getTotalAmountDonated() > 200) {
 			yourIncrease += 15;
 		}
-		NpcDropSystem.get().drop(player, npc, yourIncrease);
+/*		if (!ClueScrollHandler.npcDrop(player, npc)) {
+			if (!ClueScrollHandler.calculateDrop(player, npc, false)) {
+
+			}*/
+			NpcDropSystem.get().drop(player, npc, yourIncrease);
+		//}
 	}
 
 	/**
@@ -396,7 +454,7 @@ public final class NPCHandler {
 		 * If close enough, stop following
 		 */
 		for (Position pos : npc.getTiles()) {
-			double distance = pos.distance(player.getLocation());
+			double distance = pos.distance(player.getPosition());
 			boolean magic = npc.getCombatType() == CombatType.MAGIC;
 			boolean ranged = !magic && npc.getCombatType() == CombatType.RANGED;
 			boolean melee = !magic && !ranged;
@@ -450,31 +508,31 @@ public final class NPCHandler {
 
 		int toDir = ProjectilePathFinder.getDirection(x, y, x + toX, y + toY);
 
-		if (mob.canMoveTo(mob.getLocation(), toDir)) {
+		if (mob.canMoveTo(mob.getPosition(), toDir)) {
 			direction = toDir;
 		} else {
 			if (toDir == 0) {
-				if (mob.canMoveTo(mob.getLocation(), 3)) {
+				if (mob.canMoveTo(mob.getPosition(), 3)) {
 					direction = 3;
-				} else if (mob.canMoveTo(mob.getLocation(), 1)) {
+				} else if (mob.canMoveTo(mob.getPosition(), 1)) {
 					direction = 1;
 				}
 			} else if (toDir == 2) {
-				if (mob.canMoveTo(mob.getLocation(), 1)) {
+				if (mob.canMoveTo(mob.getPosition(), 1)) {
 					direction = 1;
-				} else if (mob.canMoveTo(mob.getLocation(), 4)) {
+				} else if (mob.canMoveTo(mob.getPosition(), 4)) {
 					direction = 4;
 				}
 			} else if (toDir == 5) {
-				if (mob.canMoveTo(mob.getLocation(), 3)) {
+				if (mob.canMoveTo(mob.getPosition(), 3)) {
 					direction = 3;
-				} else if (mob.canMoveTo(mob.getLocation(), 6)) {
+				} else if (mob.canMoveTo(mob.getPosition(), 6)) {
 					direction = 6;
 				}
 			} else if (toDir == 7) {
-				if (mob.canMoveTo(mob.getLocation(), 4)) {
+				if (mob.canMoveTo(mob.getPosition(), 4)) {
 					direction = 4;
-				} else if (mob.canMoveTo(mob.getLocation(), 6)) {
+				} else if (mob.canMoveTo(mob.getPosition(), 6)) {
 					direction = 6;
 				}
 			}

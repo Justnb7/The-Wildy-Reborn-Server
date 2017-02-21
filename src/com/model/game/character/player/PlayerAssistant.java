@@ -201,7 +201,7 @@ public class PlayerAssistant {
         boolean magicDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 7);
         boolean castingMagic = (player.spellId > 0 || player.autocastId > 0 || player.oldSpellId > 0 || player.usingMagic || player.autoCast || player.getCombatType() == CombatType.MAGIC  && magicDistance);
 
-		boolean playerRanging = (player.usingRangeWeapon) && rangeWeaponDistance;
+		boolean playerRanging = (player.throwingAxe) && rangeWeaponDistance;
 		boolean playerBowOrCross = (player.usingBow) && bowDistance;
 
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
@@ -319,7 +319,7 @@ public class PlayerAssistant {
             Position followLoc = null;
 
             for (Position i : locs) {
-                if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
+                if (followLoc == null || player.getPosition().getDistance(i) < player.getPosition().getDistance(followLoc)) {
                     followLoc = i;
                 }
             }
@@ -386,7 +386,7 @@ public class PlayerAssistant {
 			return;
 		}
 
-		if(player.usingRangeWeapon && rangeWeaponDistance && !sameSpot) {
+		if(player.usingBow || player.usingCross && rangeWeaponDistance && !sameSpot) {
 			return;
 		}
 
@@ -402,9 +402,9 @@ public class PlayerAssistant {
 
         if (!inside) {
             for (Position Location : npc.getTiles()) {
-                double distance = Location.distance(player.getLocation());
+                double distance = Location.distance(player.getPosition());
                 boolean magic = player.usingMagic;
-                boolean ranged = !player.usingMagic && (player.usingRangeWeapon || player.throwingAxe);
+                boolean ranged = !player.usingMagic && (player.usingBow || player.usingCross || player.throwingAxe);
                 boolean melee = !magic && !ranged;
                 if (melee) {
                     if (distance <= 1) {
@@ -445,7 +445,7 @@ public class PlayerAssistant {
             Position followLoc = null;
 
             for (Position i : locs) {
-                if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
+                if (followLoc == null || player.getPosition().getDistance(i) < player.getPosition().getDistance(followLoc)) {
                     followLoc = i;
                 }
             }

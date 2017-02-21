@@ -20,7 +20,6 @@ import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
-import com.model.game.location.Location;
 import com.model.game.location.Position;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.task.impl.NPCDeathTask;
@@ -271,7 +270,7 @@ public class Npc extends Entity {
 		return new Hit(damage, hit.getType());
 	}
 
-	public Position getLocation() {
+	public Position getPosition() {
 		return new Position(absX, absY, heightLevel);
 	}
 
@@ -307,7 +306,7 @@ public class Npc extends Entity {
 	}
 
 	public Position[] getTiles() {
-		return getTiles(getLocation());
+		return getTiles(getPosition());
 	}
 
 	/**
@@ -317,11 +316,11 @@ public class Npc extends Entity {
 	 *         size.
 	 */
 	public Position[] getBorder() {
-		int x = getLocation().getX();
-		int y = getLocation().getY();
+		int x = getPosition().getX();
+		int y = getPosition().getY();
 		int size = getSize();
 		if (size <= 1) {
-			return new Position[] { getLocation() };
+			return new Position[] { getPosition() };
 		}
 
 		Position[] border = new Position[(size) + (size - 1) + (size - 1) + (size - 2)];
@@ -722,7 +721,7 @@ public class Npc extends Entity {
 			return;
 		}
 		if (following_target != null) {
-			if (following_target.getLocation().getZ() != this.heightLevel) {
+			if (following_target.getPosition().getZ() != this.heightLevel) {
 				facePlayer(0);
 				this.resetFollowing();
 				return;
@@ -746,7 +745,7 @@ public class Npc extends Entity {
 			 * If close enough, stop following
 			 */
 			for (Position pos : getTiles()) {
-				double distance = pos.distance(following_target.getLocation());
+				double distance = pos.distance(following_target.getPosition());
 				if (distance > 16) {
 					facePlayer(0);
 					this.resetFollowing();
@@ -769,7 +768,7 @@ public class Npc extends Entity {
 					&& (getX() > makeX - 15)
 					&& (getY() < makeY + 15) && (getY() > makeY
 					- 15)) {
-			NPCHandler.walkToNextTile(this, following_target.getLocation().getX(), following_target.getLocation().getY());
+			NPCHandler.walkToNextTile(this, following_target.getPosition().getX(), following_target.getPosition().getY());
 			}
 		}//try
 		// wtf this old follow method isnt even used LMFAO

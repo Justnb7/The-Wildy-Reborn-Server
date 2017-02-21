@@ -33,7 +33,7 @@ public class Achievements {
 		KILL_50_GENERAL_GRAARDOR(15, AchievementTier.TIER_1, AchievementType.GENERAL_GRAARDOR, null, "Kill 50 General Graardors", 50, 1),
 		KILL_50_COMMANDER_ZILYANA(16, AchievementTier.TIER_1, AchievementType.COMMANDER_ZILYANA, null, "Kill 50 Commander zilyanas", 50, 1),
 		KILL_50_KRIL_TSUTSAROTH(17, AchievementTier.TIER_1, AchievementType.KRIL_TSUTSAROTH, null, "Kill 50 K'ril Tsutsaroths", 50, 1),
-		TREASURE_TRIALS(18, AchievementTier.TIER_1, AchievementType.TREASURE_TRIAL, null, "Complete 75 treasure trials", 75, 1),
+		TREASURE_TRIALS(18, AchievementTier.TIER_1, AchievementType.TREASURE_TRIAL, null, "Complete 50 treasure trials", 50, 1),
 		
 		/**
 		 * Tier 2 Achievement Start
@@ -41,14 +41,15 @@ public class Achievements {
 		INTERMEDIATE_PKER(0, AchievementTier.TIER_2, AchievementType.KILL_PLAYER, null, "Kill 250 Players", 250, 2),
 		INTERMEDIATE_BOUNTY_HUNTER(1, AchievementTier.TIER_2, AchievementType.BOUNTY_HUNTER, null, "Kill 250 Targets", 250, 2),
 		BOUNTY_HUNTER(2, AchievementTier.TIER_2, AchievementType.BOUNTIES, null, "Claim 50 million bounties", 50_000_000, 2),
-		
+		COMPLETE_25_MEDIUM_CLUE_SCROLLS(3, AchievementTier.TIER_2, AchievementType.MEDIUM_CLUE, null, "Complete 25 medium clue scrolls", 25, 2),
 		
 		/**
 		 * Tier 3 Achievement Start
 		 */
 		VETERAN(0, AchievementTier.TIER_3, AchievementType.KILL_PLAYER, null, "Kill 800 Players", 800, 3),
-		VETERAN_BOUNTY_HUNTER(1, AchievementTier.TIER_3, AchievementType.BOUNTY_HUNTER, null, "Kill 500 Targets", 500, 3);
-		
+		VETERAN_BOUNTY_HUNTER(1, AchievementTier.TIER_3, AchievementType.BOUNTY_HUNTER, null, "Kill 500 Targets", 500, 3),
+		COMPLETE_25_HARD_CLUE_SCROLLS(2, AchievementTier.TIER_3, AchievementType.HARD_CLUE, null, "Complete 25 hard clue scrolls", 25, 3),
+		COMPLETE_25_ELITE_CLUE_SCROLLS(3, AchievementTier.TIER_3, AchievementType.ELITE_CLUE, null, "Complete 25 elite clue scrolls", 25, 3);
 
 		private AchievementTier tier;
 		private AchievementRequirement requirement;

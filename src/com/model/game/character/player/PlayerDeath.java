@@ -7,6 +7,8 @@ import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayer;
 import com.model.game.character.combat.effect.PKHandler;
+import com.model.game.character.player.content.achievements.AchievementType;
+import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
@@ -234,6 +236,7 @@ public class PlayerDeath {
 				player.write(new SendMessagePacket(message_to_player[new java.util.Random().nextInt(message_to_player.length)]));
 				QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
+				Achievements.increase(killer, AchievementType.KILL_PLAYER, 1);
 			}
 	}
 	

@@ -7,6 +7,8 @@ import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.character.player.content.achievements.AchievementType;
+import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
@@ -390,6 +392,7 @@ public class BountyHunter extends ScheduledTask {
 			BountyTierHandler.upgrade(killer);
 			killer.setAttribute("receive_emblem", handleItemGiving(player, killer));
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
+			Achievements.increase(killer, AchievementType.BOUNTY_HUNTER, 1);
 		} else {
 			int current = killer.getAttribute(BountyHunterConstants.ROGUE_CURRENT, 0);
 			killer.setAttribute(BountyHunterConstants.ROGUE_CURRENT, current + 1);

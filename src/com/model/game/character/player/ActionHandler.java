@@ -70,7 +70,7 @@ public class ActionHandler {
 			return;
 		}
 
-		/*Obelisks.get().activate(player, id);*/
+		Obelisks.get().activate(player, id);
 		player.getMining().mine(id, new Location3D(x, y, player.heightLevel));
 		if (def.name == null || def.name.length() == 0) {
 			return;

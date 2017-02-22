@@ -25,6 +25,7 @@ import com.model.game.character.player.dialogue.impl.slayer.VannakaDialogue;
 import com.model.game.character.player.dialogue.impl.slayer.abilities.TeleportToTask;
 import com.model.game.character.player.dialogue.impl.teleport.AgilityTeleports;
 import com.model.game.character.player.dialogue.impl.teleport.MiningTeleports;
+import com.model.game.character.player.dialogue.impl.teleport.TeleportCard;
 
 /**
  * A repository to contain all of the dialogues
@@ -76,6 +77,7 @@ public class DialogueRepository {
 		 */
 		dialogues.put("AGILITY_TELEPORTS", AgilityTeleports.class);
 		dialogues.put("MINING_TELEPORTS", MiningTeleports.class);
+		dialogues.put("TELEPORT_CARD", TeleportCard.class);
 		
 		/**
 		 * Starter dialogue

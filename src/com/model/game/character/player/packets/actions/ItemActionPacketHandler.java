@@ -92,6 +92,10 @@ public class ItemActionPacketHandler implements PacketType {
 
 		switch (item) {
 		
+		case 13658:
+			player.dialogue().start("TELEPORT_CARD", player);
+			break;
+		
 		case 6798:
 			player.dialogue().start("TELEPORT_TO_TASK", player);
 			break;

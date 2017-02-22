@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import com.model.Server;
 import com.model.game.Constants;
+import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
@@ -19,6 +21,7 @@ import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendFrame87;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.packets.encode.impl.SendInterface;
 import com.model.game.character.player.packets.encode.impl.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -318,12 +321,51 @@ public class DuelSession extends MultiplayerSession {
 		player.getWeaponInterface().sendSpecialBar(player.playerEquipment[3]);
 		player.write(new CreatePlayerHint(10, -1));
 		player.getPA().movePlayer(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0);
-		player.getPA().restorePlayerAttributes();
+		restorePlayerAttributes(player);
 		player.getWeaponInterface().restoreWeaponAttributes();
 	}
 
+	private void restorePlayerAttributes(Player player) {
+		//reset special attack
+		player.setUsingSpecial(false);
+		player.setSpecialAmount(100);
+		player.getWeaponInterface().restoreWeaponAttributes();
+		
+		//Reset our combat variables
+		player.setVengeance(false);
+		player.lastVeng.reset();
+		player.setPoisonDamage((byte) 0);
+		player.infection = 0;
+		player.infected = false;
+		player.poisonDamage = 0;
+		player.venomDamage = 0;
+		player.freeze(0);
+		player.killerId = -1;
+		Combat.resetCombat(player);
+		player.attackedPlayers.clear();
+		player.resetDamageReceived();
+		
+		//refresh prayers
+		PrayerHandler.resetAllPrayers(player);
+		
+		//Refresh skills
+		for (int i = 0; i < 20; i++) {
+        	player.getSkills().setLevel(i, player.getSkills().getLevelForExperience(i));
+        }
+		
+		//Save our player
+		PlayerSerialization.saveGame(player);
+		
+		//Close all open windows
+		player.write(new SendClearScreen());
+		
+		//reset player variables
+		player.getPA().resetAnimation();
+		player.getPA().resetFollow();
+	}
+
 	private void clearPlayerAttributes(Player player) {
-		player.getPA().restorePlayerAttributes();
+		restorePlayerAttributes(player);
 		player.getWeaponInterface().restoreWeaponAttributes();
 	}
 

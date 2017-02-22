@@ -708,7 +708,8 @@ public class ActionButtonPacketHandler implements PacketType {
 			}
 			break;
 
-		case 94051:
+		case 89061:
+			System.out.println("tick: " +player.isAutoRetaliating());
 			player.setAutoRetaliating(!player.isAutoRetaliating());
 			player.npcIndex = -1;
 			player.playerIndex = -1;

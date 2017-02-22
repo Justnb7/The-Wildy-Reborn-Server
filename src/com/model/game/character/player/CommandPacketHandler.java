@@ -20,13 +20,12 @@ import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendLink;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSongPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
+import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendWalkableInterface;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
@@ -392,6 +391,7 @@ public class CommandPacketHandler implements PacketType {
     		
     		
     	case "skull":
+    		if(!player.getArea().inDuelArena())
 			player.isSkulled = true;
 			player.skullTimer = 500;
 			player.skullIcon = 0;

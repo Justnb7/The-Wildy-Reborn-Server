@@ -7,7 +7,6 @@ import org.omicron.jagex.runescape.CollisionMap;
 
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
@@ -17,17 +16,17 @@ import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
+import com.model.game.character.player.packets.encode.impl.SendClearScreen;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
 import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.packets.encode.impl.SendInterfaceModel;
 import com.model.game.character.player.packets.encode.impl.SendItemOnInterface;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
+import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
@@ -104,38 +103,6 @@ public class PlayerAssistant {
                 player.getOutStream().writeByteS((objectType << 2) + (face & 3));
             }
         }
-    }
-    
-    public void restorePlayerAttributes() {
-		requestUpdates();
-		resetAnimation();
-		resetTb();
-		resetFollow();
-		player.write(new SendClearScreen());
-		player.getWeaponInterface().restoreWeaponAttributes();
-		PrayerHandler.resetAllPrayers(player);
-		for (int i = 0; i < 20; i++) {
-        	player.getSkills().setLevel(i, player.getSkills().getLevelForExperience(i));
-        }
-		player.setSpecialAmount(100);
-		player.setVengeance(false);
-		player.setUsingSpecial(false);
-		player.lastVeng.reset();
-		player.setPoisonDamage((byte) 0);
-		player.infection = 0;
-		player.infected = false;
-		player.poisonDamage = 0;
-		player.venomDamage = 0;
-		player.freeze(0);
-		player.killerId = -1;
-		player.isSkulled = false;
-		player.skullIcon = -1;
-		player.skullTimer = -1;
-		player.attackedPlayers.clear();
-		Combat.resetCombat(player);
-		player.resetDamageReceived();
-		player.playAnimation(Animation.create(65535));
-		PlayerSerialization.saveGame(player);
     }
         
     public void resetTb() {
@@ -724,5 +691,27 @@ public class PlayerAssistant {
 		player.flushOutStream();
 		player.write(new SendInterface(6960));
 	}
+
+	public void restoreHealth() {
+    	player.faceUpdate(0);
+		player.stopMovement();
+		player.setSpecialAmount(100);
+		player.getWeaponInterface().restoreWeaponAttributes();
+		player.lastVeng.reset();
+		player.setVengeance(false);
+		player.setUsingSpecial(false);
+		player.attackDelay = 10;
+		player.setPoisonDamage((byte) 0);
+		player.infection = 0;
+		player.appearanceUpdateRequired = true;
+		player.skullIcon = -1;
+		requestUpdates();
+		PrayerHandler.resetAllPrayers(player);
+		requestUpdates();
+		resetAnimation();
+		resetTb();
+		resetFollow();
+		player.write(new SendClearScreen());
+    }
 	
 }

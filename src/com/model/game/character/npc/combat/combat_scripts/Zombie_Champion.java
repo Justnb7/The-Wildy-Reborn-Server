@@ -94,7 +94,7 @@ public class Zombie_Champion extends Boss {
 
 	@Override
 	public int distanceRequired(Npc npc) {
-		return 25;
+		return 10;
 	}
 
 	@Override

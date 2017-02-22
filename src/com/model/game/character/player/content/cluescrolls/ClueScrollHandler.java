@@ -25,15 +25,141 @@ public final class ClueScrollHandler {
 
 	public static final int DIG_RADIUS = 2;
 
-	public static final int[] ELITE_CLUE_DROPS = { 4186, 4972, 2881, 2882, 2883, 4172, 4173, 4174, 4175, 3847, 4291, 6222, 6247, 6260, 6203, 3340, 3200 };
-	public static final IntervalItem[] DUMMY_CLUE_REWARDS = { new IntervalItem(1085), new IntervalItem(1097), new IntervalItem(1094), new IntervalItem(1113), new IntervalItem(1127), new IntervalItem(1147), new IntervalItem(1149), new IntervalItem(1163), new IntervalItem(1185), new IntervalItem(1201), new IntervalItem(1207), new IntervalItem(1213), new IntervalItem(1215), new IntervalItem(1218), new IntervalItem(1224), new IntervalItem(1233), new IntervalItem(1247), new IntervalItem(1239), new IntervalItem(1253),
-	new IntervalItem(1256), new IntervalItem(1261), new IntervalItem(1267), new IntervalItem(1273), new IntervalItem(1281), new IntervalItem(1299), new IntervalItem(1319), new IntervalItem(1333), new IntervalItem(1335), new IntervalItem(1345), new IntervalItem(1348), new IntervalItem(1359), new IntervalItem(1373), new IntervalItem(1377), new IntervalItem(1411), new IntervalItem(1432), new IntervalItem(1440), new IntervalItem(1442), new IntervalItem(1514, 1, 29), new IntervalItem(1515, 12, 108), new IntervalItem(2460), new IntervalItem(2459), new IntervalItem(2490), new IntervalItem(2648), new IntervalItem(2739), new IntervalItem(2, 10, 20), new IntervalItem(1077), new IntervalItem(995, 1, 999999), new IntervalItem(985), new IntervalItem(987), new IntervalItem(989), new IntervalItem(1061), new IntervalItem(6422, 1, 3000), new IntervalItem(6424, 1, 3000), new IntervalItem(6426, 1, 3000), new IntervalItem(6428, 1, 2000), new IntervalItem(6430, 1, 200), new IntervalItem(1540), new IntervalItem(1636), new IntervalItem(1649), new IntervalItem(1652), new IntervalItem(1653), new IntervalItem(1683), new IntervalItem(1706), new IntervalItem(1276), new IntervalItem(1437, 62, 300), new IntervalItem(5641, 14, 21), new IntervalItem(5697, 1, 3), new IntervalItem(5678), new IntervalItem(5700), new IntervalItem(5728), new IntervalItem(5730), new IntervalItem(7336), new IntervalItem(7338), new IntervalItem(7341), new IntervalItem(7342), new IntervalItem(7351), new IntervalItem(14600), new IntervalItem(811, 11, 81), new IntervalItem(2452), new IntervalItem(6432, 1, 800), new IntervalItem(6434, 1, 800), new IntervalItem(6346, 1, 1500), new IntervalItem(6561), new IntervalItem(6689, 1, 3), new IntervalItem(6703), new IntervalItem(6722), new IntervalItem(7056), new IntervalItem(7416), new IntervalItem(7592), new IntervalItem(7593), new IntervalItem(7594), new IntervalItem(7595), new IntervalItem(7596), new IntervalItem(7633), new IntervalItem(7673), new IntervalItem(7803), new IntervalItem(712), new IntervalItem(697), new IntervalItem(698), new IntervalItem(740), new IntervalItem(808, 12, 24), new IntervalItem(892, 100, 500), new IntervalItem(864, 100, 500), new IntervalItem(863, 100, 500), new IntervalItem(865, 100, 500), new IntervalItem(866, 100, 500), new IntervalItem(867, 100, 500), new IntervalItem(868, 100, 500), new IntervalItem(869, 100, 500), new IntervalItem(877, 10, 50), new IntervalItem(1620, 1, 10), new IntervalItem(1618, 1, 10), new IntervalItem(1622, 1, 10), new IntervalItem(1624, 1, 10), new IntervalItem(1512, 1, 10), new IntervalItem(1516, 1, 10), new IntervalItem(1518, 1, 10), new IntervalItem(1520, 1, 10), new IntervalItem(1522, 1, 10), new IntervalItem(561, 100, 250) };
-	public static final IntervalItem[] EASY_CLUE_REWARDS = { new IntervalItem(1077), new IntervalItem(1167), new IntervalItem(1645), new IntervalItem(1621), new IntervalItem(1637), new IntervalItem(1718), new IntervalItem(1893), new IntervalItem(1511), new IntervalItem(1168), new IntervalItem(2631), new IntervalItem(2633), new IntervalItem(2635), new IntervalItem(2637), new IntervalItem(2583), new IntervalItem(2585), new IntervalItem(2587), new IntervalItem(2589), new IntervalItem(2591), new IntervalItem(2593), new IntervalItem(2595), new IntervalItem(2597), new IntervalItem(2579), new IntervalItem(2635), new IntervalItem(7329, 1, 17), new IntervalItem(7330, 1, 17), new IntervalItem(7331, 1, 17), new IntervalItem(7362), new IntervalItem(7364), new IntervalItem(7366), new IntervalItem(2631), new IntervalItem(7364), new IntervalItem(7362), new IntervalItem(7368), new IntervalItem(7366), new IntervalItem(7388), new IntervalItem(7370), new IntervalItem(7372), new IntervalItem(7374), new IntervalItem(7376), new IntervalItem(7378), new IntervalItem(7380), new IntervalItem(7382), new IntervalItem(7374), new IntervalItem(7376), new IntervalItem(7378), new IntervalItem(7380), new IntervalItem(7382), new IntervalItem(7384), new IntervalItem(7386), new IntervalItem(7388), new IntervalItem(7390), new IntervalItem(7392), new IntervalItem(7394), new IntervalItem(7396), new IntervalItem(7398), new IntervalItem(11710), new IntervalItem(11712), new IntervalItem(11714), new IntervalItem(10362), new IntervalItem(10364), new IntervalItem(10366), new IntervalItem(9977, 1, 15), new IntervalItem(803, 12, 15), new IntervalItem(802, 12, 19), new IntervalItem(813, 17, 23), new IntervalItem(814, 15, 22), new IntervalItem(815, 14, 25), new IntervalItem(10424), new IntervalItem(824, 1, 17), new IntervalItem(825, 1, 21), new IntervalItem(826, 1, 29), new IntervalItem(827, 12, 32), new IntervalItem(851), new IntervalItem(853), new IntervalItem(858), new IntervalItem(884, 1, 25), new IntervalItem(1033), new IntervalItem(1035), new IntervalItem(1119), new IntervalItem(1121), new IntervalItem(1129), new IntervalItem(1194), new IntervalItem(1191), new IntervalItem(1197), new IntervalItem(1211), new IntervalItem(1239), new IntervalItem(7366), new IntervalItem(7364), new IntervalItem(7356), new IntervalItem(10434), new IntervalItem(10412), new IntervalItem(10366), new IntervalItem(10392), new IntervalItem(2585), new IntervalItem(7392), new IntervalItem(7396), new IntervalItem(7331), new IntervalItem(2635), new IntervalItem(3472), new IntervalItem(7390), new IntervalItem(2633), new IntervalItem(2637) };
-	public static final IntervalItem[] MEDIUM_CLUE_REWARDS = { new IntervalItem(2599), new IntervalItem(2601), new IntervalItem(2603), new IntervalItem(2605), new IntervalItem(2607), new IntervalItem(2609), new IntervalItem(2611), new IntervalItem(2613), new IntervalItem(7334), new IntervalItem(7340), new IntervalItem(7346), new IntervalItem(7352), new IntervalItem(7358), new IntervalItem(7319), new IntervalItem(7321), new IntervalItem(7323), new IntervalItem(7325), new IntervalItem(7327), new IntervalItem(7372), new IntervalItem(7370), new IntervalItem(7380), new IntervalItem(7378), new IntervalItem(2645), new IntervalItem(2647), new IntervalItem(2648), new IntervalItem(2577), new IntervalItem(2579), new IntervalItem(2613), new IntervalItem(2611), new IntervalItem(2609), new IntervalItem(2607), new IntervalItem(3475), new IntervalItem(2605), new IntervalItem(2603), new IntervalItem(2599), new IntervalItem(2601), new IntervalItem(3474), new IntervalItem(2580), new IntervalItem(2578), new IntervalItem(2645), new IntervalItem(2649), new IntervalItem(2647), new IntervalItem(10420), new IntervalItem(10422), new IntervalItem(10436), new IntervalItem(10438), new IntervalItem(10416), new IntervalItem(10418), new IntervalItem(10400), new IntervalItem(10402), new IntervalItem(10446), new IntervalItem(10448), new IntervalItem(10450), new IntervalItem(10452), new IntervalItem(10454), new IntervalItem(10456), new IntervalItem(7358), new IntervalItem(7352), new IntervalItem(7346), new IntervalItem(7340), new IntervalItem(7334), new IntervalItem(7319), new IntervalItem(7325), new IntervalItem(7327), new IntervalItem(7323), new IntervalItem(7321) };
-	public static final IntervalItem[] HARD_CLUE_REWARDS = { new IntervalItem(7336), new IntervalItem(7342), new IntervalItem(7348), new IntervalItem(7354), new IntervalItem(7360), new IntervalItem(2619), new IntervalItem(2621), new IntervalItem(2617), new IntervalItem(2615), new IntervalItem(3476), new IntervalItem(2627), new IntervalItem(2629), new IntervalItem(2625), new IntervalItem(2623), new IntervalItem(3477), new IntervalItem(2657), new IntervalItem(2659), new IntervalItem(2655), new IntervalItem(2653), new IntervalItem(3478), new IntervalItem(2665), new IntervalItem(2667), new IntervalItem(2577), new IntervalItem(2581), new IntervalItem(2663), new IntervalItem(2661), new IntervalItem(3479), new IntervalItem(2673), new IntervalItem(2675), new IntervalItem(2671), new IntervalItem(2669), new IntervalItem(3480), new IntervalItem(10374), new IntervalItem(10370), new IntervalItem(10372), new IntervalItem(10368), new IntervalItem(10382), new IntervalItem(10378), new IntervalItem(10380), new IntervalItem(10376), new IntervalItem(10390), new IntervalItem(10386), new IntervalItem(10388), new IntervalItem(10384), new IntervalItem(2581), new IntervalItem(2651), new IntervalItem(2639), new IntervalItem(2641), new IntervalItem(2643), new IntervalItem(7400), new IntervalItem(7399), new IntervalItem(7398), new IntervalItem(10440), new IntervalItem(10442), new IntervalItem(10444), new IntervalItem(10446), new IntervalItem(10448), new IntervalItem(10450), new IntervalItem(10362), new IntervalItem(3486), new IntervalItem(3488), new IntervalItem(3483), new IntervalItem(3481), new IntervalItem(3485), new IntervalItem(3831), new IntervalItem(3832), new IntervalItem(3833), new IntervalItem(3834), new IntervalItem(3827), new IntervalItem(3828), new IntervalItem(3829), new IntervalItem(3830), new IntervalItem(3835), new IntervalItem(3836), new IntervalItem(3837), new IntervalItem(3838), new IntervalItem(4561, 10, 50), new IntervalItem(7331), new IntervalItem(7330), new IntervalItem(7329), new IntervalItem(1163), new IntervalItem(1201), new IntervalItem(108), new IntervalItem(1127), new IntervalItem(1093), new IntervalItem(1645), new IntervalItem(1691), new IntervalItem(1700), new IntervalItem(1644), new IntervalItem(990), new IntervalItem(1631), new IntervalItem(892, 50, 200), new IntervalItem(1615), new IntervalItem(1319), new IntervalItem(1333), new IntervalItem(1290), new IntervalItem(1303), new IntervalItem(860), new IntervalItem(862), new IntervalItem(10284), new IntervalItem(565, 10, 200), new IntervalItem(563, 10, 200) };
-	public static final IntervalItem[] ELITE_CLUE_REWARDS = { new IntervalItem(1079), new IntervalItem(1093), new IntervalItem(1113), new IntervalItem(1333), new IntervalItem(1127), new IntervalItem(1359), new IntervalItem(1147), new IntervalItem(1373), new IntervalItem(1163), new IntervalItem(2491), new IntervalItem(1185), new IntervalItem(2497), new IntervalItem(1201), new IntervalItem(2503), new IntervalItem(1275), new IntervalItem(861), new IntervalItem(1303), new IntervalItem(859), new IntervalItem(1319), new IntervalItem(2581), new IntervalItem(2577), new IntervalItem(2651), new IntervalItem(3486), new IntervalItem(3488), new IntervalItem(3483), new IntervalItem(3481), new IntervalItem(3485), new IntervalItem(3831), new IntervalItem(3832), new IntervalItem(3833), new IntervalItem(3834), new IntervalItem(3827), new IntervalItem(3828), new IntervalItem(3829), new IntervalItem(3830), new IntervalItem(3835), new IntervalItem(3836), new IntervalItem(3837), new IntervalItem(3838), new IntervalItem(10374), new IntervalItem(10370), new IntervalItem(10372), new IntervalItem(10368), new IntervalItem(10382), new IntervalItem(10378), new IntervalItem(10380), new IntervalItem(10376), new IntervalItem(10390), new IntervalItem(10386), new IntervalItem(10388), new IntervalItem(10384), new IntervalItem(2581), new IntervalItem(4561, 10, 50), new IntervalItem(7331), new IntervalItem(7330), new IntervalItem(7329), new IntervalItem(1163), new IntervalItem(1201), new IntervalItem(1080), new IntervalItem(1127), new IntervalItem(1093), new IntervalItem(1645), new IntervalItem(1691), new IntervalItem(1700), new IntervalItem(1644), new IntervalItem(990), new IntervalItem(1631), new IntervalItem(1275), new IntervalItem(4587), new IntervalItem(892, 50, 200), new IntervalItem(1615), new IntervalItem(1319) };
+	public static final int[] ELITE_CLUE_DROPS = { 2265, 2266, 2267, 6615, 6610, 6609, 6611, 494, 3162, 2205, 2215, 3129, 5779, 2054 };
+	
+	public static final IntervalItem[] BASIC_CLUE_REWARDS = { new IntervalItem(4151), new IntervalItem(6585),
+			new IntervalItem(208, 5, 25), new IntervalItem(4587), new IntervalItem(1127), new IntervalItem(1079),
+			new IntervalItem(1163), new IntervalItem(1201), new IntervalItem(2615), new IntervalItem(2617),
+			new IntervalItem(2619), new IntervalItem(2621), new IntervalItem(2623), new IntervalItem(2625),
+			new IntervalItem(2627), new IntervalItem(2629), new IntervalItem(2579), new IntervalItem(2572),
+			new IntervalItem(2570), new IntervalItem(2550), new IntervalItem(892, 100, 250),
+			new IntervalItem(9244, 200, 300), new IntervalItem(9245, 50, 144), new IntervalItem(19484, 5, 8),
+			new IntervalItem(830, 25, 50), new IntervalItem(13663), new IntervalItem(13664), new IntervalItem(13665),
+			new IntervalItem(13658), new IntervalItem(13640), new IntervalItem(13642), new IntervalItem(13643),
+			new IntervalItem(13644), new IntervalItem(13646), new IntervalItem(85), new IntervalItem(989) };
 
-	public static final IntervalItem[] ULTRA_RARE = { new IntervalItem(10350), new IntervalItem(10348), new IntervalItem(10346), new IntervalItem(10352), new IntervalItem(10342), new IntervalItem(10338), new IntervalItem(10340), new IntervalItem(10344), new IntervalItem(10334), new IntervalItem(10330), new IntervalItem(10332), new IntervalItem(10336), };
+	public static final IntervalItem[] EASY_CLUE_REWARDS = { new IntervalItem(12205), new IntervalItem(12207),
+			new IntervalItem(12209), new IntervalItem(12211), new IntervalItem(12213), new IntervalItem(12215),
+			new IntervalItem(12217), new IntervalItem(12219), new IntervalItem(12221), new IntervalItem(12223),
+			new IntervalItem(12225), new IntervalItem(12227), new IntervalItem(12229), new IntervalItem(12231),
+			new IntervalItem(12233), new IntervalItem(12235), new IntervalItem(12237), new IntervalItem(12239),
+			new IntervalItem(12241), new IntervalItem(12243), new IntervalItem(20169), new IntervalItem(20172),
+			new IntervalItem(20175), new IntervalItem(20178), new IntervalItem(20181), new IntervalItem(20184),
+			new IntervalItem(20187), new IntervalItem(20190), new IntervalItem(20193), new IntervalItem(20196),
+			new IntervalItem(2583), new IntervalItem(2585), new IntervalItem(2587), new IntervalItem(2589),
+			new IntervalItem(2591), new IntervalItem(2593), new IntervalItem(2595), new IntervalItem(2597),
+			new IntervalItem(2633), new IntervalItem(2635), new IntervalItem(2637), new IntervalItem(12247),
+			new IntervalItem(2631), new IntervalItem(12245), new IntervalItem(12449), new IntervalItem(12451),
+			new IntervalItem(12453), new IntervalItem(12455), new IntervalItem(12445), new IntervalItem(12447),
+			new IntervalItem(7390), new IntervalItem(7392), new IntervalItem(7394), new IntervalItem(7396),
+			new IntervalItem(7386), new IntervalItem(7388), new IntervalItem(7362), new IntervalItem(7364),
+			new IntervalItem(7366), new IntervalItem(7368), new IntervalItem(7332), new IntervalItem(7338),
+			new IntervalItem(7344), new IntervalItem(7350), new IntervalItem(7356), new IntervalItem(10306),
+			new IntervalItem(10308), new IntervalItem(10310), new IntervalItem(10312), new IntervalItem(10314),
+			new IntervalItem(10404), new IntervalItem(10406), new IntervalItem(10408), new IntervalItem(10410),
+			new IntervalItem(10412), new IntervalItem(10414), new IntervalItem(10424), new IntervalItem(10426),
+			new IntervalItem(10428), new IntervalItem(10430), new IntervalItem(10432), new IntervalItem(10434),
+			new IntervalItem(10714), new IntervalItem(10715), new IntervalItem(10716), new IntervalItem(10717),
+			new IntervalItem(10718), new IntervalItem(10366), new IntervalItem(12375), new IntervalItem(10458),
+			new IntervalItem(10460), new IntervalItem(10462), new IntervalItem(10464), new IntervalItem(10466),
+			new IntervalItem(10468), new IntervalItem(12253), new IntervalItem(12255), new IntervalItem(12265),
+			new IntervalItem(12267), new IntervalItem(12193), new IntervalItem(12195), new IntervalItem(12249),
+			new IntervalItem(12251), new IntervalItem(20211), new IntervalItem(20214), new IntervalItem(20217),
+			new IntervalItem(20166), new IntervalItem(20205), new IntervalItem(20208), new IntervalItem(20199),
+			new IntervalItem(20202), new IntervalItem(20164) };
+
+	public static final IntervalItem[] MEDIUM_CLUE_REWARDS = { new IntervalItem(12277), new IntervalItem(12279),
+			new IntervalItem(12281), new IntervalItem(12283), new IntervalItem(12285), new IntervalItem(12287),
+			new IntervalItem(12289), new IntervalItem(12291), new IntervalItem(12293), new IntervalItem(12295),
+			new IntervalItem(2599), new IntervalItem(2601), new IntervalItem(2603), new IntervalItem(2605),
+			new IntervalItem(2607), new IntervalItem(2609), new IntervalItem(2611), new IntervalItem(2613),
+			new IntervalItem(2577), new IntervalItem(12598), new IntervalItem(2579), new IntervalItem(2645),
+			new IntervalItem(2647), new IntervalItem(2649), new IntervalItem(12299), new IntervalItem(12301),
+			new IntervalItem(12303), new IntervalItem(12305), new IntervalItem(12307), new IntervalItem(7319),
+			new IntervalItem(7321), new IntervalItem(7323), new IntervalItem(7325), new IntervalItem(7327),
+			new IntervalItem(12309), new IntervalItem(12311), new IntervalItem(12313), new IntervalItem(7370),
+			new IntervalItem(7372), new IntervalItem(7378), new IntervalItem(7380), new IntervalItem(10296),
+			new IntervalItem(10298), new IntervalItem(10300), new IntervalItem(10302), new IntervalItem(10304),
+			new IntervalItem(10666), new IntervalItem(10669), new IntervalItem(10672), new IntervalItem(10675),
+			new IntervalItem(10678), new IntervalItem(10748), new IntervalItem(10400), new IntervalItem(10402),
+			new IntervalItem(10420), new IntervalItem(10422), new IntervalItem(12315), new IntervalItem(12317),
+			new IntervalItem(12339), new IntervalItem(12341), new IntervalItem(10416), new IntervalItem(10418),
+			new IntervalItem(10436), new IntervalItem(10438), new IntervalItem(12343), new IntervalItem(12345),
+			new IntervalItem(12347), new IntervalItem(12349), new IntervalItem(10364), new IntervalItem(12377),
+			new IntervalItem(10446), new IntervalItem(10448), new IntervalItem(10450), new IntervalItem(10452),
+			new IntervalItem(10454), new IntervalItem(10456), new IntervalItem(12203), new IntervalItem(12259),
+			new IntervalItem(12271), new IntervalItem(12273), new IntervalItem(12261), new IntervalItem(12197),
+			new IntervalItem(12201), new IntervalItem(12257), new IntervalItem(12269), new IntervalItem(12361),
+			new IntervalItem(12428), new IntervalItem(20275), new IntervalItem(12319), new IntervalItem(20243),
+			new IntervalItem(20240), new IntervalItem(12359), new IntervalItem(20246), new IntervalItem(20266),
+			new IntervalItem(20269), new IntervalItem(20272), new IntervalItem(20249) };
+
+	public static final IntervalItem[] HARD_CLUE_REWARDS = { new IntervalItem(2615), new IntervalItem(2617),
+			new IntervalItem(2619), new IntervalItem(2621), new IntervalItem(2623), new IntervalItem(2625),
+			new IntervalItem(2627), new IntervalItem(2629), new IntervalItem(2653), new IntervalItem(2655),
+			new IntervalItem(2657), new IntervalItem(2659), new IntervalItem(2361), new IntervalItem(2363),
+			new IntervalItem(2365), new IntervalItem(2367), new IntervalItem(2369), new IntervalItem(2371),
+			new IntervalItem(2373), new IntervalItem(2375), new IntervalItem(12460), new IntervalItem(12462),
+			new IntervalItem(12464), new IntervalItem(12466), new IntervalItem(12468), new IntervalItem(12470),
+			new IntervalItem(12472), new IntervalItem(12474), new IntervalItem(12476), new IntervalItem(12478),
+			new IntervalItem(12480), new IntervalItem(12482), new IntervalItem(12484), new IntervalItem(12486),
+			new IntervalItem(12488), new IntervalItem(12389), new IntervalItem(12391), new IntervalItem(20146),
+			new IntervalItem(20149), new IntervalItem(20152), new IntervalItem(20155), new IntervalItem(20158),
+			new IntervalItem(20161), new IntervalItem(3481), new IntervalItem(3483), new IntervalItem(3485),
+			new IntervalItem(3486), new IntervalItem(3488), new IntervalItem(7336), new IntervalItem(7342),
+			new IntervalItem(7348), new IntervalItem(7354), new IntervalItem(7360), new IntervalItem(10286),
+			new IntervalItem(10288), new IntervalItem(10290), new IntervalItem(10292), new IntervalItem(10294),
+			new IntervalItem(7374), new IntervalItem(7376), new IntervalItem(7382), new IntervalItem(7384),
+			new IntervalItem(12327), new IntervalItem(12329), new IntervalItem(12331), new IntervalItem(12333),
+			new IntervalItem(7398), new IntervalItem(7399), new IntervalItem(7400), new IntervalItem(2581),
+			new IntervalItem(2639), new IntervalItem(2641), new IntervalItem(2643), new IntervalItem(12321),
+			new IntervalItem(12323), new IntervalItem(12325), new IntervalItem(8950), new IntervalItem(10350),
+			new IntervalItem(10348), new IntervalItem(10346), new IntervalItem(10352), new IntervalItem(10342),
+			new IntervalItem(10338), new IntervalItem(10340), new IntervalItem(10344), new IntervalItem(10334),
+			new IntervalItem(10330), new IntervalItem(10332), new IntervalItem(10336), new IntervalItem(12422),
+			new IntervalItem(12424), new IntervalItem(12426), new IntervalItem(12437), new IntervalItem(20014),
+			new IntervalItem(20017), new IntervalItem(10362), new IntervalItem(10368), new IntervalItem(10370),
+			new IntervalItem(10372), new IntervalItem(10374), new IntervalItem(10376), new IntervalItem(10378),
+			new IntervalItem(10380), new IntervalItem(10382), new IntervalItem(10384), new IntervalItem(10386),
+			new IntervalItem(10388), new IntervalItem(10390), new IntervalItem(12490), new IntervalItem(12492),
+			new IntervalItem(12494), new IntervalItem(12496), new IntervalItem(12498), new IntervalItem(12500),
+			new IntervalItem(12502), new IntervalItem(12504), new IntervalItem(12506), new IntervalItem(12508),
+			new IntervalItem(12510), new IntervalItem(12512), new IntervalItem(10466), new IntervalItem(10468),
+			new IntervalItem(10470), new IntervalItem(10472), new IntervalItem(10474), new IntervalItem(10440),
+			new IntervalItem(10442), new IntervalItem(10444), new IntervalItem(10446), new IntervalItem(10448),
+			new IntervalItem(12199), new IntervalItem(12263), new IntervalItem(12275), new IntervalItem(12363),
+			new IntervalItem(12365), new IntervalItem(12367), new IntervalItem(12369), new IntervalItem(12516),
+			new IntervalItem(12514), new IntervalItem(12379), new IntervalItem(19912), new IntervalItem(19915),
+			new IntervalItem(19918) };
+
+	public static final IntervalItem[] ELITE_CLUE_REWARDS = { new IntervalItem(12436), new IntervalItem(12414),
+			new IntervalItem(12415), new IntervalItem(12416), new IntervalItem(12417), new IntervalItem(12418),
+			new IntervalItem(12419), new IntervalItem(12420), new IntervalItem(12421), new IntervalItem(12457),
+			new IntervalItem(12458), new IntervalItem(12459), new IntervalItem(12351), new IntervalItem(12441),
+			new IntervalItem(12443), new IntervalItem(12373), new IntervalItem(12335), new IntervalItem(12337),
+			new IntervalItem(12389), new IntervalItem(12391), new IntervalItem(20146), new IntervalItem(20149),
+			new IntervalItem(20152), new IntervalItem(20155), new IntervalItem(20158), new IntervalItem(20161),
+			new IntervalItem(3481), new IntervalItem(3483), new IntervalItem(3485), new IntervalItem(3486),
+			new IntervalItem(3488), new IntervalItem(12432), new IntervalItem(12353), new IntervalItem(12355),
+			new IntervalItem(12540), new IntervalItem(12363), new IntervalItem(12365), new IntervalItem(12367),
+			new IntervalItem(12369), new IntervalItem(12371), new IntervalItem(12381), new IntervalItem(12383),
+			new IntervalItem(12385), new IntervalItem(12387), new IntervalItem(12596), new IntervalItem(12430),
+			new IntervalItem(12439), new IntervalItem(12393), new IntervalItem(12395), new IntervalItem(12397),
+			new IntervalItem(19988), new IntervalItem(19991), new IntervalItem(19994), new IntervalItem(19997),
+			new IntervalItem(20005), new IntervalItem(19958), new IntervalItem(19961), new IntervalItem(19964),
+			new IntervalItem(19967), new IntervalItem(19970), new IntervalItem(19973), new IntervalItem(19976),
+			new IntervalItem(19979), new IntervalItem(19982), new IntervalItem(19985), new IntervalItem(19941),
+			new IntervalItem(10350), new IntervalItem(10348), new IntervalItem(10346), new IntervalItem(10352),
+			new IntervalItem(10342), new IntervalItem(10338), new IntervalItem(10340), new IntervalItem(10344),
+			new IntervalItem(10334), new IntervalItem(10330), new IntervalItem(10332), new IntervalItem(10336),
+			new IntervalItem(12422), new IntervalItem(12424), new IntervalItem(12426), new IntervalItem(12437),
+			new IntervalItem(20014), new IntervalItem(20017) };
+
+	public static final IntervalItem[] ULTRA_RARE = { new IntervalItem(10350), new IntervalItem(10348),
+			new IntervalItem(10346), new IntervalItem(10352), new IntervalItem(10342), new IntervalItem(10338),
+			new IntervalItem(10340), new IntervalItem(10344), new IntervalItem(10334), new IntervalItem(10330),
+			new IntervalItem(10332), new IntervalItem(10336), new IntervalItem(12422), new IntervalItem(12424),
+			new IntervalItem(12426), new IntervalItem(12437), new IntervalItem(20014), new IntervalItem(20017) };
 
 	public static Item[] determineReward(Player p, ClueDifficulty c) {
 		int amount = Utility.inclusiveRandom(c.minReward, c.maxReward);
@@ -47,11 +173,14 @@ public final class ClueScrollHandler {
 		}
 
 		for (int i = 0; i < amount; i++) {
+			// if we hit the uncommon table
+			
 			if (Chance.UNCOMMON.successful(Utility.r)) {
 				IntervalItem item = Utility.randomElement(c.rewards).clone();
 				items.add(new Item(item.id, item.amount));
 			} else {
-				IntervalItem item = Utility.randomElement(ClueScrollHandler.DUMMY_CLUE_REWARDS).clone();
+				// we didn't hit the uncommon table, give them a shit loot
+				IntervalItem item = Utility.randomElement(ClueScrollHandler.BASIC_CLUE_REWARDS).clone();
 				items.add(new Item(item.id, item.amount));
 			}
 		}

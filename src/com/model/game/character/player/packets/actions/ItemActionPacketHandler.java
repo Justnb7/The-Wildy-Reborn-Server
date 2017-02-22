@@ -142,12 +142,12 @@ public class ItemActionPacketHandler implements PacketType {
 			break;
 
 		case 2714:
-			
 			if (player.bossDifficulty == null) {
 				player.write(new SendMessagePacket("You have not completed a clue scroll!"));
 				return;
 			}
 			
+			System.out.println("Difficulty is "+player.bossDifficulty);
 			Item[] items = ClueScrollHandler.determineReward(player, player.bossDifficulty);
 
 			if (player.getItems().getFreeSlots() < items.length + 1) {

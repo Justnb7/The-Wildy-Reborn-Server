@@ -20,6 +20,7 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
+import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
 import com.model.game.character.player.packets.encode.impl.DrawHeadicon;
 import com.model.game.character.player.packets.encode.impl.SendKillFeed;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -362,12 +363,9 @@ public final class NPCHandler {
 		} else if(player.getTotalAmountDonated() > 200) {
 			yourIncrease += 15;
 		}
-/*		if (!ClueScrollHandler.npcDrop(player, npc)) {
-			if (!ClueScrollHandler.calculateDrop(player, npc, false)) {
-
-			}*/
+		if (!ClueScrollHandler.npcDrop(player, npc)) {
 			NpcDropSystem.get().drop(player, npc, yourIncrease);
-		//}
+		}
 	}
 
 	/**

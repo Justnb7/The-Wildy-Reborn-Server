@@ -290,6 +290,15 @@ public final class Shop {
 			player.write(new SendMessagePacket("You cannot own more then one rune pouch at the time."));
 			return false;
 		}
+		if (player.getOpenShop().equals("Achievement Rewards")) {
+			player.getAchievements().setBoughtItem(item.getId());
+		} else if (player.getOpenShop().equals("Bounty Hunter Store")) {
+			player.write(new SendString("Bounties: " + Utility.insertCommas(Integer.toString(player.getBountyPoints())), 28052));
+		} else if (player.getOpenShop().equals("Blood money rewards")) {
+			if (item.getId() == 19484) {
+				player.getItems().addItem(item.getId(), 9);
+			}
+		}
 		if (item.getAmount() > shopItem.getAmount())
 			item.setCount(shopItem.getAmount());
 		if (!player.getItems().spaceFor(item)) {
@@ -316,17 +325,6 @@ public final class Shop {
 			}
 			currency.getCurrency().takeCurrency(player, (int)totalCost);
 			player.getItems().addItemtoInventory(item);
-			if (player.getOpenShop().equals("Achievement Rewards")) {
-				player.getAchievements().setBoughtItem(item.getId());
-			} else if (player.getOpenShop().equals("Bounty Hunter Store")) {
-				player.write(new SendString("Bounties: " + Utility.insertCommas(Integer.toString(player.getBountyPoints())), 28052));
-			} else if (player.getOpenShop().equals("Blood money rewards")) {
-				if (item.getId() == 19484) {
-					player.getItems().addItem(item.getId(), 10);
-				} else {
-					player.getItems().addItem(item.getId(), 1);
-				}
-			}
 		} else {
 			player.write(new SendMessagePacket("You don't have enough space in your inventory."));
 			return false;

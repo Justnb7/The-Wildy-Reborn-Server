@@ -8,7 +8,6 @@ import com.model.game.character.Hit;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.utility.Utility;
 
 public class RangeExtras {
 

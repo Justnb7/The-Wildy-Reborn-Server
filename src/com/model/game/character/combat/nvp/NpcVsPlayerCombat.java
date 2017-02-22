@@ -315,6 +315,7 @@ public class NpcVsPlayerCombat {
 			// Autoretal
 			if (player.playerIndex <= 0 && player.npcIndex <= 0 || player.npcIndex == npc.getIndex()) {
 				if (player.isAutoRetaliating())
+					System.out.println("ok");
 					player.npcIndex = npc.getIndex();
 			}
 			// block anim

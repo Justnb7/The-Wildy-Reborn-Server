@@ -264,10 +264,6 @@ public class NPCCombatData {
 		}
 		switch (npc.npcId) {
 		case 5579:
-		case 3943: //Giant Sea Snake
-		case 763: //Giant Roc
-		case 1066: //Fear Reaper
-		case 4693: //Fear Reaper
 			return true;
 
 		}

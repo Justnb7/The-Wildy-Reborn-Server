@@ -18,20 +18,6 @@ public abstract class Boss {
 		this.npcId = npcId;
 	}
 	
-	public static double getDelay(Npc n, Player Player, int delay, int speed) {
-		/** The distance between the entities. */
-		int distance = n.distanceTo(Player);
-
-		/** The speed at which the projectile is traveling. */
-		int projectileSpeed = delay + speed + distance * 5;
-
-		/** The delay of the hit. */
-		double hitDelay = projectileSpeed * .02857;
-
-		/** Returns the hit delay. */
-		return hitDelay;
-	}
-	
 	public abstract void execute(Npc npc, Player player);
 	
     public abstract int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage);

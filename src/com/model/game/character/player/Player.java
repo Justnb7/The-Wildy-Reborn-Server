@@ -726,11 +726,6 @@ public class Player extends Entity {
 	 */
 	private boolean unattackable = false;
 
-	/**
-	 * The player is invincible
-	 */
-	private boolean invincible;
-
 	private long xlogDelay;
 	
 	public int getId() {

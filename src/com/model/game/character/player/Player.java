@@ -40,6 +40,8 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.npc.pet.PetCombat;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
+import com.model.game.character.player.content.bounty_hunter.BountyHunter;
+import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.content.clan.ClanMember;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
@@ -71,6 +73,7 @@ import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.encode.impl.SendWalkableInterface;
 import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.Skilling;
@@ -1253,29 +1256,24 @@ public class Player extends Entity {
 	
 	@Override
 	public Hit decrementHP(Hit hit) {
-		int damage = hit.getDamage();
-		int health = getSkills().getLevel(Skills.HITPOINTS);
-		System.out.println("dmg="+damage);
-		System.out.println("currentHealth="+health);
-		if (damage > health) {
-			getSkills().setLevel(Skills.HITPOINTS, health = damage);
-			System.out.println("higher");
-		} else {
-			getSkills().setLevel(Skills.HITPOINTS, health - damage);
-			System.out.println("currentHealth="+health);
-			System.out.println("dmg");
+		// NOTE: Damage must be changed BEFORE calling this method otherwise things will get out of sync
+		// such as hitting 20 but displaying something different. 
+		int damage = hit.getDamage(); 
+		if (this.getSkills().getLevel(3) - damage <= 0) {
+			damage = this.getSkills().getLevel(3);
+			System.out.println("["+this.getName()+"] dmg was over current hp ("+getSkills().getLevel(3)+"), adjusted to "+damage);
 		}
+		System.out.println("you're defo using the right method btw "+damage+" vs "+this.getSkills().getLevel(3));
+		// fuck knows lmfao ok lets print
 
-		int difference = health -= damage;
-		if (difference <= getSkills().getLevelForExperience(Skills.HITPOINTS) / 10 && difference > 0) {
-			getPrayerHandler().appendRedemption(this);
-		}
+		// and you changed it here and it didnt work? yeah i tried it here odd it should actually work here tbh
+		this.getSkills().setLevel(3, this.getSkills().getLevel(3) - damage);
 
 		/*
 		 * Check if our player has died, if so start the death task
 		 * 
 		 */
-		if (health <= 0 && !isDead()) {
+		if (this.getSkills().getLevel(3) <= 0 && !isDead()) {
 			setDead(true);
 			hasDied();
 		}
@@ -3276,6 +3274,10 @@ public class Player extends Entity {
 		if (achievementHandler == null)
 			achievementHandler = new AchievementHandler(this);
 		return achievementHandler;
+	}
+
+	public void message(String string) {
+		write(new SendMessagePacket(string)); // 10/10
 	}
 
 }

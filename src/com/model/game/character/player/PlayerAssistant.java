@@ -7,7 +7,6 @@ import org.omicron.jagex.runescape.CollisionMap;
 
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatType;
@@ -706,7 +705,6 @@ public class PlayerAssistant {
 		player.appearanceUpdateRequired = true;
 		player.skullIcon = -1;
 		requestUpdates();
-		PrayerHandler.resetAllPrayers(player);
 		requestUpdates();
 		resetAnimation();
 		resetTb();

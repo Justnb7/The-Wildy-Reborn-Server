@@ -176,7 +176,12 @@ public class Npc extends Entity {
 	public int followTargetIndex;
 	
 	public int combatLevel, attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth,
-			attackTimer, killerId, killedBy, oldIndex, underAttackBy, walking_type;
+			attackTimer, killedBy, oldIndex, underAttackBy, walking_type;
+	
+	/**
+	 * The Index of our Target - the Player we're attacking. PLAYER ONLY. TODO make this Entity instead of Int
+	 */
+	public int targetId;
 	
 	public boolean noDeathEmote, isDead, walkingHome, underAttack, randomWalk, dirUpdateRequired, 
 			forcedChatRequired;

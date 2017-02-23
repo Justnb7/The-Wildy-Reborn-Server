@@ -37,7 +37,7 @@ public final class NPCMovementTask extends ScheduledTask {
 			}
 			if (!npc.isDead && npc.walkingHome) {
 				npc.facePlayer(0);
-				npc.killerId = 0;
+				npc.targetId = 0;
 				int walkingDistance = 18;
 				if (npc.getDefinition() != null && npc.walking_type > 5) {
 					walkingDistance = npc.walking_type;

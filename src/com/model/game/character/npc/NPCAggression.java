@@ -41,8 +41,9 @@ public final class NPCAggression {
         for (Npc npc : player.localNpcs) {
             if (npc == null)
                 continue;
+            // Can the Npc attack the <player>? Will check distance, clipping, slayer level req etc. 
             if (validate(npc, player)) {
-                npc.killerId = player.getIndex();
+                npc.targetId = player.getIndex();
             }
         }
     }
@@ -64,6 +65,10 @@ public final class NPCAggression {
     	if (npc.aggressive) {
     		return true;
     	}
+    	// the npc aggression mechanic is complex AF so i'd suggest not bundling it into here cos it 
+    	// might not work.. like [1] aggression should be to ONLY check if we should attack a close player
+    	// mechanic [2] = retalion, fight back when hit
+    	// mechanic [3] = should focus OR switch targets to last soruce attacker
     	if (!npc.getDefinition().isAggressive())
     		return false;
         if(npc.isPet)

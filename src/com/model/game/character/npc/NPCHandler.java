@@ -97,17 +97,6 @@ public final class NPCHandler {
 		return false;
 	}
 	
-	
-	public boolean getsPulled(Npc npc) {
-		switch (npc.npcId) {
-		case 2215:
-			if (npc.firstAttacker > 0)
-				return false;
-			break;
-		}
-		return true;
-	}
-	
 	/**
 	 * Summon npc, barrows, etc
 	 */
@@ -133,7 +122,7 @@ public final class NPCHandler {
 		if (attackPlayer) {
 			newNPC.underAttack = true;
 			if (c != null) {
-				newNPC.killerId = c.getIndex();
+				newNPC.targetId = c.getIndex();
 			}
 		}
 		//npcs[slot] = newNPC;
@@ -212,7 +201,7 @@ public final class NPCHandler {
 		if (attacksEnemy) {
 			npc.underAttack = true;
 			if (player != null) {
-				npc.killerId = player.getIndex();
+				npc.targetId = player.getIndex();
 			}
 		}
 		if (hasHeadIcon) {
@@ -412,7 +401,7 @@ public final class NPCHandler {
 		
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
-				npc.killerId = 0;
+				npc.targetId = 0;
 				return;
 			}
 		}
@@ -432,7 +421,7 @@ public final class NPCHandler {
 		}
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
-				npc.killerId = 0;
+				npc.targetId = 0;
 				return;
 			}
 		}

@@ -242,7 +242,7 @@ public class NPCDeathTask extends ScheduledTask {
     	npc.infected = false;
         npc.appearanceUpdateRequired = true;
         npc.freeze(0);
-        npc.killerId = 0;
+        npc.targetId = 0;
         npc.underAttack = false;
         npc.poisonDamage = 0;
         npc.facePlayer(0);

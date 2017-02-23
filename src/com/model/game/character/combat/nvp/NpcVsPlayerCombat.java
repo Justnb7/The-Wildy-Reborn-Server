@@ -70,9 +70,9 @@ public class NpcVsPlayerCombat {
 		
 		// ok here is the logic we're gonna change
 
-		if (!npc.isDead && (npc.killerId > 0 || npc.underAttack) && !npc.walkingHome && NPCCombatData.retaliates(npc.getId())) {
+		if (!npc.isDead && (npc.targetId > 0 || npc.underAttack) && !npc.walkingHome && NPCCombatData.retaliates(npc.getId())) {
 			
-			Player c = World.getWorld().getPlayers().get(npc.killerId);
+			Player c = World.getWorld().getPlayers().get(npc.targetId);
 				if (c != null) {
 					
 					// follow and attack
@@ -89,13 +89,13 @@ public class NpcVsPlayerCombat {
 						}
 					} else {
 						// out of range
-						npc.killerId = 0;
+						npc.targetId = 0;
 						npc.underAttack = false;
 						npc.facePlayer(0);
 					}
 				} else {
 					// null target
-					npc.killerId = 0;
+					npc.targetId = 0;
 					npc.underAttack = false;
 					npc.facePlayer(0);
 				}
@@ -129,7 +129,7 @@ public class NpcVsPlayerCombat {
 			}
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 				if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
-					npc.killerId = 0;
+					npc.targetId = 0;
 					return;
 				}
 			}
@@ -248,12 +248,12 @@ public class NpcVsPlayerCombat {
 		if (npc.npcId != 5535 && npc.npcId != 494) { // small tent and kraken
 														// can attack in single
 			if (!npc.inMulti() && npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex()) {
-				npc.killerId = 0;
+				npc.targetId = 0;
 				return false;
 			}
 			if (!npc.inMulti() && (player.underAttackBy > 0
 					|| (player.underAttackBy2 > 0 && player.underAttackBy2 != npc.getIndex()))) {
-				npc.killerId = 0;
+				npc.targetId = 0;
 				return false;
 			}
 		}
@@ -261,16 +261,16 @@ public class NpcVsPlayerCombat {
 		 * This doesn't work.
 		 */
 		if (npc.heightLevel != player.heightLevel) {
-			npc.killerId = 0;
+			npc.targetId = 0;
 			return false;
 		}
 		if (player.getBankPin().requiresUnlock()) {
-			npc.killerId = 0;
+			npc.targetId = 0;
 			return false;
 		}
 		player.combatCountdown = 10;
 		if (player.inTutorial()) {
-			npc.killerId = 0;
+			npc.targetId = 0;
 			return false;
 		}
 		if (PlayerVsNpcCombat.validateAttack(player, npc, false)) {

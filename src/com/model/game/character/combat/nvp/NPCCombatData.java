@@ -265,7 +265,6 @@ public class NPCCombatData {
 		switch (npc.npcId) {
 		case 5579:
 			return true;
-
 		}
 
 		return false;

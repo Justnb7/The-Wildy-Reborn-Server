@@ -1256,17 +1256,12 @@ public class Player extends Entity {
 	
 	@Override
 	public Hit decrementHP(Hit hit) {
-		// NOTE: Damage must be changed BEFORE calling this method otherwise things will get out of sync
-		// such as hitting 20 but displaying something different. 
 		int damage = hit.getDamage(); 
 		if (this.getSkills().getLevel(3) - damage <= 0) {
 			damage = this.getSkills().getLevel(3);
-			System.out.println("["+this.getName()+"] dmg was over current hp ("+getSkills().getLevel(3)+"), adjusted to "+damage);
+			//System.out.println("["+this.getName()+"] dmg was over current hp ("+getSkills().getLevel(3)+"), adjusted to "+damage);
 		}
-		System.out.println("you're defo using the right method btw "+damage+" vs "+this.getSkills().getLevel(3));
-		// fuck knows lmfao ok lets print
-
-		// and you changed it here and it didnt work? yeah i tried it here odd it should actually work here tbh
+		//System.out.println("you're defo using the right method btw "+damage+" vs "+this.getSkills().getLevel(3));
 		this.getSkills().setLevel(3, this.getSkills().getLevel(3) - damage);
 
 		/*
@@ -1578,7 +1573,13 @@ public class Player extends Entity {
 			process_following();
 			combatProcessing();
 			controller.tick(this);
+			// haha another side note.. bottleneck in PI
+			// this is doing for (player p : world.plrs) // say 500 players {
+			// then forall(world.npcs) -> end up 500*3k spawned npcs loop = 1.5 million loops lol
+			// }
 			NPCAggression.process(this);
+			// ok this code can't be improved atm but thats fine it's only bad when theres lots of npcs and players
+			
 			if (!getArea().inWild()) {
 				if (wildernessKillStreak >= 2) {
 					write(new SendMessagePacket("[@red@Streak@bla@] Your wilderness ends at @red@" + wildernessKillStreak + "@bla@ as you exit the wilderness."));

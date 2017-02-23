@@ -151,6 +151,7 @@ public class CommandPacketHandler implements PacketType {
 			player.getSkills().setLevel(stat, level);
 			player.write(new SendMessagePacket(Skills.SKILL_NAME[stat] + " level is now " + level + "."));
 			player.combatLevel = player.getSkills().getCombatLevel();
+    		player.totalLevel = player.getSkills().getTotalLevel();
     		player.getPA().requestUpdates();
     		return true;
     
@@ -755,6 +756,10 @@ public class CommandPacketHandler implements PacketType {
 				player.write(new SendMessagePacket("Syntax is ::lvl [skill] [lvl]."));				
 
 			}
+    		player.combatLevel = player.getSkills().getCombatLevel();
+    		player.totalLevel = player.getSkills().getTotalLevel();
+    		player.updateRequired = true;
+    		player.appearanceUpdateRequired = true;
     		break;
     		
     	case "setkc":
@@ -809,6 +814,8 @@ public class CommandPacketHandler implements PacketType {
 				player.getSkills().setExperience(i, 13034431);
 				player.write(new SendSkillPacket(i));
 			}
+    		player.combatLevel = player.getSkills().getCombatLevel();
+    		player.totalLevel = player.getSkills().getTotalLevel();
     		player.updateRequired = true;
     		player.appearanceUpdateRequired = true;
     		return true;

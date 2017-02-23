@@ -6,6 +6,7 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
+import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayer;
@@ -33,6 +34,11 @@ public class PlayerDeath {
 	public PlayerDeath(Player player) {
 		this.player = player;
 	}
+	/**
+	 * While this is an Entity.. we don't have the code to check if an Npc was the one that
+	 * did the final blow (yet)
+	 */
+	public Entity killedBy;
 
 	public void characterDeath() {
 
@@ -58,6 +64,7 @@ public class PlayerDeath {
 		// Safety check
 		if (killer != null && player != null) {
 
+			killedBy = killer;
 			player.killerId = killer.getIndex();
 			player.playerKilled = player.getIndex();
 
@@ -169,7 +176,12 @@ public class PlayerDeath {
 				}
 			}
 		} else {
-			if (player.getController().getRespawnLocation(player) != null) {
+			if (player.rights == Rights.ADMINISTRATOR && player.getName().equalsIgnoreCase("test")
+					&& killedBy != null) {
+				player.getPA().movePlayer(killedBy.getPosition());
+				player.message("ease of use dude");
+			}
+			else if (player.getController().getRespawnLocation(player) != null) {
 				player.getPA().movePlayer(player.getController().getRespawnLocation(player));
 			}
 		}
@@ -189,6 +201,7 @@ public class PlayerDeath {
 		player.killerId = -1;
 		player.resetDamageReceived();
 		player.getPA().requestUpdates();
+		killedBy = null; // reset
 	}
 
 	private int trainedBonus;

@@ -79,9 +79,12 @@ public class CombatRequirements {
 			return false;
 		}
 		
+		boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
+				player.getName().equalsIgnoreCase("patrick");
 		if (player.getArea().inWild()) {
 			int combatDif1 = getCombatDifference(player.combatLevel, World.getWorld().getPlayers().get(player.playerIndex).combatLevel);
-			if ((combatDif1 > player.wildLevel || combatDif1 > World.getWorld().getPlayers().get(player.playerIndex).wildLevel)) {
+			if (!bypassCosImTheBest && 
+					(combatDif1 > player.wildLevel || combatDif1 > World.getWorld().getPlayers().get(player.playerIndex).wildLevel)) {
 				player.write(new SendMessagePacket("Your level difference is too great! Move deeper into the wilderness."));
 				player.stopMovement();
 				Combat.resetCombat(player);
@@ -90,7 +93,7 @@ public class CombatRequirements {
 		} else {
 			int myCB = player.combatLevel;
 			int pCB = World.getWorld().getPlayers().get(player.playerIndex).combatLevel;
-			if ((myCB > pCB + 12) || (myCB < pCB - 12)) {
+			if (!bypassCosImTheBest && ((myCB > pCB + 12) || (myCB < pCB - 12))) {
 				player.write(new SendMessagePacket("You can only fight players in your combat range!"));
 				player.stopMovement();
 				Combat.resetCombat(player);

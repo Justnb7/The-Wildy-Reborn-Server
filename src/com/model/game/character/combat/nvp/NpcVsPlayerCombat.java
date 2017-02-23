@@ -47,6 +47,8 @@ public class NpcVsPlayerCombat {
 	 *            The {@link Npc} to handle combat timers for
 	 */
 	public static void handleCombatTimer(Npc npc) {
+		// TODO PI old system for making damage show up -> REMOVE ALL THIS CODE!! 
+		// your new way of doing it is world.scheduler().submit(task() { target.damage(50) });
 		if (npc.hitDelayTimer > 0) {
 			npc.hitDelayTimer--;
 		}
@@ -56,18 +58,24 @@ public class NpcVsPlayerCombat {
 			executeDamage(npc);
 		}
 
+		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
 			npc.attackTimer--;
 		}
+		
+		// If we havent been attacked within last 5 secs reset who last attack us
 		if (System.currentTimeMillis() - npc.lastDamageTaken > 5000) {
 			npc.underAttackBy = 0;
 		}
+		
+		// ok here is the logic we're gonna change
 
-		if ((npc.killerId > 0 || npc.underAttack) && !npc.walkingHome && NPCCombatData.retaliates(npc.getId())) {
-			if (!npc.isDead) {
-				int p = npc.killerId;
-				if (World.getWorld().getPlayers().get(p) != null) {
-					Player c = World.getWorld().getPlayers().get(p);
+		if (!npc.isDead && (npc.killerId > 0 || npc.underAttack) && !npc.walkingHome && NPCCombatData.retaliates(npc.getId())) {
+			
+			Player c = World.getWorld().getPlayers().get(npc.killerId);
+				if (c != null) {
+					
+					// follow and attack
 					if (NPCHandler.goodDistance(c.absX, c.absY, npc.absX, npc.absY, 20)) {
 						NPCHandler.followPlayer(npc, c.getIndex());
 						if (World.getWorld().getNpcs().get(npc.getIndex()) == null) {
@@ -80,16 +88,18 @@ public class NpcVsPlayerCombat {
 							}
 						}
 					} else {
+						// out of range
 						npc.killerId = 0;
 						npc.underAttack = false;
 						npc.facePlayer(0);
 					}
 				} else {
+					// null target
 					npc.killerId = 0;
 					npc.underAttack = false;
 					npc.facePlayer(0);
 				}
-			}
+			
 		}
 	}
 
@@ -314,9 +324,9 @@ public class NpcVsPlayerCombat {
 			}
 			// Autoretal
 			if (player.playerIndex <= 0 && player.npcIndex <= 0 || player.npcIndex == npc.getIndex()) {
-				if (player.isAutoRetaliating())
-					System.out.println("ok");
+				if (player.isAutoRetaliating()) {
 					player.npcIndex = npc.getIndex();
+				}
 			}
 			// block anim
 			if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0 && player.oldNpcIndex == 0) {
@@ -554,8 +564,9 @@ public class NpcVsPlayerCombat {
 
 		// Autoretal
 		if (player.playerIndex <= 0 && player.npcIndex <= 0 || player.npcIndex == npc.getIndex()) {
-			if (player.isAutoRetaliating())
+			if (player.isAutoRetaliating()) {
 				player.npcIndex = npc.getIndex();
+			}
 		}
 		// block anim
 		if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0 && player.oldNpcIndex == 0) {

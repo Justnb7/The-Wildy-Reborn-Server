@@ -494,32 +494,38 @@ public class Npc extends Entity {
 	
 	@Override
 	public void process() {
+		// validate we're onlin brb 15s
+		if (World.getWorld().getNpcs().get(getIndex()) == null)
+			return;
 		
-		onUpdate();
+		
+		
+		onUpdate(); // (empty atm?)
+		 
 		try {
-			follow();
-			
-			super.frozen_process();
-
-			Player player = World.getWorld().getPlayers().get(spawnedBy);
-			if (isPet && ownerId > 0) {
-				//System.out.println("NPC Following player");
-				NPCHandler.followPlayer(this, ownerId);
-			}
+			Player owner = World.getWorld().getPlayers().get(spawnedBy);
 			
 			if (currentHealth > 0 && !isDead) {
+				follow();
+				
+				super.frozen_process();
+
+				
+				if (isPet && ownerId > 0) {
+					//System.out.println("NPC Following player");
+					NPCHandler.followPlayer(this, ownerId);
+				}
+				
+				
 				if (npcId == 6611 || npcId == 6612) {
 					if (currentHealth < (maximumHealth / 2) && !spawnedVetionMinions) {
-						spawnVetDogs(player);
+						spawnVetDogs(owner);
 					}
 				}
-			}
-			
-			if (currentHealth > 0 && !isDead) {
-				if (npcId == 6615) {
+				else if (npcId == 6615) {
 					if (currentHealth <= 100 && !spawnedScorpiaMinions) {
-						Npc min1 = NPCHandler.spawnNpcBossOffspring(player, 6617, getX()- 1, absY, heightLevel, 1, 79, -1, -1, 0, false);
-						Npc min2 = NPCHandler.spawnNpcBossOffspring(player, 6617, getX() + 1, absY, heightLevel, 1, 79, -1, -1, 0, false);
+						Npc min1 = NPCHandler.spawnNpcBossOffspring(owner, 6617, getX()- 1, absY, heightLevel, 1, 79, -1, -1, 0, false);
+						Npc min2 = NPCHandler.spawnNpcBossOffspring(owner, 6617, getX() + 1, absY, heightLevel, 1, 79, -1, -1, 0, false);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);
@@ -534,14 +540,12 @@ public class Npc extends Entity {
 				}
 			}
 			
-			if (World.getWorld().getNpcs().get(getIndex()) == null)
-				return;
 			/*
 			 * Handle our combat timers
 			 */
 			NpcVsPlayerCombat.handleCombatTimer(this);
 
-			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).heightLevel != heightLevel || World.getWorld().getPlayers().get(spawnedBy).isDead() || !player.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
+			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).heightLevel != heightLevel || World.getWorld().getPlayers().get(spawnedBy).isDead() || !owner.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
 				World.getWorld().unregister(this);
 			}
 

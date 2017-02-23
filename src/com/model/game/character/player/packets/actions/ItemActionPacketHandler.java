@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import com.model.Server;
 import com.model.game.character.Animation;
+import com.model.game.character.player.CommandPacketHandler;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
@@ -91,6 +93,12 @@ public class ItemActionPacketHandler implements PacketType {
 		player.getHerblore().clean(item);
 
 		switch (item) {
+		
+		case 5733: // rotten potato jagex item
+			if (player.rights == Rights.ADMINISTRATOR) {
+				CommandPacketHandler.doCommandFromCode(player, "kickall");
+			}
+			break;
 		
 		case 13658:
 			player.dialogue().start("TELEPORT_CARD", player);

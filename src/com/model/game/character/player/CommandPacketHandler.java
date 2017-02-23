@@ -49,7 +49,11 @@ public class CommandPacketHandler implements PacketType {
     @Override
     public void processPacket(Player player, int packetType, int packetSize) {
     	String playerCommand = player.getInStream().readString().toLowerCase();
-    	
+    	doCommandFromCode(player, playerCommand);
+	}
+    
+    public static void doCommandFromCode(Player player, String playerCommand) {
+
     	if (playerCommand.length() == 0) {
     		return;
     	}
@@ -86,7 +90,7 @@ public class CommandPacketHandler implements PacketType {
 		if (player.getRights().isStaff()) {
 			PlayerLogging.write(LogType.COMMAND, player, player.getName() + " typed command " + playerCommand);
 		}
-	}
+    }
     
     private static boolean processNormalCommand(Player player, String[] cmd) {
     	
@@ -563,6 +567,22 @@ public class CommandPacketHandler implements PacketType {
                  player.write(new SendMessagePacket("player must be online."));
              }
       		return true;
+    	case "kickall":
+            try {
+            	if (World.getWorld().getActivePlayers() > 10) {
+            		player.message("Are you on the LIVE game? shit nigga dont wanna forcekick everyone");
+            		return true;
+            	} else { 
+	            	for (Player op : World.getWorld().getPlayers()) {
+	            		if (op == null) continue;
+	    				op.logout();
+	            	}
+            	}
+            } catch (Exception e) {
+                e.printStackTrace();
+                player.write(new SendMessagePacket("player must be online."));
+            }
+     		return true;
 
       		
     	 case "mute":

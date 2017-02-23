@@ -149,10 +149,10 @@ public class TeleportHandler {
 			player.write(new SendString("<col=ff7000>PvP", 57013));
 			player.write(new SendString("</col>PvM", 57017));
 			player.write(new SendString("</col>Minigames", 57021));
-			player.write(new SendConfig(877, 0));
-			player.write(new SendConfig(878, 1));
-			player.write(new SendConfig(879, 0));
-			player.write(new SendConfig(880, 0));
+			player.write(new SendConfig(977, 0));
+			player.write(new SendConfig(978, 1));
+			player.write(new SendConfig(979, 0));
+			player.write(new SendConfig(980, 0));
 			player.write(new SendScrollbar(57050, 225));
 
 			break;
@@ -162,10 +162,10 @@ public class TeleportHandler {
 			player.write(new SendString("</col>PvP", 57013));
 			player.write(new SendString("<col=ff7000>PvM", 57017));
 			player.write(new SendString("</col>Minigames", 57021));
-			player.write(new SendConfig(877, 0));
-			player.write(new SendConfig(878, 0));
-			player.write(new SendConfig(879, 1));
-			player.write(new SendConfig(880, 0));
+			player.write(new SendConfig(977, 0));
+			player.write(new SendConfig(978, 0));
+			player.write(new SendConfig(979, 1));
+			player.write(new SendConfig(980, 0));
 			player.write(new SendScrollbar(57050, 490));
 			break;
 
@@ -174,10 +174,10 @@ public class TeleportHandler {
 			player.write(new SendString("</col>PvP", 57013));
 			player.write(new SendString("</col>PvM", 57017));
 			player.write(new SendString("<col=ff7000>Minigames", 57021));
-			player.write(new SendConfig(877, 0));
-			player.write(new SendConfig(878, 0));
-			player.write(new SendConfig(879, 0));
-			player.write(new SendConfig(880, 1));
+			player.write(new SendConfig(977, 0));
+			player.write(new SendConfig(978, 0));
+			player.write(new SendConfig(979, 0));
+			player.write(new SendConfig(980, 1));
 			player.write(new SendScrollbar(57050, 225));
 			break;
 
@@ -187,10 +187,10 @@ public class TeleportHandler {
 			player.write(new SendString("</col>PvP", 57013));
 			player.write(new SendString("</col>PvM", 57017));
 			player.write(new SendString("</col>Minigames", 57021));
-			player.write(new SendConfig(877, 1));
-			player.write(new SendConfig(878, 0));
-			player.write(new SendConfig(879, 0));
-			player.write(new SendConfig(880, 0));
+			player.write(new SendConfig(977, 1));
+			player.write(new SendConfig(978, 0));
+			player.write(new SendConfig(979, 0));
+			player.write(new SendConfig(980, 0));
 			player.write(new SendScrollbar(57050, 225));
 			break;
 		}

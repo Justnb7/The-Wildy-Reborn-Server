@@ -430,7 +430,6 @@ public class BountyHunter extends ScheduledTask {
 
 	@Override
 	public void execute() {
-		World.getWorld();
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player != null) {
 				pulse(player);

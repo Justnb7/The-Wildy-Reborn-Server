@@ -103,8 +103,8 @@ public class PlayerVsPlayerCombat {
 			damage = damage * 60 / 100;
 		}
 		
-		if (defender.getSkills().getLevel(Skills.HITPOINTS) - damage < 0) {
-			defender.getSkills().setLevel(Skills.HITPOINTS, damage);
+		if (defender.getSkills().getLevel(Skills.HITPOINTS) - damage <= 0) {
+			damage = defender.getSkills().getLevel(3);// this was it xd
 		}
 		if (defender.hasVengeance()) {
 			defender.getCombat().vengeance(attacker, damage, 1);

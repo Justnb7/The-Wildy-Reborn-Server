@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 import com.model.Server;
 import com.model.game.character.combat.PrayerHandler.Prayer;
 import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
@@ -363,6 +364,10 @@ public abstract class Entity {
 			// You can't hit over an Npcs current health. Recent update on 07 means you can in PVP though.
 			if (victim_npc.currentHealth - damage < 0) {
 				damage = victim_npc.currentHealth;
+			}
+			// Hit the guy who hit us back
+			if (NPCCombatData.switchesAttackers(victim_npc)) {
+				victim_npc.targetId = attacker.getIndex();
 			}
 		}
 		

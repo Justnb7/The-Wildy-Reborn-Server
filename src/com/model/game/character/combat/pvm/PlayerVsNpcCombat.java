@@ -15,6 +15,7 @@ import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
+import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
 import com.model.game.character.npc.NPCHandler;
@@ -194,11 +195,16 @@ public class PlayerVsNpcCombat {
 
 		npc_victim.walkingHome = false;
 
-		if (npc_victim.underAttackBy > 0 && Server.npcHandler.getsPulled(npc_victim)) {
-			npc_victim.killerId = plr_attacker.getIndex();
-		} else if (npc_victim.underAttackBy < 0 && !Server.npcHandler.getsPulled(npc_victim)) {
-			npc_victim.killerId = plr_attacker.getIndex();
+		// now this code needs to be in the damaging methods there are a few cos its a bit messy
+		if (NPCCombatData.switchesAttackers(npc_victim)) {
+			npc_victim.targetId = plr_attacker.getIndex();
 		}
+		
+		/*if (npc_victim.underAttackBy > 0 && Server.npcHandler.retaliatesAllHits(npc_victim)) {
+			npc_victim.killerId = plr_attacker.getIndex();
+		} else if (npc_victim.underAttackBy < 0 && !Server.npcHandler.retaliatesAllHits(npc_victim)) {
+			npc_victim.killerId = plr_attacker.getIndex();
+		}*/
 
 		plr_attacker.lastNpcAttacked = victim_npc_id;
 

@@ -665,9 +665,13 @@ public enum PotionData {
 	}
 	
 	public static void drinkAntifire(Player player, long duration) {
-		player.write(new SendMessagePacket("You now have resistance against dragon fire."));
-		player.lastAntifirePotion = System.currentTimeMillis();
-		player.antifireDelay = duration;
+		player.message("You drink some of your antifire potion.");
+		player.setAttribute("antiFire", duration);
+	}
+	
+	public static void drinkExtendedAntifire(Player player, long duration) {
+		player.message("You drink some of your extended antifire potion.");
+		player.setAttribute("extended_antiFire", duration);
 	}
 	
 	public static void enchanceMagic(Player player, int skillID, boolean sup) {

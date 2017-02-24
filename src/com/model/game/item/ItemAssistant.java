@@ -12,7 +12,7 @@ import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -447,7 +447,7 @@ public class ItemAssistant {
 			all.add(new Item(player.playerEquipment[i], player.playerEquipmentN[i]));
 		}
 		int finalamount = player.isSkulled ? 0 : 3;
-		if (player.isActivePrayer(Prayer.PROTECT_ITEM))
+		if (player.isActivePrayer(Prayers.PROTECT_ITEM))
 			finalamount++;
 		int amount = finalamount;
 		if (amount > 0) {

@@ -5,12 +5,13 @@ import java.util.Map;
 
 import com.google.common.base.Preconditions;
 import com.model.Server;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.location.Location;
 import com.model.game.location.Position;
@@ -52,10 +53,11 @@ public abstract class Entity {
 	 * The characters combat type, MELEE by default
 	 */
 	private CombatType combatType = CombatType.MELEE;
+	
 	/**
-	 * Attributes a creature can hold
+	 * The permanent attributes map. Items set here are only removed when told to.
 	 */
-	private final HashMap<String, Object> attributes = new HashMap<>();
+	protected Map<String, Object> attributes = new HashMap<String, Object>();
 
 	@Override
 	public final int hashCode() {
@@ -185,35 +187,83 @@ public abstract class Entity {
 			}
 		});
 	}
-
+	
+	public boolean hasAttribute(String string) {
+		return attributes.containsKey(string);
+	}
+	
+	/**
+	 * Removes an attribute.<br />
+	 * WARNING: unchecked cast, be careful!
+	 *
+	 * @param <T> The type of the value.
+	 * @param key The key.
+	 * @return The old value.
+	 */
+	@SuppressWarnings("unchecked")
 	public <T> T removeAttribute(String key) {
-		@SuppressWarnings("unchecked")
-		T t = (T) attributes.remove(key);
-		return t;
+		return (T) attributes.remove(key);
 	}
 
-	public void setAttribute(final String key, final Object value) {
-		attributes.put(key, value);
+	/**
+	 * Removes an attribute.<br />
+	 * WARNING: unchecked cast, be careful!
+	 *
+	 * @param <T> The type of the value.
+	 * @param key The key.
+	 * @return The old value.
+	 */
+	public void removeAllAttributes() {
+		if (attributes != null && attributes.size() > 0 && attributes.keySet().size() > 0) {
+			attributes = new HashMap<String, Object>();
+		}
 	}
 
+	/**
+	 * Sets an attribute.<br />
+	 * WARNING: unchecked cast, be careful!
+	 *
+	 * @param <T>   The type of the value.
+	 * @param key   The key.
+	 * @param value The value.
+	 * @return The old value.
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T setAttribute(String key, T value) {
+		return (T) attributes.put(key, value);
+	}
+
+	/**
+	 * Gets an attribute.<br />
+	 * WARNING: unchecked cast, be careful!
+	 *
+	 * @param <T> The type of the value.
+	 * @param key The key.
+	 * @return The value.
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(String key) {
+		return (T) attributes.get(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(String key, T fail) {
+		if (attributes.containsKey(key))
+			return (T) attributes.get(key);
+		else
+			return (T) fail;
+	}
+
+	/**
+	 * Gets an attribute.<br />
+	 * WARNING: unchecked cast, be careful!
+	 *
+	 * @param <T> The type of the value.
+	 * @param key The key.
+	 * @return The value.
+	 */
 	public Map<String, Object> getAttributes() {
 		return attributes;
-	}
-
-	public <T> T getAttribute(String key, T fail) {
-
-		Object object = attributes.get(key);
-
-		if (object != null && object.getClass() == fail.getClass()) {
-			@SuppressWarnings("unchecked")
-			T t = (T) object;
-			return t;
-		}
-		if (fail == null) {//wtf
-			return null;
-		}
-
-		return fail;
 	}
 
 	public int getX() {
@@ -304,13 +354,15 @@ public abstract class Entity {
 	 */
 	public abstract void process();
 	
-	public boolean isNPC() {
-		return this instanceof Npc;
-	}
+	/**
+	 * Is this entity a player.
+	 */
+	public abstract boolean isPlayer();
 	
-	public boolean isPlayer() {
-		return this instanceof Player;
-	}
+	/**
+	 * Is this entity an NPC.
+	 */
+	public abstract boolean isNPC();
 	
 	public Npc toNPC() {
 		return isNPC() ? (Npc) this : null;
@@ -342,13 +394,13 @@ public abstract class Entity {
 			
 			// The victim (this) has protection prayer enabled. TODO you need to specify combat_type
 			if (combat_type != null) {
-				if (combat_type == CombatType.MELEE && player_me.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+				if (combat_type == CombatType.MELEE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 					damage = (int) (damage * 0.6);
 				}
-				if (combat_type == CombatType.RANGED && player_me.isActivePrayer(Prayer.PROTECT_FROM_MISSILE)) {
+				if (combat_type == CombatType.RANGED && player_me.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 					damage = (int) (damage * 0.6);
 				}
-				if (combat_type == CombatType.MAGIC && player_me.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+				if (combat_type == CombatType.MAGIC && player_me.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 					damage = (int) (damage * 0.6);
 				}
 			}
@@ -570,8 +622,6 @@ public abstract class Entity {
 	public void playAnimation(Animation animation) {
 		// Purpose: anims are unique to npcs to this shops the npc deforming after transforming.
 		if (this.isNPC() && ((Npc)this).transformUpdateRequired) { 
-			// not too sure this will work we'll see
-			// its not that important tho
 			return;
 		}
 		anim = animation;

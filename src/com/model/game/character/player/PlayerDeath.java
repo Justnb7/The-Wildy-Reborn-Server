@@ -9,7 +9,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.effect.PKHandler;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
@@ -140,7 +140,7 @@ public class PlayerDeath {
 				player.getItems().keepItem(2, true);
 			}
 
-			if (player.isActivePrayer(Prayer.PROTECT_ITEM) && player.lastProtItem.elapsed(700)) {
+			if (player.isActivePrayer(Prayers.PROTECT_ITEM) && player.lastProtItem.elapsed(700)) {
 				player.getItems().keepItem(3, true);
 			}
 			player.getItems().dropAllItems();
@@ -152,7 +152,7 @@ public class PlayerDeath {
 					}
 				}
 			}
-			if (player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+			if (player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 				if (player.itemKeptId[3] > 0) {
 					player.getItems().addItem(player.itemKeptId[3], 1);
 				}

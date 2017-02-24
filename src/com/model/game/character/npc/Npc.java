@@ -205,12 +205,6 @@ public class Npc extends Entity {
 		direction = -1;
 		isDead = false;
 		randomWalk = true;
-		combatLevel = NpcDefinition.getDefinitions()[npcId] == null ? 1 : NpcDefinition.getDefinitions()[npcId].getCombatLevel();
-	}
-	
-	public Npc(int _npcId, int _npcType) {
-		super(EntityType.NPC);
-		npcId = _npcId;
 		npcId = _npcType;
 		direction = -1;
 		isDead = false;
@@ -422,7 +416,7 @@ public class Npc extends Entity {
 		FocusPointY = y;
 		updateRequired = true;
 	}
-
+	
 	public int getSize() {
 		return NPCSize.getSize(npcId);
 	}
@@ -557,19 +551,6 @@ public class Npc extends Entity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Resets players in combat
-	 */
-	public static int maxNPCs = 10000;
-	public static Npc npcs[] = new Npc[maxNPCs];
-
-	public static Npc getNpc(int npcType) {
-		for (Npc npc : npcs)
-			if (npc != null && npc.npcId == npcType)
-				return npc;
-		return null;
 	}
 
 	public void addDamageReceived(String player, int damage) {
@@ -726,7 +707,6 @@ public class Npc extends Entity {
 	// Actual following, called every cycle. This method supports both player and NPC types while PI didn't
 	public void follow() {
 		if (this.frozen()) {
-			System.out.println("frozen");
 			return;
 		}
 		if (following_target != null) {
@@ -852,6 +832,11 @@ public class Npc extends Entity {
 	}
 
 	public boolean respawnable = true;
+
+	/**
+	 * We can save our npc's last health before jumping
+	 */
+	public int storeLastHealth;
 	
 	public boolean isRespawnable() {
 		return respawnable;
@@ -859,6 +844,20 @@ public class Npc extends Entity {
 
 	public void setRespawnable(boolean respawnable) {
 		this.respawnable = respawnable;
+	}
+	
+	public void kill(Npc npc) {
+		npc.setAbsX(-1);
+		npc.setAbsY(-1);
+		npc.setVisible(false);
+		npc.removeFromTile();
+	}
+	
+	public void resetCombat() {
+		walkingHome = true;
+		underAttack = false;
+		randomWalk = true;
+		currentHealth = maximumHealth;
 	}
 	
 	public void remove() {
@@ -929,5 +928,15 @@ public class Npc extends Entity {
 
 				|| (absX >= 2660 && absX <= 2730 && absY >= 3707 && absY <= 3737);
 
+	}
+
+	@Override
+	public boolean isNPC() {
+		return true;
+	}
+
+	@Override
+	public boolean isPlayer() {
+		return false;
 	}
 }

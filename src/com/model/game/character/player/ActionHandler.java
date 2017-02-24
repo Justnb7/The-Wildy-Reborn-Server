@@ -162,6 +162,38 @@ public class ActionHandler {
 
 		switch (id) {
 		
+		case 26502:
+			if(player.getY() == 5294) {
+				player.getPA().movePlayer(new Position(2839, 5295, 2));
+			} else if(player.getY() == 5295) {
+				player.getPA().movePlayer(new Position(2839, 5294, 2));
+			}
+			break;
+		
+		case 26503:
+			if(player.getX() == 2862) {
+				player.getPA().movePlayer(new Position(2863, 5354, 2));
+			} else if(player.getX() == 2863) {
+				player.getPA().movePlayer(new Position(2862, 5354, 2));
+			}
+			break;
+			
+		case 26504:
+			if(player.getX() == 2909) {
+				player.getPA().movePlayer(new Position(2908, 5265, 0));
+			} else if(player.getX() == 2908) {
+				player.getPA().movePlayer(new Position(2909, 5265, 0));
+			}
+			break;
+			
+		case 26505:
+			if(player.getY() == 5333) {
+				player.getPA().movePlayer(new Position(2925, 5332, 2));
+			} else if(player.getY() == 5332) {
+				player.getPA().movePlayer(new Position(2925, 5333, 2));
+			}
+			break;
+		
 		case 13641:
 			if(player.getArea().inWild()) {
 				return;

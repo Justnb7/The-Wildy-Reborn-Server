@@ -760,9 +760,11 @@ public class CommandPacketHandler implements PacketType {
     		player.write(new SendMessagePacket("Setting config: "+cmd[1]+" Type: "+cmd[2]));
     		return true;
     	
-    	case "max":
+    	case "maxmelee":
     		player.write(new SendMessagePacket("Melee max: "+player.getCombat().calculateMeleeMaxHit()));
-    		player.write(new SendMessagePacket("Magic max: "+MagicCalculations.magicMaxHitModifier(player)));
+    		return true;
+    		
+    	case "maxrange":
     		player.write(new SendMessagePacket("Range max: "+player.getCombat().calculateRangeMaxHit()));
     		return true;
 			
@@ -957,15 +959,6 @@ public class CommandPacketHandler implements PacketType {
     		player.getWeaponInterface().sendSpecialBar(player.playerEquipment[player.getEquipment().getWeaponId()]);
     		player.getWeaponInterface().refreshSpecialAttack();
     		player.write(new SendString(""+player.getSpecialAmount(), 12001));
-    		return true;
-    		
-    	case "setspec":
-    		int special = Integer.parseInt(cmd[1]);
-    		int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
-    		player.setSpecialAmount(special);
-    		player.getWeaponInterface().sendSpecialBar(weapon);
-    		player.getWeaponInterface().refreshSpecialAttack();
-    		player.write(new SendMessagePacket("Your special attack now has : "+special+ "% left."));
     		return true;
     		
     	case "tele":

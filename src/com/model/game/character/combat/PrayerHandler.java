@@ -17,7 +17,7 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 
 public class PrayerHandler {
 
-	public static enum Prayer {
+	public static enum Prayers {
 		THICK_SKIN(21233, 1, 0.5, 83), 
 		BURST_OF_STRENGTH(21234, 4, 0.5, 84), 
 		CLARITY_OF_THOUGHT(21235, 7, 0.5, 85), 
@@ -53,15 +53,15 @@ public class PrayerHandler {
 
 		private int configId;
 
-		private Prayer(int buttonId, int level, double drain, int configId) {
+		private Prayers(int buttonId, int level, double drain, int configId) {
 			this.buttonId = buttonId;
 			this.levelRequirement = level;
 			this.drainRate = drain;
 			this.configId = configId;
 		}
 
-		public int getPrayerIndex(Prayer prayer) {
-			for (Prayer data : Prayer.values()) {
+		public int getPrayerIndex(Prayers prayer) {
+			for (Prayers data : Prayers.values()) {
 				if (data == prayer) {
 					return data.ordinal();
 				}
@@ -87,7 +87,7 @@ public class PrayerHandler {
 	}
 
 	public static void togglePrayer(final Player player, final int buttonId) {
-		for (Prayer prayer : Prayer.values()) {
+		for (Prayers prayer : Prayers.values()) {
 			if (buttonId == prayer.getButtonId()) {
 				if (player.isActivePrayer(prayer)) {
 					deactivatePrayer(player, prayer);
@@ -100,7 +100,7 @@ public class PrayerHandler {
 		}
 	}
 
-	private static void activatePrayer(final Player player, final Prayer prayer) {
+	private static void activatePrayer(final Player player, final Prayers prayer) {
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(session)) {
@@ -121,9 +121,9 @@ public class PrayerHandler {
 			deactivatePrayer(player, prayer);
 			return;
 		}
-		if (prayer != Prayer.PROTECT_ITEM)
+		if (prayer != Prayers.PROTECT_ITEM)
 			switchPrayer(player, prayer);
-		if (prayer.equals(Prayer.PROTECT_FROM_MAGIC) || prayer.equals(Prayer.PROTECT_FROM_MISSILE) || prayer.equals(Prayer.PROTECT_FROM_MELEE) || prayer.equals(Prayer.RETRIBUTION) || prayer.equals(Prayer.REDEMPTION) || prayer.equals(Prayer.SMITE)) {
+		if (prayer.equals(Prayers.PROTECT_FROM_MAGIC) || prayer.equals(Prayers.PROTECT_FROM_MISSILE) || prayer.equals(Prayers.PROTECT_FROM_MELEE) || prayer.equals(Prayers.RETRIBUTION) || prayer.equals(Prayers.REDEMPTION) || prayer.equals(Prayers.SMITE)) {
 			int headIcon = -1;
 			switch (prayer) {
 			case PROTECT_FROM_MAGIC:
@@ -155,9 +155,9 @@ public class PrayerHandler {
 		player.addPrayerDrainRate(prayer.getDrainRate());
 	}
 
-	public static void deactivatePrayer(final Player player, final Prayer prayer) {
+	public static void deactivatePrayer(final Player player, final Prayers prayer) {
 		player.setActivePrayer(prayer, false);
-		if (prayer.equals(Prayer.PROTECT_FROM_MAGIC) || prayer.equals(Prayer.PROTECT_FROM_MISSILE) || prayer.equals(Prayer.PROTECT_FROM_MELEE) || prayer.equals(Prayer.RETRIBUTION) || prayer.equals(Prayer.REDEMPTION) || prayer.equals(Prayer.SMITE)) {
+		if (prayer.equals(Prayers.PROTECT_FROM_MAGIC) || prayer.equals(Prayers.PROTECT_FROM_MISSILE) || prayer.equals(Prayers.PROTECT_FROM_MELEE) || prayer.equals(Prayers.RETRIBUTION) || prayer.equals(Prayers.REDEMPTION) || prayer.equals(Prayers.SMITE)) {
 			player.setPrayerIcon(-1);
 			player.getPA().requestUpdates();
 		}
@@ -165,53 +165,53 @@ public class PrayerHandler {
 		player.write(new SendConfig(prayer.getConfigId(), 0));
 	}
 
-	private static Prayer[] defensePrayers = { Prayer.THICK_SKIN, Prayer.ROCK_SKIN, Prayer.STEEL_SKIN,
+	private static Prayers[] defensePrayers = { Prayers.THICK_SKIN, Prayers.ROCK_SKIN, Prayers.STEEL_SKIN,
 
 	};
 
-	private static Prayer[] strengthPrayers = { Prayer.BURST_OF_STRENGTH, Prayer.SUPERHUMAN_STRENGTH, Prayer.ULTIMATE_STRENGTH,
+	private static Prayers[] strengthPrayers = { Prayers.BURST_OF_STRENGTH, Prayers.SUPERHUMAN_STRENGTH, Prayers.ULTIMATE_STRENGTH,
 
-	Prayer.CHIVALRY, Prayer.PIETY,
+	Prayers.CHIVALRY, Prayers.PIETY,
 
-	Prayer.EAGLE_EYE, Prayer.HAWK_EYE, Prayer.SHARP_EYE,
+	Prayers.EAGLE_EYE, Prayers.HAWK_EYE, Prayers.SHARP_EYE,
 
-	Prayer.MYSTIC_LORE, Prayer.MYSTIC_MIGHT, Prayer.MYSTIC_WILL
-
-	};
-
-	private static Prayer[] attackPrayers = { Prayer.CLARITY_OF_THOUGHT, Prayer.IMPROVED_REFLEXES, Prayer.INCREDIBLE_REFLEXES,
-
-	Prayer.CHIVALRY, Prayer.PIETY,
-
-	Prayer.EAGLE_EYE, Prayer.HAWK_EYE, Prayer.SHARP_EYE,
-
-	Prayer.MYSTIC_LORE, Prayer.MYSTIC_MIGHT, Prayer.MYSTIC_WILL
+	Prayers.MYSTIC_LORE, Prayers.MYSTIC_MIGHT, Prayers.MYSTIC_WILL
 
 	};
 
-	private static Prayer[] restorePrayers = { Prayer.RAPID_RESTORE, Prayer.RAPID_HEAL
+	private static Prayers[] attackPrayers = { Prayers.CLARITY_OF_THOUGHT, Prayers.IMPROVED_REFLEXES, Prayers.INCREDIBLE_REFLEXES,
+
+	Prayers.CHIVALRY, Prayers.PIETY,
+
+	Prayers.EAGLE_EYE, Prayers.HAWK_EYE, Prayers.SHARP_EYE,
+
+	Prayers.MYSTIC_LORE, Prayers.MYSTIC_MIGHT, Prayers.MYSTIC_WILL
 
 	};
-	private static Prayer[] overheadPrayers = { Prayer.PROTECT_FROM_MAGIC, Prayer.PROTECT_FROM_MISSILE, Prayer.PROTECT_FROM_MELEE, Prayer.RETRIBUTION, Prayer.REDEMPTION, Prayer.SMITE
+
+	private static Prayers[] restorePrayers = { Prayers.RAPID_RESTORE, Prayers.RAPID_HEAL
+
+	};
+	private static Prayers[] overheadPrayers = { Prayers.PROTECT_FROM_MAGIC, Prayers.PROTECT_FROM_MISSILE, Prayers.PROTECT_FROM_MELEE, Prayers.RETRIBUTION, Prayers.REDEMPTION, Prayers.SMITE
 
 	};
 
-	private static Map<Prayer, Prayer[]> unstackable = new HashMap<Prayer, Prayer[]>();
+	private static Map<Prayers, Prayers[]> unstackable = new HashMap<Prayers, Prayers[]>();
 
 	static {
-		for (Prayer p : defensePrayers) {
+		for (Prayers p : defensePrayers) {
 			unstackable.put(p, defensePrayers);
 		}
-		for (Prayer p : strengthPrayers) {
+		for (Prayers p : strengthPrayers) {
 			unstackable.put(p, strengthPrayers);
 		}
-		for (Prayer p : attackPrayers) {
+		for (Prayers p : attackPrayers) {
 			unstackable.put(p, attackPrayers);
 		}
-		for (Prayer p : restorePrayers) {
+		for (Prayers p : restorePrayers) {
 			unstackable.put(p, restorePrayers);
 		}
-		for (Prayer p : overheadPrayers) {
+		for (Prayers p : overheadPrayers) {
 			unstackable.put(p, overheadPrayers);
 		}
 	}
@@ -224,7 +224,7 @@ public class PrayerHandler {
 	 */
 	public static void handlePrayerDraining(Player player) {
 		double toRemove = 0.0;
-		for (Prayer prayer : Prayer.values()) {
+		for (Prayers prayer : Prayers.values()) {
 			if (player.isActivePrayer(prayer)) {
 				toRemove += prayer.getDrainRate() / 20;
 			}
@@ -241,7 +241,7 @@ public class PrayerHandler {
 			} else {
 				player.write(new SendMessagePacket("You have run out of prayer points."));
 				player.getSkills().setLevel(Skills.PRAYER, 0);
-				for (Prayer prayer : Prayer.values()) {
+				for (Prayers prayer : Prayers.values()) {
 					deactivatePrayer(player, prayer);
 				}
 			}
@@ -254,22 +254,22 @@ public class PrayerHandler {
 	 * @param player
 	 */
 	public static void resetAllPrayers(final Player player) {
-		for (Prayer prayer : Prayer.values()) {
+		for (Prayers prayer : Prayers.values()) {
 			deactivatePrayer(player, prayer);
 		}
 	}
 
-	private static void switchPrayer(final Player player, final Prayer prayer) {
-		Prayer[] toDeactivate = unstackable.get(prayer);
+	private static void switchPrayer(final Player player, final Prayers prayer) {
+		Prayers[] toDeactivate = unstackable.get(prayer);
 
-		if (player.isActivePrayer(Prayer.ROCK_SKIN) || player.isActivePrayer(Prayer.STEEL_SKIN) || player.isActivePrayer(Prayer.THICK_SKIN)) {
-			if (prayer == Prayer.CHIVALRY || prayer == Prayer.PIETY) {
-				if (player.isActivePrayer(Prayer.THICK_SKIN)) {
-					deactivatePrayer(player, Prayer.THICK_SKIN);
-				} else if (player.isActivePrayer(Prayer.ROCK_SKIN)) {
-					deactivatePrayer(player, Prayer.ROCK_SKIN);
-				} else if (player.isActivePrayer(Prayer.STEEL_SKIN)) {
-					deactivatePrayer(player, Prayer.STEEL_SKIN);
+		if (player.isActivePrayer(Prayers.ROCK_SKIN) || player.isActivePrayer(Prayers.STEEL_SKIN) || player.isActivePrayer(Prayers.THICK_SKIN)) {
+			if (prayer == Prayers.CHIVALRY || prayer == Prayers.PIETY) {
+				if (player.isActivePrayer(Prayers.THICK_SKIN)) {
+					deactivatePrayer(player, Prayers.THICK_SKIN);
+				} else if (player.isActivePrayer(Prayers.ROCK_SKIN)) {
+					deactivatePrayer(player, Prayers.ROCK_SKIN);
+				} else if (player.isActivePrayer(Prayers.STEEL_SKIN)) {
+					deactivatePrayer(player, Prayers.STEEL_SKIN);
 				}
 			}
 		}
@@ -283,7 +283,7 @@ public class PrayerHandler {
 
 	public static void handleSmite(Player player, Player defender, int damage) {
 		int reduce = damage / 4;
-		if (player.isActivePrayer(Prayer.SMITE)) {
+		if (player.isActivePrayer(Prayers.SMITE)) {
 			defender.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevel(Skills.PRAYER) - reduce);
 			//player.write(new SendMessagePacket("reduced " + defender.getName() + "'s prayer level by, " + reduce + ". Also dealt "+damage+" damage."));
 			
@@ -295,7 +295,7 @@ public class PrayerHandler {
 	}
 	
 	public void appendRedemption(Player player) {
-		if (player.isActivePrayer(Prayer.REDEMPTION)) {
+		if (player.isActivePrayer(Prayers.REDEMPTION)) {
 			player.getSkills().setLevel(Skills.HITPOINTS, (int) (+ player.getSkills().getLevelForExperience(Skills.PRAYER) * .25));
 			player.getSkills().setLevel(Skills.HITPOINTS, 0);
 			player.playGraphics(Graphic.create(436, 0, 0));

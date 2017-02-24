@@ -25,6 +25,7 @@ import com.model.game.character.npc.combat.combat_scripts.King_Black_Dragon;
 import com.model.game.character.npc.combat.combat_scripts.Kraken;
 import com.model.game.character.npc.combat.combat_scripts.Kree_Arra;
 import com.model.game.character.npc.combat.combat_scripts.Krill_Tsutsaroth;
+import com.model.game.character.npc.combat.combat_scripts.Lizardman;
 import com.model.game.character.npc.combat.combat_scripts.Scorpia;
 import com.model.game.character.npc.combat.combat_scripts.Scorpia_Guardian;
 import com.model.game.character.npc.combat.combat_scripts.Sergeant_Grimspike;
@@ -75,36 +76,14 @@ public class Bosses {
 	private static final King_Black_Dragon King_Black_Dragon = new King_Black_Dragon(239);
 	private static final Barrelchest BARRELCHEST = new Barrelchest(6342);
 	private static final Zombie_Champion ZOMBIES_CHAMPION = new Zombie_Champion(3359);
-	
+	private static final Lizardman LIZARDMAN_SHAMAN = new Lizardman(6767);
 	private static final Dragon RED_DRAGON_247 = new Dragon(247);
-	private static final Dragon RED_DRAGON_248 = new Dragon(248);
-	private static final Dragon RED_DRAGON_249 = new Dragon(249);
-	private static final Dragon RED_DRAGON_250 = new Dragon(250);
-	private static final Dragon RED_DRAGON_251 = new Dragon(251);
 	private static final Dragon BLACK_DRAGON_252 = new Dragon(252);
-	private static final Dragon BLACK_DRAGON_253 = new Dragon(253);
-	private static final Dragon BLACK_DRAGON_254 = new Dragon(254);
-	private static final Dragon BLACK_DRAGON_255 = new Dragon(255);
-	private static final Dragon BLACK_DRAGON_256 = new Dragon(256);
-	private static final Dragon BLACK_DRAGON_257 = new Dragon(257);
-	private static final Dragon BLACK_DRAGON_258 = new Dragon(258);
-	private static final Dragon BLACK_DRAGON_259 = new Dragon(259);
-	private static final Dragon GREEN_DRAGON_260 = new Dragon(260);
-	private static final Dragon GREEN_DRAGON_261 = new Dragon(261);
-	private static final Dragon GREEN_DRAGON_262 = new Dragon(262);
-	private static final Dragon GREEN_DRAGON_263 = new Dragon(263);
 	private static final Dragon GREEN_DRAGON_264 = new Dragon(264);
-	private static final Dragon BLUE_DRAGON_265 = new Dragon(265);
-	private static final Dragon BLUE_DRAGON_266 = new Dragon(266);
-	private static final Dragon BLUE_DRAGON_267 = new Dragon(267);
 	private static final Dragon BLUE_DRAGON_268 = new Dragon(268);
-	private static final Dragon BLUE_DRAGON_269 = new Dragon(269);
 	private static final Dragon BRONZE_DRAGON_270 = new Dragon(270);
-	private static final Dragon BRONZE_DRAGON_271 = new Dragon(271);
-	private static final Dragon IRON_DRAGON_272 = new Dragon(272);
 	private static final Dragon IRON_DRAGON_273 = new Dragon(273);
 	private static final Dragon STEEL_DRAGON_274 = new Dragon(274);
-	private static final Dragon STEEL_DRAGON_275 = new Dragon(275);
 	
 	
 	static {
@@ -137,38 +116,18 @@ public class Bosses {
 		bosses.put(King_Black_Dragon.npcId, King_Black_Dragon);
 		bosses.put(BARRELCHEST.npcId, BARRELCHEST);
 		bosses.put(ZOMBIES_CHAMPION.npcId, ZOMBIES_CHAMPION);
+		bosses.put(LIZARDMAN_SHAMAN.npcId, LIZARDMAN_SHAMAN);
+
 		/**
 		 * Dragons
 		 */
 		bosses.put(RED_DRAGON_247.npcId, RED_DRAGON_247);
-		bosses.put(RED_DRAGON_248.npcId, RED_DRAGON_248);
-		bosses.put(RED_DRAGON_249.npcId, RED_DRAGON_249);
-		bosses.put(RED_DRAGON_250.npcId, RED_DRAGON_250);
-		bosses.put(RED_DRAGON_251.npcId, RED_DRAGON_251);
 		bosses.put(BLACK_DRAGON_252.npcId, BLACK_DRAGON_252);
-		bosses.put(BLACK_DRAGON_253.npcId, BLACK_DRAGON_253);
-		bosses.put(BLACK_DRAGON_254.npcId, BLACK_DRAGON_254);
-		bosses.put(BLACK_DRAGON_255.npcId, BLACK_DRAGON_255);
-		bosses.put(BLACK_DRAGON_256.npcId, BLACK_DRAGON_256);
-		bosses.put(BLACK_DRAGON_257.npcId, BLACK_DRAGON_257);
-		bosses.put(BLACK_DRAGON_258.npcId, BLACK_DRAGON_257);
-		bosses.put(BLACK_DRAGON_259.npcId, BLACK_DRAGON_259);
-		bosses.put(GREEN_DRAGON_260.npcId, GREEN_DRAGON_260);
-		bosses.put(GREEN_DRAGON_261.npcId, GREEN_DRAGON_261);
-		bosses.put(GREEN_DRAGON_262.npcId, GREEN_DRAGON_262);
-		bosses.put(GREEN_DRAGON_263.npcId, GREEN_DRAGON_263);
 		bosses.put(GREEN_DRAGON_264.npcId, GREEN_DRAGON_264);
-		bosses.put(BLUE_DRAGON_265.npcId, BLUE_DRAGON_265);
-		bosses.put(BLUE_DRAGON_266.npcId, BLUE_DRAGON_266);
-		bosses.put(BLUE_DRAGON_267.npcId, BLUE_DRAGON_267);
 		bosses.put(BLUE_DRAGON_268.npcId, BLUE_DRAGON_268);
-		bosses.put(BLUE_DRAGON_269.npcId, BLUE_DRAGON_269);
 		bosses.put(BRONZE_DRAGON_270.npcId, BRONZE_DRAGON_270);
-		bosses.put(BRONZE_DRAGON_271.npcId, BRONZE_DRAGON_271);
-		bosses.put(IRON_DRAGON_272.npcId, IRON_DRAGON_272);
 		bosses.put(IRON_DRAGON_273.npcId, IRON_DRAGON_273);
 		bosses.put(STEEL_DRAGON_274.npcId, STEEL_DRAGON_274);
-		bosses.put(STEEL_DRAGON_275.npcId, STEEL_DRAGON_275);
 	}
 	
 	public static Boss get(int npcId) {

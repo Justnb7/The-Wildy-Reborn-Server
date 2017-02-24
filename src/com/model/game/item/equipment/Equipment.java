@@ -159,41 +159,6 @@ public class Equipment {
 		return complete >= 3;
 	}
 	
-	/**
-	 * Checks if the player is wearing full dharok armour.
-	 * 
-	 * @param p
-	 * @return
-	 */
-	public static boolean fullDharok(Player player) {
-		return player.playerEquipment[player.getEquipment().getWeaponId()] == 4718 && player.playerEquipment[player.getEquipment().getHelmetId()] == 4716 && player.playerEquipment[player.getEquipment().getChestId()] == 4720 && player.playerEquipment[player.getEquipment().getLegsId()] == 4722;
-	}
-
-	/**
-	 * Obisidian Weapons.
-	 */
-	public static final int[] obsidianWeapons = { 746, 747, 6523, 6525, 6526, 6527, 6528 };
-
-	/**
-	 * Checks if the player has obsidian equipment to apply the effect.
-	 * 
-	 * @param player
-	 * @return
-	 */
-	public static boolean hasObsidianEffect(Player player) {
-		if (player.playerEquipment[3] <= 0 || player.playerEquipment[2] <= 0 || player.playerEquipment[2] != 11128) {
-			return false;
-		}
-		int weapon_id = player.playerEquipment[3];
-
-		for (int weapon : obsidianWeapons) {
-			if (weapon_id == weapon) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public boolean usingCrystalBow(Player player) {
 		return player.playerEquipment[3] == 4222;
 	}
@@ -277,6 +242,7 @@ public class Equipment {
 		case 11235:
 		case 6724:
 		case 4734:
+		case 20997:
 			return true;
 		}
 		return false;

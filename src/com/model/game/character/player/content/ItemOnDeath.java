@@ -1,6 +1,6 @@
 package com.model.game.character.player.content;
 
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.player.packets.encode.impl.SendInterface;
@@ -27,7 +27,7 @@ public class ItemOnDeath {
 				sendFrame34a(player, 10494, player.WillKeepItem2, 1, player.WillKeepAmt2);
 			if (player.WillKeepItem3 > 0)
 				sendFrame34a(player, 10494, player.WillKeepItem3, 2, player.WillKeepAmt3);
-			if (player.WillKeepItem4 > 0 && player.isActivePrayer(Prayer.PROTECT_ITEM))
+			if (player.WillKeepItem4 > 0 && player.isActivePrayer(Prayers.PROTECT_ITEM))
 				sendFrame34a(player, 10494, player.WillKeepItem4, 3, 1);
 
 			for (int ITEM = 0; ITEM < 28; ITEM++) {
@@ -90,7 +90,7 @@ public class ItemOnDeath {
 	}
 
 	public static void StartBestItemScan(Player player) {
-		if (player.isSkulled && !player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+		if (player.isSkulled && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 			ItemKeptInfo(player, 0);
 			return;
 		}
@@ -100,11 +100,11 @@ public class ItemOnDeath {
 	}
 
 	public static void FindItemKeptInfo(Player player) {
-		if (player.isSkulled && player.isActivePrayer(Prayer.PROTECT_ITEM))
+		if (player.isSkulled && player.isActivePrayer(Prayers.PROTECT_ITEM))
 			ItemKeptInfo(player, 1);
-		else if (!player.isSkulled && !player.isActivePrayer(Prayer.PROTECT_ITEM))
+		else if (!player.isSkulled && !player.isActivePrayer(Prayers.PROTECT_ITEM))
 			ItemKeptInfo(player, 3);
-		else if (!player.isSkulled && player.isActivePrayer(Prayer.PROTECT_ITEM))
+		else if (!player.isSkulled && player.isActivePrayer(Prayers.PROTECT_ITEM))
 			ItemKeptInfo(player, 4);
 	}
 
@@ -176,9 +176,9 @@ public class ItemOnDeath {
 					BestValue = NextValue;
 					player.WillKeepItem1 = player.playerItems[ITEM] - 1;
 					player.WillKeepItem1Slot = ITEM;
-					if (player.playerItemsN[ITEM] > 2 && !player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					if (player.playerItemsN[ITEM] > 2 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt1 = 3;
-					} else if (player.playerItemsN[ITEM] > 3 && player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					} else if (player.playerItemsN[ITEM] > 3 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt1 = 4;
 					} else {
 						player.WillKeepAmt1 = player.playerItemsN[ITEM];
@@ -194,9 +194,9 @@ public class ItemOnDeath {
 					BestValue = NextValue;
 					player.WillKeepItem1 = player.playerEquipment[EQUIP];
 					player.WillKeepItem1Slot = EQUIP + 28;
-					if (player.playerEquipmentN[EQUIP] > 2 && !player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					if (player.playerEquipmentN[EQUIP] > 2 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt1 = 3;
-					} else if (player.playerEquipmentN[EQUIP] > 3 && player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					} else if (player.playerEquipmentN[EQUIP] > 3 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt1 = 4;
 					} else {
 						player.WillKeepAmt1 = player.playerEquipmentN[EQUIP];
@@ -204,7 +204,7 @@ public class ItemOnDeath {
 				}
 			}
 		}
-		if (!player.isSkulled && ItemsContained > 1 && (player.WillKeepAmt1 < 3 || (player.isActivePrayer(Prayer.PROTECT_ITEM) && player.WillKeepAmt1 < 4))) {
+		if (!player.isSkulled && ItemsContained > 1 && (player.WillKeepAmt1 < 3 || (player.isActivePrayer(Prayers.PROTECT_ITEM) && player.WillKeepAmt1 < 4))) {
 			BestItem2(player, ItemsContained);
 		}
 	}
@@ -221,9 +221,9 @@ public class ItemOnDeath {
 					BestValue = NextValue;
 					player.WillKeepItem2 = player.playerItems[ITEM] - 1;
 					player.WillKeepItem2Slot = ITEM;
-					if (player.playerItemsN[ITEM] > 2 - player.WillKeepAmt1 && !player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					if (player.playerItemsN[ITEM] > 2 - player.WillKeepAmt1 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt2 = 3 - player.WillKeepAmt1;
-					} else if (player.playerItemsN[ITEM] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					} else if (player.playerItemsN[ITEM] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt2 = 4 - player.WillKeepAmt1;
 					} else {
 						player.WillKeepAmt2 = player.playerItemsN[ITEM];
@@ -238,9 +238,9 @@ public class ItemOnDeath {
 					BestValue = NextValue;
 					player.WillKeepItem2 = player.playerEquipment[EQUIP];
 					player.WillKeepItem2Slot = EQUIP + 28;
-					if (player.playerEquipmentN[EQUIP] > 2 - player.WillKeepAmt1 && !player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					if (player.playerEquipmentN[EQUIP] > 2 - player.WillKeepAmt1 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt2 = 3 - player.WillKeepAmt1;
-					} else if (player.playerEquipmentN[EQUIP] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					} else if (player.playerEquipmentN[EQUIP] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt2 = 4 - player.WillKeepAmt1;
 					} else {
 						player.WillKeepAmt2 = player.playerEquipmentN[EQUIP];
@@ -248,7 +248,7 @@ public class ItemOnDeath {
 				}
 			}
 		}
-		if (!player.isSkulled && ItemsContained > 2 && (player.WillKeepAmt1 + player.WillKeepAmt2 < 3 || (player.isActivePrayer(Prayer.PROTECT_ITEM) && player.WillKeepAmt1 + player.WillKeepAmt2 < 4))) {
+		if (!player.isSkulled && ItemsContained > 2 && (player.WillKeepAmt1 + player.WillKeepAmt2 < 3 || (player.isActivePrayer(Prayers.PROTECT_ITEM) && player.WillKeepAmt1 + player.WillKeepAmt2 < 4))) {
 			BestItem3(player, ItemsContained);
 		}
 	}
@@ -266,9 +266,9 @@ public class ItemOnDeath {
 					BestValue = NextValue;
 					player.WillKeepItem3 = player.playerItems[ITEM] - 1;
 					player.WillKeepItem3Slot = ITEM;
-					if (player.playerItemsN[ITEM] > 2 - (player.WillKeepAmt1 + player.WillKeepAmt2) && !player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					if (player.playerItemsN[ITEM] > 2 - (player.WillKeepAmt1 + player.WillKeepAmt2) && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt3 = 3 - (player.WillKeepAmt1 + player.WillKeepAmt2);
-					} else if (player.playerItemsN[ITEM] > 3 - (player.WillKeepAmt1 + player.WillKeepAmt2) && player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					} else if (player.playerItemsN[ITEM] > 3 - (player.WillKeepAmt1 + player.WillKeepAmt2) && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt3 = 4 - (player.WillKeepAmt1 + player.WillKeepAmt2);
 					} else {
 						player.WillKeepAmt3 = player.playerItemsN[ITEM];
@@ -284,9 +284,9 @@ public class ItemOnDeath {
 					BestValue = NextValue;
 					player.WillKeepItem3 = player.playerEquipment[EQUIP];
 					player.WillKeepItem3Slot = EQUIP + 28;
-					if (player.playerEquipmentN[EQUIP] > 2 - (player.WillKeepAmt1 + player.WillKeepAmt2) && !player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					if (player.playerEquipmentN[EQUIP] > 2 - (player.WillKeepAmt1 + player.WillKeepAmt2) && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt3 = 3 - (player.WillKeepAmt1 + player.WillKeepAmt2);
-					} else if (player.playerEquipmentN[EQUIP] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayer.PROTECT_ITEM)) {
+					} else if (player.playerEquipmentN[EQUIP] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt3 = 4 - (player.WillKeepAmt1 + player.WillKeepAmt2);
 					} else {
 						player.WillKeepAmt3 = player.playerEquipmentN[EQUIP];
@@ -294,7 +294,7 @@ public class ItemOnDeath {
 				}
 			}
 		}
-		if (!player.isSkulled && ItemsContained > 3 && player.isActivePrayer(Prayer.PROTECT_ITEM) && ((player.WillKeepAmt1 + player.WillKeepAmt2 + player.WillKeepAmt3) < 4)) {
+		if (!player.isSkulled && ItemsContained > 3 && player.isActivePrayer(Prayers.PROTECT_ITEM) && ((player.WillKeepAmt1 + player.WillKeepAmt2 + player.WillKeepAmt3) < 4)) {
 			BestItem4(player);
 		}
 	}

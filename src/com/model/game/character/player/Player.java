@@ -25,7 +25,7 @@ import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatAssistant;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.PrayerHandler;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
@@ -40,8 +40,6 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.npc.pet.PetCombat;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
-import com.model.game.character.player.content.bounty_hunter.BountyHunter;
-import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.content.clan.ClanMember;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
@@ -73,7 +71,6 @@ import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendWalkableInterface;
 import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.Skilling;
@@ -427,7 +424,7 @@ public class Player extends Entity {
 	 * @param prayer
 	 * @return
 	 */
-	public boolean isActivePrayer(Prayer prayer) {
+	public boolean isActivePrayer(Prayers prayer) {
 		int index = prayer.getPrayerIndex(prayer);
 		return activePrayer[index];
 	}
@@ -448,7 +445,7 @@ public class Player extends Entity {
 	 * @param active
 	 * @return
 	 */
-	public Player setActivePrayer(Prayer prayer, boolean active) {
+	public Player setActivePrayer(Prayers prayer, boolean active) {
 		int index = prayer.getPrayerIndex(prayer);
 		this.activePrayer[index] = active;
 		return this;
@@ -733,6 +730,25 @@ public class Player extends Entity {
 	
 	public int getId() {
 		return getIndex();
+	}
+	
+	/**
+	 * The player's skill levels.
+	 */
+	public Skills skills = new Skills(this);
+	
+	public Skills getSkills() {
+		return skills;
+	}
+	
+	@Override
+	public boolean isNPC() {
+		return false;
+	}
+
+	@Override
+	public boolean isPlayer() {
+		return true;
 	}
 
 	@Override
@@ -1577,23 +1593,26 @@ public class Player extends Entity {
 			// this is doing for (player p : world.plrs) // say 500 players {
 			// then forall(world.npcs) -> end up 500*3k spawned npcs loop = 1.5 million loops lol
 			// }
+			
 			NPCAggression.process(this);
 			// ok this code can't be improved atm but thats fine it's only bad when theres lots of npcs and players
-			
-			if (!getArea().inWild()) {
-				if (wildernessKillStreak >= 2) {
-					write(new SendMessagePacket("[@red@Streak@bla@] Your wilderness ends at @red@" + wildernessKillStreak + "@bla@ as you exit the wilderness."));
-					write(new SendMessagePacket("[@red@Streak@bla@] Wilderness killstreak bonus: @blu@+" + (wildernessKillStreak * 5) + "@bla@ PK Points."));
-					pkPoints += (wildernessKillStreak * 5);
-				}
-				wildernessKillStreak = 0;
-			}
 			
 			if (getPoisonDamage() > 0 && System.currentTimeMillis() - getLastPoisonHit() > TimeUnit.MINUTES.toMillis(1)) {
 				appendPoisonDamage();
 				setLastPoisonHit(System.currentTimeMillis());
 				infection = 1;
 				write(new SendMessagePacket("You have been poisoned!"));
+			}
+			
+			if (hasAttribute("antiFire")) {
+				if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 360000) {
+					if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 15000 && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 14000) {
+						message("Your anti fire potion is about to wear off!");
+					}
+				} else if ((long)getAttribute("antiFire", 0L) > 0L && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 360000) {
+					message("Your resistance to dragon breath has worn off!");
+					removeAttribute("antiFire");
+				}
 			}
 			
 		} catch (Exception e) {
@@ -2492,15 +2511,6 @@ public class Player extends Entity {
 	public LunarSpells getLunarSpell() {
 		return lunar;
 	}
-	
-	/**
-	 * Gets the player's skills.
-	 * 
-	 * @return The player's skills.
-	 */
-	public Skills getSkills() {
-		return skills;
-	}
 
 	/**
 	 * End of constructors
@@ -2521,11 +2531,6 @@ public class Player extends Entity {
 	private int sessionExperience;
 	private Pet pethandler = new Pet();
 	private LunarSpells lunar = new LunarSpells(this);
-	
-	/**
-	 * The player's skill levels.
-	 */
-	public final Skills skills = new Skills(this);
 	
 	/**
 	 * End of instances
@@ -3223,7 +3228,6 @@ public class Player extends Entity {
      * Longs
      */
 	public long usernameHash;
-	public long lastAntifirePotion, antifireDelay;
 	private long lastVenomCure;
 	private long venomImmunity;
 	private long lastPoisonHit;
@@ -3259,11 +3263,6 @@ public class Player extends Entity {
 	public Stopwatch logoutDelay = new Stopwatch();
 	public Stopwatch cannotUsePrayer = new Stopwatch();
 	public Stopwatch lastVeng = new Stopwatch();
-	
-	/**
-	 * Doubles
-	 */
-	public double crossbowDamage;
 	
 	
 	public ArrayList<String> lastKilledList = new ArrayList<String>();

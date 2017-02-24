@@ -281,6 +281,7 @@ public final class NPCHandler {
 			player.getBossDeathTracker().add(npc);
 			if (npc.npcId == player.getSlayerTask())
 				player.getSlayerDeathTracker().add(npc);
+			
 			switch(npc.npcId) {
 			case 6610:
 				Achievements.increase(player, AchievementType.VENENATIS, 1);

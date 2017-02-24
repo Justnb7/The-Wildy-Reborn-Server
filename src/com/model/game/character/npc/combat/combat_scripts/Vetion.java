@@ -79,7 +79,7 @@ public class Vetion extends Boss {
 
 	@Override
 	public boolean switchesAttackers() {
-		return false;
+		return true;
 	}
 
 	@Override

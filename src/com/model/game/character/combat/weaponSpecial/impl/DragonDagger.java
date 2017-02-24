@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
-import com.model.game.character.combat.CombatFormulas;
+import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
@@ -28,11 +28,11 @@ public class DragonDagger implements SpecialAttack {
 		player.playAnimation(Animation.create(1062));
 		player.playGraphics(Graphic.highGraphic(252));
 		
-		boolean missedFirstHit = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		boolean missedFirstHit = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missedFirstHit)
 			firstHit = 0;
 		
-		boolean missedSecondHit = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		boolean missedSecondHit = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missedSecondHit)
 			secondHit = 0;
 		

@@ -5,8 +5,8 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
-import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
@@ -14,6 +14,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.utility.Utility;
 
 public class DragonWarhammer implements SpecialAttack {
 
@@ -24,14 +25,14 @@ public class DragonWarhammer implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int damage = player.getCombat().calculateMeleeMaxHit();
+		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(1378));
 		player.playGraphics(Graphic.highGraphic(1292));
 		
 		if (target instanceof Player) {
 			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
+			if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				damage = 0;
 			}
 			
@@ -41,7 +42,7 @@ public class DragonWarhammer implements SpecialAttack {
 				targPlayer.getSkills().decreaseLevelToZero(Skills.DEFENCE, decrement);
 				targPlayer.write(new SendMessagePacket("Your defence has been lowered."));
 			}
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+			if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 				damage = (int) (damage * 0.6);
 			}
 			if (targPlayer.hasVengeance()) {
@@ -51,7 +52,7 @@ public class DragonWarhammer implements SpecialAttack {
 			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 		} else {
 			Npc targNpc = (Npc) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
+			if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				damage = 0;
 			}
 			int min = targNpc.getDefinition().getMeleeDefence() * 2 / 3;

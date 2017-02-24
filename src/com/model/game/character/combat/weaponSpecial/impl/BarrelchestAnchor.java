@@ -3,10 +3,11 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
-import com.model.game.character.combat.CombatFormulas;
+import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
+import com.model.utility.Utility;
 
 public class BarrelchestAnchor implements SpecialAttack {
 
@@ -17,12 +18,12 @@ public class BarrelchestAnchor implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int damage = player.getCombat().calculateMeleeMaxHit();
+		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(5870));
 		player.playGraphics(Graphic.highGraphic(1027));
 
-		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)
 			damage = 0;
 		

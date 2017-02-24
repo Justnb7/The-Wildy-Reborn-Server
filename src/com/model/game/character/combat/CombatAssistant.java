@@ -7,12 +7,10 @@ import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.magic.MagicRequirements;
-import com.model.game.character.combat.melee.MeleeCalculations;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.range.RangeExtras;
-import com.model.game.character.combat.range.RangedCalculations;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -191,30 +189,11 @@ public class CombatAssistant {
 	}
 	
 	public int calculateMeleeMaxHit() {
-		return MeleeCalculations.calculateMeleeMaxHit(player, (player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex)));
+		return CombatFormulae.calculateMeleeMaxHit(player, (player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex)));
 	}
 	
 	public int calculateRangeMaxHit() {
-		return RangedCalculations.calculateRangedMaxHit(player, (player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex)));
+		return CombatFormulae.calculateRangeMaxHit(player, (player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex)));
 	}
 	
-	public int calculateMagicMaxHit() {
-		return 0;
-	}
-	
-	public int calculateMagicDefence() {
-		return MagicCalculations.calculateMagicDefence(player);
-	}
-	
-	public int calculateRangeDefence() {
-		return RangedCalculations.calculateRangeDefence(player);
-	}
-	
-	public int getDefensiveCalculation() {
-		return MeleeCalculations.calculateMeleeDefence(player);
-	}
-	
-	public int getAttackCalculation() {
-		return MeleeCalculations.calculateMeleeAttack(player, false);
-	}
 }

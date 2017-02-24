@@ -53,7 +53,7 @@ public class Zakln_Gritch extends Boss {
 
 	@Override
 	public boolean switchesAttackers() {
-		return false;
+		return true;
 	}
 
 	@Override

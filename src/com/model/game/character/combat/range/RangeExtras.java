@@ -40,18 +40,15 @@ public class RangeExtras {
 		}
 		Player p = World.getWorld().getPlayers().get(i);
 		Npc npc = World.getWorld().getNpcs().get(i);
-		player.crossbowDamage = 1.0;
 		switch (player.lastArrowUsed) {
 		case 9236: // Lucky Lightning
 			createCombatGFX(player, i, 749, false);
-			player.crossbowDamage = 1.25;
 			break;
 		case 9237: // Earth's Fury
 			createCombatGFX(player, i, 755, false);
 			break;
 		case 9238: // Sea Curse
 			createCombatGFX(player, i, 750, false);
-			player.crossbowDamage = 1.10;
 			break;
 		case 9239: // Down to Earth
 			createCombatGFX(player, i, 757, false);
@@ -83,14 +80,10 @@ public class RangeExtras {
 			break;
 		case 9243: // Armour Piercing
 			createCombatGFX(player, i, 758, true);
-			player.crossbowDamage = 1.15;
 			player.ignoreDefence = true;
 			break;
 		case 9244: // Dragon's Breath
 			createCombatGFX(player, i, 756, false);
-			if (player.playerEquipment[player.getEquipment().getShieldId()] != 1540 || player.playerEquipment[player.getEquipment().getShieldId()] != 11283 || player.playerEquipment[player.getEquipment().getShieldId()] != 11284) {
-				player.crossbowDamage = 1.45;
-			}
 			break;
 		case 9245: // Life Leech
 			createCombatGFX(player, i, 753, false);

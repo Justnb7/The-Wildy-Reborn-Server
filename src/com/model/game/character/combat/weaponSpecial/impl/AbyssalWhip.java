@@ -4,7 +4,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.CombatFormulas;
+import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
@@ -23,7 +23,7 @@ public class AbyssalWhip implements SpecialAttack {
 		player.playAnimation(Animation.create(1658));
         target.playGraphics(Graphic.highGraphic(341));
 		
-		boolean missed = !CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)
 			damage = 0;
 		

@@ -7,8 +7,8 @@ import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
@@ -81,7 +81,7 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 		
-		if (!CombatFormulas.getAccuracy(attacker, defender, 0, 1.0)) {
+		if (!CombatFormulae.getAccuracy(attacker, defender, 0, 1.0)) {
 			damage = 0;
 		}
 		
@@ -99,7 +99,7 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 
-		if (defender.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+		if (defender.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 			damage = damage * 60 / 100;
 		}
 		
@@ -243,7 +243,7 @@ public class PlayerVsPlayerCombat {
 			secondairy_damage = attacker.getCombat().calculateRangeMaxHit();
 		}
 		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
-		if (!attacker.ignoreDefence && !CombatFormulas.getAccuracy(attacker, defender, 1, 1.0)) {
+		if (!attacker.ignoreDefence && !CombatFormulae.getAccuracy(attacker, defender, 1, 1.0)) {
 			//System.out.println("range def");
 			primairy_damage = 0;
 		}
@@ -252,16 +252,15 @@ public class PlayerVsPlayerCombat {
 				if (primairy_damage > 0) {
 					attacker.boltDamage = primairy_damage;
 					attacker.getCombat().crossbowSpecial(attacker, defender.getIndex());
-					primairy_damage *= attacker.crossbowDamage;
 				}
 			}
 		}
 		if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1) {
-			if (!CombatFormulas.getAccuracy(attacker, defender, 1, 1.0))
+			if (!CombatFormulae.getAccuracy(attacker, defender, 1, 1.0))
 				secondairy_damage = 0;
 		}
 
-		if (defender.isActivePrayer(Prayer.PROTECT_FROM_MISSILE)) {
+		if (defender.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 			primairy_damage = primairy_damage * 60 / 100;
 			if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1)
 				secondairy_damage = secondairy_damage * 60 / 100;
@@ -368,7 +367,7 @@ public class PlayerVsPlayerCombat {
 		if (attacker.magicFailed)
 			damage = 0;
 
-		if (defender.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+		if (defender.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 			damage = damage * 60 / 100;
 		}
 		if (defender.getSkills().getLevel(Skills.HITPOINTS) - damage < 0) {
@@ -429,7 +428,7 @@ public class PlayerVsPlayerCombat {
 					defender.teleblock.reset();
 					defender.write(new SendMessagePacket("You have been teleblocked."));
 					defender.putInCombat(1);
-					if (defender.isActivePrayer(Prayer.PROTECT_FROM_MAGIC))
+					if (defender.isActivePrayer(Prayers.PROTECT_FROM_MAGIC))
 						defender.teleblockLength = 150000;
 					else
 						defender.teleblockLength = 300000;
@@ -840,7 +839,7 @@ public class PlayerVsPlayerCombat {
 						player.getCombat().getStartDelay());
 			}
 
-			player.magicFailed = !CombatFormulas.getAccuracy(player, defender, 2, 1.0);
+			player.magicFailed = !CombatFormulae.getAccuracy(player, defender, 2, 1.0);
 			// Purpose: even though barrage is a 20s freeze, there is actually 3 ticks of freeze immunity straight after
 			// Allowing the target to run for a few steps before being recubed.
 			defender.wasFrozen = defender.refreezeTicks > -3;

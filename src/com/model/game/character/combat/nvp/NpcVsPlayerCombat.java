@@ -6,9 +6,11 @@ import java.util.List;
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
+import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
@@ -342,10 +344,10 @@ public class NpcVsPlayerCombat {
 			}
 			if (npc.attackStyle == MobAttackType.MELEE) {
 				// accuracy check
-				if (Utility.getRandom(player.getCombat().getDefensiveCalculation()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
+				if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, npc.attackStyle, 1.0))) {
 					damage = npc.npcId == 1677 ? Utility.getRandom(10) : 0;
 				}
-				if (player.isActivePrayer(Prayer.PROTECT_FROM_MELEE) && npc.npcId != 1677) {
+				if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE) && npc.npcId != 1677) {
 					if (npc.npcId == 1677) {
 						damage = (int) damage;
 					}
@@ -367,11 +369,11 @@ public class NpcVsPlayerCombat {
 			}
 
 			if (npc.attackStyle == MobAttackType.RANGE) {
-				if (Utility.getRandom(player.getCombat().calculateRangeDefence()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
+				if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 1, 1.0))) {
 					damage = 0;
 				}
 				// overheads check
-				if (player.isActivePrayer(Prayer.PROTECT_FROM_MISSILE)) {
+				if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 					if (isBoss) {
 						damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.RANGE, damage));
 					} else {
@@ -382,16 +384,16 @@ public class NpcVsPlayerCombat {
 
 			if (npc.attackStyle == MobAttackType.MAGIC) {
 
-				if (npc.npcId == 319 && player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+				if (npc.npcId == 319 && player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 					damage = Utility.getRandom(40);
 				}
 
-				if (Utility.getRandom(player.getCombat().calculateMagicDefence()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
+				if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 2, 1.0))) {
 					damage = 0;
 				}
 
 				boolean magicFailed = false;
-				if (player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+				if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 					if (npc.npcId == 494 || npc.npcId == 5535) {
 						damage = Utility.getRandom(10);
 					}
@@ -433,21 +435,12 @@ public class NpcVsPlayerCombat {
 				}
 			}
 			if (npc.attackStyle == 3) {
-				if (wearingAntiShield(player)) {
-					player.write(new SendMessagePacket("The shield absorbs most of the dragons' fire."));
-				}
-
-				if (fireProtectionAmount(player) == 1) {
-					damage = Utility.getRandom(10);
-				} else if (fireProtectionAmount(player) == 2) {
-					damage = Utility.getRandom(5);
-				} else if (fireProtectionAmount(player) == 3) {
-					damage = 0;
-				}
-
-				if (Utility.getRandom(player.getCombat().calculateMagicDefence()) > Utility
-						.getRandom(npc.getDefinition().getAttackBonus())) {
-					damage = 0;
+				double dragonfireReduction = CombatFormulae.dragonfireReduction(player);
+				if (dragonfireReduction > 0) {
+					damage -= (damage * dragonfireReduction);
+					if (damage < 0) {
+						damage = 0;
+					}
 				}
 			}
 			if (npc.attackStyle == MobAttackType.SPECIAL_ATTACK) {
@@ -467,7 +460,7 @@ public class NpcVsPlayerCombat {
 					damage = 3;
 					break;
 				case 6610:
-					if (player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+					if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 						damage *= .7;
 					}
 					int doubleHitSpecialAttack = Utility.getRandom(10);
@@ -598,32 +591,6 @@ public class NpcVsPlayerCombat {
 		}
 	}
 
-	private static boolean wearingAntiShield(Player player) {
-		switch (player.playerEquipment[player.getEquipment().getShieldId()]) {
-		case 11283:
-		case 1540:
-			return true;
-
-		default:
-			return false;
-		}
-	}
-
-	private static int fireProtectionAmount(Player player) {
-		int total = 0;
-		if (player.playerEquipment[player.getEquipment().getShieldId()] == 1540
-				|| player.playerEquipment[player.getEquipment().getShieldId()] == 11283) {
-			total++;
-		}
-		if (player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
-			total++;
-		}
-		if (System.currentTimeMillis() - player.lastAntifirePotion < player.antifireDelay) {
-			total++;
-		}
-		return total;
-	}
-
 	private static boolean multiAttacks(Npc npc) {
 		if (Bosses.isBoss(npc.npcId)) {
 			return Bosses.get(npc.npcId).canMultiAttack(npc);
@@ -684,12 +651,11 @@ public class NpcVsPlayerCombat {
 						player.damage(new Hit(damage));
 					}
 					if (npc.attackStyle == MobAttackType.MAGIC) {
-						System.out.println("mage");
-						if (Utility.getRandom(player.getCombat().calculateMagicDefence()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
+						if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 2, 1.0))) {
 							damage = 0;
 						}
 						
-						if (player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+						if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 							if (isBoss) {
 								damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.MAGE, damage));
 							} else {
@@ -700,12 +666,11 @@ public class NpcVsPlayerCombat {
 					}
 					
 					if (npc.attackStyle == MobAttackType.RANGE) {
-						System.out.println("range");
-						if (Utility.getRandom(player.getCombat().calculateRangeDefence()) > Utility.getRandom(npc.getDefinition().getAttackBonus())) {
+						if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 1, 1.0))) {
 							damage = 0;
 						}
 						// overheads check
-						if (player.isActivePrayer(Prayer.PROTECT_FROM_MISSILE)) {
+						if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 							if (isBoss) {
 								damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.RANGE, damage));
 							} else {

@@ -98,7 +98,7 @@ public class Crazy_Archaeologist extends Boss {
 
 	@Override
 	public boolean switchesAttackers() {
-		return false;
+		return true;
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.model.game.character.npc.combat.combat_scripts;
 
 import com.model.game.character.npc.Npc;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.ProtectionPrayer;
@@ -18,7 +18,7 @@ public class Dark_Energy_Core extends Boss {
 	public void execute(Npc npc, Player player) {
 		npc.attackStyle = 0;
 		int damage = Utility.getRandom(13);
-		if (damage > 0 && !player.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+		if (damage > 0 && !player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 			for (Npc corpNpc : NPCHandler.getNpcsById(Corporeal_Beast.CORPOREAL_BEAST_ID)) {
 				corpNpc.currentHealth += damage;
 				if (corpNpc.currentHealth > corpNpc.maximumHealth) {

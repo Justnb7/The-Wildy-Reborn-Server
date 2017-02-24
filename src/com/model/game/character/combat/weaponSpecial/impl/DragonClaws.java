@@ -5,8 +5,8 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
-import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
@@ -36,14 +36,14 @@ public class DragonClaws implements SpecialAttack {
 
 		if (target instanceof Player) {
 			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity) player, (Entity) target, 0, getAccuracyMultiplier()))) {
+			if (!(CombatFormulae.getAccuracy((Entity) player, (Entity) target, 0, getAccuracyMultiplier()))) {
 				first = 0;
 				second = 0;
 				third = 0;
 				fourth = 0;
 			}
 
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+			if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 				first = (int) (first * 0.6);
 				second = (int) (second * 0.6);
 				third = (int) (damage * 0.6);
@@ -67,7 +67,7 @@ public class DragonClaws implements SpecialAttack {
 		} else {
 			Npc targNpc = (Npc) target;
 
-			if (!(CombatFormulas.getAccuracy((Entity) player, (Entity) target, 0, getAccuracyMultiplier()))) {
+			if (!(CombatFormulae.getAccuracy((Entity) player, (Entity) target, 0, getAccuracyMultiplier()))) {
 				first = 0;
 				second = 0;
 				third = 0;

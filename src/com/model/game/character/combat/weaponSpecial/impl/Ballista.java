@@ -5,8 +5,8 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
-import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
@@ -44,12 +44,12 @@ public class Ballista implements SpecialAttack {
 		}
 		
 		int damage = Utility.random(player.getCombat().calculateRangeMaxHit());
-		boolean success = CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		boolean success = CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (!success) {
 			damage = 0;
 		}
 
-		if (target instanceof Player && (((Player) target).isActivePrayer(Prayer.PROTECT_FROM_MISSILE))) {
+		if (target instanceof Player && (((Player) target).isActivePrayer(Prayers.PROTECT_FROM_MISSILE))) {
 			damage = (int) (damage * 0.6);
 		}
 		

@@ -6,7 +6,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.CombatFormulas;
+import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
@@ -91,11 +91,6 @@ public class PlayerVsNpcCombat {
 	 */
 	public static void handleNpcMeleeHit(Npc npc, final Player player, Item item) {
 		applyNpcMeleeDamage(player, npc, 1);
-	}
-	
-	public static int salveDamage(Player player) {
-		int damage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
-		return damage *= 1.15;
 	}
 	
 	private static boolean isWearingSpear(Player player) {
@@ -250,7 +245,7 @@ public class PlayerVsNpcCombat {
 		}
 		
 		boolean magicFailed = false;
-		if (!CombatFormulas.getAccuracy(player, npc, 2, 1.0)) {
+		if (!CombatFormulae.getAccuracy(player, npc, 2, 1.0)) {
 			damage = 0;
 			magicFailed = true;
 		} else if (npc.npcId == 2265 || npc.npcId == 2266) {
@@ -389,7 +384,7 @@ public class PlayerVsNpcCombat {
 
 		if (player.lastWeaponUsed == 11235 || player.bowSpecShot == 1)
 		    damage2 = player.getCombat().calculateRangeMaxHit();
-		if (!player.ignoreDefence && !CombatFormulas.getAccuracy(player, npc, 1, 1.0)) {
+		if (!player.ignoreDefence && !CombatFormulae.getAccuracy(player, npc, 1, 1.0)) {
 			damage = 0;
 		} else if (npc.npcId == 2265 || npc.npcId == 2267 && !player.ignoreDefence) {
 			player.write(new SendMessagePacket("The dagannoth is currently resistant to that attack!"));
@@ -402,7 +397,7 @@ public class PlayerVsNpcCombat {
 		kraken(player, npc, damage);
 
 		if (player.lastWeaponUsed == 11235 || player.bowSpecShot == 1) {
-			if (!CombatFormulas.getAccuracy(player, npc, 1, 1.0))
+			if (!CombatFormulae.getAccuracy(player, npc, 1, 1.0))
 				damage2 = 0;
 		}
 		
@@ -419,7 +414,6 @@ public class PlayerVsNpcCombat {
 			if (Utility.getRandom(8) == 1) {
 				if (damage > 0) {
 					player.getCombat().crossbowSpecial(player, npc.getIndex());
-					damage *= player.crossbowDamage;
 				}
 			}
 		}
@@ -590,6 +584,7 @@ public class PlayerVsNpcCombat {
 		}
 		
 		if (!player.getController().canAttackNPC(player)) {
+			System.out.println("blocked");
 			return;
 		}
 		

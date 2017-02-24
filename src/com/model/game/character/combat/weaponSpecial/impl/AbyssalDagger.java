@@ -6,8 +6,8 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
-import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
@@ -39,15 +39,15 @@ public class AbyssalDagger implements SpecialAttack {
 		
 		if (target instanceof Player) {
 			Player targPlayer = (Player) target;
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
+			if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				firstHit = 0;
 			}
 			
-			if (firstHit == 0 || !(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
+			if (firstHit == 0 || !(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				secondHit = 0;
 			}
 			
-			if (targPlayer.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+			if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 				firstHit = (int) (firstHit * 0.6);
 				secondHit = (int) (finalDamage * 0.6);
 			}
@@ -70,11 +70,11 @@ public class AbyssalDagger implements SpecialAttack {
 		} else {
 			Npc targNpc = (Npc) target;
 			
-			if (!(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
+			if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				firstHit = 0;
 			}
 			
-			if (firstHit == 0 || !(CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
+			if (firstHit == 0 || !(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				secondHit = 0;
 			}
 			CombatExperience.handleCombatExperience(player, firstHit, CombatType.MELEE);

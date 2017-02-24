@@ -97,7 +97,7 @@ public class Chaos_Fanatic extends Boss {
 
 	@Override
 	public boolean switchesAttackers() {
-		return false;
+		return true;
 	}
 
 	@Override

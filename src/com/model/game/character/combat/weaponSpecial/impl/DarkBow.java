@@ -6,8 +6,8 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
-import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
@@ -53,14 +53,14 @@ public class DarkBow implements SpecialAttack {
 		int first = Utility.random(player.getCombat().calculateRangeMaxHit());
 		int second = Utility.random(player.getCombat().calculateRangeMaxHit());
 		
-		boolean success = CombatFormulas.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
+		boolean success = CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (!success) {
 			// We missed. The hits are changed to 4 or 8 later in the code.
 			first = 0;
 			second = 0;
 		}
 
-		if (target instanceof Player && (((Player) target).isActivePrayer(Prayer.PROTECT_FROM_MISSILE))) {
+		if (target instanceof Player && (((Player) target).isActivePrayer(Prayers.PROTECT_FROM_MISSILE))) {
 			first = (int) (first * 0.6);
 			second = (int) (second * 0.6);
 			

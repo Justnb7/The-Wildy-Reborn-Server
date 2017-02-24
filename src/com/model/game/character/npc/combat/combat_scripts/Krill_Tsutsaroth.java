@@ -2,7 +2,7 @@ package com.model.game.character.npc.combat.combat_scripts;
 
 import java.util.Random;
 
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.ProtectionPrayer;
@@ -49,7 +49,7 @@ public class Krill_Tsutsaroth extends Boss {
 		} else {*/
 		} else {
 			npc.attackStyle = 4;
-			if (player.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+			if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 				sendSpecialAttack(player, npc);
 			}
 		}
@@ -114,7 +114,7 @@ public class Krill_Tsutsaroth extends Boss {
 
 	@Override
 	public boolean switchesAttackers() {
-		return false;
+		return true;
 	}
 
 	@Override

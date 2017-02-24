@@ -5,8 +5,8 @@ import java.util.Random;
 import com.model.Server;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
-import com.model.game.character.combat.CombatFormulas;
-import com.model.game.character.combat.PrayerHandler.Prayer;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.nvp.NpcVsPlayerCombat;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
@@ -58,10 +58,10 @@ public class Commander_Zilyana extends Boss {
 		boolean isBoss = true;
 		
 		if (npc.attackStyle == 0) {
-			if (!CombatFormulas.getAccuracy(npc, player, 0, 1.0)) {
+			if (!CombatFormulae.getAccuracy(npc, player, 0, 1.0)) {
 				damage = 0;
 			}	
-			if (player.isActivePrayer(Prayer.PROTECT_FROM_MELEE)) {
+			if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 				if (isBoss) {
 					damage = Utility.getRandom(getProtectionDamage(ProtectionPrayer.MELEE, damage));
 				} else {
@@ -82,10 +82,10 @@ public class Commander_Zilyana extends Boss {
 		int secondDamage = Utility.getRandom(31);
 		boolean isBoss = true;
 		
-		if (!CombatFormulas.getAccuracy(npc, player, 1, 1.0)) {
+		if (!CombatFormulae.getAccuracy(npc, player, 1, 1.0)) {
 			damage = 0;
 		}
-		if (player.isActivePrayer(Prayer.PROTECT_FROM_MAGIC)) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 			if (isBoss) {
 				damage = Utility.getRandom(getProtectionDamage(ProtectionPrayer.MAGE, damage));
 			} else {
@@ -168,7 +168,7 @@ public class Commander_Zilyana extends Boss {
 
 	@Override
 	public boolean switchesAttackers() {
-		return false;
+		return true;
 	}
 
 	@Override

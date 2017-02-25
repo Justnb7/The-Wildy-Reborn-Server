@@ -554,28 +554,28 @@ public enum PotionData {
 		@Override
 		public void handle(Object... object) {
 			Player player = (Player) object[0];
-			drinkAntifire(player, TimeUnit.MINUTES.toMillis(6));
+			drinkAntifire(player);//setting 6mins
 		}
 	}),
 	ANTIFIRE_3(2454, 2456, new PotionEffect() {
 		@Override
 		public void handle(Object... object) {
 			Player player = (Player) object[0];
-			drinkAntifire(player, TimeUnit.MINUTES.toMillis(6));
+			drinkAntifire(player);
 		}
 	}),
 	ANTIFIRE_2(2456, 2458, new PotionEffect() {
 		@Override
 		public void handle(Object... object) {
 			Player player = (Player) object[0];
-			drinkAntifire(player, TimeUnit.MINUTES.toMillis(6));
+			drinkAntifire(player);
 		}
 	}),
 	ANTIFIRE_1(2458, 229, new PotionEffect() {
 		@Override
 		public void handle(Object... object) {
 			Player player = (Player) object[0];
-			drinkAntifire(player, TimeUnit.MINUTES.toMillis(6));
+			drinkAntifire(player);//yh go for it
 		}
 	}),
 	;
@@ -664,14 +664,16 @@ public enum PotionData {
 		player.updateRequired = true;
 	}
 	
-	public static void drinkAntifire(Player player, long duration) {
+	// shit naming of paramater - it's when you drank it in MS (sys.curtime) not how long it lasts
+	public static void drinkAntifire(Player player) {
 		player.message("You drink some of your antifire potion.");
-		player.setAttribute("antiFire", duration);
+		player.setAttribute("antiFire", System.currentTimeMillis());//setting duration? this one :D
+		//so that would be better yes - hopping off back in 10 sure
 	}
 	
 	public static void drinkExtendedAntifire(Player player, long duration) {
 		player.message("You drink some of your extended antifire potion.");
-		player.setAttribute("extended_antiFire", duration);
+		player.setAttribute("extended_antiFire", duration);//setting duration?
 	}
 	
 	public static void enchanceMagic(Player player, int skillID, boolean sup) {

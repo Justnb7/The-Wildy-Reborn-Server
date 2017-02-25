@@ -27,7 +27,6 @@ public class MagicShortbow implements SpecialAttack {
 		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 		player.getItems().deleteArrow();
 		player.getItems().deleteArrow();
-		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 		player.playAnimation(Animation.create(1074));
 		player.setCombatType(CombatType.RANGED);
 		if (player.playerIndex > 0)

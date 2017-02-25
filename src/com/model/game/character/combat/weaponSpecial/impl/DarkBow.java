@@ -35,7 +35,6 @@ public class DarkBow implements SpecialAttack {
 		
 		// Need to investigate what these variables are used for
 		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 		
 		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 		

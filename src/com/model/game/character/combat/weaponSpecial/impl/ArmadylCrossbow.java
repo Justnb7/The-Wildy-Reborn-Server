@@ -32,7 +32,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 			player.getItems().dropArrowNpc();
 		}
 		
-		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 		player.hitDelay = 2;
 		player.setCombatType(CombatType.RANGED);
 		

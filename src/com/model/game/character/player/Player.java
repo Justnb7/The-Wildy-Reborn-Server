@@ -3173,7 +3173,6 @@ public class Player extends Entity {
 	public final int[] REDUCE_SPELLS = { 1153, 1157, 1161, 1542, 1543, 1562 };
 
 	public int rangeEndGFX;
-	public int boltDamage;
 	public int lastClickedItem;
 	public int playerFollowIndex = 0;
 	public int[] itemKeptId = new int[4];
@@ -3183,9 +3182,9 @@ public class Player extends Entity {
 	public int totalLevel, doAmount, lastX, lastY, playerKilled, totalPlayerDamageDealt, killedBy,
 			lastChatId = 1, privateChat, specBarId, attackLevelReq, rangeLevelReq, skullTimer, nextChat,
 			talkingNpc = -1, dialogueAction, followDistance, npcFollowIndex, barrageCount, delayedDamage,
-			delayedDamage2, lastArrowUsed = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, lastNpcAttacked,
+			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, lastNpcAttacked,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
-			oldPlayerIndex, lastWeaponUsed, crystalBowArrowCount, rangeItemUsed, killingNpcIndex,
+			oldPlayerIndex, rangeItemUsed, killingNpcIndex,
 			oldNpcIndex, attackDelay, npcIndex, npcClickIndex, npcType, castingSpellId, oldSpellId, hitDelay,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
 			wearId, wearSlot, interfaceId, walkTutorial = 15,
@@ -3210,7 +3209,6 @@ public class Player extends Entity {
 	public boolean teleporting = false;
 	public boolean rangeEndGFXHeight;
 	public boolean isBanking = false;
-	public boolean ignoreDefence;
 	public boolean throwingAxe;
 	public boolean usingArrows;
 	public boolean usingCross;

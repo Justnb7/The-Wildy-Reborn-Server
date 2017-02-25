@@ -271,6 +271,7 @@ public class RangeData {
 			case 12766:
 			case 12767:
 			case 12768:
+			case 20997:
 			return 11212;
 		}
 		return -1;

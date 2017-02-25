@@ -389,13 +389,17 @@ public class CombatFormulae {
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
 		double otherBonusMultiplier = 1;
-		int rangedStrength = RangeData.getRangeStr(player.usingBow ? player.lastArrowUsed : player.lastWeaponUsed);
+		int rangedStrength = RangeData.getRangeStr(player.playerEquipment[EquipmentSlot.ARROWS.getId()]);
 		
 		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == 4222) {
 			/**
 			 * Crystal Bow does not use arrows, so we don't use the arrows range strength bonus.
 			 */
 			rangedStrength = 70;
+		}
+		
+		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == 12926) {
+			rangedStrength = 60;
 		}
 		
 		if (victim != null)
@@ -409,8 +413,15 @@ public class CombatFormulae {
 		int rangeLevel = player.getSkills().getLevel(Skills.RANGE);
 		int combatStyleBonus = player.getAttackStyle() == 0 ? 3 : 0;
 		
+		if (player.isActivePrayer(Prayers.SHARP_EYE)) {
+			rangeLevel *= 1.05;
+        } else if (player.isActivePrayer(Prayers.HAWK_EYE)) {
+        	rangeLevel *= 1.10;
+        } else if (player.isActivePrayer(Prayers.EAGLE_EYE)) {
+        	rangeLevel *= 1.15;
+        }
 		
-		if(wearingFullVoid(player, 1)) {
+		if(wearingFullVoid(player, 2)) {
 			otherBonusMultiplier = 1.2;
 		}
 		
@@ -453,6 +464,17 @@ public class CombatFormulae {
 		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == -1) {
 			maxHit = 0;
 		}
+		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == 12926) {
+        	if (player.isUsingSpecial()) {
+        		maxHit *= 1.65;
+        	} else {
+        		maxHit *= 1.13;
+        	}
+        }
+		
+		if(player.playerEquipment[player.getEquipment().getAmuletId()] == 19547) {
+			maxHit += 1;
+        }
 		return maxHit;
 	}
 

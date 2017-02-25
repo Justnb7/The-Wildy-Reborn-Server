@@ -1,5 +1,7 @@
 package com.model.game.character.combat.pvm;
 
+import java.util.Random;
+
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -7,6 +9,7 @@ import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
@@ -31,6 +34,7 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.packets.encode.impl.SendString;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
+import com.model.game.item.equipment.EquipmentSlot;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -43,6 +47,12 @@ import com.model.utility.Utility;
  *
  */
 public class PlayerVsNpcCombat {
+	
+	
+	/**
+     * The random number generator.
+     */
+    private final static Random random = new Random();
 
 	/**
 	 * Applies the combat damage based on the provided {@link CombatType}
@@ -175,9 +185,7 @@ public class PlayerVsNpcCombat {
 			return;
 		}
 		
-		CombatType style = !plr_attacker.castingMagic && plr_attacker.projectileStage > 0 ? CombatType.RANGED : plr_attacker.projectileStage > 0 ? CombatType.MAGIC : CombatType.MELEE; 
-		
-		int defence = npc_victim.getDefinition().getMeleeDefence() + getBonusDefence(plr_attacker, npc_victim, style);
+		int defence = npc_victim.getDefinition().getMeleeDefence();
 		
 		if (defence < 0) {
 			defence = 0;
@@ -211,7 +219,6 @@ public class PlayerVsNpcCombat {
 		MobAttackSounds.sendBlockSound(plr_attacker, npc_victim.getId());
 		if (plr_attacker.bowSpecShot <= 0) {
 			plr_attacker.oldNpcIndex = 0;
-			plr_attacker.lastWeaponUsed = 0;
 		}
 		plr_attacker.bowSpecShot = 0;
 	}
@@ -371,119 +378,161 @@ public class PlayerVsNpcCombat {
 	/**
 	 * Applies the npc range damage
 	 * 
-	 * @param player
+	 * @param attacker
 	 *            The {@link Player} attacking the {@link Npc}
-	 * @param npc
+	 * @param victim
 	 *            The {@link Npc} being attacked
 	 */
-	private static void applyNpcRangeDamage(Player player, Npc npc, int i) {
-		int damage = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
-		int damage2 = -1;
+	private static void applyNpcRangeDamage(Player attacker, Npc victim, int i) {
+		int maxHit = attacker.getCombat().calculateRangeMaxHit();
+        int damage = Utility.random(maxHit);
+        int secondDmg = Utility.random(maxHit);
+        int randomHit = random.nextInt(damage < 1 ? 1 : damage + 1); // +1 as its exclusive
 
-		CombatEffect.slayerHelmetEffect(player, npc, damage);
+		CombatEffect.slayerHelmetEffect(attacker, victim, damage);
 
-		if (player.lastWeaponUsed == 11235 || player.bowSpecShot == 1)
-		    damage2 = player.getCombat().calculateRangeMaxHit();
-		if (!player.ignoreDefence && !CombatFormulae.getAccuracy(player, npc, 1, 1.0)) {
+		if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 11235 || attacker.bowSpecShot == 1)
+			secondDmg = attacker.getCombat().calculateRangeMaxHit();
+		if (!attacker.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(attacker, victim, 1, 1.0)) {
 			damage = 0;
-		} else if (npc.npcId == 2265 || npc.npcId == 2267 && !player.ignoreDefence) {
-			player.write(new SendMessagePacket("The dagannoth is currently resistant to that attack!"));
+		} else if (victim.npcId == 2265 || victim.npcId == 2267 && !attacker.hasAttribute("ignore defence")) {
+			attacker.write(new SendMessagePacket("The dagannoth is currently resistant to that attack!"));
 			return;
 		}
-		if (npc.npcId == 5535) {
+		if (victim.npcId == 5535) {
 			damage = 0;
 		}
 		
-		kraken(player, npc, damage);
+		kraken(attacker, victim, damage);
 
-		if (player.lastWeaponUsed == 11235 || player.bowSpecShot == 1) {
-			if (!CombatFormulae.getAccuracy(player, npc, 1, 1.0))
-				damage2 = 0;
+		if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 11235 || attacker.bowSpecShot == 1) {
+			if (!CombatFormulae.getAccuracy(attacker, victim, 1, 1.0))
+				secondDmg = 0;
 		}
 		
-		if (player.dbowSpec) {
-			npc.playGraphics(Graphic.create(player.lastArrowUsed == 11212 ? 1100 : 1103, 0, 100));
+		if (attacker.dbowSpec) {
+			victim.playGraphics(Graphic.create(attacker.playerEquipment[attacker.getEquipment().getQuiverId()] == 11212 ? 1100 : 1103, 0, 100));
 			if (damage < 8)
 				damage = 8;
-			if (damage2 < 8)
-				damage2 = 8;
-			player.dbowSpec = false;
+			if (secondDmg < 8)
+				secondDmg = 8;
+			attacker.dbowSpec = false;
 		}
 		
-		if (player.getEquipment().isCrossbow(player)) {
+		if (attacker.getEquipment().isCrossbow(attacker)) {
 			if (Utility.getRandom(8) == 1) {
 				if (damage > 0) {
-					player.getCombat().crossbowSpecial(player, npc.getIndex());
+					switch(attacker.playerEquipment[EquipmentSlot.ARROWS.getId()]) {
+					case 9236: // Lucky Lightning
+						victim.playGraphics(Graphic.create(749, 0, 0));
+						break;
+					case 9237: // Earth's Fury
+						victim.playGraphics(Graphic.create(755, 0, 0));
+						break;
+					case 9238: // Sea Curse
+						victim.playGraphics(Graphic.create(750, 0, 0));
+						break;
+					case 9239: // Down to Earth
+						victim.playGraphics(Graphic.create(757, 0, 0));
+						break;
+					case 9240: // Clear Mind
+						victim.playGraphics(Graphic.create(751, 0, 0));
+						break;
+					case 9241: // Magical Posion
+						victim.playGraphics(Graphic.create(752, 0, 0));
+						break;
+					case 9242: // Blood Forfiet
+						int damageCap = (int) (victim.currentHealth * 0.2);
+						if (victim.npcId == 319 && damageCap > 100)
+							damageCap = 100;
+						victim.damage(new Hit(damageCap));
+						victim.playGraphics(Graphic.create(754, 0, 0));
+						break;
+					case 9243: // Armour Piercing
+						victim.playGraphics(Graphic.create(758, 0, 100));
+						victim.setAttribute("ignore defence", true);
+						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
+							damage = randomHit = Utility.random(45, 57);
+						} else {
+							damage = randomHit = Utility.random(42, 51);
+						}
+						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
+							damage = randomHit *= 1.15;
+						}
+						break;
+					case 9244: // Dragon's Breath
+						victim.playGraphics(Graphic.create(756, 0, 0));
+						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
+							damage = randomHit = Utility.random(45, 57);
+						} else {
+							damage = randomHit = Utility.random(42, 51);
+						}
+						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
+							damage = randomHit *= 1.15;
+						}
+						break;
+					case 9245: // Life Leech
+						victim.playGraphics(Graphic.create(753, 0, 0));
+						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
+							damage = randomHit = Utility.random(45, 57);
+						} else {
+							damage = randomHit = Utility.random(42, 51);
+						}
+						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
+							damage = randomHit *= 1.15;
+						}
+						break;
+					}
 				}
 			}
 		}
-		if (npc.currentHealth - damage < 0) {
-			damage = npc.currentHealth;
+		if (victim.currentHealth - damage < 0) {
+			damage = victim.currentHealth;
 		}
-		if (damage2 > 0) {
-			if (damage == npc.currentHealth && npc.currentHealth - damage2 > 0) {
-				damage2 = 0;
+		if (secondDmg > 0) {
+			if (damage == victim.currentHealth && victim.currentHealth - secondDmg > 0) {
+				secondDmg = 0;
 			}
 		}
 
 		boolean dropArrows = true;
-		if(player.lastWeaponUsed == 12926 || player.lastWeaponUsed == 4222) {
+		if(attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 12926 || attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 4222) {
 			dropArrows = false;
 		}
 		if (dropArrows) {
-			player.getItems().dropArrowNpc();
-			if (player.playerEquipment[3] == 11235) {
-				player.getItems().dropArrowNpc();
+			attacker.getItems().dropArrowNpc();
+			attacker.getItems().deleteArrow();
+			if (attacker.playerEquipment[3] == 11235) {
+				attacker.getItems().dropArrowNpc();
 			}
 		}
-		if (npc.attackTimer < 5)
-			npc.playAnimation(Animation.create(CombatAnimation.getNPCBlockAnimation(npc.getIndex())));
-		player.rangeEndGFX = RangeData.getRangeEndGFX(player);
+		if (victim.attackTimer < 5)
+			victim.playAnimation(Animation.create(CombatAnimation.getNPCBlockAnimation(victim.getIndex())));
+		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
 
-		if (!player.multiAttacking) {
-			npc.underAttack = true;
-			npc.addDamageReceived(player.getName(), damage);
-			npc.damage(new Hit(damage));
+		if (!attacker.multiAttacking) {
+			victim.underAttack = true;
+			victim.addDamageReceived(attacker.getName(), damage);
+			victim.damage(new Hit(damage));
 			if(damage > 0) {
-				CombatExperience.handleCombatExperience(player, damage, CombatType.RANGED);
+				CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
 			}
-			if (damage2 > 0) {
-				CombatExperience.handleCombatExperience(player, damage2, CombatType.RANGED);
-				npc.addDamageReceived(player.getName(), damage2);
-				npc.damage(new Hit(damage2));
+			if (secondDmg > 0) {
+				CombatExperience.handleCombatExperience(attacker, secondDmg, CombatType.RANGED);
+				victim.addDamageReceived(attacker.getName(), secondDmg);
+				victim.damage(new Hit(secondDmg));
 			}
 		}
-		player.ignoreDefence = false;
-		player.multiAttacking = false;
-		if (player.rangeEndGFX > 0) {
-			if (player.rangeEndGFXHeight) {
-				npc.playGraphics(Graphic.create(player.rangeEndGFX, 0, 100));
+		attacker.setAttribute("ignore defence", false);
+		attacker.multiAttacking = false;
+		if (attacker.rangeEndGFX > 0) {
+			if (attacker.rangeEndGFXHeight) {
+				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 100));
 			} else {
-				npc.playGraphics(Graphic.create(player.rangeEndGFX, 0, 0));
+				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
 			}
 		}
-		player.killingNpcIndex = player.oldNpcIndex;
-	}
-	
-	private static int getBonusDefence(Player player, Npc npc, CombatType type) {
-		if (type.equals(CombatType.MELEE)) {
-			
-		} else if (type.equals(CombatType.MAGIC)) {
-			switch (npc.npcId) {
-				case 2042:
-					return -100; 
-				case 2044:
-					return +100;
-			}
-		} else if (type.equals(CombatType.RANGED)) {
-			switch (npc.npcId) {
-				case 2042:
-					return 100; 
-				case 2044:
-					return -100;
-			}
-		}
-		return 0;
+		attacker.killingNpcIndex = attacker.oldNpcIndex;
 	}
 
 	/**
@@ -551,7 +600,6 @@ public class PlayerVsNpcCombat {
 			player.usingMagic = false;
 			player.faceUpdate(0);
 			player.npcIndex = 0;
-			player.write(new SendMessagePacket("You cannot attack this NPC."));
 			return;
 		}
 		
@@ -584,7 +632,7 @@ public class PlayerVsNpcCombat {
 		}
 		
 		if (!player.getController().canAttackNPC(player)) {
-			System.out.println("blocked");
+			//System.out.println("blocked");
 			return;
 		}
 		
@@ -595,6 +643,7 @@ public class PlayerVsNpcCombat {
 			player.usingArrows = player.getEquipment().isArrow(player);
 			boolean bolt = player.getEquipment().isBolt(player);
 			boolean javalin = player.getCombat().properJavalins();
+			boolean blowpipe = player.getEquipment().wearingBlowpipe(player);
 			
 			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
 				player.setCombatType(CombatType.RANGED);
@@ -604,7 +653,7 @@ public class PlayerVsNpcCombat {
 				player.throwingAxe = true;
 			}
 			
-			if(bolt || javalin || player.usingArrows) {
+			if(!blowpipe && (bolt || javalin || player.usingArrows)) {
 				player.usingArrows = true;
 			}
 		}
@@ -834,12 +883,13 @@ public class PlayerVsNpcCombat {
 			if (player.getCombat().correctBowAndArrows() < player.playerEquipment[player.getEquipment().getQuiverId()] 
 					&& player.usingBow
 					&& !player.getEquipment().usingCrystalBow(player)
-					&& !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
+					&& !player.getEquipment().isCrossbow(player)) {
 				player.write(new SendMessagePacket("You can't use " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase() + "s with a " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase() + "."));
 				player.stopMovement();
 				player.npcIndex = 0;
 				return;
 			}
+			
 			if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
 				player.write(new SendMessagePacket("You must use bolts with a crossbow."));
 				player.stopMovement();
@@ -887,8 +937,6 @@ public class PlayerVsNpcCombat {
 		npc.lastDamageTaken = System.currentTimeMillis();
 		
 		if (player.isUsingSpecial()) {
-			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-			player.lastArrowUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 			Special.handleSpecialAttack(player, npc);
 			return;
 		}
@@ -908,10 +956,7 @@ public class PlayerVsNpcCombat {
 				player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
 			}
 		}
-		// These are exact examples of where PI is AWFUL. variables like these. so for future, remove and 
-		// implement another way for them to achieve whatever they achieve. 
-		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-		player.lastArrowUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
+
 		player.hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
 
 		/*
@@ -927,24 +972,16 @@ public class PlayerVsNpcCombat {
 			if (player.usingCross)
 				player.usingBow = true;
 			if (player.getAttackStyle() == 2)
-				player.attackDelay--; // this is what PI is built around.. when attackDelay=0, make damage show.
-			// design is awful cos as you will know with experience if your wep changes before the hit appears
-			// everything fucks up.. like max hits. like ags in 1hp dh and change to axe b4 hit appears you'll
-			// ags a 110
+				player.attackDelay--;
 			player.followId2 = npc.getIndex();
 			player.getPA().followNpc();
-			player.lastArrowUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.oldNpcIndex = index;
 			if (player.playerEquipment[player.getEquipment().getWeaponId()] >= 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223) {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-				player.crystalBowArrowCount++;
-				player.lastArrowUsed = 0;
 				player.getCombat().fireProjectileNpc();
 			} else {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-				player.getItems().deleteArrow();
 				if (player.playerEquipment[3] == 11235 || player.playerEquipment[3] == 12765 || player.playerEquipment[3] == 12766
 						|| player.playerEquipment[3] == 12767 || player.playerEquipment[3] == 12768) {
 					player.getItems().deleteArrow();
@@ -964,7 +1001,6 @@ public class PlayerVsNpcCombat {
 				player.getItems().deleteEquipment(); // here
 			}
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-			player.lastArrowUsed = 0;
 			player.oldNpcIndex = index;
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;

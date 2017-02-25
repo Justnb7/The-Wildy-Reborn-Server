@@ -763,6 +763,29 @@ public class CommandPacketHandler implements PacketType {
     	case "maxrange":
     		player.write(new SendMessagePacket("Range max: "+player.getCombat().calculateRangeMaxHit()));
     		return true;
+    		
+    	case "setbe":
+    		int effect = Integer.parseInt(cmd[1]);
+    		
+    		switch(effect) {
+    		case 0:
+    			player.setAttribute("armour piercing", true);
+    			player.message("You have activated the the armour piercing effect.");
+    			break;
+    		case 1:
+    			player.setAttribute("dragon's breath", true);
+    			player.message("You have activated the the dragon's breath effect.");
+    			break;
+    		case 2:
+    			player.setAttribute("life leech", true);
+    			player.message("You have activated the the life leech effect.");
+    			break;
+    		case 3:
+    			player.removeAllAttributes();
+    			player.message("All saved attributes were removed.");
+    			break;
+    		}
+    		return true;
 			
     	case "setstat":
     		try {

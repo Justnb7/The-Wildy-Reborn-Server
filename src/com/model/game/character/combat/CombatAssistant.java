@@ -9,7 +9,6 @@ import com.model.game.character.combat.magic.MagicRequirements;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.RangeData;
-import com.model.game.character.combat.range.RangeExtras;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -101,10 +100,6 @@ public class CombatAssistant {
 
 	public int getProjectileSpeed() {
 		return RangeData.getProjectileSpeed(player);
-	}
-
-	public void crossbowSpecial(Player c, int i) {
-		RangeExtras.crossbowSpecial(c, i);
 	}
 	
 	public boolean properJavalins() {

@@ -1616,9 +1616,6 @@ public class ItemAssistant {
 	 }
 
 	 public void removeEquipment() {
-		 if (player.playerEquipmentN[player.getEquipment().getWeaponId()] == 1) {
-			 player.getItems().deleteEquipmentSlot(player.playerEquipment[player.getEquipment().getWeaponId()], player.getEquipment().getWeaponId());
-		 }
 		 if (player.playerEquipmentN[player.getEquipment().getWeaponId()] != 0) {
 			 player.getOutStream().putFrameVarShort(34);
 			 int offset = player.getOutStream().offset;

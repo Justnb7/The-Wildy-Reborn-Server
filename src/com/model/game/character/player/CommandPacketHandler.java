@@ -540,9 +540,6 @@ public class CommandPacketHandler implements PacketType {
     		 Optional<Player> optionalPlayer = World.getWorld().getOptionalPlayer(name);
     		 
  			if (optionalPlayer.isPresent()) {
- 				if (name != "matthew" || name != "patrick" || name != "leerdam") {
- 					return false;
- 				}
  				Player c2 = optionalPlayer.get();
  				player.write(new SendMessagePacket("IP of " + c2.getName() + " : " + c2.connectedFrom));
  				player.write(new SendMessagePacket("Mac Address of " + c2.getName() + " : " + c2.getMacAddress()));

@@ -4,7 +4,6 @@ import com.model.game.World;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.item.UseItem;
 
 public class ItemOnNpc implements PacketType {
 
@@ -25,9 +24,9 @@ public class ItemOnNpc implements PacketType {
 		if (!player.getItems().playerHasItem(itemId, 1, slot)) {
 			return;
 		}
+		@SuppressWarnings("unused")
 		int npcId = npc.npcId;
 		player.walkingToObject = false;
-		UseItem.ItemonNpc(player, itemId, npcId, slot);
 		switch (itemId) {
 
 		}

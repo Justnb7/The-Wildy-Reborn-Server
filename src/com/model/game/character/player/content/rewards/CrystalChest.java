@@ -25,13 +25,15 @@ public class CrystalChest {
 	 * 
 	 * @param player
 	 */
-	public static void createKey(final Player player) {
+	public static boolean createKey(final Player player) {
 		if (player.getItems().playerHasItems(KEY_HALVES)) {
 			player.getItems().remove(KEY_HALVES[0]);
 			player.getItems().remove(KEY_HALVES[1]);
-			player.getItems().addOrCreateGroundItem(989, 1);;
+			player.getItems().addOrCreateGroundItem(989, 1);
 			player.getDialogueHandler().sendStatement(player, "You have combined the two parts to form a key.");
+			return true;
 		}
+		return false;
 	}
 	
 	/**

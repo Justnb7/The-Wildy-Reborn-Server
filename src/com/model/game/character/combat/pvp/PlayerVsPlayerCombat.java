@@ -705,7 +705,8 @@ public class PlayerVsPlayerCombat {
 				player.attackedPlayers.add(player.playerIndex);
 				player.isSkulled = true;
 				player.skullTimer = 500;
-				player.write(new SendClearScreen());
+				player.skullIcon = 0;
+				player.getPA().requestUpdates();
 			}
 		}
 

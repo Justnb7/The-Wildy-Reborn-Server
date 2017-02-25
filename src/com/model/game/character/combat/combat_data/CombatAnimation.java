@@ -19,9 +19,16 @@ public class CombatAnimation {
 	 */
 	public static int getNPCBlockAnimation(int i) {
 
-		int type = World.getWorld().getNpcs().get(i).npcId;
+		int type = World.getWorld().getNpcs().get(i).npcId; // this is pointless so if i just changed the param to Npc npc and called npc.npcId would be better but its kind of th same?
+		// yeah its pretty much the same hwowever it skips having to access an array with up to 32k entries (07 worlds have like 25k npcs spawned at once)
+		
+		// instead its as you say, directly using npc.id alrite thanks for claryfing that lmao its been ugging for days had to ask
 		return NpcDefinition.getDefinitions()[type].getDefenceAnimation();
-	}
+	}//All these methods arent these bottle necks? Would it not check for anim for all npcs till he found the one called?
+	//Its like this for attk def and death
+	// kind of .. the only bad part is using the npc index as a param like theres no situation ever where
+	// you'd have an npc index and not an ncpc type/id 
+	// but thats fine because its not a loop its a direct reference into the array
 
 	/**
 	 * Get's the defend animation for the attacker.

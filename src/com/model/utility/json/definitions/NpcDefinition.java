@@ -367,16 +367,6 @@ public final class NpcDefinition {
     public int getMeleeDefence() {
         return meleeDefence;
     }
-    
-    /**
-     * Sets the melee defence bonus of this NPC.
-     * @param meleeDefence
-     *
-     * @return the melee defence bonus.
-     */
-    public int setMeleeDefence(int meleeDefence) {
-    	return meleeDefence;
-    }
 
     /**
      * Gets the ranged defence of this NPC.
@@ -386,16 +376,6 @@ public final class NpcDefinition {
     public int getRangedDefence() {
         return rangedDefence;
     }
-    
-    /**
-     * Sets the ranged defence of this NPC.
-     * @param rangeDefence
-     *
-     * @return the ranged defence bonus.
-     */
-    public int setRangedDefence(int rangeDefence) {
-        return rangedDefence;
-    }
 
     /**
      * Gets the magic defence of this NPC.
@@ -403,16 +383,6 @@ public final class NpcDefinition {
      * @return the magic defence bonus.
      */
     public int getMagicDefence() {
-        return magicDefence;
-    }
-    
-    /**
-     * Sets the magic defence of this NPC.
-     * @param magicDefence
-     *
-     * @return the magic defence bonus.
-     */
-    public int setMagicDefence(int magicDefence) {
         return magicDefence;
     }
 }

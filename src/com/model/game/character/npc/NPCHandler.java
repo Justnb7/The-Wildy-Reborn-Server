@@ -165,12 +165,6 @@ public final class NPCHandler {
 		newNPC.makeX = x;
 		newNPC.makeY = y;
 		newNPC.heightLevel = heightLevel;
-		newNPC.currentHealth = newNPC.getDefinition() == null ? HP : newNPC.getDefinition().getHitpoints();
-        newNPC.maximumHealth = newNPC.getDefinition() == null ? HP : newNPC.getDefinition().getHitpoints();
-        newNPC.getDefinition().getAttackBonus();
-        newNPC.getDefinition().getMagicDefence();
-        newNPC.getDefinition().getMagicDefence();
-        newNPC.getDefinition().getRangedDefence();
         newNPC.walking_type = WalkingType;
 		newNPC.setOnTile(x, y, heightLevel);
 		if (World.getWorld().register(newNPC)) {
@@ -189,15 +183,16 @@ public final class NPCHandler {
 		npc.heightLevel = heightLevel;
 		npc.currentHealth = npc.getDefinition() == null ? health : npc.getDefinition().getHitpoints();
         npc.maximumHealth = npc.getDefinition() == null ? health : npc.getDefinition().getHitpoints();
+        npc.attack_bonus = npc.getDefinition().getAttackBonus();
+        npc.melee_defence = npc.getDefinition().getMeleeDefence();
+        npc.range_defence = npc.getDefinition().getRangedDefence();
+        npc.magic_defence = npc.getDefinition().getMagicDefence();
+        npc.maxHit = npc.getDefinition().getMaxHit();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
 		System.out.printf("Spawned npc id %d for player index %d%n", id, player.getIndex());
 		npc.setOnTile(x, y, heightLevel);
 		npc.facePlayer(player.getIndex());
-		npc.getDefinition().setAttackBonus(attackBonus);
-		npc.getDefinition().setMeleeDefence(meleeDefence);
-		npc.getDefinition().setRangedDefence(rangeDefence);
-		npc.getDefinition().setMagicDefence(magicDefence);
 		if (attacksEnemy) {
 			npc.underAttack = true;
 			if (player != null) {

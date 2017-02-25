@@ -6,7 +6,6 @@ import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.item.Item;
 import com.model.game.item.equipment.Equipment;
 import com.model.game.item.equipment.EquipmentSlot;
 import com.model.utility.Utility;
@@ -28,11 +27,11 @@ public class CombatFormulae {
 
     private static int npcDef(Npc npc, int att_type) {
         if (att_type == 0)
-            return npc.getDefinition().getMeleeDefence();
+            return npc.melee_defence;
         else if (att_type == 1)
-            return npc.getDefinition().getRangedDefence();
+            return npc.range_defence;
         else if (att_type == 2)
-            return npc.getDefinition().getMagicDefence();
+            return npc.magic_defence;
         throw new IllegalStateException();
     }
 
@@ -565,25 +564,19 @@ public class CombatFormulae {
 		boolean protectPrayer = player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC);
 		if (dragonfireShield && dragonfirePotion) {
 			player.message("You shield absorbs most of the dragon fire!");
-			player.message("Your potion protects you from the heat of the dragon's breath!");				
+			player.message("Your potion protects you from the heat of the dragon's breath!");
 			return 1;
-		} else if(dragonfireShield) {
-			if(entity.getActionSender() != null) {
-				player.message("You shield absorbs most of the dragon fire!");
-			}
-			return 0.8; //80%
-		} else if(dragonfirePotion) {
-			if(entity.getActionSender() != null) {
-				player.message("Your potion protects you from the heat of the dragon's breath!");
-			}
-			return 0.8; //80%
-		} else if(protectPrayer) {
-			if(entity.getActionSender() != null) {
-				player.message("Your prayers resist some of the dragon fire.");
-			}
-			return 0.6; //60%
+		} else if (dragonfireShield) {
+			player.message("You shield absorbs most of the dragon fire!");
+			return 0.8; // 80%
+		} else if (dragonfirePotion) {
+			player.message("Your potion protects you from the heat of the dragon's breath!");
+			return 0.8; // 80%
+		} else if (protectPrayer) {
+			player.message("Your prayers resist some of the dragon fire.");
+			return 0.6; // 60%
 		}
-		return /*mob.getEquipment() != null*/0;		
+		return 0;		
 	}
 
 }

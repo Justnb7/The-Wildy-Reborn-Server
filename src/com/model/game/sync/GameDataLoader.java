@@ -8,7 +8,6 @@ import org.omicron.jagex.runescape.CollisionMap;
 import com.model.Server;
 import com.model.ServerState;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.npc.NPCSize;
 import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
@@ -42,9 +41,15 @@ public class GameDataLoader implements Runnable {
 
 		logger.info("Loading all of the game data.");
 		try {
+			// Most important first - clipping/cache related. How can we access cache info (clipping, npcdef)
+			// when it's not loaded?
+			ObjectDefinition.loadConfig();
+			MapLoading.load();
+			CollisionMap.load("Data/data/collisiondata.dat");
+			// Everything else..
+			NPCHandler.declare();
 			NpcDropSystem.get().loadDrops();
 			NpcDropSystem.get().loadRareDrops();
-			NPCHandler.declare();
 			new ShopLoader().load();
 			new ItemDefinitionLoader().load();
 			new RequirementsDefinitionLoader().load();
@@ -52,11 +57,7 @@ public class GameDataLoader implements Runnable {
 			PlayerSounds.declare();
 			EquipmentConstants.setMetalEquipment();
 			ClanManager.init();
-			ObjectDefinition.loadConfig();
-			MapLoading.load();
-			NPCSize.init();
 			ConnectionHandler.initialize();
-			CollisionMap.load("Data/data/collisiondata.dat");
 			Server.state = ServerState.LOADED;
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Failed to load the game data.", e);

@@ -198,9 +198,50 @@ public class Npc extends Entity {
 	}
 	
 	public String forcedText;
-
+	
+	/**
+	 * Our enemys maximum hit
+	 */
+	public int maxHit;
+	
+	/**
+	 * Our enemys attack level
+	 */
+	public int attack_bonus;
+	
+	/**
+	 * Our enemys defence level for magic
+	 */
+	public int magic_defence;
+	/**
+	 * Our enemys defence level for melee
+	 */
+	
+	public int melee_defence;
+	
+	/**
+	 * Get the npcs defence level for range
+	 */
+	public int range_defence;
+	
 	public Npc(int _npcType) {
 		super(EntityType.NPC);
+		NpcDefinition definition = NpcDefinition.getDefinitions()[_npcType];
+		if (definition != null) {
+			size = definition.getSize();
+			if (size < 1) {
+				size = 1;
+			}
+			combatLevel = definition == null ? 1 : definition.getCombatLevel();
+			currentHealth = definition.getHitpoints();
+			maximumHealth = definition.getHitpoints();
+			maxHit = definition.getMaxHit();
+			attack_bonus = definition.getAttackBonus();
+			magic_defence = definition.getMagicDefence();
+			melee_defence = definition.getMeleeDefence();
+			range_defence = definition.getRangedDefence();
+			System.out.println("size: "+size+ " max: "+maxHit+" melee_def: "+melee_defence+" range_def: "+range_defence+" magic_def: "+magic_defence);
+		}
 		npcId = _npcType;
 		direction = -1;
 		isDead = false;
@@ -209,7 +250,6 @@ public class Npc extends Entity {
 		direction = -1;
 		isDead = false;
 		randomWalk = true;
-		combatLevel = NpcDefinition.getDefinitions()[npcId] == null ? 1 : NpcDefinition.getDefinitions()[npcId].getCombatLevel();
 	}
 	
 	/**
@@ -417,9 +457,12 @@ public class Npc extends Entity {
 		updateRequired = true;
 	}
 	
+	private int size = 1;
+	
 	public int getSize() {
-		return NPCSize.getSize(npcId);
-	}
+		//return NPCSize.getSize(npcId);
+		return size;
+	}//so when i use that silly method it works when i grab them from it's definition region nulls out? 
 
 	public void clearUpdateFlags() {
 		updateRequired = false;

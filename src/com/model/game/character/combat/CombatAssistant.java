@@ -4,7 +4,6 @@ package com.model.game.character.combat;
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.magic.CombatSpells;
-import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.magic.MagicRequirements;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;

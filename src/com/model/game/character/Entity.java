@@ -684,4 +684,16 @@ public abstract class Entity {
 		return ((objectX - playerX <= distance && objectX - playerX >= -distance) && (objectY - playerY <= distance && objectY - playerY >= -distance));
 	}
 	
+	/**
+	 * Gets the width of the entity.
+	 * @return The width of the entity.
+	 */
+	public abstract int getWidth();
+	
+	/**
+	 * Gets the width of the entity.
+	 * @return The width of the entity.
+	 */
+	public abstract int getHeight();
+	
 }

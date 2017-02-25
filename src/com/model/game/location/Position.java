@@ -1,5 +1,9 @@
 package com.model.game.location;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.model.game.character.Entity;
 import com.model.utility.Utility;
 
 /**
@@ -314,6 +318,83 @@ public class Position {
 
 		Position p = Utility.delta(this, other);
 		return p.x <= 14 && p.x >= -15 && p.y <= 14 && p.y >= -15;
+	}
+	
+	/**
+	 * Checks if a coordinate is within range of another.
+	 *
+	 * @return <code>true</code> if the location is in range,
+	 * <code>false</code> if not.
+	 */
+	public boolean isWithinDistance(Entity attacker, Entity victim, int distance) {
+		if (attacker.getWidth() == 1 && attacker.getHeight() == 1 &&
+				victim.getWidth() == 1 && victim.getHeight() == 1 && distance == 1) {
+			return distance(victim.getPosition()) <= distance;
+		}
+		List<Position> myTiles = entityTiles(attacker);
+		List<Position> theirTiles = entityTiles(victim);
+		for (Position myTile : myTiles) {
+			for (Position theirTile : theirTiles) {
+				if (myTile.isWithinDistance(theirTile, distance)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if a coordinate is within range of another.
+	 *
+	 * @return <code>true</code> if the location is in range,
+	 * <code>false</code> if not.
+	 */
+	public boolean isWithinDistance(Position location, int distance) {
+		int objectX = location.getX();
+		int objectY = location.getY();
+		for (int i = 0; i <= distance; i++) {
+			for (int j = 0; j <= distance; j++) {
+				if ((objectX + i) == x && ((objectY + j) == y || (objectY - j) == y || objectY == y)) {
+					return true;
+				} else if ((objectX - i) == x && ((objectY + j) == y || (objectY - j) == y || objectY == y)) {
+					return true;
+				} else if (objectX == x && ((objectY + j) == y || (objectY - j) == y || objectY == y)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * The list of tiles this entity occupies.
+	 *
+	 * @param entity The entity.
+	 * @return The list of tiles this entity occupies.
+	 */
+	public List<Position> entityTiles(Entity entity) {
+		List<Position> myTiles = new ArrayList<Position>();
+		myTiles.add(entity.getPosition());
+		if (entity.getWidth() > 1) {
+			for (int i = 1; i < entity.getWidth(); i++) {
+				myTiles.add(Position.create(entity.getPosition().getX() + i,
+						entity.getPosition().getY(), entity.getPosition().getZ()));
+			}
+		}
+		if (entity.getHeight() > 1) {
+			for (int i = 1; i < entity.getHeight(); i++) {
+				myTiles.add(Position.create(entity.getPosition().getX(),
+						entity.getPosition().getY() + i, entity.getPosition().getZ()));
+			}
+		}
+		int myHighestVal = (entity.getWidth() > entity.getHeight() ? entity.getWidth() : entity.getHeight());
+		if (myHighestVal > 1) {
+			for (int i = 1; i < myHighestVal; i++) {
+				myTiles.add(Position.create(entity.getPosition().getX() + i,
+						entity.getPosition().getY() + i, entity.getPosition().getZ()));
+			}
+		}
+		return myTiles;
 	}
 
 	/**

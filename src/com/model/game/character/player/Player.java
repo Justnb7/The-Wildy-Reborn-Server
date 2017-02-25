@@ -750,6 +750,16 @@ public class Player extends Entity {
 	public boolean isPlayer() {
 		return true;
 	}
+	
+	@Override
+	public int getHeight() {
+		return 1;
+	}
+
+	@Override
+	public int getWidth() {
+		return 1;
+	}
 
 	@Override
 	public Position getPosition() {

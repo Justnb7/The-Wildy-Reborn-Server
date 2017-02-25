@@ -982,4 +982,14 @@ public class Npc extends Entity {
 	public boolean isPlayer() {
 		return false;
 	}
+	
+	@Override
+	public int getHeight() {
+		return getDefinition().getSize();
+	}
+
+	@Override
+	public int getWidth() {
+		return getDefinition().getSize();
+	}
 }

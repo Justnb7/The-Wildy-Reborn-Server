@@ -1,13 +1,13 @@
 package com.model.game.character.npc.combat.combat_scripts;
 
-import com.model.game.World;
+import java.util.Random;
+
 import com.model.game.character.Animation;
+import com.model.game.character.Graphic;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.player.Player;
-import com.model.utility.Utility;
-import com.model.utility.cache.map.Region;
 
 public class Kree_Arra extends Boss {
 
@@ -15,32 +15,33 @@ public class Kree_Arra extends Boss {
 		super(npcId);
 	}
 
-	private static int projectileId;
+	/**
+	 * The random number generator.
+	 */
+	private final Random random = new Random();
 	
 	@Override
 	public void execute(Npc npc, Player player) {
-		 npc.playAnimation(Animation.create(6980));
-	        int attack = Utility.getRandom(2);
-	        if (attack == 0) {
-	            projectileId = 1199;
-	            npc.attackStyle = 0;
-	        } else if (attack == 1) {
-	        	npc.attackStyle = 1;
-	            projectileId = 1198;
-	        } else {
-	            projectileId = 1200;
-	            npc.attackStyle = 2;
-	        }
-	        for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
-	            Player players = World.getWorld().getPlayers().get(i);
-	            if (players == null)
-	                continue;
-	            if (Utility.doubleDistanceBetween(players, npc) < 16 && Region.canAttack(npc, players)) {
-	                int offX = (npc.getY() - players.getY()) * -1;
-	                int offY = (npc.getX() - players.getX()) * -1;
-	                players.getProjectile().createPlayersProjectile(npc.getX() + 1, npc.getY() + 1, offX, offY, 50, 106, projectileId, 0, 0, -players.getId() - 1, 76, 0);
-	            }
-	        }
+		int offX = (npc.getY() - player.getY()) * -1;
+		int offY = (npc.getX() - player.getX()) * -1;
+		switch(random.nextInt(5)) {
+		case 0:
+			npc.attackStyle = 0;	
+			break;
+		case 1:
+		case 2:
+			npc.attackStyle = 2;
+			npc.playAnimation(Animation.create(6978));
+			player.getProjectile().createPlayersProjectile(npc.getX() + 1, npc.getY() + 1, offX, offY, 50, 106, 1198,
+					31, 31, -player.getId() - 1, 76, 0);
+			player.playGraphics(Graphic.create(1196, 0, 100));
+			break;
+		default:
+			npc.attackStyle = 1;
+			player.getProjectile().createPlayersProjectile(npc.getX() + 1, npc.getY() + 1, offX, offY, 50, 106, 1199,
+					31, 31, -player.getId() - 1, 76, 0);
+			break;
+		}
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class Kree_Arra extends Boss {
 
 	@Override
 	public int getMaximumDamage(int attackType) {
-		return attackType == 0 ? 26 : attackType == 1 ? 71 : 26;
+		return attackType == 0 ? 26 : attackType == 1 ? 71 : 21;
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class Kree_Arra extends Boss {
 
 	@Override
 	public int distanceRequired(Npc npc) {
-		return 8;
+		return 5;
 	}
 
 	@Override

@@ -811,10 +811,15 @@ public class Region {
 	 * @return the region.
 	 */
 	public static Region getRegion(int x, int y) {
+		if (regions == null) {
+			System.err.println("You haven't loading region clipping."); // thats the issue
+			return null;
+		}
 		int regionX = x >> 3;
 		int regionY = y >> 3;
 		int regionId = (regionX / 8 << 8) + regionY / 8;
-		for (Region region : regions) {
+		for (Region region : regions) {//ther we go lol it even crashes when its 1
+			// regions is null nothing to do with size w.e u were changing in npc
 			if (region.id() == regionId) {
 				return region;
 			}

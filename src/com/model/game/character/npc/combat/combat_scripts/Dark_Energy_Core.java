@@ -4,7 +4,6 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
@@ -29,7 +28,7 @@ public class Dark_Energy_Core extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
+	public int getProtectionDamage(Player player, int damage) {
 		return 0;
 	}
 

@@ -1,9 +1,9 @@
 package com.model.game.character.npc.combat.combat_scripts;
 
 import com.model.game.character.Graphic;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 
 public class Zakln_Gritch extends Boss {
@@ -22,8 +22,11 @@ public class Zakln_Gritch extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		return 0;
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
+			return 0;
+		}
+		return damage;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.Random;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -72,17 +71,11 @@ public class Krill_Tsutsaroth extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch (protectionPrayer) {
-		case MAGE:
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 			return 0;
-		case MELEE:
+		} else if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 			return 0;
-		case RANGE:
-			break;
-		default:
-			break;
-
 		}
 		return damage;
 	}

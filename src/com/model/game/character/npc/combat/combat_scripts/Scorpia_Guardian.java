@@ -2,7 +2,6 @@ package com.model.game.character.npc.combat.combat_scripts;
 
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 
 public class Scorpia_Guardian extends Boss {
@@ -20,7 +19,7 @@ public class Scorpia_Guardian extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
+	public int getProtectionDamage(Player player, int damage) {
 		return 0;
 	}
 
@@ -56,7 +55,7 @@ public class Scorpia_Guardian extends Boss {
 
 	@Override
 	public int distanceRequired(Npc npc) {
-		return 20;
+		return 30;
 	}
 
 	@Override

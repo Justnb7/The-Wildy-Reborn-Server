@@ -1,10 +1,10 @@
 package com.model.game.character.npc.combat.combat_scripts;
 
 import com.model.game.character.Animation;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.MobAttackType;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -85,18 +85,13 @@ public class Corporeal_Beast extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch (protectionPrayer) {
-		case MELEE:
-			 return damage *= .1;
-		case MAGE:
-			return damage *= .5;
-		case RANGE:
-			break;
-		default:
-			break;
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+			return damage *=.1;
+		} else if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+			return damage *=.5;
 		}
-		return 0;
+		return damage;
 	}
 
 	@Override

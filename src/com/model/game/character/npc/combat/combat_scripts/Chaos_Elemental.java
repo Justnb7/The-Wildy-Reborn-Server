@@ -5,9 +5,9 @@ import java.util.Random;
 import com.model.Server;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
@@ -91,12 +91,9 @@ public class Chaos_Elemental extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch (protectionPrayer) {
-			case RANGE:
-			case MELEE:
-			case MAGE:
-				return 0;
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+			return damage /2;
 		}
 		return damage;
 	}

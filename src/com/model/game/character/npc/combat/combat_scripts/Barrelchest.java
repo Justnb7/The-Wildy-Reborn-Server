@@ -1,10 +1,10 @@
 package com.model.game.character.npc.combat.combat_scripts;
 
 import com.model.game.character.Animation;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.MobAttackType;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
@@ -71,17 +71,13 @@ public class Barrelchest extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch (protectionPrayer) {
-		case MELEE:
-			return 0;
-		case RANGE:
-			return 0;
-		case MAGE:
-			break;
-		default:
-			break;
-
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+			return damage /2;
+		} else if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
+			return damage /2;
+		} else if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+			return damage /2;
 		}
 		return damage;
 	}

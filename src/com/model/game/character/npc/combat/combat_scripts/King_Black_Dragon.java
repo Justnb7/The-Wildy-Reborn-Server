@@ -2,10 +2,10 @@ package com.model.game.character.npc.combat.combat_scripts;
 
 import java.util.Random;
 
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.MobAttackType;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 
 public class King_Black_Dragon extends Boss {
@@ -40,32 +40,24 @@ public class King_Black_Dragon extends Boss {
 			}
 			if (attackStyle >= 25 && attackStyle < 50) {
 				player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50, 80, 394, 43, 33, -player.getId() - 1, 50, 15, 36);
-				npc.attackStyle = MobAttackType.POISON_BREATH;
+				npc.attackStyle = MobAttackType.DRAGON_FIRE;
 			}
 			if (attackStyle > 50 && attackStyle < 75) {
 				player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50, 80, 395, 43, 33, -player.getId() - 1, 50, 15, 36);
-				npc.attackStyle = MobAttackType.SHOCK_BREATH;
+				npc.attackStyle = MobAttackType.DRAGON_FIRE;
 			}
 			if (attackStyle >= 75 && attackStyle <= 100) {
 				player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50, 80, 396, 43, 33, -player.getId() - 1, 50, 15, 36);
-				npc.attackStyle = MobAttackType.ICE_BREATH;
+				npc.attackStyle = MobAttackType.DRAGON_FIRE;
 			}
 		}
 		
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch(protectionPrayer) {
-		case MAGE:
-			break;
-		case MELEE:
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 			return 0;
-		case RANGE:
-			break;
-		default:
-			break;
-		
 		}
 		return damage;
 	}

@@ -2,9 +2,9 @@ package com.model.game.character.npc.combat.combat_scripts;
 
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.task.events.CycleEvent;
@@ -17,8 +17,6 @@ public class Callisto extends Boss {
 	public Callisto(int npcId) {
 		super(npcId);
 	}
-	
-	private static int sendMultiAttack = 0;
 
 	@Override
 	public void execute(Npc npc, Player player) {
@@ -35,9 +33,7 @@ public class Callisto extends Boss {
 			player.write(new SendMessagePacket("Callisto's fury sends an almighty shockwave through you."));
         } else {
         	npc.attackStyle = 4;
-        	sendMultiAttack = 1;
             callistoRoar(player, npc.absX, npc.absY);
-            sendMultiAttack = 0;
         }
 		
 	}
@@ -84,15 +80,11 @@ public class Callisto extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch (protectionPrayer) {
-		case MELEE:
-		case MAGE:
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 			return 0;
-		case RANGE:
-			break;
-		default:
-			break;
+		} else if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+			return 0;
 		}
 		return damage;
 	}
@@ -124,7 +116,7 @@ public class Callisto extends Boss {
 
 	@Override
 	public boolean canMultiAttack(Npc npc) {
-		if (sendMultiAttack == 1)
+		if (npc.attackStyle == 4)
 			return true;
 		else
 			return false;

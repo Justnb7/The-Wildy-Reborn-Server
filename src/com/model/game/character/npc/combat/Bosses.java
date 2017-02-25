@@ -25,7 +25,6 @@ import com.model.game.character.npc.combat.combat_scripts.King_Black_Dragon;
 import com.model.game.character.npc.combat.combat_scripts.Kraken;
 import com.model.game.character.npc.combat.combat_scripts.Kree_Arra;
 import com.model.game.character.npc.combat.combat_scripts.Krill_Tsutsaroth;
-import com.model.game.character.npc.combat.combat_scripts.Lizardman;
 import com.model.game.character.npc.combat.combat_scripts.Scorpia;
 import com.model.game.character.npc.combat.combat_scripts.Scorpia_Guardian;
 import com.model.game.character.npc.combat.combat_scripts.Sergeant_Grimspike;
@@ -76,7 +75,6 @@ public class Bosses {
 	private static final King_Black_Dragon King_Black_Dragon = new King_Black_Dragon(239);
 	private static final Barrelchest BARRELCHEST = new Barrelchest(6342);
 	private static final Zombie_Champion ZOMBIES_CHAMPION = new Zombie_Champion(3359);
-	private static final Lizardman LIZARDMAN_SHAMAN = new Lizardman(6767);
 	private static final Dragon RED_DRAGON_247 = new Dragon(247);
 	private static final Dragon BLACK_DRAGON_252 = new Dragon(252);
 	private static final Dragon GREEN_DRAGON_264 = new Dragon(264);
@@ -116,7 +114,6 @@ public class Bosses {
 		bosses.put(King_Black_Dragon.npcId, King_Black_Dragon);
 		bosses.put(BARRELCHEST.npcId, BARRELCHEST);
 		bosses.put(ZOMBIES_CHAMPION.npcId, ZOMBIES_CHAMPION);
-		bosses.put(LIZARDMAN_SHAMAN.npcId, LIZARDMAN_SHAMAN);
 
 		/**
 		 * Dragons

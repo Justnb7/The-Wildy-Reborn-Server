@@ -20,7 +20,7 @@ public abstract class Boss {
 	
 	public abstract void execute(Npc npc, Player player);
 	
-    public abstract int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage);
+    public abstract int getProtectionDamage(Player player, int damage);
 	
 	public abstract int getMaximumDamage(int attackType);
 	

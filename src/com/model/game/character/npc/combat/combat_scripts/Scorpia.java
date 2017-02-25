@@ -2,9 +2,9 @@ package com.model.game.character.npc.combat.combat_scripts;
 
 import com.model.Server;
 import com.model.game.World;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.NPCDeathTask;
@@ -28,8 +28,11 @@ public class Scorpia extends Boss {
 	}
 	
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		return damage *= 7;
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+			return damage /2;
+		}
+		return damage;
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package com.model.game.character.npc.combat.combat_scripts;
 
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 
 public class Bree extends Boss {
@@ -20,17 +20,9 @@ public class Bree extends Boss {
 	}
 
 	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch(protectionPrayer) {
-		case MAGE:
-			break;
-		case MELEE:
-			break;
-		case RANGE:
+	public int getProtectionDamage(Player player, int damage) {
+		if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 			return 0;
-		default:
-			break;
-		
 		}
 		return damage;
 	}

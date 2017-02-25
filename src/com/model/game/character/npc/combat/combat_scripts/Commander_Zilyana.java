@@ -10,7 +10,6 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.nvp.NpcVsPlayerCombat;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.task.ScheduledTask;
@@ -55,18 +54,15 @@ public class Commander_Zilyana extends Boss {
 	
 	private void melee(Npc npc, Player player) {
 		int damage = Utility.getRandom(31);
-		boolean isBoss = true;
 		
 		if (npc.attackStyle == 0) {
 			if (!CombatFormulae.getAccuracy(npc, player, 0, 1.0)) {
 				damage = 0;
 			}	
 			if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
-				if (isBoss) {
-					damage = Utility.getRandom(getProtectionDamage(ProtectionPrayer.MELEE, damage));
-				} else {
 					damage = 0;
-				}
+				} else {
+					damage = Utility.getRandom(damage);
 			}
 			if (player.playerEquipment[player.getEquipment().getShieldId()] == 12817) {
 				if (Utility.getRandom(100) > 30 && damage > 0) {
@@ -80,17 +76,14 @@ public class Commander_Zilyana extends Boss {
 	private void magicAttack(Player player, Npc npc) {
 		int damage = Utility.getRandom(31);
 		int secondDamage = Utility.getRandom(31);
-		boolean isBoss = true;
 		
-		if (!CombatFormulae.getAccuracy(npc, player, 1, 1.0)) {
+		if (!CombatFormulae.getAccuracy(npc, player, 2, 1.0)) {
 			damage = 0;
 		}
 		if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
-			if (isBoss) {
-				damage = Utility.getRandom(getProtectionDamage(ProtectionPrayer.MAGE, damage));
-			} else {
-				damage = 0;
-			}
+			damage = 0;
+		} else {
+			damage = Utility.getRandom(damage);
 		}
 		send_dmg_on_player(npc, player, damage);
 		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
@@ -120,22 +113,6 @@ public class Commander_Zilyana extends Boss {
 		player.damage(new Hit(dmg));
 		// trigger stuff that happens when a hit appears
 		NpcVsPlayerCombat.on_damage_delt(npc, dmg);
-	}
-
-	@Override
-	public int getProtectionDamage(ProtectionPrayer protectionPrayer, int damage) {
-		switch (protectionPrayer) {
-		case MAGE:
-			return 0;
-		case MELEE:
-			return 0;
-		case RANGE:
-			break;
-		default:
-			break;
-
-		}
-		return damage;
 	}
 
 	@Override
@@ -184,6 +161,11 @@ public class Commander_Zilyana extends Boss {
 	@Override
 	public boolean damageUsesOwnImplementation() {
 		return true;
+	}
+
+	@Override
+	public int getProtectionDamage(Player player, int damage) {
+		return 0;
 	}
 
 }

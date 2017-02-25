@@ -19,7 +19,6 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.Bosses;
 import com.model.game.character.npc.combat.MobAttackType;
-import com.model.game.character.npc.combat.ProtectionPrayer;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -352,7 +351,7 @@ public class NpcVsPlayerCombat {
 						damage = (int) damage;
 					}
 					if (isBoss) {
-						damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.MELEE, damage));
+						damage = Utility.getRandom(boss.getProtectionDamage(player, damage));
 					} else {
 						damage = 0;
 						// player.write(new SendGameMessage("damage: = 0"));
@@ -375,7 +374,7 @@ public class NpcVsPlayerCombat {
 				// overheads check
 				if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 					if (isBoss) {
-						damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.RANGE, damage));
+						damage = Utility.getRandom(boss.getProtectionDamage(player, damage));
 					} else {
 						damage = 0;
 					}
@@ -398,7 +397,7 @@ public class NpcVsPlayerCombat {
 						damage = Utility.getRandom(10);
 					}
 					if (isBoss) {
-						damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.MAGE, damage));
+						damage = Utility.getRandom(boss.getProtectionDamage(player, damage));
 					} else {
 						damage = 0;
 					}
@@ -657,7 +656,7 @@ public class NpcVsPlayerCombat {
 						
 						if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 							if (isBoss) {
-								damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.MAGE, damage));
+								damage = Utility.getRandom(boss.getProtectionDamage(player, damage));
 							} else {
 								damage = 0;
 							}
@@ -672,7 +671,7 @@ public class NpcVsPlayerCombat {
 						// overheads check
 						if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 							if (isBoss) {
-								damage = Utility.getRandom(boss.getProtectionDamage(ProtectionPrayer.RANGE, damage));
+								damage = Utility.getRandom(boss.getProtectionDamage(player, damage));
 							} else {
 								damage = 0;
 							}

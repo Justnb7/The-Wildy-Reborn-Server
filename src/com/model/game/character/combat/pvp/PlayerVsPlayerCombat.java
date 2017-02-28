@@ -183,6 +183,7 @@ public class PlayerVsPlayerCombat {
 		if (player.bowSpecShot <= 0) {
 			player.oldPlayerIndex = 0;
 			player.bowSpecShot = 0;
+			player.lastWeaponUsed = 0;
 		}
 		player.bowSpecShot = 0;
 	}
@@ -235,18 +236,20 @@ public class PlayerVsPlayerCombat {
 	 *            The {@link Player} being attacked
 	 */
 	private static void applyPlayerRangeDamage(Player attacker, Player defender, int i) {
-		// int damage = Utils.getRandom(player.getCombat().rangeMaxHit());
 		int primairy_damage = Utility.getRandom(attacker.getCombat().calculateRangeMaxHit());
 		int secondairy_damage = -1;
-		if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 11235 || attacker.bowSpecShot == 1) {
-			//damage2 = Utils.getRandom(player.getCombat().rangeMaxHit());
+		
+		if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1) {
 			secondairy_damage = attacker.getCombat().calculateRangeMaxHit();
 		}
+		
 		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
+		
 		if (!attacker.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(attacker, defender, 1, 1.0)) {
 			//System.out.println("range def");
 			primairy_damage = 0;
 		}
+		
 		if (attacker.getEquipment().isCrossbow(attacker)) {
 			if (Utility.getRandom(10) == 1) {
 				if (primairy_damage > 0) {
@@ -337,14 +340,15 @@ public class PlayerVsPlayerCombat {
 				}
 			}
 		}
-		if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 11235 || attacker.bowSpecShot == 1) {
+		
+		if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1) {
 			if (!CombatFormulae.getAccuracy(attacker, defender, 1, 1.0))
 				secondairy_damage = 0;
 		}
 
 		if (defender.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 			primairy_damage = primairy_damage * 60 / 100;
-			if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 11235 || attacker.bowSpecShot == 1)
+			if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1)
 				secondairy_damage = secondairy_damage * 60 / 100;
 		}
 
@@ -387,7 +391,7 @@ public class PlayerVsPlayerCombat {
 		CombatExperience.handleCombatExperience(attacker, primairy_damage, CombatType.RANGED);
 		boolean dropArrows = true;
 		
-		if(attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 12926 || attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 4222) {
+		if(attacker.lastWeaponUsed == 12926 || attacker.lastWeaponUsed == 4222) {
 			dropArrows = false;
 		}
 		
@@ -850,9 +854,6 @@ public class PlayerVsPlayerCombat {
 			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 			player.oldPlayerIndex = i;
-			
-			
-
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 				player.getItems().deleteArrow();
@@ -863,10 +864,10 @@ public class PlayerVsPlayerCombat {
 			player.usingBow = true;
 			player.followId = World.getWorld().getPlayers().get(player.playerIndex).getIndex();
 			player.getPA().followPlayer(true);
+			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.oldPlayerIndex = i;
 			player.getCombat().fireProjectilePlayer();
-			
 		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.getItems().deleteEquipment();

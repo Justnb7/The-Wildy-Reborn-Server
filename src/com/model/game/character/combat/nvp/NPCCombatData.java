@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Bosses;
+import com.model.utility.json.definitions.NpcDefinition;
 
 /**
  * Holds all of the combat data for npc combat
@@ -19,9 +20,13 @@ public class NPCCombatData {
 	 * A list of unspawnable npcs on death
 	 */
 	private static List<Integer> unspawnableNpcs = Arrays.asList(5779, 4303, 4304, 1605, 1606, 1607, 1608, 1609, 5054);
-
-	public static boolean retaliates(int npcType) {
-		return !(npcType > 1531 && npcType < 1536) && (npcType < 1738 || npcType > 1743 && !(npcType >= 2440 && npcType <= 2446));
+	
+	
+	/**
+	 * Get's the npcs defending animation.
+	 */
+	public static int getNPCBlockAnimation(Npc npc) {
+		return NpcDefinition.getDefinitions()[npc.npcId].getDefenceAnimation();
 	}
 	
 	/**

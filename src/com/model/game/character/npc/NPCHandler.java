@@ -97,38 +97,6 @@ public final class NPCHandler {
 		return false;
 	}
 	
-	/**
-	 * Summon npc, barrows, etc
-	 */
-	public static Npc spawnNpcBossOffspring(Player c, int npcType, int x, int y, int heightLevel, int walkType, int HP, int maxHit, int attack, int defence, boolean attackPlayer) {
-		//System.out.println("spawn "+npcType+" at x "+x+" y "+y);
-		Npc newNPC = new Npc(npcType);
-		newNPC.absX = x;
-		newNPC.absY = y;
-		newNPC.makeX = x;
-		newNPC.makeY = y;
-		newNPC.setOnTile(x, y, heightLevel);
-		newNPC.heightLevel = heightLevel;
-		newNPC.walking_type = walkType;
-		newNPC.currentHealth = HP;
-		newNPC.maximumHealth = HP;
-		newNPC.shouldRespawn = false;
-		World.getWorld().register(newNPC);
-		if (newNPC.npcId == 5054) {
-			newNPC.forcedText = "GRRRRRRRRRRRR";
-			newNPC.forcedChatRequired = true;
-			newNPC.updateRequired = true;
-		}
-		if (attackPlayer) {
-			newNPC.underAttack = true;
-			if (c != null) {
-				newNPC.targetId = c.getIndex();
-			}
-		}
-		//npcs[slot] = newNPC;
-		return newNPC;
-	}
-	
 	public static Npc spawnPetNpc(Player owner, int npcType, int x, int y, int heightLevel) {
 
 		Npc npc = new Npc(npcType);
@@ -173,7 +141,7 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static Npc spawnNpc(Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon) {
+	public static Npc spawnNpc(Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
 		Npc npc = new Npc(id);
 		
 		npc.setAbsX(x);
@@ -201,6 +169,9 @@ public final class NPCHandler {
 		}
 		if (hasHeadIcon) {
 			player.write(new DrawHeadicon(1, npc.getIndex(), 0, 0));
+		}
+		if(bossOffspring) {
+			npc.shouldRespawn = false;
 		}
 		World.getWorld().register(npc);
 		return npc;
@@ -558,13 +529,13 @@ public final class NPCHandler {
 		NpcDefinition def = NpcDefinition.getDefinitions()[npcType];
 		if (d == ClueDifficulty.EASY) {
 			////Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 10, 25, 25, 25, 25, true, true));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 10, 25, 25, 25, 25, true, true, false));
 		} else if (d == ClueDifficulty.MEDIUM) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 15, 50, 25, 25, 25, true, true));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 15, 50, 25, 25, 25, true, true, false));
 		} else if (d == ClueDifficulty.HARD) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 20, 75, 99, 25, 25, true, true));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 20, 75, 99, 25, 25, true, true, false));
 		} else if (d == ClueDifficulty.ELITE) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 35, 99, 120, 25, 25, true, true));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 35, 99, 120, 25, 25, true, true, false));
 		}
 		return Optional.empty();
 	}

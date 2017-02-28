@@ -3,7 +3,6 @@ package com.model.game.character.combat.effect;
 import com.model.game.character.Graphic;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.utility.Utility;
 
 /**
@@ -14,17 +13,6 @@ import com.model.utility.Utility;
  */
 
 public class CombatEffect {
-	
-	/**
-	 * Applies the slayer helmet effect to the victim.
-	 */
-	public static void slayerHelmetEffect(Player attacker, Npc victim, int damage) {
-		if (attacker.getSlayerTaskAmount() > 0) {
-			if (Slayer.isSlayerTask(attacker, victim.npcId)) {
-				damage *= 1.15;
-			}
-		}
-	}
 	
 	/**
 	 * Applies the veracs flail effect to the victim.

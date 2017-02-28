@@ -1,7 +1,5 @@
 package com.model.game.character.combat.pvm;
 
-import java.util.Random;
-
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -14,7 +12,6 @@ import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
@@ -47,12 +44,6 @@ import com.model.utility.Utility;
  *
  */
 public class PlayerVsNpcCombat {
-	
-	
-	/**
-     * The random number generator.
-     */
-    private final static Random random = new Random();
 
 	/**
 	 * Applies the combat damage based on the provided {@link CombatType}
@@ -159,7 +150,6 @@ public class PlayerVsNpcCombat {
 
 		npc.underAttack = true;
 		attacker.killingNpcIndex = attacker.npcIndex;
-		attacker.lastNpcAttacked = npc.getIndex(); // PI junk
 		
 		if (damage > 0) {
 			npc.addDamageReceived(attacker.getName(), damage);
@@ -200,17 +190,16 @@ public class PlayerVsNpcCombat {
 
 		// now this code needs to be in the damaging methods there are a few cos its a bit messy
 		if (NPCCombatData.switchesAttackers(npc_victim)) {
+			System.out.println("targetId: "+npc_victim.targetId+" index: "+plr_attacker.getIndex());
 			npc_victim.targetId = plr_attacker.getIndex();
-		}
+			npc_victim.facePlayer(npc_victim.targetId);
+		}//we tried this last time didnt work
+
+		//to kinda narrow it down basicly its not resetting the targetId right?
+		// yeah it'd be ok if targetId well this literally makes 0 sence
+		// printing as 0 but ingame is 1
 		
-		/*if (npc_victim.underAttackBy > 0 && Server.npcHandler.retaliatesAllHits(npc_victim)) {
-			npc_victim.killerId = plr_attacker.getIndex();
-		} else if (npc_victim.underAttackBy < 0 && !Server.npcHandler.retaliatesAllHits(npc_victim)) {
-			npc_victim.killerId = plr_attacker.getIndex();
-		}*/
-
-		plr_attacker.lastNpcAttacked = victim_npc_id;
-
+		
 		/*
 		 * Apply the damage based on the combat style
 		 */
@@ -219,6 +208,7 @@ public class PlayerVsNpcCombat {
 		MobAttackSounds.sendBlockSound(plr_attacker, npc_victim.getId());
 		if (plr_attacker.bowSpecShot <= 0) {
 			plr_attacker.oldNpcIndex = 0;
+			plr_attacker.lastWeaponUsed = 0;
 		}
 		plr_attacker.bowSpecShot = 0;
 	}
@@ -237,7 +227,6 @@ public class PlayerVsNpcCombat {
         damage = MagicCalculations.magicMaxHitModifier(player);
         
         CombatExperience.handleCombatExperience(player, damage, CombatType.MAGIC);
-        CombatEffect.slayerHelmetEffect(player, npc, damage);
         
 		if (player.getCombat().godSpells()) {
 			if (System.currentTimeMillis() - player.godSpellDelay < 300000) {
@@ -270,14 +259,14 @@ public class PlayerVsNpcCombat {
 		if (player.getCombat().getEndGfxHeight() == 100 && !magicFailed) { // end GFX
 			npc.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 100));
 			if (npc.attackTimer < 5)
-				npc.playAnimation(Animation.create(CombatAnimation.getNPCBlockAnimation(npc.getIndex())));
+				npc.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(npc)));
 		} else if (!magicFailed) {
 			npc.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 0));
 		}
 
 		if (magicFailed) {
 			if (npc.attackTimer < 5) {
-				npc.playAnimation(Animation.create(CombatAnimation.getNPCBlockAnimation(npc.getIndex())));
+				npc.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(npc)));
 			}
 			npc.playGraphics(Graphic.create(85, 0, 100));
 		}
@@ -303,12 +292,9 @@ public class PlayerVsNpcCombat {
 		}
 		npc.underAttack = true;
 		if (MagicCalculations.magicMaxHitModifier(player) != 0) {
-			if (!player.multiAttacking) {
-				npc.addDamageReceived(player.getName(), damage);
-				npc.damage(new Hit(damage));
-			}
+			npc.addDamageReceived(player.getName(), damage);
+			npc.damage(new Hit(damage));
 		}
-		player.multiAttacking = false;
 		player.killingNpcIndex = player.oldNpcIndex;
 		npc.updateRequired = true;
 		player.usingMagic = false;
@@ -386,40 +372,36 @@ public class PlayerVsNpcCombat {
 	private static void applyNpcRangeDamage(Player attacker, Npc victim, int i) {
 		int maxHit = attacker.getCombat().calculateRangeMaxHit();
         int damage = Utility.random(maxHit);
-        int secondDmg = Utility.random(maxHit);
-        int randomHit = random.nextInt(damage < 1 ? 1 : damage + 1); // +1 as its exclusive
+        
+        int secondHit = Utility.random(maxHit);
 
-		CombatEffect.slayerHelmetEffect(attacker, victim, damage);
-
-		if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 11235 || attacker.bowSpecShot == 1)
-			secondDmg = attacker.getCombat().calculateRangeMaxHit();
-		if (!attacker.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(attacker, victim, 1, 1.0)) {
+		if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1) {
+			if (!CombatFormulae.getAccuracy(attacker, victim, 1, 1.0)) {
+				secondHit = 0;
+			}
+			secondHit = maxHit;
+		}
+        
+        //Don't allow players to hit tentactles
+        if (victim.npcId == 5535) {
 			damage = 0;
-		} else if (victim.npcId == 2265 || victim.npcId == 2267 && !attacker.hasAttribute("ignore defence")) {
+		}
+        
+        if (!attacker.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(attacker, victim, 1, 1.0)) {
+			damage = 0;
+		}
+        
+        //Kraken damage
+        kraken(attacker, victim, damage);
+        
+        //Rex and Supreme do not take range damage
+        if (victim.npcId == 2265 || victim.npcId == 2267 && !attacker.hasAttribute("ignore defence")) {
 			attacker.write(new SendMessagePacket("The dagannoth is currently resistant to that attack!"));
 			return;
 		}
-		if (victim.npcId == 5535) {
-			damage = 0;
-		}
-		
-		kraken(attacker, victim, damage);
-
-		if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 11235 || attacker.bowSpecShot == 1) {
-			if (!CombatFormulae.getAccuracy(attacker, victim, 1, 1.0))
-				secondDmg = 0;
-		}
-		
-		if (attacker.dbowSpec) {
-			victim.playGraphics(Graphic.create(attacker.playerEquipment[attacker.getEquipment().getQuiverId()] == 11212 ? 1100 : 1103, 0, 100));
-			if (damage < 8)
-				damage = 8;
-			if (secondDmg < 8)
-				secondDmg = 8;
-			attacker.dbowSpec = false;
-		}
-		
-		if (attacker.getEquipment().isCrossbow(attacker)) {
+        
+        //Crossbow damage multiplier
+        if (attacker.getEquipment().isCrossbow(attacker)) {
 			if (Utility.getRandom(8) == 1) {
 				if (damage > 0) {
 					switch(attacker.playerEquipment[EquipmentSlot.ARROWS.getId()]) {
@@ -452,53 +434,56 @@ public class PlayerVsNpcCombat {
 						victim.playGraphics(Graphic.create(758, 0, 100));
 						victim.setAttribute("ignore defence", true);
 						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							damage = randomHit = Utility.random(45, 57);
+							damage = Utility.random(45, 57);
 						} else {
-							damage = randomHit = Utility.random(42, 51);
+							damage = Utility.random(42, 51);
 						}
 						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							damage = randomHit *= 1.15;
+							damage *= 1.15;
 						}
 						break;
 					case 9244: // Dragon's Breath
 						victim.playGraphics(Graphic.create(756, 0, 0));
 						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							damage = randomHit = Utility.random(45, 57);
+							damage = Utility.random(45, 57);
 						} else {
-							damage = randomHit = Utility.random(42, 51);
+							damage = Utility.random(42, 51);
 						}
 						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							damage = randomHit *= 1.15;
+							damage *= 1.15;
 						}
 						break;
 					case 9245: // Life Leech
 						victim.playGraphics(Graphic.create(753, 0, 0));
 						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							damage = randomHit = Utility.random(45, 57);
+							damage = Utility.random(45, 57);
 						} else {
-							damage = randomHit = Utility.random(42, 51);
+							damage = Utility.random(42, 51);
 						}
 						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							damage = randomHit *= 1.15;
+							damage *= 1.15;
 						}
 						break;
 					}
 				}
 			}
 		}
-		if (victim.currentHealth - damage < 0) {
+        
+        //Damage check
+        if (victim.currentHealth - damage < 0) {
 			damage = victim.currentHealth;
 		}
-		if (secondDmg > 0) {
-			if (damage == victim.currentHealth && victim.currentHealth - secondDmg > 0) {
-				secondDmg = 0;
-			}
+        
+        if (victim.currentHealth - secondHit < 0) {
+        	secondHit = victim.currentHealth;
 		}
-
+		
+		//Arrows check
 		boolean dropArrows = true;
-		if(attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 12926 || attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 4222) {
+		if(attacker.lastWeaponUsed == 12926 || attacker.lastWeaponUsed == 4222) {
 			dropArrows = false;
 		}
+		
 		if (dropArrows) {
 			attacker.getItems().dropArrowNpc();
 			attacker.getItems().deleteArrow();
@@ -506,33 +491,38 @@ public class PlayerVsNpcCombat {
 				attacker.getItems().dropArrowNpc();
 			}
 		}
-		if (victim.attackTimer < 5)
-			victim.playAnimation(Animation.create(CombatAnimation.getNPCBlockAnimation(victim.getIndex())));
-		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
-
-		if (!attacker.multiAttacking) {
+		
+        if (victim.attackTimer < 5)
+			victim.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(victim)));
+			attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
+		
+			
 			victim.underAttack = true;
 			victim.addDamageReceived(attacker.getName(), damage);
 			victim.damage(new Hit(damage));
+			
 			if(damage > 0) {
 				CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
 			}
-			if (secondDmg > 0) {
-				CombatExperience.handleCombatExperience(attacker, secondDmg, CombatType.RANGED);
-				victim.addDamageReceived(attacker.getName(), secondDmg);
-				victim.damage(new Hit(secondDmg));
+			if (attacker.lastWeaponUsed == 11235) {
+				victim.addDamageReceived(attacker.getName(), secondHit);
+				victim.damage(new Hit(secondHit));
+				if(secondHit > 0) {
+					CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
+				}
 			}
-		}
-		attacker.setAttribute("ignore defence", false);
-		attacker.multiAttacking = false;
-		if (attacker.rangeEndGFX > 0) {
-			if (attacker.rangeEndGFXHeight) {
-				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 100));
-			} else {
-				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
+			
+			attacker.setAttribute("ignore defence", false);
+			
+			if (attacker.rangeEndGFX > 0) {
+				if (attacker.rangeEndGFXHeight) {
+					victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 100));
+				} else {
+					victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
+				}
 			}
-		}
-		attacker.killingNpcIndex = attacker.oldNpcIndex;
+			attacker.killingNpcIndex = attacker.oldNpcIndex;
+			
 	}
 
 	/**
@@ -937,6 +927,7 @@ public class PlayerVsNpcCombat {
 		npc.lastDamageTaken = System.currentTimeMillis();
 		
 		if (player.isUsingSpecial()) {
+			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			Special.handleSpecialAttack(player, npc);
 			return;
 		}
@@ -948,7 +939,7 @@ public class PlayerVsNpcCombat {
 				player.playAnimation(Animation.create(CombatAnimation.getAttackAnimation(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase())));
 				if (npc.attackTimer > 3) {
 					if (npc.npcId != 2042 && npc.npcId != 2043 & npc.npcId != 2044 && npc.npcId != 3127) {
-						npc.playAnimation(Animation.create(CombatAnimation.getNPCBlockAnimation(npc.getIndex())));
+						npc.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(npc)));
 					}
 				}
 			} else {
@@ -956,7 +947,7 @@ public class PlayerVsNpcCombat {
 				player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
 			}
 		}
-
+		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 		player.hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
 
 		/*
@@ -975,6 +966,7 @@ public class PlayerVsNpcCombat {
 				player.attackDelay--;
 			player.followId2 = npc.getIndex();
 			player.getPA().followNpc();
+			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.oldNpcIndex = index;
 			if (player.playerEquipment[player.getEquipment().getWeaponId()] >= 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223) {

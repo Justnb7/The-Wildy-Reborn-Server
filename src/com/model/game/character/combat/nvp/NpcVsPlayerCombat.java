@@ -69,37 +69,42 @@ public class NpcVsPlayerCombat {
 			npc.underAttackBy = 0;
 		}
 		
-		// ok here is the logic we're gonna change
-
-		if (!npc.isDead && (npc.targetId > 0 || npc.underAttack) && !npc.walkingHome && NPCCombatData.retaliates(npc.getId())) {
+		Player tester = World.getWorld().getPlayers().get(1);
+		if (npc.npcId == 3162 && tester !=  null) {
+			tester.debug(npc.isDead+" "+ npc.targetId+" "+npc.underAttack+" "+npc.walkingHome);
+		}
+		
+		// Call code to attack our target if we're alive
+		if (!npc.isDead && (npc.targetId > 0 || npc.underAttack) && !npc.walkingHome) {
 			
-			Player c = World.getWorld().getPlayers().get(npc.targetId);
-				if (c != null) {
-					
-					// follow and attack
-					if (NPCHandler.goodDistance(c.absX, c.absY, npc.absX, npc.absY, 20)) {
-						NPCHandler.followPlayer(npc, c.getIndex());
-						if (World.getWorld().getNpcs().get(npc.getIndex()) == null) {
-							return;
-						}
+			Player c = World.getWorld().getPlayers().get(npc.targetId);//sec i think i see a duplicate
+			if (c != null) {
+				
+				// follow and attack
+				if (NPCHandler.goodDistance(c.absX, c.absY, npc.absX, npc.absY, 20)) {
+					NPCHandler.followPlayer(npc, c.getIndex());
+					if (World.getWorld().getNpcs().get(npc.getIndex()) == null) {
+						return;
+					}
 
-						if (npc.attackTimer == 0) {
-							if (c != null) {
-								NpcVsPlayerCombat.attackPlayer(c, npc);
-							}
-						}
-					} else {
-						// out of range
-						npc.targetId = 0;
-						npc.underAttack = false;
-						npc.facePlayer(0);
+					if (npc.attackTimer == 0) {
+						
+							NpcVsPlayerCombat.attackPlayer(c, npc);
+						
 					}
 				} else {
-					// null target
+					// out of range
 					npc.targetId = 0;
 					npc.underAttack = false;
 					npc.facePlayer(0);
+					c.debug("bad range");
 				}
+			} else {
+				// null target
+				npc.targetId = 0;
+				npc.underAttack = false; // bet its this
+				npc.facePlayer(0);
+			}
 			
 		}
 	}
@@ -126,18 +131,23 @@ public class NpcVsPlayerCombat {
 		// player.write(new SendGameMessage("Here"));
 		if (npc != null) {
 			if (npc.isDead) {
+				player.debug("ded");
 				return;
 			}
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 				if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
 					npc.targetId = 0;
+					player.debug("bad room");
+					npc.underAttack = false; 
 					return;
 				}
 			}
 			if (cannotAttackPlayer(npc)) {
+				player.debug("nope 1");
 				return;
 			}
 			if (!validateAttack(player, npc)) {
+				player.debug("nope 2");
 				return;
 			}
 			npc.facePlayer(player.getIndex());
@@ -246,14 +256,12 @@ public class NpcVsPlayerCombat {
 		if (!player.isVisible()) {
 			return false;
 		}
-		if (npc.npcId != 5535 && npc.npcId != 494) { // small tent and kraken
-														// can attack in single
+		if (npc.npcId != 5535 && npc.npcId != 494) { // small tent and kraken can attack in single
 			if (!npc.inMulti() && npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex()) {
 				npc.targetId = 0;
 				return false;
 			}
-			if (!npc.inMulti() && (player.underAttackBy > 0
-					|| (player.underAttackBy2 > 0 && player.underAttackBy2 != npc.getIndex()))) {
+			if (!npc.inMulti() && (player.underAttackBy > 0 || (player.underAttackBy2 > 0 && player.underAttackBy2 != npc.getIndex()))) {
 				npc.targetId = 0;
 				return false;
 			}
@@ -263,6 +271,7 @@ public class NpcVsPlayerCombat {
 		 */
 		if (npc.heightLevel != player.heightLevel) {
 			npc.targetId = 0;
+			System.out.println("test34");
 			return false;
 		}
 		if (player.getBankPin().requiresUnlock()) {

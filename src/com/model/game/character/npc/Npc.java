@@ -240,7 +240,7 @@ public class Npc extends Entity {
 			magic_defence = definition.getMagicDefence();
 			melee_defence = definition.getMeleeDefence();
 			range_defence = definition.getRangedDefence();
-			System.out.println("size: "+size+ " max: "+maxHit+" melee_def: "+melee_defence+" range_def: "+range_defence+" magic_def: "+magic_defence);
+			//System.out.println("size: "+size+ " max: "+maxHit+" melee_def: "+melee_defence+" range_def: "+range_defence+" magic_def: "+magic_defence);
 		}
 		npcId = _npcType;
 		direction = -1;
@@ -522,13 +522,13 @@ public class Npc extends Entity {
 	
 	public void spawnVetDogs(Player player) {
 		if (npcId == 6611) {
-			NPCHandler.spawnNpcBossOffspring(player, 6613, absX - 1, absY, heightLevel, 1, 190, 20, 115, 85, true);
-			NPCHandler.spawnNpcBossOffspring(player, 6613, absX - 1, absY, heightLevel, 1, 190, 20, 115, 85, true);
+			NPCHandler.spawnNpc(player, 6613, absX - 1, absY, heightLevel, 1, 190, 20, 115, 85, 85, 85, true, false, true);
+			NPCHandler.spawnNpc(player, 6613, absX - 1, absY, heightLevel, 1, 190, 20, 115, 85, 85, 85, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		} else if (npcId == 6612) {
-			NPCHandler.spawnNpcBossOffspring(player, 6614, absX - 1, absY, heightLevel, 1, 190, 25, 125, 95, true);
-			NPCHandler.spawnNpcBossOffspring(player, 6614, absX - 1, absY, heightLevel, 1, 190, 25, 125, 95, true);
+			NPCHandler.spawnNpc(player, 6614, absX - 1, absY, heightLevel, 1, 190, 25, 125, 95, 95, 95, true, false, true);
+			NPCHandler.spawnNpc(player, 6614, absX - 1, absY, heightLevel, 1, 190, 25, 125, 95, 95, 95, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		}
@@ -536,13 +536,9 @@ public class Npc extends Entity {
 	
 	@Override
 	public void process() {
-		// validate we're onlin brb 15s
+		// validate
 		if (World.getWorld().getNpcs().get(getIndex()) == null)
 			return;
-		
-		
-		
-		onUpdate(); // (empty atm?)
 		 
 		try {
 			Player owner = World.getWorld().getPlayers().get(spawnedBy);
@@ -566,8 +562,8 @@ public class Npc extends Entity {
 				}
 				else if (npcId == 6615) {
 					if (currentHealth <= 100 && !spawnedScorpiaMinions) {
-						Npc min1 = NPCHandler.spawnNpcBossOffspring(owner, 6617, getX()- 1, absY, heightLevel, 1, 79, -1, -1, 0, false);
-						Npc min2 = NPCHandler.spawnNpcBossOffspring(owner, 6617, getX() + 1, absY, heightLevel, 1, 79, -1, -1, 0, false);
+						Npc min1 = NPCHandler.spawnNpc(owner, 6617, getX()- 1, absY, heightLevel, 1, 79, -1, -1, -1, -1, 0, true, false, true);
+						Npc min2 = NPCHandler.spawnNpc(owner, 6617, getX() + 1, absY, heightLevel, 1, 79, -1, -1, -1, -1, 0, true, false, true);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);
@@ -646,12 +642,6 @@ public class Npc extends Entity {
 			faceLocation(getX(), getY() + 1);
 			// face north
 		}
-	}
-
-	/**
-	 * Dummy method for abstracted npcs
-	 */
-	public void onUpdate() {
 	}
 
 	@Override

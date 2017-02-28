@@ -1288,7 +1288,8 @@ public class Player extends Entity {
 			//System.out.println("["+this.getName()+"] dmg was over current hp ("+getSkills().getLevel(3)+"), adjusted to "+damage);
 		}
 		//System.out.println("you're defo using the right method btw "+damage+" vs "+this.getSkills().getLevel(3));
-		this.getSkills().setLevel(3, this.getSkills().getLevel(3) - damage);
+		if (!this.hasAttribute("infhp"))
+			this.getSkills().setLevel(3, this.getSkills().getLevel(3) - damage);
 
 		/*
 		 * Check if our player has died, if so start the death task

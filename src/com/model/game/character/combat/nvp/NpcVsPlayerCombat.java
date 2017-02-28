@@ -131,23 +131,19 @@ public class NpcVsPlayerCombat {
 		// player.write(new SendGameMessage("Here"));
 		if (npc != null) {
 			if (npc.isDead) {
-				player.debug("ded");
 				return;
 			}
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 				if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
 					npc.targetId = 0;
-					player.debug("bad room");
 					npc.underAttack = false; 
 					return;
 				}
 			}
 			if (cannotAttackPlayer(npc)) {
-				player.debug("nope 1");
 				return;
 			}
 			if (!validateAttack(player, npc)) {
-				player.debug("nope 2");
 				return;
 			}
 			npc.facePlayer(player.getIndex());

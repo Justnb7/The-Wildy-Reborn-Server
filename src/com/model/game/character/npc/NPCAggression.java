@@ -38,11 +38,13 @@ public final class NPCAggression {
      *            the player that will be targeted by aggressive NPCs.
      */
     public static void process(Player player) {
+    	//System.out.println("agro check for "+player.getName());
         for (Npc npc : player.localNpcs) {
             if (npc == null)
                 continue;
             // Can the Npc attack the <player>? Will check distance, clipping, slayer level req etc. 
             if (validate(npc, player)) {
+            	//System.out.println("npc "+npc.getName()+" will agro "+player.getName());
                 npc.targetId = player.getIndex();
             }
         }
@@ -58,37 +60,36 @@ public final class NPCAggression {
      * @return {@code true} if the player can be targeted, {@code false}
      *         otherwise.
      */
+    // Aggression check for the circumstance where a player might run past us. Does NOT
+    // have anything to do with retaliation/target switching.
     private static boolean validate(Npc npc, Player p) {
-    	if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
-			return true;
-		}
-    	if (npc.aggressive) {
-    		return true;
-    	}
-    	// the npc aggression mechanic is complex AF so i'd suggest not bundling it into here cos it 
-    	// might not work.. like [1] aggression should be to ONLY check if we should attack a close player
-    	// mechanic [2] = retalion, fight back when hit
-    	// mechanic [3] = should focus OR switch targets to last soruce attacker
-    	if (!npc.getDefinition().isAggressive())
+    	// We're already attacking something or under attack.
+    	// When we get it, retalition handles changing target, not this agro code.
+    	if (npc.targetId > 0 || npc.isDead || npc.underAttack || p.underAttackBy > 0 || p.underAttackBy2 > 0) {
+    		p.debug("test");
     		return false;
-        if(npc.isPet)
-            return false;
-        if (!npc.getDefinition().isAggressive() && !npc.inMulti())
-            return false;
-        if (p.underAttackBy > 0 || p.underAttackBy2 > 0 && !p.getArea().inMulti())
-            return false;
-        if (p.heightLevel != npc.heightLevel || !p.isVisible())
-            return false;
-        if (alwaysAggressive(npc))
-            return true;
-        if (p.aggressionTolerance.elapsed(5, TimeUnit.MINUTES) && !npc.inMulti() && npc.getDefinition().getCombatLevel() < COMBAT_LEVEL_TOLERANCE) {
+    	}
+    	if (!npc.getDefinition().isAggressive()) {
+    		return false;
+    	}
+        if(npc.isPet) {
             return false;
         }
-        if (!NPCHandler.goodDistance(p.absX, p.absY, npc.absX, npc.absY, AGGRESSION.getOrDefault(npc.npcId, TARGET_DISTANCE)))
+        if (p.heightLevel != npc.heightLevel || !p.isVisible()) {
             return false;
-        if (npc.underAttack && !NPCCombatData.switchesAttackers(npc) || npc.isDead)
+        }
+        if (p.aggressionTolerance.elapsed(5, TimeUnit.MINUTES) && !npc.inMulti() && npc.getDefinition().getCombatLevel() < COMBAT_LEVEL_TOLERANCE) {
+        	return false;
+        }
+        // Bad distance
+        if (!NPCHandler.goodDistance(p.absX, p.absY, npc.absX, npc.absY, AGGRESSION.getOrDefault(npc.npcId, TARGET_DISTANCE))) {
             return false;
-        return true;
+        }
+        // At a most basic level, if you get to here, the npc is alive, in distance etc
+    	if (npc.aggressive || alwaysAggressive(npc) || npc.getDefinition().isAggressive()) {
+    		return true;
+    	}
+        return false;
     }
 
 	private static boolean alwaysAggressive(Npc npc) {

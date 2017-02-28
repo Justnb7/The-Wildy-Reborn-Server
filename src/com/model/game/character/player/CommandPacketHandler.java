@@ -860,6 +860,9 @@ public class CommandPacketHandler implements PacketType {
     		player.updateRequired = true;
     		player.appearanceUpdateRequired = true;
     		return true;
+    	case "infhp":
+    		player.setAttribute("infhp", true);
+    		return true;
     		
 		case "reload":
 			try {

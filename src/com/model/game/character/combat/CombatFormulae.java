@@ -472,6 +472,10 @@ public class CombatFormulae {
         	}
         }
 		
+		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 20997) {
+			maxHit *= 2.22;
+        }
+		
 		if(player.playerEquipment[player.getEquipment().getAmuletId()] == 19547) {
 			maxHit += 1;
         }

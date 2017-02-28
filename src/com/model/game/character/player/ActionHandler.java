@@ -165,7 +165,7 @@ public class ActionHandler {
 		case 26502:
 			if(player.getY() == 5294) {
 				player.getPA().movePlayer(new Position(2839, 5295, 2));
-			} else if(player.getY() == 5295) {
+			} else if(player.getY() == 5295 || player.getY() == 5296) {
 				player.getPA().movePlayer(new Position(2839, 5294, 2));
 			}
 			break;

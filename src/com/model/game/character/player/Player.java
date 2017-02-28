@@ -1561,7 +1561,7 @@ public class Player extends Entity {
 	public void logout() {
 		if (!controller.canLogOut(this)) {
 			return;
-		}
+		}//don't see what resets here
 		this.infection = 0;
 		this.infected = false;
 		this.poisonDamage = 0;
@@ -1599,13 +1599,8 @@ public class Player extends Entity {
 			process_following();
 			combatProcessing();
 			controller.tick(this);
-			// haha another side note.. bottleneck in PI
-			// this is doing for (player p : world.plrs) // say 500 players {
-			// then forall(world.npcs) -> end up 500*3k spawned npcs loop = 1.5 million loops lol
-			// }
 			
 			NPCAggression.process(this);
-			// ok this code can't be improved atm but thats fine it's only bad when theres lots of npcs and players
 			
 			if (getPoisonDamage() > 0 && System.currentTimeMillis() - getLastPoisonHit() > TimeUnit.MINUTES.toMillis(1)) {
 				appendPoisonDamage();
@@ -3182,9 +3177,9 @@ public class Player extends Entity {
 	public int totalLevel, doAmount, lastX, lastY, playerKilled, totalPlayerDamageDealt, killedBy,
 			lastChatId = 1, privateChat, specBarId, attackLevelReq, rangeLevelReq, skullTimer, nextChat,
 			talkingNpc = -1, dialogueAction, followDistance, npcFollowIndex, barrageCount, delayedDamage,
-			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, lastNpcAttacked,
+			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
-			oldPlayerIndex, rangeItemUsed, killingNpcIndex,
+			oldPlayerIndex, rangeItemUsed, killingNpcIndex, lastWeaponUsed,
 			oldNpcIndex, attackDelay, npcIndex, npcClickIndex, npcType, castingSpellId, oldSpellId, hitDelay,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
 			wearId, wearSlot, interfaceId, walkTutorial = 15,
@@ -3212,7 +3207,6 @@ public class Player extends Entity {
 	public boolean throwingAxe;
 	public boolean usingArrows;
 	public boolean usingCross;
-	public boolean multiAttacking;
 	public boolean usingGlory, isMuted, isClanMuted,
 	isSkulled, newPlayer,
 	hasMultiSign, saveCharacter, mageFollow, dbowSpec, acbSpec, blowpipe_special,
@@ -3286,6 +3280,12 @@ public class Player extends Entity {
 
 	public void message(String string) {
 		write(new SendMessagePacket(string)); // 10/10
+	}
+
+	public void debug(String string) {
+		if (this.rights == Rights.ADMINISTRATOR) {
+			this.message(string);
+		}
 	}
 
 }

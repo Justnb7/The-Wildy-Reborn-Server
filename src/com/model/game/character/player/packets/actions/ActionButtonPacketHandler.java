@@ -58,8 +58,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			return;
 		}
 		if (player.in_debug_mode()) {
-			player.write(new SendMessagePacket("ActionButtonID = <col=FF0000>" + button
-					+ "</col>, DialogueID = <col=FF0000>" + player.dialogueAction));
+			player.write(new SendMessagePacket("ActionButtonID = <col=FF0000>" + button + "</col>"));
 		}
 
 		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181
@@ -460,16 +459,12 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-			switch (player.dialogueAction) {
-			}
 			break;
 		case 9191:
 			if (player.dialogue().isActive()) {
 				if (player.dialogue().select(2)) {
 					break;
 				}
-			}
-			switch (player.dialogueAction) {
 			}
 			break;
 
@@ -479,8 +474,6 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-			switch (player.dialogueAction) {
-			}
 			break;
 
 		case 9193:
@@ -489,16 +482,13 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-			switch (player.dialogueAction) {
-			}
 			break;
+			
 		case 9194:
 			if (player.dialogue().isActive()) {
 				if (player.dialogue().select(5)) {
 					break;
 				}
-			}
-			switch (player.dialogueAction) {
 			}
 			break;
 
@@ -508,9 +498,6 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-
-			switch (player.dialogueAction) {
-			}
 			break;
 
 		case 9168:
@@ -518,8 +505,6 @@ public class ActionButtonPacketHandler implements PacketType {
 				if (player.dialogue().select(2)) {
 					break;
 				}
-			}
-			switch (player.dialogueAction) {
 			}
 			break;
 
@@ -529,8 +514,6 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-			switch (player.dialogueAction) {
-			}
 			break;
 
 		case 9178:
@@ -538,8 +521,6 @@ public class ActionButtonPacketHandler implements PacketType {
 				if (player.dialogue().select(1)) {
 					break;
 				}
-			}
-			switch (player.dialogueAction) {
 			}
 			break;
 
@@ -549,8 +530,6 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-			switch (player.dialogueAction) {
-			}
 			break;
 
 		case 9180:
@@ -558,8 +537,6 @@ public class ActionButtonPacketHandler implements PacketType {
 				if (player.dialogue().select(3)) {
 					break;
 				}
-			}
-			switch (player.dialogueAction) {
 			}
 			break;
 
@@ -569,8 +546,6 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-			switch (player.dialogueAction) {
-			}
 			break;
 
 		case 9157:
@@ -579,8 +554,6 @@ public class ActionButtonPacketHandler implements PacketType {
 					break;
 				}
 			}
-			switch (player.dialogueAction) {
-			}
 			break;
 
 		case 9158:
@@ -588,9 +561,6 @@ public class ActionButtonPacketHandler implements PacketType {
 				if (player.dialogue().select(2)) {
 					break;
 				}
-			}
-			switch (player.dialogueAction) {
-
 			}
 			break;
 

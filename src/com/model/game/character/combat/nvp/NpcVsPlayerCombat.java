@@ -1,6 +1,5 @@
 package com.model.game.character.combat.nvp;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.model.Server;
@@ -69,35 +68,27 @@ public class NpcVsPlayerCombat {
 			npc.underAttackBy = 0;
 		}
 		
-		Player tester = World.getWorld().getPlayers().get(1);
-		if (npc.npcId == 3162 && tester !=  null) {
-			tester.debug(npc.isDead+" "+ npc.targetId+" "+npc.underAttack+" "+npc.walkingHome);
-		}
-		
 		// Call code to attack our target if we're alive
 		if (!npc.isDead && (npc.targetId > 0 || npc.underAttack) && !npc.walkingHome) {
 			
-			Player c = World.getWorld().getPlayers().get(npc.targetId);//sec i think i see a duplicate
-			if (c != null) {
+			Player player = World.getWorld().getPlayers().get(npc.targetId);
+			if (player != null) {
 				
 				// follow and attack
-				if (NPCHandler.goodDistance(c.absX, c.absY, npc.absX, npc.absY, 20)) {
-					NPCHandler.followPlayer(npc, c.getIndex());
+				if (NPCHandler.goodDistance(player.absX, player.absY, npc.absX, npc.absY, 20)) {
+					NPCHandler.followPlayer(npc, player.getIndex());
 					if (World.getWorld().getNpcs().get(npc.getIndex()) == null) {
 						return;
 					}
 
 					if (npc.attackTimer == 0) {
-						
-							NpcVsPlayerCombat.attackPlayer(c, npc);
-						
+						NpcVsPlayerCombat.attackPlayer(player, npc);
 					}
 				} else {
 					// out of range
 					npc.targetId = 0;
 					npc.underAttack = false;
 					npc.facePlayer(0);
-					c.debug("bad range");
 				}
 			} else {
 				// null target
@@ -109,16 +100,6 @@ public class NpcVsPlayerCombat {
 		}
 	}
 
-	private static boolean cannotAttackPlayer(Npc npc) {
-		return getUnattackableNpcs().contains(npc.getId());
-	}
-
-	private static List<Integer> unattackableNpcs = Arrays.asList(6617);
-
-	public static List<Integer> getUnattackableNpcs() {
-		return unattackableNpcs;
-	}
-
 	/**
 	 * Handles an npc attacking a player
 	 * 
@@ -128,7 +109,6 @@ public class NpcVsPlayerCombat {
 	 *            The {@link Npc} attacking the player
 	 */
 	public static void attackPlayer(Player player, Npc npc) {
-		// player.write(new SendGameMessage("Here"));
 		if (npc != null) {
 			if (npc.isDead) {
 				return;
@@ -139,9 +119,6 @@ public class NpcVsPlayerCombat {
 					npc.underAttack = false; 
 					return;
 				}
-			}
-			if (cannotAttackPlayer(npc)) {
-				return;
 			}
 			if (!validateAttack(player, npc)) {
 				return;
@@ -247,6 +224,10 @@ public class NpcVsPlayerCombat {
 	 */
 	private static boolean validateAttack(Player player, Npc npc) {
 		if (npc.isDead || player.isDead()) {
+			return false;
+		}
+		
+		if(npc.npcId == 6617) {
 			return false;
 		}
 		if (!player.isVisible()) {

@@ -55,7 +55,7 @@ public class Mining {
 			return;
 		}
 		if (player.getItems().getFreeSlots() == 0) {
-			player.getDialogueHandler().sendStatement(player, "You have no more free slots.");
+			player.message("You have no more free slots.");
 			return;
 		}
 		int levelReduction = (int) Math.floor(player.getSkills().getLevel(Skill.MINING.getId()) / 10);
@@ -89,7 +89,7 @@ public class Mining {
 			return;
 		}
 		if (player.getItems().getFreeSlots() == 0) {
-			player.getDialogueHandler().sendStatement(player,"You have no more free slots.");
+			player.message("You have no more free slots.");
 			return;
 		}
 		int levelReduction = (int) Math.floor(player.getSkills().getLevel(Skill.MINING.getId()) / 10);

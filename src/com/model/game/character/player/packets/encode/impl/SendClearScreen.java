@@ -13,7 +13,6 @@ public class SendClearScreen implements PacketEncoder {
 
 	@Override
 	public void encode(Player player) {
-		player.dialogueAction = -1;
         player.openInterface = -1;
         player.isBanking = false;
         player.usingGlory = false;

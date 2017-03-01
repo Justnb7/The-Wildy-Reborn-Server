@@ -105,7 +105,7 @@ public class MiningEvent extends CycleEvent {
 			return;
 		}
 		if (player.getItems().getFreeSlots() == 0) {
-			player.getDialogueHandler().sendStatement(player, "You have no more free slots.");
+			player.message("You have no more free slots.");
 			container.stop();
 			return;
 		}

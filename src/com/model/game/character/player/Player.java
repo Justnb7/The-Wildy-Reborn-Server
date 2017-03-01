@@ -58,7 +58,6 @@ import com.model.game.character.player.content.teleport.TeleportHandler.Teleport
 import com.model.game.character.player.content.trade.TradeState;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.controller.ControllerManager;
-import com.model.game.character.player.dialogue.DialogueHandler;
 import com.model.game.character.player.dialogue.DialogueManager;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.KrakenInstance;
@@ -1641,14 +1640,6 @@ public class Player extends Entity {
 	public PlayerAssistant getPA() {
 		return playerAssistant;
 	}
-	
-	public DialogueHandler getDialogueHandler() {
-		return dialogueHandler;
-	}
-	
-	public DialogueHandler getPetChat() {
-		return dialogueHandler;
-	}
 
 	public CombatAssistant getCombat() {
 		return combatAssistant;
@@ -1794,7 +1785,6 @@ public class Player extends Entity {
 	private PlayerAssistant playerAssistant = new PlayerAssistant(this);
 	private CombatAssistant combatAssistant = new CombatAssistant(this);
 	private ActionHandler actionHandler = new ActionHandler(this);
-	private DialogueHandler dialogueHandler = new DialogueHandler(this);
 	private TradeContainer tradeContainer = new TradeContainer(this);
 	
 	private TradeState tradeState = TradeState.NONE;
@@ -3176,8 +3166,8 @@ public class Player extends Entity {
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
 	public int totalLevel, doAmount, lastX, lastY, playerKilled, totalPlayerDamageDealt, killedBy,
-			lastChatId = 1, privateChat, specBarId, attackLevelReq, rangeLevelReq, skullTimer, nextChat,
-			talkingNpc = -1, dialogueAction, followDistance, npcFollowIndex, barrageCount, delayedDamage,
+			lastChatId = 1, privateChat, specBarId, attackLevelReq, rangeLevelReq, skullTimer,
+			followDistance, npcFollowIndex, barrageCount, delayedDamage,
 			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
 			oldPlayerIndex, rangeItemUsed, killingNpcIndex, lastWeaponUsed,

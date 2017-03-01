@@ -320,100 +320,100 @@ public class Pet {
 					player.dialogue().start("OLMLET");
 					break;
 				case 6630:
-					player.getPetChat().sendDialogues(3500, 6630);
+
 					break;
 					
 				case 6629:
-					player.getPetChat().sendDialogues(3508, 6629);
+
 					break;
 					
 				case 6628:
-					player.getPetChat().sendDialogues(3515, 6628);
+
 					break;
 					
 				case 6635:
-					player.getPetChat().sendDialogues(3518, 6635);
+
 					break;
 						
 				case 6636:
-					player.getPetChat().sendDialogues(3524, 6636);
+
 					break;
 					
 				case 6638:
-					player.getPetChat().sendDialogues(3531, 6637);
+
 					break;
 					
 				case 318:
-					player.getPetChat().sendDialogues(3528, 6637);
+					
 					break;
 					
 				case 2130:
-					player.getPetChat().sendDialogues(3539, 2130);
+					
 					break;
 					
 				case 2131:
-					player.getPetChat().sendDialogues(3546, 2131);
+
 					break;
 					
 				case 2132:
-					player.getPetChat().sendDialogues(3554, 2132);
+
 					break;
 					
 				case 5892:
 					int randomChat = Utility.getRandom(1);
 					switch (randomChat) {
 					case 0:
-						player.getPetChat().sendDialogues(3563, 5892);
+
 						break;
 						
 					case 1:
-						player.getPetChat().sendDialogues(3568, 5892);
+
 						break;
 					}
 					break;
 					
 				case 5907:
-					player.getPetChat().sendDialogues(3571, 5907);
+
 					break;
 					
 				case 497:
-					player.getPetChat().sendDialogues(3575, 497);
+
 					break;
 					
 				case 5547:
-					player.getPetChat().sendDialogues(3583, 5547);
+
 					break;
 					
 				case 495:
-					player.getPetChat().sendDialogues(3590, 495);
+
 					break;
 					
 				case 5536:
-					player.getPetChat().sendDialogues(3594, 5536);
+
 					break;
 					
 				case 5537:
-					player.getPetChat().sendDialogues(3600, 5537);
+
 					break;
 					
 				case 6632:
-					player.getPetChat().sendDialogues(3606, 6632);
+
 					break;
 					
 				case 6634:
-					player.getPetChat().sendDialogues(3609, 6634);
+
 					break;
 					
 				case 6631:
-					player.getPetChat().sendDialogues(3616, 6634);
+
 					break;
 					
 				case 6633:
-					player.getPetChat().sendDialogues(3623, 6633);
+
 					break;
 					
 				case 6640:
-					player.getPetChat().sendDialogues(3627, 6640);
+
 					break;
 				}
 			} else {

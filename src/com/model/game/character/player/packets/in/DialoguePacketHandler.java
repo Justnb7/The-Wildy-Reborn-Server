@@ -15,11 +15,6 @@ public class DialoguePacketHandler implements PacketType {
 				return;
 			}
 		}
-		if (player.nextChat > 0) {
-			player.getDialogueHandler().sendDialogues(player.nextChat, player.talkingNpc);
-		} else {
-			player.getDialogueHandler().sendDialogues(0, -1);
-		}
 	}
 
 }

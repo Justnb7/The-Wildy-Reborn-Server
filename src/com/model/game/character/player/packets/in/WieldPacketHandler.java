@@ -23,6 +23,7 @@ public class WieldPacketHandler implements SubPacketType {
 		player.wearId = player.getInStream().readUnsignedWord();
 		player.wearSlot = player.getInStream().readUnsignedWordA();
 		player.interfaceId = player.getInStream().readUnsignedWordA();
+		
 		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.teleporting) {
 			return;
 		}

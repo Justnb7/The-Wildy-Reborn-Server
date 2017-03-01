@@ -772,15 +772,7 @@ public class ActionHandler {
 			}
 			break;
 
-		/**
-		 * Banker
-		 */
-		case 394:
-			player.getDialogueHandler().sendDialogues(10000, 394);
-			break;
-
 		default:
-			player.dialogueAction = -1;
 			if (player.in_debug_mode()) {
 				Utility.println("First Click Npc : " + npcType);
 			}

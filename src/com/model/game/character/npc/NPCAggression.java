@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.model.game.character.combat.nvp.NPCCombatData;
-import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
  
 /**
@@ -66,7 +64,6 @@ public final class NPCAggression {
     	// We're already attacking something or under attack.
     	// When we get it, retalition handles changing target, not this agro code.
     	if (npc.targetId > 0 || npc.isDead || npc.underAttack || p.underAttackBy > 0 || p.underAttackBy2 > 0) {
-    		p.debug("test");
     		return false;
     	}
     	if (!npc.getDefinition().isAggressive()) {

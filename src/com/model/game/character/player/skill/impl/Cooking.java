@@ -221,7 +221,7 @@ public class Cooking extends SkillTask {
 			return false;
 		}
 		if (player.getSkills().getLevel(Skills.COOKING) < data.getLvl()) {
-			player.getDialogueHandler().sendStatement(player, "You need a cooking level of " + data.getLvl() + " to cook this food.");
+			player.message("You need a cooking level of " + data.getLvl() + " to cook this food.");
 			return false;
 		}
 		if (!player.getItems().playerHasItem(data.getRawItem(), 1)) {
@@ -232,7 +232,7 @@ public class Cooking extends SkillTask {
 			if (objectDef.name.contains("stove") || objectDef.name.contains("range") || objectDef.name.contains("Cooking range")) {
 				return true;
 			} else {
-				player.getDialogueHandler().sendStatement(player, "You may only cook this on a stove or cooking range.");
+				player.message("You may only cook this on a stove or cooking range.");
 				return false;
 			}
 		}
@@ -259,7 +259,7 @@ public class Cooking extends SkillTask {
 			return;
 		}
 		if (!getPlayer().getItems().playerHasItem(data.getRawItem(), 1)) {
-			getPlayer().getDialogueHandler().sendStatement(getPlayer(), "You have run out of food to cook.");
+			getPlayer().message("You have run out of food to cook.");
 			stop();
 			return;
 		}

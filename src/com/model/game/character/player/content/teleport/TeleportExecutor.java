@@ -236,7 +236,6 @@ public class TeleportExecutor {
 		}
 		player.teleporting = true;
 		player.write(new SendClearScreen());
-		player.dialogueAction = -1;
 		player.npcIndex = 0;
 		player.playerIndex = 0;
 		player.faceUpdate(0);

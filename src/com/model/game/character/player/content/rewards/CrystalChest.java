@@ -30,7 +30,7 @@ public class CrystalChest {
 			player.getItems().remove(KEY_HALVES[0]);
 			player.getItems().remove(KEY_HALVES[1]);
 			player.getItems().addOrCreateGroundItem(989, 1);
-			player.getDialogueHandler().sendStatement(player, "You have combined the two parts to form a key.");
+			player.message("You have combined the two parts to form a key.");
 			return true;
 		}
 		return false;

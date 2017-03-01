@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.model.game.character.player.dialogue.impl.Imbue;
 import com.model.game.character.player.dialogue.impl.MaxCape;
+import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.dialogue.impl.SigmundTheMerchant;
 import com.model.game.character.player.dialogue.impl.WeirdOldMan;
 import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue;
@@ -40,6 +41,11 @@ public class DialogueRepository {
 	private static final Map<String, Class<? extends Dialogue>> dialogues = new HashMap<>();
 
 	static {
+		
+		/**
+		 * Rotten potato
+		 */
+		dialogues.put("POTATO", RottenPotato.class);
 		
 		/**
 		 * Slayer abilities

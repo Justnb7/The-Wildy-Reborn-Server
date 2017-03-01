@@ -142,7 +142,7 @@ public class Corporeal_Beast extends Boss {
 
 	@Override
 	public int distanceRequired(Npc npc) {
-		return 6;
+		return 7;
 	}
 
 	@Override

@@ -120,18 +120,6 @@ public class AttackPlayer implements PacketType {
 				player.autoCast = false;
 			}
 			
-			for (int r = 0; r < player.REDUCE_SPELLS.length; r++) { // reducing
-				if (World.getWorld().getPlayers().get(player.playerIndex).REDUCE_SPELLS[r] == player.MAGIC_SPELLS[player.getSpellId()][0]) {
-					if ((System.currentTimeMillis() - World.getWorld().getPlayers().get(player.playerIndex).reduceSpellDelay[r]) < World.getWorld().getPlayers().get(player.playerIndex).REDUCE_SPELL_TIME[r]) {
-						player.write(new SendMessagePacket("That player is currently immune to this spell."));
-						player.usingMagic = false;
-						player.setCombatType(CombatType.MELEE);
-						player.stopMovement();
-						Combat.resetCombat(player);
-					}
-					break;
-				}
-			}
 			if (!player.teleblock.elapsed(player.teleblockLength) && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
 				player.write(new SendMessagePacket("That player is already affected by this spell."));
 				player.usingMagic = false;

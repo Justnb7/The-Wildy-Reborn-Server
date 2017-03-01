@@ -131,7 +131,6 @@ public class PlayerVsPlayerCombat {
 		attacker.setInCombat(true);
 
 		if (attacker.killedBy != defender.getIndex())
-			attacker.totalPlayerDamageDealt = 0;
 		attacker.killedBy = defender.getIndex();
 		attacker.getCombat().applySmite(defender, damage);
 		defender.addDamageReceived(attacker.getName(), damage);
@@ -560,7 +559,6 @@ public class PlayerVsPlayerCombat {
 		attacker.setInCombat(true);
 		if (MagicCalculations.magicMaxHitModifier(attacker) != 0 && !attacker.magicFailed) {
 			defender.addDamageReceived(attacker.getName(), damage);
-			attacker.totalPlayerDamageDealt += damage;
 			defender.damage(new Hit(damage));
 		}
 		attacker.getCombat().applySmite(defender, damage);

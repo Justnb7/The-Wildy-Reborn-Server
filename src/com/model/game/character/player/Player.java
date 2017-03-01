@@ -3145,8 +3145,6 @@ public class Player extends Entity {
 	private int direction = -1;
 	public int followId;
 	public int followId2;
-	public final int[] REDUCE_SPELL_TIME = { 250000, 250000, 250000, 500000, 500000, 500000 };
-	public final int[] REDUCE_SPELLS = { 1153, 1157, 1161, 1542, 1543, 1562 };
 
 	public int rangeEndGFX;
 	public int lastClickedItem;
@@ -3155,7 +3153,7 @@ public class Player extends Entity {
 	public int[] playerBonus = new int[14];
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
-	public int totalLevel, doAmount, lastX, lastY, playerKilled, totalPlayerDamageDealt, killedBy,
+	public int totalLevel, doAmount, lastX, lastY, playerKilled, killedBy,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance, npcFollowIndex, barrageCount, delayedDamage,
 			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,

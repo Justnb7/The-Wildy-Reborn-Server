@@ -65,29 +65,6 @@ public class MagicRequirements extends MagicData {
 			} 
 		}
 
-		if(player.usingMagic && player.playerIndex > 0) {
-			if(World.getWorld().getPlayers().get(player.playerIndex) != null) {
-				for(int r = 0; r < player.REDUCE_SPELLS.length; r++){	// reducing spells, confuse etc
-					if(World.getWorld().getPlayers().get(player.playerIndex).REDUCE_SPELLS[r] == player.MAGIC_SPELLS[spell][0]) {
-						player.reduceSpellId = r;
-						if((System.currentTimeMillis() - World.getWorld().getPlayers().get(player.playerIndex).reduceSpellDelay[player.reduceSpellId]) > World.getWorld().getPlayers().get(player.playerIndex).REDUCE_SPELL_TIME[player.reduceSpellId]) {
-							World.getWorld().getPlayers().get(player.playerIndex).canUseReducingSpell[player.reduceSpellId] = true;
-						} else {
-							World.getWorld().getPlayers().get(player.playerIndex).canUseReducingSpell[player.reduceSpellId] = false;
-						}
-						break;
-					}			
-				}
-				if(!World.getWorld().getPlayers().get(player.playerIndex).canUseReducingSpell[player.reduceSpellId]) {
-					player.write(new SendMessagePacket("That player is currently immune to this spell."));
-					player.usingMagic = false;
-					player.stopMovement();
-					Combat.resetCombat(player);
-					return false;
-				}
-			}
-		}
-
 		int staffRequired = getStaffNeeded(player);
 		if(player.usingMagic && staffRequired > 0) { // staff required
 			if(player.playerEquipment[player.getEquipment().getWeaponId()] != staffRequired) {

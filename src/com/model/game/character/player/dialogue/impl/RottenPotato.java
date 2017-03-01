@@ -32,9 +32,10 @@ public class RottenPotato extends Dialogue {
 	
 	@Override
 	protected void select(int index) {
-		if(getPhase() == 0 ) {
+		if(getPhase() == 0) {
 			switch(index) {
 			case 1:
+				
 				break;
 			case 2:
 				break;

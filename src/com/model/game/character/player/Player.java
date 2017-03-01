@@ -2397,14 +2397,6 @@ public class Player extends Entity {
 	public void setLastPoisonCure(long lastPoisonCure) {
 		this.lastPoisonCure = lastPoisonCure;
 	}
-	
-	public void setDragonfireShieldCharge(int charge) {
-		this.dragonfireShieldCharge = charge;
-	}
-
-	public int getDragonfireShieldCharge() {
-		return dragonfireShieldCharge;
-	}
 
 	public void setLastDragonfireShieldAttack(long lastAttack) {
 		this.lastDragonfireShieldAttack = lastAttack;
@@ -3144,8 +3136,6 @@ public class Player extends Entity {
 	public int runAnimation = 0x338;
 	public int[] playerEquipment = new int[14];
 	public int[] playerEquipmentN = new int[14];
-	public int[] lastWeapon = new int[14];
-	private int dragonfireShieldCharge;
 	private int x1 = -1;
 	private int y1 = -1;
 	private int x2 = -1;
@@ -3166,7 +3156,7 @@ public class Player extends Entity {
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
 	public int totalLevel, doAmount, lastX, lastY, playerKilled, totalPlayerDamageDealt, killedBy,
-			lastChatId = 1, privateChat, specBarId, attackLevelReq, rangeLevelReq, skullTimer,
+			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance, npcFollowIndex, barrageCount, delayedDamage,
 			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
@@ -3180,9 +3170,6 @@ public class Player extends Entity {
 	/**
 	 * Booleans
 	 */
-	public boolean wasFrozen = false;
-	public boolean magicDef;
-	public boolean smeltInterface, stopPlayerSkill;
 	public boolean isDead = false;
 	public boolean chatTextUpdateRequired = false;
 	private boolean faceUpdateRequired = false;
@@ -3198,8 +3185,8 @@ public class Player extends Entity {
 	public boolean throwingAxe;
 	public boolean usingArrows;
 	public boolean usingCross;
-	public boolean usingGlory, isMuted, isClanMuted,
-	isSkulled, newPlayer,
+	public boolean isMuted, isClanMuted,
+	isSkulled,
 	hasMultiSign, saveCharacter, mageFollow, dbowSpec, acbSpec, blowpipe_special,
 	properLogout, msbSpec, stopPlayerPacket, playerIsFiremaking,
 	playerStun, mageAllowed, isShopping,
@@ -3213,7 +3200,6 @@ public class Player extends Entity {
 	public String passHash;
 	private String password = "";
 	public String lastClanChat = "";
-	public String fletchThis = "";
 	private String identity;
 	public String loyaltyTitle = "";
 	
@@ -3242,7 +3228,6 @@ public class Player extends Entity {
 	/**
 	 * Timers
 	 */
-	public Stopwatch potionTimer = new Stopwatch();
 	private Stopwatch lastCombatAction = new Stopwatch();
 	public Stopwatch switchDelay = new Stopwatch();
 	public Stopwatch aggressionTolerance = new Stopwatch();
@@ -3270,7 +3255,7 @@ public class Player extends Entity {
 	}
 
 	public void message(String string) {
-		write(new SendMessagePacket(string)); // 10/10
+		write(new SendMessagePacket(string));
 	}
 
 	public void debug(String string) {

@@ -19,9 +19,6 @@ public class CombatExperience {
 		switch (type) {
 		
 		case MAGIC:
-			if (player.magicDef) {
-				player.getSkills().addExperience(Skills.DEFENCE, damage / 3);
-			}
 			player.getSkills().addExperience(Skills.MAGIC, (player.MAGIC_SPELLS[player.oldSpellId][7] + damage));
 			player.getSkills().addExperience(Skills.HITPOINTS, (player.MAGIC_SPELLS[player.oldSpellId][7] + damage * 1.33));
 			break;

@@ -30,12 +30,6 @@ public class SecondItemOption implements PacketType {
 		}
 		switch (itemId) {
 		
-		case 11283:
-		case 11285:
-		case 11284:
-			player.write(new SendMessagePacket("Your dragonfire shield currently has "+player.getDragonfireShieldCharge()+" charges."));
-			break;
-		
 		case 4155:
 			Teleports.teleport(player);
 			break;

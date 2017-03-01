@@ -75,7 +75,6 @@ public class PlayerSerialization {
 		File file = new File(getCharacterDirectory(), playerName + ".txt");
 		if (!file.exists()) {
 			Utility.println(playerName + ": character file not found.");
-			p.newPlayer = false;
 			return 0;
 		}
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -483,7 +482,7 @@ public class PlayerSerialization {
      *            The {@link Player to save the account for
      */
     public static void saveGame(final Player player) {
-        if (!player.saveFile || player.newPlayer || !player.saveCharacter) {
+        if (!player.saveFile || !player.saveCharacter) {
             return;
         }
         if (player.getName() == null || World.getWorld().getPlayers().get(player.getIndex()) == null) {

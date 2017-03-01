@@ -470,32 +470,15 @@ public class PlayerVsPlayerCombat {
 		}
 		CombatExperience.handleCombatExperience(attacker, damage, CombatType.MAGIC);
 
-		if (attacker.getCombat().getEndGfxHeight() == 100 && !attacker.magicFailed) { // end
-																		// GFX
-			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, 0));
+		if (attacker.getCombat().getEndGfxHeight() == 100 && !attacker.magicFailed) { // end GFX
+			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, 100));
 		} else if (!attacker.magicFailed) {
-			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, 0));
+			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, 100));
 		} else if (attacker.magicFailed) {
-			defender.playGraphics(Graphic.create(85, 0, 0));
+			defender.playGraphics(Graphic.create(85, 0, 100));
 		}
 
 		if (!attacker.magicFailed) {
-		/*int gfxId = Player.MAGIC_SPELLS[c.oldSpellId][5];
-		if (!c.magicFailed) {
-			if (gfxId == 369 && o.wasFrozen) {
-				//o.playGraphic(Graphic.create(1677);
-				o.playGraphic(Graphic.create(369);
-			} else if (c.getCombat().getEndGfxHeight() == 100) { // end
-				// GFX
-				o.playGraphic(Graphic.create(gfxId);
-			} else {
-				o.playGraphic(Graphic.create(gfxId);
-			}
-		} else {
-			o.playGraphic(Graphic.create(85);
-		}
-
-		if (!c.magicFailed) {*/
 			if (System.currentTimeMillis() - defender.reduceStat > 35000) {
 				defender.reduceStat = System.currentTimeMillis();
 				switch (attacker.MAGIC_SPELLS[attacker.oldSpellId][0]) {
@@ -913,9 +896,6 @@ public class PlayerVsPlayerCombat {
 			}
 
 			player.magicFailed = !CombatFormulae.getAccuracy(player, defender, 2, 1.0);
-			// Purpose: even though barrage is a 20s freeze, there is actually 3 ticks of freeze immunity straight after
-			// Allowing the target to run for a few steps before being recubed.
-			defender.wasFrozen = defender.refreezeTicks > -3;
 			int spellFreezeTime = player.getCombat().getFreezeTime();
 			if (spellFreezeTime > 0 && !defender.frozen() && !player.magicFailed) {
 				

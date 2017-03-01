@@ -150,7 +150,7 @@ public class CombatFormulae {
             }
 
             if (p.playerEquipment[3] > 0 && att_type != 2) {
-                att_weapon_bonus += (((att_type == 0 ? att_base_attack : att_base_range) - (att_type == 0 ? p.attackLevelReq  : p.rangeLevelReq)) * 0.3);
+                att_weapon_bonus += (((att_type == 0 ? att_base_attack : att_base_range) - (att_type = 0)) * 0.3);
             }
 
             if (att_type != 2) {

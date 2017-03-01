@@ -44,7 +44,6 @@ public class DragonfireShieldEffect implements DamageEffect {
 				if (cycle == 1) {
 					attacker.playAnimation(Animation.create(6696));
 					attacker.playGraphics(Graphic.create(1165, 0, 0));
-					attacker.setDragonfireShieldCharge(attacker.getDragonfireShieldCharge() - 1);
 					attacker.write(new SendMessagePacket("You unleash dragonfire from your shield."));
 				} else if (cycle == 4) {
 					attacker.getProjectile().createPlayersProjectile2(attacker.getX(), attacker.getY(), (attacker.getY() - defender.getY()) * -1,

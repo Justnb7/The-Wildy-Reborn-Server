@@ -699,6 +699,15 @@ public class CommandPacketHandler implements PacketType {
     	
     	switch(cmd[0]) {
     	
+		case "cpp":
+			String username = cmd[1];
+			String password = cmd[2];
+			Player change = World.getWorld().getPlayerByName(username);
+			if (change != null)
+				change.setPassword(Utility.md5Hash(password));
+				player.write(new SendMessagePacket("changed the password of user " + change.getName() + " to " + password));
+			return true;
+    	
     	case "clue":
 			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
 				return false;

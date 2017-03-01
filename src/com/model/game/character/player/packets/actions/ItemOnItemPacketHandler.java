@@ -1,6 +1,7 @@
 package com.model.game.character.player.packets.actions;
 
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.PotionCombinating;
 import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.packets.PacketType;
@@ -8,6 +9,7 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.skill.impl.Firemaking;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
+import com.model.utility.json.definitions.ItemDefinition;
 
 public class ItemOnItemPacketHandler implements PacketType {
 
@@ -37,6 +39,14 @@ public class ItemOnItemPacketHandler implements PacketType {
 		}
 		
 		player.getSkilling().stop();
+		
+		if (player.rights == Rights.ADMINISTRATOR) {
+			if(usedItem == 5733 || withItem == 5733) {
+				int amount = player.getItems().checkAmount(withItem);
+				player.getItems().remove(new Item(withItem, amount));
+				player.message("Whee... "+ItemDefinition.forId(withItem).getName()+" All gone!");
+			}
+		}
 		
 		if (CrystalChest.createKey(player)) {
 			return;
@@ -137,8 +147,6 @@ public class ItemOnItemPacketHandler implements PacketType {
 			player.getItems().addItem(new Item(11800, 1));
 			return;
 		}
-		
-		
 	}
 
 }

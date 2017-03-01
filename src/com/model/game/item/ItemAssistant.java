@@ -693,6 +693,7 @@ public class ItemAssistant {
 	public boolean wearItem(int id, int slotId) {
         ItemDefinition def = ItemDefinition.forId(id);
         int targetSlot = def.getEquipmentSlot().getId();
+        
 		if (def == null || def.getEquipmentSlot() == null) {
 			player.write(new SendMessagePacket(player.wearId + " is unable to be used, if this is an error please report it!"));
 			return false;
@@ -1808,7 +1809,7 @@ public class ItemAssistant {
 	  public boolean playerHasItem(int itemID, int amt) {
 		  itemID++;
 		  int found = 0;
-		  for (int i = 0; i < player.playerItems.length; i++) { // where
+		  for (int i = 0; i < player.playerItems.length; i++) {
 			  if (player.playerItems[i] == itemID) {
 				  if (player.playerItemsN[i] >= amt) {
 					  return true;
@@ -2146,6 +2147,25 @@ public class ItemAssistant {
 			if (playerHasItem(id))
 				return id;
 		return -1;
+	}
+	
+	/**
+	 * Checks how many we have of an certain item
+	 * @param item
+	 *         The item we're deleting
+	 * @return The amount of the {linkplain item} we've found.
+	 */
+	public int checkAmount(int item) {
+		int found = 0;
+		for (int index = 0; index < item; index++) {
+			
+			//Deletes item and sets item id as amount
+			if (playerHasItem(item)) {
+				found++;
+			}
+		}
+		System.out.println(found);
+		return found;
 	}
 	
 }

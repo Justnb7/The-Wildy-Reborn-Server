@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.model.Server;
 import com.model.game.character.Animation;
-import com.model.game.character.player.CommandPacketHandler;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.achievements.AchievementType;
@@ -18,6 +17,7 @@ import com.model.game.character.player.content.rewards.Mysterybox;
 import com.model.game.character.player.content.rewards.RewardCasket;
 import com.model.game.character.player.content.teleport.TeleTabs;
 import com.model.game.character.player.content.teleport.TeleTabs.TabData;
+import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
@@ -96,7 +96,8 @@ public class ItemActionPacketHandler implements PacketType {
 		
 		case 5733: // rotten potato jagex item
 			if (player.rights == Rights.ADMINISTRATOR) {
-				CommandPacketHandler.doCommandFromCode(player, "kickall");
+				RottenPotato.option = 0;
+				player.dialogue().start("POTATO", player);
 			}
 			break;
 		

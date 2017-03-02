@@ -14,7 +14,7 @@ public class ClickingObject implements PacketType {
 	public static final int FIRST_CLICK = 132, SECOND_CLICK = 252, THIRD_CLICK = 70;
 
 	@Override
-	public void processPacket(final Player player, int packetType, int packetSize) {
+	public void handle(final Player player, int packetType, int packetSize) {
 
 		player.clickObjectType = 0;
 		player.objectX = 0;

@@ -24,7 +24,7 @@ import com.model.game.location.Position;
 public class WalkingPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		if (packetType == 248 || packetType == 164) {
 			player.faceUpdate(0);
 			player.npcIndex = 0;

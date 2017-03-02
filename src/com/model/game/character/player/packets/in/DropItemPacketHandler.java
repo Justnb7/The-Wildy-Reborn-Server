@@ -20,7 +20,7 @@ import com.model.utility.json.definitions.ItemDefinition;
 public class DropItemPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int itemId = player.getInStream().readUnsignedWordA();
 		player.getInStream().readUnsignedByte();
 		player.getInStream().readUnsignedByte();

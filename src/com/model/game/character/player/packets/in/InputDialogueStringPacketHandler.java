@@ -8,7 +8,7 @@ import com.model.utility.Utility;
 public class InputDialogueStringPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(Player c, int packetType, int packetSize) {
+	public void handle(Player c, int packetType, int packetSize) {
 		long value = c.getInStream().readQWord();
 
 		if (value < 0) {

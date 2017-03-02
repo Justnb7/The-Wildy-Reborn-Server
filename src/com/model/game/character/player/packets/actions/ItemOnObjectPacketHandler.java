@@ -8,7 +8,7 @@ public class ItemOnObjectPacketHandler implements PacketType {
 	
 
 	@Override
-	public void processPacket(final Player player, int packetType, int packetSize) {
+	public void handle(final Player player, int packetType, int packetSize) {
 		player.getInStream().readUnsignedWord();
 		player.objectId = player.getInStream().readSignedWordBigEndian();
 		player.objectY = player.getInStream().readSignedWordBigEndianA();

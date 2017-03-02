@@ -16,7 +16,7 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 public class Trade implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int tradeId = player.getInStream().readSignedWordBigEndian();
 		Player requested = World.getWorld().getPlayers().get(tradeId);
 		player.getPA().resetFollow();

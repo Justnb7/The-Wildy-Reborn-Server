@@ -8,7 +8,7 @@ import com.model.game.character.player.packets.PacketType;
 public class ItemOnNpc implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int itemId = player.getInStream().readSignedWordA();
 		int i = player.getInStream().readSignedWordA();
 		int slot = player.getInStream().readSignedWordBigEndian();

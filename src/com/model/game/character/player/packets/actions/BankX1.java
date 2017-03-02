@@ -16,7 +16,7 @@ public class BankX1 implements PacketType {
     public int XremoveSlot, XinterfaceID, XremoveID, Xamount;
 
     @Override
-    public void processPacket(Player player, int packetType, int packetSize) {
+    public void handle(Player player, int packetType, int packetSize) {
     	
         if (packetType == 135) {
             player.xRemoveSlot = player.getInStream().readSignedWordBigEndian();

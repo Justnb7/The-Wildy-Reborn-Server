@@ -18,7 +18,7 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 public class ClickingStuff implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		if (player.teleporting) {
 			return;
 		}

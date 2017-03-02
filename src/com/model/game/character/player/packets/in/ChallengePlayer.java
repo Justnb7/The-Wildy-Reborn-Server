@@ -16,7 +16,7 @@ import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 public class ChallengePlayer implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packet, int size) {
+	public void handle(Player player, int packet, int size) {
 		System.out.println("Called packet "+packet+" size "+size);
 		switch (packet) {
 		

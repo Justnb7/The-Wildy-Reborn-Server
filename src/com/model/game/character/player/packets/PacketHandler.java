@@ -12,7 +12,6 @@ import com.model.game.character.player.packets.actions.NpcInteractionPacketHandl
 import com.model.game.character.player.packets.actions.ClickingInGame;
 import com.model.game.character.player.packets.actions.ClickingObject;
 import com.model.game.character.player.packets.actions.ClickingStuff;
-import com.model.game.character.player.packets.actions.ItemActionPacketHandler;
 import com.model.game.character.player.packets.actions.ItemOnGroundItem;
 import com.model.game.character.player.packets.actions.ItemOnItemPacketHandler;
 import com.model.game.character.player.packets.actions.ItemOnNpc;
@@ -20,8 +19,6 @@ import com.model.game.character.player.packets.actions.ItemOnObjectPacketHandler
 import com.model.game.character.player.packets.actions.ItemOnPlayerPacketHandler;
 import com.model.game.character.player.packets.actions.MagicOnItemPacketHandler;
 import com.model.game.character.player.packets.actions.SecondGroundOption;
-import com.model.game.character.player.packets.actions.SecondItemOption;
-import com.model.game.character.player.packets.actions.ThirdItemOption;
 import com.model.game.character.player.packets.actions.Withdraw10Action;
 import com.model.game.character.player.packets.actions.Withdraw1Action;
 import com.model.game.character.player.packets.actions.Withdraw5Action;
@@ -39,6 +36,7 @@ import com.model.game.character.player.packets.in.FollowPlayer;
 import com.model.game.character.player.packets.in.IdleLogoutPacketHandler;
 import com.model.game.character.player.packets.in.InputDialogueStringPacketHandler;
 import com.model.game.character.player.packets.in.InputFieldOther;
+import com.model.game.character.player.packets.in.ItemOptionPacket;
 import com.model.game.character.player.packets.in.SwitchItemPacketHandler;
 import com.model.game.character.player.packets.in.PickupGroundItemPacketHandler;
 import com.model.game.character.player.packets.in.DefaultPacketHandler;
@@ -54,10 +52,11 @@ public class PacketHandler {
 	static {
 
 		DefaultPacketHandler u = new DefaultPacketHandler();
+		ItemOptionPacket iop = new ItemOptionPacket();
+		packetId[122] = iop;
+		packetId[16] = iop;
+		packetId[75] = iop;
 		subPacketId[41] = new WieldPacketHandler();
-		packetId[122] = new ItemActionPacketHandler();
-		packetId[16] = new SecondItemOption();
-		packetId[75] = new ThirdItemOption();
 		packetId[3] = u;
 		packetId[202] = u;
 		packetId[77] = u;
@@ -153,7 +152,7 @@ public class PacketHandler {
 		if (p != null) {
 			try {
 				if (p != null) {
-					p.processPacket(c, packetType, packetSize);
+					p.handle(c, packetType, packetSize);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -15,7 +15,7 @@ public class PrivateMessaging implements PacketType {
 	public final int ADD_FRIEND = 188, SEND_PM = 126, REMOVE_FRIEND = 215, CHANGE_PM_STATUS = 95, REMOVE_IGNORE = 74, ADD_IGNORE = 133;
 
 	@Override
-	public void processPacket(final Player player, final int packetType, final int packetSize) {
+	public void handle(final Player player, final int packetType, final int packetSize) {
 		switch (packetType) {
 
 		case ADD_FRIEND:

@@ -50,7 +50,7 @@ public class ActionButtonPacketHandler implements PacketType {
 	public int gonext;
 
 	@Override
-	public void processPacket(final Player player, int packetType, int packetSize) {
+	public void handle(final Player player, int packetType, int packetSize) {
 		int button = Utility.hexToInt(player.getInStream().buffer, 0, packetSize);
 		DuelSession duelSession = null;
 		// System.out.println(""+buttonId);

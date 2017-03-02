@@ -22,7 +22,7 @@ import com.model.utility.json.definitions.ItemDefinition;
 public class WithdrawAllAction implements PacketType {
 
     @Override
-    public void processPacket(Player player, int packetType, int packetSize) {
+    public void handle(Player player, int packetType, int packetSize) {
         int removeSlot = player.getInStream().readUnsignedWordA();
         int interfaceId = player.getInStream().readUnsignedWord();
         int removeId = player.getInStream().readUnsignedWordA();

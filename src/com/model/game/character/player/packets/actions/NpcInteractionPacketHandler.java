@@ -15,7 +15,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 	public static final int ATTACK_NPC = 72, MAGE_NPC = 131, FIRST_CLICK = 155, SECOND_CLICK = 17, THIRD_CLICK = 21, FOURTH_CLICK = 18;
 
 	@Override
-	public void processPacket(final Player player, int packetType, int packetSize) {
+	public void handle(final Player player, int packetType, int packetSize) {
 		player.npcIndex = 0;
 		player.npcClickIndex = 0;
 		player.playerIndex = 0;

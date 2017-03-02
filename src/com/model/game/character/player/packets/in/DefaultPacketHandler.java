@@ -9,7 +9,7 @@ import com.model.game.character.player.packets.PacketType;
 public class DefaultPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(Player c, int packetType, int packetSize) {
+	public void handle(Player c, int packetType, int packetSize) {
 
 	}
 }

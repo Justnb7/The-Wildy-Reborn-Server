@@ -10,7 +10,7 @@ import com.model.game.item.bank.BankPin;
 public class InputFieldOther implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int id = player.inStream.readDWord();
 		String text = player.inStream.readString();
 		if (player.in_debug_mode()) {

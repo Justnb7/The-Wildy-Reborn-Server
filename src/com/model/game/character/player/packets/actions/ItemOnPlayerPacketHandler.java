@@ -10,7 +10,7 @@ import com.model.game.character.player.packets.PacketType;
 
 public class ItemOnPlayerPacketHandler implements PacketType {
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int playerId = player.inStream.readUnsignedWord();
 		int itemId = player.playerItems[player.inStream.readSignedWordBigEndian()] - 1;
 		if (playerId > World.getWorld().getPlayers().capacity()) {

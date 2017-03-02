@@ -13,7 +13,7 @@ import com.model.utility.logging.PlayerLogging.LogType;
 public class ChatPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		player.setChatTextEffects(player.getInStream().readUnsignedByteS());
 		player.setChatTextColor(player.getInStream().readUnsignedByteS());
 		player.setChatTextSize((byte) (packetSize - 2));

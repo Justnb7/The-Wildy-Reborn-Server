@@ -6,7 +6,7 @@ import com.model.game.character.player.packets.PacketType;
 public class BankModifiableX implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		player.getInStream().readUnsignedWordA();
 		int component = player.getInStream().readUnsignedWord();
 		int item = player.getInStream().readUnsignedWordA();

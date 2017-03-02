@@ -35,7 +35,7 @@ public class CharDesignPacketHandler implements PacketType {
 	};
 
 	@Override
-	public void processPacket(final Player player, final int packetId, final int packetSize) {
+	public void handle(final Player player, final int packetId, final int packetSize) {
 		final int gender = player.getInStream().readSignedByte();
 		   if(!player.canChangeAppearance)
             return;

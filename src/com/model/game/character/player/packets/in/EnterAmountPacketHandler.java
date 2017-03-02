@@ -21,7 +21,7 @@ import com.model.game.shop.Shop;
  */
 public class EnterAmountPacketHandler implements PacketType {
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		
 		int amount = player.getInStream().readDWord();
 		if (amount <= 0) {

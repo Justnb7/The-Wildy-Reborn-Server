@@ -8,7 +8,7 @@ import com.model.utility.Utility;
 public class ItemOnGroundItem implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		player.getInStream().readSignedWord();
 		int itemUsed = player.getInStream().readSignedWordA();
 		int groundItem = player.getInStream().readUnsignedWord();

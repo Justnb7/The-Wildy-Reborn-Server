@@ -8,7 +8,7 @@ import com.model.game.item.bank.BankItem;
 public class WithdrawAllButOneAction implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int interfaceId = player.getInStream().readSignedWordBigEndianA();
 		int itemId = player.getInStream().readSignedWordBigEndianA();
 		player.getInStream().readSignedWordBigEndian();

@@ -7,7 +7,7 @@ import com.model.game.character.player.packets.PacketType;
 public class FollowPlayer implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int followPlayer = player.getInStream().readUnsignedWordBigEndian();
 		if (World.getWorld().getPlayers().get(followPlayer) == null) {
 			return;

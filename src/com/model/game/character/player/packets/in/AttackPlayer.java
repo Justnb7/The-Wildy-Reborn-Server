@@ -16,7 +16,7 @@ public class AttackPlayer implements PacketType {
 	public static final int ATTACK_PLAYER = 73, MAGE_PLAYER = 249;
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		player.playerIndex = 0;
 		player.npcIndex = 0;
 		player.walkingToObject = false;

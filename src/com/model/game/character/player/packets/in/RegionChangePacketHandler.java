@@ -11,7 +11,7 @@ import com.model.game.item.ground.GroundItemHandler;
  */
 public class RegionChangePacketHandler implements PacketType {
 	@Override
-	public final void processPacket(Player player, int packetType, int packetSize) {
+	public final void handle(Player player, int packetType, int packetSize) {
 		GroundItemHandler.reloadGroundItems(player);
 		Server.getGlobalObjects().updateRegionObjects(player);
 		if (player.skullTimer > 0) {

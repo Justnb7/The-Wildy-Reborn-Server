@@ -15,7 +15,7 @@ import com.model.task.impl.DistancedActionTask;
 public class PickupGroundItemPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(final Player player, int packetType, int packetSize) {
+	public void handle(final Player player, int packetType, int packetSize) {
 		final int y = player.getInStream().readSignedWordBigEndian();
 		final int id = player.getInStream().readUnsignedWord();
 		final int x = player.getInStream().readSignedWordBigEndian();

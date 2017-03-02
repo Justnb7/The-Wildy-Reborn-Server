@@ -14,7 +14,7 @@ import com.model.utility.json.definitions.ItemDefinition;
 public class ItemOnItemPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int usedWithSlot = player.getInStream().readUnsignedWord();
 		int usedItemSlot = player.getInStream().readUnsignedWordA();
 		

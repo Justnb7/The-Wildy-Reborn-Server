@@ -7,7 +7,7 @@ import com.model.game.character.player.packets.PacketType;
 public class SwitchItemPacketHandler implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int interfaceId = player.getInStream().readUnsignedWordBigEndianA();
 		boolean insertMode = player.getInStream().readSignedByteC() == 1;
 		int from = player.getInStream().readUnsignedWordBigEndianA();

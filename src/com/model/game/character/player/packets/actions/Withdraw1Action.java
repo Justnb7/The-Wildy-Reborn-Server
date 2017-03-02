@@ -20,7 +20,7 @@ import com.model.game.shop.Shop;
 public class Withdraw1Action implements PacketType {
 
 	@Override
-	public void processPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		int interfaceId = player.getInStream().readUnsignedWordA();
 		int removeSlot = player.getInStream().readUnsignedWordA();
 		int removeId = player.getInStream().readUnsignedWordA();

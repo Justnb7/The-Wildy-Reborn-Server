@@ -1,5 +1,6 @@
 package com.model.game.character.player;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
@@ -46,7 +47,7 @@ import com.model.utility.logging.PlayerLogging.LogType;
 public class CommandPacketHandler implements PacketType {
 
     @Override
-    public void processPacket(Player player, int packetType, int packetSize) {
+    public void handle(Player player, int packetType, int packetSize) {
     	String playerCommand = player.getInStream().readString().toLowerCase();
     	doCommandFromCode(player, playerCommand);
 	}
@@ -96,9 +97,9 @@ public class CommandPacketHandler implements PacketType {
     	String message;
     	switch (cmd[0]) {
     	
-    	/*case "changename":
-    	 //TODO ask Jak for help, we need to kick the player, change his name and delete the old playerfile.
+    	case "changename":
     		if(player.getTotalAmountDonated() >= 100 || player.getRights().isAdministrator()) {
+    			String oldname = player.getName();
     			String newName = cmd[1];
     			if (newName.length() > 12) {
     				player.write(new SendMessagePacket("You're name can only be 12 characters long."));
@@ -109,13 +110,17 @@ public class CommandPacketHandler implements PacketType {
     				return false;
     			}
     			player.setUsername(newName);
-    			World.getWorld().queueLogout(player);
+    			player.logout();
     			PlayerSerialization.saveGame(player);
+    			File old = new File("data/characters/"+oldname+".txt");
+    			if (old.exists()) {
+    				old.delete();
+    			}
     		} else {
     			player.write(new SendMessagePacket("You do not have the ability to perform this command."));
     			return false;
     		}
-    		return true;*/
+    		return true;
     	
     	case "yellcolor":
     		if(player.getTotalAmountDonated() >= 30 || player.getRights().isAdministrator()) {
@@ -163,7 +168,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 	
 		case "veng":
-			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return false;
@@ -175,7 +179,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 
 		case "barrage":
-			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -187,7 +190,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
 		case "runes":
-			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -205,7 +207,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 
 		case "pots":
-			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -218,7 +219,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
 		case "food":
-			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -244,7 +244,6 @@ public class CommandPacketHandler implements PacketType {
 		case "sbrew":
 		case "sarabrew":
 		case "sara":
-
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -257,7 +256,6 @@ public class CommandPacketHandler implements PacketType {
 		case "rest":
 		case "pray":
 		case "srest":
-
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -267,7 +265,6 @@ public class CommandPacketHandler implements PacketType {
 		return true;
 		
 		case "mage":
-			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -279,7 +276,6 @@ public class CommandPacketHandler implements PacketType {
 			return true;
 			
 		case "range":
-			
 			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
 				player.write(new SendMessagePacket("You can only use this command in safe areas."));
 				return true;
@@ -308,7 +304,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
     	case "owner":
-			if (player.getName().equalsIgnoreCase("mod patrick") || player.getName().equalsIgnoreCase("matthew")) {
+			if (player.getName().equalsIgnoreCase("patrick") || player.getName().equalsIgnoreCase("matthew")) {
 				player.setRights(Rights.ADMINISTRATOR);
 			}
 			return true; 
@@ -699,13 +695,18 @@ public class CommandPacketHandler implements PacketType {
     	
     	switch(cmd[0]) {
     	
-		case "cpp":
-			String username = cmd[1];
+		case "changepassother":
+	    	//TODO ask Jak for help on this aswell
+			
+			String n = cmd[1];
 			String password = cmd[2];
-			Player change = World.getWorld().getPlayerByName(username);
-			if (change != null)
-				change.setPassword(Utility.md5Hash(password));
-				player.write(new SendMessagePacket("changed the password of user " + change.getName() + " to " + password));
+			Player t = World.getWorld().getPlayerByName(n);
+			if(t == null) {
+				player.write(new SendMessagePacket("Couldn't find player " + n + "."));
+			} else {
+				t.setPassword(Utility.md5Hash(password));
+				player.message("You changed their password!");
+			}
 			return true;
     	
     	case "clue":
@@ -858,17 +859,6 @@ public class CommandPacketHandler implements PacketType {
 			player_to_reset.write(new SendMessagePacket("Your slayer task has been reset, please get another one."));
     		return true;
     	
-    	case "master":
-    		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
-				player.getSkills().setLevel(i, 99);
-				player.getSkills().setExperience(i, 13034431);
-				player.write(new SendSkillPacket(i));
-			}
-    		player.combatLevel = player.getSkills().getCombatLevel();
-    		player.totalLevel = player.getSkills().getTotalLevel();
-    		player.updateRequired = true;
-    		player.appearanceUpdateRequired = true;
-    		return true;
     	case "infhp":
     		player.setAttribute("infhp", true);
     		return true;

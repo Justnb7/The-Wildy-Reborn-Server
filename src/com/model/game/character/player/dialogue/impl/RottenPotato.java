@@ -1,7 +1,10 @@
 package com.model.game.character.player.dialogue.impl;
 
+import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
+import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
+import com.model.game.item.Item;
 
 public class RottenPotato extends Dialogue {
 
@@ -16,7 +19,7 @@ public class RottenPotato extends Dialogue {
 	@Override
 	protected void start(Object... parameters) {
 		if(option == 0) {
-			send(Type.CHOICE, "Select Option", "Set all stats", "Wipe inventory", "Teleport to player", "Spawn aggressive NPC");
+			send(Type.CHOICE, "Select Option", "Set all stats", "Wipe inventory");
 			setPhase(0);
 		} else if(option == 1) {
 			send(Type.CHOICE, "Select Option", "invulnerability", "invincible", "invisibility");
@@ -35,9 +38,21 @@ public class RottenPotato extends Dialogue {
 		if(getPhase() == 0) {
 			switch(index) {
 			case 1:
-				
+				for (int i = 0; i < Skills.SKILL_COUNT; i++) {
+					player.getSkills().setLevel(i, 99);
+					player.getSkills().setExperience(i, 13034431);
+					player.write(new SendSkillPacket(i));
+				}
+	    		player.combatLevel = player.getSkills().getCombatLevel();
+	    		player.totalLevel = player.getSkills().getTotalLevel();
+	    		player.updateRequired = true;
+	    		player.appearanceUpdateRequired = true;
+	    		stop();
 				break;
 			case 2:
+				player.getItems().reset();
+				player.getItems().addItemtoInventory(new Item(5733));
+				stop();
 				break;
 			case 3:
 				break;

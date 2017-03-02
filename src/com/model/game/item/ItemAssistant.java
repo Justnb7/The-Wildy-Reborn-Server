@@ -16,6 +16,7 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Rights;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
@@ -335,15 +336,6 @@ public class ItemAssistant {
 		player.itemKeptId[keepItem] = item;
 	}
 
-	public void replaceItem(Player c, int i, int l) {
-		for (int k = 0; k < c.playerItems.length; k++) {
-			if (playerHasItem(i, 1)) {
-				deleteItem(i, getItemSlot(i), 1);
-				addItem(l, 1);
-			}
-		}
-	}
-
 	/**
 	 * Reset items kept on death
 	 */
@@ -362,7 +354,6 @@ public class ItemAssistant {
 	/**
 	 * delete all items
 	 */
-
 	public void deleteAllItems() {
 		for (int i1 = 0; i1 < player.playerEquipment.length; i1++) {
 			deleteEquipmentSlot(player.playerEquipment[i1], i1);
@@ -496,10 +487,6 @@ public class ItemAssistant {
 		}
 
 		if (item <= 0) {
-			return false;
-		}
-
-		if (item >= 26000) {
 			return false;
 		}
 
@@ -806,7 +793,6 @@ public class ItemAssistant {
 			}
 		}
 			if (toEquip == toRemove + 1 && ItemDefinition.forId(toRemove).isStackable()) {
-				System.out.println("ok man delete?");
 				deleteItem(toRemove, getItemSlot(toRemove), toEquipN);
 				player.playerEquipmentN[targetSlot] += toEquipN;
 			} else if (targetSlot != 5 && targetSlot != 3) {
@@ -1842,7 +1828,6 @@ public class ItemAssistant {
 	   /**
 	    * Pickup Item
 	    */
-
 	   public void removeGroundItem(int itemID, int itemX, int itemY, int height) {
 		   if (player.getOutStream() != null && player != null) {
 			   player.getOutStream().writeFrame(85);
@@ -2047,10 +2032,6 @@ public class ItemAssistant {
 		   clearSlot(slot);
 		   addItem(item, 1, slot);
 	   }
-	   
-	   public void set(int slot, Item item) {
-		   replaceSlot(slot, item.getId());
-	   }
 
 	   public boolean addItem(int item, int amount, int slot) {
 		   if (amount < 1) {
@@ -2087,11 +2068,11 @@ public class ItemAssistant {
 	   }
 
 	public void reset() {
-		if (player.getArea().inWild()) {
+		if (player.getArea().inWild() && player.rights != Rights.ADMINISTRATOR) {
 			return;
 		}
 		for (int i = 0; i < player.playerItems.length; i++) {
-			player.getItems().deleteItem(player.playerItems[i] - 1, player.getItems().getItemSlot(player.playerItems[i] - 1), player.playerItemsN[i]);
+			deleteItem(player.playerItems[i] - 1, player.getItems().getItemSlot(player.playerItems[i] - 1), player.playerItemsN[i]);
 		}
 	}
 	
@@ -2157,14 +2138,18 @@ public class ItemAssistant {
 	 */
 	public int checkAmount(int item) {
 		int found = 0;
-		for (int index = 0; index < item; index++) {
-			
-			//Deletes item and sets item id as amount
-			if (playerHasItem(item)) {
-				found++;
-			}
-		}
-		System.out.println(found);
+		boolean stackable = new Item(item).getDefinition().isStackable();
+		  for (int i = 0; i < player.playerItems.length; i++) {
+			  System.out.println("item["+i+"]="+player.playerItems[i]);
+			  if (player.playerItems[i] == (item + 1)) {
+				  if (stackable) {
+					  return player.playerItemsN[i];
+				  } else {
+					  found += player.playerItemsN[i];
+				  }
+			  }
+		  }
+		  //System.out.println(found);
 		return found;
 	}
 	

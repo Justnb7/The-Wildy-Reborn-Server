@@ -765,7 +765,7 @@ public class ActionHandler {
 		case 1306:
 			if (!player.canChanceAppearance()) {
 				player.write(new SendMessagePacket("You must remove your equipment before changing your appearence."));
-				player.canChangeAppearance = false;
+				player.canChangeAppearance = false; // most retarded thing ive ever seen remove it alrite
 			} else {
 				player.write(new SendInterfacePacket(3559));
 				player.canChangeAppearance = true;

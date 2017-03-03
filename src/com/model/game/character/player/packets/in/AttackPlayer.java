@@ -91,7 +91,7 @@ public class AttackPlayer implements PacketType {
 		 * Attack player with magic
 		 **/
 		case MAGE_PLAYER:
-			if (!player.mageAllowed) {
+			if (!player.mageAllowed) { // no idea remove it
 				player.mageAllowed = true;
 				break;
 			}

@@ -6,7 +6,6 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-import com.model.game.character.player.Player;
 import com.model.net.network.Packet;
 import com.model.net.network.rsa.ISAACRandomGen;
 
@@ -32,7 +31,7 @@ public class RS2Decoder extends ByteToMessageDecoder {
 
 				opcode = buf.readUnsignedByte();
 				opcode = (opcode - cipher.getNextKey()) & 0xFF;
-				size = Player.PACKET_SIZES[opcode];
+				size = Packet.PACKET_SIZES[opcode];
 			}
 
 			if (size == -1) {
@@ -49,6 +48,10 @@ public class RS2Decoder extends ByteToMessageDecoder {
 
 			try {
 				out.add(new Packet(opcode, buf.readBytes(size)));
+				/*
+				 * Produce and write the packet object.
+				 */
+				//out.write(new Packet(opcode, Type.FIXED, payload));
 			} finally {
 				opcode = size = -1;
 			}

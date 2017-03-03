@@ -25,6 +25,7 @@ public class WeaponInterface {
 		BATTLEAXE("battleaxe", 1698, 1701, 1701), 
 		TWO_HANDED("2h", 4705, 4708, 4708), 
 		PICKAXE("pickaxe", 5570, 5573, 5573), 
+		TWISTED_BOW("Twisted bow", 1764, 1767, 1765),
 		SHORT_BOW_UPPER("Shortbow", 1764, 1767, 1765), 
 		SHORT_BOW("shortbow", 1764, 1767, 1765), 
 		THIRD_AGE_BOW("3rd age bow", 1764, 1767, 1765), 

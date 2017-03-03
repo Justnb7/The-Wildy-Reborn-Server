@@ -675,7 +675,7 @@ public class ItemAssistant {
 		Item item = player.getItems().getItemFromSlot(slotId);
 		
         ItemDefinition def = ItemDefinition.forId(id);
-        int targetSlot = def.getEquipmentSlot().getId();
+        int targetSlot = def.getEquipmentSlot().getId();//it
 		
 		if (def == null || def.getEquipmentSlot() == null) {
 			player.write(new SendMessagePacket(def.getName() + " is unable to be used, if this is an error please report it!"));

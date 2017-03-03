@@ -7,13 +7,6 @@ public class SecondGroundOption implements PacketType {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
-		player.getInStream().readSignedWordBigEndian();
-		player.getInStream().readUnsignedWord();
-		player.getInStream().readSignedWordBigEndian();
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
-			return;
-		}
+
 	}
 }

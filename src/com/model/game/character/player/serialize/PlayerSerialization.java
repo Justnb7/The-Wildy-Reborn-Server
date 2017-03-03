@@ -121,8 +121,6 @@ public class PlayerSerialization {
 							p.setReceivedStarter(Boolean.parseBoolean(value));
 						} else if (key.equals("character-account-type")) {
 							p.setGameMode(value);
-						} else if (key.equals("character-bank-pin")) {
-                            p.getBankPin().setPin(value);
 						} else if (key.equals("character-posx")) {
 							p.teleportToX = (Integer.parseInt(value) <= 0 ? 3091 : Integer.parseInt(value));
 						} else if (key.equals("character-posy")) {
@@ -171,8 +169,6 @@ public class PlayerSerialization {
                             p.teleblockLength = Integer.parseInt(value);
                         } else if (key.equals("muted")) {
     						p.isMuted = Boolean.parseBoolean(value);
-                        } else if (key.equals("yellMute")) {
-    						p.yellMute = Integer.parseInt(value);
                         } else if (key.equals("skull-timer")) {
                             p.skullTimer = Integer.parseInt(value);
 						} else if (key.equals("infection-type")) {
@@ -531,8 +527,6 @@ public class PlayerSerialization {
             writer.newLine();
             writer.write("character-account-type = " + p.getGameMode());
             writer.newLine();
-            writer.write("character-bank-pin = " + p.getBankPin().getPin());
-            writer.newLine();
             writer.write("character-posx = ");
             writer.write(Integer.toString(p.getX()));
             writer.newLine();
@@ -579,8 +573,6 @@ public class PlayerSerialization {
             writer.write("teleblock-length = " + tbTime);
             writer.newLine();
             writer.write("muted = " + p.isMuted);
-            writer.newLine();
-            writer.write("yellMute = " + p.yellMute);
             writer.newLine();
             writer.write("skull-timer = " + p.skullTimer);
             writer.newLine();

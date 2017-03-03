@@ -1046,9 +1046,6 @@ public class ItemAssistant {
 	}
 
 	public boolean addToBank(int itemID, int amount, boolean updateView) {
-		if (player.playerStun) {
-			return false;
-		}
 		if (!player.isBanking())
 			return false;
 		if (!player.getItems().playerHasItem(itemID))
@@ -1057,13 +1054,7 @@ public class ItemAssistant {
 			player.getBank().getBankSearch().reset();
 			return false;
 		}
-		if (player.getBankPin().requiresUnlock()) {
-			resetBank();
-			if (player.openInterface != 39500) {
-				player.getBankPin().open(2);
-			}
-			return false;
-		}
+
 		BankTab tab = player.getBank().getCurrentBankTab();
 		BankItem item = new BankItem(itemID + 1, amount);
 		for (BankTab t : player.getBank().getBankTab()) {
@@ -1132,13 +1123,7 @@ public class ItemAssistant {
 			return;
 		if (itemAmount <= 0)
 			return;
-		if (player.getBankPin().requiresUnlock()) {
-			resetBank();
-			if (player.openInterface != 39500) {
-				player.getBankPin().open(2);
-			}
-			return;
-		}
+
 		if (System.currentTimeMillis() - player.lastBankDeposit < 250)
 			return;
 		if (player.isBusy()) {
@@ -1341,12 +1326,7 @@ public class ItemAssistant {
 				player.getBank().getBankSearch().reset();
 				return;
 			}
-			if (player.getBankPin().requiresUnlock()) {
-				resetBank();
-				player.setBanking(false);
-				player.getBankPin().open(2);
-				return;
-			}
+
 			if (to > 999) {
 				int tabId = to - 1000;
 				if (tabId < 0)

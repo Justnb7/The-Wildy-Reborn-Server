@@ -12,11 +12,7 @@ public class ItemOnNpc implements PacketType {
 		int itemId = player.getInStream().readSignedWordA();
 		int i = player.getInStream().readSignedWordA();
 		int slot = player.getInStream().readSignedWordBigEndian();
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
-			return;
-		}
+
 		Npc npc = World.getWorld().getNpcs().get(i);
 		if (npc == null) {
 			return;
@@ -26,7 +22,6 @@ public class ItemOnNpc implements PacketType {
 		}
 		@SuppressWarnings("unused")
 		int npcId = npc.npcId;
-		player.walkingToObject = false;
 		switch (itemId) {
 
 		}

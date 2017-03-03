@@ -240,12 +240,6 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		//We have a bank pin active, we can't drop items.
-		if (player.getBankPin().requiresUnlock()) {
-			player.getBankPin().open(2);
-			return;
-		}
-		
 		//Check if player is in combat, in combat we cannot drop items worth more then 10,000 gold
 		if (player.underAttackBy != 0 && (ItemDefinition.forId(itemId).getShopValue()* .75) > 10_000) {
 			player.message("You can't drop items worth over 10,000 gold in combat.");
@@ -300,13 +294,6 @@ public class ItemOptionPacket implements PacketType {
 
 		//Safety checks
 		if (player.isDead() || interfaceIndex != 3214 || player.isTeleporting()) {
-			return;
-		}
-		
-		//Player has bank pin
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
 			return;
 		}
 		
@@ -479,13 +466,6 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 
-		// Player has bank pin
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
-			return;
-		}
-
 		// Debug mode
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[handleItemOption2] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceId, slot));
@@ -527,13 +507,6 @@ public class ItemOptionPacket implements PacketType {
 		
 		// Safety checks
 		if (player.isDead() || interfaceId != 3214 || player.isTeleporting()) {
-			return;
-		}
-
-		// Player has bank pin
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
 			return;
 		}
 

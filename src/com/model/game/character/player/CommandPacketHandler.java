@@ -63,11 +63,6 @@ public class CommandPacketHandler implements PacketType {
     	if (player.inTutorial()) {
     		return;
     	}
-
-        if (player.getBankPin().isLocked() && player.getBankPin().getPin().trim().length() > 0) {
-            player.write(new SendMessagePacket("Please enter your bank pin to use commands. "));
-            return;
-        }
 		
 		if (playerCommand.startsWith("/")) {
 			ClanManager.memberActions(player, "DIALOGUE", playerCommand);
@@ -638,37 +633,7 @@ public class CommandPacketHandler implements PacketType {
 				target.isMuted = false;
 				target.write(new SendMessagePacket("Your punishment has been removed, relog for this to process"));
     		 return true; 
-    		 
-		case "yellmute":
-			name = "";
-			for (int i = 1; i < cmd.length; i++)
-				name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-			target = World.getWorld().getPlayerByName(name);
-			if (target == null)
-				player.write(new SendMessagePacket("Couldn't find player " + name + "."));
-			if (target.getRights().isBetween(2, 3)) {
-				player.write(new SendMessagePacket("You cannot yellmute this player's account!"));
-				return false;
-			} else
-				target.yellMute = 1;
-			PlayerUpdating.executeGlobalMessage("[Server] " + player.getName() + " has yell muted " + target.getName()+".");
-			return true;
-    		 
-    	 case "unyellmute":
-    		 name = "";
- 			for (int i = 1; i < cmd.length; i++)
- 				name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
- 			target = World.getWorld().getPlayerByName(name);
- 			if (target == null)
- 				player.write(new SendMessagePacket("Couldn't find player " + name + "."));
- 			if (target.getRights().isBetween(2, 3)) {
- 				player.write(new SendMessagePacket("You cannot yellmute this player's account!"));
- 				return false;
- 			} else
- 				target.yellMute = 0;
- 			PlayerUpdating.executeGlobalMessage("[Server] "+player.getName()+" has unyell muted "+target.getName()+".");
- 			player.write(new SendMessagePacket(name + "has been unyellmuted."));
-    		 return true;
+    	
     	}
     	return false;
     }

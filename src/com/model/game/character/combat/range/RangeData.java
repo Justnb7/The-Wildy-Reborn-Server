@@ -126,20 +126,12 @@ public class RangeData {
 
 	public static int getRangeProjectileGFX(Player player) {
 		
-		if (player.blowpipe_special) {
-			return 1043;
-		}
-		
 		if (player.getItems().isWearingItem(12926)) {
 			return 1123;
 		}
 		
 		if (player.dbowSpec) {
 			return player.playerEquipment[player.getEquipment().getQuiverId()] == 11212 ? 1099 : 1101;
-		}
-		
-		if (player.acbSpec) {
-			return 301;
 		}
 		
 		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12424)
@@ -278,7 +270,7 @@ public class RangeData {
 	}
 
 	public static int getProjectileSpeed(Player player) {
-		if (player.dbowSpec || player.acbSpec)
+		if (player.dbowSpec)
 			return 100;
 		switch(player.playerEquipment[3]) {
 			case 10033:

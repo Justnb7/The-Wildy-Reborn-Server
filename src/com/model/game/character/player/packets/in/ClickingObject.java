@@ -23,11 +23,6 @@ public class ClickingObject implements PacketType {
 		player.getPA().resetFollow();
 		Combat.resetCombat(player);
 		player.getPA().requestUpdates();
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
-			return;
-		}
 		
 		switch (packetType) {
 		case FIRST_CLICK:

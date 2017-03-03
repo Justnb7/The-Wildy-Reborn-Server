@@ -237,13 +237,9 @@ public class NpcVsPlayerCombat {
 		 */
 		if (npc.heightLevel != player.heightLevel) {
 			npc.targetId = 0;
-			System.out.println("test34");
 			return false;
 		}
-		if (player.getBankPin().requiresUnlock()) {
-			npc.targetId = 0;
-			return false;
-		}
+
 		player.combatCountdown = 10;
 		if (player.inTutorial()) {
 			npc.targetId = 0;

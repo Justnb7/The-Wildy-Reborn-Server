@@ -221,7 +221,7 @@ public class TeleportExecutor {
 			player.write(new SendMessagePacket("Please finish what you're doing first."));
 			return false;
 		}
-		if (player.isDead || player.isTeleporting() || player.stopPlayerPacket) {
+		if (player.isDead || player.isTeleporting()) {
 			return false;
 		}
 		if (!player.teleblock.elapsed(player.teleblockLength)) {

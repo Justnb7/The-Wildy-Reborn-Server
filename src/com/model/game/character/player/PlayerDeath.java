@@ -64,7 +64,6 @@ public class PlayerDeath {
 
 			killedBy = killer;
 			player.killerId = killer.getIndex();
-			player.playerKilled = player.getIndex();
 
 			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
@@ -101,8 +100,6 @@ public class PlayerDeath {
 				}
 			}
 		}
-
-		player.playerKilled = player.getIndex();
 
 		/**
 		 * Update player

@@ -25,11 +25,6 @@ public class Withdraw1Action implements PacketType {
 		int removeSlot = player.getInStream().readUnsignedWordA();
 		int removeId = player.getInStream().readUnsignedWordA();
 		
-		if (player.getBankPin().requiresUnlock()) {
-			player.getBankPin().open(2);
-			return;
-		}
-		
 		switch (interfaceId) {
 		
 		case 41710:

@@ -45,7 +45,6 @@ public class RunescapeGuide extends Dialogue {
 	    		player.updateRequired = true;
 	    		player.appearanceUpdateRequired = true;
 	    		player.write(new SendInterfacePacket(3559));
-				player.canChangeAppearance = true;
 				break;
 			case 4:
 				player.setGameMode("TRAINED");
@@ -56,7 +55,6 @@ public class RunescapeGuide extends Dialogue {
 	    		player.updateRequired = true;
 	    		player.appearanceUpdateRequired = true;
 	    		player.write(new SendInterfacePacket(3559));
-				player.canChangeAppearance = true;
 				break;
 			}
 		}

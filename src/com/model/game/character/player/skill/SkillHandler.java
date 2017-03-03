@@ -52,10 +52,6 @@ public class SkillHandler {
 		return true;
 	}
 
-	public static void deleteTime(Player c) {
-		c.doAmount--;
-	}
-
 	/**
 	 * Returns if a skill is currently active
 	 * 

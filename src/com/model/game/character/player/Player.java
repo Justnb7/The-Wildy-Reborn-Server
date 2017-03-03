@@ -78,7 +78,6 @@ import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
 import com.model.game.item.UseItem;
 import com.model.game.item.bank.Bank;
-import com.model.game.item.bank.BankPin;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.item.container.impl.TradeContainer;
@@ -1409,7 +1408,6 @@ public class Player extends Entity {
 		}
 
 		getWeaponInterface().sendSpecialBar(playerEquipment[this.getEquipment().getWeaponId()]);
-		canChangeAppearance = true;
 
 		submitAfterLogin();
 		correctPlayerCoordinatesOnLogin();
@@ -1452,12 +1450,7 @@ public class Player extends Entity {
 				}
 				
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
-				if (player.getBankPin().isLocked() && player.getBankPin().getPin().trim().length() > 0) {
-					player.getBankPin().open(2);
-					player.playerStun = true;
-					player.aggressionTolerance.stop();
-					player.setBanking(false);
-				}
+
 				if (player.petId > 0)
 					player.getPets().spawnPet(player, 0, true);
 				if (player.teleportRequired) {
@@ -1679,7 +1672,6 @@ public class Player extends Entity {
 	}
 
 	public void handleObjectAction() {
-		walkingToObject = false;
 		turnPlayerTo(objectX, objectY);
 		if (clickObjectType == 1)
 			getActions().firstClickObject(objectId, objectX, objectY);
@@ -2224,23 +2216,6 @@ public class Player extends Entity {
 
 	public int packetSize = 0, packetType = -1;
 
-	public boolean canChanceAppearance() {
-		if ((playerEquipment[getEquipment().getHelmetId()] == -1)
-				&& (playerEquipment[getEquipment().getCapeId()] == -1)
-				&& (playerEquipment[getEquipment().getAmuletId()] == -1)
-				&& (playerEquipment[getEquipment().getChestId()] == -1)
-				&& (playerEquipment[getEquipment().getShieldId()] == -1)
-				&& (playerEquipment[getEquipment().getLegsId()] == -1)
-				&& (playerEquipment[getEquipment().getGlovesId()] == -1)
-				&& (playerEquipment[getEquipment().getBootsId()] == -1)
-				&& (playerEquipment[getEquipment().getWeaponId()] == -1)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-
 	public int rememberNpcIndex;
 	
 	private Thieving thieving = new Thieving(this);
@@ -2411,12 +2386,6 @@ public class Player extends Entity {
 	public void setKiller(String killer) {
 		this.killer = killer;
 	}
-	
-	public BankPin getBankPin() {
-		if (pin == null)
-			pin = new BankPin(this);
-		return pin;
-	}
 
 	public Bank getBank() {
 		if (bank == null)
@@ -2451,7 +2420,6 @@ public class Player extends Entity {
 	private ScheduledTask distancedTask;
 	private SkillTask skillTask;
 	private Bank bank;
-	private BankPin pin;
 	private int sessionExperience;
 	private Pet pethandler = new Pet();
 	private LunarSpells lunar = new LunarSpells(this);
@@ -3114,11 +3082,11 @@ public class Player extends Entity {
      * Integers
      */
 	public int playerAppearance[] = new int[13];
-	public int openInterface = -1, droppedItem = -1;
+	public int openInterface = -1;
 	public int petNpcIndex;
 	public int countdown;
 	public int combatCountdown = 10;
-	public int petId, distance, yellMute;
+	public int petId, distance;
 	public int face = -1;
 	public int FocusPointX = -1, FocusPointY = -1;
 	private int chatTextColor = 0;
@@ -3153,13 +3121,14 @@ public class Player extends Entity {
 	public int rangeEndGFX;
 	public int lastClickedItem;
 	public int playerFollowIndex = 0;
-	public int[] itemKeptId = new int[4];
 	public int[] playerBonus = new int[14];
+	public int[] itemKeptId = new int[4];
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
-	public int totalLevel, doAmount, lastX, lastY, playerKilled, killedBy,
+	
+	public int totalLevel, lastX, lastY, killedBy,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
-			followDistance, npcFollowIndex, barrageCount, delayedDamage,
+			followDistance, npcFollowIndex, delayedDamage,
 			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
 			oldPlayerIndex, rangeItemUsed, killingNpcIndex, lastWeaponUsed,
@@ -3168,29 +3137,22 @@ public class Player extends Entity {
 			walkTutorial = 15, skullIcon = -1, bountyPoints;
 	public int objectDistance, teleHeight;
 	
-	
-	
 	/**
 	 * Booleans
 	 */
 	public boolean isDead = false;
 	public boolean chatTextUpdateRequired = false;
 	private boolean faceUpdateRequired = false;
-	public boolean walkingToObject;
-	public boolean[] canUseReducingSpell = { true, true, true, true, true, true };
 	private boolean dragonfireShieldActive;
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
-	public boolean canChangeAppearance = false;
 	public boolean rangeEndGFXHeight;
 	public boolean throwingAxe;
 	public boolean usingArrows;
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
-	isSkulled,
-	hasMultiSign, saveCharacter, mageFollow, dbowSpec, acbSpec, blowpipe_special,
-	properLogout, msbSpec, stopPlayerPacket, playerIsFiremaking,
-	playerStun, mageAllowed,
+	isSkulled, hasMultiSign, saveCharacter, mageFollow, dbowSpec,
+	properLogout, msbSpec, playerIsFiremaking,
 	acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
 	
 	/**

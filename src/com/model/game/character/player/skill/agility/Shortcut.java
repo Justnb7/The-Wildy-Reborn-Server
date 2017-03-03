@@ -235,10 +235,6 @@ public class Shortcut {
 	}
 
 	public static void brimhavenSkippingStone(final Player player) {
-		if (player.stopPlayerPacket) {
-			return;
-		}
-		player.stopPlayerPacket = true;
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			@Override
 			public void execute() {
@@ -265,13 +261,10 @@ public class Shortcut {
 						stop();
 					}
 				}
-
 			}
-
 			@Override
 			public void onStop() {
 				setAnimationBack(player);
-				player.stopPlayerPacket = false;
 			}
 		});
 	}

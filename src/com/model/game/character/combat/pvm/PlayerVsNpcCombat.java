@@ -203,7 +203,6 @@ public class PlayerVsNpcCombat {
 		 * Apply the damage based on the combat style
 		 */
 		applyCombatDamage(plr_attacker, npc_victim, plr_attacker.getCombatType(), item, victim_npc_id);
-		// TODO are sounds done when the attack starts or when damage appears?
 		MobAttackSounds.sendBlockSound(plr_attacker, npc_victim.getId());
 		if (plr_attacker.bowSpecShot <= 0) {
 			plr_attacker.oldNpcIndex = 0;
@@ -589,12 +588,6 @@ public class PlayerVsNpcCombat {
 			player.usingMagic = false;
 			player.faceUpdate(0);
 			player.npcIndex = 0;
-			return;
-		}
-		
-		if (player.getBankPin().requiresUnlock()) {
-			player.write(new SendMessagePacket("You cannot attack this NPC while you haven't entered your PIN."));
-			Combat.resetCombat(player);
 			return;
 		}
         

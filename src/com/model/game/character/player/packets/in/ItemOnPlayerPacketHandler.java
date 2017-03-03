@@ -16,13 +16,7 @@ public class ItemOnPlayerPacketHandler implements PacketType {
 		if (playerId > World.getWorld().getPlayers().capacity()) {
 			return;
 		}
-		player.walkingToObject = false;
 
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
-			return;
-		}
 		switch (itemId) {
 		
 		

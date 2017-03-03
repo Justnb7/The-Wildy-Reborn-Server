@@ -22,7 +22,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 		Entity entity = player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex);
 		player.setCombatType(CombatType.RANGED);
 		player.playAnimation(Animation.create(4230));
-		player.acbSpec = true;
 		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 		player.getItems().deleteArrow();
 		
@@ -31,6 +30,8 @@ public class ArmadylCrossbow implements SpecialAttack {
 		} else if (player.npcIndex > 0) {
 			player.getItems().dropArrowNpc();
 		}
+		
+		//TODO implement gfx 301
 		
 		player.hitDelay = 2;
 		player.setCombatType(CombatType.RANGED);
@@ -47,7 +48,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 			npcSpecialHitDelay(player, entity.getIndex(), player.hitDelay);
 		else
 			playerSpecialHitDelay(player, entity.getIndex(), player.hitDelay);
-		player.acbSpec = false;
 	}
 	
 	private void npcSpecialHitDelay(final Player c, final int i, int hitDelay) {

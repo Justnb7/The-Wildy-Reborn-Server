@@ -518,12 +518,6 @@ public class PlayerAssistant {
     }
 
     public void openBank() {
-    	
-        if (player.getBankPin().isLocked() && player.getBankPin().getPin().trim().length() > 0) {
-            player.getBankPin().open(2);
-            player.setBanking(false);
-            return;
-        }
         
         if (player.takeAsNote)
         	player.write(new SendConfigPacket(115, 1));

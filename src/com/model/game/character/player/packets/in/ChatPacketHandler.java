@@ -8,8 +8,10 @@ import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 
 /**
- * Chat
- **/
+ * Handles public chat messages.
+ * @author Patrick van Elderen
+ *
+ */
 public class ChatPacketHandler implements PacketType {
 
 	@Override
@@ -18,24 +20,25 @@ public class ChatPacketHandler implements PacketType {
 		player.setChatTextColor(player.getInStream().readUnsignedByteS());
 		player.setChatTextSize((byte) (packetSize - 2));
 		player.inStream.readBytes_reverseA(player.getChatText(), player.getChatTextSize(), 0);
+		
 		String term = Utility.textUnpack(player.getChatText(), packetSize - 2).toLowerCase();
-		PlayerLogging.write(LogType.PUBLIC_CHAT, player, "Spoke = "+term);
+		
 		if (player.isMuted) {
 			player.write(new SendMessagePacket("Sorry, your account is still muted, please appeal on our forums."));
 			return;
 		}
-
-		if(player.getBankPin().isLocked() && player.getBankPin().getPin().trim().length() > 0) {
-			player.write(new SendMessagePacket("You need to enter your pin before you can speak"));
+		
+		if (!player.getController().canTalk(player)) {
 			return;
 		}
+		
 		if(term.contains("on the percentile dice") || term.contains(" just rolled") || term.contains("just rolled")){
 			player.write(new SendMessagePacket("@red@Your message was blocked because it is similar to the ::dice message."));
 			return;
 		}
-		if (!player.getController().canTalk(player)) {
-			return;
-		}
+		
+		PlayerLogging.write(LogType.PUBLIC_CHAT, player, "Spoke = "+term);
+
 		player.chatTextUpdateRequired = true;
 		player.updateRequired = true;
 

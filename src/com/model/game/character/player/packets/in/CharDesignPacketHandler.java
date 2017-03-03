@@ -36,8 +36,6 @@ public class CharDesignPacketHandler implements PacketType {
 	@Override
 	public void handle(final Player player, final int packetId, final int packetSize) {
 		final int gender = player.getInStream().readSignedByte();
-		   if(!player.canChangeAppearance)
-            return;
 		if (gender != 0 && gender != 1)
 			return;
 
@@ -58,7 +56,6 @@ public class CharDesignPacketHandler implements PacketType {
 			colors[i] = value;
 		}
 
-		if (player.canChangeAppearance) {
 			player.playerAppearance[0] = gender; // gender
 			player.playerAppearance[1] = apperances[0]; // head
 			player.playerAppearance[2] = apperances[2]; // torso
@@ -75,9 +72,7 @@ public class CharDesignPacketHandler implements PacketType {
 
 			player.getActionSender().sendRemoveInterfacePacket();
 			player.getPA().requestUpdates();
-			player.canChangeAppearance = false;
 			
-		}
 	}
 
 }

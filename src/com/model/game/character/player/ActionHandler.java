@@ -56,9 +56,6 @@ public class ActionHandler {
 
 		if (player.followId > 0 || player.followId2 > 0)
 			player.getPA().resetFollow();
-		if (player.stopPlayerPacket || player.isTeleporting()) {
-			return;
-		}
 
 		if (id != 2283) {
 			player.turnPlayerTo(player.objectX, player.objectY);
@@ -763,13 +760,7 @@ public class ActionHandler {
 		 * Appearance npc
 		 */
 		case 1306:
-			if (!player.canChanceAppearance()) {
-				player.write(new SendMessagePacket("You must remove your equipment before changing your appearence."));
-				player.canChangeAppearance = false; // most retarded thing ive ever seen remove it alrite
-			} else {
-				player.write(new SendInterfacePacket(3559));
-				player.canChangeAppearance = true;
-			}
+			player.write(new SendInterfacePacket(3559));
 			break;
 
 		default:

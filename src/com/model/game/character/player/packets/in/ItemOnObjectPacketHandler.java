@@ -18,11 +18,7 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		player.objectDistance = player.objectDistance < 1 ? 1 : player.objectDistance;
 		player.itemUsedOn = player.getInStream().readUnsignedWord();
 		player.turnPlayerTo(player.objectX, player.objectY);
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
-			return;
-		}
+
 		if (!player.getItems().playerHasItem(player.itemUsedOn, 1)) {
 			return;
 		}

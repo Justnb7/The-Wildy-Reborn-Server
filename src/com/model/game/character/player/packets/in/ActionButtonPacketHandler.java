@@ -33,37 +33,35 @@ import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSongPacket;
 import com.model.game.character.player.skill.SkillInterfaceButtons;
 import com.model.game.item.bank.BankItem;
-import com.model.game.item.bank.BankPin;
 import com.model.game.item.bank.BankTab;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 
 
 /**
- * Clicking most buttons
+ * Handles clicking on most buttons in the interface.
+ * 
+ * @author Patrick van Elderen
+ * 
  */
-
 public class ActionButtonPacketHandler implements PacketType {
-	public int gonext;
 
 	@Override
-	public void handle(final Player player, int packetType, int packetSize) {
-		int button = Utility.hexToInt(player.getInStream().buffer, 0, packetSize);
+	public void handle(final Player player, int id, int size) {
+		int button = Utility.hexToInt(player.getInStream().buffer, 0, size);
+		
 		DuelSession duelSession = null;
-		// System.out.println(""+buttonId);
+		
 		if (player.isDead()) {
 			return;
 		}
+		
 		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("ActionButtonID = <col=FF0000>" + button + "</col>"));
 		}
-
+		
 		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181
 				&& button != 14067 && button != 9154) {
-			return;
-		}
-
-		if (player.getMovementHandler().isForcedMovement() && button != 29138 && button != 29124) {
 			return;
 		}
 
@@ -236,17 +234,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.getPA().handleDestroyItem();
 			break;
 
-		case 20174:
-			player.getActionSender().sendRemoveInterfacePacket();
-			BankPin pin = player.getBankPin();
-			if (pin.getPin().length() <= 0)
-				player.getBankPin().open(1);
-			else if (!pin.getPin().isEmpty() && !pin.isAppendingCancellation())
-				player.getBankPin().open(3);
-			else if (!pin.getPin().isEmpty() && pin.isAppendingCancellation())
-				player.getBankPin().open(4);
-			break;
-
 		/*
 		 * Bank Searching
 		 */
@@ -279,13 +266,6 @@ public class ActionButtonPacketHandler implements PacketType {
 				player.getBank().getBankSearch().reset();
 				return;
 			}
-			if (player.getBankPin().requiresUnlock()) {
-				player.setBanking(false);
-				if (player.openInterface != 39500) {
-					player.getBankPin().open(2);
-				}
-				return;
-			}
 			player.lastBankDeposit = System.currentTimeMillis();
 			for (int slot = 0; slot < player.playerEquipment.length; slot++) {
 				if (player.playerEquipment[slot] > 0 && player.playerEquipmentN[slot] > 0) {
@@ -310,13 +290,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 227019:
 			if (!player.isBanking()) {
 				player.getActionSender().sendRemoveInterfacePacket();
-				return;
-			}
-			if (player.getBankPin().requiresUnlock()) {
-				player.setBanking(false);
-				if (player.openInterface != 39500) {
-					player.getBankPin().open(2);
-				}
 				return;
 			}
 			int tabId = button == 226186 ? 0
@@ -361,13 +334,6 @@ public class ActionButtonPacketHandler implements PacketType {
 				player.getActionSender().sendRemoveInterfacePacket();
 				return;
 			}
-			if (player.getBankPin().requiresUnlock()) {
-				player.setBanking(false);
-				if (player.openInterface != 39500) {
-					player.getBankPin().open(2);
-				}
-				return;
-			}
 			tabId = button == 226197 ? 1
 					: button == 226208 ? 2
 							: button == 226219 ? 3
@@ -410,13 +376,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 227017:
 			if (!player.isBanking()) {
 				player.getActionSender().sendRemoveInterfacePacket();
-				return;
-			}
-			if (player.getBankPin().requiresUnlock()) {
-				player.setBanking(false);
-				if (player.openInterface != 39500) {
-					player.getBankPin().open(2);
-				}
 				return;
 			}
 			if (player.getBank().getBankSearch().isSearching()) {

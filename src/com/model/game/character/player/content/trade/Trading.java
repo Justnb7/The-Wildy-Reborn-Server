@@ -137,12 +137,6 @@ public class Trading {
 				|| target.underAttackBy2 > 0) {
 			return false;
 		}
-		if (player.getBankPin().requiresUnlock()) {
-			if (player.openInterface != 39500) {
-				player.getBankPin().open(2);
-			}
-			return false;
-		}
 		
 		if (player.absX == target.absX && player.absY == target.absY) {
 			player.write(new SendMessagePacket("You cannot trade while standing on someone"));

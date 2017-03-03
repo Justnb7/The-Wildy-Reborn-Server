@@ -27,15 +27,7 @@ public class WalkingPacketHandler implements PacketType {
 		
 		//We can't walk because of the following reasons
 		if (player.isDead() || !player.getController().canMove(player) || player.inTutorial() || player.teleTimer > 0
-				|| player.isTeleporting() || player.mapRegionDidChange || player.getMovementHandler().isForcedMovement()
-				|| player.playerStun) {
-			return;
-		}
-		
-		//we have a bank pin, so we can't walk
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
+				|| player.isTeleporting() || player.mapRegionDidChange || player.getMovementHandler().isForcedMovement()) {
 			return;
 		}
 		
@@ -62,11 +54,6 @@ public class WalkingPacketHandler implements PacketType {
 		
 		//Stop our distanced action task because we reset the walking queue by walking
 		player.stopDistancedTask();
-		
-		//PI logic?
-		if (player.canChangeAppearance) {
-			player.canChangeAppearance = false;
-		}//this why does PI have this?
 		
 		//When walking stop our skilling action
 		if (player.getSkilling().isSkilling()) {
@@ -97,7 +84,6 @@ public class WalkingPacketHandler implements PacketType {
 			player.faceUpdate(0);
 			player.npcIndex = 0;
 			player.clickObjectType = 0;
-			player.walkingToObject = false;
 			player.clickNpcType = 0;
 			player.playerIndex = 0;
 			player.setOpenShop(null);
@@ -106,12 +92,6 @@ public class WalkingPacketHandler implements PacketType {
 			if (player.followId > 0 || player.followId2 > 0) {
 				player.getPA().resetFollow();
 			}
-		}
-		
-		//FIXME remove
-		if (packetType == 98) {
-			player.walkingToObject = true;
-			player.mageAllowed = true;
 		}
 		
 		// Packet 248 is either clicking on the minimap or a npc/object/player

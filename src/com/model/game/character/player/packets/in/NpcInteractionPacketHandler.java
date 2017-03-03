@@ -20,7 +20,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 		player.npcClickIndex = 0;
 		player.playerIndex = 0;
 		player.clickNpcType = 0;
-		player.walkingToObject = false;
 		player.getPA().resetFollow();
 		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
@@ -42,23 +41,13 @@ public class NpcInteractionPacketHandler implements PacketType {
 			}
             if (!npc.getDefinition().isAttackable())
                 return;
-			if (!player.mageAllowed) {
-				player.mageAllowed = true;
-				//player.write(new SendGameMessage("I can't reach that.");
-				break;
-			}
 			if (player.autocastId > 0) {
 				player.autoCast = true;
 			}
 			if (!player.autoCast && player.spellId > 0) {
 				player.spellId = 0;
 			}
-			if (player.getBankPin().requiresUnlock()) {
-				player.npcIndex = 0;
-				player.setBanking(false);
-				player.getBankPin().open(2);
-				return;
-			}
+
 			player.faceUpdate(player.npcIndex);
 			player.usingMagic = false;
 			boolean usingBow = player.getEquipment().isBow(player);
@@ -85,11 +74,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 		 * Attack npc with magic
 		 **/
 		case MAGE_NPC:
-			if (!player.mageAllowed) {
-				player.mageAllowed = true;
-				//player.write(new SendGameMessage("I can't reach that.");
-				break;
-			}
 			player.npcIndex = player.getInStream().readSignedWordBigEndianA();
 			int castingSpellId = player.getInStream().readSignedWordA();
 			player.usingMagic = false;
@@ -110,12 +94,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 					player.usingMagic = true;
 					break;
 				}
-			}
-			if (player.getBankPin().requiresUnlock()) {
-				player.npcIndex = 0;
-				player.setBanking(false);
-				player.getBankPin().open(2);
-				return;
 			}
 			
 			if (player.autoCast) {
@@ -143,12 +121,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 				return;
 			}
 			
-			if (player.getBankPin().requiresUnlock()) {
-				player.npcIndex = 0;
-				player.setBanking(false);
-				player.getBankPin().open(2);
-				return;
-			}
 			switch (player.npcType) {
 			case 394:
 			case 306:
@@ -201,13 +173,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 					player.distance = 3;
 					break;
 			}
-			// check PIN before banking
-			if (player.getBankPin().requiresUnlock()) {
-				player.npcIndex = 0;
-				player.setBanking(false);
-				player.getBankPin().open(2);
-				return;
-			}
 			
 			// if within distance, handle
 			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), player.distance)) {
@@ -248,12 +213,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		case THIRD_CLICK:
 			player.npcClickIndex = player.inStream.readSignedWord();
 			player.npcType = World.getWorld().getNpcs().get(player.npcClickIndex).npcId;
-			if (player.getBankPin().requiresUnlock()) {
-				player.npcIndex = 0;
-				player.setBanking(false);
-				player.getBankPin().open(2);
-				return;
-			}
+
 			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), 1)) {
 				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
 				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
@@ -294,12 +254,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			if (World.getWorld().getNpcs().get(player.npcClickIndex) == null) {
 				return;
 			}
-			if (player.getBankPin().requiresUnlock()) {
-				player.npcIndex = 0;
-				player.setBanking(false);
-				player.getBankPin().open(2);
-				return;
-			}
+
 			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), 1)) {
 				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
 				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());

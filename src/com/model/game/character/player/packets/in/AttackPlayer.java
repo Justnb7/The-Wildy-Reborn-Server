@@ -19,7 +19,6 @@ public class AttackPlayer implements PacketType {
 	public void handle(Player player, int packetType, int packetSize) {
 		player.playerIndex = 0;
 		player.npcIndex = 0;
-		player.walkingToObject = false;
 		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
 		}
@@ -35,12 +34,6 @@ public class AttackPlayer implements PacketType {
 			
 			if (player.getIndex() < 0 || player.isDead()) {
 				System.out.println("index below 0 or player dead");
-				return;
-			}
-			
-			if (player.getBankPin().requiresUnlock()) {
-				Combat.resetCombat(player);
-				player.getBankPin().open(2);
 				return;
 			}
 
@@ -91,10 +84,6 @@ public class AttackPlayer implements PacketType {
 		 * Attack player with magic
 		 **/
 		case MAGE_PLAYER:
-			if (!player.mageAllowed) { // no idea remove it
-				player.mageAllowed = true;
-				break;
-			}
 			player.playerIndex = player.getInStream().readSignedWordA();
 			player.castingSpellId = player.getInStream().readSignedWordBigEndian();
 			player.usingMagic = false;

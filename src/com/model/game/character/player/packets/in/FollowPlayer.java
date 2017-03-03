@@ -12,11 +12,7 @@ public class FollowPlayer implements PacketType {
 		if (World.getWorld().getPlayers().get(followPlayer) == null) {
 			return;
 		}
-		if (player.getBankPin().requiresUnlock()) {
-			player.getBankPin().open(2);
-			return;
-		}
-		player.walkingToObject = false;
+
 		player.playerIndex = 0;
 		player.npcIndex = 0;
 		player.mageFollow = false;

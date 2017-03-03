@@ -23,8 +23,8 @@ public class ToxicBlowpipe implements SpecialAttack {
 		player.setCombatType(CombatType.RANGED);
 		int damage = Utility.random(player.getCombat().calculateRangeMaxHit());
 		player.playAnimation(Animation.create(5061));
-		player.blowpipe_special = true;
 
+		//TODO implement gfx 1043
 		if (target instanceof Player) {
 			Player targPlayer = (Player) target;
 			if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
@@ -39,7 +39,6 @@ public class ToxicBlowpipe implements SpecialAttack {
 			}
 			targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 		}
-		player.blowpipe_special = false;
 	}
 
 	@Override

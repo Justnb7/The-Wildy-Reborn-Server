@@ -3,9 +3,6 @@ package com.model.game.character.player.packets.in;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.item.bank.BankPin;
-
-
 
 public class InputFieldOther implements PacketType {
 
@@ -33,18 +30,6 @@ public class InputFieldOther implements PacketType {
 					player.getBank().getBankSearch().setSearching(false);
 				}
 			}
-			break;
-			
-
-		case 39507:
-			if (player.getBankPin().getPinState() == BankPin.PinState.CREATE_NEW)
-				player.getBankPin().create(text);
-			else if (player.getBankPin().getPinState() == BankPin.PinState.UNLOCK)
-				player.getBankPin().unlock(text);
-			else if (player.getBankPin().getPinState() == BankPin.PinState.CANCEL_PIN)
-				player.getBankPin().cancel(text);
-			else if (player.getBankPin().getPinState() == BankPin.PinState.CANCEL_REQUEST)
-				player.getBankPin().cancel(text);
 			break;
 	
 			default:

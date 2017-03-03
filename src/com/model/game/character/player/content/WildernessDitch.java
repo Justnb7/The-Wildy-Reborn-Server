@@ -38,10 +38,6 @@ public class WildernessDitch {
 	 * @param c	the player
 	 */
 	public static void enter(final Player player) {
-		if (player.stopPlayerPacket) {
-			return;
-		}
-		player.stopPlayerPacket = true;
 		player.playAnimation(Animation.create(ANIMATION_ID));
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			@Override
@@ -49,11 +45,9 @@ public class WildernessDitch {
 				crossDitch(player, player.absX, player.absY + OFFSET_Y);
 				if (player.absY <= 3523) {
 					resetWalkIndex(player);
-					player.stopPlayerPacket = false;
 					stop();
 				} else if (player.absX <= 2998) {
 					resetWalkIndex(player);
-					player.stopPlayerPacket = false;
 					stop();
 				}
 			}
@@ -67,11 +61,6 @@ public class WildernessDitch {
 	 * @param c	the player
 	 */
 	public static void leave(final Player player) {
-
-		if (player.stopPlayerPacket) {
-			return;
-		}
-		player.stopPlayerPacket = true;
 		player.playAnimation(Animation.create(ANIMATION_ID));
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			@Override
@@ -79,11 +68,9 @@ public class WildernessDitch {
 				crossDitch(player, player.absX, player.absY - OFFSET_Y);
 				if (player.absY <= 3523) {
 					resetWalkIndex(player);
-					player.stopPlayerPacket = false;
 					stop();
 				} else if (player.absX <= 2995) {
 					resetWalkIndex(player);
-					player.stopPlayerPacket = false;
 					stop();
 				}
 			}

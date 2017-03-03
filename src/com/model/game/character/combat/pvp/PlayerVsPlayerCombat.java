@@ -33,7 +33,6 @@ import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.game.item.equipment.EquipmentSet;
 import com.model.game.item.equipment.EquipmentSlot;
-import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 /**
@@ -533,29 +532,6 @@ public class PlayerVsPlayerCombat {
 	}
 
 	/**
-	 * Sets the player attackable after 60 ticks
-	 * 
-	 * @param player
-	 */
-	private static void isAttackable(Player player) {
-		if (player.inTask)
-			return;
-		Server.getTaskScheduler().schedule(new ScheduledTask(60) {
-			@Override
-			public void execute() {
-				this.stop();
-
-			}
-
-			public void onStop() {
-				player.write(new SendMessagePacket("You're now attackable.."));
-				player.attackable = true;
-				player.inTask = false;
-			}
-		}.attach(player));
-	}
-
-	/**
 	 * Handles attacking a player
 	 * 
 	 * @param player
@@ -893,25 +869,6 @@ public class PlayerVsPlayerCombat {
 			return false;
 		if (!CombatRequirements.canAttackVictim(player)) {
 			return false;
-		}
-		if (player.getBankPin().requiresUnlock()) {
-			player.setBanking(false);
-			player.getBankPin().open(2);
-			Combat.resetCombat(player);
-			return false;
-		}
-
-		if (target.getBankPin().requiresUnlock()) {
-			if (target.attackable) {
-
-			} else {
-				isAttackable(target);
-				target.inTask = true;
-				player.write(new SendMessagePacket("The other player needs to unlock the account before they can be in combat."));
-				player.write(new SendMessagePacket("The account will become attackable after 1 minute"));
-				Combat.resetCombat(player);
-				return false;
-			}
 		}
 		
 		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12924) {

@@ -13,18 +13,26 @@ import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
- * Clicking stuff (interfaces)
- **/
-public class ClickingStuff implements PacketType {
+ * A packet handler that is called when an interface is closed.
+ * 
+ * @author Patrick van Elderen
+ * 
+ */
+public class CloseInterfacePacketHandler implements PacketType {
 
 	@Override
-	public void handle(Player player, int packetType, int packetSize) {
-		if (player.isTeleporting()) {
-			return;
+	public void handle(Player player, int id, int size) {
+		
+		if (player.inDebugMode()) {
+			System.out.println("[CloseInterface] - Closed Window");
 		}
+		
+		//Decline trade when closing an interface
 		if (Trading.isTrading(player)) {
 			Trading.decline(player);
 		}
+		
+		//Decline duel when closing an interface
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Trading.isTrading(player) && duelSession == null) {
 			Trading.decline(player);
@@ -35,6 +43,13 @@ public class ClickingStuff implements PacketType {
 			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 			return;
 		}
+		
+		//Reset the following variables when closing an interface
+		player.openInterface = -1;
+		player.setShopping(false);
+		player.setTrading(false);
+		player.setBanking(false);
+		
 	}
 
 }

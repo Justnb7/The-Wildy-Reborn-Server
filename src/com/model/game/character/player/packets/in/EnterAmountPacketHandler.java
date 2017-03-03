@@ -16,7 +16,7 @@ import com.model.game.shop.Shop;
 
 /**
  * A packet sent when the player enters a custom amount for banking etc.
- * @author Graham Edgecombe
+ * @author Patrick van Elderen and original PI creators
  *
  */
 public class EnterAmountPacketHandler implements PacketType {

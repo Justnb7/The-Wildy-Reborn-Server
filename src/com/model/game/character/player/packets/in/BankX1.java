@@ -6,9 +6,6 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.shop.Shop;
 
-/**
- * Bank X Items
- **/
 public class BankX1 implements PacketType {
 
     public static final int PART1 = 135;

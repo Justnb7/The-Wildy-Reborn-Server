@@ -1305,7 +1305,7 @@ public class ItemAssistant {
 		player.getBank().getCurrentBankTab().setItem(to, item);
 	}
 
-	public void moveItems(int from, int to, int moveWindow, boolean insertMode) {
+	public void swap(int from, int to, int moveWindow, boolean insertMode) {
 		if (moveWindow == 3214) {
 			int tempI;
 			int tempN;

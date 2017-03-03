@@ -1,4 +1,3 @@
-
 package com.model.game.character.player.packets.in;
 
 import java.util.Objects;

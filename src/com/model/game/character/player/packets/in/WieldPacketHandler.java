@@ -14,8 +14,11 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 
 /**
- * Wear Item
- **/
+ * Handles the 'wield' option on items.
+ * 
+ * @author Patrick van Elderen
+ * 
+ */
 public class WieldPacketHandler implements SubPacketType {
 
 	@Override
@@ -37,7 +40,7 @@ public class WieldPacketHandler implements SubPacketType {
 		}
 		
 		switch (interfaceId) {
-		case 3214:
+		case 3214: // Inventory
 			final Item item = player.getItems().getItemFromSlot(wearSlot);
 
 			if (item == null || item.getId() != wearId) {
@@ -47,12 +50,16 @@ public class WieldPacketHandler implements SubPacketType {
 			if (player.inDebugMode()) {
 				System.out.println(String.format("[WieldPacket] [id= %d] [slot= %d] [interface %d]", wearId, wearSlot, interfaceId));
 			}
-			
-			if (!player.getController().canEquip(player, wearId, wearSlot)) {
-				return;
+			if (item.getId() == 5733) {
+				// TODO custom stuff for the equip option of rotten potato
+			} else {
+				// Try equipping the item
+				if (!player.getController().canEquip(player, wearId, wearSlot)) {
+					return;
+				}
+				
+				player.getItems().wearItem(item.getId(), wearSlot);
 			}
-			
-			player.getItems().wearItem(item.getId(), wearSlot);
 
 			break;
 		}

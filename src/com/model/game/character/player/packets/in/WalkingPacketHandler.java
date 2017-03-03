@@ -66,7 +66,7 @@ public class WalkingPacketHandler implements PacketType {
 		//PI logic?
 		if (player.canChangeAppearance) {
 			player.canChangeAppearance = false;
-		}
+		}//this why does PI have this?
 		
 		//When walking stop our skilling action
 		if (player.getSkilling().isSkilling()) {
@@ -108,13 +108,14 @@ public class WalkingPacketHandler implements PacketType {
 			}
 		}
 		
-		//Don't know what this does
+		//FIXME remove
 		if (packetType == 98) {
 			player.walkingToObject = true;
 			player.mageAllowed = true;
 		}
 		
-		//Don't know what this does either
+		// Packet 248 is either clicking on the minimap or a npc/object/player
+		// It has 14 less bytes at the start compared to normal walking, so we skip these.
 		if (packetType == 248) {
 			packetSize -= 14;
 		}

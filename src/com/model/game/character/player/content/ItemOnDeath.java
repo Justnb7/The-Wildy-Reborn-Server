@@ -2,7 +2,7 @@ package com.model.game.character.player.content;
 
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.utility.json.definitions.ItemDefinition;
 
 /**
@@ -74,7 +74,7 @@ public class ItemOnDeath {
 				}
 			}
 			ResetKeepItems(player);
-			player.write(new SendInterface(17100));
+			player.write(new SendInterfacePacket(17100));
 	}
 
 	public static void ResetKeepItems(Player player) {

@@ -21,8 +21,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.packets.out.CreatePlayerHint;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.utility.Utility;
@@ -119,7 +117,7 @@ public class PlayerDeath {
 		player.setDead(false);
 		player.faceUpdate(-1);
 		player.freeze(0);
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
 		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (!player.getController().isSafe() && duelSession == null) {
@@ -170,7 +168,7 @@ public class PlayerDeath {
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() == MultiplayerSessionStage.FURTHER_INTERACTION) {
 				Player opponent = duelSession.getWinner().get();
 				if (opponent != null) {
-					opponent.write(new CreatePlayerHint(10, -1));
+					opponent.getActionSender().createPlayerHint(10, -1);
 					duelSession.finish(MultiplayerSessionFinalizeType.GIVE_ITEMS);
 					PlayerSerialization.saveGame(player);
 				}

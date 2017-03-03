@@ -16,11 +16,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.CreatePlayerHint;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
-import com.model.game.character.player.packets.out.SendFrame87;
-import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
@@ -160,10 +156,10 @@ public class DuelSession extends MultiplayerSession {
 				int teleportY = arenaBoundary.getMinimumY() + 1 + Utility.exclusiveRandom(11);
 				player.getPA().movePlayer(teleportX, teleportY, 0);
 				opponent.getPA().movePlayer(teleportX, teleportY - 1, 0);
-				player.write(new CreatePlayerHint(10, opponent.getIndex()));
-				opponent.write(new CreatePlayerHint(10, player.getIndex()));
-				player.write(new SendRemoveInterface());
-				opponent.write(new SendRemoveInterface());
+				player.getActionSender().createPlayerHint(10, opponent.getIndex());
+				opponent.getActionSender().createPlayerHint(10, player.getIndex());
+				player.getActionSender().sendRemoveInterfacePacket();
+				opponent.getActionSender().sendRemoveInterfacePacket();
 				removeDisabledEquipment(player);
 				removeDisabledEquipment(opponent);
 				CycleEventHandler.getSingleton().addEvent(this, new AttackingOperation(), 2);
@@ -219,8 +215,8 @@ public class DuelSession extends MultiplayerSession {
 				refreshItemContainer(player, player, 6670);
 				player.getActionSender().sendString("Dueling with: " + recipient.getName() + " (level-" + recipient.combatLevel + ")", 6671);
 				player.getActionSender().sendString("", 6684);
-				player.write(new SendInterfaceWithInventoryOverlay(6575, 3321));
-				player.write(new SendFrame87(286, 0));
+				player.getActionSender().sendInterfaceWithInventoryOverlay(6575, 3321);
+				player.getActionSender().sendFrame87(286, 0);
 			}
 		} else if (stage.getStage() == MultiplayerSessionStage.CONFIRM_DECISION) {
 			for (Player player : players) {
@@ -256,7 +252,7 @@ public class DuelSession extends MultiplayerSession {
 					}
 				}
 				player.getActionSender().sendString("", 6571);
-				player.write(new SendInterfaceWithInventoryOverlay(6412, 197));
+				player.getActionSender().sendInterfaceWithInventoryOverlay(6412, 197);
 			}
 		}
 	}
@@ -317,7 +313,7 @@ public class DuelSession extends MultiplayerSession {
 
 	public void moveAndClearAttributes(Player player) {
 		player.getWeaponInterface().sendSpecialBar(player.playerEquipment[3]);
-		player.write(new CreatePlayerHint(10, -1));
+		player.getActionSender().createPlayerHint(10, -1);
 		player.getPA().movePlayer(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0);
 		restorePlayerAttributes(player);
 		player.getWeaponInterface().restoreWeaponAttributes();
@@ -355,7 +351,7 @@ public class DuelSession extends MultiplayerSession {
 		PlayerSerialization.saveGame(player);
 		
 		//Close all open windows
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
 		
 		//reset player variables
 		player.getPA().resetAnimation();
@@ -377,7 +373,7 @@ public class DuelSession extends MultiplayerSession {
 		}
 		player.getActionSender().sendString(Integer.toString(getOther(player).combatLevel), 6839);
 		player.getActionSender().sendString(getOther(player).getName(), 6840);
-		player.write(new SendInterface(6733));
+		player.write(new SendInterfacePacket(6733));
 		player.getOutStream().createFrameVarSizeWord(53);
 		player.getOutStream().writeWord(6822);
 		player.getOutStream().writeWord(itemList.size());
@@ -515,7 +511,7 @@ public class DuelSession extends MultiplayerSession {
 	}
 
 	public void refreshRules() {
-		players.stream().filter(Objects::nonNull).forEach(p -> p.write(new SendFrame87(286, rules.getTotalValue())));
+		players.stream().filter(Objects::nonNull).forEach(p -> p.getActionSender().sendFrame87(286, rules.getTotalValue()));
 	}
 
 }

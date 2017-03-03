@@ -28,7 +28,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
@@ -173,7 +172,7 @@ public class PlayerVsPlayerCombat {
 				Trading.decline(target);
 			}
 			
-			target.write(new SendRemoveInterface());
+			target.getActionSender().sendRemoveInterfacePacket();
 			applyCombatDamage(player, target, player.getCombatType(), item, index);
 		}
 

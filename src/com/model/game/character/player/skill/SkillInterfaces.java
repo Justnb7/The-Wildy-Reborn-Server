@@ -2,7 +2,7 @@ package com.model.game.character.player.skill;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 
 public class SkillInterfaces {
 
@@ -97,7 +97,7 @@ public class SkillInterfaces {
 		player.getActionSender().sendString(op11, 15303);
 		player.getActionSender().sendString(op12, 15306);
 		player.getActionSender().sendString(op13, 15309);
-		player.write(new SendInterface(8714));
+		player.write(new SendInterfacePacket(8714));
 	}
 
 	/**

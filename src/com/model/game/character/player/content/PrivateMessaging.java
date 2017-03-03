@@ -3,9 +3,8 @@ package com.model.game.character.player.content;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendFriendStatus;
+import com.model.game.character.player.packets.out.SendFriendPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendPM;
 import com.model.utility.Utility;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
@@ -81,7 +80,7 @@ public class PrivateMessaging implements PacketType {
 			 * verify we have the person added
 			 */
 			if (player.getFAI().hasFriend(target.usernameHash) || (player.rights.getValue() >= 1 && player.rights.getValue() <= 5)) {
-				target.write(new SendPM(player.usernameHash, player.rights.getValue(), chatMessage, size));
+				target.getActionSender().sendPm(player.usernameHash, player.rights.getValue(), chatMessage, size);
 			}
 			break;
 
@@ -127,7 +126,7 @@ public class PrivateMessaging implements PacketType {
 						/*
 						 * Send our online status to the player
 						 */
-						p.write(new SendFriendStatus(player.usernameHash, world));
+						p.write(new SendFriendPacket(player.usernameHash, world));
 					}
 				}
 			}

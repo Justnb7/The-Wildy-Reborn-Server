@@ -4,8 +4,7 @@ import com.model.game.Constants;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
-import com.model.game.character.player.packets.out.SendInteractionOption;
-import com.model.game.character.player.packets.out.SendWalkableInterface;
+import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.location.Position;
 
 public class DuelArenaController extends Controller {
@@ -83,16 +82,16 @@ public class DuelArenaController extends Controller {
 	@Override
 	public void onControllerInit(Player player) {
 		if ((player.getArea().inDuelArena() || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
-			player.write(new SendWalkableInterface(201));
+			player.write(new SendWalkableInterfacePacket(201));
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
-				player.write(new SendInteractionOption("Attack", 3, true));
+				player.getActionSender().sendInteractionOption("Attack", 3, true);
 			} else if (player.getArea().inDuelArena()) {
-				player.write(new SendInteractionOption("Challenge", 3, true));
+				player.getActionSender().sendInteractionOption("Challenge", 3, true);
 			} else {
-				player.write(new SendInteractionOption("null", 3, true));
+				player.getActionSender().sendInteractionOption("null", 3, true);
 			}
 		} else {
-			player.write(new SendInteractionOption("null", 3, true));
+			player.getActionSender().sendInteractionOption("null", 3, true);
 		}
 	}
 
@@ -144,16 +143,16 @@ public class DuelArenaController extends Controller {
 	@Override
 	public void onWalk(Player player) {
 		if ((player.getArea().inDuelArena() || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
-			player.write(new SendWalkableInterface(201));
+			player.write(new SendWalkableInterfacePacket(201));
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
-				player.write(new SendInteractionOption("Attack", 3, true));
+				player.getActionSender().sendInteractionOption("Attack", 3, true);
 			} else if (player.getArea().inDuelArena()) {
-				player.write(new SendInteractionOption("Challenge", 3, true));
+				player.getActionSender().sendInteractionOption("Challenge", 3, true);
 			} else {
-				player.write(new SendInteractionOption("null", 3, true));
+				player.getActionSender().sendInteractionOption("null", 3, true);
 			}
 		} else {
-			player.write(new SendInteractionOption("null", 3, true));
+			player.getActionSender().sendInteractionOption("null", 3, true);
 		}
 	}
 

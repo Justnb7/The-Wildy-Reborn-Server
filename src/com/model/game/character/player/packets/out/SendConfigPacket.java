@@ -3,7 +3,7 @@ package com.model.game.character.player.packets.out;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketEncoder;
 
-public class SendConfig implements PacketEncoder {
+public class SendConfigPacket implements PacketEncoder {
 	
 	/**
 	 * The opcode for the string to send
@@ -12,7 +12,7 @@ public class SendConfig implements PacketEncoder {
 	
 	private final int configId, state;
 
-	public SendConfig(int configId, int state) {
+	public SendConfigPacket(int configId, int state) {
 		this.configId = configId;
 		this.state = state;
 	}

@@ -2,7 +2,6 @@ package com.model.game.character.player.content.music;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendSongPacket;
-import com.model.game.character.player.packets.out.SendStringColor;
 import com.model.utility.Utility;
 
 /**
@@ -60,7 +59,7 @@ public class MusicData {
 	 * @param id
 	 */
 	public static void updateList(Player player, int id) {
-		player.write(new SendStringColor(id, 0 << 10 | 255 << 5 | 0));
+		player.getActionSender().sendStringColor(id, 0 << 10 | 255 << 5 | 0);
 	}
 
 	public static MusicData which;

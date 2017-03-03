@@ -1,7 +1,7 @@
 package com.model.game.character.combat.weapon;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 
 /**
  * The class which represents functionality for the attack style.
@@ -156,7 +156,7 @@ public class AttackStyle {
 	    		if (type.getButton() == buttonId) {
                     player.setAttackStyleConfig(type.getChild());
                     player.setAttackStyle(type.getStyle());
-                    player.write(new SendConfig(type.getParent(), type.getChild()));
+                    player.write(new SendConfigPacket(type.getParent(), type.getChild()));
                     //player.write(new SendMessagePacket("Setting config ID: "+type.getParent()+" to child id: "+type.getChild()+" attack style: "+type.getStyle()));
                     return true;
                 }
@@ -173,32 +173,32 @@ public class AttackStyle {
 		if (player.getEquipment().getWeaponId() == -1) {
 			switch(player.getAttackStyleConfig()) {
 			case 0:
-				 player.write(new SendConfig(43, 0));
+				 player.write(new SendConfigPacket(43, 0));
 				break;
 			case 1:
-				player.write(new SendConfig(43, 1));
+				player.write(new SendConfigPacket(43, 1));
 				break;
 			case 2:
-				player.write(new SendConfig(43, 2));
+				player.write(new SendConfigPacket(43, 2));
 				break;
 			}
 		} else if(player.getEquipment().getWeaponId() > 0) {
 			switch(player.getAttackStyle()) {
 			case 0:
-				 player.write(new SendConfig(43, 0));
+				 player.write(new SendConfigPacket(43, 0));
 				break;
 			case 1:
-				player.write(new SendConfig(43, 1));
+				player.write(new SendConfigPacket(43, 1));
 				break;
 			case 2:
-				player.write(new SendConfig(43, 2));
+				player.write(new SendConfigPacket(43, 2));
 				break;
 			case 3:
-				player.write(new SendConfig(43, 3));
+				player.write(new SendConfigPacket(43, 3));
 				break;
 			}
 		} else {
-			player.write(new SendConfig(43, 0));
+			player.write(new SendConfigPacket(43, 0));
 		}
 	}
 
@@ -210,7 +210,7 @@ public class AttackStyle {
 	public static void adjustAttackStyleOnLogin(Player player) {
 		if (player.getEquipment().getWeaponId() == -1) {
 			player.setAttackStyle(0);
-			player.write(new SendConfig(43, 0));
+			player.write(new SendConfigPacket(43, 0));
 		} else {
 			adjustAttackStyle(player);
 		}

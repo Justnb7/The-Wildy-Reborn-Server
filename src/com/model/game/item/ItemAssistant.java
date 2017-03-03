@@ -21,10 +21,7 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
-import com.model.game.character.player.packets.out.SendConfig;
-import com.model.game.character.player.packets.out.SendInterfaceConfig;
-import com.model.game.character.player.packets.out.SendItemOnInterface;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
@@ -964,28 +961,28 @@ public class ItemAssistant {
 				player.getBank().getBankTab()[i + 1].getItems().clear();
 			}
 		}
-		player.write(new SendConfig(600, 0));
-		player.write(new SendItemOnInterface(58040, -1, 0, 0));
+		player.write(new SendConfigPacket(600, 0));
+		player.getActionSender().sendUpdateItem(58040, -1, 0, 0);
 		int newSlot = -1;
 		for (int i = 0; i < player.getBank().getBankTab().length; i++) {
 			BankTab tab = player.getBank().getBankTab()[i];
 			if (i == tabId) {
-				player.write(new SendConfig(600 + i, 1));
+				player.write(new SendConfigPacket(600 + i, 1));
 			} else {
-				player.write(new SendConfig(600 + i, 0));
+				player.write(new SendConfigPacket(600 + i, 0));
 			}
 			if (tab.getTabId() != 0 && tab.size() > 0 && tab.getItem(0) != null) {
-				player.write(new SendInterfaceConfig(0, 58050 + i));
-				player.write(new SendItemOnInterface(58040 + i, player.getBank().getBankTab()[i].getItem(0).getId() - 1, 0, player.getBank().getBankTab()[i].getItem(0).getAmount()));
+				player.getActionSender().sendInterfaceConfig(0, 58050 + i);
+				player.getActionSender().sendUpdateItem(58040 + i, player.getBank().getBankTab()[i].getItem(0).getId() - 1, 0, player.getBank().getBankTab()[i].getItem(0).getAmount());
 			} else if (i != 0) {
 				if (newSlot == -1) {
 					newSlot = i;
-					player.write(new SendItemOnInterface(58040 + i, -1, 0, 0));
-					player.write(new SendInterfaceConfig(0, 58050 + i));
+					player.getActionSender().sendUpdateItem(58040 + i, -1, 0, 0);
+					player.getActionSender().sendInterfaceConfig(0, 58050 + i);
 					continue;
 				}
-				player.write(new SendItemOnInterface(58040 + i, -1, 0, 0));
-				player.write(new SendInterfaceConfig(1, 58050 + i));
+				player.getActionSender().sendUpdateItem(58040 + i, -1, 0, 0);
+				player.getActionSender().sendInterfaceConfig(1, 58050 + i);
 			}
 		}
 		player.getOutStream().putFrameVarShort(53);
@@ -1145,7 +1142,7 @@ public class ItemAssistant {
 		if (System.currentTimeMillis() - player.lastBankDeposit < 250)
 			return;
 		if (player.isBusy()) {
-			player.write(new SendRemoveInterface());
+			player.getActionSender().sendRemoveInterfacePacket();
 			return;
 		}
 		if (!tab.contains(item))
@@ -1336,7 +1333,7 @@ public class ItemAssistant {
 		}
 		if (moveWindow == 5382) {
 			if (!player.isBanking()) {
-				player.write(new SendRemoveInterface());
+				player.getActionSender().sendRemoveInterfacePacket();
 				resetBank();
 				return;
 			}

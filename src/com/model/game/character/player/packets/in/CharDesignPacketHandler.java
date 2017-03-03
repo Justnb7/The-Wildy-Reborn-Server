@@ -2,7 +2,6 @@ package com.model.game.character.player.packets.in;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
 
 /**
  * Change appearance
@@ -74,7 +73,7 @@ public class CharDesignPacketHandler implements PacketType {
 			player.playerAppearance[11] = colors[3]; // feet colour
 			player.playerAppearance[12] = colors[4]; // skin colour
 
-			player.write(new SendRemoveInterface());
+			player.getActionSender().sendRemoveInterfacePacket();
 			player.getPA().requestUpdates();
 			player.canChangeAppearance = false;
 			

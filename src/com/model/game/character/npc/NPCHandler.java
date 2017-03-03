@@ -21,8 +21,7 @@ import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
-import com.model.game.character.player.packets.out.DrawHeadicon;
-import com.model.game.character.player.packets.out.SendKillFeed;
+import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
@@ -168,7 +167,7 @@ public final class NPCHandler {
 			}
 		}
 		if (hasHeadIcon) {
-			player.write(new DrawHeadicon(1, npc.getIndex(), 0, 0));
+			player.getActionSender().drawHeadIcon(1, npc.getIndex(), 0, 0);
 		}
 		if(bossOffspring) {
 			npc.shouldRespawn = false;
@@ -302,7 +301,7 @@ public final class NPCHandler {
 	
 		
 		int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
-		player.write(new SendKillFeed(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
+		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
 		// get the drop table
 		
 		Pet.drop(player, npc.npcId);

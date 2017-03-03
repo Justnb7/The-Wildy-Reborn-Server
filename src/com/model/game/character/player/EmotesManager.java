@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
-import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
@@ -296,7 +296,7 @@ public final class EmotesManager {
 	
 	public static void onLogin(Player player) {
 		for (int i = 744; i <= 760; i++)
-			player.write(new SendConfig(i, 1));
+			player.write(new SendConfigPacket(i, 1));
 	}
 	
 }

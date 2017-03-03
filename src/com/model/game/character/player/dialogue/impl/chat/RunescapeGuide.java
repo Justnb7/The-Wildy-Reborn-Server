@@ -6,9 +6,8 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
-import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendSidebarInterface;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
+import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.item.Item;
 
 public class RunescapeGuide extends Dialogue {
@@ -38,14 +37,14 @@ public class RunescapeGuide extends Dialogue {
 				handleStarterKit(player);
 				player.setSpellBook(SpellBook.LUNAR);
 				player.setTutorial(false);
-				player.write(new SendRemoveInterface());
+				player.getActionSender().sendRemoveInterfacePacket();
 				for (int i = 0; i < 7; i++) {
 					player.getSkills().setLevel(i, 99);
 					player.getSkills().setExperience(i, 13034431);
 				}
 	    		player.updateRequired = true;
 	    		player.appearanceUpdateRequired = true;
-	    		player.write(new SendInterface(3559));
+	    		player.write(new SendInterfacePacket(3559));
 				player.canChangeAppearance = true;
 				break;
 			case 4:
@@ -53,10 +52,10 @@ public class RunescapeGuide extends Dialogue {
 				handleStarterKit(player);
 				player.setSpellBook(SpellBook.MODERN);
 				player.setTutorial(false);
-				player.write(new SendRemoveInterface());
+				player.getActionSender().sendRemoveInterfacePacket();
 	    		player.updateRequired = true;
 	    		player.appearanceUpdateRequired = true;
-	    		player.write(new SendInterface(3559));
+	    		player.write(new SendInterfacePacket(3559));
 				player.canChangeAppearance = true;
 				break;
 			}
@@ -65,7 +64,7 @@ public class RunescapeGuide extends Dialogue {
 	
 	private void handleStarterKit(Player player) {
 		player.setAttackStyle(AttackStyle.ACCURATE);
-		player.write(new SendSidebarInterface(0, 5855));
+		player.write(new SendSidebarInterfacePacket(0, 5855));
 		player.getActionSender().sendString("Unarmed", 5857);
 		Item[] starterItems = { //Runes
 				new Item(560, 100_000),
@@ -104,7 +103,7 @@ public class RunescapeGuide extends Dialogue {
 		for (Item item : starterItems) {
 			player.getItems().addItemToBank(item);
 		}
-		player.write(new SendInterface(3559));
+		player.write(new SendInterfacePacket(3559));
 		player.setReceivedStarter(true);
 		
 	}

@@ -3,13 +3,13 @@ package com.model.game.character.player.packets.out;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketEncoder;
 
-public class SendWalkableInterface implements PacketEncoder {
+public class SendWalkableInterfacePacket implements PacketEncoder {
 	
     private final int OPCODE = 208;
     
     private final int interfaceId;
 	
-	public SendWalkableInterface(int interfaceId) {
+	public SendWalkableInterfacePacket(int interfaceId) {
 		this.interfaceId = interfaceId;
 	}
 

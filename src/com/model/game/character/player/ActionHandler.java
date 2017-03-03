@@ -12,9 +12,9 @@ import com.model.game.character.player.content.rewards.ShinyChest;
 import com.model.game.character.player.content.teleport.Obelisks;
 import com.model.game.character.player.content.teleport.Teleport;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
-import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendSidebarInterface;
+import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.skill.agility.Shortcut;
 import com.model.game.character.player.skill.fishing.FishableSpot;
@@ -205,17 +205,17 @@ public class ActionHandler {
 			switch (player.getSpellBook()) {
 			case MODERN:
 				player.setSpellBook(SpellBook.ANCIENT);
-				player.write(new SendSidebarInterface(6, 12855));
+				player.write(new SendSidebarInterfacePacket(6, 12855));
 				player.write(new SendMessagePacket("An ancient wisdom fills your mind."));
 				break;
 			case ANCIENT:
 				player.setSpellBook(SpellBook.LUNAR);
-				player.write(new SendSidebarInterface(6, 29999));
+				player.write(new SendSidebarInterfacePacket(6, 29999));
 				player.write(new SendMessagePacket("The power of the moon overpowers you."));
 				break;
 			case LUNAR:
 				player.setSpellBook(SpellBook.MODERN);
-				player.write(new SendSidebarInterface(6, 1151));
+				player.write(new SendSidebarInterfacePacket(6, 1151));
 				player.write(new SendMessagePacket("You feel a drain on your memory."));
 				break;
 			}
@@ -455,17 +455,17 @@ public class ActionHandler {
 			switch (player.getSpellBook()) {
 			case MODERN:
 				player.setSpellBook(SpellBook.ANCIENT);
-				player.write(new SendSidebarInterface(6, 12855));
+				player.write(new SendSidebarInterfacePacket(6, 12855));
 				player.write(new SendMessagePacket("An ancient wisdom fills your mind."));
 				break;
 			case ANCIENT:
 				player.setSpellBook(SpellBook.LUNAR);
-				player.write(new SendSidebarInterface(6, 29999));
+				player.write(new SendSidebarInterfacePacket(6, 29999));
 				player.write(new SendMessagePacket("The power of the moon overpowers you."));
 				break;
 			case LUNAR:
 				player.setSpellBook(SpellBook.MODERN);
-				player.write(new SendSidebarInterface(6, 1151));
+				player.write(new SendSidebarInterfacePacket(6, 1151));
 				player.write(new SendMessagePacket("You feel a drain on your memory."));
 				break;
 			}
@@ -767,7 +767,7 @@ public class ActionHandler {
 				player.write(new SendMessagePacket("You must remove your equipment before changing your appearence."));
 				player.canChangeAppearance = false;
 			} else {
-				player.write(new SendInterface(3559));
+				player.write(new SendInterfacePacket(3559));
 				player.canChangeAppearance = true;
 			}
 			break;

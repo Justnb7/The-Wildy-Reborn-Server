@@ -3,13 +3,13 @@ package com.model.game.character.player.packets.out;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketEncoder;
 
-public class SendFrame75 implements PacketEncoder {
+public class SendInterfaceAnimationPacket implements PacketEncoder {
 
-	private final int OPCODE = 75;
+	private final int OPCODE = 200;
 
 	private final int mainFrame, subFrame;
 
-	public SendFrame75(int mainFrame, int subFrame) {
+	public SendInterfaceAnimationPacket(int mainFrame, int subFrame) {
 		this.mainFrame = mainFrame;
 		this.subFrame = subFrame;
 	}
@@ -18,8 +18,8 @@ public class SendFrame75 implements PacketEncoder {
 	public void encode(Player player) {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(OPCODE);
-			player.getOutStream().writeWordBigEndianA(mainFrame);
-			player.getOutStream().writeWordBigEndianA(subFrame);
+			player.getOutStream().writeShort(mainFrame);
+			player.getOutStream().writeShort(subFrame);
 		}
 	}
 

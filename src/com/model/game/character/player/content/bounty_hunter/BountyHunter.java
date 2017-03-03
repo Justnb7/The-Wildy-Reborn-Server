@@ -12,10 +12,8 @@ import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
-import com.model.game.character.player.packets.out.CreatePlayerHint;
-import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendStringColor;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -66,11 +64,11 @@ public class BountyHunter extends ScheduledTask {
 		if (player.getAttribute(BountyHunterConstants.BOUNTY_TARGET, 0) != 0) {
 			if (!validateTarget(player)) {
 				player.setAttribute(BountyHunterConstants.BOUNTY_TARGET, 0);
-				player.write(new CreatePlayerHint(10, -1));
+				player.getActionSender().createPlayerHint(10, -1);
 				for (int i = 0; i < 6; i++) {
-					player.write(new SendConfig(BountyHunterConstants.V_LOW_WEALTH_CONFIG + i, 0));
+					player.write(new SendConfigPacket(BountyHunterConstants.V_LOW_WEALTH_CONFIG + i, 0));
 				}
-				player.write(new SendConfig(BountyHunterConstants.DEFAULT_CONFIG, 0));
+				player.write(new SendConfigPacket(BountyHunterConstants.DEFAULT_CONFIG, 0));
 			}
 		}
 	}
@@ -110,7 +108,7 @@ public class BountyHunter extends ScheduledTask {
 				color = (255 << 10 | 255 << 5 | 0);
 			}
 		}
-		player.write( new SendStringColor(BountyHunterConstants.LEVEL_COMBAT_STRING_ID, color));
+		player.getActionSender().sendStringColor(BountyHunterConstants.LEVEL_COMBAT_STRING_ID, color);
 		player.getActionSender().sendString((level == 0 ? "Safe" : level > 0 ? (("Lvl " + minLevel + "-" + maxLevel) + ", Cmb " + combat) : "Level: ------"), BountyHunterConstants.LEVEL_COMBAT_STRING_ID);
 	}
 
@@ -261,11 +259,11 @@ public class BountyHunter extends ScheduledTask {
 				continue;
 			}
 			player.setAttribute(BountyHunterConstants.BOUNTY_TARGET, target.getIndex());
-			player.write(new CreatePlayerHint(10, target.getIndex()));
+			player.getActionSender().createPlayerHint(10, target.getIndex());
 			determineWealth(player);
 
 			target.setAttribute(BountyHunterConstants.BOUNTY_TARGET, player.getIndex());
-			target.write(new CreatePlayerHint(10, player.getIndex()));
+			target.getActionSender().createPlayerHint(10, player.getIndex());
 			determineWealth(target);
 
 			return;
@@ -303,7 +301,7 @@ public class BountyHunter extends ScheduledTask {
 		 * Disable all of the active configs
 		 */
 		for (int i = 0; i < 6; i++) {
-			target.write(new SendConfig(BountyHunterConstants.V_LOW_WEALTH_CONFIG + i, 0));
+			target.write(new SendConfigPacket(BountyHunterConstants.V_LOW_WEALTH_CONFIG + i, 0));
 		}
 
 		/*
@@ -333,8 +331,8 @@ public class BountyHunter extends ScheduledTask {
 			player.setAttribute("bounty_wealth", "Wealth: V. Low");
 		}
 
-		target.write(new SendConfig(configId, 1));
-		target.write(new SendConfig(BountyHunterConstants.DEFAULT_CONFIG, 1));
+		target.write(new SendConfigPacket(configId, 1));
+		target.write(new SendConfigPacket(BountyHunterConstants.DEFAULT_CONFIG, 1));
 	}
 
 	/**
@@ -351,18 +349,18 @@ public class BountyHunter extends ScheduledTask {
 		 * Reset the killers target
 		 */
 		killer.setAttribute(BountyHunterConstants.BOUNTY_TARGET, 0);
-		killer.write(new CreatePlayerHint(10, -1));
+		killer.getActionSender().createPlayerHint(10, -1);
 		killer.setAttribute("last_bounty_kill", System.currentTimeMillis());
 		for (int i = 0; i < 6; i++) {
-			killer.write(new SendConfig(BountyHunterConstants.V_LOW_WEALTH_CONFIG + i, 0));
+			killer.write(new SendConfigPacket(BountyHunterConstants.V_LOW_WEALTH_CONFIG + i, 0));
 		}
-		killer.write(new SendConfig(BountyHunterConstants.DEFAULT_CONFIG, 0));
+		killer.write(new SendConfigPacket(BountyHunterConstants.DEFAULT_CONFIG, 0));
 
 		/*
 		 * Reset the player who died
 		 */
 		player.setAttribute(BountyHunterConstants.BOUNTY_TARGET, 0);
-		player.write(new CreatePlayerHint(10, -1));
+		player.getActionSender().createPlayerHint(10, -1);
 		player.setAttribute("left_wild_delay", 0);
 	}
 

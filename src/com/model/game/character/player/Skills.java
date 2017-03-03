@@ -5,8 +5,7 @@ import java.util.Map;
 
 import com.model.game.Constants;
 import com.model.game.character.Graphic;
-import com.model.game.character.player.packets.out.SendChatBoxInterface;
-import com.model.game.character.player.packets.out.SendExperienceCounter;
+import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.skill.prayer.Prayer;
@@ -193,7 +192,7 @@ public class Skills {
 		if (skill.getFrame1() > 0 && skill.getFrame2() > 0 && skill.getFrame3() > 0) {
 			player.getActionSender().sendString("@dbl@Congratulations, you just advanced a " + skillName + " level.", skill.getFrame1());
 			player.getActionSender().sendString("Your " + skillName + " is now " + getLevelForExperience(skillId) + ".", skill.getFrame2());
-			player.write(new SendChatBoxInterface(skill.getFrame3()));
+			player.write(new SendChatBoxInterfacePacket(skill.getFrame3()));
 		} else {
 			player.write(new SendMessagePacket("Congralations, your " + skillName + " is now level " + getLevelForExperience(skillId) + "."));
 		}
@@ -448,7 +447,7 @@ public class Skills {
         //TODO add 1.25 and 1.50 exp additional for extreme/gold donator
         exps[skillId] += experience * multi;
         expCounter += experience*multi;
-        player.write(new SendExperienceCounter(skillId, (int) (experience*multi)));
+        player.getActionSender().sendExperienceCounter(skillId, (int) (experience*multi));
         //player.write(new SendMessagePacket("Exp received: "+experience+ " times "+multi+" so "+(experience*multi)));
        
 		if (exps[skillId] > MAXIMUM_EXP) {

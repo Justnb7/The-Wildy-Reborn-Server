@@ -13,7 +13,7 @@ import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.game.object.GlobalObject;
@@ -183,7 +183,7 @@ public class Obelisks {
 			line++;			
 			player.getActionSender().sendString("<col=46320a>" + strings, line);
 		}
-		player.write(new SendInterface(38100));
+		player.write(new SendInterfacePacket(38100));
 	}
 	
 	

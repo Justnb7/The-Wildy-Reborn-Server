@@ -18,13 +18,13 @@ import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendChatBoxInterface;
-import com.model.game.character.player.packets.out.SendConfig;
-import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
+import com.model.game.character.player.packets.out.SendConfigPacket;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSongPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.packets.out.SendWalkableInterface;
+import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
@@ -398,7 +398,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "staff":
-			player.write(new SendInterface(8134));
+			player.write(new SendInterfacePacket(8134));
 			player.getActionSender().sendString("@red@Luzoxpk Staff@bla@", 8144);
 			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Patrick - " + World.getWorld().getOnlineStatus("patrick"), 8145);
 			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Matthew - " + World.getWorld().getOnlineStatus("matthew"), 8146);
@@ -748,7 +748,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
     	case "sc":
-    		player.write(new SendConfig(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])));
+    		player.write(new SendConfigPacket(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])));
     		player.write(new SendMessagePacket("Setting config: "+cmd[1]+" Type: "+cmd[2]));
     		return true;
     	
@@ -912,17 +912,17 @@ public class CommandPacketHandler implements PacketType {
     	
     	case "interface":
     		int interfaceId = Integer.parseInt(cmd[1]);
-    		player.write(new SendInterface(interfaceId));
+    		player.write(new SendInterfacePacket(interfaceId));
     		return true;
     		
     	case "wi":
     		interfaceId = Integer.parseInt(cmd[1]);
-    		player.write(new SendWalkableInterface(interfaceId));
+    		player.write(new SendWalkableInterfacePacket(interfaceId));
     		return true;
     		
     	case "cbi":
 			interfaceId = Integer.parseInt(cmd[1]);
-			player.write(new SendChatBoxInterface(interfaceId));
+			player.write(new SendChatBoxInterfacePacket(interfaceId));
     		return true;
     		
     	case "debugmode":

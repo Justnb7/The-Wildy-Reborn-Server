@@ -3,8 +3,7 @@ package com.model.game.character.player.controller.impl;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
-import com.model.game.character.player.packets.out.SendInteractionOption;
-import com.model.game.character.player.packets.out.SendWalkableInterface;
+import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.location.Position;
 
 public class DefaultController extends Controller {
@@ -59,8 +58,8 @@ public class DefaultController extends Controller {
 
 	@Override
 	public void onControllerInit(Player player) {
-		player.write(new SendWalkableInterface(-1));
-		player.write(new SendInteractionOption("null", 3, true));
+		player.write(new SendWalkableInterfacePacket(-1));
+		player.getActionSender().sendInteractionOption("null", 3, true);
 	}
 
 	@Override
@@ -133,8 +132,8 @@ public class DefaultController extends Controller {
 
 	@Override
 	public void onWalk(Player player) {
-		player.write(new SendWalkableInterface(-1));
-		player.write(new SendInteractionOption("null", 3, true));
+		player.write(new SendWalkableInterfacePacket(-1));
+		player.getActionSender().sendInteractionOption("null", 3, true);
 	}
 
 	@Override

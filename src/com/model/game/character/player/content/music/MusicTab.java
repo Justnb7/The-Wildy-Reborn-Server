@@ -7,7 +7,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.buttons.ActionButton;
 import com.model.game.character.player.packets.buttons.ActionButtonEvent;
 import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
-import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendSongPacket;
 
 /**
@@ -386,7 +386,7 @@ public class MusicTab {
 
 	public static void setToManual(Player player) {
 		player.setAttribute("AUTO_MUSIC_DISABLED", Boolean.TRUE);
-		player.write(new SendConfig(18, 0));
+		player.write(new SendConfigPacket(18, 0));
 	}
 
 	/**
@@ -422,7 +422,7 @@ public class MusicTab {
 				case 38197:
 					player.setAttribute("MUSIC_LOOP", !player.getAttribute("MUSIC_LOOP", Boolean.FALSE));
 					int setting = player.getAttribute("MUSIC_LOOP", Boolean.FALSE) ? 1 : 0;
-					player.write(new SendConfig(19, setting));
+					player.write(new SendConfigPacket(19, setting));
 					break;
 				}
 				for (MusicTab element : music) {

@@ -24,7 +24,7 @@ import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
-import com.model.game.character.player.packets.out.SendFriendStatus;
+import com.model.game.character.player.packets.out.SendFriendPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.service.Service;
@@ -298,7 +298,7 @@ public class World implements Service {
 				if (target == null || !target.isActive())
 					continue;
 				if (target.getFAI().hasFriend(player.usernameHash) && !player.getFAI().hasIgnored(target.usernameHash))
-					target.write(new SendFriendStatus(player.usernameHash, 0));
+					target.write(new SendFriendPacket(player.usernameHash, 0));
 			}
 		}
 

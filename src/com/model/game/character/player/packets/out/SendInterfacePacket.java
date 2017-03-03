@@ -3,7 +3,7 @@ package com.model.game.character.player.packets.out;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketEncoder;
 
-public class SendInterface implements PacketEncoder {
+public class SendInterfacePacket implements PacketEncoder {
 
 	
 	/**
@@ -22,7 +22,7 @@ public class SendInterface implements PacketEncoder {
 	 * @param interfaceId
 	 *            The interface
 	 */
-	public SendInterface(int interfaceId) {
+	public SendInterfacePacket(int interfaceId) {
 		this.interfaceId = interfaceId;
 	}
 	

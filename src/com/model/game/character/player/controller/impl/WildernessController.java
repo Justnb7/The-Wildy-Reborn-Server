@@ -4,8 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.controller.Controller;
-import com.model.game.character.player.packets.out.SendInteractionOption;
-import com.model.game.character.player.packets.out.SendWalkableInterface;
+import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.location.Position;
 
 
@@ -86,11 +85,11 @@ public class WildernessController extends Controller {
 	public void onControllerInit(Player player) {
 		int modY = player.getY() > 6400 ? player.getY() - 6400 : player.getY();
 		player.wildLevel = (((modY - 3520) / 8) + 1);
-		player.write(new SendInteractionOption("Attack", 3, true));
+		player.getActionSender().sendInteractionOption("Attack", 3, true);
 		player.getActionSender().sendString("@yel@Level: " + player.wildLevel, 199);
 		player.setAttribute("left_wild_delay", 0);
 		BountyHunter.writeBountyStrings(player);
-		player.write(new SendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID));
+		player.write(new SendWalkableInterfacePacket(BountyHunterConstants.BOUNTY_INTERFACE_ID));
 		/*int modY = player.getY() > 6400 ? player.getY() - 6400 : player.getY();
 		player.wildLevel = (((modY - 3520) / 8) + 1);
 		player.setAttribute("left_wild_delay", 0);
@@ -98,10 +97,10 @@ public class WildernessController extends Controller {
 			BountyHunter.writeBountyStrings(player);
 			player.write(new SendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID));
 			player.getActionSender().sendString("@yel@Level: " + player.wildLevel, 199));
-			player.write(new SendInteractionOption("Attack", 3, true));
+			player.getActionSender().sendInteractionOption("Attack", 3, true));
 		} else {
 			player.write(new SendWalkableInterface(-1));
-			player.write(new SendInteractionOption("null", 3, true));
+			player.getActionSender().sendInteractionOption("null", 3, true));
 		}*/
 	}
 
@@ -161,10 +160,10 @@ public class WildernessController extends Controller {
 				player.wildLevel = wildLevel;
 				player.getActionSender().sendString("@yel@Level: " + player.wildLevel, 199));
 			}
-			player.write(new SendInteractionOption("Attack", 3, true));
+			player.getActionSender().sendInteractionOption("Attack", 3, true));
 		} else {
 			player.write(new SendWalkableInterface(-1));
-			player.write(new SendInteractionOption("null", 3, true));
+			player.getActionSender().sendInteractionOption("null", 3, true);
 		}*/
 		int modY = player.getY() > 6400 ? player.getY() - 6400 : player.getY();
 		int wildLevel = (((modY - 3523) / 8) + 1);
@@ -172,7 +171,7 @@ public class WildernessController extends Controller {
 			player.wildLevel = wildLevel;
 			player.getActionSender().sendString("@yel@Level: " + player.wildLevel, 199);
 		}
-		player.write(new SendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID));
+		player.write(new SendWalkableInterfacePacket(BountyHunterConstants.BOUNTY_INTERFACE_ID));
 	}
 
 	@Override

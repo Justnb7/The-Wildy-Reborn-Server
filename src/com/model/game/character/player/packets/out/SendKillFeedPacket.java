@@ -4,7 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketEncoder;
 import com.model.net.network.rsa.GameBuffer;
 
-public class SendKillFeed implements PacketEncoder {
+public class SendKillFeedPacket implements PacketEncoder {
 
 	private static final int OPCODE = 173;
 
@@ -15,7 +15,7 @@ public class SendKillFeed implements PacketEncoder {
 	
 	private final boolean poison;
 
-	public SendKillFeed(String killer, String victim, int weapon, boolean poison) {
+	public SendKillFeedPacket(String killer, String victim, int weapon, boolean poison) {
 		this.killer = killer;
 		this.victim = victim;
 		this.weapon = weapon;

@@ -4,9 +4,8 @@ import java.io.BufferedWriter;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.achievements.Achievements.Achievement;
-import com.model.game.character.player.packets.out.SendConfig;
-import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendConfigPacket;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 
 
 
@@ -60,12 +59,12 @@ public class AchievementHandler {
 	
 	public void drawInterface(int tier) {
 		int scrollId = tier == 0 ? 49101 : tier == 1 ? 51101 : 53101;
-		player.write(new SendInterfaceConfig(tier == 0 ? 0 : 1, 49100));
-		player.write(new SendInterfaceConfig(tier == 1 ? 0 : 1, 51100));
-		player.write(new SendInterfaceConfig(tier == 2 ? 0 : 1, 53100));
-		player.write(new SendConfig(800, tier == 0 ? 1 : 0));
-		player.write(new SendConfig(801, tier == 1 ? 1 : 0));
-		player.write(new SendConfig(802, tier == 2 ? 1 : 0));
+		player.getActionSender().sendInterfaceConfig(tier == 0 ? 0 : 1, 49100);
+		player.getActionSender().sendInterfaceConfig(tier == 1 ? 0 : 1, 51100);
+		player.getActionSender().sendInterfaceConfig(tier == 2 ? 0 : 1, 53100);
+		player.write(new SendConfigPacket(800, tier == 0 ? 1 : 0));
+		player.write(new SendConfigPacket(801, tier == 1 ? 1 : 0));
+		player.write(new SendConfigPacket(802, tier == 2 ? 1 : 0));
 		player.getActionSender().sendString(Integer.toString(this.getPoints()), 49016);
 		int components = 0;
 		for(Achievement achievement : Achievement.ACHIEVEMENTS) {
@@ -81,7 +80,7 @@ public class AchievementHandler {
 			}
 		}
 		player.getActionSender().sendString(Integer.toString(components), 49020);
-		player.write(new SendInterface(49000));
+		player.write(new SendInterfacePacket(49000));
 	}
 	
 	public boolean hasCompletedAll() {

@@ -15,12 +15,9 @@ import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.packets.out.SendChatBoxInterface;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
-import com.model.game.character.player.packets.out.SendConfig;
-import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendInterfaceModel;
-import com.model.game.character.player.packets.out.SendItemOnInterface;
+import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
+import com.model.game.character.player.packets.out.SendConfigPacket;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
@@ -136,7 +133,7 @@ public class PlayerAssistant {
         player.autocastId = 0;
         player.onAuto = false;
         player.autoCast = false;
-        player.write(new SendConfig(108, 0));
+        player.write(new SendConfigPacket(108, 0));
     }
 
     /**
@@ -529,9 +526,9 @@ public class PlayerAssistant {
         }
         
         if (player.takeAsNote)
-        	player.write(new SendConfig(115, 1));
+        	player.write(new SendConfigPacket(115, 1));
         else
-        	player.write(new SendConfig(115, 0));
+        	player.write(new SendConfigPacket(115, 0));
         
         if (Trading.isTrading(player)) {
             Trading.decline(player);
@@ -585,7 +582,7 @@ public class PlayerAssistant {
 	}
 	
 	public void destroyItem(Item item) {
-		player.write(new SendItemOnInterface(14171, item.getId(), 0, 1));
+		player.getActionSender().sendUpdateItem(14171, item.getId(), 0, 1);
 		player.getActionSender().sendString("Are you sure you want to drop this item?", 14174);
 		player.getActionSender().sendString("Yes.", 14175);
 		player.getActionSender().sendString("No.", 14176);
@@ -593,7 +590,7 @@ public class PlayerAssistant {
 		player.getActionSender().sendString("This item is valuable, you will not", 14182);
 		player.getActionSender().sendString("get it back once lost.", 14183);
 		player.getActionSender().sendString(ItemDefinition.forId(item.getId()).getName(), 14184);
-		player.write(new SendChatBoxInterface(14170));
+		player.write(new SendChatBoxInterfacePacket(14170));
 	}
 
 	public void handleDestroyItem() {
@@ -601,7 +598,7 @@ public class PlayerAssistant {
 			if (player.getItems().playerHasItem(player.getDestroyItem())) {
 				player.getItems().deleteItem(player.getDestroyItem());
 				player.setDestroyItem(-1);
-				player.write(new SendRemoveInterface());
+				player.getActionSender().sendRemoveInterfacePacket();
 			}
 		}
 	}
@@ -649,7 +646,7 @@ public class PlayerAssistant {
 		}
 		player.outStream.endFrameVarSizeWord();
 		player.flushOutStream();
-		player.write(new SendInterface(6960));
+		player.write(new SendInterfacePacket(6960));
 	}
 
 	public void sendItems(Item... items) {
@@ -672,7 +669,7 @@ public class PlayerAssistant {
 		}
 		player.outStream.endFrameVarSizeWord();
 		player.flushOutStream();
-		player.write(new SendInterface(6960));
+		player.write(new SendInterfacePacket(6960));
 	}
 
 	public void restoreHealth() {
@@ -693,7 +690,7 @@ public class PlayerAssistant {
 		resetAnimation();
 		resetTb();
 		resetFollow();
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
     }
 	
 }

@@ -24,10 +24,7 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
-import com.model.game.character.player.packets.out.SendFrame107;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendShakeScreen;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -170,7 +167,7 @@ public class NpcVsPlayerCombat {
 				npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
 				player.updateLastCombatAction();
 				player.setInCombat(true);
-				player.write(new SendRemoveInterface());
+				player.getActionSender().sendRemoveInterfacePacket();
 			}
 		}
 	}
@@ -673,11 +670,11 @@ public class NpcVsPlayerCombat {
 	}
 
 	private static void createVetionEarthquake(Player player) {
-		player.write(new SendShakeScreen(3, 2, 3, 2));
+		player.getActionSender().sendShakeScreen(3, 2, 3, 2);
 		Server.getTaskScheduler().schedule(new ScheduledTask(4) {
 			@Override
 			public void execute() {
-				player.write(new SendFrame107());
+				player.getActionSender().clearScreen();
 				this.stop();
 			}
 		});

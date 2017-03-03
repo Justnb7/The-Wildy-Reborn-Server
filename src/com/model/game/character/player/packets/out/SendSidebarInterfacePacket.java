@@ -4,7 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketEncoder;
 
-public class SendSidebarInterface implements PacketEncoder {
+public class SendSidebarInterfacePacket implements PacketEncoder {
 
 	/**
 	 * The opcode for the link to send
@@ -21,7 +21,7 @@ public class SendSidebarInterface implements PacketEncoder {
 	 * @param link
 	 *            The link to the url to open up
 	 */
-	public SendSidebarInterface(int menu, int id) {
+	public SendSidebarInterfacePacket(int menu, int id) {
 		this.menu = menu;
 		this.id = id;
 	}

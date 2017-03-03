@@ -4,7 +4,6 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.SkillHandler;
 import com.model.game.character.player.skill.SkillTask;
@@ -56,7 +55,7 @@ public class Fishing extends SkillTask {
 		if (!meetsRequirements(player, data)) {
 			return false;
 		}
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
 		continueAnimation(player, npcId, optionId);
 		player.getMovementHandler().stopMovement();
 		player.write(new SendMessagePacket("You begin fishing..."));

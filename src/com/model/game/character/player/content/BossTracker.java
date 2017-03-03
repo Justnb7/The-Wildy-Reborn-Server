@@ -4,8 +4,7 @@ import java.util.Map.Entry;
 
 import com.model.game.character.npc.BossDeathTracker.BossName;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendScrollbar;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.utility.Utility;
 
 public class BossTracker {
@@ -26,9 +25,9 @@ public class BossTracker {
 			line++;
 		}
 		
-		player.write(new SendScrollbar(45010, 200));
+		player.getActionSender().sendScrollBar(45010, 200);
 
-		player.write(new SendInterface(45000));
+		player.write(new SendInterfacePacket(45000));
 	}
 
 	public static int getTotalKills(Player player) {

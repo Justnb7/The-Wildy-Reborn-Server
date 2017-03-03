@@ -2,7 +2,6 @@ package com.model.game.item.container.impl;
 
 import com.google.common.collect.ImmutableSet;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
@@ -60,7 +59,7 @@ public final class RunePouchContainer extends Container {
 
 
 		player.getItems().resetItems(5064);
-		player.write(new SendInterfaceWithInventoryOverlay(41700, 5063));
+		player.getActionSender().sendInterfaceWithInventoryOverlay(41700, 5063);
 		player.getRunePouchContainer().refresh(player, 41710);
 		return true;
 	}

@@ -12,7 +12,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 
 public class PrayerHandler {
@@ -151,7 +151,7 @@ public class PrayerHandler {
 			player.getPA().requestUpdates();
 		}
 		player.setActivePrayer(prayer, true);
-		player.write(new SendConfig(prayer.getConfigId(), 1));
+		player.write(new SendConfigPacket(prayer.getConfigId(), 1));
 		player.addPrayerDrainRate(prayer.getDrainRate());
 	}
 
@@ -162,7 +162,7 @@ public class PrayerHandler {
 			player.getPA().requestUpdates();
 		}
 		player.addPrayerDrainRate(-(prayer.getDrainRate()));
-		player.write(new SendConfig(prayer.getConfigId(), 0));
+		player.write(new SendConfigPacket(prayer.getConfigId(), 0));
 	}
 
 	private static Prayers[] defensePrayers = { Prayers.THICK_SKIN, Prayers.ROCK_SKIN, Prayers.STEEL_SKIN,

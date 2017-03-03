@@ -18,8 +18,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.buttons.ActionButton;
 import com.model.game.character.player.packets.buttons.ActionButtonEvent;
 import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
-import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.TradeContainer;
@@ -190,7 +188,7 @@ public class Trading {
 					+ target.getTradeContainer().remaining() + " free\\n inventory slots.", 23505);
 			target.getActionSender().sendString(formatPlayerName(player.getName()) + " has\\n "
 					+ player.getTradeContainer().remaining() + " free\\n inventory slots.", 23505);
-			player.write(new SendInterfaceWithInventoryOverlay(3323, 3321));
+			player.getActionSender().sendInterfaceWithInventoryOverlay(3323, 3321);
 		} else if (state == TradeState.CONFIRM_SCREEN) {
 			player.setTradeState(TradeState.CONFIRM_SCREEN);
 			update(player, TradeState.CONFIRM_SCREEN);
@@ -207,7 +205,7 @@ public class Trading {
 		player.setTradeState(TradeState.NONE);
 		player.getRequestManager().setRequestType(null);
 		player.getRequestManager().setAcquaintance(null);
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
 		player.getTradeContainer().clear();
 	}
 
@@ -331,7 +329,7 @@ public class Trading {
 			}
 		}
 		player.getActionSender().sendString(SendTrade, 3558);
-		player.write(new SendInterfaceWithInventoryOverlay(3443, 197));
+		player.getActionSender().sendInterfaceWithInventoryOverlay(3443, 197);
 	}
 
 	/**

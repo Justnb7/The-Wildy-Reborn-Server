@@ -8,7 +8,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.tasks.Nieve;
 import com.model.game.character.player.skill.slayer.tasks.Task;
@@ -186,12 +185,12 @@ public class SlayerTaskManagement {
 			player.setSlayerTask(0);
 			player.setSlayerTaskAmount(0);
 			player.getItems().deleteItem(13307, 10);
-			player.write(new SendRemoveInterface());
+			player.getActionSender().sendRemoveInterfacePacket();
 			player.write(new SendMessagePacket("Your slayer task has been reset, talk to any slayer master for a new one."));
 			return true;
 		} else {
 			player.write(new SendMessagePacket("You do not have enough blood money in order to reset your slayer task."));
-			player.write(new SendRemoveInterface());
+			player.getActionSender().sendRemoveInterfacePacket();
 			return false;
 		}
 	}

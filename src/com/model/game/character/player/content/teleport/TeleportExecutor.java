@@ -13,7 +13,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
@@ -40,7 +39,7 @@ public class TeleportExecutor {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
 			player.write(new SendMessagePacket("You can't teleport while being in a duel."));
-			player.write(new SendRemoveInterface());
+			player.getActionSender().sendRemoveInterfacePacket();
 			return;
 		}
 		//ken if statement, end dueling session if we aren't beyond request stage and want to teleport away
@@ -134,7 +133,7 @@ public class TeleportExecutor {
 		player.getSkilling().stop();
 		Combat.resetCombat(player);
 		player.stopMovement();
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
 		player.npcIndex = player.playerIndex = 0;
 		player.faceUpdate(-1);
 		player.teleTimer = initialDelay;
@@ -232,7 +231,7 @@ public class TeleportExecutor {
 		if (player.playerIndex > 0 || player.npcIndex > 0) {
 			Combat.resetCombat(player);
 		}
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
 		player.npcIndex = 0;
 		player.playerIndex = 0;
 		player.faceUpdate(0);

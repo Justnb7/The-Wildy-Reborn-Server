@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.MoveComponent;
-import com.model.game.character.player.packets.out.SendConfig;
-import com.model.game.character.player.packets.out.SendInterfaceConfig;
-import com.model.game.character.player.packets.out.SendInterfaceModel;
-import com.model.game.character.player.packets.out.SendSidebarInterface;
+import com.model.game.character.player.packets.out.SendConfigPacket;
+import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 
 /**
  * The class which represents functionality for the weapons interface.
@@ -123,15 +120,15 @@ public class WeaponInterface {
 		for (final weaponInterface equipment : weaponInterface.values()) {
 			if (name == null || name == "Unarmed") {
 				player.setAttackStyle(0);
-				player.write(new SendSidebarInterface(0, 5855));
+				player.write(new SendSidebarInterfacePacket(0, 5855));
 				player.getActionSender().sendString("Unarmed", 5857);
 				player.setAttackStyle(0);
-				player.write(new SendConfig(43, 0));
+				player.write(new SendConfigPacket(43, 0));
 				return;
 			}
 			if (name.contains(equipment.getWeaponType()) || name.endsWith(equipment.getWeaponType()) || name.startsWith(equipment.getWeaponType())) {
-				player.write(new SendSidebarInterface(0, equipment.getInterface()));
-				player.write(new SendInterfaceModel(equipment.getItemLocation(), 200, id));
+				player.write(new SendSidebarInterfacePacket(0, equipment.getInterface()));
+				player.getActionSender().sendInterfaceModel(equipment.getItemLocation(), 200, id);
 				player.getActionSender().sendString(name, equipment.getNameOnInterfaceId());
 			}
 		}
@@ -193,21 +190,21 @@ public class WeaponInterface {
 	public void sendSpecialBar(int id) {
 		WeaponSpecials spec = WeaponSpecials.forId(id);
 		if (spec == null) {
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.DAGGER_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.KORASI_SWORD_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.WHIP_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.SCIMITAR_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.SPEAR_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.MAUL_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.AXE_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.HALBERD_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.MACE_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.CROSSBOW.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.CLAWS.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.GODSWORD_INTERFACE.getConfigId()));
-			player.write(new SendInterfaceConfig(1, WeaponSpecials.BLOWPIPE.getConfigId()));
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.DAGGER_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.KORASI_SWORD_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.WHIP_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.SCIMITAR_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.SPEAR_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.MAUL_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.AXE_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.HALBERD_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.MACE_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.CROSSBOW.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.CLAWS.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.GODSWORD_INTERFACE.getConfigId());
+			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.BLOWPIPE.getConfigId());
 		} else {
-			player.write(new SendInterfaceConfig(0, spec.getConfigId()));
+			player.getActionSender().sendInterfaceConfig(0, spec.getConfigId());
 			specialAmount(id, player.getSpecialAmount(), spec.getSpecialBarId());
 		}
 	}
@@ -224,16 +221,16 @@ public class WeaponInterface {
 	 */
 	public void specialAmount(int weapon, int specAmount, int barId) {
 		player.specBarId = barId;
-		player.write(new MoveComponent(specAmount >= 100 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 90 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 80 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 70 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 60 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 50 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 40 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 30 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 20 ? 500 : 0, 0, (--barId)));
-		player.write(new MoveComponent(specAmount >= 10 ? 500 : 0, 0, (--barId)));
+		player.getActionSender().moveComponent(specAmount >= 100 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 90 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 80 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 70 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 60 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 50 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 40 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 30 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 20 ? 500 : 0, 0, (--barId));
+		player.getActionSender().moveComponent(specAmount >= 10 ? 500 : 0, 0, (--barId));
 		refreshSpecialAttack();
 		sendWeapon(weapon, player.getItems().getItemName(weapon));
 	}

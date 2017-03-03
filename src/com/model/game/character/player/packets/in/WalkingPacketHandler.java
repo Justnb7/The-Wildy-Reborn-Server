@@ -14,7 +14,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 
@@ -59,7 +58,7 @@ public class WalkingPacketHandler implements PacketType {
 		player.getController().onWalk(player);
 		
 		//When walking we have to close all open interfaces.
-		player.write(new SendRemoveInterface());
+		player.getActionSender().sendRemoveInterfacePacket();
 		
 		//Stop our distanced action task because we reset the walking queue by walking
 		player.stopDistancedTask();

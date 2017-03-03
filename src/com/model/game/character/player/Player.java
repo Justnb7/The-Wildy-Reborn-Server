@@ -62,11 +62,9 @@ import com.model.game.character.player.dialogue.DialogueManager;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.PacketEncoder;
-import com.model.game.character.player.packets.out.SendConfig;
-import com.model.game.character.player.packets.out.SendInteractionOption;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendMultiWay;
-import com.model.game.character.player.packets.out.SendSidebarInterface;
+import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.skill.SkillInterfaces;
@@ -958,8 +956,8 @@ public class Player extends Entity {
 				Player c = World.getWorld().getPlayers().get(this.getIndex());
 				autoCast = true;
 				autocastId = autocastIds[j + 1];
-				c.write(new SendConfig(108, 1));
-				c.write(new SendSidebarInterface(0, 328));
+				c.write(new SendConfigPacket(108, 1));
+				c.write(new SendSidebarInterfacePacket(0, 328));
 				break;
 			}
 		}
@@ -1386,15 +1384,15 @@ public class Player extends Entity {
 	private void loadInterfaces() {
 		int[] interfaces = { 2423, 3917, 29400, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 36000, 147, -1, -1 };//15
 		for (int i = 0; i < 15; i++) {
-			this.write(new SendSidebarInterface(i, interfaces[i]));
+			this.write(new SendSidebarInterfacePacket(i, interfaces[i]));
 		}
 		
 		if (this.getSpellBook() == SpellBook.ANCIENT) {
-			this.write(new SendSidebarInterface(6, 12855));
+			this.write(new SendSidebarInterfacePacket(6, 12855));
 		} else if (this.getSpellBook() == SpellBook.MODERN) {
-			this.write(new SendSidebarInterface(6, 1151));
+			this.write(new SendSidebarInterfacePacket(6, 1151));
 		} else if (this.getSpellBook() == SpellBook.LUNAR) {
-			this.write(new SendSidebarInterface(6, 29999));
+			this.write(new SendSidebarInterfacePacket(6, 29999));
 		}
 		
 	}
@@ -1429,8 +1427,8 @@ public class Player extends Entity {
 		loadInterfaces();
 		this.setLastRegionHeight(this.getZ());
 		getActionSender().sendString("100%", 149);
-		write(new SendInteractionOption("Follow", 4, true));
-		write(new SendInteractionOption("Trade With", 5, true));
+		getActionSender().sendInteractionOption("Follow", 4, true);
+		getActionSender().sendInteractionOption("Trade With", 5, true);
 		getItems().resetItems(3214);
 		getWeaponInterface().sendWeapon(playerEquipment[this.getEquipment().getWeaponId()], this.getItems().getItemName(playerEquipment[this.getEquipment().getWeaponId()]));
 		getItems().setEquipment(playerEquipment[getEquipment().getWeaponId()],playerEquipmentN[getEquipment().getWeaponId()], getEquipment().getWeaponId());
@@ -1459,14 +1457,14 @@ public class Player extends Entity {
 		AttackStyle.adjustAttackStyleOnLogin(player);
 		this.setScreenBrightness((byte) 4);
 		player.getActionSender().sendString("100%", 149);
-		player.write(new SendConfig(166, getScreenBrightness()));
-		player.write(new SendConfig(207, isEnableMusic() ? 1 : 0));
-		player.write(new SendConfig(206, isEnableSound() ? 1 : 0));
-		player.write(new SendConfig(287, getSplitPrivateChat() ? 1 : 0));
-		player.write(new SendConfig(205, getSplitPrivateChat() ? 1 : 0));
-		player.write(new SendConfig(200, getAcceptAid() ? 1 : 0));
-		player.write(new SendConfig(172, isAutoRetaliating() ? 1 : 0));
-		player.write(new SendConfig(152, isRunning() ? 1 : 0));
+		player.write(new SendConfigPacket(166, getScreenBrightness()));
+		player.write(new SendConfigPacket(207, isEnableMusic() ? 1 : 0));
+		player.write(new SendConfigPacket(206, isEnableSound() ? 1 : 0));
+		player.write(new SendConfigPacket(287, getSplitPrivateChat() ? 1 : 0));
+		player.write(new SendConfigPacket(205, getSplitPrivateChat() ? 1 : 0));
+		player.write(new SendConfigPacket(200, getAcceptAid() ? 1 : 0));
+		player.write(new SendConfigPacket(172, isAutoRetaliating() ? 1 : 0));
+		player.write(new SendConfigPacket(152, isRunning() ? 1 : 0));
 	}
 
 	private void submitAfterLogin() {
@@ -1706,10 +1704,10 @@ public class Player extends Entity {
 		
 		if (hasMultiSign && !getArea().inMulti()) {
 			hasMultiSign = false;
-			this.write(new SendMultiWay(-1));
+			this.getActionSender().sendMultiway(-1);
 		} else if (!hasMultiSign && getArea().inMulti()) {
 			hasMultiSign = true;
-			this.write(new SendMultiWay(1));
+			this.getActionSender().sendMultiway(1);
 		}
 	}
 

@@ -7,9 +7,7 @@ import java.util.Map;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.RemoveClanMember;
-import com.model.game.character.player.packets.out.SendEnterStringInterface;
-import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.NameUtils;
 import com.model.utility.Utility;
@@ -98,7 +96,7 @@ public class ClanManager extends ClanData {
 			}
 		}
 		
-		player.write(new SendInterface(48000));
+		player.write(new SendInterfacePacket(48000));
 	}
 
 	/**
@@ -293,7 +291,7 @@ public class ClanManager extends ClanData {
 			if (member != null && member.getName() != null) {
 				Player clan_member = World.getWorld().getPlayerByName(member.getName());
 				if (clan_member != null) {
-					clan_member.write(new RemoveClanMember(player.getName()));
+					clan_member.getActionSender().removeClanMember(player.getName());
 				}
 			}
 		}
@@ -470,7 +468,7 @@ public class ClanManager extends ClanData {
 		switch (button_id) {
 		case 230120:
 			player.setStringReceiver(1);
-			player.write(new SendEnterStringInterface());
+			player.getActionSender().sendEnterStringInterface();
 			return true;
 		case 70215:
 			leaveClan(player, false);

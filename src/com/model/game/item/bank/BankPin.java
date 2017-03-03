@@ -1,9 +1,7 @@
 package com.model.game.item.bank;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendRemoveInterface;
-import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
@@ -38,7 +36,7 @@ public class BankPin {
 			player.getActionSender().sendString("Choose any 4-8 character combination.", 39504);
 			player.getActionSender().sendString("Make sure caps lock isn't enabled.", 39505);
 			player.getActionSender().sendString("Press enter to continue", 39506);
-            player.write(new SendInterfaceConfig(1, 39511));
+            player.getActionSender().sendInterfaceConfig(1, 39511);
 			break;
 		case 2:
 			pinState = PinState.UNLOCK;
@@ -46,7 +44,7 @@ public class BankPin {
 			player.getActionSender().sendString("Type in your 4-8 character combination.", 39504);
 			player.getActionSender().sendString("Hit enter after you've typed your pin.", 39505);
 			player.getActionSender().sendString("Press the button to continue", 39506);
-            player.write(new SendInterfaceConfig(1, 39511));
+            player.getActionSender().sendInterfaceConfig(1, 39511);
 			break;
 		case 3:
 			pinState = PinState.CANCEL_PIN;
@@ -54,7 +52,7 @@ public class BankPin {
 			player.getActionSender().sendString("click the button below. If not", 39504);
 			player.getActionSender().sendString("click the x button in the corner.", 39505);
 			player.getActionSender().sendString("Press the button to continue", 39506);
-            player.write(new SendInterfaceConfig(0, 39511));
+            player.getActionSender().sendInterfaceConfig(0, 39511);
 			break;
 		case 4:
 			pinState = PinState.CANCEL_REQUEST;
@@ -62,10 +60,10 @@ public class BankPin {
 			player.getActionSender().sendString("pending. Press continue to cancel", 39504);
 			player.getActionSender().sendString("this and keep your bank pin.", 39505);
 			player.getActionSender().sendString("Press the button to continue", 39506);
-            player.write(new SendInterfaceConfig(1, 39511));
+            player.getActionSender().sendInterfaceConfig(1, 39511);
 			break;
 		}
-		player.write(new SendInterface(39500));
+		player.write(new SendInterfacePacket(39500));
 	}
 
 	public void create(String pin) {
@@ -110,7 +108,7 @@ public class BankPin {
 			this.attempts++;
 			return;
 		}
-		this.player.write(new SendRemoveInterface());
+		this.player.getActionSender().sendRemoveInterfacePacket();
 		this.attempts = 0;
 		this.locked = false;
 		this.player.playerStun = false;

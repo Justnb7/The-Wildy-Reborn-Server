@@ -13,8 +13,6 @@ import java.util.Set;
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterfaceConfig;
-import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
@@ -130,16 +128,16 @@ public final class Shop {
 			return;
 		}
 		if (name.equals("Bounty Hunter Store")) {
-			player.write(new SendInterfaceConfig(0, 28050));
+			player.getActionSender().sendInterfaceConfig(0, 28050);
 			player.getActionSender().sendString("Bounties: " + Utility.insertCommas(Integer.toString(player.getBountyPoints())), 28052);
 		} else {
-			player.write(new SendInterfaceConfig(1, 28050));
+			player.getActionSender().sendInterfaceConfig(1, 28050);
 		}
 		player.setShopping(true);
 		player.getItems().resetItems(3823);
 		player.getItems().sendItemsOnInterface(3900, container.container(), container.size());
 		player.setOpenShop(name);
-		player.write(new SendInterfaceWithInventoryOverlay(3824, 3822));
+		player.getActionSender().sendInterfaceWithInventoryOverlay(3824, 3822);
 		player.getActionSender().sendString(name, 3901);
 		players.add(player);
 	}

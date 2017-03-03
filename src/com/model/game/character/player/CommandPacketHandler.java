@@ -683,14 +683,18 @@ public class CommandPacketHandler implements PacketType {
     	
 		case "changepassother":
 	    	//TODO ask Jak for help on this aswell
-			
+			//Yeh how am i checking an offline player and change their pw for recovery purpose
 			String n = cmd[1];
 			String password = cmd[2];
 			Player t = World.getWorld().getPlayerByName(n);
 			if(t == null) {
 				player.write(new SendMessagePacket("Couldn't find player " + n + "."));
+				// player here is the person that will get feedback from this process as it executes
+				PlayerSerialization.change_offline_password(player, n, password);
 			} else {
-				t.setPassword(Utility.md5Hash(password));
+				// This is fine for a player thats already online
+				t.setPassword(""); // when savig, if pw is null/len=0 we save the passHash instead
+				t.passHash = Utility.md5Hash(password);
 				player.message("You changed their password!");
 			}
 			return true;

@@ -2140,7 +2140,7 @@ public class ItemAssistant {
 		int found = 0;
 		boolean stackable = new Item(item).getDefinition().isStackable();
 		  for (int i = 0; i < player.playerItems.length; i++) {
-			  System.out.println("item["+i+"]="+player.playerItems[i]);
+			  //System.out.println("item["+i+"]="+player.playerItems[i]);
 			  if (player.playerItems[i] == (item + 1)) {
 				  if (stackable) {
 					  return player.playerItemsN[i];

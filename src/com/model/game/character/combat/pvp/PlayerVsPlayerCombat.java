@@ -898,7 +898,7 @@ public class PlayerVsPlayerCombat {
 			if (spellFreezeTime > 0 && !defender.frozen() && !player.magicFailed) {
 				
 				defender.freeze(spellFreezeTime);
-				defender.resetWalkingQueue();
+				defender.getMovementHandler().resetWalkingQueue();
 				defender.write(new SendMessagePacket("You have been frozen."));
 				defender.frozenBy = player.getIndex();
 			}

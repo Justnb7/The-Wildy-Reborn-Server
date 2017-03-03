@@ -1,7 +1,5 @@
 package com.model.game.character.combat.magic;
 
-import com.model.game.World;
-import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;

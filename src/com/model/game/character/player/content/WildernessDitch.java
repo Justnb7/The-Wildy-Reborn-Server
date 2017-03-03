@@ -27,7 +27,7 @@ public class WildernessDitch {
 	 * @param y the y-coordinate to walk to
 	 */
 	public static void crossDitch(Player player, int x, int y) {
-		player.resetWalkingQueue();
+		player.getMovementHandler().resetWalkingQueue();
 		player.teleportToX = x;
        	player.teleportToY = y;
 		player.getPA().requestUpdates();

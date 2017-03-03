@@ -12,12 +12,9 @@ import com.model.game.character.player.packets.actions.NpcInteractionPacketHandl
 import com.model.game.character.player.packets.actions.ClickingInGame;
 import com.model.game.character.player.packets.actions.ClickingObject;
 import com.model.game.character.player.packets.actions.ClickingStuff;
-import com.model.game.character.player.packets.actions.ItemOnGroundItem;
-import com.model.game.character.player.packets.actions.ItemOnItemPacketHandler;
 import com.model.game.character.player.packets.actions.ItemOnNpc;
 import com.model.game.character.player.packets.actions.ItemOnObjectPacketHandler;
 import com.model.game.character.player.packets.actions.ItemOnPlayerPacketHandler;
-import com.model.game.character.player.packets.actions.MagicOnItemPacketHandler;
 import com.model.game.character.player.packets.actions.SecondGroundOption;
 import com.model.game.character.player.packets.actions.Withdraw10Action;
 import com.model.game.character.player.packets.actions.Withdraw1Action;
@@ -30,7 +27,6 @@ import com.model.game.character.player.packets.in.RegionChangePacketHandler;
 import com.model.game.character.player.packets.in.CharDesignPacketHandler;
 import com.model.game.character.player.packets.in.ChatPacketHandler;
 import com.model.game.character.player.packets.in.DialoguePacketHandler;
-import com.model.game.character.player.packets.in.DropItemPacketHandler;
 import com.model.game.character.player.packets.in.EnterAmountPacketHandler;
 import com.model.game.character.player.packets.in.FollowPlayer;
 import com.model.game.character.player.packets.in.IdleLogoutPacketHandler;
@@ -38,7 +34,6 @@ import com.model.game.character.player.packets.in.InputDialogueStringPacketHandl
 import com.model.game.character.player.packets.in.InputFieldOther;
 import com.model.game.character.player.packets.in.ItemOptionPacket;
 import com.model.game.character.player.packets.in.SwitchItemPacketHandler;
-import com.model.game.character.player.packets.in.PickupGroundItemPacketHandler;
 import com.model.game.character.player.packets.in.DefaultPacketHandler;
 import com.model.game.character.player.packets.in.Trade;
 import com.model.game.character.player.packets.in.WalkingPacketHandler;
@@ -51,11 +46,20 @@ public class PacketHandler {
 
 	static {
 
-		DefaultPacketHandler u = new DefaultPacketHandler();
+		//Redone by Patrick van Elderen
 		ItemOptionPacket iop = new ItemOptionPacket();
 		packetId[122] = iop;
 		packetId[16] = iop;
 		packetId[75] = iop;
+		packetId[87] = iop;
+		packetId[236] = iop;
+		packetId[53] = iop;
+		packetId[237] = iop;
+		packetId[25] = iop;
+		
+		
+		//PI
+		DefaultPacketHandler u = new DefaultPacketHandler();
 		subPacketId[41] = new WieldPacketHandler();
 		packetId[3] = u;
 		packetId[202] = u;
@@ -98,13 +102,10 @@ public class PacketHandler {
 		packetId[21] = cn;
 		packetId[241] = new ClickingInGame();
 		packetId[4] = new ChatPacketHandler();
-		packetId[236] = new PickupGroundItemPacketHandler();
-		packetId[87] = new DropItemPacketHandler();
 		packetId[185] = new ActionButtonPacketHandler();
 		packetId[130] = new ClickingStuff();
 		packetId[103] = new CommandPacketHandler();
 		packetId[214] = new SwitchItemPacketHandler();
-		packetId[237] = new MagicOnItemPacketHandler();
 		AttackPlayer ap = new AttackPlayer();
 		packetId[73] = ap;
 		packetId[249] = ap;
@@ -132,9 +133,7 @@ public class PacketHandler {
 		packetId[98] = w;
 		packetId[164] = w;
 		packetId[248] = w;
-		packetId[53] = new ItemOnItemPacketHandler();
 		packetId[192] = new ItemOnObjectPacketHandler();
-		packetId[25] = new ItemOnGroundItem();
 		RegionChangePacketHandler cr = new RegionChangePacketHandler();
 		packetId[121] = cr;
 		packetId[210] = cr;

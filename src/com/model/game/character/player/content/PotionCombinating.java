@@ -2,7 +2,7 @@ package com.model.game.character.player.content;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.item.GameItem;
+import com.model.game.item.Item;
 
 /**
  * @author Jason MacKeigan
@@ -19,7 +19,7 @@ public class PotionCombinating {
 	 * @param item	the item we're determining this for
 	 * @return	true if the item is a potion based on its item id, otherwise it will return false
 	 */
-	public boolean isPotion(GameItem item) {
+	public boolean isPotion(Item item) {
 		Potion potion = Potion.get(item.getId());
 		return potion != null;
 	}
@@ -31,7 +31,7 @@ public class PotionCombinating {
 	 * @param potion2	the second potion
 	 * @return	true if they both match.
 	 */
-	public boolean matches(GameItem potion1, GameItem potion2) {
+	public boolean matches(Item potion1, Item potion2) {
 		Potion p1 = Potion.get(potion1.getId());
 		Potion p2 = Potion.get(potion2.getId());
 		if (p1 == null || p2 == null) {
@@ -46,11 +46,11 @@ public class PotionCombinating {
 	 * @param potion1	the first potion
 	 * @param potion2	the second potion
 	 */
-	public void mix(Player player, GameItem item1, GameItem item2) {
-		if (!player.getItems().playerHasItem(item1.getId(), item1.getAmount(), item1.getSlot())) {
+	public void mix(Player player, Item item1, Item item2) {
+		if (!player.getItems().playerHasItem(item1.getId(), item1.getAmount())) {
 			return;
 		}
-		if (!player.getItems().playerHasItem(item2.getId(), item2.getAmount(), item2.getSlot())) {
+		if (!player.getItems().playerHasItem(item2.getId(), item2.getAmount())) {
 			return;
 		}
 		Potion potion1 = Potion.get(item1.getId()); 
@@ -62,21 +62,21 @@ public class PotionCombinating {
 			player.write(new SendMessagePacket("You cannot mix a 4 dose potion."));
 			return;
 		}
-		player.getItems().deleteItem(item1.getId(), item1.getSlot(), item1.getAmount());
-		player.getItems().deleteItem(item2.getId(), item2.getSlot(), item2.getAmount());
+		player.getItems().deleteItem(item1.getId(), item1.getAmount());
+		player.getItems().deleteItem(item2.getId(), item2.getAmount());
 		int dose1 = potion1.getDosage(item1.getId());
 		int dose2 = potion2.getDosage(item2.getId());
 		int sum = dose1 + dose2;
 		if (sum >= 4) {
-			item1 = new GameItem(potion1.full);
+			item1 = new Item(potion1.full);
 			if (sum - 4 > 0) {
-				item2 = new GameItem(potion2.getItemId(sum - 4));
+				item2 = new Item(potion2.getItemId(sum - 4));
 			} else {
-				item2 = new GameItem(229);
+				item2 = new Item(229);
 			}
 		} else {
-			item1 = new GameItem(potion1.getItemId(sum));
-			item2 = new GameItem(229);
+			item1 = new Item(potion1.getItemId(sum));
+			item2 = new Item(229);
 		}
 		player.getItems().addItem(item1.getId(), item1.getAmount());
 		player.getItems().addItem(item2.getId(), item2.getAmount());

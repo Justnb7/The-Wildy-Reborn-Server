@@ -11,6 +11,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem.State;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -26,9 +27,9 @@ public final class GroundItemHandler {
 
 	private static final List<GroundItem> groundItems = new ArrayList<>();
 
-	public static Optional<GroundItem> get(int id, int x, int y, int z) {
-		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getLocation().getX() == x
-				&& item.getLocation().getY() == y && item.getLocation().getZ() == z).findFirst();
+	public static Optional<GroundItem> get(int id, Position position/*int x, int y, int z*/) {
+		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getLocation().getX() == position.getX()
+				&& item.getLocation().getY() == position.getY() && item.getLocation().getZ() == position.getZ()).findFirst();
 	}
 
 	/**
@@ -281,8 +282,8 @@ public final class GroundItemHandler {
 		return true;
 	}
 
-	public static void pickup(Player player, int id, int x, int y, int z) {
-		Optional<GroundItem> optionalGroundItem = get(id, x, y, z);
+	public static void pickup(Player player, int id, Position position/*int x, int y, int z*/) {
+		Optional<GroundItem> optionalGroundItem = get(id, position);
 		if (!optionalGroundItem.isPresent()) {
 			return;
 		}

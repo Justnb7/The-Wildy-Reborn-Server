@@ -22,7 +22,6 @@ import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
 import com.model.game.character.player.packets.encode.impl.SendConfig;
 import com.model.game.character.player.packets.encode.impl.SendInterface;
 import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 import com.model.game.character.player.packets.encode.impl.SendSongPacket;
 import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
 import com.model.game.character.player.packets.encode.impl.SendString;

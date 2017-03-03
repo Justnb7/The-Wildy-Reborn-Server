@@ -980,10 +980,6 @@ public class Player extends Entity {
 	public Equipment getEquipment() {
 		return equipment;
 	}
-	
-	public void resetWalkingQueue() {
-		getMovementHandler().reset();
-	}
 
 	public Set<Player> localPlayers = new LinkedHashSet<>(255);
 	public Set<Npc> localNpcs = new LinkedHashSet<>(255);
@@ -1041,7 +1037,7 @@ public class Player extends Entity {
 				switch (countdown) {
 				case 0:
 					setDead(true);
-					resetWalkingQueue();
+					getMovementHandler().resetWalkingQueue();
 					break;
 				case 1:
 					playAnimation(Animation.create(0x900));
@@ -1272,7 +1268,7 @@ public class Player extends Entity {
 		absX = absY = -1;
 		mapRegionX = mapRegionY = -1;
 		currentX = currentY = 0;
-		resetWalkingQueue();
+		getMovementHandler().resetWalkingQueue();
 		outStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		outStream.offset = 0;
 		inStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
@@ -1385,21 +1381,6 @@ public class Player extends Entity {
 
 			}
 		}.attach(this));
-	}
-
-	/**
-	 * Checks if a player is in a specific location
-	 *
-	 * @param x
-	 *            The x location
-	 * @param y
-	 *            The y location
-	 * @param z
-	 *            The z location
-	 * @return If the player is standing on this spot
-	 */
-	public boolean onSpot(int x, int y, int z) {
-		return this.absX == x && this.absY == y && this.heightLevel == z;
 	}
 
 	private void loadInterfaces() {

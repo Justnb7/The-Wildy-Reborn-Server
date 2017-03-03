@@ -600,15 +600,15 @@ public class PlayerAssistant {
 		return format.format(getRatio(player));
 	}
 	
-	public void destroyItem(int item) {
-		player.write(new SendItemOnInterface(14171, item, 0, 1));
+	public void destroyItem(Item item) {
+		player.write(new SendItemOnInterface(14171, item.getId(), 0, 1));
 		player.write(new SendString("Are you sure you want to drop this item?", 14174));
 		player.write(new SendString("Yes.", 14175));
 		player.write(new SendString("No.", 14176));
 		player.write(new SendString("", 14177));
 		player.write(new SendString("This item is valuable, you will not", 14182));
 		player.write(new SendString("get it back once lost.", 14183));
-		player.write(new SendString(ItemDefinition.forId(item).getName(), 14184));
+		player.write(new SendString(ItemDefinition.forId(item.getId()).getName(), 14184));
 		player.write(new SendChatBoxInterface(14170));
 	}
 

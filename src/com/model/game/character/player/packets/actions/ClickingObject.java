@@ -47,7 +47,7 @@ public class ClickingObject implements PacketType {
 				return;
 			}
 			if (Math.abs(player.getX() - player.objectX) > 25 || Math.abs(player.getY() - player.objectY) > 25) {
-				player.resetWalkingQueue();
+				player.getMovementHandler().resetWalkingQueue();
 				break;
 			}
 			switch (player.objectId) {

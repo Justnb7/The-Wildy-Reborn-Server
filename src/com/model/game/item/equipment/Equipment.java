@@ -1,6 +1,8 @@
 package com.model.game.item.equipment;
 
+import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Player;
+import com.model.utility.json.definitions.ItemDefinition;
 
 
 public class Equipment {
@@ -104,6 +106,23 @@ public class Equipment {
 		return SLOT_WEAPON;
 	}
 	
+	/**
+	 * Update the players equipment
+	 * @param player
+	 */
+	public void updateEquipment(Player player) {
+		player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
+		player.getItems().setEquipment(player.playerEquipment[player.getEquipment().getWeaponId()], player.playerEquipmentN[player.getEquipment().getWeaponId()], player.getEquipment().getWeaponId());
+		CombatAnimation.itemAnimations(player);
+		player.getItems().resetBonus();
+		player.getItems().getBonus();
+		player.getItems().writeBonus();
+		for (int equip = 0; equip < player.playerEquipment.length; equip++) {
+			player.getItems().setEquipment(player.playerEquipment[equip], player.playerEquipmentN[equip], equip);
+		}
+		player.getWeaponInterface().sendSpecialBar(player.playerEquipment[player.getEquipment().getWeaponId()]);
+	}
+	
 	public final int[] VENEMOUS_WEPS = {12926, 12904, 12899, 12904};
 	public final int[] VENEMOUS_HELMS = {13197, 13199, 12931};
 	
@@ -115,6 +134,47 @@ public class Equipment {
 		}
 		for(int i : VENEMOUS_HELMS){
 			if(player.playerEquipment[getHelmetId()] == i){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static final byte[] IS_METAL = new byte[25000];
+
+
+	private static final String[] METAL_KEYWORDS = { "platebody", "chestplate", "platelegs", "chainbody", "chainskirt" };
+
+	public static void setMetalEquipment() {
+		for (int i = 0; i < 25000; i++) {
+			ItemDefinition def = ItemDefinition.forId(i);
+			if (def != null && def.getName() != null) {
+				for (String s : METAL_KEYWORDS) {
+					if (def.getName().toLowerCase().contains(s.toLowerCase())) {
+						IS_METAL[i] = 1;
+					}
+				}
+			}
+		}
+	}
+
+
+	public static boolean isWearingMetal(Player player) {
+		int[] equip = player.playerEquipment;
+
+		if (equip[4] > 0) {
+			if (equip[4] > 0 && IS_METAL[equip[4]] == 1) {
+				return true;
+			}
+		}
+		if (equip[7] > 0) {
+			if (equip[7] > 0 && IS_METAL[equip[7]] == 1) {
+				return true;
+			}
+		}
+
+		if (equip[5] > 0) {
+			if (equip[5] > 0 && IS_METAL[equip[5]] == 1) {
 				return true;
 			}
 		}

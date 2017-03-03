@@ -5,7 +5,6 @@ import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
-import com.model.game.character.HitType;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
@@ -31,7 +30,6 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
-import com.model.game.item.equipment.EquipmentSet;
 import com.model.game.item.equipment.EquipmentSlot;
 import com.model.utility.Utility;
 
@@ -81,14 +79,6 @@ public class PlayerVsPlayerCombat {
 		
 		if (!CombatFormulae.getAccuracy(attacker, defender, 0, 1.0)) {
 			damage = 0;
-		}
-		
-		if (EquipmentSet.DHAROK.isWearingBarrows(attacker) && attacker.getItems().isWearingItem(12853) && Utility.getRandom(100) < 25) {
-			int damageDealt = (int) Math.floor(damage * .15);
-			if (damageDealt < 1) {
-				return;
-			}
-			defender.damage(new Hit(damageDealt, HitType.NORMAL));
 		}
 		
 		if (attacker.playerEquipment[attacker.getEquipment().getShieldId()] == 12817) {

@@ -25,8 +25,6 @@ import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
-import com.model.game.item.equipment.EquipmentConstants;
-import com.model.game.item.equipment.EquipmentSet;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.shop.Currency;
@@ -638,9 +636,6 @@ public class ItemAssistant {
 			for (int i = 0; i < values.length; i++)
 				player.playerBonus[i] += values[i];
 		}
-		if (EquipmentSet.VERAC.isWearingBarrows(player) && isWearingItem(12853)) {
-			player.playerBonus[11] += 4;
-		}
 	}
 
 	/**
@@ -865,7 +860,7 @@ public class ItemAssistant {
                 player.getOutStream().putFrameSizeShort(offset);
                 player.flushOutStream();
             }
-            EquipmentConstants.sendSoundForEquipSlot(player, slotId, id);
+
 			player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
 			resetBonus();
 			getBonus();

@@ -1,6 +1,6 @@
 package com.model.game.character.player;
 
-import com.model.game.Constants;
+import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
@@ -74,9 +74,6 @@ public class ActionSender {
 	}
 	
 	public ActionSender sendString(String message, int interfaceId) {
-		/*if (!player.checkPacket126Update(message, interfaceId) && interfaceId != 56306 && interfaceId != 39507) {
-			return;
-		}*/
 		if (player.getOutStream() != null) {
 			player.getOutStream().putFrameVarShort(126);
 			int offset = player.getOutStream().offset;
@@ -151,10 +148,16 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendSidebarInterfaces() {
-		final int[] icons = Constants.SIDEBAR_INTERFACES[0];
-		final int[] interfaces = Constants.SIDEBAR_INTERFACES[1];
-		for (int i = 0; i < icons.length; i++) {
-			player.write(new SendSidebarInterfacePacket(icons[i], interfaces[i]));
+		int[] interfaces = { 2423, 3917, 29400, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 36000, 147, -1, -1 };//15
+		for (int i = 0; i < 15; i++) {
+			player.write(new SendSidebarInterfacePacket(i, interfaces[i]));
+		}
+		if (player.getSpellBook() == SpellBook.ANCIENT) {
+			player.write(new SendSidebarInterfacePacket(6, 12855));
+		} else if (player.getSpellBook() == SpellBook.MODERN) {
+			player.write(new SendSidebarInterfacePacket(6, 1151));
+		} else if (player.getSpellBook() == SpellBook.LUNAR) {
+			player.write(new SendSidebarInterfacePacket(6, 29999));
 		}
 		return this;
 	}

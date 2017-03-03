@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +25,6 @@ import com.model.game.character.combat.CombatAssistant;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.range.Projectile;
@@ -37,7 +35,6 @@ import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
-import com.model.game.character.npc.pet.PetCombat;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
@@ -82,7 +79,6 @@ import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.item.container.impl.TradeContainer;
 import com.model.game.item.equipment.Equipment;
-import com.model.game.item.equipment.EquipmentSet;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Position;
@@ -174,28 +170,6 @@ public class Player extends Entity {
 	 */
 	public void setReceivedStarter(boolean received) {
 		this.receivedStarter = received;
-	}
-	
-	private boolean maxCape;
-	
-	public boolean hasClaimedMax() {
-		return maxCape;
-	}
-	
-	public void setClaimedMaxCape(boolean maxCape) {
-		this.maxCape = maxCape;
-	}
-	
-	public boolean usingBow, usingMagic, castingMagic, magicFailed;
-	
-	private boolean usingMelee;
-	
-	public boolean isUsingMelee() {
-		return usingMelee;
-	}
-	
-	public void usingMelee(boolean usingMelee) {
-		this.usingMelee = usingMelee;
 	}
 	
 	/**
@@ -624,12 +598,6 @@ public class Player extends Entity {
 		return runePouchContainer;
 	}
 	
-	private PetCombat petCombat = new PetCombat(this);
-	
-	public PetCombat getPetCombat() {
-		return petCombat;
-	}
-	
 	/**
 	 * The player's spell book.
 	 */
@@ -712,14 +680,6 @@ public class Player extends Entity {
 			encoder.encode(this);
 		}
 	}
-	
-	public boolean attackable;
-	public boolean inTask = false;
-
-	/**
-	 * The player is unattackable
-	 */
-	private boolean unattackable = false;
 
 	private long xlogDelay;
 	
@@ -1295,8 +1255,7 @@ public class Player extends Entity {
 	}
 
 	public void flushOutStream() {
-		if (outStream == null || getSession() == null || !getSession().getChannel().isOpen()
-				|| (outStream.offset == 0)) {
+		if (outStream == null || getSession() == null || !getSession().getChannel().isOpen() || (outStream.offset == 0)) {
 			return;
 		}
 		byte[] temp = new byte[outStream.offset];
@@ -1304,118 +1263,50 @@ public class Player extends Entity {
 		getSession().getChannel().writeAndFlush(new Packet(-1, Unpooled.wrappedBuffer(temp)));
 		outStream.offset = 0;
 	}
-
-	public void sendClan(String name, String message, String clan) {
-		outStream.putFrameVarShort(217);
-		int offset = getOutStream().offset;
-		outStream.putRS2String(name);
-		outStream.putRS2String(message);
-		outStream.putRS2String(clan);
-		outStream.writeShort(0);
-		outStream.putFrameSizeShort(offset);
-	}
-
-	public void sendClan(String name, String message, String clan, int rights) {
-		outStream.putFrameVarShort(217);
-		int offset = getOutStream().offset;
-		outStream.putRS2String(name);
-		outStream.putRS2String(message);
-		outStream.putRS2String(clan);
-		outStream.writeShort(rights);
-		outStream.putFrameSizeShort(offset);
-	}
-
-	public boolean teleportRequired = false;
-
-	public void teleportRequired(Player player) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(3) {
-			@Override
-			public void execute() {
-				if (teleportRequired) {
-					player.getPA().movePlayer(3087, 3500, 0);
-					this.stop();
-				}
-				if (!teleportRequired)
-					this.stop();
-			}
-
-			@Override
-			public void onStop() {
-				teleportRequired = false;
-
-			}
-		}.attach(this));
-	}
-
-	private void loadInterfaces() {
-		int[] interfaces = { 2423, 3917, 29400, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 36000, 147, -1, -1 };//15
-		for (int i = 0; i < 15; i++) {
-			this.write(new SendSidebarInterfacePacket(i, interfaces[i]));
-		}
-		
-		if (this.getSpellBook() == SpellBook.ANCIENT) {
-			this.write(new SendSidebarInterfacePacket(6, 12855));
-		} else if (this.getSpellBook() == SpellBook.MODERN) {
-			this.write(new SendSidebarInterfacePacket(6, 1151));
-		} else if (this.getSpellBook() == SpellBook.LUNAR) {
-			this.write(new SendSidebarInterfacePacket(6, 29999));
-		}
-		
-	}
-	
-	public boolean ecoReset = true;
 	
 	public void initialize() {
+		//set flags, 0 is flagged as bot i believe
 		outStream.writeFrame(249);
 		outStream.putByteA(0);
+		//Sent the index to the client
 		outStream.writeWordBigEndianA(getIndex());
 		flushOutStream();
 
+		//Update our combat before login
 		combatLevel = getSkills().getCombatLevel();
+		//Update our total level before login
 		totalLevel = getSkills().getTotalLevel();
-		this.getPA().serverReset();
-		infection = 0;
-		poisonDamage = 0;
-		infected = false;
+		//Update our skills before login
 		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
 			this.write(new SendSkillPacket(i));
 		}
+		//Reset prayers before login
 		PrayerHandler.resetAllPrayers(this);
-
-		if (teleportRequired) {
-			teleportRequired(this);
-		}
-		if (!receivedStarter() && inTutorial()) {
-			this.dialogue().start("STARTER");
-			PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(getName()) + "</col> Has joined Luzoxpk for the first time.");
-		}
+		//Set our sidebars before login
+		getActionSender().sendSidebarInterfaces();
+		//Update inventory before login
+		getItems().resetItems(3214);
+		//Update equipment before login
+		getEquipment().updateEquipment(this);
+		//Update friends and ignores
 		getFAI().handleLogin();
-		loadInterfaces();
-		this.setLastRegionHeight(this.getZ());
-		getActionSender().sendString("100%", 149);
+		//Update right click menu
 		getActionSender().sendInteractionOption("Follow", 4, true);
 		getActionSender().sendInteractionOption("Trade With", 5, true);
-		getItems().resetItems(3214);
-		getWeaponInterface().sendWeapon(playerEquipment[this.getEquipment().getWeaponId()], this.getItems().getItemName(playerEquipment[this.getEquipment().getWeaponId()]));
-		getItems().setEquipment(playerEquipment[getEquipment().getWeaponId()],playerEquipmentN[getEquipment().getWeaponId()], getEquipment().getWeaponId());
-		CombatAnimation.itemAnimations(this);
-		getItems().resetBonus();
-		getItems().getBonus();
-		getItems().writeBonus();
-
-		for (int equip = 0; equip < playerEquipment.length; equip++) {
-			getItems().setEquipment(playerEquipment[equip], playerEquipmentN[equip], equip);
-		}
-
-		getWeaponInterface().sendSpecialBar(playerEquipment[this.getEquipment().getWeaponId()]);
-
-		submitAfterLogin();
+		//Update location
 		correctPlayerCoordinatesOnLogin();
-		setActive(true);
+		//Refresh the player settings
 		refreshSettings(this);
+		//Set last known height
+		this.setLastRegionHeight(this.getZ());
+		//Set session active
+		setActive(true);
 		Utility.println("[REGISTERED]: " + this + "");
+		//activate login delay
 		setAttribute("login_delay", System.currentTimeMillis());
-		QuestTabPageHandler.write(this, QuestTabPages.HOME_PAGE);
+		
+		//We can goahead and finish of the players login
+		submitAfterLogin();
 	}
 
 	public void refreshSettings(Player player) {
@@ -1445,17 +1336,21 @@ public class Player extends Entity {
 				
 				player.write(new SendMessagePacket("Welcome back to " + Constants.SERVER_NAME + "."));
 				
+				if (!receivedStarter() && inTutorial()) {
+					player.dialogue().start("STARTER");
+					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(getName()) + "</col> Has joined Luzoxpk for the first time.");
+				}
+				
 				if (isMuted()) {
 					player.write(new SendMessagePacket("You are currently muted. Other players will not see your chat messages."));
 				}
 				
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 
-				if (player.petId > 0)
+				if (player.petId > 0) {
 					player.getPets().spawnPet(player, 0, true);
-				if (player.teleportRequired) {
-					player.teleportRequired(player);
 				}
+
 				if (player.getName().equalsIgnoreCase("Patrick")) {
 					player.setDebugMode(true);
 				}
@@ -1486,38 +1381,40 @@ public class Player extends Entity {
 					stop();
 					return;
 				}
-				/*if(player.getArea().inDuelArena()) {
-					player.getPA().movePlayer(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0);
-				}*/
 				ControllerManager.setControllerOnWalk(player);
 				controller.onControllerInit(player);
 				stop();
 			}
-
 		}.attach(this));
 	}
 
 	public void logout() {
+		//Are we allowed to logout
 		if (!controller.canLogOut(this)) {
 			return;
-		}//don't see what resets here
+		}
+		
+		//Reset poison and venom
 		this.infection = 0;
 		this.infected = false;
 		this.poisonDamage = 0;
+		
+		//Reset duel
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(this, MultiplayerSessionType.DUEL);
+		
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 			duelSession.getOther(this).write(new SendMessagePacket("The challenger has left the duel."));
 			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 			return;
 		}
-		if (this.petId > 0)
+		
+		//Queue pet
+		if (this.petId > 0) {
 			getPets().pickupPet(this, false, World.getWorld().getNpcs().get(this.petNpcIndex));
+		}
+		
+		//If we're no longer in combat we can goahead and logout
 		if (logoutDelay.elapsed(10000) && getLastCombatAction().elapsed(600)) {
-			if (this.attackable || this.inTask) {
-				this.write(new SendMessagePacket("You're currently under an attack-timer..(Someone attempted to attack you)"));
-				this.write(new SendMessagePacket("Please enter your pin to remove this block."));
-				return;
-			}
 			outStream.writeFrame(109);
 			flushOutStream();
 			properLogout = true;
@@ -1532,7 +1429,6 @@ public class Player extends Entity {
 		try {
 			refresh_inventory();
 			PrayerHandler.handlePrayerDraining(this);
-			//Server.getGlobalObjects().pulse();
 			if (clickObjectType > 0 && destinationReached())
 				handleObjectAction();
 			process_following();
@@ -1683,30 +1579,6 @@ public class Player extends Entity {
 			UseItem.ItemonObject(this, objectId, objectX, objectY, itemUsedOn);
 	}
 
-	private Map<Integer, TinterfaceText> interfaceText = new HashMap<Integer, TinterfaceText>();
-
-	public class TinterfaceText {
-		public int id;
-		public String currentState;
-
-		public TinterfaceText(String s, int id) {
-			this.currentState = s;
-			this.id = id;
-		}
-
-	}
-	
-	public boolean checkPacket126Update(String text, int id) {
-		if (interfaceText.containsKey(id)) {
-			TinterfaceText t = interfaceText.get(id);
-			if (text.equals(t.currentState)) {
-				return false;
-			}
-		}
-		interfaceText.put(id, new TinterfaceText(text, id));
-		return true;
-	}
-
 	public int getChunckX() {
 		return (absX >> 6);
 	}
@@ -1790,14 +1662,6 @@ public class Player extends Entity {
 			s.getPlayers().remove(this);
 		}
 		this.openShop = openShop;
-	}
-
-	public boolean isUnattackable() {
-		return unattackable;
-	}
-
-	public void setUnattackable(boolean attackable) {
-		this.unattackable = attackable;
 	}
 
 	/**
@@ -2166,28 +2030,6 @@ public class Player extends Entity {
 	public void setVenomImmunity(long duration) {
 		this.venomImmunity = duration;
 	}
-
-	
-	/**
-	 * Determines if the teleport to target spell is accessible
-	 */
-	public boolean spellAccessible;
-	
-	/**
-	 * Determines if the spell to teleport to a target is accessible
-	 * @return	true if we can
-	 */
-	public boolean isSpellAccessible() {
-		return spellAccessible;
-	}
-
-	/**
-	 * Sets the state of the ability to teleport to a target
-	 * @param spellAccessible	the state
-	 */
-	public void setSpellAccessible(boolean spellAccessible) {
-		this.spellAccessible = spellAccessible;
-	}
 	
 	private Herblore herblore = new Herblore(this);
 
@@ -2240,9 +2082,6 @@ public class Player extends Entity {
 
 	public int getMaximumHealth() {
 		int base = this.getSkills().getLevelForExperience(Skills.HITPOINTS);
-		if (EquipmentSet.GUTHAN.isWearingBarrows(this) && getItems().isWearingItem(12853)) {
-			base += 10;
-		}
 		return base;
 	}
 	
@@ -3140,6 +2979,7 @@ public class Player extends Entity {
 	/**
 	 * Booleans
 	 */
+	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
 	public boolean chatTextUpdateRequired = false;
 	private boolean faceUpdateRequired = false;

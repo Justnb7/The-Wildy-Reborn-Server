@@ -899,11 +899,6 @@ public class CommandPacketHandler implements PacketType {
 			player.write(new SendMessagePacket("You are " + (player.inDebugMode() ? "now using" : " no longer using") + " debug mode."));
     		return true;
     		
-    	case "attackable":
-    		player.setUnattackable(!player.isUnattackable());
-			player.write(new SendMessagePacket("You are now " + (player.isUnattackable() ? " unattackable" : "attackable") + "."));
-    		return true;
-    		
     	case "openbank":
     		player.getPA().openBank();
     		return true;

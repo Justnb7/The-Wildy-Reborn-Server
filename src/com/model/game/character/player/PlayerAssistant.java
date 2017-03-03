@@ -19,9 +19,7 @@ import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
 import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
@@ -594,29 +592,6 @@ public class PlayerAssistant {
 				player.setDestroyItem(-1);
 				player.getActionSender().sendRemoveInterfacePacket();
 			}
-		}
-	}
-	
-	public void serverReset() {
-		if(player.ecoReset) {
-			player.teleportToX = 1803;
-			player.teleportToY = 3779;
-			player.heightLevel = 0;
-			for (int i = 0; i < Skills.SKILL_COUNT; i++) {
-				player.getSkills().setLevel(i, 1);
-				player.getSkills().setExperience(i, 0);
-				player.write(new SendSkillPacket(i));
-			}
-			player.getSkills().setLevel(Skills.HITPOINTS, 10);
-			player.getSkills().setExperience(Skills.HITPOINTS, 1184);
-			player.write(new SendSkillPacket(Skills.HITPOINTS));
-			player.setTutorial(true);
-			player.setReceivedStarter(false);
-			player.ecoReset = false;
-			if(!player.getName().equalsIgnoreCase("patrick") || !player.getName().equalsIgnoreCase("matthew")) {
-				player.setRights(Rights.PLAYER);
-			}
-			PlayerSerialization.saveGame(player);
 		}
 	}
 

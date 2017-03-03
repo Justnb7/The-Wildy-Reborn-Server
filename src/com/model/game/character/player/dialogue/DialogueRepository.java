@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.dialogue.impl.Imbue;
-import com.model.game.character.player.dialogue.impl.MaxCape;
 import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.dialogue.impl.SigmundTheMerchant;
 import com.model.game.character.player.dialogue.impl.WeirdOldMan;
@@ -73,10 +72,6 @@ public class DialogueRepository {
 		 */
 		dialogues.put("BARROWS", WeirdOldMan.class);
 		dialogues.put("BARROWS_TUNNEL", BarrowsTunnel.class);
-		/**
-		 * Max cape
-		 */
-		dialogues.put("MAXCAPE", MaxCape.class);
 		
 		/**
 		 * Teleports

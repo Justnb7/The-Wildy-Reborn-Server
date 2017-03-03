@@ -3,7 +3,7 @@ package com.model.game.character.player.content.music.sounds;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.item.equipment.EquipmentConstants;
+import com.model.game.item.equipment.Equipment;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -33,7 +33,7 @@ public class PlayerSounds {
 		if (shield > 0 && sounds[shield] != null) {
 			int sound = Utility.inclusiveRandom(sounds[shield].length - 1);
 			player.sendGlobalSound(player, sounds[shield][sound].id, 0, 0);
-		} else if (EquipmentConstants.isWearingMetal(player)) {
+		} else if (Equipment.isWearingMetal(player)) {
 			int sound = Utility.inclusiveRandom(RANDOM_METAL_ARMOR_SOUNDS.length - 1);
 			player.sendGlobalSound(player, RANDOM_METAL_ARMOR_SOUNDS[sound], 0, 0);
 

@@ -37,14 +37,6 @@ public class AttackPlayer implements PacketType {
 				return;
 			}
 
-			Player target = World.getWorld().getPlayers().get(player.playerIndex);
-			
-			if (target.isUnattackable()) {
-				player.write(new SendMessagePacket("You cannot attack this player."));
-				Combat.resetCombat(player);
-				return;
-			}
-
 			player.setSpellId(0);
 			player.mageFollow = player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
 			player.usingCross = player.getEquipment().isCrossbow(player);
@@ -72,7 +64,6 @@ public class AttackPlayer implements PacketType {
 				player.followId = player.playerIndex;
 				if (!player.usingMagic && !player.usingBow && !player.throwingAxe) {
 					player.followDistance = 1;
-					player.usingMelee(true);
 					player.getPA().followPlayer(true);
 				}
 				if (player.attackDelay <= 0) {

@@ -1,23 +1,18 @@
 package com.model.game.character.player.content.bounty_hunter;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
-import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.cache.map.Region;
 
 
 /**
@@ -151,57 +146,6 @@ public class BountyHunter extends ScheduledTask {
 
 		}
 		return true;
-	}
-	
-	/**
-	 * Teleports the player the their target so long as both players
-	 * meet certain conditions such as level requirement, item requirements,
-	 * etcetera. 
-	 */
-	public static void teleportToTarget(Player player) {
-		int index = player.getAttribute(BountyHunterConstants.BOUNTY_TARGET, 0);
-
-		Player target = World.getWorld().getPlayers().get(index);
-		if (!player.spellAccessible) {
-			player.write(new SendMessagePacket("You do not have access to this spell, you must learn about it first."));
-			return;
-		}
-		if (player.getSkills().getLevel(Skills.MAGIC) < 85) {
-			player.write(new SendMessagePacket("You need a magic level of 85 to use this spell."));
-			return;
-		}
-		/*if (!target.isActive()) {
-			player.sendMessage("You need to have a target to use this spell.");
-			return;
-		}*/
-		if (System.currentTimeMillis() - lastTeleport < 30_000) {
-			player.write(new SendMessagePacket("You can only use this spell every 30 seconds."));
-			return;
-		}
-		if (Objects.isNull(target)) {
-			player.write(new SendMessagePacket("Your target cannot be found."));
-			return;
-		}
-		if (!target.getArea().inWild()) {
-			player.write(new SendMessagePacket("Your target is not in the wilderness, they must be to be teleported to."));
-			return;
-		}
-		if (player.playerIndex > 0 && target.getIndex() == player.playerIndex) {
-			player.write(new SendMessagePacket("You cannot use this spell whilst in combat with your target."));
-			return;
-		}
-		int targetX = target.getX();
-		int targetY = target.getY();
-		for (int teleX = targetX - 1; teleX < targetX + 2; teleX++) {
-			for (int teleY = targetY - 1; teleY < targetY + 2; teleY++) {
-				if (!Region.canMove(teleX, teleY, teleX + 1, teleY + 1, target.heightLevel, 1, 1)) {
-					player.write(new SendMessagePacket("Your target is in a blocked in area, you cannot teleport to them right now."));
-					return;
-				}
-			}
-		}
-		TeleportExecutor.teleport(player, new Position(targetX, targetY - 1, target.heightLevel));
-		lastTeleport = System.currentTimeMillis();
 	}
 
 	/**

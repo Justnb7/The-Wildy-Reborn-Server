@@ -56,10 +56,10 @@ public class PacketHandler {
 		packetId[237] = iop;
 		packetId[25] = iop;
 		
-		
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();
 		subPacketId[41] = new WieldPacketHandler();
+		packetId[241] = u;
 		packetId[3] = u;
 		packetId[202] = u;
 		packetId[77] = u;

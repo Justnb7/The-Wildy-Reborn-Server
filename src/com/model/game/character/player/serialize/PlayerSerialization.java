@@ -129,8 +129,6 @@ public class PlayerSerialization {
 							p.teleHeight = Integer.parseInt(value);
     					} else if (key.equals("character-special-amount")) {
                             p.setSpecialAmount(Integer.parseInt(value));
-    					} else if (key.equals("character-was-reseted")) {
-    						p.ecoReset = Boolean.parseBoolean(value);
     					}
 						break;
 						
@@ -191,8 +189,6 @@ public class PlayerSerialization {
                             p.isClanMuted = Boolean.parseBoolean(value);
 						} else if(key.equals("gear-points")) {
 							p.setGearPoints(Integer.parseInt(value));
-						} else if(key.equals("max-cape-claimed")) {
-							p.setClaimedMaxCape(Boolean.parseBoolean(value));
 						}
 						break;
 					
@@ -539,9 +535,6 @@ public class PlayerSerialization {
 	        writer.write("character-special-amount = ");
 	        writer.write(Integer.toString(p.getSpecialAmount()));
 	        writer.newLine();
-	        writer.write("character-was-reseted = ");
-	        writer.write(Boolean.toString(p.ecoReset));
-	        writer.newLine();
 			writer.newLine();
 			
 			/* Character */
@@ -596,8 +589,6 @@ public class PlayerSerialization {
 			writer.write("clanChatPunishment = " + p.getClanPunishment());
             writer.newLine();
             writer.write("gear-points = " + p.getGearPoints());
-			writer.newLine();
-			writer.write("max-cape-claimed = " + p.hasClaimedMax());
 			writer.newLine();
 			writer.newLine();
             

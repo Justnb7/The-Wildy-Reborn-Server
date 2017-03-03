@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
@@ -116,7 +115,7 @@ public final class RunePouchContainer extends Container {
 		sb.append(i3 == null ? "0" : ""+i3.amount);
 		sb.append("$");
 		
-		player2.write(new SendString(sb.toString(), 49999)); 
+		player2.getActionSender().sendString(sb.toString(), 49999); 
 	}
 
 	/**

@@ -3,7 +3,6 @@ package com.model.game.character.player.content;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.utility.json.definitions.ItemDefinition;
 
 /**
@@ -110,51 +109,51 @@ public class ItemOnDeath {
 
 	public static void ItemKeptInfo(Player player, int Lose) {
 		for (int i = 17109; i < 17131; i++) {
-			player.write(new SendString("", i));
+			player.getActionSender().sendString("", i);
 		}
-		player.write(new SendString("Items you will keep on death:", 17104));
-		player.write(new SendString("Items you will lose on death:", 17105));
-		player.write(new SendString("Player Information", 17106));
-		player.write(new SendString("Max items kept on death:", 17107));
-		player.write(new SendString("~ " + Lose + " ~", 17108));
-		player.write(new SendString("The normal amount of", 17111));
-		player.write(new SendString("items kept is three.", 17112));
+		player.getActionSender().sendString("Items you will keep on death:", 17104);
+		player.getActionSender().sendString("Items you will lose on death:", 17105);
+		player.getActionSender().sendString("Player Information", 17106);
+		player.getActionSender().sendString("Max items kept on death:", 17107);
+		player.getActionSender().sendString("~ " + Lose + " ~", 17108);
+		player.getActionSender().sendString("The normal amount of", 17111);
+		player.getActionSender().sendString("items kept is three.", 17112);
 		switch (Lose) {
 		case 0:
 		default:
-			player.write(new SendString("Items you will keep on death:", 17104));
-			player.write(new SendString("Items you will lose on death:", 17105));
-			player.write(new SendString("You're marked with a", 17111));
-			player.write(new SendString("@red@skull. @lre@This reduces the", 17112));
-			player.write(new SendString("items you keep from", 17113));
-			player.write(new SendString("three to zero!", 17114));
+			player.getActionSender().sendString("Items you will keep on death:", 17104);
+			player.getActionSender().sendString("Items you will lose on death:", 17105);
+			player.getActionSender().sendString("You're marked with a", 17111);
+			player.getActionSender().sendString("@red@skull. @lre@This reduces the", 17112);
+			player.getActionSender().sendString("items you keep from", 17113);
+			player.getActionSender().sendString("three to zero!", 17114);
 			break;
 		case 1:
-			player.write(new SendString("Items you will keep on death:", 17104));
-			player.write(new SendString("Items you will lose on death:", 17105));
-			player.write(new SendString("You're marked with a", 17111));
-			player.write(new SendString("@red@skull. @lre@This reduces the", 17112));
-			player.write(new SendString("items you keep from", 17113));
-			player.write(new SendString("three to zero!", 17114));
-			player.write(new SendString("However, you also have", 17115));
-			player.write(new SendString("the @red@Protect @lre@Items prayer", 17116));
-			player.write(new SendString("active, which saves you", 17117));
-			player.write(new SendString("one extra item!", 17118));
+			player.getActionSender().sendString("Items you will keep on death:", 17104);
+			player.getActionSender().sendString("Items you will lose on death:", 17105);
+			player.getActionSender().sendString("You're marked with a", 17111);
+			player.getActionSender().sendString("@red@skull. @lre@This reduces the", 17112);
+			player.getActionSender().sendString("items you keep from", 17113);
+			player.getActionSender().sendString("three to zero!", 17114);
+			player.getActionSender().sendString("However, you also have", 17115);
+			player.getActionSender().sendString("the @red@Protect @lre@Items prayer", 17116);
+			player.getActionSender().sendString("active, which saves you", 17117);
+			player.getActionSender().sendString("one extra item!", 17118);
 			break;
 		case 3:
-			player.write(new SendString("Items you will keep on death(if not skulled):", 17104));
-			player.write(new SendString("Items you will lose on death(if not skulled):", 17105));
-			player.write(new SendString("You have no factors", 17111));
-			player.write(new SendString("affecting the items you", 17112));
-			player.write(new SendString("keep.", 17113));
+			player.getActionSender().sendString("Items you will keep on death(if not skulled):", 17104);
+			player.getActionSender().sendString("Items you will lose on death(if not skulled):", 17105);
+			player.getActionSender().sendString("You have no factors", 17111);
+			player.getActionSender().sendString("affecting the items you", 17112);
+			player.getActionSender().sendString("keep.", 17113);
 			break;
 		case 4:
-			player.write(new SendString("Items you will keep on death(if not skulled):", 17104));
-			player.write(new SendString("Items you will lose on death(if not skulled):", 17105));
-			player.write(new SendString("You have the @red@Protect", 17111));
-			player.write(new SendString("@red@Item @lre@prayer active,", 17112));
-			player.write(new SendString("which saves you one", 17113));
-			player.write(new SendString("extra item!", 17114));
+			player.getActionSender().sendString("Items you will keep on death(if not skulled):", 17104);
+			player.getActionSender().sendString("Items you will lose on death(if not skulled):", 17105);
+			player.getActionSender().sendString("You have the @red@Protect", 17111);
+			player.getActionSender().sendString("@red@Item @lre@prayer active,", 17112);
+			player.getActionSender().sendString("which saves you one", 17113);
+			player.getActionSender().sendString("extra item!", 17114);
 			break;
 		}
 	}

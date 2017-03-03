@@ -15,7 +15,6 @@ import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.packets.out.CreatePlayerHint;
 import com.model.game.character.player.packets.out.SendConfig;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.packets.out.SendStringColor;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
@@ -100,8 +99,8 @@ public class BountyHunter extends ScheduledTask {
 			wealth = target.getAttribute("bounty_wealth", "---");
 		}
 
-		player.write(new SendString(wealth, BountyHunterConstants.WEALTH_STRING_ID));
-		player.write(new SendString(targetName, BountyHunterConstants.TARGET_NAME_STRING_ID));
+		player.getActionSender().sendString(wealth, BountyHunterConstants.WEALTH_STRING_ID);
+		player.getActionSender().sendString(targetName, BountyHunterConstants.TARGET_NAME_STRING_ID);
 		int levelDifference = player.wildLevel - level;
 		int color = (0 << 10 | 255 << 5 | 0);
 		if (level != -1) {
@@ -111,8 +110,8 @@ public class BountyHunter extends ScheduledTask {
 				color = (255 << 10 | 255 << 5 | 0);
 			}
 		}
-		player.write(new SendStringColor(BountyHunterConstants.LEVEL_COMBAT_STRING_ID, color));
-		player.write(new SendString((level == 0 ? "Safe" : level > 0 ? (("Lvl " + minLevel + "-" + maxLevel) + ", Cmb " + combat) : "Level: ------"), BountyHunterConstants.LEVEL_COMBAT_STRING_ID));
+		player.write( new SendStringColor(BountyHunterConstants.LEVEL_COMBAT_STRING_ID, color));
+		player.getActionSender().sendString((level == 0 ? "Safe" : level > 0 ? (("Lvl " + minLevel + "-" + maxLevel) + ", Cmb " + combat) : "Level: ------"), BountyHunterConstants.LEVEL_COMBAT_STRING_ID);
 	}
 
 	/**
@@ -280,10 +279,10 @@ public class BountyHunter extends ScheduledTask {
 	 *            The {@link Player} to write the strings for
 	 */
 	public static void writeBountyStrings(Player player) {
-		player.write(new SendString(Integer.toString(player.getAttribute(BountyHunterConstants.ROGUE_CURRENT, 0)), BountyHunterConstants.ROGUE_CURRENT_STRING_ID));
-		player.write(new SendString(Integer.toString(player.getAttribute(BountyHunterConstants.ROGUE_RECORD, 0)), BountyHunterConstants.ROGUE_RECORD_STRING_ID));
-		player.write(new SendString(Integer.toString(player.getAttribute(BountyHunterConstants.HUNTER_CURRENT, 0)), BountyHunterConstants.HUNTER_CURRENT_STRING_ID));
-		player.write(new SendString(Integer.toString(player.getAttribute(BountyHunterConstants.HUNTER_RECORD, 0)), BountyHunterConstants.HUNTER_RECORD_STRING_ID));
+		player.getActionSender().sendString(Integer.toString(player.getAttribute(BountyHunterConstants.ROGUE_CURRENT, 0)), BountyHunterConstants.ROGUE_CURRENT_STRING_ID);
+		player.getActionSender().sendString(Integer.toString(player.getAttribute(BountyHunterConstants.ROGUE_RECORD, 0)), BountyHunterConstants.ROGUE_RECORD_STRING_ID);
+		player.getActionSender().sendString(Integer.toString(player.getAttribute(BountyHunterConstants.HUNTER_CURRENT, 0)), BountyHunterConstants.HUNTER_CURRENT_STRING_ID);
+		player.getActionSender().sendString(Integer.toString(player.getAttribute(BountyHunterConstants.HUNTER_RECORD, 0)), BountyHunterConstants.HUNTER_RECORD_STRING_ID);
 	}
 
 	/**

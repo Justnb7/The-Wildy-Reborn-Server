@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 
 public class BankSearch {
 	
@@ -57,7 +56,7 @@ public class BankSearch {
 			player.getBank().setCurrentBankTab(player.getBank().getBankTab(0));
 			player.getItems().resetBank();
 			player.write(new SendMessagePacket("Search results reset."));
-			player.write(new SendString("", 58063));
+			player.getActionSender().sendString("", 58063);
 			searching = false;
 		}
 	}
@@ -67,7 +66,7 @@ public class BankSearch {
 			player.getBank().setCurrentBankTab(player.getBank().getBankTab(tabId));
 			player.getItems().resetBank();
 			player.write(new SendMessagePacket("Search results reset."));
-			player.write(new SendString("", 58063));
+			player.getActionSender().sendString("", 58063);
 			searching = false;
 		}
 	}

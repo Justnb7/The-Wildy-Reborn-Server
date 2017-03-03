@@ -3,7 +3,6 @@ package com.model.game.character.player.skill;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendInterface;
-import com.model.game.character.player.packets.out.SendString;
 
 public class SkillInterfaces {
 
@@ -83,21 +82,21 @@ public class SkillInterfaces {
 			String op2, String op3, String op4, String op5, String op6,
 			String op7, String op8, String op9, String op10, String op11,
 			String op12, String op13) {
-		player.write(new SendString(title, 8716));
-		player.write(new SendString(currentTab, 8849));
-		player.write(new SendString(op1, 8846));
-		player.write(new SendString(op2, 8823));
-		player.write(new SendString(op3, 8824));
-		player.write(new SendString(op4, 8827));
-		player.write(new SendString(op5, 8837));
-		player.write(new SendString(op6, 8840));
-		player.write(new SendString(op7, 8843));
-		player.write(new SendString(op8, 8859));
-		player.write(new SendString(op9, 8862));
-		player.write(new SendString(op10, 8865));
-		player.write(new SendString(op11, 15303));
-		player.write(new SendString(op12, 15306));
-		player.write(new SendString(op13, 15309));
+		player.getActionSender().sendString(title, 8716);
+		player.getActionSender().sendString(currentTab, 8849);
+		player.getActionSender().sendString(op1, 8846);
+		player.getActionSender().sendString(op2, 8823);
+		player.getActionSender().sendString(op3, 8824);
+		player.getActionSender().sendString(op4, 8827);
+		player.getActionSender().sendString(op5, 8837);
+		player.getActionSender().sendString(op6, 8840);
+		player.getActionSender().sendString(op7, 8843);
+		player.getActionSender().sendString(op8, 8859);
+		player.getActionSender().sendString(op9, 8862);
+		player.getActionSender().sendString(op10, 8865);
+		player.getActionSender().sendString(op11, 15303);
+		player.getActionSender().sendString(op12, 15306);
+		player.getActionSender().sendString(op13, 15309);
 		player.write(new SendInterface(8714));
 	}
 
@@ -116,8 +115,8 @@ public class SkillInterfaces {
 	 */
 	private void menuLine(final String levels, final String lines,
 			final int ids, final int lineCounter) {
-		player.write(new SendString(lines, 8760 + lineCounter));
-		player.write(new SendString(levels, 8720 + lineCounter));
+		player.getActionSender().sendString(lines, 8760 + lineCounter);
+		player.getActionSender().sendString(levels, 8720 + lineCounter);
 		item[0 + lineCounter] = ids;
 		writeInterfaceItem(item);
 	}
@@ -130,7 +129,7 @@ public class SkillInterfaces {
 			item[i] = 0;
 		}
 		for (int i = 8720; i < 8799; i++) {
-			player.write(new SendString("", i));
+			player.getActionSender().sendString("", i);
 		}
 	}
 

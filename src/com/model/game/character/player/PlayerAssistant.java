@@ -24,7 +24,6 @@ import com.model.game.character.player.packets.out.SendItemOnInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
@@ -549,7 +548,7 @@ public class PlayerAssistant {
         }
         
         player.write(new SendSoundPacket(1457, 0, 0));
-        player.write(new SendString("Search", 58113));
+        player.getActionSender().sendString("Search", 58113);
         
         if (player.getOutStream() != null && player != null) {
         	player.setBanking(true);
@@ -559,7 +558,7 @@ public class PlayerAssistant {
             player.getOutStream().writeFrame(248);
             player.getOutStream().writeWordA(5292);
             player.getOutStream().writeShort(5063);
-            player.write(new SendString(player.getName() + "'s Bank", 58064));
+            player.getActionSender().sendString(player.getName() + "'s Bank", 58064);
         }
     }
 
@@ -568,21 +567,6 @@ public class PlayerAssistant {
             this.player.getOutStream().writeFrame(221);
             this.player.getOutStream().writeByte(i);
         }
-    }
-
-    public void chooseItem5(String q1, String n1, String n2, String n3, String n4, String n5, int i1, int i2, int i3, int i4, int i5) {
-    	player.write(new SendString(n1, 8949));
-        player.write(new SendString(n2, 8953));
-        player.write(new SendString(n3, 8957));
-        player.write(new SendString(n4, 8961));
-        player.write(new SendString(n5, 8965));
-        player.write(new SendString(q1, 8966));
-        player.write(new SendInterfaceModel(8941, 190, i1));
-        player.write(new SendInterfaceModel(8942, 190, i2));
-        player.write(new SendInterfaceModel(8943, 190, i3));
-        player.write(new SendInterfaceModel(8944, 190, i4));
-        player.write(new SendInterfaceModel(8945, 190, i5));
-        player.write(new SendChatBoxInterface(8938));
     }
 	
 	DecimalFormat format = new DecimalFormat("##.##");
@@ -602,13 +586,13 @@ public class PlayerAssistant {
 	
 	public void destroyItem(Item item) {
 		player.write(new SendItemOnInterface(14171, item.getId(), 0, 1));
-		player.write(new SendString("Are you sure you want to drop this item?", 14174));
-		player.write(new SendString("Yes.", 14175));
-		player.write(new SendString("No.", 14176));
-		player.write(new SendString("", 14177));
-		player.write(new SendString("This item is valuable, you will not", 14182));
-		player.write(new SendString("get it back once lost.", 14183));
-		player.write(new SendString(ItemDefinition.forId(item.getId()).getName(), 14184));
+		player.getActionSender().sendString("Are you sure you want to drop this item?", 14174);
+		player.getActionSender().sendString("Yes.", 14175);
+		player.getActionSender().sendString("No.", 14176);
+		player.getActionSender().sendString("", 14177);
+		player.getActionSender().sendString("This item is valuable, you will not", 14182);
+		player.getActionSender().sendString("get it back once lost.", 14183);
+		player.getActionSender().sendString(ItemDefinition.forId(item.getId()).getName(), 14184);
 		player.write(new SendChatBoxInterface(14170));
 	}
 

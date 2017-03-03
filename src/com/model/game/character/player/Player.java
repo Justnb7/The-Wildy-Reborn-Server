@@ -69,7 +69,6 @@ import com.model.game.character.player.packets.out.SendMultiWay;
 import com.model.game.character.player.packets.out.SendSidebarInterface;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.Skilling;
@@ -1429,7 +1428,7 @@ public class Player extends Entity {
 		getFAI().handleLogin();
 		loadInterfaces();
 		this.setLastRegionHeight(this.getZ());
-		write(new SendString("100%", 149));
+		getActionSender().sendString("100%", 149);
 		write(new SendInteractionOption("Follow", 4, true));
 		write(new SendInteractionOption("Trade With", 5, true));
 		getItems().resetItems(3214);
@@ -1459,7 +1458,7 @@ public class Player extends Entity {
 	public void refreshSettings(Player player) {
 		AttackStyle.adjustAttackStyleOnLogin(player);
 		this.setScreenBrightness((byte) 4);
-		player.write(new SendString("100%", 149));
+		player.getActionSender().sendString("100%", 149);
 		player.write(new SendConfig(166, getScreenBrightness()));
 		player.write(new SendConfig(207, isEnableMusic() ? 1 : 0));
 		player.write(new SendConfig(206, isEnableSound() ? 1 : 0));

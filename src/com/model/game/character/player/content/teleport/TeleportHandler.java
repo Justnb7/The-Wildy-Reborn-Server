@@ -8,7 +8,6 @@ import com.model.game.character.player.packets.out.SendConfig;
 import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendScrollbar;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.location.Position;
 
 public class TeleportHandler {
@@ -135,7 +134,7 @@ public class TeleportHandler {
 			if (data != null) {
 				if (data.getType() == type) {
 					String prefix = data.getButton() == selected ? "<col=ff7000>" : "";
-					player.write(new SendString(prefix + data.getName(), data.getString()));
+					player.getActionSender().sendString(prefix + data.getName(), data.getString());
 				}
 			}
 		}
@@ -145,10 +144,10 @@ public class TeleportHandler {
 		switch (type) {
 
 		case PVP:
-			player.write(new SendString("</col>Skilling", 57009));
-			player.write(new SendString("<col=ff7000>PvP", 57013));
-			player.write(new SendString("</col>PvM", 57017));
-			player.write(new SendString("</col>Minigames", 57021));
+			player.getActionSender().sendString("</col>Skilling", 57009);
+			player.getActionSender().sendString("<col=ff7000>PvP", 57013);
+			player.getActionSender().sendString("</col>PvM", 57017);
+			player.getActionSender().sendString("</col>Minigames", 57021);
 			player.write(new SendConfig(977, 0));
 			player.write(new SendConfig(978, 1));
 			player.write(new SendConfig(979, 0));
@@ -158,10 +157,10 @@ public class TeleportHandler {
 			break;
 
 		case PVM:
-			player.write(new SendString("</col>Skilling", 57009));
-			player.write(new SendString("</col>PvP", 57013));
-			player.write(new SendString("<col=ff7000>PvM", 57017));
-			player.write(new SendString("</col>Minigames", 57021));
+			player.getActionSender().sendString("</col>Skilling", 57009);
+			player.getActionSender().sendString("</col>PvP", 57013);
+			player.getActionSender().sendString("<col=ff7000>PvM", 57017);
+			player.getActionSender().sendString("</col>Minigames", 57021);
 			player.write(new SendConfig(977, 0));
 			player.write(new SendConfig(978, 0));
 			player.write(new SendConfig(979, 1));
@@ -170,10 +169,10 @@ public class TeleportHandler {
 			break;
 
 		case MINIGAME:
-			player.write(new SendString("</col>Skilling", 57009));
-			player.write(new SendString("</col>PvP", 57013));
-			player.write(new SendString("</col>PvM", 57017));
-			player.write(new SendString("<col=ff7000>Minigames", 57021));
+			player.getActionSender().sendString("</col>Skilling", 57009);
+			player.getActionSender().sendString("</col>PvP", 57013);
+			player.getActionSender().sendString("</col>PvM", 57017);
+			player.getActionSender().sendString("<col=ff7000>Minigames", 57021);
 			player.write(new SendConfig(977, 0));
 			player.write(new SendConfig(978, 0));
 			player.write(new SendConfig(979, 0));
@@ -183,10 +182,10 @@ public class TeleportHandler {
 
 		case SKILLING:
 		default:
-			player.write(new SendString("<col=ff7000>Skilling", 57009));
-			player.write(new SendString("</col>PvP", 57013));
-			player.write(new SendString("</col>PvM", 57017));
-			player.write(new SendString("</col>Minigames", 57021));
+			player.getActionSender().sendString("<col=ff7000>Skilling", 57009);
+			player.getActionSender().sendString("</col>PvP", 57013);
+			player.getActionSender().sendString("</col>PvM", 57017);
+			player.getActionSender().sendString("</col>Minigames", 57021);
 			player.write(new SendConfig(977, 1));
 			player.write(new SendConfig(978, 0));
 			player.write(new SendConfig(979, 0));
@@ -222,10 +221,10 @@ public class TeleportHandler {
 		}
 
 		if (currentData != null) {
-			player.write(new SendString("</col>Selected: <col=ff7000>" + currentData.getName(), 57023));
-			player.write(new SendString("</col>Cost: <col=ff7000>" + (currentData.getCost() == 0 ? "Free" : NumberFormat.getInstance().format(currentData.getCost())), 57024));
-			player.write(new SendString("</col>Requirable(s): <col=ff7000>" + currentData.getRequirement(), 57025));
-			player.write(new SendString("</col>Other: <col=ff7000>" + currentData.getOther(), 57026));
+			player.getActionSender().sendString("</col>Selected: <col=ff7000>" + currentData.getName(), 57023);
+			player.getActionSender().sendString("</col>Cost: <col=ff7000>" + (currentData.getCost() == 0 ? "Free" : NumberFormat.getInstance().format(currentData.getCost())), 57024);
+			player.getActionSender().sendString("</col>Requirable(s): <col=ff7000>" + currentData.getRequirement(), 57025);
+			player.getActionSender().sendString("</col>Other: <col=ff7000>" + currentData.getOther(), 57026);
 			display(player, player.getTeleportationType(), button);
 		}
 
@@ -286,20 +285,20 @@ public class TeleportHandler {
 	}
 
 	public static void clear(Player player) {
-		player.write(new SendString("---", 57054));
-		player.write(new SendString("---", 57058));
-		player.write(new SendString("---", 57062));
-		player.write(new SendString("---", 57066));
-		player.write(new SendString("---", 57070));
-		player.write(new SendString("---", 57074));
-		player.write(new SendString("---", 57078));
-		player.write(new SendString("---", 57082));
-		player.write(new SendString("---", 57086));
-		player.write(new SendString("---", 57090));
-		player.write(new SendString("</col>Selected: <col=ff7000>---", 57023));
-		player.write(new SendString("</col>Cost: <col=ff7000>---", 57024));
-		player.write(new SendString("</col>Requirable(s): <col=ff7000>---", 57025));
-		player.write(new SendString("</col>Other: <col=ff7000>---", 57026));
+		player.getActionSender().sendString("---", 57054);
+		player.getActionSender().sendString("---", 57058);
+		player.getActionSender().sendString("---", 57062);
+		player.getActionSender().sendString("---", 57066);
+		player.getActionSender().sendString("---", 57070);
+		player.getActionSender().sendString("---", 57074);
+		player.getActionSender().sendString("---", 57078);
+		player.getActionSender().sendString("---", 57082);
+		player.getActionSender().sendString("---", 57086);
+		player.getActionSender().sendString("---", 57090);
+		player.getActionSender().sendString("</col>Selected: <col=ff7000>---", 57023);
+		player.getActionSender().sendString("</col>Cost: <col=ff7000>---", 57024);
+		player.getActionSender().sendString("</col>Requirable(s): <col=ff7000>---", 57025);
+		player.getActionSender().sendString("</col>Other: <col=ff7000>---", 57026);
 	}
 
 	private static void handleSpecial(Player player, TeleportData data) {

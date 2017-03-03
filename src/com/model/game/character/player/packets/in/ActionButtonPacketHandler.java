@@ -33,7 +33,6 @@ import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterface;
 import com.model.game.character.player.packets.out.SendSongPacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.skill.SkillInterfaceButtons;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankPin;
@@ -802,11 +801,11 @@ public class ActionButtonPacketHandler implements PacketType {
 					return;
 				}
 				if (!Rule.WHIP_AND_DDS.getReq().get().meets(player)) {
-					player.write(new SendString("You must have a whip and dragon dagger to select this.", 6684));
+					player.getActionSender().sendString("You must have a whip and dragon dagger to select this.", 6684);
 					return;
 				}
 				if (!Rule.WHIP_AND_DDS.getReq().get().meets(duelSession.getOther(player))) {
-					player.write(new SendString("Your opponent does not have a whip and dragon dagger.", 6684));
+					player.getActionSender().sendString("Your opponent does not have a whip and dragon dagger.", 6684);
 					return;
 				}
 				if (duelSession.getStage().getStage() != MultiplayerSessionStage.OFFER_ITEMS) {

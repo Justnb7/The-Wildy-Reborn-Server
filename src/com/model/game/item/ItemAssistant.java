@@ -26,7 +26,6 @@ import com.model.game.character.player.packets.out.SendConfig;
 import com.model.game.character.player.packets.out.SendInterfaceConfig;
 import com.model.game.character.player.packets.out.SendItemOnInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.game.item.equipment.EquipmentConstants;
@@ -630,7 +629,7 @@ public class ItemAssistant {
 			if (i == 10) {
 				offset = 1;
 			}
-			player.write(new SendString(send, (1675 + i + offset)));
+			player.getActionSender().sendString(send, (1675 + i + offset));
 		}
 	}
 
@@ -1018,8 +1017,8 @@ public class ItemAssistant {
 		}
 		player.getOutStream().putFrameSizeShort(offset);
 		player.flushOutStream();
-		player.write(new SendString("" + player.getBank().getCurrentBankTab().size(), 58061));
-		player.write(new SendString(Integer.toString(tabId), 5292));
+		player.getActionSender().sendString("" + player.getBank().getCurrentBankTab().size(), 58061);
+		player.getActionSender().sendString(Integer.toString(tabId), 5292);
 	}
 
 	public void resetTempItems() {

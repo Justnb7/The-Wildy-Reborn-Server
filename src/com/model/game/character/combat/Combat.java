@@ -1,7 +1,6 @@
 package com.model.game.character.combat;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendString;
 
 public class Combat {
     
@@ -18,6 +17,6 @@ public class Combat {
 		player.playerIndex = 0;
 		player.getPA().resetFollow();
 		player.setInCombat(false);
-		player.write(new SendString("", 35000));
+		player.getActionSender().sendString("", 35000);
 	}
 }

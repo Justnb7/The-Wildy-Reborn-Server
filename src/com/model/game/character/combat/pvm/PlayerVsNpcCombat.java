@@ -28,7 +28,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.game.item.equipment.EquipmentSlot;
@@ -579,7 +578,7 @@ public class PlayerVsNpcCombat {
 		if (npc.npcId != 493 || npc.npcId != 496 || npc.npcId != 5534) {
 			Player attacker = World.getWorld().PLAYERS.get(npc.underAttackBy);
 			//System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
-			player.write(new SendString(Npc.getName(npc.npcId).replaceAll("_", " ")+ "-"+npc.maximumHealth+"-"+npc.currentHealth+ ((attacker != null) ? "-"+attacker.getName() : ""), 35000));
+			player.getActionSender().sendString(Npc.getName(npc.npcId).replaceAll("_", " ")+ "-"+npc.maximumHealth+"-"+npc.currentHealth+ ((attacker != null) ? "-"+attacker.getName() : ""), 35000);
 		}
 		if (!validateAttack(player, npc, true)) {
 			//System.out.println("blocked");

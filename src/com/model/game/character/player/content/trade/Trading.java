@@ -21,7 +21,6 @@ import com.model.game.character.player.packets.buttons.ActionButtonEventListener
 import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.TradeContainer;
 import com.model.task.impl.DistancedActionTask;
@@ -182,15 +181,15 @@ public class Trading {
 			player.setTradeState(TradeState.TRADE_SCREEN);
 			update(player, TradeState.TRADE_SCREEN);
 			player.getItems().resetItems(3322);
-			player.write(new SendString("", 3431));
-			target.write(new SendString("" + formatPlayerName(player.getName()) + "", 3451));
-			player.write(new SendString("" + formatPlayerName(target.getName()) + "", 3451));
-			target.write(new SendString("Trading with: " + formatPlayerName(player.getName()) + "", 3417));
-			player.write(new SendString("Trading with: " + formatPlayerName(target.getName()) + "", 3417));
-			player.write(new SendString(formatPlayerName(target.getName()) + " has\\n "
-					+ target.getTradeContainer().remaining() + " free\\n inventory slots.", 23505));
-			target.write(new SendString(formatPlayerName(player.getName()) + " has\\n "
-					+ player.getTradeContainer().remaining() + " free\\n inventory slots.", 23505));
+			player.getActionSender().sendString("", 3431);
+			target.getActionSender().sendString("" + formatPlayerName(player.getName()) + "", 3451);
+			player.getActionSender().sendString("" + formatPlayerName(target.getName()) + "", 3451);
+			target.getActionSender().sendString("Trading with: " + formatPlayerName(player.getName()) + "", 3417);
+			player.getActionSender().sendString("Trading with: " + formatPlayerName(target.getName()) + "", 3417);
+			player.getActionSender().sendString(formatPlayerName(target.getName()) + " has\\n "
+					+ target.getTradeContainer().remaining() + " free\\n inventory slots.", 23505);
+			target.getActionSender().sendString(formatPlayerName(player.getName()) + " has\\n "
+					+ player.getTradeContainer().remaining() + " free\\n inventory slots.", 23505);
 			player.write(new SendInterfaceWithInventoryOverlay(3323, 3321));
 		} else if (state == TradeState.CONFIRM_SCREEN) {
 			player.setTradeState(TradeState.CONFIRM_SCREEN);
@@ -246,20 +245,20 @@ public class Trading {
 			resetItems(player);
 			resetItems(target);
 			player.getItems().resetItems(3322);
-			player.write(new SendString("", 3431));
-			target.write(new SendString("", 3431));
+			player.getActionSender().sendString("", 3431);
+			target.getActionSender().sendString("", 3431);
 			break;
 		case ACCEPTED_TRADE_SCREEN:
-			target.write(new SendString("Other player has accepted", 3431));
-			player.write(new SendString("Waiting for other player...", 3431));
+			target.getActionSender().sendString("Other player has accepted", 3431);
+			player.getActionSender().sendString("Waiting for other player...", 3431);
 			break;
 		case CONFIRM_SCREEN:
 			writeConfirmScreen(player, target);
 			writeConfirmScreen(target, player);
 			break;
 		case ACCEPTED_CONFIRM_SCREEN:
-			target.write(new SendString("Other player has accepted.", 3535));
-			player.write(new SendString("Waiting for other player...", 3535));
+			target.getActionSender().sendString("Other player has accepted.", 3535);
+			player.getActionSender().sendString("Waiting for other player...", 3535);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid trade state. " + state);
@@ -275,8 +274,8 @@ public class Trading {
 	 *            The {@link Player} we are trading with
 	 */
 	private static void writeConfirmScreen(Player player, Player target) {
-		target.write(new SendString("Waiting for other player...", 3535));
-		player.write(new SendString("Waiting for other player...", 3535));
+		target.getActionSender().sendString("Waiting for other player...", 3535);
+		player.getActionSender().sendString("Waiting for other player...", 3535);
 		player.getItems().resetItems(3214);
 		String SendTrade = "Absolutely nothing!";
 		String SendAmount;
@@ -304,7 +303,7 @@ public class Trading {
 			}
 		}
 
-		player.write(new SendString(SendTrade, 3557));
+		player.getActionSender().sendString(SendTrade, 3557);
 		SendTrade = "Absolutely nothing!";
 		SendAmount = "";
 		Count = 0;
@@ -331,7 +330,7 @@ public class Trading {
 				Count++;
 			}
 		}
-		player.write(new SendString(SendTrade, 3558));
+		player.getActionSender().sendString(SendTrade, 3558);
 		player.write(new SendInterfaceWithInventoryOverlay(3443, 197));
 	}
 
@@ -604,8 +603,8 @@ public class Trading {
 					+ " free slots, please remove " + (playerSize - target.getItems().getFreeSlots()) + " items."));
 			target.write(new SendMessagePacket(player.getName() + " has to remove " + (playerSize - target.getItems().getFreeSlots())
 					+ " items or you could offer them " + (targetSize - target.getItems().getFreeSlots()) + " items."));
-			player.write(new SendString("Not enough inventory space...", 3431));
-			target.write(new SendString("Not enough inventory space...", 3431));
+			player.getActionSender().sendString("Not enough inventory space...", 3431);
+			target.getActionSender().sendString("Not enough inventory space...", 3431);
 			return;
 		}
 

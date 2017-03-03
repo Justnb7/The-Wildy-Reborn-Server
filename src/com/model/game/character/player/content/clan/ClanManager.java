@@ -11,7 +11,6 @@ import com.model.game.character.player.packets.out.RemoveClanMember;
 import com.model.game.character.player.packets.out.SendEnterStringInterface;
 import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.utility.NameUtils;
 import com.model.utility.Utility;
 
@@ -72,15 +71,15 @@ public class ClanManager extends ClanData {
 			ClanWriter.saveClan(clan);
 		}
 
-		player.write(new SendString(clan.getClanName(), CLAN_SETUP_NAME));
-		player.write(new SendString(clan.getSettings()[Clan.CAN_JOIN].toString(), CLAN_SETUP_JOIN));
-		player.write(new SendString(clan.getSettings()[Clan.CAN_TALK].toString(), CLAN_SETUP_TALK));
-		player.write(new SendString(clan.getSettings()[Clan.CAN_KICK].toString(), CLAN_SETUP_KICK));
-		player.write(new SendString(clan.getSettings()[Clan.CAN_TOGGLE_LOOTSHARE].toString(), CLAN_SETUP_LOOTSHARE));
+		player.getActionSender().sendString(clan.getClanName(), CLAN_SETUP_NAME);
+		player.getActionSender().sendString(clan.getSettings()[Clan.CAN_JOIN].toString(), CLAN_SETUP_JOIN);
+		player.getActionSender().sendString(clan.getSettings()[Clan.CAN_TALK].toString(), CLAN_SETUP_TALK);
+		player.getActionSender().sendString(clan.getSettings()[Clan.CAN_KICK].toString(), CLAN_SETUP_KICK);
+		player.getActionSender().sendString(clan.getSettings()[Clan.CAN_TOGGLE_LOOTSHARE].toString(), CLAN_SETUP_LOOTSHARE);
 
 		for (int x = 0; x < 200; x++) {
-			player.write(new SendString("", 58101 + x));
-			player.write(new SendString("", 59301 + (x * 10)));
+			player.getActionSender().sendString("", 58101 + x);
+			player.getActionSender().sendString("", 59301 + (x * 10));
 		}
 
 		int interface_slot = 0;
@@ -93,8 +92,8 @@ public class ClanManager extends ClanData {
 			if (name != null && name.length() > 0) {
 				name = NameUtils.formatName(clan.getFriendList().get(i));
 				member = clan.getRegisteredMembers().get(name);
-				player.write(new SendString(name, 58101 + interface_slot));
-				player.write(new SendString(member == null ? "Guest" : member.getRank().toStringRank(), 59301 + (interface_slot * 10)));
+				player.getActionSender().sendString(name, 58101 + interface_slot);
+				player.getActionSender().sendString(member == null ? "Guest" : member.getRank().toStringRank(), 59301 + (interface_slot * 10));
 				interface_slot++;
 			}
 		}
@@ -139,11 +138,11 @@ public class ClanManager extends ClanData {
 
 			clan.setClanSettings(player, state, index);
 
-			player.write(new SendString(clan.getClanName(), CLAN_SETUP_NAME));
-			player.write(new SendString(clan.getSettings()[Clan.CAN_JOIN].toString(), CLAN_SETUP_JOIN));
-			player.write(new SendString(clan.getSettings()[Clan.CAN_TALK].toString(), CLAN_SETUP_TALK));
-			player.write(new SendString(clan.getSettings()[Clan.CAN_KICK].toString(), CLAN_SETUP_KICK));
-			player.write(new SendString(clan.getSettings()[Clan.CAN_TOGGLE_LOOTSHARE].toString(), CLAN_SETUP_LOOTSHARE));
+			player.getActionSender().sendString(clan.getClanName(), CLAN_SETUP_NAME);
+			player.getActionSender().sendString(clan.getSettings()[Clan.CAN_JOIN].toString(), CLAN_SETUP_JOIN);
+			player.getActionSender().sendString(clan.getSettings()[Clan.CAN_TALK].toString(), CLAN_SETUP_TALK);
+			player.getActionSender().sendString(clan.getSettings()[Clan.CAN_KICK].toString(), CLAN_SETUP_KICK);
+			player.getActionSender().sendString(clan.getSettings()[Clan.CAN_TOGGLE_LOOTSHARE].toString(), CLAN_SETUP_LOOTSHARE);
 		}
 
 		switch (action) {
@@ -163,7 +162,7 @@ public class ClanManager extends ClanData {
 			name = name.replace("_", " ");
 
 			clan.setClanName(player, NameUtils.formatName(name));
-			player.write(new SendString(clan.getClanName(), CLAN_SETUP_NAME));
+			player.getActionSender().sendString(clan.getClanName(), CLAN_SETUP_NAME);
 			break;
 		case "EDIT_PLAYER":
 			break;
@@ -229,8 +228,8 @@ public class ClanManager extends ClanData {
 				clan.sendMessage(clan.getClanOwner(), " has promoted " + NameUtils.formatName(member_name) + " to "
 						+ rank.toString().toLowerCase() + ".", player.rights.getValue());
 			}
-			player.write(new SendString(NameUtils.formatName(member_name), 58101 + info[1]));
-			player.write(new SendString(NameUtils.formatName(rank.toString().toLowerCase()), 59301 + (info[1] * 10)));
+			player.getActionSender().sendString(NameUtils.formatName(member_name), 58101 + info[1]);
+			player.getActionSender().sendString(NameUtils.formatName(rank.toString().toLowerCase()), 59301 + (info[1] * 10));
 			ClanWriter.saveClan(clan);
 			clan.updateTab();
 			break;
@@ -275,15 +274,15 @@ public class ClanManager extends ClanData {
 		Clan clan = player.getClanMembership() == null ? null : clansMap.get(player.getClanMembership().getClanOwner()
 				.toLowerCase());
 
-		player.write(new SendString("Talking in: Not in chat", TAB_CLAN_NAME));
-		player.write(new SendString("Owner: None", TAB_OWNER_NAME));
-		player.write(new SendString("r221", 18144));
+		player.getActionSender().sendString("Talking in: Not in chat", TAB_CLAN_NAME);
+		player.getActionSender().sendString("Owner: None", TAB_OWNER_NAME);
+		player.getActionSender().sendString("r221", 18144);
 
 		for (int x = 0; x < 100; x++) {
-			player.write(new SendString("", 18144 + x));
+			player.getActionSender().sendString("", 18144 + x);
 		}
 		
-		player.write(new SendString("Join Chat", 18135));
+		player.getActionSender().sendString("Join Chat", 18135);
 		player.setClanMembership(null);
 
 		if (clan == null) {

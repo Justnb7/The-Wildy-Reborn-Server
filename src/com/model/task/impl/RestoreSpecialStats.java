@@ -2,7 +2,6 @@ package com.model.task.impl;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.task.ScheduledTask;
 
 public class RestoreSpecialStats extends ScheduledTask {
@@ -31,7 +30,6 @@ public class RestoreSpecialStats extends ScheduledTask {
 							}
 							player.getWeaponInterface().sendSpecialBar(player.playerEquipment[player.getEquipment().getWeaponId()]);
 							player.getWeaponInterface().refreshSpecialAttack();
-							player.write(new SendString(""+player.getSpecialAmount(), 12001));
 							//System.out.println("Special bar updated.");
 					}
 				}

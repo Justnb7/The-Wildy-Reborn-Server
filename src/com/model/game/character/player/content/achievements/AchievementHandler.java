@@ -7,7 +7,6 @@ import com.model.game.character.player.content.achievements.Achievements.Achieve
 import com.model.game.character.player.packets.out.SendConfig;
 import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendInterfaceConfig;
-import com.model.game.character.player.packets.out.SendString;
 
 
 
@@ -67,7 +66,7 @@ public class AchievementHandler {
 		player.write(new SendConfig(800, tier == 0 ? 1 : 0));
 		player.write(new SendConfig(801, tier == 1 ? 1 : 0));
 		player.write(new SendConfig(802, tier == 2 ? 1 : 0));
-		player.write(new SendString(Integer.toString(this.getPoints()), 49016));
+		player.getActionSender().sendString(Integer.toString(this.getPoints()), 49016);
 		int components = 0;
 		for(Achievement achievement : Achievement.ACHIEVEMENTS) {
 			if(achievement.getTier().ordinal() == tier) {
@@ -75,13 +74,13 @@ public class AchievementHandler {
 				int amount = getAmountRemaining(achievement.getTier().ordinal(), achievement.getId());
 				if(amount > achievement.getAmount())
 					amount = achievement.getAmount();
-				player.write(new SendString(Integer.toString(achievement.getPoints()), scrollId + 300 + achievement.getId()));
-				player.write(new SendString(achievement.name().toUpperCase().replaceAll("_", " "), scrollId + 400 + achievement.getId()));
-				player.write(new SendString(achievement.getDescription(), scrollId + 500 + achievement.getId()));
-				player.write(new SendString(amount+"/"+achievement.getAmount(), scrollId + 700 + achievement.getId()));
+				player.getActionSender().sendString(Integer.toString(achievement.getPoints()), scrollId + 300 + achievement.getId());
+				player.getActionSender().sendString(achievement.name().toUpperCase().replaceAll("_", " "), scrollId + 400 + achievement.getId());
+				player.getActionSender().sendString(achievement.getDescription(), scrollId + 500 + achievement.getId());
+				player.getActionSender().sendString(amount+"/"+achievement.getAmount(), scrollId + 700 + achievement.getId());
 			}
 		}
-		player.write(new SendString(Integer.toString(components), 49020));
+		player.getActionSender().sendString(Integer.toString(components), 49020);
 		player.write(new SendInterface(49000));
 	}
 	

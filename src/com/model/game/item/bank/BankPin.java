@@ -5,7 +5,6 @@ import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendInterfaceConfig;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 
 /**
  * 
@@ -31,38 +30,38 @@ public class BankPin {
 	};
 
 	public void open(int state) {
-		player.write(new SendString("", 39507));
+		player.getActionSender().sendString("", 39507);
 		switch (state) {
 		case 1:
 			pinState = PinState.CREATE_NEW;
-			player.write(new SendString("You do not have a pin set.", 39503));
-			player.write(new SendString("Choose any 4-8 character combination.", 39504));
-			player.write(new SendString("Make sure caps lock isn't enabled.", 39505));
-			player.write(new SendString("Press enter to continue", 39506));
+			player.getActionSender().sendString("You do not have a pin set.", 39503);
+			player.getActionSender().sendString("Choose any 4-8 character combination.", 39504);
+			player.getActionSender().sendString("Make sure caps lock isn't enabled.", 39505);
+			player.getActionSender().sendString("Press enter to continue", 39506);
             player.write(new SendInterfaceConfig(1, 39511));
 			break;
 		case 2:
 			pinState = PinState.UNLOCK;
-			player.write(new SendString("You currently have a pin set.", 39503));
-			player.write(new SendString("Type in your 4-8 character combination.", 39504));
-			player.write(new SendString("Hit enter after you've typed your pin.", 39505));
-			player.write(new SendString("Press the button to continue", 39506));
+			player.getActionSender().sendString("You currently have a pin set.", 39503);
+			player.getActionSender().sendString("Type in your 4-8 character combination.", 39504);
+			player.getActionSender().sendString("Hit enter after you've typed your pin.", 39505);
+			player.getActionSender().sendString("Press the button to continue", 39506);
             player.write(new SendInterfaceConfig(1, 39511));
 			break;
 		case 3:
 			pinState = PinState.CANCEL_PIN;
-			player.write(new SendString("If you wish to cancel your pin, ", 39503));
-			player.write(new SendString("click the button below. If not", 39504));
-			player.write(new SendString("click the x button in the corner.", 39505));
-			player.write(new SendString("Press the button to continue", 39506));
+			player.getActionSender().sendString("If you wish to cancel your pin, ", 39503);
+			player.getActionSender().sendString("click the button below. If not", 39504);
+			player.getActionSender().sendString("click the x button in the corner.", 39505);
+			player.getActionSender().sendString("Press the button to continue", 39506);
             player.write(new SendInterfaceConfig(0, 39511));
 			break;
 		case 4:
 			pinState = PinState.CANCEL_REQUEST;
-			player.write(new SendString("Your current pin cancellation is", 39503));
-			player.write(new SendString("pending. Press continue to cancel", 39504));
-			player.write(new SendString("this and keep your bank pin.", 39505));
-			player.write(new SendString("Press the button to continue", 39506));
+			player.getActionSender().sendString("Your current pin cancellation is", 39503);
+			player.getActionSender().sendString("pending. Press continue to cancel", 39504);
+			player.getActionSender().sendString("this and keep your bank pin.", 39505);
+			player.getActionSender().sendString("Press the button to continue", 39506);
             player.write(new SendInterfaceConfig(1, 39511));
 			break;
 		}

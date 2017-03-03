@@ -42,4 +42,42 @@ public class ActionSender {
 		return this;
 	}
 	
+	public ActionSender addClanMember(String username) {
+		if (player.getOutStream() != null) {
+            player.getOutStream().putFrameVarByte(216);
+            int offset = player.getOutStream().offset;
+            player.getOutStream().putRS2String(username);
+            player.getOutStream().putFrameSizeByte(offset);
+        }
+        return this;
+	}
+	
+	public ActionSender sendClanMessage(String member, String message, String clan, int rights) {
+		if (player.getOutStream() != null) {
+            player.getOutStream().putFrameVarShort(217);
+            int offset = player.getOutStream().offset;
+            player.getOutStream().putRS2String(member);
+            player.getOutStream().putRS2String(message);
+            player.getOutStream().putRS2String(clan);
+            player.getOutStream().writeShort(rights);
+            player.getOutStream().putFrameSizeShort(offset);
+        }
+		return this;
+	}
+	
+	public ActionSender sendString(String message, int interfaceId) {
+		/*if (!player.checkPacket126Update(message, interfaceId) && interfaceId != 56306 && interfaceId != 39507) {
+			return;
+		}*/
+		if (player.getOutStream() != null) {
+			player.getOutStream().putFrameVarShort(126);
+			int offset = player.getOutStream().offset;
+			player.getOutStream().putRS2String(message == null ? "" : message);
+			player.getOutStream().writeWordA(interfaceId);
+			player.getOutStream().putFrameSizeShort(offset);
+		}
+		player.flushOutStream();
+		return this;
+	}
+	
 }

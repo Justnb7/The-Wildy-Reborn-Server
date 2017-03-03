@@ -23,7 +23,6 @@ import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.GameItem;
 import com.model.game.item.bank.BankItem;
@@ -113,29 +112,29 @@ public class DuelSession extends MultiplayerSession {
 		case MultiplayerSessionStage.OFFER_ITEMS:
 			if (System.currentTimeMillis() - lastRuleModification < 5_000) {
 				player.write(new SendMessagePacket("<col=CC0000>A rule was changed in the last 5 seconds, you cannot accept yet."));
-				player.write(new SendString("A rule was changed in recently, you cannot accept yet.", 6684));
+				player.getActionSender().sendString("A rule was changed in recently, you cannot accept yet.", 6684);
 				return;
 			}
 			if (recipient.getItems().getFreeSlots() < getItems(player).size()) {
-				player.write(new SendString("You have offered more items than " + recipient.getName() + " has free space.", 6684));
-				recipient.write(new SendString("You do not have enough inventory space to continue.", 6684));
+				player.getActionSender().sendString("You have offered more items than " + recipient.getName() + " has free space.", 6684);
+				recipient.getActionSender().sendString("You do not have enough inventory space to continue.", 6684);
 				return;
 			}
 			if (recipient.getItems().getFreeSlots() < getDisabledEquipmentCount(recipient)) {
-				player.write(new SendString("Player doesn't have enough space to unequip the disabled items.", 6684));
-				recipient.write(new SendString("Not enough space to remove the disabled equipped items.", 6684));
+				player.getActionSender().sendString("Player doesn't have enough space to unequip the disabled items.", 6684);
+				recipient.getActionSender().sendString("Not enough space to remove the disabled equipped items.", 6684);
 				return;
 			}
 			if (rules.contains(Rule.NO_MELEE) && rules.contains(Rule.NO_MAGE) && rules.contains(Rule.NO_WEAPON)) {
-				player.write(new SendString("You cannot have no melee, no mage and no weapon selected.", 6684));
-				recipient.write(new SendString("You cannot have no melee, no mage and no weapon selected.", 6684));
+				player.getActionSender().sendString("You cannot have no melee, no mage and no weapon selected.", 6684);
+				recipient.getActionSender().sendString("You cannot have no melee, no mage and no weapon selected.", 6684);
 				return;
 			}
 			for (Player p : players) {
 				GameItem overlap = getOverlappedItem(p);
 				if (overlap != null) {
-					p.write(new SendString("Too many of one item! The other player has " + Utility.getValueRepresentation(overlap.amount) + " " + p.getItems().getItemName(overlap.id) + " in their inventory.", 6684));
-					getOther(p).write(new SendString("The other player has offered too many of one item, they must remove some.", 6684));
+					p.getActionSender().sendString("Too many of one item! The other player has " + Utility.getValueRepresentation(overlap.amount) + " " + p.getItems().getItemName(overlap.id) + " in their inventory.", 6684);
+					getOther(p).getActionSender().sendString("The other player has offered too many of one item, they must remove some.", 6684);
 					return;
 				}
 			}
@@ -145,9 +144,9 @@ public class DuelSession extends MultiplayerSession {
 				updateMainComponent();
 				return;
 			}
-			player.write(new SendString("Waiting for other player...", 6684));
+			player.getActionSender().sendString("Waiting for other player...", 6684);
 			stage.setAttachment(player);
-			recipient.write(new SendString("Other player has accepted", 6684));
+			recipient.getActionSender().sendString("Other player has accepted", 6684);
 			break;
 
 		case MultiplayerSessionStage.CONFIRM_DECISION:
@@ -171,8 +170,8 @@ public class DuelSession extends MultiplayerSession {
 				return;
 			}
 			stage.setAttachment(player);
-			player.write(new SendString("Waiting for other player...", 6571));
-			recipient.write(new SendString("Other player has accepted", 6571));
+			player.getActionSender().sendString("Waiting for other player...", 6571);
+			recipient.getActionSender().sendString("Other player has accepted", 6571);
 			break;
 
 		default:
@@ -218,8 +217,8 @@ public class DuelSession extends MultiplayerSession {
 				player.getItems().resetItems(3322);
 				refreshItemContainer(player, player, 6669);
 				refreshItemContainer(player, player, 6670);
-				player.write(new SendString("Dueling with: " + recipient.getName() + " (level-" + recipient.combatLevel + ")", 6671));
-				player.write(new SendString("", 6684));
+				player.getActionSender().sendString("Dueling with: " + recipient.getName() + " (level-" + recipient.combatLevel + ")", 6671);
+				player.getActionSender().sendString("", 6684);
 				player.write(new SendInterfaceWithInventoryOverlay(6575, 3321));
 				player.write(new SendFrame87(286, 0));
 			}
@@ -234,7 +233,7 @@ public class DuelSession extends MultiplayerSession {
 						itemList.append(player.getItems().getItemName(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
 					}
 				}
-				player.write(new SendString(itemList.toString(), 6516));
+				player.getActionSender().sendString(itemList.toString(), 6516);
 				itemList = new StringBuilder();
 				items = getItems(recipient);
 				for (GameItem item : items) {
@@ -242,21 +241,21 @@ public class DuelSession extends MultiplayerSession {
 						itemList.append(player.getItems().getItemName(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
 					}
 				}
-				player.write(new SendString(itemList.toString(), 6517));
-				player.write(new SendString("", 8242));
+				player.getActionSender().sendString(itemList.toString(), 6517);
+				player.getActionSender().sendString("", 8242);
 				for (int i = 8238; i <= 8253; i++) {
-					player.write(new SendString("", i));
+					player.getActionSender().sendString("", i);
 				}
-				player.write(new SendString("Hitpoints will be restored.", 8250));
-				player.write(new SendString("Boosted stats will be reset.", 8238));
+				player.getActionSender().sendString("Hitpoints will be restored.", 8250);
+				player.getActionSender().sendString("Boosted stats will be reset.", 8238);
 				int offset = 0;
 				for (Rule rule : rules.rules) {
 					if (!rule.getDetails().isEmpty()) {
-						player.write(new SendString(rule.getDetails(), 8242 + offset));
+						player.getActionSender().sendString(rule.getDetails(), 8242 + offset);
 						offset++;
 					}
 				}
-				player.write(new SendString("", 6571));
+				player.getActionSender().sendString("", 6571);
 				player.write(new SendInterfaceWithInventoryOverlay(6412, 197));
 			}
 		}
@@ -269,8 +268,8 @@ public class DuelSession extends MultiplayerSession {
 			player.getItems().resetItems(3322);
 			refreshItemContainer(player, player, 6669);
 			refreshItemContainer(player, getOther(player), 6670);
-			player.write(new SendString("", 6684));
-			player.write(new SendString("Dueling with: " + recipient.getName() + " (level-" + recipient.combatLevel + ")", 6671));
+			player.getActionSender().sendString("", 6684);
+			player.getActionSender().sendString("Dueling with: " + recipient.getName() + " (level-" + recipient.combatLevel + ")", 6671);
 		}
 	}
 
@@ -368,34 +367,34 @@ public class DuelSession extends MultiplayerSession {
 		player.getWeaponInterface().restoreWeaponAttributes();
 	}
 
-	public void showRewardComponent(Player c) {
-		if (Objects.isNull(c) || Objects.isNull(getOther(c))) {
+	public void showRewardComponent(Player player) {
+		if (Objects.isNull(player) || Objects.isNull(getOther(player))) {
 			return;
 		}
-		List<GameItem> itemList = items.get(getOther(c));
+		List<GameItem> itemList = items.get(getOther(player));
 		if (itemList.size() > 28) {
 			itemList.subList(0, 27);
 		}
-		c.write(new SendString(Integer.toString(getOther(c).combatLevel), 6839));
-		c.write(new SendString(getOther(c).getName(), 6840));
-		c.write(new SendInterface(6733));
-		c.getOutStream().createFrameVarSizeWord(53);
-		c.getOutStream().writeWord(6822);
-		c.getOutStream().writeWord(itemList.size());
+		player.getActionSender().sendString(Integer.toString(getOther(player).combatLevel), 6839);
+		player.getActionSender().sendString(getOther(player).getName(), 6840);
+		player.write(new SendInterface(6733));
+		player.getOutStream().createFrameVarSizeWord(53);
+		player.getOutStream().writeWord(6822);
+		player.getOutStream().writeWord(itemList.size());
 		for (GameItem item : itemList) {
 			if (item.amount > 254) {
-				c.getOutStream().writeByte(255);
-				c.getOutStream().writeDWord_v2(item.amount);
+				player.getOutStream().writeByte(255);
+				player.getOutStream().writeDWord_v2(item.amount);
 			} else {
-				c.getOutStream().writeByte(item.amount);
+				player.getOutStream().writeByte(item.amount);
 			}
 			if (item.id > Constants.ITEM_LIMIT || item.id < 0) {
 				item = new GameItem(Constants.ITEM_LIMIT, item.id);
 			}
-			c.getOutStream().writeWordBigEndianA(item.id + 1);
+			player.getOutStream().writeWordBigEndianA(item.id + 1);
 		}
-		c.getOutStream().endFrameVarSizeWord();
-		c.flushOutStream();
+		player.getOutStream().endFrameVarSizeWord();
+		player.flushOutStream();
 	}
 
 	public void sendDuelEquipment() {
@@ -429,7 +428,7 @@ public class DuelSession extends MultiplayerSession {
 		if (rule.equals(Rule.NO_MELEE) || rule.equals(Rule.NO_RANGE) || rule.equals(Rule.NO_MAGE)) {
 			long count = rules.rules.stream().filter(r -> r.equals(Rule.NO_MELEE) || r.equals(Rule.NO_RANGE) || r.equals(Rule.NO_MAGE)).count();
 			if (count >= 2 && !rules.contains(rule)) {
-				player.write(new SendString("You must fight with at least one combat style.", 6684));
+				player.getActionSender().sendString("You must fight with at least one combat style.", 6684);
 				return;
 			}
 		}
@@ -448,8 +447,8 @@ public class DuelSession extends MultiplayerSession {
 		}
 		lastRuleModification = System.currentTimeMillis();
 		stage.setAttachment(null);
-		player.write(new SendString("", 6684));
-		getOther(player).write(new SendString("", 6684));
+		player.getActionSender().sendString("", 6684);
+		getOther(player).getActionSender().sendString("", 6684);
 		refreshRules();
 	}
 

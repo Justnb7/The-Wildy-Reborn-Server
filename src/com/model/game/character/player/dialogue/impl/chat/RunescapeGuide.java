@@ -9,7 +9,6 @@ import com.model.game.character.player.dialogue.Type;
 import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendSidebarInterface;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 
 public class RunescapeGuide extends Dialogue {
@@ -67,7 +66,7 @@ public class RunescapeGuide extends Dialogue {
 	private void handleStarterKit(Player player) {
 		player.setAttackStyle(AttackStyle.ACCURATE);
 		player.write(new SendSidebarInterface(0, 5855));
-		player.write(new SendString("Unarmed", 5857));
+		player.getActionSender().sendString("Unarmed", 5857);
 		Item[] starterItems = { //Runes
 				new Item(560, 100_000),
 				new Item(565, 100_000),

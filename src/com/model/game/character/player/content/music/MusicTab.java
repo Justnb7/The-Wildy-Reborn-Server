@@ -9,7 +9,6 @@ import com.model.game.character.player.packets.buttons.ActionButtonEvent;
 import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
 import com.model.game.character.player.packets.out.SendConfig;
 import com.model.game.character.player.packets.out.SendSongPacket;
-import com.model.game.character.player.packets.out.SendString;
 
 /**
  *
@@ -428,7 +427,7 @@ public class MusicTab {
 				}
 				for (MusicTab element : music) {
 					if (button.getId() == element.buttonId) { //Disabled unlocking for now.
-						player.write(new SendString(element.songName, 4439));
+						player.getActionSender().sendString(element.songName, 4439);
 						player.write(new SendSongPacket(element.songId));
 						setToManual(player);
 					}

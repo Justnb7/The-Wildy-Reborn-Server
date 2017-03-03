@@ -4,7 +4,6 @@ import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 
 /**
  * The class which represents functionality for the special attack.
@@ -48,7 +47,6 @@ public class Special {
 			attacker.updateLastCombatAction();
 			attacker.setInCombat(true);
 		}
-		attacker.write(new SendString(""+attacker.getSpecialAmount(), 12001));
 		
 		int weapon = attacker.playerEquipment[attacker.getEquipment().getWeaponId()];
 

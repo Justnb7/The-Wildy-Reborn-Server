@@ -30,7 +30,6 @@ import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.SendRemoveInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.game.item.equipment.EquipmentSet;
@@ -581,7 +580,7 @@ public class PlayerVsPlayerCombat {
 		}
 		
 		Player attacker = World.getWorld().PLAYERS.get(defender.underAttackBy);
-		player.write(new SendString(defender.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+defender.getSkills().getLevel(Skills.HITPOINTS)+ ((attacker != null) ? "-"+ attacker.getName() : ""), 35000));
+		player.getActionSender().sendString(defender.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+defender.getSkills().getLevel(Skills.HITPOINTS)+ ((attacker != null) ? "-"+ attacker.getName() : ""), 35000);
 
 		player.usingBow = player.usingBow = player.usingArrows = player.throwingAxe = false;
 		player.rangeItemUsed = 0;

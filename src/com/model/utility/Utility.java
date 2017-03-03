@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 import com.model.Server;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.location.Position;
 
 public class Utility {
@@ -31,26 +30,6 @@ public class Utility {
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	
     private static final String VALID_PASSWORD_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789243 ";
-
-    public static int lineWrap(Player player, List<String> messages) {
-        int cap = 63;
-        int index = 41001;
-        for (String s : messages) {
-            if (s.length() > cap) {
-                int wrap = s.substring(0, cap).lastIndexOf(" ");
-                wrap = wrap == -1 ? cap : wrap;
-
-                String nonWrapped = s.substring(0, wrap);
-                String wrapped = s.substring(wrap + 1);
-
-                player.write(new SendString(nonWrapped, index++));
-                player.write(new SendString(wrapped, index++));
-            } else {
-                player.write(new SendString(s, index++));
-            }
-        }
-        return index - 41001;
-    }
 
     public static byte[] toPrimitive(Byte[] data) {
         byte[] primitive = new byte[data.length];

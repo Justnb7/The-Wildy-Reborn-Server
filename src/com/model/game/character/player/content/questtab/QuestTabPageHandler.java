@@ -3,7 +3,6 @@ package com.model.game.character.player.content.questtab;
 import java.util.Objects;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendString;
 
 /**
  * Handles the quest tab pages
@@ -26,7 +25,7 @@ public class QuestTabPageHandler {
 	 */
 	public static void reset(Player player) {
 		for (int i = 1; i < 100; i++) {
-			player.write(new SendString("", getQuestLine(i)));
+			player.getActionSender().sendString("", getQuestLine(i));
 		}
 	}
 

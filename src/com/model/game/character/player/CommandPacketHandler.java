@@ -24,7 +24,6 @@ import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSongPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.packets.out.SendWalkableInterface;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
@@ -400,12 +399,12 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "staff":
 			player.write(new SendInterface(8134));
-			player.write(new SendString("@red@Luzoxpk Staff@bla@", 8144));
-			player.write(new SendString("[@red@Owner@bla@] <img=1>Patrick - " + World.getWorld().getOnlineStatus("patrick"), 8145));
-			player.write(new SendString("[@red@Owner@bla@] <img=1>Matthew - " + World.getWorld().getOnlineStatus("matthew"), 8146));
+			player.getActionSender().sendString("@red@Luzoxpk Staff@bla@", 8144);
+			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Patrick - " + World.getWorld().getOnlineStatus("patrick"), 8145);
+			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Matthew - " + World.getWorld().getOnlineStatus("matthew"), 8146);
 
 			for (int i = 8151; i < 8178; i++) {
-				player.write(new SendString("", i));
+				player.getActionSender().sendString("", i);
 			}
 			return true;
     		
@@ -966,7 +965,6 @@ public class CommandPacketHandler implements PacketType {
     		player.setSpecialAmount(100);
     		player.getWeaponInterface().sendSpecialBar(player.playerEquipment[player.getEquipment().getWeaponId()]);
     		player.getWeaponInterface().refreshSpecialAttack();
-    		player.write(new SendString(""+player.getSpecialAmount(), 12001));
     		return true;
     		
     	case "tele":

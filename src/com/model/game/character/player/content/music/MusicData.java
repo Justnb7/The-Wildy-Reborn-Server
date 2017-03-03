@@ -2,7 +2,6 @@ package com.model.game.character.player.content.music;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendSongPacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.packets.out.SendStringColor;
 import com.model.utility.Utility;
 
@@ -47,7 +46,7 @@ public class MusicData {
 			if (!player.getAttribute("AUTO_MUSIC_DISABLED", Boolean.FALSE)) {
 				player.write(new SendSongPacket(random));
 			}
-			player.write(new SendString(songs[random].name, 4439));
+			player.getActionSender().sendString(songs[random].name, 4439);
 			return;
 		}
 		if (!player.getAttribute("AUTO_MUSIC_DISABLED", Boolean.FALSE)) {

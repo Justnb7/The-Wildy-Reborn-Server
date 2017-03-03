@@ -7,10 +7,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.AddClanMember;
-import com.model.game.character.player.packets.out.SendClanMessage;
-import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 import com.model.utility.NameUtils;
 
@@ -174,18 +170,18 @@ public class Clan extends ClanData {
 		}
 
 		if (member.getRank() == ClanRank.BANNED) {
-			player.write(new SendMessagePacket("You have been banned from this clan chat."));
+			player.message("You have been banned from this clan chat.");
 			return;
 		}
 
 		if (member.getRank() == ClanRank.GUEST && settings[CAN_JOIN] == SettingState.ANY_FRIENDS
 				&& !isFriend(player.getName())) {
-			player.write(new SendMessagePacket("You don't have the necessary rank to join this clan chat."));
+			player.message("You don't have the necessary rank to join this clan chat.");
 			return;
 		}
 
 		if (settings[CAN_JOIN].getRankRequired().ordinal() > member.getRank().ordinal()) {
-			player.write(new SendMessagePacket("You don't have the necessary rank to join this clan chat."));
+			player.message("You don't have the necessary rank to join this clan chat.");
 			return;
 		}
 
@@ -204,7 +200,7 @@ public class Clan extends ClanData {
 		}
 		
 		updateTab();
-		player.write(new SendString("Leave Chat", 18135));
+		player.getActionSender().sendString("Leave Chat", 18135);
 	}
 
 	/**
@@ -235,7 +231,7 @@ public class Clan extends ClanData {
 			if (member != null && member.getName() != null) {
 				Player player = World.getWorld().getPlayerByName(member.getName());
 				if (player != null) {
-					player.write(new SendClanMessage(member_name, message, clan_name, crown_id));
+					player.getActionSender().sendClanMessage(member_name, message, clan_name, crown_id);
 				}
 			}
 		}
@@ -308,17 +304,17 @@ public class Clan extends ClanData {
 				if (player != null && player.getClanMembership() != null
 						&& player.getClanMembership().getClanOwner().equalsIgnoreCase(clan_owner)) {
 					
-					player.write(new SendString("Talking in: " + clan_name, TAB_CLAN_NAME));
-					player.write(new SendString("Owner: " + clan_owner, TAB_OWNER_NAME));
+					player.getActionSender().sendString("Talking in: " + clan_name, TAB_CLAN_NAME);
+					player.getActionSender().sendString("Owner: " + clan_owner, TAB_OWNER_NAME);
 					
 					for (int x = 0; x < 100; x++) {
 						
 						if (x < online_members.size() && online_members.get(x) != null) {
 							name = online_members.get(x).getName();
-							player.write(new SendString(("" + getClanIcon(name) + (NameUtils.formatName(name))), 18144 + x));
-							player.write(new AddClanMember(name));
+							player.getActionSender().sendString(("" + getClanIcon(name) + (NameUtils.formatName(name))), 18144 + x);
+							player.getActionSender().addClanMember(name);
 						} else {
-							player.write(new SendString("", 18144 + x));
+							player.getActionSender().sendString("", 18144 + x);
 						}
 						
 					}

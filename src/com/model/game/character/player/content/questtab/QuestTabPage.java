@@ -1,7 +1,6 @@
 package com.model.game.character.player.content.questtab;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendString;
 
 /**
  * Represents a single Quest Tab Page
@@ -40,7 +39,7 @@ public abstract class QuestTabPage {
 	 *            The line of the quest tab to write the text too
 	 */
 	public void write(Player player, String text, int line) {
-		player.write(new SendString(text, QuestTabPageHandler.getQuestLine(line)));
+		player.getActionSender().sendString(text, QuestTabPageHandler.getQuestLine(line));
 	}
 
 }

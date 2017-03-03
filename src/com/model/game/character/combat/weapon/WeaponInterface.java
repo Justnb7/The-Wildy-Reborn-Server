@@ -9,7 +9,6 @@ import com.model.game.character.player.packets.out.SendConfig;
 import com.model.game.character.player.packets.out.SendInterfaceConfig;
 import com.model.game.character.player.packets.out.SendInterfaceModel;
 import com.model.game.character.player.packets.out.SendSidebarInterface;
-import com.model.game.character.player.packets.out.SendString;
 
 /**
  * The class which represents functionality for the weapons interface.
@@ -125,7 +124,7 @@ public class WeaponInterface {
 			if (name == null || name == "Unarmed") {
 				player.setAttackStyle(0);
 				player.write(new SendSidebarInterface(0, 5855));
-				player.write(new SendString("Unarmed", 5857));
+				player.getActionSender().sendString("Unarmed", 5857);
 				player.setAttackStyle(0);
 				player.write(new SendConfig(43, 0));
 				return;
@@ -133,7 +132,7 @@ public class WeaponInterface {
 			if (name.contains(equipment.getWeaponType()) || name.endsWith(equipment.getWeaponType()) || name.startsWith(equipment.getWeaponType())) {
 				player.write(new SendSidebarInterface(0, equipment.getInterface()));
 				player.write(new SendInterfaceModel(equipment.getItemLocation(), 200, id));
-				player.write(new SendString(name, equipment.getNameOnInterfaceId()));
+				player.getActionSender().sendString(name, equipment.getNameOnInterfaceId());
 			}
 		}
 	}
@@ -241,11 +240,10 @@ public class WeaponInterface {
 
 	public void refreshSpecialAttack() {
 		if (player.isUsingSpecial()) {
-			player.write(new SendString("@yel@ Special Attack ("+player.getSpecialAmount() * 1 +"%)", player.specBarId));
+			player.getActionSender().sendString("@yel@ Special Attack ("+player.getSpecialAmount() * 1 +"%)", player.specBarId);
 		} else {
-			player.write(new SendString("@bla@ Special Attack ("+player.getSpecialAmount() * 1 +"%)", player.specBarId));
+			player.getActionSender().sendString("@bla@ Special Attack ("+player.getSpecialAmount() * 1 +"%)", player.specBarId);
 		}
-		player.write(new SendString(""+player.getSpecialAmount(), 12001));
 	}
 	
 	public void restoreWeaponAttributes() {

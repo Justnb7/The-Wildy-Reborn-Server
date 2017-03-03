@@ -6,7 +6,6 @@ import com.model.game.character.npc.BossDeathTracker.BossName;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterface;
 import com.model.game.character.player.packets.out.SendScrollbar;
-import com.model.game.character.player.packets.out.SendString;
 import com.model.utility.Utility;
 
 public class BossTracker {
@@ -21,9 +20,9 @@ public class BossTracker {
 				continue;
 			}
 			
-			player.write(new SendString(entry.getKey().format(), line));
+			player.getActionSender().sendString(entry.getKey().format(), line);
 			line++;
-			player.write(new SendString(Utility.formatDigits(entry.getValue()), line));
+			player.getActionSender().sendString(Utility.formatDigits(entry.getValue()), line);
 			line++;
 		}
 		

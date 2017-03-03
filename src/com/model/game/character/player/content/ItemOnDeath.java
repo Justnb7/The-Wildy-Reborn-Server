@@ -2,8 +2,8 @@ package com.model.game.character.player.content;
 
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.utility.json.definitions.ItemDefinition;
 
 /**

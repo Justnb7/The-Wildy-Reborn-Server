@@ -10,8 +10,8 @@ import java.util.Optional;
 
 import com.model.Server;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.GameItem;
 
@@ -389,7 +389,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			}
 			if (this.type.equals(MultiplayerSessionType.DUEL)) {
 				if (type.equals(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS)) {
-					player.write(new SendClearScreen());
+					player.write(new SendRemoveInterface());
 				}
 			}
 			PlayerSerialization.saveGame(player);

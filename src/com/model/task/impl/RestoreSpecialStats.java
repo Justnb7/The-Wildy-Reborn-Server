@@ -2,7 +2,7 @@ package com.model.task.impl;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.task.ScheduledTask;
 
 public class RestoreSpecialStats extends ScheduledTask {

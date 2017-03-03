@@ -14,8 +14,8 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 
 /**
@@ -25,99 +25,23 @@ public class WalkingPacketHandler implements PacketType {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
-		if (packetType == 248 || packetType == 164) {
-			player.faceUpdate(0);
-			player.npcIndex = 0;
-			player.clickObjectType = 0;
-			player.walkingToObject = false;
-			player.clickNpcType = 0;
-			player.playerIndex = 0;
-			player.setOpenShop(null);
-			if (player.followId > 0 || player.followId2 > 0) {
-				player.getPA().resetFollow();
-			}
-		}
-
-		if (player.isDead()) {
+		
+		//We can't walk because of the following reasons
+		if (player.isDead() || !player.getController().canMove(player) || player.inTutorial() || player.teleTimer > 0
+				|| player.isTeleporting() || player.mapRegionDidChange || player.getMovementHandler().isForcedMovement()
+				|| player.playerStun) {
 			return;
 		}
 		
-		if (player.inTutorial()) {
-    		return;
-    	}
-		
-		DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
-
-		if (session != null && Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
-			if (session.getRules().contains(Rule.NO_MOVEMENT)) {
-				return;
-			}
-		}
-		// ken if statement, this makes it so that when you click on the minimap
-		// while in dueling screen, you decline the duel. not sure if other
-		// abyssal/ospvp servers have this, or if i invented this
-		if (Objects.nonNull(session) && session.getStage().getStage() > MultiplayerSessionStage.REQUEST && session.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
-			player.write(new SendMessagePacket("You have declined the duel."));
-			session.getOther(player).write(new SendMessagePacket("The challenger has declined the duel."));
-			session.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
-			// return;
-		}
-		
-		/*
-		 * Stop our distanced action task because we reset the walking queue by walking
-		 */
-		player.stopDistancedTask();
-		
+		//we have a bank pin, so we can't walk
 		if (player.getBankPin().requiresUnlock()) {
-			player.isBanking = false;
+			player.setBanking(false);
 			player.getBankPin().open(2);
 			return;
 		}
 		
-		if (Trading.isTrading(player)) {
-            Trading.decline(player);
-        }
-		
-		if (player.teleporting || player.mapRegionDidChange) {
-			return;
-		}
-		
-		if (player.getMovementHandler().isForcedMovement()) {
-			// dont walk while we're force walking
-			return;
-		}
-		
-		if (player.canChangeAppearance) {
-			player.canChangeAppearance = false;
-		}
-		
-		if (player.getSkilling().isSkilling()) {
-			player.getSkilling().stop();
-		}
-		
-		Combat.resetCombat(player);
-		player.setOpenShop(null);
-		player.mageFollow = false;
-		player.clickNpcType = 0;
-		player.clickObjectType = 0;
-
-		if (player.playerStun) {
-			return;
-		}
-		if (player.followId > 0 || player.followId2 > 0) {
-			player.getPA().resetFollow();
-		}
-		if (player.isBanking) {
-			player.isBanking = false;
-		}
-		
-		player.write(new SendClearScreen());
-		if (player.teleTimer > 0 || player.teleporting) {
-			return;
-		}
-
+		//We're frozen we can't walk
 		if (player.frozen()) {
-			System.out.println("yeah");
 			if (World.getWorld().getPlayers().get(player.playerIndex) != null) {
 				if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 1) && packetType != 98) {
 					player.playerIndex = 0;
@@ -130,15 +54,73 @@ public class WalkingPacketHandler implements PacketType {
 			}
 			return;
 		}
+		
+		//Set our controller
+		player.getController().onWalk(player);
+		
+		//When walking we have to close all open interfaces.
+		player.write(new SendRemoveInterface());
+		
+		//Stop our distanced action task because we reset the walking queue by walking
+		player.stopDistancedTask();
+		
+		//PI logic?
+		if (player.canChangeAppearance) {
+			player.canChangeAppearance = false;
+		}
+		
+		//When walking stop our skilling action
+		if (player.getSkilling().isSkilling()) {
+			player.getSkilling().stop();
+		}
+		
+		//When walking during a trade we decline
+		if (Trading.isTrading(player)) {
+            Trading.decline(player);
+        }
+		
+		//When walking we close our duel invitation
+		DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
+
+		if (session != null && Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
+			if (session.getRules().contains(Rule.NO_MOVEMENT)) {
+				return;
+			}
+		}
+		if (Objects.nonNull(session) && session.getStage().getStage() > MultiplayerSessionStage.REQUEST && session.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
+			player.write(new SendMessagePacket("You have declined the duel."));
+			session.getOther(player).write(new SendMessagePacket("The challenger has declined the duel."));
+			session.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
+		}
+		
+		//When walking reset the following variables
+		if (packetType == 248 || packetType == 164) {
+			player.faceUpdate(0);
+			player.npcIndex = 0;
+			player.clickObjectType = 0;
+			player.walkingToObject = false;
+			player.clickNpcType = 0;
+			player.playerIndex = 0;
+			player.setOpenShop(null);
+			player.mageFollow = false;
+			Combat.resetCombat(player);
+			if (player.followId > 0 || player.followId2 > 0) {
+				player.getPA().resetFollow();
+			}
+		}
+		
+		//Don't know what this does
 		if (packetType == 98) {
 			player.walkingToObject = true;
 			player.mageAllowed = true;
 		}
 		
+		//Don't know what this does either
 		if (packetType == 248) {
 			packetSize -= 14;
 		}
 		
+		//We're walking to our target
 		int steps = (packetSize - 5) / 2;
 		if (steps < 0)
 			return;
@@ -158,7 +140,7 @@ public class WalkingPacketHandler implements PacketType {
 			path[i][1] += firstStepY;
 			player.getMovementHandler().addToPath(new Position(path[i][0], path[i][1], 0));
 		}
+		//We've reached our destination
 		player.getMovementHandler().finish();
 	}
-
 }

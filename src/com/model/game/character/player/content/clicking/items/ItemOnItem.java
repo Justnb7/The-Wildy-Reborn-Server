@@ -4,7 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.PotionCombinating;
 import com.model.game.character.player.content.rewards.CrystalChest;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.impl.Firemaking;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -24,7 +24,7 @@ public class ItemOnItem {
 	 *            The {@link Item} that is being selected on.
 	 */
 	public static void handleAction(Player player, Item used, Item usedWith) {
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			System.out.println(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", used.getId(), usedWith.getId()));
 		}
 		

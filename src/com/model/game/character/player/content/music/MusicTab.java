@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.actions.buttons.ActionButton;
-import com.model.game.character.player.packets.actions.buttons.ActionButtonEvent;
-import com.model.game.character.player.packets.actions.buttons.ActionButtonEventListener;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendSongPacket;
+import com.model.game.character.player.packets.buttons.ActionButton;
+import com.model.game.character.player.packets.buttons.ActionButtonEvent;
+import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendSongPacket;
+import com.model.game.character.player.packets.out.SendString;
 
 /**
  *

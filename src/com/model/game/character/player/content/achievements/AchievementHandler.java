@@ -4,10 +4,10 @@ import java.io.BufferedWriter;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.achievements.Achievements.Achievement;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceConfig;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendString;
 
 
 

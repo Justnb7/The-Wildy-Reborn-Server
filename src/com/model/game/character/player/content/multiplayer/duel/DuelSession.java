@@ -16,15 +16,15 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.encode.impl.CreatePlayerHint;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendFrame87;
-import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.CreatePlayerHint;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendFrame87;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceWithInventoryOverlay;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
 import com.model.game.item.GameItem;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.ground.GroundItemHandler;
@@ -163,8 +163,8 @@ public class DuelSession extends MultiplayerSession {
 				opponent.getPA().movePlayer(teleportX, teleportY - 1, 0);
 				player.write(new CreatePlayerHint(10, opponent.getIndex()));
 				opponent.write(new CreatePlayerHint(10, player.getIndex()));
-				player.write(new SendClearScreen());
-				opponent.write(new SendClearScreen());
+				player.write(new SendRemoveInterface());
+				opponent.write(new SendRemoveInterface());
 				removeDisabledEquipment(player);
 				removeDisabledEquipment(opponent);
 				CycleEventHandler.getSingleton().addEvent(this, new AttackingOperation(), 2);
@@ -215,7 +215,6 @@ public class DuelSession extends MultiplayerSession {
 		if (stage.getStage() == MultiplayerSessionStage.OFFER_ITEMS) {
 			for (Player player : players) {
 				Player recipient = getOther(player);
-				player.setTrading(true);
 				player.getItems().resetItems(3322);
 				refreshItemContainer(player, player, 6669);
 				refreshItemContainer(player, player, 6670);
@@ -357,7 +356,7 @@ public class DuelSession extends MultiplayerSession {
 		PlayerSerialization.saveGame(player);
 		
 		//Close all open windows
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
 		
 		//reset player variables
 		player.getPA().resetAnimation();

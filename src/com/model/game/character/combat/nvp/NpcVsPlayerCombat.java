@@ -24,10 +24,10 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendFrame107;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendShakeScreen;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendFrame107;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendShakeScreen;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -116,7 +116,7 @@ public class NpcVsPlayerCombat {
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 				if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
 					npc.targetId = 0;
-					npc.underAttack = false; 
+					npc.underAttack = false;
 					return;
 				}
 			}
@@ -127,60 +127,52 @@ public class NpcVsPlayerCombat {
 			boolean dont_use_normal_damage_method = false;
 			if (goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(),
 					NPCCombatData.distanceRequired(npc))) {
-					npc.attackTimer = NPCCombatData.getNpcDelay(npc);
-					npc.attackStyle = 0;
-					boolean isBoss = Bosses.isBoss(npc.npcId);
-					Boss boss_cb = Bosses.get(npc.npcId);
-					if (isBoss) {
-						boss_cb.execute(npc, player);
-						if (boss_cb.damageUsesOwnImplementation()) {
-							dont_use_normal_damage_method = true;
-							// npc.hitDelayTimer =
-							// NPCCombatData.getHitDelay(npc);
-						}
-					}
-					if (!dont_use_normal_damage_method) {
-						// use the normal damage method.
-						npc.hitDelayTimer = NPCCombatData.getHitDelay(npc);
-					}
-					if (npc.attackStyle == 3) {
-						npc.hitDelayTimer += 2;
-					}
-					if (multiAttacks(npc)) {
-						multiAttackGfx(npc, npc.projectileId);
-						npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
-						npc.oldIndex = player.getIndex();
-						return;
-					}
-					if (npc.projectileId > 0) {
-						int nX = npc.getX() + NPCCombatData.offset(npc);
-						int nY = npc.getY() + NPCCombatData.offset(npc);
-						int pX = player.getX();
-						int pY = player.getY();
-						int offX = (nX - pX) * -1;
-						int offY = (nY - pY) * -1;
-						player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50,
-								NPCCombatData.getProjectileSpeed(npc), npc.projectileId,
-								NPCCombatData.getProjectileStartHeight(npc.npcId, npc.projectileId),
-								NPCCombatData.getProjectileEndHeight(npc.npcId, npc.projectileId), -player.getId() - 1,
-								65);
-					}
-					player.underAttackBy2 = npc.getIndex();
-					player.singleCombatDelay2.reset();
-					npc.oldIndex = player.getIndex();
-					npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
-					player.updateLastCombatAction();
-					player.setInCombat(true);
-					player.write(new SendClearScreen());
-					if (player.teleporting) {
-						player.playAnimation(Animation.create(65535));
-						player.teleporting = false;
-						player.setRunning(false);
-						player.playGraphics(Graphic.create(-1, 0, 0));
-						player.playAnimation(Animation.create(-1));
+				npc.attackTimer = NPCCombatData.getNpcDelay(npc);
+				npc.attackStyle = 0;
+				boolean isBoss = Bosses.isBoss(npc.npcId);
+				Boss boss_cb = Bosses.get(npc.npcId);
+				if (isBoss) {
+					boss_cb.execute(npc, player);
+					if (boss_cb.damageUsesOwnImplementation()) {
+						dont_use_normal_damage_method = true;
+						// npc.hitDelayTimer =
+						// NPCCombatData.getHitDelay(npc);
 					}
 				}
+				if (!dont_use_normal_damage_method) {
+					// use the normal damage method.
+					npc.hitDelayTimer = NPCCombatData.getHitDelay(npc);
+				}
+				if (npc.attackStyle == 3) {
+					npc.hitDelayTimer += 2;
+				}
+				if (multiAttacks(npc)) {
+					multiAttackGfx(npc, npc.projectileId);
+					npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
+					npc.oldIndex = player.getIndex();
+					return;
+				}
+				if (npc.projectileId > 0) {
+					int nX = npc.getX() + NPCCombatData.offset(npc);
+					int nY = npc.getY() + NPCCombatData.offset(npc);
+					int pX = player.getX();
+					int pY = player.getY();
+					int offX = (nX - pX) * -1;
+					int offY = (nY - pY) * -1;
+					player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50,
+							NPCCombatData.getProjectileSpeed(npc), npc.projectileId,
+							NPCCombatData.getProjectileStartHeight(npc.npcId, npc.projectileId),
+							NPCCombatData.getProjectileEndHeight(npc.npcId, npc.projectileId), -player.getId() - 1, 65);
+				}
+				player.underAttackBy2 = npc.getIndex();
+				player.singleCombatDelay2.reset();
+				npc.oldIndex = player.getIndex();
+				npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
+				player.updateLastCombatAction();
+				player.setInCombat(true);
+				player.write(new SendRemoveInterface());
 			}
+		}
 	}
 
 	private static void multiAttackGfx(Npc npc, int gfx) {
@@ -506,7 +498,7 @@ public class NpcVsPlayerCombat {
 				}
 			}
 
-			if (player.teleporting) {
+			if (player.isTeleporting()) {
 				return;
 			}
 			PlayerSounds.sendBlockOrHitSound(player, damage > 0);

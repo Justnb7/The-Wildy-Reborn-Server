@@ -102,7 +102,7 @@ public class Commander_Zilyana extends Boss {
 	public static void send_dmg_on_player(Npc npc, Player player, int dmg) {
 
 		// last stage - apply the damage (make it show on player) - dont do this if they're teleporting
-		if (player.teleporting) {
+		if (player.isTeleporting()) {
 			return;
 		}
 		// adjust the damage if it's above the available HP

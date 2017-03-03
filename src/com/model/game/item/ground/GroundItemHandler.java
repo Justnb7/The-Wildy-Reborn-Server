@@ -8,7 +8,7 @@ import java.util.Optional;
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem.State;
 import com.model.game.location.Position;

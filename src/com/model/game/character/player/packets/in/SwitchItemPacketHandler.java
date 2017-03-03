@@ -15,8 +15,7 @@ public class SwitchItemPacketHandler implements PacketType {
 		if (Trading.isTrading(player)) {
         	Trading.decline(player);
         }
-		if (player.inTrade || player.tradeStatus == 1 || player.teleporting) {
-			Trading.decline(player);
+		if (player.isBusy()) {
 			return;
 		}
 		player.getItems().moveItems(from, to, interfaceId, insertMode);

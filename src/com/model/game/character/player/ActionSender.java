@@ -1,7 +1,7 @@
 package com.model.game.character.player;
 
-import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
-import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
+import com.model.game.character.player.packets.out.SendSidebarInterface;
+import com.model.game.character.player.packets.out.SendSkillPacket;
 
 /**
  * A utility class for sending packets.

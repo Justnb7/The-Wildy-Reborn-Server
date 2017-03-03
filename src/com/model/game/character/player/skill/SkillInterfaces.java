@@ -2,8 +2,8 @@ package com.model.game.character.player.skill;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendString;
 
 public class SkillInterfaces {
 

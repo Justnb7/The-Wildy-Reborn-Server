@@ -1,7 +1,7 @@
 package com.model.game.character.player.content.questtab;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.SendString;
 
 /**
  * Represents a single Quest Tab Page

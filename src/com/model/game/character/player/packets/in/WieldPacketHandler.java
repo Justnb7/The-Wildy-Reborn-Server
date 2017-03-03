@@ -3,7 +3,6 @@ package com.model.game.character.player.packets.in;
 import java.util.Objects;
 
 import com.model.Server;
-import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
@@ -11,7 +10,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.SubPacketType;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.item.Item;
 
 /**
  * Wear Item
@@ -20,21 +20,14 @@ public class WieldPacketHandler implements SubPacketType {
 
 	@Override
 	public void processSubPacket(Player player, int packetType, int packetSize) {
-		player.wearId = player.getInStream().readUnsignedWord();
-		player.wearSlot = player.getInStream().readUnsignedWordA();
-		player.interfaceId = player.getInStream().readUnsignedWordA();
+		final int wearId = player.getInStream().readUnsignedWord();
+		final int wearSlot = player.getInStream().readUnsignedWordA();
+		final int interfaceId = player.getInStream().readUnsignedWordA();
 		
-		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.teleporting) {
+		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.isTeleporting()) {
 			return;
 		}
-		if (!player.getItems().playerHasItem(player.wearId, 1, player.wearSlot)) {
-			return;
-		}
-		if (player.getBankPin().requiresUnlock()) {
-			player.isBanking = false;
-			player.getBankPin().open(2);
-			return;
-		}
+		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 			player.write(new SendMessagePacket("Your actions have declined the duel."));
@@ -42,10 +35,28 @@ public class WieldPacketHandler implements SubPacketType {
 			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 			return;
 		}
-		if ((player.playerIndex > 0 || player.npcIndex > 0) && player.wearId != 4153) {
-			Combat.resetCombat(player);
+		
+		switch (interfaceId) {
+		case 3214:
+			final Item item = player.getItems().getItemFromSlot(wearSlot);
+
+			if (item == null || item.getId() != wearId) {
+				return;
+			}
+			
+			if (player.inDebugMode()) {
+				System.out.println(String.format("[WieldPacket] [id= %d] [slot= %d] [interface %d]", wearId, wearSlot, interfaceId));
+			}
+			
+			if (!player.getController().canEquip(player, wearId, wearSlot)) {
+				return;
+			}
+			
+			player.getItems().wearItem(item.getId(), wearSlot);
+
+			break;
 		}
-		player.getItems().wearItem(player.wearId, player.wearSlot);
+		
 	}
 
 }

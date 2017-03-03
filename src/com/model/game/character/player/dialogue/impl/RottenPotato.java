@@ -3,7 +3,7 @@ package com.model.game.character.player.dialogue.impl;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
+import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.item.Item;
 
 public class RottenPotato extends Dialogue {

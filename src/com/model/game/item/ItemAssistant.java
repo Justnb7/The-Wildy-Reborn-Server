@@ -17,17 +17,16 @@ import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
-import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceConfig;
-import com.model.game.character.player.packets.encode.impl.SendItemOnInterface;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendItemOnInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.game.item.equipment.EquipmentConstants;
@@ -37,7 +36,6 @@ import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.shop.Currency;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
-import com.model.utility.json.definitions.Requirements;
 
 public class ItemAssistant {
 
@@ -112,7 +110,7 @@ public class ItemAssistant {
 		if (refresh) {
 			resetTempItems();
 		}
-		if (player.isBanking)
+		if (player.isBanking())
 			resetBank();
 		if (refresh) {
 			//c.sendMessage(getItemName(itemId) + " x" + item.getAmount() + " has been added to your bank.");
@@ -169,7 +167,7 @@ public class ItemAssistant {
 		}
 		tab.add(item);
 		resetTempItems();
-		if (player.isBanking)
+		if (player.isBanking())
 			resetBank();
 		//c.sendMessage(getItemName(itemId) + " x" + item.getAmount() + " has been added to your bank.");
 	}
@@ -226,7 +224,7 @@ public class ItemAssistant {
 		}
 		tab.add(item);
 		resetTempItems();
-		if (player.isBanking)
+		if (player.isBanking())
 			resetBank();
 		//c.sendMessage(getItemName(itemId) + " x" + item.getAmount() + " has been added to your bank.");
 	}
@@ -666,7 +664,6 @@ public class ItemAssistant {
 			return true;
 		return false;
 	}
-
 	
 	/**
 	 * Wear Item
@@ -678,33 +675,19 @@ public class ItemAssistant {
 	 * @return return;
 	 */
 	public boolean wearItem(int id, int slotId) {
-        ItemDefinition def = ItemDefinition.forId(id);
-        int targetSlot = def.getEquipmentSlot().getId();
-        
-		if (def == null || def.getEquipmentSlot() == null) {
-			player.write(new SendMessagePacket(player.wearId + " is unable to be used, if this is an error please report it!"));
-			return false;
-		}
 		
 		Item item = player.getItems().getItemFromSlot(slotId);
 		
-		if (!player.getController().canEquip(player, player.wearId, targetSlot)) {
+        ItemDefinition def = ItemDefinition.forId(id);
+        int targetSlot = def.getEquipmentSlot().getId();
+		
+		if (def == null || def.getEquipmentSlot() == null) {
+			player.write(new SendMessagePacket(def.getName() + " is unable to be used, if this is an error please report it!"));
 			return false;
 		}
 		
 		if(!ItemConstants.canWear(item, player))
 			return false;
-        
-        /**
-         * Item requirements check
-         */
-		Requirements requirement = Requirements.forId(id);
-		for (int i = 0; i < requirement.getRequirement().length; i++) {
-			if (player.getSkills().getLevelForExperience(i) < requirement.getRequirement()[i]) {
-				player.write(new SendMessagePacket("You need an " + Skills.SKILL_NAME[i] + " level of " + requirement.getRequirement()[i] + " to wear this item."));
-				return false;
-			}
-		}
 
         if (!player.getItems().playerHasItem(id) || player.playerItems[slotId] - 1 != id || player.playerItemsN[slotId] <= 0) {
             return false;
@@ -1070,7 +1053,7 @@ public class ItemAssistant {
 		if (player.playerStun) {
 			return false;
 		}
-		if (!player.isBanking)
+		if (!player.isBanking())
 			return false;
 		if (!player.getItems().playerHasItem(itemID))
 			return false;
@@ -1149,7 +1132,7 @@ public class ItemAssistant {
 		BankTab tab = player.getBank().getCurrentBankTab();
 		BankItem item = new BankItem(itemId + 1, itemAmount);
 		boolean noted = false;
-		if (!player.isBanking)
+		if (!player.isBanking())
 			return;
 		if (itemAmount <= 0)
 			return;
@@ -1162,8 +1145,8 @@ public class ItemAssistant {
 		}
 		if (System.currentTimeMillis() - player.lastBankDeposit < 250)
 			return;
-		if (player.inTrade) {
-			player.write(new SendClearScreen());
+		if (player.isBusy()) {
+			player.write(new SendRemoveInterface());
 			return;
 		}
 		if (!tab.contains(item))
@@ -1215,7 +1198,7 @@ public class ItemAssistant {
 			player.write(new SendMessagePacket("You can't do that in the wilderness."));
 			return false;
 		}
-		if (!player.isBanking)
+		if (!player.isBanking())
 			return false;
 		if (player.playerEquipment[slot] != itemID || player.playerEquipmentN[slot] <= 0)
 			return false;
@@ -1353,8 +1336,8 @@ public class ItemAssistant {
 			player.playerItemsN[to] = tempN;
 		}
 		if (moveWindow == 5382) {
-			if (!player.isBanking) {
-				player.write(new SendClearScreen());
+			if (!player.isBanking()) {
+				player.write(new SendRemoveInterface());
 				resetBank();
 				return;
 			}
@@ -1364,7 +1347,7 @@ public class ItemAssistant {
 			}
 			if (player.getBankPin().requiresUnlock()) {
 				resetBank();
-				player.isBanking = false;
+				player.setBanking(false);
 				player.getBankPin().open(2);
 				return;
 			}

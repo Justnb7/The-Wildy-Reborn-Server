@@ -15,13 +15,13 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.packets.actions.buttons.ActionButton;
-import com.model.game.character.player.packets.actions.buttons.ActionButtonEvent;
-import com.model.game.character.player.packets.actions.buttons.ActionButtonEventListener;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceWithInventoryOverlay;
+import com.model.game.character.player.packets.buttons.ActionButton;
+import com.model.game.character.player.packets.buttons.ActionButtonEvent;
+import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.TradeContainer;
 import com.model.task.impl.DistancedActionTask;
@@ -152,7 +152,7 @@ public class Trading {
 			return false;
 		}
 
-		if (target.inTrade || target.isBanking || target.isPlayerTransformed() || target.tradeStatus > 0) {
+		if (target.isBusy() || target.isPlayerTransformed() || target.tradeStatus > 0) {
 			player.write(new SendMessagePacket("This player is currently busy."));
 			return false;
 		}
@@ -208,7 +208,7 @@ public class Trading {
 		player.setTradeState(TradeState.NONE);
 		player.getRequestManager().setRequestType(null);
 		player.getRequestManager().setAcquaintance(null);
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
 		player.getTradeContainer().clear();
 	}
 
@@ -741,7 +741,7 @@ public class Trading {
 					Trading.decline(player);
 				} else if (button.getId() == 13220) {
 					Player op = World.getWorld().getPlayers().get(player.tradeWith);
-					if (player.inTrade) {
+					if (player.isBusy()) {
 						if (!op.acceptedTrade && !player.acceptedTrade) {
 							Trading.decline(player);
 						}

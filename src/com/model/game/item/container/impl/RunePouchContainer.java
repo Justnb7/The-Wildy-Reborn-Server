@@ -2,9 +2,9 @@ package com.model.game.item.container.impl;
 
 import com.google.common.collect.ImmutableSet;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceWithInventoryOverlay;
+import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;

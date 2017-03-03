@@ -3,7 +3,7 @@ package com.model.game.character.player.content.questtab;
 import java.util.Objects;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.SendString;
 
 /**
  * Handles the quest tab pages

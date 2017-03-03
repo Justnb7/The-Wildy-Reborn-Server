@@ -7,10 +7,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.AddClanMember;
-import com.model.game.character.player.packets.encode.impl.SendClanMessage;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.AddClanMember;
+import com.model.game.character.player.packets.out.SendClanMessage;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 import com.model.utility.NameUtils;
 

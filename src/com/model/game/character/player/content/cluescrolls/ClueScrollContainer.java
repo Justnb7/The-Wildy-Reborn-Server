@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.Queue;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Chance;
 import com.model.utility.Utility;
 

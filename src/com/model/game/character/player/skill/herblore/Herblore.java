@@ -9,7 +9,7 @@ import java.util.Set;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.GameItem;
 import com.model.utility.json.definitions.ItemDefinition;
 

@@ -4,7 +4,7 @@ import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 
 /**

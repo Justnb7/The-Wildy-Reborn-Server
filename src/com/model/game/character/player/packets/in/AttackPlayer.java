@@ -6,7 +6,7 @@ import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  * Attack Player
@@ -20,7 +20,7 @@ public class AttackPlayer implements PacketType {
 		player.playerIndex = 0;
 		player.npcIndex = 0;
 		player.walkingToObject = false;
-		if (player.isPlayerTransformed() || player.teleporting) {
+		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
 		}
 		switch (packetType) {

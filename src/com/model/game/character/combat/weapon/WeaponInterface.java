@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.MoveComponent;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceConfig;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceModel;
-import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
+import com.model.game.character.player.packets.out.MoveComponent;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendInterfaceModel;
+import com.model.game.character.player.packets.out.SendSidebarInterface;
+import com.model.game.character.player.packets.out.SendString;
 
 /**
  * The class which represents functionality for the weapons interface.

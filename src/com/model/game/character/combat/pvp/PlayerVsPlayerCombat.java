@@ -28,9 +28,9 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.game.item.equipment.EquipmentSet;
@@ -118,7 +118,7 @@ public class PlayerVsPlayerCombat {
 			// c.getCombat().applySpiritShield(damage, i);
 		}
 
-		if (attacker.teleporting || defender.teleporting) {
+		if (attacker.isTeleporting() || defender.isTeleporting()) {
 			Combat.resetCombat(attacker);
 			Combat.resetCombat(defender);;
 			return;
@@ -174,7 +174,7 @@ public class PlayerVsPlayerCombat {
 				Trading.decline(target);
 			}
 			
-			target.write(new SendClearScreen());
+			target.write(new SendRemoveInterface());
 			applyCombatDamage(player, target, player.getCombatType(), item, index);
 		}
 
@@ -515,41 +515,6 @@ public class PlayerVsPlayerCombat {
 				}
 				break;
 
-			case 1153:
-				defender.getSkills().setLevel(Skills.ATTACK, defender.getSkills().getLevelForExperience(Skills.ATTACK) * 5 / 100);
-				defender.write(new SendMessagePacket("Your attack level has been reduced!"));
-				defender.reduceSpellDelay[attacker.reduceSpellId] = System.currentTimeMillis();
-				break;
-
-			case 1157:
-				defender.getSkills().setLevel(Skills.STRENGTH, defender.getSkills().getLevelForExperience(Skills.STRENGTH) * 5 / 100);
-				defender.write(new SendMessagePacket("Your strength level has been reduced!"));
-				defender.reduceSpellDelay[attacker.reduceSpellId] = System.currentTimeMillis();
-				break;
-
-			case 1161:
-				defender.getSkills().setLevel(Skills.DEFENCE, defender.getSkills().getLevelForExperience(Skills.DEFENCE) * 5 / 100);
-				defender.write(new SendMessagePacket("Your defence level has been reduced!"));
-				defender.reduceSpellDelay[attacker.reduceSpellId] = System.currentTimeMillis();
-				break;
-
-			case 1542:
-				defender.getSkills().setLevel(Skills.DEFENCE, defender.getSkills().getLevelForExperience(Skills.DEFENCE) * 5 / 100);
-				defender.write(new SendMessagePacket("Your defence level has been reduced!"));
-				defender.reduceSpellDelay[attacker.reduceSpellId] = System.currentTimeMillis();
-				break;
-
-			case 1543:
-				defender.getSkills().setLevel(Skills.STRENGTH, defender.getSkills().getLevelForExperience(Skills.STRENGTH) * 5 / 100);
-				defender.write(new SendMessagePacket("Your strength level has been reduced!"));
-				defender.reduceSpellDelay[attacker.reduceSpellId] = System.currentTimeMillis();
-				break;
-
-			case 1562:
-				defender.getSkills().setLevel(Skills.ATTACK, defender.getSkills().getLevelForExperience(Skills.ATTACK) * 5 / 100);
-				defender.write(new SendMessagePacket("Your attack level has been reduced!"));
-				defender.reduceSpellDelay[attacker.reduceSpellId] = System.currentTimeMillis();
-				break;
 			}
 		}
 		
@@ -932,7 +897,7 @@ public class PlayerVsPlayerCombat {
 			return false;
 		}
 		if (player.getBankPin().requiresUnlock()) {
-			player.isBanking = false;
+			player.setBanking(false);
 			player.getBankPin().open(2);
 			Combat.resetCombat(player);
 			return false;

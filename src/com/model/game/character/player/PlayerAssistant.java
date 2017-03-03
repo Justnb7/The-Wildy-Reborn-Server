@@ -15,16 +15,16 @@ import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceModel;
-import com.model.game.character.player.packets.encode.impl.SendItemOnInterface;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
-import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.SendChatBoxInterface;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfaceModel;
+import com.model.game.character.player.packets.out.SendItemOnInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendSkillPacket;
+import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
@@ -112,7 +112,7 @@ public class PlayerAssistant {
     public void movePlayer(int x, int y, int h) {
         if (player == null)
             return;
-        if (player.inTrade) {
+        if (player.isBusy()) {
             return;
         }
 		if (!player.lastSpear.elapsed(4000)) {
@@ -525,7 +525,7 @@ public class PlayerAssistant {
     	
         if (player.getBankPin().isLocked() && player.getBankPin().getPin().trim().length() > 0) {
             player.getBankPin().open(2);
-            player.isBanking = false;
+            player.setBanking(false);
             return;
         }
         
@@ -552,7 +552,7 @@ public class PlayerAssistant {
         player.write(new SendString("Search", 58113));
         
         if (player.getOutStream() != null && player != null) {
-            player.isBanking = true;
+        	player.setBanking(true);
             player.getItems().resetItems(5064);
             player.getItems().resetBank();
             player.getItems().resetTempItems();
@@ -617,7 +617,7 @@ public class PlayerAssistant {
 			if (player.getItems().playerHasItem(player.getDestroyItem())) {
 				player.getItems().deleteItem(player.getDestroyItem());
 				player.setDestroyItem(-1);
-				player.write(new SendClearScreen());
+				player.write(new SendRemoveInterface());
 			}
 		}
 	}
@@ -709,7 +709,7 @@ public class PlayerAssistant {
 		resetAnimation();
 		resetTb();
 		resetFollow();
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
     }
 	
 }

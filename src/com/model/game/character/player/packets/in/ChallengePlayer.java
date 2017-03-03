@@ -7,7 +7,7 @@ import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 
 
 /**

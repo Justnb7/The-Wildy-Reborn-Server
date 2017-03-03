@@ -13,10 +13,10 @@ import java.util.Set;
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceConfig;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceWithInventoryOverlay;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendInterfaceWithInventoryOverlay;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
@@ -136,7 +136,7 @@ public final class Shop {
 		} else {
 			player.write(new SendInterfaceConfig(1, 28050));
 		}
-		player.isShopping = true;
+		player.setShopping(true);
 		player.getItems().resetItems(3823);
 		player.getItems().sendItemsOnInterface(3900, container.container(), container.size());
 		player.setOpenShop(name);
@@ -378,8 +378,7 @@ public final class Shop {
 			player.write(new SendMessagePacket("You do not have enough space in your inventory to sell this item!"));
 			return false;
 		}
-		if (player.inTrade || player.isBanking) {
-			player.write(new SendMessagePacket("You cant sell items to the shop while your in trade!"));
+		if (player.isBusy()) {
 			return false;
 		}
 

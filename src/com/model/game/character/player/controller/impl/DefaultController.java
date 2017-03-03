@@ -3,8 +3,8 @@ package com.model.game.character.player.controller.impl;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
-import com.model.game.character.player.packets.encode.impl.SendWalkableInterface;
-import com.model.game.character.player.packets.encode.impl.SendInteractionOption;
+import com.model.game.character.player.packets.out.SendInteractionOption;
+import com.model.game.character.player.packets.out.SendWalkableInterface;
 import com.model.game.location.Position;
 
 public class DefaultController extends Controller {

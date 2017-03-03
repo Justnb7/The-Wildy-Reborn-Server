@@ -26,8 +26,8 @@ import com.model.game.character.player.content.teleport.TeleTabs.TabData;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Teleports;
 import com.model.game.item.Item;
@@ -96,7 +96,7 @@ public class ItemOptionPacket implements PacketType {
 			handleItemOption3(player, id);
 			break;
 		case OPTION_DROP_DESTROY:
-			handleDropOrDesttroy(player, id);
+			handleDropOrDestroy(player, id);
 			break;
 		case OPTION_PICKUP:
 			handlePickup(player, id);
@@ -152,7 +152,7 @@ public class ItemOptionPacket implements PacketType {
 
 		Position position = new Position(gItemX, gItemY, player.getPosition().getZ());
 		
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			System.out.println("ItemUsed: " + itemUsed + " groundItem: " + groundItem + " itemUsedSlot: " + itemUsedSlot + " gItemX: " + gItemX + " gItemY: " + gItemY + " a1: " + a1);
 		}
 		
@@ -171,7 +171,7 @@ public class ItemOptionPacket implements PacketType {
 		
 		Position position = new Position(x, y, player.getPosition().getZ());
 		
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			System.out.println(String.format("[handlePickup] - Item: %s Location: %s", item.toString(), position.toString()));
 		}
 		
@@ -180,7 +180,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if (player.teleporting) {
+		if (player.isTeleporting()) {
 			return;
 		}
 		
@@ -209,7 +209,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 	}
 
-	private void handleDropOrDesttroy(Player player, int packetId) {
+	private void handleDropOrDestroy(Player player, int packetId) {
 		int itemId = player.getInStream().readUnsignedWordA();
 		player.getInStream().readUnsignedByte();
 		player.getInStream().readUnsignedByte();
@@ -226,12 +226,12 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if(player.in_debug_mode()) {
+		if(player.inDebugMode()) {
 			System.out.println("drop_or_destroy option: dropped: " + item.getId() + " from slot: " + slot);
 		}
 		
 		//During teleport we cannot drop any items.
-		if(player.teleporting) {
+		if(player.isTeleporting()) {
 			return;
 		}
 		
@@ -299,19 +299,19 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(id);
 
 		//Safety checks
-		if (player.isDead() || interfaceIndex != 3214 || player.teleporting) {
+		if (player.isDead() || interfaceIndex != 3214 || player.isTeleporting()) {
 			return;
 		}
 		
 		//Player has bank pin
 		if (player.getBankPin().requiresUnlock()) {
-			player.isBanking = false;
+			player.setBanking(false);
 			player.getBankPin().open(2);
 			return;
 		}
 		
 		//Debug mode
-		if(player.in_debug_mode()) {
+		if(player.inDebugMode()) {
 			System.out.println(String.format("[handleItemOption1] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceIndex, slot));
 		}
 		
@@ -475,19 +475,19 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(itemId);
 		
 		// Safety checks
-		if (player.isDead() || player.teleporting) {
+		if (player.isDead() || player.isTeleporting()) {
 			return;
 		}
 
 		// Player has bank pin
 		if (player.getBankPin().requiresUnlock()) {
-			player.isBanking = false;
+			player.setBanking(false);
 			player.getBankPin().open(2);
 			return;
 		}
 
 		// Debug mode
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			System.out.println(String.format("[handleItemOption2] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceId, slot));
 		}
 
@@ -526,19 +526,19 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(itemId);
 		
 		// Safety checks
-		if (player.isDead() || interfaceId != 3214 || player.teleporting) {
+		if (player.isDead() || interfaceId != 3214 || player.isTeleporting()) {
 			return;
 		}
 
 		// Player has bank pin
 		if (player.getBankPin().requiresUnlock()) {
-			player.isBanking = false;
+			player.setBanking(false);
 			player.getBankPin().open(2);
 			return;
 		}
 
 		// Debug mode
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			System.out.println(String.format("[handleItemOption3] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceId, slot));
 		}
 

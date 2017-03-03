@@ -7,7 +7,7 @@ import com.model.game.Constants;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;

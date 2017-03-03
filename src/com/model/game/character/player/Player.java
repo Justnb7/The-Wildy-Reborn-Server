@@ -61,15 +61,15 @@ import com.model.game.character.player.controller.ControllerManager;
 import com.model.game.character.player.dialogue.DialogueManager;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.KrakenInstance;
-import com.model.game.character.player.packets.encode.PacketEncoder;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendInteractionOption;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendMultiWay;
-import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
-import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
-import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.PacketEncoder;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendInteractionOption;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMultiWay;
+import com.model.game.character.player.packets.out.SendSidebarInterface;
+import com.model.game.character.player.packets.out.SendSkillPacket;
+import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.Skilling;
@@ -657,12 +657,12 @@ public class Player extends Entity {
 		this.yellColor = yellColor;
 	}
 	
-	public boolean in_debug_mode() {
+	public boolean inDebugMode() {
 		return debugMode;
 	}
 	
-	public void set_debug_mode(boolean a) {
-		this.debugMode = a;
+	public void setDebugMode(boolean on) {
+		this.debugMode = on;
 	}
 	
 	/**
@@ -1099,6 +1099,7 @@ public class Player extends Entity {
 		forcedChatUpdateRequired = false;
 		this.gfxUpdateRequired = false;
 		this.animUpdateRequired = false;
+		setTeleporting(false);
 		FocusPointX = -1;
 		FocusPointY = -1;
 		setFaceUpdateRequired(false);
@@ -1491,7 +1492,7 @@ public class Player extends Entity {
 					player.getBankPin().open(2);
 					player.playerStun = true;
 					player.aggressionTolerance.stop();
-					player.isBanking = false;
+					player.setBanking(false);
 				}
 				if (player.petId > 0)
 					player.getPets().spawnPet(player, 0, true);
@@ -1499,7 +1500,7 @@ public class Player extends Entity {
 					player.teleportRequired(player);
 				}
 				if (player.getName().equalsIgnoreCase("Patrick")) {
-					player.set_debug_mode(true);
+					player.setDebugMode(true);
 				}
 				if (tempKey == null || tempKey.equals("") || tempKey.isEmpty()) {
 					player.write(new SendMessagePacket("<col=ff0033>We noticed you aren't in a clanchat, so we added you to the community clanchat!"));
@@ -2294,16 +2295,6 @@ public class Player extends Entity {
 		this.lastContainerSearch = lastContainerSearch;
 	}
 	
-	private boolean trading;
-	
-	public void setTrading(boolean trading) {
-		this.trading = trading;
-	}
-
-	public boolean isTrading() {
-		return this.trading;
-	}
-	
 	public long lastCast;
 	public int projectileStage;
 	public boolean usingObelisk = false;
@@ -3028,6 +3019,74 @@ public class Player extends Entity {
 		});
 	}
 	
+	/**
+	 * The teleporting flag.
+	 */
+	private boolean teleport = false;
+
+	/**
+	 * @return we're teleporting
+	 */
+	public boolean isTeleporting() {
+		return teleport;
+	}
+
+	/**
+	 * @param set teleport true or false
+	 */
+	public void setTeleporting(boolean teleport) {
+		this.teleport = teleport;
+	}
+	
+	/**
+	 * @param set shopping true or false
+	 */
+	public void setShopping(boolean shopping) {
+		this.shopping = shopping;
+	}
+	
+	/**
+	 * The shopping flag.
+	 */
+	private boolean shopping = false;
+
+	/**
+	 * @return we're shopping
+	 */
+	public boolean isShopping() {
+		return shopping;
+	}
+	
+    private boolean trading;
+	
+	public void setTrading(boolean trading) {
+		this.trading = trading;
+	}
+
+	public boolean isTrading() {
+		return this.trading;
+	}
+	
+    private boolean banking;
+	
+	public void setBanking(boolean banking) {
+		this.banking = banking;
+	}
+
+	public boolean isBanking() {
+		return this.banking;
+	}
+	
+	/**
+	 * We can't perform actions while the other person is busy.
+	 */
+	public boolean isBusy() {
+		if(isTeleporting() || isShopping() || isTrading() || isBanking()) {
+			return true;
+		}
+		return false;
+	}
+	
 	private Area area = new Area(this);
 
 	public Area getArea() {
@@ -3142,9 +3201,10 @@ public class Player extends Entity {
 			oldPlayerIndex, rangeItemUsed, killingNpcIndex, lastWeaponUsed,
 			oldNpcIndex, attackDelay, npcIndex, npcClickIndex, npcType, castingSpellId, oldSpellId, hitDelay,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
-			wearId, wearSlot, interfaceId, walkTutorial = 15,
-			skullIcon = -1, reduceSpellId, bountyPoints;
+			walkTutorial = 15, skullIcon = -1, bountyPoints;
 	public int objectDistance, teleHeight;
+	
+	
 	
 	/**
 	 * Booleans
@@ -3158,9 +3218,7 @@ public class Player extends Entity {
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean canChangeAppearance = false;
-	public boolean teleporting = false;
 	public boolean rangeEndGFXHeight;
-	public boolean isBanking = false;
 	public boolean throwingAxe;
 	public boolean usingArrows;
 	public boolean usingCross;
@@ -3168,8 +3226,8 @@ public class Player extends Entity {
 	isSkulled,
 	hasMultiSign, saveCharacter, mageFollow, dbowSpec, acbSpec, blowpipe_special,
 	properLogout, msbSpec, stopPlayerPacket, playerIsFiremaking,
-	playerStun, mageAllowed, isShopping,
-	inTrade, acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
+	playerStun, mageAllowed,
+	acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
 	
 	/**
 	 * Strings

@@ -2,7 +2,7 @@ package com.model.game.character.player.content.cluescrolls;
 
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.impl.NpcDistanceEventListener;
 
 /**

@@ -3,8 +3,8 @@ package com.model.game.character.player.dialogue.impl.teleport;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 
 /**
@@ -39,7 +39,7 @@ public class AgilityTeleports extends Dialogue {
 		System.out.println("Phase: " + phase + " index : " + index);
 		if (phase == 0) {
 			if(index == 4) {
-				player.write(new SendClearScreen());
+				player.write(new SendRemoveInterface());
 			} else if(index == 3) {
 				player.write(new SendMessagePacket("We currently do not have support yet for this agility course."));
 			} else {

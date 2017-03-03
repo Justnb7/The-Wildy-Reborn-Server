@@ -7,11 +7,11 @@ import java.util.Map;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.RemoveClanMember;
-import com.model.game.character.player.packets.encode.impl.SendEnterStringInterface;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
+import com.model.game.character.player.packets.out.RemoveClanMember;
+import com.model.game.character.player.packets.out.SendEnterStringInterface;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.utility.NameUtils;
 import com.model.utility.Utility;
 

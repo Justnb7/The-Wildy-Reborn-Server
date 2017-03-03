@@ -5,12 +5,12 @@ import java.util.Map;
 
 import com.model.game.Constants;
 import com.model.game.character.Graphic;
-import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
-import com.model.game.character.player.packets.encode.impl.SendExperienceCounter;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.SendChatBoxInterface;
+import com.model.game.character.player.packets.out.SendExperienceCounter;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendSkillPacket;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.character.player.skill.prayer.Prayer;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSkillPacket;
 
 /**
  * Represents a player's skill and experience levels.

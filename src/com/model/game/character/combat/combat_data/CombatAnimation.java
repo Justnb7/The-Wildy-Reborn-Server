@@ -1,7 +1,7 @@
 package com.model.game.character.combat.combat_data;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  * 

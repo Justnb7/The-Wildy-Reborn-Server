@@ -4,7 +4,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 

@@ -34,11 +34,11 @@ public class MagicOnItems {
 			return;
 		}
 
-		if (player.teleporting) {
+		if (player.isTeleporting()) {
 			return;
 		}
 
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			System.out.println(String.format("[MagicOnItem] - ItemId: %d Slot: %d ChildId: %d SpellId: %d", itemId, slot, childId, spellId));
 		}
 

@@ -12,10 +12,10 @@ import com.model.game.character.player.content.rewards.ShinyChest;
 import com.model.game.character.player.content.teleport.Obelisks;
 import com.model.game.character.player.content.teleport.Teleport;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendSidebarInterface;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSidebarInterface;
 import com.model.game.character.player.skill.agility.Shortcut;
 import com.model.game.character.player.skill.fishing.FishableSpot;
 import com.model.game.character.player.skill.fishing.Fishing;
@@ -42,7 +42,7 @@ public class ActionHandler {
 
 		ObjectDefinition def = ObjectDefinition.getObjectDef(id);
 		final Position loc = Position.create(x, y, player.heightLevel);
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("[Debug] First click object - ObjectId: [@red@" + id + "@bla@] objectX:[@red@" + x + "@bla@]@bla@] objectY:[@red@" + y + "@bla@]"));
 		}
 
@@ -56,7 +56,7 @@ public class ActionHandler {
 
 		if (player.followId > 0 || player.followId2 > 0)
 			player.getPA().resetFollow();
-		if (player.stopPlayerPacket || player.teleporting) {
+		if (player.stopPlayerPacket || player.isTeleporting()) {
 			return;
 		}
 
@@ -555,10 +555,10 @@ public class ActionHandler {
 	}
 
 	public void secondClickObject(int objectType, int obX, int obY) {
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("[Debug] Second click object - ObjectId: [@red@" + objectType+"@bla@]"));
 		}
-		if (player.teleporting) {
+		if (player.isTeleporting()) {
 			return;
 		}
 		
@@ -620,7 +620,7 @@ public class ActionHandler {
 	}
 
 	public void thirdClickObject(int objectType, int obX, int obY) {
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("[Debug] Third click object - ObjectId: [@red@" + objectType+"@bla@]"));
 		}
 		player.clickObjectType = 0;
@@ -635,7 +635,7 @@ public class ActionHandler {
 		int npcType = player.npcType;
 		player.clickNpcType = 0;
 		player.rememberNpcIndex = player.npcClickIndex;
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("First click NPC:  " + npcType));
 		}
 
@@ -773,7 +773,7 @@ public class ActionHandler {
 			break;
 
 		default:
-			if (player.in_debug_mode()) {
+			if (player.inDebugMode()) {
 				Utility.println("First Click Npc : " + npcType);
 			}
 			break;
@@ -921,7 +921,7 @@ public class ActionHandler {
 		 */
 			
 		default:
-			if (player.in_debug_mode()) {
+			if (player.inDebugMode()) {
 				player.write(new SendMessagePacket("Second Click Npc : " + npcType));
 			}
 			break;
@@ -995,7 +995,7 @@ public class ActionHandler {
 		 */
 
 		default:
-			if (player.in_debug_mode()) {
+			if (player.inDebugMode()) {
 				Utility.println("Third Click NPC : " + npcType);
 			}
 			break;
@@ -1039,7 +1039,7 @@ public class ActionHandler {
 			break;
 	
 		default:
-			if (player.in_debug_mode()) {
+			if (player.inDebugMode()) {
 				player.write(new SendMessagePacket("Fourth Click NPC : " + npcType));
 			}
 			break;

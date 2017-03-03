@@ -6,8 +6,8 @@ import java.util.List;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.clan.ClanManager;
-import com.model.game.character.player.packets.encode.impl.SendFriendStatus;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendFriendStatus;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 
 /**

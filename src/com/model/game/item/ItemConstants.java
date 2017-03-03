@@ -2,7 +2,10 @@ package com.model.game.item;
 
 import com.model.game.character.player.EmotesManager;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Skills;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.json.definitions.ItemDefinition;
+import com.model.utility.json.definitions.Requirements;
 
 public class ItemConstants {
 	
@@ -68,8 +71,16 @@ public class ItemConstants {
 	}
 
 	public static boolean canWear(Item id, Player player) {
-		if(player.getRights().isAdministrator() && player.in_debug_mode())
+		if(player.getRights().isAdministrator() && player.inDebugMode())
 			return true;
+		
+		Requirements requirement = Requirements.forId(id.getId());
+		for (int i = 0; i < requirement.getRequirement().length; i++) {
+			if (player.getSkills().getLevelForExperience(i) < requirement.getRequirement()[i]) {
+				player.write(new SendMessagePacket("You need an " + Skills.SKILL_NAME[i] + " level of " + requirement.getRequirement()[i] + " to wear this item."));
+				return false;
+			}
+		}
 		
         /**
          * Skill Capes

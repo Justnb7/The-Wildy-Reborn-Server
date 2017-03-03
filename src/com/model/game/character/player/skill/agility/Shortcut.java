@@ -3,8 +3,8 @@ package com.model.game.character.player.skill.agility;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 
 public class Shortcut {

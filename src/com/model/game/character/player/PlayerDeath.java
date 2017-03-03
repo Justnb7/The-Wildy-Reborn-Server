@@ -21,9 +21,9 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.packets.encode.impl.CreatePlayerHint;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.CreatePlayerHint;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.utility.Utility;
 
@@ -119,7 +119,7 @@ public class PlayerDeath {
 		player.setDead(false);
 		player.faceUpdate(-1);
 		player.freeze(0);
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
 		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (!player.getController().isSafe() && duelSession == null) {

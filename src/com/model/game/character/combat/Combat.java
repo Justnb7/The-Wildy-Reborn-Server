@@ -1,7 +1,7 @@
 package com.model.game.character.combat;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
+import com.model.game.character.player.packets.out.SendString;
 
 public class Combat {
     

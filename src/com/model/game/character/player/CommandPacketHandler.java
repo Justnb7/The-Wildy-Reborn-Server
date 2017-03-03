@@ -18,14 +18,14 @@ import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSongPacket;
-import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendWalkableInterface;
+import com.model.game.character.player.packets.out.SendChatBoxInterface;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendSongPacket;
+import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.character.player.packets.out.SendString;
+import com.model.game.character.player.packets.out.SendWalkableInterface;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
@@ -337,7 +337,7 @@ public class CommandPacketHandler implements PacketType {
 						stop();
 						player.write(new SendMessagePacket("Your requested teleport has being cancelled."));
 					}
-					if (player.inTrade) {
+					if (player.isBusy()) {
 						player.write(new SendMessagePacket("Your requested teleport has being cancelled."));
 						stop();
 					}
@@ -447,10 +447,6 @@ public class CommandPacketHandler implements PacketType {
 						player.write(new SendMessagePacket("You cannot ban this player."));
 						return false;
 					}
-					if (c2.inTrade) {
-						player.write(new SendMessagePacket("You cannot punish someone who is in a trade."));
-						return false;
-					}
 					ConnectionHandler.addNameToBanList(name);
 					ConnectionHandler.addNameToFile(name);
 					player.write(new SendMessagePacket("You have banned " + name + "."));
@@ -473,10 +469,6 @@ public class CommandPacketHandler implements PacketType {
  						player.write(new SendMessagePacket("You cannot ban this player."));
  						return false;
  					}
- 					if (c2.inTrade) {
- 						player.write(new SendMessagePacket("You cannot punish someone who is in a trade."));
- 						return false;
- 					}
  					ConnectionHandler.addMacBan(c2.getMacAddress());
  					player.write(new SendMessagePacket("@red@[" + name + "] has been MAC Banned"));
  					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just banned "+c2.getName()+".", false);
@@ -496,10 +488,6 @@ public class CommandPacketHandler implements PacketType {
   					Player c2 = optionalPlayer.get();
   					if (c2.getRights().isBetween(2, 3)) {
   						player.write(new SendMessagePacket("You cannot ban this player."));
-  						return false;
-  					}
-  					if (c2.inTrade) {
-  						player.write(new SendMessagePacket("You cannot punish someone who is in a trade."));
   						return false;
   					}
   					ConnectionHandler.addIpToBanList(c2.connectedFrom);
@@ -939,8 +927,8 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "debugmode":
-    		player.set_debug_mode(!player.in_debug_mode());
-			player.write(new SendMessagePacket("You are " + (player.in_debug_mode() ? "now using" : " no longer using") + " debug mode."));
+    		player.setDebugMode(!player.inDebugMode());
+			player.write(new SendMessagePacket("You are " + (player.inDebugMode() ? "now using" : " no longer using") + " debug mode."));
     		return true;
     		
     	case "attackable":

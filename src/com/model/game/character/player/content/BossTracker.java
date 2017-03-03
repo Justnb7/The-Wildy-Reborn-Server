@@ -4,9 +4,9 @@ import java.util.Map.Entry;
 
 import com.model.game.character.npc.BossDeathTracker.BossName;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendScrollbar;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendScrollbar;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.utility.Utility;
 
 public class BossTracker {

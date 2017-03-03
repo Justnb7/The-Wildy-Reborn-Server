@@ -7,7 +7,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 
 public class Krill_Tsutsaroth extends Boss {
 

@@ -13,8 +13,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
@@ -40,7 +40,7 @@ public class TeleportExecutor {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
 			player.write(new SendMessagePacket("You can't teleport while being in a duel."));
-			player.write(new SendClearScreen());
+			player.write(new SendRemoveInterface());
 			return;
 		}
 		//ken if statement, end dueling session if we aren't beyond request stage and want to teleport away
@@ -134,10 +134,11 @@ public class TeleportExecutor {
 		player.getSkilling().stop();
 		Combat.resetCombat(player);
 		player.stopMovement();
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
 		player.npcIndex = player.playerIndex = 0;
 		player.faceUpdate(-1);
 		player.teleTimer = initialDelay;
+		player.setTeleporting(true);
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) { 
 			
 			/**
@@ -181,7 +182,7 @@ public class TeleportExecutor {
 				
 				if (player.teleTimer == 0) {
 					player.teleTimer = -1;
-					player.teleporting = false;
+					player.setTeleporting(false);
 					stop();
 				}
 			}
@@ -217,11 +218,11 @@ public class TeleportExecutor {
 			player.write(new SendMessagePacket("You are stunned and can not teleport!"));
 			return false;
 		}
-		if (player.inTrade) {
+		if (player.isBusy()) {
 			player.write(new SendMessagePacket("Please finish what you're doing first."));
 			return false;
 		}
-		if (player.isDead || player.teleporting || player.stopPlayerPacket) {
+		if (player.isDead || player.isTeleporting() || player.stopPlayerPacket) {
 			return false;
 		}
 		if (!player.teleblock.elapsed(player.teleblockLength)) {
@@ -231,8 +232,7 @@ public class TeleportExecutor {
 		if (player.playerIndex > 0 || player.npcIndex > 0) {
 			Combat.resetCombat(player);
 		}
-		player.teleporting = true;
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
 		player.npcIndex = 0;
 		player.playerIndex = 0;
 		player.faceUpdate(0);

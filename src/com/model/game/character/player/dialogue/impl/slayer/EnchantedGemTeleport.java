@@ -5,7 +5,7 @@ import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 
 /**

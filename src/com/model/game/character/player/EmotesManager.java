@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
 

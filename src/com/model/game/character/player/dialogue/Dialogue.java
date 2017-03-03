@@ -2,13 +2,13 @@ package com.model.game.character.player.dialogue;
 
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendChatBoxInterface;
-import com.model.game.character.player.packets.encode.impl.SendFrame185;
-import com.model.game.character.player.packets.encode.impl.SendFrame200;
-import com.model.game.character.player.packets.encode.impl.SendFrame75;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceModel;
+import com.model.game.character.player.packets.out.SendChatBoxInterface;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendFrame185;
+import com.model.game.character.player.packets.out.SendFrame200;
+import com.model.game.character.player.packets.out.SendFrame75;
+import com.model.game.character.player.packets.out.SendInterfaceModel;
+import com.model.game.character.player.packets.out.SendString;
 
 /**
  * Represents a single dialogue
@@ -264,7 +264,7 @@ public abstract class Dialogue {
 	 * Stops the current dialogue where it is
 	 */
 	protected final void stop() {
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
 	}
 
 	/**

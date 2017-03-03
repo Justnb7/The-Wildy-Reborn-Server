@@ -4,11 +4,11 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendScrollbar;
+import com.model.game.character.player.packets.out.SendConfig;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendScrollbar;
+import com.model.game.character.player.packets.out.SendString;
 import com.model.game.location.Position;
 
 public class TeleportHandler {

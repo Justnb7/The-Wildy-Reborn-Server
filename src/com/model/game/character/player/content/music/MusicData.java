@@ -1,9 +1,9 @@
 package com.model.game.character.player.content.music;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendSongPacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendStringColor;
+import com.model.game.character.player.packets.out.SendSongPacket;
+import com.model.game.character.player.packets.out.SendString;
+import com.model.game.character.player.packets.out.SendStringColor;
 import com.model.utility.Utility;
 
 /**

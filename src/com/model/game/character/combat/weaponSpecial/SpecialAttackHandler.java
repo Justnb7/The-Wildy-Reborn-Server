@@ -31,7 +31,7 @@ import com.model.game.character.combat.weaponSpecial.impl.SaradominSword;
 import com.model.game.character.combat.weaponSpecial.impl.ToxicBlowpipe;
 import com.model.game.character.combat.weaponSpecial.impl.ZamorakGodsword;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  * The class which represents functionality to load the data for the special attacks.

@@ -48,7 +48,7 @@ public class UseItem {
 		switch (object) {
 			
 		default:
-			if (player.in_debug_mode())
+			if (player.inDebugMode())
 				Utility.println("Player At Object id: " + object + " with Item id: " + item);
 			break;
 		}

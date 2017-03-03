@@ -7,8 +7,8 @@ import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendSoundPacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.utility.Utility;
 
 public class FoodConsumable {

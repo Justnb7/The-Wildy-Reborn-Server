@@ -3,7 +3,7 @@ package com.model.game.character.player.content;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
+import com.model.game.character.player.packets.out.SendConfig;
 import com.model.task.ScheduledTask;
 
 public class WildernessDitch {

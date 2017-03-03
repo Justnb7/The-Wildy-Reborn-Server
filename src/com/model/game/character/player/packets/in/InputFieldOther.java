@@ -2,7 +2,7 @@ package com.model.game.character.player.packets.in;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.bank.BankPin;
 
 
@@ -13,13 +13,13 @@ public class InputFieldOther implements PacketType {
 	public void handle(Player player, int packetType, int packetSize) {
 		int id = player.inStream.readDWord();
 		String text = player.inStream.readString();
-		if (player.in_debug_mode()) {
+		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("Component; "+id+", input; " + text));
 		}
 		switch (id) {
 		
 		case 58063:
-			if (player.isBanking) {
+			if (player.isBanking()) {
 				player.getBank().getBankSearch().setText(text);
 				player.getBank().setLastSearch(System.currentTimeMillis());
 				if (text.length() > 2) {

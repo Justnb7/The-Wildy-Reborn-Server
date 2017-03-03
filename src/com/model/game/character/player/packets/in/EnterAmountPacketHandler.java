@@ -8,7 +8,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.RunePouchContainer;

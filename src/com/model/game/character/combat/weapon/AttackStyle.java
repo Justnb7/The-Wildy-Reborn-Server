@@ -1,7 +1,7 @@
 package com.model.game.character.combat.weapon;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendConfig;
+import com.model.game.character.player.packets.out.SendConfig;
 
 /**
  * The class which represents functionality for the attack style.

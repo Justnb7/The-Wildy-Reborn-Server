@@ -1,11 +1,11 @@
 package com.model.game.item.bank;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
-import com.model.game.character.player.packets.encode.impl.SendString;
-import com.model.game.character.player.packets.encode.impl.SendInterface;
-import com.model.game.character.player.packets.encode.impl.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendInterface;
+import com.model.game.character.player.packets.out.SendInterfaceConfig;
+import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendString;
 
 /**
  * 
@@ -111,7 +111,7 @@ public class BankPin {
 			this.attempts++;
 			return;
 		}
-		this.player.write(new SendClearScreen());
+		this.player.write(new SendRemoveInterface());
 		this.attempts = 0;
 		this.locked = false;
 		this.player.playerStun = false;

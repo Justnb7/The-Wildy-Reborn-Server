@@ -7,8 +7,8 @@ import java.util.Set;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.encode.impl.SendClearScreen;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendRemoveInterface;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -210,7 +210,7 @@ public class Cooking extends SkillTask {
 		if (!meetsRequirements(player, data, object)) {
 			return;
 		}
-		player.write(new SendClearScreen());
+		player.write(new SendRemoveInterface());
 		player.getMovementHandler().stopMovement();
 		player.setSkillTask(new Cooking(player, id, data));
 	}

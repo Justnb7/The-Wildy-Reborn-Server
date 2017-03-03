@@ -11,7 +11,7 @@ import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionListener;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
-import com.model.game.character.player.packets.encode.impl.SendMessagePacket;
+import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.ItemHandler;
 import com.model.game.object.GlobalObjects;
 import com.model.game.sync.GameDataLoader;

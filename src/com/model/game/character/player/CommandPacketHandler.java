@@ -995,9 +995,13 @@ public class CommandPacketHandler implements PacketType {
     		int spawnItem = Integer.parseInt(cmd[1]);
 			if (cmd.length == 3) {
 				int amount = Integer.parseInt(cmd[2]);
-				player.getItems().addItem(new Item(spawnItem, amount));
+				player.getInventory().add(new Item(spawnItem, amount));
+				//player.getItems().addItem(new Item(spawnItem, amount));
+				System.out.println("adding item "+spawnItem+" amount "+amount);
 			} else if (cmd.length == 2) {
-				player.getItems().addItem(new Item(spawnItem, 1));
+				//player.getItems().addItem(new Item(spawnItem, 1));
+				player.getInventory().add(new Item(spawnItem, 1));
+				System.out.println("adding item "+spawnItem);
 			} else {
 				player.write(new SendMessagePacket("Invalid Format - ::item <id> <amount>"));
 			}

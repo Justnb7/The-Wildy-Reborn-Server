@@ -210,7 +210,7 @@ public enum Currency {
 		if (ItemDefinition.forId(id) == null) {
 			return 0;
 		}
-		return ItemDefinition.forId(id).getShopValue();
+		return ItemDefinition.forId(id).getGeneralPrice();
 	}
 
 	/**

@@ -4,6 +4,7 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
+import com.model.game.item.Item;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
 
@@ -401,5 +402,53 @@ public class ActionSender {
         }
 		return this;
 	}
-	
+
+	public ActionSender sendItemsOnInterface(int widget, Item[] container) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().putFrameVarShort(53);
+			int offset = player.getOutStream().offset;
+			player.getOutStream().writeShort(widget);
+			player.getOutStream().writeShort(container.length);
+			for (Item item : container) {
+				if (item != null) {
+					if (item.getAmount() > 254) {
+						player.getOutStream().writeByte(255);
+						player.getOutStream().writeDWord_v2(item.getAmount());
+					} else {
+						player.getOutStream().writeByte(item.getAmount());
+					}
+					player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+				} else {
+					player.getOutStream().writeByte(0);
+					player.getOutStream().writeWordBigEndianA(0);
+				}
+			}
+			player.getOutStream().putFrameSizeShort(offset);
+			player.flushOutStream();
+		}
+		return this;
+	}
+
+	public ActionSender sendItemsOnInterface(int widget, Item[] container, int size) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().putFrameVarShort(53);
+			int offset = player.getOutStream().offset;
+			player.getOutStream().writeShort(widget);
+			player.getOutStream().writeShort(size);
+			for (Item item : container) {
+				if (item == null)
+					continue;
+				if (item.getAmount() > 254) {
+					player.getOutStream().writeByte(255);
+					player.getOutStream().writeDWord_v2(item.getAmount());
+				} else {
+					player.getOutStream().writeByte(item.getAmount());
+				}
+				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+			}
+			player.getOutStream().putFrameSizeShort(offset);
+			player.flushOutStream();
+		}
+		return this;
+	}
 }

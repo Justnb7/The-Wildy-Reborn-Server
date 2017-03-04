@@ -397,7 +397,7 @@ public class ActionButtonPacketHandler implements PacketType {
 				return;
 			for (BankItem item : tab.getItems()) {
 				ItemDefinition itemDef = ItemDefinition.forId(item.getId() - 1);
-				long tempValue = (long) (item.getId() - 1 == 995 ? 1 : itemDef.getShopValue());
+				long tempValue = (long) (item.getId() - 1 == 995 ? 1 : itemDef.getGeneralPrice());
 				value += tempValue * item.getAmount();
 			}
 			player.write(new SendMessagePacket("<col=255>The total networth of tab " + tab.getTabId()

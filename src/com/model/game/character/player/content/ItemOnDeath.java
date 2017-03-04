@@ -159,7 +159,7 @@ public class ItemOnDeath {
 	}
 
 	private static int deathValue(int itemId) {
-		return ItemDefinition.forId(itemId).getShopValue();
+		return ItemDefinition.forId(itemId).getGeneralPrice();
 	}
 	public static void BestItem1(Player player) {
 		int BestValue = 0;

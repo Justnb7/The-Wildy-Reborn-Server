@@ -12,7 +12,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionLis
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.item.ItemHandler;
 import com.model.game.object.GlobalObjects;
 import com.model.game.sync.GameDataLoader;
 import com.model.game.sync.GameLogicService;
@@ -176,11 +175,6 @@ public class Server {
 	public static GlobalObjects getGlobalObjects() {
 		return globalObjects;
 	}
-	
-	/**
-	 * Calls the usage of player items.
-	 */
-	public static ItemHandler itemHandler = new ItemHandler();
 
 	/**
 	 * Gets the elapsed time the server has been running for.

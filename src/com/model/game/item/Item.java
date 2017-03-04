@@ -127,7 +127,7 @@ public class Item {
 			return 0;
 		}
 
-		return def.getShopValue();
+		return def.getGeneralPrice();
 	}
 
 	/**

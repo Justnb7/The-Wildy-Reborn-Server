@@ -75,6 +75,7 @@ import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
 import com.model.game.item.UseItem;
 import com.model.game.item.bank.Bank;
+import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.item.container.impl.TradeContainer;
@@ -96,6 +97,20 @@ import com.model.utility.Utility;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	/**
+     * Gets the container that holds the inventory items.
+     *
+     * @return the container for the inventory.
+     */
+    public Inventory getInventory() {
+        return inventory;
+    }
+    
+    /**
+     * The container that holds the inventory items.
+     */
+    private final Inventory inventory = new Inventory(this);
 	
 	private Duel duelSession = new Duel(this);
 	
@@ -2960,7 +2975,7 @@ public class Player extends Entity {
 	public int rangeEndGFX;
 	public int lastClickedItem;
 	public int playerFollowIndex = 0;
-	public int[] playerBonus = new int[14];
+	public int[] playerBonus = new int[12];
 	public int[] itemKeptId = new int[4];
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;

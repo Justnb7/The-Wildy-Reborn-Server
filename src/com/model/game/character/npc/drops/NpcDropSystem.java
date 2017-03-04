@@ -222,7 +222,7 @@ public class NpcDropSystem {
 						dropAnnouncement.announce(player, item.getId(), item.getAmount());
 						GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location.getX(), location.getY(), location.getH(), player));
 						ItemDefinition itemDef = ItemDefinition.forId(item.getId());
-						if (itemDef.getShopValue() > 10000000) {
+						if (itemDef.getGeneralPrice() > 10000000) {
 							PlayerUpdating.executeGlobalMessage("@red@[News]@blu@" + player.getName() + "@bla@ just got a @red@" + ItemDefinition.forId(item.getId()).getName() + " @bla@drop.");
 						}
 					}

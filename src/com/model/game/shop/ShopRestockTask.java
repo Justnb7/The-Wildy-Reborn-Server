@@ -48,7 +48,7 @@ public final class ShopRestockTask extends ScheduledTask {
         if (container.getItemCache().containsKey(item.getId()) && item.getAmount()< container.getItemCache().get(item.getId())) {
             item.incrementAmount();
             int size = container.getContainer().size();
-            container.getPlayers().stream().filter(Objects::nonNull).forEach(p -> p.getItems().sendItemsOnInterface(3900, container.getContainer().container(), size));
+            container.getPlayers().stream().filter(Objects::nonNull).forEach(p -> p.getActionSender().sendItemsOnInterface(3900, container.getContainer().container(), size));
         }
     }
 }

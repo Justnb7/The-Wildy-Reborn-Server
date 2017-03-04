@@ -38,7 +38,7 @@ public final class GeneralStoreTask extends ScheduledTask {
             container.getContainer().remove(item);
         }
         int size = container.getContainer().size();
-        container.getPlayers().stream().filter(Objects::nonNull).forEach(p -> p.getItems().sendItemsOnInterface(3900, container.getContainer().container(), size));
+        container.getPlayers().stream().filter(Objects::nonNull).forEach(p -> p.getActionSender().sendItemsOnInterface(3900, container.getContainer().container(), size));
         list = getAlienItems(container);
         if(list.size() == 0)
             this.stop();

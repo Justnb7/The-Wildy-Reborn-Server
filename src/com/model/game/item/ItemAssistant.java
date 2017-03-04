@@ -268,11 +268,15 @@ public class ItemAssistant {
 	}
 
 	public boolean isNotable(int itemId) {
-		for (ItemList list : Server.itemHandler.ItemList)
+		boolean withdrawAsNote = ItemDefinition.forId(itemId).isNoted();
+		
+		if(withdrawAsNote)
+			return true;
+		/*for (ItemList list : Server.itemHandler.ItemList)
 			if (list != null)
 				if (list.itemId == itemId)
 					if (list.itemDescription.startsWith("Swap this note at any bank"))
-						return true;
+						return true;*/
 		return false;
 	}
 
@@ -434,7 +438,7 @@ public class ItemAssistant {
 			finalamount++;
 		int amount = finalamount;
 		if (amount > 0) {
-			all.sort(Collections.reverseOrder((one, two) -> Double.compare(one.getDefinition().getShopValue(), two.getDefinition().getShopValue())));
+			all.sort(Collections.reverseOrder((one, two) -> Double.compare(one.getDefinition().getGeneralPrice(), two.getDefinition().getGeneralPrice())));
 			for (Iterator<Item> it = all.iterator(); it.hasNext();) {
 				Item next = it.next();
 				if (amount == 0) {
@@ -450,7 +454,7 @@ public class ItemAssistant {
 		}
 		long wealth = 0;
 		for (Item i : all) {
-			wealth += (i.getDefinition().getShopValue() * i.amount);
+			wealth += (i.getDefinition().getGeneralPrice() * i.amount);
 		}
 		return wealth;
 	}
@@ -647,7 +651,6 @@ public class ItemAssistant {
 	 *            the item's id
 	 * @return return;
 	 */
-
 	public boolean is2handed(String itemName, int itemId) {
 		boolean Handed = ItemDefinition.forId(itemId).isTwoHanded();
 		
@@ -669,13 +672,7 @@ public class ItemAssistant {
 		
 		Item item = player.getItems().getItemFromSlot(slotId);
 		
-        ItemDefinition def = ItemDefinition.forId(id);
-        int targetSlot = def.getEquipmentSlot().getId();//it
-		
-		if (def == null || def.getEquipmentSlot() == null) {
-			player.write(new SendMessagePacket(def.getName() + " is unable to be used, if this is an error please report it!"));
-			return false;
-		}
+        int targetSlot = ItemDefinition.forId(id).getEquipmentSlot();
 		
 		if(!ItemConstants.canWear(item, player))
 			return false;
@@ -1828,54 +1825,6 @@ public class ItemAssistant {
 	   public boolean playerOwnsAnyItems(int... ids) {
 		   return Arrays.stream(ids).anyMatch(this::alreadyHasItem);
 	   }
-
-	   public void sendItemsOnInterface(int widget, Item[] container) {
-		   if (player.getOutStream() != null && player != null) {
-			   player.getOutStream().putFrameVarShort(53);
-			   int offset = player.getOutStream().offset;
-			   player.getOutStream().writeShort(widget);
-			   player.getOutStream().writeShort(container.length);
-			   for (Item item : container) {
-				   if(item != null) {
-					   if (item.getAmount() > 254) {
-						   player.getOutStream().writeByte(255);
-						   player.getOutStream().writeDWord_v2(item.getAmount());
-					   } else {
-						   player.getOutStream().writeByte(item.getAmount());
-					   }
-					   player.getOutStream().writeWordBigEndianA(item.getId() + 1);
-				   } else {
-					   player.getOutStream().writeByte(0);
-					   player.getOutStream().writeWordBigEndianA(0);
-				   }
-			   }
-			   player.getOutStream().putFrameSizeShort(offset);
-			   player.flushOutStream();
-		   }
-	   }
-
-	   public void sendItemsOnInterface(int widget, Item[] container, int size) {
-		   if (player.getOutStream() != null && player != null) {
-			   player.getOutStream().putFrameVarShort(53);
-			   int offset = player.getOutStream().offset;
-			   player.getOutStream().writeShort(widget);
-			   player.getOutStream().writeShort(size);
-			   for (Item item : container) {
-				   if (item == null)
-					   continue;
-				   if (item.getAmount() > 254) {
-					   player.getOutStream().writeByte(255);
-					   player.getOutStream().writeDWord_v2(item.getAmount());
-				   } else {
-					   player.getOutStream().writeByte(item.getAmount());
-				   }
-				   player.getOutStream().writeWordBigEndianA(item.getId() + 1);
-			   }
-			   player.getOutStream().putFrameSizeShort(offset);
-			   player.flushOutStream();
-		   }
-	   }
-
 	   public void sendItemToAnyTabOffline(int itemId, int amount, boolean online) {
 		   if (player.getArea().inWild()) {
 			   player.write(new SendMessagePacket("You can't do that in the wilderness."));

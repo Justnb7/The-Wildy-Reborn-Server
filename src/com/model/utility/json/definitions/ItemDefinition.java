@@ -6,8 +6,6 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
 
-import com.model.game.item.equipment.EquipmentSlot;
-
 /**
  * The container that represents an item definition.
  *
@@ -19,11 +17,6 @@ public final class ItemDefinition {
      * The array that contains all of the item definitions.
      */
     public static final ItemDefinition[] DEFINITIONS = new ItemDefinition[25000];
-
-    /**
-     * The cached noted item description.
-     */
-    private static final String NOTED_ITEM_DESCRIPTION = "Swap this note at any bank for the equivalent item.";
 
     /**
      * The identifier for the item.
@@ -43,17 +36,27 @@ public final class ItemDefinition {
     /**
      * The equipment slot of this item.
      */
-    private final EquipmentSlot equipmentSlot;
+    private final int equipmentSlot;
+
+    /**
+     * The flag that determines if the item is noteable.
+     */
+    private final boolean noteable;
 
     /**
      * The flag that determines if the item is stackable.
      */
     private final boolean stackable;
-    
+
+    /**
+     * The special store price of this item.
+     */
+    private final int specialPrice;
+
     /**
      * The general store price of this item.
      */
-    private final int shopValue;
+    private final int generalPrice;
 
     /**
      * The low alch value of this item.
@@ -64,6 +67,11 @@ public final class ItemDefinition {
      * The high alch value of this item.
      */
     private final int highAlchValue;
+
+    /**
+     * The weight value of this item.
+     */
+    private final double weight;
 
     /**
      * The array of bonuses for this item.
@@ -84,16 +92,6 @@ public final class ItemDefinition {
      * The flag denoting whether or not a helmet is a full mask, which hides the beard.
      */
     private final boolean fullMask;
-    
-    /**
-     * The flag that determines if the item is tradable.
-     */
-    private final boolean tradable;
-    
-    /**
-     * The flag that determines the weight of the item.
-     */
-    private final double weight;
 
     /**
      * The flag that determines if this item is a platebody.
@@ -101,53 +99,68 @@ public final class ItemDefinition {
     private final boolean platebody;
 
     /**
+     * The flag that determines if this item is tradeable.
+     */
+    private final boolean tradeable;
+
+    /**
      * Creates a new {@link ItemDefinition}.
      *
      * @param id
-     *         the identifier for the item.
+     *            the identifier for the item.
      * @param name
-     *         the proper name of the item.
+     *            the proper name of the item.
      * @param description
-     *         the description of the item.
+     *            the description of the item.
      * @param equipmentSlot
-     *         the equipment slot of this item.
+     *            the equipment slot of this item.
+     * @param noteable
+     *            the flag that determines if the item is noteable.
      * @param stackable
-     *         the flag that determines if the item is stackable.
-     * @param tradable 
-     *        the flag that determines if the item is tradable.
-     * @param shopValue
-     *         the general store price of this item.
+     *            the flag that determines if the item is stackable.
+     * @param specialPrice
+     *            the special store price of this item.
+     * @param generalPrice
+     *            the general store price of this item.
      * @param lowAlchValue
-     *         the low alch value of this item.
+     *            the low alch value of this item.
      * @param highAlchValue
-     *         the high alch value of this item.
+     *            the high alch value of this item.
+     * @param weight
+     *            the weight value of this item.
      * @param bonus
-     *         the array of bonuses for this item.
+     *            the array of bonuses for this item.
      * @param twoHanded
-     *         the flag that determines if this item is two-handed.
+     *            the flag that determines if this item is two-handed.
      * @param fullHelm
-     *         the flag that determines if this item is a full helmet.
-     * @param fullMask
-     *         The flag denoting whether or not a helmet is a full mask, which hides the beard.
+     *            the flag that determines if this item is a full helmet.
      * @param platebody
-     *         the flag that determines if this item is a platebody.
+     *            the flag that determines if this item is a platebody.
+     * @param fullMask
+     *            the flag denoting whether or not a helmet is a full mask, which hides the beard.
+     * @param tradeable
+     *            the flag that determines if this item is tradeable.
      */
-    public ItemDefinition(int id, String name, String description, EquipmentSlot equipmentSlot, boolean stackable, int shopValue, int lowAlchValue, int highAlchValue, int[] bonus, boolean twoHanded, boolean fullHelm, boolean fullMask, boolean platebody, boolean tradable, double weight) {
+    public ItemDefinition(int id, String name, String description, int equipmentSlot, boolean noteable, boolean stackable,
+        int specialPrice, int generalPrice, int lowAlchValue, int highAlchValue, double weight, int[] bonus, boolean twoHanded,
+        boolean fullHelm, boolean fullMask, boolean platebody, boolean tradeable) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.equipmentSlot = equipmentSlot;
+        this.noteable = noteable;
         this.stackable = stackable;
-        this.shopValue = shopValue;
+        this.specialPrice = specialPrice;
+        this.generalPrice = generalPrice;
         this.lowAlchValue = lowAlchValue;
         this.highAlchValue = highAlchValue;
+        this.weight = weight;
         this.bonus = bonus;
         this.twoHanded = twoHanded;
         this.fullHelm = fullHelm;
         this.fullMask = fullMask;
         this.platebody = platebody;
-        this.tradable = tradable;
-        this.weight = weight;
+        this.tradeable = tradeable;
     }
 
     /**
@@ -171,7 +184,7 @@ public final class ItemDefinition {
      */
     public static ItemDefinition forId(int id) {
         if (id < 0 || id > ItemDefinition.DEFINITIONS.length || DEFINITIONS[id] == null) {
-        	 return new ItemDefinition(id, "NULL_ITEM", "NULL_DESCRIPTION", null, false, 500, 100, 200, new int[14], false, false, false, false, true, 0.0);
+        	 return new ItemDefinition(id, "NULL_ITEM", "NULL_DESCRIPTION", 0, false, false, 0, 500, 100, 200, 0.0, new int[12], false, false, false, false, true);
         	 
         	 //throw new IllegalStateException("Item definition is not initialised for id " + id);
         }
@@ -246,7 +259,7 @@ public final class ItemDefinition {
      *
      * @return the equipment slot.
      */
-    public EquipmentSlot getEquipmentSlot() {
+    public int getEquipmentSlot() {
         return equipmentSlot;
     }
 
@@ -256,7 +269,16 @@ public final class ItemDefinition {
      * @return {@code true} if the item is noted, {@code false} otherwise.
      */
     public boolean isNoted() {
-        return description.equals(NOTED_ITEM_DESCRIPTION);
+        return description.equals("Swap this note at any bank for the " + "equivalent item.");
+    }
+
+    /**
+     * Determines if the item is noteable or not.
+     *
+     * @return {@code true} if the item is noteable, {@code false} otherwise.
+     */
+    public boolean isNoteable() {
+        return noteable;
     }
 
     /**
@@ -267,27 +289,23 @@ public final class ItemDefinition {
     public boolean isStackable() {
         return stackable;
     }
-    
+
     /**
-     * Determines if the item is tradable or not.
+     * Gets the special store price of this item.
      *
-     * @return {@code true} if the item is tradable, {@code false} otherwise.
+     * @return the special price.
      */
-    public boolean isTradeable() {
-    	return tradable;
+    public int getSpecialPrice() {
+        return specialPrice;
     }
-    
-    public double getWeight() {
-    	return weight;
-    }
-    
+
     /**
      * Gets the general store price of this item.
      *
      * @return the general price.
      */
-    public int getShopValue() {
-        return shopValue;
+    public int getGeneralPrice() {
+        return generalPrice;
     }
 
     /**
@@ -306,6 +324,15 @@ public final class ItemDefinition {
      */
     public int getHighAlchValue() {
         return highAlchValue;
+    }
+
+    /**
+     * Gets the weight value of this item.
+     *
+     * @return the weight value.
+     */
+    public double getWeight() {
+        return weight;
     }
 
     /**
@@ -329,7 +356,8 @@ public final class ItemDefinition {
     /**
      * Determines if this item is a full helmet or not.
      *
-     * @return {@code true} if this item is a full helmet, {@code false} otherwise.
+     * @return {@code true} if this item is a full helmet, {@code false}
+     *         otherwise.
      */
     public boolean isFullHelm() {
         return fullHelm;
@@ -347,10 +375,20 @@ public final class ItemDefinition {
     /**
      * Determines if this item is a platebody or not.
      *
-     * @return {@code true} if this item is a platebody, {@code false} otherwise.
+     * @return {@code true} if this item is a platebody, {@code false}
+     *         otherwise.
      */
     public boolean isPlatebody() {
         return platebody;
+    }
+    
+    /**
+     * Determines if this item is tradeable.
+     * 
+     * @return {@code true} if this item is tradeable, {@code false} otherwise.
+     */
+    public boolean isTradeable() {
+        return tradeable;
     }
     
     public static Map<Integer, ItemDefinition> getDefinitions() {

@@ -135,7 +135,7 @@ public final class Shop {
 		}
 		player.setShopping(true);
 		player.getItems().resetItems(3823);
-		player.getItems().sendItemsOnInterface(3900, container.container(), container.size());
+		player.getActionSender().sendItemsOnInterface(3900, container.container(), container.size());
 		player.setOpenShop(name);
 		player.getActionSender().sendInterfaceWithInventoryOverlay(3824, 3822);
 		player.getActionSender().sendString(name, 3901);
@@ -154,8 +154,7 @@ public final class Shop {
 	public void updateShop(Player player, boolean checkStock) {
 		player.getItems().resetItems(3823);
 		int size = container.size();
-		players.stream().filter(Objects::nonNull)
-				.forEach(p -> p.getItems().sendItemsOnInterface(3900, container.container(), size));
+		players.stream().filter(Objects::nonNull).forEach(p -> p.getActionSender().sendItemsOnInterface(3900, container.container(), size));
 
 		if (checkStock && restock) {
 			if (Server.getTaskScheduler().running(this) || !needsRestock())
@@ -351,7 +350,7 @@ public final class Shop {
 		if (player.getOpenShop().equals("Skillcape Shop")) {
 			return false;
 		}
-		if (item.getDefinition().getShopValue() > 100_000_000) {
+		if (item.getDefinition().getGeneralPrice() > 100_000_000) {
 			player.write(new SendMessagePacket("The shop keeper cannot afford your, "+item.getDefinition().getName()+"."));
 			return false;
 		}

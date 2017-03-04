@@ -403,7 +403,7 @@ public class Trading {
 	 * @return If the player can trade the item
 	 */
 	private static boolean cannotTrade(Player player, Player target, int id) {
-		if (!ItemDefinition.forId(id).isTradable() || ClueDifficulty.isClue(id)) {
+		if (!ItemDefinition.forId(id).isTradeable() || ClueDifficulty.isClue(id)) {
 			player.write(new SendMessagePacket("That item isn't tradeable."));
 			return false;
 		}

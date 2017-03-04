@@ -7,7 +7,6 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.equipment.Equipment;
-import com.model.game.item.equipment.EquipmentSlot;
 import com.model.utility.Utility;
 
 /**
@@ -331,7 +330,7 @@ public class CombatFormulae {
 		double base = (13 + effectiveStrengthDamage + (strengthBonus / 8) + ((effectiveStrengthDamage * strengthBonus) * 0.016865)) / 10;
 
 		if (player.isUsingSpecial()) {
-			switch (player.playerEquipment[EquipmentSlot.WEAPON.getId()]) {
+			switch (player.playerEquipment[player.getEquipment().getWeaponId()]) {
 			case 11802:
 				specialMultiplier = 1.42375;
 				break;
@@ -389,16 +388,16 @@ public class CombatFormulae {
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
 		double otherBonusMultiplier = 1;
-		int rangedStrength = RangeData.getRangeStr(player.playerEquipment[EquipmentSlot.ARROWS.getId()]);
+		int rangedStrength = RangeData.getRangeStr(player.playerEquipment[player.getEquipment().getQuiverId()]);
 		
-		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == 4222) {
+		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 4222) {
 			/**
 			 * Crystal Bow does not use arrows, so we don't use the arrows range strength bonus.
 			 */
 			rangedStrength = 70;
 		}
 		
-		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == 12926) {
+		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 12926) {
 			rangedStrength = 60;
 		}
 		
@@ -429,7 +428,7 @@ public class CombatFormulae {
 		double baseDamage = 1.3 + (effectiveRangeDamage / 10) + (rangedStrength / 80) + ((effectiveRangeDamage * rangedStrength) / 640);
 		
 		if (player.isUsingSpecial()) {
-			switch (player.playerEquipment[EquipmentSlot.ARROWS.getId()]) {
+			switch (player.playerEquipment[player.getEquipment().getQuiverId()]) {
 			case 9243:
 				specialMultiplier = 1.15;
 				break;
@@ -449,22 +448,22 @@ public class CombatFormulae {
 			case 890:
 			case 892:
 			case 11212:
-				if (player.playerEquipment[EquipmentSlot.WEAPON.getId()] == 11235) {
+				if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11235) {
 					specialMultiplier = 1.3;
-					if (player.playerEquipment[EquipmentSlot.ARROWS.getId()] == 11212)
+					if (player.playerEquipment[player.getEquipment().getQuiverId()] == 11212)
 						specialMultiplier += .5;
 				}
-				if (player.playerEquipment[EquipmentSlot.ARROWS.getId()] == 11212)
+				if (player.playerEquipment[player.getEquipment().getQuiverId()] == 11212)
 					specialMultiplier = 1.5;
 				break;
 			}
 		}
 		
 		maxHit = (int) (baseDamage * specialMultiplier);
-		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == -1) {
+		if(player.playerEquipment[player.getEquipment().getWeaponId()] == -1) {
 			maxHit = 0;
 		}
-		if(player.playerEquipment[EquipmentSlot.WEAPON.getId()] == 12926) {
+		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 12926) {
         	if (player.isUsingSpecial()) {
         		maxHit *= 1.65;
         	} else {

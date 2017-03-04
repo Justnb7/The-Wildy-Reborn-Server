@@ -30,7 +30,6 @@ import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
-import com.model.game.item.equipment.EquipmentSlot;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -402,7 +401,7 @@ public class PlayerVsNpcCombat {
         if (attacker.getEquipment().isCrossbow(attacker)) {
 			if (Utility.getRandom(8) == 1) {
 				if (damage > 0) {
-					switch(attacker.playerEquipment[EquipmentSlot.ARROWS.getId()]) {
+					switch(attacker.playerEquipment[attacker.getEquipment().getQuiverId()]) {
 					case 9236: // Lucky Lightning
 						victim.playGraphics(Graphic.create(749, 0, 0));
 						break;

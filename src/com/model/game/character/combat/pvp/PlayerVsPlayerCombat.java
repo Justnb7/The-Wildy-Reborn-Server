@@ -30,7 +30,6 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
-import com.model.game.item.equipment.EquipmentSlot;
 import com.model.utility.Utility;
 
 /**
@@ -239,7 +238,7 @@ public class PlayerVsPlayerCombat {
 		if (attacker.getEquipment().isCrossbow(attacker)) {
 			if (Utility.getRandom(10) == 1) {
 				if (primairy_damage > 0) {
-					switch (attacker.playerEquipment[EquipmentSlot.ARROWS.getId()]) {
+					switch (attacker.playerEquipment[attacker.getEquipment().getQuiverId()]) {
 					case 9236: // Lucky Lightning
 						defender.playGraphics(Graphic.create(749, 0, 0));
 						break;
@@ -289,7 +288,7 @@ public class PlayerVsPlayerCombat {
 							primairy_damage *= 1.15;
 						}
 						boolean fire = true;
-                        int shield = defender.playerEquipment[EquipmentSlot.SHIELD.getId()];
+                        int shield = defender.playerEquipment[defender.getEquipment().getShieldId()];
                         if (shield == 11283 || shield == 1540) {
                             fire = false;
                         }

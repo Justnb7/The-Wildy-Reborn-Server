@@ -273,7 +273,7 @@ public final class ItemDefinition {
      *
      * @return {@code true} if the item is tradable, {@code false} otherwise.
      */
-    public boolean isTradable() {
+    public boolean isTradeable() {
     	return tradable;
     }
     

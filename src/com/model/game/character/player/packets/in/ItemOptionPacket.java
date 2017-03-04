@@ -258,7 +258,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//Special case for destroying items.
-		if(!ItemDefinition.forId(item.getId()).isTradable() || ClueDifficulty.isClue(itemId)) {
+		if(!ItemDefinition.forId(item.getId()).isTradeable() || ClueDifficulty.isClue(itemId)) {
 			player.getPA().destroyItem(item);
 			player.setDestroyItem(item.getId());
 			return;

@@ -456,7 +456,7 @@ public class ItemAssistant {
 	}
 
 	public boolean isTradeable(int itemId) {
-		boolean tradable = ItemDefinition.forId(itemId).isTradable();
+		boolean tradable = ItemDefinition.forId(itemId).isTradeable();
 		if (tradable)
 			return true;
 
@@ -1111,17 +1111,20 @@ public class ItemAssistant {
 	}
 
 	public void removeFromBank(int itemId, int itemAmount, boolean updateView) {
+		System.out.println("enter");
 		BankTab tab = player.getBank().getCurrentBankTab();
 		BankItem item = new BankItem(itemId + 1, itemAmount);
 		boolean noted = false;
-		if (!player.isBanking())
+		if (!player.isBanking()) {
 			return;
+		}
 		if (itemAmount <= 0)
 			return;
 
 		if (System.currentTimeMillis() - player.lastBankDeposit < 250)
 			return;
-		if (player.isBusy()) {
+		if (!player.isBusy()) {
+			System.out.println("block: "+player.isBanking());
 			player.getActionSender().sendRemoveInterfacePacket();
 			return;
 		}

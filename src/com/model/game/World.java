@@ -21,6 +21,10 @@ import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.clan.ClanManager;
+import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
+import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
+import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
+import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
@@ -271,6 +275,32 @@ public class World implements Service {
 		if (Trading.isTrading(player)) {
 			Trading.decline(player);
 		}
+
+		
+		//Reset poison and venom
+		player.infection = 0;
+		player.infected = false;
+		player.poisonDamage = 0;
+		
+		//Dueling check
+		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
+		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
+			if (duelSession.getStage().getStage() >= MultiplayerSessionStage.FURTHER_INTERACTION) {
+
+				Player opponent = duelSession.getOther(player);
+				if (!duelSession.getWinner().isPresent()) {
+					duelSession.setWinner(opponent);
+				}
+				opponent.message("Other player forefiet, you win.");
+				opponent.getActionSender().createPlayerHint(10, -1);
+				duelSession.finish(MultiplayerSessionFinalizeType.GIVE_ITEMS);
+			}
+		}
+		
+		//Queue pet
+		if (player.petId > 0) {
+			player.getPets().pickupPet(player, false, World.getWorld().getNpcs().get(player.petNpcIndex));
+		}
 		
 		/*
 		 * Send our controller check
@@ -286,7 +316,6 @@ public class World implements Service {
 		/*
 		 * Remove from kraken instance
 		 */
-		
 		if (player.getKraken() != null && player.getKraken().getInstance() != null)
 			InstancedAreaManager.getSingleton().disposeOf(player.getKraken().getInstance());
 
@@ -301,6 +330,7 @@ public class World implements Service {
 					target.write(new SendFriendPacket(player.usernameHash, 0));
 			}
 		}
+		
 
 		/*
 		 * Finally allow ourself to be saved
@@ -311,7 +341,6 @@ public class World implements Service {
 		/*
 		 * Stop all of the players tasks
 		 */
-
 		for (Iterator<ScheduledTask> t = player.getTasks().iterator(); t.hasNext();) {
 			ScheduledTask task = t.next();
 			if (task.isRunning()) {

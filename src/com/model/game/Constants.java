@@ -157,7 +157,7 @@ public class Constants {
 	/**
 	 * Maximum players allowed in a single world.
 	 */
-	public static final int MAX_PLAYERS = 2000;
+	public static final int MAX_PLAYERS = 2048;
 	
 	/**
 	 * Valid chacters that can be used in the friends chat

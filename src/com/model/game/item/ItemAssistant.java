@@ -696,7 +696,6 @@ public class ItemAssistant {
 			int toRemove = player.playerEquipment[targetSlot];
 			int toRemoveN = player.playerEquipmentN[targetSlot];
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
-				System.out.println("removing armour");
 			DuelSession session = (DuelSession) Server
 					.getMultiplayerSessionListener().getMultiplayerSession(
 							player, MultiplayerSessionType.DUEL);

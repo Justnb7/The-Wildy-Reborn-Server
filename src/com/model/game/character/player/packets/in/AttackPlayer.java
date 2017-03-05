@@ -39,8 +39,8 @@ public class AttackPlayer implements PacketType {
 
 			player.setSpellId(0);
 			player.mageFollow = player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
-			player.usingCross = player.getEquipment().isCrossbow(player);
-			player.setCombatType(player.usingCross ? CombatType.RANGED : CombatType.MELEE);
+
+			player.setCombatType(player.getEquipment().usingRange(player) ? CombatType.RANGED : CombatType.MELEE);
 
 			if (player.autocastId > 0) {
 				player.autoCast = true;

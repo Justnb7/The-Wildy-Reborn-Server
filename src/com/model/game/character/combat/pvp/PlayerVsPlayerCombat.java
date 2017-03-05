@@ -1,5 +1,7 @@
 package com.model.game.character.combat.pvp;
 
+import java.util.Objects;
+
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -20,11 +22,14 @@ import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
+import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerAssistant;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
+import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.SendMessagePacket;
@@ -464,17 +469,6 @@ public class PlayerVsPlayerCombat {
 		}
 
 		if (!attacker.magicFailed) {
-			if (System.currentTimeMillis() - defender.reduceStat > 35000) {
-				defender.reduceStat = System.currentTimeMillis();
-				switch (attacker.MAGIC_SPELLS[attacker.oldSpellId][0]) {
-				case 12987:
-				case 13011:
-				case 12999:
-				case 13023:
-					defender.getSkills().setLevel(Skills.ATTACK, attacker.getSkills().getLevelForExperience(Skills.ATTACK) * 1 / 100);
-					break;
-				}
-			}
 
 			switch (attacker.MAGIC_SPELLS[attacker.oldSpellId][0]) {
 			case 12445: // teleblock
@@ -545,12 +539,7 @@ public class PlayerVsPlayerCombat {
 		
 		Player attacker = World.getWorld().PLAYERS.get(defender.underAttackBy);
 		player.getActionSender().sendString(defender.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+defender.getSkills().getLevel(Skills.HITPOINTS)+ ((attacker != null) ? "-"+ attacker.getName() : ""), 35000);
-
-		player.usingBow = player.usingBow = player.usingArrows = player.throwingAxe = false;
-		player.rangeItemUsed = 0;
-		player.usingCross = player.getEquipment().isCrossbow(player);
-		player.setCombatType(player.usingCross ? CombatType.RANGED : CombatType.MELEE);
-
+		
 		boolean sameSpot = player.getX() == defender.getX() && player.getY() == defender.getY();
 		if (sameSpot) {
 			if (player.frozen()) {
@@ -859,11 +848,33 @@ public class PlayerVsPlayerCombat {
 		if (!CombatRequirements.canAttackVictim(player)) {
 			return false;
 		}
-		
-		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12924) {
-			player.write(new SendMessagePacket("You must load this weapon with zulrah scales!"));
-			Combat.resetCombat(player);
-			return false;
+		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
+			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
+			if (!Objects.isNull(session)) {
+				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatType.RANGED)) {
+					player.message("<col=CC0000>Range has been disabled in this duel!");
+					Combat.resetCombat(player);
+					return false;
+				}
+				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatType.RANGED && !player.usingMagic)) {
+					player.message("<col=CC0000>Melee has been disabled in this duel!");
+					Combat.resetCombat(player);
+					return false;
+				}
+				if (session.getRules().contains(Rule.NO_MAGE) && player.usingMagic) {
+					player.message("<col=CC0000>Magic has been disabled in this duel!");
+					Combat.resetCombat(player);
+					return false;
+				}
+				if (session.getRules().contains(Rule.WHIP_AND_DDS)) {
+					String weaponName = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase();
+					if (!weaponName.contains("whip") && !weaponName.contains("dragon dagger") || weaponName.contains("tentacle")) {
+						player.message("<col=CC0000>You can only use a whip and dragon dagger in this duel.");
+						Combat.resetCombat(player);
+						return false;
+					}
+				}
+			}
 		}
 		if (target.isDead()) {
 			target.playerIndex = 0;

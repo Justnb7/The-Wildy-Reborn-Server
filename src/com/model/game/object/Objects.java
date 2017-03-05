@@ -9,14 +9,6 @@ public class Objects {
 	public int objectFace;
 	public int objectType;
 	public int objectTicks;
-	public int replacedObject = -1;
-	public int owner;
-	public boolean bait;
-	public int target;
-	public long delay;
-	public long oDelay;
-	public int item;
-	public int xp;
 
 	public Objects(int id, int x, int y, int height, int face, int type, int ticks) {
 		this.objectId = id;
@@ -50,14 +42,6 @@ public class Objects {
 
 	public int getObjectType() {
 		return this.objectType;
-	}
-
-	public void setReplacement(int replacement) {
-		this.replacedObject = replacement;
-	}
-
-	public int getReplacementId() {
-		return this.replacedObject;
 	}
 
 }

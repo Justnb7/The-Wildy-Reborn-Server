@@ -343,5 +343,11 @@ public class Equipment {
 		
 		return false;
 	}
+	
+	public boolean usingRange(Player player) {
+		if(wearingBlowpipe(player) || usingCrystalBow(player) || isCrossbow(player) || isThrowingWeapon(player) || isBow(player) || wearingBallista(player))
+			return true;
+		return false;
+	}
 
 }

@@ -108,7 +108,7 @@ public class Boundary {
 				}
 			}
 			if (player.absX >= b.minX && player.absX <= b.highX && player.absY >= b.minY && player.absY <= b.highY) {
-				 return true;
+				return true;
 			}
 		}
 		return false;

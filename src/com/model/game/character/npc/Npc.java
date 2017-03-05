@@ -460,9 +460,8 @@ public class Npc extends Entity {
 	private int size = 1;
 	
 	public int getSize() {
-		//return NPCSize.getSize(npcId);
 		return size;
-	}//so when i use that silly method it works when i grab them from it's definition region nulls out? 
+	}
 
 	public void clearUpdateFlags() {
 		updateRequired = false;

@@ -44,7 +44,6 @@ import com.model.game.character.player.content.consumable.Consumable;
 import com.model.game.character.player.content.consumable.food.FoodConsumable;
 import com.model.game.character.player.content.consumable.potion.PotionData;
 import com.model.game.character.player.content.consumable.potion.Potions;
-import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.Duel;
@@ -986,7 +985,7 @@ public class Player extends Entity {
 
 	public void faceUpdate(int index) {
 		face = index;
-		setFaceUpdateRequired(true);
+		this.faceUpdateRequired = false;
 		updateRequired = true;
 	}
 
@@ -1073,7 +1072,7 @@ public class Player extends Entity {
 		setTeleporting(false);
 		FocusPointX = -1;
 		FocusPointY = -1;
-		setFaceUpdateRequired(false);
+		this.faceUpdateRequired = false;
 		face = 65535;
 		setUpdateBlock(null);
 		super.clear();
@@ -1414,13 +1413,13 @@ public class Player extends Entity {
 		this.infected = false;
 		this.poisonDamage = 0;
 		
-		//Reset duel
+		//Dueling check
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(this, MultiplayerSessionType.DUEL);
-		
-		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
-			duelSession.getOther(this).write(new SendMessagePacket("The challenger has left the duel."));
-			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
-			return;
+		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
+			if (duelSession.getStage().getStage() >= MultiplayerSessionStage.FURTHER_INTERACTION) {
+				message("You are not permitted to logout during a duel. If you forcefully logout you will");
+				message("lose all of your staked items, if any, to your opponent.");
+			}
 		}
 		
 		//Queue pet
@@ -1625,14 +1624,6 @@ public class Player extends Entity {
 
 	public void setUpdateBlock(GameBuffer updateBlock) {
 		this.updateBlock = updateBlock;
-	}
-
-	public boolean isFaceUpdateRequired() {
-		return faceUpdateRequired;
-	}
-
-	public void setFaceUpdateRequired(boolean faceUpdateRequired) {
-		this.faceUpdateRequired = faceUpdateRequired;
 	}
 
 	public void setSession(GameSession session) {
@@ -2997,7 +2988,6 @@ public class Player extends Entity {
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
 	public boolean chatTextUpdateRequired = false;
-	private boolean faceUpdateRequired = false;
 	private boolean dragonfireShieldActive;
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
@@ -3030,9 +3020,8 @@ public class Player extends Entity {
 	private long lastPoisonHit;
 	private long lastPoisonCure;
 	private long poisonImmunity;
-	public long[] reduceSpellDelay = new long[6];
 	private long lastDragonfireShieldAttack;
-	public long lastAction, godSpellDelay, reduceStat, lastFire;
+	public long godSpellDelay;
 
 	/**
 	 * Bytes
@@ -3080,6 +3069,19 @@ public class Player extends Entity {
 		if (this.rights == Rights.ADMINISTRATOR) {
 			this.message(string);
 		}
+	}
+	
+	/**
+	 * The last fire made.
+	 */
+	private long lastFire;
+
+	public long getLastFire() {
+		return lastFire;
+	}
+
+	public void setLastFire(long lastFire) {
+		this.lastFire = lastFire;
 	}
 
 }

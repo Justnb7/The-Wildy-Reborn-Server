@@ -1,11 +1,6 @@
 package com.model.game.object;
 
-import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import com.model.game.World;
-import com.model.game.character.player.Player;
-import com.model.game.location.Location;
+import com.model.game.location.Position;
 
 /**
  * A global object is a visual model that is viewed by all players within a region.
@@ -41,7 +36,7 @@ public class GlobalObject {
 	/**
 	 * The location.
 	 */
-	private Location location;
+	private Position position;
 	
 	/**
 	 * Creates the game object.
@@ -49,8 +44,8 @@ public class GlobalObject {
 	 * @param type The type.
 	 * @param rotation The rotation.
 	 */
-	public GlobalObject(Location location, int face, int type) {
-		this.location = location;
+	public GlobalObject(Position position, int face, int type) {
+		this.position = position;
 		this.type = type;
 		this.face = face;
 	}
@@ -84,7 +79,7 @@ public class GlobalObject {
 		this(id, x, y, height, face, type, ticksRemaining);
 		this.restoreId = restoreId;
 	}
-	
+
 	public void removeTick() {
 		this.ticksRemaining--;
 	}
@@ -122,74 +117,11 @@ public class GlobalObject {
 	}
 	
 	/**
-	 * Gets the location.
-	 * @return The location.
+	 * Gets the position.
+	 * @return The position.
 	 */
-	public Location getLocation() {
-		return location;
-	}
-	
-    public static CopyOnWriteArrayList<Objects> globalObjects = new CopyOnWriteArrayList<Objects>();
-	
-	public static Objects fireExists(int id, int objectX, int objectY, int objectHeight) {
-		for (Objects o : globalObjects) {
-			if (o.objectId == id && o.getObjectX() == objectX && o.getObjectY() == objectY && o.getObjectHeight() == objectHeight) {
-				return o;
-			}
-		}
-		return null;
-	}
-	
-	public static void createAnObject(Player c, int id, int x, int y) {
-		Objects OBJECT = new Objects(id, x, y, 0, 0, 10, 0);
-		if (id == -1) {
-			removeObject(OBJECT);
-		} else {
-			addObject(OBJECT);
-		}
-		placeObject(OBJECT);
-	}
-	
-	/**
-	 * Adds object to list
-	 */
-	public static void addObject(Objects object) {
-		globalObjects.add(object);
-	}
-
-	/**
-	 * Removes object from list
-	 */
-	public static void removeObject(Objects object) {
-		globalObjects.remove(object);
-	}
-	
-	/**
-	 * Creates the object for anyone who is within 60 squares of the object
-	 */
-	public static void placeObject(Objects o) {
-		ArrayList<Objects> toremove = new ArrayList<Objects>();
-		for (Objects s : globalObjects) {
-			if (s.getObjectX() == o.getObjectX() && s.getObjectY() == o.getObjectY()) {
-				toremove.add(s);
-			}
-		}
-		for (Objects s : toremove) {
-			if (globalObjects.contains(s)) {
-				globalObjects.remove(s);
-			}
-		}
-		globalObjects.add(o);
-		for (Player player : World.getWorld().getPlayers()) {
-			if (player == null) {
-				continue;
-			}
-			if (player.heightLevel == o.getObjectHeight() && o.objectTicks == 0) {
-				if (player.distanceToPoint(o.getObjectX(), o.getObjectY()) <= 60) {
-					player.getPA().object(o.getObjectId(), o.getObjectX(), o.getObjectY(), o.getObjectFace(), o.getObjectType());
-				}
-			}
-		}
+	public Position getPosition() {
+		return position;
 	}
 
 }

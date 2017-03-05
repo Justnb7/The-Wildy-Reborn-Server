@@ -55,6 +55,7 @@ public class CombatRequirements {
 				Combat.resetCombat(player);
 				return false;
 			}
+			
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(session)) {
 				if (!session.isAttackingOperationable()) {

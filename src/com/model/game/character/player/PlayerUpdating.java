@@ -237,7 +237,7 @@ public class PlayerUpdating {
 		if (player.isChatTextUpdateRequired() && !noChat) {
 			updateMask |= 0x80;
 		}
-		if (player.isFaceUpdateRequired()) {
+		if (player.faceUpdateRequired) {
 			updateMask |= 0x1;
 		}
 		if (player.isAppearanceUpdateRequired() || forceAppearance) {
@@ -278,7 +278,7 @@ public class PlayerUpdating {
 		if (player.isChatTextUpdateRequired() && !noChat) {
 			appendPlayerChatText(player, updateBlock);
 		}
-		if (player.isFaceUpdateRequired()) {
+		if (player.faceUpdateRequired) {
 			appendFaceUpdate(player, updateBlock);
 		}
 		if (player.isAppearanceUpdateRequired() || forceAppearance) {

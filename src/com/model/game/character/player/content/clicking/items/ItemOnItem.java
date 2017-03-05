@@ -5,7 +5,7 @@ import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.PotionCombinating;
 import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.skill.impl.Firemaking;
+import com.model.game.character.player.skill.firemaking.Firemaking;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -28,6 +28,8 @@ public class ItemOnItem {
 			System.out.println(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", used.getId(), usedWith.getId()));
 		}
 		
+		Firemaking.useLighterWithLog(player, used.getId(), usedWith.getId(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+		
 		if (player.rights == Rights.ADMINISTRATOR) {
 			if(used.getId() == 5733 || usedWith.getId() == 5733) {
 				int amount = player.getItems().checkAmount(usedWith.getId());
@@ -42,11 +44,6 @@ public class ItemOnItem {
 			} else {
 				player.write(new SendMessagePacket("You cannot combine two potions of different types."));
 			}
-			return;
-		}
-		
-		if (Firemaking.playerLogs(used.getId(), usedWith.getId())) {
-			Firemaking.grabData(player, used.getId(), usedWith.getId());
 			return;
 		}
 		

@@ -11,7 +11,7 @@ public final class GroundItem {
 		PRIVATE, GLOBAL
 	}
 
-	private final Item item;
+	private Item item;
 	private final Player owner;
 
 	private boolean removed;
@@ -25,24 +25,41 @@ public final class GroundItem {
 		this(item, new Position(x, y, z), owner);
 	}
 
-	public GroundItem(Item item, Position location, Player owner) {
+	public GroundItem(Item item, Position position, Player owner) {
 		this.item = item;
-		this.setLocation(location);
+		this.setLocation(position);
 		this.owner = owner;
 	}
 
-	private Position location;
+	private Position position;
 	
-	public void setLocation(Position location) {
-		this.location = location;
+	public void setLocation(Position position) {
+		this.position = position;
 	}
 	
-	public Position getLocation() {
-		return location;
+	/**
+	 * Returns the items position
+	 * @return
+	 */
+	public Position getPosition() {
+		return position;
 	}
 
+	/**
+	 * Gets the associated item.
+	 * 
+	 * @return the associated item
+	 */
 	public Item getItem() {
 		return item;
+	}
+	
+	/**
+	 * Sets the ground items item
+	 * @param item
+	 */
+	public void setItem(Item item) {
+		this.item = item;
 	}
 
 	public long getOwnerHash() {
@@ -57,12 +74,24 @@ public final class GroundItem {
 		this.removed = removed;
 	}
 
+	/**
+	 * Decreases ground item timer by one.
+	 */
 	public int decreaseTimer() {
 		return timer--;
 	}
 
 	public void setTimer(int timer) {
 		this.timer = timer;
+	}
+
+	/**
+	 * Gets the ground item timer.
+	 * 
+	 * @return the ground item timer
+	 */
+	public int getTimer() {
+		return timer;
 	}
 
 	public State getState() {
@@ -73,6 +102,11 @@ public final class GroundItem {
 		this.state = state;
 	}
 
+	/**
+	 * Gets the item owner's username.
+	 * 
+	 * @return the droppers username
+	 */
 	public Player getOwner() {
 		return owner;
 	}

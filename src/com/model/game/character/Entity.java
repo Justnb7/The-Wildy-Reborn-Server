@@ -12,7 +12,6 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
-import com.model.game.location.Location;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
@@ -47,6 +46,7 @@ public abstract class Entity {
 	public boolean forcedChatUpdateRequired;
 	public boolean updateRequired = true;
 	public boolean appearanceUpdateRequired = true;
+	public boolean faceUpdateRequired = false;
 
 	/**
 	 * The characters combat type, MELEE by default
@@ -467,7 +467,7 @@ public abstract class Entity {
 	/**
 	 * The face location.
 	 */
-	private Location face;
+	private Position face;
 
     private final EntityType type;
 
@@ -514,8 +514,20 @@ public abstract class Entity {
 	 * @return The face location, or <code>null</code> if the entity is not
 	 *         facing.
 	 */
-	public Location getFaceLocation() {
+	public Position getFaceLocation() {
 		return face;
+	}
+	
+	/**
+	 * Makes this entity face a location.
+	 * 
+	 * @param location
+	 *            The location to face.
+	 */
+	public void face(Position position) {
+		this.face = position;
+		faceUpdateRequired = true;
+		updateRequired = true;
 	}
 	
 	/**

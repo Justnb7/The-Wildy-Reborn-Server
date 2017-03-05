@@ -56,7 +56,7 @@ public class Firemaking {
 				
 				final GroundItem item = new GroundItem(new Item(log.getLog()), player.getPosition(), player);
 				
-				int createTime = 2000;
+				int createTime = 2;
 				
 				if (GroundItemHandler.register(item)) {
 					GroundItemHandler.createGroundItem(item);
@@ -65,21 +65,15 @@ public class Firemaking {
 				if (notInstant) {
 					player.write(new SendMessagePacket("You attempt to light the logs."));
 					player.playAnimation(Animation.create(733));
-					createTime = 3000 + Utility.random(6000);
 				}
-				
 				player.getItems().remove(new Item(log.getLog()));
-				
 				Server.getTaskScheduler().schedule(new ScheduledTask(createTime) {
 					@Override
 					public void execute() {
-						player.debug("enter task");
 						if (!player.getItems().playerHasItem(590, 1)) {
-							player.debug("stop task, no tinderbox");
 							this.stop();
 							return;
 						}
-						player.debug("Create fire");
 						GlobalObject fire = new GlobalObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 250 + Utility.random(20));
 						Server.getGlobalObjects().add(fire);
 						

@@ -17,25 +17,28 @@ public class ChallengePlayer implements PacketType {
 
 	@Override
 	public void handle(Player player, int packet, int size) {
-		System.out.println("Called packet "+packet+" size "+size);
+		//System.out.println("Called packet "+packet+" size "+size);
 		switch (packet) {
 		
 		case 128:
 			int answerPlayer = player.getInStream().readUnsignedWord();
 
 			if (answerPlayer >= Constants.MAX_PLAYERS || answerPlayer < 0) {
+				//player.message("Bad player id.");
 				return;
 			}
-			System.out.println("opp pid "+answerPlayer+" list copy size "+World.getWorld().getPlayers().size());
+			//player.debug("my pid "+player.getIndex()+" opp pid "+answerPlayer+" list copy size "+World.getWorld().getPlayers().size());
 
 			// getPlayer constructs a new list
-			if (answerPlayer >= World.getWorld().getPlayers().size() || World.getWorld().getPlayers().get(answerPlayer) == null) {
+			if (answerPlayer >= Constants.MAX_PLAYERS || World.getWorld().getPlayers().get(answerPlayer) == null) {
+				//player.message("Unable to find player.");
 				return;
 			}
 			
 			Player requested = World.getWorld().getPlayers().get(answerPlayer);
 			
 			if (Objects.isNull(requested)) {
+				//player.message("Unable to find partner.");
 				return;
 			}
 			

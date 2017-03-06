@@ -542,6 +542,12 @@ public abstract class Entity {
 		faceEntityUpdateRequired = false;
 		updateRequired = true;
 	}
+	
+	public void faceEntity(Entity e) {
+		faceEntityIndex = e.getEntityType() == EntityType.PLAYER ? 32768 + e.getIndex() : e.getIndex();
+		faceEntityUpdateRequired = false;
+		updateRequired = true;
+	}
 
 	/**
 	 * Checks if this entity is facing a location.

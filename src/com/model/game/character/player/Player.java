@@ -1408,17 +1408,23 @@ public class Player extends Entity {
 			return;
 		}
 		
-		// ONLY ADD CHECKS ALLOWING TO LOGOUT HERE NO UNREGISTERING RELATED CODE
-		//instead put that in {@code World.unregister}
-
+		//Reset poison and venom
+		this.infection = 0;
+		this.infected = false;
+		this.poisonDamage = 0;
+		
 		//Dueling check
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(this, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
 			if (duelSession.getStage().getStage() >= MultiplayerSessionStage.FURTHER_INTERACTION) {
 				message("You are not permitted to logout during a duel. If you forcefully logout you will");
 				message("lose all of your staked items, if any, to your opponent.");
-				return;
 			}
+		}
+		
+		//Queue pet
+		if (this.petId > 0) {
+			getPets().pickupPet(this, false, World.getWorld().getNpcs().get(this.petNpcIndex));
 		}
 		
 		//If we're no longer in combat we can goahead and logout

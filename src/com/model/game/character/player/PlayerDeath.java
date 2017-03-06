@@ -94,7 +94,6 @@ public class PlayerDeath {
 					if (!duelSession.getWinner().isPresent()) {
 						duelSession.setWinner(opponent);
 					}
-					
 					PlayerSerialization.saveGame(opponent);
 				} else {
 					player.write(new SendMessagePacket("Congratulations, you have won the duel."));

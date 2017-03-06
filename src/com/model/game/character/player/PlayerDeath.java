@@ -23,6 +23,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
+import com.model.game.location.Position;
 import com.model.utility.Utility;
 
 public class PlayerDeath {

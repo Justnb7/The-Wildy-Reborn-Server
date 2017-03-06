@@ -130,6 +130,8 @@ public class Barrelchest extends Boss {
 	private final void special_attack(Player player, Npc npc) {
 		npc.playAnimation(SPECIAL_ATTACK_ANIMATION);
 		npc.forceChat("PROTECTION PRAYERS ARE USELESS NOW!");
+		npc.forcedChatRequired = true;
+		npc.updateRequired = true;
 		npc.attackStyle = MobAttackType.SPECIAL_ATTACK;
 		if (player.distanceToPoint(npc.absX, npc.absY) < 2) {
 			//player.write(new SendMessagePacket("[Debug]Special melee distance"));

@@ -21,6 +21,7 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.location.Position;
+import com.model.net.network.rsa.GameBuffer;
 import com.model.task.impl.NPCDeathTask;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
@@ -114,6 +115,30 @@ public class Npc extends Entity {
 	 * Checks the last location the npc was on
 	 */
 	private Position lastLocation = null;
+	
+	/**
+	 * Face the npc to the player
+	 */
+	private boolean facePlayer = true;
+	
+	/**
+	 * Determines if the npc can face another player
+	 * @return	{@code true} if the npc can face players
+	 */
+	public boolean canFacePlayer() {
+		return facePlayer;
+	}
+	
+	/**
+	 * Makes the npcs either able or unable to face other players
+	 * @param facePlayer	{@code true} if the npc can face players
+	 */
+	public void setFacePlayer(boolean facePlayer) {
+		this.facePlayer = facePlayer;
+		if(!facePlayer){
+			this.facePlayer(65535);//reset the entity in client to -1 so its not locked onto something
+		}
+	}
 
 	/**
 	 * Requesting the transformation
@@ -158,7 +183,8 @@ public class Npc extends Entity {
 	 */
 	public int targetId;
 	
-	public boolean noDeathEmote, isDead, walkingHome, underAttack, randomWalk;
+	public boolean noDeathEmote, isDead, walkingHome, underAttack, randomWalk, dirUpdateRequired, 
+			forcedChatRequired;
 
 	public boolean aggressive;
 	
@@ -170,6 +196,8 @@ public class Npc extends Entity {
 		else 
 			return false;
 	}
+	
+	public String forcedText;
 	
 	/**
 	 * Our enemys maximum hit
@@ -290,6 +318,15 @@ public class Npc extends Entity {
         if (def == null)
             return NpcDefinition.getDefinitions()[1];
         return def;
+	}
+
+	/**
+	 * Text update
+	 **/
+	public void forceChat(String text) {
+		setForcedText(text);
+		forcedChatRequired = true;
+		updateRequired = true;
 	}
 
 	public Position[] getTiles(Position location) {
@@ -428,7 +465,7 @@ public class Npc extends Entity {
 
 	public void clearUpdateFlags() {
 		updateRequired = false;
-		forcedChatUpdateRequired = false;
+		forcedChatRequired = false;
 		hitUpdateRequired = false;
 		hitUpdateRequired2 = false;
 		animUpdateRequired = false;
@@ -441,6 +478,7 @@ public class Npc extends Entity {
 			
 		}
 		this.gfxUpdateRequired = false;
+		setForcedText(null);
 		moveX = 0;
 		moveY = 0;
 		direction = -1;
@@ -610,6 +648,14 @@ public class Npc extends Entity {
 		return EntityType.NPC;
 	}
 
+	public String getForcedText() {
+		return forcedText;
+	}
+
+	public void setForcedText(String forcedText) {
+		this.forcedText = forcedText;
+	}
+
 	/**
 	 * Contains the delta Locations for the x and y coordinate of actor model
 	 * sizes.
@@ -646,6 +692,29 @@ public class Npc extends Entity {
 		FocusPointY = 2 * j + 1;
 		updateRequired = true;
 		System.out.println("focusnig npc on "+this.FocusPointX+" "+this.FocusPointY);
+	}
+	
+	public void appendFaceEntity(GameBuffer str) {
+		str.writeShort(face);
+	}
+
+	public void facePlayer(int player) {
+		if (!facePlayer) {
+			if (face == -1) {
+				return;
+			}
+			face = -1;
+		} else {
+			face = player + 32768;
+		}
+		dirUpdateRequired = true;
+		updateRequired = true;
+	}
+	
+	public void face(Entity e) {
+		face = e.getEntityType() == EntityType.PLAYER ? 32768 + e.getIndex() : e.getIndex();//go
+		dirUpdateRequired = true;
+		updateRequired = true;
 	}
 
 	public int distanceToPoint(int pointX, int pointY) {

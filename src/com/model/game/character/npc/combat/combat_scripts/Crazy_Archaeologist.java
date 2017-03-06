@@ -28,6 +28,8 @@ public class Crazy_Archaeologist extends Boss {
 	public void execute(Npc npc, Player player) {
 
 		npc.forceChat(MESSAGES[(int) (Math.random() * MESSAGES.length)]);
+		npc.forcedChatRequired = true;
+		npc.updateRequired = true;
 		
 		int chance = r.nextInt(40);
 		int offX = (npc.getY() - player.getY()) * -1;
@@ -40,6 +42,8 @@ public class Crazy_Archaeologist extends Boss {
 			player.getProjectile().createPlayersProjectile(npc.getX(), npc.getY(), offX, offY, 50, speed, 1259, 43, 31, -player.getId() - 1, 65, 0, 36);
 		} else if (chance > 25 && chance < 40) {
 			npc.forceChat("Rain of knowledge!");
+			npc.forcedChatRequired = true;
+			npc.updateRequired = true;
 			npc.attackStyle = 2;
 			npc.attackTimer = 7;
 			npc.hitDelayTimer = 4;

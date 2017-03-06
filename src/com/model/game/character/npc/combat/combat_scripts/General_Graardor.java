@@ -34,6 +34,8 @@ public class General_Graardor extends Boss {
 		
 		if (randomMessage == 1) {
 			npc.forceChat(MESSAGES[(int) (Math.random() * MESSAGES.length)]);
+			npc.forcedChatRequired = true;
+			npc.updateRequired = true;
 		}
 		
 		int offX = (npc.getY() - player.getY()) * -1;

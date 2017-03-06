@@ -47,7 +47,6 @@ public abstract class Entity {
 	public boolean updateRequired = true;
 	public boolean appearanceUpdateRequired = true;
 	public boolean faceEntityUpdateRequired = false;
-	public boolean dirUpdateRequired;
 	public int faceTileX = -1, faceTileY = -1;
 	public int faceEntityIndex = -1;
 
@@ -547,24 +546,6 @@ public abstract class Entity {
 	public void faceEntity(Entity e) {
 		faceEntityIndex = e.getEntityType() == EntityType.PLAYER ? 32768 + e.getIndex() : e.getIndex();
 		faceEntityUpdateRequired = false;
-		updateRequired = true;
-	}
-	
-	/**
-	 * Face the npc to the player
-	 */
-	private boolean facePlayer = true;
-	
-	public void facePlayer(int player) {
-		if (!facePlayer) {
-			if (faceEntityIndex == -1) {
-				return;
-			}
-			faceEntityIndex = -1;
-		} else {
-			faceEntityIndex = player + 32768;
-		}
-		dirUpdateRequired = true;
 		updateRequired = true;
 	}
 

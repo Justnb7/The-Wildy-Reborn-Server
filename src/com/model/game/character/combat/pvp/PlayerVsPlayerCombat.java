@@ -35,6 +35,7 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
+import com.model.game.location.Position;
 import com.model.utility.Utility;
 
 /**

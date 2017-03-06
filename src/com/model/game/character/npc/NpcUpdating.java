@@ -103,7 +103,7 @@ public class NpcUpdating {
 			updateMask |= 0x80;
 		if (npc.dirUpdateRequired)
 			updateMask |= 0x20;
-		if (npc.forcedChatUpdateRequired)
+		if (npc.forcedChatRequired)
 			updateMask |= 1;
 		if (npc.hitUpdateRequired)
 			updateMask |= 0x40;
@@ -122,8 +122,8 @@ public class NpcUpdating {
 			appendMask80Update(npc, buffer);
 		if (npc.dirUpdateRequired)
 			appendFaceEntity(npc, buffer);
-		if (npc.forcedChatUpdateRequired) {
-			buffer.putRS2String(npc.getForcedChatMessage());
+		if (npc.forcedChatRequired) {
+			buffer.putRS2String(npc.forcedText);
 		}
 		if (npc.hitUpdateRequired)
 			appendHitUpdate(npc, buffer);

@@ -23,11 +23,11 @@ import com.model.utility.cache.map.Region;
 public class Firemaking {
 	
 	/**
-	 * Attempts to light a fire for the player.
+	 * Attempt to light a fire.
 	 */
-	public static void useLighterWithLog(final Player player, int used, int with, final int x, final int y, final int z) {
+	public static void startFire(final Player player, int itemUsed, int usedWith, final int x, final int y, final int z) {
 		for (final LogData log : LogData.values()) {
-			if (used == 590 && with == log.getLog() || used == log.getLog() && with == 590) {
+			if (itemUsed == 590 && usedWith == log.getLog() || itemUsed == log.getLog() && usedWith == 590) {
 				
 				if (SkillHandler.isSkillActive(player, Skills.WOODCUTTING)) {
 					player.message("You cannot perform this action while Woodcutting.");
@@ -63,74 +63,70 @@ public class Firemaking {
 				}
 				
 				if (notInstant) {
-					player.write(new SendMessagePacket("You attempt to light the logs."));
 					player.playAnimation(Animation.create(733));
+					player.write(new SendMessagePacket("You attempt to light the logs."));
+					createTime = 3 + Utility.random(6);
 				}
+				
 				player.getItems().remove(new Item(log.getLog()));
+				
+				GlobalObject fire = new GlobalObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10);
 				Server.getTaskScheduler().schedule(new ScheduledTask(createTime) {
 					@Override
 					public void execute() {
-						if (!player.getItems().playerHasItem(590, 1)) {
-							this.stop();
-							return;
-						}
-						GlobalObject fire = new GlobalObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 250 + Utility.random(20));
+						
 						Server.getGlobalObjects().add(fire);
 						
-						player.message("The fire catches and the logs begin to burn.");
-						player.face(item.getPosition());
 						if (item != null) {
 							GroundItemHandler.removeGroundItem(item);
 						}
-						getFiremakingWalk(player, x, y, z);
-						/*if (!CollisionMap.isEastBlocked(player.heightLevel, player.absX - 1, player.absY)) {
-							player.getPA().walkTo(-1, 0);
-						} else if (!CollisionMap.isWestBlocked(player.heightLevel, player.absX + 1, player.absY)) {
-							player.getPA().walkTo(1, 0);
-						}*/
+						player.message("The fire catches and the logs begin to burn.");
+						walk(player, x, y, z);
 						player.getSkills().addExperience(Skills.FIREMAKING, log.getExperience());
-						player.face(fire.getPosition());
+						Position face = new Position(fire.getX(), fire.getY());
+						player.face(face);
 						player.setLastFire(System.currentTimeMillis());
 						stop();
 					}
 				}.attach(player));
 				
+				Server.getTaskScheduler().schedule(new ScheduledTask(100) {
+					@Override
+					public void execute() {
+						Server.getGlobalObjects().add(new GlobalObject(-1, fire.getX(), fire.getY(), fire.getHeight()));
+						stop();
+					}
+
+					@Override
+					public void onStop() {
+						if (player.getOutStream() != null && player != null && player.isActive()) {
+							GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getX(), fire.getY(), fire.getHeight(), player));
+						}
+					}
+				}.attach(player));
 			}
 		}
 	}
 	
 	/**
-	 * Gets the clipped firemaking walk.
+	 * Finding the right direction to walk to.
 	 */
-	public static void getFiremakingWalk(Player player, int x, int y, int z) {
-		int[] walkDirection = { 0, 0 };
+	private static void walk(Player player, int x, int y, int z) {
+		int[] walkDir = { 0, 0 };
 		if (Region.getClipping(x - 1, y - 1, player.getPosition().getZ(), -1, 0)) {
-			walkDirection[0] = -1;
-			walkDirection[1] = 0;
+			walkDir[0] = -1;
+			walkDir[1] = 0;
 		} else if (Region.getClipping(x - +1, y, player.getPosition().getZ(), 1, 0)) {
-			walkDirection[0] = 1;
-			walkDirection[1] = 0;
+			walkDir[0] = 1;
+			walkDir[1] = 0;
 		} else if (Region.getClipping(x, y - 1, player.getPosition().getZ(), 0, -1)) {
-			walkDirection[0] = 0;
-			walkDirection[1] = -1;
+			walkDir[0] = 0;
+			walkDir[1] = -1;
 		} else if (Region.getClipping(x, y + 1, player.getPosition().getZ(), 0, 1)) {
-			walkDirection[0] = 0;
-			walkDirection[1] = 1;
+			walkDir[0] = 0;
+			walkDir[1] = 1;
 		}
-		player.getMovementHandler().walkTo(walkDirection[0], walkDirection[1]);
-	}
-
-	/**
-	 * Registers the ashes when the fire is gone.
-	 * 
-	 * @param player
-	 */
-	public static void registerAshes(Player player, Position position) {
-		GroundItem ash = new GroundItem(new Item(592), position, player);
-		if (!GroundItemHandler.register(ash)) {
-			return;
-		}
-		GroundItemHandler.createGroundItem(ash);
+		player.getMovementHandler().walkTo(walkDir[0], walkDir[1]);
 	}
 	
 }

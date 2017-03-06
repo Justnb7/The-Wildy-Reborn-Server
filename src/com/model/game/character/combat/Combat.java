@@ -1,7 +1,6 @@
 package com.model.game.character.combat;
 
 import com.model.game.character.player.Player;
-import com.model.game.location.Position;
 
 public class Combat {
     
@@ -13,8 +12,7 @@ public class Combat {
 	
 	public static void resetCombat(Player player) {
 		player.usingMagic = false;
-		player.face(new Position(0, 0));
-		player.resetFace();
+		player.faceUpdate(0);
 		player.npcIndex = 0;
 		player.playerIndex = 0;
 		player.getPA().resetFollow();

@@ -6,7 +6,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.SkillHandler.Skill;
-import com.model.game.location.Position;
 import com.model.task.events.CycleEvent;
 
 public class Woodcutting {
@@ -15,7 +14,7 @@ public class Woodcutting {
 	
 	public void chop(Player player, int objectId, int x, int y) {
 		Tree tree = Tree.forObject(objectId);
-		player.face(new Position(x, y));
+		player.turnPlayerTo(x, y);
 		if (player.getSkills().getLevel(Skills.WOODCUTTING) < tree.getLevelRequired()) {
 			player.write(new SendMessagePacket("You do not have the woodcutting level required to cut this tree down."));
 			return;

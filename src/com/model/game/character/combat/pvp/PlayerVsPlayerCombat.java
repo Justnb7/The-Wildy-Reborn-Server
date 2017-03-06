@@ -35,7 +35,6 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
 import com.model.utility.Utility;
 
 /**
@@ -148,7 +147,7 @@ public class PlayerVsPlayerCombat {
 				return;
 			}
 			if (target.isDead()) {
-				player.face(new Position(0, 0));
+				player.faceUpdate(0);
 				player.playerIndex = 0;
 				return;
 			}
@@ -695,7 +694,7 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 
-		player.faceEntity(i + 32768);
+		player.faceUpdate(i + 32768);
 		player.delayedDamage = player.delayedDamage2 = 0;
 
 		/*

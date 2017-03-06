@@ -9,11 +9,10 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 
+
 /**
- * Challenging packet, for dueling.
- * @author Patrick van Elderen
- *
- */
+ * Challenge Player
+ **/
 public class ChallengePlayer implements PacketType {
 
 	@Override

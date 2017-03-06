@@ -585,7 +585,7 @@ public class PlayerVsNpcCombat {
 		}
 		if (npc.isDead || npc.maximumHealth <= 0 || player.isDead()) {
 			player.usingMagic = false;
-			player.face(new Position(0, 0));
+			player.faceUpdate(0);
 			player.npcIndex = 0;
 			return;
 		}
@@ -913,7 +913,7 @@ public class PlayerVsNpcCombat {
 			player.stopMovement();
 		}
 
-		player.faceEntity(index);
+		player.faceUpdate(index);
 		npc.underAttackBy = player.getIndex();
 		npc.lastDamageTaken = System.currentTimeMillis();
 		

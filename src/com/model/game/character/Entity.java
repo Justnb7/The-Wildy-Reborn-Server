@@ -46,9 +46,7 @@ public abstract class Entity {
 	public boolean forcedChatUpdateRequired;
 	public boolean updateRequired = true;
 	public boolean appearanceUpdateRequired = true;
-	public boolean faceEntityUpdateRequired = false;
-	public int faceTileX = -1, faceTileY = -1;
-	public int faceEntityIndex = -1;
+	public boolean faceUpdateRequired = false;
 
 	/**
 	 * The characters combat type, MELEE by default
@@ -454,7 +452,7 @@ public abstract class Entity {
     /**
 	 * The current location.
 	 */
-	private Position position;
+	private Position location;
 	
 	/**
 	 * The teleportation target.
@@ -462,34 +460,20 @@ public abstract class Entity {
 	private Position teleportTarget = null;
 
 	/**
-	 * Sets the teleport target.
-	 * 
-	 * @param teleportTarget
-	 *            The target location.
-	 */
-	public void setTeleportTarget(Position teleportTarget) {
-		this.teleportTarget = teleportTarget;
-	}
-	
-	/**
-	 * Gets the teleport target.
-	 * 
-	 * @return The teleport target.
-	 */
-	public Position getTeleportTarget() {
-		return teleportTarget;
-	}
-	
-	/**
 	 * The last known map region.
 	 */
 	private Position lastKnownRegion = this.getPosition();
+	
+	/**
+	 * The face location.
+	 */
+	private Position face;
 
     private final EntityType type;
 
     public Entity(EntityType type) {
-    	setPosition(DEFAULT_LOCATION);
-		this.lastKnownRegion = position;
+    	setLocation(DEFAULT_LOCATION);
+		this.lastKnownRegion = location;
         this.type = type;
     }
 
@@ -523,68 +507,72 @@ public abstract class Entity {
 	public Position getLastKnownRegion() {
 		return lastKnownRegion;
 	}
+    
+    /**
+	 * Gets the face location.
+	 * 
+	 * @return The face location, or <code>null</code> if the entity is not
+	 *         facing.
+	 */
+	public Position getFaceLocation() {
+		return face;
+	}
 	
 	/**
 	 * Makes this entity face a location.
 	 * 
-	 * @param position
-	 *            The position to face.
+	 * @param location
+	 *            The location to face.
 	 */
 	public void face(Position position) {
-		faceTileX = 2 * position.getX() + 1;
-		faceTileY = 2 * position.getY() + 1;
-		faceEntityUpdateRequired = true;
+		this.face = position;
+		faceUpdateRequired = true;
 		updateRequired = true;
 	}
 	
-	public void faceEntity(int index) {
-		faceEntityIndex = index;
-		faceEntityUpdateRequired = false;
-		updateRequired = true;
+	/**
+	 * Checks if this entity has a target to teleport to.
+	 * 
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean hasTeleportTarget() {
+		return teleportTarget != null;
+	}
+
+	/**
+	 * Gets the teleport target.
+	 * 
+	 * @return The teleport target.
+	 */
+	public Position getTeleportTarget() {
+		return teleportTarget;
+	}
+
+	/**
+	 * Sets the teleport target.
+	 * 
+	 * @param teleportTarget
+	 *            The target location.
+	 */
+	public void setTeleportTarget(Position teleportTarget) {
+		this.teleportTarget = teleportTarget;
+	}
+
+	/**
+	 * Resets the teleport target.
+	 */
+	public void resetTeleportTarget() {
+		this.teleportTarget = null;
 	}
 	
-	public void faceEntity(Entity e) {
-		faceEntityIndex = e.getEntityType() == EntityType.PLAYER ? 32768 + e.getIndex() : e.getIndex();
-		faceEntityUpdateRequired = false;
-		updateRequired = true;
-	}
-
 	/**
-	 * Checks if this entity is facing a location.
+	 * Sets the current location.
 	 * 
-	 * @return The entity face flag.
+	 * @param location
+	 *            The current location.
 	 */
-	public boolean isFacing() {
-		return faceEntityUpdateRequired;
-	}
-
-	/**
-	 * Resets the facing location.
-	 */
-	public void resetFace() {
-		faceEntityIndex = -1;
-		faceEntityUpdateRequired = true;
-		updateRequired = true;
-	}
-
-	/**
-	 * Gets the face position.
-	 * 
-	 * @return The face position, or <code>null</code> if the entity is not
-	 *         facing.
-	 */
-	public int getFacePosition() {
-		return faceEntityIndex;
-	}
-
-	/**
-	 * Sets the current position.
-	 * 
-	 * @param position
-	 *            The current position.
-	 */
-	public void setPosition(Position position) {
-		this.position = position;
+	public void setLocation(Position location) {
+		this.location = location;
 	}
 
 	/**
@@ -593,7 +581,7 @@ public abstract class Entity {
 	 * @return The current location.
 	 */
 	public Position getPosition() {
-		return position;
+		return location;
 	}
 	
 	/**

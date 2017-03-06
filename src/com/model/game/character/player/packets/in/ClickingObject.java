@@ -4,7 +4,6 @@ import com.model.Server;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.location.Position;
 import com.model.utility.Utility;
 
 /**
@@ -148,7 +147,7 @@ public class ClickingObject implements PacketType {
 				break;
 			}
 			if (player.destinationReached()) {
-				player.face(new Position(player.objectX, player.objectY));
+				player.turnPlayerTo(player.objectX, player.objectY);
 				player.getActions().firstClickObject(player.objectId, player.objectX, player.objectY);
 			} else {
 				player.clickObjectType = 1;

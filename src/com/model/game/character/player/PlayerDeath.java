@@ -23,7 +23,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.game.location.Position;
 import com.model.utility.Utility;
 
 public class PlayerDeath {
@@ -106,7 +105,7 @@ public class PlayerDeath {
 		/**
 		 * Update player
 		 */
-		player.face(new Position(0, 0));
+		player.faceUpdate(0);
 		player.stopMovement();
 		player.setPoisonDamage((byte) 0);
 		player.getPA().restoreHealth();
@@ -114,7 +113,7 @@ public class PlayerDeath {
 
 	public void giveLife() {
 		player.setDead(false);
-		player.resetFace();
+		player.faceUpdate(-1);
 		player.freeze(0);
 		player.getActionSender().sendRemoveInterfacePacket();
 		

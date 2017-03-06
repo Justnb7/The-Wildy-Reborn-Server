@@ -47,6 +47,9 @@ public abstract class Entity {
 	public boolean updateRequired = true;
 	public boolean appearanceUpdateRequired = true;
 	public boolean faceUpdateRequired = false;
+	public boolean directionUpdateRequired;
+	public int entityFaceIndex = -1;
+	public int faceTileX = -1, faceTileY = -1;
 
 	/**
 	 * The characters combat type, MELEE by default
@@ -463,11 +466,6 @@ public abstract class Entity {
 	 * The last known map region.
 	 */
 	private Position lastKnownRegion = this.getPosition();
-	
-	/**
-	 * The face location.
-	 */
-	private Position face;
 
     private final EntityType type;
 
@@ -507,26 +505,70 @@ public abstract class Entity {
 	public Position getLastKnownRegion() {
 		return lastKnownRegion;
 	}
-    
-    /**
-	 * Gets the face location.
+	
+	/**
+	 * Makes this entity face a position.
 	 * 
-	 * @return The face location, or <code>null</code> if the entity is not
-	 *         facing.
+	 * @param position
+	 *            The position to face.
 	 */
-	public Position getFaceLocation() {
-		return face;
+	public void face(Entity entity, Position position) {
+		//Faces the player
+		if(entity.getEntityType() == EntityType.PLAYER) {
+			faceTileX = 2 * position.getX() + 1;
+			faceTileY = 2 * position.getY() + 1;
+		//Faces the npc
+		} else if(entity.getEntityType() == EntityType.NPC) {
+			faceTileX = position.getX();
+			faceTileY = position.getY();
+		}
+		faceUpdateRequired = true;
+		directionUpdateRequired = true;
+		updateRequired = true;
 	}
 	
 	/**
-	 * Makes this entity face a location.
-	 * 
-	 * @param location
-	 *            The location to face.
+	 * Sets the entity facing index
+	 * @param e
+	 *   The entity
 	 */
-	public void face(Position position) {
-		this.face = position;
+	public void faceEntity(Entity e) {
+		entityFaceIndex = e.getEntityType() == EntityType.PLAYER ? 32768 + e.getIndex() : e.getIndex();
 		faceUpdateRequired = true;
+		directionUpdateRequired = true;
+		updateRequired = true;
+	}
+	
+	/**
+	 * Resets the facing position.
+	 */
+	public void resetFace() {
+		this.entityFaceIndex = -1;
+		faceUpdateRequired = true;
+		directionUpdateRequired = true;
+		updateRequired = true;
+	}
+	
+	/**
+	 * Face the npc to the player
+	 */
+	private boolean facePlayer = true;
+	
+	/**
+	 * Moves the npc to the player
+	 * @param player
+	 *         The index
+	 */
+	public void facePlayer(int player) {
+		if (!facePlayer) {
+			if (entityFaceIndex == -1) {
+				return;
+			}
+			entityFaceIndex = -1;
+		} else {
+			entityFaceIndex = player + 32768;
+		}
+		this.directionUpdateRequired = true;
 		updateRequired = true;
 	}
 	

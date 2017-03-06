@@ -81,7 +81,7 @@ public class WalkingPacketHandler implements PacketType {
 		
 		//When walking reset the following variables
 		if (packetType == 248 || packetType == 164) {
-			player.faceUpdate(0);
+			player.faceEntity(player);
 			player.npcIndex = 0;
 			player.clickObjectType = 0;
 			player.clickNpcType = 0;

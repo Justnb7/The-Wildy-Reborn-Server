@@ -223,9 +223,9 @@ public class Pet {
 	 * 			NPCID
 	 * @return if it is a Pet NPC
 	 */
-	public boolean isPetNPC(int i) {
+	public boolean isPetNPC(Npc npc) {
 		for (Pets pet : Pets.values()) {
-			if (pet.getPetID() == i) {
+			if (pet.getPetID() == npc.npcId) {
 				return true;
 			}
 		}

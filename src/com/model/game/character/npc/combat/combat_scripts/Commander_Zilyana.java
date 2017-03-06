@@ -35,8 +35,6 @@ public class Commander_Zilyana extends Boss {
 
 		if (r.nextInt(3) == 0) {
 			npc.forceChat(MESSAGES[(int) (Math.random() * MESSAGES.length)]);
-			npc.forcedChatRequired = true;
-			npc.updateRequired = true;
 		}
 
 		int attack = r.nextInt(20);

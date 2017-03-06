@@ -104,7 +104,7 @@ public class PlayerDeath {
 		/**
 		 * Update player
 		 */
-		player.faceUpdate(0);
+		player.faceEntity(player);
 		player.stopMovement();
 		player.setPoisonDamage((byte) 0);
 		player.getPA().restoreHealth();
@@ -112,7 +112,7 @@ public class PlayerDeath {
 
 	public void giveLife() {
 		player.setDead(false);
-		player.faceUpdate(-1);
+		player.resetFace();
 		player.freeze(0);
 		player.getActionSender().sendRemoveInterfacePacket();
 		

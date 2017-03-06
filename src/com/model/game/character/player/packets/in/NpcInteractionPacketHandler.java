@@ -6,6 +6,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
 /**
@@ -48,7 +49,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 				player.spellId = 0;
 			}
 
-			player.faceUpdate(player.npcIndex);
+			player.faceEntity(npc);
 			player.usingMagic = false;
 			boolean usingBow = player.getEquipment().isBow(player);
 			boolean throwingWeapon = player.getEquipment().isThrowingWeapon(player);
@@ -112,26 +113,23 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		case FIRST_CLICK:
 			player.npcClickIndex = player.inStream.readSignedWordBigEndian();
+			Npc first_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
 			player.distance = 1;
-			if (World.getWorld().getNpcs().get(player.npcClickIndex) == null) {
-				return;
-			}
-			player.npcType = World.getWorld().getNpcs().get(player.npcClickIndex).npcId;
-			if (World.getWorld().getNpcs().get(player.npcClickIndex) == null) {
+
+			if (first_click_npc == null) {
 				return;
 			}
 			
-			switch (player.npcType) {
+			switch (first_click_npc.npcId) {
 			case 394:
 			case 306:
 				player.distance = 3;
 				break;
 			}
-			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), player.distance)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-			   // NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
-				player.getActions().firstClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
+			if (player.goodDistance(first_click_npc.getX(), first_click_npc.getY(), player.getX(), player.getY(), player.distance)) {
+				player.face(player, new Position(first_click_npc.getX(), first_click_npc.getY()));
+				first_click_npc.face(first_click_npc, new Position(player.getX(), player.getY()));
+				player.getActions().firstClickNpc(first_click_npc);
 			} else {
 				player.clickNpcType = 1;
 				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
@@ -141,12 +139,11 @@ public class NpcInteractionPacketHandler implements PacketType {
 							stop();
 							return;
 						}
-						if ((player.clickNpcType == 1) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
-							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
-								player.getActions().firstClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
+						if ((player.clickNpcType == 1) && first_click_npc != null) {
+							if (player.goodDistance(player.getX(), player.getY(), first_click_npc.getX(), first_click_npc.getY(), 1)) {
+								player.face(player, new Position(first_click_npc.getX(), first_click_npc.getY()));
+								first_click_npc.face(first_click_npc, new Position(player.getX(), player.getY()));
+								player.getActions().firstClickNpc(first_click_npc);
 								stop();
 							}
 						}
@@ -164,21 +161,24 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		case SECOND_CLICK:
 			player.npcClickIndex = player.inStream.readUnsignedWordBigEndianA(); // NPC INDEX from the client
-			player.npcType = World.getWorld().getNpcs().get(player.npcClickIndex).npcId;
+			Npc second_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
 			player.distance = 1;
 			
+			if(second_click_npc == null) {
+				return;
+			}
+			
 			// distance for certain npcs.. like bankers can be done over a bank booth
-			switch(player.npcType) {
+			switch(second_click_npc.npcId) {
 				case 394:
 					player.distance = 3;
 					break;
 			}
 			
 			// if within distance, handle
-			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), player.distance)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-				//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
+			if (player.goodDistance(second_click_npc.getX(), second_click_npc.getY(), player.getX(), player.getY(), player.distance)) {
+				player.face(player, new Position(second_click_npc.getX(), second_click_npc.getY()));
+				second_click_npc.face(second_click_npc, new Position(player.getX(), player.getY()));
 				player.getActions().secondClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
 				// PI's terrible design
 			} else {
@@ -188,11 +188,10 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 					@Override
 					public void execute() {
-						if ((player.clickNpcType == 2) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
-							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
+						if ((player.clickNpcType == 2) && second_click_npc != null) {
+							if (player.goodDistance(player.getX(), player.getY(), second_click_npc.getX(), second_click_npc.getY(), 1)) {
+								player.face(player, new Position(second_click_npc.getX(), second_click_npc.getY()));
+								second_click_npc.face(second_click_npc, new Position(player.getX(), player.getY()));
 								player.getActions().secondClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
 								stop();
 							}
@@ -212,24 +211,27 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		case THIRD_CLICK:
 			player.npcClickIndex = player.inStream.readSignedWord();
-			player.npcType = World.getWorld().getNpcs().get(player.npcClickIndex).npcId;
+			Npc thrid_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
+			player.distance = 1;
+			
+			if(thrid_click_npc == null) {
+				return;
+			}
 
-			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), 1)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-				//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
-				player.getActions().thirdClickNpc(player.npcType);
+			if (player.goodDistance(thrid_click_npc.getX(), thrid_click_npc.getY(), player.getX(), player.getY(), 1)) {
+				player.face(player, new Position(thrid_click_npc.getX(), thrid_click_npc.getY()));
+				thrid_click_npc.face(thrid_click_npc, new Position(player.getX(), player.getY()));
+				player.getActions().thirdClickNpc(thrid_click_npc);
 			} else {
 				player.clickNpcType = 3;
 				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 					@Override
 					public void execute() {
-						if ((player.clickNpcType == 3) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
-							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
-								player.getActions().thirdClickNpc(player.npcType);
+						if ((player.clickNpcType == 3) && thrid_click_npc != null) {
+							if (player.goodDistance(player.getX(), player.getY(), thrid_click_npc.getX(), thrid_click_npc.getY(), 1)) {
+								player.face(player, new Position(thrid_click_npc.getX(), thrid_click_npc.getY()));
+								thrid_click_npc.face(thrid_click_npc, new Position(player.getX(), player.getY()));
+								player.getActions().thirdClickNpc(thrid_click_npc);
 								stop();
 							}
 						}
@@ -247,19 +249,17 @@ public class NpcInteractionPacketHandler implements PacketType {
 			break;
 		case FOURTH_CLICK:
 			player.npcClickIndex = player.inStream.readSignedWordBigEndian();
-			if (World.getWorld().getNpcs().get(player.npcClickIndex) == null) {
-				return;
-			}
-			player.npcType = World.getWorld().getNpcs().get(player.npcClickIndex).npcId;
-			if (World.getWorld().getNpcs().get(player.npcClickIndex) == null) {
+			Npc fourth_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
+			player.distance = 1;
+			
+			if (fourth_click_npc == null) {
 				return;
 			}
 
-			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), 1)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-				//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
-				player.getActions().fourthClickNpc(player.npcType);
+			if (player.goodDistance(fourth_click_npc.getX(), fourth_click_npc.getY(), player.getX(), player.getY(), 1)) {
+				player.face(player, new Position(fourth_click_npc.getX(), fourth_click_npc.getY()));
+				fourth_click_npc.face(fourth_click_npc, new Position(player.getX(), player.getY()));
+				player.getActions().fourthClickNpc(fourth_click_npc);
 			} else {
 				player.clickNpcType = 4;
 				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
@@ -269,12 +269,11 @@ public class NpcInteractionPacketHandler implements PacketType {
 							stop();
 							return;
 						}
-						if ((player.clickNpcType == 4) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
-							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
-								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
-								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
-								player.getActions().firstClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
+						if ((player.clickNpcType == 4) && fourth_click_npc != null) {
+							if (player.goodDistance(player.getX(), player.getY(), fourth_click_npc.getX(), fourth_click_npc.getY(), 1)) {
+								player.face(player, new Position(fourth_click_npc.getX(), fourth_click_npc.getY()));
+								fourth_click_npc.face(fourth_click_npc, new Position(player.getX(), player.getY()));
+								player.getActions().fourthClickNpc(fourth_click_npc);
 								stop();
 							}
 						}

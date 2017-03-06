@@ -7,6 +7,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.GameItem;
+import com.model.game.location.Position;
 import com.model.game.object.GlobalObject;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
@@ -75,7 +76,7 @@ public class Thieving {
 			player.write(new SendMessagePacket("You need a thieving level of " + stall.level + " to steal from this."));
 			return;
 		}
-		player.turnPlayerTo(location.getX(), location.getY());
+		player.face(player, new Position(location.getX(), location.getY()));
 		if (Utility.getRandom(stall.depletionProbability) == 0) {
 			GlobalObject stallObj = Server.getGlobalObjects().get(objectId, location.getX(), location.getY(), location.getZ());
 			if (stallObj != null) {
@@ -113,7 +114,7 @@ public class Thieving {
 		/**
 		 * Incorporate chance for failure
 		 */
-		player.turnPlayerTo(npc.getX(), npc.getY());
+		player.face(player, new Position(npc.getX(), npc.getY()));
 		player.playAnimation(Animation.create(ANIMATION));
 		GameItem item = pickpocket.items[Utility.getRandom(pickpocket.items.length - 1)];
 		player.getItems().addItem(item.getId(), item.getAmount());

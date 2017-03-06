@@ -243,7 +243,7 @@ public class PlayerUpdating {
 		if (player.isAppearanceUpdateRequired() || forceAppearance) {
 			updateMask |= 0x10;
 		}
-		if (player.FocusPointX != -1) {
+		if (player.faceTileX != -1) {
 			updateMask |= 0x2;
 		}
 		if (player.isHitUpdateRequired()) {
@@ -284,7 +284,7 @@ public class PlayerUpdating {
 		if (player.isAppearanceUpdateRequired() || forceAppearance) {
 			appendPlayerAppearance(player, updateBlock);
 		}
-		if (player.FocusPointX != -1) {
+		if (player.faceTileX != -1) {
 			appendSetFocusDestination(player, updateBlock);
 		}
 		if (player.isHitUpdateRequired()) {
@@ -579,7 +579,7 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data on
 	 */
 	private static void appendFaceUpdate(Player player, GameBuffer str) {
-		str.writeWordBigEndian(player.face);
+		str.writeWordBigEndian(player.entityFaceIndex);
 	}
 
 	/**
@@ -604,8 +604,8 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data on
 	 */
 	private static void appendSetFocusDestination(Player player, GameBuffer str) {
-		str.writeWordBigEndianA(player.FocusPointX);
-		str.writeWordBigEndian(player.FocusPointY);
+		str.writeWordBigEndianA(player.faceTileX);
+		str.writeWordBigEndian(player.faceTileY);
 	}
 
 	/**

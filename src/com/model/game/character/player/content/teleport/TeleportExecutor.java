@@ -135,7 +135,7 @@ public class TeleportExecutor {
 		player.stopMovement();
 		player.getActionSender().sendRemoveInterfacePacket();
 		player.npcIndex = player.playerIndex = 0;
-		player.faceUpdate(-1);
+		player.resetFace();
 		player.teleTimer = initialDelay;
 		player.setTeleporting(true);
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) { 
@@ -234,7 +234,7 @@ public class TeleportExecutor {
 		player.getActionSender().sendRemoveInterfacePacket();
 		player.npcIndex = 0;
 		player.playerIndex = 0;
-		player.faceUpdate(0);
+		player.faceEntity(player);
 		return true;
 	}
 	

@@ -47,7 +47,7 @@ public class ActionHandler {
 		}
 
 		player.clickObjectType = 0;
-		player.turnPlayerTo(x, y);
+		player.face(player, new Position(x, y));
 
 		if (id >= 21731 && id <= 21737 || id == 12987 || id == 12986) {
 			BrimhavenVines.handleBrimhavenVines(player, id);
@@ -58,7 +58,7 @@ public class ActionHandler {
 			player.getPA().resetFollow();
 
 		if (id != 2283) {
-			player.turnPlayerTo(player.objectX, player.objectY);
+			player.face(player, new Position(player.objectX, player.objectY));
 		}
 		
 		Tree tree = Tree.forObject(id);
@@ -244,7 +244,7 @@ public class ActionHandler {
 					player.getPA().movePlayer(player.absX - 1, player.absY, 0);
 				else if (player.absX == 2876)
 					player.getPA().movePlayer(player.absX + 1, player.absY, 0);
-				player.turnPlayerTo(x, y);
+				player.face(player, new Position(x, y));
 			}
 			break;
 
@@ -256,7 +256,7 @@ public class ActionHandler {
 			if (!player.ditchDelay.elapsed(1000)) {
 				return;
 			}
-			player.turnPlayerTo(x, y);
+			player.face(player, new Position(x, y));
 			player.ditchDelay.reset();
 			if (player.getY() >= 3523) {
 				WildernessDitch.leave(player);
@@ -629,21 +629,21 @@ public class ActionHandler {
 	}
 
 	public void firstClickNpc(Npc npc) {
-		int npcType = player.npcType;
 		player.clickNpcType = 0;
 		player.rememberNpcIndex = player.npcClickIndex;
+		
 		if (player.inDebugMode()) {
-			player.write(new SendMessagePacket("First click NPC:  " + npcType));
+			player.write(new SendMessagePacket("First click "+npc.npcId));
 		}
 
-		if (FishableSpot.fishingNPC(npcType)) {
-			Fishing.attemptFishing(player, npcType, 1);
+		if (FishableSpot.fishingNPC(npc.npcId)) {
+			Fishing.attemptFishing(player, npc.npcId, 1);
 			return;
 		}
 		if (player.petId > 0) {
-			player.getPets().talktoPet(player, npcType, npc);
+			player.getPets().talktoPet(player, npc.npcId, npc);
 		}
-		switch (npcType) {
+		switch (npc.npcId) {
 		
 		case 315:
 			player.dialogue().start("emblem_trader_dialogue", player);
@@ -762,32 +762,29 @@ public class ActionHandler {
 		case 1306:
 			player.write(new SendInterfacePacket(3559));
 			break;
-
-		default:
-			if (player.inDebugMode()) {
-				Utility.println("First Click Npc : " + npcType);
-			}
-			break;
 		}
 	}
 
 	public void secondClickNpc(Npc npc) {
-		int npcType = player.npcType;
 		
 		player.clickNpcType = 0;
 		player.rememberNpcIndex = player.npcClickIndex;
 		
-		if (FishableSpot.fishingNPC(npcType)) {
-			Fishing.attemptFishing(player, npcType, 2);
+		if (player.inDebugMode()) {
+			player.message("Second click: "+npc.npcId);
+		}
+		
+		if (FishableSpot.fishingNPC(npc.npcId)) {
+			Fishing.attemptFishing(player, npc.npcId, 2);
 			return;
 		}
 
-		if(player.petId > 0 && player.getPets().isPetNPC(npcType)) {
+		if(player.petId > 0 && player.getPets().isPetNPC(npc)) {
 			player.getPets().pickupPet(player, true, npc);
 			return;
 		}
 
-		switch (npcType) {
+		switch (npc.npcId) {
 		
 		case 315:
 			Shop.SHOPS.get("Bounty Hunter Store").openShop(player);
@@ -910,30 +907,28 @@ public class ActionHandler {
 		/**
 		 * End of Bankers
 		 */
-			
-		default:
-			if (player.inDebugMode()) {
-				player.write(new SendMessagePacket("Second Click Npc : " + npcType));
-			}
-			break;
 
 		}
 	}
 
-	public void thirdClickNpc(int npcType) {
+	public void thirdClickNpc(Npc npc) {
 		
 		player.clickNpcType = 0;
 		player.rememberNpcIndex = player.npcClickIndex;
 		
-		if (player.getPets().isPetNPC(npcType)) {
-			if (player.getPets().hasNextStage(player, npcType)) {
+		if (player.inDebugMode()) {
+			player.message("Third click: "+npc.npcId);
+		}
+		
+		if (player.getPets().isPetNPC(npc)) {
+			if (player.getPets().hasNextStage(player, npc.npcId)) {
 				player.getPets().handleNextStage(player);
 			} else {
 				player.getPets().pickupPet(player, true, World.getWorld().getNpcs().get(player.npcClickIndex));
 			}
 		}
 		
-		switch (npcType) {
+		switch (npc.npcId) {
 
 		/**
 		 * Dialogues
@@ -985,21 +980,19 @@ public class ActionHandler {
 		 * End of Shops
 		 */
 
-		default:
-			if (player.inDebugMode()) {
-				Utility.println("Third Click NPC : " + npcType);
-			}
-			break;
-
 		}
 	}
 
-	public void fourthClickNpc(int npcType) {
+	public void fourthClickNpc(Npc npc) {
 		
 		player.clickNpcType = 0;
 		player.rememberNpcIndex = player.npcClickIndex;
+		
+		if (player.inDebugMode()) {
+			player.message("Fourth click: "+npc.npcId);
+		}
 
-		switch (npcType) {
+		switch (npc.npcId) {
 		
 		/**
 		 * Slayer masters
@@ -1027,12 +1020,6 @@ public class ActionHandler {
 			
 		case 490: //Nieve
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);
-			break;
-	
-		default:
-			if (player.inDebugMode()) {
-				player.write(new SendMessagePacket("Fourth Click NPC : " + npcType));
-			}
 			break;
 
 		}

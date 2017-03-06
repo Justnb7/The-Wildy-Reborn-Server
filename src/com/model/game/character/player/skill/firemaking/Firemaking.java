@@ -70,7 +70,7 @@ public class Firemaking {
 				
 				player.getItems().remove(new Item(log.getLog()));
 				
-				GlobalObject fire = new GlobalObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10);
+				GlobalObject fire = new GlobalObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 100);
 				Server.getTaskScheduler().schedule(new ScheduledTask(createTime) {
 					@Override
 					public void execute() {
@@ -84,7 +84,7 @@ public class Firemaking {
 						walk(player, x, y, z);
 						player.getSkills().addExperience(Skills.FIREMAKING, log.getExperience());
 						Position face = new Position(fire.getX(), fire.getY());
-						player.face(face);
+						player.face(player, face);
 						player.setLastFire(System.currentTimeMillis());
 						stop();
 					}
@@ -93,15 +93,10 @@ public class Firemaking {
 				Server.getTaskScheduler().schedule(new ScheduledTask(100) {
 					@Override
 					public void execute() {
-						Server.getGlobalObjects().add(new GlobalObject(-1, fire.getX(), fire.getY(), fire.getHeight()));
-						stop();
-					}
-
-					@Override
-					public void onStop() {
 						if (player.getOutStream() != null && player != null && player.isActive()) {
 							GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getX(), fire.getY(), fire.getHeight(), player));
 						}
+						stop();
 					}
 				}.attach(player));
 			}

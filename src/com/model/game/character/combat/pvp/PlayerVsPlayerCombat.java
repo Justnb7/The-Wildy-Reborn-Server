@@ -147,7 +147,7 @@ public class PlayerVsPlayerCombat {
 				return;
 			}
 			if (target.isDead()) {
-				player.faceUpdate(0);
+				player.faceEntity(player);
 				player.playerIndex = 0;
 				return;
 			}
@@ -694,7 +694,7 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 
-		player.faceUpdate(i + 32768);
+		player.faceEntity(defender);
 		player.delayedDamage = player.delayedDamage2 = 0;
 
 		/*

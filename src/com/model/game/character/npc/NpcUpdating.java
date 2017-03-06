@@ -101,15 +101,15 @@ public class NpcUpdating {
 			updateMask |= 8;
 		if (npc.gfxUpdateRequired)
 			updateMask |= 0x80;
-		if (npc.dirUpdateRequired)
+		if (npc.directionUpdateRequired)
 			updateMask |= 0x20;
-		if (npc.forcedChatRequired)
+		if (npc.forcedChatUpdateRequired)
 			updateMask |= 1;
 		if (npc.hitUpdateRequired)
 			updateMask |= 0x40;
 		if (npc.transformUpdateRequired)
 			updateMask |= 2;
-		if (npc.FocusPointX != -1)
+		if (npc.faceTileX != -1)
 			updateMask |= 4;
 
 		buffer.writeByte(updateMask);
@@ -120,16 +120,16 @@ public class NpcUpdating {
 			appendHitUpdate2(npc, buffer);
 		if (npc.gfxUpdateRequired)
 			appendMask80Update(npc, buffer);
-		if (npc.dirUpdateRequired)
+		if (npc.directionUpdateRequired)
 			appendFaceEntity(npc, buffer);
-		if (npc.forcedChatRequired) {
-			buffer.putRS2String(npc.forcedText);
+		if (npc.forcedChatUpdateRequired) {
+			buffer.putRS2String(npc.getForcedChatMessage());
 		}
 		if (npc.hitUpdateRequired)
 			appendHitUpdate(npc, buffer);
 		if (npc.transformUpdateRequired)
 			appendTransformUpdate(npc, buffer);
-		if (npc.FocusPointX != -1)
+		if (npc.faceTileX != -1)
 			appendSetFocusDestination(npc, buffer);
 
 	}
@@ -190,8 +190,8 @@ public class NpcUpdating {
 	}
 
 	private static void appendSetFocusDestination(Npc npc, GameBuffer str) {
-		str.writeWordBigEndian(npc.FocusPointX * 2 + 1);
-		str.writeWordBigEndian(npc.FocusPointY * 2 + 1);
+		str.writeWordBigEndian(npc.faceTileX * 2 + 1);
+		str.writeWordBigEndian(npc.faceTileY * 2 + 1);
 	}
 
 	private static void appendAnimUpdate(Npc npc, GameBuffer str) {

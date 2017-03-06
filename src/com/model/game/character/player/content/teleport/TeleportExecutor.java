@@ -234,7 +234,7 @@ public class TeleportExecutor {
 		player.getActionSender().sendRemoveInterfacePacket();
 		player.npcIndex = 0;
 		player.playerIndex = 0;
-		player.faceEntity(0);
+		player.face(new Position(0, 0));
 		return true;
 	}
 	

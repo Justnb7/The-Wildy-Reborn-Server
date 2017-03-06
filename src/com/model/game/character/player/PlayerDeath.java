@@ -106,7 +106,7 @@ public class PlayerDeath {
 		/**
 		 * Update player
 		 */
-		player.faceEntity(0);
+		player.face(new Position(0, 0));
 		player.stopMovement();
 		player.setPoisonDamage((byte) 0);
 		player.getPA().restoreHealth();

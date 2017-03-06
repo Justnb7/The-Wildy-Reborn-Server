@@ -148,7 +148,7 @@ public class PlayerVsPlayerCombat {
 				return;
 			}
 			if (target.isDead()) {
-				player.faceEntity(0);
+				player.face(new Position(0, 0));
 				player.playerIndex = 0;
 				return;
 			}

@@ -174,8 +174,6 @@ public class NPCDeathTask extends ScheduledTask {
         }
         if (npc.npcId == 6618 && npc.isDead) {
         	npc.forceChat("Ow!");
-			npc.forcedChatRequired = true;
-			npc.updateRequired = true;
         }
         if (npc.npcId == 6615 && npc.isDead) {
         	npc.spawnedScorpiaMinions = false;
@@ -187,7 +185,6 @@ public class NPCDeathTask extends ScheduledTask {
 			npc.isDead = false;
 			npc.spawnedVetionMinions = false;
 			npc.forceChat("Do it again!!");
-			npc.forcedChatRequired = true;
 			stop();
 			return;
 		} else {
@@ -195,7 +192,6 @@ public class NPCDeathTask extends ScheduledTask {
 				npc.npcId = 6611;
 				npc.spawnedVetionMinions = false;
 				npc.forceChat("Got'em");
-				npc.forcedChatRequired = true;
 			}
 		}
 		if (npc.killedBy >= 0) {
@@ -221,8 +217,7 @@ public class NPCDeathTask extends ScheduledTask {
         if (npc.npcId != 6611) // vetion or somet
 			npc.playAnimation(Animation.create(NPCCombatData.getDeadEmote(npc))); // dead emote
         if (npc.transformId == 6612) {
-			npc.forcedText = "Got'em";
-			npc.forcedChatRequired = true;
+			npc.forceChat("Got'em");
 			npc.requestTransform(6611);
 			npc.transformUpdateRequired = true;
 		}

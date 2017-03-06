@@ -30,8 +30,6 @@ public class Krill_Tsutsaroth extends Boss {
 		int poison = r.nextInt(10);
 		if (message > 12 && message <= 20) {
 			npc.forceChat(MESSAGES[(int) (Math.random() * MESSAGES.length)]);
-			npc.forcedChatRequired = true;
-			npc.updateRequired = true;
 		}
 		if (attack <= 14) {
 			if (poison > 8 && poison <= 10) {
@@ -56,8 +54,6 @@ public class Krill_Tsutsaroth extends Boss {
 
 	private void sendSpecialAttack(Player player, Npc npc) {
 		npc.forceChat("YARRRRRRR!");
-		npc.forcedChatRequired = true;
-		npc.updateRequired = true;
 		int prayerReduction = player.getSkills().getLevel(Skills.PRAYER) / 2;
 		if (prayerReduction < 1) {
 			return;

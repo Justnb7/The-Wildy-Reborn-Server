@@ -81,7 +81,7 @@ public class Scorpia extends Boss {
 	}
 
 	public static void heal_scorpia(Npc boss, Npc minion) {
-		minion.face(boss);
+		minion.faceEntity(boss);
 		minion.follow(boss);
 		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 			@Override

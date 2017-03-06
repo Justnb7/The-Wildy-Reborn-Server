@@ -32,8 +32,6 @@ public class Chaos_Fanatic extends Boss {
 	public void execute(Npc npc, Player player) {
 
 		npc.forceChat(MESSAGES[(int) (Math.random() * MESSAGES.length)]);
-		npc.forcedChatRequired = true;
-		npc.updateRequired = true;
 		
 		int chance = Utility.getRandom(40);
 		int offX = (npc.getY() - player.getY()) * -1;

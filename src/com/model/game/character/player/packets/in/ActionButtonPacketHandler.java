@@ -31,7 +31,6 @@ import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSongPacket;
-import com.model.game.character.player.skill.SkillInterfaceButtons;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.utility.Utility;
@@ -89,7 +88,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		}
 		
 		/*Obelisks.chooseTeleport(player, button);*/
-		SkillInterfaceButtons.buttonClick(player, button);
 		PrayerHandler.togglePrayer(player, button);
 		player.getLunarSpell().processLunarSpell(button);
 		QuestTabPage page = player.getAttribute(QuestTabPageHandler.QUEST_TAB_PAGE, QuestTabPages.HOME_PAGE).getPage();

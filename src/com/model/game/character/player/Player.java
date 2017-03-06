@@ -63,7 +63,6 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
 import com.model.game.character.walking.MovementHandler;
@@ -2308,12 +2307,6 @@ public class Player extends Entity {
 	 */
 	public PrayerHandler getPrayerHandler() {
 		return prayerHandler;
-	}
-	
-	private SkillInterfaces skillInterfaces = new SkillInterfaces(this);
-	
-	public SkillInterfaces getSI() {
-		return skillInterfaces;
 	}
 
 	private boolean running = true;

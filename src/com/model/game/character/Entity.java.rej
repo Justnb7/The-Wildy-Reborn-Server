@@ -1,0 +1,9 @@
+diff a/src/com/model/game/character/Entity.java b/src/com/model/game/character/Entity.java	(rejected hunks)
+@@ -47,6 +47,7 @@
+ 	public boolean updateRequired = true;
+ 	public boolean appearanceUpdateRequired = true;
+ 	public boolean faceEntityUpdateRequired = false;
++	public boolean dirUpdateRequired;
+ 	public int faceTileX = -1, faceTileY = -1;
+ 	public int faceEntityIndex = -1;
+ 

@@ -13,7 +13,6 @@ public class Combat {
 	
 	public static void resetCombat(Player player) {
 		player.usingMagic = false;
-		player.face(new Position(0, 0));
 		player.resetFace();
 		player.npcIndex = 0;
 		player.playerIndex = 0;

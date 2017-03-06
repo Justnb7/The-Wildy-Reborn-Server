@@ -585,7 +585,7 @@ public class PlayerVsNpcCombat {
 		}
 		if (npc.isDead || npc.maximumHealth <= 0 || player.isDead()) {
 			player.usingMagic = false;
-			player.face(new Position(0, 0));
+			player.faceEntity(0);
 			player.npcIndex = 0;
 			return;
 		}

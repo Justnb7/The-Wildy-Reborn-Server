@@ -421,7 +421,7 @@ public class PlayerAssistant {
     public void resetFollow() {
         player.followId = 0;
         player.followId2 = 0;
-        player.face(new Position(0, 0));
+        player.faceEntity(0);
     }
 
     public void walkTo(int i, int j) {
@@ -642,7 +642,7 @@ public class PlayerAssistant {
 	}
 
 	public void restoreHealth() {
-		player.face(new Position(0, 0));
+		player.faceEntity(0);
 		player.stopMovement();
 		player.setSpecialAmount(100);
 		player.getWeaponInterface().restoreWeaponAttributes();

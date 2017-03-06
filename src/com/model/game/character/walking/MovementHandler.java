@@ -98,7 +98,7 @@ public class MovementHandler {
 				player.absX = (short) player.teleportToX;
 				player.absY = (short) player.teleportToY;
 				player.heightLevel = player.teleHeight != -1 ? player.teleHeight : player.heightLevel;
-				player.setLocation(new Position(player.absX, player.absY, player.heightLevel));
+				player.setPosition(new Position(player.absX, player.absY, player.heightLevel));
 				player.lastX = player.absX;
 				player.lastY = player.absY + 1;
 				reset();
@@ -177,7 +177,7 @@ public class MovementHandler {
 		player.currentY += DIR[dir][1];
 		player.absX += DIR[dir][0];
 		player.absY += DIR[dir][1];
-		player.setLocation(new Position(player.absX, player.absY, player.heightLevel));
+		player.setPosition(new Position(player.absX, player.absY, player.heightLevel));
 		player.updateWalkEntities();
 	}
 
@@ -187,7 +187,7 @@ public class MovementHandler {
 		player.teleportToX = x;
 		player.teleportToY = y;
 		player.heightLevel = (short) plane;
-		player.setLocation(new Position(x, y, plane));
+		player.setPosition(new Position(x, y, plane));
 	}
 
 	public boolean isMoving() {

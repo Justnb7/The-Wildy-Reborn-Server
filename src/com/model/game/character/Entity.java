@@ -46,7 +46,9 @@ public abstract class Entity {
 	public boolean forcedChatUpdateRequired;
 	public boolean updateRequired = true;
 	public boolean appearanceUpdateRequired = true;
-	public boolean faceUpdateRequired = false;
+	public boolean faceEntityUpdateRequired = false;
+	public int faceTileX = -1, faceTileY = -1;
+	public int faceEntityIndex = -1;
 
 	/**
 	 * The characters combat type, MELEE by default
@@ -452,7 +454,7 @@ public abstract class Entity {
     /**
 	 * The current location.
 	 */
-	private Position location;
+	private Position position;
 	
 	/**
 	 * The teleportation target.
@@ -460,20 +462,34 @@ public abstract class Entity {
 	private Position teleportTarget = null;
 
 	/**
+	 * Sets the teleport target.
+	 * 
+	 * @param teleportTarget
+	 *            The target location.
+	 */
+	public void setTeleportTarget(Position teleportTarget) {
+		this.teleportTarget = teleportTarget;
+	}
+	
+	/**
+	 * Gets the teleport target.
+	 * 
+	 * @return The teleport target.
+	 */
+	public Position getTeleportTarget() {
+		return teleportTarget;
+	}
+	
+	/**
 	 * The last known map region.
 	 */
 	private Position lastKnownRegion = this.getPosition();
-	
-	/**
-	 * The face location.
-	 */
-	private Position face;
 
     private final EntityType type;
 
     public Entity(EntityType type) {
-    	setLocation(DEFAULT_LOCATION);
-		this.lastKnownRegion = location;
+    	setPosition(DEFAULT_LOCATION);
+		this.lastKnownRegion = position;
         this.type = type;
     }
 
@@ -507,72 +523,62 @@ public abstract class Entity {
 	public Position getLastKnownRegion() {
 		return lastKnownRegion;
 	}
-    
-    /**
-	 * Gets the face location.
-	 * 
-	 * @return The face location, or <code>null</code> if the entity is not
-	 *         facing.
-	 */
-	public Position getFaceLocation() {
-		return face;
-	}
 	
 	/**
 	 * Makes this entity face a location.
 	 * 
-	 * @param location
-	 *            The location to face.
+	 * @param position
+	 *            The position to face.
 	 */
 	public void face(Position position) {
-		this.face = position;
-		faceUpdateRequired = true;
+		faceTileX = 2 * position.getX() + 1;
+		faceTileY = 2 * position.getY() + 1;
+		faceEntityUpdateRequired = true;
 		updateRequired = true;
 	}
 	
-	/**
-	 * Checks if this entity has a target to teleport to.
-	 * 
-	 * @return <code>true</code> if so, <code>false</code> if not.
-	 */
-	public boolean hasTeleportTarget() {
-		return teleportTarget != null;
+	public void faceEntity(int index) {
+		faceEntityIndex = index;
+		faceEntityUpdateRequired = false;
+		updateRequired = true;
 	}
 
 	/**
-	 * Gets the teleport target.
+	 * Checks if this entity is facing a location.
 	 * 
-	 * @return The teleport target.
+	 * @return The entity face flag.
 	 */
-	public Position getTeleportTarget() {
-		return teleportTarget;
+	public boolean isFacing() {
+		return faceEntityUpdateRequired;
 	}
 
 	/**
-	 * Sets the teleport target.
-	 * 
-	 * @param teleportTarget
-	 *            The target location.
+	 * Resets the facing location.
 	 */
-	public void setTeleportTarget(Position teleportTarget) {
-		this.teleportTarget = teleportTarget;
+	public void resetFace() {
+		faceEntityIndex = -1;
+		faceEntityUpdateRequired = true;
+		updateRequired = true;
 	}
 
 	/**
-	 * Resets the teleport target.
-	 */
-	public void resetTeleportTarget() {
-		this.teleportTarget = null;
-	}
-	
-	/**
-	 * Sets the current location.
+	 * Gets the face position.
 	 * 
-	 * @param location
-	 *            The current location.
+	 * @return The face position, or <code>null</code> if the entity is not
+	 *         facing.
 	 */
-	public void setLocation(Position location) {
-		this.location = location;
+	public int getFacePosition() {
+		return faceEntityIndex;
+	}
+
+	/**
+	 * Sets the current position.
+	 * 
+	 * @param position
+	 *            The current position.
+	 */
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 
 	/**
@@ -581,7 +587,7 @@ public abstract class Entity {
 	 * @return The current location.
 	 */
 	public Position getPosition() {
-		return location;
+		return position;
 	}
 	
 	/**

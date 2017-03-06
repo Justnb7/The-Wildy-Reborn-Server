@@ -28,7 +28,7 @@ public class ItemOnItem {
 			System.out.println(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", used.getId(), usedWith.getId()));
 		}
 		
-		Firemaking.useLighterWithLog(player, used.getId(), usedWith.getId(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+		Firemaking.startFire(player, used.getId(), usedWith.getId(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
 		
 		if (player.rights == Rights.ADMINISTRATOR) {
 			if(used.getId() == 5733 || usedWith.getId() == 5733) {

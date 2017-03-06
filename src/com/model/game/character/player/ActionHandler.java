@@ -47,7 +47,7 @@ public class ActionHandler {
 		}
 
 		player.clickObjectType = 0;
-		player.turnPlayerTo(x, y);
+		player.face(new Position(x, y));
 
 		if (id >= 21731 && id <= 21737 || id == 12987 || id == 12986) {
 			BrimhavenVines.handleBrimhavenVines(player, id);
@@ -58,7 +58,7 @@ public class ActionHandler {
 			player.getPA().resetFollow();
 
 		if (id != 2283) {
-			player.turnPlayerTo(player.objectX, player.objectY);
+			player.face(new Position(player.objectX, player.objectY));
 		}
 		
 		Tree tree = Tree.forObject(id);
@@ -244,7 +244,7 @@ public class ActionHandler {
 					player.getPA().movePlayer(player.absX - 1, player.absY, 0);
 				else if (player.absX == 2876)
 					player.getPA().movePlayer(player.absX + 1, player.absY, 0);
-				player.turnPlayerTo(x, y);
+				player.face(new Position(x, y));
 			}
 			break;
 
@@ -256,7 +256,7 @@ public class ActionHandler {
 			if (!player.ditchDelay.elapsed(1000)) {
 				return;
 			}
-			player.turnPlayerTo(x, y);
+			player.face(new Position(x, y));
 			player.ditchDelay.reset();
 			if (player.getY() >= 3523) {
 				WildernessDitch.leave(player);

@@ -6,6 +6,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.SkillHandler.Skill;
+import com.model.game.location.Position;
 import com.model.utility.Location3D;
 
 /**
@@ -66,7 +67,7 @@ public class Mining {
 		}
 		player.write(new SendMessagePacket("You swing your pickaxe at the rock."));
 		player.playAnimation(Animation.create(pickaxe.getAnimation()));
-		player.turnPlayerTo(location.getX(), location.getY());
+		player.face(new Position(location.getX(), location.getY()));
 		player.getSkilling().stop();
 		player.getSkilling().setSkill(Skill.MINING);
 		player.getSkilling().add(new MiningEvent(player, objectId, location, mineral, pickaxe), extractionTime);
@@ -100,7 +101,7 @@ public class Mining {
 		}
 		player.write(new SendMessagePacket("You swing your pickaxe at the rock."));
 		player.playAnimation(Animation.create(pickaxe.getAnimation()));
-		player.turnPlayerTo(location.getX(), location.getY());
+		player.face(new Position(location.getX(), location.getY()));
 		player.getSkilling().stop();
 		player.getSkilling().setSkill(Skill.MINING);
 		player.getSkilling().add(new MiningEvent(player, npc, location, mineral, pickaxe), extractionTime);

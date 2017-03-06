@@ -67,7 +67,7 @@ public class Duel extends Multiplayer {
 			player.write(new SendMessagePacket("You cannot trade yourself."));
 			return;
 		}
-		player.faceUpdate(requested.getIndex());
+		player.faceEntity(requested.getIndex());
 		//System.out.println("lol");
 		DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().requestAvailable(player, requested, MultiplayerSessionType.DUEL);
 		if (session != null) {

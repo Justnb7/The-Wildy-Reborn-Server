@@ -288,7 +288,7 @@ public class Npc extends Entity {
 		setAbsX(x);
 		setAbsY(y);
 		heightLevel = z;
-		setLocation(new Position(x, y, z));
+		setPosition(new Position(x, y, z));
 		getAttributes().put("teleporting", true);
 	}
 

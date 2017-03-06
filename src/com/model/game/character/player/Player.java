@@ -983,18 +983,6 @@ public class Player extends Entity {
 		}
 	}
 
-	public void faceUpdate(int index) {
-		face = index;
-		this.faceUpdateRequired = false;
-		updateRequired = true;
-	}
-
-	public void turnPlayerTo(int pointX, int pointY) {
-		FocusPointX = 2 * pointX + 1;
-		FocusPointY = 2 * pointY + 1;
-		updateRequired = true;
-	}
-
 	private void hasDied() {
 		Server.getTaskScheduler().schedule(new ScheduledTask(1, true) {
 
@@ -1070,10 +1058,9 @@ public class Player extends Entity {
 		this.gfxUpdateRequired = false;
 		this.animUpdateRequired = false;
 		setTeleporting(false);
-		FocusPointX = -1;
-		FocusPointY = -1;
-		this.faceUpdateRequired = false;
-		face = 65535;
+		this.face(new Position(-1, -1));
+		this.faceEntityUpdateRequired = false;
+		faceEntityIndex = 65535;
 		setUpdateBlock(null);
 		super.clear();
 	}
@@ -1576,7 +1563,7 @@ public class Player extends Entity {
 	}
 
 	public void handleObjectAction() {
-		turnPlayerTo(objectX, objectY);
+		face(new Position(objectX, objectY));
 		if (clickObjectType == 1)
 			getActions().firstClickObject(objectId, objectX, objectY);
 		else if (clickObjectType == 2)
@@ -2926,8 +2913,6 @@ public class Player extends Entity {
 	public int countdown;
 	public int combatCountdown = 10;
 	public int petId, distance;
-	public int face = -1;
-	public int FocusPointX = -1, FocusPointY = -1;
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
 	public int mapRegionX, mapRegionY;

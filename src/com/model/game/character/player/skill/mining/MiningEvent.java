@@ -6,6 +6,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.location.Position;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -142,7 +143,7 @@ public class MiningEvent extends CycleEvent {
 				npc.needRespawn = false;
 			}
 		}
-		player.turnPlayerTo(location.getX(), location.getY());
+		player.face(new Position(location.getX(), location.getY()));
 		player.getItems().addItem(mineral.getMineral(), 1);
 		player.getSkills().addExperience(Skills.MINING, mineral.getExperience());
 	}

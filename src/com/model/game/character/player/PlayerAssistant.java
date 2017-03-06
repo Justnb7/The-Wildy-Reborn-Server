@@ -202,7 +202,7 @@ public class PlayerAssistant {
             return;
         }
 
-        player.faceUpdate(player.followId + 32768);
+        player.faceEntity(player.followId + 32768);
 
         /**
          * Out of combat following, possibly a bug or 2?
@@ -256,7 +256,7 @@ public class PlayerAssistant {
             case MELEE:
                 if (player.goodDistance(otherX, otherY, player.getX(), player.getY(), 1)) {
                     if (otherX != player.getX() && otherY != player.getY()) {
-                        player.faceUpdate(player.followId + 32768);
+                        player.faceEntity(player.followId + 32768);
                         stopDiagonal(player, otherX, otherY);
                         return;
                     } else {
@@ -380,7 +380,7 @@ public class PlayerAssistant {
             }
         }
 
-        player.faceUpdate(player.npcFollowIndex);
+        player.faceEntity(player.npcFollowIndex);
 
         if (inside) {
             int r = Utility.getRandom(3);
@@ -415,13 +415,13 @@ public class PlayerAssistant {
                 player.getMovementHandler().followPath = true;
             }
         }
-        player.faceUpdate(player.npcFollowIndex);
+        player.faceEntity(player.npcFollowIndex);
     }
 
     public void resetFollow() {
         player.followId = 0;
         player.followId2 = 0;
-        player.faceUpdate(0);
+        player.face(new Position(0, 0));
     }
 
     public void walkTo(int i, int j) {
@@ -642,7 +642,7 @@ public class PlayerAssistant {
 	}
 
 	public void restoreHealth() {
-    	player.faceUpdate(0);
+		player.face(new Position(0, 0));
 		player.stopMovement();
 		player.setSpecialAmount(100);
 		player.getWeaponInterface().restoreWeaponAttributes();

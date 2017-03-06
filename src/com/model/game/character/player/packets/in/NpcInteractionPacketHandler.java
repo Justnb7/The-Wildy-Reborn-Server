@@ -6,6 +6,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
 /**
@@ -48,7 +49,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 				player.spellId = 0;
 			}
 
-			player.faceUpdate(player.npcIndex);
+			player.faceEntity(player.npcIndex);
 			player.usingMagic = false;
 			boolean usingBow = player.getEquipment().isBow(player);
 			boolean throwingWeapon = player.getEquipment().isThrowingWeapon(player);
@@ -128,7 +129,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 				break;
 			}
 			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), player.distance)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+				player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 			   // NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 				player.getActions().firstClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
@@ -143,7 +144,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 						}
 						if ((player.clickNpcType == 1) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
 							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+								player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 								player.getActions().firstClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
@@ -176,7 +177,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			
 			// if within distance, handle
 			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), player.distance)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+				player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 				//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 				player.getActions().secondClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
@@ -190,7 +191,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 					public void execute() {
 						if ((player.clickNpcType == 2) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
 							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+								player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 								player.getActions().secondClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));
@@ -215,7 +216,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			player.npcType = World.getWorld().getNpcs().get(player.npcClickIndex).npcId;
 
 			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), 1)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+				player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 				//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 				player.getActions().thirdClickNpc(player.npcType);
@@ -226,7 +227,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 					public void execute() {
 						if ((player.clickNpcType == 3) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
 							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+								player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 								player.getActions().thirdClickNpc(player.npcType);
@@ -256,7 +257,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			}
 
 			if (player.goodDistance(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), player.getX(), player.getY(), 1)) {
-				player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+				player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 				World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 				//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 				player.getActions().fourthClickNpc(player.npcType);
@@ -271,7 +272,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 						}
 						if ((player.clickNpcType == 4) && World.getWorld().getNpcs().get(player.npcClickIndex) != null) {
 							if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY(), 1)) {
-								player.turnPlayerTo(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY());
+								player.face(new Position(World.getWorld().getNpcs().get(player.npcClickIndex).getX(), World.getWorld().getNpcs().get(player.npcClickIndex).getY()));
 								World.getWorld().getNpcs().get(player.npcClickIndex).faceLocation(player.getX(), player.getY());
 								//NPCHandler.npcs[c.npcClickIndex].facePlayer(c.getIndex());
 								player.getActions().firstClickNpc(World.getWorld().getNpcs().get(player.npcClickIndex));

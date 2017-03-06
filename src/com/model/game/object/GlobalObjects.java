@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.skill.firemaking.Firemaking;
 
 
 /**
@@ -142,17 +141,6 @@ public class GlobalObjects {
 			} else {
 				updated.add(object);
 			}
-		}
-		for (GlobalObject o : updated) {
-			int[] fire = { 26186, 26185, 26576, 26575, 20001, 20000, 9735, 5249 };
-			for (int i = 0; i < fire.length; i++) {
-				if (o.getObjectId() == fire[i]) {
-					for (Player players : World.getWorld().getPlayers()) {
-						Firemaking.registerAshes(players, o.getPosition());
-					}
-				}
-			}
-			objects.remove(object);
 		}
 		objects.addAll(updated);
 	}

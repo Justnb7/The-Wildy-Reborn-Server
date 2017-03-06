@@ -45,7 +45,6 @@ public class PlayerAssistant {
         player.teleportToX = x;
         player.teleportToY = y;
         requestUpdates();
-        player.getSkilling().stop();
     }
 
     /**
@@ -119,7 +118,6 @@ public class PlayerAssistant {
         player.teleHeight = h;
         player.setTeleportTarget(Position.create(x, y, h));
         requestUpdates();
-        player.getSkilling().stop();
         //System.out.println("to "+Arrays.toString(new int[] {x,y,h}));
     }
 

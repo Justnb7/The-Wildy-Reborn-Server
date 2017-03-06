@@ -17,12 +17,6 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.skill.agility.Shortcut;
-import com.model.game.character.player.skill.fishing.FishableSpot;
-import com.model.game.character.player.skill.fishing.Fishing;
-import com.model.game.character.player.skill.impl.Thieving.Pickpocket;
-import com.model.game.character.player.skill.impl.Thieving.Stall;
-import com.model.game.character.player.skill.woodcutting.Tree;
-import com.model.game.character.player.skill.woodcutting.Woodcutting;
 import com.model.game.location.Position;
 import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
@@ -60,15 +54,8 @@ public class ActionHandler {
 		if (id != 2283) {
 			player.face(player, new Position(player.objectX, player.objectY));
 		}
-		
-		Tree tree = Tree.forObject(id);
-		if (tree != null) {
-			Woodcutting.getInstance().chop(player, id, x, y);
-			return;
-		}
 
 		Obelisks.get().activate(player, id);
-		player.getMining().mine(id, new Location3D(x, y, player.heightLevel));
 		if (def.name == null || def.name.length() == 0) {
 			return;
 		}
@@ -589,29 +576,6 @@ public class ActionHandler {
 		case 27718:
 			player.getPA().openBank();
 			break;
-		
-		/**
-		 * Thieving stalls
-		 */
-		case 11730:
-			player.getThieving().steal(Stall.CAKE, objectType, location);
-			break;
-			
-		case 11731:
-			player.getThieving().steal(Stall.GEM, objectType, location);
-			break;
-			
-		case 11732:
-			player.getThieving().steal(Stall.FUR, objectType, location);
-			break;
-			
-		case 11734:
-			player.getThieving().steal(Stall.SILVER, objectType, location);
-			break;
-			
-		case 14011:
-			player.getThieving().steal(Stall.WINE, objectType, location);
-			break;
 			
 		}
 	}
@@ -630,16 +594,11 @@ public class ActionHandler {
 
 	public void firstClickNpc(Npc npc) {
 		player.clickNpcType = 0;
-		player.rememberNpcIndex = player.npcClickIndex;
 		
 		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("First click "+npc.npcId));
 		}
 
-		if (FishableSpot.fishingNPC(npc.npcId)) {
-			Fishing.attemptFishing(player, npc.npcId, 1);
-			return;
-		}
 		if (player.petId > 0) {
 			player.getPets().talktoPet(player, npc.npcId, npc);
 		}
@@ -768,15 +727,9 @@ public class ActionHandler {
 	public void secondClickNpc(Npc npc) {
 		
 		player.clickNpcType = 0;
-		player.rememberNpcIndex = player.npcClickIndex;
 		
 		if (player.inDebugMode()) {
 			player.message("Second click: "+npc.npcId);
-		}
-		
-		if (FishableSpot.fishingNPC(npc.npcId)) {
-			Fishing.attemptFishing(player, npc.npcId, 2);
-			return;
 		}
 
 		if(player.petId > 0 && player.getPets().isPetNPC(npc)) {
@@ -796,17 +749,6 @@ public class ActionHandler {
 			} else {
 				player.dialogue().start("DEATH_SHOP_DIALOGUE2", player);
 			}
-			break;
-		
-		/**
-		 * Thieving pickpocket npcs
-		 */
-		case 3078:
-			player.getThieving().steal(Pickpocket.MAN, NPCHandler.npcs[player.rememberNpcIndex]);
-			break;
-			
-		case 3086:
-			player.getThieving().steal(Pickpocket.FARMER, NPCHandler.npcs[player.rememberNpcIndex]);
 			break;
 		
 		/**
@@ -914,7 +856,6 @@ public class ActionHandler {
 	public void thirdClickNpc(Npc npc) {
 		
 		player.clickNpcType = 0;
-		player.rememberNpcIndex = player.npcClickIndex;
 		
 		if (player.inDebugMode()) {
 			player.message("Third click: "+npc.npcId);
@@ -986,7 +927,6 @@ public class ActionHandler {
 	public void fourthClickNpc(Npc npc) {
 		
 		player.clickNpcType = 0;
-		player.rememberNpcIndex = player.npcClickIndex;
 		
 		if (player.inDebugMode()) {
 			player.message("Fourth click: "+npc.npcId);

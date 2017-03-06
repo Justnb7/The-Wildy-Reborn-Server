@@ -130,7 +130,6 @@ public class TeleportExecutor {
 				player.playGraphics(Graphic.create(startGraphic, 0, 0));
 			}
 		}
-		player.getSkilling().stop();
 		Combat.resetCombat(player);
 		player.stopMovement();
 		player.getActionSender().sendRemoveInterfacePacket();
@@ -249,7 +248,6 @@ public class TeleportExecutor {
 	 * @param player
 	 */
 	public static void executeLeverTeleport(Player player, Teleport teleport) {
-		player.getSkilling().stop();
 		player.playAnimation(Animation.create(2140));
 		player.write(new SendMessagePacket("You pull the lever..."));
 		lever = true;
@@ -265,7 +263,6 @@ public class TeleportExecutor {
 	}
 	
 	public static void executeObeliskTeleport(Player player, Teleport teleport) {
-		player.getSkilling().stop();
 		player.playAnimation(Animation.create(2140));
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) { 
 		@Override

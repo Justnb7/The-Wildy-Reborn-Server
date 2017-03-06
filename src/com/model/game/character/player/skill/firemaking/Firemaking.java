@@ -5,7 +5,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.skill.SkillHandler;
+import com.model.game.character.player.skill.SkillTask;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
@@ -28,11 +28,6 @@ public class Firemaking {
 	public static void startFire(final Player player, int itemUsed, int usedWith, final int x, final int y, final int z) {
 		for (final LogData log : LogData.values()) {
 			if (itemUsed == 590 && usedWith == log.getLog() || itemUsed == log.getLog() && usedWith == 590) {
-				
-				if (SkillHandler.isSkillActive(player, Skills.WOODCUTTING)) {
-					player.message("You cannot perform this action while Woodcutting.");
-					return;
-				}
 				
 				if (System.currentTimeMillis() - player.getLastFire() < 200) {
 					return;

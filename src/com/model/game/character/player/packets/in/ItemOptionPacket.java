@@ -128,8 +128,6 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		player.getSkilling().stop();
-		
 		ItemOnItem.handleAction(player, used, with);
 	}
 

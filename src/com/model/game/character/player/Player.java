@@ -65,10 +65,7 @@ import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.skill.SkillInterfaces;
 import com.model.game.character.player.skill.SkillTask;
-import com.model.game.character.player.skill.Skilling;
 import com.model.game.character.player.skill.herblore.Herblore;
-import com.model.game.character.player.skill.impl.Thieving;
-import com.model.game.character.player.skill.mining.Mining;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
@@ -2051,14 +2048,6 @@ public class Player extends Entity {
 	}
 
 	public int packetSize = 0, packetType = -1;
-
-	public int rememberNpcIndex;
-	
-	private Thieving thieving = new Thieving(this);
-	
-	public Thieving getThieving() {
-		return thieving;
-	}
 	
 	private long lastContainerSearch;
 	
@@ -2429,18 +2418,6 @@ public class Player extends Entity {
 	
 	public Projectile getProjectile() {
 		return projectile;
-	}
-	
-	private Skilling skilling = new Skilling(this);
-	
-	public Skilling getSkilling() {
-		return skilling;
-	}
-	
-	private Mining mining = new Mining(this);
-	
-	public Mining getMining() {
-		return mining;
 	}
 
 	/**

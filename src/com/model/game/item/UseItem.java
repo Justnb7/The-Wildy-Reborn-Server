@@ -1,8 +1,8 @@
 package com.model.game.item;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.skill.impl.Cooking;
-import com.model.game.character.player.skill.impl.Cooking.Cookables;
+import com.model.game.character.player.skill.cooking.Cookables;
+import com.model.game.character.player.skill.cooking.Cooking;
 import com.model.utility.Utility;
 import com.model.utility.cache.ObjectDefinition;
 

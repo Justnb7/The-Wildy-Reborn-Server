@@ -20,7 +20,6 @@ import com.model.game.character.player.skill.agility.Shortcut;
 import com.model.game.location.Position;
 import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
-import com.model.utility.Location3D;
 import com.model.utility.Utility;
 import com.model.utility.cache.ObjectDefinition;
 
@@ -547,8 +546,7 @@ public class ActionHandler {
 		}
 		
 		player.clickObjectType = 0;
-		
-		new Location3D(obX, obY, player.heightLevel);
+
 		ObjectDefinition objectDef = ObjectDefinition.getObjectDef(objectType);
 		switch (objectDef.name.toLowerCase()) {
 
@@ -561,7 +559,6 @@ public class ActionHandler {
 			
 		}
 		
-		Location3D location = new Location3D(obX, obY, player.heightLevel);
 		switch (objectType) {
 		case 14827:
 		case 14828:

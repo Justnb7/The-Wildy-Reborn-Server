@@ -308,8 +308,11 @@ public class PlayerSerialization {
 						
 					// Pets
 					case 15:
-						if (key.equals("petId")) {
-    						p.petId = Integer.parseInt(value);
+						if (key.equals("pet-spawned")) {
+    						p.setPetSpawned(Boolean.parseBoolean(value));
+                    	} else if(key.equals("pet")) {
+                    		//p.setPet();
+                    		//TODO ask Jak how to save an Pet instance
                     	}
 						break;
 						
@@ -766,10 +769,9 @@ public class PlayerSerialization {
 			/* Pets */
 			writer.write("[CHARACTER-PETS]");
 			writer.newLine();
-			writer.write("petId = ", 0, 8);
-			writer.write(Integer.toString(p.petId), 0, Integer.toString(p.petId).length());
-
+			writer.write("pet-spawned = "+p.isPetSpawned());
 			writer.newLine();
+			
 			writer.newLine();
 
 			/* Achievements */

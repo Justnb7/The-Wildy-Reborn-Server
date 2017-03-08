@@ -597,10 +597,6 @@ public class ActionHandler {
 		if (player.inDebugMode()) {
 			player.write(new SendMessagePacket("First click "+npc.npcId));
 		}
-
-		if (player.petId > 0) {
-			player.getPets().talktoPet(player, npc.npcId, npc);
-		}
 		
 		if (FishingSpot.fishingNPC(npc.npcId)) {
 			Fishing.attemptFishing(player, npc, 1);
@@ -736,14 +732,8 @@ public class ActionHandler {
 		if (player.inDebugMode()) {
 			player.message("Second click: "+npc.npcId);
 		}
-
-		if(player.petId > 0 && player.getPets().isPetNPC(npc)) {
-			player.getPets().pickupPet(player, true, npc);
-			return;
-		}
 		
 		if (player.getPet().pickup(player, npc)) {
-			System.out.println("here");
 			return;
 		}
 		
@@ -874,14 +864,6 @@ public class ActionHandler {
 		
 		if (player.inDebugMode()) {
 			player.message("Third click: "+npc.npcId);
-		}
-		
-		if (player.getPets().isPetNPC(npc)) {
-			if (player.getPets().hasNextStage(player, npc.npcId)) {
-				player.getPets().handleNextStage(player);
-			} else {
-				player.getPets().pickupPet(player, true, World.getWorld().getNpcs().get(player.npcClickIndex));
-			}
 		}
 		
 		switch (npc.npcId) {

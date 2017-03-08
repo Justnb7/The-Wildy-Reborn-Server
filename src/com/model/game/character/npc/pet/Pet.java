@@ -5,11 +5,15 @@ import java.util.Map;
 
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 
+/**
+ * A pet system that uses the Npc class rather than loops
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
+ *
+ */
 public class Pet extends Npc {
 	
 	public enum Pets {
@@ -62,21 +66,54 @@ public class Pet extends Npc {
 
 		HELLPUPPY(13247, 964);
 
+		/**
+		 * The pet item
+		 */
         private final int item;
+        
+        /**
+         * The pet
+         */
         private final int npc;
 
+        /**
+         * Constructs an pet
+         * @param item
+         *         The itemId
+         * @param npc
+         *         The npcId
+         */
         Pets(int item, int npc) {
             this.item = item;
             this.npc = npc;
         }
 
+        /**
+         * We store all our pet items in a map so we can access them later.
+         */
         private static Map<Integer, Pets> petItems = new HashMap<Integer, Pets>();
+        
+        /**
+         * We're also storing our pet npcs in a map so we can access these later too.
+         */
         private static Map<Integer, Pets> petNpcs = new HashMap<Integer, Pets>();
 
+        /**
+         * Get the pet by itemId
+         * @param item
+         *         The itemId
+         * @return The pet item
+         */
         public static Pets from(int item) {
             return petItems.get(item);
         }
 
+        /**
+         * Grabs the pet by npcId
+         * @param npc
+         *         The npc Id
+         * @return The pet npc
+         */
         public static Pets fromNpc(int npc) {
             return petNpcs.get(npc);
         }
@@ -90,10 +127,18 @@ public class Pet extends Npc {
             }
         }
 
+        /**
+         * An public getter for the pet item
+         * @return
+         */
         public int getItem() {
             return item;
         }
 
+        /**
+         * A public getter for the pet npc
+         * @return
+         */
         public int getNpc() {
             return npc;
         }
@@ -105,29 +150,46 @@ public class Pet extends Npc {
 		super(id, owner.getPosition(), 0);
 		this.setAbsX(owner.getX());
 		this.setAbsY(owner.getY() - 1);
-		this.ownerId = owner.getIndex(); // same as spawnedBy should be removed in future
 		this.isPet = true;
+		this.ownerId = owner.getIndex(); //same as spawnedBy should be removed in future
 		this.faceEntity(owner);
 		System.out.printf("Spawned npc id %d for player index %d%n", this.npcId, owner.getIndex());
 	}
 	
-	public void drop(Player player, Item item) {
+	/**
+	 * Drop the pet item, making the pet appear
+	 * @param player
+	 *         The player dropping the item
+	 * @param item
+	 *         The pet item being dropped
+	 * @return Spawn the pet
+	 */
+	public boolean drop(Player player, Item item) {
 		Pet.Pets petIds = Pet.Pets.from(item.getId());
 		if (petIds != null) {
-			if (player.getPet() != null) {
+			if (player.getPet() != null && player.isPetSpawned()) {
 				player.message("You may only have one pet out at a time.");
-				return;
+				return false;
 			} else {
 				Pet pet = new Pet(player, petIds.getNpc());
 				player.setPetSpawned(true);
 				player.setPet(pet);
 				World.getWorld().register(pet);
 				player.getItems().remove(item);
-				return;
+				return false;
 			}
 		}
+		return true;
 	}
 
+	/**
+	 * Picks up the pet npc
+	 * @param player
+	 *         The player picking up the pet
+	 * @param pet 
+	 *         The pet being picked up
+	 * @return despawn the pet, and respawn the pet item in the players inventory.
+	 */
 	public boolean pickup(Player player, Npc pet) {
 		Pet.Pets pets = Pet.Pets.fromNpc(pet.getId());
 		if (pets != null && player.getItems().freeSlots() < 28) {

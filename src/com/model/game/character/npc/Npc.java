@@ -525,7 +525,7 @@ public class Npc extends Entity {
 					if (ftarg != null) {
 						NPCHandler.attemptFollowEntity(this, ftarg);
 					} else {
-						System.out.println("ftarg null.. disgarding");
+						//System.out.println("ftarg null.. disgarding");
 						this.followTargetIndex = -1;
 					}
 				}

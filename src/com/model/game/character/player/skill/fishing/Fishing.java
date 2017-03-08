@@ -1,17 +1,12 @@
 package com.model.game.character.player.skill.fishing;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.Npc;
-import com.model.game.character.npc.pet.PetOld;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.Rights;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.item.Item;
-import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;
@@ -127,19 +122,7 @@ public class Fishing extends SkillTask {
 	void heronPet(Player player, FishingSpot spot) {
 		int random = Utility.random(spot.getPetChance());
 		if (random == 0) {
-			PetOld.Pets pets = PetOld.Pets.HERON;
-			if (player.petId > 1) {
-				if (player.getItems().freeSlots() > 0) {
-					player.getItems().addItem(pets.getItemId(), 1);
-					player.write(new SendMessagePacket("You feel something weird sneaking into your backpack."));
-				} else {
-					player.getItems().sendItemToAnyTab(pets.getItemId(), 1);
-					player.write(new SendMessagePacket("You had no space in your inventory there for your pet walked to your bank."));
-				}
-			} else {
-				player.getPets().spawnPet(player, pets.getItemId(), false);
-				player.write(new SendMessagePacket("You have a funny feeling like you're being followed."));
-			}
+			//TODO spawn pet
 			World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received the Heron pet.", false);
 		}
 	}

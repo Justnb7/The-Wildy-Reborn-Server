@@ -215,7 +215,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 108020:
-			player.getPets().callPet(player);
 			break;
 
 		case 42210:

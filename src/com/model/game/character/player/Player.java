@@ -35,7 +35,6 @@ import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
-import com.model.game.character.npc.pet.PetOld;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
@@ -1346,9 +1345,9 @@ public class Player extends Entity {
 				
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 
-				if (player.petId > 0) {
-					player.getPets().spawnPet(player, 0, true);
-				}
+				if (player.isPetSpawned()) {
+		            //TODO spawn pet upon login
+		        }
 
 				if (player.getName().equalsIgnoreCase("Patrick")) {
 					player.setDebugMode(true);
@@ -1405,11 +1404,6 @@ public class Player extends Entity {
 				message("You are not permitted to logout during a duel. If you forcefully logout you will");
 				message("lose all of your staked items, if any, to your opponent.");
 			}
-		}
-		
-		//Queue pet
-		if (this.petId > 0) {
-			getPets().pickupPet(this, false, World.getWorld().getNpcs().get(this.petNpcIndex));
 		}
 		
 		//If we're no longer in combat we can goahead and logout
@@ -2214,10 +2208,6 @@ public class Player extends Entity {
 			bank = new Bank(this);
 		return bank;
 	}
-	
-	public PetOld getPets() {
-		return pethandler;
-	}
 
 	public int getSessionExperience() {
 		return sessionExperience;
@@ -2243,7 +2233,6 @@ public class Player extends Entity {
 	private SkillTask skillTask;
 	private Bank bank;
 	private int sessionExperience;
-	private PetOld pethandler = new PetOld();
 	private LunarSpells lunar = new LunarSpells(this);
 	
 	/**
@@ -2887,10 +2876,9 @@ public class Player extends Entity {
      */
 	public int playerAppearance[] = new int[13];
 	public int openInterface = -1;
-	public int petNpcIndex;
 	public int countdown;
 	public int combatCountdown = 10;
-	public int petId, distance;
+	public int distance;
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
 	public int mapRegionX, mapRegionY;

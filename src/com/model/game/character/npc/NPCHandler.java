@@ -14,7 +14,6 @@ import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.npc.drops.NpcDropSystem;
-import com.model.game.character.npc.pet.PetOld;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -95,27 +94,6 @@ public final class NPCHandler {
 		} catch (IOException ignored) {
 		}
 		return false;
-	}
-	
-	public static Npc spawnPetNpc(Player owner, int npcType, int x, int y, int heightLevel) {
-
-		Npc npc = new Npc(npcType);
-		npc.setAbsX(x);
-		npc.setAbsY(y);
-		npc.makeX = x;
-		npc.makeY = y;
-		npc.heightLevel = heightLevel;
-		npc.currentHealth = 0;
-		npc.maximumHealth = 0;
-		npc.walking_type = 0;
-		npc.spawnedBy = owner.getIndex(); // PlayerId which owns this Npc 
-		System.out.printf("Spawned npc id %d for player index %d%n", npcType, owner.getIndex());
-		npc.setOnTile(x, y, heightLevel);
-		World.getWorld().register(npc);
-		npc.ownerId = owner.getIndex(); // same as spawnedBy should be removed in future 
-		npc.isPet = true;
-		// newNPC.killerId = c.playerId;
-		return npc;
 	}
 	
 	public static void newNPC(int npcType, int x, int y, int heightLevel, int WalkingType, int HP) {
@@ -299,7 +277,6 @@ public final class NPCHandler {
 		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
 		// get the drop table
 		
-		PetOld.drop(player, npc.npcId);
 		float yourIncrease = 0;
 
 		if (player.playerEquipment[player.getEquipment().getRingId()] == 2572) {

@@ -250,16 +250,10 @@ public class ItemOptionPacket implements PacketType {
         }
 		
 		// We are dropping an pet item.
-		if (player != null || item != null) {
-			player.getPet().drop(player, item);
-		}
-		
-		//Old
-		if (player.getPets().isPetItem(item.getId())) {
-			player.getPets().spawnPet(player, item.getId(), false);
+		if (player.getPet().drop(player, item)) {
 			return;
 		}
-		
+
 		//Special case for destroying items.
 		if(!ItemDefinition.forId(item.getId()).isTradeable() || ClueDifficulty.isClue(itemId)) {
 			player.getPA().destroyItem(item);

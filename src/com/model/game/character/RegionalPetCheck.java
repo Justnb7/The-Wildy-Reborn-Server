@@ -15,14 +15,14 @@ public class RegionalPetCheck extends ScheduledTask {
  
 	@Override
 	public void execute() {
-		if (player.petId < 1) {
+		/*if (player.petId < 1) {
 			//System.out.println(player.getUsername() + " |  Here closing petspawn event");
 			this.stop();
 		}
 		if (player.getPets().getPet(player) == null) {
 			//System.out.println("Respawning pet for "+ player.getUsername());
 			player.getPets().spawnPet(player, 0, true);
-		}
+		}*/
 	}
  
 }

@@ -3061,4 +3061,9 @@ public class Player extends Entity {
 		this.petSpawned = petSpawned;
 	}
 
+	@Override
+	public int clientIndex() {
+		return 32768 + this.getIndex();
+	}
+
 }

@@ -101,7 +101,7 @@ public class NpcUpdating {
 			updateMask |= 8;
 		if (npc.gfxUpdateRequired)
 			updateMask |= 0x80;
-		if (npc.directionUpdateRequired)
+		if (npc.faceUpdateRequired)
 			updateMask |= 0x20;
 		if (npc.forcedChatUpdateRequired)
 			updateMask |= 1;
@@ -120,7 +120,7 @@ public class NpcUpdating {
 			appendHitUpdate2(npc, buffer);
 		if (npc.gfxUpdateRequired)
 			appendMask80Update(npc, buffer);
-		if (npc.directionUpdateRequired)
+		if (npc.faceUpdateRequired)
 			appendFaceEntity(npc, buffer);
 		if (npc.forcedChatUpdateRequired) {
 			buffer.putRS2String(npc.getForcedChatMessage());
@@ -186,7 +186,7 @@ public class NpcUpdating {
 	}
 
 	private static void appendFaceEntity(Npc npc, GameBuffer str) {
-		str.writeShort(npc.face);
+		str.writeShort(npc.entityFaceIndex);
 	}
 
 	private static void appendSetFocusDestination(Npc npc, GameBuffer str) {

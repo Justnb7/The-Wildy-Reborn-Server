@@ -58,6 +58,7 @@ public class NpcVsPlayerCombat {
 		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
 			npc.attackTimer--;
+			npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
 		}
 		
 		// If we havent been attacked within last 5 secs reset who last attack us
@@ -69,31 +70,19 @@ public class NpcVsPlayerCombat {
 		if (!npc.isDead && (npc.targetId > 0 || npc.underAttack) && !npc.walkingHome) {
 			
 			Player player = World.getWorld().getPlayers().get(npc.targetId);
-			if (player != null) {
-				
-				// follow and attack
-				if (NPCHandler.goodDistance(player.absX, player.absY, npc.absX, npc.absY, 20)) {
-					NPCHandler.followPlayer(npc, player.getIndex());
-					if (World.getWorld().getNpcs().get(npc.getIndex()) == null) {
-						return;
-					}
-
-					if (npc.attackTimer == 0) {
-						NpcVsPlayerCombat.attackPlayer(player, npc);
-					}
-				} else {
-					// out of range
-					npc.targetId = 0;
-					npc.underAttack = false;
-					npc.facePlayer(0);
-				}
-			} else {
-				// null target
+		//FIXME 
+			boolean in_range = player != null && NPCHandler.goodDistance(player.absX, player.absY, npc.absX, npc.absY, 20);
+			if (player == null || !in_range) {
+				// out of range
 				npc.targetId = 0;
-				npc.underAttack = false; // bet its this
-				npc.facePlayer(0);
+				npc.underAttack = false;
+				npc.resetFace();
+			} else {
+				if (npc.attackTimer == 0) {
+					NpcVsPlayerCombat.attackPlayer(player, npc);
+				}
+				// Following called in process()
 			}
-			
 		}
 	}
 
@@ -120,10 +109,14 @@ public class NpcVsPlayerCombat {
 			if (!validateAttack(player, npc)) {
 				return;
 			}
-			npc.facePlayer(player.getIndex());
+			
+			npc.faceEntity(player);
 			boolean dont_use_normal_damage_method = false;
+			
 			if (goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(),
 					NPCCombatData.distanceRequired(npc))) {
+				npc.randomWalk = false;
+				
 				npc.attackTimer = NPCCombatData.getNpcDelay(npc);
 				npc.attackStyle = 0;
 				boolean isBoss = Bosses.isBoss(npc.npcId);

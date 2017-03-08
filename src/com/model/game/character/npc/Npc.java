@@ -150,6 +150,10 @@ public class Npc extends Entity {
 	 */
 	public int followTargetIndex;
 	
+	//fml called to many times lmao cant we just replace all with owner? 
+	// nah cos they might be used in diff situations, its fine tho everything will work
+	// lets remove the debugs and commit
+	
 	public int combatLevel, attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth,
 			attackTimer, killedBy, oldIndex, underAttackBy, walking_type;
 	
@@ -413,14 +417,6 @@ public class Npc extends Entity {
 		return true;
 	}
 	
-
-	/**
-	 * 
-	 * Face
-	 * 
-	 **/
-	public int face = 0;
-	
 	private int size = 1;
 	
 	public int getSize() {
@@ -433,7 +429,7 @@ public class Npc extends Entity {
 		hitUpdateRequired = false;
 		hitUpdateRequired2 = false;
 		this.animUpdateRequired = false;
-		this.directionUpdateRequired = false;
+		this.faceUpdateRequired = false;
 		if (transformUpdateRequired) {
 			transformUpdateRequired = false;
 			this.npcId = this.transformId;
@@ -503,19 +499,36 @@ public class Npc extends Entity {
 			return;
 		 
 		try {
-			Player owner = World.getWorld().getPlayers().get(spawnedBy);
+			Player owner = World.getWorld().getPlayers().get(spawnedBy);//whats the pointsin this
+			// none yet again duplicate INTs by PI
 			
 			if (currentHealth > 0 && !isDead) {
-				follow();
 				
 				super.frozen_process();
 
-				
+				// Only ever call following from here.
 				if (isPet && ownerId > 0) {
-					//System.out.println("NPC Following player");
-					NPCHandler.followPlayer(this, ownerId);
+					Player ownerPlr = World.getWorld().getPlayers().get(ownerId);
+					if (ownerPlr == null) {
+						System.out.println("owner disappeared!!!");
+						ownerId = -1;
+					} else {
+						//System.out.println("NPC Following player");
+						NPCHandler.attemptFollowEntity(this, ownerPlr);
+					}
+				} else if (this.following_target != null) {
+					NPCHandler.attemptFollowEntity(this, following_target);
+				} else if (this.followTargetIndex > -1) {
+					// TODO remove followTargetIndex fully in favour of follow_target - so it's
+					// entity based rather than that PI shit
+					Player ftarg = World.getWorld().getPlayers().get(followTargetIndex);
+					if (ftarg != null) {
+						NPCHandler.attemptFollowEntity(this, ftarg);
+					} else {
+						System.out.println("ftarg null.. disgarding");
+						this.followTargetIndex = -1;
+					}
 				}
-				
 				
 				if (npcId == 6611 || npcId == 6612) {
 					if (currentHealth < (maximumHealth / 2) && !spawnedVetionMinions) {
@@ -660,85 +673,7 @@ public class Npc extends Entity {
 	public void resetFollowing() {
 		following_target = null;
 	}
-	
-	// Actual following, called every cycle. This method supports both player and NPC types while PI didn't
-	public void follow() {
-		if (this.frozen()) {
-			return;
-		}
-		if (following_target == null) {
-			// Reset if target null
-			if (followTargetIndex > 0) { // support the old PI system anyway (only player targets supported)
-				Player fTarg = World.getWorld().getPlayers().get(followTargetIndex);
-				if (fTarg == null) {
-					World.getWorld().unregister(this);
-					return;
-				}
-				facePlayer(followTargetIndex);
-				if (Math.abs(fTarg.getX() - getX()) > 5 || Math.abs(fTarg.getY() - getY()) > 5) {
-					//wtf
-					System.out.println("why tf does this matter?");
-				} else {
-					NPCHandler.followPlayer(this, followTargetIndex);
-				}
-			}
-		} else { // We have a valid follow target
-			
-			if (following_target.getPosition().getZ() != this.heightLevel) {
-				facePlayer(0);
-				this.resetFollowing();
-				return;
-			}
-			if (following_target.getEntityType() == EntityType.PLAYER) {
-				Player targ = (Player)following_target;
-				if (targ.isDead() || !targ.isVisible()) {
-					facePlayer(0);
-					this.resetFollowing();
-					return;
-				}
-			} else if (following_target.getEntityType() == EntityType.NPC) {
-				Npc targ = (Npc)following_target;
-				if (targ.currentHealth <= 0 || !targ.isVisible()) {
-					facePlayer(0);
-					this.resetFollowing();
-					return;
-				}
-			}
-			/*
-			 * If not close enough (within viewport of 16 tiles), stop following
-			 */
-			for (Position pos : getTiles()) {
-				double distance = pos.distance(following_target.getPosition());
-				if (distance > 16) {
-					facePlayer(0);
-					this.resetFollowing();
-					return;
-				}
-				boolean magic = getCombatType() == CombatType.MAGIC;
-				boolean ranged = !magic && getCombatType() == CombatType.RANGED;
-				boolean melee = !magic && !ranged;
-				if (melee) {
-					if (distance <= 1) {
-						return; // dont reset follow, just dont go anywher this cycle. we're at the target.
-					}
-				} else {
-					if (distance <= (ranged ? 7 : 10)) {
-						return; // dont reset follow, just dont go anywher this cycle. we're at the target.
-					}
-				}
-			}
-			// Only random walk when you're in the main area -if ur outside (following a player)
-			// you walk back into ur main area
-			boolean in_spawn_area = (getX() < makeX + 15)
-					&& (getX() > makeX - 15)
-					&& (getY() < makeY + 15) && (getY() > makeY
-					- 15);
-			if (in_spawn_area) {
-				NPCHandler.walkToNextTile(this, following_target.getPosition().getX(), following_target.getPosition().getY());
-			}
-		}
-		
-	}
+
 	
 	public int walkX, walkY;
 
@@ -912,5 +847,15 @@ public class Npc extends Entity {
 	@Override
 	public int getWidth() {
 		return getDefinition().getSize();
+	}
+
+	@Override
+	public boolean isDead() {
+		return isDead;
+	}
+
+	@Override
+	public int clientIndex() {
+		return this.getIndex();
 	}
 }

@@ -161,7 +161,7 @@ public class NPCDeathTask extends ScheduledTask {
      */
     private void initialDeath(Npc npc) {
         npc.updateRequired = true;
-        npc.facePlayer(0);
+        npc.resetFace();
 
         String killerName = npc.getKiller();
 
@@ -239,7 +239,7 @@ public class NPCDeathTask extends ScheduledTask {
         npc.targetId = 0;
         npc.underAttack = false;
         npc.poisonDamage = 0;
-        npc.facePlayer(0);
+        npc.resetFace();
         NPCHandler.resetPlayersInCombat(npc.getIndex());
     }
 

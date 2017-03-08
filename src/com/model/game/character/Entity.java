@@ -49,7 +49,6 @@ public abstract class Entity {
 	public boolean updateRequired = true;
 	public boolean appearanceUpdateRequired = true;
 	public boolean faceUpdateRequired = false;
-	public boolean directionUpdateRequired;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 
@@ -508,13 +507,15 @@ public abstract class Entity {
 		return lastKnownRegion;
 	}
 	
+	//from here starts what i redid
+	
 	/**
 	 * Makes this entity face a position.
 	 * 
 	 * @param position
 	 *            The position to face.
 	 */
-	public void face(Entity entity, Position position) {
+	public void face(Entity entity, Position position) {//th th
 		//Faces the player
 		if(entity.getEntityType() == EntityType.PLAYER) {
 			faceTileX = 2 * position.getX() + 1;
@@ -525,7 +526,6 @@ public abstract class Entity {
 			faceTileY = position.getY();
 		}
 		faceUpdateRequired = true;
-		directionUpdateRequired = true;
 		updateRequired = true;
 	}
 	
@@ -534,44 +534,30 @@ public abstract class Entity {
 	 * @param e
 	 *   The entity
 	 */
-	public void faceEntity(Entity e) {
-		entityFaceIndex = e.getEntityType() == EntityType.PLAYER ? 32768 + e.getIndex() : e.getIndex();
+	public void faceEntity(Entity e) {//\nd this nice vnice
+		if (e == null) {
+			//System.out.println("wtf");
+			this.resetFace();
+			return;
+		}
+		// If WE are an npc, faceIndex is 'raw' - not +32k. 
+		// If we're a player, facing players = 32k+pid.. facing npcs= raw index
+		entityFaceIndex = e.clientIndex();
 		faceUpdateRequired = true;
-		directionUpdateRequired = true;
 		updateRequired = true;
+		System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
 	}
-	
+
+	public abstract int clientIndex();
+
 	/**
 	 * Resets the facing position.
 	 */
-	public void resetFace() {
-		this.entityFaceIndex = -1;
+	public void resetFace() {//maybe its hit?
+		this.entityFaceIndex = -1;//is -1 then okay since they all said 0 yh
 		faceUpdateRequired = true;
-		directionUpdateRequired = true;
 		updateRequired = true;
-	}
-	
-	/**
-	 * Face the npc to the player
-	 */
-	private boolean facePlayer = true;
-	
-	/**
-	 * Moves the npc to the player
-	 * @param player
-	 *         The index
-	 */
-	public void facePlayer(int player) {
-		if (!facePlayer) {
-			if (entityFaceIndex == -1) {
-				return;
-			}
-			entityFaceIndex = -1;
-		} else {
-			entityFaceIndex = player + 32768;
-		}
-		this.directionUpdateRequired = true;
-		updateRequired = true;
+		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
 	}
 	
 	/**
@@ -751,5 +737,7 @@ public abstract class Entity {
 	 * @return The width of the entity.
 	 */
 	public abstract int getHeight();
+
+	public abstract boolean isDead();
 	
 }

@@ -190,7 +190,7 @@ public class PlayerVsNpcCombat {
 		if (NPCCombatData.switchesAttackers(npc_victim)) {
 			System.out.println("targetId: "+npc_victim.targetId+" index: "+plr_attacker.getIndex());
 			npc_victim.targetId = plr_attacker.getIndex();
-			npc_victim.facePlayer(npc_victim.targetId);
+			npc_victim.faceEntity(npc_victim);
 		}//we tried this last time didnt work
 
 		//to kinda narrow it down basicly its not resetting the targetId right?

@@ -98,9 +98,7 @@ public class CommandPacketHandler implements PacketType {
 			if (player.getPet() != null) {
 				World.getWorld().unregister(player.getPet());
 			}
-			/*pet.setAbsX(player.getX());
-			pet.setAbsY(player.getY() -1);//then it works? so i believe it has to do with this.?
-*/			player.setPet(pet);
+			player.setPet(pet);
 			player.setPetSpawned(true);
 			World.getWorld().register(pet);
 			return true;

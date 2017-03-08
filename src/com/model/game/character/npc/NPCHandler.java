@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import com.model.game.Constants;
 import com.model.game.World;
+import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.npc.pet.PetOld;
@@ -114,13 +115,6 @@ public final class NPCHandler {
 		npc.ownerId = owner.getIndex(); // same as spawnedBy should be removed in future 
 		npc.isPet = true;
 		// newNPC.killerId = c.playerId;
-		for (Npc i : NPCHandler.npcs) {
-			if (i == null)
-				continue;
-			if (i.ownerId == owner.getIndex())
-				System.out.println("asasass");
-				followPlayer(npc, owner.getIndex());
-		}
 		return npc;
 	}
 	
@@ -160,7 +154,7 @@ public final class NPCHandler {
 		npc.spawnedBy = player.getIndex();
 		System.out.printf("Spawned npc id %d for player index %d%n", id, player.getIndex());
 		npc.setOnTile(x, y, heightLevel);
-		npc.facePlayer(player.getIndex());
+		npc.faceEntity(player);
 		if (attacksEnemy) {
 			npc.underAttack = true;
 			if (player != null) {
@@ -337,103 +331,106 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static boolean followPlayer(Npc npc) {
-		switch (npc.npcId) {
-		case 2042:
-		case 2043:
-		case 2044:
-		case 492:
-		case 494:
-		case 5535:
-			return false;
-		case 6610:
-			return false;
-		}
-		return true;
-	}
 	
 	/**
 	 * Handles following a player
 	 * 
 	 * @param npc
 	 *            The {@link Npc} which is following the player
-	 * @param playerId
+	 * @param target
 	 *            The id of the player being followed
 	 */
-	public static void followPlayer(Npc npc, int playerId) {
-		Player player = World.getWorld().getPlayers().get(playerId);
-		if (player == null || npc == null) {
+	public static void attemptFollowEntity(Npc npc, Entity target) {
+		if (target == null || npc == null) {
+			npc.resetFollowing();
+			npc.resetFace();
 			return;
-		}//sec so basicly you made this follow() method before can't we apply that to this? check
+		}
 		
-		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
-			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
-				npc.targetId = 0;
-				return;
+		boolean isBoss = false; // TODO
+		
+		// Only check rooms if npc is even remotely related to GWD.. otherwise.. LAG!
+		if (isBoss) {
+			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
+				if (!Boundary.isIn(target, Boundary.GODWARS_BOSSROOMS)) {
+					npc.resetFollowing();
+					npc.resetFace();
+					npc.targetId = 0; // reset cb as well.. not valid
+					return;
+				}
 			}
 		}
-		if (followPlayer(npc)) {
-			npc.facePlayer(playerId);
-			//return;
-		}
-		if (npc.frozen()) {
-			return;
-		}
 
-		if (player.isDead() || !player.isVisible()) {
-			npc.facePlayer(0);
+		if (target.isDead() || !target.isVisible() || npc.heightLevel != target.heightLevel) {
+			npc.resetFollowing();
+			npc.resetFace();
 			npc.walkingHome = true;
 			npc.underAttack = false;
 			return;
 		}
-		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
-			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
-				npc.targetId = 0;
-				return;
-			}
-		}
-		if (!followPlayer(npc)) {
-			npc.facePlayer(playerId);
+
+		int targX = target.getX();
+		int targY = target.getY();
+
+		// At this point, the target is valid, don't start walking off randomly.
+		
+		// Stop the npc from walking home and from random walking
+		npc.walkingHome = npc.randomWalk = false;
+		
+
+		if (npc.frozen()) {
+			// Don't reset, we just can't reach.
 			return;
 		}
-		int playerX = player.getX();
-		int playerY = player.getY();
 
-		/*
-		 * Stop the npc from walking home and from random walking
-		 */
-		npc.walkingHome = npc.randomWalk = false;
-
+		// Pets don't need to check combat distance
+		boolean is_combat_npc = !npc.isPet;
 		/*
 		 * If close enough, stop following
 		 */
-		for (Position pos : npc.getTiles()) {
-			double distance = pos.distance(player.getPosition());
-			boolean magic = npc.getCombatType() == CombatType.MAGIC;
-			boolean ranged = !magic && npc.getCombatType() == CombatType.RANGED;
-			boolean melee = !magic && !ranged;
-			if (melee) {
-				if (distance <= 1) {
-					return;
-				}
-			} else {
-				if (distance <= (ranged ? 7 : 10)) {
-					return;
+		if (is_combat_npc) {
+			for (Position pos : npc.getTiles()) {
+				double distance = pos.distance(target.getPosition());
+				boolean magic = npc.getCombatType() == CombatType.MAGIC;
+				boolean ranged = !magic && npc.getCombatType() == CombatType.RANGED;
+				boolean melee = !magic && !ranged;
+				if (melee) {
+					if (distance <= 1) {
+						return;
+					}
+				} else {
+					if (distance <= (ranged ? 7 : 10)) {
+						return;
+					}
 				}
 			}
 		}
-		if (npc.spawnedBy > 0 || ((npc.getX() < npc.makeX + 15) && (npc.getX() > npc.makeX - 15) && (npc.getY() < npc.makeY + 15) && (npc.getY() > npc.makeY - 15))) {
-			if (npc.heightLevel == player.heightLevel) {
-				npc.resetFollowing(); // dont use the new system
-				walkToNextTile(npc, playerX, playerY);
-			}
+		// Spawned by a player.. we're (1) a pet (2) a warrior guild armour.. we follow forever
+		boolean locked_to_plr = npc.spawnedBy > 0; // pets have spawnBy set
+		// Within +/- 15 tiles from where our spawn pos is.
+		boolean in_spawn_area = is_combat_npc && ((npc.getX() < npc.makeX + 15) && (npc.getX() > npc.makeX - 15) && (npc.getY() < npc.makeY + 15) && (npc.getY() > npc.makeY - 15));
+		
+		// Let's calculate a path to the target now.
+		if (locked_to_plr || in_spawn_area) {
+			npc.faceEntity(target);
+				npc.resetFollowing(); // reset existing walking queue
+				walkToNextTile(npc, targX, targY); // update walking queue to new target pos
+			
 		} else {
-			npc.facePlayer(0);
+			// Reset following
+			npc.resetFollowing();
+			npc.resetFace();
 			npc.walkingHome = true;
 			npc.underAttack = false;
 		}
 	}
 
+	/**
+	 * Calculates the movement required to reach a target X Y
+	 * @param mob
+	 * @param destinationX
+	 * @param destinationY
+	 */
 	public static void walkToNextTile(Npc mob, int destinationX, int destinationY) {
 		if (mob.absX == destinationX && mob.absY == destinationY)
 			return;

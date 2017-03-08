@@ -103,20 +103,11 @@ public class Pet extends Npc {
 	//Create pet instance
 	public Pet(Player owner, int id) {
 		super(id, owner.getPosition(), 0);
-		NPCHandler.followPlayer(this, owner.getIndex());
 		this.setAbsX(owner.getX());
-		this.setAbsY(owner.getY() -1);
-		//They don't even appear when im calling this method when we did
-		//so they appear but dont follow?
-		
-		//So we figured out it was setabsx and y but it doesn't work if we apply it here
-		//Only works when we apply @ the actual register like in commands for example
-		
-		/*this.makeX = owner.getX();
-		this.makeY = owner.getY() -1;
-		this.heightLevel = owner.getHeight();
-		this.setOnTile(owner.getX(), owner.getY() -1, heightLevel);
-		this.facePlayer(owner.getIndex());*/
+		this.setAbsY(owner.getY() - 1);
+		this.ownerId = owner.getIndex(); // same as spawnedBy should be removed in future
+		this.isPet = true;
+		this.faceEntity(owner);
 		System.out.printf("Spawned npc id %d for player index %d%n", this.npcId, owner.getIndex());
 	}
 	
@@ -137,18 +128,19 @@ public class Pet extends Npc {
 		}
 	}
 
-	public void pickup(Player player, Npc pet) {
+	public boolean pickup(Player player, Npc pet) {
 		Pet.Pets pets = Pet.Pets.fromNpc(pet.getId());
 		if (pets != null && player.getItems().freeSlots() < 28) {
-			if (player.getPet() != null) {
+			if (player.getPet() != null && player.isPetSpawned()) {
 				player.playAnimation(Animation.create(827));
 				player.getItems().addItemtoInventory(new Item(pets.getItem()));
 				World.getWorld().unregister(player.getPet());
 				player.setPetSpawned(false);
 				player.setPet(null);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 
 }

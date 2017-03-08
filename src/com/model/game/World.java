@@ -192,7 +192,6 @@ public class World implements Service {
 	 * @return If the entity can be registered to the world
 	 */
 	public boolean register(Entity entity) {
-		System.out.println("woop we got here");
 		if (entity.getEntityType() == EntityType.PLAYER) {
 			Player player = (Player) entity;
 			if (getPlayers().spaceLeft() == 0)
@@ -201,7 +200,6 @@ public class World implements Service {
 			player.initialize();
 			return true;
 		} else if (entity.getEntityType() == EntityType.NPC) {
-			System.out.println("woop we got here aswell");
 			Npc npc = (Npc) entity;
 			if (getNpcs().spaceLeft() == 0)
 				return false;

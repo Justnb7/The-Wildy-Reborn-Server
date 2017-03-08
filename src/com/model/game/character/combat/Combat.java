@@ -12,7 +12,7 @@ public class Combat {
 	
 	public static void resetCombat(Player player) {
 		player.usingMagic = false;
-		player.faceEntity(player);
+		player.faceEntity(player); // face urself wtf l0l
 		player.npcIndex = 0;
 		player.playerIndex = 0;
 		player.getPA().resetFollow();

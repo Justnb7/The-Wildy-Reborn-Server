@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.model.game.World;
+import com.model.game.character.Entity;
 import com.model.game.character.npc.Npc;
 
 
@@ -100,7 +101,7 @@ public class Boundary {
 	 * @param boundaries The array of Boundary objects
 	 * @return
 	 */
-	public static boolean isIn(Player player, Boundary[] boundaries) {
+	public static boolean isIn(Entity player, Boundary[] boundaries) {
 		for(Boundary b : boundaries) {
 			if (b.height > 0) {
 				if (player.heightLevel != b.height) {

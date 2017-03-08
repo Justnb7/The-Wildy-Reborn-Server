@@ -742,6 +742,11 @@ public class ActionHandler {
 			return;
 		}
 		
+		if (player.getPet().pickup(player, npc)) {
+			System.out.println("here");
+			return;
+		}
+		
 		if (FishingSpot.fishingNPC(npc.npcId)) {
 			Fishing.attemptFishing(player, npc, 2);
 			return;

@@ -1346,7 +1346,9 @@ public class Player extends Entity {
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 
 				if (player.isPetSpawned()) {
-		            //TODO spawn pet upon login
+		            Pet pet = new Pet(player, player.getPet());
+		            player.setPet(player.getPet());
+		            World.getWorld().register(pet);
 		        }
 
 				if (player.getName().equalsIgnoreCase("Patrick")) {
@@ -3028,14 +3030,14 @@ public class Player extends Entity {
 	public void setLastFire(long lastFire) {
 		this.lastFire = lastFire;
 	}
-
-	private Pet pet;
 	
-	public void setPet(Pet pet) {
+	private int pet;
+
+	public void setPet(int pet) {
 		this.pet = pet;
 	}
 
-	public Pet getPet() {
+	public int getPet() {
 		return pet;
 	}
 	

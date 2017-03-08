@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.Skills;
@@ -250,7 +251,7 @@ public class ItemOptionPacket implements PacketType {
         }
 		
 		// We are dropping an pet item.
-		if (player.getPet().drop(player, item)) {
+		if (Pet.drop(player, item)) {
 			return;
 		}
 

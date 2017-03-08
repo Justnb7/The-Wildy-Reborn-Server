@@ -94,11 +94,7 @@ public class CommandPacketHandler implements PacketType {
 		case "pet":
 			int id = Integer.parseInt(cmd[1]);
 			Pet pet = new Pet(player, id);
-
-			if (player.getPet() != null) {
-				World.getWorld().unregister(player.getPet());
-			}
-			player.setPet(pet);
+			player.setPet(id);
 			player.setPetSpawned(true);
 			World.getWorld().register(pet);
 			return true;

@@ -348,6 +348,11 @@ public final class NPCHandler {
 
 		int targX = target.getX();
 		int targY = target.getY();
+		if (npc.isPet) {
+			targX = target.getX();
+			targY = target.getY() -1;
+		} 
+		//npc.forceChat("delta "+(npc.absX-targX)+" by "+(npc.absY-targY));
 
 		// At this point, the target is valid, don't start walking off randomly.
 		
@@ -383,15 +388,16 @@ public final class NPCHandler {
 			}
 		}
 		// Spawned by a player.. we're (1) a pet (2) a warrior guild armour.. we follow forever
-		boolean locked_to_plr = npc.spawnedBy > 0; // pets have spawnBy set
+		boolean locked_to_plr = npc.spawnedBy > 0 || npc.ownerId > 0; // pets have spawnBy set
 		// Within +/- 15 tiles from where our spawn pos is.
 		boolean in_spawn_area = is_combat_npc && ((npc.getX() < npc.makeX + 15) && (npc.getX() > npc.makeX - 15) && (npc.getY() < npc.makeY + 15) && (npc.getY() > npc.makeY - 15));
 		
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
 			npc.faceEntity(target);
-				npc.resetFollowing(); // reset existing walking queue
-				walkToNextTile(npc, targX, targY); // update walking queue to new target pos
+			npc.resetFollowing(); // reset existing walking queue
+			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
+			//npc.forceChat("my nigga");
 			
 		} else {
 			// Reset following

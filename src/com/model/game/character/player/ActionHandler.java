@@ -5,6 +5,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.BrimhavenVines;
 import com.model.game.character.player.content.WildernessDitch;
 import com.model.game.character.player.content.rewards.CrystalChest;
@@ -733,7 +734,7 @@ public class ActionHandler {
 			player.message("Second click: "+npc.npcId);
 		}
 		
-		if (player.getPet().pickup(player, npc)) {
+		if (Pet.pickup(player, npc)) {
 			return;
 		}
 		

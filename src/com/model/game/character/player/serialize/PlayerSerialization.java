@@ -311,8 +311,7 @@ public class PlayerSerialization {
 						if (key.equals("pet-spawned")) {
     						p.setPetSpawned(Boolean.parseBoolean(value));
                     	} else if(key.equals("pet")) {
-                    		//p.setPet();
-                    		//TODO ask Jak how to save an Pet instance
+                    		p.setPet(Integer.parseInt(value));
                     	}
 						break;
 						
@@ -771,7 +770,8 @@ public class PlayerSerialization {
 			writer.newLine();
 			writer.write("pet-spawned = "+p.isPetSpawned());
 			writer.newLine();
-			
+			writer.write("pet = "+p.getPet());
+			writer.newLine();
 			writer.newLine();
 
 			/* Achievements */

@@ -201,8 +201,20 @@ public class Npc extends Entity {
 	public int range_defence;
 	
 	public Npc(int _npcType) {
+		this(_npcType, null, -1);
+	}
+	
+	public Npc(int id, Position spawn, int dir) {
 		super(EntityType.NPC);
-		NpcDefinition definition = NpcDefinition.getDefinitions()[_npcType];
+		direction = dir;
+		if (spawn != null)
+			setLocation(spawn);
+		npcId = id;
+		
+		isDead = false;
+		randomWalk = true;
+		
+		NpcDefinition definition = NpcDefinition.getDefinitions()[id];
 		if (definition != null) {
 			size = definition.getSize();
 			if (size < 1) {
@@ -218,21 +230,6 @@ public class Npc extends Entity {
 			range_defence = definition.getRangedDefence();
 			//System.out.println("size: "+size+ " max: "+maxHit+" melee_def: "+melee_defence+" range_def: "+range_defence+" magic_def: "+magic_defence);
 		}
-		npcId = _npcType;
-		direction = -1;
-		isDead = false;
-		randomWalk = true;
-		npcId = _npcType;
-		direction = -1;
-		isDead = false;
-		randomWalk = true;
-	}
-	
-	public Npc(int id, Position spawn, int dir) {
-		super(EntityType.NPC);
-		direction = dir;
-		setLocation(spawn);
-		npcId = id;
 	}
 
 	/**
@@ -494,12 +491,8 @@ public class Npc extends Entity {
 	
 	@Override
 	public void process() {
-		// validate
-		if (World.getWorld().getNpcs().get(getIndex()) == null)
-			return;
-		 
 		try {
-			Player owner = World.getWorld().getPlayers().get(spawnedBy);//whats the pointsin this
+			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);//whats the pointsin this
 			// none yet again duplicate INTs by PI
 			
 			if (currentHealth > 0 && !isDead) {
@@ -532,13 +525,13 @@ public class Npc extends Entity {
 				
 				if (npcId == 6611 || npcId == 6612) {
 					if (currentHealth < (maximumHealth / 2) && !spawnedVetionMinions) {
-						spawnVetDogs(owner);
+						spawnVetDogs(spawnedByPlr);
 					}
 				}
 				else if (npcId == 6615) {
 					if (currentHealth <= 100 && !spawnedScorpiaMinions) {
-						Npc min1 = NPCHandler.spawnNpc(owner, 6617, getX()- 1, absY, heightLevel, 1, 79, -1, -1, -1, -1, 0, true, false, true);
-						Npc min2 = NPCHandler.spawnNpc(owner, 6617, getX() + 1, absY, heightLevel, 1, 79, -1, -1, -1, -1, 0, true, false, true);
+						Npc min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, getX()- 1, absY, heightLevel, 1, 79, -1, -1, -1, -1, 0, true, false, true);
+						Npc min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, getX() + 1, absY, heightLevel, 1, 79, -1, -1, -1, -1, 0, true, false, true);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);
@@ -558,7 +551,7 @@ public class Npc extends Entity {
 			 */
 			NpcVsPlayerCombat.handleCombatTimer(this);
 
-			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).heightLevel != heightLevel || World.getWorld().getPlayers().get(spawnedBy).isDead() || !owner.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
+			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).heightLevel != heightLevel || World.getWorld().getPlayers().get(spawnedBy).isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
 				World.getWorld().unregister(this);
 			}
 

@@ -16,55 +16,75 @@ import com.model.game.item.Item;
  */
 public class Pet extends Npc {
 	
+	//Enum data credits to Stan Jansen.
 	public enum Pets {
         //item id, npc id
-        ZULRAH_RANGE(12921, 2127),
-
-        ZULRAH_MAGE(12940, 2129),
-
-        ZULRAH_MELEE(12939, 2128),
-
-        DAGANNOTH_SUPREME(12643, 6626),
-
-        DAGANNOTH_PRIME(12644, 6627),
-
-        DAGANNOTH_REX(12645, 6641),
-
-        ARMADYL(12649, 6643),
-
-        BANDOS(12650, 6644),
-
-        SARADOMIN(12651, 6646),
-
-        ZAMORAK(12652, 6647),
-
-        KING_BLACK_DRAGON(12653, 6652),
-
-        CHAOS_ELEMENTAL(11995, 5907),
-
-        KALPHITE_PRINCESS_FORM_1(12654, 6653),
-
-        KRAKEN(12655, 6656),
-
-        SCORPIA(13181, 5547),
-
-        CALLISTO(13178, 497),
-
-        VETION(13179, 5536),
-
-        VENENATIS(13177, 495),
-
-		JAD(13225, 5892),
-
-		SMOKE_DEVIL(12648, 6655),
-
-		BEAVER(13322, 6717),
-
+		ABYSSAL_ORPHAN(13262, 5883),
+		BABY_MOLE(12646, 6635),
+		CALLISTO_CUB(13178, 497),
+		HELLPUPPY(13247, 964),
+		CHAOS_ELEMENTAL(11995, 5907),
+		DAGANNOTH_PRIME(12644, 6627),
+		DAGANNOTH_REX(12645, 6630),
+		DAGANNOTH_SUPREME(12643, 6626),
+		DARK_CORE(12816, 388),
+		GENERAL_GRAARDOR(12650, 6632),
+		KRIL_TSUTSAROTH(12652, 6634),
+		KRAKEN(12655, 6640),
+		KREEARRA(12649, 6631),
+		PENANCE_PET(12703, 6642),
+		SMOKE_DEVIL(12648, 6639),
+		ZILYANA(12651, 6633),
+		SNAKELING(12921, 2130),
+		SNAKELING_RED(12939, 2131),
+		SNAKELING_BLUE(12940, 2132),
+		PRINCE_BLACK_DRAGON(12653, 6636),
+		SCORPIAS_OFFSPRING(13181, 5547),
+		TZREK_JAD(13225, 5892),
+		VENENATIS_SPIDERLING(13177, 5557),
+		VETION_PURPLE(13179, 5559),
+		VETION_ORANGE(13180, 5560),
+		KALPHITE_PRINCESS_BUG(12647, 6638),
+		KALPHITE_PRINCESS_FLY(12654, 6637),
 		HERON(13320, 6715),
-
-		ROCK_GOLEM(13321, 6716),
-
-		HELLPUPPY(13247, 964);
+		ROCK_GOLEM(13321, 7439),
+		ROCK_GOLEM_TIN(21187, 7440),
+		ROCK_GOLEM_COPPER(21188, 7441),
+		ROCK_GOLEM_IRON(21189, 7442),
+		ROCK_GOLEM_BLURITE(21190, 7443),
+		ROCK_GOLEM_SILVER(21191, 7444),
+		ROCK_GOLEM_COAL(21192, 7445),
+		ROCK_GOLEM_GOLD(21193, 7446),
+		ROCK_GOLEM_MITHRIL(21194, 7447),
+		ROCK_GOLEM_GRANITE(21195, 7448),
+		ROCK_GOLEM_ADAMANTITE(21196, 7449),
+		ROCK_GOLEM_RUNITE(21197, 7450),
+		BEAVER(13322, 6717),
+		GIANT_SQUIRREL(20659,7334),
+		ROCKY(20663, 7336),
+		TANGLEROOT(20661, 7335),
+		RIFT_GUARDIAN_FIRE(20665, 7337),
+		RIFT_GUARDIAN_AIR(20667, 7337),
+		RIFT_GUARDIAN_MIND(20669, 7337),
+		RIFT_GUARDIAN_WATER(20671, 7337),
+		RIFT_GUARDIAN_EARTH(20673, 7337),
+		RIFT_GUARDIAN_CHAOS(20675, 7337),
+		RIFT_GUARDIAN_BODY(20677, 7337),
+		RIFT_GUARDIAN_COSMIC(20679, 7337),
+		RIFT_GUARDIAN_NATURE(20681, 7337),
+		RIFT_GUARDIAN_LAW(20683, 7337),
+		RIFT_GUARDIAN_DEATH(20685, 7337),
+		RIFT_GUARDIAN_SOUL(20687, 7337),
+		RIFT_GUARDIAN_ASTRAL(20689, 7337),
+		RIFT_GUARDIAN_BLOOD(20691, 7337),
+		BABY_CHINCHOMPA(13323, 6756),
+		BABY_CHINCHOMPA_GREY(13324, 6757),
+		BABY_CHINCHOMPA_BLACK(13325, 6758),
+		BABY_CHINCHOMPA_GOLD(13326, 6759),
+		CHOMPY_CHICK(13071, 4001),
+		BLOODHOUND(19730, 7232),
+		PHOENIX(20693, 7368),
+		OLMLET(20851, 7519);
 
 		/**
 		 * The pet item
@@ -151,9 +171,9 @@ public class Pet extends Npc {
 		this.setAbsX(owner.getX());
 		this.setAbsY(owner.getY() - 1);
 		this.isPet = true;
-		this.ownerId = owner.getIndex(); //same as spawnedBy should be removed in future
+		this.spawnedBy = owner.getIndex();
+		this.ownerId = owner.getIndex();
 		this.faceEntity(owner);
-		System.out.printf("Spawned npc id %d for player index %d%n", this.npcId, owner.getIndex());
 	}
 	
 	/**
@@ -164,16 +184,16 @@ public class Pet extends Npc {
 	 *         The pet item being dropped
 	 * @return Spawn the pet
 	 */
-	public boolean drop(Player player, Item item) {
+	public static boolean drop(Player player, Item item) {
 		Pet.Pets petIds = Pet.Pets.from(item.getId());
 		if (petIds != null) {
-			if (player.getPet() != null && player.isPetSpawned()) {
+			if (player.isPetSpawned()) {
 				player.message("You may only have one pet out at a time.");
 				return false;
 			} else {
 				Pet pet = new Pet(player, petIds.getNpc());
 				player.setPetSpawned(true);
-				player.setPet(pet);
+				player.setPet(petIds.getNpc());
 				World.getWorld().register(pet);
 				player.getItems().remove(item);
 				return false;
@@ -190,15 +210,15 @@ public class Pet extends Npc {
 	 *         The pet being picked up
 	 * @return despawn the pet, and respawn the pet item in the players inventory.
 	 */
-	public boolean pickup(Player player, Npc pet) {
+	public static boolean pickup(Player player, Npc pet) {
 		Pet.Pets pets = Pet.Pets.fromNpc(pet.getId());
 		if (pets != null && player.getItems().freeSlots() < 28) {
-			if (player.getPet() != null && player.isPetSpawned()) {
+			if (player.isPetSpawned()) {
 				player.playAnimation(Animation.create(827));
 				player.getItems().addItemtoInventory(new Item(pets.getItem()));
-				World.getWorld().unregister(player.getPet());
+				World.getWorld().unregister(pet);
 				player.setPetSpawned(false);
-				player.setPet(null);
+				player.setPet(-1);
 				return true;
 			}
 		}

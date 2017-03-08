@@ -1295,7 +1295,7 @@ public class Player extends Entity {
 		//Update location
 		correctPlayerCoordinatesOnLogin();
 		//Refresh the player settings
-		refreshSettings(this);
+		refreshSettings();
 		//Set last known height
 		this.setLastRegionHeight(this.getZ());
 		//Set session active
@@ -1308,18 +1308,18 @@ public class Player extends Entity {
 		submitAfterLogin();
 	}
 
-	public void refreshSettings(Player player) {
-		AttackStyle.adjustAttackStyleOnLogin(player);
+	public void refreshSettings() {
+		AttackStyle.adjustAttackStyleOnLogin(this);
 		this.setScreenBrightness((byte) 4);
-		player.getActionSender().sendString("100%", 149);
-		player.write(new SendConfigPacket(166, getScreenBrightness()));
-		player.write(new SendConfigPacket(207, isEnableMusic() ? 1 : 0));
-		player.write(new SendConfigPacket(206, isEnableSound() ? 1 : 0));
-		player.write(new SendConfigPacket(287, getSplitPrivateChat() ? 1 : 0));
-		player.write(new SendConfigPacket(205, getSplitPrivateChat() ? 1 : 0));
-		player.write(new SendConfigPacket(200, getAcceptAid() ? 1 : 0));
-		player.write(new SendConfigPacket(172, isAutoRetaliating() ? 1 : 0));
-		player.write(new SendConfigPacket(152, isRunning() ? 1 : 0));
+		getActionSender().sendString("100%", 149);
+		write(new SendConfigPacket(166, getScreenBrightness()));
+		write(new SendConfigPacket(207, isEnableMusic() ? 1 : 0));
+		write(new SendConfigPacket(206, isEnableSound() ? 1 : 0));
+		write(new SendConfigPacket(287, getSplitPrivateChat() ? 1 : 0));
+		write(new SendConfigPacket(205, getSplitPrivateChat() ? 1 : 0));
+		write(new SendConfigPacket(200, getAcceptAid() ? 1 : 0));
+		write(new SendConfigPacket(172, isAutoRetaliating() ? 1 : 0));
+		write(new SendConfigPacket(152, isRunning() ? 1 : 0));
 	}
 
 	private void submitAfterLogin() {

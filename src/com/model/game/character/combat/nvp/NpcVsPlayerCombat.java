@@ -58,7 +58,7 @@ public class NpcVsPlayerCombat {
 		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
 			npc.attackTimer--;
-			npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
+			//npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
 		}
 		
 		// If we havent been attacked within last 5 secs reset who last attack us

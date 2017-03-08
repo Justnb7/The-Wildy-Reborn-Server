@@ -507,15 +507,13 @@ public abstract class Entity {
 		return lastKnownRegion;
 	}
 	
-	//from here starts what i redid
-	
 	/**
 	 * Makes this entity face a position.
 	 * 
 	 * @param position
 	 *            The position to face.
 	 */
-	public void face(Entity entity, Position position) {//th th
+	public void face(Entity entity, Position position) {
 		//Faces the player
 		if(entity.getEntityType() == EntityType.PLAYER) {
 			faceTileX = 2 * position.getX() + 1;
@@ -534,7 +532,7 @@ public abstract class Entity {
 	 * @param e
 	 *   The entity
 	 */
-	public void faceEntity(Entity e) {//\nd this nice vnice
+	public void faceEntity(Entity e) {
 		if (e == null) {
 			//System.out.println("wtf");
 			this.resetFace();
@@ -545,7 +543,7 @@ public abstract class Entity {
 		entityFaceIndex = e.clientIndex();
 		faceUpdateRequired = true;
 		updateRequired = true;
-		System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
+		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
 	}
 
 	public abstract int clientIndex();
@@ -553,8 +551,8 @@ public abstract class Entity {
 	/**
 	 * Resets the facing position.
 	 */
-	public void resetFace() {//maybe its hit?
-		this.entityFaceIndex = -1;//is -1 then okay since they all said 0 yh
+	public void resetFace() {
+		this.entityFaceIndex = -1;
 		faceUpdateRequired = true;
 		updateRequired = true;
 		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);

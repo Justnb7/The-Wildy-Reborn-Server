@@ -587,7 +587,7 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		case 4026:
 			player.setRunning(!player.isRunning());
-			player.write(new SendConfigPacket(152, player.isRunning() ? 1 : 0));
+			//player.write(new SendConfigPacket(152, player.isRunning() ? 1 : 0));
 			break;
 
 		case 3138:

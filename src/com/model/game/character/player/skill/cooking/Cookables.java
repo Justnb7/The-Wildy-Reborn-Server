@@ -162,7 +162,7 @@ public enum Cookables {
 	 * @return the uncooked cookable id
 	 */
 	public static Cookables forId(int id) {
-		return cook.stream().filter(cooking -> cooking.raw == id).findFirst().orElse(null);
+		return cook.stream().filter(cooking -> cooking.raw == id).findAny().orElse(null);
 	}
 
 	public static boolean isCookable(int id) {

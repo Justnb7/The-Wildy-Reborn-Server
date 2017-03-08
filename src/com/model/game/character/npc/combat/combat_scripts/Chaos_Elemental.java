@@ -53,7 +53,7 @@ public class Chaos_Elemental extends Boss {
 				if (attackStyle == 0) {
 					player.playGraphics(Graphic.create(552, 0, 100));
 					int itemToRemove = r.nextInt(player.playerEquipment().length - 1);
-					if (player.playerEquipment()[itemToRemove] > 0 && player.getItems().getFreeSlots() > 0) {
+					if (player.playerEquipment()[itemToRemove] > 0 && player.getItems().freeSlots() > 0) {
 						player.getItems().removeEquipment(player.playerEquipment()[itemToRemove], itemToRemove);
 						if (itemToRemove == player.getEquipment().getWeaponId() || itemToRemove == player.getEquipment().getQuiverId()) {
 							Combat.resetCombat(player);

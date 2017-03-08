@@ -224,6 +224,13 @@ public class Npc extends Entity {
 		randomWalk = true;
 	}
 	
+	public Npc(int id, Position spawn, int dir) {
+		super(EntityType.NPC);
+		direction = dir;
+		setLocation(spawn);
+		npcId = id;
+	}
+
 	/**
 	 * Set an npc onto a tile, removes it from the current tile before placing
 	 * another one
@@ -659,7 +666,24 @@ public class Npc extends Entity {
 		if (this.frozen()) {
 			return;
 		}
-		if (following_target != null) {
+		if (following_target == null) {
+			// Reset if target null
+			if (followTargetIndex > 0) { // support the old PI system anyway (only player targets supported)
+				Player fTarg = World.getWorld().getPlayers().get(followTargetIndex);
+				if (fTarg == null) {
+					World.getWorld().unregister(this);
+					return;
+				}
+				facePlayer(followTargetIndex);
+				if (Math.abs(fTarg.getX() - getX()) > 5 || Math.abs(fTarg.getY() - getY()) > 5) {
+					//wtf
+					System.out.println("why tf does this matter?");
+				} else {
+					NPCHandler.followPlayer(this, followTargetIndex);
+				}
+			}
+		} else { // We have a valid follow target
+			
 			if (following_target.getPosition().getZ() != this.heightLevel) {
 				facePlayer(0);
 				this.resetFollowing();
@@ -681,7 +705,7 @@ public class Npc extends Entity {
 				}
 			}
 			/*
-			 * If close enough, stop following
+			 * If not close enough (within viewport of 16 tiles), stop following
 			 */
 			for (Position pos : getTiles()) {
 				double distance = pos.distance(following_target.getPosition());
@@ -703,27 +727,17 @@ public class Npc extends Entity {
 					}
 				}
 			}
-			if ((getX() < makeX + 15)
+			// Only random walk when you're in the main area -if ur outside (following a player)
+			// you walk back into ur main area
+			boolean in_spawn_area = (getX() < makeX + 15)
 					&& (getX() > makeX - 15)
 					&& (getY() < makeY + 15) && (getY() > makeY
-					- 15)) {
-			NPCHandler.walkToNextTile(this, following_target.getPosition().getX(), following_target.getPosition().getY());
-			}
-		}//try
-		// wtf this old follow method isnt even used LMFAO
-		else if (followTargetIndex > 0) { // support the old PI system anyway (only player targets supported)
-			if (World.getWorld().getPlayers().get(followTargetIndex) == null) {
-				World.getWorld().unregister(this);
-				return;
-			}
-			facePlayer(followTargetIndex);
-			if (Math.abs(World.getWorld().getPlayers().get(followTargetIndex).getX() - getX()) > 5
-					|| Math.abs(World.getWorld().getPlayers().get(followTargetIndex).getY() - getY()) > 5) {
-				//wtf
-			} else {
-				NPCHandler.followPlayer(this, followTargetIndex);
+					- 15);
+			if (in_spawn_area) {
+				NPCHandler.walkToNextTile(this, following_target.getPosition().getX(), following_target.getPosition().getY());
 			}
 		}
+		
 	}
 	
 	public int walkX, walkY;

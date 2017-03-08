@@ -13,6 +13,7 @@ import com.model.game.character.Graphic;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
@@ -89,6 +90,20 @@ public class CommandPacketHandler implements PacketType {
     	
     	String message;
     	switch (cmd[0]) {
+    	
+		case "pet":
+			int id = Integer.parseInt(cmd[1]);
+			Pet pet = new Pet(player, id);
+
+			if (player.getPet() != null) {
+				World.getWorld().unregister(player.getPet());
+			}
+			/*pet.setAbsX(player.getX());
+			pet.setAbsY(player.getY() -1);//then it works? so i believe it has to do with this.?
+*/			player.setPet(pet);
+			player.setPetSpawned(true);
+			World.getWorld().register(pet);
+			return true;
     	
     	case "changename":
     		if(player.getTotalAmountDonated() >= 100 || player.getRights().isAdministrator()) {

@@ -1,49 +1,53 @@
 package com.model.game.character.player.skill.herblore;
 
-import com.model.game.item.GameItem;
+import com.model.game.item.Item;
 
-
-
+/**
+ * The potion data, for the herblore skill.
+ * @author Unknown
+ *
+ */
 public enum Potion {
-	ATTACK_POTION(new GameItem(121), 3, 25, new GameItem(249), new GameItem(221)),
-	ANTIPOISON(new GameItem(175), 5, 37, new GameItem(251), new GameItem(235)),
-	STRENGTH_POTION(new GameItem(115), 12, 50, new GameItem(253), new GameItem(1526)),
-	RESTORE_POTION(new GameItem(127), 22, 62, new GameItem(255), new GameItem(223)),
-	GUTHIX_BALANCE(new GameItem(7662), 30, 75, new GameItem(257), new GameItem(223), new GameItem(1550), new GameItem(7650)),
-	ENERGY_POTION(new GameItem(3010), 26, 80, new GameItem(255), new GameItem(1975)),
-	COMBAT_POTION(new GameItem(9741), 36, 84, new GameItem(255), new GameItem(9736)),
-	PRAYER_POTION(new GameItem(139), 38, 87, new GameItem(257), new GameItem(231)),
-	SUPER_ATTACK(new GameItem(145), 45, 100, new GameItem(259), new GameItem(221)),
-	SUPER_ANTIPOISON(new GameItem(181), 48, 106, new GameItem(259), new GameItem(235)),
-	SUPER_ENERGY(new GameItem(3018), 52, 117, new GameItem(261), new GameItem(2970)),
-	SUPER_STRENGTH(new GameItem(157), 55, 125, new GameItem(263), new GameItem(225)),
-	SUPER_RESTORE(new GameItem(3026), 63, 142, new GameItem(3000), new GameItem(223)),
-	SUPER_DEFENCE(new GameItem(163), 66, 150, new GameItem(265), new GameItem(239)),
-	ANTIDOTE_PLUS(new GameItem(5945), 68, 155, new GameItem(2998), new GameItem(6049)),
-	ANTIFIRE(new GameItem(2454), 69, 157, new GameItem(2481), new GameItem(243)),
-	RANGING(new GameItem(169), 72, 162, new GameItem(267), new GameItem(245)),
-	MAGIC(new GameItem(3042), 76, 172, new GameItem(2481), new GameItem(3138)),
-	ANTIDOTE_PLUS_PLUS(new GameItem(5954), 79, 178, new GameItem(259)),
-	SARADOMIN_BREW(new GameItem(6687), 81, 180, new GameItem(2998), new GameItem(6693)),
-	SUPER_COMBAT_POTION(new GameItem(12697), 90, 190, new GameItem(269), new GameItem(2436), new GameItem(2440), new GameItem(2442)),
-	ANTI_VENOM(new GameItem(12907), 87, 120, new GameItem(5954), new GameItem(12934, 15)),
-	ANTI_VENOM_PLUS(new GameItem(12915), 94, 125, new GameItem(12907), new GameItem(269)),
-	SANFEW_SERUM(new GameItem(10919), 99, 150, new GameItem(3000), new GameItem(223), new GameItem(235), new GameItem(1526), new GameItem(10937));
+	
+	ATTACK_POTION(new Item(121), 3, 25, new Item(249), new Item(221)),
+	ANTIPOISON(new Item(175), 5, 37, new Item(251), new Item(235)),
+	STRENGTH_POTION(new Item(115), 12, 50, new Item(253), new Item(1526)),
+	RESTORE_POTION(new Item(127), 22, 62, new Item(255), new Item(223)),
+	GUTHIX_BALANCE(new Item(7662), 30, 75, new Item(257), new Item(223), new Item(1550), new Item(7650)),
+	ENERGY_POTION(new Item(3010), 26, 80, new Item(255), new Item(1975)),
+	COMBAT_POTION(new Item(9741), 36, 84, new Item(255), new Item(9736)),
+	PRAYER_POTION(new Item(139), 38, 87, new Item(257), new Item(231)),
+	SUPER_ATTACK(new Item(145), 45, 100, new Item(259), new Item(221)),
+	SUPER_ANTIPOISON(new Item(181), 48, 106, new Item(259), new Item(235)),
+	SUPER_ENERGY(new Item(3018), 52, 117, new Item(261), new Item(2970)),
+	SUPER_STRENGTH(new Item(157), 55, 125, new Item(263), new Item(225)),
+	SUPER_RESTORE(new Item(3026), 63, 142, new Item(3000), new Item(223)),
+	SUPER_DEFENCE(new Item(163), 66, 150, new Item(265), new Item(239)),
+	ANTIDOTE_PLUS(new Item(5945), 68, 155, new Item(2998), new Item(6049)),
+	ANTIFIRE(new Item(2454), 69, 157, new Item(2481), new Item(243)),
+	RANGING(new Item(169), 72, 162, new Item(267), new Item(245)),
+	MAGIC(new Item(3042), 76, 172, new Item(2481), new Item(3138)),
+	ANTIDOTE_PLUS_PLUS(new Item(5954), 79, 178, new Item(259)),
+	SARADOMIN_BREW(new Item(6687), 81, 180, new Item(2998), new Item(6693)),
+	SUPER_COMBAT_POTION(new Item(12697), 90, 190, new Item(269), new Item(2436), new Item(2440), new Item(2442)),
+	ANTI_VENOM(new Item(12907), 87, 120, new Item(5954), new Item(12934, 15)),
+	ANTI_VENOM_PLUS(new Item(12915), 94, 125, new Item(12907), new Item(269)),
+	SANFEW_SERUM(new Item(10919), 99, 150, new Item(3000), new Item(223), new Item(235), new Item(1526), new Item(10937));
 	
 	/**
 	 * The primary ingredient required
 	 */
-	private final GameItem primary;
+	private final Item primary;
 	
 	/**
-	 * An array of {@link GameItem} objects that represent the ingredients
+	 * An array of {@link Item} objects that represent the ingredients
 	 */
-	private final GameItem[] ingredients;
+	private final Item[] ingredients;
 	
 	/**
 	 * The item received from combining the ingredients
 	 */
-	private final GameItem result;
+	private final Item result;
 	
 	/**
 	 * The level required to make this potion
@@ -62,7 +66,7 @@ public enum Potion {
 	 * @param experience	the experience
 	 * @param ingredients	the ingredients to make the result
 	 */
-	private Potion(GameItem result, int level, int experience, GameItem primary, GameItem... ingredients) {
+	private Potion(Item result, int level, int experience, Item primary, Item... ingredients) {
 		this.result = result;
 		this.level = level;
 		this.experience = experience;
@@ -74,7 +78,7 @@ public enum Potion {
 	 * The result from combining the ingredients
 	 * @return	the result
 	 */
-	public GameItem getResult() {
+	public Item getResult() {
 		return result;
 	}
 	
@@ -95,11 +99,11 @@ public enum Potion {
 	}
 	
 	/**
-	 * An array of {@link GameItem} objects that represent the ingredients required
+	 * An array of {@link Item} objects that represent the ingredients required
 	 * to create this potion.
 	 * @return	the ingredients required
 	 */
-	public GameItem[] getIngredients() {
+	public Item[] getIngredients() {
 		return ingredients;
 	}
 	
@@ -107,7 +111,7 @@ public enum Potion {
 	 * The primary ingredient required for the potion
 	 * @return	the primary ingredient
 	 */
-	public GameItem getPrimary() {
+	public Item getPrimary() {
 		return primary;
 	}
 

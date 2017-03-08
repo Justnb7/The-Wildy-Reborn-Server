@@ -179,7 +179,7 @@ public class MovementHandler {
 		player.absY += DIR[dir][1];
 		player.setLocation(new Position(player.absX, player.absY, player.heightLevel));
 		player.updateWalkEntities();
-	}
+	}//works for players
 
 	public void setLocation(final int x, final int y, final int plane) {
 		Combat.resetCombat(player);

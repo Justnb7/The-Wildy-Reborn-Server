@@ -4,6 +4,11 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ * Stores all our cooking data
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
+ *
+ */
 public enum Cookables {
 	
 	/**

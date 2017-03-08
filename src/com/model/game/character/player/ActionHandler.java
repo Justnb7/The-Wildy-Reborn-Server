@@ -17,6 +17,8 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.skill.agility.Shortcut;
+import com.model.game.character.player.skill.fishing.Fishing;
+import com.model.game.character.player.skill.fishing.FishingSpot;
 import com.model.game.location.Position;
 import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
@@ -599,6 +601,12 @@ public class ActionHandler {
 		if (player.petId > 0) {
 			player.getPets().talktoPet(player, npc.npcId, npc);
 		}
+		
+		if (FishingSpot.fishingNPC(npc.npcId)) {
+			Fishing.attemptFishing(player, npc, 1);
+			return;
+		}
+		
 		switch (npc.npcId) {
 		
 		case 315:
@@ -731,6 +739,11 @@ public class ActionHandler {
 
 		if(player.petId > 0 && player.getPets().isPetNPC(npc)) {
 			player.getPets().pickupPet(player, true, npc);
+			return;
+		}
+		
+		if (FishingSpot.fishingNPC(npc.npcId)) {
+			Fishing.attemptFishing(player, npc, 2);
 			return;
 		}
 

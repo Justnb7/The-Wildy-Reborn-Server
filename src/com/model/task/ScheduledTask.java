@@ -247,7 +247,7 @@ public abstract class ScheduledTask {
 	 * @throws IllegalStateException
 	 *             if the task has already been stopped.
 	 */
-	public final void stop() {
+	public void stop() {
 		if (running) {
 			running = false;
 			onStop();

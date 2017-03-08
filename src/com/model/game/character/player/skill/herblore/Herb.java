@@ -1,5 +1,10 @@
 package com.model.game.character.player.skill.herblore;
 
+/**
+ * The herb data for the herblore skill.
+ * @author Unknown
+ *
+ */
 public enum Herb {
 	GUAM(199, 249, 1, 3),
 	MARRENTIL(201, 251, 5, 4),

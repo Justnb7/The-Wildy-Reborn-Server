@@ -590,11 +590,11 @@ public class Trading {
 
 		int playerSize = player.getTradeContainer().size();
 		int targetSize = target.getTradeContainer().size();
-		if (target.getItems().getFreeSlots() < playerSize) {
-			player.write(new SendMessagePacket(target.getName() + " only has " + target.getItems().getFreeSlots()
-					+ " free slots, please remove " + (playerSize - target.getItems().getFreeSlots()) + " items."));
-			target.write(new SendMessagePacket(player.getName() + " has to remove " + (playerSize - target.getItems().getFreeSlots())
-					+ " items or you could offer them " + (targetSize - target.getItems().getFreeSlots()) + " items."));
+		if (target.getItems().freeSlots() < playerSize) {
+			player.write(new SendMessagePacket(target.getName() + " only has " + target.getItems().freeSlots()
+					+ " free slots, please remove " + (playerSize - target.getItems().freeSlots()) + " items."));
+			target.write(new SendMessagePacket(player.getName() + " has to remove " + (playerSize - target.getItems().freeSlots())
+					+ " items or you could offer them " + (targetSize - target.getItems().freeSlots()) + " items."));
 			player.getActionSender().sendString("Not enough inventory space...", 3431);
 			target.getActionSender().sendString("Not enough inventory space...", 3431);
 			return;

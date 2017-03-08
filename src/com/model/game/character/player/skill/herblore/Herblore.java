@@ -10,11 +10,14 @@ import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.item.GameItem;
+import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
 
-
-
+/**
+ * The herblore skill.
+ * @author Unknown
+ *
+ */
 public class Herblore {
 	
 	/**
@@ -92,7 +95,7 @@ public class Herblore {
 	 */
 	private boolean containsSecondaries(Potion potion) {
 		int required = potion.getIngredients().length;
-		for (GameItem ingredient : potion.getIngredients()) {
+		for (Item ingredient : potion.getIngredients()) {
 			if (player.getItems().playerHasItem(ingredient.getId(), ingredient.getAmount())) {
 				required--;
 			}

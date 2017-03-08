@@ -14,8 +14,7 @@ import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The cooking skill
- * @author Patrick van Elderen
- * http://www.rune-server.org/members/_patrick_/
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  * @version 1.0 @date 06-03-2017
  */
 public class Cooking extends SkillTask {
@@ -128,6 +127,7 @@ public class Cooking extends SkillTask {
 		}
 		getPlayer().write(new SendMessagePacket("You attempt to cook the " + ItemDefinition.forId(cookables.getProduct()).getName().toLowerCase() + "."));
 		getPlayer().playAnimation(Animation.create(896));
+		
 		if ((getPlayer().getSkills().getLevel(Skills.COOKING) >= cookables.getBurningLvl()) ? false : burned(cookables, getPlayer())) {
 			getPlayer().getItems().deleteItem(cookables.getRawItem(), 1);
 			getPlayer().getItems().addItem(cookables.getBurntId(), 1);

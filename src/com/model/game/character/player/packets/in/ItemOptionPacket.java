@@ -249,7 +249,12 @@ public class ItemOptionPacket implements PacketType {
         	Trading.decline(player);
         }
 		
-		//We are dropping an pet item.
+		// We are dropping an pet item.
+		if (player != null || item != null) {
+			player.getPet().drop(player, item);
+		}
+		
+		//Old
 		if (player.getPets().isPetItem(item.getId())) {
 			player.getPets().spawnPet(player, item.getId(), false);
 			return;
@@ -410,7 +415,7 @@ public class ItemOptionPacket implements PacketType {
 			System.out.println("Difficulty is "+player.bossDifficulty);
 			Item[] items = ClueScrollHandler.determineReward(player, player.bossDifficulty);
 
-			if (player.getItems().getFreeSlots() < items.length + 1) {
+			if (player.getItems().freeSlots() < items.length + 1) {
 				player.write(new SendMessagePacket("You do not have enough space in your inventory!"));
 				return;
 			}

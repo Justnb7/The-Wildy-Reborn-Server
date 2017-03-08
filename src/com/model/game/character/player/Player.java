@@ -35,6 +35,7 @@ import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.npc.pet.PetOld;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
@@ -2214,7 +2215,7 @@ public class Player extends Entity {
 		return bank;
 	}
 	
-	public Pet getPets() {
+	public PetOld getPets() {
 		return pethandler;
 	}
 
@@ -2242,7 +2243,7 @@ public class Player extends Entity {
 	private SkillTask skillTask;
 	private Bank bank;
 	private int sessionExperience;
-	private Pet pethandler = new Pet();
+	private PetOld pethandler = new PetOld();
 	private LunarSpells lunar = new LunarSpells(this);
 	
 	/**
@@ -3038,6 +3039,26 @@ public class Player extends Entity {
 
 	public void setLastFire(long lastFire) {
 		this.lastFire = lastFire;
+	}
+
+	private Pet pet;
+	
+	public void setPet(Pet pet) {
+		this.pet = pet;
+	}
+
+	public Pet getPet() {
+		return pet;
+	}
+	
+	private boolean petSpawned;
+	
+	public boolean isPetSpawned() {
+		return petSpawned;
+	}
+
+	public void setPetSpawned(boolean petSpawned) {
+		this.petSpawned = petSpawned;
 	}
 
 }

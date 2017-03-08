@@ -35,5 +35,13 @@ public abstract class SkillTask extends ScheduledTask {
 	public Player getPlayer() {
 		return player;
 	}
+
+	public static boolean noInventorySpace(Player player, String skill) {
+		if (player.getItems().freeSlots() == 0) {
+			player.message("You don't have enough inventory space.");
+			return false;
+		}
+		return true;
+	}
 	
 }

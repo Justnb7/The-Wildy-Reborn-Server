@@ -14,6 +14,7 @@ import com.model.game.character.player.packets.in.RegionChangePacketHandler;
 import com.model.game.character.player.packets.in.SecondGroundOption;
 import com.model.game.character.player.packets.in.CharDesignPacketHandler;
 import com.model.game.character.player.packets.in.ChatPacketHandler;
+import com.model.game.character.player.packets.in.ClickOnGameScreen;
 import com.model.game.character.player.packets.in.ClickingObject;
 import com.model.game.character.player.packets.in.CloseInterfacePacketHandler;
 import com.model.game.character.player.packets.in.DialoguePacketHandler;
@@ -59,7 +60,8 @@ public class PacketHandler {
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();
 		subPacketId[41] = new WieldPacketHandler();
-		packetId[241] = u;
+		packetId[241] = new ClickOnGameScreen();
+		
 		packetId[3] = u;
 		packetId[202] = u;
 		packetId[77] = u;
@@ -141,6 +143,7 @@ public class PacketHandler {
 	}
 
 	public static void processPacket(Player c, int packetType, int packetSize) {
+		//System.out.println("Unhandled packet type: " + packetType + " - size: " + packetSize);
 		if (packetType == -1 || packetType == 181) {
 			return;
 		}

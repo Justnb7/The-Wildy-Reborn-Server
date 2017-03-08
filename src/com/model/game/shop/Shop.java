@@ -298,7 +298,7 @@ public final class Shop {
 		if (item.getAmount() > shopItem.getAmount())
 			item.setCount(shopItem.getAmount());
 		if (!player.getItems().spaceFor(item)) {
-			item.setCount(player.getItems().getFreeSlots());
+			item.setCount(player.getItems().freeSlots());
 			if (item.getAmount() == 0) {
 				player.write(new SendMessagePacket("You do not have enough space" + " in your inventory to buy this item!"));
 				return false;
@@ -310,8 +310,8 @@ public final class Shop {
 			player.write(new SendMessagePacket("You do not have enough " + currency + " to buy this item."));
 			return false;
 		}
-		if (player.getItems().getFreeSlots() >= item.getAmount() && !item.getDefinition().isStackable()
-				|| player.getItems().getFreeSlots() >= 1 && item.getDefinition().isStackable()
+		if (player.getItems().freeSlots() >= item.getAmount() && !item.getDefinition().isStackable()
+				|| player.getItems().freeSlots() >= 1 && item.getDefinition().isStackable()
 				|| player.getItems().playerHasItem(item.getId()) && item.getDefinition().isStackable()) {
 
 			if (itemCache.containsKey(item.getId()) && !player.getOpenShop().equals("Gear Point Store") && !player.getOpenShop().equals("Donator Ticket Shop") && !player.getOpenShop().equals("Bounty Hunter Store")) {
@@ -370,7 +370,7 @@ public final class Shop {
 			player.write(new SendMessagePacket("There is no room in this store for the item you are trying to sell!"));
 			return false;
 		}
-		if (player.getItems().getFreeSlots() == 0 && !currency.getCurrency().canRecieveCurrency(player)) {
+		if (player.getItems().freeSlots() == 0 && !currency.getCurrency().canRecieveCurrency(player)) {
 			player.write(new SendMessagePacket("You do not have enough space in your inventory to sell this item!"));
 			return false;
 		}
@@ -434,7 +434,7 @@ public final class Shop {
 		}
 		for (int j = 0; j < skillCapes.length; j++) {
 			if (skillCapes[j] == item || skillCapes[j] + 1 == item) {
-				if (player.getItems().getFreeSlots() > 1) {
+				if (player.getItems().freeSlots() > 1) {
 					if (player.getItems().playerHasItem(995, 99000)) {
 						if (player.getSkills().getLevelForExperience(j) >= 99) {
 							player.getItems().deleteItem(995, player.getItems().getItemSlot(995), 99000);

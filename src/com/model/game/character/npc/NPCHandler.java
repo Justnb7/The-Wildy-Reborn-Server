@@ -13,7 +13,7 @@ import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.npc.drops.NpcDropSystem;
-import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.npc.pet.PetOld;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -118,6 +118,7 @@ public final class NPCHandler {
 			if (i == null)
 				continue;
 			if (i.ownerId == owner.getIndex())
+				System.out.println("asasass");
 				followPlayer(npc, owner.getIndex());
 		}
 		return npc;
@@ -304,7 +305,7 @@ public final class NPCHandler {
 		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
 		// get the drop table
 		
-		Pet.drop(player, npc.npcId);
+		PetOld.drop(player, npc.npcId);
 		float yourIncrease = 0;
 
 		if (player.playerEquipment[player.getEquipment().getRingId()] == 2572) {
@@ -336,8 +337,8 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static boolean followPlayer(int i) {
-		switch (World.getWorld().getNpcs().get(i).npcId) {
+	public static boolean followPlayer(Npc npc) {
+		switch (npc.npcId) {
 		case 2042:
 		case 2043:
 		case 2044:
@@ -363,7 +364,7 @@ public final class NPCHandler {
 		Player player = World.getWorld().getPlayers().get(playerId);
 		if (player == null || npc == null) {
 			return;
-		}
+		}//sec so basicly you made this follow() method before can't we apply that to this? check
 		
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
@@ -371,7 +372,7 @@ public final class NPCHandler {
 				return;
 			}
 		}
-		if (followPlayer(npc.getIndex())) {
+		if (followPlayer(npc)) {
 			npc.facePlayer(playerId);
 			//return;
 		}
@@ -391,7 +392,7 @@ public final class NPCHandler {
 				return;
 			}
 		}
-		if (!followPlayer(npc.getIndex())) {
+		if (!followPlayer(npc)) {
 			npc.facePlayer(playerId);
 			return;
 		}

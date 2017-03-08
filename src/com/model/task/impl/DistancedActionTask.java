@@ -5,8 +5,6 @@ import com.model.task.ScheduledTask;
 /**
  * A {@link ScheduledTask} which runs when a certain requirement is met such as
  * reaching a destination
- * 
- * @author Patrick van Elderen
  *
  */
 public abstract class DistancedActionTask extends ScheduledTask {

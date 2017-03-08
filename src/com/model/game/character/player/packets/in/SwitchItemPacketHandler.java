@@ -26,6 +26,9 @@ public class SwitchItemPacketHandler implements PacketType {
 			return;
 		}
 		
+		//Stop active skilling tasks
+		player.stopSkillTask();
+		
 		player.getItems().swap(fromSlot, toSlot, interfaceId, insertMode);
 	}
 }

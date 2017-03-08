@@ -349,7 +349,7 @@ public final class GroundItemHandler {
 				if (player.getPosition().getX() == groundItem.getPosition().getX()
 						&& player.getPosition().getY() == groundItem.getPosition().getY()) {
 
-					if (player.getItems().getFreeSlots() == 0
+					if (player.getItems().freeSlots() == 0
 							&& !(player.getItems().playerHasItem(item.getId()) && item.getDefinition().isStackable())) {
 						player.write(new SendMessagePacket("You do not have enough inventory space to pick that up."));
 						stop();

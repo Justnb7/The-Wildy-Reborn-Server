@@ -486,7 +486,7 @@ public class ItemAssistant {
 			return false;
 		}
 
-		if ((((getFreeSlots() >= 1) || playerHasItem(item, 1)) && ItemDefinition.forId(item).isStackable()) || ((getFreeSlots() > 0) && !ItemDefinition
+		if ((((freeSlots() >= 1) || playerHasItem(item, 1)) && ItemDefinition.forId(item).isStackable()) || ((freeSlots() > 0) && !ItemDefinition
 				.forId(item).isStackable())) {
 
 			for (int i = 0; i < player.playerItems.length; i++) {
@@ -528,7 +528,7 @@ public class ItemAssistant {
             return false;
         }
 
-        if ((((getFreeSlots() >= 1) || playerHasItem(item, 1)) && ItemDefinition.forId(item).isStackable()) || ((getFreeSlots() > 0) && !ItemDefinition
+        if ((((freeSlots() >= 1) || playerHasItem(item, 1)) && ItemDefinition.forId(item).isStackable()) || ((freeSlots() > 0) && !ItemDefinition
             .forId(item).isStackable())) {
             for (int i = 0; i < player.playerItems.length; i++) {
                 if ((player.playerItems[i] == (item + 1)) && ItemDefinition.forId(item).isStackable() && (player.playerItems[i] > 0)) {
@@ -790,7 +790,7 @@ public class ItemAssistant {
                 boolean wearingWeapon = player.playerEquipment[player.getEquipment().getWeaponId()] > 0;
                 if (is2h) {
                     if (wearingShield && wearingWeapon) {
-                        if (getFreeSlots() > 0) {
+                        if (freeSlots() > 0) {
                             player.playerItems[slotId] = toRemove + 1;
                             player.playerItemsN[slotId] = toRemoveN;
                             player.playerEquipment[targetSlot] = toEquip - 1;
@@ -1132,7 +1132,7 @@ public class ItemAssistant {
 			} else
 				player.write(new SendMessagePacket("This item cannot be taken out as noted."));
 		}
-		if (getFreeSlots() == 0 && !playerHasItem(itemId)) {
+		if (freeSlots() == 0 && !playerHasItem(itemId)) {
 			player.write(new SendMessagePacket("There is not enough space in your inventory."));
 			return;
 		}
@@ -1149,8 +1149,8 @@ public class ItemAssistant {
 			item.setAmount(tab.getItemAmount(item));
 		}
 		if (!isStackable(item.getId() - 1) && !noted) {
-			if (getFreeSlots() < item.getAmount())
-				item.setAmount(getFreeSlots());
+			if (freeSlots() < item.getAmount())
+				item.setAmount(freeSlots());
 		}
 		if (item.getAmount() < 0)
 			item.setAmount(0);
@@ -1626,7 +1626,7 @@ public class ItemAssistant {
 		  }
 	  }
 
-	  public int getFreeSlots() {
+	  public int freeSlots() {
 		  int freeS = 0;
 		  for (int i = 0; i < player.playerItems.length; i++) {
 			  if (player.playerItems[i] <= 0) {
@@ -1648,11 +1648,11 @@ public class ItemAssistant {
 					  return true;
 				  }
 			  }
-			  int slot = getFreeSlots();
+			  int slot = freeSlots();
 			  return slot != -1;
 		  }
 
-		  int slots = getFreeSlots();
+		  int slots = freeSlots();
 		  return slots >= item.getAmount();
 	  }
 
@@ -1982,7 +1982,7 @@ public class ItemAssistant {
 	}
 	
 	public void addOrSendToBank(int item, int amount) {
-		if(getFreeSlots() > 0) {
+		if(freeSlots() > 0) {
 			addItem(item, amount);
 		} else {
 			addToBank(item, amount, true);
@@ -1991,7 +1991,7 @@ public class ItemAssistant {
 	}
 
     public void addOrCreateGroundItem(int id, int amount) {
-		if (getFreeSlots() > 0) {
+		if (freeSlots() > 0) {
 			addItem(id, amount);
 		} else if ((amount > 1) && (!ItemDefinition.forId(id).isStackable())) {
 			for (int i = 0; i < amount; i++)

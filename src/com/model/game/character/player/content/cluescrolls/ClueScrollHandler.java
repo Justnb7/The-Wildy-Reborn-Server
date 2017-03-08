@@ -191,7 +191,7 @@ public final class ClueScrollHandler {
 	public static boolean npcDrop(Player player, Npc npc) {
 		if (player.clueContainer != null && npc.spawnedBy == player.getIndex() && npc.forClue && player.bossDifficulty != null) {
 			StringBuilder builder = new StringBuilder("The boss drops a casket, ");
-			if (player.getItems().getFreeSlots() > 0) {
+			if (player.getItems().freeSlots() > 0) {
 				player.getItems().addItem(2714, 1);
 				builder.append("it is added to your inventory!");
 			} else if (player.getItems().freeBankSlots() > 0) {
@@ -211,7 +211,7 @@ public final class ClueScrollHandler {
 	public static boolean giveReward(Player player) {
 		if (player.clueContainer != null) {
 			StringBuilder builder = new StringBuilder("You dig and find a casket, ");
-			if (player.getItems().getFreeSlots() > 0) {
+			if (player.getItems().freeSlots() > 0) {
 				player.getItems().addItem(2714, 1);
 				builder.append("it is added to your inventory!");
 			} else if (player.getItems().freeBankSlots() > 0) {

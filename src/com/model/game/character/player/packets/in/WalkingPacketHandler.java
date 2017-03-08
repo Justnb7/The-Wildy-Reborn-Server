@@ -55,6 +55,10 @@ public class WalkingPacketHandler implements PacketType {
 		//Stop our distanced action task because we reset the walking queue by walking
 		player.stopDistancedTask();
 		
+		//Stop active skilling tasks
+		player.removeAttribute("fishing");
+		player.stopSkillTask();
+		
 		//When walking during a trade we decline
 		if (Trading.isTrading(player)) {
             Trading.decline(player);

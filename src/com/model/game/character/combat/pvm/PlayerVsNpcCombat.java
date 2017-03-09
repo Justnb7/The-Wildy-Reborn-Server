@@ -3,6 +3,7 @@ package com.model.game.character.combat.pvm;
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
+import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
@@ -146,7 +147,7 @@ public class PlayerVsNpcCombat {
 			damage = npc.currentHealth;
 		}
 
-		npc.underAttack = true;
+		npc.retaliate(attacker);
 		attacker.killingNpcIndex = attacker.npcIndex;
 		
 		if (damage > 0) {
@@ -287,7 +288,7 @@ public class PlayerVsNpcCombat {
 				break;
 			}
 		}
-		npc.underAttack = true;
+		npc.retaliate(player);
 		if (MagicCalculations.magicMaxHitModifier(player) != 0) {
 			npc.addDamageReceived(player.getName(), damage);
 			npc.damage(new Hit(damage));
@@ -494,7 +495,7 @@ public class PlayerVsNpcCombat {
 			attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
 		
 			
-			victim.underAttack = true;
+			victim.retaliate(attacker);
 			victim.addDamageReceived(attacker.getName(), damage);
 			victim.damage(new Hit(damage));
 			
@@ -949,6 +950,10 @@ public class PlayerVsNpcCombat {
 			player.getPA().followNpc(); // adjust walking queue in direction of target
 			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit()); // same junk
 			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
+			if (!(CombatFormulae.getAccuracy(player, npc, 1, 1.0))) {
+				player.delayedDamage = 0;
+				player.delayedDamage2 = 0;
+			}
 			player.oldNpcIndex = index;
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) { // range
 			if (player.usingCross)

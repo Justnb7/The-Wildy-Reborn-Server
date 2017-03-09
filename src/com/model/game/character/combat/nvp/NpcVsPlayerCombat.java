@@ -67,8 +67,7 @@ public class NpcVsPlayerCombat {
 		}
 		
 		// Call code to attack our target if we're alive
-		if (!npc.isDead && (npc.targetId > 0 || npc.underAttack) && !npc.walkingHome) {
-			
+		if (!npc.isDead && !npc.walkingHome && npc.targetId > 0) {
 			Player player = World.getWorld().getPlayers().get(npc.targetId);
 		//FIXME 
 			boolean in_range = player != null && NPCHandler.goodDistance(player.absX, player.absY, npc.absX, npc.absY, 20);
@@ -306,8 +305,8 @@ public class NpcVsPlayerCombat {
 				damage = Utility.getRandom(boss.getMaximumDamage(npc.attackStyle));
 			}
 			if (npc.attackStyle == MobAttackType.MELEE) {
-				// accuracy check
-				if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, npc.attackStyle, 1.0))) {
+				// accuracy check wrong way around lol
+				if (!(CombatFormulae.getAccuracy(npc, player, npc.attackStyle, 1.0))) {
 					damage = npc.npcId == 1677 ? Utility.getRandom(10) : 0;
 				}
 				if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE) && npc.npcId != 1677) {
@@ -332,7 +331,7 @@ public class NpcVsPlayerCombat {
 			}
 
 			if (npc.attackStyle == MobAttackType.RANGE) {
-				if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 1, 1.0))) {
+				if (!(CombatFormulae.getAccuracy(npc, player, 1, 1.0))) {
 					damage = 0;
 				}
 				// overheads check
@@ -351,7 +350,7 @@ public class NpcVsPlayerCombat {
 					damage = Utility.getRandom(40);
 				}
 
-				if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 2, 1.0))) {
+				if (!(CombatFormulae.getAccuracy(npc, player, 2, 1.0))) {
 					damage = 0;
 				}
 
@@ -614,7 +613,7 @@ public class NpcVsPlayerCombat {
 						player.damage(new Hit(damage));
 					}
 					if (npc.attackStyle == MobAttackType.MAGIC) {
-						if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 2, 1.0))) {
+						if (!(CombatFormulae.getAccuracy(npc, player, 2, 1.0))) {
 							damage = 0;
 						}
 						
@@ -629,7 +628,7 @@ public class NpcVsPlayerCombat {
 					}
 					
 					if (npc.attackStyle == MobAttackType.RANGE) {
-						if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)npc, 1, 1.0))) {
+						if (!(CombatFormulae.getAccuracy(npc, player, 1, 1.0))) {
 							damage = 0;
 						}
 						// overheads check

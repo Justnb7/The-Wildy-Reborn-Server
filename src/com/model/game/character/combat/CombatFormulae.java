@@ -77,8 +77,6 @@ public class CombatFormulae {
         double tar_block_chance = 0;
 
         double tar_effective_defence = 0;
-        
-        double repBonus = 1;
 
         if (attacker.isPlayer()) {
             Player p = attacker.toPlayer();
@@ -275,8 +273,9 @@ public class CombatFormulae {
         }
         att_hit_chance = Utility.getRandom((int) (att_hit_chance + 20 + (!attacker.isNPC() ? attacker.toPlayer().isUsingSpecial() ? 20 * additionalSpecMulti : 0 : 0)));
         tar_block_chance = Utility.getRandom((int) tar_block_chance);
-        //System.out.println("additionalSpecMulti "+additionalSpecMulti);
-        return (int) att_hit_chance > (int) tar_block_chance * repBonus;
+        /*if (attacker.isPlayer())
+        	System.out.println("target "+target+" hit = "+((int)att_hit_chance)+" > "+((int) tar_block_chance * repBonus)+" also additionalSpecMulti "+additionalSpecMulti);*/
+        return (int) att_hit_chance > (int) tar_block_chance;
     }
     
     /**

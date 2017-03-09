@@ -851,4 +851,9 @@ public class Npc extends Entity {
 	public int clientIndex() {
 		return this.getIndex();
 	}
+
+	public void retaliate(Entity attacker) {
+		// Set npc's target to the person that attacked us
+		this.targetId = attacker.getIndex();
+	}
 }

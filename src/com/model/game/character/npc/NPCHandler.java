@@ -348,10 +348,10 @@ public final class NPCHandler {
 
 		int targX = target.getX();
 		int targY = target.getY();
-		if (npc.isPet) {
+		/*if (npc.isPet) { // always stand 1 south
 			targX = target.getX();
 			targY = target.getY() -1;
-		} 
+		} */
 		//npc.forceChat("delta "+(npc.absX-targX)+" by "+(npc.absY-targY));
 
 		// At this point, the target is valid, don't start walking off randomly.
@@ -365,32 +365,30 @@ public final class NPCHandler {
 			return;
 		}
 
-		// Pets don't need to check combat distance
-		boolean is_combat_npc = !npc.isPet;
 		/*
 		 * If close enough, stop following
 		 */
-		if (is_combat_npc) {
-			for (Position pos : npc.getTiles()) {
-				double distance = pos.distance(target.getPosition());
-				boolean magic = npc.getCombatType() == CombatType.MAGIC;
-				boolean ranged = !magic && npc.getCombatType() == CombatType.RANGED;
-				boolean melee = !magic && !ranged;
-				if (melee) {
-					if (distance <= 1) {
-						return;
-					}
-				} else {
-					if (distance <= (ranged ? 7 : 10)) {
-						return;
-					}
+		
+		for (Position pos : npc.getTiles()) {
+			double distance = pos.distance(target.getPosition());
+			boolean magic = npc.getCombatType() == CombatType.MAGIC;
+			boolean ranged = !magic && npc.getCombatType() == CombatType.RANGED;
+			boolean melee = !magic && !ranged;
+			if (melee || npc.isPet) {
+				if (distance <= 1) { // Stop following when close
+					return;
+				}
+			} else {
+				if (distance <= (ranged ? 7 : 10)) {
+					return;
 				}
 			}
 		}
+		
 		// Spawned by a player.. we're (1) a pet (2) a warrior guild armour.. we follow forever
 		boolean locked_to_plr = npc.spawnedBy > 0 || npc.ownerId > 0; // pets have spawnBy set
 		// Within +/- 15 tiles from where our spawn pos is.
-		boolean in_spawn_area = is_combat_npc && ((npc.getX() < npc.makeX + 15) && (npc.getX() > npc.makeX - 15) && (npc.getY() < npc.makeY + 15) && (npc.getY() > npc.makeY - 15));
+		boolean in_spawn_area = ((npc.getX() < npc.makeX + 15) && (npc.getX() > npc.makeX - 15) && (npc.getY() < npc.makeY + 15) && (npc.getY() > npc.makeY - 15));
 		
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {

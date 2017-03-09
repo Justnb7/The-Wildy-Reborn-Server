@@ -78,7 +78,7 @@ public class NpcVsPlayerCombat {
 				npc.underAttack = false;
 				npc.resetFace();
 			} else {
-				if (npc.attackTimer == 0) {
+				if (npc.attackTimer == 0) {//something before it reaches here breaks
 					NpcVsPlayerCombat.attackPlayer(player, npc);
 				}
 				// Following called in process()

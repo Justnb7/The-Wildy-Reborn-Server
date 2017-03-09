@@ -3,11 +3,18 @@ package com.model.game.character.npc.pet;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.impl.WeakHashtable;
+
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+import com.model.task.events.CycleEvent;
+import com.model.task.events.CycleEventContainer;
+import com.model.task.events.CycleEventHandler;
+
+import jdk.nashorn.internal.objects.annotations.Where;
 
 /**
  * A pet system that uses the Npc class rather than loops
@@ -196,6 +203,24 @@ public class Pet extends Npc {
 				player.setPet(petIds.getNpc());
 				World.getWorld().register(pet);
 				player.getItems().remove(item);
+				CycleEventHandler.getSingleton().addEvent(player, new CycleEvent() {
+
+					@Override
+					public void execute(CycleEventContainer container) {
+						// Pet despawned or owner offline
+						if (player.getIndex() < 1 || pet.getIndex() < 1) {
+							container.stop();
+							return;
+						}
+						int delta = player.getPosition().distance(pet.getPosition());
+						if (delta >= 13 || delta <= -13) {
+							// TODO teleport npc to player thats itt
+							//teleport you mean move the npc or respawn move to player ok
+							//got some more time to help me with two bugs? yh
+						}
+					}
+
+				}, 4);
 				return false;
 			}
 		}

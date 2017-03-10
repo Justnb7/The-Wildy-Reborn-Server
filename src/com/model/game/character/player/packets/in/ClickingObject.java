@@ -21,7 +21,7 @@ public class ClickingObject implements PacketType {
 		player.objectX = 0;
 		player.objectId = 0;
 		player.objectY = 0;
-		player.getPA().resetFollow();
+		player.setFollowing(null);
 		Combat.resetCombat(player);
 		player.getPA().requestUpdates();
 		

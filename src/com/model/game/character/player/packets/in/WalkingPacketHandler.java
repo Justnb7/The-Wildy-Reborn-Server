@@ -87,9 +87,7 @@ public class WalkingPacketHandler implements PacketType {
 			player.setOpenShop(null);
 			player.mageFollow = false;
 			Combat.resetCombat(player);
-			if (player.followId > 0 || player.followId2 > 0) {
-				player.getPA().resetFollow();
-			}
+			player.setFollowing(null);
 		}
 		
 		// Packet 248 is either clicking on the minimap or a npc/object/player

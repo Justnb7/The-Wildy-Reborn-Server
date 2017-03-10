@@ -1,9 +1,5 @@
 package com.model.game.character.player.content.multiplayer.duel;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.combat.Combat;
@@ -27,6 +23,10 @@ import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
 import com.model.utility.Utility;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class DuelSession extends MultiplayerSession {
 
@@ -355,7 +355,7 @@ public class DuelSession extends MultiplayerSession {
 		
 		//reset player variables
 		player.getPA().resetAnimation();
-		player.getPA().resetFollow();
+		player.setFollowing(null);
 	}
 
 	private void clearPlayerAttributes(Player player) {

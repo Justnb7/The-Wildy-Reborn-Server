@@ -9,13 +9,14 @@ public class FollowPlayer implements PacketType {
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
 		int followPlayer = player.getInStream().readUnsignedWordBigEndian();
-		if (World.getWorld().getPlayers().get(followPlayer) == null) {
+		Player op = World.getWorld().getPlayers().get(followPlayer);
+		if (op == null) {
 			return;
 		}
 		player.getCombat().reset();
 		player.mageFollow = false;
 		player.usingBow = false;
 		player.followDistance = 1;
-		player.followId = followPlayer;
+		player.setFollowing(op);
 	}
 }

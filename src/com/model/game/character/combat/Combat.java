@@ -37,7 +37,7 @@ public class Combat {
 		player.usingMagic = false;
 		player.faceEntity(null);
 		player.getCombat().reset();
-		player.getPA().resetFollow();
+		player.setFollowing(null);
 		player.setInCombat(false);
 		player.getActionSender().sendString("", 35000);
 	}
@@ -301,8 +301,7 @@ public class Combat {
 			player.mageFollow = true;
 			if (!player.autoCast) {
 				player.stopMovement();
-				player.followId = 0;
-				player.followId2 = 0;
+				player.setFollowing(null);
 			}
 		}
 
@@ -333,7 +332,6 @@ public class Combat {
 
 		if (player.getCombatType() == CombatType.MELEE) {
 
-			player.getPA().followPlayer(true);
 
 			// First, calc hits.
 			int dam1 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
@@ -357,8 +355,6 @@ public class Combat {
 
 			player.usingBow = true;
 
-			player.getPA().followPlayer(true);
-
 
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.getCombat().fireProjectileAtTarget();
@@ -380,8 +376,6 @@ public class Combat {
 			} else {
 				player.getItems().deleteEquipment(); // here
 			}
-
-			player.getPA().followPlayer(true);
 
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 

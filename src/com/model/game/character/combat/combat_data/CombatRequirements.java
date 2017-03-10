@@ -120,9 +120,9 @@ public class CombatRequirements {
 	}		
 
 	public static int getRequiredDistance(Player player) {
-		if (player.followId > 0 && player.frozen() && !player.getMovementHandler().isMoving())
+		if (player.followTarget != null && player.frozen() && !player.getMovementHandler().isMoving())
 			return 2;
-		else if(player.followId > 0 && player.frozen() && player.getMovementHandler().isMoving()) {
+		else if(player.followTarget != null && player.frozen() && player.getMovementHandler().isMoving()) {
 			return 3;
 		} else {
 			return 1;

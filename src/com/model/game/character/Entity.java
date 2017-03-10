@@ -539,7 +539,7 @@ public abstract class Entity {
 	 *   The entity
 	 */
 	public void faceEntity(Entity e) {
-		forceChat("face: "+e);
+		//forceChat("face: "+e);
 		if (e == null || e == this) {
 			//System.out.println("wtf");
 			this.resetFace();

@@ -1,7 +1,7 @@
 package com.model.game.character.player;
 
-import com.model.game.World;
 import com.model.game.character.Animation;
+import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatType;
@@ -128,10 +128,9 @@ public class PlayerAssistant {
     /**
      * Following
      */
-    public void followPlayer(boolean forCombat) {
-        Player following = World.getWorld().getPlayers().get(player.followId);
+    public void followPlayer(boolean forCombat, Entity following) {
         if (following == null || following.isDead()) {
-            resetFollow();
+            player.setFollowing(null);
             return;
         }
         if (player.frozen()) {
@@ -139,7 +138,7 @@ public class PlayerAssistant {
         }
 
         if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-            resetFollow();
+            player.setFollowing(null);
             return;
         }
 
@@ -156,7 +155,7 @@ public class PlayerAssistant {
 		boolean playerBowOrCross = (player.usingBow) && bowDistance;
 
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
-            resetFollow();
+            player.setFollowing(null);
             return;
         }
 
@@ -200,9 +199,9 @@ public class PlayerAssistant {
          */
         if (!forCombat) {
             int fx = following.lastX;
-            int fy = World.getWorld().getPlayers().get(player.followId).lastY;
+            int fy = following.lastY;
 
-            int delay = (player.getMovementHandler().isMoving() || following.getMovementHandler().isMoving()) ? 1
+            int delay = (player.getMovementHandler().isMoving() || ((Player)following).getMovementHandler().isMoving()) ? 1
                 : (player.walkTutorial + 1 >= Integer.MAX_VALUE ? player.walkTutorial = 0 : player.walkTutorial++);
             int remainder = delay % 2;
             if (remainder == 1) {
@@ -239,7 +238,7 @@ public class PlayerAssistant {
 
                 if ((player.spellId > 0 || player.oldSpellId > 0) && magicDistance) {
                     if (player.spellId > 0 || player.oldSpellId > 0) {
-                        resetFollow();
+                        player.setFollowing(null);
                         return;
                     }
                 }
@@ -296,10 +295,10 @@ public class PlayerAssistant {
         player.getMovementHandler().addToPath(new Position(player.getX() + xMove, player.getY() + yMove, 0));
     }
 
-    public void followNpc() {
+    public void followNpc(Entity targ) {
 
-        if (World.getWorld().getNpcs().get(player.npcFollowIndex) == null || World.getWorld().getNpcs().get(player.npcFollowIndex).isDead) {
-            player.npcFollowIndex = 0;
+        if (targ == null || targ.isDead()) {
+            player.setFollowing(null);
             return;
         }
         if (player.frozen()) {
@@ -308,8 +307,8 @@ public class PlayerAssistant {
         if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0)
             return;
 
-        int otherX = World.getWorld().getNpcs().get(player.npcFollowIndex).getX();
-        int otherY = World.getWorld().getNpcs().get(player.npcFollowIndex).getY();
+        int otherX = targ.getX();
+        int otherY = targ.getY();
         player.goodDistance(otherX, otherY, player.getX(), player.getY(), 1);
         boolean hallyDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 2);
         boolean bowDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 7);
@@ -318,7 +317,7 @@ public class PlayerAssistant {
         boolean mageDistance = player.goodDistance(otherX, otherY, player.getX(),player.getY(), 7);
         boolean castingMagic = false, playerRanging = false;
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
-            player.npcFollowIndex = 0;
+            player.setFollowing(null);
             return;
         }
 
@@ -341,7 +340,7 @@ public class PlayerAssistant {
 			return;
 		}
 
-        Npc npc = World.getWorld().getNpcs().get(player.npcFollowIndex);
+        Npc npc = (Npc) targ;
 
         boolean inside = false;
         for (Position tile : npc.getTiles()) {
@@ -407,12 +406,6 @@ public class PlayerAssistant {
             }
         }
         player.faceEntity(npc);
-    }
-
-    public void resetFollow() {
-        player.followId = 0;
-        player.followId2 = 0;
-        player.faceEntity(player);
     }
 
     public void walkTo(int i, int j) {
@@ -641,7 +634,7 @@ public class PlayerAssistant {
 		requestUpdates();
 		resetAnimation();
 		resetTb();
-		resetFollow();
+        player.setFollowing(null);
 		player.getActionSender().sendRemoveInterfacePacket();
     }
 	

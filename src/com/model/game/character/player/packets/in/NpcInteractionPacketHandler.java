@@ -21,7 +21,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		player.npcClickIndex = 0;
 		player.getCombat().reset();
 		player.clickNpcType = 0;
-		player.getPA().resetFollow();
+		player.setFollowing(null);
 		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
 		}
@@ -62,9 +62,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 				player.stopMovement();
 			}
 
-			if (player.playerFollowIndex > 0) {
-				player.getPA().resetFollow();
-			}
 			player.getCombat().setTarget(npc);
 			break;
 

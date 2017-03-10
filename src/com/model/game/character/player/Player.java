@@ -1481,10 +1481,11 @@ public class Player extends Entity {
 	}
 	
 	public void process_following() {
-		if (followId > 0) {
-			getPA().followPlayer(!asPlayer().getCombat().noTarget());
-		} else if (followId2 > 0) {
-			getPA().followNpc();
+		if (followTarget != null) {
+			if (followTarget.isNPC())
+				getPA().followNpc(followTarget);
+			else
+				getPA().followPlayer(!asPlayer().getCombat().noTarget(), followTarget);
 		}
 	}
 
@@ -2881,12 +2882,9 @@ public class Player extends Entity {
 	private int speed1 = -1;
 	private int speed2 = -1;
 	private int direction = -1;
-	public int followId;
-	public int followId2;
 
 	public int rangeEndGFX;
 	public int lastClickedItem;
-	public int playerFollowIndex = 0;
 	public int[] playerBonus = new int[12];
 	public int[] itemKeptId = new int[4];
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
@@ -2894,7 +2892,7 @@ public class Player extends Entity {
 	
 	public int totalLevel, lastX, lastY, killedBy,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
-			followDistance, npcFollowIndex,
+			followDistance,
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId,
 			rangeItemUsed, killingNpcIndex, lastWeaponUsed,

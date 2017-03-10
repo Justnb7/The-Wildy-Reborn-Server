@@ -1,9 +1,7 @@
 package com.model.game.character.player;
 import com.model.Server;
-import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.magic.SpellBook;
-import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.BrimhavenVines;
@@ -13,10 +11,10 @@ import com.model.game.character.player.content.rewards.ShinyChest;
 import com.model.game.character.player.content.teleport.Obelisks;
 import com.model.game.character.player.content.teleport.Teleport;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
+import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
-import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.skill.agility.Shortcut;
 import com.model.game.character.player.skill.fishing.Fishing;
 import com.model.game.character.player.skill.fishing.FishingSpot;
@@ -50,8 +48,7 @@ public class ActionHandler {
 			return;
 		}
 
-		if (player.followId > 0 || player.followId2 > 0)
-			player.getPA().resetFollow();
+		player.setFollowing(null);
 
 		if (id != 2283) {
 			player.face(player, new Position(player.objectX, player.objectY));

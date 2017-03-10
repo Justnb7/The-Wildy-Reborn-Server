@@ -1,13 +1,13 @@
 package com.model.game.character.player.packets.in;
 
-import java.util.Objects;
-
 import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+
+import java.util.Objects;
 
 /**
  * Trading
@@ -18,7 +18,7 @@ public class Trade implements PacketType {
 	public void handle(Player player, int packetType, int packetSize) {
 		int tradeId = player.getInStream().readSignedWordBigEndian();
 		Player requested = World.getWorld().getPlayers().get(tradeId);
-		player.getPA().resetFollow();
+		player.setFollowing(null);
 		if (requested == null) {
 			return;
 		}

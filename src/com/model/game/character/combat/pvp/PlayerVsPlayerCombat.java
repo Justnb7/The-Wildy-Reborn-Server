@@ -261,15 +261,6 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 		CombatExperience.handleCombatExperience(attacker, primairy_damage, CombatType.RANGED);
-		boolean dropArrows = true;
-		
-		if(attacker.lastWeaponUsed == 12926 || attacker.lastWeaponUsed == 4222) {
-			dropArrows = false;
-		}
-		
-		if (dropArrows) {
-			attacker.getItems().dropArrowUnderTarget();
-		}
 		
 		if (attacker.rangeEndGFX > 0 && !attacker.getCombat().usingBolts(attacker.playerEquipment[attacker.getEquipment().getQuiverId()])) {
 			if (attacker.rangeEndGFXHeight) {

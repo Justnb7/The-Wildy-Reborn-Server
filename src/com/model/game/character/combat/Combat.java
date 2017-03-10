@@ -364,6 +364,20 @@ public class Combat {
 				player.getItems().deleteArrow();
 			}
 
+			//Arrows check
+			boolean dropArrows = true;
+			if(player.lastWeaponUsed == 12926 || player.lastWeaponUsed == 4222) {
+				dropArrows = false;
+			}
+
+			if (dropArrows) {
+				player.getItems().dropArrowUnderTarget();
+				player.getItems().deleteArrow();
+				if (player.playerEquipment[3] == 11235) {
+					player.getItems().dropArrowUnderTarget();
+				}
+			}
+
 			// TODO calculate damage and accuracy
 			Combat.hitEvent(player, target, hitDelay, null, CombatType.RANGED);
 

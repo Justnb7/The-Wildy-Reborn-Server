@@ -355,20 +355,6 @@ public class PlayerVsNpcCombat {
         	secondHit = victim.currentHealth;
 		}
 		
-		//Arrows check
-		boolean dropArrows = true;
-		if(attacker.lastWeaponUsed == 12926 || attacker.lastWeaponUsed == 4222) {
-			dropArrows = false;
-		}
-		
-		if (dropArrows) {
-			attacker.getItems().dropArrowUnderTarget();
-			attacker.getItems().deleteArrow();
-			if (attacker.playerEquipment[3] == 11235) {
-				attacker.getItems().dropArrowUnderTarget();
-			}
-		}
-		
         if (victim.attackTimer < 5)
 			victim.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(victim)));
 		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);

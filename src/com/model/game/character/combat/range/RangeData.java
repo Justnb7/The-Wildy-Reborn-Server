@@ -8,24 +8,24 @@ import com.model.game.character.player.Player;
 public class RangeData {
 
 	public static void fireProjectileAtTarget(Player player) {
-				Entity target = player.getCombat().target;
-				int pX = player.getX();
-				int pY = player.getY();
-				int oX = target.getX();
-				int oY = target.getY();
-				int offX = (pY - oY) * -1;
-				int offY = (pX - oX) * -1;
-				int targetIndex = -target.getIndex() - 1; // TODO confirm, maybe use clientIndex()?
-				if (!player.msbSpec)
-					player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, player.getCombat().getStartDelay());
-				else if (player.msbSpec) {
-					player.getProjectile().createPlayersProjectile2(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, player.getCombat().getStartDelay(), 10);
-					player.msbSpec = false;
-				}
-				if (player.getCombat().usingDbow())
-					player.getProjectile().createProjectile3(pY, pX, offY, offX, player.getCombat().getRangeProjectileGFX(), 53, 31, 100, targetIndex);
-
-
+		Entity target = player.getCombat().target;
+		int pX = player.getX();
+		int pY = player.getY();
+		int oX = target.getX();
+		int oY = target.getY();
+		int offX = (pY - oY) * -1;
+		int offY = (pX - oX) * -1;
+		int targetIndex = -target.getIndex() - 1; // TODO confirm, maybe use clientIndex()?
+		if (!player.msbSpec)
+			player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(),
+					player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, getProjectileShowDelay(player));
+		else if (player.msbSpec) {
+			player.getProjectile().createPlayersProjectile2(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(),
+					player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, getProjectileShowDelay(player), 10);
+			player.msbSpec = false;
+		}
+		if (player.getCombat().usingDbow())
+			player.getProjectile().createProjectile3(pY, pX, offY, offX, player.getCombat().getRangeProjectileGFX(), 53, 31, 100, targetIndex);
 	}
 
 	public static int getRangeStr(int i) {

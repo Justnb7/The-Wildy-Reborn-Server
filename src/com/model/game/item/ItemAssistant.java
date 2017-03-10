@@ -861,6 +861,7 @@ public class ItemAssistant {
 			writeBonus();
 			CombatAnimation.itemAnimations(player);
 			player.getPA().requestUpdates();
+			player.getCombat().reset();
             return true;
         } else {
             return false;

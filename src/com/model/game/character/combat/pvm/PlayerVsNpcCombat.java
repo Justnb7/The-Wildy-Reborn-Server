@@ -177,6 +177,7 @@ public class PlayerVsNpcCombat {
 		player.usingMagic = false;
 		player.castingMagic = false;
 		player.oldSpellId = 0;
+		npc.retaliate(player);
 	}
 
 	
@@ -370,34 +371,35 @@ public class PlayerVsNpcCombat {
 		
         if (victim.attackTimer < 5)
 			victim.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(victim)));
-			attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
-		
-			
-			victim.retaliate(attacker);
-			victim.addDamageReceived(attacker.getName(), damage);
-			victim.damage(new Hit(damage));
-			
-			if(damage > 0) {
+		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
+
+
+		victim.retaliate(attacker);
+		victim.addDamageReceived(attacker.getName(), damage);
+		victim.damage(new Hit(damage));
+
+		if(damage > 0) {
+			CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
+		}
+		if (attacker.lastWeaponUsed == 11235) {
+			victim.addDamageReceived(attacker.getName(), secondHit);
+			victim.damage(new Hit(secondHit));
+			if(secondHit > 0) {
 				CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
 			}
-			if (attacker.lastWeaponUsed == 11235) {
-				victim.addDamageReceived(attacker.getName(), secondHit);
-				victim.damage(new Hit(secondHit));
-				if(secondHit > 0) {
-					CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
-				}
+		}
+
+		attacker.setAttribute("ignore defence", false);
+
+		if (attacker.rangeEndGFX > 0) {
+			if (attacker.rangeEndGFXHeight) {
+				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 100));
+			} else {
+				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
 			}
-			
-			attacker.setAttribute("ignore defence", false);
-			
-			if (attacker.rangeEndGFX > 0) {
-				if (attacker.rangeEndGFXHeight) {
-					victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 100));
-				} else {
-					victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
-				}
-			}
-			
+		}
+
+		victim.retaliate(attacker);
 	}
 
 	/**
@@ -602,7 +604,6 @@ public class PlayerVsNpcCombat {
 		if (hasDistance) {
 			player.stopMovement();
 		} else {
-			player.attackDelay = 1;
 			//player.write(new SendGameMessage("No fucking distance?");
 			return false;
 		}

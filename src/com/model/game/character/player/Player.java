@@ -1510,6 +1510,7 @@ public class Player extends Entity {
 			}
 
 			super.frozen_process();
+			//message("atkDelay: "+attackDelay);
 			if (attackDelay > 0) {
 				attackDelay--;
 			}

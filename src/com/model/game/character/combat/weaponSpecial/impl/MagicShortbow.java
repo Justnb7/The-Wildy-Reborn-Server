@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
-import com.model.game.character.combat.combat_data.CombatData;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
@@ -44,12 +44,9 @@ public class MagicShortbow implements SpecialAttack {
 			}
 		});
 
-		Server.getTaskScheduler().schedule(new ScheduledTask(CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase()) - 1) {
-			public void execute() {
-				// TODO hit code which i put in notepad
-				this.stop();
-			}
-		});
+		// TODO maxhit, accuracy calc
+		Combat.hitEvent(player, target, 2, null, CombatType.RANGED);
+		Combat.hitEvent(player, target, 2, null, CombatType.RANGED);
 	}
 
 	@Override

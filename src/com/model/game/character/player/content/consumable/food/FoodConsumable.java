@@ -1,8 +1,5 @@
 package com.model.game.character.player.content.consumable.food;
 
-import java.util.HashMap;
-import java.util.Optional;
-
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
@@ -10,6 +7,9 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.utility.Utility;
+
+import java.util.HashMap;
+import java.util.Optional;
 
 public class FoodConsumable {
 

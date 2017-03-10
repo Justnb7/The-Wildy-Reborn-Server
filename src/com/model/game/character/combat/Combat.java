@@ -48,6 +48,7 @@ public class Combat {
 
 		Entity target = player.getCombat().target;
 		Combat.setCombatStyle(player);
+		player.faceEntity(target);
 
 		if (target.isPlayer()) {
 			Player ptarg = (Player)target;
@@ -100,7 +101,6 @@ public class Combat {
 				player.setFollowing(target);
 			else
 				player.getPA().walkTo(0, 1); // TODO following Npcs properly
-			player.attackDelay = 0;
 			return;
 		}
 		if (target.isNPC()) {
@@ -116,15 +116,6 @@ public class Combat {
 			return;
 		}
 
-		if (player.attackDelay > 0) {
-			// don't attack as our timer hasnt reached 0 yet
-			return;
-		}
-		// ##### BEGIN ATTACK - WE'RE IN VALID DISTANCE AT THIS POINT #######
-		/*
-		 * Set our attack timer so we dont instantly hit again
-		 */
-		player.attackDelay = CombatData.getAttackDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
 
 		/*
 		 * Verify if we have the proper arrows/bolts
@@ -227,8 +218,20 @@ public class Combat {
 		if (player.getCombatType() == CombatType.MAGIC || player.getCombatType() == CombatType.RANGED) {
 			player.stopMovement();
 		}
+
 		//player.getCombat().checkVenomousItems();
-		player.faceEntity(target);
+
+		if (player.attackDelay > 0) {
+			// don't attack as our timer hasnt reached 0 yet
+			player.message("cooldown");
+			return;
+		}
+
+		// ##### BEGIN ATTACK - WE'RE IN VALID DISTANCE AT THIS POINT #######
+		/*
+		 * Set our attack timer so we dont instantly hit again
+		 */
+		player.attackDelay = CombatData.getAttackDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
 		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 
 		/*
@@ -271,7 +274,6 @@ public class Combat {
 		 */
 		if (player.isUsingSpecial() && player.getCombatType() != CombatType.MAGIC) {
 			Special.handleSpecialAttack(player, target);
-			player.setFollowing(player.getCombat().target);
 			return;
 		}
 
@@ -297,7 +299,6 @@ public class Combat {
 			// Magic attack anim
 			player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
 			player.mageFollow = true;
-			player.setFollowing(player.getCombat().target);
 			if (!player.autoCast) {
 				player.stopMovement();
 				player.followId = 0;
@@ -311,6 +312,7 @@ public class Combat {
 		if (target.isPlayer()) {
 			((Player)target).putInCombat(player.getIndex());
 			((Player)target).killerId = player.getIndex();
+			target.getActionSender().sendRemoveInterfacePacket();
 		}
 		player.updateLastCombatAction();
 		player.setInCombat(true);
@@ -331,7 +333,6 @@ public class Combat {
 
 		if (player.getCombatType() == CombatType.MELEE) {
 
-			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
 
 			// First, calc hits.
@@ -342,7 +343,7 @@ public class Combat {
 				dam1 = 0;
 			}
 
-			Combat.hitEvent(player, target, hitDelay, new Hit(dam1), CombatType.MELEE);
+			Combat.hitEvent(player, target, 1, new Hit(dam1), CombatType.MELEE);
 
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
@@ -356,7 +357,6 @@ public class Combat {
 
 			player.usingBow = true;
 
-			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
 
 
@@ -381,7 +381,6 @@ public class Combat {
 				player.getItems().deleteEquipment(); // here
 			}
 
-			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
 
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
@@ -419,7 +418,6 @@ public class Combat {
 						player.getCombat().getEndHeight(), targetIndex, player.getCombat().getStartDelay());
 			}
 			if (player.autocastId > 0) {
-				player.setFollowing(player.getCombat().target);
 				player.followDistance = 5;
 			}
 
@@ -459,6 +457,8 @@ public class Combat {
 
 
 	public static void setCombatStyle(Player player) {
+		player.mageFollow = player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
+		player.setCombatType(null); // reset
 
 		/*
 		 * Check if we are using magic
@@ -479,6 +479,7 @@ public class Combat {
 			player.castingMagic = true;
 		}
 
+		// Spell id set when packet: magic on player
 		if (player.getSpellId() > 0) {
 			player.usingMagic = true;
 			player.setCombatType(CombatType.MAGIC);
@@ -510,12 +511,20 @@ public class Combat {
 				player.usingArrows = true;
 			}
 		}
+		// hasn't been set to magic/range.. must be melee.
+		if (player.getCombatType() == null) {
+			player.setCombatType(CombatType.MELEE);
+		}
 	}
 
 	public static void hitEvent(Player player, Entity target, int delay, Hit hit, CombatType combatType) {
+
+		// Schedule a task
 		Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
 			public void execute() {
-				if (hit == null) { // Method below will calculate the hit itself after the delay.
+				// If the hit param is null, the methods below will calculate the damage for us.
+				if (hit == null) {
+					// Method below will calculate the hit itself after the delay.
 					if (target.isPlayer()) {
 						Player defender = (Player) target;
 						switch (combatType) {
@@ -542,14 +551,13 @@ public class Combat {
 						}
 					}
 				} else {
-					// melee calculated when you swing.
+					// Hit param is not null. Only for melee attacks atm. Damage/accuracy is checked before this code instead of in the below methods.
 					if (target.isPlayer()) {
 						PlayerVsPlayerCombat.applyPlayerMeleeDamage(player, (Player)target, hit.getDamage());
 					} else {
 						PlayerVsNpcCombat.applyNpcMeleeDamage(player, (Npc)target, hit.getDamage());
 					}
 				}
-				// TODO hit code which i put in notepad
 				this.stop();
 			}
 		});

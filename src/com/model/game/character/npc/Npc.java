@@ -1,19 +1,10 @@
 package com.model.game.character.npc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
-
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
-import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.nvp.NpcVsPlayerCombat;
 import com.model.game.character.npc.combat.combat_scripts.Scorpia;
 import com.model.game.character.player.ActionSender;
@@ -26,6 +17,10 @@ import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.NpcDefinition;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 public class Npc extends Entity {
 
@@ -853,7 +848,11 @@ public class Npc extends Entity {
 	}
 
 	public void retaliate(Entity attacker) {
+
+		// if (NPCCombatData.switchesAttackers(victim)) // TODO whats this 1 for
+
 		// Set npc's target to the person that attacked us
 		this.targetId = attacker.getIndex();
+		faceEntity(attacker);
 	}
 }

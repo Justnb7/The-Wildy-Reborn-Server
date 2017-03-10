@@ -1,13 +1,12 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
-import com.model.task.ScheduledTask;
 
 public class ArmadylCrossbow implements SpecialAttack {
 
@@ -34,12 +33,7 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 		player.getCombat().fireProjectileAtTarget();
 
-		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
-			public void execute() {
-				// TODO notepad code
-				this.stop();
-			}
-		});
+		Combat.hitEvent(player, target, 2, null, CombatType.RANGED);
 	}
 
 	@Override

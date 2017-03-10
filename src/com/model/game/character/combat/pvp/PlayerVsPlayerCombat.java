@@ -27,6 +27,7 @@ import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
+import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 import java.util.Objects;
@@ -698,7 +699,13 @@ public class PlayerVsPlayerCombat {
 		/*
 		 * Set the delay before the damage is applied
 		 */
-		player.hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
+		int hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
+		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+			public void execute() {
+				// TODO hit code which i put in notepad
+				this.stop();
+			}
+		});
 
 		/*
 		 * Set our combat values based on the combat style

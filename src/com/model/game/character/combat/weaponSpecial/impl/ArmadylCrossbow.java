@@ -27,15 +27,14 @@ public class ArmadylCrossbow implements SpecialAttack {
 		player.getItems().dropArrowUnderTarget();
 		
 		//TODO implement gfx 301
-		
-		player.hitDelay = 2;
+
 		player.setCombatType(CombatType.RANGED);
 		
 		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
 
 		player.getCombat().fireProjectileAtTarget();
 
-		Server.getTaskScheduler().schedule(new ScheduledTask(player.hitDelay - 1) {
+		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 			public void execute() {
 				// TODO notepad code
 				this.stop();

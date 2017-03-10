@@ -877,7 +877,14 @@ public class PlayerVsNpcCombat {
 			}
 		}
 		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-		player.hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
+
+		int hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
+		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+			public void execute() {
+				// TODO hit code which i put in notepad
+				this.stop();
+			}
+		});
 
 		/*
 		 * Set our calculations for our combat style

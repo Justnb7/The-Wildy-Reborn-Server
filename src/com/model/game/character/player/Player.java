@@ -1510,9 +1510,6 @@ public class Player extends Entity {
 			}
 
 			super.frozen_process();
-			if (hitDelay > 0) { // TODO remove this pi shit in favour of Events
-				hitDelay--;
-			}
 			if (attackDelay > 0) {
 				attackDelay--;
 			}
@@ -2900,7 +2897,7 @@ public class Player extends Entity {
 			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId,
 			rangeItemUsed, killingNpcIndex, lastWeaponUsed,
-			 attackDelay, npcIndex, npcClickIndex, castingSpellId, oldSpellId, hitDelay,
+			 attackDelay, npcIndex, npcClickIndex, castingSpellId, oldSpellId,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
 			walkTutorial = 15, skullIcon = -1, bountyPoints;
 	public int objectDistance, teleHeight;

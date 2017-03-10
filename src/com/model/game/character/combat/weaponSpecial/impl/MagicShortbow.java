@@ -43,9 +43,8 @@ public class MagicShortbow implements SpecialAttack {
 				this.stop();
 			}
 		});
-		
-		player.hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
-		Server.getTaskScheduler().schedule(new ScheduledTask(player.hitDelay - 1) {
+
+		Server.getTaskScheduler().schedule(new ScheduledTask(CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase()) - 1) {
 			public void execute() {
 				// TODO hit code which i put in notepad
 				this.stop();

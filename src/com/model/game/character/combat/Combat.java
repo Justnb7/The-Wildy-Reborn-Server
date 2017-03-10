@@ -279,7 +279,7 @@ public class Combat {
 		 */
 		if (!player.usingMagic && player.playerEquipment[player.getEquipment().getWeaponId()] != 22494 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2415 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2416 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2417) {
 			player.playAnimation(Animation.create(CombatAnimation.getAttackAnimation(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase())));
-			player.mageFollow = false;
+
 
 			// Npc block anim
 			if (target.isNPC()) {
@@ -293,8 +293,8 @@ public class Combat {
 		} else {
 			// Magic attack anim
 			player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
-			player.mageFollow = true;
-			if (!player.autoCast) {
+
+			if (!player.autoCast) { // Not autocast = a one-time attack. Doesn't continue following.
 				player.stopMovement();
 				player.setFollowing(null);
 			}
@@ -461,7 +461,8 @@ public class Combat {
 
 	public static void setCombatStyle(Player player) {
 		boolean spellQueued = player.usingMagic && player.getCombatType() == CombatType.MAGIC && player.spellId > 0;
-		player.mageFollow = player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
+
+		player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
 		player.setCombatType(null); // reset
 
 		int followDist = 1;
@@ -526,7 +527,7 @@ public class Combat {
 				followDist = 2;
 		}
 		player.followDistance = followDist;
-		player.message("style: "+player.getCombatType());
+		player.message("style: "+player.getCombatType()+"  dist:"+followDist+"  atkDelay:"+player.attackDelay);
 
 	}
 

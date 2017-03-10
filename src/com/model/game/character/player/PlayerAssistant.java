@@ -127,7 +127,8 @@ public class PlayerAssistant {
     /**
      * Following
      */
-    public void followPlayer(boolean forCombat, Entity following, int cbDist) {
+    public void followPlayer(boolean forCombat, Entity following) {
+        int cbDist = player.followDistance;
         if (following == null || following.isDead()) {
             player.setFollowing(null);
             return;

@@ -70,7 +70,6 @@ public class AttackPlayer implements PacketType {
 				Combat.resetCombat(player);
 			}
 			if (player.usingMagic) {
-				player.mageFollow = true;
 				player.getCombat().setTarget(targ);
 			} else {
 				System.err.println("Unsupported combat situation, is the spell you're using supported?");

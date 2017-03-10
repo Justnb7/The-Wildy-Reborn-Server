@@ -85,7 +85,6 @@ public class WalkingPacketHandler implements PacketType {
 			player.clickNpcType = 0;
 			player.getCombat().reset();
 			player.setOpenShop(null);
-			player.mageFollow = false;
 			Combat.resetCombat(player);
 			player.setFollowing(null);
 		}

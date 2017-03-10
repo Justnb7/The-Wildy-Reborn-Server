@@ -1485,7 +1485,7 @@ public class Player extends Entity {
 			if (followTarget.isNPC())
 				getPA().followNpc(followTarget);
 			else
-				getPA().followPlayer(!asPlayer().getCombat().noTarget(), followTarget, followDistance);
+				getPA().followPlayer(!asPlayer().getCombat().noTarget(), followTarget);
 		}
 	}
 
@@ -1511,8 +1511,6 @@ public class Player extends Entity {
 			}
 
 			super.frozen_process();
-
-			//message("atkDelay: "+attackDelay);
 
 			// Every game tick, update our combat style for worn items. This means we'll keep pathing towards any non-null target properly.
 			if (getCombat().target != null) {
@@ -2923,7 +2921,7 @@ public class Player extends Entity {
 	public boolean usingArrows;
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
-	isSkulled, hasMultiSign, saveCharacter, mageFollow, dbowSpec,
+	isSkulled, hasMultiSign, saveCharacter,  dbowSpec,
 	properLogout, msbSpec, playerIsFiremaking,
 	acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
 	

@@ -28,7 +28,6 @@ import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
-import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 import java.util.Objects;
@@ -627,6 +626,37 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 
+		if (target.isNPC()) {
+			Npc npc = (Npc)target;
+			if (npc.getSize() == 1) {
+				if (player.getX() != npc.getX() && npc.getY() != player.getY()
+						&& player.getCombatType() == CombatType.MELEE) {
+					PlayerAssistant.stopDiagonal(player, npc.getX(), npc.getY());
+					return;
+				}
+			}
+			/*
+			 * Check if we are close enough to stop running towards the npc
+			 */
+			if (player.usingBow
+					|| player.castingMagic
+					|| player.throwingAxe
+					|| (CombatData.usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), npc.getX(),
+					npc.getY(), 2))) {
+				player.stopMovement();
+			}
+			npc.underAttackBy = player.getIndex();
+			npc.lastDamageTaken = System.currentTimeMillis();
+		}
+
+
+		if (player.getCombatType() == CombatType.MAGIC || player.getCombatType() == CombatType.RANGED) {
+			player.stopMovement();
+		}
+		//player.getCombat().checkVenomousItems();
+		player.faceEntity(target);
+		player.delayedDamage = player.delayedDamage2 = 0;
+		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 		/*
 		 * Add a skull if needed
 		 */
@@ -642,26 +672,6 @@ public class PlayerVsPlayerCombat {
 				}
 			}
 		}
-		if (target.isNPC()) {
-			Npc npc = (Npc)target;
-			/*
-			 * Check if we are close enough to stop running towards the npc
-			 */
-			if (player.usingBow
-					|| player.castingMagic
-					|| player.throwingAxe
-					|| (CombatData.usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), npc.getX(),
-					npc.getY(), 2))) {
-				player.stopMovement();
-			}
-			npc.underAttackBy = player.getIndex();
-			npc.lastDamageTaken = System.currentTimeMillis();
-		}
-
-		//player.getCombat().checkVenomousItems();
-		player.faceEntity(target);
-		player.delayedDamage = player.delayedDamage2 = 0;
-		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 
 		/*
 		 * Check if we are using a special attack
@@ -671,6 +681,8 @@ public class PlayerVsPlayerCombat {
 			player.setFollowing(player.getCombat().target);
 			return;
 		}
+
+		// ####### WASNT A SPECIAL ATTACK -- DO NORMAL COMBAT STYLES HERE #####
 		
 		/*
 		 * Start the attack animation
@@ -718,12 +730,7 @@ public class PlayerVsPlayerCombat {
 		 * Set the delay before the damage is applied
 		 */
 		int hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
-		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
-			public void execute() {
-				// TODO hit code which i put in notepad
-				this.stop();
-			}
-		});
+
 
 		/*
 		 * Set our combat values based on the combat style
@@ -733,32 +740,64 @@ public class PlayerVsPlayerCombat {
 
 			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
+
+			// First, calc hits.
 			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
+			int dam1 = 1;
+
+			// Second, calc accuracy. If miss, dam=0
+			if (!(CombatFormulae.getAccuracy(player, target, 1, 1.0))) {
+				player.delayedDamage = 0;
+				player.delayedDamage2 = 0;
+			}
+
+			Combat.hitEvent(player, target, hitDelay, new Hit(dam1));
 
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 				player.getItems().deleteArrow();
+
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
+
 			if (player.usingCross)
 				player.usingBow = true;
+
 			player.usingBow = true;
+
 			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
+
+			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
+
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.getCombat().fireProjectileAtTarget();
 
+			if (player.playerEquipment[3] == 11235 || player.playerEquipment[3] == 12765 || player.playerEquipment[3] == 12766
+					|| player.playerEquipment[3] == 12767 || player.playerEquipment[3] == 12768) {
+				player.getItems().deleteArrow();
+			}
+
 		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
+
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-			player.getItems().deleteEquipment();
-			World.getWorld();
+
+			if (player.playerEquipment[3] == 21000) {
+				player.getItems().removeEquipment();
+			} else {
+				player.getItems().deleteEquipment(); // here
+			}
+
 			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
+
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
+
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
+
 			player.getCombat().fireProjectileAtTarget();
 
 		} else if (player.getCombatType() == CombatType.MAGIC) {
@@ -769,6 +808,7 @@ public class PlayerVsPlayerCombat {
 			int offX = (pY - nY) * -1;
 			int offY = (pX - nX) * -1;
 			player.castingMagic = true;
+
 			if (player.MAGIC_SPELLS[player.getSpellId()][3] > 0) {
 				if (player.getCombat().getStartGfxHeight() == 100) {
 					player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
@@ -776,7 +816,9 @@ public class PlayerVsPlayerCombat {
 					player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
 				}
 			}
+
 			int targetIndex = -player.getCombat().target.getIndex() - 1;
+
 			if (player.MAGIC_SPELLS[player.getSpellId()][4] > 0) {
 				player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, 78,
 						player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartHeight(),
@@ -786,6 +828,11 @@ public class PlayerVsPlayerCombat {
 				player.setFollowing(player.getCombat().target);
 				player.followDistance = 5;
 			}
+
+			if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907 || player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
+				return;
+			}
+
 			player.oldSpellId = player.getSpellId();
 			player.setSpellId(0);
 
@@ -798,6 +845,7 @@ public class PlayerVsPlayerCombat {
 			}
 
 			player.magicFailed = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
+
 			int spellFreezeTime = player.getCombat().getFreezeTime();
 			if (spellFreezeTime > 0 && !target.frozen() && !player.magicFailed) {
 

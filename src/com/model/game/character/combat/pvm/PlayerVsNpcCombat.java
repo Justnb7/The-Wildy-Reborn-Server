@@ -473,45 +473,9 @@ public class PlayerVsNpcCombat {
 		}
 
 		/*
-		 * Set our attack timer again so we don't attack the npc right away
-		 */
-		player.attackDelay = CombatData.getAttackDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
-
-
-		if (npc.getSize() == 1) {
-			if (player.getX() != npc.getX() && npc.getY() != player.getY()
-					&& player.getCombatType() == CombatType.MELEE) {
-				PlayerAssistant.stopDiagonal(player, npc.getX(), npc.getY());
-				return;
-			}
-		}
-
-		if (player.getCombatType() == CombatType.MAGIC || player.getCombatType() == CombatType.RANGED) {
-			player.stopMovement();
-		}
-
-
-		int hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
-		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
-			public void execute() {
-				// TODO hit code which i put in notepad
-				this.stop();
-			}
-		});
-
-		/*
 		 * Set our calculations for our combat style
 		 */
-		if (player.getCombatType() == CombatType.MELEE) { // melee
-			player.followId2 = npc.getIndex(); // another example of shit code.. use entity.follow(target) or somet 
-			player.getPA().followNpc(); // adjust walking queue in direction of target
-			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit()); // same junk
-			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
-			if (!(CombatFormulae.getAccuracy(player, npc, 1, 1.0))) {
-				player.delayedDamage = 0;
-				player.delayedDamage2 = 0;
-			}
-		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) { // range
+		if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) { // range
 			if (player.usingCross)
 				player.usingBow = true;
 			if (player.getAttackStyle() == 2)
@@ -523,33 +487,18 @@ public class PlayerVsNpcCombat {
 			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 
-			if (player.playerEquipment[player.getEquipment().getWeaponId()] >= 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223) {
-				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-				player.getCombat().fireProjectileAtTarget();
-			} else {
-				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-				if (player.playerEquipment[3] == 11235 || player.playerEquipment[3] == 12765 || player.playerEquipment[3] == 12766
-						|| player.playerEquipment[3] == 12767 || player.playerEquipment[3] == 12768) {
-					player.getItems().deleteArrow();
-				}
-				if (npc.currentHealth > 0) {
-					player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-					player.getCombat().fireProjectileAtTarget();
-				}
-			}
+
+
 		} else if (player.throwingAxe && player.getCombatType() == CombatType.RANGED) {
 			player.followId2 = npc.getIndex();
 			player.getPA().followNpc();
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-			if (player.playerEquipment[3] == 21000) {
-				player.getItems().removeEquipment();
-			} else {
-				player.getItems().deleteEquipment(); // here
-			}
+
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
 			player.getCombat().fireProjectileAtTarget();
+
 		} else if (player.getCombatType() == CombatType.MAGIC) { // magic hit
 																	// delay
 			int pX = player.getX();

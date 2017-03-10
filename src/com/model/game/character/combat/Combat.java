@@ -1,8 +1,12 @@
 package com.model.game.character.combat;
 
+import com.model.Server;
+import com.model.game.character.Entity;
+import com.model.game.character.Hit;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.Player;
+import com.model.task.ScheduledTask;
 
 public class Combat {
     
@@ -79,5 +83,14 @@ public class Combat {
 				player.usingArrows = true;
 			}
 		}
+	}
+
+	public static void hitEvent(Player player, Entity target, int delay, Hit hit) {
+		Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
+			public void execute() {
+				// TODO hit code which i put in notepad
+				this.stop();
+			}
+		});
 	}
 }

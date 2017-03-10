@@ -65,10 +65,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			if (player.playerFollowIndex > 0) {
 				player.getPA().resetFollow();
 			}
-			if (player.attackDelay <= 0) {
-				player.getCombat().attackNpc(player.npcIndex);
-				player.attackDelay++;
-			}
+			player.getCombat().setTarget(npc);
 			break;
 
 		/**
@@ -104,10 +101,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 				if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 6)) {
 					player.stopMovement();
 				}
-				if (player.attackDelay <= 0) {
-					player.getCombat().attackNpc(player.npcIndex);
-					player.attackDelay++;
-				}
+				player.getCombat().setTarget(npc);
 			}
 			break;
 

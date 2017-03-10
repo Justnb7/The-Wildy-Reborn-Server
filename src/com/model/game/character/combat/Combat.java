@@ -1,5 +1,7 @@
 package com.model.game.character.combat;
 
+import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.Player;
 
 public class Combat {
@@ -22,5 +24,60 @@ public class Combat {
 
 	public static void playerVsEntity(Player player) {
 
+	}
+
+
+	public static void setCombatStyle(Player player) {
+
+		/*
+		 * Check if we are using magic
+		 */
+		if (player.autoCast && (player.getSpellBook() == SpellBook.MODERN || player.getSpellBook() == SpellBook.ANCIENT)) {
+			player.spellId = player.autocastId;
+			player.usingMagic = true;
+			player.setCombatType(CombatType.MAGIC);
+		}
+
+		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907) {
+			player.spellId = 52;
+			player.castingMagic = true;
+		}
+
+		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
+			player.spellId = 53;
+			player.castingMagic = true;
+		}
+
+		if (player.getSpellId() > 0) {
+			player.usingMagic = true;
+			player.setCombatType(CombatType.MAGIC);
+		}
+		if (player.usingMagic) {
+			player.setCombatType(CombatType.MAGIC);
+		}
+
+		/*
+		 * Check if we are using ranged
+		 */
+		if (player.getCombatType() != CombatType.MAGIC) {
+			player.usingBow = player.getEquipment().isBow(player);
+			player.throwingAxe = player.getEquipment().isThrowingWeapon(player);
+			player.usingCross = player.getEquipment().isCrossbow(player);
+			player.usingArrows = player.getEquipment().isArrow(player);
+			boolean bolt = player.getEquipment().isBolt(player);
+			boolean javalin = player.getCombat().properJavalins();
+
+			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
+				player.setCombatType(CombatType.RANGED);
+			}
+
+			if(player.throwingAxe) {
+				player.throwingAxe = true;
+			}
+
+			if(bolt || javalin || player.usingArrows) {
+				player.usingArrows = true;
+			}
+		}
 	}
 }

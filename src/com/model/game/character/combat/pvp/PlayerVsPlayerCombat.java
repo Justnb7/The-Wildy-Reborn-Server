@@ -15,6 +15,7 @@ import com.model.game.character.combat.effect.impl.RingOfRecoil;
 import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
+import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
@@ -469,26 +470,51 @@ public class PlayerVsPlayerCombat {
 	 *            The {@link Player} attacking
 	 */
 	public static void attackPlayer(Player player) {
+		if (player.getCombat().noTarget())
+			return;
+
 		Entity target = player.getCombat().target;
+		Combat.setCombatStyle(player);
 
 		if (target.isPlayer()) {
-			if (!validateAttack(player, (Player)target)) {
+			Player ptarg = (Player)target;
+			if (!validateAttack(player, ptarg)) {
 				return;
-			} else if (!PlayerVsNpcCombat.validateAttack(player, (Npc)target, false)) {
+			}
+			if (ptarg.inTutorial())
+				return;
+		} else {
+			Npc npc = (Npc)target;
+			// Clip check first. Get line of sight.
+			if (!PlayerVsNpcCombat.canTouch(player, npc, true)) {
+				return;
+			}
+
+			if (npc.isDead || npc.maximumHealth <= 0 || player.isDead()) {
+				player.usingMagic = false;
+				player.faceEntity(player);
+				player.npcIndex = 0;
+				return;
+			}
+			// Can attack check
+			if (!PlayerVsNpcCombat.canAttackNpc(player, npc)) {
 				return;
 			}
 		}
 
 		player.setFollowing(target);
 
-		if (player.attackDelay > 0) {
-			// don't attack as our timer hasnt reached 0 yet
-			return;
-		}
 
 		if (target.isPlayer()) {
 			Player ptarg = (Player) target;
 			player.getActionSender().sendString(ptarg.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName() , 35000);
+		} else {
+			Npc npc = (Npc) target;
+			if (npc.npcId != 493 || npc.npcId != 496 || npc.npcId != 5534) {
+				Player attacker = World.getWorld().PLAYERS.get(npc.underAttackBy);
+				//System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
+				player.getActionSender().sendString(Npc.getName(npc.npcId).replaceAll("_", " ") + "-" + npc.maximumHealth + "-" + npc.currentHealth + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
+			}
 		}
 		
 		boolean sameSpot = player.getX() == target.getX() && player.getY() == target.getY();
@@ -497,47 +523,15 @@ public class PlayerVsPlayerCombat {
 				Combat.resetCombat(player);
 				return;
 			}
-			player.setFollowing(target);
+			if (target.isPlayer())
+				player.setFollowing(target);
+			else
+				player.getPA().walkTo(0, 1); // TODO following Npcs properly
 			player.attackDelay = 0;
 			return;
 		}
-		
-		/*
-		 * Check if we are using magic
-		 */
-		if (player.autoCast) {
-			player.spellId = player.autocastId;
-			player.usingMagic = true;
-			player.setCombatType(CombatType.MAGIC);
-		}
-		
-		if (player.getSpellId() > 0) {
-			player.usingMagic = true;
-			player.setCombatType(CombatType.MAGIC);
-		}
-		
-		/*
-		 * Check if we are using ranged
-		 */
-		if (player.getCombatType() != CombatType.MAGIC) {
-			player.usingBow = player.getEquipment().isBow(player);
-			player.throwingAxe = player.getEquipment().isThrowingWeapon(player);
-			player.usingCross = player.getEquipment().isCrossbow(player);
-			player.usingArrows = player.getEquipment().isArrow(player);
-			boolean bolt = player.getEquipment().isBolt(player);
-			boolean javalin = player.getCombat().properJavalins();
-			
-			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
-				player.setCombatType(CombatType.RANGED);
-			}
-			
-			if(player.throwingAxe) {
-				player.throwingAxe = true;
-			}
-			
-			if(bolt || javalin || player.usingArrows) {
-				player.usingArrows = true;
-			}
+		if (target.isNPC()) {
+			PlayerVsNpcCombat.moveOutFromUnderLargeNpc(player, (Npc)target);
 		}
 
 		if (target.isPlayer()) {
@@ -545,7 +539,15 @@ public class PlayerVsPlayerCombat {
 				return;
 			}
 		}
-		
+		if (target.isNPC() && !PlayerVsNpcCombat.inDistance(player, (Npc)target)) {
+			return;
+		}
+
+		if (player.attackDelay > 0) {
+			// don't attack as our timer hasnt reached 0 yet
+			return;
+		}
+		// ##### BEGIN ATTACK - WE'RE IN VALID DISTANCE AT THIS POINT #######
 		/*
 		 * Set our attack timer so we dont instantly hit again
 		 */
@@ -610,20 +612,9 @@ public class PlayerVsPlayerCombat {
 		/*
 		 * Since we can attack, lets verify if we're close enough to attack
 		 */
-		if (target.isPlayer() && CombatData.isWithinAttackDistance(player, (Player)target)) {
-			/*
-			 * We're close enough, so stop us from moving
-			 */
-			// c.getMovementHandler().reset();
-		} else {
-			/*
-			 * We aren't close enough yet, continue to reset our timer until we
-			 * are.
-			 */
-			player.attackDelay = 1;
+		if (target.isPlayer() && !CombatData.isWithinAttackDistance(player, (Player)target)) {
 			return;
 		}
-
 
 		if (target.isPlayer()) {
 			Player ptarg = (Player)target;
@@ -651,9 +642,26 @@ public class PlayerVsPlayerCombat {
 				}
 			}
 		}
+		if (target.isNPC()) {
+			Npc npc = (Npc)target;
+			/*
+			 * Check if we are close enough to stop running towards the npc
+			 */
+			if (player.usingBow
+					|| player.castingMagic
+					|| player.throwingAxe
+					|| (CombatData.usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), npc.getX(),
+					npc.getY(), 2))) {
+				player.stopMovement();
+			}
+			npc.underAttackBy = player.getIndex();
+			npc.lastDamageTaken = System.currentTimeMillis();
+		}
 
+		//player.getCombat().checkVenomousItems();
 		player.faceEntity(target);
 		player.delayedDamage = player.delayedDamage2 = 0;
+		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 
 		/*
 		 * Check if we are using a special attack
@@ -667,11 +675,21 @@ public class PlayerVsPlayerCombat {
 		/*
 		 * Start the attack animation
 		 */
-		
 		if (!player.usingMagic && player.playerEquipment[player.getEquipment().getWeaponId()] != 22494 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2415 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2416 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2417) {
 			player.playAnimation(Animation.create(CombatAnimation.getAttackAnimation(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase())));
 			player.mageFollow = false;
+
+			// Npc block anim
+			if (target.isNPC()) {
+				Npc npc = (Npc) target;
+				if (npc.maximumHealth > 0 && npc.attackTimer > 3) {
+					if (npc.npcId != 2042 && npc.npcId != 2043 & npc.npcId != 2044 && npc.npcId != 3127) {
+						npc.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(npc)));
+					}
+				}
+			}
 		} else {
+			// Magic attack anim
 			player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
 			player.mageFollow = true;
 			player.setFollowing(player.getCombat().target);
@@ -717,6 +735,7 @@ public class PlayerVsPlayerCombat {
 			player.getPA().followPlayer(true);
 			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
+
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 				player.getItems().deleteArrow();
@@ -730,6 +749,7 @@ public class PlayerVsPlayerCombat {
 			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.getCombat().fireProjectileAtTarget();
+
 		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.getItems().deleteEquipment();
@@ -740,6 +760,7 @@ public class PlayerVsPlayerCombat {
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
 			player.getCombat().fireProjectileAtTarget();
+
 		} else if (player.getCombatType() == CombatType.MAGIC) {
 			int pX = player.getX();
 			int pY = player.getY();
@@ -861,6 +882,7 @@ public class PlayerVsPlayerCombat {
 		if (player.frozen() && !CombatData.isWithinAttackDistanceForStopFollow(player, target)) {
 			return false;
 		}
+		// TODO split into 2 methods, canAttack and canTouch??
 
 		// Always last
 		if (player.usingBow || player.usingMagic || player.throwingAxe) {

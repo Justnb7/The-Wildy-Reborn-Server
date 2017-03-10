@@ -236,7 +236,7 @@ public class NpcVsPlayerCombat {
 			npc.targetId = 0;
 			return false;
 		}
-		if (PlayerVsNpcCombat.validateAttack(player, npc, false)) {
+		if (PlayerVsNpcCombat.canTouch(player, npc, false)) {
 			return true;
 		}
 

@@ -397,6 +397,7 @@ public class Combat {
 			Combat.hitEvent(player, target, hitDelay, null, CombatType.RANGED);
 
 		} else if (player.getCombatType() == CombatType.MAGIC) {
+			player.oldSpellId = player.getSpellId();
 			int pX = player.getX();
 			int pY = player.getY();
 			int nX = target.getX();
@@ -428,8 +429,6 @@ public class Combat {
 				return;
 			}
 
-			player.oldSpellId = player.getSpellId();
-			player.setSpellId(0);
 
 			if (target.isPlayer()) {
 				Player ptarg = (Player)target;
@@ -451,10 +450,13 @@ public class Combat {
 					((Player)target).frozenBy = player.getIndex();
 				}
 			}
-			if (!player.autoCast && player.spellId <= 0)
+			// One time attack!
+			if (!player.autoCast) {
 				player.getCombat().reset();
+			}
 
 			Combat.hitEvent(player, target, hitDelay, null, CombatType.MAGIC);
+			player.setSpellId(0);
 		}
 	}
 
@@ -566,10 +568,14 @@ public class Combat {
 					}
 				} else {
 					// Hit param is not null. Only for melee attacks atm. Damage/accuracy is checked before this code instead of in the below methods.
-					if (target.isPlayer()) {
-						PlayerVsPlayerCombat.applyPlayerMeleeDamage(player, (Player)target, hit.getDamage());
+					if (combatType == CombatType.MELEE) {
+						if (target.isPlayer()) {
+							PlayerVsPlayerCombat.applyPlayerMeleeDamage(player, (Player) target, hit.getDamage());
+						} else {
+							PlayerVsNpcCombat.applyNpcMeleeDamage(player, (Npc) target, hit.getDamage());
+						}
 					} else {
-						PlayerVsNpcCombat.applyNpcMeleeDamage(player, (Npc)target, hit.getDamage());
+						System.err.println("Senario not supported! Only melee attacks should have a non-null Hit param of this method.");
 					}
 				}
 				this.stop();

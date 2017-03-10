@@ -336,7 +336,7 @@ public class PlayerVsPlayerCombat {
 		if (attacker.getCombat().getEndGfxHeight() == 100 && !attacker.magicFailed) { // end GFX
 			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, 100));
 		} else if (!attacker.magicFailed) {
-			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, 100));
+			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, attacker.getCombat().getEndGfxHeight()));
 		} else if (attacker.magicFailed) {
 			defender.playGraphics(Graphic.create(85, 0, 100));
 		}

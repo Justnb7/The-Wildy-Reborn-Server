@@ -2902,7 +2902,7 @@ public class Player extends Entity {
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
 	
-	public int totalLevel, lastX, lastY, killedBy,
+	public int totalLevel, lastX, lastY,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance,
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
@@ -2921,11 +2921,10 @@ public class Player extends Entity {
 	private boolean dragonfireShieldActive;
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
-	public boolean rangeEndGFXHeight;
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
 	isSkulled, hasMultiSign, saveCharacter,  dbowSpec,
-	properLogout, msbSpec, playerIsFiremaking,
+	properLogout, playerIsFiremaking,
 	acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
 	
 	/**

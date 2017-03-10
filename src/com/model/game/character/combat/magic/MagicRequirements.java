@@ -13,7 +13,7 @@ public class MagicRequirements extends MagicData {
 				return true;
 			}
 		}
-		player.write(new SendMessagePacket("You don't have enough required runes to cast this spell!"));
+		player.write(new SendMessagePacket("You don't have enough runes to cast this spell!"));
 		return false;
 	}
 

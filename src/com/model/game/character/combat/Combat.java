@@ -423,7 +423,6 @@ public class Combat {
                 return;
             }
 
-
             if (target.isPlayer()) {
                 Player ptarg = (Player) target;
                 if (player.MAGIC_SPELLS[player.oldSpellId][0] == 12891 && ptarg.getMovementHandler().isMoving()) {
@@ -450,20 +449,17 @@ public class Combat {
             }
 
             int dam1 = MagicCalculations.magicMaxHitModifier(player);
-            if (player.getCombat().godSpells()) {
-                if (System.currentTimeMillis() - player.godSpellDelay < 300000) {
-                    dam1 += 10;
-                }
-            }
 
             // Graphic that appears when hit appears.
+            final int endGfx = player.MAGIC_SPELLS[player.oldSpellId][5];
+            final int endH = player.getCombat().getEndGfxHeight();
             Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
                 @Override
                 public void execute() {
                     if (splash)
                         target.playGraphics(Graphic.create(85, 0, 100));
                     else
-                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombat().getEndGfxHeight()));
+                        target.playGraphics(Graphic.create(endGfx, 0, endH));
                     this.stop();
                 }
             });
@@ -603,7 +599,7 @@ public class Combat {
     public static void setCombatStyle(Player player) {
         boolean spellQueued = player.usingMagic && player.getCombatType() == CombatType.MAGIC && player.spellId > 0;
 
-        player.usingMagic = player.usingBow;
+        player.usingMagic = player.usingBow = false;
         player.setCombatType(null); // reset
 
         int followDist = 1;

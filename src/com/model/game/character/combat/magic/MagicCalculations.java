@@ -10,13 +10,21 @@ public class MagicCalculations {
 
 	/**
      * Returns the entity's magic hit
-     * 
-     * @param attacker
+     *
      * @return the max hit
      */
 	public static int magicMaxHitModifier(Player player) {
+        int maxhit = player.MAGIC_SPELLS[player.oldSpellId][6];
 
-        double damage = Utility.getRandom(player.MAGIC_SPELLS[player.oldSpellId][6]);
+        if (player.getCombat().godSpells()) {
+            if (System.currentTimeMillis() - player.godSpellDelay < 300000) {
+                maxhit += 10;
+            }
+        }
+        // Random
+        double damage = Utility.getRandom(maxhit);
+
+        // Multipliers
         double damageMultiplier = 1;
 
         if (player.getSkills().getLevel(Skills.MAGIC) > player.getSkills().getLevelForExperience(Skills.MAGIC)) {
@@ -44,9 +52,6 @@ public class MagicCalculations {
         }
 
         damage *= damageMultiplier;
-
-        if (damage > player.MAGIC_SPELLS[player.oldSpellId][6])
-            damage = player.MAGIC_SPELLS[player.oldSpellId][6];
         return (int) damage;
 	}
 	

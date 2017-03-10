@@ -3,12 +3,15 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
-import com.model.game.character.Graphic;
+import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
+import com.model.utility.Utility;
 
 public class MagicShortbow implements SpecialAttack {
 
@@ -19,32 +22,32 @@ public class MagicShortbow implements SpecialAttack {
 
 	@Override
 	public void handleAttack(final Player player, final Entity target) {
-		Entity entity = player.getCombat().target;
-		player.setCombatType(CombatType.RANGED);
-		player.usingBow = true;
 		player.getItems().deleteArrow();
 		player.getItems().deleteArrow();
+
 		player.playAnimation(Animation.create(1074));
-		player.setCombatType(CombatType.RANGED);
-		player.getCombat().fireProjectileAtTarget();
+
+		RangeData.msbSpecProjectile(player);
+
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			public void execute() {
-				player.playAnimation(Animation.create(1074));
-				player.playGraphics(Graphic.highGraphic(256));
-				this.stop();
-			}
-		});
-		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-			public void execute() {
-				player.getCombat().fireProjectileAtTarget();
-				player.playGraphics(Graphic.create(256));
+				RangeData.msbSpecProjectile(player);
 				this.stop();
 			}
 		});
 
+		int dam1 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
+		int dam2 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
+		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?
+			dam1 = 0;
+		}
+		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?
+			dam2 = 0;
+		}
+
 		// TODO maxhit, accuracy calc
-		Combat.hitEvent(player, target, 2, null, CombatType.RANGED);
-		Combat.hitEvent(player, target, 2, null, CombatType.RANGED);
+		Combat.hitEvent(player, target, 1, new Hit(dam1), CombatType.RANGED);
+		Combat.hitEvent(player, target, 1, new Hit(dam2), CombatType.RANGED);
 	}
 
 	@Override

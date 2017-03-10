@@ -43,8 +43,7 @@ public class NpcVsPlayerCombat {
 	 *            The {@link Npc} to handle combat timers for
 	 */
 	public static void handleCombatTimer(Npc npc) {
-		// TODO PI old system for making damage show up -> REMOVE ALL THIS CODE!! 
-		// your new way of doing it is world.scheduler().submit(task() { target.damage(50) });
+		// TODO PI old system for making damage show up -> REMOVE ALL THIS CODE!! your new way of doing it is world.scheduler().submit(task() { target.damage(50) });
 		if (npc.hitDelayTimer > 0) {
 			npc.hitDelayTimer--;
 		}
@@ -57,14 +56,15 @@ public class NpcVsPlayerCombat {
 		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
 			npc.attackTimer--;
-			//npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
+			// npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+"
+			// "+npc.randomWalk);
 		}
-		
+
 		// If we havent been attacked within last 5 secs reset who last attack us
 		if (System.currentTimeMillis() - npc.lastDamageTaken > 5000) {
 			npc.underAttackBy = 0;
 		}
-		
+
 		// Call code to attack our target if we're alive
 		if (!npc.isDead && !npc.walkingHome && npc.targetId > 0) {
 			Player player = World.getWorld().getPlayers().get(npc.targetId);
@@ -72,15 +72,13 @@ public class NpcVsPlayerCombat {
 			if (npc.followTarget != player)
 				npc.followTarget = player;
 
-		//FIXME 
-			boolean in_range = player != null && NPCHandler.goodDistance(player.absX, player.absY, npc.absX, npc.absY, 20);
-			if (player == null || !in_range) {
+			if (player == null) {
 				// out of range
 				npc.targetId = 0;
 				npc.underAttack = false;
 				npc.resetFace();
 			} else {
-				if (npc.attackTimer == 0) {//something before it reaches here breaks
+				if (npc.attackTimer == 0) {
 					NpcVsPlayerCombat.attackPlayer(player, npc);
 				}
 				// Following called in process()

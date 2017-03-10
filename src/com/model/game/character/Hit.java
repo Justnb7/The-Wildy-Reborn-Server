@@ -87,7 +87,7 @@ public final class Hit {
 		return this;
     }
     
-    private CombatType cbType;
+    public CombatType cbType;
 
 	public Hit type(CombatType combat_type) {
 		this.cbType = combat_type;

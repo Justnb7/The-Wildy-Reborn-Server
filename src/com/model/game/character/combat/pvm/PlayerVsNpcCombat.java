@@ -6,13 +6,11 @@ import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.nvp.NPCCombatData;
-import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Boundary;
@@ -63,8 +61,7 @@ public class PlayerVsNpcCombat {
 				damage += Utility.getRandom(10);
 			}
 		}
-		
-		kraken(player, npc, damage);
+
 		
 		if (npc.npcId == 5535) {
 			damage = 0;
@@ -132,7 +129,7 @@ public class PlayerVsNpcCombat {
 	}
 
 	
-	private static void kraken(Player player, Npc npc, int damage) {
+	public static void kraken(Player player, Npc npc, int damage) {
 		
 		if (npc.npcId == 5534 && npc.transformId != 5535) {
 			npc.transforming = true;
@@ -188,154 +185,6 @@ public class PlayerVsNpcCombat {
 			});
 		}
 		
-	}
-	
-	/**
-	 * Applies the npc range damage
-	 *  @param attacker
-	 *            The {@link Player} attacking the {@link Npc}
-	 * @param victim
-	 *            The {@link Npc} being attacked
-	 */
-	public static void applyNpcRangeDamage(Player attacker, Npc victim) {
-		int maxHit = attacker.getCombat().calculateRangeMaxHit();
-        int damage = Utility.random(maxHit);
-        
-        int secondHit = Utility.random(maxHit);
-
-		if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1) {
-			if (!CombatFormulae.getAccuracy(attacker, victim, 1, 1.0)) {
-				secondHit = 0;
-			}
-			secondHit = maxHit;
-		}
-        
-        //Don't allow players to hit tentactles
-        if (victim.npcId == 5535) {
-			damage = 0;
-		}
-        
-        if (!attacker.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(attacker, victim, 1, 1.0)) {
-			damage = 0;
-		}
-        
-        //Kraken damage
-        kraken(attacker, victim, damage);
-        
-        //Rex and Supreme do not take range damage
-        if (victim.npcId == 2265 || victim.npcId == 2267 && !attacker.hasAttribute("ignore defence")) {
-			attacker.write(new SendMessagePacket("The dagannoth is currently resistant to that attack!"));
-			return;
-		}
-        
-        //Crossbow damage multiplier
-        if (attacker.getEquipment().isCrossbow(attacker)) {
-			if (Utility.getRandom(8) == 1) {
-				if (damage > 0) {
-					switch(attacker.playerEquipment[attacker.getEquipment().getQuiverId()]) {
-					case 9236: // Lucky Lightning
-						victim.playGraphics(Graphic.create(749, 0, 0));
-						break;
-					case 9237: // Earth's Fury
-						victim.playGraphics(Graphic.create(755, 0, 0));
-						break;
-					case 9238: // Sea Curse
-						victim.playGraphics(Graphic.create(750, 0, 0));
-						break;
-					case 9239: // Down to Earth
-						victim.playGraphics(Graphic.create(757, 0, 0));
-						break;
-					case 9240: // Clear Mind
-						victim.playGraphics(Graphic.create(751, 0, 0));
-						break;
-					case 9241: // Magical Posion
-						victim.playGraphics(Graphic.create(752, 0, 0));
-						break;
-					case 9242: // Blood Forfiet
-						int damageCap = (int) (victim.currentHealth * 0.2);
-						if (victim.npcId == 319 && damageCap > 100)
-							damageCap = 100;
-						victim.damage(new Hit(damageCap));
-						victim.playGraphics(Graphic.create(754, 0, 0));
-						break;
-					case 9243: // Armour Piercing
-						victim.playGraphics(Graphic.create(758, 0, 100));
-						victim.setAttribute("ignore defence", true);
-						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							damage = Utility.random(45, 57);
-						} else {
-							damage = Utility.random(42, 51);
-						}
-						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							damage *= 1.15;
-						}
-						break;
-					case 9244: // Dragon's Breath
-						victim.playGraphics(Graphic.create(756, 0, 0));
-						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							damage = Utility.random(45, 57);
-						} else {
-							damage = Utility.random(42, 51);
-						}
-						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							damage *= 1.15;
-						}
-						break;
-					case 9245: // Life Leech
-						victim.playGraphics(Graphic.create(753, 0, 0));
-						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							damage = Utility.random(45, 57);
-						} else {
-							damage = Utility.random(42, 51);
-						}
-						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							damage *= 1.15;
-						}
-						break;
-					}
-				}
-			}
-		}
-        
-        //Damage check
-        if (victim.currentHealth - damage < 0) {
-			damage = victim.currentHealth;
-		}
-        
-        if (victim.currentHealth - secondHit < 0) {
-        	secondHit = victim.currentHealth;
-		}
-		
-        if (victim.attackTimer < 5)
-			victim.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(victim)));
-		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
-
-
-		victim.retaliate(attacker);
-		victim.addDamageReceived(attacker.getName(), damage);
-		victim.damage(new Hit(damage));
-
-		if(damage > 0) {
-			CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
-		}
-		if (attacker.lastWeaponUsed == 11235) {
-			victim.addDamageReceived(attacker.getName(), secondHit);
-			victim.damage(new Hit(secondHit));
-			if(secondHit > 0) {
-				CombatExperience.handleCombatExperience(attacker, damage, CombatType.RANGED);
-			}
-		}
-
-		attacker.setAttribute("ignore defence", false);
-
-		if (attacker.rangeEndGFX > 0) {
-			if (attacker.rangeEndGFXHeight) {
-				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 100));
-			} else {
-				victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
-			}
-		}
-
 	}
 
 	/**

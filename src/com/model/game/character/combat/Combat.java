@@ -14,6 +14,7 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
+import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
@@ -116,9 +117,11 @@ public class Combat {
 		 * Verify if we have the proper arrows/bolts
 		 */
 		if (player.getCombatType() == CombatType.RANGED) {
-			if (!player.usingCross
-					&& (player.playerEquipment[player.getEquipment().getWeaponId()] < 4212 || player.playerEquipment[player.getEquipment().getWeaponId()] > 4223)
-					&& player.playerEquipment[player.getEquipment().getWeaponId()] != 12926) {
+			int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
+			int ammo = player.playerEquipment[player.getEquipment().getQuiverId()];
+			boolean crystal = wep >= 4212 && wep <= 4223;
+			boolean blowp = wep == 12926;
+			if (!crystal && !blowp && ammo < 1) {
 				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
 				player.stopMovement();
 				player.getCombat().reset();
@@ -207,7 +210,6 @@ public class Combat {
 
 		if (player.attackDelay > 0) {
 			// don't attack as our timer hasnt reached 0 yet
-			player.message("cooldown");
 			return;
 		}
 
@@ -367,9 +369,23 @@ public class Combat {
 				}
 			}
 
+			// Random dmg
+			int dam1 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
 
-			// TODO calculate damage and accuracy
-			Combat.hitEvent(player, target, hitDelay, null, CombatType.RANGED);
+			// Bolt special increases damage.
+			boolean boltSpec = player.getEquipment().isCrossbow(player) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;
+			if (boltSpec && dam1 > 0)
+				dam1 = Combat.boltSpecialVsEntity(player, target, dam1);
+
+			// Missed?
+			if (!player.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(player, target, 1, 1.0)) {
+				dam1 = 0;
+			}
+			player.rangeEndGFX = RangeData.getRangeEndGFX(player);
+
+			// Apply dmg.
+			Hit hitInfo = target.take_hit(player, dam1, CombatType.RANGED, false);
+			Combat.hitEvent(player, target, 1, hitInfo, CombatType.RANGED);
 
 		} else if (player.getCombatType() == CombatType.MAGIC) {
 			player.oldSpellId = player.getSpellId();
@@ -433,6 +449,100 @@ public class Combat {
 			Combat.hitEvent(player, target, hitDelay, null, CombatType.MAGIC);
 			player.setSpellId(0);
 		}
+	}
+
+	private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
+		if (dam1 == 0) return dam1;
+		switch (attacker.playerEquipment[attacker.getEquipment().getQuiverId()]) {
+		case 9236: // Lucky Lightning
+			defender.playGraphics(Graphic.create(749, 0, 0));
+			break;
+		case 9237: // Earth's Fury
+			defender.playGraphics(Graphic.create(755, 0, 0));
+			break;
+		case 9238: // Sea Curse
+			defender.playGraphics(Graphic.create(750, 0, 0));
+			break;
+		case 9239: // Down to Earth
+			defender.playGraphics(Graphic.create(757, 0, 0));
+			break;
+		case 9240: // Clear Mind
+			defender.playGraphics(Graphic.create(751, 0, 0));
+			break;
+		case 9241: // Magical Posion
+			defender.playGraphics(Graphic.create(752, 0, 0));
+			break;
+		case 9242: // Blood Forfiet
+			defender.playGraphics(Graphic.create(754, 0, 0));
+			int selfDamage = (int) (attacker.getSkills().getLevel(Skills.HITPOINTS) * 0.1);
+			if (selfDamage < attacker.getSkills().getLevel(Skills.HITPOINTS)) {
+				int opHP = defender.isPlayer() ? ((Player)defender).getSkills().getLevel(Skills.HITPOINTS)
+						: ((Npc)defender).currentHealth;
+				dam1 += opHP * 0.2;
+				attacker.damage(new Hit(selfDamage));
+			}
+			break;
+		case 9243: // Armour Piercing
+			defender.playGraphics(Graphic.create(758, 0, 100));
+			attacker.setAttribute("ignore defence", true);
+			if (CombatFormulae.wearingFullVoid(attacker, 2)) {
+				dam1 = Utility.random(45, 57);
+			} else {
+				dam1 = Utility.random(42, 51);
+			}
+			if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+				dam1 *= 1.15;
+			}
+			break;
+		case 9244: // Dragon's Breath
+			defender.playGraphics(Graphic.create(756, 0, 0));
+			if (CombatFormulae.wearingFullVoid(attacker, 2)) {
+				dam1 = Utility.random(45, 57);
+			} else {
+				dam1 = Utility.random(42, 51);
+			}
+			if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+				dam1 *= 1.15;
+			}
+			boolean fire = true;
+			int shield = defender.isPlayer() ? ((Player)defender).playerEquipment[((Player)defender).getEquipment().getShieldId()] : -1;
+			if (shield == 11283 || shield == 1540) {
+				fire = false;
+			}
+			if (fire) {
+				if (CombatFormulae.wearingFullVoid(attacker, 2)) {
+					dam1 = Utility.random(45, 57);
+				} else {
+					dam1 = Utility.random(42, 51);
+				}
+				if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+					dam1 *= 1.15;
+				}
+				if (defender.isPlayer()) {
+					double protectionPrayer = ((Player)defender).isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE) ? 0.40 : 1;
+					if (protectionPrayer != 1) {
+						double protectionHit = dam1 * protectionPrayer; // +1 as its exclusive
+						dam1 -= protectionHit;
+						if (dam1 < 1)
+							dam1 = 0;
+					}
+				}
+			}
+			break;
+		case 9245: // Life Leech
+			defender.playGraphics(Graphic.create(753, 0, 0));
+			if (CombatFormulae.wearingFullVoid(attacker, 2)) {
+				dam1 = Utility.random(45, 57);
+			} else {
+				dam1 = Utility.random(42, 51);
+			}
+			if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+				dam1 *= 1.15;
+			}
+			break;
+		}
+
+		return dam1;
 	}
 
 
@@ -512,9 +622,6 @@ public class Combat {
 							case MAGIC:
 								PlayerVsPlayerCombat.applyPlayerMagicDamage(player, defender);
 								break;
-							case RANGED:
-								PlayerVsPlayerCombat.applyPlayerRangeDamage(player, defender);
-								break;
 							default:
 								throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
 						}
@@ -524,15 +631,28 @@ public class Combat {
 							case MAGIC:
 								PlayerVsNpcCombat.applyNpcMagicDamage(player, npc);
 								break;
-							case RANGED:
-								PlayerVsNpcCombat.applyNpcRangeDamage(player, npc);
-								break;
 							default:
 								throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
 						}
 					}
 				} else {
 					target.damage(hit);
+
+					// Range attack invoke block emote when hit appears.
+					if (hit.cbType == CombatType.RANGED && target.isNPC()) {
+						if (((Npc)target).attackTimer < 5)
+							target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((Npc)target))));
+
+						// Graphics that happen when hit appears
+						player.setAttribute("ignore defence", false);
+						if (player.rangeEndGFX > 0) {
+							if (player.rangeEndGFXHeight) {
+								target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 100));
+							} else {
+								target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 0));
+							}
+						}
+					}
 				}
 				this.stop();
 			}

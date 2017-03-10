@@ -402,7 +402,6 @@ public abstract class Entity {
 	}
 
 	public Hit take_hit(Entity attacker, int damage, CombatType combat_type, boolean applyInstantly) {
-		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type);
 
 		// ALWAYS: FIRST APPLY DAMAGE REDUCTIONS, ABSORBS ETC. Protection pray/ely.
 		// The entity taking damage is a player. 
@@ -440,15 +439,25 @@ public abstract class Entity {
 			if (victim_npc.currentHealth - damage < 0) {
 				damage = victim_npc.currentHealth;
 			}
+			if (attacker.isPlayer())
+				PlayerVsNpcCombat.kraken((Player)attacker, victim_npc, damage);
 			if (victim_npc.npcId == 319) {
 				if (attacker.isNPC() || (attacker.isPlayer() && !PlayerVsNpcCombat.isWearingSpear(((Player)attacker)))) {
 					damage /= 2;
 				}
 			}
-
+			if (victim_npc.npcId == 5535) {
+				damage = 0;
+			}
+			// TODO what dags are these and what style isnt the one allowed?
 			if (victim_npc.npcId == 2267 || victim_npc.npcId == 2266) {
 				if (attacker.isPlayer())
 					((Player)attacker).message("The dagannoth is currently resistant to that attack!");
+				damage = 0;
+			}
+			//Rex and Supreme do not take range damage
+			if (combat_type == CombatType.RANGED && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
+				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 		}
@@ -503,7 +512,7 @@ public abstract class Entity {
 		PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
 
 		// Update hit instance since we've changed the 'damage' value
-		hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED);
+		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type);
 
 		// NOTE: If not instantly applied, use EventManager.event(2) { entity.damage(hit) }
 		if (applyInstantly) {

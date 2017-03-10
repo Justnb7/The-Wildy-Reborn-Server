@@ -90,6 +90,15 @@ public class DarkBow implements SpecialAttack {
 				this.stop();
 			}
 		});
+
+		boolean dragArrow = player.playerEquipment[player.getEquipment().getQuiverId()] == 11212;
+		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+			@Override
+			public void execute() {
+				target.playGraphics(Graphic.create(dragArrow ? 1100 : 1103, 0, 0));
+				this.stop();
+			}
+		});
 		
 	}
 

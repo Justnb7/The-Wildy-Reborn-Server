@@ -4,7 +4,6 @@ import com.model.Server;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
@@ -13,7 +12,6 @@ import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.effect.impl.RingOfRecoil;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
-import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -23,7 +21,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
-import com.model.utility.Utility;
 
 import java.util.Objects;
 
@@ -37,195 +34,6 @@ import java.util.Objects;
 public class PlayerVsPlayerCombat {
 
 	public static int[] poisonous = {5698, 13267, 13269, 13271};
-
-
-	/**
-	 * Applies the ranged damage to the opponent
-	 *  @param attacker
-	 *            The {@link Player} applying the damage
-	 * @param defender
-	 *            The {@link Player} being attacked
-	 */
-	public static void applyPlayerRangeDamage(Player attacker, Player defender) {
-		int primairy_damage = Utility.getRandom(attacker.getCombat().calculateRangeMaxHit());
-		int secondairy_damage = -1;
-		
-		if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1) {
-			secondairy_damage = attacker.getCombat().calculateRangeMaxHit();
-		}
-		
-		attacker.rangeEndGFX = RangeData.getRangeEndGFX(attacker);
-		
-		if (!attacker.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(attacker, defender, 1, 1.0)) {
-			//System.out.println("range def");
-			primairy_damage = 0;
-		}
-		
-		if (attacker.getEquipment().isCrossbow(attacker)) {
-			if (Utility.getRandom(10) == 1) {
-				if (primairy_damage > 0) {
-					switch (attacker.playerEquipment[attacker.getEquipment().getQuiverId()]) {
-					case 9236: // Lucky Lightning
-						defender.playGraphics(Graphic.create(749, 0, 0));
-						break;
-					case 9237: // Earth's Fury
-						defender.playGraphics(Graphic.create(755, 0, 0));
-						break;
-					case 9238: // Sea Curse
-						defender.playGraphics(Graphic.create(750, 0, 0));
-						break;
-					case 9239: // Down to Earth
-						defender.playGraphics(Graphic.create(757, 0, 0));
-						break;
-					case 9240: // Clear Mind
-						defender.playGraphics(Graphic.create(751, 0, 0));
-						break;
-					case 9241: // Magical Posion
-						defender.playGraphics(Graphic.create(752, 0, 0));
-						break;
-					case 9242: // Blood Forfiet
-						defender.playGraphics(Graphic.create(754, 0, 0));
-						int selfDamage = (int) (attacker.getSkills().getLevel(Skills.HITPOINTS) * 0.1);
-                        if (selfDamage < attacker.getSkills().getLevel(Skills.HITPOINTS)) {
-                        	primairy_damage += defender.getSkills().getLevel(Skills.HITPOINTS) * 0.2;
-                            attacker.damage(new Hit(selfDamage));
-                        }
-						break;
-					case 9243: // Armour Piercing
-						defender.playGraphics(Graphic.create(758, 0, 100));
-						attacker.setAttribute("ignore defence", true);
-						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							primairy_damage = Utility.random(45, 57);
-						} else {
-							primairy_damage = Utility.random(42, 51);
-						}
-						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							primairy_damage *= 1.15;
-						}
-						break;
-					case 9244: // Dragon's Breath
-						defender.playGraphics(Graphic.create(756, 0, 0));
-						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							primairy_damage = Utility.random(45, 57);
-						} else {
-							primairy_damage = Utility.random(42, 51);
-						}
-						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							primairy_damage *= 1.15;
-						}
-						boolean fire = true;
-                        int shield = defender.playerEquipment[defender.getEquipment().getShieldId()];
-                        if (shield == 11283 || shield == 1540) {
-                            fire = false;
-                        }
-                        if (fire) {
-                        	if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-                        		primairy_damage = Utility.random(45, 57);
-                            } else {
-                            	primairy_damage = Utility.random(42, 51);
-                            }
-                        	if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-                        		primairy_damage *= 1.15;
-                            }
-                            double protectionPrayer = defender.isActivePrayer(Prayers.EAGLE_EYE) ? 0.40 : 1;
-                            if (protectionPrayer != 1) {
-                                double protectionHit = primairy_damage * protectionPrayer; // +1 as its exclusive
-                                primairy_damage -= protectionHit;
-                                if (primairy_damage < 1)
-                                	primairy_damage = 0;
-                            }
-                        }
-						break;
-					case 9245: // Life Leech
-						defender.playGraphics(Graphic.create(753, 0, 0));
-						if (CombatFormulae.wearingFullVoid(attacker, 2)) {
-							primairy_damage = Utility.random(45, 57);
-						} else {
-							primairy_damage = Utility.random(42, 51);
-						}
-						if (attacker.isActivePrayer(Prayers.EAGLE_EYE)) {
-							primairy_damage *= 1.15;
-						}
-						break;
-					}
-				}
-			}
-		}
-		
-		if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1) {
-			if (!CombatFormulae.getAccuracy(attacker, defender, 1, 1.0))
-				secondairy_damage = 0;
-		}
-
-		if (defender.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
-			primairy_damage = primairy_damage * 60 / 100;
-			if (attacker.lastWeaponUsed == 11235 || attacker.bowSpecShot == 1)
-				secondairy_damage = secondairy_damage * 60 / 100;
-		}
-
-		if (attacker.dbowSpec) {
-			defender.playGraphics(Graphic.create(attacker.playerEquipment[attacker.getEquipment().getQuiverId()] == 11212 ? 1100 : 1103, 0, 0));
-			if (primairy_damage < 8)
-				primairy_damage = 8;
-			if (secondairy_damage < 8)
-				secondairy_damage = 8;
-			attacker.dbowSpec = false;
-		}
-
-		if (defender.getSkills().getLevel(Skills.HITPOINTS) - primairy_damage < 0) {
-			defender.getSkills().setLevel(Skills.HITPOINTS, primairy_damage);
-		}
-		if (defender.getSkills().getLevel(Skills.HITPOINTS) - primairy_damage - secondairy_damage < 0) {
-			defender.getSkills().setLevel(Skills.HITPOINTS, secondairy_damage = primairy_damage);
-		}
-		if (primairy_damage < 0)
-			primairy_damage = 0;
-		if (secondairy_damage < 0 && secondairy_damage != -1)
-			secondairy_damage = 0;
-		if (defender.hasVengeance()) {
-			defender.getCombat().vengeance(attacker, primairy_damage, 1);
-			attacker.getCombat().vengeance(defender, secondairy_damage, 1);
-		}
-		
-		if (primairy_damage > 0) {
-			RingOfRecoil recoil = new RingOfRecoil();
-			if (recoil.isExecutable(attacker)) {
-				recoil.execute(defender, attacker, primairy_damage);
-			}
-		}
-		if (secondairy_damage > 0) {
-			RingOfRecoil recoil = new RingOfRecoil();
-			if (recoil.isExecutable(attacker)) {
-				recoil.execute(defender, attacker, primairy_damage);
-			}
-		}
-		CombatExperience.handleCombatExperience(attacker, primairy_damage, CombatType.RANGED);
-		
-		if (attacker.rangeEndGFX > 0 && !attacker.getCombat().usingBolts(attacker.playerEquipment[attacker.getEquipment().getQuiverId()])) {
-			if (attacker.rangeEndGFXHeight) {
-				defender.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
-			} else {
-				defender.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
-			}
-		}
-		defender.putInCombat(attacker.getIndex());
-		defender.killerId = attacker.getIndex();
-		defender.addDamageReceived(attacker.getName(), primairy_damage);
-		attacker.updateLastCombatAction();
-		attacker.setInCombat(true);
-		attacker.killedBy = defender.getIndex();
-		defender.damage(new Hit(primairy_damage));
-		attacker.setAttribute("ignore defence", false);
-		if (secondairy_damage != -1) {
-			defender.addDamageReceived(attacker.getName(), secondairy_damage);
-			defender.damage(new Hit(secondairy_damage));
-		}
-		//World.getWorld().getPlayers().get(i).setHitUpdateRequired(true);	
-		defender.updateRequired = true;
-		attacker.getCombat().applySmite(defender, primairy_damage);
-		if (secondairy_damage != -1)
-			attacker.getCombat().applySmite(defender, secondairy_damage);
-	}
 
 	/**
 	 * Applies the magic damage for the player

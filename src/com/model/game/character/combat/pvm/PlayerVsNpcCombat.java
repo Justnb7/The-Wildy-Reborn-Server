@@ -127,6 +127,11 @@ public class PlayerVsNpcCombat {
 	}
 
 	public static boolean canAttackNpc(Player player, Npc npc) {
+
+		if (npc.isDead || npc.maximumHealth <= 0 || player.isDead()) {
+			player.getCombat().reset();
+			return false;
+		}
 		if (npc.transforming)
 			return false;
 		if (NPCHandler.isArmadylNpc(npc.getIndex()) && player.getCombatType() == CombatType.MELEE) {
@@ -265,11 +270,9 @@ public class PlayerVsNpcCombat {
 		boolean hasDistance = npc.npcId == 5535 ? true : false; // force 5535 tents to always be hittable
 		for (Position pos : npc.getTiles()) {
 			double distance = pos.distance(player.getPosition());
-			if(CombatData.usingHalberd(player)) {
-				if(distance <= 2) {
-					hasDistance = true;
-					break;
-				}
+			if(CombatData.usingHalberd(player) && distance <= 2) {
+				hasDistance = true;
+				break;
 			}
 			if (player.getCombatType() == CombatType.MELEE) {
 				if (distance <= 1) {

@@ -45,6 +45,8 @@ public class PlayerVsPlayerCombat {
 			Combat.resetCombat(player);
 			return false;
 		}
+		if (target.inTutorial())
+			return false;
 		if (!player.getArea().inWild() && !player.getArea().inDuelArena())
 			return false;
 		if (!CombatRequirements.canAttackVictim(player)) {

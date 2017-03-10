@@ -1,37 +1,12 @@
 package com.model.game.character.combat.weaponSpecial;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.model.game.World;
 import com.model.game.character.Entity;
-import com.model.game.character.combat.weaponSpecial.impl.AbyssalBludgeon;
-import com.model.game.character.combat.weaponSpecial.impl.AbyssalDagger;
-import com.model.game.character.combat.weaponSpecial.impl.AbyssalTentacle;
-import com.model.game.character.combat.weaponSpecial.impl.AbyssalWhip;
-import com.model.game.character.combat.weaponSpecial.impl.ArmadylCrossbow;
-import com.model.game.character.combat.weaponSpecial.impl.ArmadylGodsword;
-import com.model.game.character.combat.weaponSpecial.impl.Ballista;
-import com.model.game.character.combat.weaponSpecial.impl.BandosGodsword;
-import com.model.game.character.combat.weaponSpecial.impl.BarrelchestAnchor;
-import com.model.game.character.combat.weaponSpecial.impl.CrystalHalberd;
-import com.model.game.character.combat.weaponSpecial.impl.DarkBow;
-import com.model.game.character.combat.weaponSpecial.impl.DragonClaws;
-import com.model.game.character.combat.weaponSpecial.impl.DragonDagger;
-import com.model.game.character.combat.weaponSpecial.impl.DragonHalberd;
-import com.model.game.character.combat.weaponSpecial.impl.DragonLongsword;
-import com.model.game.character.combat.weaponSpecial.impl.DragonMace;
-import com.model.game.character.combat.weaponSpecial.impl.DragonScimitar;
-import com.model.game.character.combat.weaponSpecial.impl.DragonWarhammer;
-import com.model.game.character.combat.weaponSpecial.impl.GraniteMaul;
-import com.model.game.character.combat.weaponSpecial.impl.KorasiSword;
-import com.model.game.character.combat.weaponSpecial.impl.MagicShortbow;
-import com.model.game.character.combat.weaponSpecial.impl.SaradominGodsword;
-import com.model.game.character.combat.weaponSpecial.impl.SaradominSword;
-import com.model.game.character.combat.weaponSpecial.impl.ToxicBlowpipe;
-import com.model.game.character.combat.weaponSpecial.impl.ZamorakGodsword;
+import com.model.game.character.combat.weaponSpecial.impl.*;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The class which represents functionality to load the data for the special attacks.
@@ -138,7 +113,7 @@ public class SpecialAttackHandler {
 					}
 
 					if (player.getSpecialAmount() >= special.amountRequired()) {
-						Entity target = player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex);
+						Entity target = player.getCombat().target;
 						if (special.meetsRequirements(player, target)) {
 							player.setSpecialAmount(player.getSpecialAmount() - special.amountRequired());
 							special.handleAttack(player, target);

@@ -43,11 +43,7 @@ public class DarkBow implements SpecialAttack {
 			player.attackDelay--;
 		
 		// Send the projectile TODO adjust the height and duration for the 2nd arrow
-		if (player.playerIndex > 0) {
-			player.getCombat().fireProjectilePlayer();
-		} else if (player.npcIndex > 0) {
-			player.getCombat().fireProjectileNpc();
-		}
+		player.getCombat().fireProjectileAtTarget();
 		
 		int first = Utility.random(player.getCombat().calculateRangeMaxHit());
 		int second = Utility.random(player.getCombat().calculateRangeMaxHit());

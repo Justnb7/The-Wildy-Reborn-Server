@@ -19,7 +19,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 	public void handle(final Player player, int packetType, int packetSize) {
 		player.npcIndex = 0;
 		player.npcClickIndex = 0;
-		player.playerIndex = 0;
+		player.getCombat().reset();
 		player.clickNpcType = 0;
 		player.getPA().resetFollow();
 		if (player.isPlayerTransformed() || player.isTeleporting()) {

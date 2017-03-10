@@ -1,16 +1,9 @@
 package com.model.game.item;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
+import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
@@ -30,6 +23,9 @@ import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.shop.Currency;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ItemAssistant {
 
@@ -1579,52 +1575,22 @@ public class ItemAssistant {
 	 /**
 	  * Dropping Arrows
 	  */
-
-	  public void dropArrowNpc() {
-		 if (player.playerEquipment[player.getEquipment().getCapeId()] == 10499 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111)
-			 return;
-		 int enemyX = 0;
-		 int enemyY = 0;
-		 if (player != null && player.outStream != null) {
-			 if (World.getWorld().getNpcs().get(player.oldNpcIndex) != null) {
-				 enemyX = World.getWorld().getNpcs().get(player.oldNpcIndex).getX();
-				 enemyY = World.getWorld().getNpcs().get(player.oldNpcIndex).getY();
-			 }
-		 }
-		 if (Utility.getRandom(10) >= 4) {
-			 GroundItemHandler.createGroundItem(new GroundItem(new Item(player.rangeItemUsed), enemyX, enemyY, player.getZ(), player));
-		 }
-	  }
-
-	  public void dropArrow() {
-		  int enemyX = 0, enemyY = 0;
-		  if (player.playerEquipment[player.getEquipment().getCapeId()] == 10499 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111)
-			  return;
-		  if (player.oldNpcIndex > 0) {
-			  enemyX = World.getWorld().getNpcs().get(player.oldNpcIndex).getX();
-			  enemyY = World.getWorld().getNpcs().get(player.oldNpcIndex).getY();
-		  } else if (player.oldPlayerIndex > 0) {
-			  enemyX = World.getWorld().getPlayers().get(player.oldPlayerIndex).getX();
-			  enemyY = World.getWorld().getPlayers().get(player.oldPlayerIndex).getZ();
-		  }
-		  if (Utility.getRandom(10) >= 4) {
-			  GroundItemHandler.createGroundItem(new GroundItem(new Item(player.rangeItemUsed), enemyX, enemyY, player.getZ(), player));
-		  }
-	  }
-
-	  public void dropArrowPlayer() {
-		  if (player.playerEquipment[player.getEquipment().getWeaponId()] == 10033 || player.playerEquipment[player.getEquipment().getWeaponId()] == 10034) {
-			  return;
-		  }
-		  int enemyX = World.getWorld().getPlayers().get(player.oldPlayerIndex).getX();
-		  int enemyY = World.getWorld().getPlayers().get(player.oldPlayerIndex).getY();
-		  int enemyHeight = World.getWorld().getPlayers().get(player.oldPlayerIndex).getZ();
-		  if (player.playerEquipment[player.getEquipment().getCapeId()] == 10499 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111)
-			  return;
-		  if (Utility.getRandom(10) >= 4) {
-			  GroundItemHandler.createGroundItem(new GroundItem(new Item(player.rangeItemUsed), enemyX, enemyY, enemyHeight, player));
-		  }
-	  }
+	public void dropArrowUnderTarget() {
+	  	// Chinchompas: don't drop ammo
+		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 10033 || player.playerEquipment[player.getEquipment().getWeaponId()] == 10034) {
+			return;
+		}
+		Entity target = player.getCombat().target;
+		int enemyX = target.getX();
+		int enemyY = target.getY();
+		int enemyHeight = target.heightLevel;
+		// Avas equipment: don't drop ammo
+		if (player.playerEquipment[player.getEquipment().getCapeId()] == 10499 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111)
+			return;
+		if (Utility.getRandom(10) >= 4) {
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(player.rangeItemUsed), enemyX, enemyY, enemyHeight, player));
+		}
+	}
 
 	  public int freeSlots() {
 		  int freeS = 0;

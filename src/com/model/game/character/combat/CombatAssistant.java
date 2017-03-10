@@ -1,7 +1,6 @@
 package com.model.game.character.combat;
 
 
-import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.combat.magic.MagicData;
@@ -17,6 +16,8 @@ import com.model.game.item.Item;
 public class CombatAssistant {
 
 	private Player player;
+
+	public Entity target;
 
 	public CombatAssistant(Player player) {
 		this.player = player;
@@ -174,20 +175,27 @@ public class CombatAssistant {
 		return MagicData.getStartGfxHeight(player);
 	}
 
-	public void fireProjectileNpc() {
-		RangeData.fireProjectileNpc(player);
-	}
-
-	public void fireProjectilePlayer() {
-		RangeData.fireProjectilePlayer(player);
+	public void fireProjectileAtTarget() {
+		RangeData.fireProjectileAtTarget(player);
 	}
 	
 	public int calculateMeleeMaxHit() {
-		return CombatFormulae.calculateMeleeMaxHit(player, (player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex)));
+		return CombatFormulae.calculateMeleeMaxHit(player, player.getCombat().target);
 	}
 	
 	public int calculateRangeMaxHit() {
-		return CombatFormulae.calculateRangeMaxHit(player, (player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex)));
+		return CombatFormulae.calculateRangeMaxHit(player, player.getCombat().target);
 	}
-	
+
+	public void reset() {
+		target = null;
+	}
+
+	public void setTarget(Entity target) {
+		this.target = target;
+	}
+
+	public boolean noTarget() {
+		return target == null;
+	}
 }

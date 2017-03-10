@@ -20,8 +20,14 @@ import com.model.task.ScheduledTask;
  * @author Jak
  */
 public abstract class Entity {
-	
-	public enum EntityType {
+
+	public Entity followTarget;
+
+    public void setFollowing(Entity following) {
+        this.followTarget = following;
+    }
+
+    public enum EntityType {
 		PLAYER, NPC,
 	}
 

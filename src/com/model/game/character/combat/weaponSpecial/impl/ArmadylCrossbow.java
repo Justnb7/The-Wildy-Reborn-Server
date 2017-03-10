@@ -1,7 +1,6 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
 import com.model.Server;
-import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
@@ -19,17 +18,13 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		Entity entity = player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex);
+		Entity entity = player.getCombat().target;
 		player.setCombatType(CombatType.RANGED);
 		player.playAnimation(Animation.create(4230));
 		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 		player.getItems().deleteArrow();
-		
-		if (player.playerIndex > 0) {
-			player.getItems().dropArrowPlayer();
-		} else if (player.npcIndex > 0) {
-			player.getItems().dropArrowNpc();
-		}
+
+		player.getItems().dropArrowUnderTarget();
 		
 		//TODO implement gfx 301
 		
@@ -37,12 +32,8 @@ public class ArmadylCrossbow implements SpecialAttack {
 		player.setCombatType(CombatType.RANGED);
 		
 		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
-		
-		if (player.playerIndex > 0) {
-			player.getCombat().fireProjectilePlayer();
-		} else if (player.npcIndex > 0) {
-			player.getCombat().fireProjectileNpc();
-		}
+
+		player.getCombat().fireProjectileAtTarget();
 		
 		if (player.npcIndex > 0)
 			npcSpecialHitDelay(player, entity.getIndex(), player.hitDelay);

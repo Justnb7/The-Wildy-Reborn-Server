@@ -1,6 +1,7 @@
 package com.model.game.character.player.packets.in;
 
 import com.model.game.World;
+import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatType;
@@ -17,7 +18,7 @@ public class AttackPlayer implements PacketType {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
-		player.playerIndex = 0;
+		player.getCombat().reset();
 		player.npcIndex = 0;
 		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
@@ -27,13 +28,16 @@ public class AttackPlayer implements PacketType {
 		 * Attack player
 		 **/
 		case ATTACK_PLAYER:
-			player.playerIndex = player.getInStream().readSignedWordBigEndian();
-			if (World.getWorld().getPlayers().get(player.playerIndex) == null) {
+			int targetIndex = player.getInStream().readSignedWordBigEndian();
+			Entity targ = World.getWorld().getPlayers().get(targetIndex);
+			if (targ == null) {
 				break;
 			}
+			player.getCombat().setTarget(targ);
 			
-			if (player.getIndex() < 0 || player.isDead()) {
+			if (targetIndex < 0 || player.getIndex() < 0 || player.isDead()) {
 				System.out.println("index below 0 or player dead");
+				player.getCombat().reset();
 				return;
 			}
 
@@ -50,12 +54,12 @@ public class AttackPlayer implements PacketType {
 				player.spellId = 0;
 			}
 
-			if ((!player.throwingAxe && (player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC)) && player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 7)) {
+			if ((!player.throwingAxe && (player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC)) && player.goodDistance(player.getX(), player.getY(), player.getCombat().target.getX(), player.getCombat().target.getY(), 7)) {
 				player.usingBow = true;
 				player.stopMovement();
 			}
 
-			if (player.throwingAxe && player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 3)) {
+			if (player.throwingAxe && player.goodDistance(player.getX(), player.getY(), player.getCombat().target.getX(), player.getCombat().target.getY(), 3)) {
 				player.throwingAxe = true;
 				player.stopMovement();
 			}
@@ -75,17 +79,20 @@ public class AttackPlayer implements PacketType {
 		 * Attack player with magic
 		 **/
 		case MAGE_PLAYER:
-			player.playerIndex = player.getInStream().readSignedWordA();
+			int targetIdx = player.getInStream().readSignedWordA();
 			player.castingSpellId = player.getInStream().readSignedWordBigEndian();
 			player.usingMagic = false;
-			if (World.getWorld().getPlayers().get(player.playerIndex) == null) {
-				player.playerIndex = 0;
+			targ = World.getWorld().getPlayers().get(targetIdx);
+			if (targ == null) {
+				player.getCombat().reset();
 				break;
 			}
 
 			if (player.isDead()) {
+				player.getCombat().reset();
 				break;
 			}
+			player.getCombat().setTarget(targ);
 
 			for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {
 				if (player.castingSpellId == player.MAGIC_SPELLS[i][0]) {
@@ -108,7 +115,7 @@ public class AttackPlayer implements PacketType {
 				Combat.resetCombat(player);
 			}
 			if (player.usingMagic) {
-				if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 7)) {
+				if (player.goodDistance(player.getX(), player.getY(), targ.getX(), targ.getY(), 7)) {
 					player.stopMovement();
 
 					if (player.getSpellId() > 0 && player.autocastId <= 0) {

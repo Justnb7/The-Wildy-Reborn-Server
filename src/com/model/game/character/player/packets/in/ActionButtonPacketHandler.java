@@ -635,7 +635,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			System.out.println("tick: " +player.isAutoRetaliating());
 			player.setAutoRetaliating(!player.isAutoRetaliating());
 			player.npcIndex = -1;
-			player.playerIndex = -1;
+			player.getCombat().reset();
 			break;
 			
 		case 7217:

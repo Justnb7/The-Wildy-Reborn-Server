@@ -1,50 +1,31 @@
 package com.model.game.character.combat.range;
 
-import com.model.game.World;
+import com.model.game.character.Entity;
 import com.model.game.character.player.Player;
 
 
 
 public class RangeData {
-	
-	// Another example of PI poor code, using oldNpcIndex here instead of a Entity instance
-	public static void fireProjectileNpc(Player player) {
-		if (player.oldNpcIndex > 0) {
-			if (World.getWorld().getNpcs().get(player.oldNpcIndex) != null) {
+
+	public static void fireProjectileAtTarget(Player player) {
+				Entity target = player.getCombat().target;
 				int pX = player.getX();
 				int pY = player.getY();
-				int nX = World.getWorld().getNpcs().get(player.oldNpcIndex).getX();
-				int nY = World.getWorld().getNpcs().get(player.oldNpcIndex).getY();
-				int offX = (pY - nY) * -1;
-				int offY = (pX - nX) * -1;
-				player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, player.oldNpcIndex + 1, player.getCombat().getProjectileShowDelay());
-
-				if (player.getCombat().usingDbow())
-					player.getProjectile().createPlayersProjectile2(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 60, 31, player.oldNpcIndex + 1, player.getCombat().getProjectileShowDelay(), 35);
-			}
-		}
-	}
-
-	public static void fireProjectilePlayer(Player player) {
-		if (player.oldPlayerIndex > 0) {
-			if (World.getWorld().getPlayers().get(player.oldPlayerIndex) != null) {
-				int pX = player.getX();
-				int pY = player.getY();
-				int oX = World.getWorld().getPlayers().get(player.oldPlayerIndex).getX();
-				int oY = World.getWorld().getPlayers().get(player.oldPlayerIndex).getY();
+				int oX = target.getX();
+				int oY = target.getY();
 				int offX = (pY - oY) * -1;
 				int offY = (pX - oX) * -1;
+				int targetIndex = -player.oldPlayerIndex - 1; // TODO confirm, maybe use clientIndex()?
 				if (!player.msbSpec)
-					player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, -player.oldPlayerIndex - 1, player.getCombat().getStartDelay());
+					player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, player.getCombat().getStartDelay());
 				else if (player.msbSpec) {
-					player.getProjectile().createPlayersProjectile2(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, -player.oldPlayerIndex - 1, player.getCombat().getStartDelay(), 10);
+					player.getProjectile().createPlayersProjectile2(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, player.getCombat().getStartDelay(), 10);
 					player.msbSpec = false;
 				}
 				if (player.getCombat().usingDbow())
-					player.getProjectile().createProjectile3(pY, pX, offY, offX, player.getCombat().getRangeProjectileGFX(), 53, 31, 100, -player.oldPlayerIndex - 1);
+					player.getProjectile().createProjectile3(pY, pX, offY, offX, player.getCombat().getRangeProjectileGFX(), 53, 31, 100, targetIndex);
 
-			}
-		}
+
 	}
 
 	public static int getRangeStr(int i) {

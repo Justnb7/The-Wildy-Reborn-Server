@@ -14,7 +14,7 @@ public class Combat {
 		player.usingMagic = false;
 		player.faceEntity(player); // face urself wtf l0l
 		player.npcIndex = 0;
-		player.playerIndex = 0;
+		player.getCombat().reset();
 		player.getPA().resetFollow();
 		player.setInCombat(false);
 		player.getActionSender().sendString("", 35000);

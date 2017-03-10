@@ -1,9 +1,7 @@
 package com.model.game.character.player.packets.in;
 
-import java.util.Objects;
-
 import com.model.Server;
-import com.model.game.World;
+import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -16,6 +14,8 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
+
+import java.util.Objects;
 
 /**
  * Walking packet
@@ -30,18 +30,18 @@ public class WalkingPacketHandler implements PacketType {
 				|| player.isTeleporting() || player.mapRegionDidChange || player.getMovementHandler().isForcedMovement()) {
 			return;
 		}
-		
+		Entity combattarg = player.getCombat().target;
 		//We're frozen we can't walk
 		if (player.frozen()) {
-			if (World.getWorld().getPlayers().get(player.playerIndex) != null) {
-				if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getPlayers().get(player.playerIndex).getX(), World.getWorld().getPlayers().get(player.playerIndex).getY(), 1) && packetType != 98) {
-					player.playerIndex = 0;
+			if (combattarg != null) {
+				if (player.goodDistance(player.getX(), player.getY(), combattarg.getX(), combattarg.getY(), 1) && packetType != 98) {
+					player.getCombat().reset();
 					return;
 				}
 			}
 			if (packetType != 98) {
 				player.write(new SendMessagePacket("A magical force stops you from moving."));
-				player.playerIndex = 0;
+				player.getCombat().reset();
 			}
 			return;
 		}
@@ -81,10 +81,9 @@ public class WalkingPacketHandler implements PacketType {
 		//When walking reset the following variables
 		if (packetType == 248 || packetType == 164) {
 			player.faceEntity(player);
-			player.npcIndex = 0;
 			player.clickObjectType = 0;
 			player.clickNpcType = 0;
-			player.playerIndex = 0;
+			player.getCombat().reset();
 			player.setOpenShop(null);
 			player.mageFollow = false;
 			Combat.resetCombat(player);

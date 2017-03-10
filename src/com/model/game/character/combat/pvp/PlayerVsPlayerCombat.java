@@ -1,20 +1,15 @@
 package com.model.game.character.combat.pvp;
 
-import java.util.Objects;
-
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
+import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.combat_data.CombatAnimation;
-import com.model.game.character.combat.combat_data.CombatData;
-import com.model.game.character.combat.combat_data.CombatExperience;
-import com.model.game.character.combat.combat_data.CombatRequirements;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.*;
 import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.RingOfRecoil;
 import com.model.game.character.combat.effect.impl.Venom;
@@ -22,11 +17,7 @@ import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
-import com.model.game.character.player.Boundary;
-import com.model.game.character.player.Player;
-import com.model.game.character.player.PlayerAssistant;
-import com.model.game.character.player.ProjectilePathFinder;
-import com.model.game.character.player.Skills;
+import com.model.game.character.player.*;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
@@ -36,6 +27,8 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
+
+import java.util.Objects;
 
 /**
  * Handles Player Vs Player Combat
@@ -143,21 +136,22 @@ public class PlayerVsPlayerCombat {
 		Player target = World.getWorld().getPlayers().get(index);
 		if (target != null) {
 			if (target.isDead() || player.isDead() || target.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-				player.playerIndex = 0;
+				player.getCombat().reset();
 				return;
 			}
 			if (target.isDead()) {
 				player.faceEntity(player);
-				player.playerIndex = 0;
+				player.getCombat().reset();
 				return;
 			}
 
-			if (target.playerIndex <= 0 && target.npcIndex <= 0 || target.playerIndex == player.getIndex()) {
+			if (target.getCombat().noTarget()) {
 				if (target.isAutoRetaliating()) {
-					target.playerIndex = player.getIndex();
+					target.getCombat().setTarget(target);
 				}
 			}
-			if (target.attackDelay <= 3 || target.attackDelay == 0 && target.playerIndex == 0 && !player.castingMagic) {
+			// Do block emote
+			if (target.attackDelay <= 3 || target.attackDelay == 0 && !player.castingMagic) {
 				target.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(target)));
 			}
 
@@ -524,6 +518,7 @@ public class PlayerVsPlayerCombat {
 	 */
 	public static void attackPlayer(Player player, int i) {
 		Player defender = World.getWorld().getPlayers().get(i);
+		Entity target = player.getCombat().target;
 		
 		if (!validateAttack(player, defender)) {
 			return;
@@ -609,7 +604,7 @@ public class PlayerVsPlayerCombat {
 					&& player.playerEquipment[player.getEquipment().getWeaponId()] != 12926) {
 				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
 				player.stopMovement();
-				player.playerIndex = 0;
+				player.getCombat().reset();
 				return;
 			}
 
@@ -619,7 +614,7 @@ public class PlayerVsPlayerCombat {
 					&& !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
 				player.write(new SendMessagePacket("You can't use " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase() + "s with a " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase() + "."));
 				player.stopMovement();
-				player.playerIndex = 0;
+				player.getCombat().reset();
 				return;
 			}
 			if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
@@ -684,13 +679,16 @@ public class PlayerVsPlayerCombat {
 		/*
 		 * Add a skull if needed
 		 */
-		if (player != null && player.attackedPlayers != null && World.getWorld().getPlayers().get(player.playerIndex) != null && World.getWorld().getPlayers().get(player.playerIndex).attackedPlayers != null && !World.getWorld().getPlayers().get(player.playerIndex).getArea().inDuelArena()) {
-			if (!player.attackedPlayers.contains(player.playerIndex) && !World.getWorld().getPlayers().get(player.playerIndex).attackedPlayers.contains(player.getIndex())) {
-				player.attackedPlayers.add(player.playerIndex);
-				player.isSkulled = true;
-				player.skullTimer = 500;
-				player.skullIcon = 0;
-				player.getPA().requestUpdates();
+		if (target.isPlayer()) {
+			Player ptarg = (Player) target;
+			if (player != null && player.attackedPlayers != null && ptarg.attackedPlayers != null && !ptarg.getArea().inDuelArena()) {
+				if (!player.attackedPlayers.contains(target.getIndex()) && !ptarg.attackedPlayers.contains(player.getIndex())) {
+					player.attackedPlayers.add(target.getIndex());
+					player.isSkulled = true;
+					player.skullTimer = 500;
+					player.skullIcon = 0;
+					player.getPA().requestUpdates();
+				}
 			}
 		}
 
@@ -702,7 +700,7 @@ public class PlayerVsPlayerCombat {
 		 */
 		if (player.isUsingSpecial() && player.getCombatType() != CombatType.MAGIC) {
 			Special.handleSpecialAttack(player, defender);
-			player.followId = player.playerIndex;
+			player.setFollowing(player.getCombat().target);
 			return;
 		}
 		
@@ -716,7 +714,7 @@ public class PlayerVsPlayerCombat {
 		} else {
 			player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
 			player.mageFollow = true;
-			player.followId = player.playerIndex;
+			player.setFollowing(player.getCombat().target);
 			if (!player.autoCast) {
 				player.stopMovement();
 				player.followId = 0;
@@ -747,7 +745,7 @@ public class PlayerVsPlayerCombat {
 
 		if (player.getCombatType() == CombatType.MELEE) {
 
-			player.followId = player.playerIndex;
+			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
 			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
@@ -760,23 +758,23 @@ public class PlayerVsPlayerCombat {
 			if (player.usingCross)
 				player.usingBow = true;
 			player.usingBow = true;
-			player.followId = World.getWorld().getPlayers().get(player.playerIndex).getIndex();
+			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
 			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.oldPlayerIndex = i;
-			player.getCombat().fireProjectilePlayer();
+			player.getCombat().fireProjectileAtTarget();
 		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.getItems().deleteEquipment();
 			World.getWorld();
-			player.followId = World.getWorld().getPlayers().get(player.playerIndex).getIndex();
+			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
 			player.oldPlayerIndex = i;
-			player.getCombat().fireProjectilePlayer();
+			player.getCombat().fireProjectileAtTarget();
 		} else if (player.getCombatType() == CombatType.MAGIC) {
 			int pX = player.getX();
 			int pY = player.getY();
@@ -798,7 +796,7 @@ public class PlayerVsPlayerCombat {
 						player.getCombat().getEndHeight(), -i - 1, player.getCombat().getStartDelay());
 			}
 			if (player.autocastId > 0) {
-				player.followId = player.playerIndex;
+				player.setFollowing(player.getCombat().target);
 				player.followDistance = 5;
 			}
 			player.oldPlayerIndex = i;
@@ -820,7 +818,7 @@ public class PlayerVsPlayerCombat {
 				defender.frozenBy = player.getIndex();
 			}
 			if (!player.autoCast && player.spellId <= 0)
-				player.playerIndex = 0;
+				player.getCombat().reset();
 			
 		}
 	}
@@ -877,7 +875,7 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 		if (target.isDead()) {
-			target.playerIndex = 0;
+			player.getCombat().reset();
 			Combat.resetCombat(player);
 			return false;
 		}

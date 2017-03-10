@@ -1481,7 +1481,7 @@ public class Player extends Entity {
 	
 	public void process_following() {
 		if (followId > 0) {
-			getPA().followPlayer(/* !getLastCombatAction().elapsed(5000) || inCombat() || */playerIndex > 0);
+			getPA().followPlayer(!asPlayer().getCombat().noTarget());
 		} else if (followId2 > 0) {
 			getPA().followNpc();
 		}
@@ -1525,23 +1525,13 @@ public class Player extends Entity {
 			if (attackDelay > 0) {
 				attackDelay--;
 			}
-
-			if (attackDelay == 1) {
-				if (npcIndex > 0 && clickNpcType == 0) {
+			if (attackDelay == 0) {
+				// Now attack a target if we have one
+				if (getCombat().target.isPlayer()) {
+					getCombat().attackPlayer();
+				} else if (npcIndex > 0) {
 					getCombat().attackNpc(npcIndex);
 					//System.out.println("Can attack?");
-				}
-				if (playerIndex > 0) {
-					getCombat().attackPlayer(playerIndex);
-				}
-			} else if (attackDelay <= 0 && (npcIndex > 0 || playerIndex > 0)) {
-				if (npcIndex > 0) {
-					attackDelay = 0;
-					getCombat().attackNpc(npcIndex);
-					//System.out.println("Can attack.");
-				} else if (playerIndex > 0) {
-					attackDelay = 0;
-					getCombat().attackPlayer(playerIndex);
 				}
 			}
 		} catch (Exception e) {
@@ -2922,7 +2912,7 @@ public class Player extends Entity {
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance, npcFollowIndex, delayedDamage,
 			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
-			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId, playerIndex,
+			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId,
 			oldPlayerIndex, rangeItemUsed, killingNpcIndex, lastWeaponUsed,
 			oldNpcIndex, attackDelay, npcIndex, npcClickIndex, castingSpellId, oldSpellId, hitDelay,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,

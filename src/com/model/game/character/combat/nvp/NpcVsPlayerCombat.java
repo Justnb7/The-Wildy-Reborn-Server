@@ -287,7 +287,7 @@ public class NpcVsPlayerCombat {
 				return;
 			}
 			// Autoretal
-			if (player.playerIndex <= 0 && player.npcIndex <= 0 || player.npcIndex == npc.getIndex()) {
+			if (player.getCombat().noTarget()) {
 				if (player.isAutoRetaliating()) {
 					player.npcIndex = npc.getIndex();
 				}
@@ -518,7 +518,7 @@ public class NpcVsPlayerCombat {
 		}
 
 		// Autoretal
-		if (player.playerIndex <= 0 && player.npcIndex <= 0 || player.npcIndex == npc.getIndex()) {
+		if (player.getCombat().noTarget()) {
 			if (player.isAutoRetaliating()) {
 				player.npcIndex = npc.getIndex();
 			}

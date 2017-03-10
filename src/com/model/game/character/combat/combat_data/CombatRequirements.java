@@ -1,15 +1,16 @@
 package com.model.game.character.combat.combat_data;
 
-import java.util.Objects;
-
 import com.model.Server;
 import com.model.game.World;
+import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+
+import java.util.Objects;
 
 /**
  * 
@@ -33,22 +34,20 @@ public class CombatRequirements {
 	}
 	
 	public static boolean canAttackVictim(Player player) {
-		if(World.getWorld().getPlayers().get(player.playerIndex) == null) {
+		Entity target = player.getCombat().target;
+		if(target == null || target == player) {
 			return false;
 		}
 		
-		if (player.playerIndex == player.getIndex())
-			return false;
-		
-		if (World.getWorld().getPlayers().get(player.playerIndex).inTutorial()) {
+		if (target.inTutorial()) {
 			player.write(new SendMessagePacket("You cannot attack this player."));
 			player.stopMovement();
 			Combat.resetCombat(player);
 			return false;
 		}
-		if (World.getWorld().getPlayers().get(player.playerIndex).getArea().inDuelArena()) {
-			if (!Boundary.isIn(World.getWorld().getPlayers().get(player.playerIndex), Boundary.DUEL_ARENAS)) {
-				Player other = World.getWorld().getPlayers().get(player.playerIndex);
+		if (target.getArea().inDuelArena()) {
+			if (!Boundary.isIn(target, Boundary.DUEL_ARENAS)) {
+				Player other = target;
 				if (player.getDuel().requestable(other)) {
 					player.getDuel().request(other);
 				}
@@ -66,7 +65,7 @@ public class CombatRequirements {
 			return true;
 		}
 
-		if(!World.getWorld().getPlayers().get(player.playerIndex).getArea().inWild()) {
+		if(!target.getArea().inWild()) {
 			player.write(new SendMessagePacket("That player is not in the wilderness."));
 			player.stopMovement();
 			Combat.resetCombat(player);
@@ -79,41 +78,43 @@ public class CombatRequirements {
 			Combat.resetCombat(player);
 			return false;
 		}
-		
-		boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
-				player.getName().equalsIgnoreCase("patrick");
-		if (player.getArea().inWild()) {
-			int combatDif1 = getCombatDifference(player.combatLevel, World.getWorld().getPlayers().get(player.playerIndex).combatLevel);
-			if (!bypassCosImTheBest && 
-					(combatDif1 > player.wildLevel || combatDif1 > World.getWorld().getPlayers().get(player.playerIndex).wildLevel)) {
-				player.write(new SendMessagePacket("Your level difference is too great! Move deeper into the wilderness."));
-				player.stopMovement();
-				Combat.resetCombat(player);
-				return false;
-			}
-		} else {
-			int myCB = player.combatLevel;
-			int pCB = World.getWorld().getPlayers().get(player.playerIndex).combatLevel;
-			if (!bypassCosImTheBest && ((myCB > pCB + 12) || (myCB < pCB - 12))) {
-				player.write(new SendMessagePacket("You can only fight players in your combat range!"));
-				player.stopMovement();
-				Combat.resetCombat(player);
-				return false;
-			}
-		}
-		if (!World.getWorld().getPlayers().get(player.playerIndex).getArea().inMulti()) { // single combat zones
-			if (World.getWorld().getPlayers().get(player.playerIndex).underAttackBy != player.getIndex() && World.getWorld().getPlayers().get(player.playerIndex).underAttackBy != 0) {
-				player.write(new SendMessagePacket("That player is already in combat."));
-				player.stopMovement();
-				Combat.resetCombat(player);
-				return false;
-			}
 
-			if (World.getWorld().getPlayers().get(player.playerIndex).getIndex() != player.underAttackBy && player.underAttackBy != 0 || player.underAttackBy2 > 0) {
-				player.write(new SendMessagePacket("You are already in combat."));
-				player.stopMovement();
-				Combat.resetCombat(player);
-				return false;
+		if (target.isPlayer()) {
+			boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
+					player.getName().equalsIgnoreCase("patrick");
+			if (player.getArea().inWild()) {
+				int combatDif1 = getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
+				if (!bypassCosImTheBest &&
+						(combatDif1 > player.wildLevel || combatDif1 > ((Player) target).wildLevel)) {
+					player.write(new SendMessagePacket("Your level difference is too great! Move deeper into the wilderness."));
+					player.stopMovement();
+					Combat.resetCombat(player);
+					return false;
+				}
+			} else {
+				int myCB = player.combatLevel;
+				int pCB = ((Player) target).combatLevel;
+				if (!bypassCosImTheBest && ((myCB > pCB + 12) || (myCB < pCB - 12))) {
+					player.write(new SendMessagePacket("You can only fight players in your combat range!"));
+					player.stopMovement();
+					Combat.resetCombat(player);
+					return false;
+				}
+			}
+			if (!((Player) target).getArea().inMulti()) { // single combat zones
+				if (((Player) target).underAttackBy != player.getIndex() && ((Player) target).underAttackBy != 0) {
+					player.write(new SendMessagePacket("That player is already in combat."));
+					player.stopMovement();
+					Combat.resetCombat(player);
+					return false;
+				}
+
+				if (target.getIndex() != player.underAttackBy && player.underAttackBy != 0 || player.underAttackBy2 > 0) {
+					player.write(new SendMessagePacket("You are already in combat."));
+					player.stopMovement();
+					Combat.resetCombat(player);
+					return false;
+				}
 			}
 		}
 		return true;

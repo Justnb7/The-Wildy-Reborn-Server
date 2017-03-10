@@ -35,12 +35,8 @@ public class Ballista implements SpecialAttack {
 		// On rapid, the attack delay is 1 tick faster.
 		if (player.getAttackStyle() == 2)
 			player.attackDelay--;
-		
-		if (player.playerIndex > 0) {
-			player.getCombat().fireProjectilePlayer();
-		} else if (player.npcIndex > 0) {
-			player.getCombat().fireProjectileNpc();
-		}
+
+		player.getCombat().fireProjectileAtTarget();
 		
 		int damage = Utility.random(player.getCombat().calculateRangeMaxHit());
 		boolean success = CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());

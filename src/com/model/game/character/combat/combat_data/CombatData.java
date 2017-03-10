@@ -47,13 +47,7 @@ public class CombatData {
 		}
 		
 		if (weapon.contains("blowpipe")) {
-			if (player.playerIndex > 0) { // we're attacking a player
-				return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? 3 : 4;
-			} else if (player.npcIndex > 0) { // we're attacking an npc
-				// accurate = 4, rapid = accurate-1
-				return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? 2 : 3;
-			}
-			return 4;
+			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombat().target.isPlayer() ? 3 : 2 : player.getCombat().target.isPlayer() ? 4 : 3;
 		}
 		
 		if (weapon.endsWith("greataxe"))

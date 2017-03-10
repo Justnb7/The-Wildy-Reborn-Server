@@ -1,7 +1,6 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
 import com.model.Server;
-import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
@@ -20,7 +19,7 @@ public class MagicShortbow implements SpecialAttack {
 
 	@Override
 	public void handleAttack(final Player player, final Entity target) {
-		Entity entity = player.playerIndex > 0 ? World.getWorld().getPlayers().get(player.playerIndex) : World.getWorld().getNpcs().get(player.npcIndex);
+		Entity entity = player.getCombat().target;
 		player.setCombatType(CombatType.RANGED);
 		player.usingBow = true;			
 		player.bowSpecShot = 1;
@@ -29,10 +28,7 @@ public class MagicShortbow implements SpecialAttack {
 		player.getItems().deleteArrow();
 		player.playAnimation(Animation.create(1074));
 		player.setCombatType(CombatType.RANGED);
-		if (player.playerIndex > 0)
-			player.getCombat().fireProjectilePlayer();
-		else
-			player.getCombat().fireProjectileNpc();
+		player.getCombat().fireProjectileAtTarget();
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			public void execute() {
 				player.playAnimation(Animation.create(1074));
@@ -42,10 +38,7 @@ public class MagicShortbow implements SpecialAttack {
 		});
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			public void execute() {
-				if (player.playerIndex > 0)
-					player.getCombat().fireProjectilePlayer();
-				else
-					player.getCombat().fireProjectileNpc();
+				player.getCombat().fireProjectileAtTarget();
 				player.playGraphics(Graphic.create(256));
 				this.stop();
 			}

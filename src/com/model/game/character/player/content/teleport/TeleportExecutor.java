@@ -133,7 +133,7 @@ public class TeleportExecutor {
 		Combat.resetCombat(player);
 		player.stopMovement();
 		player.getActionSender().sendRemoveInterfacePacket();
-		player.npcIndex = player.playerIndex = 0;
+		player.getCombat().reset();
 		player.resetFace();
 		player.teleTimer = initialDelay;
 		player.setTeleporting(true);
@@ -227,12 +227,11 @@ public class TeleportExecutor {
 			player.write(new SendMessagePacket("You are teleblocked and can't teleport."));
 			return false;
 		}
-		if (player.playerIndex > 0 || player.npcIndex > 0) {
+		if (!player.getCombat().noTarget()) {
 			Combat.resetCombat(player);
 		}
 		player.getActionSender().sendRemoveInterfacePacket();
-		player.npcIndex = 0;
-		player.playerIndex = 0;
+		player.getCombat().reset();
 		player.faceEntity(player);
 		return true;
 	}

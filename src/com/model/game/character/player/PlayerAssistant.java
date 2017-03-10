@@ -1,31 +1,24 @@
 package com.model.game.character.player;
 
-import java.text.DecimalFormat;
-import java.util.Objects;
-
-import org.omicron.jagex.runescape.CollisionMap;
-
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.effect.impl.DragonfireShieldEffect;
-import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
-import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.character.player.packets.out.*;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.ItemDefinition;
+import org.omicron.jagex.runescape.CollisionMap;
+
+import java.text.DecimalFormat;
 
 public class PlayerAssistant {
 
@@ -486,28 +479,20 @@ public class PlayerAssistant {
         case 11283:
 			DragonfireShieldEffect dfsEffect = new DragonfireShieldEffect();
 			
-			if (player.npcIndex <= 0 && player.playerIndex <= 0) {
+			if (player.getCombat().noTarget()) {
 				return;
 			}
 			if (dfsEffect.isExecutable(player)) {
 				int damage = Utility.getRandom(25);
-				if (player.playerIndex > 0) {
-					Player target = World.getWorld().getPlayers().get(player.playerIndex);
-					if (Objects.isNull(target)) {
-						return;
-					}
-					player.attackDelay = 7;
-					dfsEffect.execute(player, target, damage);
-					player.setLastDragonfireShieldAttack(System.currentTimeMillis());
-				} else if (player.npcIndex > 0) {
-					Npc target = NPCHandler.npcs[player.npcIndex];
-					if (Objects.isNull(target)) {
-						return;
-					}
-					player.attackDelay = 7;
-					dfsEffect.execute(player, target, damage);
-					player.setLastDragonfireShieldAttack(System.currentTimeMillis());
-				}
+                if (player.getCombat().noTarget()) {
+                    return;
+                }
+                player.attackDelay = 7;
+                if (player.getCombat().target.isPlayer())
+                    dfsEffect.execute(player, (Player)player.getCombat().target, damage);
+                else
+                    dfsEffect.execute(player, (Npc)player.getCombat().target, damage);
+                player.setLastDragonfireShieldAttack(System.currentTimeMillis());
 			}
 			break;
         }

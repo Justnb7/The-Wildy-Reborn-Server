@@ -1,7 +1,6 @@
 package com.model.game.character.combat.combat_data;
 
 import com.model.Server;
-import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Boundary;
@@ -38,40 +37,7 @@ public class CombatRequirements {
 		if(target == null || target == player) {
 			return false;
 		}
-		
-		if (target.inTutorial()) {
-			player.write(new SendMessagePacket("You cannot attack this player."));
-			player.stopMovement();
-			Combat.resetCombat(player);
-			return false;
-		}
-		if (target.getArea().inDuelArena()) {
-			if (!Boundary.isIn(target, Boundary.DUEL_ARENAS)) {
-				Player other = target;
-				if (player.getDuel().requestable(other)) {
-					player.getDuel().request(other);
-				}
-				Combat.resetCombat(player);
-				return false;
-			}
-			
-			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
-			if (Objects.nonNull(session)) {
-				if (!session.isAttackingOperationable()) {
-					player.write(new SendMessagePacket("You must wait until the duel has commenced!"));
-					return false;
-				}
-			}
-			return true;
-		}
 
-		if(!target.getArea().inWild()) {
-			player.write(new SendMessagePacket("That player is not in the wilderness."));
-			player.stopMovement();
-			Combat.resetCombat(player);
-			return false;
-		}
-		
 		if(!player.getArea().inWild()) {
 			player.write(new SendMessagePacket("You are not in the wilderness."));
 			player.stopMovement();
@@ -80,6 +46,39 @@ public class CombatRequirements {
 		}
 
 		if (target.isPlayer()) {
+			Player ptarg = (Player)target;
+			if(!ptarg.getArea().inWild()) {
+				player.write(new SendMessagePacket("That player is not in the wilderness."));
+				player.stopMovement();
+				Combat.resetCombat(player);
+				return false;
+			}
+
+			if (ptarg.inTutorial()) {
+				player.write(new SendMessagePacket("You cannot attack this player."));
+				player.stopMovement();
+				Combat.resetCombat(player);
+				return false;
+			}
+			if (ptarg.getArea().inDuelArena()) {
+				if (!Boundary.isIn(target, Boundary.DUEL_ARENAS)) {
+					if (player.getDuel().requestable(ptarg)) {
+						player.getDuel().request(ptarg);
+					}
+					Combat.resetCombat(player);
+					return false;
+				}
+
+				DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
+				if (Objects.nonNull(session)) {
+					if (!session.isAttackingOperationable()) {
+						player.write(new SendMessagePacket("You must wait until the duel has commenced!"));
+						return false;
+					}
+				}
+				return true;
+			}
+
 			boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
 					player.getName().equalsIgnoreCase("patrick");
 			if (player.getArea().inWild()) {

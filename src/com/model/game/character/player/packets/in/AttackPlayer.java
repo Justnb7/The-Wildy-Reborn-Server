@@ -65,7 +65,7 @@ public class AttackPlayer implements PacketType {
 			}
 
 			if (CombatRequirements.canAttackVictim(player)) {
-				player.followId = player.playerIndex;
+				player.setFollowing(targ);
 				if (!player.usingMagic && !player.usingBow && !player.throwingAxe) {
 					player.followDistance = 1;
 					player.getPA().followPlayer(true);

@@ -19,4 +19,8 @@ public class Combat {
 		player.setInCombat(false);
 		player.getActionSender().sendString("", 35000);
 	}
+
+	public static void playerVsEntity(Player player) {
+
+	}
 }

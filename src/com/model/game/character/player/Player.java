@@ -21,6 +21,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatAssistant;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.PrayerHandler;
@@ -1527,12 +1528,7 @@ public class Player extends Entity {
 			}
 			if (attackDelay == 0) {
 				// Now attack a target if we have one
-				if (getCombat().target.isPlayer()) {
-					getCombat().attackPlayer();
-				} else if (npcIndex > 0) {
-					getCombat().attackNpc(npcIndex);
-					//System.out.println("Can attack?");
-				}
+				Combat.playerVsEntity(this);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

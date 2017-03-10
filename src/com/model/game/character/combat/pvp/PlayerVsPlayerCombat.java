@@ -380,7 +380,7 @@ public class PlayerVsPlayerCombat {
 		}
 		
 		if (dropArrows) {
-			attacker.getItems().dropArrowPlayer();
+			attacker.getItems().dropArrowUnderTarget();
 		}
 		
 		if (attacker.rangeEndGFX > 0 && !attacker.getCombat().usingBolts(attacker.playerEquipment[attacker.getEquipment().getQuiverId()])) {

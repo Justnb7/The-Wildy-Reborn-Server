@@ -2,27 +2,19 @@ package com.model.game.character.combat.pvm;
 
 import com.model.Server;
 import com.model.game.character.Animation;
-import com.model.game.character.Graphic;
-import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatData;
-import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.magic.MagicCalculations;
-import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
-import com.model.game.character.player.Skills;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
-import com.model.utility.Utility;
 
 /**
  * Handles Player Vs Npc combat
@@ -39,95 +31,6 @@ public class PlayerVsNpcCombat {
 			return true;
 		return false;
 	}
-
-
-	/**
-	 * Applys magic damage to the {@link Npc}
-	 * 
-	 * @param player
-	 *            The {@link Player} attacking the npc
-	 * @param npc
-	 *            The {@link Npc} being attacked
-	 */
-	public static void applyNpcMagicDamage(Player player, Npc npc) {
-		int damage = 0;
-		player.usingMagic = true;
-        damage = MagicCalculations.magicMaxHitModifier(player);
-        
-        CombatExperience.handleCombatExperience(player, damage, CombatType.MAGIC);
-        
-		if (player.getCombat().godSpells()) {
-			if (System.currentTimeMillis() - player.godSpellDelay < 300000) {
-				damage += Utility.getRandom(10);
-			}
-		}
-
-		
-		if (npc.npcId == 5535) {
-			damage = 0;
-		}
-		
-		boolean magicFailed = false;
-		if (!CombatFormulae.getAccuracy(player, npc, 2, 1.0)) {
-			damage = 0;
-			magicFailed = true;
-		} else if (npc.npcId == 2265 || npc.npcId == 2266) {
-			player.write(new SendMessagePacket("The dagannoth is currently resistant to that attack!"));
-			magicFailed = true;
-			return;
-		} else if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907 || player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
-            Utility.getRandom(npc.getDefinition().getMagicDefence());
-		}
-		
-		if (npc.currentHealth - damage < 0) {
-			damage = npc.currentHealth;
-		}
-
-		if (player.getCombat().getEndGfxHeight() == 100 && !magicFailed) { // end GFX
-			npc.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 100));
-			if (npc.attackTimer < 5)
-				npc.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(npc)));
-		} else if (!magicFailed) {
-			npc.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 0));
-		}
-
-		if (magicFailed) {
-			if (npc.attackTimer < 5) {
-				npc.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(npc)));
-			}
-			npc.playGraphics(Graphic.create(85, 0, 100));
-		}
-		if (!magicFailed) {
-			int freezeDelay = player.getCombat().getFreezeTime();// freeze
-			if (freezeDelay > 0 && npc.refreezeTicks == 0) {
-				npc.freeze(freezeDelay);
-				System.out.println("Freeze timer: "+npc.refreezeTicks+ " Freezedelay: "+freezeDelay);
-			}
-			switch (player.MAGIC_SPELLS[player.oldSpellId][0]) {
-			case 12901:
-			case 12919: // blood spells
-			case 12911:
-			case 12929:
-				int heal = Utility.getRandom(damage / 2);
-				if (player.getSkills().getLevel(Skills.HITPOINTS) + heal >= player.getSkills().getLevelForExperience(Skills.HITPOINTS)) {
-					player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevelForExperience(Skills.HITPOINTS));
-				} else {
-					player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + heal);
-				}
-				break;
-			}
-		}
-		npc.retaliate(player);
-		if (MagicCalculations.magicMaxHitModifier(player) != 0) {
-			npc.addDamageReceived(player.getName(), damage);
-			npc.damage(new Hit(damage));
-		}
-		npc.updateRequired = true;
-		player.usingMagic = false;
-		player.castingMagic = false;
-		player.oldSpellId = 0;
-	}
-
 	
 	public static void kraken(Player player, Npc npc, int damage) {
 		

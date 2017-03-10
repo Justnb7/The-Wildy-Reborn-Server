@@ -1,17 +1,10 @@
 package com.model.game.character.combat.pvp;
 
 import com.model.Server;
-import com.model.game.character.Graphic;
-import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatData;
-import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.effect.impl.RingOfRecoil;
-import com.model.game.character.combat.magic.MagicCalculations;
-import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -19,7 +12,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 
 import java.util.Objects;
@@ -34,105 +26,6 @@ import java.util.Objects;
 public class PlayerVsPlayerCombat {
 
 	public static int[] poisonous = {5698, 13267, 13269, 13271};
-
-	/**
-	 * Applies the magic damage for the player
-	 * 
-	 * @param attacker
-	 *            The {@link Player} applying the damage
-	 * @param defender
-	 *            The {@link Player} being attacked
-	 */
-	public static void applyPlayerMagicDamage(Player attacker, Player defender) {
-		int damage = 0;
-
-		damage = MagicCalculations.magicMaxHitModifier(attacker);
-
-		if (attacker.getCombat().godSpells()) {
-			if (System.currentTimeMillis() - attacker.godSpellDelay < 300000) {
-				damage += 10;
-			}
-		}
-		
-		if (attacker.getSpellBook() == SpellBook.MODERN && (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 2415 || attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 2416 || attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == 2417)) {
-			damage = 0;
-			attacker.write(new SendMessagePacket("You must be on the modern spellbook to cast this spell."));
-			return;
-		}
-		
-		if (attacker.magicFailed)
-			damage = 0;
-
-		if (defender.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
-			damage = damage * 60 / 100;
-		}
-		if (defender.getSkills().getLevel(Skills.HITPOINTS) - damage < 0) {
-			defender.getSkills().setLevel(Skills.HITPOINTS, damage);
-		}
-		if (defender.hasVengeance()) {
-			defender.getCombat().vengeance(attacker, damage, 1);
-		}
-		if (damage > 0) {
-			RingOfRecoil recoil = new RingOfRecoil();
-			if (recoil.isExecutable(attacker)) {
-				recoil.execute(defender, attacker, damage);
-			}
-		}
-		CombatExperience.handleCombatExperience(attacker, damage, CombatType.MAGIC);
-
-		if (attacker.getCombat().getEndGfxHeight() == 100 && !attacker.magicFailed) { // end GFX
-			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, 100));
-		} else if (!attacker.magicFailed) {
-			defender.playGraphics(Graphic.create(attacker.MAGIC_SPELLS[attacker.oldSpellId][5], 0, attacker.getCombat().getEndGfxHeight()));
-		} else if (attacker.magicFailed) {
-			defender.playGraphics(Graphic.create(85, 0, 100));
-		}
-
-		if (!attacker.magicFailed) {
-
-			switch (attacker.MAGIC_SPELLS[attacker.oldSpellId][0]) {
-			case 12445: // teleblock
-				if (defender.teleblock.elapsed(defender.teleblockLength)) {
-					defender.teleblock.reset();
-					defender.write(new SendMessagePacket("You have been teleblocked."));
-					defender.putInCombat(1);
-					if (defender.isActivePrayer(Prayers.PROTECT_FROM_MAGIC))
-						defender.teleblockLength = 150000;
-					else
-						defender.teleblockLength = 300000;
-				}
-				break;
-
-			case 12901:
-			case 12919: // blood spells
-			case 12911:
-			case 12929:
-				int heal = damage / 4;
-				if (attacker.getSkills().getLevel(Skills.HITPOINTS) + heal > attacker.getMaximumHealth()) {
-					attacker.getSkills().setLevel(Skills.HITPOINTS, attacker.getMaximumHealth());
-				} else {
-					attacker.getSkills().setLevel(Skills.HITPOINTS, attacker.getSkills().getLevel(Skills.HITPOINTS) + heal);
-				}
-				break;
-
-			}
-		}
-		
-		defender.putInCombat(attacker.getIndex());
-		defender.killerId = attacker.getIndex();
-		attacker.updateLastCombatAction();
-		attacker.setInCombat(true);
-		if (MagicCalculations.magicMaxHitModifier(attacker) != 0 && !attacker.magicFailed) {
-			defender.addDamageReceived(attacker.getName(), damage);
-			defender.damage(new Hit(damage));
-		}
-		attacker.getCombat().applySmite(defender, damage);
-		attacker.killedBy = defender.getIndex();
-		defender.updateRequired = true;
-		attacker.usingMagic = false;
-		attacker.castingMagic = false;
-		attacker.oldSpellId = 0;
-	}
 
 	/**
 	 * Validates that the attack can be made

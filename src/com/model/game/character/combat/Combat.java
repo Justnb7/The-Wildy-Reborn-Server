@@ -10,6 +10,7 @@ import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.effect.impl.Venom;
+import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
@@ -165,6 +166,10 @@ public class Combat {
 			if (!player.getCombat().checkMagicReqs(player.getSpellId())) {
 				player.stopMovement();
 				Combat.resetCombat(player);
+				return;
+			}
+			if (player.getSpellBook() != SpellBook.MODERN && (player.playerEquipment[player.getEquipment().getWeaponId()] == 2415 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2416 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2417)) {
+				player.message("You must be on the modern spellbook to cast this spell.");
 				return;
 			}
 		}
@@ -429,10 +434,10 @@ public class Combat {
 				}
 			}
 
-			player.magicFailed = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
+			boolean splash = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
 
 			int spellFreezeTime = player.getCombat().getFreezeTime();
-			if (spellFreezeTime > 0 && !target.frozen() && !player.magicFailed) {
+			if (spellFreezeTime > 0 && !target.frozen() && !splash) {
 
 				target.freeze(spellFreezeTime);
 				if (target.isPlayer()) {
@@ -446,7 +451,58 @@ public class Combat {
 				player.getCombat().reset();
 			}
 
-			Combat.hitEvent(player, target, hitDelay, null, CombatType.MAGIC);
+			int dam1 = MagicCalculations.magicMaxHitModifier(player);
+			if (player.getCombat().godSpells()) {
+				if (System.currentTimeMillis() - player.godSpellDelay < 300000) {
+					dam1 += 10;
+				}
+			}
+
+			// Graphic that appears when hit appears.
+			Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+				@Override
+				public void execute() {
+					if (splash)
+						target.playGraphics(Graphic.create(85, 0, 100));
+					else
+						target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombat().getEndGfxHeight()));
+					this.stop();
+				}
+			});
+
+			if (splash) {
+				dam1 = 0;
+			} else {
+				switch (player.MAGIC_SPELLS[player.oldSpellId][0]) {
+					case 12445: // teleblock
+						if (target.isPlayer()) {
+							Player defender = (Player) target;
+							if (defender.teleblock.elapsed(defender.teleblockLength)) {
+								defender.teleblock.reset();
+								defender.write(new SendMessagePacket("You have been teleblocked."));
+								defender.putInCombat(1);
+								if (defender.isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MAGIC))
+									defender.teleblockLength = 150000;
+								else
+									defender.teleblockLength = 300000;
+							}
+						}
+						break;
+					case 12901:
+					case 12919: // blood spells
+					case 12911:
+					case 12929:
+						int heal = dam1 / 4;
+						if (player.getSkills().getLevel(Skills.HITPOINTS) + heal > player.getMaximumHealth()) {
+							player.getSkills().setLevel(Skills.HITPOINTS, player.getMaximumHealth());
+						} else {
+							player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + heal);
+						}
+						break;
+				}
+			}
+
+			Combat.hitEvent(player, target, hitDelay, new Hit(dam1), CombatType.MAGIC);
 			player.setSpellId(0);
 		}
 	}
@@ -613,47 +669,33 @@ public class Combat {
 		// Schedule a task
 		Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
 			public void execute() {
-				// If the hit param is null, the methods below will calculate the damage for us.
-				if (hit == null) {
-					// Method below will calculate the hit itself after the delay.
-					if (target.isPlayer()) {
-						Player defender = (Player) target;
-						switch (combatType) {
-							case MAGIC:
-								PlayerVsPlayerCombat.applyPlayerMagicDamage(player, defender);
-								break;
-							default:
-								throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
-						}
-					} else {
-						Npc npc = (Npc)target;
-						switch (combatType) {
-							case MAGIC:
-								PlayerVsNpcCombat.applyNpcMagicDamage(player, npc);
-								break;
-							default:
-								throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
+				PlayerSounds.sendBlockOrHitSound(player, hit.getDamage() > 0);
+				target.damage(hit);
+
+				// Range attack invoke block emote when hit appears.
+				if (hit.cbType == CombatType.RANGED && target.isNPC()) {
+					if (((Npc)target).attackTimer < 5)
+						target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((Npc)target))));
+
+					// Graphics that happen when hit appears
+					player.setAttribute("ignore defence", false);
+					if (player.rangeEndGFX > 0) {
+						if (player.rangeEndGFXHeight) {
+							target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 100));
+						} else {
+							target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 0));
 						}
 					}
-				} else {
-					PlayerSounds.sendBlockOrHitSound(player, hit.getDamage() > 0);
-					target.damage(hit);
-
-					// Range attack invoke block emote when hit appears.
-					if (hit.cbType == CombatType.RANGED && target.isNPC()) {
-						if (((Npc)target).attackTimer < 5)
-							target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((Npc)target))));
-
-						// Graphics that happen when hit appears
-						player.setAttribute("ignore defence", false);
-						if (player.rangeEndGFX > 0) {
-							if (player.rangeEndGFXHeight) {
-								target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 100));
-							} else {
-								target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 0));
-							}
-						}
+				}
+				if (hit.cbType == CombatType.MAGIC) {
+					if (player.getCombat().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX
+						target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 100));
+					} else if (!player.magicFailed) {
+						target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombat().getEndGfxHeight()));
+					} else if (player.magicFailed) {
+						target.playGraphics(Graphic.create(85, 0, 100));
 					}
+
 				}
 				this.stop();
 			}

@@ -449,8 +449,7 @@ public abstract class Entity {
 			if (victim_npc.npcId == 5535) {
 				damage = 0;
 			}
-			// TODO what dags are these and what style isnt the one allowed?
-			if (victim_npc.npcId == 2267 || victim_npc.npcId == 2266) {
+			if (combat_type == CombatType.MELEE && (victim_npc.npcId == 2267 || victim_npc.npcId == 2266)) {
 				if (attacker.isPlayer())
 					((Player)attacker).message("The dagannoth is currently resistant to that attack!");
 				damage = 0;
@@ -458,6 +457,13 @@ public abstract class Entity {
 			//Rex and Supreme do not take range damage
 			if (combat_type == CombatType.RANGED && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
 				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
+				damage = 0;
+			}
+			if (combat_type == CombatType.MAGIC && (victim_npc.npcId == 2265 || victim_npc.npcId == 2266)) {
+				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
+				damage = 0;
+			}
+			if (combat_type == CombatType.MAGIC && victim_npc.npcId == 5535) {
 				damage = 0;
 			}
 		}

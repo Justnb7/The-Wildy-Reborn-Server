@@ -33,8 +33,7 @@ public class Combat {
 	
 	public static void resetCombat(Player player) {
 		player.usingMagic = false;
-		player.faceEntity(player); // face urself wtf l0l
-		player.npcIndex = 0;
+		player.faceEntity(null);
 		player.getCombat().reset();
 		player.getPA().resetFollow();
 		player.setInCombat(false);
@@ -64,8 +63,8 @@ public class Combat {
 
 			if (npc.isDead || npc.maximumHealth <= 0 || player.isDead()) {
 				player.usingMagic = false;
-				player.faceEntity(player);
-				player.npcIndex = 0;
+				player.faceEntity(null);
+				player.getCombat().reset();
 				return;
 			}
 			// Can attack check

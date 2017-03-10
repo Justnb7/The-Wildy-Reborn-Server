@@ -330,7 +330,7 @@ public class PlayerAssistant {
 		if((player.usingBow || playerRanging) && bowDistance && !sameSpot) {
 			return;
 		}
-		if((castingMagic || player.mageFollow || (player.npcIndex > 0 && player.autocastId > 0)) && mageDistance && !sameSpot) {
+		if((castingMagic || player.mageFollow || (!player.getCombat().noTarget() && player.autocastId > 0)) && mageDistance && !sameSpot) {
 			return;
 		}
 		if(CombatData.usingHalberd(player) && hallyDistance && !sameSpot) {

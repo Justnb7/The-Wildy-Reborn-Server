@@ -288,11 +288,11 @@ public class NpcVsPlayerCombat {
 			// Autoretal
 			if (player.getCombat().noTarget()) {
 				if (player.isAutoRetaliating()) {
-					player.npcIndex = npc.getIndex();
+					player.getCombat().setTarget(npc);
 				}
 			}
 			// block anim
-			if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0) {
+			if (player.attackDelay <= 3 || player.attackDelay == 0) {
 				player.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(player)));
 			}
 			boolean isBoss = Bosses.isBoss(npc.npcId);
@@ -519,11 +519,11 @@ public class NpcVsPlayerCombat {
 		// Autoretal
 		if (player.getCombat().noTarget()) {
 			if (player.isAutoRetaliating()) {
-				player.npcIndex = npc.getIndex();
+				player.getCombat().setTarget(npc);
 			}
 		}
 		// block anim
-		if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0) {
+		if (player.attackDelay <= 3 || player.attackDelay == 0) {
 			player.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(player)));
 		}
 		// final graphic

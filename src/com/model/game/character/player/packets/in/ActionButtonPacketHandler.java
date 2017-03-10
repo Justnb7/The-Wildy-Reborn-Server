@@ -1,7 +1,5 @@
 package com.model.game.character.player.packets.in;
 
-import java.util.Objects;
-
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
@@ -26,15 +24,13 @@ import com.model.game.character.player.content.teleport.TeleportHandler.Teleport
 import com.model.game.character.player.content.teleport.Teleports;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
-import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
-import com.model.game.character.player.packets.out.SendSongPacket;
+import com.model.game.character.player.packets.out.*;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
+
+import java.util.Objects;
 
 
 /**
@@ -634,7 +630,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 89061:
 			System.out.println("tick: " +player.isAutoRetaliating());
 			player.setAutoRetaliating(!player.isAutoRetaliating());
-			player.npcIndex = -1;
 			player.getCombat().reset();
 			break;
 			

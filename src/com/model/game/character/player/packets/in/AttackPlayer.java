@@ -19,7 +19,6 @@ public class AttackPlayer implements PacketType {
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
 		player.getCombat().reset();
-		player.npcIndex = 0;
 		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
 		}

@@ -139,7 +139,7 @@ public class PlayerVsNpcCombat {
 		}
 
 		npc.retaliate(attacker);
-		attacker.killingNpcIndex = attacker.npcIndex;
+		attacker.killingNpcIndex = attacker.getCombat().target.getIndex();
 		
 		if (damage > 0) {
 			npc.addDamageReceived(attacker.getName(), damage);
@@ -504,7 +504,6 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 		if ((npc.npcId == 6611 || npc.npcId == 6612) && npc.dogs > 0) {
-			player.npcIndex = 0;
 			Combat.resetCombat(player);
 			player.write(new SendMessagePacket("You must vanquish Vet'ions dogs."));
 			return false;
@@ -529,7 +528,7 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !npc.inMulti()) {
-			player.npcIndex = 0;
+			player.getCombat().reset();
 			player.write(new SendMessagePacket("This monster is already in combat."));
 			return false;
 		}

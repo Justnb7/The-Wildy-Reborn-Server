@@ -17,7 +17,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 	@Override
 	public void handle(final Player player, int packetType, int packetSize) {
-		player.npcIndex = 0;
+		player.getCombat().reset();
 		player.npcClickIndex = 0;
 		player.getCombat().reset();
 		player.clickNpcType = 0;
@@ -31,13 +31,13 @@ public class NpcInteractionPacketHandler implements PacketType {
 		 * Attack npc melee or range
 		 **/
 		case ATTACK_NPC:
-			player.npcIndex = player.getInStream().readUnsignedWordA();
-			Npc npc = World.getWorld().getNpcs().get(player.npcIndex);
+			int pid = player.getInStream().readUnsignedWordA();
+			Npc npc = World.getWorld().getNpcs().get(pid);
 			if (npc == null) {
 				break;
 			}
-			if (World.getWorld().getNpcs().get(player.npcIndex).maximumHealth == 0 && npc.npcId != 493) {
-				player.npcIndex = 0;
+			if (npc.maximumHealth == 0 && npc.npcId != 493) {
+				player.getCombat().reset();
 				break;
 			}
             if (!npc.getDefinition().isAttackable())
@@ -55,10 +55,10 @@ public class NpcInteractionPacketHandler implements PacketType {
 			boolean throwingWeapon = player.getEquipment().isThrowingWeapon(player);
 			boolean usingCross = player.getEquipment().isCrossbow(player);
 			
-			if ((usingBow || usingCross || player.autoCast) && player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 7)) {
+			if ((usingBow || usingCross || player.autoCast) && player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {
 				player.stopMovement();
 			}
-			if (throwingWeapon && player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 4)) {
+			if (throwingWeapon && player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 4)) {
 				player.stopMovement();
 			}
 
@@ -72,17 +72,17 @@ public class NpcInteractionPacketHandler implements PacketType {
 		 * Attack npc with magic
 		 **/
 		case MAGE_NPC:
-			player.npcIndex = player.getInStream().readSignedWordBigEndianA();
+			pid = player.getInStream().readSignedWordBigEndianA();
 			int castingSpellId = player.getInStream().readSignedWordA();
 			player.usingMagic = false;
-            npc = World.getWorld().getNpcs().get(player.npcIndex);
-			if (World.getWorld().getNpcs().get(player.npcIndex) == null) {
+            npc = World.getWorld().getNpcs().get(pid);
+			if (npc == null) {
 				return;
 			}
 
             if (!npc.getDefinition().isAttackable())
                 return;
-			if (World.getWorld().getNpcs().get(player.npcIndex).maximumHealth == 0 || World.getWorld().getNpcs().get(player.npcIndex).npcId == 944) {
+			if (npc.maximumHealth == 0 || npc.npcId == 944) {
 				player.write(new SendMessagePacket("You can't attack this npc."));
 				break;
 			}
@@ -98,7 +98,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 				player.autoCast = false;
 			}
 			if (player.usingMagic) {
-				if (player.goodDistance(player.getX(), player.getY(), World.getWorld().getNpcs().get(player.npcIndex).getX(), World.getWorld().getNpcs().get(player.npcIndex).getY(), 6)) {
+				if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 6)) {
 					player.stopMovement();
 				}
 				player.getCombat().setTarget(npc);

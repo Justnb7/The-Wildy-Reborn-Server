@@ -12,7 +12,7 @@ public class FollowPlayer implements PacketType {
 		if (World.getWorld().getPlayers().get(followPlayer) == null) {
 			return;
 		}
-		player.npcIndex = 0;
+		player.getCombat().reset();
 		player.mageFollow = false;
 		player.usingBow = false;
 		player.followDistance = 1;

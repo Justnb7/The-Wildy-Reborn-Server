@@ -10,7 +10,6 @@ import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.RingOfRecoil;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
@@ -22,7 +21,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.utility.Utility;
@@ -38,67 +36,8 @@ import java.util.Objects;
  */
 public class PlayerVsPlayerCombat {
 
-	private static int[] poisonous = {5698, 13267, 13269, 13271};
-	
-	public static void applyPlayerMeleeDamage(Player attacker, Player defender, int damage) {
-		
-		CombatEffect.applyRandomEffect(attacker, defender, damage);
+	public static int[] poisonous = {5698, 13267, 13269, 13271};
 
-		for (int i : poisonous) {
-			if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == i) {
-				if (defender.isSusceptibleToPoison() && Utility.getRandom(4) == 0) {
-					defender.setPoisonDamage((byte) 6);
-				}
-			}
-		}
-		
-		if (!CombatFormulae.getAccuracy(attacker, defender, 0, 1.0)) {
-			damage = 0;
-		}
-		
-		if (attacker.playerEquipment[attacker.getEquipment().getShieldId()] == 12817) {
-			if (Utility.getRandom(100) > 30 && damage > 0) {
-				damage *= .75;
-			}
-		}
-
-		if (defender.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
-			damage = damage * 60 / 100;
-		}
-		
-		if (defender.getSkills().getLevel(Skills.HITPOINTS) - damage <= 0) {
-			damage = defender.getSkills().getLevel(3);// this was it xd
-		}
-		if (defender.hasVengeance()) {
-			defender.getCombat().vengeance(attacker, damage, 1);
-		}
-		if (damage > 0) {
-			RingOfRecoil recoil = new RingOfRecoil();
-			if (recoil.isExecutable(attacker)) {
-				recoil.execute(defender, attacker, damage);
-			}
-			// c.getCombat().applySpiritShield(damage, i);
-		}
-
-		if (attacker.isTeleporting() || defender.isTeleporting()) {
-			Combat.resetCombat(attacker);
-			Combat.resetCombat(defender);;
-			return;
-		}
-
-		CombatExperience.handleCombatExperience(attacker, damage, CombatType.MELEE);
-		defender.putInCombat(attacker.getIndex());
-		defender.killerId = attacker.getIndex();
-		attacker.updateLastCombatAction();
-		attacker.setInCombat(true);
-
-		if (attacker.killedBy != defender.getIndex())
-		attacker.killedBy = defender.getIndex();
-		attacker.getCombat().applySmite(defender, damage);
-		defender.addDamageReceived(attacker.getName(), damage);
-		defender.damage(new Hit(damage));
-		PlayerSounds.sendBlockOrHitSound(defender, damage > 0);
-	}
 
 	/**
 	 * Applies the ranged damage to the opponent

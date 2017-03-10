@@ -321,11 +321,12 @@ public class Combat {
 			int dam1 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 
 			// Second, calc accuracy. If miss, dam=0
-			if (!(CombatFormulae.getAccuracy(player, target, 1, 1.0))) {
+			if (!(CombatFormulae.getAccuracy(player, target, 0, 1.0))) {
 				dam1 = 0;
 			}
 
-			Combat.hitEvent(player, target, 1, new Hit(dam1), CombatType.MELEE);
+			Hit hitInfo = target.take_hit(player, dam1, CombatType.MELEE, false);
+			Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 
 		} else if (player.getCombatType() == CombatType.RANGED) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
@@ -531,16 +532,7 @@ public class Combat {
 						}
 					}
 				} else {
-					// Hit param is not null. Only for melee attacks atm. Damage/accuracy is checked before this code instead of in the below methods.
-					if (combatType == CombatType.MELEE) {
-						if (target.isPlayer()) {
-							PlayerVsPlayerCombat.applyPlayerMeleeDamage(player, (Player) target, hit.getDamage());
-						} else {
-							PlayerVsNpcCombat.applyNpcMeleeDamage(player, (Npc) target, hit.getDamage());
-						}
-					} else {
-						System.err.println("Senario not supported! Only melee attacks should have a non-null Hit param of this method.");
-					}
+					target.damage(hit);
 				}
 				this.stop();
 			}

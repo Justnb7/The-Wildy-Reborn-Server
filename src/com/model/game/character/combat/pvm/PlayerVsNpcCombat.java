@@ -35,60 +35,12 @@ import com.model.utility.Utility;
  */
 public class PlayerVsNpcCombat {
 	
-	private static boolean isWearingSpear(Player player) {
+	public static boolean isWearingSpear(Player player) {
 		String weapon = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase();
 		if (weapon.contains("spear") || weapon.contains("hasta"))
 			return true;
 		return false;
 	}
-	
-	private static int corporeal_beast_damage(Player player) {
-		int damage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
-		
-		if (!isWearingSpear(player)) {
-			 damage /= 2;
-			 //System.out.println("nope");
-		} else {
-			damage = (int) damage;
-			//System.out.println("wearing spear");
-		}
-		
-		return damage;
-	}
-
-	/**
-	 * Applies npc melee damage to an npc
-	 * 
-	 * @param attacker
-	 *            The {@link Player} attacking the {@link Npc}
-	 * @param npc
-	 *            The {@link Npc} thats being attacked
-	 */
-	public static void applyNpcMeleeDamage(Player attacker, Npc npc, int damage) {
-		CombatExperience.handleCombatExperience(attacker, damage, CombatType.MELEE);
-		
-		if (npc.npcId == 319) {
-			corporeal_beast_damage(attacker);
-		}
-
-		if (npc.npcId == 2267 || npc.npcId == 2266) {
-			attacker.write(new SendMessagePacket("The dagannoth is currently resistant to that attack!"));
-			return;
-		}
-
-		if (npc.currentHealth - damage < 0) {
-			damage = npc.currentHealth;
-		}
-
-		npc.retaliate(attacker);
-		attacker.killingNpcIndex = attacker.getCombat().target.getIndex();
-		
-		if (damage > 0) {
-			npc.addDamageReceived(attacker.getName(), damage);
-		}
-		npc.damage(new Hit(damage));
-	}
-
 
 
 	/**

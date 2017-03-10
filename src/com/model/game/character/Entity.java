@@ -1,19 +1,24 @@
 package com.model.game.character;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.common.base.Preconditions;
 import com.model.Server;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.nvp.NPCCombatData;
+import com.model.game.character.combat.effect.CombatEffect;
+import com.model.game.character.combat.effect.impl.RingOfRecoil;
+import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
+import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
+import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
+import com.model.utility.Utility;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Patrick van Elderen
@@ -116,6 +121,9 @@ public abstract class Entity {
 		this.inCombat = inCombat;
 	}
 
+	/**
+	 * Actually apply the hit. Makes it show in Player Updating and also reduces your HITPOINTS (can kill you)
+	 */
 	public void damage(Hit... hits) {
 		Preconditions.checkArgument(hits.length >= 1 && hits.length <= 4);
 
@@ -218,8 +226,6 @@ public abstract class Entity {
 	 * Removes an attribute.<br />
 	 * WARNING: unchecked cast, be careful!
 	 *
-	 * @param <T> The type of the value.
-	 * @param key The key.
 	 * @return The old value.
 	 */
 	public void removeAllAttributes() {
@@ -267,8 +273,6 @@ public abstract class Entity {
 	 * Gets an attribute.<br />
 	 * WARNING: unchecked cast, be careful!
 	 *
-	 * @param <T> The type of the value.
-	 * @param key The key.
 	 * @return The value.
 	 */
 	public Map<String, Object> getAttributes() {
@@ -394,12 +398,17 @@ public abstract class Entity {
 
 	// Since damage gets reduced you need to add XP after this method.
 	public Hit take_hit(Entity attacker, int damage, CombatType combat_type) {
+		return take_hit(attacker, damage, combat_type, true);
+	}
+
+	public Hit take_hit(Entity attacker, int damage, CombatType combat_type, boolean applyInstantly) {
 		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type);
-		
+
+		// ALWAYS: FIRST APPLY DAMAGE REDUCTIONS, ABSORBS ETC. Protection pray/ely.
 		// The entity taking damage is a player. 
 		if (this.isPlayer()) {
 			Player player_me = (Player) this;
-			player_me.logoutDelay.reset(); // we're taking a hit. we can't logout for 10s.
+			player_me.putInCombat(attacker.getIndex()); // we're taking a hit. we can't logout for 10s.
 			
 			// The victim (this) has protection prayer enabled. TODO you need to specify combat_type
 			if (combat_type != null) {
@@ -415,37 +424,92 @@ public abstract class Entity {
 			}
 			
 			// TODO special reduction effects can go here, like Ely
-
-			// Trigger veng once the damage has been reduced by effects/protection prayers
-			if (player_me.hasVengeance()) {
-				player_me.getCombat().vengeance(attacker, damage, 1);
+			if (player_me.playerEquipment[player_me.getEquipment().getShieldId()] == 12817) {
+				if (Utility.getRandom(100) > 30 && damage > 0) {
+					damage *= .75;
+				}
 			}
+
+			if (player_me.isTeleporting()) {
+				damage = 0;
+			}
+
 		} else if (this.isNPC()) {
 			Npc victim_npc = (Npc) this;
 			// You can't hit over an Npcs current health. Recent update on 07 means you can in PVP though.
 			if (victim_npc.currentHealth - damage < 0) {
 				damage = victim_npc.currentHealth;
 			}
-			// Hit the guy who hit us back
-			if (NPCCombatData.switchesAttackers(victim_npc)) {
-				victim_npc.targetId = attacker.getIndex();
+			if (victim_npc.npcId == 319) {
+				if (attacker.isNPC() || (attacker.isPlayer() && !PlayerVsNpcCombat.isWearingSpear(((Player)attacker)))) {
+					damage /= 2;
+				}
+			}
+
+			if (victim_npc.npcId == 2267 || victim_npc.npcId == 2266) {
+				if (attacker.isPlayer())
+					((Player)attacker).message("The dagannoth is currently resistant to that attack!");
+				damage = 0;
 			}
 		}
 		
 		// At this point damage accurately reduced by stuff like prots/ely. 
 		// Now we can use it to give XP/add to npcs damage tracker.
 
+		if (isPlayer()) {
+			Player me = (Player)this;
+
+			if (damage > 0) {
+				// Trigger veng once the damage has been reduced by effects/protection prayers
+				if (me.hasVengeance()) {
+					me.getCombat().vengeance(attacker, damage, 1);
+				}
+
+				RingOfRecoil recoil = new RingOfRecoil();
+				if (recoil.isExecutable(me)) {
+					if (attacker.isPlayer())
+						recoil.execute(me, (Player)attacker, damage);
+					else
+						recoil.execute(me, (Npc)attacker, damage);
+				}
+
+			}
+
+			if (attacker.isPlayer()) {
+				Player pAttacker = (Player)attacker;
+				CombatEffect.applyRandomEffect(pAttacker, me, damage);
+				pAttacker.getCombat().applySmite(me, damage);
+
+				for (int i : PlayerVsPlayerCombat.poisonous) {
+					if (pAttacker.playerEquipment[pAttacker.getEquipment().getWeaponId()] == i) {
+						if (me.isSusceptibleToPoison() && Utility.getRandom(4) == 0) {
+							me.setPoisonDamage((byte) 6);
+						}
+					}
+				}
+			}
+		}
+
 		// This Entity is an npc taking damage from a player. 
 		if (this.isNPC() && attacker.isPlayer()) {
 			Player attacker_player = (Player)attacker;
 			Npc victim_npc = (Npc) this;
-			((Npc)this).addDamageReceived(attacker_player.getName(), damage);
+			victim_npc.retaliate(attacker);
+			victim_npc.addDamageReceived(attacker_player.getName(), damage);
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
+		} else if (isPlayer() && attacker.isPlayer()) {
+			((Player)this).addDamageReceived(((Player)attacker).getName(), damage);
 		}
-		
+		PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
+
+		// Update hit instance since we've changed the 'damage' value
+		hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED);
+
+		// NOTE: If not instantly applied, use EventManager.event(2) { entity.damage(hit) }
+		if (applyInstantly) {
+			this.damage(hit);
+		}
 		// Returning hit: might be helpful in the future. For chaining. Such as hit.x().y()..
-		
-		this.damage(new Hit(damage));
 		return hit;
 	}
 	
@@ -661,8 +725,6 @@ public abstract class Entity {
 	
 	/**
 	 * Animations
-	 *
-	 * @param animId
 	 *            The animation id.
 	 */
 	public void playAnimation(Animation animation) {

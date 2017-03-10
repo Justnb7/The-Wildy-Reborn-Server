@@ -10,6 +10,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+import com.model.game.location.Position;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -215,8 +216,8 @@ public class Pet extends Npc {
 						int delta = player.getPosition().distance(pet.getPosition());
 						if (delta >= 13 || delta <= -13) {
 							// TODO teleport npc to player thats itt
-							//teleport you mean move the npc or respawn move to player ok
-							//got some more time to help me with two bugs? yh
+							Position move = new Position(player.getX(), player.getY() -1, player.getZ());
+							pet.setLocation(move);
 						}
 					}
 

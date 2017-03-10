@@ -10,7 +10,6 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.range.RangeData;
@@ -23,7 +22,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.item.Item;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -36,53 +34,6 @@ import com.model.utility.Utility;
  *
  */
 public class PlayerVsNpcCombat {
-
-	/**
-	 * Applies the combat damage based on the provided {@link CombatType}
-	 * 
-	 * @param player
-	 *            The {@link Player} attacking the npc
-	 * @param npc
-	 *            The {@link Npc} being attacked
-	 * @param type
-	 *            The {@link CombatType} of the attack
-	 * @param item
-	 *            The {@link Item} the player is wearing
-	 */
-	private static void applyCombatDamage(Player player, Npc npc, CombatType type, Item item, int index) {
-		// TODO remove INDEX gtfoo
-		if(!npc.infected && player.getEquipment().canInfect(player) && !Venom.venomImmune(npc)){
-			if(Utility.getRandom(10) == 5){
-				new Venom(npc);
-			}
-		}
-		switch (type) {
-		case MAGIC:
-			applyNpcMagicDamage(player, npc);
-			break;
-		case MELEE:
-			handleNpcMeleeHit(npc, player, item);
-			break;
-		case RANGED:
-			applyNpcRangeDamage(player, npc, index);
-			break;
-		default:
-			throw new IllegalArgumentException("Invalid Combat Type: " + type);
-
-		}
-	}
-
-	/**
-	 * Handles the melee hit damage towards an npc
-	 *
-	 * @param player
-	 *            The {@link Player} applying the melee damage
-	 * @param item
-	 *            The item the player is wearing
-	 */
-	public static void handleNpcMeleeHit(Npc npc, final Player player, Item item) {
-		applyNpcMeleeDamage(player, npc, 1);
-	}
 	
 	private static boolean isWearingSpear(Player player) {
 		String weapon = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase();
@@ -112,17 +63,8 @@ public class PlayerVsNpcCombat {
 	 *            The {@link Player} attacking the {@link Npc}
 	 * @param npc
 	 *            The {@link Npc} thats being attacked
-	 * @param damageMask
-	 *            The damage mask of the attack
 	 */
-	public static void applyNpcMeleeDamage(Player attacker, Npc npc, int damageMask) {
-
-		/*
-		 * With melee, we need to calculate our damage BEFORE we apply it so you
-		 * cannot switch weapons and apply the damage of the switched weapon
-		 */
-		int damage = damageMask == 1 ? attacker.delayedDamage : damageMask == 2 ? attacker.delayedDamage2 : 0;
-		
+	public static void applyNpcMeleeDamage(Player attacker, Npc npc, int damage) {
 		CombatExperience.handleCombatExperience(attacker, damage, CombatType.MELEE);
 		
 		if (npc.npcId == 319) {
@@ -157,7 +99,7 @@ public class PlayerVsNpcCombat {
 	 * @param npc
 	 *            The {@link Npc} being attacked
 	 */
-	private static void applyNpcMagicDamage(Player player, Npc npc) {
+	public static void applyNpcMagicDamage(Player player, Npc npc) {
 		int damage = 0;
 		player.usingMagic = true;
         damage = MagicCalculations.magicMaxHitModifier(player);
@@ -298,13 +240,12 @@ public class PlayerVsNpcCombat {
 	
 	/**
 	 * Applies the npc range damage
-	 * 
-	 * @param attacker
+	 *  @param attacker
 	 *            The {@link Player} attacking the {@link Npc}
 	 * @param victim
 	 *            The {@link Npc} being attacked
 	 */
-	private static void applyNpcRangeDamage(Player attacker, Npc victim, int i) {
+	public static void applyNpcRangeDamage(Player attacker, Npc victim) {
 		int maxHit = attacker.getCombat().calculateRangeMaxHit();
         int damage = Utility.random(maxHit);
         

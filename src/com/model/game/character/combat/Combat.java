@@ -9,6 +9,7 @@ import com.model.game.character.Hit;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
@@ -19,6 +20,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerAssistant;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
+import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -227,8 +229,8 @@ public class Combat {
 		}
 		//player.getCombat().checkVenomousItems();
 		player.faceEntity(target);
-		player.delayedDamage = player.delayedDamage2 = 0;
 		player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
+
 		/*
 		 * Add a skull if needed
 		 */
@@ -243,6 +245,25 @@ public class Combat {
 					player.getPA().requestUpdates();
 				}
 			}
+			if(ptarg.infection != 2 && player.getEquipment().canInfect(player)) {
+				int inflictVenom = Utility.getRandom(5);
+				//System.out.println("Venom roll: "+inflictVenom);
+				if(inflictVenom == 0 && ptarg.isSusceptibleToVenom()) {
+					new Venom(ptarg);
+				}
+			}
+		} else if (target.isNPC()) {
+			Npc npc = (Npc)target;
+			if(!npc.infected && player.getEquipment().canInfect(player) && !Venom.venomImmune(npc)){
+				if(Utility.getRandom(10) == 5){
+					new Venom(npc);
+				}
+			}
+		}
+
+		int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
+		if (wep > -1) {
+			PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep);
 		}
 
 		/*
@@ -314,17 +335,14 @@ public class Combat {
 			player.getPA().followPlayer(true);
 
 			// First, calc hits.
-			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
-			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
-			int dam1 = 1;
+			int dam1 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 
 			// Second, calc accuracy. If miss, dam=0
 			if (!(CombatFormulae.getAccuracy(player, target, 1, 1.0))) {
-				player.delayedDamage = 0;
-				player.delayedDamage2 = 0;
+				dam1 = 0;
 			}
 
-			Combat.hitEvent(player, target, hitDelay, new Hit(dam1));
+			Combat.hitEvent(player, target, hitDelay, new Hit(dam1), CombatType.MELEE);
 
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
@@ -341,8 +359,6 @@ public class Combat {
 			player.setFollowing(player.getCombat().target);
 			player.getPA().followPlayer(true);
 
-			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.getCombat().fireProjectileAtTarget();
@@ -351,6 +367,9 @@ public class Combat {
 					|| player.playerEquipment[3] == 12767 || player.playerEquipment[3] == 12768) {
 				player.getItems().deleteArrow();
 			}
+
+			// TODO calculate damage and accuracy
+			Combat.hitEvent(player, target, hitDelay, null, CombatType.RANGED);
 
 		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
 
@@ -371,6 +390,9 @@ public class Combat {
 				player.attackDelay--;
 
 			player.getCombat().fireProjectileAtTarget();
+
+			// TODO calculate damage and accuracy
+			Combat.hitEvent(player, target, hitDelay, null, CombatType.RANGED);
 
 		} else if (player.getCombatType() == CombatType.MAGIC) {
 			int pX = player.getX();
@@ -431,6 +453,7 @@ public class Combat {
 			if (!player.autoCast && player.spellId <= 0)
 				player.getCombat().reset();
 
+			Combat.hitEvent(player, target, hitDelay, null, CombatType.MAGIC);
 		}
 	}
 
@@ -489,9 +512,43 @@ public class Combat {
 		}
 	}
 
-	public static void hitEvent(Player player, Entity target, int delay, Hit hit) {
+	public static void hitEvent(Player player, Entity target, int delay, Hit hit, CombatType combatType) {
 		Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
 			public void execute() {
+				if (hit == null) { // Method below will calculate the hit itself after the delay.
+					if (target.isPlayer()) {
+						Player defender = (Player) target;
+						switch (combatType) {
+							case MAGIC:
+								PlayerVsPlayerCombat.applyPlayerMagicDamage(player, defender);
+								break;
+							case RANGED:
+								PlayerVsPlayerCombat.applyPlayerRangeDamage(player, defender);
+								break;
+							default:
+								throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
+						}
+					} else {
+						Npc npc = (Npc)target;
+						switch (combatType) {
+							case MAGIC:
+								PlayerVsNpcCombat.applyNpcMagicDamage(player, npc);
+								break;
+							case RANGED:
+								PlayerVsNpcCombat.applyNpcRangeDamage(player, npc);
+								break;
+							default:
+								throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
+						}
+					}
+				} else {
+					// melee calculated when you swing.
+					if (target.isPlayer()) {
+						PlayerVsPlayerCombat.applyPlayerMeleeDamage(player, (Player)target, hit.getDamage());
+					} else {
+						PlayerVsNpcCombat.applyNpcMeleeDamage(player, (Npc)target, hit.getDamage());
+					}
+				}
 				// TODO hit code which i put in notepad
 				this.stop();
 			}

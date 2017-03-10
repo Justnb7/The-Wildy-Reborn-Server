@@ -2893,8 +2893,8 @@ public class Player extends Entity {
 	
 	public int totalLevel, lastX, lastY, killedBy,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
-			followDistance, npcFollowIndex, delayedDamage,
-			delayedDamage2 = -1, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
+			followDistance, npcFollowIndex,
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId,
 			rangeItemUsed, killingNpcIndex, lastWeaponUsed,
 			 attackDelay, npcClickIndex, castingSpellId, oldSpellId,

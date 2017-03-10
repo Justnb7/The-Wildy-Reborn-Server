@@ -12,7 +12,6 @@ import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.RingOfRecoil;
-import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.range.RangeData;
@@ -26,7 +25,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.item.Item;
 import com.model.utility.Utility;
 
 import java.util.Objects;
@@ -40,32 +38,11 @@ import java.util.Objects;
  */
 public class PlayerVsPlayerCombat {
 
-	/**
-	 * Applies a melee hit to the opponent
-	 * 
-	 * @param player
-	 *            The {@link Player} attacking the opponent
-	 * @param target
-	 *            The {@link Player} being attacked
-	 * @param item
-	 *            The {@link Item} being held by the player
-	 */
-	
-	public static void applyPlayerHit(final Player player, Player target, Item item) {
-		applyPlayerMeleeDamage(player, target, 1); 
-	}
-	
 	private static int[] poisonous = {5698, 13267, 13269, 13271};
 	
-	public static void applyPlayerMeleeDamage(Player attacker, Player defender, int damageMask) {
-		
-		int damage = damageMask == 1 ? attacker.delayedDamage : damageMask == 2 ? attacker.delayedDamage2 : 0;
+	public static void applyPlayerMeleeDamage(Player attacker, Player defender, int damage) {
 		
 		CombatEffect.applyRandomEffect(attacker, defender, damage);
-		if (damageMask == 1)
-			attacker.delayedDamage = 0;
-		else if (damageMask == 2)
-			attacker.delayedDamage2 = 0;
 
 		for (int i : poisonous) {
 			if (attacker.playerEquipment[attacker.getEquipment().getWeaponId()] == i) {
@@ -123,56 +100,14 @@ public class PlayerVsPlayerCombat {
 		PlayerSounds.sendBlockOrHitSound(defender, damage > 0);
 	}
 
-
-
-	/**
-	 * Applies the damage based on the provided combat type
-	 * 
-	 * @param attacker
-	 *            The {@link Player} attacking the opponent
-	 * @param defender
-	 *            The {@link Player} being attacked
-	 * @param combatType
-	 *            The {@link CombatType} for the attack
-	 * @param item
-	 *            The {@link Item} the player is holding
-	 */
-	private static void applyCombatDamage(Player attacker, Player defender, CombatType combatType, Item item, int index) {
-		if(item != null && attacker != null) {
-			PlayerSounds.SendSoundPacketForId(attacker, attacker.isUsingSpecial(), item.getId());
-		}
-		if(defender.infection != 2 && attacker.getEquipment().canInfect(attacker)) {
-			int inflictVenom = Utility.getRandom(5);
-			//System.out.println("Venom roll: "+inflictVenom);
-			if(inflictVenom == 0 && defender.isSusceptibleToVenom()) {
-				new Venom(defender);
-			}
-		}
-		switch (combatType) {
-		case MAGIC:
-			applyPlayerMagicDamage(attacker, defender);
-			break;
-		case MELEE:
-			applyPlayerHit(attacker, defender, item);
-			break;
-		case RANGED:
-			applyPlayerRangeDamage(attacker, defender, index);
-			break;
-		default:
-			throw new IllegalArgumentException("Invalid Combat Type: " + combatType);
-
-		}
-	}
-
 	/**
 	 * Applies the ranged damage to the opponent
-	 * 
-	 * @param attacker
+	 *  @param attacker
 	 *            The {@link Player} applying the damage
 	 * @param defender
 	 *            The {@link Player} being attacked
 	 */
-	private static void applyPlayerRangeDamage(Player attacker, Player defender, int i) {
+	public static void applyPlayerRangeDamage(Player attacker, Player defender) {
 		int primairy_damage = Utility.getRandom(attacker.getCombat().calculateRangeMaxHit());
 		int secondairy_damage = -1;
 		
@@ -370,7 +305,7 @@ public class PlayerVsPlayerCombat {
 	 * @param defender
 	 *            The {@link Player} being attacked
 	 */
-	private static void applyPlayerMagicDamage(Player attacker, Player defender) {
+	public static void applyPlayerMagicDamage(Player attacker, Player defender) {
 		int damage = 0;
 
 		damage = MagicCalculations.magicMaxHitModifier(attacker);

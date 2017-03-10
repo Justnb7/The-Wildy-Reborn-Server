@@ -175,22 +175,18 @@ public class RangeData {
 		return str;
 	}
 
-	public static int getRangeEndGFX(Player c) {
-		int str = -1;
-		int gfx = 0;
+	public static int[] getRangeEndGFX(Player c) {
+		int[] info = new int[] {-1, -1};
 		int[][] data = {
 			{10033, 157, 100}, {10034, 157, 100},
 		};
 		for(int l = 0; l < data.length; l++) {
 			if(c.playerEquipment[c.getEquipment().getWeaponId()] == data[l][0]) {
-				str = data[l][1];
-				gfx = data[l][2];
+				info[0] = data[l][1];
+				info[1] = data[l][2];
 			}
 		}
-		if(gfx == 100) {
-			c.rangeEndGFXHeight = true;
-		}
-		return str;
+		return info;
 	}
 
 	public static int correctBowAndArrows(Player player) {

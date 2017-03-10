@@ -374,11 +374,21 @@ public class Combat {
             if (!player.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(player, target, 1, 1.0)) {
                 dam1 = 0;
             }
-            player.rangeEndGFX = RangeData.getRangeEndGFX(player);
 
             // Apply dmg.
             Hit hitInfo = target.take_hit(player, dam1, CombatType.RANGED, false);
             Combat.hitEvent(player, target, 1, hitInfo, CombatType.RANGED);
+
+            int[] endGfx = RangeData.getRangeEndGFX(player);
+            // Graphic that appears when hit appears.
+            Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+                @Override
+                public void execute() {
+                    if (endGfx[0] > -1)
+                        target.playGraphics(Graphic.create(endGfx[0], 0, endGfx[1]));
+                    this.stop();
+                }
+            });
 
         } else if (player.getCombatType() == CombatType.MAGIC) {
             player.oldSpellId = player.getSpellId();
@@ -665,15 +675,7 @@ public class Combat {
                     if (((Npc) target).attackTimer < 5)
                         target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((Npc) target))));
 
-                    // Graphics that happen when hit appears
                     player.setAttribute("ignore defence", false);
-                    if (player.rangeEndGFX > 0) {
-                        if (player.rangeEndGFXHeight) {
-                            target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 100));
-                        } else {
-                            target.playGraphics(Graphic.create(player.rangeEndGFX, 0, 0));
-                        }
-                    }
                 }
                 if (hit.cbType == CombatType.MAGIC) {
                     if (player.getCombat().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX

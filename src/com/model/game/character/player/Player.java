@@ -2896,7 +2896,6 @@ public class Player extends Entity {
 	private int speed2 = -1;
 	private int direction = -1;
 
-	public int rangeEndGFX;
 	public int lastClickedItem;
 	public int[] playerBonus = new int[12];
 	public int[] itemKeptId = new int[4];

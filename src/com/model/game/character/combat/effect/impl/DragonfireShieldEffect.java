@@ -1,7 +1,5 @@
 package com.model.game.character.combat.effect.impl;
 
-import java.util.Objects;
-
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
@@ -14,6 +12,8 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+
+import java.util.Objects;
 
 
 /**
@@ -46,8 +46,9 @@ public class DragonfireShieldEffect implements DamageEffect {
 					attacker.playGraphics(Graphic.create(1165, 0, 0));
 					attacker.write(new SendMessagePacket("You unleash dragonfire from your shield."));
 				} else if (cycle == 4) {
+					int targetIndex = - attacker.getCombat().target.getIndex() - 1;
 					attacker.getProjectile().createPlayersProjectile2(attacker.getX(), attacker.getY(), (attacker.getY() - defender.getY()) * -1,
-							(attacker.getX() - defender.getX()) * -1, 50, 50, 1166, 30, 30, - attacker.oldPlayerIndex - 1, 30, 5);
+							(attacker.getX() - defender.getX()) * -1, 50, 50, 1166, 30, 30, targetIndex, 30, 5);
 				} else if (cycle >= 5) {
 					if (defender.playerEquipment[defender.getEquipment().getShieldId()] == 11283) {
 						defender.damage(new Hit((damage / 2) + (Utility.getRandom(damage / 2)), HitType.NORMAL));
@@ -94,7 +95,8 @@ public class DragonfireShieldEffect implements DamageEffect {
 					attacker.playGraphics(Graphic.create(1165, 0, 0));
 					attacker.write(new SendMessagePacket("You unleash dragonfire from your shield."));
 				} else if (cycle == 4) {
-					attacker.getProjectile().createPlayersProjectile2(attacker.getX(), attacker.getY(), (attacker.getY() - defender.getY()) * -1, (attacker.getX() - defender.getX()) * -1, 50, 50, 1166, 30, 30, - attacker.oldNpcIndex - 1, 30, 5);
+					int targetIndex = - attacker.getCombat().target.getIndex() - 1;
+					attacker.getProjectile().createPlayersProjectile2(attacker.getX(), attacker.getY(), (attacker.getY() - defender.getY()) * -1, (attacker.getX() - defender.getX()) * -1, 50, 50, 1166, 30, 30, targetIndex, 30, 5);
 				} else if (cycle >= 5) {
 					defender.underAttack = true;
 					defender.currentHealth -= damage;

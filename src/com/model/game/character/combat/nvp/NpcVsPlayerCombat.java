@@ -1,11 +1,8 @@
 package com.model.game.character.combat.nvp;
 
-import java.util.List;
-
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatFormulae;
@@ -28,6 +25,8 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+
+import java.util.List;
 
 /**
  * Handles all Npc Vs Player combat methods
@@ -293,7 +292,7 @@ public class NpcVsPlayerCombat {
 				}
 			}
 			// block anim
-			if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0 && player.oldNpcIndex == 0) {
+			if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0) {
 				player.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(player)));
 			}
 			boolean isBoss = Bosses.isBoss(npc.npcId);
@@ -524,7 +523,7 @@ public class NpcVsPlayerCombat {
 			}
 		}
 		// block anim
-		if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0 && player.oldNpcIndex == 0) {
+		if (player.attackDelay <= 3 || player.attackDelay == 0 && player.npcIndex == 0) {
 			player.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(player)));
 		}
 		// final graphic
@@ -585,10 +584,6 @@ public class NpcVsPlayerCombat {
 		return 15;
 	}
 
-	/**
-	 * 
-	 * @param i
-	 */
 	public static void multiAttackDamage(Npc npc) {
 		boolean isBoss = Bosses.isBoss(npc.npcId);
 		Boss boss = Bosses.get(npc.npcId);

@@ -34,26 +34,10 @@ public class ArmadylCrossbow implements SpecialAttack {
 		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
 
 		player.getCombat().fireProjectileAtTarget();
-		
-		if (player.npcIndex > 0)
-			npcSpecialHitDelay(player, entity.getIndex(), player.hitDelay);
-		else
-			playerSpecialHitDelay(player, entity.getIndex(), player.hitDelay);
-	}
-	
-	private void npcSpecialHitDelay(final Player c, final int i, int hitDelay) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay - 1) {
+
+		Server.getTaskScheduler().schedule(new ScheduledTask(player.hitDelay - 1) {
 			public void execute() {
-				c.getCombat().delayedHit(c, i, null);
-				this.stop();
-			}
-		});
-	}
-	
-	private void playerSpecialHitDelay(final Player c, final int i, int hitDelay) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay - 1) {
-			public void execute() {
-				c.getCombat().playerDelayedHit(c, i, null);
+				// TODO notepad code
 				this.stop();
 			}
 		});

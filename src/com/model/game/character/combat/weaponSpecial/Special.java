@@ -34,12 +34,8 @@ public class Special {
 		attacker.setCombatType(CombatType.MELEE);
 		attacker.logoutDelay.reset();
 		
-		if (attacker.npcIndex > 0) { // indexid of an npc we're attacking
-			attacker.oldNpcIndex = target.getIndex();
-			
-		} else if (attacker.getCombat().target.isPlayer()) { // playerIndex is the indexId of the player we're attacking
+		if (attacker.getCombat().target.isPlayer()) { // playerIndex is the indexId of the player we're attacking
 			Player targPlayer = (Player) target; // type cast
-			attacker.oldPlayerIndex = target.getIndex();
 			targPlayer.putInCombat(attacker.getIndex());
 			targPlayer.killerId = attacker.getIndex();
 			targPlayer.logoutDelay.reset();

@@ -3,7 +3,6 @@ package com.model.game.character.combat.pvm;
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
@@ -21,12 +20,7 @@ import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
-import com.model.game.character.player.Boundary;
-import com.model.game.character.player.Player;
-import com.model.game.character.player.PlayerAssistant;
-import com.model.game.character.player.ProjectilePathFinder;
-import com.model.game.character.player.Skills;
-import com.model.game.character.player.content.music.sounds.MobAttackSounds;
+import com.model.game.character.player.*;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
@@ -81,9 +75,7 @@ public class PlayerVsNpcCombat {
 
 	/**
 	 * Handles the melee hit damage towards an npc
-	 * 
-	 * @param index
-	 *            The index of the npc
+	 *
 	 * @param player
 	 *            The {@link Player} applying the melee damage
 	 * @param item
@@ -156,60 +148,7 @@ public class PlayerVsNpcCombat {
 		npc.damage(new Hit(damage));
 	}
 
-	/**
-	 * Applies the hit to the npc
-	 * 
-	 * @param plr_attacker
-	 *            The {@link Player} applying the damage
-	 * @param victim_npc_id
-	 *            The index of the npc
-	 * @param item
-	 *            Th
-	 */
-	public static void applyNpcHit(final Player plr_attacker, final int victim_npc_id, Item item) {
-		// TODO once again eradicate uses of npc_id .. use ENTITY or MOBILE CHAR instead aka 'entity based' combat
-		Npc npc_victim = World.getWorld().getNpcs().get(victim_npc_id);
-		
-		if (npc_victim == null || npc_victim.isDead || npc_victim.currentHealth <= 0) {
-			return;
-		}
-		
-		int defence = npc_victim.getDefinition().getMeleeDefence();
-		
-		if (defence < 0) {
-			defence = 0;
-		}
 
-		if (npc_victim.isDead || plr_attacker.isDead() || npc_victim == null) {
-			Combat.resetCombat(plr_attacker);
-			return;
-		}
-
-		npc_victim.walkingHome = false;
-
-		// now this code needs to be in the damaging methods there are a few cos its a bit messy
-		if (NPCCombatData.switchesAttackers(npc_victim)) {
-			System.out.println("targetId: "+npc_victim.targetId+" index: "+plr_attacker.getIndex());
-			npc_victim.targetId = plr_attacker.getIndex();
-			npc_victim.faceEntity(npc_victim);
-		}//we tried this last time didnt work
-
-		//to kinda narrow it down basicly its not resetting the targetId right?
-		// yeah it'd be ok if targetId well this literally makes 0 sence
-		// printing as 0 but ingame is 1
-		
-		
-		/*
-		 * Apply the damage based on the combat style
-		 */
-		applyCombatDamage(plr_attacker, npc_victim, plr_attacker.getCombatType(), item, victim_npc_id);
-		MobAttackSounds.sendBlockSound(plr_attacker, npc_victim.getId());
-		if (plr_attacker.bowSpecShot <= 0) {
-			plr_attacker.oldNpcIndex = 0;
-			plr_attacker.lastWeaponUsed = 0;
-		}
-		plr_attacker.bowSpecShot = 0;
-	}
 
 	/**
 	 * Applys magic damage to the {@link Npc}
@@ -293,7 +232,6 @@ public class PlayerVsNpcCombat {
 			npc.addDamageReceived(player.getName(), damage);
 			npc.damage(new Hit(damage));
 		}
-		player.killingNpcIndex = player.oldNpcIndex;
 		npc.updateRequired = true;
 		player.usingMagic = false;
 		player.castingMagic = false;
@@ -483,10 +421,10 @@ public class PlayerVsNpcCombat {
 		}
 		
 		if (dropArrows) {
-			attacker.getItems().dropArrowNpc();
+			attacker.getItems().dropArrowUnderTarget();
 			attacker.getItems().deleteArrow();
 			if (attacker.playerEquipment[3] == 11235) {
-				attacker.getItems().dropArrowNpc();
+				attacker.getItems().dropArrowUnderTarget();
 			}
 		}
 		
@@ -519,7 +457,6 @@ public class PlayerVsNpcCombat {
 					victim.playGraphics(Graphic.create(attacker.rangeEndGFX, 0, 0));
 				}
 			}
-			attacker.killingNpcIndex = attacker.oldNpcIndex;
 			
 	}
 
@@ -954,20 +891,21 @@ public class PlayerVsNpcCombat {
 				player.delayedDamage = 0;
 				player.delayedDamage2 = 0;
 			}
-			player.oldNpcIndex = index;
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) { // range
 			if (player.usingCross)
 				player.usingBow = true;
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
+
 			player.followId2 = npc.getIndex();
+
 			player.getPA().followNpc();
 			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-			player.oldNpcIndex = index;
+
 			if (player.playerEquipment[player.getEquipment().getWeaponId()] >= 4212 && player.playerEquipment[player.getEquipment().getWeaponId()] <= 4223) {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-				player.getCombat().fireProjectileNpc();
+				player.getCombat().fireProjectileAtTarget();
 			} else {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 				if (player.playerEquipment[3] == 11235 || player.playerEquipment[3] == 12765 || player.playerEquipment[3] == 12766
@@ -976,7 +914,7 @@ public class PlayerVsNpcCombat {
 				}
 				if (npc.currentHealth > 0) {
 					player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-					player.getCombat().fireProjectileNpc();
+					player.getCombat().fireProjectileAtTarget();
 				}
 			}
 		} else if (player.throwingAxe && player.getCombatType() == CombatType.RANGED) {
@@ -989,10 +927,9 @@ public class PlayerVsNpcCombat {
 				player.getItems().deleteEquipment(); // here
 			}
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-			player.oldNpcIndex = index;
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
-			player.getCombat().fireProjectileNpc();
+			player.getCombat().fireProjectileAtTarget();
 		} else if (player.getCombatType() == CombatType.MAGIC) { // magic hit
 																	// delay
 			int pX = player.getX();
@@ -1016,7 +953,6 @@ public class PlayerVsNpcCombat {
 						player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartHeight(),
 						player.getCombat().getEndHeight(), index + 1, 50);
 			}
-			player.oldNpcIndex = index;
 			player.oldSpellId = player.getSpellId();
 			if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907 || player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
 				return;

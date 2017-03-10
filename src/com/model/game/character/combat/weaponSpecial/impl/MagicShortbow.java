@@ -45,10 +45,12 @@ public class MagicShortbow implements SpecialAttack {
 		});
 		
 		player.hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
-		if (player.npcIndex > 0)
-			npcSpecialHitDelay(player, entity.getIndex(), player.hitDelay);
-		else 
-			playerSpecialHitDelay(player, entity.getIndex(), player.hitDelay);
+		Server.getTaskScheduler().schedule(new ScheduledTask(player.hitDelay - 1) {
+			public void execute() {
+				// TODO hit code which i put in notepad
+				this.stop();
+			}
+		});
 	}
 
 	@Override
@@ -63,24 +65,7 @@ public class MagicShortbow implements SpecialAttack {
 		}
 		return false;
 	}
-	
-	private void npcSpecialHitDelay(final Player c, final int i, int hitDelay) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay - 1) {
-			public void execute() {
-				c.getCombat().delayedHit(c, i, null);
-				this.stop();
-			}
-		});
-	}
-	
-	private void playerSpecialHitDelay(final Player c, final int i, int hitDelay) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay - 1) {
-			public void execute() {
-				c.getCombat().playerDelayedHit(c, i, null);
-				this.stop();
-			}
-		});
-	}
+
 	
 	@Override
 	public double getAccuracyMultiplier() {

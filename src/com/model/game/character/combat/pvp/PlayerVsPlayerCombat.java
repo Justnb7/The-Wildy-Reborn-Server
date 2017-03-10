@@ -15,14 +15,15 @@ import com.model.game.character.combat.effect.impl.RingOfRecoil;
 import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
+import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
+import com.model.game.character.npc.Npc;
 import com.model.game.character.player.*;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
@@ -122,55 +123,7 @@ public class PlayerVsPlayerCombat {
 		PlayerSounds.sendBlockOrHitSound(defender, damage > 0);
 	}
 
-	/**
-	 * Applies the players hit to the opponent
-	 * 
-	 * @param player
-	 *            The {@link Player} attacking the opponent
-	 * @param index
-	 *            The index of the opponent
-	 * @param item
-	 *            The {@link Item} the player is holding
-	 */
-	public static void applyPlayerHit(final Player player, final int index, Item item) {//mine
-		Player target = World.getWorld().getPlayers().get(index);
-		if (target != null) {
-			if (target.isDead() || player.isDead() || target.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-				player.getCombat().reset();
-				return;
-			}
-			if (target.isDead()) {
-				player.faceEntity(player);
-				player.getCombat().reset();
-				return;
-			}
 
-			if (target.getCombat().noTarget()) {
-				if (target.isAutoRetaliating()) {
-					target.getCombat().setTarget(target);
-				}
-			}
-			// Do block emote
-			if (target.attackDelay <= 3 || target.attackDelay == 0 && !player.castingMagic) {
-				target.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(target)));
-			}
-
-			if (Trading.isTrading(target)) {
-				Trading.decline(target);
-			}
-			
-			target.getActionSender().sendRemoveInterfacePacket();
-			applyCombatDamage(player, target, player.getCombatType(), item, index);
-		}
-
-		player.getPA().requestUpdates();
-		if (player.bowSpecShot <= 0) {
-			player.oldPlayerIndex = 0;
-			player.bowSpecShot = 0;
-			player.lastWeaponUsed = 0;
-		}
-		player.bowSpecShot = 0;
-	}
 
 	/**
 	 * Applies the damage based on the provided combat type
@@ -513,35 +466,37 @@ public class PlayerVsPlayerCombat {
 	 * 
 	 * @param player
 	 *            The {@link Player} attacking
-	 * @param i
-	 *            The index of the player being attacked
 	 */
-	public static void attackPlayer(Player player, int i) {
-		Player defender = World.getWorld().getPlayers().get(i);
+	public static void attackPlayer(Player player) {
 		Entity target = player.getCombat().target;
-		
-		if (!validateAttack(player, defender)) {
-			return;
+
+		if (target.isPlayer()) {
+			if (!validateAttack(player, (Player)target)) {
+				return;
+			} else if (!PlayerVsNpcCombat.validateAttack(player, (Npc)target, false)) {
+				return;
+			}
 		}
 
-		player.followId = i;
-		player.followId2 = 0;
+		player.setFollowing(target);
 
 		if (player.attackDelay > 0) {
 			// don't attack as our timer hasnt reached 0 yet
 			return;
 		}
+
+		if (target.isPlayer()) {
+			Player ptarg = (Player) target;
+			player.getActionSender().sendString(ptarg.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName() , 35000);
+		}
 		
-		Player attacker = World.getWorld().PLAYERS.get(defender.underAttackBy);
-		player.getActionSender().sendString(defender.getName()+ "-"+player.getSkills().getLevelForExperience(Skills.HITPOINTS)+"-"+defender.getSkills().getLevel(Skills.HITPOINTS)+ ((attacker != null) ? "-"+ attacker.getName() : ""), 35000);
-		
-		boolean sameSpot = player.getX() == defender.getX() && player.getY() == defender.getY();
+		boolean sameSpot = player.getX() == target.getX() && player.getY() == target.getY();
 		if (sameSpot) {
 			if (player.frozen()) {
 				Combat.resetCombat(player);
 				return;
 			}
-			player.followId = i;
+			player.setFollowing(target);
 			player.attackDelay = 0;
 			return;
 		}
@@ -584,8 +539,10 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 
-		if (!player.getController().canAttackPlayer(player, defender) && Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL) == null) {
-			return;
+		if (target.isPlayer()) {
+			if (!player.getController().canAttackPlayer(player, (Player)target) && Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL) == null) {
+				return;
+			}
 		}
 		
 		/*
@@ -649,17 +606,16 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 
-		/**
+		/*
 		 * Since we can attack, lets verify if we're close enough to attack
 		 */
-
-		if (CombatData.isWithinAttackDistance(player, defender)) {
-			/**
+		if (target.isPlayer() && CombatData.isWithinAttackDistance(player, (Player)target)) {
+			/*
 			 * We're close enough, so stop us from moving
 			 */
 			// c.getMovementHandler().reset();
 		} else {
-			/**
+			/*
 			 * We aren't close enough yet, continue to reset our timer until we
 			 * are.
 			 */
@@ -668,11 +624,14 @@ public class PlayerVsPlayerCombat {
 		}
 
 
-		if (!player.getMovementHandler().isMoving() && !defender.getMovementHandler().isMoving()) {
-			if (player.getX() != defender.getX() && defender.getY() != player.getY()
-					&& player.getCombatType() == CombatType.MELEE) {
-				PlayerAssistant.stopDiagonal(player, defender.getX(), defender.getY());
-				return;
+		if (target.isPlayer()) {
+			Player ptarg = (Player)target;
+			if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
+				if (player.getX() != ptarg.getX() && ptarg.getY() != player.getY()
+						&& player.getCombatType() == CombatType.MELEE) {
+					PlayerAssistant.stopDiagonal(player, ptarg.getX(), ptarg.getY());
+					return;
+				}
 			}
 		}
 
@@ -692,14 +651,14 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 
-		player.faceEntity(defender);
+		player.faceEntity(target);
 		player.delayedDamage = player.delayedDamage2 = 0;
 
 		/*
 		 * Check if we are using a special attack
 		 */
 		if (player.isUsingSpecial() && player.getCombatType() != CombatType.MAGIC) {
-			Special.handleSpecialAttack(player, defender);
+			Special.handleSpecialAttack(player, target);
 			player.setFollowing(player.getCombat().target);
 			return;
 		}
@@ -725,8 +684,10 @@ public class PlayerVsPlayerCombat {
 		/*
 		 * Set the target in combat since we just attacked him/her
 		 */
-		defender.putInCombat(player.getIndex());
-		defender.killerId = player.getIndex();
+		if (target.isPlayer()) {
+			((Player)target).putInCombat(player.getIndex());
+			((Player)target).killerId = player.getIndex();
+		}
 		player.updateLastCombatAction();
 		player.setInCombat(true);
 		/*if (player.petBonus) {
@@ -749,7 +710,6 @@ public class PlayerVsPlayerCombat {
 			player.getPA().followPlayer(true);
 			player.delayedDamage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 			player.delayedDamage2 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
-			player.oldPlayerIndex = i;
 		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
 				player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 				player.getItems().deleteArrow();
@@ -762,7 +722,6 @@ public class PlayerVsPlayerCombat {
 			player.getPA().followPlayer(true);
 			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-			player.oldPlayerIndex = i;
 			player.getCombat().fireProjectileAtTarget();
 		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
@@ -773,13 +732,12 @@ public class PlayerVsPlayerCombat {
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
-			player.oldPlayerIndex = i;
 			player.getCombat().fireProjectileAtTarget();
 		} else if (player.getCombatType() == CombatType.MAGIC) {
 			int pX = player.getX();
 			int pY = player.getY();
-			int nX = defender.getX();
-			int nY = defender.getY();
+			int nX = target.getX();
+			int nY = target.getY();
 			int offX = (pY - nY) * -1;
 			int offY = (pX - nX) * -1;
 			player.castingMagic = true;
@@ -790,32 +748,37 @@ public class PlayerVsPlayerCombat {
 					player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
 				}
 			}
+			int targetIndex = -player.getCombat().target.getIndex() - 1;
 			if (player.MAGIC_SPELLS[player.getSpellId()][4] > 0) {
 				player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, 78,
 						player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartHeight(),
-						player.getCombat().getEndHeight(), -i - 1, player.getCombat().getStartDelay());
+						player.getCombat().getEndHeight(), targetIndex, player.getCombat().getStartDelay());
 			}
 			if (player.autocastId > 0) {
 				player.setFollowing(player.getCombat().target);
 				player.followDistance = 5;
 			}
-			player.oldPlayerIndex = i;
 			player.oldSpellId = player.getSpellId();
 			player.setSpellId(0);
 
-			if (player.MAGIC_SPELLS[player.oldSpellId][0] == 12891 && defender.getMovementHandler().isMoving()) {
-				player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, 85, 368, 25, 25, -i - 1,
-						player.getCombat().getStartDelay());
+			if (target.isPlayer()) {
+				Player ptarg = (Player)target;
+				if (player.MAGIC_SPELLS[player.oldSpellId][0] == 12891 && ptarg.getMovementHandler().isMoving()) {
+					player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, 85, 368, 25, 25, targetIndex,
+							player.getCombat().getStartDelay());
+				}
 			}
 
-			player.magicFailed = !CombatFormulae.getAccuracy(player, defender, 2, 1.0);
+			player.magicFailed = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
 			int spellFreezeTime = player.getCombat().getFreezeTime();
-			if (spellFreezeTime > 0 && !defender.frozen() && !player.magicFailed) {
-				
-				defender.freeze(spellFreezeTime);
-				defender.getMovementHandler().resetWalkingQueue();
-				defender.write(new SendMessagePacket("You have been frozen."));
-				defender.frozenBy = player.getIndex();
+			if (spellFreezeTime > 0 && !target.frozen() && !player.magicFailed) {
+
+				target.freeze(spellFreezeTime);
+				if (target.isPlayer()) {
+					((Player)target).getMovementHandler().resetWalkingQueue();
+					((Player)target).write(new SendMessagePacket("You have been frozen."));
+					((Player)target).frozenBy = player.getIndex();
+				}
 			}
 			if (!player.autoCast && player.spellId <= 0)
 				player.getCombat().reset();

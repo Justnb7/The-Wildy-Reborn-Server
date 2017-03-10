@@ -15,7 +15,7 @@ public class RangeData {
 				int oY = target.getY();
 				int offX = (pY - oY) * -1;
 				int offY = (pX - oX) * -1;
-				int targetIndex = -player.oldPlayerIndex - 1; // TODO confirm, maybe use clientIndex()?
+				int targetIndex = -target.getIndex() - 1; // TODO confirm, maybe use clientIndex()?
 				if (!player.msbSpec)
 					player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(), player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, player.getCombat().getStartDelay());
 				else if (player.msbSpec) {

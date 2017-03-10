@@ -6,12 +6,10 @@ import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.magic.MagicRequirements;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
-import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.item.Item;
 
 public class CombatAssistant {
 
@@ -49,18 +47,6 @@ public class CombatAssistant {
 
 	public void attackNpc(int i) {
 		PlayerVsNpcCombat.attackNpc(player, i);
-	}
-
-	public void delayedHit(final Player c, final int i, Item item) {
-		PlayerVsNpcCombat.applyNpcHit(c, i, item);
-	}
-
-	public void attackPlayer(int i) {
-		PlayerVsPlayerCombat.attackPlayer(player, i);
-	}
-
-	public void playerDelayedHit(final Player c, final int i, Item item) {
-		PlayerVsPlayerCombat.applyPlayerHit(c, i, item);
 	}
 
 	public void applySmite(Player defender, int damage) {

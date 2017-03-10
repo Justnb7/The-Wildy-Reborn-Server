@@ -458,7 +458,7 @@ public class PlayerVsPlayerCombat {
 		// TODO split into 2 methods, canAttack and canTouch??
 
 		// Always last
-		if (player.usingBow || player.usingMagic || player.throwingAxe) {
+		if (player.getCombatType() != CombatType.MELEE) {
 			if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), target.getPosition())) {
 				return true;
 			}

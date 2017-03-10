@@ -117,8 +117,6 @@ public class Combat {
 		 */
 		if (player.getCombatType() == CombatType.RANGED) {
 			if (!player.usingCross
-					&& !player.throwingAxe
-					&& !player.usingArrows
 					&& (player.playerEquipment[player.getEquipment().getWeaponId()] < 4212 || player.playerEquipment[player.getEquipment().getWeaponId()] > 4223)
 					&& player.playerEquipment[player.getEquipment().getWeaponId()] != 12926) {
 				player.write(new SendMessagePacket("There is no ammo left in your quiver."));
@@ -195,22 +193,13 @@ public class Combat {
 					return;
 				}
 			}
-			/*
-			 * Check if we are close enough to stop running towards the npc
-			 */
-			if (player.usingBow
-					|| player.castingMagic
-					|| player.throwingAxe
-					|| (CombatData.usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), npc.getX(),
-					npc.getY(), 2))) {
-				player.stopMovement();
-			}
 			npc.underAttackBy = player.getIndex();
 			npc.lastDamageTaken = System.currentTimeMillis();
 		}
 
 
-		if (player.getCombatType() == CombatType.MAGIC || player.getCombatType() == CombatType.RANGED) {
+		if (player.getCombatType() == CombatType.MAGIC || player.getCombatType() == CombatType.RANGED ||
+				(CombatData.usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2))) {
 			player.stopMovement();
 		}
 
@@ -338,60 +327,45 @@ public class Combat {
 
 			Combat.hitEvent(player, target, 1, new Hit(dam1), CombatType.MELEE);
 
-		} else if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) {
+		} else if (player.getCombatType() == CombatType.RANGED) {
 			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-			player.getItems().deleteArrow();
 
 			if (player.getAttackStyle() == 2)
 				player.attackDelay--;
 
-			if (player.usingCross)
-				player.usingBow = true;
-
-			player.usingBow = true;
-
-
 			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 			player.getCombat().fireProjectileAtTarget();
 
-			if (player.playerEquipment[3] == 11235 || player.playerEquipment[3] == 12765 || player.playerEquipment[3] == 12766
-					|| player.playerEquipment[3] == 12767 || player.playerEquipment[3] == 12768) {
-				player.getItems().deleteArrow();
-			}
+			boolean hand_thrown = false;
+			if (hand_thrown) {
 
-			//Arrows check
-			boolean dropArrows = true;
-			if(player.lastWeaponUsed == 12926 || player.lastWeaponUsed == 4222) {
-				dropArrows = false;
-			}
+				if (player.playerEquipment[3] == 21000) {
+					player.getItems().removeEquipment();
+				} else {
+					player.getItems().deleteAmmo(); // here
+				}
+			} else {
 
-			if (dropArrows) {
-				player.getItems().dropArrowUnderTarget();
-				player.getItems().deleteArrow();
-				if (player.playerEquipment[3] == 11235) {
+				if (player.playerEquipment[3] == 11235 || player.playerEquipment[3] == 12765 || player.playerEquipment[3] == 12766
+						|| player.playerEquipment[3] == 12767 || player.playerEquipment[3] == 12768) {
+					player.getItems().deleteArrow();
+				}
+
+				//Arrows check
+				boolean dropArrows = true;
+				if(player.lastWeaponUsed == 12926 || player.lastWeaponUsed == 4222) {
+					dropArrows = false;
+				}
+
+				if (dropArrows) {
 					player.getItems().dropArrowUnderTarget();
+					player.getItems().deleteArrow();
+					if (player.playerEquipment[3] == 11235) { // Dark bow, 2nd arrow
+						player.getItems().dropArrowUnderTarget();
+					}
 				}
 			}
 
-			// TODO calculate damage and accuracy
-			Combat.hitEvent(player, target, hitDelay, null, CombatType.RANGED);
-
-		} else if (player.getCombatType() == CombatType.RANGED && player.throwingAxe) {
-
-			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-
-			if (player.playerEquipment[3] == 21000) {
-				player.getItems().removeEquipment();
-			} else {
-				player.getItems().deleteEquipment(); // here
-			}
-
-			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-
-			if (player.getAttackStyle() == 2)
-				player.attackDelay--;
-
-			player.getCombat().fireProjectileAtTarget();
 
 			// TODO calculate damage and accuracy
 			Combat.hitEvent(player, target, hitDelay, null, CombatType.RANGED);
@@ -464,7 +438,7 @@ public class Combat {
 	public static void setCombatStyle(Player player) {
 		boolean spellQueued = player.usingMagic && player.getCombatType() == CombatType.MAGIC && player.spellId > 0;
 
-		player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
+		player.usingMagic = player.usingBow;
 		player.setCombatType(null); // reset
 
 		int followDist = 1;
@@ -502,24 +476,14 @@ public class Combat {
 		 */
 		if (player.getCombatType() != CombatType.MAGIC) {
 			player.usingBow = player.getEquipment().isBow(player);
-			player.throwingAxe = player.getEquipment().isThrowingWeapon(player);
+			boolean handthrown = player.getEquipment().isThrowingWeapon(player);
 			player.usingCross = player.getEquipment().isCrossbow(player);
-			player.usingArrows = player.getEquipment().isArrow(player);
 			boolean bolt = player.getEquipment().isBolt(player);
 			boolean javalin = player.getCombat().properJavalins();
 
-			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
+			if(handthrown || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
 				player.setCombatType(CombatType.RANGED);
-				followDist = 7;
-			}
-
-			if(player.throwingAxe) {
-				player.throwingAxe = true;
-				followDist = 4;
-			}
-
-			if(bolt || javalin || player.usingArrows) {
-				player.usingArrows = true;
+				followDist = handthrown ? 4 : 7;
 			}
 		}
 		// hasn't been set to magic/range.. must be melee.
@@ -529,7 +493,7 @@ public class Combat {
 				followDist = 2;
 		}
 		player.followDistance = followDist;
-		player.message("style: "+player.getCombatType()+"  dist:"+followDist+"  atkDelay:"+player.attackDelay);
+		//player.message("style: "+player.getCombatType()+"  dist:"+followDist+"  atkDelay:"+player.attackDelay);
 
 	}
 

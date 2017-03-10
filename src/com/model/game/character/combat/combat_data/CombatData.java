@@ -258,9 +258,9 @@ public class CombatData {
 	 */
 	public static int calculateAttackDistance(Player player, Player victim, boolean follow) {
 		int distance = 1;
-		if (player.throwingAxe && !player.usingBow && !player.usingMagic) {
+		if (player.getCombatType() == CombatType.RANGED && player.getEquipment().isThrowingWeapon(player)) {
 			distance = 4;
-		} else if (!player.throwingAxe && usingHalberd(player) && !player.usingBow && !player.usingMagic) {
+		} else if (usingHalberd(player) && player.getCombatType() == CombatType.MELEE) {
 			distance = 2;
 		} else if (player.usingBow) {
 			distance = 7;
@@ -272,7 +272,7 @@ public class CombatData {
 			distance = 5;
 		} else if (player.usingMagic) {
 			distance = 10;
-		} else if (!player.throwingAxe && !usingHalberd(player) && !player.usingBow && !player.usingMagic) {
+		} else if (player.getCombatType() == CombatType.MELEE) {
 			if (player.getX() != victim.getX() && player.getY() != victim.getY()
 					&& player.distanceToPoint(victim.getX(), victim.getY()) < 2) {
 				distance = 2;

@@ -2924,8 +2924,6 @@ public class Player extends Entity {
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean rangeEndGFXHeight;
-	public boolean throwingAxe;
-	public boolean usingArrows;
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
 	isSkulled, hasMultiSign, saveCharacter,  dbowSpec,

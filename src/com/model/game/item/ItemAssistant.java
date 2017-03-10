@@ -1528,8 +1528,11 @@ public class ItemAssistant {
 		player.appearanceUpdateRequired = true;
 	 }
 
-	 public void deleteEquipment() {
-		 if (player.throwingAxe && player.playerEquipment[player.getEquipment().getCapeId()] == 10499 && Utility.getRandom(5) != 1 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111 && Utility.getRandom(5) != 1) {
+	 public void deleteAmmo() {
+	 	boolean avaSave = player.playerEquipment[player.getEquipment().getCapeId()] == 10499;
+	 	boolean otherSave = player.playerEquipment[player.getEquipment().getCapeId()] == 19111;
+		 if (Utility.getRandom(5) != 1 && (avaSave || otherSave)) {
+		 	// arrow saved
 			 return;
 		 }
 		 if (player.playerEquipmentN[player.getEquipment().getWeaponId()] != 0) {

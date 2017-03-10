@@ -487,8 +487,7 @@ public class PlayerVsNpcCombat {
 	public static void moveOutFromUnderLargeNpc(Player player, Npc npc) {
 
 		boolean inside = false;
-		boolean projectiles = player.usingBow || player.usingMagic || player.throwingAxe
-				|| player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC;
+		boolean projectiles = player.getCombatType() != CombatType.MELEE;
 		for (Position tile : npc.getTiles()) {
 			if (player.absX == tile.getX() && player.absY == tile.getY()) {
 				inside = true;
@@ -562,23 +561,19 @@ public class PlayerVsNpcCombat {
 		boolean hasDistance = npc.npcId == 5535 ? true : false; // force 5535 tents to always be hittable
 		for (Position pos : npc.getTiles()) {
 			double distance = pos.distance(player.getPosition());
-			boolean magic = player.usingMagic;
-			boolean ranged = !player.usingMagic
-					&& (player.throwingAxe || player.usingBow || player.usingCross || player.usingArrows);
-			boolean melee = !magic && !ranged;
 			if(CombatData.usingHalberd(player)) {
 				if(distance <= 2) {
 					hasDistance = true;
 					break;
 				}
 			}
-			if (melee) {
+			if (player.getCombatType() == CombatType.MELEE) {
 				if (distance <= 1) {
 					hasDistance = true;
 					break;
 				}
 			} else {
-				if (distance <= (ranged ? 10 : 15)) {
+				if (distance <= (player.getCombatType() == CombatType.RANGED ? 10 : 15)) {
 					hasDistance = true;
 					break;
 				}

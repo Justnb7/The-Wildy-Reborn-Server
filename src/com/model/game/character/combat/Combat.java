@@ -636,6 +636,7 @@ public class Combat {
 						}
 					}
 				} else {
+					PlayerSounds.sendBlockOrHitSound(player, hit.getDamage() > 0);
 					target.damage(hit);
 
 					// Range attack invoke block emote when hit appears.

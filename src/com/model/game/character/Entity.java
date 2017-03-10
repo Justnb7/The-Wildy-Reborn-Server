@@ -509,13 +509,13 @@ public abstract class Entity {
 		} else if (isPlayer() && attacker.isPlayer()) {
 			((Player)this).addDamageReceived(((Player)attacker).getName(), damage);
 		}
-		PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
 
 		// Update hit instance since we've changed the 'damage' value
 		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type);
 
 		// NOTE: If not instantly applied, use EventManager.event(2) { entity.damage(hit) }
 		if (applyInstantly) {
+			PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
 			this.damage(hit);
 		}
 		// Returning hit: might be helpful in the future. For chaining. Such as hit.x().y()..

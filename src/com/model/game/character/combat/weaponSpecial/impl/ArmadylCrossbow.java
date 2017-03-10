@@ -20,7 +20,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 		Entity entity = player.getCombat().target;
 		player.setCombatType(CombatType.RANGED);
 		player.playAnimation(Animation.create(4230));
-		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 		player.getItems().deleteArrow();
 
 		player.getItems().dropArrowUnderTarget();

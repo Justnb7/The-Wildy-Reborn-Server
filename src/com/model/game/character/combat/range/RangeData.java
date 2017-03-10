@@ -53,8 +53,8 @@ public class RangeData {
 	}
 
 	public static int getRangeStartGFX(Player c) {
-		
-		switch (c.rangeItemUsed) {
+		int ammo = c.playerEquipment[c.getEquipment().getQuiverId()];
+		switch (ammo) {
 		case 4212:
 				return -1;
 		}
@@ -88,7 +88,7 @@ public class RangeData {
 			{4221, 250}, {4222, 250}, {4223, 250},
 		};
 		for(int l = 0; l < data.length; l++) {
-			if(c.rangeItemUsed == data[l][0]) {
+			if(ammo == data[l][0]) {
 				str = data[l][1];
 			}
 		}
@@ -107,7 +107,9 @@ public class RangeData {
 	}
 
 	public static int getRangeProjectileGFX(Player player) {
-		
+		int ammo = player.playerEquipment[player.getEquipment().getQuiverId()];
+		int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
+		boolean spec = player.isUsingSpecial();
 		if (player.getItems().isWearingItem(12926)) {
 			return 1123;
 		}
@@ -116,14 +118,13 @@ public class RangeData {
 			return player.playerEquipment[player.getEquipment().getQuiverId()] == 11212 ? 1099 : 1101;
 		}
 		
-		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12424)
+		if (wep == 12424)
 			return 806;
-		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 4212)
+		if (wep == 4212)
 			return 249;
 			
-		if(player.bowSpecShot > 0) {
-			switch(player.rangeItemUsed) {
-				default:
+		if (spec) {
+			if (wep == 861) {
 				return 249;
 			}
 		}
@@ -167,7 +168,7 @@ public class RangeData {
 			{4221, 249}, {4222, 249}, {4223, 249},
 		};
 		for(int l = 0; l < data.length; l++) {
-			if(player.rangeItemUsed == data[l][0]) {
+			if(ammo == data[l][0]) {
 				str = data[l][1];
 			}
 		}

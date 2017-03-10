@@ -21,9 +21,7 @@ public class MagicShortbow implements SpecialAttack {
 	public void handleAttack(final Player player, final Entity target) {
 		Entity entity = player.getCombat().target;
 		player.setCombatType(CombatType.RANGED);
-		player.usingBow = true;			
-		player.bowSpecShot = 1;
-		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
+		player.usingBow = true;
 		player.getItems().deleteArrow();
 		player.getItems().deleteArrow();
 		player.playAnimation(Animation.create(1074));

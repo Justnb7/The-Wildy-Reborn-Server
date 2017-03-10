@@ -2908,9 +2908,8 @@ public class Player extends Entity {
 			followDistance,
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId,
-			rangeItemUsed, killingNpcIndex, lastWeaponUsed,
-			 attackDelay, npcClickIndex, oldSpellId,
-			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
+			attackDelay, npcClickIndex, oldSpellId,
+			clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
 			walkTutorial = 15, skullIcon = -1, bountyPoints;
 	public int objectDistance, teleHeight;
 	

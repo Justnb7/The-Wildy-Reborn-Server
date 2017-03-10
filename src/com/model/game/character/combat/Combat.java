@@ -210,11 +210,11 @@ public class Combat {
         }
 
         // ##### BEGIN ATTACK - WE'RE IN VALID DISTANCE AT THIS POINT #######
+        int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
 		/*
 		 * Set our attack timer so we dont instantly hit again
 		 */
-        player.attackDelay = CombatData.getAttackDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
-        player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
+        player.attackDelay = CombatData.getAttackDelay(player, player.getItems().getItemName(wep).toLowerCase());
 
 		/*
 		 * Add a skull if needed
@@ -246,7 +246,6 @@ public class Combat {
             }
         }
 
-        int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
         if (wep > -1 && !player.usingMagic) {
             PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep);
         }
@@ -264,8 +263,8 @@ public class Combat {
 		/*
 		 * Start the attack animation
 		 */
-        if (!player.usingMagic && player.playerEquipment[player.getEquipment().getWeaponId()] != 22494 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2415 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2416 && player.playerEquipment[player.getEquipment().getWeaponId()] != 2417) {
-            player.playAnimation(Animation.create(CombatAnimation.getAttackAnimation(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase())));
+        if (!player.usingMagic && wep != 22494 && wep != 2415 && wep != 2416 && wep != 2417) {
+            player.playAnimation(Animation.create(CombatAnimation.getAttackAnimation(player, player.getItems().getItemName(wep).toLowerCase())));
 
 
             // Npc block anim
@@ -300,12 +299,11 @@ public class Combat {
 		/*if (player.petBonus) {
 			player.getCombat().handlePetHit(World.getWorld().getPlayers().get(player.playerIndex));
 		}*/
-        player.rangeItemUsed = 0;
 
 		/*
 		 * Set the delay before the damage is applied
 		 */
-        int hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase());
+        int hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(wep).toLowerCase());
 
 
 		/*
@@ -327,7 +325,6 @@ public class Combat {
             Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 
         } else if (player.getCombatType() == CombatType.RANGED) {
-            player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
 
             if (player.getAttackStyle() == 2)
                 player.attackDelay--;
@@ -352,7 +349,7 @@ public class Combat {
 
                 //Arrows check
                 boolean dropArrows = true;
-                if (player.lastWeaponUsed == 12926 || player.lastWeaponUsed == 4222) {
+                if (wep == 12926 || wep == 4222) {
                     dropArrows = false;
                 }
 
@@ -412,7 +409,7 @@ public class Combat {
                 player.followDistance = 5;
             }
 
-            if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907 || player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
+            if (wep == 11907 || wep == 12899) {
                 return;
             }
 
@@ -608,13 +605,13 @@ public class Combat {
             player.usingMagic = true;
             player.setCombatType(CombatType.MAGIC);
         }
-
-        if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907) {
+        int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
+        if (wep == 11907) {
             player.spellId = 52;
             player.castingMagic = true;
         }
 
-        if (player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
+        if (wep == 12899) {
             player.spellId = 53;
             player.castingMagic = true;
         }

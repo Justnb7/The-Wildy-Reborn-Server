@@ -29,9 +29,6 @@ public class Ballista implements SpecialAttack {
 		
 		player.getItems().deleteArrow();
 		
-		// Need to investigate what these variables are used for
-		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-		
 		// On rapid, the attack delay is 1 tick faster.
 		if (player.getAttackStyle() == 2)
 			player.attackDelay--;

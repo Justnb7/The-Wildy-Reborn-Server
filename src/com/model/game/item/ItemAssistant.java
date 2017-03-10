@@ -1591,8 +1591,9 @@ public class ItemAssistant {
 		// Avas equipment: don't drop ammo
 		if (player.playerEquipment[player.getEquipment().getCapeId()] == 10499 || player.playerEquipment[player.getEquipment().getCapeId()] == 19111)
 			return;
+		int ammoId = player.playerEquipment[player.getEquipment().getQuiverId()];
 		if (Utility.getRandom(10) >= 4) {
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(player.rangeItemUsed), enemyX, enemyY, enemyHeight, player));
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(ammoId), enemyX, enemyY, enemyHeight, player));
 		}
 	}
 

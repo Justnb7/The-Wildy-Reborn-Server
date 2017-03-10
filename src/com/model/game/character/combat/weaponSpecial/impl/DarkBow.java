@@ -33,9 +33,6 @@ public class DarkBow implements SpecialAttack {
 		player.getItems().deleteArrow();
 		player.getItems().deleteArrow();
 		
-		// Need to investigate what these variables are used for
-		player.rangeItemUsed = player.playerEquipment[player.getEquipment().getQuiverId()];
-		
 		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 		
 		// On rapid, the attack delay is 1 tick faster.

@@ -1427,8 +1427,11 @@ public class Player extends Entity {
 			PrayerHandler.handlePrayerDraining(this);
 			if (clickObjectType > 0 && destinationReached())
 				handleObjectAction();
+
+			update_attack_style(); // also updates follow distance. Must be done before following & combat
 			process_following();
 			combatProcessing();
+
 			controller.tick(this);
 			
 			NPCAggression.process(this);
@@ -1455,7 +1458,17 @@ public class Player extends Entity {
 			e.printStackTrace();
 		}
 	}
-	
+
+	private void update_attack_style() {
+
+		// Every game tick, update our combat style for worn items. This means we'll keep pathing towards any non-null target properly.
+		if (getCombat().target != null) {
+			Combat.setCombatStyle(this);
+			faceEntity(getCombat().target);
+			setFollowing(getCombat().target);
+		}
+	}
+
 	public GameBuffer getInStream() {
 		return inStream;
 	}
@@ -1512,12 +1525,6 @@ public class Player extends Entity {
 
 			super.frozen_process();
 
-			// Every game tick, update our combat style for worn items. This means we'll keep pathing towards any non-null target properly.
-			if (getCombat().target != null) {
-				Combat.setCombatStyle(this);
-				faceEntity(getCombat().target);
-				setFollowing(getCombat().target);
-			}
 			if (attackDelay > 0) {
 				attackDelay--;
 			}

@@ -1,7 +1,6 @@
 package com.model.game.character.combat.pvm;
 
 import com.model.Server;
-import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
@@ -17,7 +16,10 @@ import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
-import com.model.game.character.player.*;
+import com.model.game.character.player.Boundary;
+import com.model.game.character.player.Player;
+import com.model.game.character.player.ProjectilePathFinder;
+import com.model.game.character.player.Skills;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
@@ -455,83 +457,6 @@ public class PlayerVsNpcCombat {
 				}
 			}
 			
-	}
-
-	/**
-	 * Starts the attack on an {@link Npc}
-	 * 
-	 * @param player
-	 *            The {@link Player} attacking the npc
-	 * @param index
-	 *            The index of the npc
-	 */
-	public static void attackNpc(Player player, int index) {
-		Npc npc = World.getWorld().getNpcs().get(index);
-		if (npc == null) {
-			//System.out.println("null");
-			return;
-		}
-
-		/*
-		 * Set our calculations for our combat style
-		 */
-		if (player.getCombatType() == CombatType.RANGED && !player.throwingAxe) { // range
-			if (player.usingCross)
-				player.usingBow = true;
-			if (player.getAttackStyle() == 2)
-				player.attackDelay--;
-
-			player.followId2 = npc.getIndex();
-
-			player.getPA().followNpc();
-			player.lastWeaponUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-
-
-
-		} else if (player.throwingAxe && player.getCombatType() == CombatType.RANGED) {
-			player.followId2 = npc.getIndex();
-			player.getPA().followNpc();
-			player.rangeItemUsed = player.playerEquipment[player.getEquipment().getWeaponId()];
-
-			player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-			if (player.getAttackStyle() == 2)
-				player.attackDelay--;
-			player.getCombat().fireProjectileAtTarget();
-
-		} else if (player.getCombatType() == CombatType.MAGIC) { // magic hit
-																	// delay
-			int pX = player.getX();
-			int pY = player.getY();
-			int nX = npc.getX();
-			int nY = npc.getY();
-			int offX = (pY - nY) * -1;
-			int offY = (pX - nX) * -1;
-			player.castingMagic = true;
-			player.setCombatType(CombatType.MAGIC);
-			player.stopMovement();
-			if (player.MAGIC_SPELLS[player.getSpellId()][3] > 0) {
-				if (player.getCombat().getStartGfxHeight() == 100) {
-					player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
-				} else {
-					player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
-				}
-			}
-			if (player.MAGIC_SPELLS[player.getSpellId()][4] > 0) {
-				player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, 78,
-						player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartHeight(),
-						player.getCombat().getEndHeight(), index + 1, 50);
-			}
-			player.oldSpellId = player.getSpellId();
-			if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11907 || player.playerEquipment[player.getEquipment().getWeaponId()] == 12899) {
-				return;
-			}
-			
-			player.setSpellId(0);
-			if (!player.autoCast)
-				player.npcIndex = 0;
-		}
-
 	}
 
 	/**

@@ -177,7 +177,6 @@ public class PlayerVsNpcCombat {
 		player.usingMagic = false;
 		player.castingMagic = false;
 		player.oldSpellId = 0;
-		npc.retaliate(player);
 	}
 
 	
@@ -385,7 +384,6 @@ public class PlayerVsNpcCombat {
 			}
 		}
 
-		victim.retaliate(attacker);
 	}
 
 	/**

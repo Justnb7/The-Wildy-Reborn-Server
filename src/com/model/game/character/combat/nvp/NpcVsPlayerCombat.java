@@ -68,6 +68,10 @@ public class NpcVsPlayerCombat {
 		// Call code to attack our target if we're alive
 		if (!npc.isDead && !npc.walkingHome && npc.targetId > 0) {
 			Player player = World.getWorld().getPlayers().get(npc.targetId);
+
+			if (npc.followTarget != player)
+				npc.followTarget = player;
+
 		//FIXME 
 			boolean in_range = player != null && NPCHandler.goodDistance(player.absX, player.absY, npc.absX, npc.absY, 20);
 			if (player == null || !in_range) {

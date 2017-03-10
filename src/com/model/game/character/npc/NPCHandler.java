@@ -1,14 +1,5 @@
 package com.model.game.character.npc;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Entity;
@@ -27,6 +18,15 @@ import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.json.NPCDefinitionLoader;
 import com.model.utility.json.definitions.NpcDefinition;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public final class NPCHandler {
 
@@ -318,8 +318,9 @@ public final class NPCHandler {
 	 *            The id of the player being followed
 	 */
 	public static void attemptFollowEntity(Npc npc, Entity target) {
+		npc.forceChat("folo: "+target);
 		if (target == null || npc == null) {
-			npc.resetFollowing();
+			npc.setFollowing(null);
 			npc.resetFace();
 			return;
 		}
@@ -330,7 +331,7 @@ public final class NPCHandler {
 		if (isBoss) {
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 				if (!Boundary.isIn(target, Boundary.GODWARS_BOSSROOMS)) {
-					npc.resetFollowing();
+					npc.setFollowing(null);
 					npc.resetFace();
 					npc.targetId = 0; // reset cb as well.. not valid
 					return;
@@ -339,7 +340,7 @@ public final class NPCHandler {
 		}
 
 		if (target.isDead() || !target.isVisible() || npc.heightLevel != target.heightLevel) {
-			npc.resetFollowing();
+			npc.setFollowing(null);
 			npc.resetFace();
 			npc.walkingHome = true;
 			npc.underAttack = false;
@@ -393,13 +394,13 @@ public final class NPCHandler {
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
 			npc.faceEntity(target);
-			npc.resetFollowing(); // reset existing walking queue
+			npc.setFollowing(null); // reset existing walking queue
 			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
 			//npc.forceChat("my nigga");
 			
 		} else {
 			// Reset following
-			npc.resetFollowing();
+			npc.setFollowing(null);
 			npc.resetFace();
 			npc.walkingHome = true;
 			npc.underAttack = false;

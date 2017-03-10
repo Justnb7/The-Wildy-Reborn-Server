@@ -140,11 +140,6 @@ public class Npc extends Entity {
 	 */
 	public int npcIndex;
 	
-	/**
-	 * Target following index
-	 */
-	public int followTargetIndex;
-	
 	//fml called to many times lmao cant we just replace all with owner? 
 	// nah cos they might be used in diff situations, its fine tho everything will work
 	// lets remove the debugs and commit
@@ -504,18 +499,8 @@ public class Npc extends Entity {
 						//System.out.println("NPC Following player");
 						NPCHandler.attemptFollowEntity(this, ownerPlr);
 					}
-				} else if (this.following_target != null) {
-					NPCHandler.attemptFollowEntity(this, following_target);
-				} else if (this.followTargetIndex > -1) {
-					// TODO remove followTargetIndex fully in favour of follow_target - so it's
-					// entity based rather than that PI shit
-					Player ftarg = World.getWorld().getPlayers().get(followTargetIndex);
-					if (ftarg != null) {
-						NPCHandler.attemptFollowEntity(this, ftarg);
-					} else {
-						//System.out.println("ftarg null.. disgarding");
-						this.followTargetIndex = -1;
-					}
+				} else if (this.followTarget != null) {
+					NPCHandler.attemptFollowEntity(this, followTarget);
 				}
 				
 				if (npcId == 6611 || npcId == 6612) {
@@ -650,18 +635,6 @@ public class Npc extends Entity {
 	public void requestUpdates() {
         this.updateRequired = true;
     }
-
-	private Entity following_target;
-	//SETTER
-	public void follow(Npc boss) {
-		walkingHome = randomWalk = false;
-		following_target = boss;
-	}
-	// clearer
-	public void resetFollowing() {
-		following_target = null;
-	}
-
 	
 	public int walkX, walkY;
 

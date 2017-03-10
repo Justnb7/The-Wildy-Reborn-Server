@@ -123,7 +123,7 @@ public class RangeData {
 			return 1123;
 		}
 		
-		if (player.dbowSpec) {
+		if (spec && wep == 11235) {
 			return player.playerEquipment[player.getEquipment().getQuiverId()] == 11212 ? 1099 : 1101;
 		}
 		
@@ -258,7 +258,7 @@ public class RangeData {
 	}
 
 	public static int getProjectileSpeed(Player player) {
-		if (player.dbowSpec)
+		if (player.isUsingSpecial() && player.playerEquipment[3] == 11235)
 			return 100;
 		switch(player.playerEquipment[3]) {
 			case 10033:

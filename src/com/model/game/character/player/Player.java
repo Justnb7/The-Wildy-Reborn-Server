@@ -2923,7 +2923,7 @@ public class Player extends Entity {
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
-	isSkulled, hasMultiSign, saveCharacter,  dbowSpec,
+	isSkulled, hasMultiSign, saveCharacter,
 	properLogout, playerIsFiremaking,
 	acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
 	

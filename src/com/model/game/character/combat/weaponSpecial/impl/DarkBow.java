@@ -28,8 +28,6 @@ public class DarkBow implements SpecialAttack {
 		player.setCombatType(CombatType.RANGED);
 		player.playAnimation(Animation.create(426));
 		
-		player.dbowSpec = true;
-		
 		player.getItems().deleteArrow();
 		player.getItems().deleteArrow();
 		

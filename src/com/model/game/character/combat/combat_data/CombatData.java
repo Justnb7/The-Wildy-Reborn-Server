@@ -205,9 +205,7 @@ public class CombatData {
 				return 4;
 			}
 			
-			if (weaponName.contains("bow") && !player.dbowSpec) {
-				return 4;
-			} else if (player.dbowSpec) {
+			if (weaponName.contains("bow")) {
 				return 4;
 			}
 

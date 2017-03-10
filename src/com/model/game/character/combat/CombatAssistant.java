@@ -169,7 +169,11 @@ public class CombatAssistant {
 	}
 
 	public void reset() {
+		// Nullify target
 		target = null;
+		// Reset all styles
+		player.mageFollow = player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
+		player.setCombatType(null);
 	}
 
 	public void setTarget(Entity target) {

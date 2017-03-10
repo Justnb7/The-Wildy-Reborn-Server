@@ -45,21 +45,17 @@ public class AttackPlayer implements PacketType {
 		 **/
 		case MAGE_PLAYER:
 			int targetIdx = player.getInStream().readSignedWordA();
-			player.castingSpellId = player.getInStream().readSignedWordBigEndian();
+			int spellId = player.getInStream().readSignedWordBigEndian();
 
 			targ = World.getWorld().getPlayers().get(targetIdx);
-			if (targ == null) {
-				player.getCombat().reset();
-				break;
-			}
 
-			if (player.isDead()) {
+			if (targ == null || player.isDead()) {
 				player.getCombat().reset();
 				break;
 			}
 
 			for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {
-				if (player.castingSpellId == player.MAGIC_SPELLS[i][0]) {
+				if (spellId == player.MAGIC_SPELLS[i][0]) {
 					player.setSpellId(i);
 					player.usingMagic = true;
 					player.setCombatType(CombatType.MAGIC);

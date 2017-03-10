@@ -47,8 +47,6 @@ public class Combat {
 			return;
 
 		Entity target = player.getCombat().target;
-		Combat.setCombatStyle(player);
-		player.faceEntity(target);
 
 		if (target.isPlayer()) {
 			Player ptarg = (Player)target;
@@ -75,9 +73,6 @@ public class Combat {
 				return;
 			}
 		}
-
-		player.setFollowing(target);
-
 
 		if (target.isPlayer()) {
 			Player ptarg = (Player) target;
@@ -265,7 +260,7 @@ public class Combat {
 		}
 
 		int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
-		if (wep > -1) {
+		if (wep > -1 && !player.usingMagic) {
 			PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep);
 		}
 
@@ -465,9 +460,11 @@ public class Combat {
 
 
 	public static void setCombatStyle(Player player) {
+		boolean spellQueued = player.usingMagic && player.getCombatType() == CombatType.MAGIC && player.spellId > 0;
 		player.mageFollow = player.usingMagic = player.usingBow = player.throwingAxe = player.usingArrows = false;
 		player.setCombatType(null); // reset
 
+		int followDist = 1;
 		/*
 		 * Check if we are using magic
 		 */
@@ -494,6 +491,7 @@ public class Combat {
 		}
 		if (player.usingMagic) {
 			player.setCombatType(CombatType.MAGIC);
+			followDist = 8;
 		}
 
 		/*
@@ -509,10 +507,12 @@ public class Combat {
 
 			if(player.throwingAxe || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
 				player.setCombatType(CombatType.RANGED);
+				followDist = 7;
 			}
 
 			if(player.throwingAxe) {
 				player.throwingAxe = true;
+				followDist = 4;
 			}
 
 			if(bolt || javalin || player.usingArrows) {
@@ -522,7 +522,12 @@ public class Combat {
 		// hasn't been set to magic/range.. must be melee.
 		if (player.getCombatType() == null) {
 			player.setCombatType(CombatType.MELEE);
+			if (CombatData.usingHalberd(player))
+				followDist = 2;
 		}
+		player.followDistance = followDist;
+		player.message("style: "+player.getCombatType());
+
 	}
 
 	public static void hitEvent(Player player, Entity target, int delay, Hit hit, CombatType combatType) {

@@ -1485,7 +1485,7 @@ public class Player extends Entity {
 			if (followTarget.isNPC())
 				getPA().followNpc(followTarget);
 			else
-				getPA().followPlayer(!asPlayer().getCombat().noTarget(), followTarget);
+				getPA().followPlayer(!asPlayer().getCombat().noTarget(), followTarget, followDistance);
 		}
 	}
 
@@ -1511,7 +1511,15 @@ public class Player extends Entity {
 			}
 
 			super.frozen_process();
+
 			//message("atkDelay: "+attackDelay);
+
+			// Every game tick, update our combat style for worn items. This means we'll keep pathing towards any non-null target properly.
+			if (getCombat().target != null) {
+				Combat.setCombatStyle(this);
+				faceEntity(getCombat().target);
+				setFollowing(getCombat().target);
+			}
 			if (attackDelay > 0) {
 				attackDelay--;
 			}
@@ -2896,7 +2904,7 @@ public class Player extends Entity {
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId,
 			rangeItemUsed, killingNpcIndex, lastWeaponUsed,
-			 attackDelay, npcClickIndex, castingSpellId, oldSpellId,
+			 attackDelay, npcClickIndex, oldSpellId,
 			bowSpecShot, clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
 			walkTutorial = 15, skullIcon = -1, bountyPoints;
 	public int objectDistance, teleHeight;

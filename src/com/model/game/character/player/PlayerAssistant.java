@@ -3,7 +3,6 @@ package com.model.game.character.player;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatAnimation;
-import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.effect.impl.DragonfireShieldEffect;
 import com.model.game.character.npc.Npc;
@@ -128,7 +127,7 @@ public class PlayerAssistant {
     /**
      * Following
      */
-    public void followPlayer(boolean forCombat, Entity following) {
+    public void followPlayer(boolean forCombat, Entity following, int cbDist) {
         if (following == null || following.isDead()) {
             player.setFollowing(null);
             return;
@@ -144,41 +143,13 @@ public class PlayerAssistant {
 
         int otherX = following.getX();
         int otherY = following.getY();
-        boolean sameSpot = (player.absX == otherX && player.absY == otherY);
-        boolean hallyDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 2);
-        boolean rangeWeaponDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 4);
-        boolean bowDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 7);
-        boolean magicDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 7);
-        boolean castingMagic = (player.spellId > 0 || player.autocastId > 0 || player.oldSpellId > 0 || player.usingMagic || player.autoCast || player.getCombatType() == CombatType.MAGIC  && magicDistance);
-
-		boolean playerRanging = (player.throwingAxe) && rangeWeaponDistance;
-		boolean playerBowOrCross = (player.usingBow) && bowDistance;
 
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
             player.setFollowing(null);
             return;
         }
 
-		if (!sameSpot) {
-			if (!player.isUsingSpecial() && player.getArea().inWild()) {
-				if (player.isUsingSpecial() && (playerRanging || playerBowOrCross)) {
-					player.stopMovement();
-					return;
-				}
-				if (playerRanging || playerBowOrCross) {
-					player.stopMovement();
-					return;
-				}
-				if (castingMagic) {
-					return;
-				}
-				if (CombatData.usingHalberd(player) && hallyDistance) {
-					player.stopMovement();
-					return;
-				}
-			}
-		}
-        
+        boolean sameSpot = (player.absX == otherX && player.absY == otherY);
         if (sameSpot) {
             if (Region.getClipping(player.getX() - 1, player.getY(), player.heightLevel, -1, 0)) {
                 walkTo(-1, 0);
@@ -212,55 +183,25 @@ public class PlayerAssistant {
             }
         } else {
 
+            boolean goodCombatDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), cbDist);
             /*
              * Check for other range weapons which require a distance of 4
              */
-            if (player.throwingAxe && rangeWeaponDistance) {
+            if (goodCombatDistance) {
                 player.getMovementHandler().stopMovement();
                 return;
             }
-
-            if (CombatData.usingHalberd(player) && hallyDistance) {
-                player.getMovementHandler().stopMovement();
-                return;
-            }
-
             /*
              * Check our regular combat styles for distance
              */
-            switch (player.getCombatType()) {
-            case MAGIC:
-
-                if (magicDistance) {
+            if (player.getCombatType() == CombatType.MELEE && player.goodDistance(otherX, otherY, player.getX(), player.getY(), 1)) {
+                if (otherX != player.getX() && otherY != player.getY()) {
+                    stopDiagonal(player, otherX, otherY);
+                    return;
+                } else {
                     player.getMovementHandler().stopMovement();
                     return;
                 }
-
-                if ((player.spellId > 0 || player.oldSpellId > 0) && magicDistance) {
-                    if (player.spellId > 0 || player.oldSpellId > 0) {
-                        player.setFollowing(null);
-                        return;
-                    }
-                }
-                break;
-            case MELEE:
-                if (player.goodDistance(otherX, otherY, player.getX(), player.getY(), 1)) {
-                    if (otherX != player.getX() && otherY != player.getY()) {
-                        player.faceEntity(following);
-                        stopDiagonal(player, otherX, otherY);
-                        return;
-                    } else {
-                        player.getMovementHandler().stopMovement();
-                        return;
-                    }
-                }
-                break;
-            case RANGED:
-                if (bowDistance) {
-                    player.getMovementHandler().reset();
-                    return;
-                }
-                break;
             }
 
             Position[] locs = { new Position(otherX + 1, otherY, player.getZ()), new Position(otherX - 1, otherY, player.getZ()), new Position(otherX, otherY + 1, player.getZ()),
@@ -304,39 +245,22 @@ public class PlayerAssistant {
         if (player.frozen()) {
             return;
         }
-        if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0)
+        if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+            player.setFollowing(null);
             return;
+        }
 
         int otherX = targ.getX();
         int otherY = targ.getY();
-        player.goodDistance(otherX, otherY, player.getX(), player.getY(), 1);
-        boolean hallyDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 2);
-        boolean bowDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 7);
-        boolean rangeWeaponDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), 4);
-        boolean sameSpot = player.absX == otherX && player.absY == otherY;
-        boolean mageDistance = player.goodDistance(otherX, otherY, player.getX(),player.getY(), 7);
-        boolean castingMagic = false, playerRanging = false;
+
+        boolean goodCombatDist = player.goodDistance(otherX, otherY, player.getX(), player.getY(), player.followDistance);
+
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
             player.setFollowing(null);
             return;
         }
 
-        if((player.playerEquipment[player.getEquipment().getWeaponId()] == 13022 || player.playerEquipment[player.getEquipment().getWeaponId()] == 15041 || player.playerEquipment[player.getEquipment().getWeaponId()] == 11785 || player.playerEquipment[player.getEquipment().getWeaponId()] == 9185) && rangeWeaponDistance)
-			playerRanging = true;
-		if((player.playerEquipment[player.getEquipment().getWeaponId()] == 22494 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2415 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2416 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2417) && mageDistance)
-			castingMagic = true;
-		
-		if((player.usingBow || playerRanging) && bowDistance && !sameSpot) {
-			return;
-		}
-		if((castingMagic || player.mageFollow || (!player.getCombat().noTarget() && player.autocastId > 0)) && mageDistance && !sameSpot) {
-			return;
-		}
-		if(CombatData.usingHalberd(player) && hallyDistance && !sameSpot) {
-			return;
-		}
-
-		if(player.usingBow || player.usingCross && rangeWeaponDistance && !sameSpot) {
+		if (goodCombatDist) {
 			return;
 		}
 
@@ -351,26 +275,14 @@ public class PlayerAssistant {
         }
 
         if (!inside) {
-            for (Position Location : npc.getTiles()) {
-                double distance = Location.distance(player.getPosition());
-                boolean magic = player.usingMagic;
-                boolean ranged = !player.usingMagic && (player.usingBow || player.usingCross || player.throwingAxe);
-                boolean melee = !magic && !ranged;
-                if (melee) {
-                    if (distance <= 1) {
-                        player.stopMovement();
-                        return;
-                    }
-                } else {
-                    if (distance <= (ranged ? 7 : 10)) {
-                        player.stopMovement();
-                        return;
-                    }
+            for (Position npcloc : npc.getTiles()) {
+                double distance = npcloc.distance(player.getPosition());
+                if (distance <= player.followDistance) {
+                    player.stopMovement();
+                    return;
                 }
             }
         }
-
-        player.faceEntity(npc);
 
         if (inside) {
             int r = Utility.getRandom(3);
@@ -405,7 +317,6 @@ public class PlayerAssistant {
                 player.getMovementHandler().followPath = true;
             }
         }
-        player.faceEntity(npc);
     }
 
     public void walkTo(int i, int j) {

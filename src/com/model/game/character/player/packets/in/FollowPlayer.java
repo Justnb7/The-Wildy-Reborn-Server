@@ -14,9 +14,6 @@ public class FollowPlayer implements PacketType {
 			return;
 		}
 		player.getCombat().reset();
-		player.mageFollow = false;
-		player.usingBow = false;
-		player.followDistance = 1;
 		player.setFollowing(op);
 	}
 }

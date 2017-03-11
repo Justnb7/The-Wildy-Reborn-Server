@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,12 +75,18 @@ public class PlayerSerialization {
 	public static int loadGame(Player p, String playerName, String playerPass, boolean withoutPass) {
 		playerName = playerName.toLowerCase();
 
-		File file = new File(getCharacterDirectory(), playerName + ".txt");
-		if (!file.exists()) {
-			Utility.println(playerName + ": character file not found.");
-			return 0;
+		Path path = Paths.get(getCharacterDirectory(), playerName.charAt(0) + File.separator + playerName + ".txt");
+		
+		if (!Files.exists(path)) {
+			try {
+				Files.createDirectories(path.getParent());
+				Files.createFile(path);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		
+		try (BufferedReader reader = Files.newBufferedReader(path)) {
 			int mode = 0;
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -498,9 +506,19 @@ public class PlayerSerialization {
         String username = p.getName().toLowerCase();
         final int time = p.teleblock.isStopped() ? 0 : (int) (p.teleblockLength - p.teleblock.elapsedTime());
         final int tbTime = time > 300000 || time < 0 ? 0 : time;
-        //spellBook = p.getSpellBook();
-        File file = new File(getCharacterDirectory(), username + ".txt");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+       
+        Path path = Paths.get(getCharacterDirectory(), username.charAt(0) + File.separator + username + ".txt");
+		
+		if (!Files.exists(path)) {
+			try {
+				Files.createDirectories(path.getParent());
+				Files.createFile(path);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
         	
         	/* Character Account */
         	

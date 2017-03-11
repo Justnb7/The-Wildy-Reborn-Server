@@ -1,5 +1,7 @@
 package com.model.game.character.combat.nvp;
 
+import java.util.List;
+
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -10,7 +12,6 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
-import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.Bosses;
@@ -25,8 +26,6 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-
-import java.util.List;
 
 /**
  * Handles all Npc Vs Player combat methods

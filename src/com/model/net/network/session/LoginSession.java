@@ -119,23 +119,34 @@ public class LoginSession extends Session {
 			return;
 		}
 		if (returnCode == 2) {
+			System.out.println("Enter logincode: "+returnCode);
 			int load = PlayerSerialization.loadGame(player, name, pass);
 			if (credential.getRequestType().equals("register")) {
+				System.out.println("register");
+				/*if (DisplayName.displayExists(name)) {
+					sendReturnCode(ctx.channel(), 24);
+					return;
+				}*/
 				if (PlayerSerialization.playerExists(name)) {
+					System.out.println("player exists");
 					try {
 						if (PlayerSerialization.passwordMatches(name, pass)) {
 							sendReturnCode(ctx.channel(), 22);
+							System.out.println("create profile for existing player");
 							return;
 						} else {
 							sendReturnCode(ctx.channel(), 23);
+							System.out.println("unable to register the profile");
 							return;
 						}
 					} catch (IOException e) {
 						sendReturnCode(ctx.channel(), 23);
+						System.out.println("unable to register the profile, 2");
 						return;
 					}
 				} else {
 					sendReturnCode(ctx.channel(), 22);
+					System.out.println("Creating profile");
 					return;
 				}
 			}

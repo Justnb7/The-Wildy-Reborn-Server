@@ -3,8 +3,6 @@ package com.model.game.character.npc.pet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.impl.WeakHashtable;
-
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.Npc;
@@ -14,8 +12,6 @@ import com.model.game.location.Position;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
-
-import jdk.nashorn.internal.objects.annotations.Where;
 
 /**
  * A pet system that uses the Npc class rather than loops

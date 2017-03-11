@@ -1337,7 +1337,7 @@ public class Player extends Entity {
 				
 				if (!receivedStarter() && inTutorial()) {
 					player.dialogue().start("STARTER");
-					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(getName()) + "</col> Has joined Luzoxpk for the first time.");
+					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(getName()) + "</col> Has joined Venenatis for the first time.");
 				}
 				
 				if (isMuted()) {

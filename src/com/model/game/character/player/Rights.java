@@ -36,6 +36,7 @@ public enum Rights {
 	YOUTUBER(21),
 	IRON_MAN(22),
 	ULTIMATE_IRON_MAN(23),
+	HARDCORE_IRON_MAN(24),
 	NEWS_ICON(25),
 	CASH_STACK(26),
 	SKULL_ICON_3(27),
@@ -137,13 +138,20 @@ public enum Rights {
 	}
 	
 	/**
-	 * Determines if the players rights equal that of {@linkplain HARDCORE_IRONMAN}
+	 * Determines if the players rights equal that of {@linkplain ULTIMATE_IRONMAN}
 	 * @return	true if they are of type Ultimate ironmen
 	 */	
-	public boolean isUltimateIron() {
+	public boolean isUltimateIronMan() {
 		return equals(ULTIMATE_IRON_MAN);
 	}
 	
+	/**
+	 * Determines if the players rights equal that of {@linkplain HARDCORE_IRONMAN}
+	 * @return	true if they are of type Hardcore ironmen
+	 */	
+	public boolean isHardcoreIronMan() {
+		return equals(HARDCORE_IRON_MAN);
+	}
 	/**
 	 * Determines if the players rights equal that of {@linkplain SUPPORT}
 	 * @return	true if they are of type helper

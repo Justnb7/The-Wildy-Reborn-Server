@@ -403,7 +403,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "staff":
 			player.write(new SendInterfacePacket(8134));
-			player.getActionSender().sendString("@red@Luzoxpk Staff@bla@", 8144);
+			player.getActionSender().sendString("@red@Venenatis Staff@bla@", 8144);
 			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Patrick - " + World.getWorld().getOnlineStatus("patrick"), 8145);
 			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Matthew - " + World.getWorld().getOnlineStatus("matthew"), 8146);
 

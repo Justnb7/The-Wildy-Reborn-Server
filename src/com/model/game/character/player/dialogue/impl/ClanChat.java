@@ -13,7 +13,7 @@ public class ClanChat extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.NPC, 1, Expression.SLEEPY, "Hello there Luzoxpk player! I am contacting you regarding...",
+		send(Type.NPC, 1, Expression.SLEEPY, "Hello there Venenatis player! I am contacting you regarding...",
 				"Some current changes with our Clanchat system ", "This is purely a FYI statement.");
 
 		send(Type.NPC, 1, Expression.SLEEPY, "Pick a clanchat", "Join the help clanchat ",

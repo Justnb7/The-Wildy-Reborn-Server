@@ -16,7 +16,6 @@ import java.util.Objects;
  * @author Patrick van Elderen
  * @date 13-4-2016
  */
-
 public class CombatRequirements {
 	
 	public static int getCombatDifference(int combat1, int combat2) {

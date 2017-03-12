@@ -49,7 +49,7 @@ public class Skills {
 		FIREMAKING(11, 4283, 4284, 4282, "Firemaking"),  
 		CRAFTING(12, 6264, 6265, 6263, "Crafting"),
 		SMITHING(13, 6222, 6223, 6221, "Smithing"),  
-		MINING(14, 4417, 4418, 4416, "Mining"), 
+		MINING(14, 4417, 4438, 4416, "Mining"), 
 		HERBLORE(15, 6238, 6239, 6237, "Herblore"), 
 		AGILITY(16, 4278, 4279, 4277, "Agility"),
 		THIEVING(17, 4263, 4264, 4261, "Thieving"), 
@@ -205,6 +205,7 @@ public class Skills {
 			player.getActionSender().sendString("Combat Level: " + player.getSkills().getCombatLevel(), 3983);
 			player.getPA().requestUpdates();
 		}
+		player.getSkillCyclesTask().stop();
 	}
 	
 	/**

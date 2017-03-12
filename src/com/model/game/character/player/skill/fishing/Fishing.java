@@ -128,12 +128,19 @@ public class Fishing extends SkillTask {
 	void heronPet(Player player, FishingSpot spot) {
 		int random = Utility.random(spot.getPetChance());
 		if (random == 0) {
-			Pet.Pets pets = Pet.Pets.HERON;
-			Pet pet = new Pet(player, pets.getNpc());
-			player.setPetSpawned(true);
-			player.setPet(pets.getNpc());
-			World.getWorld().register(pet);
-			World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.", false);
+			if (player.isPetSpawned()) {
+				player.getItems().addOrSendToBank(13320, 1);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.",
+						false);
+			} else {
+				Pet.Pets pets = Pet.Pets.HERON;
+				Pet pet = new Pet(player, pets.getNpc());
+				player.setPetSpawned(true);
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.",
+						false);
+			}
 		}
 	}
 }

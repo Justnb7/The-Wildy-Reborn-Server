@@ -1,8 +1,9 @@
 package com.model.game.character.player.skill.mining;
 
 import com.model.Server;
+import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.SimpleDialogues;
@@ -56,11 +57,6 @@ public class MiningEvent extends CycleEvent {
 	private Position position;
 	
 	/**
-	 * The npc the player is mining, if any
-	 */
-	private Npc npc;
-	
-	/**
 	 * Constructs a new {@link MiningEvent} for a single player
 	 * @param player	the player this is created for
 	 * @param objectId	the id value of the object being mined from
@@ -98,12 +94,6 @@ public class MiningEvent extends CycleEvent {
 				container.stop();
 				return;
 			}
-		} else {
-			if (npc == null || npc.isDead) {
-				player.message("This vein contains no more minerals.");
-				container.stop();
-				return;
-			}
 		}
 		if (container.getTotalTicks() - lastAnimation > ANIMATION_CYCLE_DELAY) {
 			player.playAnimation(pickaxe.getAnimation());
@@ -117,17 +107,30 @@ public class MiningEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (Utility.random(rock.getDepletionProbability()) == 0 || rock.getDepletionProbability() == 0) {
+		//if (Utility.random(rock.getDepletionProbability()) == 0) {
 			if (objectId > 0) {
 				Server.getGlobalObjects().add(new GlobalObject(Rock.EMPTY_ROCK, position.getX(), position.getY(), position.getZ(), 0, 10, rock.getRespawnRate(), objectId));
-			} else {
-				npc.isDead = true;
-				npc.needRespawn = false;
 			}
-		}
+		//}
 		player.face(player, new Position(position.getX(), position.getY()));
 		player.getItems().addItem(rock.getMineral(), 1);
 		player.getSkills().addExperience(Skills.MINING, rock.getExperience());
+		int random = Utility.random(rock.getPetChance());
+		
+		if (random == 0) {
+			if(player.isPetSpawned()) {
+				player.getItems().addOrSendToBank(13321, 1);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Rock Golem.", false);
+			} else {
+				Pet.Pets pets = Pet.Pets.ROCK_GOLEM;
+				Pet pet = new Pet(player, pets.getNpc());
+				player.setPetSpawned(true);
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Rock Golem.", false);
+			}
+			
+		}
 	}
 	
 	@Override

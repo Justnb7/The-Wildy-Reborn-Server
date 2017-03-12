@@ -12,15 +12,15 @@ import java.util.Set;
  */
 public enum Rock {
 	
-	COPPER(new int[] {7484, 13450, 2090, 11961, 11960, 11962}, 436, 1, 18, 5, 5, 15, 10000),
-	TIN(new int[] {7485, 13447, 2095, 9714, 9716, 11957, 11958, 11959}, 438, 1, 18, 5, 5, 15, 10000),
-	IRON(new int[] {7455, 13710, 2092, 11954, 11955, 11956, 13710}, 440, 15, 35, 5, 8, 18, 6000),
-	COAL(new int[] {7485, 7489, 9717, 9718, 9719, 13714, 13714}, 453, 30, 50, 3, 15, 23, 5000),
-	GOLD(new int[] {13707, 2099, 9722, 9720, 13707}, 444, 40, 65, 3, 25, 25, 4500),
-	MITHRIL(new int[] {7492, 13718, 13718}, 447, 55, 80, 3, 40, 27, 3500),
-	ADAMANTITE(new int[] {7460, 13720 , 2105, 13720}, 449, 70, 95, 2, 50, 30, 3000),
+	COPPER(new int[] {7484, 7453, 13450, 2090, 11961, 11960, 11962}, 436, 1, 18, 0, 5, 15, 10000),
+	TIN(new int[] {7485, 7486, 13447, 2095, 9714, 9716, 11957, 11958, 11959}, 438, 1, 18, 0, 5, 15, 10000),
+	IRON(new int[] {7488, 7455, 13710, 2092, 11954, 11955, 11956, 13710}, 440, 15, 35, 5, 8, 18, 6000),
+	COAL(new int[] {7456, 7485, 7489, 9717, 9718, 9719, 13714, 13714}, 453, 30, 50, 3, 15, 23, 5000),
+	GOLD(new int[] {7491, 7458, 13707, 2099, 9722, 9720, 13707}, 444, 40, 65, 3, 25, 25, 4500),
+	MITHRIL(new int[] {7492, 7459, 13718, 13718}, 447, 55, 80, 3, 40, 27, 3500),
+	ADAMANTITE(new int[] {7460, 7493, 13720 , 2105, 13720}, 449, 70, 95, 2, 50, 30, 3000),
 	VOLCANIC_SULPHUR(new int[] {28498}, 13571, 42, 60, 2, 50, 30, 3000),
-	RUNITE(new int[] {7494, 14175}, 451, 85, 125, 0, 100, 40, 1000);
+	RUNITE(new int[] {7494, 7461, 14175}, 451, 85, 125, 0, 100, 40, 1000);
 	
 	/**
 	 * An array of object ids that are associated with the mineral obtained from them
@@ -142,7 +142,7 @@ public enum Rock {
 	/**
 	 * The identification value of the object with no mineral remaining after extraction
 	 */
-	public static final int EMPTY_ROCK = 451;
+	public static final int EMPTY_ROCK = 7469;
 	
 	/**
 	 * An unmodification set of {@link Rock} objects that will be used as a constant

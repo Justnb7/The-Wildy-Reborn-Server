@@ -110,6 +110,7 @@ public class PlayerAssistant {
         player.teleHeight = h;
         player.setTeleportTarget(Position.create(x, y, h));
         requestUpdates();
+        player.getSkillCyclesTask().stop();
         //System.out.println("to "+Arrays.toString(new int[] {x,y,h}));
     }
 

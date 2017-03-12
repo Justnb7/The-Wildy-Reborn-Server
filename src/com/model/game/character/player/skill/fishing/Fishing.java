@@ -3,6 +3,7 @@ package com.model.game.character.player.skill.fishing;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.skill.SkillTask;
@@ -91,13 +92,11 @@ public class Fishing extends SkillTask {
 		}
 		return true;
 	}
-	
-	//Where would i apply -1 since its all one task
 
 	@Override
 	public void execute() {
 		if (getPlayer() == null || !getPlayer().isActive() || !SkillTask.noInventorySpace(getPlayer(), "fishing") || !(Boolean) getPlayer().getAttribute("fishing")) {
-			getPlayer().playAnimation(Animation.create(-1));// i did it here but doesn't work
+			getPlayer().playAnimation(Animation.create(-1));
 			getPlayer().setAttribute("fishing", false);
 			stop();
 			return;
@@ -112,18 +111,29 @@ public class Fishing extends SkillTask {
 			getPlayer().getItems().addItem(fish);
 			getPlayer().message("You manage to catch some " + fish.getDefinition().getName().toLowerCase() + ".");
 		}
-		//heronPet(getPlayer(), data);
+		heronPet(getPlayer(), data);
 		if (data.isBaitRequired() && getPlayer().getItems().playerHasItem(313) && Utility.getRandom(2) == 0) {
 			getPlayer().getItems().deleteItem(313, 1);
 		}
 		getPlayer().getSkills().addExperience(Skills.FISHING, data.getExperience());
 	}
 	
+	/**
+	 * Spawns the Heron pet when we roll on the table.
+	 * @param player
+	 *        The player receiving the Heron pet.
+	 * @param spot
+	 *        The fishing spot
+	 */
 	void heronPet(Player player, FishingSpot spot) {
 		int random = Utility.random(spot.getPetChance());
 		if (random == 0) {
-			//TODO spawn pet
-			World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received the Heron pet.", false);
+			Pet.Pets pets = Pet.Pets.HERON;
+			Pet pet = new Pet(player, pets.getNpc());
+			player.setPetSpawned(true);
+			player.setPet(pets.getNpc());
+			World.getWorld().register(pet);
+			World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.", false);
 		}
 	}
 }

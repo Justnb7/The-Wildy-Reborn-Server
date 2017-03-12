@@ -1,17 +1,16 @@
 package com.model.game.character.player.skill.thieving;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
-import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 /**
  * The thieving skill.
+ * Credits to Jason for some of the comments.
  * 
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  * 
@@ -49,6 +48,13 @@ public class Thieving {
 		this.player = player;
 	}
 	
+	/**
+	 * When we pass all the checks, we can goahead and steal from the stall.
+	 * @param stall
+	 *        The stall were stealing from
+	 * @param objectId
+	 *        The stallId
+	 */
 	public void stealFromStall(Stalls stall, int objectId) {
 		
 		//We can only steal once per 2 seconds
@@ -81,6 +87,13 @@ public class Thieving {
 		
 	}
 	
+	/**
+	 * Once we pass all the checks, we can goahead and pickpocket the npc.
+	 * @param pickpocket
+	 *        The npc were pickpocketing
+	 * @param npc
+	 *        The npcId
+	 */
 	public void pickpocket(Pickpocket pickpocket, Npc npc) {
 		//face the npc
 		player.face(player, new Position(npc.getX(), npc.getY()));

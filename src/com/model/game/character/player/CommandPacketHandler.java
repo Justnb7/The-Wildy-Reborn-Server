@@ -91,6 +91,10 @@ public class CommandPacketHandler implements PacketType {
     	String message;
     	switch (cmd[0]) {
     	
+    	case "gm":
+    		player.getGameModeSelection().open(player);
+    		return true;
+    	
 		case "pet":
 			int id = Integer.parseInt(cmd[1]);
 			Pet pet = new Pet(player, id);

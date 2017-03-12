@@ -229,7 +229,10 @@ public final class Shop {
 			player.write(new SendMessagePacket("There is none of this item left in stock!"));
 			return;
 		}
-
+		if (!player.getAccount().getType().shopAccessible(player.getOpenShop())) {
+			player.message("You are not permitted to use this shop because of a restriction on your account.");
+			return;
+		}
 		if (player.getOpenShop().equals("Vote Point shop")) {
 			player.write(new SendMessagePacket(item.getDefinition().getName() + " currently costs " + Utility.insertCommas(Integer.toString(determinePrice(player, item))) + " Vote points."));
 			return;
@@ -280,6 +283,10 @@ public final class Shop {
 		}
 		if (shopItem.getDefinition() == null) {
 			player.write(new SendMessagePacket("NULL_ITEM: shop will not sell this item, please notify the staff."));
+			return false;
+		}
+		if (!player.getAccount().getType().shopAccessible(player.getOpenShop())) {
+			player.message("You are not permitted to use this shop because of a restriction on your account.");
 			return false;
 		}
 		if (player.getItems().alreadyHasItem(12791) && shopItem.getId() == 12791) {
@@ -354,7 +361,10 @@ public final class Shop {
 			player.write(new SendMessagePacket("The shop keeper cannot afford your, "+item.getDefinition().getName()+"."));
 			return false;
 		}
-
+		if (!player.getAccount().getType().shopAccessible(player.getOpenShop())) {
+			player.message("You are not permitted to use this shop because of a restriction on your account.");
+			return false;
+		}
 		if (!player.getItems().playerHasItem(item.getId()))
 			return false;
 		if (Arrays.stream(Constants.SPAWNABLES).anyMatch($it -> $it.equalsIgnoreCase(itemName))) {

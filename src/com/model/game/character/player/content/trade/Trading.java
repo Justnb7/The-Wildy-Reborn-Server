@@ -68,7 +68,6 @@ public class Trading {
 
 			});
 		}
-
 	}
 
 	/**
@@ -133,6 +132,17 @@ public class Trading {
 		if (target == null) {
 			return false;
 		}
+		
+		if (player.getAccount().getType().tradingPermitted()) {
+			player.message("You're restricted to trade because of your account type.");
+			return false;
+		}
+		
+		if (target.getAccount().getType().tradingPermitted()) {
+			player.message("You're restricted to trade because of your account type.");
+			return false;
+		}
+		
 		if (player.underAttackBy > 0 || player.underAttackBy2 > 0 || target.underAttackBy > 0
 				|| target.underAttackBy2 > 0) {
 			return false;
@@ -403,6 +413,16 @@ public class Trading {
 	 * @return If the player can trade the item
 	 */
 	private static boolean cannotTrade(Player player, Player target, int id) {
+		if (player.getAccount().getType().tradingPermitted()) {
+			player.message("You're restricted to trade because of your account type.");
+			return false;
+		}
+		
+		if (target.getAccount().getType().tradingPermitted()) {
+			player.message("You're restricted to trade because of your account type.");
+			return false;
+		}
+		
 		if (!ItemDefinition.forId(id).isTradeable() || ClueDifficulty.isClue(id)) {
 			player.write(new SendMessagePacket("That item isn't tradeable."));
 			return false;

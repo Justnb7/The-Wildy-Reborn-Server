@@ -10,6 +10,7 @@ import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
+import com.model.game.character.player.account.Account;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
@@ -23,6 +24,8 @@ import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.shop.Currency;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
+import com.model.utility.logging.PlayerLogging;
+import com.model.utility.logging.PlayerLogging.LogType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -362,11 +365,27 @@ public class ItemAssistant {
                     player.write(new SendMessagePacket("You have died, so all of your previous death store items have been deleted!"));
                 player.deathShop.getContainer().clear();
             }
+			
 			/**
 			 * What you might want to start doing is logging information at this
 			 * point.
 			 */
 			Player killer = ((player.killerId != -1 && player.killerId != player.getIndex()) ? World.getWorld().getPlayers().get(player.killerId) : null);
+			
+			if (killer != null) {
+				if (player.getAccount().getType().equals(Account.IRON_MAN_TYPE) || player.getAccount().getType().equals(Account.ULTIMATE_IRON_MAN_TYPE) || player.getAccount().getType().equals(Account.HARDCORE_IRON_MAN_TYPE)) {
+					player.message("<col=ff0033>You was killed by " + killer.getName() + ", This means you can only loot your untradables.");
+					PlayerLogging.write(LogType.IRON_KILLED_PLAYER, player, "Killed by " + killer.getName());
+				}
+			}
+			
+			if (Objects.nonNull(killer)) {
+                if (killer.getAccount() != null && player.getAccount() != null && !killer.getAccount().getType().attackableTypes().contains(
+                    player.getAccount().getType().alias())) {
+                    killer.message("You do not receive drops from this player.");
+                    return;
+                }
+            }
 			
 			/*
              * Handle giving the emblem to the killer

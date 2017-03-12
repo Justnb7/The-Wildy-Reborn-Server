@@ -404,7 +404,10 @@ public class PlayerAssistant {
     }
 
     public void openBank() {
-        
+    	if (!player.getAccount().getType().canBank()) {
+			player.message("You're restricted to bank because of your account type.");
+			return;
+		}
         if (player.takeAsNote)
         	player.write(new SendConfigPacket(115, 1));
         else

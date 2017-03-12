@@ -21,6 +21,7 @@ public class Duel extends Multiplayer {
 
 	@Override
 	public boolean requestable(Player requested) {
+		
 		if (Server.getMultiplayerSessionListener().requestAvailable(requested, player, MultiplayerSessionType.DUEL) != null) {
 			player.write(new SendMessagePacket("You have already sent a request to this player."));
 			return false;
@@ -59,6 +60,7 @@ public class Duel extends Multiplayer {
 
 	@Override
 	public void request(Player requested) {
+		
 		if (Objects.isNull(requested)) {
 			player.write(new SendMessagePacket("The player cannot be found, try again shortly."));
 			return;

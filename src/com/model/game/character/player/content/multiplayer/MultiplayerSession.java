@@ -80,7 +80,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 	 * Adds a {@code GameItem} to the list of items that a player has offered
 	 * 
 	 * @param player
-	 *            The player in the trade offering the item or items
+	 *            The player in the duel offering the item or items
 	 * @param item
 	 *            The game item the player is offering
 	 */
@@ -92,6 +92,17 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (Objects.isNull(player) || Objects.isNull(item)) {
 			return;
 		}
+		
+		if (player.getAccount().getType().stakingPermitted()) {
+			player.message("You're restricted to stake because of your account type.");
+			return;
+		}
+		
+		/*if (receiver.getAccount().getType().stakingPermitted()) {
+			player.message("You're restricted to stake because of your account type.");
+			return;
+		}*/
+		
 		if (!player.getItems().playerHasItem(id)) {
 			return;
 		}

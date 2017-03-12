@@ -186,6 +186,7 @@ public class DuelSession extends MultiplayerSession {
 			player.write(new SendMessagePacket("You cannot stake this item, it is deemed as untradable."));
 			return false;
 		}
+		
 		if (stage.getStage() != MultiplayerSessionStage.OFFER_ITEMS) {
 			finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 			return false;

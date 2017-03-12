@@ -3,6 +3,7 @@ package com.model.game.item;
 import com.model.game.character.player.EmotesManager;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.character.player.account.Account;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.Requirements;
@@ -78,6 +79,36 @@ public class ItemConstants {
 		for (int i = 0; i < requirement.getRequirement().length; i++) {
 			if (player.getSkills().getLevelForExperience(i) < requirement.getRequirement()[i]) {
 				player.write(new SendMessagePacket("You need an " + Skills.SKILL_NAME[i] + " level of " + requirement.getRequirement()[i] + " to wear this item."));
+				return false;
+			}
+		}
+		
+		/**
+		 * Ironman armour
+		 */
+		if (id.getId() == 12810 || id.getId() == 12811 || id.getId() == 12812) {
+			if (!player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
+				player.message("You need to be an regular Ironman to wear this armour.");
+				return false;
+			}
+		}
+		
+		/**
+		 * Ultimate ironman armour
+		 */
+		if (id.getId() == 12813 || id.getId() == 12814 || id.getId() == 12815) {
+			if (!player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
+				player.message("You need to be an Ultimate Ironman to wear this armour.");
+				return false;
+			}
+		}
+		
+		/**
+		 * Hardcore ironman armour
+		 */
+		if (id.getId() == 20792 || id.getId() == 20793 || id.getId() == 20794) {
+			if (!player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
+				player.message("You need to be an Hardcore Ironman to wear this armour.");
 				return false;
 			}
 		}

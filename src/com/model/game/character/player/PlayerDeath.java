@@ -80,8 +80,12 @@ public class PlayerDeath {
 					BountyHunter.handleOnDeath(player, killer);
 					PlayerSerialization.saveGame(killer);
 					PlayerSerialization.saveGame(player);
-
 				}
+				
+				if (player.getAccount().getType().loseStatusOnDeath()) {
+					player.message("");
+				}
+				
 				player.write(new SendMessagePacket("Oh dear you are dead!"));
 				player.setAttribute(BountyHunterConstants.HUNTER_CURRENT, 0);
 				player.setAttribute(BountyHunterConstants.ROGUE_CURRENT, 0);

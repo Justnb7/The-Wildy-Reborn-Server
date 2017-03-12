@@ -36,6 +36,8 @@ import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.player.account.Account;
+import com.model.game.character.player.account.ironman.GameModeSelection;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
@@ -93,6 +95,21 @@ import com.model.utility.Utility;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	/**
+	 * The account type
+	 */
+    private Account account;
+	
+    /**
+     * Gets the account type, exampe Ironman Account
+     * @return the accounts
+     */
+	public Account getAccount() {
+		if (account == null)
+			account = new Account(this);
+		return account;
+	}
 	
 	/**
      * Gets the container that holds the inventory items.
@@ -3034,6 +3051,12 @@ public class Player extends Entity {
 	@Override
 	public int clientIndex() {
 		return 32768 + this.getIndex();
+	}
+	
+	private GameModeSelection select_game_mode = new GameModeSelection();
+
+	public GameModeSelection getGameModeSelection() {
+		return select_game_mode;
 	}
 
 }

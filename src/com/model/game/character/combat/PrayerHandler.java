@@ -121,6 +121,14 @@ public class PrayerHandler {
 			deactivatePrayer(player, prayer);
 			return;
 		}
+		
+		if (prayer == Prayers.PROTECT_ITEM) {
+			if (!player.getAccount().getType().canUseItemProtection()) {
+				player.message("You're account is restricted from using protect item prayer.");
+				return;
+			}
+		}
+		
 		if (prayer != Prayers.PROTECT_ITEM)
 			switchPrayer(player, prayer);
 		if (prayer.equals(Prayers.PROTECT_FROM_MAGIC) || prayer.equals(Prayers.PROTECT_FROM_MISSILE) || prayer.equals(Prayers.PROTECT_FROM_MELEE) || prayer.equals(Prayers.RETRIBUTION) || prayer.equals(Prayers.REDEMPTION) || prayer.equals(Prayers.SMITE)) {

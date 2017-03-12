@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.account.Account;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem.State;
@@ -107,8 +108,11 @@ public final class GroundItemHandler {
 
 	private static void addRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player == null || player.getPosition().getZ() != groundItem.getPosition().getZ()
-					|| player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+			if (player == null || player.getPosition().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+				continue;
+			}
+			
+			if (player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
 				continue;
 			}
 
@@ -230,9 +234,14 @@ public final class GroundItemHandler {
 
 	public static void reloadGroundItems(Player player) {
 		for (GroundItem groundItem : groundItems) {
-			if (player.getPosition().getZ() != groundItem.getPosition().getZ()
-					|| player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+			if (player.getPosition().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
 				continue;
+			}
+			
+			if (groundItem.getOwnerHash() != player.usernameHash) {
+				if (!player.getAccount().getType().unownedDropsVisible() || (groundItem.getType() == GroundItemType.PRIVATE)) {
+					continue;
+				}
 			}
 			
 			if (groundItem.getOwnerHash() != player.usernameHash) {
@@ -265,7 +274,9 @@ public final class GroundItemHandler {
 		}
 
 		PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
-		
+		if (player != null && player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
+			groundItem.setGroundItemType(GroundItemType.PRIVATE);
+		}
 		
 		if (groundItem.getItem().getId() > 4705 && groundItem.getItem().getId() < 4760) {
 			for (int[] brokenBarrow : brokenBarrows) {

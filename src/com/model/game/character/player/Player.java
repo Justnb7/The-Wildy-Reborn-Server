@@ -66,8 +66,10 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.character.player.skill.SkillCyclesTask;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
+import com.model.game.character.player.skill.mining.Mining;
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
@@ -96,6 +98,18 @@ import com.model.utility.Utility;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+    private SkillCyclesTask skillCyclesTask = new SkillCyclesTask(this);
+	
+	public SkillCyclesTask getSkillCyclesTask() {
+		return skillCyclesTask;
+	}
+	
+    private Mining mining = new Mining(this);
+	
+	public Mining getMining() {
+		return mining;
+	}
 	
 	private Thieving thieving = new Thieving(this);
 	

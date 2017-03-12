@@ -45,18 +45,16 @@ public class ActionHandler {
 		player.clickObjectType = 0;
 		player.face(player, new Position(x, y));
 
+		player.setFollowing(null);
+
+		player.getMining().mine(id, new Position(x, y, player.heightLevel));
+		Obelisks.get().activate(player, id);
+		
 		if (id >= 21731 && id <= 21737 || id == 12987 || id == 12986) {
 			BrimhavenVines.handleBrimhavenVines(player, id);
 			return;
 		}
-
-		player.setFollowing(null);
-
-		if (id != 2283) {
-			player.face(player, new Position(player.objectX, player.objectY));
-		}
-
-		Obelisks.get().activate(player, id);
+		
 		if (def.name == null || def.name.length() == 0) {
 			return;
 		}

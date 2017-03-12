@@ -13,7 +13,6 @@ import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
 import com.model.game.character.player.packets.out.SendKillFeedPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.json.NPCDefinitionLoader;
@@ -25,13 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 public final class NPCHandler {
-
-	public static int maxNPCs = 10000;
-	public static Npc npcs[] = new Npc[maxNPCs];
 
 	public static void declare() {
         Arrays.fill(NpcDefinition.getDefinitions(), null);
@@ -194,16 +189,6 @@ public final class NPCHandler {
 			}
 		}
 	}
-
-	public final static int[][] BOSSES_PKP = { { 2054, 1 }, {239, 1}, {6342, 3}, {2265, 1}, {2266, 1}, {2267, 1}, {6612, 3}, {6610, 3}, {6612, 3} };
-	public static void getPKP(Player player, int npc) {
-		for (int[] i : BOSSES_PKP)
-			if (i[0] == npc) {
-				player.setPkPoints(player.getPkPoints() + i[1]);
-				player.write(new SendMessagePacket("<img=1>@blu@<shad>You have killed the @red@<shad>"+NpcDefinition.getDefinitions()[npc].getName()+" @blu@and received a potential bonus of @mag@<shad>" + i[1] + " @blu@PkP."));
-				break;
-			}
-	}
 	
 	public static void dropItems(Npc npc) {
 		if (npc.killedBy == -1) {
@@ -292,19 +277,6 @@ public final class NPCHandler {
 		}
 		if (!ClueScrollHandler.npcDrop(player, npc)) {
 			NpcDropSystem.get().drop(player, npc, yourIncrease);
-		}
-	}
-
-	/**
-	 * Resets players in combat
-	 */
-	public static void resetPlayersInCombat(int i) {
-		for (int j = 0; j < World.getWorld().getPlayers().capacity(); j++) {
-			if (World.getWorld().getPlayers().get(j) != null) {
-				if (World.getWorld().getPlayers().get(j).underAttackBy2 == i) {
-					World.getWorld().getPlayers().get(j).underAttackBy2 = 0;
-				}
-			}
 		}
 	}
 	
@@ -480,28 +452,6 @@ public final class NPCHandler {
 		mob.direction = direction;
 		mob.updateRequired = true;
 		mob.setOnTile(mob.absX, mob.absY, mob.heightLevel);
-	}
-
-	public static boolean goodDistance(int objectX, int objectY, int playerX, int playerY, int distance) {
-		return Math.sqrt(Math.pow(objectX - playerX, 2) + Math.pow(objectY - playerY, 2)) <= distance;
-	}
-
-	public static boolean isArmadylNpc(int i) {
-		return World.getWorld().getNpcs().get(i).npcId >= 3162 && World.getWorld().getNpcs().get(i).npcId <= 3165;
-	}
-	
-	public static Npc[] getNpcsById(int npcType) {
-		List<Npc> npcList = new ArrayList<>();
-		for (Npc npc : npcs) {
-			if (npc == null) {
-				continue;
-			}
-			if (npc.npcId != npcType) {
-				continue;
-			}
-			npcList.add(npc);
-		}
-		return npcList.toArray(new Npc[npcList.size()]);
 	}
 
 	public static Optional<Npc> spawnNpc3(Player c, int npcType, int x, int y, int heightLevel, ClueDifficulty d) {

@@ -5,13 +5,13 @@ import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
@@ -134,8 +134,13 @@ public class PlayerVsNpcCombat {
 		}
 		if (npc.transforming)
 			return false;
-		if (NPCHandler.isArmadylNpc(npc.getIndex()) && player.getCombatType() == CombatType.MELEE) {
-			player.write(new SendMessagePacket("You can only use range against this."));
+		
+		if(!Slayer.canAttack(player, npc)) {
+			return false;
+		}
+		
+		if (npc.isArmadylNpc() && player.getCombatType() == CombatType.MELEE) {
+			player.write(new SendMessagePacket("You can only use range or magic against this npc."));
 			Combat.resetCombat(player);
 			return false;
 		}
@@ -175,10 +180,6 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 
-		if (!player.getCombat().goodSlayer(npc.npcId)) {
-			Combat.resetCombat(player);
-			return false;
-		}
 		if (npc.spawnedBy != player.getIndex() && npc.spawnedBy > 0) {
 			Combat.resetCombat(player);
 			player.write(new SendMessagePacket("This monster was not spawned for you."));

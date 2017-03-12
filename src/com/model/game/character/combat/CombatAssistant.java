@@ -7,8 +7,6 @@ import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.magic.MagicRequirements;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 public class CombatAssistant {
 
@@ -18,30 +16,6 @@ public class CombatAssistant {
 
 	public CombatAssistant(Player player) {
 		this.player = player;
-	}
-	
-	public int[][] slayerRequirements = { {433, 30}, {419, 25}, {420, 20}, {459, 20}, {406, 10}, {480, 17}, { 493, 87 }, {496, 87}, {5534, 87}, { 6296, 56 }, { 3209, 58 }, { 448, 5 },
-			{ 414, 15 }, {481, 7}, { 443, 45 }, { 484, 50 }, { 423, 65 }, { 412, 75 }, { 11, 80 }, { 415, 85 }, { 4005, 90 },
-			{ 498, 93 }, { 3, 60 }, };
-
-	public boolean goodSlayer(int npcId) {
-		for (int j = 0; j < slayerRequirements.length; j++) {
-			if (slayerRequirements[j][0] == npcId) {
-				if (slayerRequirements[j][1] > player.getSkills().getLevel(Skills.SLAYER)) {
-					player.write(new SendMessagePacket("You need a slayer level of " + slayerRequirements[j][1] + " to harm this NPC."));
-					return false;
-				}
-				if(npcId == 5534 && player.getSlayerTask() != 494) {
-					player.write(new SendMessagePacket("You must have Kraken's as a slayer-task to disturb these whirlpools."));
-					return false;
-				}
-				if (npcId == 493 && player.getSlayerTask() != 492 || npcId == 496 && player.getSlayerTask() != 494) {
-					player.write(new SendMessagePacket("You must have cave krakens as a slayer-task to attack"));
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	public void applySmite(Player defender, int damage) {

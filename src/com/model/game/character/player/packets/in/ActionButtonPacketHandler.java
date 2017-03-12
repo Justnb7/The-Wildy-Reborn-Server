@@ -55,11 +55,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			System.out.printf("ActionButtonPacket: button %d - packet %d - packetSize %d%n", button, id, size);
 		}
 		
-		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181
-				&& button != 14067 && button != 9154) {
-			return;
-		}
-		
 		if (button == 165179) {
 			player.getGameModeSelection().confirm(player);
 			return;
@@ -67,6 +62,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		if (button >= 165162 && button <= 165165) {
 			player.getGameModeSelection().selectMode(player, button);
+			return;
+		}
+		
+		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181
+				&& button != 14067 && button != 9154) {
 			return;
 		}
 

@@ -622,12 +622,6 @@ public class Npc extends Entity {
 	 */
 	public static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
 
-	public int getRegion() {
-		int pl_regionX = this.absX >> 3;
-		int pl_regionY = this.absY >> 3;
-		return (pl_regionX / 8 << 8) + pl_regionY / 8;
-	}
-
 	public int distanceToPoint(int pointX, int pointY) {
 		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
 	}
@@ -637,20 +631,6 @@ public class Npc extends Entity {
     }
 	
 	public int walkX, walkY;
-
-	/**
-	 * Make an NPC walk somewhere
-	 * 
-	 * @param x
-	 *            X coordinate
-	 * @param y
-	 *            Y coordinate
-	 */
-	public void walkTo(int x, int y) {
-		walkX = x;
-		walkY = y;
-		walking_type = 1337;
-	}
 
 	public void getNextNPCMovement(Npc npc) {
 		if (direction != -1) {
@@ -690,43 +670,19 @@ public class Npc extends Entity {
 		}
 		return minDistance;
 	}
-
-	public boolean respawnable = true;
-
-	/**
-	 * We can save our npc's last health before jumping
-	 */
-	public int storeLastHealth;
-	
-	public boolean isRespawnable() {
-		return respawnable;
-	}
-
-	public void setRespawnable(boolean respawnable) {
-		this.respawnable = respawnable;
-	}
-	
-	public void kill(Npc npc) {
-		npc.setAbsX(-1);
-		npc.setAbsY(-1);
-		npc.setVisible(false);
-		npc.removeFromTile();
-	}
-	
-	public void resetCombat() {
-		walkingHome = true;
-		underAttack = false;
-		randomWalk = true;
-		currentHealth = maximumHealth;
-	}
 	
 	public void remove() {
 		setVisible(false);
-		if (NPCHandler.npcs[npcId] == this) {
-			NPCHandler.npcs[npcId] = null;
-		}
 		setAbsX(0);
 		setAbsY(0);
+	}
+	
+	public boolean distance(int objectX, int objectY, int playerX, int playerY, int distance) {
+		return Math.sqrt(Math.pow(objectX - playerX, 2) + Math.pow(objectY - playerY, 2)) <= distance;
+	}
+	
+	public boolean isArmadylNpc() {
+		return npcId >= 3162 && npcId <= 3165;
 	}
 	
 	@Override

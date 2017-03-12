@@ -10,12 +10,10 @@ import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
-import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.clan.ClanManager;
-import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
@@ -91,18 +89,6 @@ public class CommandPacketHandler implements PacketType {
     	String message;
     	switch (cmd[0]) {
     	
-    	case "gm":
-    		player.getGameModeSelection().open(player);
-    		return true;
-    	
-		case "pet":
-			int id = Integer.parseInt(cmd[1]);
-			Pet pet = new Pet(player, id);
-			player.setPet(id);
-			player.setPetSpawned(true);
-			World.getWorld().register(pet);
-			return true;
-    	
     	case "changename":
     		if(player.getTotalAmountDonated() >= 100 || player.getRights().isAdministrator()) {
     			String oldname = player.getName();
@@ -146,162 +132,10 @@ public class CommandPacketHandler implements PacketType {
 				e.printStackTrace();
 			}
 			return true;
-    	
-    	case "setlevel":
-    		int stat = Integer.parseInt(cmd[1]);
-    		int level = Integer.parseInt(cmd[2]);
-    		if(player.getGameMode() == "TRAINED" || player.getArea().inWild()) {
-    			return false;
-    		}
-    		if (stat > 6) {
-    			player.write(new SendMessagePacket("You're only allowed to change combat."));
-    			return false;
-    		}
-    		if(level > 99 && !player.getRights().isAdministrator() || stat == 3 && level < 10 && !player.getRights().isAdministrator()) {
-    			player.write(new SendMessagePacket("Invalid entry."));
-    			return false;
-    		}
-    		player.getSkills().setExperience(stat, player.getSkills().getXPForLevel(level) + 1);
-			player.getSkills().setLevel(stat, level);
-			player.write(new SendMessagePacket(Skills.SKILL_NAME[stat] + " level is now " + level + "."));
-			player.combatLevel = player.getSkills().getCombatLevel();
-    		player.totalLevel = player.getSkills().getTotalLevel();
-    		player.getPA().requestUpdates();
-    		return true;
     
     	case "players":
 			player.write(new SendMessagePacket("There are currently @red@" + Utility.format(World.getWorld().getActivePlayers()) + "</col> players online."));
 			return true;
-	
-		case "veng":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return false;
-			}
-			player.getItems().addItem(557, 10000);
-			player.getItems().addItem(560, 2000);
-			player.getItems().addItem(9075, 4000);
-			player.setSpellBook(SpellBook.LUNAR);
-			return true;
-
-		case "barrage":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			player.getItems().addItem(555, 6000);
-			player.getItems().addItem(565, 4000);
-			player.getItems().addItem(560, 3000);
-			player.setSpellBook(SpellBook.ANCIENT);
-			return true;
-			
-		case "runes":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			Item[] RUNES = { new Item(554, 1000), new Item(555, 1000),
-					new Item(556, 1000), new Item(557, 1000),
-					new Item(558, 1000), new Item(559, 1000),
-					new Item(560, 1000), new Item(561, 1000),
-					new Item(562, 1000), new Item(563, 1000),
-					new Item(564, 1000), new Item(565, 1000),
-					new Item(566, 1000), new Item(9075, 100) };
-			for (Item consumables : RUNES) {
-				player.getItems().addItem(consumables);
-			}
-			return true;
-
-		case "pots":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			Item[] POTS = { new Item(2436, 1), new Item(2440, 1),
-					new Item(2442, 1), new Item(3024, 2) };
-			for (Item consumable : POTS) {
-				player.getItems().addItem(consumable);
-			}
-			return true;
-			
-		case "food":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			if (player.getTotalAmountDonated() < 10) {
-				player.getItems().addItem(385, 28);
-				player.write(new SendMessagePacket("You receive 28 Sharks."));
-				player.write(new SendMessagePacket("Become a Donator today to receive Manta rays instead!"));
-			}
-			if (player.getTotalAmountDonated() >= 10 && player.getTotalAmountDonated() < 30) {
-				player.getItems().addItem(391, 28);
-				player.write(new SendMessagePacket("You receive 28 Manta rays."));
-				player.write(new SendMessagePacket("Become a super Donator today to receive Dark crabs instead!"));
-			}
-			if (player.getTotalAmountDonated() >= 30) {
-				player.getItems().addItem(11936, 28);
-				player.write(new SendMessagePacket("You receive 28 Dark crabs."));
-				player.write(new SendMessagePacket("Thanks for being a super Donator!"));
-			}
-			return true;
-			
-		case "brew":
-		case "sbrew":
-		case "sarabrew":
-		case "sara":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			player.getItems().addItem(6685, 1);
-			player.write(new SendMessagePacket("@blu@You spawn a Saradomin brew."));
-			return true;
-			
-		case "restore":
-		case "rest":
-		case "pray":
-		case "srest":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			player.getItems().addItem(3024, 1);
-			player.write(new SendMessagePacket("@blu@You spawn a Super restore potion."));
-		return true;
-		
-		case "mage":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			player.getItems().addItem(3040, 1);
-			player.getItems().addItem(2442, 1);
-			player.getItems().addItem(3024, 2);
-			player.write(new SendMessagePacket("@blu@You spawn a magic potion set."));
-			return true;
-			
-		case "range":
-			if (!Boundary.isIn(player, Boundary.SAFE_AREAS)) {
-				player.write(new SendMessagePacket("You can only use this command in safe areas."));
-				return true;
-			}
-			player.getItems().addItem(2444, 1);
-			player.getItems().addItem(2442, 1);
-			player.getItems().addItem(3024, 2);
-			player.write(new SendMessagePacket("@blu@You spawn a range potion set."));
-			return true;
-    	
-    	case "testslot":
-    		int slot = Integer.parseInt(cmd[1]);
-    		Item item = player.getItems().getItemFromSlot(slot);
-    		
-    		if(item == null) {
-    			player.write(new SendMessagePacket("no item on this slot"));
-    			return false;
-    		}
-    		player.write(new SendMessagePacket("item id = " + item.getId() + ", item amount = " + item.getAmount()));
-    		return true;
     	
     	case "dz":
     	case "donzatorzone":
@@ -394,7 +228,6 @@ public class CommandPacketHandler implements PacketType {
     		double KDR = ((double)player.getKillCount())/((double)player.getDeathCount());
 			player.forceChat("My Kill/Death ratio is "+player.getKillCount()+"/"+player.getDeathCount()+"; "+KDR);
     		return true;
-    		
     		
     	case "skull":
     		if(!player.getArea().inDuelArena())
@@ -659,9 +492,26 @@ public class CommandPacketHandler implements PacketType {
     	
     	switch(cmd[0]) {
     	
+    	case "pet":
+			int id = Integer.parseInt(cmd[1]);
+			Pet pet = new Pet(player, id);
+			player.setPet(id);
+			player.setPetSpawned(true);
+			World.getWorld().register(pet);
+			return true;
+			
+    	case "testslot":
+    		int slot = Integer.parseInt(cmd[1]);
+    		Item item = player.getItems().getItemFromSlot(slot);
+    		
+    		if(item == null) {
+    			player.write(new SendMessagePacket("no item on this slot"));
+    			return false;
+    		}
+    		player.write(new SendMessagePacket("item id = " + item.getId() + ", item amount = " + item.getAmount()));
+    		return true;
+    	
 		case "changepassother":
-	    	//TODO ask Jak for help on this aswell
-			//Yeh how am i checking an offline player and change their pw for recovery purpose
 			String n = cmd[1];
 			String password = cmd[2];
 			Player t = World.getWorld().getPlayerByName(n);
@@ -677,38 +527,6 @@ public class CommandPacketHandler implements PacketType {
 			}
 			return true;
     	
-    	case "clue":
-			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
-				return false;
-			Optional<ClueDifficulty> clueScroll = Optional.of(ClueDifficulty.EASY);
-			Item item = new Item(clueScroll.get().clueId);
-			player.getItems().addItem(item);
-			return true;
-			
-    	case "clue2":
-			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
-				return false;
-			clueScroll = Optional.of(ClueDifficulty.MEDIUM);
-			item = new Item(clueScroll.get().clueId);
-			player.getItems().addItem(item);
-			return true;
-			
-    	case "clue3":
-			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
-				return false;
-			clueScroll = Optional.of(ClueDifficulty.HARD);
-			item = new Item(clueScroll.get().clueId);
-			player.getItems().addItem(item);
-			return true;
-			
-		case "clue4":
-			if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds()))
-				return false;
-			clueScroll = Optional.of(ClueDifficulty.ELITE);
-			item = new Item(clueScroll.get().clueId);
-			player.getItems().addItem(item);
-		return true;
-    	
     	case "song":
     		int song = Integer.parseInt(cmd[1]);
     		player.write(new SendSongPacket(song));
@@ -719,12 +537,6 @@ public class CommandPacketHandler implements PacketType {
     		player.write(new SendSoundPacket(sound, 0, 0));
     		return true;
     	
-    	case "src":
-    		int charges = Integer.parseInt(cmd[1]);
-    		player.setRecoil(charges);
-    		player.write(new SendMessagePacket("You now have "+player.getRecoil()+" charges left on your ring of recoil."));
-    		return true;
-    	
     	case "ski":
     		player.getKraken().start(player);
     		return true;
@@ -732,37 +544,6 @@ public class CommandPacketHandler implements PacketType {
     	case "sc":
     		player.write(new SendConfigPacket(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])));
     		player.write(new SendMessagePacket("Setting config: "+cmd[1]+" Type: "+cmd[2]));
-    		return true;
-    	
-    	case "maxmelee":
-    		player.write(new SendMessagePacket("Melee max: "+player.getCombat().calculateMeleeMaxHit()));
-    		return true;
-    		
-    	case "maxrange":
-    		player.write(new SendMessagePacket("Range max: "+player.getCombat().calculateRangeMaxHit()));
-    		return true;
-    		
-    	case "setbe":
-    		int effect = Integer.parseInt(cmd[1]);
-    		
-    		switch(effect) {
-    		case 0:
-    			player.setAttribute("armour piercing", true);
-    			player.message("You have activated the the armour piercing effect.");
-    			break;
-    		case 1:
-    			player.setAttribute("dragon's breath", true);
-    			player.message("You have activated the the dragon's breath effect.");
-    			break;
-    		case 2:
-    			player.setAttribute("life leech", true);
-    			player.message("You have activated the the life leech effect.");
-    			break;
-    		case 3:
-    			player.removeAllAttributes();
-    			player.message("All saved attributes were removed.");
-    			break;
-    		}
     		return true;
 			
     	case "setstat":
@@ -780,31 +561,7 @@ public class CommandPacketHandler implements PacketType {
     		player.updateRequired = true;
     		player.appearanceUpdateRequired = true;
     		break;
-    		
-    	case "setkc":
-    		int kc = Integer.parseInt(cmd[1]);
-    		player.setKillCount(kc);
-    		player.write(new SendMessagePacket("You have set your killcount to: "+kc+"."));
-    		return true;
-    		
-    	case "sethstreak":
-    		int hstreak = Integer.parseInt(cmd[1]);
-    		player.setHighestKillStreak(hstreak);
-    		player.write(new SendMessagePacket("You have set your highest killstreak to: "+hstreak+"."));
-    		return true;
-    		
-    	case "setvotepoints":
-    		int vp = Integer.parseInt(cmd[1]);
-    		player.setVotePoints(vp);
-    		player.write(new SendMessagePacket("You have set your vote points to: "+vp+"."));
-    		break;
     	
-    	case "dwh":
-    		player.playAnimation(Animation.create(1378));
-    		player.playGraphics(Graphic.create(1292, 0, 100));
-    		return true;
-    	
-    	 case "masssave":
          case "saveall":
 			for (Player players : World.getWorld().getPlayers()) {
 				if (players != null && players.isActive()) {
@@ -869,26 +626,6 @@ public class CommandPacketHandler implements PacketType {
 			} catch (Exception e) {
 				e.printStackTrace();
 				player.write(new SendMessagePacket("Syntax is ::reload [option]."));
-			}
-			return true;
-			
-		case "setpoints":
-			try {
-				Optional<Player> name = World.getWorld().getOptionalPlayer(cmd[1]);
-				String pointsName = cmd[2];
-				int points = Integer.parseInt(cmd[3]);
-				switch (pointsName) {
-				case "pkp":
-					if (name.isPresent()) {
-						Player p = name.get();
-						p.setPkPoints(p.getPkPoints() + points);
-						p.write(new SendMessagePacket(player.getName()+" Has rewarded you with "+points+", you now have "+p.getPkPoints()+" pkpoints."));
-					}
-					break;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				player.write(new SendMessagePacket("Syntax is ::setpoints [name] [points_name] [amount]"));
 			}
 			return true;
     	
@@ -1078,9 +815,9 @@ public class CommandPacketHandler implements PacketType {
     	
 		case "npc":
 			try {
-				int id = Integer.parseInt(cmd[1]);
-				if (id > 0) {
-					Npc npc = NPCHandler.spawnNpc(player, id, player.getX() + 1, player.getY(), player.getZ(), 0, 50, -1, -1, -1, -1, -1, false, false, false);
+				int npcId = Integer.parseInt(cmd[1]);
+				if (npcId > 0) {
+					Npc npc = NPCHandler.spawnNpc(player, npcId, player.getX() + 1, player.getY(), player.getZ(), 0, 50, -1, -1, -1, -1, -1, false, false, false);
 					if (cmd.length > 2) {
 						int hp = Integer.parseInt(cmd[2]);
 						npc.currentHealth = hp;

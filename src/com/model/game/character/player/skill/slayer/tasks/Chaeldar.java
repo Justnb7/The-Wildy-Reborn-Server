@@ -28,7 +28,7 @@ public enum Chaeldar implements Task {
 	 INFERNAL_MAGE(443, 45),
 	 JELLY(437, 52),
 	 KURASK(410, 70),
-	 PYREFIEND(433, 30),
+	 PYREFIEND(435, 30),
 	 NECHRYAEL(11, 80),
 	 TUROTH(432, 55),
 	 DUST_DEVIL(423, 65),

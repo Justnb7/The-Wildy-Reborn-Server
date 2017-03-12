@@ -68,6 +68,7 @@ import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
+import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
@@ -95,6 +96,12 @@ import com.model.utility.Utility;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	private Thieving thieving = new Thieving(this);
+	
+	public Thieving getThieving() {
+		return thieving;
+	}
 	
 	/**
 	 * The account type
@@ -1064,8 +1071,8 @@ public class Player extends Entity {
 	public void clearUpdateFlags() {
 		forceMovementUpdateRequired = false;
 		updateRequired = false;
-		chatTextUpdateRequired = false;
 		appearanceUpdateRequired = false;
+		chatTextUpdateRequired = false;
 		setHitUpdateRequired(false);
 		hitUpdateRequired2 = false;
 		forcedChatUpdateRequired = false;

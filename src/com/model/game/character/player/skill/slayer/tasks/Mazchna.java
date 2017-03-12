@@ -15,7 +15,7 @@ public enum Mazchna implements Task {
 	 HILL_GIANT(2098, 1),
 	 ICE_WARRIOR(2841, 1),
 	 KALPHITES(955, 1),
-	 PYREFIEND(433, 30),
+	 PYREFIEND(435, 30),
 	 ROCK_SLUG(421, 20);
 	
 	/**

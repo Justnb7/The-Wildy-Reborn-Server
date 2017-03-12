@@ -18,6 +18,8 @@ import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.skill.agility.Shortcut;
 import com.model.game.character.player.skill.fishing.Fishing;
 import com.model.game.character.player.skill.fishing.FishingSpot;
+import com.model.game.character.player.skill.thieving.Pickpocket;
+import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.location.Position;
 import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
@@ -537,17 +539,18 @@ public class ActionHandler {
 		}
 	}
 
-	public void secondClickObject(int objectType, int obX, int obY) {
+	public void secondClickObject(int id, int x, int y) {
 		if (player.inDebugMode()) {
-			player.write(new SendMessagePacket("[Debug] Second click object - ObjectId: [@red@" + objectType+"@bla@]"));
+			player.write(new SendMessagePacket("[Debug] Second click object - ObjectId: [@red@" + id+"@bla@]"));
 		}
 		if (player.isTeleporting()) {
 			return;
 		}
 		
 		player.clickObjectType = 0;
+		player.face(player, new Position(x, y));
 
-		ObjectDefinition objectDef = ObjectDefinition.getObjectDef(objectType);
+		ObjectDefinition objectDef = ObjectDefinition.getObjectDef(id);
 		switch (objectDef.name.toLowerCase()) {
 
 		case "bank":
@@ -559,7 +562,24 @@ public class ActionHandler {
 			
 		}
 		
-		switch (objectType) {
+		switch (id) {
+		
+		case 11730:
+			player.getThieving().stealFromStall(Stalls.BAKERS_STALL, id);
+			break;
+		case 11731:
+			player.getThieving().stealFromStall(Stalls.GEM_STALL, id);
+			break;
+		case 11732:
+			player.getThieving().stealFromStall(Stalls.FUR_STALL, id);
+			break;
+		case 11734:
+			player.getThieving().stealFromStall(Stalls.SILVER_STALL, id);
+			break;
+		case 14011:
+			player.getThieving().stealFromStall(Stalls.MARKET_STALL, id);
+			break;
+		
 		case 14827:
 		case 14828:
 		case 14829:
@@ -602,6 +622,10 @@ public class ActionHandler {
 		}
 		
 		switch (npc.npcId) {
+		
+		case 3257:
+			player.getThieving().pickpocket(Pickpocket.FARMER, npc);
+			break;
 		
 		case 315:
 			player.dialogue().start("emblem_trader_dialogue", player);
@@ -741,6 +765,10 @@ public class ActionHandler {
 		}
 
 		switch (npc.npcId) {
+		
+		case 3078:
+			player.getThieving().pickpocket(Pickpocket.MAN, npc);
+			break;
 		
 		case 315:
 			Shop.SHOPS.get("Bounty Hunter Store").openShop(player);

@@ -67,7 +67,7 @@ public class NPCDeathTask extends ScheduledTask {
     				killer.getKraken().spawnNextWave(killer);
             	}
 			}
-            if (killer != null || isUnspawnableNpc(npc) || !npc.shouldRespawn || !npc.isRespawnable()) {
+            if (killer != null || isUnspawnableNpc(npc) || !npc.shouldRespawn) {
 				handleUnspawnableNpc(npc);
 				removeMobFromWorld(killer, npc);
 				stop();
@@ -240,7 +240,6 @@ public class NPCDeathTask extends ScheduledTask {
         npc.underAttack = false;
         npc.poisonDamage = 0;
         npc.resetFace();
-        NPCHandler.resetPlayersInCombat(npc.getIndex());
     }
 
     /**

@@ -36,8 +36,6 @@ public abstract class Entity {
 		PLAYER, NPC,
 	}
 
-	
-
 	public int absX;
 	public int absY;
 	public int lastX;

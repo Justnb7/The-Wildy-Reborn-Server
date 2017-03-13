@@ -30,6 +30,7 @@ import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
+import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Teleports;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.LootingBagContainer;
@@ -520,6 +521,10 @@ public class ItemOptionPacket implements PacketType {
 		// if its an invalid item, refresh the inventory
 		if ((slot < 0) || (slot > 27) || (item.getId() != player.playerItems[slot] - 1) || (player.playerItemsN[slot] <= 0)) {
 			player.getItems().resetItems(3214);
+			return;
+		}
+		
+		if(Runecrafting.findAltar(player, item)) {
 			return;
 		}
 		

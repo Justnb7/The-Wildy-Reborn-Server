@@ -35,31 +35,29 @@ public class Skills {
 	          "Hunter", "Construction" };
 	
 	public enum LevelUpData {
-		ATTACK(0, 6248, 6249, 6247, "Attack"), 
-		DEFENCE(1, 6254, 6255, 6253, "Defence"), 
+		ATTACK(0, 6248, 6249, 6247, "Attack"),
+		DEFENCE(1, 6254, 6255, 6253, "Defence"),
 		STRENGTH(2, 6207, 6208, 6206, "Strength"),
-		HITPOINTS(3, 6217, 6218, 6216, "Hitpoints"), 
-		RANGED(4, 5453, 6114, 4443, "Ranged"), 
-		PRAYER(5, 6243, 6244, 6242, "Prayer"), 
-		MAGIC(6, 6212, 6213, 6211, "Magic"), 
+		HITPOINTS(3, 6217, 6218, 6216, "Hitpoints"),
+		RANGED(4, 5453, 6114, 4443, "Ranged"),
+		PRAYER(5, 6243, 6244, 6242, "Prayer"),
+		MAGIC(6, 6212, 6213, 6211, "Magic"),
 		COOKING(7, 6227, 6228, 6226, "Cooking"),
 		WOODCUTTING(8, 4273, 4274, 4272, "Woodcutting"),
 		FLETCHING(9, 6232, 6233, 6231, "Fletching"),
-		FISHING(10, 6259, 6260, 6258, "Fishing"), 
-		FIREMAKING(11, 4283, 4284, 4282, "Firemaking"),  
+		FISHING(10, 6259, 6260, 6258, "Fishing"),
+		FIREMAKING(11, 4283, 4284, 4282, "Firemaking"), 
 		CRAFTING(12, 6264, 6265, 6263, "Crafting"),
-		SMITHING(13, 6222, 6223, 6221, "Smithing"),  
-		MINING(14, 4417, 4438, 4416, "Mining"), 
-		HERBLORE(15, 6238, 6239, 6237, "Herblore"), 
+		SMITHING(13, 6222, 6223, 6221, "Smithing"), 
+		MINING(14, 4417, 4438, 4416, "Mining"),
+		HERBLORE(15, 6238, 6239, 6237, "Herblore"),
 		AGILITY(16, 4278, 4279, 4277, "Agility"),
-		THIEVING(17, 4263, 4264, 4261, "Thieving"), 
-		SLAYER(18, 12123, 12124, 12122, "Slayer"), 
-		FARMING(19, -1, -1, -1, "Farming"),
+		THIEVING(17, 4263, 4264, 4261, "Thieving"),
+		SLAYER(18, 12123, 12124, 12122, "Slayer"),
+		FARMING(19, 4889, 4890, 4887, "Farming"),
 		RUNECRAFTING(20, 4268, 4269, 4267, "Runecrafting"),
-		SUMMONING(21, 4268, 4269, 4267, "Summoning"),
-		HUNTER(22, -1, -1, -1, "Hunter"), 
-		CONSTRUCTION(23, 22602, 22603, 22601, "Construction"),
-		DUNGEONEERING(24, 12123, 12124, 12122, "Dungeoneering");
+		HUNTER(21, 4268, 4269, 4267, "Hunter"), 
+		CONSTRUCTION(22, 4268, 4269, 4267, "Construction");
 
 		private static Map<Integer, LevelUpData> levelUp = new HashMap<Integer, LevelUpData>();
 

@@ -25,8 +25,6 @@ public class ItemOnObjectPacketHandler implements PacketType {
 			return;
 		}
 		
-		
-		
 		switch (item.getId()) {
 		
 		default:

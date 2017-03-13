@@ -18,6 +18,7 @@ import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.skill.agility.Shortcut;
 import com.model.game.character.player.skill.fishing.Fishing;
 import com.model.game.character.player.skill.fishing.FishingSpot;
+import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.thieving.Pickpocket;
 import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.location.Position;
@@ -49,6 +50,10 @@ public class ActionHandler {
 
 		player.getMining().mine(id, new Position(x, y, player.heightLevel));
 		Obelisks.get().activate(player, id);
+		
+		if (Runecrafting.handleObject(player, id)) {
+			return;
+		}
 		
 		if (id >= 21731 && id <= 21737 || id == 12987 || id == 12986) {
 			BrimhavenVines.handleBrimhavenVines(player, id);

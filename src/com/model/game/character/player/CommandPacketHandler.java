@@ -89,6 +89,10 @@ public class CommandPacketHandler implements PacketType {
     	String message;
     	switch (cmd[0]) {
     	
+    	case "exp":
+    		player.getSkills().addExperience(Skills.HUNTER, 1000);
+    		return true;
+    	
     	case "changename":
     		if(player.getTotalAmountDonated() >= 100 || player.getRights().isAdministrator()) {
     			String oldname = player.getName();

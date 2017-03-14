@@ -101,7 +101,7 @@ public final class GroundItemHandler {
 				continue;
 			}
 
-			player.getItems().removeGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
+			player.getActionSender().removeGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
 					groundItem.getPosition().getY(), player.getZ());
 		}
 	}
@@ -136,7 +136,7 @@ public final class GroundItemHandler {
 				// online.
 				if (player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) <= 60
 						&& player.getPosition().getZ() == player.getPosition().getZ()) {
-					player.getItems().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
+					player.getActionSender().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
 							groundItem.getPosition().getY(), player.getZ(), groundItem.getItem().getAmount());
 				}
 			}
@@ -255,9 +255,9 @@ public final class GroundItemHandler {
 				
 				if (groundItem.getState() == State.GLOBAL || groundItem.getOwnerHash() == player.usernameHash) {
 					//System.out.println(player.getLocation() + " : " + groundItem.getLocation());
-					player.getItems().removeGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
+					player.getActionSender().removeGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
 							groundItem.getPosition().getY(), player.getZ());
-					player.getItems().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
+					player.getActionSender().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
 							groundItem.getPosition().getY(), player.getZ(), groundItem.getItem().getAmount());
 				}
 			}
@@ -319,7 +319,7 @@ public final class GroundItemHandler {
 		if (add(groundItem)) {
 			groundItem.setTimer(groundItem.getState() == State.GLOBAL ? 200 : 100);
 			if (player != null) {
-				player.getItems().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
+				player.getActionSender().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
                         groundItem.getPosition().getY(), player.getPosition().getZ(), groundItem.getItem().getAmount());
 				//System.out.println("Grounditem height: "+player.getLocation().getH());
 			}

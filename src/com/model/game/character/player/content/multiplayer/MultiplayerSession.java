@@ -219,11 +219,9 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (item.stackable) {
 			for (int i = 0; i < items.size(); i++) {
 				if (items.get(i).id == id) {
-					long total = ((long) amount + (long) player.getItems()
-							.getItemCount(id));
+					long total = ((long) amount + (long) player.getItems().getItemAmount(id));
 					if (total > Integer.MAX_VALUE) {
-						amount = Integer.MAX_VALUE
-								- player.getItems().getItemCount(id);
+						amount = Integer.MAX_VALUE - player.getItems().getItemAmount(id);
 					}
 					if (amount > items.get(i).amount) {
 						amount = items.get(i).amount;

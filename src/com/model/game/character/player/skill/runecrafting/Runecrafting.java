@@ -4,9 +4,10 @@ import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.skill.SkillTask;
-import com.model.game.character.player.skill.runecrafting.Talisman.Talisman;
 import com.model.game.item.Item;
+import com.model.game.location.Position;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -43,21 +44,41 @@ public class Runecrafting extends SkillTask {
 	}
 	
 	/**
-	 * Were trying to locate the altar
-	 * @param player 
-	 *        The player looking for an altar
+	 * Teleports the player to the altar using the locate option on the talisman
+	 * @param player
+	 *        The player teleporting
+	 * @param item
+	 *        The talisman
+	 * @return
 	 */
-	public static boolean findAltar(Player player, Item item) {
+	public static boolean locateTalisman(Player player, Item item) {
 		if (player == null) {
 			return false;
 		}
 		if (item != null) {
-			Talisman talisman = Talisman.forId(item.getId());
-			if (talisman != null) {
-				return locateAlter(player, talisman);
+			if(item.getId() == 1438) {//Air talisman
+				TeleportExecutor.teleport(player, new Position(2841, 4829, 0));
+			} else if(item.getId() == 1448) {//Mind talisman
+				TeleportExecutor.teleport(player, new Position(2792, 4827, 0));
+			} else if(item.getId() == 1444) {//Water talisman
+				TeleportExecutor.teleport(player, new Position(3482, 4838, 0));
+			} else if(item.getId() == 1440) {//Earth talisman
+				TeleportExecutor.teleport(player, new Position(2655, 4830, 0));
+			} else if(item.getId() == 1442) {//Fire talisman
+				TeleportExecutor.teleport(player, new Position(2574, 4848, 0));
+			} else if(item.getId() == 1446) {//Body talisman
+				TeleportExecutor.teleport(player, new Position(2522, 4825, 0));
+			} else if(item.getId() == 1454) {//Cosmic talisman
+				TeleportExecutor.teleport(player, new Position(2122, 4833, 0));
+			} else if(item.getId() == 1452) {//Chaos talisman
+				TeleportExecutor.teleport(player, new Position(2281, 4837, 0));
+			} else if(item.getId() == 1462) {//Nature talisman
+				TeleportExecutor.teleport(player, new Position(2400, 4835, 0));
+			} else if(item.getId() == 1458) {//Law talisman
+				TeleportExecutor.teleport(player, new Position(2464, 4818, 0));
+			} else if(item.getId() == 1456) {//Death talisman
+				TeleportExecutor.teleport(player, new Position(2208, 4830, 0));
 			}
-		} else {
-			return true;
 		}
 		return false;
 	}
@@ -66,25 +87,29 @@ public class Runecrafting extends SkillTask {
 	 * Do we meet the requirements to continue crafting runes
 	 * @param player
 	 *        The player
-	 * @param object
+	 * @param id
 	 *        The altar
 	 */
-	public static boolean meetsRequirements(Player player, int object) {
-		if(player.getSkills().getLevel(Skills.RUNECRAFTING) < Talisman.getTalismanByAlter(object).getLevel()) {
-			player.message("You do not have the required level to craft these runes.");
-			return false;
+	public static boolean meetsRequirements(Player player, int id) {
+		Talisman talisman = Talisman.getTalismanByAltar(id);
+		if(talisman != null) {
+			if(player.getSkills().getLevel(Skills.RUNECRAFTING) < Talisman.getTalismanByAltar(talisman.getAlterId()).getLevel()) {
+				player.message("You do not have the required level to craft these runes.");
+				return false;
+			}
+			if(!player.getItems().playerHasItem(7936) && !player.getItems().playerHasItem(1436)) {
+				player.message("Did you forget something?");
+				return false;
+			}
+			if(Talisman.getTalismanByAltar(talisman.getAlterId()).pureEssOnly() && !player.getItems().playerHasItem(7936)) {
+				player.message("You do not have the right essence.");
+				return false;
+			}
+			player.playAnimation(Animation.create(791));
+			player.playGraphics(Graphic.create(186));
+			return true;
 		}
-		if(!player.getItems().playerHasItem(7936) && !player.getItems().playerHasItem(1436)) {
-			System.out.println("test");
-			return false;
-		}
-		if(Talisman.getTalismanByAlter(object).getRequirePureEss() && !player.getItems().playerHasItem(7936)) {
-			System.out.println("test2");
-			return false;
-		}
-		player.playAnimation(Animation.create(791));
-		player.playGraphics(Graphic.create(186));
-		return true;
+		return false;
 	}
 	
 	@Override
@@ -94,47 +119,20 @@ public class Runecrafting extends SkillTask {
 			return;
 		}
 		
-		Talisman talisman = Talisman.getTalismanByAlter(getObject());
+		Talisman talisman = Talisman.getTalismanByAltar(getObject());
 		int amount = getAmount(getPlayer(), talisman);
-		int essCount = getPlayer().getItems().getItemCount(getEssType(getPlayer(), talisman));
-		getPlayer().message("You bind the temple's power into "+ItemDefinition.forId(talisman.getRewardId()).getName()+"s");
-		getPlayer().getSkills().addExperience(Skills.RUNECRAFTING, talisman.getRewardExp()*essCount);
-		getPlayer().getItems().remove(new Item(getEssType(getPlayer(), talisman)));
-		getPlayer().getItems().addItem(new Item(talisman.getRewardId(), amount));
+		int essCount = getPlayer().getItems().getItemAmount(getEssType(getPlayer(), talisman));
+		
+		//Grant experience
+		getPlayer().message("You bind the temple's power into "+ItemDefinition.forId(talisman.getRuneReward()).getName()+"s");
+		getPlayer().getSkills().addExperience(Skills.RUNECRAFTING, talisman.getExperience()*essCount);
+		
+		//Delete essence and reward runes
+		getPlayer().getItems().deleteItem(getEssType(getPlayer(), talisman), amount);
+		getPlayer().getItems().addItem(new Item(talisman.getRuneReward(), amount));
+		
+		//Stop task
 		stop();
-	}
-	
-	/**
-	 * We can locate a altar with this method
-	 * @param player
-	 *        The player trying to locate an altar
-	 * @param talisman
-	 *        The talisman of the altar we're trying to locate
-	 */
-	private static boolean locateAlter(Player player, Talisman talisman){
-		String mainDirection = "";
-		String subDirection = "";
-		if(talisman.getOutsidePosition().getY() > player.getPosition().getY()){
-			mainDirection = "north";
-		}
-		else if(talisman.getOutsidePosition().getY() < player.getPosition().getY()){
-			mainDirection = "south";
-		}
-		if(talisman.getOutsidePosition().getX() > player.getPosition().getX()){
-			subDirection = "east";
-		}
-		else if(talisman.getOutsidePosition().getX() < player.getPosition().getX()){
-			subDirection = "west";
-		}
-		if(talisman.getOutsidePosition() == player.getPosition()){
-			mainDirection = "center";
-		}
-		if(mainDirection != "" && subDirection != ""){
-			player.message("The talisman pulls towards the "+mainDirection+"-"+subDirection);
-		}else{
-			player.message("The talisman pulls towards the "+mainDirection+subDirection);
-		}
-		return false;
 	}
 
 	/**
@@ -149,7 +147,7 @@ public class Runecrafting extends SkillTask {
 			return false;
 		}
 		
-		if(Talisman.alterIds(altarId)){
+		if(Talisman.altar(altarId)){
 			Runecrafting runecrafting = new Runecrafting(player, altarId);
 			runecrafting.execute();
 			player.setSkillTask(runecrafting);
@@ -167,7 +165,7 @@ public class Runecrafting extends SkillTask {
 	 */
 	private int getAmount(Player player, Talisman talisman) {
 		int rcLevel = player.getSkills().getLevel(Skills.RUNECRAFTING);
-		int essCount = player.getItems().getItemCount(getEssType(player, talisman));
+		int essCount = player.getItems().getItemAmount(getEssType(player, talisman));
 		if (talisman.equals(Talisman.AIR_TALISMAN)) {
 			if (rcLevel < 11) {
 				return essCount;
@@ -269,7 +267,7 @@ public class Runecrafting extends SkillTask {
 	}
 
 	/**
-	 * Gets the essence type we need
+	 * Gets the essence type required
 	 * @param player
 	 *        The player
 	 * @param talisman
@@ -278,7 +276,7 @@ public class Runecrafting extends SkillTask {
 	private int getEssType(Player player, Talisman talisman) {
 		if (player.getItems().playerHasItem(7936)) {
 			return 7936;
-		} else if (player.getItems().playerHasItem(1436) && !talisman.getRequirePureEss()) {
+		} else if (player.getItems().playerHasItem(1436) && !talisman.pureEssOnly()) {
 			return 1436;
 		}
 		return -1;

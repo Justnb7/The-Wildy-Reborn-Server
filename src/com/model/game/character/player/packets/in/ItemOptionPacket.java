@@ -253,7 +253,7 @@ public class ItemOptionPacket implements PacketType {
         }
 		
 		// We are dropping an pet item.
-		if (Pet.drop(player, item)) {
+		if (!Pet.drop(player, item)) {
 			return;
 		}
 
@@ -524,7 +524,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if(Runecrafting.findAltar(player, item)) {
+		if(Runecrafting.locateTalisman(player, item)) {
 			return;
 		}
 		

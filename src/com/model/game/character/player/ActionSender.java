@@ -451,4 +451,35 @@ public class ActionSender {
 		}
 		return this;
 	}
+	
+	public ActionSender createGroundItem(int itemID, int itemX, int itemY,
+			int height, int itemAmount) {
+		if (player != null) {
+			player.getOutStream().writeFrame(85);
+			int localX = itemX - 8 * player.mapRegionX;
+			int localY = itemY - 8 * player.mapRegionY;
+			player.getOutStream().writeByteC((localY));
+			player.getOutStream().writeByteC((localX));
+			player.getOutStream().writeFrame(44);
+			player.getOutStream().writeWordBigEndianA(itemID);
+			player.getOutStream().writeShort(itemAmount);
+			player.getOutStream().writeByte(0);
+			player.flushOutStream();
+		}
+		return this;
+	}
+
+	public ActionSender removeGroundItem(int itemID, int itemX, int itemY,
+			int height) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().writeFrame(85);
+			player.getOutStream().writeByteC((itemY - 8 * player.mapRegionY));
+			player.getOutStream().writeByteC((itemX - 8 * player.mapRegionX));
+			player.getOutStream().writeFrame(156);
+			player.getOutStream().writeByteS(0);
+			player.getOutStream().writeShort(itemID);
+			player.flushOutStream();
+		}
+		return this;
+	}
 }

@@ -25,6 +25,8 @@ public enum AchievementType {
 	TREASURE_TRIAL, 
 	MEDIUM_CLUE, 
 	HARD_CLUE, 
-	ELITE_CLUE
+	ELITE_CLUE, 
+	WOODCUTTING,
+	FISHERMAN
 
 }

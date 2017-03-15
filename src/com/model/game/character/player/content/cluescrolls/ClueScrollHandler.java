@@ -27,11 +27,9 @@ public final class ClueScrollHandler {
 
 	public static final int[] ELITE_CLUE_DROPS = { 2265, 2266, 2267, 6615, 6610, 6609, 6611, 494, 3162, 2205, 2215, 3129, 5779, 2054 };
 	
-	public static final IntervalItem[] BASIC_CLUE_REWARDS = { new IntervalItem(4151), new IntervalItem(6585),
+	public static final IntervalItem[] BASIC_CLUE_REWARDS = {
 			new IntervalItem(208, 5, 25), new IntervalItem(4587), new IntervalItem(1127), new IntervalItem(1079),
-			new IntervalItem(1163), new IntervalItem(1201), new IntervalItem(2615), new IntervalItem(2617),
-			new IntervalItem(2619), new IntervalItem(2621), new IntervalItem(2623), new IntervalItem(2625),
-			new IntervalItem(2627), new IntervalItem(2629), new IntervalItem(2579), new IntervalItem(2572),
+			new IntervalItem(1163), new IntervalItem(1201), new IntervalItem(2579), new IntervalItem(2572),
 			new IntervalItem(2570), new IntervalItem(2550), new IntervalItem(892, 100, 250),
 			new IntervalItem(9244, 200, 300), new IntervalItem(9245, 50, 144), new IntervalItem(19484, 5, 8),
 			new IntervalItem(830, 25, 50), new IntervalItem(13663), new IntervalItem(13664), new IntervalItem(13665),

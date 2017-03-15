@@ -34,6 +34,8 @@ public class Achievements {
 		KILL_50_COMMANDER_ZILYANA(16, AchievementTier.TIER_1, AchievementType.COMMANDER_ZILYANA, null, "Kill 50 Commander zilyanas", 50, 1),
 		KILL_50_KRIL_TSUTSAROTH(17, AchievementTier.TIER_1, AchievementType.KRIL_TSUTSAROTH, null, "Kill 50 K'ril Tsutsaroths", 50, 1),
 		TREASURE_TRIALS(18, AchievementTier.TIER_1, AchievementType.TREASURE_TRIAL, null, "Complete 50 treasure trials", 50, 1),
+		CUT_100_TREES(19, AchievementTier.TIER_1, AchievementType.WOODCUTTING, null, "Cut 100 trees", 100, 1),
+		FISHERMAN(20, AchievementTier.TIER_1, AchievementType.FISHERMAN, null, "Catch 350 fish", 350, 1),
 		
 		/**
 		 * Tier 2 Achievement Start

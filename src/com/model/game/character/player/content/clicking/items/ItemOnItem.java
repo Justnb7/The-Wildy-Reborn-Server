@@ -5,6 +5,7 @@ import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.PotionCombinating;
 import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.character.player.skill.crafting.GemCutting;
 import com.model.game.character.player.skill.firemaking.Firemaking;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -44,6 +45,11 @@ public class ItemOnItem {
 			} else {
 				player.write(new SendMessagePacket("You cannot combine two potions of different types."));
 			}
+			return;
+		}
+		
+		if (used.getId() == 1755 || usedWith.getId() == 1755) {
+			GemCutting.attemptGemCutting(player, used.getId(), usedWith.getId());
 			return;
 		}
 		

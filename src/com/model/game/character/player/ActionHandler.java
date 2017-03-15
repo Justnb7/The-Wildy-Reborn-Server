@@ -21,6 +21,8 @@ import com.model.game.character.player.skill.fishing.FishingSpot;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.thieving.Pickpocket;
 import com.model.game.character.player.skill.thieving.Stalls;
+import com.model.game.character.player.skill.woodcutting.Tree;
+import com.model.game.character.player.skill.woodcutting.Woodcutting;
 import com.model.game.location.Position;
 import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
@@ -49,6 +51,13 @@ public class ActionHandler {
 		player.setFollowing(null);
 
 		player.getMining().mine(id, new Position(x, y, player.heightLevel));
+		
+		Tree tree = Tree.forObject(id);
+		if (tree != null) {
+			Woodcutting.getInstance().chop(player, id, x, y);
+			return;
+		}
+		
 		Obelisks.get().activate(player, id);
 		
 		if (Runecrafting.handleObject(player, id)) {

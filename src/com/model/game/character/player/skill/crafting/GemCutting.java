@@ -17,7 +17,7 @@ public class GemCutting extends SkillTask {
 	/**
 	 * The type of gem we are cutting.
 	 */
-	private Gems data;
+	private Gems gem;
 	
 	public static final Item CHISEL = new Item(1755, 1);
 	
@@ -26,12 +26,12 @@ public class GemCutting extends SkillTask {
 	 *
 	 * @param player
 	 *            The player cutting gems
-	 * @param data
+	 * @param gem
 	 *            The data for the gem to be cut
 	 */
-	public GemCutting(Player player, Gems data) {
+	public GemCutting(Player player, Gems gem) {
 		super(player, 4, Walkable.NON_WALKABLE, Stackable.NON_STACKABLE, false);
-		this.data = data;
+		this.gem = gem;
 	}
 	
 	/**
@@ -48,12 +48,12 @@ public class GemCutting extends SkillTask {
 	public static boolean attemptGemCutting(Player player, int useWith, int itemUsed) {
 		int gemId = useWith == CHISEL.getId() ? itemUsed : useWith;
 
-		Gems data = Gems.forId(gemId);
-		if (!meetsRequirements(player, data)) {
+		Gems gem = Gems.forId(gemId);
+		if (!meetsRequirements(player, gem)) {
 			return false;
 		}
-		player.playAnimation(data.getAnimation());
-		player.setSkillTask(new GemCutting(player, data));
+		player.playAnimation(gem.getAnimation());
+		player.setSkillTask(new GemCutting(player, gem));
 		return true;
 	}
 
@@ -62,16 +62,16 @@ public class GemCutting extends SkillTask {
 	 *
 	 * @param player
 	 *            The player cutting the gem
-	 * @param data
+	 * @param gem
 	 *            The data for the gem being cut
 	 * @return The player can cut the gem
 	 */
-	private static boolean meetsRequirements(Player player, Gems data) {
-		if (data == null) {
+	private static boolean meetsRequirements(Player player, Gems gem) {
+		if (gem == null) {
 			return false;
 		}
-		if (player.getSkills().getLevel(Skills.CRAFTING) < data.getRequiredLevel()) {
-			player.message("You need a crafting level of " + data.getRequiredLevel() + " to cut this gem.");
+		if (player.getSkills().getLevel(Skills.CRAFTING) < gem.getRequiredLevel()) {
+			player.message("You need a crafting level of " + gem.getRequiredLevel() + " to cut this uncut.");
 			return false;
 		}
 		return true;
@@ -88,15 +88,15 @@ public class GemCutting extends SkillTask {
 			stop();
 			return;
 		}
-		if (!getPlayer().getItems().playerHasItem(data.getUncutVersion(), 1)) {
-			getPlayer().message("You have run out of gems.");
+		if (!getPlayer().getItems().playerHasItem(gem.getUncutVersion(), 1)) {
+			getPlayer().message("You have run out of uncuts.");
 			stop();
 			return;
 		}
-		getPlayer().playAnimation(data.getAnimation());
-		getPlayer().getItems().deleteItem(data.getUncutVersion(), 1);
-		getPlayer().getItems().addItem(data.cutReward(), 1);
-		getPlayer().getSkills().addExperience(Skills.CRAFTING, data.getExperience());
+		getPlayer().playAnimation(gem.getAnimation());
+		getPlayer().getItems().deleteItem(gem.getUncutVersion(), 1);
+		getPlayer().getItems().addItem(gem.cutReward(), 1);
+		getPlayer().getSkills().addExperience(Skills.CRAFTING, gem.getExperience());
 	}
 
 }

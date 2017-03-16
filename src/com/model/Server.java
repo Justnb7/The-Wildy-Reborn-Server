@@ -12,6 +12,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionLis
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.item.Item;
 import com.model.game.object.GlobalObjects;
 import com.model.game.sync.GameDataLoader;
 import com.model.game.sync.GameLogicService;
@@ -114,7 +115,7 @@ public class Server {
 								if (r2.success()) {
 									int mystery_box_roll = Utility.random(10);
 									if(mystery_box_roll == 8) {
-										player.getItems().addOrCreateGroundItem(6199, 1);
+										player.getItems().addOrCreateGroundItem(new Item(6199));
 									}
 									player.write(new SendMessagePacket("You've received your vote reward! Congratulations!"));
 									player.setTotalVotes(player.getTotalVotes() + 1);

@@ -9,6 +9,7 @@ import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
+import com.model.game.item.Item;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -82,7 +83,7 @@ public class TriviaBot {
 		
 		for (String answers : current.getAnswers()) {
 			if (answers.equalsIgnoreCase(answer)) {
-				answered(player, answer);
+				reward(player, answer);
 				return;
 			}
 		}
@@ -92,24 +93,25 @@ public class TriviaBot {
 	}
 
 	/**
-	 * Handles player answering the question successfully
-	 * 
-	 * @param player
-	 * @param answer
-	 */
-	private static void answered(Player player, String answer) {
-		int BM = Utility.random(1, 5);
-		World.getWorld().sendWorldMessage("<img=12><col=0066FF><shad=222222>[Trivia]: Congratulations, "+Utility.formatPlayerName(player.getName())+" has won "+BM+" blood money.", false);
-		player.getItems().addOrCreateGroundItem(13307, BM);
-		reset();
-	}
-
-	/**
 	 * Resets the Trivia Bot
 	 */
 	private static final void reset() {
 		current = null;
 		attempts.clear();
+	}
+	
+	private static Item[] REWARDS = {new Item(995, 100_000)};
+	
+	/**
+	 * Reward the player with a random reward from the rewards array
+	 * @param player
+	 *        The player being rewarded
+	 */
+	public static void reward(Player player, String answer) {
+		Item reward = Utility.randomElement(REWARDS);
+		World.getWorld().sendWorldMessage("<img=12><col=0066FF><shad=222222>[Trivia]: Congratulations, "+Utility.formatPlayerName(player.getName())+" has won "+reward.getName()+".", false);
+		player.getItems().addOrCreateGroundItem(reward);
+		reset();
 	}
 
 }

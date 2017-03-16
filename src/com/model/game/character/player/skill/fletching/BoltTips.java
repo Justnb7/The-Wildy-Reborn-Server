@@ -1,4 +1,4 @@
-package com.model.game.character.player.skill.crafting;
+package com.model.game.character.player.skill.fletching;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,11 +6,11 @@ import java.util.Map;
 import com.model.game.item.Item;
 
 /**
- * Our bolt tip data for the crafting skill
+ * Bolt tips data for the fletching skill
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  *
  */
-public enum BoltTip {
+public enum BoltTips {
 	
 	OPAL_TIP(11, 4, 1609, new Item(45, 12)),
 	
@@ -59,7 +59,7 @@ public enum BoltTip {
 	 * @param gem
 	 * @param reward
 	 */
-	BoltTip(int levelReq, int xp, int gem, Item reward) {
+	BoltTips(int levelReq, int xp, int gem, Item reward) {
 		this.levelRequirement = levelReq;
 		this.experience = xp;
 		this.gem = gem;
@@ -69,19 +69,19 @@ public enum BoltTip {
 	/**
 	 * All bolt tips stored in a map
 	 */
-	private static Map<Integer, BoltTip> gems = new HashMap<Integer, BoltTip>();
+	private static Map<Integer, BoltTips> gems = new HashMap<Integer, BoltTips>();
 
 	/**
 	 * Get the bolt tips by gem id
 	 * @param gem
 	 *        The cut gem
 	 */
-	public static BoltTip forId(int gem) {
+	public static BoltTips forId(int gem) {
 		return gems.get(gem);
 	}
 
 	static {
-		for (BoltTip gem : BoltTip.values()) {
+		for (BoltTips gem : BoltTips.values()) {
 			gems.put(gem.gem, gem);
 		}
 	}

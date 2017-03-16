@@ -2191,22 +2191,16 @@ public class ItemAssistant {
 		}
 	}
 
-	public void addOrCreateGroundItem(int id, int amount) {
+	public void addOrCreateGroundItem(Item item) {
 		if (freeSlots() > 0) {
-			addItem(id, amount);
-		} else if ((amount > 1) && (!ItemDefinition.forId(id).isStackable())) {
-			for (int i = 0; i < amount; i++)
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(id,
-						amount), player.getX(), player.getY(), player.getZ(),
-						player));
-			player.write(new SendMessagePacket(
-					"Invntory full item placed underneath you."));
+			addItem(item.getId(), item.getAmount());
+		} else if ((item.getAmount() > 1) && (!ItemDefinition.forId(item.getId()).isStackable())) {
+			for (int i = 0; i < item.getAmount(); i++)
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
+			player.write(new SendMessagePacket("Invntory full item placed underneath you."));
 		} else {
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(id,
-					amount), player.getX(), player.getY(), player.getZ(),
-					player));
-			player.write(new SendMessagePacket(
-					"Invntory full item placed underneath you."));
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
+			player.write(new SendMessagePacket("Invntory full item placed underneath you."));
 		}
 	}
 

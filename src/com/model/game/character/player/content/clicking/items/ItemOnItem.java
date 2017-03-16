@@ -5,11 +5,12 @@ import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.PotionCombinating;
 import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.skill.crafting.BoltCrafting;
-import com.model.game.character.player.skill.crafting.BoltTip;
 import com.model.game.character.player.skill.crafting.GemCutting;
 import com.model.game.character.player.skill.crafting.Gems;
 import com.model.game.character.player.skill.firemaking.Firemaking;
+import com.model.game.character.player.skill.fletching.Fletching;
+import com.model.game.character.player.skill.fletching.FletchingHandler;
+import com.model.game.character.player.skill.fletching.Bolts;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -59,17 +60,27 @@ public class ItemOnItem {
 				uncut = usedItem;
 			}
 			Gems gem = Gems.forId(uncut.getId());
-			BoltTip tip = BoltTip.forId(uncut.getId());
 			
 			if (gem != null) {
 				GemCutting.attemptGemCutting(player, usedItem.getId(), withItem.getId());
-			} else if (tip != null) {
-				BoltCrafting.attemptBoltTipCreation(player, usedItem.getId(), withItem.getId());
 			}
 		}
 		
 		if (CrystalChest.createKey(player)) {
 			return;
+		}
+		
+		for (int ref : Fletching.refItems) {
+			if (usedItem.getId() == ref || withItem.getId() == ref) {
+				FletchingHandler.appendType(player, usedItem.getId(), withItem.getId());
+			}
+		}
+		
+		for (final Bolts bolt : Bolts.values()) {
+			if (usedItem.getId() == bolt.getUnfBolts() || withItem.getId() == bolt.getUnfBolts()) {
+				FletchingHandler.appendType(player, usedItem.getId(), withItem.getId());
+				return;
+			}
 		}
 		
 		if (usedItem.getId() == 227 || withItem.getId() == 227) {

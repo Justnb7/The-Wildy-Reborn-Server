@@ -99,6 +99,13 @@ import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
 	
+	//Fletching variables
+	public boolean isFletching = false, needsFletchDelay = false;
+	public long lastFletch = 0;
+	public int fletchDelay = -1, fletchAmount = -1, arrowShaft = 52, fletchItem = -1, fletchIndex = -1;
+	public String fletchThis = "";
+	public int[] fletchSprites = { -1, -1, -1, -1, -1 };
+	
     private SkillCyclesTask skillCyclesTask = new SkillCyclesTask(this);
 	
 	public SkillCyclesTask getSkillCyclesTask() {

@@ -228,13 +228,25 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendInterfaceModel(int id, int zoom, int model) {
+	/**
+     * zoom is usually 175
+     */
+	public ActionSender sendItemOnInterface(int id, int zoom, int model) {
 		if (player.getOutStream() != null && player != null) {
             player.getOutStream().writeFrame(246);
             player.getOutStream().writeWordBigEndian(id);
             player.getOutStream().writeShort(zoom);
             player.getOutStream().writeShort(model);
         }
+		return this;
+	}
+	
+	public ActionSender sendChatInterface(int frame) {
+		player.stopSkillTask();
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(164);
+			player.getOutStream().writeWordBigEndian_dup(frame);
+		}
 		return this;
 	}
 	

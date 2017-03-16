@@ -129,7 +129,7 @@ public class WeaponInterface {
 			}
 			if (name.contains(equipment.getWeaponType()) || name.endsWith(equipment.getWeaponType()) || name.startsWith(equipment.getWeaponType())) {
 				player.write(new SendSidebarInterfacePacket(0, equipment.getInterface()));
-				player.getActionSender().sendInterfaceModel(equipment.getItemLocation(), 200, id);
+				player.getActionSender().sendItemOnInterface(equipment.getItemLocation(), 200, id);
 				player.getActionSender().sendString(name, equipment.getNameOnInterfaceId());
 			}
 		}

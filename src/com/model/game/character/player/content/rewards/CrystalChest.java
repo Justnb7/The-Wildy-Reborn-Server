@@ -29,7 +29,7 @@ public class CrystalChest {
 		if (player.getItems().playerHasItems(KEY_HALVES)) {
 			player.getItems().remove(KEY_HALVES[0]);
 			player.getItems().remove(KEY_HALVES[1]);
-			player.getItems().addOrCreateGroundItem(989, 1);
+			player.getItems().addOrCreateGroundItem(new Item(989));
 			player.message("You have combined the two parts to form a key.");
 			return true;
 		}
@@ -81,7 +81,7 @@ public class CrystalChest {
 			itemReceived = Utility.randomElement(COMMON_CHEST_REWARDS);
 		}
 
-		player.getItems().addOrCreateGroundItem(itemReceived.getId(), itemReceived.getAmount());
+		player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
 		player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
 	}
 }

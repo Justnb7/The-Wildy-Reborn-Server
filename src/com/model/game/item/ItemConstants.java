@@ -84,6 +84,16 @@ public class ItemConstants {
 		}
 		
 		/**
+         * Fire cape requirement
+         */
+		if (id.getId() == 6570) {
+			if(!player.hasCompletedFightCaves()) {
+				player.message("You need to complete at least once fight cave minigame to use this cape.");
+				return false;
+			}
+		}
+		
+		/**
 		 * Ironman armour
 		 */
 		if (id.getId() == 12810 || id.getId() == 12811 || id.getId() == 12812) {

@@ -89,6 +89,12 @@ public class CommandPacketHandler implements PacketType {
     	String message;
     	switch (cmd[0]) {
     	
+    	case "pestr":
+    		player.getPestControlRewards().showInterface();
+    		return true;
+    		
+    		
+    	
     	case "exp":
     		player.getSkills().addExperience(Skills.HUNTER, 1000);
     		return true;

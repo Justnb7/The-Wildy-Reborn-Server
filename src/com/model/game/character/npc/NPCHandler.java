@@ -478,7 +478,6 @@ public final class NPCHandler {
 	}
 
 	public static Optional<Npc> spawnNpc3(Player c, int npcType, int x, int y, int heightLevel, ClueDifficulty d) {
-		NpcDefinition def = NpcDefinition.getDefinitions()[npcType];
 		if (d == ClueDifficulty.EASY) {
 			////Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon
 			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
@@ -490,5 +489,12 @@ public final class NPCHandler {
 			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
 		}
 		return Optional.empty();
+	}
+
+	public static boolean isSpawnedBy(Player player, Npc npc) {
+		if (player != null && npc != null)
+			if (npc.spawnedBy == player.getIndex() || npc.targetId == player.getIndex())
+				return true;
+		return false;
 	}
 }

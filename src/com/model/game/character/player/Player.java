@@ -60,6 +60,7 @@ import com.model.game.character.player.controller.ControllerManager;
 import com.model.game.character.player.dialogue.DialogueManager;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.KrakenInstance;
+import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.minigames.pest_control.PestControlRewards;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
@@ -101,12 +102,6 @@ import com.model.utility.Utility;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
-	
-	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);
-
-	public WarriorsGuild getWarriorsGuild() {
-		return warriorsGuild;
-	}
 	
 	//Fletching variables
 	public boolean isFletching = false, needsFletchDelay = false;
@@ -1456,8 +1451,8 @@ public class Player extends Entity {
 				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
 					player.getPA().movePlayer(2657, 2639, 0);
 				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
-					//player.message("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
-					//player.getFightCave().startWave();
+					player.message("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
+					player.getFightCave().startWave();
 				}
 				ControllerManager.setControllerOnWalk(player);
 				controller.onControllerInit(player);
@@ -2128,16 +2123,6 @@ public class Player extends Entity {
 	public int getMaximumHealth() {
 		int base = this.getSkills().getLevelForExperience(Skills.HITPOINTS);
 		return base;
-	}
-	
-	/**
-	 * The single instance of the {@link PestControlRewards} class for this player
-	 * @return	the reward class
-	 */
-	private PestControlRewards pestControlRewards = new PestControlRewards(this);
-	
-	public PestControlRewards getPestControlRewards() {
-		return pestControlRewards;
 	}
 	
 	/**
@@ -3133,5 +3118,43 @@ public class Player extends Entity {
 	//Minigame variables
 	public int pestControlDamage;
 	public boolean isAnimatedArmourSpawned;
+	public int waveId;
+	public boolean secondOption;
+	
+	private FightCaves fightcave = null;
+	
+	public FightCaves getFightCave() {
+		if (fightcave == null)
+			fightcave = new FightCaves(this);
+		return fightcave;
+	}
+	
+    private boolean completedFightCaves;
+	
+	public boolean hasCompletedFightCaves() {
+		return completedFightCaves;
+	}
+
+	public void setCompletedFightCaves() {
+		if(!completedFightCaves) {
+			completedFightCaves = true;
+		}
+	}
+	
+	/**
+	 * The single instance of the {@link PestControlRewards} class for this player
+	 * @return	the reward class
+	 */
+	private PestControlRewards pestControlRewards = new PestControlRewards(this);
+	
+	public PestControlRewards getPestControlRewards() {
+		return pestControlRewards;
+	}
+	
+	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);
+
+	public WarriorsGuild getWarriorsGuild() {
+		return warriorsGuild;
+	}
 
 }

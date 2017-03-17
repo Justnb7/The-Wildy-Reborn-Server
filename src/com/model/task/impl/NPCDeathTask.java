@@ -10,6 +10,7 @@ import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
+import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 import com.model.task.ScheduledTask;
 
@@ -216,6 +217,9 @@ public class NPCDeathTask extends ScheduledTask {
 		
         if (npc.npcId != 6611) // vetion or somet
 			npc.playAnimation(Animation.create(NPCCombatData.getDeadEmote(npc))); // dead emote
+        if (killer != null) {
+        	FightCaves.sendDeath(killer, npc);
+		}
         if (npc.transformId == 6612) {
 			npc.requestTransform(6611);
 			npc.transformUpdateRequired = true;

@@ -13,6 +13,11 @@ import com.model.game.character.player.dialogue.impl.chat.EmblemTraderDialogue;
 import com.model.game.character.player.dialogue.impl.chat.Mandrith;
 import com.model.game.character.player.dialogue.impl.chat.RunescapeGuide;
 import com.model.game.character.player.dialogue.impl.minigames.BarrowsTunnel;
+import com.model.game.character.player.dialogue.impl.minigames.fight_caves.DiedInProcess;
+import com.model.game.character.player.dialogue.impl.minigames.fight_caves.EnterCave;
+import com.model.game.character.player.dialogue.impl.minigames.fight_caves.ExitCave;
+import com.model.game.character.player.dialogue.impl.minigames.fight_caves.Tzhaar_Mej_Jal;
+import com.model.game.character.player.dialogue.impl.minigames.fight_caves.WonFightCave;
 import com.model.game.character.player.dialogue.impl.minigames.warriors_guild.DefenderInPosession;
 import com.model.game.character.player.dialogue.impl.minigames.warriors_guild.NoDefenderInPossesion;
 import com.model.game.character.player.dialogue.impl.minigames.warriors_guild.NoTokens;
@@ -44,6 +49,15 @@ public class DialogueRepository {
 	private static final Map<String, Class<? extends Dialogue>> dialogues = new HashMap<>();
 
 	static {
+		
+		/**
+		 * Fight caves
+		 */
+		dialogues.put("ENTER_FIGHT_CAVE", EnterCave.class);
+		dialogues.put("LEAVE_FIGHT_CAVE", ExitCave.class);
+		dialogues.put("DIED_DURING_FIGHT_CAVE", DiedInProcess.class);
+		dialogues.put("WON_FIGHT_CAVE", WonFightCave.class);
+		dialogues.put("FIGHT_CAVE", Tzhaar_Mej_Jal.class);
 		
 		/**
 		 * Warriors guild

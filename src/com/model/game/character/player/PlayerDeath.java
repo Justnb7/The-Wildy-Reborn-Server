@@ -21,6 +21,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.utility.Utility;
@@ -175,14 +176,18 @@ public class PlayerDeath {
 				}
 			}
 		} else {
-			if (player.rights == Rights.ADMINISTRATOR && player.getName().equalsIgnoreCase("test")
-					&& killedBy != null) {
+			//TODO ask Jak if this is correct
+			player.getController().onDeath(player);
+			if (player.rights == Rights.ADMINISTRATOR && player.getName().equalsIgnoreCase("test") && killedBy != null) {
 				player.getPA().movePlayer(killedBy.getPosition());
 				player.message("ease of use dude");
-			}
-			else if (player.getController().getRespawnLocation(player) != null) {
+			} else if (player.getController().getRespawnLocation(player) != null) {
 				player.getPA().movePlayer(player.getController().getRespawnLocation(player));
-			}
+	        } else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
+				player.getPA().movePlayer(2656 + Utility.random(2), 2614 - Utility.random(3), 0);
+	        } else if (Boundary.isIn(player, Boundary.FIGHT_CAVE)) {
+				player.getFightCave().exitCave(3);
+	        }
 		}
 
 		player.isSkulled = false;

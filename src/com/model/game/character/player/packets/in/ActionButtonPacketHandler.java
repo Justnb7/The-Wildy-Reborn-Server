@@ -100,7 +100,7 @@ public class ActionButtonPacketHandler implements PacketType {
 				return;
 			}
 		}
-		
+		player.getPestControlRewards().click(button);
 		/*Obelisks.chooseTeleport(player, button);*/
 		PrayerHandler.togglePrayer(player, button);
 		player.getLunarSpell().processLunarSpell(button);

@@ -161,6 +161,24 @@ public class ActionHandler {
 		switch (id) {
 		
 		/**
+		 * Entering the Fight Caves.
+		 */
+		case 11833:
+			if (Boundary.entitiesInArea(Boundary.FIGHT_CAVE) >= 50) {
+				player.message("There are too many people using the fight caves at the moment. Please try again later");
+				return;
+			}
+			player.getFightCave().enterFightCaves();
+			break;
+
+		case 11834:
+			if (Boundary.isIn(player, Boundary.FIGHT_CAVE)) {
+				player.getFightCave().exitCave(1);
+				return;
+			}
+			break;
+		
+		/**
 		 * Pest control
 		 */
 		case 14315:
@@ -816,6 +834,11 @@ public class ActionHandler {
 		}
 
 		switch (npc.npcId) {
+		
+		case 2180:
+			player.secondOption = true;
+			player.dialogue().start("FIGHT_CAVE");
+			break;
 		
 		case 3078:
 			player.getThieving().pickpocket(Pickpocket.MAN, npc);

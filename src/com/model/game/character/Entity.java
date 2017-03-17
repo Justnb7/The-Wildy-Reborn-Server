@@ -10,9 +10,11 @@ import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.ActionSender;
+import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
+import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -509,6 +511,9 @@ public abstract class Entity {
 			Npc victim_npc = (Npc) this;
 			victim_npc.retaliate(attacker);
 			victim_npc.addDamageReceived(attacker_player.getName(), damage);
+			if (Boundary.isIn(attacker_player, PestControl.GAME_BOUNDARY)) {
+				attacker_player.pestControlDamage += damage;
+			}
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		} else if (isPlayer() && attacker.isPlayer()) {
 			((Player)this).addDamageReceived(((Player)attacker).getName(), damage);

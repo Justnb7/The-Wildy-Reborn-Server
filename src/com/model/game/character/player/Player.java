@@ -60,6 +60,9 @@ import com.model.game.character.player.controller.ControllerManager;
 import com.model.game.character.player.dialogue.DialogueManager;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.KrakenInstance;
+import com.model.game.character.player.minigames.pest_control.PestControl;
+import com.model.game.character.player.minigames.pest_control.PestControlRewards;
+import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.player.packets.PacketEncoder;
 import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
@@ -98,6 +101,12 @@ import com.model.utility.Utility;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);
+
+	public WarriorsGuild getWarriorsGuild() {
+		return warriorsGuild;
+	}
 	
 	//Fletching variables
 	public boolean isFletching = false, needsFletchDelay = false;
@@ -382,6 +391,19 @@ public class Player extends Entity {
 	
 	public void setPkPoints(int pkPoints) {
 		this.pkPoints = pkPoints;
+	}
+	
+	/**
+	 * A reward for playing pest control
+	 */
+	private int pestPoints;
+	
+	public int getPestControlPoints() {
+		return pestPoints;
+	}
+	
+	public void setPestControlPoints(int pestPoints) {
+		this.pestPoints = pestPoints;
 	}
 	
 	/**
@@ -1427,10 +1449,21 @@ public class Player extends Entity {
 					stop();
 					return;
 				}
+				final Boundary pc = PestControl.GAME_BOUNDARY;
+				final Boundary fc = Boundary.FIGHT_CAVE;
+				int x = teleportToX;
+				int y = teleportToY;
+				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
+					player.getPA().movePlayer(2657, 2639, 0);
+				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
+					//player.message("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
+					//player.getFightCave().startWave();
+				}
 				ControllerManager.setControllerOnWalk(player);
 				controller.onControllerInit(player);
 				stop();
 			}
+
 		}.attach(this));
 	}
 
@@ -2095,6 +2128,16 @@ public class Player extends Entity {
 	public int getMaximumHealth() {
 		int base = this.getSkills().getLevelForExperience(Skills.HITPOINTS);
 		return base;
+	}
+	
+	/**
+	 * The single instance of the {@link PestControlRewards} class for this player
+	 * @return	the reward class
+	 */
+	private PestControlRewards pestControlRewards = new PestControlRewards(this);
+	
+	public PestControlRewards getPestControlRewards() {
+		return pestControlRewards;
 	}
 	
 	/**
@@ -3086,5 +3129,9 @@ public class Player extends Entity {
 	public GameModeSelection getGameModeSelection() {
 		return select_game_mode;
 	}
+	
+	//Minigame variables
+	public int pestControlDamage;
+	public boolean isAnimatedArmourSpawned;
 
 }

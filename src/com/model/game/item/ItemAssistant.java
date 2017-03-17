@@ -1272,9 +1272,9 @@ public class ItemAssistant {
 			if (totalAmount >= Integer.MAX_VALUE) {
 				int difference = Integer.MAX_VALUE - tab.getItemAmount(item);
 				item.setAmount(difference);
-				deleteItem2(itemID, difference);
+				deleteItem(itemID, difference);
 			} else {
-				deleteItem2(itemID, item.getAmount());
+				deleteItem(itemID, item.getAmount());
 			}
 			tab.add(item);
 			if (updateView) {
@@ -1692,26 +1692,6 @@ public class ItemAssistant {
 
 	public void remove(Item item, int slot) {
 		deleteItem(item.id, slot, item.amount);
-	}
-
-	public void deleteItem2(int id, int amount) {
-		int am = amount;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (am == 0) {
-				break;
-			}
-			if (player.playerItems[i] == (id + 1)) {
-				if (player.playerItemsN[i] > amount) {
-					player.playerItemsN[i] -= amount;
-					break;
-				} else {
-					player.playerItems[i] = 0;
-					player.playerItemsN[i] = 0;
-					am--;
-				}
-			}
-		}
-		resetItems(3214);
 	}
 
 	/**

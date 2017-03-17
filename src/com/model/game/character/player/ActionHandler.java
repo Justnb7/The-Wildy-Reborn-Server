@@ -12,6 +12,7 @@ import com.model.game.character.player.content.teleport.Obelisks;
 import com.model.game.character.player.content.teleport.Teleport;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
+import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
@@ -158,6 +159,37 @@ public class ActionHandler {
 		}
 
 		switch (id) {
+		
+		/**
+		 * Pest control
+		 */
+		case 14315:
+			PestControl.addToLobby(player);
+			break;
+
+		case 14314:
+			PestControl.removeFromLobby(player);
+			break;
+		
+		/**
+		 * Warriors guild
+		 */
+		case 24306:
+		case 24309:
+			if (player.getHeight() == 2) {
+				player.getWarriorsGuild().handleDoor();
+				return;
+			}
+			if (player.heightLevel == 0) {
+				if (player.absX == 2855 || player.absX == 2854) {
+					if (player.absY == 3546)
+						player.getPA().movePlayer(player.absX, player.absY - 1, 0);
+					else if (player.absY == 3545)
+						player.getPA().movePlayer(player.absX, player.absY + 1, 0);
+					player.face(player, new Position(x, y));
+				}
+			}
+			break;
 		
 		case 26502:
 			if(player.getY() == 5294) {
@@ -634,6 +666,13 @@ public class ActionHandler {
 		}
 		
 		switch (npc.npcId) {
+		
+		/**
+		 * Kamfreena	
+		 */
+		case 2461:
+			player.getWarriorsGuild().handleDoor();
+			break;
 		
 		case 3257:
 			player.getThieving().pickpocket(Pickpocket.FARMER, npc);

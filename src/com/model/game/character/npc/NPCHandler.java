@@ -12,6 +12,7 @@ import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
+import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
@@ -108,7 +109,7 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static Npc spawnNpc(Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
+	public static Npc spawnNpc(Player player, int id, int x, int y, int heightLevel, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
 		Npc npc = new Npc(id);
 		
 		npc.setAbsX(x);
@@ -116,8 +117,8 @@ public final class NPCHandler {
 		npc.makeX = x;
 		npc.makeY = y;
 		npc.heightLevel = heightLevel;
-		npc.currentHealth = npc.getDefinition() == null ? health : npc.getDefinition().getHitpoints();
-        npc.maximumHealth = npc.getDefinition() == null ? health : npc.getDefinition().getHitpoints();
+		npc.currentHealth = npc.getDefinition().getHitpoints();
+        npc.maximumHealth = npc.getDefinition().getHitpoints();
         npc.attack_bonus = npc.getDefinition().getAttackBonus();
         npc.melee_defence = npc.getDefinition().getMeleeDefence();
         npc.range_defence = npc.getDefinition().getRangedDefence();
@@ -142,6 +143,23 @@ public final class NPCHandler {
 		}
 		World.getWorld().register(npc);
 		return npc;
+	}
+	
+	public static void spawnNpc(int npcType, int x, int y, int heightLevel, int walkType, int health, int maxHit, int attack, int defence) {
+		Npc npc = new Npc(npcType);
+		
+		npc.absX = x;
+		npc.absY = y;
+		npc.makeX = x;
+		npc.makeY = y;
+		npc.heightLevel = heightLevel;
+		npc.walking_type = walkType;
+		npc.currentHealth = health;
+		npc.maximumHealth = health;
+		npc.maxHit = maxHit;
+		npc.attack_bonus = attack;
+		npc.melee_defence = npc.range_defence = npc.magic_defence = defence;
+		World.getWorld().register(npc);
 	}
 	
 	private static GroupRespawn tempGroup = null;
@@ -260,6 +278,11 @@ public final class NPCHandler {
 		
 		int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
 		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
+		
+		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
+		if(AnimatedArmour.isAnimatedArmourNpc(npc.npcId))
+			AnimatedArmour.dropTokens(player, npc.npcId, npc.absX, npc.absY);
+		
 		// get the drop table
 		
 		float yourIncrease = 0;
@@ -458,13 +481,13 @@ public final class NPCHandler {
 		NpcDefinition def = NpcDefinition.getDefinitions()[npcType];
 		if (d == ClueDifficulty.EASY) {
 			////Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 10, 25, 25, 25, 25, true, true, false));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
 		} else if (d == ClueDifficulty.MEDIUM) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 15, 50, 25, 25, 25, true, true, false));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
 		} else if (d == ClueDifficulty.HARD) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 20, 75, 99, 25, 25, true, true, false));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
 		} else if (d == ClueDifficulty.ELITE) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 0, def.getHitpoints(), 35, 99, 120, 25, 25, true, true, false));
+			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
 		}
 		return Optional.empty();
 	}

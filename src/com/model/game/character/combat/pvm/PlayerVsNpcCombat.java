@@ -10,6 +10,7 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
+import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.walking.PathFinder;
@@ -144,10 +145,21 @@ public class PlayerVsNpcCombat {
 			Combat.resetCombat(player);
 			return false;
 		}
+		
 		if ((npc.npcId == 6611 || npc.npcId == 6612) && npc.dogs > 0) {
 			Combat.resetCombat(player);
 			player.write(new SendMessagePacket("You must vanquish Vet'ions dogs."));
 			return false;
+		}
+		
+		if (npc.npcId == 2463 || npc.npcId == 2464) {
+			if (Boundary.isIn(player, WarriorsGuild.CYCLOPS_BOUNDARY)) {
+				if (!player.getWarriorsGuild().isActive()) {
+					player.message("You cannot attack a cyclops without talking to kamfreena.");
+					Combat.resetCombat(player);
+					return false;
+				}
+			}
 		}
 
 		if (npc.npcId == 496 && npc.transformId != 494) {
@@ -256,14 +268,6 @@ public class PlayerVsNpcCombat {
 			if (lowX > 0 && lowY > 0) {
 				player.getPA().playerWalk(lowX, lowY);
 			}
-			/*
-			 * int r = Misc.random(3); switch (r) { case 0:
-			 * player.getPA().walkTo(0, -1); return; case 1:
-			 * player.getPA().walkTo(0, 1); return; case 2:
-			 * player.getPA().walkTo(1, 0); return; case 3:
-			 * player.getPA().walkTo(-1, 0); return; }
-			 */
-
 		}
 	}
 

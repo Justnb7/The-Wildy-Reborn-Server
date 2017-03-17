@@ -148,7 +148,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 					long total = ((long) i.amount + (long) amount);
 					if (total > Integer.MAX_VALUE) {
 						items.get(player).remove(i);
-						player.getItems().deleteItem2(id,
+						player.getItems().deleteItem(id,
 								Integer.MAX_VALUE - i.amount);
 						items.get(player).add(
 								new GameItem(id, Integer.MAX_VALUE));
@@ -156,18 +156,18 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 						items.get(player).remove(i);
 						items.get(player).add(
 								new GameItem(id, i.amount + amount));
-						player.getItems().deleteItem2(id, amount);
+						player.getItems().deleteItem(id, amount);
 					}
 					break;
 				}
 			}
 		} else if (item.stackable && !listContainsItem) {
 			items.get(player).add(new GameItem(id, amount));
-			player.getItems().deleteItem2(id, amount);
+			player.getItems().deleteItem(id, amount);
 		} else {
 			while (amount-- > 0) {
 				items.get(player).add(new GameItem(id, 1));
-				player.getItems().deleteItem2(id, 1);
+				player.getItems().deleteItem(id, 1);
 			}
 		}
 		stage.setAttachment(null);

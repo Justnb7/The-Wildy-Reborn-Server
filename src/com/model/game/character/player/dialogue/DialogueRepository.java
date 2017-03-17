@@ -13,6 +13,10 @@ import com.model.game.character.player.dialogue.impl.chat.EmblemTraderDialogue;
 import com.model.game.character.player.dialogue.impl.chat.Mandrith;
 import com.model.game.character.player.dialogue.impl.chat.RunescapeGuide;
 import com.model.game.character.player.dialogue.impl.minigames.BarrowsTunnel;
+import com.model.game.character.player.dialogue.impl.minigames.warriors_guild.DefenderInPosession;
+import com.model.game.character.player.dialogue.impl.minigames.warriors_guild.NoDefenderInPossesion;
+import com.model.game.character.player.dialogue.impl.minigames.warriors_guild.NoTokens;
+import com.model.game.character.player.dialogue.impl.minigames.warriors_guild.NotEnoughTokens;
 import com.model.game.character.player.dialogue.impl.pets.Olmlet;
 import com.model.game.character.player.dialogue.impl.slayer.ChaeldarDialogue;
 import com.model.game.character.player.dialogue.impl.slayer.DuradelDialogue;
@@ -40,6 +44,14 @@ public class DialogueRepository {
 	private static final Map<String, Class<? extends Dialogue>> dialogues = new HashMap<>();
 
 	static {
+		
+		/**
+		 * Warriors guild
+		 */
+		dialogues.put("OUT_OF_TOKENS", NotEnoughTokens.class);
+		dialogues.put("PLAYER_HAS_NO_TOKENS", NoTokens.class);
+		dialogues.put("HAS_DEFENDER", DefenderInPosession.class);
+		dialogues.put("NO_DEFENDER", NoDefenderInPossesion.class);
 		
 		/**
 		 * Rotten potato

@@ -43,12 +43,11 @@ public class KrakenInstance {
 	public void startUp(Player player) {
 		if (player != null && instance != null) {
 			npcs = new Npc[5];
-			//Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon
-			npcs[0] = NPCHandler.spawnNpc(player, 496, 3694, 5810, instance.getHeight(), 0, 255, 0, 0, 0, 0, 0, false, false, false);
-			npcs[1] = NPCHandler.spawnNpc(player, 5534, 3691, 5810, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
-			npcs[2] = NPCHandler.spawnNpc(player, 5534, 3691, 5814, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
-			npcs[3] = NPCHandler.spawnNpc(player, 5534, 3700, 5814, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
-			npcs[4] = NPCHandler.spawnNpc(player, 5534, 3700, 5810, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
+			npcs[0] = NPCHandler.spawnNpc(player, 496, 3694, 5810, instance.getHeight(), 0, false, false, false);
+			npcs[1] = NPCHandler.spawnNpc(player, 5534, 3691, 5810, instance.getHeight(), 0, false, false, false);
+			npcs[2] = NPCHandler.spawnNpc(player, 5534, 3691, 5814, instance.getHeight(), 0, false, false, false);
+			npcs[3] = NPCHandler.spawnNpc(player, 5534, 3700, 5814, instance.getHeight(), 0, false, false, false);
+			npcs[4] = NPCHandler.spawnNpc(player, 5534, 3700, 5810, instance.getHeight(), 0, false, false, false);
 		}
 	}
 	
@@ -57,11 +56,11 @@ public class KrakenInstance {
 	 * @param player
 	 */
 	public void spawnNextWave(Player player) { 
-		npcs[0] = NPCHandler.spawnNpc(player, 496, 3694, 5810, instance.getHeight(), 0, 255, 0, 0, 0, 0, 0, false, false, false);
-		npcs[1] = NPCHandler.spawnNpc(player, 5534, 3691, 5810, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
-		npcs[2] = NPCHandler.spawnNpc(player, 5534, 3691, 5814, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
-		npcs[3] = NPCHandler.spawnNpc(player, 5534, 3700, 5814, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
-		npcs[4] = NPCHandler.spawnNpc(player, 5534, 3700, 5810, instance.getHeight(), 0, 120, 0, 0, 0, 0, 0, false, false, false);
+		npcs[0] = NPCHandler.spawnNpc(player, 496, 3694, 5810, instance.getHeight(), 0, false, false, false);
+		npcs[1] = NPCHandler.spawnNpc(player, 5534, 3691, 5810, instance.getHeight(), 0, false, false, false);
+		npcs[2] = NPCHandler.spawnNpc(player, 5534, 3691, 5814, instance.getHeight(), 0, false, false, false);
+		npcs[3] = NPCHandler.spawnNpc(player, 5534, 3700, 5814, instance.getHeight(), 0, false, false, false);
+		npcs[4] = NPCHandler.spawnNpc(player, 5534, 3700, 5810, instance.getHeight(), 0, false, false, false);
 		for (Npc n : npcs) {
 			n.setVisible(false);
 		}

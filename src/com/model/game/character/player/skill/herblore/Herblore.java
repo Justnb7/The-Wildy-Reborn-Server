@@ -60,7 +60,7 @@ public class Herblore {
 			}
 			ItemDefinition definition = ItemDefinition.forId(h.getClean());
 			player.getSkills().addExperience(Skills.HERBLORE, h.getExperience() * Constants.SKILL_MODIFIER);
-			player.getItems().deleteItem2(h.getGrimy(), 1);
+			player.getItems().deleteItem(h.getGrimy(), 1);
 			player.getItems().addItem(h.getClean(), 1);
 			player.write(new SendMessagePacket("You identify the herb as " + definition.getName() + "."));
 		});
@@ -78,9 +78,9 @@ public class Herblore {
 				player.write(new SendMessagePacket("You need a regular vial of water to do this."));
 				return;
 			}
-			Arrays.asList(p.getIngredients()).stream().forEach(ing -> player.getItems().deleteItem2(ing.getId(), ing.getAmount()));
-			player.getItems().deleteItem2(227, 1);
-			player.getItems().deleteItem2(p.getPrimary().getId(), p.getPrimary().getAmount());
+			Arrays.asList(p.getIngredients()).stream().forEach(ing -> player.getItems().deleteItem(ing.getId(), ing.getAmount()));
+			player.getItems().deleteItem(227, 1);
+			player.getItems().deleteItem(p.getPrimary().getId(), p.getPrimary().getAmount());
 			player.getItems().addItem(p.getResult().getId(), p.getResult().getAmount());
 			player.getSkills().addExperience(Skills.HERBLORE, p.getExperience() * Constants.SKILL_MODIFIER);
 			player.write(new SendMessagePacket("You combine all of the ingredients and make a " + definition.getName() + "."));

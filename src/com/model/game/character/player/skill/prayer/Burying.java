@@ -181,7 +181,7 @@ public class Burying {
 							return;
 						}
 						player.playAnimation(Animation.create(ALTAR_ANIMATION));
-						player.getItems().deleteItem2(itemId, 1);
+						player.getItems().deleteItem(itemId, 1);
 						player.getSkills().addExperience(Skills.PRAYER, bone.getExperience() * 2);
 						player.write(new SendMessagePacket("You interact the bones with altar and gain x2 experience!"));
 					}

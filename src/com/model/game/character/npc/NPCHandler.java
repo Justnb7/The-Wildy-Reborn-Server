@@ -68,7 +68,7 @@ public final class NPCHandler {
 				token2_2 = token2_2.replaceAll("\t\t", "\t");
 				token3 = token2_2.split("\t");
 				if (token.equals("spawn")) {
-					newNPC(Integer.parseInt(token3[0]), Integer.parseInt(token3[1]), Integer.parseInt(token3[2]), Integer.parseInt(token3[3]), Integer.parseInt(token3[4]), -1);
+					newNPC(Integer.parseInt(token3[0]), Integer.parseInt(token3[1]), Integer.parseInt(token3[2]), Integer.parseInt(token3[3]), Integer.parseInt(token3[4]));
 				}
 			} else {
 				if (line.equals("[ENDOFSPAWNLIST]")) {
@@ -92,7 +92,7 @@ public final class NPCHandler {
 		return false;
 	}
 	
-	public static void newNPC(int npcType, int x, int y, int heightLevel, int WalkingType, int HP) {
+	public static void newNPC(int npcType, int x, int y, int heightLevel, int WalkingType) {
 
 		Npc newNPC = new Npc(npcType);
 

@@ -33,9 +33,9 @@ public class NPCCombatData {
 	 * Emotes
 	 */
 	public static int getAttackEmote(Npc npc) {
-		if (Bosses.isBoss(npc.npcId)) {
+		/*if (Bosses.isBoss(npc.npcId)) {
 			return Bosses.get(npc.npcId).getAttackEmote(npc);
-		}
+		}*/
 		if (npc.npcId >= 1694 && npc.npcId <= 1703) {
 			return 3901;
 		}
@@ -53,9 +53,9 @@ public class NPCCombatData {
 	 * Attack delays
 	 */
 	public static int getNpcDelay(Npc npc) {
-		if (Bosses.isBoss(npc.npcId)) {
+		/*if (Bosses.isBoss(npc.npcId)) {
 			return Bosses.get(npc.npcId).getAttackDelay(npc);
-		}
+		}*/
 		switch (npc.npcId) {
 		case 7497:
 			return 6;
@@ -83,9 +83,9 @@ public class NPCCombatData {
 	 * Hit delays
 	 */
 	public static int getHitDelay(Npc npc) {
-		if (Bosses.isBoss(npc.npcId)) {
+		/*if (Bosses.isBoss(npc.npcId)) {
 			return Bosses.get(npc.npcId).getHitDelay(npc);
-		}
+		}*/
 		switch (npc.npcId) {
 		
 		case 7497:
@@ -242,9 +242,9 @@ public class NPCCombatData {
 	 * @return The offset for the npc
 	 */
 	public static int offset(Npc npc) {
-		if (Bosses.isBoss(npc.npcId)) {
+		/*if (Bosses.isBoss(npc.npcId)) {
 			return Bosses.get(npc.npcId).offSet(npc);
-		}
+		}*/
 		switch (npc.npcId) {
 		case 2044:
 			return 0;
@@ -264,9 +264,9 @@ public class NPCCombatData {
 	public static boolean switchesAttackers(Npc npc) {
 		if (npc == null)
 			return false;
-		if (Bosses.isBoss(npc.npcId)) {
+		/*if (Bosses.isBoss(npc.npcId)) {
 			return Bosses.get(npc.npcId).switchesAttackers();
-		}
+		}*/
 		switch (npc.npcId) {
 		case 5579:
 			return true;
@@ -288,7 +288,7 @@ public class NPCCombatData {
 	**/	
 	public static int distanceRequired(Npc npc) {
 		if (Bosses.isBoss(npc.npcId)) {
-			return Bosses.get(npc.npcId).distanceRequired(npc);
+			return Bosses.get(npc.npcId).distance();
 		}
 		switch (npc.npcId) {
 		

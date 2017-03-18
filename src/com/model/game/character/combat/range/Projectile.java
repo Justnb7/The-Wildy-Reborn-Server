@@ -243,10 +243,26 @@ public class Projectile {
 			}
 		}
 	}
-
-	public void createProjectile(int x, int y, int offX, int offY, int angle,
-			int speed, int gfxMoving, int startHeight, int endHeight,
-			int lockon, int time, int slope) {
+	
+	public void createProjectile(int x, int y, int offX, int offY, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().writeFrame(85);
+			player.getOutStream().writeByteC((y - (player.getMapRegionY() * 8)) - 2);
+			player.getOutStream().writeByteC((x - (player.getMapRegionX() * 8)) - 3);
+			player.getOutStream().writeFrame(117);
+			player.getOutStream().writeShort(id);
+			player.getOutStream().writeShort(delay);
+			player.getOutStream().writeByte(angle);
+			player.getOutStream().writeShort(speed);
+			player.getOutStream().writeByte(startHeight);
+			player.getOutStream().writeByte(endHeight);
+			player.getOutStream().writeByte(slope);
+			player.getOutStream().writeByte(radius);
+			player.flushOutStream();
+		}
+	}
+	
+	public void sendProjectile(int x, int y, int offX, int offY, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
 		if (player.getOutStream() != null && player != null) {
 			player.getOutStream().writeFrame(85);
 			player.getOutStream().writeByteC((y - (player.getMapRegionY() * 8)) - 2);
@@ -256,20 +272,18 @@ public class Projectile {
 			player.getOutStream().writeByte(offY);
 			player.getOutStream().writeByte(offX);
 			player.getOutStream().writeShort(lockon);
-			player.getOutStream().writeShort(gfxMoving);
+			player.getOutStream().writeShort(id);
 			player.getOutStream().writeByte(startHeight);
 			player.getOutStream().writeByte(endHeight);
-			player.getOutStream().writeShort(time);
+			player.getOutStream().writeShort(delay);
 			player.getOutStream().writeShort(speed);
 			player.getOutStream().writeByte(slope);
-			player.getOutStream().writeByte(64);
+			player.getOutStream().writeByte(radius);
 			player.flushOutStream();
 		}
 	}
-
-	public void createPlayersProjectile(int x, int y, int offX, int offY,
-			int angle, int speed, int gfxMoving, int startHeight,
-			int endHeight, int lockon, int time, int slope, int lol) {
+	
+	public void playProjectile(int x, int y, int offX, int offY, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
 		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
 			Player p = World.getWorld().getPlayers().get(i);
 			if (p != null) {
@@ -278,7 +292,26 @@ public class Projectile {
 					if (person.getOutStream() != null) {
 						if (person.distanceToPoint(x, y) <= 25) {
 							if (p.heightLevel == player.heightLevel)
-								person.getProjectile().createProjectile(x, y, offX, offY, angle, speed, gfxMoving, startHeight, endHeight, lockon, time, slope, lol);
+								person.getProjectile().sendProjectile(x, y, offX, offY, id, delay, angle, speed, startHeight, endHeight, slope, radius, lockon);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void createPlayersProjectile(int x, int y, int offX, int offY,
+			int angle, int speed, int gfxId, int startHeight,
+			int endHeight, int lockon, int time, int slope, int radius) {
+		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
+			Player p = World.getWorld().getPlayers().get(i);
+			if (p != null) {
+				Player person = p;
+				if (person != null) {
+					if (person.getOutStream() != null) {
+						if (person.distanceToPoint(x, y) <= 25) {
+							if (p.heightLevel == player.heightLevel)
+								person.getProjectile().createProjectile(x, y, offX, offY, angle, speed, gfxId, startHeight, endHeight, lockon, time, slope, radius);
 						}
 					}
 				}
@@ -288,7 +321,7 @@ public class Projectile {
 	
 	public void createProjectile(int x, int y, int offX, int offY, int angle,
 			int speed, int gfxMoving, int startHeight, int endHeight,
-			int lockon, int time, int slope, int lol) {
+			int lockon, int time, int slope, int radius) {
 
 		if (player.getOutStream() != null && player != null) {
 			player.getOutStream().writeFrame(85);
@@ -305,7 +338,7 @@ public class Projectile {
 			player.getOutStream().writeWord(time);
 			player.getOutStream().writeWord(speed);
 			player.getOutStream().writeByte(slope);
-			player.getOutStream().writeByte(lol);
+			player.getOutStream().writeByte(radius);
 			player.flushOutStream();
 		}
 	}

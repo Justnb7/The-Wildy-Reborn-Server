@@ -555,6 +555,13 @@ public class CommandPacketHandler implements PacketType {
     		player.write(new SendConfigPacket(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])));
     		player.write(new SendMessagePacket("Setting config: "+cmd[1]+" Type: "+cmd[2]));
     		return true;
+    		
+    	case "master":
+    		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
+    			player.getSkills().setExperience(i, player.getSkills().getXPForLevel(99) + 1);
+				player.getSkills().setLevel(i, 99);
+    		}
+    		return true;
 			
     	case "setstat":
     		try {

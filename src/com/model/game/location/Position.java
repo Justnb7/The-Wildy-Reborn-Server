@@ -326,6 +326,31 @@ public class Position {
 	 * @return <code>true</code> if the location is in range,
 	 * <code>false</code> if not.
 	 */
+	public int distanceToEntity(Entity attacker, Entity victim) {
+		if (attacker.getWidth() == 1 && attacker.getHeight() == 1 && victim.getWidth() == 1
+				&& victim.getHeight() == 1) {
+			return distanceToPoint(victim.getPosition());
+		}
+		int lowestDistance = 100;
+		List<Position> myTiles = entityTiles(attacker);
+		List<Position> theirTiles = entityTiles(victim);
+		for (Position myTile : myTiles) {
+			for (Position theirTile : theirTiles) {
+				int dist = myTile.distanceToPoint(theirTile);
+				if (dist <= lowestDistance) {
+					lowestDistance = dist;
+				}
+			}
+		}
+		return lowestDistance;
+	}
+	
+	/**
+	 * Checks if a coordinate is within range of another.
+	 *
+	 * @return <code>true</code> if the location is in range,
+	 * <code>false</code> if not.
+	 */
 	public boolean isWithinDistance(Entity attacker, Entity victim, int distance) {
 		if (attacker.getWidth() == 1 && attacker.getHeight() == 1 &&
 				victim.getWidth() == 1 && victim.getHeight() == 1 && distance == 1) {
@@ -446,6 +471,20 @@ public class Position {
 		if (dis > 1.0 && dis < 2)
 			return 2;
 		return (int) dis;
+	}
+	
+	/**
+	 * Gets the distance to a location.
+	 *
+	 * @param other The location.
+	 * @return The distance from the other location.
+	 */
+	public int distanceToPoint(Position other) {
+		int absX = x;
+		int absY = y;
+		int pointX = other.getX();
+		int pointY = other.getY();
+		return (int) Math.sqrt(Math.pow(absX - pointX, 2) + Math.pow(absY - pointY, 2));
 	}
 	
 	public static double getDistance(Position p, Position p2) {

@@ -136,9 +136,11 @@ public class PlayerVsNpcCombat {
 		if (npc.transforming)
 			return false;
 		
-		if(!Slayer.canAttack(player, npc)) {
+		//TODO ask Jak how to do thiss
+		/*if(!Slayer.canAttack(player, npc)) {
+			player.debug("is it cuz of own stupidity?");
 			return false;
-		}
+		}*/
 		
 		if (npc.isArmadylNpc() && player.getCombatType() == CombatType.MELEE) {
 			player.write(new SendMessagePacket("You can only use range or magic against this npc."));

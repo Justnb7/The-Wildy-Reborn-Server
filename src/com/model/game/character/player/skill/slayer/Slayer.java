@@ -45,6 +45,7 @@ public class Slayer {
 
 	public static boolean isSlayerTask(Player player, int npcId) {
 		if (player.getSlayerTask() == npcId) {
+			player.debug("task");
 			return true;
 		}
 		return false;
@@ -59,8 +60,8 @@ public class Slayer {
 	 */
 	public static boolean canAttack(Player player, Npc npc) {
 		if (isSlayerTask(player, npc.npcId)) {
-			if (task.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER)) {
-				return true;
+			if (player.getSkills().getLevel(Skills.SLAYER) < task.getSlayerReq()) {
+				return false;
 			}
 			if(npc.npcId == 5534 && player.getSlayerTask() != 494) {
 				player.write(new SendMessagePacket("You must have Kraken's as a slayer-task to disturb these whirlpools."));
@@ -71,7 +72,7 @@ public class Slayer {
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 }

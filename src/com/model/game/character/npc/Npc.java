@@ -6,7 +6,6 @@ import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.nvp.NpcVsPlayerCombat;
-import com.model.game.character.npc.combat.combat_scripts.Scorpia;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -134,15 +133,6 @@ public class Npc extends Entity {
 	 * npc Locations
 	 */
 	public int makeX, makeY, moveX, moveY;
-
-	/**
-	 * representing the npc index
-	 */
-	public int npcIndex;
-	
-	//fml called to many times lmao cant we just replace all with owner? 
-	// nah cos they might be used in diff situations, its fine tho everything will work
-	// lets remove the debugs and commit
 	
 	public int combatLevel, attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth,
 			attackTimer, killedBy, oldIndex, underAttackBy, walking_type;
@@ -520,8 +510,8 @@ public class Npc extends Entity {
 						// flag spawned
 						spawnedScorpiaMinions = true;
 						// start task
-						Scorpia.heal_scorpia(this, min1);
-						Scorpia.heal_scorpia(this, min2);
+						//Scorpia.heal_scorpia(this, min1);
+						//Scorpia.heal_scorpia(this, min2);
 					}
 				}
 			}

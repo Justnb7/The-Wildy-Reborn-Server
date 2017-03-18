@@ -321,7 +321,17 @@ public class Combat {
                 dam1 = 0;
             }
 
+            // ok so to deal damage there are 2 things that happen
+            // (1) you create a new Hit instance by doing target.takehit -
+            // this checks for overhead prayers on the same tick the attack started..
+            // it also does veng,recoil,damage tracking,npc reduction (corp, dks)...
+            // all in 1 method, instead of PI where it had the same code 5+ times
+            // once you have the Hit instance, you keep it for a bit, and submit a Tickable Event
+            // which, once finishes, applies the hit you set up like 5 seconds ago.
+            
+            // Here: setup the Hit
             Hit hitInfo = target.take_hit(player, dam1, CombatType.MELEE, false);
+            // (2) Here: submit an event that applies the Hit X ticks later
             Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 
         } else if (player.getCombatType() == CombatType.RANGED) {
@@ -658,30 +668,36 @@ public class Combat {
 
     }
 
-    public static void hitEvent(Player player, Entity target, int delay, Hit hit, CombatType combatType) {
+    public static void hitEvent(Entity attacker, Entity target, int delay, Hit hit, CombatType combatType) {
 
         // Schedule a task
         Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
             public void execute() {
-                PlayerSounds.sendBlockOrHitSound(player, hit.getDamage() > 0);
+            	if (attacker.isPlayer())
+            		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
+            	
+            	// Apply the damage inside Hit
                 target.damage(hit);
 
-                // Range attack invoke block emote when hit appears.
-                if (hit.cbType == CombatType.RANGED && target.isNPC()) {
-                    if (((Npc) target).attackTimer < 5)
-                        target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((Npc) target))));
-
-                    player.setAttribute("ignore defence", false);
-                }
-                if (hit.cbType == CombatType.MAGIC) {
-                    if (player.getCombat().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX
-                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 100));
-                    } else if (!player.magicFailed) {
-                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombat().getEndGfxHeight()));
-                    } else if (player.magicFailed) {
-                        target.playGraphics(Graphic.create(85, 0, 100));
-                    }
-
+                if (attacker.isPlayer()) {
+                	Player player = (Player) attacker;
+	                // Range attack invoke block emote when hit appears.
+	                if (hit.cbType == CombatType.RANGED && target.isNPC()) {
+	                    if (((Npc) target).attackTimer < 5)
+	                        target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((Npc) target))));
+	
+	                    player.setAttribute("ignore defence", false);
+	                }
+	                if (hit.cbType == CombatType.MAGIC) {
+	                    if (player.getCombat().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX
+	                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 100));
+	                    } else if (!player.magicFailed) {
+	                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombat().getEndGfxHeight()));
+	                    } else if (player.magicFailed) {
+	                        target.playGraphics(Graphic.create(85, 0, 100));
+	                    }
+	
+	                }
                 }
                 this.stop();
             }

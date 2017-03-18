@@ -33,9 +33,6 @@ public class NPCCombatData {
 	 * Emotes
 	 */
 	public static int getAttackEmote(Npc npc) {
-		/*if (Bosses.isBoss(npc.npcId)) {
-			return Bosses.get(npc.npcId).getAttackEmote(npc);
-		}*/
 		if (npc.npcId >= 1694 && npc.npcId <= 1703) {
 			return 3901;
 		}
@@ -47,104 +44,6 @@ public class NPCCombatData {
 	
 	public static int getDeadEmote(Npc npc) {
 		return npc.getDefinition().getDeathAnimation();
-	}
-
-	/**
-	 * Attack delays
-	 */
-	public static int getNpcDelay(Npc npc) {
-		/*if (Bosses.isBoss(npc.npcId)) {
-			return Bosses.get(npc.npcId).getAttackDelay(npc);
-		}*/
-		switch (npc.npcId) {
-		case 7497:
-			return 6;
-		case 1672:
-		case 1675:
-		case 5996:
-			return 7;
-		case 3127:
-			return 8;
-		case 6260:
-			return 7;
-		case 6204:
-			return 8;
-		case 6208:
-		case 2043:
-			return 8;
-		case 2205:
-			return 4;
-		default:
-			return npc.getDefinition().getAttackSpeed();
-		}
-	}
-
-	/**
-	 * Hit delays
-	 */
-	public static int getHitDelay(Npc npc) {
-		/*if (Bosses.isBoss(npc.npcId)) {
-			return Bosses.get(npc.npcId).getHitDelay(npc);
-		}*/
-		switch (npc.npcId) {
-		
-		case 7497:
-			return 5;
-		
-		case 5535:
-			return 5;
-		
-		case 6607:
-		case 6616:
-			return 4;
-		
-		case 492:
-			return 4;
-			
-		case 6528:
-			
-		case 4303:
-		case 4304:
-			if (npc.attackStyle == 1 || npc.attackStyle == 2) {
-				return 3;
-			} else {
-				return 2;
-			}
-			
-		case 2043:
-			return 6;
-			
-		case 3125:
-		case 3121:
-		case 2167:
-			return 3;
-
-		case 3127:
-			if (npc.attackStyle == 1 || npc.attackStyle == 2)
-				return 5;
-			else
-				return 2;
-
-		case 1672:
-			return 4;
-			
-		case 1675:
-			return 3;
-			
-		case 6361:
-			if (npc.attackStyle == 2)
-				return 4;
-			else if (npc.attackStyle == 1)
-				return 4;
-			else
-				return 2;
-			
-		case 319:
-			return 5;
-			
-		default:
-			return 2;
-		}
 	}
 	
 	/**
@@ -232,47 +131,6 @@ public class NPCCombatData {
 			break;
 		}
 		return 31;
-	}
-
-	/**
-	 * Gets the offset for the npc
-	 * 
-	 * @param npc
-	 *            The {@link Npc} to get the offset for
-	 * @return The offset for the npc
-	 */
-	public static int offset(Npc npc) {
-		/*if (Bosses.isBoss(npc.npcId)) {
-			return Bosses.get(npc.npcId).offSet(npc);
-		}*/
-		switch (npc.npcId) {
-		case 2044:
-			return 0;
-			
-		case 6581:
-		case 6580:
-			return 1;
-			
-		case 3127:
-		case 3125:
-			return 1;
-			
-		}
-		return 0;
-	}
-
-	public static boolean switchesAttackers(Npc npc) {
-		if (npc == null)
-			return false;
-		/*if (Bosses.isBoss(npc.npcId)) {
-			return Bosses.get(npc.npcId).switchesAttackers();
-		}*/
-		switch (npc.npcId) {
-		case 5579:
-			return true;
-		}
-
-		return false;
 	}
 
 	/**

@@ -125,15 +125,15 @@ public class NpcVsPlayerCombat {
 					// don't do any code below this, boss script handles all.
 					return;
 				}
-				npc.attackTimer = NPCCombatData.getNpcDelay(npc);
+				npc.attackTimer = npc.getDefinition().getAttackSpeed();
 
 				if (npc.attackStyle == 3) {
 					npc.hitDelayTimer += 2;
 				}
 
 				if (npc.projectileId > 0) {
-					int nX = npc.getX() + NPCCombatData.offset(npc);
-					int nY = npc.getY() + NPCCombatData.offset(npc);
+					int nX = npc.getX();
+					int nY = npc.getY();
 					int pX = player.getX();
 					int pY = player.getY();
 					int offX = (nX - pX) * -1;

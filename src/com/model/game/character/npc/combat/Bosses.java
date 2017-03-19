@@ -8,11 +8,10 @@ import com.model.game.character.npc.combat.combat_scripts.KetZek;
 
 
 /**
- * 
+ * All the bosses that have a custom script
  * @author Patrick van Elderen
  * @date Feb, 23-2-2016
  */
-
 public class Bosses {
 	
 	private static Map<Integer, Boss> bosses = new HashMap<>();

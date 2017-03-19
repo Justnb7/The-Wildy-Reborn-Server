@@ -5,7 +5,6 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
 

@@ -8,12 +8,12 @@ import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.npcs.Boss;
+import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.npc.Npc;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
-public class KetZek extends Boss {
+public class KetZek extends AbstractBossCombat {
 
 	public KetZek(int npcId) {
 		super(npcId);
@@ -84,7 +84,7 @@ public class KetZek extends Boss {
 	}
 
 	@Override
-	public int distance() {
+	public int distance(Entity attacker) {
 		return 8;
 	}
 

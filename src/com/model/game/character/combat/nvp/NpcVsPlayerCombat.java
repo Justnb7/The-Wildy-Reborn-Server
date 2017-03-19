@@ -6,8 +6,8 @@ import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatType;
-import com.model.game.character.combat.npcs.Boss;
-import com.model.game.character.combat.npcs.Bosses;
+import com.model.game.character.combat.npcs.AbstractBossCombat;
+import com.model.game.character.combat.npcs.BossScripts;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.player.Boundary;
@@ -33,7 +33,7 @@ public class NpcVsPlayerCombat {
 	public static void handleCombatTimer(Npc npc) {
 		//npc.forceChat("attacktimer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
 		
-		boolean isBoss = Bosses.isBoss(npc.npcId);
+		boolean isBoss = BossScripts.isBoss(npc.npcId);
 
 		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
@@ -103,8 +103,8 @@ public class NpcVsPlayerCombat {
 					NPCCombatData.distanceRequired(npc))) {
 				npc.randomWalk = false;
 				
-				boolean isBoss = Bosses.isBoss(npc.npcId);
-				Boss boss_cb = Bosses.get(npc.npcId);
+				boolean isBoss = BossScripts.isBoss(npc.npcId);
+				AbstractBossCombat boss_cb = BossScripts.get(npc.npcId);
 				if (isBoss) {
 					boss_cb.execute(npc, player);
 					// don't do any code below this, boss script handles all.

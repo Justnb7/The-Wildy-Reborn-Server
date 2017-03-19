@@ -12,9 +12,9 @@ import com.model.game.character.combat.npcs.script.KetZek;
  * @author Patrick van Elderen
  * @date Feb, 23-2-2016
  */
-public class Bosses {
+public class BossScripts {
 	
-	private static Map<Integer, Boss> bosses = new HashMap<>();
+	private static Map<Integer, AbstractBossCombat> bosses = new HashMap<>();
 	
 	
 	private static final KetZek KET_ZEK = new KetZek(3125);
@@ -27,7 +27,7 @@ public class Bosses {
 
 	}
 	
-	public static Boss get(int npcId) {
+	public static AbstractBossCombat get(int npcId) {
 		if (!bosses.containsKey(npcId))
 			return null;
 		return bosses.get(npcId);

@@ -1,10 +1,10 @@
-package com.model.game.character.npc.combat;
+package com.model.game.character.combat.npcs;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.model.game.character.npc.combat.combat_scripts.KetZek;
+import com.model.game.character.combat.npcs.script.KetZek;
 
 
 /**

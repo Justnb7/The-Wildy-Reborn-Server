@@ -1,4 +1,4 @@
-package com.model.game.character.npc.combat;
+package com.model.game.character.combat.npcs;
 
 import com.model.game.character.Entity;
 

@@ -1,7 +1,7 @@
-package com.model.game.character.npc.combat.combat_scripts;
+package com.model.game.character.combat.npcs.script;
 
 import com.model.game.character.Entity;
-import com.model.game.character.npc.combat.Boss;
+import com.model.game.character.combat.npcs.Boss;
 
 public class TokXil extends Boss {
 

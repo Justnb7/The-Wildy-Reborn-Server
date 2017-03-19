@@ -1,4 +1,4 @@
-package com.model.game.character.npc.combat.combat_scripts;
+package com.model.game.character.combat.npcs.script;
 
 import com.model.Server;
 import com.model.game.character.Animation;
@@ -8,8 +8,8 @@ import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.npcs.Boss;
 import com.model.game.character.npc.Npc;
-import com.model.game.character.npc.combat.Boss;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -35,11 +35,8 @@ public class KetZek extends Boss {
 			npc.playAnimation(Animation.create(npc.getDefinition().getAttackAnimation()));
 			int randomHit = Utility.random(maxHit);
 			
-			// Set up a Hit instance
             Hit hitInfo = victim.take_hit(attacker, randomHit, CombatType.MELEE, false);
 
-            // apply damage - call this, change the 'delay' param to whatever you want the delay to be
-            // and the method submits the Event
             Combat.hitEvent(attacker, victim, 1, hitInfo, CombatType.MELEE);
 			
 			break;
@@ -61,20 +58,16 @@ public class KetZek extends Boss {
 				gfxDelay = 140;
 			}
 			int delay = (gfxDelay / 20) - 1;
-			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 445, 25, 5, clientSpeed, 43, 36, 10, 48));
 			
-			// Right away: calculate a max hit.
+			
+			//npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 445, 25, 5, clientSpeed, 43, 36, 10, 48));
+			
 			randomHit = Utility.random(maxHit);
 			
-			// Set up a Hit instance
             hitInfo = victim.take_hit(attacker, randomHit, CombatType.MAGIC, false);
 
-            // apply damage - call this, change the 'delay' param to whatever you want the delay to be
-            // and the method submits the Event
             Combat.hitEvent(attacker, victim, delay, hitInfo, CombatType.MAGIC);
             
-            // now the 1 last addition which depends on the Npc is the graphic at the end
-            // This can be a seperate Task
             Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
 				@Override
 				public void execute() {

@@ -3,8 +3,8 @@ package com.model.game.character.combat.nvp;
 import java.util.Arrays;
 import java.util.List;
 
+import com.model.game.character.combat.npcs.Bosses;
 import com.model.game.character.npc.Npc;
-import com.model.game.character.npc.combat.Bosses;
 import com.model.utility.json.definitions.NpcDefinition;
 
 /**

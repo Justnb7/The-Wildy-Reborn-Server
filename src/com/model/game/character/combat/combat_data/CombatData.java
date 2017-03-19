@@ -256,7 +256,7 @@ public class CombatData {
 	 */
 	public static int calculateAttackDistance(Player player, Player victim, boolean follow) {
 		int distance = 1;
-		if (player.getCombatType() == CombatType.RANGED && player.getEquipment().isThrowingWeapon(player)) {
+		if (player.getCombatType() == CombatType.RANGE && player.getEquipment().isThrowingWeapon(player)) {
 			distance = 4;
 		} else if (usingHalberd(player) && player.getCombatType() == CombatType.MELEE) {
 			distance = 2;

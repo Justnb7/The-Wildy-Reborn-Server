@@ -25,7 +25,7 @@ public class DarkBow implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		player.setCombatType(CombatType.RANGED);
+		player.setCombatType(CombatType.RANGE);
 		player.playAnimation(Animation.create(426));
 		
 		player.getItems().deleteArrow();

@@ -108,7 +108,7 @@ public class Combat {
 		/*
          * Verify if we have the proper arrows/bolts
 		 */
-        if (player.getCombatType() == CombatType.RANGED) {
+        if (player.getCombatType() == CombatType.RANGE) {
             int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
             int ammo = player.playerEquipment[player.getEquipment().getQuiverId()];
             boolean crystal = wep >= 4212 && wep <= 4223;
@@ -197,7 +197,7 @@ public class Combat {
         }
 
 
-        if (player.getCombatType() == CombatType.MAGIC || player.getCombatType() == CombatType.RANGED ||
+        if (player.getCombatType() == CombatType.MAGIC || player.getCombatType() == CombatType.RANGE ||
                 (CombatData.usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2))) {
             player.stopMovement();
         }
@@ -326,7 +326,7 @@ public class Combat {
             // (2) Here: submit an event that applies the Hit X ticks later
             Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 
-        } else if (player.getCombatType() == CombatType.RANGED) {
+        } else if (player.getCombatType() == CombatType.RANGE) {
 
             if (player.getAttackStyle() == 2)
                 player.attackDelay--;
@@ -378,8 +378,8 @@ public class Combat {
             }
 
             // Apply dmg.
-            Hit hitInfo = target.take_hit(player, dam1, CombatType.RANGED, false).giveXP(player);
-            Combat.hitEvent(player, target, 1, hitInfo, CombatType.RANGED);
+            Hit hitInfo = target.take_hit(player, dam1, CombatType.RANGE, false).giveXP(player);
+            Combat.hitEvent(player, target, 1, hitInfo, CombatType.RANGE);
 
             int[] endGfx = RangeData.getRangeEndGFX(player);
             // Graphic that appears when hit appears.
@@ -645,7 +645,7 @@ public class Combat {
             boolean javalin = player.getCombat().properJavalins();
 
             if (handthrown || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
-                player.setCombatType(CombatType.RANGED);
+                player.setCombatType(CombatType.RANGE);
                 followDist = handthrown ? 4 : 7;
             }
         }
@@ -674,7 +674,7 @@ public class Combat {
                 if (attacker.isPlayer()) {
                 	Player player = (Player) attacker;
 	                // Range attack invoke block emote when hit appears.
-	                if (hit.cbType == CombatType.RANGED && target.isNPC()) {
+	                if (hit.cbType == CombatType.RANGE && target.isNPC()) {
 	                    if (((NPC) target).attackTimer < 5)
 	                        target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((NPC) target))));
 	

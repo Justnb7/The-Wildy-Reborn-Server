@@ -44,7 +44,7 @@ public class CombatExperience {
 			}
 			player.getSkills().addExperience(Skills.HITPOINTS, (damage * 1.33));
 			break;
-		case RANGED:
+		case RANGE:
 			switch (player.getAttackStyle()) {
 			case AttackStyle.ACCURATE:
 			case AttackStyle.AGGRESSIVE:

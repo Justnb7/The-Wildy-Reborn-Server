@@ -15,7 +15,7 @@ public enum CombatType {
     /**
      * The ranged combat type, includes things like bows and crossbows.
      */
-    RANGED,
+    RANGE,
     
     /**
      * The magic combat type, includes things like fire blast and ice barrage.

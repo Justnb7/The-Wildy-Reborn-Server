@@ -104,7 +104,7 @@ public class PlayerVsNpcCombat {
 		boolean ignoreClip = npc.getId() == 494 || npc.getId() == 492 || npc.getId() == 493 || npc.getId() == 496 || npc.getId() == 5534 || npc.getId() == 5535 || npc.getId() == 2054 || npc.getId() == 5947;
 		if (ignoreClip)
 			return true;
-		boolean projectile = player.getCombatType() == CombatType.RANGED || player.getCombatType() == CombatType.MAGIC;
+		boolean projectile = player.getCombatType() == CombatType.RANGE || player.getCombatType() == CombatType.MAGIC;
 		if (projectile) {
 			for (Position pos : npc.getBorder()) {
 				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
@@ -287,7 +287,7 @@ public class PlayerVsNpcCombat {
 					break;
 				}
 			} else {
-				if (distance <= (player.getCombatType() == CombatType.RANGED ? 10 : 15)) {
+				if (distance <= (player.getCombatType() == CombatType.RANGE ? 10 : 15)) {
 					hasDistance = true;
 					break;
 				}

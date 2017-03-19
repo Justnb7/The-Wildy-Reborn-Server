@@ -55,12 +55,12 @@ public class PlayerVsPlayerCombat {
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (!Objects.isNull(session)) {
-				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatType.RANGED)) {
+				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatType.RANGE)) {
 					player.message("<col=CC0000>Range has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
-				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatType.RANGED && !player.usingMagic)) {
+				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatType.RANGE && !player.usingMagic)) {
 					player.message("<col=CC0000>Melee has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;

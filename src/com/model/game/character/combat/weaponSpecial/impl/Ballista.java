@@ -24,7 +24,7 @@ public class Ballista implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		player.setCombatType(CombatType.RANGED);
+		player.setCombatType(CombatType.RANGE);
 		player.playAnimation(Animation.create(7222));
 		
 		player.getItems().deleteArrow();

@@ -419,7 +419,7 @@ public abstract class Entity {
 				if (combat_type == CombatType.MELEE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 					damage *= prayProtection;
 				}
-				if (combat_type == CombatType.RANGED && player_me.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
+				if (combat_type == CombatType.RANGE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 					damage *= prayProtection;
 				}
 				if (combat_type == CombatType.MAGIC && player_me.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
@@ -460,7 +460,7 @@ public abstract class Entity {
 				damage = 0;
 			}
 			//Rex and Supreme do not take range damage
-			if (combat_type == CombatType.RANGED && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
+			if (combat_type == CombatType.RANGE && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
 				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}

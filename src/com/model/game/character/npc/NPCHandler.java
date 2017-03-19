@@ -368,7 +368,7 @@ public final class NPCHandler {
 		for (Position pos : npc.getTiles()) {
 			double distance = pos.distance(target.getPosition());
 			boolean magic = npc.getCombatType() == CombatType.MAGIC;
-			boolean ranged = !magic && npc.getCombatType() == CombatType.RANGED;
+			boolean ranged = !magic && npc.getCombatType() == CombatType.RANGE;
 			boolean melee = !magic && !ranged;
 			if (melee || npc.isPet) {
 				if (distance <= 1) { // Stop following when close

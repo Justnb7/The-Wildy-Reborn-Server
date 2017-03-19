@@ -46,8 +46,8 @@ public class MagicShortbow implements SpecialAttack {
 		}
 
 		// TODO maxhit, accuracy calc
-		Combat.hitEvent(player, target, 1, new Hit(dam1), CombatType.RANGED);
-		Combat.hitEvent(player, target, 1, new Hit(dam2), CombatType.RANGED);
+		Combat.hitEvent(player, target, 1, new Hit(dam1), CombatType.RANGE);
+		Combat.hitEvent(player, target, 1, new Hit(dam2), CombatType.RANGE);
 	}
 
 	@Override

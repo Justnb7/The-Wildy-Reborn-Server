@@ -9,9 +9,8 @@ import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 
 /**
- * 
- * @author Patrick van Elderen
- * @version 1.0
+ * The class which handles Venom activity
+ * @author https://www.rune-server.ee/members/max+_/
  * @date 14-08-2015
  *
  */

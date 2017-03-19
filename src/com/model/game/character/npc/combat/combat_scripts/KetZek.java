@@ -6,10 +6,10 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
-import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -27,13 +27,11 @@ public class KetZek extends Boss {
 		}
 		CombatType style = attacker.getPosition().distanceToEntity(attacker, victim) <= 1 ? CombatType.MELEE : CombatType.MAGIC;
 		Npc npc = (Npc) attacker;
-		Player vicPlayer = (Player) victim;
 		
 		int maxHit = style == CombatType.MAGIC ? 48 : 54;
 		
 		switch (style) {
 		case MELEE:
-			vicPlayer.debug("comb systeem melee");
 			npc.playAnimation(Animation.create(npc.getDefinition().getAttackAnimation()));
 			int randomHit = Utility.random(maxHit);
 			
@@ -46,7 +44,6 @@ public class KetZek extends Boss {
 			
 			break;
 		case MAGIC:
-			vicPlayer.debug("comb systeem magic");
 			npc.playAnimation(Animation.create(2647));
 			int clientSpeed;
 			int gfxDelay;
@@ -63,11 +60,9 @@ public class KetZek extends Boss {
 				clientSpeed = 130;
 				gfxDelay = 140;
 			}
-			int offX = (attacker.getY() - victim.getY()) * -1;
-			int offY = (attacker.getX() - victim.getX()) * -1;
 			int delay = (gfxDelay / 20) - 1;
-			vicPlayer.getProjectile().createPlayersProjectile(attacker.getX() + 1, attacker.getY() + 1, offX, offY, 50, clientSpeed, 445, 133, 31, -victim.getIndex() - 1, 76);
-
+			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 445, 25, 5, clientSpeed, 43, 36, 10, 48));
+			
 			// Right away: calculate a max hit.
 			randomHit = Utility.random(maxHit);
 			

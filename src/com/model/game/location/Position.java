@@ -474,6 +474,20 @@ public class Position {
 	}
 	
 	/**
+	 * Checks if this location is within range of another.
+	 * @param other The other location.
+	 * @return <code>true</code> if the location is in range,
+	 * <code>false</code> if not.
+	 */
+	public boolean isWithinDistance(Position other) {
+		if(z != other.z) {
+			return false;
+		}
+		int deltaX = other.x - x, deltaY = other.y - y;
+		return deltaX <= 14 && deltaX >= -15 && deltaY <= 14 && deltaY >= -15;
+	}
+	
+	/**
 	 * Gets the distance to a location.
 	 *
 	 * @param other The location.

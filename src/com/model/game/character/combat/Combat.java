@@ -320,17 +320,9 @@ public class Combat {
             if (!(CombatFormulae.getAccuracy(player, target, 0, 1.0))) {
                 dam1 = 0;
             }
-
-            // ok so to deal damage there are 2 things that happen
-            // (1) you create a new Hit instance by doing target.takehit -
-            // this checks for overhead prayers on the same tick the attack started..
-            // it also does veng,recoil,damage tracking,npc reduction (corp, dks)...
-            // all in 1 method, instead of PI where it had the same code 5+ times
-            // once you have the Hit instance, you keep it for a bit, and submit a Tickable Event
-            // which, once finishes, applies the hit you set up like 5 seconds ago.
             
-            // Here: setup the Hit
-            Hit hitInfo = target.take_hit(player, dam1, CombatType.MELEE, false);
+            //setup the Hit
+            Hit hitInfo = target.take_hit(player, dam1, CombatType.MELEE, false).giveXP(player);
             // (2) Here: submit an event that applies the Hit X ticks later
             Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 
@@ -386,7 +378,7 @@ public class Combat {
             }
 
             // Apply dmg.
-            Hit hitInfo = target.take_hit(player, dam1, CombatType.RANGED, false);
+            Hit hitInfo = target.take_hit(player, dam1, CombatType.RANGED, false).giveXP(player);
             Combat.hitEvent(player, target, 1, hitInfo, CombatType.RANGED);
 
             int[] endGfx = RangeData.getRangeEndGFX(player);

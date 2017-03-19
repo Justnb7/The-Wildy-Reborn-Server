@@ -793,6 +793,16 @@ public class Player extends Entity {
 	public Position getPosition() {
 		return new Position(absX, absY, heightLevel);
 	}
+	
+	@Override
+	public Position getCentreLocation() {
+		return getPosition();
+	}
+	
+	@Override
+	public int getProjectileLockonIndex() {
+		return -getIndex() - 1;
+	}
 
 	public long lastBankDeposit;
 
@@ -3156,5 +3166,4 @@ public class Player extends Entity {
 	public WarriorsGuild getWarriorsGuild() {
 		return warriorsGuild;
 	}
-
 }

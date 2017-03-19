@@ -1,10 +1,12 @@
 package com.model.game.character.player;
 
+import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.item.Item;
+import com.model.game.location.Position;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
 
@@ -492,6 +494,61 @@ public class ActionSender {
 			player.getOutStream().writeShort(itemID);
 			player.flushOutStream();
 		}
+		return this;
+	}
+	
+	/**
+     * Sends a projectile to a location.
+     *
+     * @param start       The starting location.
+     * @param finish      The finishing location.
+     * @param id          The graphic id.
+     * @param delay       The delay before showing the projectile.
+     * @param angle       The angle the projectile is coming from.
+     * @param speed       The speed the projectile travels at.
+     * @param startHeight The starting height of the projectile.
+     * @param endHeight   The ending height of the projectile.
+     * @param lockon      The lockon index of the projectile, so it follows them if they
+     *                    move.
+     * @param slope       The slope at which the projectile moves.
+     * @param radius      The radius from the centre of the tile to display the
+     *                    projectile from.
+     * @return The action sender instance, for chaining.
+     */
+    public ActionSender sendProjectile(Position start, Position to, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
+        int offsetX = to.getX() - start.getX();
+        int offsetY = to.getY() - start.getY();
+
+        sendLocalCoordinates(start);
+        player.getOutStream().writeFrame(117);
+        player.getOutStream().writeByte(0);
+        player.getOutStream().writeByte(offsetX);
+        player.getOutStream().writeByte(offsetY);
+        player.getOutStream().writeShort(lockon);
+        player.getOutStream().writeShort(id);
+        player.getOutStream().writeByte(startHeight);
+        player.getOutStream().writeByte(endHeight);
+        player.getOutStream().writeShort(delay);
+        player.getOutStream().writeShort(speed);
+        player.getOutStream().writeByte(slope);
+        player.getOutStream().writeByte(radius);
+
+        player.flushOutStream();
+        return this;
+    }
+    
+    public ActionSender sendProjectile(Projectile projectile) {
+		return sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(), projectile.getLockon(), projectile.getSlope(), projectile.getRadius());
+	}
+	
+	public ActionSender sendLocalCoordinates(Position position) {
+		player.getOutStream().writeFrame(85);
+		int y = position.getY() - player.getMapRegionY() * 8 - 2;
+		int x = position.getX() - player.getMapRegionX() * 8 - 3;
+
+		player.getOutStream().writeByteC(y);
+		player.getOutStream().writeByteC(x);
+		player.flushOutStream();
 		return this;
 	}
 }

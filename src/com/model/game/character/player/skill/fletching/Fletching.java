@@ -393,7 +393,7 @@ public class Fletching {
 		if (player.getItems().playerHasItem(player.fletchItem, 1)) {
 			player.getItems().deleteItem(player.fletchItem, 1);
 			player.getItems().addItem(player.arrowShaft, 15);
-			player.getSkills().addExperience(Skills.FISHING, 5);
+			player.getSkills().addExperience(Skills.FLETCHING, 5);
 			player.getActionSender().sendRemoveInterfacePacket();
 			player.playAnimation(Animation.create(1248));
 			player.lastFletch = System.currentTimeMillis();

@@ -755,6 +755,16 @@ public class Npc extends Entity {
 	public int getWidth() {
 		return getDefinition().getSize();
 	}
+	
+	@Override
+	public Position getCentreLocation() {
+		return Position.create(getPosition().getX() + getWidth() / 2, getPosition().getY() + getHeight() / 2, getPosition().getZ());
+	}
+	
+	@Override
+	public int getProjectileLockonIndex() {
+		return getIndex() + 1;
+	}
 
 	@Override
 	public boolean isDead() {

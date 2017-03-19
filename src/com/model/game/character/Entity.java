@@ -3,6 +3,8 @@ package com.model.game.character;
 import com.google.common.base.Preconditions;
 import com.model.Server;
 import com.model.game.character.combat.PrayerHandler.Prayers;
+import com.model.game.World;
+import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.RingOfRecoil;
@@ -18,6 +20,7 @@ import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+import com.model.utility.cache.map.Region;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -814,6 +817,24 @@ public abstract class Entity {
 	}
 	
 	/**
+	 * Plays graphics.
+	 * @param graphic The graphics.
+	 */
+	public void playProjectile(Projectile projectile) {
+		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
+			Player p = World.getWorld().getPlayers().get(i);
+			if (p != null) {
+				Player person = p;
+				if (person.getOutStream() != null) {
+					if (person.getPosition().isWithinDistance(this.getPosition())) {
+						person.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(), projectile.getLockon(), projectile.getSlope(), projectile.getRadius());
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Gets the width of the entity.
 	 * @return The width of the entity.
 	 */
@@ -826,5 +847,18 @@ public abstract class Entity {
 	public abstract int getHeight();
 
 	public abstract boolean isDead();
+	
+	/**
+	 * Gets the centre location of the entity.
+	 * @return The centre location of the entity.
+	 */
+	public abstract Position getCentreLocation();
+	
+	/**
+	 * Gets the projectile lockon index of this mob.
+	 *
+	 * @return The projectile lockon index of this mob.
+	 */
+	public abstract int getProjectileLockonIndex();
 	
 }

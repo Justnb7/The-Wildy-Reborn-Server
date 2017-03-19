@@ -134,7 +134,7 @@ public class Npc extends Entity {
 	 */
 	public int makeX, makeY, moveX, moveY;
 	
-	public int combatLevel, attackStyle, projectileId, endGfx, spawnedBy, hitDelayTimer, currentHealth, maximumHealth,
+	public int combatLevel, projectileId, spawnedBy, currentHealth, maximumHealth,
 			attackTimer, killedBy, oldIndex, underAttackBy, walking_type;
 	
 	/**

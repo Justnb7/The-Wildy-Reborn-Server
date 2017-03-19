@@ -1,26 +1,18 @@
 package com.model.game.character.combat.nvp;
 
-import java.util.List;
-
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
-import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.PrayerHandler.Prayers;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.npc.Npc;
 import com.model.game.character.npc.combat.Boss;
 import com.model.game.character.npc.combat.Bosses;
-import com.model.game.character.npc.combat.MobAttackType;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
-import com.model.game.character.player.Skills;
-import com.model.game.character.player.content.music.sounds.MobAttackSounds;
-import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
 
@@ -39,26 +31,20 @@ public class NpcVsPlayerCombat {
 	 *            The {@link Npc} to handle combat timers for
 	 */
 	public static void handleCombatTimer(Npc npc) {
-		npc.forceChat("attacktimre: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
-		// TODO PI old system for making damage show up -> REMOVE ALL THIS CODE!! your new way of doing it is world.scheduler().submit(task() { target.damage(50) });
-		if (npc.hitDelayTimer > 0) {
-			npc.hitDelayTimer--;
-		}
-
-		boolean isBoss = Bosses.isBoss(npc.npcId);
+		//npc.forceChat("attacktimer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
 		
-		if(!isBoss) {
-			if (npc.hitDelayTimer == 1) {
-				npc.hitDelayTimer = 0;
-				executeDamage(npc);
-			}
-		}
+		boolean isBoss = Bosses.isBoss(npc.npcId);
 
 		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
 			npc.attackTimer--;
-			// npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+"
-			// "+npc.randomWalk);
+			//npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
+		}
+		
+		if(!isBoss) {
+			if (npc.attackTimer == 1) {
+				executeDamage(npc);
+			}
 		}
 
 		// If we havent been attacked within last 5 secs reset who last attack us
@@ -117,7 +103,6 @@ public class NpcVsPlayerCombat {
 					NPCCombatData.distanceRequired(npc))) {
 				npc.randomWalk = false;
 				
-				npc.attackStyle = 0;
 				boolean isBoss = Bosses.isBoss(npc.npcId);
 				Boss boss_cb = Bosses.get(npc.npcId);
 				if (isBoss) {
@@ -126,10 +111,6 @@ public class NpcVsPlayerCombat {
 					return;
 				}
 				npc.attackTimer = npc.getDefinition().getAttackSpeed();
-
-				if (npc.attackStyle == 3) {
-					npc.hitDelayTimer += 2;
-				}
 
 				if (npc.projectileId > 0) {
 					int nX = npc.getX();
@@ -230,12 +211,13 @@ public class NpcVsPlayerCombat {
 	}
 
 	/**
-	 * Applies damage to the target
+	 * Applies damage to the target, for non boss characters.
 	 * 
 	 * @param npc
 	 *            The {@link Npc} attacking the player
 	 */
 	public static void executeDamage(Npc npc) {
+		
 		if (npc != null) {
 			if (World.getWorld().getPlayers().get(npc.oldIndex) == null) {
 				return;
@@ -257,131 +239,14 @@ public class NpcVsPlayerCombat {
 				player.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(player)));
 			}
 
-			int damage = 0;
-			int secondDamage = -1;
-			damage = Utility.getRandom(npc.getDefinition().getMaxHit());
+			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
+			// Set up a Hit instance
+            Hit hitInfo = player.take_hit(npc, damage, npc.getCombatType(), false);
 
-			if (npc.attackStyle == MobAttackType.MELEE) {
-				if (!(CombatFormulae.getAccuracy(npc, player, npc.attackStyle, 1.0))) {
-					damage = 0;
-				}
-				if (player.isActivePrayer(Prayers.PROTECT_FROM_MELEE) && npc.npcId != 1677) {
-					damage = 0;
-				}
-				if (player.playerEquipment[player.getEquipment().getShieldId()] == 12817) {
-					if (Utility.getRandom(100) > 30 && damage > 0) {
-						damage *= .75;
-					}
-				}
-				if (player.getSkills().getLevel(Skills.HITPOINTS) - damage < 0) {
-					damage = player.getSkills().getLevel(Skills.HITPOINTS);
-				}
-			}
-
-			if (npc.attackStyle == MobAttackType.RANGE) {
-				if (!(CombatFormulae.getAccuracy(npc, player, 1, 1.0))) {
-					damage = 0;
-				}
-				// overheads check
-				if (player.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
-					damage = 0;
-				}
-			}
-
-			if (npc.attackStyle == MobAttackType.MAGIC) {
-
-				if (!(CombatFormulae.getAccuracy(npc, player, 2, 1.0))) {
-					damage = 0;
-				}
-
-				boolean magicFailed = false;
-				if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
-					damage = 0;
-				}
-
-				if (player.getSkills().getLevel(Skills.HITPOINTS) - damage < 0) {
-					damage = player.getSkills().getLevel(Skills.HITPOINTS);
-				}
-				magicFailed = damage > 0 ? false : true;
-				if (npc.endGfx > 0 && (!magicFailed)) {
-					player.playGraphics(Graphic.create(npc.endGfx, 0, 0));
-				} else {
-					player.playGraphics(Graphic.create(85, 0, 0));
-				}
-			}
-			if (npc.attackStyle == 3) {
-				double dragonfireReduction = CombatFormulae.dragonfireReduction(player);
-				if (dragonfireReduction > 0) {
-					damage -= (damage * dragonfireReduction);
-					if (damage < 0) {
-						damage = 0;
-					}
-				}
-			}
-
-			// final graphic
-			if (npc.endGfx > 0 && damage > 0) {
-				if (npc.npcId == 2205 || npc.npcId == 319) {
-					player.playGraphics(Graphic.create(npc.endGfx, 0, 0));
-				} else {
-					player.playGraphics(Graphic.create(npc.endGfx, 0, 100));
-				}
-			}
-
-			npc.endGfx = 0;
-
-			if (npc.npcId == 3116) {
-				if (player.getSkills().getLevel(Skills.PRAYER) - 1 > 0)
-					player.getSkills().setLevel(Skills.PRAYER, -1);
-			}
-			int poisonDamage = getPoisonDamage(npc);
-			if (poisonDamage > 0 && player.isSusceptibleToPoison() && Utility.getRandom(10) == 1) {
-				player.setPoisonDamage((byte) poisonDamage);
-			}
-			if (player.getSkills().getLevel(Skills.HITPOINTS) - damage < 0
-					|| secondDamage > -1 && player.getSkills().getLevel(Skills.HITPOINTS) - secondDamage < 0) {
-				damage = player.getSkills().getLevel(Skills.HITPOINTS);
-				if (secondDamage > -1) {
-					secondDamage = 0;
-				}
-			}
-			player.logoutDelay.reset(); // logout delay
-			if (player.hasVengeance()) {
-				player.getCombat().vengeance(npc, damage, 1);
-			}
-			if (npc.npcId == 319 && npc.attackStyle == 5) {
-				List<Player> localPlayers = Npc.getSurroundingPlayers(npc, 16);
-				if (npc.getId() == 319) {
-					for (Player players : localPlayers) {
-						players.damage(new Hit(damage));
-						if (players.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-							players.updateRequired = true;
-						}
-					}
-					return;
-				}
-			}
-
-			if (player.isTeleporting()) {
-				return;
-			}
-			PlayerSounds.sendBlockOrHitSound(player, damage > 0);
-			MobAttackSounds.sendAttackSound(player, npc.getId(), npc.attackStyle, damage > 0);
-			player.damage(new Hit(damage));
-			if (secondDamage > -1) {
-				player.damage(new Hit(secondDamage));
-			}
-			if (player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-				player.updateRequired = true;
-			}
+            // apply damage - call this, change the 'delay' param to whatever you want the delay to be
+            // and the method submits the Event
+            Combat.hitEvent(npc, player, 1, hitInfo, npc.getCombatType());
 		}
 	}
 
-	private static int getPoisonDamage(Npc npc) {
-		switch (npc.npcId) {
-		case 3129:
-			return 16;
-		}
-		return 0;
-	}
 }

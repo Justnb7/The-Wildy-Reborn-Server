@@ -66,13 +66,6 @@ public class NPCCombatData {
 		case 7497:
 			return 85;
 
-		case 6361:
-			if (npc.attackStyle == 2)
-				return 150;
-			else if (npc.attackStyle == 1)
-				return 100;
-			else if (npc.attackStyle == 0)
-				return 100;
 		case 2265:
 		case 2266:
 		case 2054:
@@ -193,9 +186,6 @@ public class NPCCombatData {
 		case 5961:
 		case 5947:
 			return 12;
-
-		case 239:
-			return npc.attackStyle > 0 ? 6 : 1;
 
 		case 2054:
 			return 6;

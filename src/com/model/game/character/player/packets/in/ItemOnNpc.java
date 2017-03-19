@@ -1,7 +1,7 @@
 package com.model.game.character.player.packets.in;
 
 import com.model.game.World;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 
@@ -13,7 +13,7 @@ public class ItemOnNpc implements PacketType {
 		int i = player.getInStream().readSignedWordA();
 		int slot = player.getInStream().readSignedWordBigEndian();
 
-		Npc npc = World.getWorld().getNpcs().get(i);
+		NPC npc = World.getWorld().getNpcs().get(i);
 		if (npc == null) {
 			return;
 		}

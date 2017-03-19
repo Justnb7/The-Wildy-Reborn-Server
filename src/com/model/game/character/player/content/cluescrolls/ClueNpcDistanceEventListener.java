@@ -1,6 +1,6 @@
 package com.model.game.character.player.content.cluescrolls;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.impl.NpcDistanceEventListener;
@@ -10,10 +10,10 @@ import com.model.task.impl.NpcDistanceEventListener;
  */
 public class ClueNpcDistanceEventListener extends NpcDistanceEventListener {
 
-	private Npc npc;
+	private NPC npc;
 	private Player player;
 
-	public ClueNpcDistanceEventListener(Npc npc, Player player) {
+	public ClueNpcDistanceEventListener(NPC npc, Player player) {
 		super(npc, player);
 		this.npc = npc;
 		this.player = player;

@@ -1,7 +1,7 @@
 package com.model.game.character.combat.effect;
 
 import com.model.game.character.Graphic;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
@@ -111,7 +111,7 @@ public class CombatEffect {
 		 * @param npc	    the npc in combat
 		 * @param damage	the damage dealt during this step
 		 */
-		public void execute(Player attacker, Npc npc, int damage);
+		public void execute(Player attacker, NPC npc, int damage);
 		
 	}
 }

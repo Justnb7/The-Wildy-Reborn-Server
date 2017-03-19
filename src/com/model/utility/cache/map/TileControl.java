@@ -1,6 +1,6 @@
 package com.model.utility.cache.map;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 
 /**
@@ -13,7 +13,7 @@ public class TileControl {
 		return new Tile(x, y, z);
 	}
 
-	public static Tile[] getTiles(Npc n, Player c) {
+	public static Tile[] getTiles(NPC n, Player c) {
 
 		int size = 1, tileCount = 0;
 
@@ -43,7 +43,7 @@ public class TileControl {
 		return tiles;
 	}
 
-	public static Tile[] getTiles(Npc n, Player c, int[] location) {
+	public static Tile[] getTiles(NPC n, Player c, int[] location) {
 
 		int size = 1, tileCount = 0;
 
@@ -63,7 +63,7 @@ public class TileControl {
 		return tiles;
 	}
 
-	public static int calculateDistance(Npc n, Player c, Npc nFol, Player cFol) {
+	public static int calculateDistance(NPC n, Player c, NPC nFol, Player cFol) {
 
 		int[] location = {};
 		Tile[] tiles = {};
@@ -93,7 +93,7 @@ public class TileControl {
 		return lowestCount;
 	}
 
-	public static int calculateDistance(Tile location, Npc n, Player c) {
+	public static int calculateDistance(Tile location, NPC n, Player c) {
 		int X = 0;
 		int Y = 0;
 
@@ -107,7 +107,7 @@ public class TileControl {
 		return X > Y ? X : Y;
 	}
 
-	public static int calculateDistance(int[] location, Npc n, Player c) {
+	public static int calculateDistance(int[] location, NPC n, Player c) {
 		int X = 0;
 		int Y = 0;
 
@@ -127,7 +127,7 @@ public class TileControl {
 		return X > Y ? X : Y;
 	}
 
-	public static int[] currentLocation(Npc n, Player c) {
+	public static int[] currentLocation(NPC n, Player c) {
 		int[] currentLocation = new int[3];
 		if (n != null || c != null) {
 			if (n != null && c == null) {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
@@ -18,7 +18,7 @@ import com.model.task.events.CycleEventHandler;
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  *
  */
-public class Pet extends Npc {
+public class Pet extends NPC {
 	
 	//Enum data credits to Stan Jansen.
 	public enum Pets {
@@ -232,7 +232,7 @@ public class Pet extends Npc {
 	 *         The pet being picked up
 	 * @return despawn the pet, and respawn the pet item in the players inventory.
 	 */
-	public static boolean pickup(Player player, Npc pet) {
+	public static boolean pickup(Player player, NPC pet) {
 		Pet.Pets pets = Pet.Pets.fromNpc(pet.getId());
 		if (pets != null && player.getItems().freeSlots() < 28) {
 			if (player.isPetSpawned()) {

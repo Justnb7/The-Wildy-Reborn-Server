@@ -1,6 +1,6 @@
 package com.model.game.character.player.dialogue.impl.slayer;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
@@ -90,7 +90,7 @@ public class TuraelDialogue extends Dialogue {
 										} else {
 											if (getPhase() == 10) {
 												SlayerTaskManagement.beginnerTask(player);
-												send(Type.NPC, NPC_ID, Expression.DEFAULT, "We'll start you off hunting @blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@,", "you'll need to kill 10 of them");
+												send(Type.NPC, NPC_ID, Expression.DEFAULT, "We'll start you off hunting @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@,", "you'll need to kill 10 of them");
 												player.setFirstSlayerTask(true);
 												setPhase(11);
 											} else {
@@ -165,7 +165,7 @@ public class TuraelDialogue extends Dialogue {
 																			} else {
 																				if (getPhase() == 22) {
 																					SlayerTaskManagement.beginnerTask(player);
-																					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+																					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 																					setPhase(16);
 																				} else {
 																					if (getPhase() == 23) {
@@ -225,7 +225,7 @@ public class TuraelDialogue extends Dialogue {
 																										} else {
 																											if (getPhase() == 31) {
 																												SlayerTaskManagement.beginnerTask(player);
-																												send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill ", player.getSlayerTaskAmount(), "@blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+																												send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill ", player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 																												setPhase(16);
 																											}
 																										}

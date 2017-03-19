@@ -51,7 +51,12 @@ public class TzTok_Jad extends AbstractBossCombat {
 
 	@Override
 	public void execute(Entity attacker, Entity victim) {
+		if(!attacker.isNPC()) {
+			return;
+		}
 		
+		CombatStyle style = CombatStyle.MAGIC;
+        CombatStyle[] styles = {CombatStyle.MAGIC, CombatStyle.RANGE, CombatStyle.MELEE};
 	}
 
 	@Override

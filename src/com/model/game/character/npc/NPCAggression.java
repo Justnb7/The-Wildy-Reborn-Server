@@ -37,7 +37,7 @@ public final class NPCAggression {
      */
     public static void process(Player player) {
     	//System.out.println("agro check for "+player.getName());
-        for (Npc npc : player.localNpcs) {
+        for (NPC npc : player.localNpcs) {
             if (npc == null)
                 continue;
             // Can the Npc attack the <player>? Will check distance, clipping, slayer level req etc. 
@@ -60,7 +60,7 @@ public final class NPCAggression {
      */
     // Aggression check for the circumstance where a player might run past us. Does NOT
     // have anything to do with retaliation/target switching.
-    private static boolean validate(Npc npc, Player p) {
+    private static boolean validate(NPC npc, Player p) {
     	// We're already attacking something or under attack.
     	// When we get it, retalition handles changing target, not this agro code.
     	if (npc.targetId > 0 || npc.isDead || npc.underAttack || p.underAttackBy > 0 || p.underAttackBy2 > 0) {
@@ -89,7 +89,7 @@ public final class NPCAggression {
         return false;
     }
 
-	private static boolean alwaysAggressive(Npc npc) {
+	private static boolean alwaysAggressive(NPC npc) {
         return aggressiveNpcs.contains(npc.getId());
     }
 }

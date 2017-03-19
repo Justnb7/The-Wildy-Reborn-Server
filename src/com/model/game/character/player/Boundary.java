@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import com.model.game.World;
 import com.model.game.character.Entity;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 
 
 /**
@@ -137,7 +137,7 @@ public class Boundary {
 	 * @param boundaries The boundary object
 	 * @return
 	 */
-	public static boolean isIn(Npc npc, Boundary boundaries) {
+	public static boolean isIn(NPC npc, Boundary boundaries) {
 		if (boundaries.height > 0) {
 			if (npc.heightLevel != boundaries.height) {
 				return false;
@@ -147,7 +147,7 @@ public class Boundary {
 				&& npc.absY >= boundaries.minY && npc.absY <= boundaries.highY;
 	}
 	
-	public static boolean isIn(Npc npc, Boundary[] boundaries) {
+	public static boolean isIn(NPC npc, Boundary[] boundaries) {
 		for (Boundary boundary : boundaries) {
 			if (boundary.height > 0) {
 				if (npc.heightLevel != boundary.height) {

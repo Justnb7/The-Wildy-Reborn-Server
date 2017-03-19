@@ -7,7 +7,7 @@ import org.omicron.jagex.runescape.CollisionMap;
 
 import com.model.Server;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.IntervalItem;
@@ -21,25 +21,25 @@ public enum ClueDifficulty {
 	
 	EASY(2677, 1, 2, 1, 3, ClueScrollHandler.EASY_CLUE_REWARDS, new int[] { 6732, 6733, 7258, 6725, 6380 }) {
 		@Override
-		public boolean dropClue(Player player, Npc npc) {
+		public boolean dropClue(Player player, NPC npc) {
 			return npc.combatLevel >= 0 && npc.combatLevel <= 40;
 		}
 	},
 	MEDIUM(2801, 2, 4, 2, 4, ClueScrollHandler.MEDIUM_CLUE_REWARDS, new int[] { 6732, 6733, 7258, 6725, 6380 }) {
 		@Override
-		public boolean dropClue(Player player, Npc npc) {
+		public boolean dropClue(Player player, NPC npc) {
 			return npc.combatLevel > 40 && npc.combatLevel <= 100;
 		}
 	},
 	HARD(2722, 4, 6, 3, 5, ClueScrollHandler.HARD_CLUE_REWARDS, new int[] { 6732, 6733, 7258, 6725, 6380 }) {
 		@Override
-		public boolean dropClue(Player player, Npc npc) {
+		public boolean dropClue(Player player, NPC npc) {
 			return npc.combatLevel > 100 && !Arrays.stream(ClueScrollHandler.ELITE_CLUE_DROPS).anyMatch(id -> id == npc.npcId);
 		}
 	},
 	ELITE(12073, 7, 10, 5, 9, ClueScrollHandler.ELITE_CLUE_REWARDS, new int[] { 6615, 6610, 6609, 6611 }) {
 		@Override
-		public boolean dropClue(Player player, Npc npc) {
+		public boolean dropClue(Player player, NPC npc) {
 			return Arrays.stream(ClueScrollHandler.ELITE_CLUE_DROPS).anyMatch(id -> id == npc.npcId);
 		}
 	};
@@ -64,11 +64,11 @@ public enum ClueDifficulty {
 	}
 
 
-	public abstract boolean dropClue(Player player, Npc npc);
+	public abstract boolean dropClue(Player player, NPC npc);
 
 	public void createBoss(Player player) {
 		int boss = Utility.randomElement(bosses);
-		Optional<Npc> npc = Optional.empty();
+		Optional<NPC> npc = Optional.empty();
 
 		if (!CollisionMap.isEastBlocked(player.heightLevel, player.absX - 1, player.absY)) {
 			npc = NPCHandler.spawnNpc3(player, boss, player.absX - 1, player.absY, player.heightLevel, this);
@@ -89,7 +89,7 @@ public enum ClueDifficulty {
 		});
 	}
 
-	public static Optional<ClueDifficulty> determineClue(Player player, Npc npc) {
+	public static Optional<ClueDifficulty> determineClue(Player player, NPC npc) {
 		return Arrays.stream(values()).filter(c -> c.dropClue(player, npc)).findAny();
 	}
 

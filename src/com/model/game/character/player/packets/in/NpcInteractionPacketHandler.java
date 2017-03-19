@@ -2,7 +2,7 @@ package com.model.game.character.player.packets.in;
 
 import com.model.Server;
 import com.model.game.World;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
@@ -32,7 +32,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		 **/
 		case ATTACK_NPC:
 			int pid = player.getInStream().readUnsignedWordA();
-			Npc npc = World.getWorld().getNpcs().get(pid);
+			NPC npc = World.getWorld().getNpcs().get(pid);
 			if (npc == null) {
 				break;
 			}
@@ -104,7 +104,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		case FIRST_CLICK:
 			player.npcClickIndex = player.inStream.readSignedWordBigEndian();
-			Npc first_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
+			NPC first_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
 			player.distance = 1;
 
 			if (first_click_npc == null) {
@@ -152,7 +152,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		case SECOND_CLICK:
 			player.npcClickIndex = player.inStream.readUnsignedWordBigEndianA(); // NPC INDEX from the client
-			Npc second_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
+			NPC second_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
 			player.distance = 1;
 			
 			if(second_click_npc == null) {
@@ -202,7 +202,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		case THIRD_CLICK:
 			player.npcClickIndex = player.inStream.readSignedWord();
-			Npc thrid_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
+			NPC thrid_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
 			player.distance = 1;
 			
 			if(thrid_click_npc == null) {
@@ -240,7 +240,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			break;
 		case FOURTH_CLICK:
 			player.npcClickIndex = player.inStream.readSignedWordBigEndian();
-			Npc fourth_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
+			NPC fourth_click_npc = World.getWorld().getNpcs().get(player.npcClickIndex);
 			player.distance = 1;
 			
 			if (fourth_click_npc == null) {

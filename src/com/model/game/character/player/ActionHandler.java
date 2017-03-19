@@ -2,7 +2,7 @@ package com.model.game.character.player;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.magic.SpellBook;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.BrimhavenVines;
 import com.model.game.character.player.content.WildernessDitch;
@@ -671,7 +671,7 @@ public class ActionHandler {
 		}
 	}
 
-	public void firstClickNpc(Npc npc) {
+	public void firstClickNpc(NPC npc) {
 		player.clickNpcType = 0;
 		
 		if (player.inDebugMode()) {
@@ -816,7 +816,7 @@ public class ActionHandler {
 		}
 	}
 
-	public void secondClickNpc(Npc npc) {
+	public void secondClickNpc(NPC npc) {
 		
 		player.clickNpcType = 0;
 		
@@ -958,7 +958,7 @@ public class ActionHandler {
 		}
 	}
 
-	public void thirdClickNpc(Npc npc) {
+	public void thirdClickNpc(NPC npc) {
 		
 		player.clickNpcType = 0;
 		
@@ -1021,7 +1021,7 @@ public class ActionHandler {
 		}
 	}
 
-	public void fourthClickNpc(Npc npc) {
+	public void fourthClickNpc(NPC npc) {
 		
 		player.clickNpcType = 0;
 		

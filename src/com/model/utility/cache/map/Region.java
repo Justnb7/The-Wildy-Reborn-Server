@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.location.Position;
 import com.model.utility.cache.Direction;
@@ -910,7 +910,7 @@ public class Region {
 		return (getShootable(x - 1, y - 1, z) & 0x128010e) != 0;
 	}
 
-	public static boolean canAttack(Npc npc, Player p) {
+	public static boolean canAttack(NPC npc, Player p) {
 		return canMove(npc.getX(), npc.getY(), p.getX(), p.getY(), npc.heightLevel % 4, npc.getSize(), npc.getSize());
 	}
 	

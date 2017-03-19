@@ -94,7 +94,7 @@ public final class NPCHandler {
 	
 	public static void newNPC(int npcType, int x, int y, int heightLevel, int WalkingType) {
 
-		Npc newNPC = new Npc(npcType);
+		NPC newNPC = new NPC(npcType);
 
 		newNPC.setAbsX(x);
 		newNPC.setAbsY(y);
@@ -109,8 +109,8 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static Npc spawnNpc(Player player, int id, int x, int y, int heightLevel, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
-		Npc npc = new Npc(id);
+	public static NPC spawnNpc(Player player, int id, int x, int y, int heightLevel, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
+		NPC npc = new NPC(id);
 		
 		npc.setAbsX(x);
 		npc.setAbsY(y);
@@ -146,7 +146,7 @@ public final class NPCHandler {
 	}
 	
 	public static void spawnNpc(int npcType, int x, int y, int heightLevel, int walkType, int health, int maxHit, int attack, int defence) {
-		Npc npc = new Npc(npcType);
+		NPC npc = new NPC(npcType);
 		
 		npc.absX = x;
 		npc.absY = y;
@@ -163,12 +163,12 @@ public final class NPCHandler {
 	}
 	
 	private static GroupRespawn tempGroup = null;
-	private static Npc tempboss = null;
+	private static NPC tempboss = null;
 	
 	/**
 	 * This method links instances of NPCs to each other by using their Attribute system.
 	 */
-	private static void handleForGroup(Npc n) {
+	private static void handleForGroup(NPC n) {
 		GroupRespawn gr = null;
 		//System.out.println("group check for "+n+" using "+tempGroup +" | "+tempboss); //go
 		if (tempGroup == null) {
@@ -179,7 +179,7 @@ public final class NPCHandler {
 				if (gr.getNpcs()[0] == n.getId()) {
 					// Only set it to temp when we've identified the boss.
 					tempGroup = gr;
-					n.setAttribute("group_spawn_map", new ArrayList<Npc>());
+					n.setAttribute("group_spawn_map", new ArrayList<NPC>());
 					//System.out.println("boss "+n+" map set.");
 					tempboss = n;
 				}
@@ -189,7 +189,7 @@ public final class NPCHandler {
 			GroupRespawn bossgroup = GroupRespawn.getGroup(n.getId());
 			if (bossgroup != null) {
 				// We're a minion
-				ArrayList<Npc> minion_list = tempboss.getAttribute("group_spawn_map", new ArrayList<Npc>());
+				ArrayList<NPC> minion_list = tempboss.getAttribute("group_spawn_map", new ArrayList<NPC>());
 				// Add the minion NPC instance to the bosses attributes
 				minion_list.add(n);
 				
@@ -208,7 +208,7 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static void dropItems(Npc npc) {
+	public static void dropItems(NPC npc) {
 		if (npc.killedBy == -1) {
 			return;
 		}
@@ -308,11 +308,11 @@ public final class NPCHandler {
 	 * Handles following a player
 	 * 
 	 * @param npc
-	 *            The {@link Npc} which is following the player
+	 *            The {@link NPC} which is following the player
 	 * @param target
 	 *            The id of the player being followed
 	 */
-	public static void attemptFollowEntity(Npc npc, Entity target) {
+	public static void attemptFollowEntity(NPC npc, Entity target) {
 		npc.forceChat("folo: "+target);
 		if (target == null || npc == null) {
 			npc.setFollowing(null);
@@ -408,7 +408,7 @@ public final class NPCHandler {
 	 * @param destinationX
 	 * @param destinationY
 	 */
-	public static void walkToNextTile(Npc mob, int destinationX, int destinationY) {
+	public static void walkToNextTile(NPC mob, int destinationX, int destinationY) {
 		if (mob.absX == destinationX && mob.absY == destinationY)
 			return;
 
@@ -477,7 +477,7 @@ public final class NPCHandler {
 		mob.setOnTile(mob.absX, mob.absY, mob.heightLevel);
 	}
 
-	public static Optional<Npc> spawnNpc3(Player c, int npcType, int x, int y, int heightLevel, ClueDifficulty d) {
+	public static Optional<NPC> spawnNpc3(Player c, int npcType, int x, int y, int heightLevel, ClueDifficulty d) {
 		if (d == ClueDifficulty.EASY) {
 			////Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon
 			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
@@ -491,7 +491,7 @@ public final class NPCHandler {
 		return Optional.empty();
 	}
 
-	public static boolean isSpawnedBy(Player player, Npc npc) {
+	public static boolean isSpawnedBy(Player player, NPC npc) {
 		if (player != null && npc != null)
 			if (npc.spawnedBy == player.getIndex() || npc.targetId == player.getIndex())
 				return true;

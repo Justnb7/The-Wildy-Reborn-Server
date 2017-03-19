@@ -3,7 +3,7 @@ package com.model.game.character.player.minigames.fight_caves;
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
@@ -184,7 +184,7 @@ public class FightCaves {
 	 */
 	private void killAllSpawns() {
 		for (int i = 0; i < World.getWorld().getNpcs().capacity(); i++) {
-			Npc npc = World.getWorld().getNpcs().get(i);
+			NPC npc = World.getWorld().getNpcs().get(i);
 			if (npc != null) {
 				if (isFightCaveNpc(npc)) {
 					if (NPCHandler.isSpawnedBy(player, npc)) {
@@ -200,7 +200,7 @@ public class FightCaves {
 	 * @param npc
 	 *        The fightcave npc
 	 */
-	public static boolean isFightCaveNpc(Npc npc) {
+	public static boolean isFightCaveNpc(NPC npc) {
 		if (npc == null)
 			return false;
 		switch (npc.npcId) {
@@ -224,7 +224,7 @@ public class FightCaves {
 	 * @param npc
 	 *        The fightcave enemy
 	 */
-	public static void sendDeath(Player player, Npc npc) {
+	public static void sendDeath(Player player, NPC npc) {
 		if (npc != null) {
 			if (player != null) {
 				if (player.getFightCave() != null) {
@@ -245,7 +245,7 @@ public class FightCaves {
 	 * @param npc
 	 *        The fightcave enemy
 	 */
-	public static void nextWave(Player player, Npc npc) {
+	public static void nextWave(Player player, NPC npc) {
 		if (player.getFightCave() != null) {
 			player.getFightCave().setKillsRemaining(player.getFightCave().getKillsRemaining() - 1);
 			if (player.getFightCave().getKillsRemaining() == 0) {

@@ -30,7 +30,7 @@ public class SlayerDeathTracker {
 		this.player = player;
 	}
 
-	public void add(Npc npc) {
+	public void add(NPC npc) {
 		if (npc == null) {
 			return;
 		}

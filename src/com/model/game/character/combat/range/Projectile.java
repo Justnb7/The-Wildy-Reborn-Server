@@ -3,7 +3,7 @@ package com.model.game.character.combat.range;
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.Entity.EntityType;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.location.Position;
 
@@ -354,7 +354,7 @@ public class Projectile {
 
 	}
 
-	public void createNpcProjectile(int projectileId, Npc npc, int offsetX, int offsetY, int delay) {
+	public void createNpcProjectile(int projectileId, NPC npc, int offsetX, int offsetY, int delay) {
 		int nX = npc.getX();
 		int nY = npc.getY();
 		if (player.absX > npc.absX) {

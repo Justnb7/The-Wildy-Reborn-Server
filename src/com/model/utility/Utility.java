@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import com.model.Server;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.location.Position;
 
@@ -789,7 +789,7 @@ public class Utility {
         return Math.sqrt((x + y));
     }
 
-    public static double doubleDistanceBetween(Player a1, Npc a2) {
+    public static double doubleDistanceBetween(Player a1, NPC a2) {
         double x = Math.pow(a1.getX() - a2.getX(), 2);
         double y = Math.pow(a1.getY() - a2.getY(), 2);
         return Math.sqrt((x + y));

@@ -1,6 +1,6 @@
 package com.model.game.character.player.dialogue.impl.slayer;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
@@ -54,7 +54,7 @@ public class DuradelDialogue extends Dialogue {
 				setPhase(9);
 			} else {
 				SlayerTaskManagement.bossTask(player);
-				send(Type.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + Npc.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getName() + ", you'll need it.");
+				send(Type.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getName() + ", you'll need it.");
 				player.setFirstBossSlayerTask(false);
 				setPhase(9);
 			}
@@ -63,7 +63,7 @@ public class DuradelDialogue extends Dialogue {
 			setPhase(7);
 		} else if (getPhase() == 6) {
 			SlayerTaskManagement.bossTask(player);
-			send(Type.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + Npc.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getName() + ", you'll need it.");
+			send(Type.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getName() + ", you'll need it.");
 			player.setFirstBossSlayerTask(false);
 			setPhase(9);
 		} else if (getPhase() == 7) {
@@ -76,7 +76,7 @@ public class DuradelDialogue extends Dialogue {
 				send(Type.NPC, NPC_ID, Expression.DEFAULT, "It seems you already have an assignment.", "You can reset it by talking to Nieve.");
 				setPhase(9);
 			} else {
-				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getName() + ".");
+				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getName() + ".");
 				setPhase(9);
 			}
 		}

@@ -7,7 +7,7 @@ import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
@@ -32,7 +32,7 @@ public class ToxicBlowpipe implements SpecialAttack {
 			}
 			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 		} else {
-			Npc targNpc = (Npc) target;
+			NPC targNpc = (NPC) target;
 			
 			if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				damage = 0;

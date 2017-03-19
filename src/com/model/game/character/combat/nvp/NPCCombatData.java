@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.model.game.character.combat.npcs.BossScripts;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.utility.json.definitions.NpcDefinition;
 
 /**
@@ -25,14 +25,14 @@ public class NPCCombatData {
 	/**
 	 * Get's the npcs defending animation.
 	 */
-	public static int getNPCBlockAnimation(Npc npc) {
+	public static int getNPCBlockAnimation(NPC npc) {
 		return NpcDefinition.getDefinitions()[npc.npcId].getDefenceAnimation();
 	}
 	
 	/**
 	 * Emotes
 	 */
-	public static int getAttackEmote(Npc npc) {
+	public static int getAttackEmote(NPC npc) {
 		if (npc.npcId >= 1694 && npc.npcId <= 1703) {
 			return 3901;
 		}
@@ -42,7 +42,7 @@ public class NPCCombatData {
 		return npc.getDefinition().getAttackAnimation();
 	}
 	
-	public static int getDeadEmote(Npc npc) {
+	public static int getDeadEmote(NPC npc) {
 		return npc.getDefinition().getDeathAnimation();
 	}
 	
@@ -50,10 +50,10 @@ public class NPCCombatData {
 	 * Gets the projectile speed for the npc
 	 * 
 	 * @param npc
-	 *            The {@link Npc} to fetch the projectile speed for
+	 *            The {@link NPC} to fetch the projectile speed for
 	 * @return The projectile speed for the npc
 	 */
-	public static int getProjectileSpeed(Npc npc) {
+	public static int getProjectileSpeed(NPC npc) {
 		switch (npc.npcId) {
 		
 		case 5535:
@@ -137,7 +137,7 @@ public class NPCCombatData {
 	/**
 	* Distanced required to attack
 	**/	
-	public static int distanceRequired(Npc npc) {
+	public static int distanceRequired(NPC npc) {
 		if (BossScripts.isBoss(npc.npcId)) {
 			return BossScripts.get(npc.npcId).distance(null);
 		}

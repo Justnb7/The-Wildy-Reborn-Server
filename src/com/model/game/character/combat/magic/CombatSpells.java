@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.task.ScheduledTask;
@@ -53,7 +53,7 @@ public class CombatSpells {
 			 * The npc entity
 			 */
 		} else {
-			Npc attacker_npc = (Npc) entity_attacker;
+			NPC attacker_npc = (NPC) entity_attacker;
 			
 			Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
 				@Override

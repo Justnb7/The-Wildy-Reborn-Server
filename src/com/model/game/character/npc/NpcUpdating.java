@@ -32,9 +32,9 @@ public class NpcUpdating {
 
 		buffer.writeBits(8, player.localNpcs.size());
 
-		Iterator<Npc> $it = player.localNpcs.iterator();
+		Iterator<NPC> $it = player.localNpcs.iterator();
 		while ($it.hasNext()) {
-			Npc npc = $it.next();
+			NPC npc = $it.next();
 			if (World.getWorld().getNpcs().get(npc.getIndex()) != null && npc.isVisible() && player.withinDistance(npc) && !npc.getAttribute("teleporting", false)) {
 				updateNPCMovement(npc, buffer);
 				appendNPCUpdateBlock(npc, updateBlock);
@@ -47,7 +47,7 @@ public class NpcUpdating {
 
 		int added = 0;
 
-		for (Npc npc : World.getWorld().getNpcs()) {
+		for (NPC npc : World.getWorld().getNpcs()) {
 
 			if (player.localNpcs.size() >= 255) {
 				break;
@@ -86,11 +86,11 @@ public class NpcUpdating {
 	 * Appends an npcs update block
 	 * 
 	 * @param npc
-	 *            The {@link Npc} we are updating the block for
+	 *            The {@link NPC} we are updating the block for
 	 * @param buffer
 	 *            The {@link GameBuffer} to write the data on
 	 */
-	private static void appendNPCUpdateBlock(Npc npc, GameBuffer buffer) {
+	private static void appendNPCUpdateBlock(NPC npc, GameBuffer buffer) {
 		
 		if (!npc.updateRequired)
 			return;
@@ -140,7 +140,7 @@ public class NpcUpdating {
 	 * @param str
 	 *            The {@link GameBuffer} to write data on
 	 */
-	private static void updateNPCMovement(Npc npc, GameBuffer str) {
+	private static void updateNPCMovement(NPC npc, GameBuffer str) {
 		if (npc.direction == -1) {
 			if (npc.updateRequired) {
 				str.writeBits(1, 1);
@@ -167,7 +167,7 @@ public class NpcUpdating {
 	 * @param npc
 	 * @param buffer
 	 */
-	private static void addNewNPC(Player player, Npc npc, GameBuffer buffer) {
+	private static void addNewNPC(Player player, NPC npc, GameBuffer buffer) {
 		buffer.writeBits(14, npc.getIndex());
 		int yPos = npc.getY() - player.getY();
 		int xPos = npc.getX() - player.getX();
@@ -178,40 +178,40 @@ public class NpcUpdating {
 		buffer.writeBits(npc.updateRequired);
 	}
 
-	private static void appendHitUpdate(Npc npc, GameBuffer str) {
+	private static void appendHitUpdate(NPC npc, GameBuffer str) {
 		str.writeByteC(npc.primary.getDamage());
 		str.writeByteS(npc.primary.getType().getId());
 		str.writeByteS(Utility.getCurrentHP(npc.currentHealth, npc.maximumHealth, 100));
 		str.writeByteC(100);
 	}
 
-	private static void appendFaceEntity(Npc npc, GameBuffer str) {
+	private static void appendFaceEntity(NPC npc, GameBuffer str) {
 		str.writeShort(npc.entityFaceIndex);
 	}
 
-	private static void appendSetFocusDestination(Npc npc, GameBuffer str) {
+	private static void appendSetFocusDestination(NPC npc, GameBuffer str) {
 		str.writeWordBigEndian(npc.faceTileX * 2 + 1);
 		str.writeWordBigEndian(npc.faceTileY * 2 + 1);
 	}
 
-	private static void appendAnimUpdate(Npc npc, GameBuffer str) {
+	private static void appendAnimUpdate(NPC npc, GameBuffer str) {
 		str.writeWordBigEndian(npc.anim.getId());
 		str.writeByte(npc.anim.getDelay());
 	}
 
-	private static void appendMask80Update(Npc npc, GameBuffer str) {
+	private static void appendMask80Update(NPC npc, GameBuffer str) {
 		str.writeShort(npc.gfx.getId());
 		str.putInt(npc.gfx.getDelay() + (65536 * npc.gfx.getHeight()));
 	}
 
-	private static void appendHitUpdate2(Npc npc, GameBuffer str) {
+	private static void appendHitUpdate2(NPC npc, GameBuffer str) {
 		str.putByteA(npc.secondary.getDamage());
 		str.writeByteC(npc.secondary.getType().getId());
 		str.putByteA(Utility.getCurrentHP(npc.currentHealth, npc.maximumHealth, 100));
 		str.writeByte(100);
 	}
 
-	private static void appendTransformUpdate(Npc npc, GameBuffer str) {
+	private static void appendTransformUpdate(NPC npc, GameBuffer str) {
 		str.writeWordBigEndianA(npc.transformId);
 	}
 

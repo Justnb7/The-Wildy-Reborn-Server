@@ -10,7 +10,7 @@ import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.RingOfRecoil;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -324,8 +324,8 @@ public abstract class Entity {
 		return (Player) this;
 	}
 
-	public Npc asNpc() {
-		return (Npc) this;
+	public NPC asNpc() {
+		return (NPC) this;
 	}
 
 	/**
@@ -380,8 +380,8 @@ public abstract class Entity {
 	 */
 	public abstract boolean isNPC();
 	
-	public Npc toNPC() {
-		return isNPC() ? (Npc) this : null;
+	public NPC toNPC() {
+		return isNPC() ? (NPC) this : null;
 	}
 	
 	public Player toPlayer() {
@@ -439,7 +439,7 @@ public abstract class Entity {
 			}
 
 		} else if (this.isNPC()) {
-			Npc victim_npc = (Npc) this;
+			NPC victim_npc = (NPC) this;
 			// You can't hit over an Npcs current health. Recent update on 07 means you can in PVP though.
 			if (victim_npc.currentHealth - damage < 0) {
 				damage = victim_npc.currentHealth;
@@ -490,7 +490,7 @@ public abstract class Entity {
 					if (attacker.isPlayer())
 						recoil.execute(me, (Player)attacker, damage);
 					else
-						recoil.execute(me, (Npc)attacker, damage);
+						recoil.execute(me, (NPC)attacker, damage);
 				}
 
 			}
@@ -513,7 +513,7 @@ public abstract class Entity {
 		// This Entity is an npc taking damage from a player. 
 		if (this.isNPC() && attacker.isPlayer()) {
 			Player attacker_player = (Player)attacker;
-			Npc victim_npc = (Npc) this;
+			NPC victim_npc = (NPC) this;
 			victim_npc.retaliate(attacker);
 			victim_npc.addDamageReceived(attacker_player.getName(), damage);
 			if (Boundary.isIn(attacker_player, PestControl.GAME_BOUNDARY)) {
@@ -752,7 +752,7 @@ public abstract class Entity {
 	 */
 	public void playAnimation(Animation animation) {
 		// Purpose: anims are unique to npcs to this shops the npc deforming after transforming.
-		if (this.isNPC() && ((Npc)this).transformUpdateRequired) { 
+		if (this.isNPC() && ((NPC)this).transformUpdateRequired) { 
 			return;
 		}
 		anim = animation;

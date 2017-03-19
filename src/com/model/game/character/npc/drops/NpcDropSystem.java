@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.model.game.character.npc.NPCDropAnnouncement;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.Skills;
@@ -189,7 +189,7 @@ public class NpcDropSystem {
 	 * @param player - the player
 	 * @param npc - the npc
 	 */
-	public void drop(Player player, Npc npc, float percentIncrease) {
+	public void drop(Player player, NPC npc, float percentIncrease) {
 		NPCDropAnnouncement dropAnnouncement = new NPCDropAnnouncement(npc);
 		if(npcDropData == null)
 		{

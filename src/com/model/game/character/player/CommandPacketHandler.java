@@ -11,7 +11,7 @@ import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
@@ -622,7 +622,7 @@ public class CommandPacketHandler implements PacketType {
 					new NPCDefinitionLoader().load();
 					break;
 				case 2:
-					for (Npc npc : World.getWorld().getNpcs()) {
+					for (NPC npc : World.getWorld().getNpcs()) {
 						if (npc != null) {
 							World.getWorld().unregister(npc);
 						}
@@ -785,7 +785,7 @@ public class CommandPacketHandler implements PacketType {
     		player.setPlayerTransformed(true);
 			player.appearanceUpdateRequired = true;
 			player.updateRequired = true;
-			player.write(new SendMessagePacket("You transform into a " + Npc.getName(value) + "."));
+			player.write(new SendMessagePacket("You transform into a " + NPC.getName(value) + "."));
     		return true;
     		
     	case "pos":
@@ -802,7 +802,7 @@ public class CommandPacketHandler implements PacketType {
     		player.setPnpc(value);
 			player.appearanceUpdateRequired = true;
 			player.updateRequired = true;
-			player.write(new SendMessagePacket("You transform into a " + Npc.getName(value) + "."));
+			player.write(new SendMessagePacket("You transform into a " + NPC.getName(value) + "."));
     		return true;
     		
     	case "sigil":
@@ -810,7 +810,7 @@ public class CommandPacketHandler implements PacketType {
     		player.setPnpc(value);
 			player.appearanceUpdateRequired = true;
 			player.updateRequired = true;
-			player.write(new SendMessagePacket("You transform into a " + Npc.getName(value) + "."));
+			player.write(new SendMessagePacket("You transform into a " + NPC.getName(value) + "."));
     		return true;
     	
     	case "idban":
@@ -834,7 +834,7 @@ public class CommandPacketHandler implements PacketType {
 			try {
 				int npcId = Integer.parseInt(cmd[1]);
 				if (npcId > 0) {
-					Npc npc = NPCHandler.spawnNpc(player, npcId, player.getX() + 1, player.getY(), player.getZ(), 0, false, false, false);
+					NPC npc = NPCHandler.spawnNpc(player, npcId, player.getX() + 1, player.getY(), player.getZ(), 0, false, false, false);
 					if (cmd.length > 2) {
 						int hp = Integer.parseInt(cmd[2]);
 						npc.currentHealth = hp;

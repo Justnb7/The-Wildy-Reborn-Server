@@ -6,7 +6,7 @@ import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
 import com.model.game.character.combat.effect.DamageEffect;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendMessagePacket;
@@ -72,7 +72,7 @@ public class DragonfireShieldEffect implements DamageEffect {
 	}
 
 	@Override
-	public void execute(Player attacker, Npc defender, int damage) {
+	public void execute(Player attacker, NPC defender, int damage) {
 		
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			@Override

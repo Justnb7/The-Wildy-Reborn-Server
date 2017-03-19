@@ -1,6 +1,6 @@
 package com.model.game.character.combat.effect;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 
 public interface DamageEffect {
@@ -19,7 +19,7 @@ public interface DamageEffect {
 	 * @param defender	the defending npc in combat
 	 * @param damage	the damage dealt during this step
 	 */
-	public void execute(Player attacker, Npc defender, int damage);
+	public void execute(Player attacker, NPC defender, int damage);
 	
 	/**
 	 * Determines if the event is executable by the operator

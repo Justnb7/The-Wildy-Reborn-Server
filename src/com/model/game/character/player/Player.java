@@ -33,7 +33,7 @@ import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.combat.weapon.WeaponInterface;
 import com.model.game.character.npc.BossDeathTracker;
 import com.model.game.character.npc.NPCAggression;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.account.Account;
@@ -1021,7 +1021,7 @@ public class Player extends Entity {
 	}
 
 	public Set<Player> localPlayers = new LinkedHashSet<>(255);
-	public Set<Npc> localNpcs = new LinkedHashSet<>(255);
+	public Set<NPC> localNpcs = new LinkedHashSet<>(255);
 
 	public boolean withinDistance(Player otherPlr) {
 		if (heightLevel != otherPlr.heightLevel) {
@@ -1031,7 +1031,7 @@ public class Player extends Entity {
 		return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
 	}
 
-	public boolean withinDistance(Npc npc) {
+	public boolean withinDistance(NPC npc) {
 		if (heightLevel != npc.heightLevel) {
 			return false;
 		}

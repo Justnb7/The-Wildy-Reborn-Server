@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Iterables;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.packets.out.SendMessagePacket;
@@ -186,7 +186,7 @@ public final class ClueScrollHandler {
 		return Iterables.toArray(items, Item.class);
 	}
 
-	public static boolean npcDrop(Player player, Npc npc) {
+	public static boolean npcDrop(Player player, NPC npc) {
 		if (player.clueContainer != null && npc.spawnedBy == player.getIndex() && npc.forClue && player.bossDifficulty != null) {
 			StringBuilder builder = new StringBuilder("The boss drops a casket, ");
 			if (player.getItems().freeSlots() > 0) {

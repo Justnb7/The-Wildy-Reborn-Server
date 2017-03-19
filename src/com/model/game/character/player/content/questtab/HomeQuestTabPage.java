@@ -1,6 +1,6 @@
 package com.model.game.character.player.content.questtab;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 
 
@@ -26,7 +26,7 @@ public class HomeQuestTabPage extends QuestTabPage {
 		if(player.getSlayerTaskAmount() <= 0) {
 			write(player, "<img=28><col=FFFFFF>Task: <col=00CC00>None", 10);
 		} else {
-			write(player, "<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+Npc.getName(player.getSlayerTask()), 10);
+			write(player, "<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 10);
 		}
 		write(player, "<img=28><col=FFFFFF>tasks completed: <col=00CC00>"+ player.getSlayerTasksCompleted(), 11);
 		write(player, "<img=28><col=FFFFFF>Slayer Reward Points: <col=00CC00>"+ player.getSlayerPoints(), 12);

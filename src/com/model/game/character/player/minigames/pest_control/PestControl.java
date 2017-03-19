@@ -6,7 +6,7 @@ import java.util.Collections;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendConfigPacket;
@@ -145,7 +145,7 @@ public class PestControl {
 			player.getActionSender().sendString("@or1@Members: " + PestControl.gameMembers.size(), 21115);
 			player.getActionSender().sendString("@or1@Health: " + PestControl.getAllPortalHP(), 21116);
 			for (int i = 0; i < NPC_DATA.length; i++) {
-				Npc npc = getNpc(NPC_DATA[i][0], NPC_DATA[i][1], NPC_DATA[i][2]);
+				NPC npc = getNpc(NPC_DATA[i][0], NPC_DATA[i][1], NPC_DATA[i][2]);
 				if (npc == null) {
 					player.getActionSender().sendString("@red@Error", 21111 + i);
 					continue;
@@ -301,7 +301,7 @@ public class PestControl {
 	public static int getAllPortalHP() {
 		int total = 0;
 		for (int i = 0; i < NPC_DATA.length; i++) {
-			Npc npc = getNpc(NPC_DATA[i][0], NPC_DATA[i][1], NPC_DATA[i][2]);
+			NPC npc = getNpc(NPC_DATA[i][0], NPC_DATA[i][1], NPC_DATA[i][2]);
 			if (npc == null || npc.isDead) {
 				continue;
 			}
@@ -533,7 +533,7 @@ public class PestControl {
 
 	public static void killAllNpcs() {
 		for (int i = 0; i < NPC_DATA.length; i++) {
-			Npc npc = getNpc(NPC_DATA[i][0]);
+			NPC npc = getNpc(NPC_DATA[i][0]);
 			if (npc != null) {
 				npc.isDead = true;
 				npc.updateRequired = true;
@@ -546,15 +546,15 @@ public class PestControl {
 		player.write(new SendInterfacePacket(35_000));
 	}
 
-	private static Npc getNpc(int npcType, int x, int y) {
-		for (Npc npc : World.getWorld().getNpcs())
+	private static NPC getNpc(int npcType, int x, int y) {
+		for (NPC npc : World.getWorld().getNpcs())
 			if (npc != null && npc.npcId == npcType && npc.absX == x && npc.absY == y)
 				return npc;
 		return null;
 	}
 
-	private static Npc getNpc(int npcType) {
-		for (Npc npc : World.getWorld().getNpcs())
+	private static NPC getNpc(int npcType) {
+		for (NPC npc : World.getWorld().getNpcs())
 			if (npc != null && npc.npcId == npcType)
 				return npc;
 		return null;

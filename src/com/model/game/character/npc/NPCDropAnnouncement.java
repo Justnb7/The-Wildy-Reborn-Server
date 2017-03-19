@@ -14,9 +14,9 @@ import com.model.utility.Utility;
  * @date Aug 13, 2014, 10:32:24 AM
  */
 public class NPCDropAnnouncement {
-	Npc npc;
+	NPC npc;
 
-	public NPCDropAnnouncement(Npc npc) {
+	public NPCDropAnnouncement(NPC npc) {
 		this.npc = npc;
 	}
 
@@ -24,7 +24,7 @@ public class NPCDropAnnouncement {
 		if (this.npc == null)
 			return;
 
-		NPCName npc = NPCName.get(Npc.getName(this.npc.npcId).replaceAll("_", " "));
+		NPCName npc = NPCName.get(NPC.getName(this.npc.npcId).replaceAll("_", " "));
 		
 		if (npc != null) {
 			for (Player regionalPlayer : World.getWorld().getPlayers()) {

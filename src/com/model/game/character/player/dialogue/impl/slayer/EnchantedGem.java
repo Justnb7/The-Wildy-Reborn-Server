@@ -1,6 +1,6 @@
 package com.model.game.character.player.dialogue.impl.slayer;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
@@ -62,7 +62,7 @@ public class EnchantedGem extends Dialogue {
 				setPhase(2);
 			} else {
 				if (getPhase() == 3) {
-					send(Type.NPC, TURAEL, Expression.DEFAULT, "Your task was to kill " + player.getSlayerTaskAmount() +  " @blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+					send(Type.NPC, TURAEL, Expression.DEFAULT, "Your task was to kill " + player.getSlayerTaskAmount() +  " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 					setPhase(4);
 				} else {
 					if (getPhase() == 4) {
@@ -73,7 +73,7 @@ public class EnchantedGem extends Dialogue {
 							setPhase(6);
 						} else {
 							if (getPhase() == 7) {
-								send(Type.NPC, MAZCHNA, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+								send(Type.NPC, MAZCHNA, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 								setPhase(4);
 							} else {
 								if (getPhase() == 8) {
@@ -81,7 +81,7 @@ public class EnchantedGem extends Dialogue {
 									setPhase(9);
 								} else {
 									if (getPhase() == 10) {
-										send(Type.NPC, VANNAKA, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+										send(Type.NPC, VANNAKA, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 										setPhase(4);
 									} else {
 										if (getPhase() == 11) {
@@ -89,7 +89,7 @@ public class EnchantedGem extends Dialogue {
 											setPhase(12);
 										} else {
 											if (getPhase() == 13) {
-												send(Type.NPC, CHAELDAR, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+												send(Type.NPC, CHAELDAR, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 												setPhase(4);
 											} else {
 												if (getPhase() == 14) {
@@ -97,7 +97,7 @@ public class EnchantedGem extends Dialogue {
 													setPhase(15);
 												} else {
 													if (getPhase() == 16) {
-														send(Type.NPC, NIEVE, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+														send(Type.NPC, NIEVE, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 														setPhase(4);
 													} else {
 														if (getPhase() == 17) {
@@ -105,7 +105,7 @@ public class EnchantedGem extends Dialogue {
 															setPhase(18);
 														} else {
 															if (getPhase() == 19) {
-																send(Type.NPC, DURADEL, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + Npc.getName(player.getSlayerTask()) + "s@bla@.");
+																send(Type.NPC, DURADEL, Expression.DEFAULT, "Your task is to kill " + player.getSlayerTaskAmount() + " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 																setPhase(4);
 															} else {
 																if (getPhase() == 20) {

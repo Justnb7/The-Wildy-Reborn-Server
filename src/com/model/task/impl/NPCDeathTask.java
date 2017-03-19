@@ -6,7 +6,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.GroupRespawn;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
@@ -15,7 +15,7 @@ import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 import com.model.task.ScheduledTask;
 
 /**
- * Handles respawning an {@link Npc} which has just died
+ * Handles respawning an {@link NPC} which has just died
  * 
  * @author Mobster
  * @author lare96 <http://github.com/lare96>
@@ -32,9 +32,9 @@ public class NPCDeathTask extends ScheduledTask {
      * Constructs a new npc death task which will reset the npc after its died
      * 
      * @param npc
-     *            The {@link Npc} which has died
+     *            The {@link NPC} which has died
      */
-    public NPCDeathTask(Npc npc) {
+    public NPCDeathTask(NPC npc) {
         super(1, true);
         attach(npc);
         npc.isDead = true;
@@ -42,7 +42,7 @@ public class NPCDeathTask extends ScheduledTask {
 
     @Override
     public void execute() {
-        Npc npc = (Npc) getAttachment();
+        NPC npc = (NPC) getAttachment();
 
         if (npc == null || World.getWorld().getNpcs().get(npc.getIndex()) == null) {
             stop();
@@ -57,7 +57,7 @@ public class NPCDeathTask extends ScheduledTask {
             Player killer = World.getWorld().getPlayers().get(npc.spawnedBy);
             if (killer != null && killer.getKraken() != null && killer.getKraken().npcs != null && killer.getKraken().npcs[0] != null) {
             	if (npc == killer.getKraken().npcs[0]) {
-            		for (Npc n : killer.getKraken().npcs) {
+            		for (NPC n : killer.getKraken().npcs) {
             			if (n.npcId == 5535) {
             				// kill off tents
             				n.isDead = true;
@@ -95,11 +95,11 @@ public class NPCDeathTask extends ScheduledTask {
      * Handles the unspawnable npcs upon death
      * 
      * @param npc
-     *            The {@link Npc} that has died
+     *            The {@link NPC} that has died
      * @param killer
      *            The {@link Player} that has killed the npc
      */
-    private void handleUnspawnableNpc(Npc npc) {
+    private void handleUnspawnableNpc(NPC npc) {
 
     }
 
@@ -107,10 +107,10 @@ public class NPCDeathTask extends ScheduledTask {
      * Checks if the npc is unspawnable
      * 
      * @param npc
-     *            The {@link Npc} to check if its unspawnable
+     *            The {@link NPC} to check if its unspawnable
      * @return If the npc is unspawnable
      */
-    private boolean isUnspawnableNpc(Npc npc) {
+    private boolean isUnspawnableNpc(NPC npc) {
         return NPCCombatData.getUnspawnableNpcs().contains(npc.getId());
     }
 
@@ -120,9 +120,9 @@ public class NPCDeathTask extends ScheduledTask {
      * @param player
      *            The {@link Player} who has killed this npc
      * @param mob
-     *            The {@link Npc} who died
+     *            The {@link NPC} who died
      */
-    private void removeMobFromWorld(Player player, Npc npc) {
+    private void removeMobFromWorld(Player player, NPC npc) {
         if (player != null && !player.isDead()) {}
         World.getWorld().unregister(npc);
     }
@@ -132,7 +132,7 @@ public class NPCDeathTask extends ScheduledTask {
      * 
      * @param npc
      */
-    public static void setNpcToInvisible(Npc npc) {
+    public static void setNpcToInvisible(NPC npc) {
         npc.removeFromTile();
         NPCHandler.dropItems(npc);
         npc.setVisible(false);
@@ -158,9 +158,9 @@ public class NPCDeathTask extends ScheduledTask {
      * The npc has just died, so we perform the death emote and reset facing
      * 
      * @param npc
-     *            The {@link Npc} which as just died
+     *            The {@link NPC} which as just died
      */
-    private void initialDeath(Npc npc) {
+    private void initialDeath(NPC npc) {
         npc.updateRequired = true;
         npc.resetFace();
 
@@ -206,7 +206,7 @@ public class NPCDeathTask extends ScheduledTask {
 		}
 
 		if (npc.npcId == 6613 || npc.npcId == 6614) {
-        	for (Npc i : World.getWorld().getNpcs()) {
+        	for (NPC i : World.getWorld().getNpcs()) {
         		if(i == null)
         			continue;
         		if(i.npcId == 6611 || i.npcId == 6612 && i.dogs > 0) {
@@ -236,7 +236,7 @@ public class NPCDeathTask extends ScheduledTask {
         reset(npc);
     }
     
-    public static void reset(Npc npc) {
+    public static void reset(NPC npc) {
     	npc.infected = false;
         npc.appearanceUpdateRequired = true;
         npc.freeze(0);
@@ -251,7 +251,7 @@ public class NPCDeathTask extends ScheduledTask {
      * 
      * @param mob2
      */
-    public static void respawn(Npc npc) {
+    public static void respawn(NPC npc) {
         npc.killedBy = -1;
         npc.setVisible(true);
         npc.isDead = false;

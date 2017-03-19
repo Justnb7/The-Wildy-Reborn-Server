@@ -1,7 +1,7 @@
 package com.model.task.impl;
 
 import com.model.game.World;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NPCHandler;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -31,7 +31,7 @@ public final class NPCMovementTask extends ScheduledTask {
 	@Override
 	public void execute() {
 		for (int index = 0; index < World.getWorld().getNpcs().capacity(); index++) {
-			Npc npc = World.getWorld().getNpcs().get(index);
+			NPC npc = World.getWorld().getNpcs().get(index);
 			if (npc == null) {
 				continue;
 			}

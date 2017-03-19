@@ -1,7 +1,7 @@
 package com.model.game.character.player.skill.thieving;
 
 import com.model.game.character.Animation;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
@@ -94,7 +94,7 @@ public class Thieving {
 	 * @param npc
 	 *        The npcId
 	 */
-	public void pickpocket(Pickpocket pickpocket, Npc npc) {
+	public void pickpocket(Pickpocket pickpocket, NPC npc) {
 		//face the npc
 		player.face(player, new Position(npc.getX(), npc.getY()));
 		

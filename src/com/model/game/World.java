@@ -14,7 +14,7 @@ import com.model.Server;
 import com.model.game.character.Entity;
 import com.model.game.character.Entity.EntityType;
 import com.model.game.character.MobileCharacterList;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NpcUpdating;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
@@ -57,7 +57,7 @@ public class World implements Service {
 	/**
 	 * A list of all registered npcs in the world
 	 */
-	private final MobileCharacterList<Npc> NPCS = new MobileCharacterList<>(2000);
+	private final MobileCharacterList<NPC> NPCS = new MobileCharacterList<>(2000);
 
 	/**
 	 * A list of all players registered to the world
@@ -200,7 +200,7 @@ public class World implements Service {
 			player.initialize();
 			return true;
 		} else if (entity.getEntityType() == EntityType.NPC) {
-			Npc npc = (Npc) entity;
+			NPC npc = (NPC) entity;
 			if (getNpcs().spaceLeft() == 0)
 				return false;
 			getNpcs().add(npc);
@@ -249,7 +249,7 @@ public class World implements Service {
 			 */
 			getPlayers().remove(index);
 		} else if (entity.getEntityType() == EntityType.NPC) {
-			Npc npc = (Npc) entity;
+			NPC npc = (NPC) entity;
 			npc.setAbsX(-1);
 			npc.setAbsY(-1);
 			npc.setVisible(false);
@@ -383,7 +383,7 @@ public class World implements Service {
 				}
 			}
 
-			for (Npc npc : NPCS) {
+			for (NPC npc : NPCS) {
 				if (npc != null && npc.isVisible()) {
 					npc.process();
 				}
@@ -402,7 +402,7 @@ public class World implements Service {
 					handlePostUpdating(player);
 				}
 			}
-			for (Npc npc : NPCS) {
+			for (NPC npc : NPCS) {
 				if (npc != null) {
 					npc.clearUpdateFlags();
 				}
@@ -481,7 +481,7 @@ public class World implements Service {
 	 *
 	 * @return A list of registered npcs to the game world
 	 */
-	public MobileCharacterList<Npc> getNpcs() {
+	public MobileCharacterList<NPC> getNpcs() {
 		return NPCS;
 	}
 

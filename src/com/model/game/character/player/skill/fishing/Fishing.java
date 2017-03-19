@@ -2,7 +2,7 @@ package com.model.game.character.player.skill.fishing;
 
 import com.model.game.World;
 import com.model.game.character.Animation;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
@@ -45,7 +45,7 @@ public class Fishing extends SkillTask {
 	 *            The player attempting to fish
 	 * @return
 	 */
-	public static boolean attemptFishing(Player player, Npc npc, int optionId) {
+	public static boolean attemptFishing(Player player, NPC npc, int optionId) {
 		int spotId = npc.npcId;
 		
 		FishingSpot data = FishingSpot.forId(spotId, optionId);

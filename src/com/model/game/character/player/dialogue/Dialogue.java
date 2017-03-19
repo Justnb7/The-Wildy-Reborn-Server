@@ -1,6 +1,6 @@
 package com.model.game.character.player.dialogue;
 
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
 import com.model.game.character.player.packets.out.SendPlayerHeadToInterfacePacket;
@@ -139,20 +139,20 @@ public abstract class Dialogue {
 			}
 		} else if (type == Type.NPC) {
 			if (parameters.length == 3) {
-				player.getActionSender().sendString(Npc.getName((Integer) parameters[0]), 4884);
+				player.getActionSender().sendString(NPC.getName((Integer) parameters[0]), 4884);
 				player.getActionSender().sendString((String) parameters[2], 4885);
 				player.write(new SendInterfaceAnimationPacket(4883, ((Expression) parameters[1]).getEmoteId()));
 				player.write(new SendNpcHeadToInterfacePacket((Integer) parameters[0], 4883));
 				player.write(new SendChatBoxInterfacePacket(4882));
 			} else if (parameters.length == 4) {
-				player.getActionSender().sendString(Npc.getName((Integer) parameters[0]), 4889);
+				player.getActionSender().sendString(NPC.getName((Integer) parameters[0]), 4889);
 				player.getActionSender().sendString((String) parameters[2], 4890);
 				player.getActionSender().sendString((String) parameters[3], 4891);
 				player.write(new SendInterfaceAnimationPacket(4888, ((Expression) parameters[1]).getEmoteId()));
 				player.write(new SendNpcHeadToInterfacePacket((Integer) parameters[0], 4888));
 				player.write(new SendChatBoxInterfacePacket(4887));
 			} else if (parameters.length == 5) {
-				player.getActionSender().sendString(Npc.getName((Integer) parameters[0]), 4895);
+				player.getActionSender().sendString(NPC.getName((Integer) parameters[0]), 4895);
 				player.getActionSender().sendString((String) parameters[2], 4896);
 				player.getActionSender().sendString((String) parameters[3], 4897);
 				player.getActionSender().sendString((String) parameters[4], 4898);
@@ -160,7 +160,7 @@ public abstract class Dialogue {
 				player.write(new SendNpcHeadToInterfacePacket((Integer) parameters[0], 4894));
 				player.write(new SendChatBoxInterfacePacket(4893));
 			} else if (parameters.length == 6) {
-				player.getActionSender().sendString(Npc.getName((Integer) parameters[0]), 4902);
+				player.getActionSender().sendString(NPC.getName((Integer) parameters[0]), 4902);
 				player.getActionSender().sendString((String) parameters[2], 4903);
 				player.getActionSender().sendString((String) parameters[3], 4904);
 				player.getActionSender().sendString((String) parameters[4], 4905);

@@ -9,7 +9,7 @@ import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.combat.npcs.BossScripts;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -28,9 +28,9 @@ public class NpcVsPlayerCombat {
 	 * Handles the npcs combat timers
 	 * 
 	 * @param npc
-	 *            The {@link Npc} to handle combat timers for
+	 *            The {@link NPC} to handle combat timers for
 	 */
-	public static void handleCombatTimer(Npc npc) {
+	public static void handleCombatTimer(NPC npc) {
 		//npc.forceChat("attacktimer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
 		
 		boolean isBoss = BossScripts.isBoss(npc.npcId);
@@ -79,9 +79,9 @@ public class NpcVsPlayerCombat {
 	 * @param player
 	 *            The {@link Player} being attacked
 	 * @param npc
-	 *            The {@link Npc} attacking the player
+	 *            The {@link NPC} attacking the player
 	 */
-	public static void attackPlayer(Player player, Npc npc) {
+	public static void attackPlayer(Player player, NPC npc) {
 		if (npc != null) {
 			if (npc.isDead) {
 				return;
@@ -146,10 +146,10 @@ public class NpcVsPlayerCombat {
 	 * @param player
 	 *            The {@link Player} being attacked
 	 * @param npc
-	 *            The {@link Npc} attacking the player
+	 *            The {@link NPC} attacking the player
 	 * @return If the npc can attack the player
 	 */
-	private static boolean validateAttack(Player player, Npc npc) {
+	private static boolean validateAttack(Player player, NPC npc) {
 		if (npc.isDead || player.isDead()) {
 			return false;
 		}
@@ -214,9 +214,9 @@ public class NpcVsPlayerCombat {
 	 * Applies damage to the target, for non boss characters.
 	 * 
 	 * @param npc
-	 *            The {@link Npc} attacking the player
+	 *            The {@link NPC} attacking the player
 	 */
-	public static void executeDamage(Npc npc) {
+	public static void executeDamage(NPC npc) {
 		
 		if (npc != null) {
 			if (World.getWorld().getPlayers().get(npc.oldIndex) == null) {

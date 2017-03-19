@@ -3,7 +3,7 @@ package com.model.game.character.combat;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.range.RangeData;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.equipment.Equipment;
@@ -24,7 +24,7 @@ public class CombatFormulae {
 		
 	}
 
-    private static int npcDef(Npc npc, int att_type) {
+    private static int npcDef(NPC npc, int att_type) {
         if (att_type == 0)
             return npc.melee_defence;
         else if (att_type == 1)
@@ -306,7 +306,7 @@ public class CombatFormulae {
 		// Apply black mask/slayer helm bonus if the victim is the player's slayer task
 		if (target != null)
 			if (attacker.isPlayer() && target.isNPC()) {
-				final Npc npc = (Npc) target;
+				final NPC npc = (NPC) target;
 				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.npcId && hasBlackMaskOrSlayerHelm(player)) {
 					otherBonusMultiplier = 1.15;
 				}
@@ -402,7 +402,7 @@ public class CombatFormulae {
 		
 		if (victim != null)
 			if (mob.isPlayer() && victim.isNPC()) {
-				final Npc npc = (Npc) victim;
+				final NPC npc = (NPC) victim;
 				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.npcId && hasBlackMaskOrSlayerHelm(player)) {
 					otherBonusMultiplier = 1.15;
 				}

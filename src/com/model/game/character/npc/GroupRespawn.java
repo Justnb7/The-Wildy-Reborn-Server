@@ -125,8 +125,8 @@ public enum GroupRespawn {
 	}
 
 	// If we're going to be spawned by our boss, not just 60s later from our death.
-	public static boolean check_groups(Npc npc) {
-		Npc boss = (Npc) npc.getAttributes().getOrDefault("boss_owner", null);
+	public static boolean check_groups(NPC npc) {
+		NPC boss = (NPC) npc.getAttributes().getOrDefault("boss_owner", null);
 		if (boss != null) {
 			//System.out.println("boss found for "+npc+" : "+boss);
 			// If the boss isn't dead we just respawn 60s later as usual.
@@ -138,9 +138,9 @@ public enum GroupRespawn {
 		return false;
 	}
 
-	public static void on_boss_spawned(Npc npc) {
+	public static void on_boss_spawned(NPC npc) {
 		@SuppressWarnings("unchecked")
-		ArrayList<Npc> minions = (ArrayList<Npc>) npc.getAttributes().getOrDefault("group_spawn_map", null);
+		ArrayList<NPC> minions = (ArrayList<NPC>) npc.getAttributes().getOrDefault("group_spawn_map", null);
 		if (minions != null) {
 			minions.stream().forEach(min -> {
 				//System.out.println("minion "+min+" beglongs to "+npc);

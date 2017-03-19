@@ -9,7 +9,7 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -26,7 +26,7 @@ public class KetZek extends AbstractBossCombat {
 			return;
 		}
 		CombatType style = attacker.getPosition().distanceToEntity(attacker, victim) <= 1 ? CombatType.MELEE : CombatType.MAGIC;
-		Npc npc = (Npc) attacker;
+		NPC npc = (NPC) attacker;
 		
 		int maxHit = style == CombatType.MAGIC ? 48 : 54;
 		
@@ -80,7 +80,7 @@ public class KetZek extends AbstractBossCombat {
 			break;
 		
 		}
-		((Npc)attacker).attackTimer = (style == CombatType.MAGIC ? 5 : 4);
+		((NPC)attacker).attackTimer = (style == CombatType.MAGIC ? 5 : 4);
 	}
 
 	@Override

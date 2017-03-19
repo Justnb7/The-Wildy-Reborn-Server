@@ -10,7 +10,7 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
@@ -65,7 +65,7 @@ public class DragonClaws implements SpecialAttack {
 					new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));
 
 		} else {
-			Npc targNpc = (Npc) target;
+			NPC targNpc = (NPC) target;
 
 			if (!(CombatFormulae.getAccuracy((Entity) player, (Entity) target, 0, getAccuracyMultiplier()))) {
 				first = 0;

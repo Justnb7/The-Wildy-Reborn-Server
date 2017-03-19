@@ -2,7 +2,7 @@ package com.model.game.character.player.skill.slayer;
 
 import com.model.game.Constants;
 import com.model.game.World;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
@@ -330,7 +330,7 @@ public class SlayerTaskManagement {
 	 * @param npc
 	 *        The slayer task
 	 */
-	public static void decreaseTask(Player player, Npc npc) {
+	public static void decreaseTask(Player player, NPC npc) {
 		
 		//Safety check
 		if (player != null) {
@@ -341,14 +341,14 @@ public class SlayerTaskManagement {
 				player.setSlayerTaskAmount(player.getSlayerTaskAmount() - 1);
 				player.getSkills().addExperience(Skills.SLAYER, npc.maximumHealth);
 				//player.write(new SendMessagePacket("Slayertask: "+Npc.getName(npc.npcId)+ " left: "+player.getSlayerTaskAmount()));
-				player.getActionSender().sendString("<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+Npc.getName(player.getSlayerTask()), 29511);
+				player.getActionSender().sendString("<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 29511);
 			}
 			
 			//Kills left messages
 			if(player.getSlayerTaskAmount() == 25) {
-				player.write(new SendMessagePacket("You still have to kill 25 more "+Npc.getName(npc.npcId)));
+				player.write(new SendMessagePacket("You still have to kill 25 more "+NPC.getName(npc.npcId)));
 			} else if(player.getSlayerTaskAmount() == 10) {
-				player.write(new SendMessagePacket("You still have to kill 10 more "+Npc.getName(npc.npcId)));
+				player.write(new SendMessagePacket("You still have to kill 10 more "+NPC.getName(npc.npcId)));
 			}
 			
 			// The player has completed their task, we can go ahead and reward them.

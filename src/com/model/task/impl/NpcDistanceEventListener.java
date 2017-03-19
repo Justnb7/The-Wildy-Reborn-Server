@@ -1,7 +1,7 @@
 package com.model.task.impl;
 
 import com.model.game.World;
-import com.model.game.character.npc.Npc;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.task.EventListener;
 
@@ -14,7 +14,7 @@ import com.model.task.EventListener;
 public abstract class NpcDistanceEventListener extends EventListener {
 
 	/** The npc that will be "tracked". */
-	private Npc npc;
+	private NPC npc;
 
 	/** The player that the npc must be close to. */
 	private Player player;
@@ -27,7 +27,7 @@ public abstract class NpcDistanceEventListener extends EventListener {
 	 * @param player
 	 *            the player that the npc must be close to.
 	 */
-	public NpcDistanceEventListener(Npc npc, Player player) {
+	public NpcDistanceEventListener(NPC npc, Player player) {
 		this.npc = npc;
 		this.player = player;
 	}

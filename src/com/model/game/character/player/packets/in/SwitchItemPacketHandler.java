@@ -22,10 +22,6 @@ public class SwitchItemPacketHandler implements PacketType {
         	Trading.decline(player);
         }
 		
-		if (player.isBusy()) {
-			return;
-		}
-		
 		//Stop active skilling tasks
 		player.stopSkillTask();
 		

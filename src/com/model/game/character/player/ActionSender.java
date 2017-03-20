@@ -519,6 +519,7 @@ public class ActionSender {
         int offsetX = to.getX() - start.getX();
         int offsetY = to.getY() - start.getY();
 
+        //this is that packet yh
         sendLocalCoordinates(start);
         player.getOutStream().writeFrame(117);
         player.getOutStream().writeByte(0);

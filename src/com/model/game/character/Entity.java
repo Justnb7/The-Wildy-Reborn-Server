@@ -531,7 +531,7 @@ public abstract class Entity {
 		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type);
 
 		// NOTE: If not instantly applied, use EventManager.event(2) { entity.damage(hit) }
-		if (applyInstantly) {
+		if (applyInstantly && this.isPlayer()) {
 			PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
 			this.damage(hit);
 		}
@@ -830,7 +830,7 @@ public abstract class Entity {
 				Player person = p;
 				if (person.getOutStream() != null) {
 					if (person.getPosition().isWithinDistance(this.getPosition())) {
-						person.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(), projectile.getLockon(), projectile.getSlope(), projectile.getRadius());
+						person.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(),  projectile.getSlope(), projectile.getRadius(), projectile.getLockon());
 					}
 				}
 			}

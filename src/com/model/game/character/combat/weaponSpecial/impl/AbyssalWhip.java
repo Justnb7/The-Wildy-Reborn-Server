@@ -3,6 +3,7 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
+import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatType;
@@ -19,7 +20,7 @@ public class AbyssalWhip implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int damage = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1658));
         target.playGraphics(Graphic.highGraphic(341));
 		
@@ -27,7 +28,10 @@ public class AbyssalWhip implements SpecialAttack {
 		if (missed)
 			damage = 0;
 		
-		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+		// Set up a Hit instance
+        Hit hitInfo = target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+
+        Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 	}
 
 	@Override

@@ -758,6 +758,7 @@ public class NPC extends Entity {
 	
 	@Override
 	public Position getCentreLocation() {
+		if (this.getWidth() == 1 && this.getHeight() == 1) return this.getPosition();
 		return Position.create(getPosition().getX() + getWidth() / 2, getPosition().getY() + getHeight() / 2, getPosition().getZ());
 	}
 	

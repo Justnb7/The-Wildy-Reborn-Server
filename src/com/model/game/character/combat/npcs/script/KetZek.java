@@ -60,7 +60,10 @@ public class KetZek extends AbstractBossCombat {
 			int delay = (gfxDelay / 20) - 1;
 			
 			
-			//npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 445, 25, 5, clientSpeed, 43, 36, 10, 48));
+			npc.playProjectile(Projectile.create(npc.getPosition(), victim, 
+					445, 25, 5, clientSpeed, 43, 36, 10, 48));
+			// its either angle or radius thats wrong, so is it wrong in the packet then with converting
+			//cuz i literaly tested on the hyperion and it shoots right? yh
 			
 			randomHit = Utility.random(maxHit);
 			

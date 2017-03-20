@@ -296,6 +296,8 @@ public class Combat {
         }
         player.updateLastCombatAction();
         player.setInCombat(true);
+        target.lastAttacker = player;
+        target.lastWasHitTime = System.currentTimeMillis();
 		/*if (player.petBonus) {
 			player.getCombat().handlePetHit(World.getWorld().getPlayers().get(player.playerIndex));
 		}*/

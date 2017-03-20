@@ -242,7 +242,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//Check if player is in combat, in combat we cannot drop items worth more then 10,000 gold
-		if (player.underAttackBy != 0 && (ItemDefinition.forId(itemId).getGeneralPrice()* .75) > 10_000) {
+		if (Combat.incombat(player) && (ItemDefinition.forId(itemId).getGeneralPrice()* .75) > 10_000) {
 			player.message("You can't drop items worth over 10,000 gold in combat.");
 			return;
 		}

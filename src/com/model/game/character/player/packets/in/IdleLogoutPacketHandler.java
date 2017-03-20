@@ -1,5 +1,6 @@
 package com.model.game.character.player.packets.in;
 
+import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.packets.PacketType;
@@ -9,7 +10,7 @@ public class IdleLogoutPacketHandler implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {
-		if (player.underAttackBy > 0 || player.underAttackBy2 > 0 || player.rights == Rights.ADMINISTRATOR) {
+		if (Combat.incombat(player) || player.rights == Rights.ADMINISTRATOR) {
 			return;
 		} else {
 			player.logout();

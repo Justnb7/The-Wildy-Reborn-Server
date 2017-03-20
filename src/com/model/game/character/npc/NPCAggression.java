@@ -1,12 +1,13 @@
 package com.model.game.character.npc;
  
+import com.model.game.character.combat.Combat;
+import com.model.game.character.player.Player;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import com.model.game.character.player.Player;
  
 /**
  * The static utility class that handles the behavior of aggressive NPCs within
@@ -53,7 +54,7 @@ public final class NPCAggression {
      *
      * @param npc
      *            the npc trying to target the player.
-     * @param player
+     * @param p
      *            the player that is being targeted by the NPC.
      * @return {@code true} if the player can be targeted, {@code false}
      *         otherwise.
@@ -63,7 +64,7 @@ public final class NPCAggression {
     private static boolean validate(NPC npc, Player p) {
     	// We're already attacking something or under attack.
     	// When we get it, retalition handles changing target, not this agro code.
-    	if (npc.targetId > 0 || npc.isDead || npc.underAttack || p.underAttackBy > 0 || p.underAttackBy2 > 0) {
+    	if (npc.targetId > 0 || npc.isDead || npc.underAttack || Combat.incombat(p)) {
     		return false;
     	}
     	if (!npc.getDefinition().isAggressive()) {

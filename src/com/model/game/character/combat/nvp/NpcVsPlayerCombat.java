@@ -108,26 +108,27 @@ public class NpcVsPlayerCombat {
 				if (isBoss) {
 					boss_cb.execute(npc, player);
 					// don't do any code below this, boss script handles all.
-					return;
-				}
-				npc.attackTimer = npc.getDefinition().getAttackSpeed();
+				} else {
+					npc.attackTimer = npc.getDefinition().getAttackSpeed();
+					npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
 
-				if (npc.projectileId > 0) {
-					int nX = npc.getX();
-					int nY = npc.getY();
-					int pX = player.getX();
-					int pY = player.getY();
-					int offX = (nX - pX) * -1;
-					int offY = (nY - pY) * -1;
-					player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50,
-							NPCCombatData.getProjectileSpeed(npc), npc.projectileId,
-							NPCCombatData.getProjectileStartHeight(npc.npcId, npc.projectileId),
-							NPCCombatData.getProjectileEndHeight(npc.npcId, npc.projectileId), -player.getId() - 1, 65);
+					if (npc.projectileId > 0) {
+						int nX = npc.getX();
+						int nY = npc.getY();
+						int pX = player.getX();
+						int pY = player.getY();
+						int offX = (nX - pX) * -1;
+						int offY = (nY - pY) * -1;
+						player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50,
+								NPCCombatData.getProjectileSpeed(npc), npc.projectileId,
+								NPCCombatData.getProjectileStartHeight(npc.npcId, npc.projectileId),
+								NPCCombatData.getProjectileEndHeight(npc.npcId, npc.projectileId), -player.getId() - 1, 65);
+					}
 				}
-				player.underAttackBy2 = npc.getIndex();
+				player.lastAttacker = npc;
+				player.lastWasHitTime = System.currentTimeMillis();
 				player.singleCombatDelay2.reset();
 				npc.oldIndex = player.getIndex();
-				npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
 				player.updateLastCombatAction();
 				player.setInCombat(true);
 				player.getActionSender().sendRemoveInterfacePacket();
@@ -165,12 +166,14 @@ public class NpcVsPlayerCombat {
 				npc.targetId = 0;
 				return false;
 			}
-			if (!npc.inMulti() && (player.underAttackBy > 0 || (player.underAttackBy2 > 0 && player.underAttackBy2 != npc.getIndex()))) {
-				npc.targetId = 0;
-				return false;
+			if (!npc.inMulti()) {
+				if ((npc.lastAttacker != player && Combat.hitRecently(npc, 4000)) || npc != player.lastAttacker && Combat.hitRecently(player, 4000)) {
+					npc.targetId = 0;
+					return false;
+				}
 			}
 		}
-		/**
+		/*
 		 * This doesn't work.
 		 */
 		if (npc.heightLevel != player.heightLevel) {

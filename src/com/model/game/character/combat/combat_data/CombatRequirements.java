@@ -100,14 +100,14 @@ public class CombatRequirements {
 				}
 			}
 			if (!((Player) target).getArea().inMulti()) { // single combat zones
-				if (((Player) target).underAttackBy != player.getIndex() && ((Player) target).underAttackBy != 0) {
+				if (target.lastAttacker != player && Combat.hitRecently(target, 4000)) {
 					player.write(new SendMessagePacket("That player is already in combat."));
 					player.stopMovement();
 					Combat.resetCombat(player);
 					return false;
 				}
 
-				if (target.getIndex() != player.underAttackBy && player.underAttackBy != 0 || player.underAttackBy2 > 0) {
+				if (target != player.lastAttacker && Combat.hitRecently(player, 4000)) {
 					player.write(new SendMessagePacket("You are already in combat."));
 					player.stopMovement();
 					Combat.resetCombat(player);

@@ -1,12 +1,8 @@
 package com.model.game.character.player.content.trade;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import com.model.Server;
 import com.model.game.World;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.RequestManager.RequestState;
 import com.model.game.character.player.RequestManager.RequestType;
@@ -26,6 +22,11 @@ import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -143,8 +144,7 @@ public class Trading {
 			return false;
 		}
 		
-		if (player.underAttackBy > 0 || player.underAttackBy2 > 0 || target.underAttackBy > 0
-				|| target.underAttackBy2 > 0) {
+		if (Combat.incombat(player)) {
 			return false;
 		}
 		

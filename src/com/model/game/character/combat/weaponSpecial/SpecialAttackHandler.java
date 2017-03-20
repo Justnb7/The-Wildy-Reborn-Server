@@ -101,7 +101,7 @@ public class SpecialAttackHandler {
 				int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
 
 				if (weapon == 4153) {
-					if(player.underAttackBy <= 0 && player.underAttackBy2 <= 0) {
+					if(player.lastAttacker == null) { // nobody hit us
 						return false;
 					}
 					SpecialAttack special = SpecialAttackHandler.forId(weapon);

@@ -1,29 +1,19 @@
 package com.model.game.character.player;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
-
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
-import com.model.game.character.npc.NPCHandler;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
-import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.packets.out.SendSongPacket;
-import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
+import com.model.game.character.player.packets.out.*;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
@@ -37,6 +27,11 @@ import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.NpcDefinition;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Commands
@@ -184,7 +179,7 @@ public class CommandPacketHandler implements PacketType {
 				@Override
 				public void execute() {
 
-					if (player.underAttackBy != 0) {
+					if (Combat.incombat(player)) {
 						stop();
 						player.write(new SendMessagePacket("Your requested teleport has being cancelled."));
 					}

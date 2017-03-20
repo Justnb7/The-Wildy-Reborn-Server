@@ -12,7 +12,6 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.player.packets.out.SendMessagePacket;
-import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
@@ -188,7 +187,7 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 
-		if ((player.underAttackBy > 0 || player.underAttackBy2 > 0) && player.underAttackBy2 != npc.getIndex() && !player.getArea().inMulti() && !Boundary.isIn(player, Boundary.KRAKEN)) {
+		if (Combat.incombat(player) && player.lastAttacker != npc && !player.getArea().inMulti() && !Boundary.isIn(player, Boundary.KRAKEN)) {
 			Combat.resetCombat(player);
 			player.write(new SendMessagePacket("I am already under attack."));
 			return false;

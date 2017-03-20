@@ -3,6 +3,7 @@ package com.model.net.network;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.model.game.World;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.net.network.handshake.HandshakeMessage;
 import com.model.net.network.session.LoginSession;
@@ -60,8 +61,7 @@ public class NettyChannelHandler extends ChannelInboundHandlerAdapter {
 				final Player player = (Player) session.getAttachment();
 				if (player != null) {
 
-					if (player.inCombat() || player.underAttackBy > 0
-							|| player.underAttackBy2 > 0) {
+					if (Combat.incombat(player)) {
 						player.setXLogDelay(System.currentTimeMillis());
 					}
 					World.getWorld().queueLogout(player);

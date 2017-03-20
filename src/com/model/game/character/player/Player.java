@@ -1223,7 +1223,6 @@ public class Player extends Entity {
 	}
 
 	public void putInCombat(int attacker) {
-		underAttackBy = attacker;
 		logoutDelay.reset();
 		singleCombatDelay.reset();
 		updateLastCombatAction();
@@ -1588,11 +1587,9 @@ public class Player extends Entity {
 	public void combatProcessing() {
 		try {
 			if (singleCombatDelay.elapsed(6000)) {
-				underAttackBy = 0;
 				setInCombat(false);
 			}
 			if (singleCombatDelay2.elapsed(6000)) {
-				underAttackBy2 = 0;
 				resetDamageReceived();
 			}
 			if (skullTimer > 0) {
@@ -1729,7 +1726,7 @@ public class Player extends Entity {
 	 * @return If the player is capable of being unregistered from the server
 	 */
 	public boolean canUnregister() {
-		if (underAttackBy <= 0 && underAttackBy2 <= 0) {
+		if (System.currentTimeMillis() - lastWasHitTime > 4000) { // out of cb
 			xlogDelay = 0;
 		}
 		boolean inCombat = (System.currentTimeMillis() - xlogDelay < 20000);
@@ -2989,7 +2986,7 @@ public class Player extends Entity {
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance,
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
-			underAttackBy, underAttackBy2, wildLevel, teleTimer, killerId,
+			wildLevel, teleTimer, killerId,
 			attackDelay, npcClickIndex, oldSpellId,
 			clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
 			walkTutorial = 15, skullIcon = -1, bountyPoints;

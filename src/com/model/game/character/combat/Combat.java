@@ -695,4 +695,12 @@ public class Combat {
             }
         });
     }
+
+    public static boolean hitRecently(Entity target, int timeframe) {
+        return System.currentTimeMillis() - target.lastWasHitTime <= timeframe;
+    }
+
+    public static boolean incombat(Player player) {
+        return System.currentTimeMillis() - player.lastWasHitTime < 4000;
+    }
 }

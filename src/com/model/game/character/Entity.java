@@ -115,6 +115,8 @@ public abstract class Entity {
 	}
 
 	private boolean inCombat;
+	public long lastWasHitTime;
+	public Entity lastAttacker;
 
 	public boolean inCombat() {
 		return inCombat;

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
@@ -92,7 +93,7 @@ public final class EmotesManager {
 
 			EmoteData emote = emotes.get();
 			
-			if (player.underAttackBy + 10000 > Utility.currentTimeMillis()) {
+			if (Combat.incombat(player)) {
 				player.write(new SendMessagePacket("You can't do this while you're under combat."));
 				return;
 			}

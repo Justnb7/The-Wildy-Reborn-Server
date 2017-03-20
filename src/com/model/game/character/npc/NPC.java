@@ -2,6 +2,7 @@ package com.model.game.character.npc;
 
 import com.model.Server;
 import com.model.game.World;
+import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
@@ -784,5 +785,23 @@ public class NPC extends Entity {
 		// Set npc's target to the person that attacked us
 		this.targetId = attacker.getIndex();
 		faceEntity(attacker);
+	}
+
+	public int getAttackAnimation() {
+		if (npcId >= 1694 && npcId <= 1703) {
+			return 3901;
+		}
+		if (npcId >= 1704 && npcId <= 1708) {
+			return 3915;
+		}
+		return getDefinition().getAttackAnimation();
+	}
+	
+	public int getDeathAnimation() {
+		return getDefinition().getDeathAnimation();
+	}
+
+	public int getDefendAnimation() {
+		return getDefinition().getDefenceAnimation();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.model.game.character.combat.npcs.script.KetZek;
+import com.model.game.character.combat.npcs.script.TokXil;
 import com.model.game.character.combat.npcs.script.TzTokJad;
 
 
@@ -19,7 +20,7 @@ public class BossScripts {
 	
 	
 	private static final KetZek KET_ZEK = new KetZek(3125);
-	
+	private static final TokXil TOK_XIL = new TokXil(3121);
 	private static final TzTokJad JAD = new TzTokJad(3127);
 	
 	private static final int[] DRAGONS = {247, 252, 264, 268, 270, 273, 274};
@@ -28,6 +29,7 @@ public class BossScripts {
 		
 		bosses.put(KET_ZEK.npcId, KET_ZEK);
 		bosses.put(JAD.npcId, JAD);
+		bosses.put(TOK_XIL.npcId, TOK_XIL);
 
 	}
 	

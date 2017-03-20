@@ -516,8 +516,8 @@ public class ActionSender {
      * @return The action sender instance, for chaining.
      */
     public ActionSender sendProjectile(Position start, Position to, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
-        int offsetX = to.getX() - start.getX();
-        int offsetY = to.getY() - start.getY();
+        int offsetX = to.getX() - start.getX() * -1;
+        int offsetY = to.getY() - start.getY() * -1;
 
         //this is that packet yh
         sendLocalCoordinates(start);
@@ -544,11 +544,8 @@ public class ActionSender {
 	
 	public ActionSender sendLocalCoordinates(Position position) {
 		player.getOutStream().writeFrame(85);
-		int y = position.getY() - player.getMapRegionY() * 8 - 2;
-		int x = position.getX() - player.getMapRegionX() * 8 - 3;
-
-		player.getOutStream().writeByteC(y);
-		player.getOutStream().writeByteC(x);
+		player.getOutStream().writeByteC((position.getY() - (player.getMapRegionY() * 8)) - 2);
+		player.getOutStream().writeByteC((position.getX() - (player.getMapRegionX() * 8)) - 3);
 		player.flushOutStream();
 		return this;
 	}

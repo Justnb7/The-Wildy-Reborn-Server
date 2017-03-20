@@ -80,7 +80,7 @@ public class KetZek extends AbstractBossCombat {
 			break;
 		
 		}
-		((NPC)attacker).attackTimer = (style == CombatStyle.MAGIC ? 5 : 4);
+		((NPC)attacker).attackTimer = 6;
 	}
 
 	@Override

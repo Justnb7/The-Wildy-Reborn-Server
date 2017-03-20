@@ -272,7 +272,7 @@ public class Combat {
                 NPC npc = (NPC) target;
                 if (npc.maximumHealth > 0 && npc.attackTimer > 3) {
                     if (npc.npcId != 2042 && npc.npcId != 2043 & npc.npcId != 2044 && npc.npcId != 3127) {
-                        npc.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(npc)));
+                        npc.playAnimation(Animation.create(npc.getDefendAnimation()));
                     }
                 }
             }
@@ -675,10 +675,11 @@ public class Combat {
 
                 if (attacker.isPlayer()) {
                 	Player player = (Player) attacker;
+                	NPC npc = (NPC) attacker;
 	                // Range attack invoke block emote when hit appears.
 	                if (hit.cbType == CombatStyle.RANGE && target.isNPC()) {
 	                    if (((NPC) target).attackTimer < 5)
-	                        target.playAnimation(Animation.create(NPCCombatData.getNPCBlockAnimation(((NPC) target))));
+	                        target.playAnimation(Animation.create(npc.getDefendAnimation()));
 	
 	                    player.setAttribute("ignore defence", false);
 	                }

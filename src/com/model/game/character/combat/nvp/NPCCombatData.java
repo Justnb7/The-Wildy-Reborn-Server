@@ -21,31 +21,6 @@ public class NPCCombatData {
 	 */
 	private static List<Integer> unspawnableNpcs = Arrays.asList(5779, 4303, 4304, 1605, 1606, 1607, 1608, 1609, 5054);
 	
-	
-	/**
-	 * Get's the npcs defending animation.
-	 */
-	public static int getNPCBlockAnimation(NPC npc) {
-		return NpcDefinition.getDefinitions()[npc.npcId].getDefenceAnimation();
-	}
-	
-	/**
-	 * Emotes
-	 */
-	public static int getAttackEmote(NPC npc) {
-		if (npc.npcId >= 1694 && npc.npcId <= 1703) {
-			return 3901;
-		}
-		if (npc.npcId >= 1704 && npc.npcId <= 1708) {
-			return 3915;
-		}
-		return npc.getDefinition().getAttackAnimation();
-	}
-	
-	public static int getDeadEmote(NPC npc) {
-		return npc.getDefinition().getDeathAnimation();
-	}
-	
 	/**
 	 * Gets the projectile speed for the npc
 	 * 

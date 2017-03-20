@@ -110,7 +110,7 @@ public class NpcVsPlayerCombat {
 					// don't do any code below this, boss script handles all.
 				} else {
 					npc.attackTimer = npc.getDefinition().getAttackSpeed();
-					npc.playAnimation(Animation.create(NPCCombatData.getAttackEmote(npc)));
+					npc.playAnimation(Animation.create(npc.getAttackAnimation()));
 
 					if (npc.projectileId > 0) {
 						int nX = npc.getX();

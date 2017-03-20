@@ -216,7 +216,7 @@ public class NPCDeathTask extends ScheduledTask {
         }
 		
         if (npc.npcId != 6611) // vetion or somet
-			npc.playAnimation(Animation.create(NPCCombatData.getDeadEmote(npc))); // dead emote
+			npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead emote
         if (killer != null) {
         	FightCaves.sendDeath(killer, npc);
 		}
@@ -226,7 +226,7 @@ public class NPCDeathTask extends ScheduledTask {
 		}
        
         if (!npc.noDeathEmote) {
-            npc.playAnimation(Animation.create(NPCCombatData.getDeadEmote(npc))); // dead
+            npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead
         }
         
         if (killer != null) {

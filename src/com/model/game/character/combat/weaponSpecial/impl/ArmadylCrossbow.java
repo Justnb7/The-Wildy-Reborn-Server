@@ -4,6 +4,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
@@ -23,12 +24,13 @@ public class ArmadylCrossbow implements SpecialAttack {
 		player.getItems().deleteArrow();
 
 		player.getItems().dropArrowUnderTarget();
-		
-		//TODO implement gfx 301
 
 		player.setCombatType(CombatType.RANGE);
 		
-		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
+		//player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
+		//TODO implement gfx 301
+				int d = player.getPosition().distanceToEntity(player, target);
+				player.playProjectile(Projectile.create(player.getPosition(), target, 301, 60, 50, 65 + (d * 5), 43, 35, 10, 36));
 
 		player.getCombat().fireProjectileAtTarget();
 
@@ -42,6 +44,11 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity target) {
+		if (player.playerEquipment[player.getEquipment().getQuiverId()] < 1) {
+			player.message("You need atleast 1 bolt to perform this special.");
+			player.setUsingSpecial(false);
+			return false;
+		}
 		return true;
 	}
 

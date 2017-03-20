@@ -60,6 +60,11 @@ public class MagicShortbow implements SpecialAttack {
 		if (player.usingBow) {
 			return true;
 		}
+		if (player.playerEquipment[player.getEquipment().getQuiverId()] < 2) {
+			player.message("You need atleast 2 arrows to perform this special.");
+			player.setUsingSpecial(false);
+			return false;
+		}
 		return false;
 	}
 

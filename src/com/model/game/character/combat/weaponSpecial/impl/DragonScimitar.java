@@ -3,6 +3,8 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
+import com.model.game.character.Hit;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatType;
@@ -48,7 +50,10 @@ public class DragonScimitar implements SpecialAttack {
 			}
 		}
 		
-		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+		// Set up a Hit instance
+        Hit hitInfo = target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+
+        Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 		
 	}
 

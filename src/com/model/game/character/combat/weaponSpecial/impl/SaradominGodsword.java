@@ -3,6 +3,8 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
+import com.model.game.character.Hit;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
@@ -33,7 +35,10 @@ public class SaradominGodsword implements SpecialAttack {
 		player.getSkills().increaseLevelToMaximum(Skills.HITPOINTS, hitpointsHeal);
 		player.getSkills().increaseLevelToMaximum(Skills.PRAYER, prayerHeal);
 		
-		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+		// Set up a Hit instance
+        Hit hitInfo = target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+
+        Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 	}
 
 	@Override

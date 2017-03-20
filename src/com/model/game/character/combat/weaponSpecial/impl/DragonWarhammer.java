@@ -5,6 +5,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
@@ -42,14 +43,6 @@ public class DragonWarhammer implements SpecialAttack {
 				targPlayer.getSkills().decreaseLevelToZero(Skills.DEFENCE, decrement);
 				targPlayer.write(new SendMessagePacket("Your defence has been lowered."));
 			}
-			if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
-				damage = (int) (damage * 0.6);
-			}
-			if (targPlayer.hasVengeance()) {
-				targPlayer.getCombat().vengeance(player, damage, 1);
-			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targPlayer.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 		} else {
 			NPC targNpc = (NPC) target;
 			if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
@@ -64,9 +57,11 @@ public class DragonWarhammer implements SpecialAttack {
 					skill = 1;
 				}
 			}
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			targNpc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 		}
+		// Set up a Hit instance
+        Hit hitInfo = target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+
+        Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
 	}
 
 	@Override

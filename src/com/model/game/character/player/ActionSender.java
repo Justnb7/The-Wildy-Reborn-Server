@@ -1,6 +1,5 @@
 package com.model.game.character.player;
 
-import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
@@ -515,12 +514,11 @@ public class ActionSender {
      *                    projectile from.
      * @return The action sender instance, for chaining.
      */
-    public ActionSender sendProjectile(Position start, Position to, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
-        int offsetX = to.getX() - start.getX() * -1;
-        int offsetY = to.getY() - start.getY() * -1;
+    public ActionSender sendProjectile(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
+    	int offsetX = (start.getX() - finish.getX()) * -1;
+		int offsetY = (start.getY() - finish.getY()) * -1;
 
-        //this is that packet yh
-        sendLocalCoordinates(start);
+        sendLocalCoordinates(start, -3, -2);
         player.getOutStream().writeFrame(117);
         player.getOutStream().writeByte(0);
         player.getOutStream().writeByte(offsetX);
@@ -537,15 +535,14 @@ public class ActionSender {
         player.flushOutStream();
         return this;
     }
-    
-    public ActionSender sendProjectile(Projectile projectile) {
-		return sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(), projectile.getLockon(), projectile.getSlope(), projectile.getRadius());
-	}
 	
-	public ActionSender sendLocalCoordinates(Position position) {
+	public ActionSender sendLocalCoordinates(Position position, int xOffset, int yOffset) {
 		player.getOutStream().writeFrame(85);
-		player.getOutStream().writeByteC((position.getY() - (player.getMapRegionY() * 8)) - 2);
-		player.getOutStream().writeByteC((position.getX() - (player.getMapRegionX() * 8)) - 3);
+		
+		int regionX = player.getMapRegionX(), regionY = player.getMapRegionY();
+		player.getOutStream().writeByteC((position.getY() - ((regionY - 6) * 8)) + yOffset);
+		player.getOutStream().writeByteC((position.getX() - ((regionX - 6) * 8)) + xOffset);
+
 		player.flushOutStream();
 		return this;
 	}

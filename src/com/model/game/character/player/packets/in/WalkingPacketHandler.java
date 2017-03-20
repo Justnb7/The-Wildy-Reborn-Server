@@ -111,8 +111,6 @@ public class WalkingPacketHandler implements PacketType {
 		}
 		int firstStepY = player.getInStream().readSignedWordBigEndian();
 
-		player.lastX = player.absX;
-		player.lastY = player.absY;
 		player.getMovementHandler().reset();
 		player.getMovementHandler().setRunPath(player.getInStream().readSignedByteC() == 1);
 		player.getMovementHandler().addToPath(new Position(firstStepX, firstStepY, 0));

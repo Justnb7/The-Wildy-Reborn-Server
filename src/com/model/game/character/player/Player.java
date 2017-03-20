@@ -2982,7 +2982,7 @@ public class Player extends Entity {
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
 	
-	public int totalLevel, lastX, lastY,
+	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance,
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,

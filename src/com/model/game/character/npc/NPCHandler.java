@@ -313,7 +313,6 @@ public final class NPCHandler {
 	 *            The id of the player being followed
 	 */
 	public static void attemptFollowEntity(NPC npc, Entity target) {
-		npc.forceChat("folo: "+target);
 		if (target == null || npc == null) {
 			npc.setFollowing(null);
 			npc.resetFace();

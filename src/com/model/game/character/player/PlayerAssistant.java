@@ -171,8 +171,8 @@ public class PlayerAssistant {
          * Out of combat following, possibly a bug or 2?
          */
         if (!forCombat) {
-            int fx = following.lastX;
-            int fy = following.lastY;
+            int fx = following.lastTile.getX();
+            int fy = following.lastTile.getY();
 
             int delay = (player.getMovementHandler().isMoving() || ((Player)following).getMovementHandler().isMoving()) ? 1
                 : (player.walkTutorial + 1 >= Integer.MAX_VALUE ? player.walkTutorial = 0 : player.walkTutorial++);

@@ -1,12 +1,12 @@
 package com.model.game.character.walking;
 
-import java.util.Deque;
-import java.util.LinkedList;
-
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Position;
+
+import java.util.Deque;
+import java.util.LinkedList;
 
 /**
  * @author blakeman8192
@@ -99,8 +99,7 @@ public class MovementHandler {
 				player.absY = (short) player.teleportToY;
 				player.heightLevel = player.teleHeight != -1 ? player.teleHeight : player.heightLevel;
 				player.setLocation(new Position(player.absX, player.absY, player.heightLevel));
-				player.lastX = player.absX;
-				player.lastY = player.absY + 1;
+				player.lastTile = new Position(player.absX, player.absY+1, player.heightLevel);
 				reset();
 				player.teleportToX = player.teleportToY = player.teleHeight = -1;
 				player.didTeleport = true;
@@ -171,8 +170,7 @@ public class MovementHandler {
 			throw new IllegalArgumentException("Tried to set a THIRD walking direction!");
 		}
 
-		player.lastX = player.absX;
-		player.lastY = player.absY;
+		player.lastTile = new Position(player.absX, player.absY, player.heightLevel);
 		player.currentX += DIR[dir][0];
 		player.currentY += DIR[dir][1];
 		player.absX += DIR[dir][0];

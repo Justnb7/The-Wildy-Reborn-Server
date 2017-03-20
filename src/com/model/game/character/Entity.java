@@ -65,6 +65,7 @@ public abstract class Entity {
 	public boolean faceUpdateRequired = false;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
+	public Position lastTile;
 
 	/**
 	 * The characters combat type, MELEE by default

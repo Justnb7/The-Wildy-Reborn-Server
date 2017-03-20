@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatRequirements;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -55,12 +55,12 @@ public class PlayerVsPlayerCombat {
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (!Objects.isNull(session)) {
-				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatType.RANGE)) {
+				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatStyle.RANGE)) {
 					player.message("<col=CC0000>Range has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
-				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatType.RANGE && !player.usingMagic)) {
+				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatStyle.RANGE && !player.usingMagic)) {
 					player.message("<col=CC0000>Melee has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
@@ -100,7 +100,7 @@ public class PlayerVsPlayerCombat {
 		// TODO split into 2 methods, canAttack and canTouch??
 
 		// Always last
-		if (player.getCombatType() != CombatType.MELEE) {
+		if (player.getCombatType() != CombatStyle.MELEE) {
 			if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), target.getPosition())) {
 				return true;
 			}

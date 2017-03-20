@@ -5,7 +5,7 @@ import com.model.Server;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.World;
 import com.model.game.character.combat.Projectile;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.CombatEffect;
 import com.model.game.character.combat.effect.impl.RingOfRecoil;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
@@ -70,7 +70,7 @@ public abstract class Entity {
 	/**
 	 * The characters combat type, MELEE by default
 	 */
-	private CombatType combatType = CombatType.MELEE;
+	private CombatStyle combatType = CombatStyle.MELEE;
 	
 	/**
 	 * The permanent attributes map. Items set here are only removed when told to.
@@ -350,21 +350,21 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Determines the characters {@link CombatType}
+	 * Determines the characters {@link CombatStyle}
 	 * 
-	 * @return The {@link CombatType} this character is attacking with
+	 * @return The {@link CombatStyle} this character is attacking with
 	 */
-	public CombatType getCombatType() {
+	public CombatStyle getCombatType() {
 		return combatType;
 	}
 
 	/**
-	 * Sets the characters new {@link CombatType}
+	 * Sets the characters new {@link CombatStyle}
 	 * 
 	 * @param type
-	 *            The {@link CombatType} this character is attacking with
+	 *            The {@link CombatStyle} this character is attacking with
 	 */
-	public void setCombatType(CombatType type) {
+	public void setCombatType(CombatStyle type) {
 		this.combatType = type;
 	}
 
@@ -403,11 +403,11 @@ public abstract class Entity {
 	}
 
 	// Since damage gets reduced you need to add XP after this method.
-	public Hit take_hit(Entity attacker, int damage, CombatType combat_type) {
+	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type) {
 		return take_hit(attacker, damage, combat_type, true);
 	}
 
-	public Hit take_hit(Entity attacker, int damage, CombatType combat_type, boolean applyInstantly) {
+	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly) {
 
 		// ALWAYS: FIRST APPLY DAMAGE REDUCTIONS, ABSORBS ETC. Protection pray/ely.
 		// The entity taking damage is a player. 
@@ -419,13 +419,13 @@ public abstract class Entity {
 			if (combat_type != null) {
 				// 40% Protection from player attacks, 100% protection from Npc attacks
 				double prayProtection = attacker.isPlayer() ? 0.6D : 0.0D;
-				if (combat_type == CombatType.MELEE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+				if (combat_type == CombatStyle.MELEE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
 					damage *= prayProtection;
 				}
-				if (combat_type == CombatType.RANGE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
+				if (combat_type == CombatStyle.RANGE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 					damage *= prayProtection;
 				}
-				if (combat_type == CombatType.MAGIC && player_me.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+				if (combat_type == CombatStyle.MAGIC && player_me.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 					damage *= prayProtection;
 				}
 			}
@@ -457,21 +457,21 @@ public abstract class Entity {
 			if (victim_npc.npcId == 5535) {
 				damage = 0;
 			}
-			if (combat_type == CombatType.MELEE && (victim_npc.npcId == 2267 || victim_npc.npcId == 2266)) {
+			if (combat_type == CombatStyle.MELEE && (victim_npc.npcId == 2267 || victim_npc.npcId == 2266)) {
 				if (attacker.isPlayer())
 					((Player)attacker).message("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 			//Rex and Supreme do not take range damage
-			if (combat_type == CombatType.RANGE && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
+			if (combat_type == CombatStyle.RANGE && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
 				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
-			if (combat_type == CombatType.MAGIC && (victim_npc.npcId == 2265 || victim_npc.npcId == 2266)) {
+			if (combat_type == CombatStyle.MAGIC && (victim_npc.npcId == 2265 || victim_npc.npcId == 2266)) {
 				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
-			if (combat_type == CombatType.MAGIC && victim_npc.npcId == 5535) {
+			if (combat_type == CombatStyle.MAGIC && victim_npc.npcId == 5535) {
 				damage = 0;
 			}
 		}

@@ -4,7 +4,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
@@ -27,7 +27,7 @@ public class BarrelchestAnchor implements SpecialAttack {
 		if (missed)
 			damage = 0;
 		
-		target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+		target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player);
 	}
 
 	@Override

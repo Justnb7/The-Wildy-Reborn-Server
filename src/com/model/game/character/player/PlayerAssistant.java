@@ -3,7 +3,7 @@ package com.model.game.character.player;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatAnimation;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.impl.DragonfireShieldEffect;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.content.BossTracker;
@@ -196,7 +196,7 @@ public class PlayerAssistant {
             /*
              * Check our regular combat styles for distance
              */
-            if (player.getCombatType() == CombatType.MELEE && player.goodDistance(otherX, otherY, player.getX(), player.getY(), 1)) {
+            if (player.getCombatType() == CombatStyle.MELEE && player.goodDistance(otherX, otherY, player.getX(), player.getY(), 1)) {
                 if (otherX != player.getX() && otherY != player.getY()) {
                     stopDiagonal(player, otherX, otherY);
                     return;

@@ -1,7 +1,7 @@
 package com.model.game.character.combat.range;
 
 import com.model.game.character.Entity;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 
 
@@ -137,7 +137,7 @@ public class RangeData {
 				return 249;
 			}
 		}
-		boolean castingMagic = (player.getCombatType() == CombatType.MAGIC || player.usingMagic || player.getSpellId() > 0);
+		boolean castingMagic = (player.getCombatType() == CombatStyle.MAGIC || player.usingMagic || player.getSpellId() > 0);
 		if(castingMagic) {
 			return -1;
 		}

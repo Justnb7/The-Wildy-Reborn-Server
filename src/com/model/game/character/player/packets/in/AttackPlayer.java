@@ -3,7 +3,7 @@ package com.model.game.character.player.packets.in;
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendMessagePacket;
@@ -58,7 +58,7 @@ public class AttackPlayer implements PacketType {
 				if (spellId == player.MAGIC_SPELLS[i][0]) {
 					player.setSpellId(i);
 					player.usingMagic = true;
-					player.setCombatType(CombatType.MAGIC);
+					player.setCombatType(CombatStyle.MAGIC);
 					break;
 				}
 			}

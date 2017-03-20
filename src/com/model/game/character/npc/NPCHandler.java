@@ -3,7 +3,7 @@ package com.model.game.character.npc;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Entity;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -366,8 +366,8 @@ public final class NPCHandler {
 		
 		for (Position pos : npc.getTiles()) {
 			double distance = pos.distance(target.getPosition());
-			boolean magic = npc.getCombatType() == CombatType.MAGIC;
-			boolean ranged = !magic && npc.getCombatType() == CombatType.RANGE;
+			boolean magic = npc.getCombatType() == CombatStyle.MAGIC;
+			boolean ranged = !magic && npc.getCombatType() == CombatStyle.RANGE;
 			boolean melee = !magic && !ranged;
 			if (melee || npc.isPet) {
 				if (distance <= 1) { // Stop following when close

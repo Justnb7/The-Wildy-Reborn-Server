@@ -7,7 +7,7 @@ import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.Projectile;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.npc.NPC;
 import com.model.task.ScheduledTask;
@@ -25,19 +25,19 @@ public class KetZek extends AbstractBossCombat {
 		if(!attacker.isNPC()) {
 			return;
 		}
-		CombatType style = attacker.getPosition().distanceToEntity(attacker, victim) <= 1 ? CombatType.MELEE : CombatType.MAGIC;
+		CombatStyle style = attacker.getPosition().distanceToEntity(attacker, victim) <= 1 ? CombatStyle.MELEE : CombatStyle.MAGIC;
 		NPC npc = (NPC) attacker;
 		
-		int maxHit = style == CombatType.MAGIC ? 48 : 54;
+		int maxHit = style == CombatStyle.MAGIC ? 48 : 54;
 		
 		switch (style) {
 		case MELEE:
 			npc.playAnimation(Animation.create(npc.getDefinition().getAttackAnimation()));
 			int randomHit = Utility.random(maxHit);
 			
-            Hit hitInfo = victim.take_hit(attacker, randomHit, CombatType.MELEE, false);
+            Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false);
 
-            Combat.hitEvent(attacker, victim, 1, hitInfo, CombatType.MELEE);
+            Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
 			
 			break;
 		case MAGIC:
@@ -60,16 +60,13 @@ public class KetZek extends AbstractBossCombat {
 			int delay = (gfxDelay / 20) - 1;
 			
 			
-			npc.playProjectile(Projectile.create(npc.getPosition(), victim, 
-					445, 25, 5, clientSpeed, 43, 36, 10, 48));
-			// its either angle or radius thats wrong, so is it wrong in the packet then with converting
-			//cuz i literaly tested on the hyperion and it shoots right? yh
+			npc.playProjectile(Projectile.create(npc.getPosition(), victim, 445, 25, 5, clientSpeed, 43, 36, 10, 48));
 			
 			randomHit = Utility.random(maxHit);
 			
-            hitInfo = victim.take_hit(attacker, randomHit, CombatType.MAGIC, false);
+            hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false);
 
-            Combat.hitEvent(attacker, victim, delay, hitInfo, CombatType.MAGIC);
+            Combat.hitEvent(attacker, victim, delay, hitInfo, CombatStyle.MAGIC);
             
             Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
 				@Override
@@ -83,7 +80,7 @@ public class KetZek extends AbstractBossCombat {
 			break;
 		
 		}
-		((NPC)attacker).attackTimer = (style == CombatType.MAGIC ? 5 : 4);
+		((NPC)attacker).attackTimer = (style == CombatStyle.MAGIC ? 5 : 4);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
@@ -59,9 +59,9 @@ public class DragonWarhammer implements SpecialAttack {
 			}
 		}
 		// Set up a Hit instance
-        Hit hitInfo = target.take_hit(player, damage, CombatType.MELEE).giveXP(player);
+        Hit hitInfo = target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player);
 
-        Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
+        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MELEE);
 	}
 
 	@Override

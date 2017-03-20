@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatData;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -103,7 +103,7 @@ public class PlayerVsNpcCombat {
 		boolean ignoreClip = npc.getId() == 494 || npc.getId() == 492 || npc.getId() == 493 || npc.getId() == 496 || npc.getId() == 5534 || npc.getId() == 5535 || npc.getId() == 2054 || npc.getId() == 5947;
 		if (ignoreClip)
 			return true;
-		boolean projectile = player.getCombatType() == CombatType.RANGE || player.getCombatType() == CombatType.MAGIC;
+		boolean projectile = player.getCombatType() == CombatStyle.RANGE || player.getCombatType() == CombatStyle.MAGIC;
 		if (projectile) {
 			for (Position pos : npc.getBorder()) {
 				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
@@ -141,7 +141,7 @@ public class PlayerVsNpcCombat {
 			return false;
 		}*/
 		
-		if (npc.isArmadylNpc() && player.getCombatType() == CombatType.MELEE) {
+		if (npc.isArmadylNpc() && player.getCombatType() == CombatStyle.MELEE) {
 			player.write(new SendMessagePacket("You can only use range or magic against this npc."));
 			Combat.resetCombat(player);
 			return false;
@@ -210,7 +210,7 @@ public class PlayerVsNpcCombat {
 	public static void moveOutFromUnderLargeNpc(Player player, NPC npc) {
 
 		boolean inside = false;
-		boolean projectiles = player.getCombatType() != CombatType.MELEE;
+		boolean projectiles = player.getCombatType() != CombatStyle.MELEE;
 		for (Position tile : npc.getTiles()) {
 			if (player.absX == tile.getX() && player.absY == tile.getY()) {
 				inside = true;
@@ -280,13 +280,13 @@ public class PlayerVsNpcCombat {
 				hasDistance = true;
 				break;
 			}
-			if (player.getCombatType() == CombatType.MELEE) {
+			if (player.getCombatType() == CombatStyle.MELEE) {
 				if (distance <= 1) {
 					hasDistance = true;
 					break;
 				}
 			} else {
-				if (distance <= (player.getCombatType() == CombatType.RANGE ? 10 : 15)) {
+				if (distance <= (player.getCombatType() == CombatStyle.RANGE ? 10 : 15)) {
 					hasDistance = true;
 					break;
 				}

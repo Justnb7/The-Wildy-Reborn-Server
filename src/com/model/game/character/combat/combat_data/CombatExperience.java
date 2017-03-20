@@ -15,7 +15,7 @@ public class CombatExperience {
 	/**
 	 * Add's the combat experience to the player.
 	 */
-	public static void handleCombatExperience(Player player, int damage, CombatType type) {
+	public static void handleCombatExperience(Player player, int damage, CombatStyle type) {
 		switch (type) {
 		
 		case MAGIC:

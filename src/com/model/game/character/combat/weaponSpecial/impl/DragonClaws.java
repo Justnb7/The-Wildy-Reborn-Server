@@ -8,7 +8,7 @@ import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
@@ -54,10 +54,10 @@ public class DragonClaws implements SpecialAttack {
 				targPlayer.getCombat().vengeance(player, damage, 1);
 			}
 
-			CombatExperience.handleCombatExperience(player, first, CombatType.MELEE);
-			CombatExperience.handleCombatExperience(player, second, CombatType.MELEE);
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			CombatExperience.handleCombatExperience(player, finalDmg, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, first, CombatStyle.MELEE);
+			CombatExperience.handleCombatExperience(player, second, CombatStyle.MELEE);
+			CombatExperience.handleCombatExperience(player, damage, CombatStyle.MELEE);
+			CombatExperience.handleCombatExperience(player, finalDmg, CombatStyle.MELEE);
 
 			targPlayer.damage(new Hit(first, first > 0 ? HitType.NORMAL : HitType.BLOCKED),
 					new Hit(second, second > 0 ? HitType.NORMAL : HitType.BLOCKED),
@@ -73,10 +73,10 @@ public class DragonClaws implements SpecialAttack {
 				third = 0;
 				fourth = 0;
 			}
-			CombatExperience.handleCombatExperience(player, first, CombatType.MELEE);
-			CombatExperience.handleCombatExperience(player, second, CombatType.MELEE);
-			CombatExperience.handleCombatExperience(player, damage, CombatType.MELEE);
-			CombatExperience.handleCombatExperience(player, finalDmg, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, first, CombatStyle.MELEE);
+			CombatExperience.handleCombatExperience(player, second, CombatStyle.MELEE);
+			CombatExperience.handleCombatExperience(player, damage, CombatStyle.MELEE);
+			CombatExperience.handleCombatExperience(player, finalDmg, CombatStyle.MELEE);
 			targNpc.damage(new Hit(first, first > 0 ? HitType.NORMAL : HitType.BLOCKED),
 					new Hit(second, second > 0 ? HitType.NORMAL : HitType.BLOCKED),
 					new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED),

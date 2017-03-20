@@ -5,7 +5,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatAnimation;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.combat.npcs.BossScripts;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
@@ -197,7 +197,7 @@ public class NpcVsPlayerCombat {
 		}
 
 		// Always last
-		if (npc.getCombatType() != CombatType.MELEE) {
+		if (npc.getCombatType() != CombatStyle.MELEE) {
 			for (Position pos : npc.getBorder()) {
 				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
 					return true;

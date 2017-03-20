@@ -5,7 +5,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.Projectile;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 
@@ -19,13 +19,13 @@ public class ArmadylCrossbow implements SpecialAttack {
 	@Override
 	public void handleAttack(Player player, Entity target) {
 		Entity entity = player.getCombat().target;
-		player.setCombatType(CombatType.RANGE);
+		player.setCombatType(CombatStyle.RANGE);
 		player.playAnimation(Animation.create(4230));
 		player.getItems().deleteArrow();
 
 		player.getItems().dropArrowUnderTarget();
 
-		player.setCombatType(CombatType.RANGE);
+		player.setCombatType(CombatStyle.RANGE);
 		
 		//player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
 		//TODO implement gfx 301
@@ -34,7 +34,7 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 		player.getCombat().fireProjectileAtTarget();
 
-		Combat.hitEvent(player, target, 2, null, CombatType.RANGE);
+		Combat.hitEvent(player, target, 2, null, CombatStyle.RANGE);
 	}
 
 	@Override

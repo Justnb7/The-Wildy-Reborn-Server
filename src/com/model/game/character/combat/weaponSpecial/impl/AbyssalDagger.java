@@ -9,7 +9,7 @@ import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatExperience;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
@@ -56,13 +56,13 @@ public class AbyssalDagger implements SpecialAttack {
 				targPlayer.getCombat().vengeance(targPlayer, firstHit, 1);
 			}
 			
-			CombatExperience.handleCombatExperience(player, firstHit, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, firstHit, CombatStyle.MELEE);
 			targPlayer.damage(new Hit(firstHit, firstHit > 0 ? HitType.NORMAL : HitType.BLOCKED));
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 
 				@Override
 				public void execute() {
-					CombatExperience.handleCombatExperience(player, finalDamage, CombatType.MELEE);
+					CombatExperience.handleCombatExperience(player, finalDamage, CombatStyle.MELEE);
 					targPlayer.damage(new Hit(finalDamage, finalDamage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 					this.stop();
 				}
@@ -77,7 +77,7 @@ public class AbyssalDagger implements SpecialAttack {
 			if (firstHit == 0 || !(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
 				secondHit = 0;
 			}
-			CombatExperience.handleCombatExperience(player, firstHit, CombatType.MELEE);
+			CombatExperience.handleCombatExperience(player, firstHit, CombatStyle.MELEE);
 			targNpc.damage(new Hit(firstHit, firstHit > 0 ? HitType.NORMAL : HitType.BLOCKED));
 			
 			if(firstHit == 0) {
@@ -87,7 +87,7 @@ public class AbyssalDagger implements SpecialAttack {
 
 				@Override
 				public void execute() {
-					CombatExperience.handleCombatExperience(player, finalDamage, CombatType.MELEE);
+					CombatExperience.handleCombatExperience(player, finalDamage, CombatStyle.MELEE);
 					targNpc.damage(new Hit(finalDamage, finalDamage > 0 ? HitType.NORMAL : HitType.BLOCKED));
 					this.stop();
 				}

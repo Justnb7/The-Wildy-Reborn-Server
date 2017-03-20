@@ -1,7 +1,7 @@
 package com.model.game.character;
 
 import com.model.game.character.combat.combat_data.CombatExperience;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 
 /**
@@ -87,9 +87,9 @@ public final class Hit {
 		return this;
     }
     
-    public CombatType cbType;
+    public CombatStyle cbType;
 
-	public Hit type(CombatType combat_type) {
+	public Hit type(CombatStyle combat_type) {
 		this.cbType = combat_type;
 		return this;
 	}

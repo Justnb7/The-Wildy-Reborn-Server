@@ -7,7 +7,7 @@ import com.model.game.character.Hit;
 import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
@@ -24,7 +24,7 @@ public class Ballista implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		player.setCombatType(CombatType.RANGE);
+		player.setCombatType(CombatStyle.RANGE);
 		player.playAnimation(Animation.create(7222));
 		
 		player.getItems().deleteArrow();

@@ -1,7 +1,7 @@
 package com.model.game.character.combat.weaponSpecial;
 
 import com.model.game.character.Entity;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendMessagePacket;
 
@@ -31,7 +31,7 @@ public class Special {
 			return;
 		}
 		attacker.setUsingSpecial(true);
-		attacker.setCombatType(CombatType.MELEE);
+		attacker.setCombatType(CombatStyle.MELEE);
 		attacker.logoutDelay.reset();
 		
 		if (attacker.getCombat().target.isPlayer()) { // playerIndex is the indexId of the player we're attacking

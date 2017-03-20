@@ -5,7 +5,7 @@ package com.model.game.character.combat.combat_data;
  *
  * @author lare96 <http://github.com/lare96>
  */
-public enum CombatType {
+public enum CombatStyle {
 
     /**
      * The melee combat type, includes things like swords and daggers.

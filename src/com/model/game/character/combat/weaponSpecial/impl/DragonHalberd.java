@@ -5,7 +5,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
@@ -34,13 +34,13 @@ public class DragonHalberd implements SpecialAttack {
 		if (missedSecondHit)
 			secondHit = 0;
 		
-		target.take_hit(player, firstHit, CombatType.MELEE).giveXP(player);
+		target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player);
 		
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 
 			@Override
 			public void execute() {
-				target.take_hit(player, finalDamage, CombatType.MELEE).giveXP(player);
+				target.take_hit(player, finalDamage, CombatStyle.MELEE).giveXP(player);
 				this.stop();
 			}
 		});

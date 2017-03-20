@@ -6,7 +6,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
@@ -46,8 +46,8 @@ public class MagicShortbow implements SpecialAttack {
 		}
 
 		// TODO maxhit, accuracy calc
-		Combat.hitEvent(player, target, 1, new Hit(dam1), CombatType.RANGE);
-		Combat.hitEvent(player, target, 1, new Hit(dam2), CombatType.RANGE);
+		Combat.hitEvent(player, target, 1, new Hit(dam1), CombatStyle.RANGE);
+		Combat.hitEvent(player, target, 1, new Hit(dam2), CombatStyle.RANGE);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.combat_data.CombatType;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
@@ -39,18 +39,18 @@ public class DragonDagger implements SpecialAttack {
 			secondHit = 0;
 		
 		// Set up a Hit instance
-        Hit hitInfo = target.take_hit(player, firstHit, CombatType.MELEE).giveXP(player);
+        Hit hitInfo = target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player);
 
-        Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
+        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MELEE);
 		
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 
 			@Override
 			public void execute() {
 				// Set up a Hit instance
-		        Hit hitInfo = target.take_hit(player, finalDamage, CombatType.MELEE).giveXP(player);
+		        Hit hitInfo = target.take_hit(player, finalDamage, CombatStyle.MELEE).giveXP(player);
 
-		        Combat.hitEvent(player, target, 1, hitInfo, CombatType.MELEE);
+		        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MELEE);
 				this.stop();
 			}
 		});

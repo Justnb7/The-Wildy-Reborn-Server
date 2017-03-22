@@ -3,7 +3,6 @@ package com.model.game.character.player.dialogue.impl.chat;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  * @author lare96 <http://github.com/lare96>
@@ -34,7 +33,7 @@ public class DeathShopDialogue2 extends Dialogue {
         } else if(index == 2) {
             player.deathShop.getContainer().clear();
             player.deathShopChat = false;
-            player.write(new SendMessagePacket("Your death shop has been cleared and disabled."));
+            player.getActionSender().sendMessage("Your death shop has been cleared and disabled.");
             stop();
             setPhase(0);
         }

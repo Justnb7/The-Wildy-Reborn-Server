@@ -9,7 +9,6 @@ import com.model.Server;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.IntervalItem;
 import com.model.utility.Utility;
 
@@ -83,7 +82,7 @@ public enum ClueDifficulty {
 
 		npc.ifPresent(n -> {
 			n.forceChat("How dare you try and steal my treasure!");
-			player.write(new SendMessagePacket("Defeat the boss in order to claim your reward!"));
+			player.getActionSender().sendMessage("Defeat the boss in order to claim your reward!");
 			player.bossDifficulty = this;
 			n.forClue = true;
 		});

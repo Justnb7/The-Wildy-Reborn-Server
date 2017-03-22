@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -77,7 +76,7 @@ public class TriviaBot {
 	 */
 	public static void answer(Player player, String answer) {
 		if (current == null) {
-			player.write(new SendMessagePacket("That round has already been won, wait for the next round."));
+			player.getActionSender().sendMessage("That round has already been won, wait for the next round.");
 			return;
 		}
 		
@@ -88,7 +87,7 @@ public class TriviaBot {
 			}
 		}
 		
-		player.write(new SendMessagePacket("That answer wasn't correct, please try it again."));
+		player.getActionSender().sendMessage("That answer wasn't correct, please try it again.");
 		attempts.add(answer);
 	}
 

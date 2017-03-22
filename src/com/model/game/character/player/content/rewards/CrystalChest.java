@@ -2,7 +2,6 @@ package com.model.game.character.player.content.rewards;
 
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
 
@@ -30,7 +29,7 @@ public class CrystalChest {
 			player.getItems().remove(KEY_HALVES[0]);
 			player.getItems().remove(KEY_HALVES[1]);
 			player.getItems().addOrCreateGroundItem(new Item(989));
-			player.message("You have combined the two parts to form a key.");
+			player.getActionSender().sendMessage("You have combined the two parts to form a key.");
 			return true;
 		}
 		return false;
@@ -56,7 +55,7 @@ public class CrystalChest {
 		if (!player.getItems().playerHasItem(989)) {
 			return;
 		}
-		player.write(new SendMessagePacket("You unlock the chest with your key."));
+		player.getActionSender().sendMessage("You unlock the chest with your key.");
 		player.getItems().deleteItem(989);
 		player.playAnimation(Animation.create(881));
 		Item itemReceived;
@@ -82,6 +81,6 @@ public class CrystalChest {
 		}
 
 		player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-		player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+		player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 	}
 }

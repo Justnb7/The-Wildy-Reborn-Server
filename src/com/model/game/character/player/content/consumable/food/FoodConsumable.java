@@ -4,7 +4,6 @@ import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.utility.Utility;
 
@@ -167,7 +166,7 @@ public class FoodConsumable {
 			return;
 		}
 		if (!player.lastSpear.elapsed(4000)) {
-			player.write(new SendMessagePacket("You are stunned and can not eat!"));
+			player.getActionSender().sendMessage("You are stunned and can not eat!");
 			return;
 		}
 		FoodToEat f = FoodToEat.food.get(id);
@@ -189,12 +188,12 @@ public class FoodConsumable {
 			}
 			
 			if (f.getType().equalsIgnoreCase("Food")) {
-				player.write(new SendMessagePacket("You eat the " + f.getName() + "."));
+				player.getActionSender().sendMessage("You eat the " + f.getName() + ".");
 			}
 			
 			if (player.getSkills().getLevel(Skills.HITPOINTS) < player.getMaximumHealth()) {
 				player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + f.getHeal());
-				player.write(new SendMessagePacket("It heals some health."));
+				player.getActionSender().sendMessage("It heals some health.");
 			}
 			
 			if (player.getSkills().getLevel(Skills.HITPOINTS) > player.getMaximumHealth()) {

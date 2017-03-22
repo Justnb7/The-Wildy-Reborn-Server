@@ -7,9 +7,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
-import com.model.utility.Utility;
 
 public final class EmotesManager {
 	
@@ -94,7 +92,7 @@ public final class EmotesManager {
 			EmoteData emote = emotes.get();
 			
 			if (Combat.incombat(player)) {
-				player.write(new SendMessagePacket("You can't do this while you're under combat."));
+				player.getActionSender().sendMessage("You can't do this while you're under combat.");
 				return;
 			}
 			
@@ -103,7 +101,7 @@ public final class EmotesManager {
 			
 			//player.write(new SendGameMessage("emote dur = "+emote.emoteDuration);
 			if (System.currentTimeMillis() - lastEmote < emote.emoteDuration) {
-				player.write(new SendMessagePacket("You're already doing an emote!"));
+				player.getActionSender().sendMessage("You're already doing an emote!");
 				return;
 			}
 			
@@ -234,12 +232,12 @@ public final class EmotesManager {
 					if (itemId == -1 || cape.getSkillId() == -1) {
 						if (!player.isMaxed() && itemId == 13329 && itemId == 13330 && itemId == 13280 && itemId == 13281 && itemId == 13331 && itemId == 13332
 						  && itemId == 13333 && itemId == 13334 && itemId == 13335 && itemId == 13336) {
-							player.write(new SendMessagePacket("You are not yet maxed."));
+							player.getActionSender().sendMessage("You are not yet maxed.");
 							return true;
 						}
 					}
 					else if(player.getSkills().getLevelForExperience(cape.getSkillId()) < 99) {
-						player.write(new SendMessagePacket("You don't meet the skill requirement to wear that item."));
+						player.getActionSender().sendMessage("You don't meet the skill requirement to wear that item.");
 						return true;
 					}
 				}
@@ -292,7 +290,7 @@ public final class EmotesManager {
 				}
 			}
 		}
-		player.write(new SendMessagePacket("You need to wield a skillcape before you can perform the emote."));
+		player.getActionSender().sendMessage("You need to wield a skillcape before you can perform the emote.");
 	}
 	
 	public static void onLogin(Player player) {

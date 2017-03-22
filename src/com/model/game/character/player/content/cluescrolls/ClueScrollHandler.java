@@ -9,7 +9,6 @@ import com.google.common.collect.Iterables;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.IntervalItem;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
@@ -199,7 +198,7 @@ public final class ClueScrollHandler {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(2714), npc.getX(), npc.getY(), npc.heightLevel, player));
 				builder.append("it is dropped on the floor!");
 			}
-			player.write(new SendMessagePacket(builder.toString()));
+			player.getActionSender().sendMessage(builder.toString());
 			player.clueContainer = null;
 			return true;
 		}
@@ -219,7 +218,7 @@ public final class ClueScrollHandler {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(2714), player.getX(), player.getY(), player.getZ(), player));
 				builder.append("it is dropped on the floor!");
 			}
-			player.write(new SendMessagePacket(builder.toString()));
+			player.getActionSender().sendMessage(builder.toString());
 			player.clueContainer = null;
 			return true;
 		}

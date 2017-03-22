@@ -4,7 +4,6 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerMasters;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
@@ -45,7 +44,7 @@ public class NieveDialogue extends Dialogue {
 					setPhase(9);
 				} else if (player.combatLevel < 85) {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "You are not strong enough to handle my assignments.", "Come back to me when you are a bit more experienced.");
-					player.write(new SendMessagePacket("You need a combat level of 85 to get an assignment from Nieve."));
+					player.getActionSender().sendMessage("You need a combat level of 85 to get an assignment from Nieve.");
 					setPhase(9);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.DURADEL) {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "You are really strong. Did you know", "you can talk to Duradel and receive a boss", "slayer task? Would you like to get", "an assignment from him?");

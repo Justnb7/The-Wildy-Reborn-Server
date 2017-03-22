@@ -2,7 +2,6 @@ package com.model.game.character.player.dialogue.impl;
 
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.shop.Shop;
 
 public class WeirdOldMan extends Dialogue {
@@ -41,14 +40,14 @@ public class WeirdOldMan extends Dialogue {
 				if (player.playerItems[j]-1 == brokenBarrows[i][1]) {					
 					if (totalCost + 50000 > cashAmount) {
 						breakOut = true;
-						player.write(new SendMessagePacket("You need 50 000 coins to repair a piece of Barrows' armour!"));
+						player.getActionSender().sendMessage("You need 50 000 coins to repair a piece of Barrows' armour!");
 						player.getActionSender().sendRemoveInterfacePacket();
 						break;
 					} else {
 						totalCost += 50000;
 					}
 					player.playerItems[j] = brokenBarrows[i][0]+1;
-					player.write(new SendMessagePacket("You repair your "+player.getItems().getItemName(brokenBarrows[i][0]+1)+"."));
+					player.getActionSender().sendMessage("You repair your "+player.getItems().getItemName(brokenBarrows[i][0]+1)+".");
 				}		
 			}
 			if (breakOut)		

@@ -8,7 +8,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.RunePouchContainer;
@@ -57,7 +56,7 @@ public class Withdraw1Action implements PacketType {
 			
 		case 3900:
 			if (player.getOpenShop().equals("Skillcape Shop")) {
-				player.write(new SendMessagePacket("All items in this shop cost 99K coins."));
+				player.getActionSender().sendMessage("All items in this shop cost 99K coins.");
 				return;
 			}
 			Shop.SHOPS.get(player.getOpenShop()).sendPurchasePrice(player, new Item(removeId));
@@ -65,10 +64,10 @@ public class Withdraw1Action implements PacketType {
 			
 		case 3823:
 			if (player.getOpenShop().equals("Skillcape Shop")) {
-				player.write(new SendMessagePacket("Items cannot be sold to this shop."));
+				player.getActionSender().sendMessage("Items cannot be sold to this shop.");
 				return;
 			} else if (player.getOpenShop().equals("Death Store")) {
-				player.write(new SendMessagePacket("You cannot sell items to this store!"));
+				player.getActionSender().sendMessage("You cannot sell items to this store!");
 				return;
 			}
 			Shop.SHOPS.get(player.getOpenShop()).sendSellingPrice(player, new Item(removeId));

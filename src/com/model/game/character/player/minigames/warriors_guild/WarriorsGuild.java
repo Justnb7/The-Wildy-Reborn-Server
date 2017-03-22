@@ -68,7 +68,7 @@ public class WarriorsGuild {
 					return;
 				}
 				player.getItems().deleteItem(8851, 20);
-				player.message("You notice some of your warrior guild tokens dissapear..");
+				player.getActionSender().sendMessage("You notice some of your warrior guild tokens dissapear..");
 			}
 
 			@Override
@@ -166,7 +166,7 @@ public class WarriorsGuild {
 			int item = current == -1 ? DEFENDER_DATA[0][0] : nextDefender();
 			if (Utility.random(chance) == 0) {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(item, 1), x, y, 2, player));
-				player.message("The cyclops dropped a "+player.getItems().getItemName(item)+" on the ground.");
+				player.getActionSender().sendMessage("The cyclops dropped a "+player.getItems().getItemName(item)+" on the ground.");
 			}
 		}
 	}

@@ -27,7 +27,6 @@ import com.model.game.character.player.content.teleport.TeleTabs.TabData;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
@@ -243,7 +242,7 @@ public class ItemOptionPacket implements PacketType {
 		
 		//Check if player is in combat, in combat we cannot drop items worth more then 10,000 gold
 		if (Combat.incombat(player) && (ItemDefinition.forId(itemId).getGeneralPrice()* .75) > 10_000) {
-			player.message("You can't drop items worth over 10,000 gold in combat.");
+			player.getActionSender().sendMessage("You can't drop items worth over 10,000 gold in combat.");
 			return;
 		}
 		
@@ -405,7 +404,7 @@ public class ItemOptionPacket implements PacketType {
 
 		case 2714:
 			if (player.bossDifficulty == null) {
-				player.write(new SendMessagePacket("You have not completed a clue scroll!"));
+				player.getActionSender().sendMessage("You have not completed a clue scroll!");
 				return;
 			}
 			
@@ -413,33 +412,33 @@ public class ItemOptionPacket implements PacketType {
 			Item[] items = ClueScrollHandler.determineReward(player, player.bossDifficulty);
 
 			if (player.getItems().freeSlots() < items.length + 1) {
-				player.write(new SendMessagePacket("You do not have enough space in your inventory!"));
+				player.getActionSender().sendMessage("You do not have enough space in your inventory!");
 				return;
 			}
 			if (player.bossDifficulty.equals(ClueDifficulty.EASY)) {
 				player.easyClue += 1;
-				player.write(new SendMessagePacket("<col=009900> You have now completed " + player.easyClue + " easy clues"));
+				player.getActionSender().sendMessage("<col=009900> You have now completed " + player.easyClue + " easy clues");
 			}
 			if (player.bossDifficulty.equals(ClueDifficulty.MEDIUM)) {
 				player.mediumClue += 1;
-				player.write(new SendMessagePacket("<col=FF5050> You have now completed " + player.mediumClue + " medium clues"));
+				player.getActionSender().sendMessage("<col=FF5050> You have now completed " + player.mediumClue + " medium clues");
 				Achievements.increase(player, AchievementType.MEDIUM_CLUE, 1);
 			}
 			if (player.bossDifficulty.equals(ClueDifficulty.HARD)) {
 				player.hardClue += 1;
 				Achievements.increase(player, AchievementType.HARD_CLUE, 1);
-				player.write(new SendMessagePacket("<col=CC3300> You have now completed " + player.hardClue + " hard clues"));
+				player.getActionSender().sendMessage("<col=CC3300> You have now completed " + player.hardClue + " hard clues");
 			}
 			if (player.bossDifficulty.equals(ClueDifficulty.ELITE)) {
 				player.eliteClue += 1;
 				Achievements.increase(player, AchievementType.ELITE_CLUE, 1);
-				player.write(new SendMessagePacket("<col=5A0000> You have now completed " + player.eliteClue + " elite clues"));
+				player.getActionSender().sendMessage("<col=5A0000> You have now completed " + player.eliteClue + " elite clues");
 			}
 			Achievements.increase(player, AchievementType.TREASURE_TRIAL, 1);
 			player.getItems().deleteItem(2714);
 			player.getPA().displayReward(items);
 			Arrays.stream(items).forEach(player.getItems()::addItem);
-			player.write(new SendMessagePacket("You open the casket and obtain your reward!"));
+			player.getActionSender().sendMessage("You open the casket and obtain your reward!");
 			player.bossDifficulty = null;
 			break;
 			
@@ -556,7 +555,7 @@ public class ItemOptionPacket implements PacketType {
 
 	private void doShovelActions(Player player) {
 		if (!sendClue(player, player.getItems().search(ClueDifficulty.getClueIds()))) {
-			player.write(new SendMessagePacket("Nothing interesting happens."));
+			player.getActionSender().sendMessage("Nothing interesting happens.");
 		}
 	}
 	

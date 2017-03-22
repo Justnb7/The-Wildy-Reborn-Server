@@ -6,7 +6,6 @@ import com.model.game.character.combat.effect.DamageEffect;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 public class RingOfRecoil implements DamageEffect {
 
@@ -34,7 +33,7 @@ public class RingOfRecoil implements DamageEffect {
 				attacker.playerEquipmentN[attacker.getEquipment().getRingId()] = 0;
 				attacker.getItems().wearItem(-1, 1, 12);
 			}
-			attacker.write(new SendMessagePacket("<col=9A289E>Your ring of recoil has shattered!"));
+			attacker.getActionSender().sendMessage("<col=9A289E>Your ring of recoil has shattered!");
 		}
 	}
 
@@ -62,7 +61,7 @@ public class RingOfRecoil implements DamageEffect {
 				attacker.playerEquipmentN[attacker.getEquipment().getRingId()] = 0;
 				attacker.getItems().wearItem(-1, 1, 12);
 			}
-			attacker.write(new SendMessagePacket("<col=9A289E>Your ring of recoil has shattered!"));
+			attacker.getActionSender().sendMessage("<col=9A289E>Your ring of recoil has shattered!");
 		}
 	}
 

@@ -2,7 +2,6 @@ package com.model.game.character.player.packets.in;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
@@ -24,7 +23,7 @@ public class ChatPacketHandler implements PacketType {
 		String term = Utility.textUnpack(player.getChatText(), packetSize - 2).toLowerCase();
 		
 		if (player.isMuted) {
-			player.write(new SendMessagePacket("Sorry, your account is still muted, please appeal on our forums."));
+			player.getActionSender().sendMessage("Sorry, your account is still muted, please appeal on our forums.");
 			return;
 		}
 		
@@ -33,7 +32,7 @@ public class ChatPacketHandler implements PacketType {
 		}
 		
 		if(term.contains("on the percentile dice") || term.contains(" just rolled") || term.contains("just rolled")){
-			player.write(new SendMessagePacket("@red@Your message was blocked because it is similar to the ::dice message."));
+			player.getActionSender().sendMessage("@red@Your message was blocked because it is similar to the ::dice message.");
 			return;
 		}
 		

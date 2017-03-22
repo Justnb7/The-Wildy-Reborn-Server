@@ -5,7 +5,6 @@ import java.util.Arrays;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportHandler.TeleportationTypes;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
 
@@ -108,7 +107,7 @@ public class Teleports {
 		}
 
 		if (player.getArea().inWild() && player.wildLevel > 20) {
-			player.write(new SendMessagePacket("You cannot teleport above level 20 wilderness."));
+			player.getActionSender().sendMessage("You cannot teleport above level 20 wilderness.");
 			return false;
 		}
 		
@@ -126,7 +125,7 @@ public class Teleports {
 		
 		//Shop teleport
 		if(buttonId == 6004 || buttonId == 51013 || buttonId == 117162) {
-			player.write(new SendMessagePacket("Shops were moved to the home area, type ::home to access the shops."));
+			player.getActionSender().sendMessage("Shops were moved to the home area, type ::home to access the shops.");
 			return false;
 		}
 		
@@ -150,14 +149,14 @@ public class Teleports {
 		for (MagicBookTeleportData data : MagicBookTeleportData.values()) {
 			if (data.getButton() == buttonId) {
 				if (player.getSkills().getExperience(Skills.MAGIC) < data.getMagicLevelRequirement()) {
-					player.write(new SendMessagePacket("You need atleast level " + data.getMagicLevelRequirement() + " magic to teleport to " + data.getTeleportName() + "."));
+					player.getActionSender().sendMessage("You need atleast level " + data.getMagicLevelRequirement() + " magic to teleport to " + data.getTeleportName() + ".");
 				} else if (Arrays.asList(data.getRequiredRunes()).stream().filter(i -> player.getItems().playerHasItems(i)).toArray().length == data.getRequiredRunes().length) {
 					TeleportExecutor.teleport(player, new Position(data.getX(), data.getY(), data.getHeight()));
 					player.getSkills().addExperience(Skills.MAGIC, data.getExperience());
 					Arrays.asList(data.getRequiredRunes()).stream().forEach(i -> player.getItems().remove(i));
 					return true;
 				} else {
-					player.write(new SendMessagePacket("You do not have the correct teleporting materials."));
+					player.getActionSender().sendMessage("You do not have the correct teleporting materials.");
 					return false;
 				}
 				break;

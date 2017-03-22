@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 
 public class Achievements {
@@ -131,7 +130,7 @@ public class Achievements {
 							String name = achievement.name().toLowerCase().replaceAll("_", " ");
 							player.getAchievements().setComplete(tier, achievement.getId(), true);
 							player.getAchievements().setPoints(achievement.getPoints() + player.getAchievements().getPoints());
-							player.write(new SendMessagePacket("Achievement completed on tier " + (tier + 1) + ": '" + achievement.name().toLowerCase().replaceAll("_", " ") + "' and receive " + achievement.getPoints() + " point(s)."));
+							player.getActionSender().sendMessage("Achievement completed on tier " + (tier + 1) + ": '" + achievement.name().toLowerCase().replaceAll("_", " ") + "' and receive " + achievement.getPoints() + " point(s).");
 							PlayerUpdating.executeGlobalMessage("<col=7a008e>" + player.getName() + "</col> completed the achievement " + name + " on tier <col=ff0033> " + (tier + 1) + "</col>.");
 	 						
 						}
@@ -163,7 +162,7 @@ public class Achievements {
 					player.getAchievements().setAmountRemaining(tier, achievement.getId(), achievement.getAmount());
 					player.getAchievements().setComplete(tier, achievement.getId(), true);
 					player.getAchievements().setPoints(achievement.getPoints() + player.getAchievements().getPoints());
-					player.write(new SendMessagePacket("Achievement completed on tier "+(tier + 1)+": '"+achievement.name().toLowerCase().replaceAll("_", " ")+"' and receive "+achievement.getPoints()+" point(s)."));
+					player.getActionSender().sendMessage("Achievement completed on tier "+(tier + 1)+": '"+achievement.name().toLowerCase().replaceAll("_", " ")+"' and receive "+achievement.getPoints()+" point(s).");
 				}
 			}
 		}

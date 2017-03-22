@@ -192,7 +192,7 @@ public class Pet extends NPC {
 		Pet.Pets petIds = Pet.Pets.from(item.getId());
 		if (petIds != null) {
 			if (player.isPetSpawned()) {
-				player.message("You may only have one pet out at a time.");
+				player.getActionSender().sendMessage("You may only have one pet out at a time.");
 				return false;
 			} else {
 				Pet pet = new Pet(player, petIds.getNpc());

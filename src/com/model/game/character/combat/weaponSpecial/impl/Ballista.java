@@ -10,7 +10,6 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.equipment.Equipment;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -68,7 +67,7 @@ public class Ballista implements SpecialAttack {
 	@Override
 	public boolean meetsRequirements(Player player, Entity target) {
 		if (player.playerEquipmentN[Equipment.SLOT_ARROWS] < 1) {
-			player.write(new SendMessagePacket("You need at least one javalin to use this special attack."));
+			player.getActionSender().sendMessage("You need at least one javalin to use this special attack.");
 			return false;
 		}
 		return true;

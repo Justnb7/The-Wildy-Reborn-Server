@@ -71,7 +71,7 @@ public class GemCutting extends SkillTask {
 			return false;
 		}
 		if (player.getSkills().getLevel(Skills.CRAFTING) < gem.getRequiredLevel()) {
-			player.message("You need a crafting level of " + gem.getRequiredLevel() + " to cut this uncut.");
+			player.getActionSender().sendMessage("You need a crafting level of " + gem.getRequiredLevel() + " to cut this uncut.");
 			return false;
 		}
 		return true;
@@ -84,12 +84,12 @@ public class GemCutting extends SkillTask {
 			return;
 		}
 		if (!getPlayer().getItems().playerHasItem(CHISEL)) {
-			getPlayer().message("You do not have a chisel.");
+			getPlayer().getActionSender().sendMessage("You do not have a chisel.");
 			stop();
 			return;
 		}
 		if (!getPlayer().getItems().playerHasItem(gem.getUncutVersion(), 1)) {
-			getPlayer().message("You have run out of uncuts.");
+			getPlayer().getActionSender().sendMessage("You have run out of uncuts.");
 			stop();
 			return;
 		}

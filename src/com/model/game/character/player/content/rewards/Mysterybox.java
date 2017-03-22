@@ -1,7 +1,6 @@
 package com.model.game.character.player.content.rewards;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
 
@@ -144,7 +143,7 @@ public class Mysterybox {
 				itemReceived = Utility.randomElement(COMMON_REWARDS);
 			}
 			player.getItems().addOrSendToBank(itemReceived.getId(), itemReceived.getAmount());
-			player.write(new SendMessagePacket("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + "."));
+			player.getActionSender().sendMessage("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + ".");
 			player.getItems().deleteItems(MYSTERY_BOX);
 		}
 	}

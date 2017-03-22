@@ -11,7 +11,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.RunePouchContainer;
@@ -55,7 +54,7 @@ public class Withdraw10Action implements PacketType {
             if (player.getOpenShop().equals("Skillcape Shop")) {
                 return;
             } else if (player.getOpenShop().equals("Death Store")) {
-                player.write(new SendMessagePacket("You cannot sell items to this store!"));
+                player.getActionSender().sendMessage("You cannot sell items to this store!");
                 return;
             }
             Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(removeId, 5), removeSlot);
@@ -73,8 +72,8 @@ public class Withdraw10Action implements PacketType {
             }
             DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
-				player.write(new SendMessagePacket("You have declined the duel."));
-				duelSession.getOther(player).write(new SendMessagePacket("The challenger has declined the duel."));
+				player.getActionSender().sendMessage("You have declined the duel.");
+				duelSession.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");
 				duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 				return;
 			}

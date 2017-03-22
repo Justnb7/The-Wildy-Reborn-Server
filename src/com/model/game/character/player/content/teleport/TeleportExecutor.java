@@ -13,7 +13,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
@@ -38,7 +37,7 @@ public class TeleportExecutor {
 	public static void teleport(Player player, Position location) {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
-			player.write(new SendMessagePacket("You can't teleport while being in a duel."));
+			player.getActionSender().sendMessage("You can't teleport while being in a duel.");
 			player.getActionSender().sendRemoveInterfacePacket();
 			return;
 		}
@@ -202,31 +201,31 @@ public class TeleportExecutor {
 	public static boolean canTeleport(Player player) {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
-			player.write(new SendMessagePacket("You can't teleport while being in a duel."));
+			player.getActionSender().sendMessage("You can't teleport while being in a duel.");
 			return false;
 		}
 		if (!player.teleblock.elapsed(player.teleblockLength)) {
-			player.write(new SendMessagePacket("You are teleblocked and can't teleport."));
+			player.getActionSender().sendMessage("You are teleblocked and can't teleport.");
 			return false;
 		}
 		if (player.getArea().inWild() && player.wildLevel > 20 && !player.usingObelisk && !isUsingLever()) {
-			player.write(new SendMessagePacket("You can't teleport above level " + 20 + " in the wilderness."));
+			player.getActionSender().sendMessage("You can't teleport above level " + 20 + " in the wilderness.");
 			return false;
 		}
 			
 		if (!player.lastSpear.elapsed(4000)) {
-			player.write(new SendMessagePacket("You are stunned and can not teleport!"));
+			player.getActionSender().sendMessage("You are stunned and can not teleport!");
 			return false;
 		}
 		if (player.isBusy()) {
-			player.write(new SendMessagePacket("Please finish what you're doing first."));
+			player.getActionSender().sendMessage("Please finish what you're doing first.");
 			return false;
 		}
 		if (player.isDead || player.isTeleporting()) {
 			return false;
 		}
 		if (!player.teleblock.elapsed(player.teleblockLength)) {
-			player.write(new SendMessagePacket("You are teleblocked and can't teleport."));
+			player.getActionSender().sendMessage("You are teleblocked and can't teleport.");
 			return false;
 		}
 		if (!player.getCombat().noTarget()) {
@@ -250,7 +249,7 @@ public class TeleportExecutor {
 	 */
 	public static void executeLeverTeleport(Player player, Teleport teleport) {
 		player.playAnimation(Animation.create(2140));
-		player.write(new SendMessagePacket("You pull the lever..."));
+		player.getActionSender().sendMessage("You pull the lever...");
 		lever = true;
 		Server.getTaskScheduler().schedule(new ScheduledTask(2) { 
 		@Override

@@ -1,7 +1,6 @@
 package com.model.game.character.combat.combat_data;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  * 
@@ -362,7 +361,7 @@ public class CombatAnimation {
 		// ACCURATE = 0, AGGRESSIVE = 1, DEFENSIVE = 2, CONTROLLED = 3
 
 		if (animation == 0) {
-			player.write(new SendMessagePacket("Attack Animation not supported. Please contact Mod Patrick."));
+			player.getActionSender().sendMessage("Attack Animation not supported. Please contact Mod Patrick.");
 		}
 		return animation;
 	}

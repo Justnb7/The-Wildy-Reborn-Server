@@ -58,7 +58,7 @@ public class Fishing extends SkillTask {
 		player.playAnimation(Animation.create(data.getAnimationId()));
 		player.getMovementHandler().stopMovement();
 		player.setAttribute("fishing", true);
-		player.message("You begin fishing...");
+		player.getActionSender().sendMessage("You begin fishing...");
 		player.setSkillTask(new Fishing(player, data, data.getTimer()));
 		player.playAnimation(Animation.create(data.getAnimationId()));
 		return true;
@@ -79,15 +79,15 @@ public class Fishing extends SkillTask {
 			return false;
 		}
 		if (player.getSkills().getLevel(Skills.FISHING) < data.getLevelRequired()) {
-			player.message("You need a fishing level of " + data.getLevelRequired() + " to fish here.");
+			player.getActionSender().sendMessage("You need a fishing level of " + data.getLevelRequired() + " to fish here.");
 			return false;
 		}
 		if (data.isBaitRequired() && !player.getItems().playerHasItem(313)) {
-			player.message("You need some fishing bait to fish here.");
+			player.getActionSender().sendMessage("You need some fishing bait to fish here.");
 			return false;
 		}
 		if (!player.getItems().playerHasItem(data.getToolId(), 1)) {
-			player.message("You need a " + ItemDefinition.forId(data.getToolId()).getName() + " to fish here.");
+			player.getActionSender().sendMessage("You need a " + ItemDefinition.forId(data.getToolId()).getName() + " to fish here.");
 			return false;
 		}
 		return true;
@@ -106,10 +106,10 @@ public class Fishing extends SkillTask {
 		Item secondFish = new Item(data.getSecondFishId(), 1);
 		if (data.isSecondFishAvailable() && Utility.getRandom(3) == 0) {
 			getPlayer().getItems().addItem(secondFish);
-			getPlayer().message("You manage to catch some " + secondFish.getDefinition().getName().toLowerCase() + ".");
+			getPlayer().getActionSender().sendMessage("You manage to catch some " + secondFish.getDefinition().getName().toLowerCase() + ".");
 		} else {
 			getPlayer().getItems().addItem(fish);
-			getPlayer().message("You manage to catch some " + fish.getDefinition().getName().toLowerCase() + ".");
+			getPlayer().getActionSender().sendMessage("You manage to catch some " + fish.getDefinition().getName().toLowerCase() + ".");
 		}
 		heronPet(getPlayer(), data);
 		if (data.isBaitRequired() && getPlayer().getItems().playerHasItem(313) && Utility.getRandom(2) == 0) {

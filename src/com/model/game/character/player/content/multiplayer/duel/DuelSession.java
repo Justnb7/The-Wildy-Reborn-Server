@@ -13,7 +13,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.GameItem;
@@ -70,7 +69,7 @@ public class DuelSession extends MultiplayerSession {
 			winner.get().write(new SendSoundPacket(77, 1, 2));
 			showRewardComponent(winner.get());
 		} else {
-			winner.get().write(new SendMessagePacket("You cannot be the winner and the loser of a duel."));
+			winner.get().getActionSender().sendMessage("You cannot be the winner and the loser of a duel.");
 		}
 		GroundItemHandler.reloadGroundItems(winner.get());
 		items.clear();
@@ -107,7 +106,7 @@ public class DuelSession extends MultiplayerSession {
 		switch (stageId) {
 		case MultiplayerSessionStage.OFFER_ITEMS:
 			if (System.currentTimeMillis() - lastRuleModification < 5_000) {
-				player.write(new SendMessagePacket("<col=CC0000>A rule was changed in the last 5 seconds, you cannot accept yet."));
+				player.getActionSender().sendMessage("<col=CC0000>A rule was changed in the last 5 seconds, you cannot accept yet.");
 				player.getActionSender().sendString("A rule was changed in recently, you cannot accept yet.", 6684);
 				return;
 			}
@@ -179,11 +178,11 @@ public class DuelSession extends MultiplayerSession {
 	@Override
 	public boolean itemAddable(Player player, GameItem item) {
 		if (!player.getItems().isTradeable(item.id)) {
-			player.write(new SendMessagePacket("You cannot stake this item, it is deemed as untradable."));
+			player.getActionSender().sendMessage("You cannot stake this item, it is deemed as untradable.");
 			return false;
 		}
 		if (item.id == 12926 || item.id == 12931 || item.id == 12904 || ClueDifficulty.isClue(item.id)) {
-			player.write(new SendMessagePacket("You cannot stake this item, it is deemed as untradable."));
+			player.getActionSender().sendMessage("You cannot stake this item, it is deemed as untradable.");
 			return false;
 		}
 		
@@ -419,7 +418,7 @@ public class DuelSession extends MultiplayerSession {
 
 	public void toggleRule(Player player, Rule rule) {
 		if (stage.getStage() != MultiplayerSessionStage.OFFER_ITEMS) {
-			player.write(new SendMessagePacket("You cannot change rules whilst on the second interface."));
+			player.getActionSender().sendMessage("You cannot change rules whilst on the second interface.");
 			return;
 		}
 		if (rule.equals(Rule.NO_MELEE) || rule.equals(Rule.NO_RANGE) || rule.equals(Rule.NO_MAGE)) {

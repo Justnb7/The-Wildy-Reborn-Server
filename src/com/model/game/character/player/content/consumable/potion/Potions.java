@@ -11,7 +11,6 @@ import com.model.game.character.player.content.consumable.Consumable;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.item.Item;
 
@@ -55,7 +54,7 @@ public class Potions extends Consumable {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(getPlayer(), MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(session)) {
 				if (session.getRules().contains(Rule.NO_DRINKS)) {
-					getPlayer().write(new SendMessagePacket("Drinks have been disabled for this duel."));
+					getPlayer().getActionSender().sendMessage("Drinks have been disabled for this duel.");
 					return;
 				}
 			}
@@ -68,6 +67,6 @@ public class Potions extends Consumable {
 		getPlayer().getItems().replaceSlot(data.getReplacement(), slot);
 		data.getPotionEffect().handle(getPlayer());
 		String message = data.getReplacement() != 229 ? "You drink a dose of the " + item.getDefinition().getName() + "." : "You drink the last dose of your " + item.getDefinition().getName() + ".";
-		getPlayer().write(new SendMessagePacket(message));
+		getPlayer().getActionSender().sendMessage(message);
 	}
 }

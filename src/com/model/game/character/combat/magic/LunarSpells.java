@@ -5,7 +5,6 @@ import com.model.game.character.Graphic;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
@@ -47,7 +46,7 @@ public class LunarSpells {
 			player.getSkills().addExperience(Skills.MAGIC, 1000);
 			player.setVengeance(true);
 			player.lastCast = System.currentTimeMillis();
-			player.write(new SendMessagePacket("You cast a vengeance."));
+			player.getActionSender().sendMessage("You cast a vengeance.");
 		}
 	}
 	
@@ -55,16 +54,16 @@ public class LunarSpells {
 		
 		//Checking for already casted vengeance
 		if (player.hasVengeance()) {
-			player.write(new SendMessagePacket("You already have vengeance casted."));
+			player.getActionSender().sendMessage("You already have vengeance casted.");
 			return false;
 		}
 		
 		//Level requirement check
 		if (player.getSkills().getLevel(Skills.MAGIC) < 94) {
-			player.write(new SendMessagePacket("Your Magic level is not high enough for this spell."));
+			player.getActionSender().sendMessage("Your Magic level is not high enough for this spell.");
 			return false;
 		} else if (player.getSkills().getLevel(Skills.DEFENCE) < 40) {
-			player.write(new SendMessagePacket("You need a Defence level of 40 for this spell"));
+			player.getActionSender().sendMessage("You need a Defence level of 40 for this spell");
 			return false;
 		}
 		
@@ -75,7 +74,7 @@ public class LunarSpells {
 		
 		//Checking duration
 		if (player.lastVeng != null && Utility.currentTimeMillis() - player.lastCast < 30000) {
-			player.write(new SendMessagePacket("Players may only cast vengeance once every 30 seconds."));
+			player.getActionSender().sendMessage("Players may only cast vengeance once every 30 seconds.");
 			return false;
 		}
 		return true;
@@ -94,7 +93,7 @@ public class LunarSpells {
 				//Checks for rune pouch or staff.
 			}
 			else if (!player.getItems().playerHasItem(i.getId(), i.getAmount())) {
-				player.write(new SendMessagePacket("You do not have enough " + ItemDefinition.forId(i.getId()).getName().replace("rune", "Rune") + "s to cast this spell."));
+				player.getActionSender().sendMessage("You do not have enough " + ItemDefinition.forId(i.getId()).getName().replace("rune", "Rune") + "s to cast this spell.");
 				return false;
 			}
 			// at this point you have the required amount. if you've met all requirements (length of RUNES paramater)

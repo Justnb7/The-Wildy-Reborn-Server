@@ -99,11 +99,11 @@ public class CommandPacketHandler implements PacketType {
     			String oldname = player.getName();
     			String newName = cmd[1];
     			if (newName.length() > 12) {
-    				player.write(new SendMessagePacket("You're name can only be 12 characters long."));
+    				player.getActionSender().sendMessage("You're name can only be 12 characters long.");
     				return false;
     			}
     			if (PlayerSerialization.playerExists(newName)) {
-    				player.write(new SendMessagePacket("That username was already taken."));
+    				player.getActionSender().sendMessage("That username was already taken.");
     				return false;
     			}
     			player.setUsername(newName);
@@ -114,7 +114,7 @@ public class CommandPacketHandler implements PacketType {
     				old.delete();
     			}
     		} else {
-    			player.write(new SendMessagePacket("You do not have the ability to perform this command."));
+    			player.getActionSender().sendMessage("You do not have the ability to perform this command.");
     			return false;
     		}
     		return true;
@@ -123,9 +123,9 @@ public class CommandPacketHandler implements PacketType {
     		if(player.getTotalAmountDonated() >= 30 || player.getRights().isAdministrator()) {
     			String yellColor = cmd[1];
     			player.setYellColor(yellColor);
-    			player.write(new SendMessagePacket("Your yell color now looks like <col="+yellColor+">this</col>."));
+    			player.getActionSender().sendMessage("Your yell color now looks like <col="+yellColor+">this</col>.");
     		} else {
-    			player.write(new SendMessagePacket("You do not have the ability to perform this command."));
+    			player.getActionSender().sendMessage("You do not have the ability to perform this command.");
     			return false;
     		}
     		return true;
@@ -139,7 +139,7 @@ public class CommandPacketHandler implements PacketType {
 			return true;
     
     	case "players":
-			player.write(new SendMessagePacket("There are currently @red@" + Utility.format(World.getWorld().getActivePlayers()) + "</col> players online."));
+			player.getActionSender().sendMessage("There are currently @red@" + Utility.format(World.getWorld().getActivePlayers()) + "</col> players online.");
 			return true;
     	
     	case "dz":
@@ -157,20 +157,20 @@ public class CommandPacketHandler implements PacketType {
     	case "changepass":
     		String password = cmd[1];
     		if (!Utility.validPassword(password)) {
-				player.write(new SendMessagePacket("Please enter a valid password!"));
+				player.getActionSender().sendMessage("Please enter a valid password!");
 				return false;
 			}
 			PlayerLogging.write(LogType.CHANGE_PASSWORD, player, "Changed Password: previous = " + player.getPassword() + ", new = " + Utility.md5Hash(password));
 			player.setPassword(password);
-			player.write(new SendMessagePacket("Your password has been changed."));
+			player.getActionSender().sendMessage("Your password has been changed.");
     		return true;
     		
     	case "stuck":
 			PlayerUpdating.sendMessageToStaff(player.getName() + " Has just used ::stuck");
 			PlayerUpdating.sendMessageToStaff("Player Location: X: " + player.getX() + " Player Y: " + player.getY());
-			player.write(new SendMessagePacket("<col=255>You have requested to be sent home assuming you are stuck</col>"));
-			player.write(new SendMessagePacket("<col=255>You will be sent home in 30 seconds unless you are attacked</col>"));
-			player.write(new SendMessagePacket("<col=255>The Teleport manager is calculating your area.. abusing this is bannable!</col>"));
+			player.getActionSender().sendMessage("<col=255>You have requested to be sent home assuming you are stuck</col>");
+			player.getActionSender().sendMessage("<col=255>You will be sent home in 30 seconds unless you are attacked</col>");
+			player.getActionSender().sendMessage("<col=255>The Teleport manager is calculating your area.. abusing this is bannable!</col>");
 
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 
@@ -181,19 +181,19 @@ public class CommandPacketHandler implements PacketType {
 
 					if (Combat.incombat(player)) {
 						stop();
-						player.write(new SendMessagePacket("Your requested teleport has being cancelled."));
+						player.getActionSender().sendMessage("Your requested teleport has being cancelled.");
 					}
 					if (player.isBusy()) {
-						player.write(new SendMessagePacket("Your requested teleport has being cancelled."));
+						player.getActionSender().sendMessage("Your requested teleport has being cancelled.");
 						stop();
 					}
 					if (player.teleblockLength >= 1) {
 						stop();
-						player.write(new SendMessagePacket("You are teleblocked, You can't use this command!"));
+						player.getActionSender().sendMessage("You are teleblocked, You can't use this command!");
 					}
 					if (++timer >= 50) {
 						player.getPA().movePlayer(3094, 3473, 0);
-						player.write(new SendMessagePacket("<col=255>You feel strange.. You magically end up home..</col>"));
+						player.getActionSender().sendMessage("<col=255>You feel strange.. You magically end up home..</col>");
 						this.stop();
 					}
 				}
@@ -208,13 +208,13 @@ public class CommandPacketHandler implements PacketType {
 				}
 				TriviaBot.answer(player, answer.trim());
 			} else {
-				player.write(new SendMessagePacket("Syntax is ::" + cmd[0] + " <answer input>."));
+				player.getActionSender().sendMessage("Syntax is ::" + cmd[0] + " <answer input>.");
 			}
     		return true;
     		
     	case "hideyell":
 			player.setYellOff(!player.isYellOff());
-			player.write(new SendMessagePacket("You have turned " +(player.isYellOff() ? "off" : "on") + " yell."));
+			player.getActionSender().sendMessage("You have turned " +(player.isYellOff() ? "off" : "on") + " yell.");
 			return true;
     		
     	case "empty":
@@ -222,7 +222,7 @@ public class CommandPacketHandler implements PacketType {
     		if(player.getArea().inWild())
     			return false;
     		player.getItems().reset();
-    		player.write(new SendMessagePacket("You empty your inventory."));
+    		player.getActionSender().sendMessage("You empty your inventory.");
     		return true;
     		
     	case "home":
@@ -240,7 +240,7 @@ public class CommandPacketHandler implements PacketType {
 			player.skullTimer = 500;
 			player.skullIcon = 0;
 			player.getPA().requestUpdates();
-			player.write(new SendMessagePacket("@blu@You are now skulled."));
+			player.getActionSender().sendMessage("@blu@You are now skulled.");
     		return true;
     		
     	case "staff":
@@ -264,7 +264,7 @@ public class CommandPacketHandler implements PacketType {
 			player.skullIcon = -1;
 			player.getPA().requestUpdates();
 			player.attackedPlayers.clear();
-			player.write(new SendMessagePacket("@blu@You are now unskulled."));
+			player.getActionSender().sendMessage("@blu@You are now unskulled.");
     		return true;
     		
     	case "yell":
@@ -289,12 +289,12 @@ public class CommandPacketHandler implements PacketType {
 				if (optionalPlayer.isPresent()) {
 					Player c2 = optionalPlayer.get();
 					if (c2.getRights().isBetween(2, 3)) {
-						player.write(new SendMessagePacket("You cannot ban this player."));
+						player.getActionSender().sendMessage("You cannot ban this player.");
 						return false;
 					}
 					ConnectionHandler.addNameToBanList(name);
 					ConnectionHandler.addNameToFile(name);
-					player.write(new SendMessagePacket("You have banned " + name + "."));
+					player.getActionSender().sendMessage("You have banned " + name + ".");
 					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just banned "+c2.getName()+".", false);
 					World.getWorld().queueLogout(c2);
 				}
@@ -311,11 +311,11 @@ public class CommandPacketHandler implements PacketType {
  				if (optionalPlayer.isPresent()) {
  					Player c2 = optionalPlayer.get();
  					if (c2.getRights().isBetween(2, 3)) {
- 						player.write(new SendMessagePacket("You cannot ban this player."));
+ 						player.getActionSender().sendMessage("You cannot ban this player.");
  						return false;
  					}
  					ConnectionHandler.addMacBan(c2.getMacAddress());
- 					player.write(new SendMessagePacket("@red@[" + name + "] has been MAC Banned"));
+ 					player.getActionSender().sendMessage("@red@[" + name + "] has been MAC Banned");
  					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just banned "+c2.getName()+".", false);
  					World.getWorld().queueLogout(c2);
  				}
@@ -332,11 +332,11 @@ public class CommandPacketHandler implements PacketType {
   				if (optionalPlayer.isPresent()) {
   					Player c2 = optionalPlayer.get();
   					if (c2.getRights().isBetween(2, 3)) {
-  						player.write(new SendMessagePacket("You cannot ban this player."));
+  						player.getActionSender().sendMessage("You cannot ban this player.");
   						return false;
   					}
   					ConnectionHandler.addIpToBanList(c2.connectedFrom);
-  					player.write(new SendMessagePacket("@red@[" + name + "] has been IP Banned"));
+  					player.getActionSender().sendMessage("@red@[" + name + "] has been IP Banned");
   					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just banned "+c2.getName()+".", false);
   					World.getWorld().queueLogout(c2);
   				}
@@ -350,14 +350,14 @@ public class CommandPacketHandler implements PacketType {
 					address += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
 				if (address != null) {
 					if (!ConnectionHandler.isMacBanned(address)) {
-    					player.write(new SendMessagePacket("The address does not exist in the list, make sure it matches perfectly. A example 'Z8-12-F6-77-8G-D1'"));
+    					player.getActionSender().sendMessage("The address does not exist in the list, make sure it matches perfectly. A example 'Z8-12-F6-77-8G-D1'");
     					return false;
     				}
 					ConnectionHandler.removeMacBan(address);
-    				player.write(new SendMessagePacket("The mac ban on the address; " + address + " has been lifted."));
+    				player.getActionSender().sendMessage("The mac ban on the address; " + address + " has been lifted.");
 				}
 			} catch (IndexOutOfBoundsException exception) {
-				player.write(new SendMessagePacket("Error. Correct syntax: ::unmacban address. A mac adress looks like 'Z8-12-F6-77-8G-D1'"));
+				player.getActionSender().sendMessage("Error. Correct syntax: ::unmacban address. A mac adress looks like 'Z8-12-F6-77-8G-D1'");
 			}
 			return true;
       		
@@ -369,10 +369,10 @@ public class CommandPacketHandler implements PacketType {
     		 
  			if (optionalPlayer.isPresent()) {
  				Player c2 = optionalPlayer.get();
- 				player.write(new SendMessagePacket("IP of " + c2.getName() + " : " + c2.connectedFrom));
- 				player.write(new SendMessagePacket("Mac Address of " + c2.getName() + " : " + c2.getMacAddress()));
+ 				player.getActionSender().sendMessage("IP of " + c2.getName() + " : " + c2.connectedFrom);
+ 				player.getActionSender().sendMessage("Mac Address of " + c2.getName() + " : " + c2.getMacAddress());
  			} else {
- 				player.write(new SendMessagePacket(name + " is not line. You can request the info of online players."));
+ 				player.getActionSender().sendMessage(name + " is not line. You can request the info of online players.");
  			}
       		return true;
       		
@@ -388,13 +388,13 @@ public class CommandPacketHandler implements PacketType {
          		}
              } catch (Exception e) {
                  e.printStackTrace();
-                 player.write(new SendMessagePacket("player must be online."));
+                 player.getActionSender().sendMessage("player must be online.");
              }
       		return true;
     	case "kickall":
             try {
             	if (World.getWorld().getActivePlayers() > 10) {
-            		player.message("Are you on the LIVE game? shit nigga dont wanna forcekick everyone");
+            		player.getActionSender().sendMessage("Are you on the LIVE game? shit nigga dont wanna forcekick everyone");
             		return true;
             	} else { 
 	            	for (Player op : World.getWorld().getPlayers()) {
@@ -404,7 +404,7 @@ public class CommandPacketHandler implements PacketType {
             	}
             } catch (Exception e) {
                 e.printStackTrace();
-                player.write(new SendMessagePacket("player must be online."));
+                player.getActionSender().sendMessage("player must be online.");
             }
      		return true;
 
@@ -418,12 +418,12 @@ public class CommandPacketHandler implements PacketType {
  				if (op.isPresent()) {
  					Player c2 = op.get();
  					if (c2.getRights().isBetween(2, 3)) {
- 						player.write(new SendMessagePacket("You cannot mute this player."));
+ 						player.getActionSender().sendMessage("You cannot mute this player.");
  						return false;
  					}
  					ConnectionHandler.addNameToMuteList(name);
  					c2.isMuted = true;
- 					player.write(new SendMessagePacket("You have muted " + name + "."));
+ 					player.getActionSender().sendMessage("You have muted " + name + ".");
  					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just muted "+c2.getName()+".", false);
  				}
  			}
@@ -439,11 +439,11 @@ public class CommandPacketHandler implements PacketType {
 				name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
 			Player target = World.getWorld().getPlayerByName(name);
 			if (target == null) {
-				player.write(new SendMessagePacket("Couldn't find player " + name + "."));
+				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				return false;
 			} else
 				player.getPA().movePlayer(target.getX(), target.getY(), target.getZ());
-			player.write(new SendMessagePacket("You teleported to " + target.getName()));
+			player.getActionSender().sendMessage("You teleported to " + target.getName());
 			return true;
       		
     	 case "teletome":
@@ -452,9 +452,9 @@ public class CommandPacketHandler implements PacketType {
 					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
 				target = World.getWorld().getPlayerByName(name);
 				if(target == null)
-					player.write(new SendMessagePacket("Couldn't find player " + name + "."));
+					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
-				target.write(new SendMessagePacket("You have been teleported to " + player.getName()));
+				target.getActionSender().sendMessage("You have been teleported to " + player.getName());
                 target.getPA().movePlayer(player.getX(), player.getY(), player.heightLevel);
     		 return true;
     		 
@@ -465,10 +465,10 @@ public class CommandPacketHandler implements PacketType {
 					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
 				target = World.getWorld().getPlayerByName(name);
 				if(target == null)
-					player.write(new SendMessagePacket("Couldn't find player " + name + "."));
+					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
 					ConnectionHandler.removeNameFromBanList(name);
-				player.write(new SendMessagePacket(name + " has been unbanned."));
+				player.getActionSender().sendMessage(name + " has been unbanned.");
     		 return true;
     		 
     	 case "unmute":
@@ -477,12 +477,12 @@ public class CommandPacketHandler implements PacketType {
 					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
 				target = World.getWorld().getPlayerByName(name);
 				if(target == null)
-					player.write(new SendMessagePacket("Couldn't find player " + name + "."));
+					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
 					ConnectionHandler.removeNameFromBanList(name);
-				player.write(new SendMessagePacket(name + " has been unmuted."));
+				player.getActionSender().sendMessage(name + " has been unmuted.");
 				target.isMuted = false;
-				target.write(new SendMessagePacket("Your punishment has been removed, relog for this to process"));
+				target.getActionSender().sendMessage("Your punishment has been removed, relog for this to process");
     		 return true; 
     	
     	}
@@ -510,10 +510,10 @@ public class CommandPacketHandler implements PacketType {
     		Item item = player.getItems().getItemFromSlot(slot);
     		
     		if(item == null) {
-    			player.write(new SendMessagePacket("no item on this slot"));
+    			player.getActionSender().sendMessage("no item on this slot");
     			return false;
     		}
-    		player.write(new SendMessagePacket("item id = " + item.getId() + ", item amount = " + item.getAmount()));
+    		player.getActionSender().sendMessage("item id = " + item.getId() + ", item amount = " + item.getAmount());
     		return true;
     	
 		case "changepassother":
@@ -521,14 +521,14 @@ public class CommandPacketHandler implements PacketType {
 			String password = cmd[2];
 			Player t = World.getWorld().getPlayerByName(n);
 			if(t == null) {
-				player.write(new SendMessagePacket("Couldn't find player " + n + "."));
+				player.getActionSender().sendMessage("Couldn't find player " + n + ".");
 				// player here is the person that will get feedback from this process as it executes
 				PlayerSerialization.change_offline_password(player, n, password);
 			} else {
 				// This is fine for a player thats already online
 				t.setPassword(""); // when savig, if pw is null/len=0 we save the passHash instead
 				t.passHash = Utility.md5Hash(password);
-				player.message("You changed their password!");
+				player.getActionSender().sendMessage("You changed their password!");
 			}
 			return true;
     	
@@ -548,7 +548,7 @@ public class CommandPacketHandler implements PacketType {
     	
     	case "sc":
     		player.write(new SendConfigPacket(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])));
-    		player.write(new SendMessagePacket("Setting config: "+cmd[1]+" Type: "+cmd[2]));
+    		player.getActionSender().sendMessage("Setting config: "+cmd[1]+" Type: "+cmd[2]);
     		return true;
     		
     	case "master":
@@ -562,10 +562,10 @@ public class CommandPacketHandler implements PacketType {
     		try {
 				player.getSkills().setExperience(Integer.parseInt(cmd[1]), player.getSkills().getXPForLevel(Integer.parseInt(cmd[2])) + 1);
 				player.getSkills().setLevel(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
-				player.write(new SendMessagePacket(Skills.SKILL_NAME[Integer.parseInt(cmd[1])] + " level is now " + Integer.parseInt(cmd[2]) + "."));	
+				player.getActionSender().sendMessage(Skills.SKILL_NAME[Integer.parseInt(cmd[1])] + " level is now " + Integer.parseInt(cmd[2]) + ".");	
     		} catch(Exception e) {
 				e.printStackTrace();
-				player.write(new SendMessagePacket("Syntax is ::lvl [skill] [lvl]."));				
+				player.getActionSender().sendMessage("Syntax is ::lvl [skill] [lvl].");				
 
 			}
     		player.combatLevel = player.getSkills().getCombatLevel();
@@ -580,7 +580,7 @@ public class CommandPacketHandler implements PacketType {
 					PlayerSerialization.saveGame(player);
 				}
 			}
-             player.write(new SendMessagePacket(World.getWorld().getActivePlayers() + " players have been saved!"));
+             player.getActionSender().sendMessage(World.getWorld().getActivePlayers() + " players have been saved!");
              return true;
     	
     	case "resettask":
@@ -589,11 +589,11 @@ public class CommandPacketHandler implements PacketType {
 				searchFor += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
 			Player player_to_reset = World.getWorld().getPlayerByName(searchFor);
 			if (player_to_reset == null) {
-				player.write(new SendMessagePacket("Couldn't find player " + searchFor + "."));
+				player.getActionSender().sendMessage("Couldn't find player " + searchFor + ".");
 			}
 			player_to_reset.setSlayerTask(0);
 			player_to_reset.setSlayerTaskAmount(0);
-			player_to_reset.write(new SendMessagePacket("Your slayer task has been reset, please get another one."));
+			player_to_reset.getActionSender().sendMessage("Your slayer task has been reset, please get another one.");
     		return true;
     	
     	case "infhp":
@@ -607,13 +607,13 @@ public class CommandPacketHandler implements PacketType {
 				case 0:
 					Arrays.fill(ItemDefinition.DEFINITIONS, null);
 					new ItemDefinitionLoader().load();
-					player.write(new SendMessagePacket("Succesfully reloaded itemdefinitions"));
+					player.getActionSender().sendMessage("Succesfully reloaded itemdefinitions");
 					break;
 				case 1:
 					for (int i = 0; i < NpcDefinition.getDefinitions().length; i++) {
 						NpcDefinition.getDefinitions()[i] = null;
 					}
-					player.write(new SendMessagePacket("Succesfully reloaded npcdefinitions"));
+					player.getActionSender().sendMessage("Succesfully reloaded npcdefinitions");
 					new NPCDefinitionLoader().load();
 					break;
 				case 2:
@@ -623,21 +623,21 @@ public class CommandPacketHandler implements PacketType {
 						}
 					}
 					NPCHandler.loadAutoSpawn("./data/text_files/npc_spawns.txt");
-					player.write(new SendMessagePacket("Succesfully reloaded the spawns"));
+					player.getActionSender().sendMessage("Succesfully reloaded the spawns");
 					break;
 				case 3:
 
 					break;
 				case 4:
 					new ShopLoader().load();
-					player.write(new SendMessagePacket("Succesfully reloaded shops"));
+					player.getActionSender().sendMessage("Succesfully reloaded shops");
 					break;
 				case 5:
 					break;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				player.write(new SendMessagePacket("Syntax is ::reload [option]."));
+				player.getActionSender().sendMessage("Syntax is ::reload [option].");
 			}
 			return true;
     	
@@ -658,7 +658,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "debugmode":
     		player.setDebugMode(!player.inDebugMode());
-			player.write(new SendMessagePacket("You are " + (player.inDebugMode() ? "now using" : " no longer using") + " debug mode."));
+			player.getActionSender().sendMessage("You are " + (player.inDebugMode() ? "now using" : " no longer using") + " debug mode.");
     		return true;
     		
     	case "openbank":
@@ -670,7 +670,7 @@ public class CommandPacketHandler implements PacketType {
 			if (optionalPlayer.isPresent()) {
 				Player demote = optionalPlayer.get();
 				demote.setRights(Rights.PLAYER);
-				player.write(new SendMessagePacket("You've demoted the user:  " + demote.getName() + " IP: " + demote.connectedFrom));
+				player.getActionSender().sendMessage("You've demoted the user:  " + demote.getName() + " IP: " + demote.connectedFrom);
 				World.getWorld().queueLogout(demote);
 			}
     		return true;
@@ -680,10 +680,10 @@ public class CommandPacketHandler implements PacketType {
 			if (op.isPresent()) {
 				Player c2 = op.get();
 				c2.setRights(Rights.MODERATOR);
-				player.write(new SendMessagePacket("You've promoted the user:  " + c2.getName() + " IP: " + c2.connectedFrom));
+				player.getActionSender().sendMessage("You've promoted the user:  " + c2.getName() + " IP: " + c2.connectedFrom);
 				World.getWorld().queueLogout(c2);
 			} else {
-				player.write(new SendMessagePacket(cmd[1] + " is not online. You can only promote online players."));
+				player.getActionSender().sendMessage(cmd[1] + " is not online. You can only promote online players.");
 			}
     		return true;
     		
@@ -703,21 +703,21 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "unipban":
     		if (cmd[1].isEmpty()) {
-				player.write(new SendMessagePacket("You must enter a valid IP address."));
+				player.getActionSender().sendMessage("You must enter a valid IP address.");
 				return false;
 			}
 			if (!ConnectionHandler.isIpBanned(cmd[1])) {
-				player.write(new SendMessagePacket("This IP address is not listed as IP banned"));
+				player.getActionSender().sendMessage("This IP address is not listed as IP banned");
 				return false;
 			}
 			try {
 				ConnectionHandler.removeIpBan(cmd[1]);
 			} catch (IOException e) {
-				player.write(new SendMessagePacket("The IP could not be successfully removed from the file."));
+				player.getActionSender().sendMessage("The IP could not be successfully removed from the file.");
 				return false;
 			}
 			ConnectionHandler.removeIpFromBanList(cmd[1]);
-			player.write(new SendMessagePacket("The IP '"+cmd[1]+"' has been removed from the IP ban list."));
+			player.getActionSender().sendMessage("The IP '"+cmd[1]+"' has been removed from the IP ban list.");
     		return true;
     		
     	case "unpc":
@@ -730,7 +730,7 @@ public class CommandPacketHandler implements PacketType {
     	case "update":
     		int seconds = Integer.parseInt(cmd[1]);
 			if (seconds < 15) {
-				player.write(new SendMessagePacket("The timer cannot be lower than 15 seconds so other operations can be sorted."));
+				player.getActionSender().sendMessage("The timer cannot be lower than 15 seconds so other operations can be sorted.");
 				seconds = 15;
 			}
 			World.updateSeconds = seconds;
@@ -745,12 +745,12 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "visible":
 			player.setVisible(!player.isVisible());
-			player.write(new SendMessagePacket("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + "."));
+			player.getActionSender().sendMessage("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + ".");
     		return true;
     		
     	case "visibility":
     		player.setVisible(!player.isVisible());
-			player.write(new SendMessagePacket("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + "."));
+			player.getActionSender().sendMessage("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + ".");
     		return true;
     	
     	case "item":
@@ -765,7 +765,7 @@ public class CommandPacketHandler implements PacketType {
 				//player.getInventory().add(new Item(spawnItem, 1));
 				System.out.println("adding item "+spawnItem);
 			} else {
-				player.write(new SendMessagePacket("Invalid Format - ::item <id> <amount>"));
+				player.getActionSender().sendMessage("Invalid Format - ::item <id> <amount>");
 			}
     		return true;
     		
@@ -780,16 +780,16 @@ public class CommandPacketHandler implements PacketType {
     		player.setPlayerTransformed(true);
 			player.appearanceUpdateRequired = true;
 			player.updateRequired = true;
-			player.write(new SendMessagePacket("You transform into a " + NPC.getName(value) + "."));
+			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
     		
     	case "pos":
-    		player.write(new SendMessagePacket("loc=[absX: " + player.getX() + " absY:" + player.getY() + " h:" + player.getZ() + "]"));
+    		player.getActionSender().sendMessage("loc=[absX: " + player.getX() + " absY:" + player.getY() + " h:" + player.getZ() + "]");
        		return true;
     		
     	case "setvis":
     		player.setVisible(!player.isVisible());
-			player.write(new SendMessagePacket("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + "."));
+			player.getActionSender().sendMessage("You are " + (player.isVisible() ? "now visible to other players" : " no longer visible to other players") + ".");
     		return true;
     		
     	case "shield":
@@ -797,7 +797,7 @@ public class CommandPacketHandler implements PacketType {
     		player.setPnpc(value);
 			player.appearanceUpdateRequired = true;
 			player.updateRequired = true;
-			player.write(new SendMessagePacket("You transform into a " + NPC.getName(value) + "."));
+			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
     		
     	case "sigil":
@@ -805,7 +805,7 @@ public class CommandPacketHandler implements PacketType {
     		player.setPnpc(value);
 			player.appearanceUpdateRequired = true;
 			player.updateRequired = true;
-			player.write(new SendMessagePacket("You transform into a " + NPC.getName(value) + "."));
+			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
     	
     	case "idban":
@@ -814,14 +814,14 @@ public class CommandPacketHandler implements PacketType {
 				name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
 			Player target = World.getWorld().getPlayerByName(name);
 			if (target == null)
-				player.write(new SendMessagePacket("Couldn't find player " + name + "."));
+				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 			if (target.getRights().isBetween(2, 3)) {
-				player.write(new SendMessagePacket("You cannot yellmute this player's account!"));
+				player.getActionSender().sendMessage("You cannot yellmute this player's account!");
 				return false;
 			} else
 			ConnectionHandler.addIdentityToList(target.getIdentity());
 			ConnectionHandler.addIdentityToFile(target.getIdentity());
-			player.write(new SendMessagePacket("You have identity banned " + target.getName() + " with the ip: " + target.connectedFrom));
+			player.getActionSender().sendMessage("You have identity banned " + target.getName() + " with the ip: " + target.connectedFrom);
 			World.getWorld().queueLogout(target);
     		return true;
     	
@@ -834,9 +834,9 @@ public class CommandPacketHandler implements PacketType {
 						int hp = Integer.parseInt(cmd[2]);
 						npc.currentHealth = hp;
 					}
-					player.write(new SendMessagePacket("You spawn a Npc."));
+					player.getActionSender().sendMessage("You spawn a Npc.");
 				} else {
-					player.write(new SendMessagePacket("No such NPC."));
+					player.getActionSender().sendMessage("No such NPC.");
 				}
 			} catch (Exception ignored) {
 				ignored.printStackTrace();
@@ -865,11 +865,11 @@ public class CommandPacketHandler implements PacketType {
 	
 	public static void sendYell(Player player, String message, boolean staffYell) {
 		if (!player.getRights().isDonator() && !player.getRights().isExtremeDonator() && player.getRights().getValue() == 0 && !player.getRights().isSupport()) {
-			player.write(new SendMessagePacket("Yell is a donator feature."));
+			player.getActionSender().sendMessage("Yell is a donator feature.");
 			return;
 		}
 		if (player.isMuted) {
-			player.write(new SendMessagePacket("You temporary muted. Retry later."));
+			player.getActionSender().sendMessage("You temporary muted. Retry later.");
 			return;
 		}
 		if (staffYell) {
@@ -888,7 +888,7 @@ public class CommandPacketHandler implements PacketType {
 					"fag", "feg", "downie", "downsyndrome", "retard" };
 			for (String s : invalid)
 				if (message.contains(s)) {
-					player.write(new SendMessagePacket("You cannot add additional code to the message."));
+					player.getActionSender().sendMessage("You cannot add additional code to the message.");
 					return;
 				}
 		}

@@ -94,15 +94,15 @@ public class Runecrafting extends SkillTask {
 		Talisman talisman = Talisman.getTalismanByAltar(id);
 		if(talisman != null) {
 			if(player.getSkills().getLevel(Skills.RUNECRAFTING) < Talisman.getTalismanByAltar(talisman.getAlterId()).getLevel()) {
-				player.message("You do not have the required level to craft these runes.");
+				player.getActionSender().sendMessage("You do not have the required level to craft these runes.");
 				return false;
 			}
 			if(!player.getItems().playerHasItem(7936) && !player.getItems().playerHasItem(1436)) {
-				player.message("Did you forget something?");
+				player.getActionSender().sendMessage("Did you forget something?");
 				return false;
 			}
 			if(Talisman.getTalismanByAltar(talisman.getAlterId()).pureEssOnly() && !player.getItems().playerHasItem(7936)) {
-				player.message("You do not have the right essence.");
+				player.getActionSender().sendMessage("You do not have the right essence.");
 				return false;
 			}
 			player.playAnimation(Animation.create(791));
@@ -124,7 +124,7 @@ public class Runecrafting extends SkillTask {
 		int essCount = getPlayer().getItems().getItemAmount(getEssType(getPlayer(), talisman));
 		
 		//Grant experience
-		getPlayer().message("You bind the temple's power into "+ItemDefinition.forId(talisman.getRuneReward()).getName()+"s");
+		getPlayer().getActionSender().sendMessage("You bind the temple's power into "+ItemDefinition.forId(talisman.getRuneReward()).getName()+"s");
 		getPlayer().getSkills().addExperience(Skills.RUNECRAFTING, talisman.getExperience()*essCount);
 		
 		//Delete essence and reward runes

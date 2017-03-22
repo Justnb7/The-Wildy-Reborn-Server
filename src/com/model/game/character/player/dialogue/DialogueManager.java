@@ -1,7 +1,6 @@
 package com.model.game.character.player.dialogue;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  *
@@ -86,7 +85,7 @@ public class DialogueManager {
 			dialogue.player = player;
 			dialogue.start(parameters);
 		} else {
-			player.write(new SendMessagePacket("Invalid dialogue"));
+			player.getActionSender().sendMessage("Invalid dialogue");
 		}
 	}
 
@@ -107,7 +106,7 @@ public class DialogueManager {
 			dialogue.player = player;
 			dialogue.start(parameters);
 		} else {
-			player.write(new SendMessagePacket("Invalid dialogue: " + name));
+			player.getActionSender().sendMessage("Invalid dialogue: " + name);
 		}
 	}
 

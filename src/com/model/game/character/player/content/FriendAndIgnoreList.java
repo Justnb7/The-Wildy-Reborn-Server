@@ -7,7 +7,6 @@ import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.packets.out.SendFriendPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 
 /**
@@ -72,7 +71,7 @@ public class FriendAndIgnoreList {
 	public void addFriend(Long username) {
 		
 		if (username == player.usernameHash) {
-			player.write(new SendMessagePacket("You cannot add yourself."));
+			player.getActionSender().sendMessage("You cannot add yourself.");
 			return;
 		}
 		int size = player.rights.getValue() > 0 ? 200 : 100;
@@ -84,7 +83,7 @@ public class FriendAndIgnoreList {
 		 * Check if our friends list already has the player
 		 */
 		if (hasFriend(username)) {
-			player.write(new SendMessagePacket(Utility.longToPlayerName(username) + " is already on your friends list."));
+			player.getActionSender().sendMessage(Utility.longToPlayerName(username) + " is already on your friends list.");
 			return;
 		}
 
@@ -92,7 +91,7 @@ public class FriendAndIgnoreList {
 		 * Check if our ignores list already contains the player
 		 */
 		if (hasIgnored(username)) {
-			player.write(new SendMessagePacket("Please remove from your ignore list before adding."));
+			player.getActionSender().sendMessage("Please remove from your ignore list before adding.");
 			return;
 		}
 
@@ -161,12 +160,12 @@ public class FriendAndIgnoreList {
 	public void addIgnore(long username) {
 		
 		if (username == player.usernameHash) {
-			player.write(new SendMessagePacket("You cannot add yourself."));
+			player.getActionSender().sendMessage("You cannot add yourself.");
 			return;
 		}
 		
 		if (getIgnoreList().size() >= 100) {
-			player.write(new SendMessagePacket("You cannot ignore more then 100 people at a time."));
+			player.getActionSender().sendMessage("You cannot ignore more then 100 people at a time.");
 			return;
 		}
 		
@@ -174,7 +173,7 @@ public class FriendAndIgnoreList {
 		 * check if our ignore list contains the username first
 		 */
 		if (hasIgnored(username)) {
-			player.write(new SendMessagePacket(Utility.longToPlayerName(username) + " is already on your ignore list."));
+			player.getActionSender().sendMessage(Utility.longToPlayerName(username) + " is already on your ignore list.");
 			return;
 		}
 
@@ -182,7 +181,7 @@ public class FriendAndIgnoreList {
 		 * Check if our friends list contains the username first
 		 */
 		if (hasFriend(username)) {
-			player.write(new SendMessagePacket("Please remove " + Utility.longToPlayerName(username) + " from  your friends list first."));
+			player.getActionSender().sendMessage("Please remove " + Utility.longToPlayerName(username) + " from  your friends list first.");
 			return;
 		}
 

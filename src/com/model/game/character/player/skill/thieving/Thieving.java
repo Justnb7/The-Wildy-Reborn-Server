@@ -64,13 +64,13 @@ public class Thieving {
 		
 		// Level requirement check
 		if (player.getSkills().getLevel(Skills.THIEVING) < stall.getRequirement()) {
-			player.message("You need a thieving level of " + stall.getRequirement() + " to steal from this stall.");
+			player.getActionSender().sendMessage("You need a thieving level of " + stall.getRequirement() + " to steal from this stall.");
 			return;
 		}
 		
 		//Check if we have enough inventory space
 		if (player.getItems().freeSlots() == 0) {
-			player.message("You need at least one free slot to steal from this stall.");
+			player.getActionSender().sendMessage("You need at least one free slot to steal from this stall.");
 			return;
 		}
 		
@@ -105,13 +105,13 @@ public class Thieving {
 		
 		//Level requirement check
 		if (player.getSkills().getLevel(Skills.THIEVING) < pickpocket.getRequirement()) {
-			player.message("You need a thieving level of " + pickpocket.getRequirement() + " to pickpocket this npc.");
+			player.getActionSender().sendMessage("You need a thieving level of " + pickpocket.getRequirement() + " to pickpocket this npc.");
 			return;
 		}
 		
 		//Check if we have enough inventory space
 		if (player.getItems().freeSlots() == 0) {
-			player.message("You need at least one free slot to steal from this npc.");
+			player.getActionSender().sendMessage("You need at least one free slot to steal from this npc.");
 			return;
 		}
 		

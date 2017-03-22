@@ -281,7 +281,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 										switch (index) {
 										case 1:
 											if (player.getItems().alreadyHasItem(13225)) {
-												player.message("You already have a pet jad.");
+												player.getActionSender().sendMessage("You already have a pet jad.");
 												player.getActionSender().sendRemoveInterfacePacket();
 												return;
 											}
@@ -304,7 +304,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 													World.getWorld().register(pet);
 													World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Tzrek Jad.", false);
 												}
-												player.message("You have a funny feeling like you're being followed.");
+												player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 												setPhase(39);
 											} else {
 												send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You not lucky. Maybe next time, JalYt.");

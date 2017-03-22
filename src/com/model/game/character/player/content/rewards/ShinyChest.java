@@ -3,7 +3,6 @@ package com.model.game.character.player.content.rewards;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
 
@@ -28,7 +27,7 @@ public class ShinyChest {
 	 * @param y
 	 */
 	public static void searchChest(final Player player, final int x, final int y) {
-			player.write(new SendMessagePacket("You unlock the chest with your key."));
+			player.getActionSender().sendMessage("You unlock the chest with your key.");
 			player.getItems().deleteItem(85);
 			player.playAnimation(Animation.create(881));
 			player.playGraphics(Graphic.create(390));
@@ -56,6 +55,6 @@ public class ShinyChest {
 			}
 			
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 }

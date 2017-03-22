@@ -5,7 +5,6 @@ import com.model.game.character.Hit;
 import com.model.game.character.HitType;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 
 /**
@@ -48,7 +47,7 @@ public class Venom {
 						return;
 					}
 					player.damage(new Hit(damage, HitType.VENOM));
-					player.write(new SendMessagePacket("You have been hit by the venom infection."));
+					player.getActionSender().sendMessage("You have been hit by the venom infection.");
 					player.appearanceUpdateRequired = true;
 					damage = (damage + 2 > 20 ? 20 : damage + 2);
 				}

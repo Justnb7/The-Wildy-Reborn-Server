@@ -2,7 +2,6 @@ package com.model.game.character.player.packets.in;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.bank.BankItem;
 
 public class WithdrawAllButOneAction implements PacketType {
@@ -18,7 +17,7 @@ public class WithdrawAllButOneAction implements PacketType {
 			if (amount < 1)
 				return;
 			if (amount == 1) {
-				player.write(new SendMessagePacket("Your bank only contains one of this item."));
+				player.getActionSender().sendMessage("Your bank only contains one of this item.");
 				return;
 			}
 			if (player.getBank().getBankSearch().isSearching()) {

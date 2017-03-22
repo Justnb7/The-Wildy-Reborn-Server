@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 
 /**
@@ -32,7 +31,7 @@ public class NPCDropAnnouncement {
 					continue;
 				}
 				if (regionalPlayer.distanceToPoint(this.npc.getX(), this.npc.getY()) < 40) {
-					regionalPlayer.write(new SendMessagePacket("<col=0B6121>" + Utility.capitalize(player.getName()) + " has received " + amount + " x " + player.getItems().getItemName(itemId) + "</col>."));
+					regionalPlayer.getActionSender().sendMessage("<col=0B6121>" + Utility.capitalize(player.getName()) + " has received " + amount + " x " + player.getItems().getItemName(itemId) + "</col>.");
 				}
 			}
 		}

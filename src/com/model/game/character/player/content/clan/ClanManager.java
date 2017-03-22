@@ -8,7 +8,6 @@ import java.util.Map;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.NameUtils;
 import com.model.utility.Utility;
 
@@ -111,12 +110,12 @@ public class ClanManager extends ClanData {
 		Clan clan = clansMap.get(player.getName().toLowerCase());
 
 		if (clan == null) {
-			player.write(new SendMessagePacket("You don't have permissions to edit this clan."));
+			player.getActionSender().sendMessage("You don't have permissions to edit this clan.");
 			return;
 		}
 
 		if (player.getClanMembership() != null && player.getClanMembership().getRank() != ClanRank.OWNER) {
-			player.write(new SendMessagePacket("You don't have permissions to edit this clan."));
+			player.getActionSender().sendMessage("You don't have permissions to edit this clan.");
 			return;
 		}
 
@@ -126,7 +125,7 @@ public class ClanManager extends ClanData {
 			SettingState state = (SettingState) objects[0];
 
 			if (state == null) {
-				player.write(new SendMessagePacket("Error: Invalid setting."));
+				player.getActionSender().sendMessage("Error: Invalid setting.");
 				return;
 			}
 
@@ -146,14 +145,14 @@ public class ClanManager extends ClanData {
 		switch (action) {
 		case "CHANGE_NAME":
 			if (objects.length == 0) {
-				player.write(new SendMessagePacket("Error: Invalid clan name."));
+				player.getActionSender().sendMessage("Error: Invalid clan name.");
 				return;
 			}
 
 			String name = (String) objects[0];
 
 			if (name == null || name.length() == 0) {
-				player.write(new SendMessagePacket("Error: Invalid clan name."));
+				player.getActionSender().sendMessage("Error: Invalid clan name.");
 				return;
 			}
 
@@ -192,12 +191,12 @@ public class ClanManager extends ClanData {
 				if (member != null && member.getRank() == ClanRank.BANNED) {
 					rank = ClanRank.GUEST;
 				} else {
-					player.write(new SendMessagePacket("This user is not banned."));
+					player.getActionSender().sendMessage("This user is not banned.");
 					return;
 				}
 			} else if (info[0] == 1) {
 				if (member != null && member.getRank() == ClanRank.BANNED) {
-					player.write(new SendMessagePacket("This user is already banned."));
+					player.getActionSender().sendMessage("This user is already banned.");
 					return;
 				}
 				rank = ClanRank.BANNED;
@@ -243,7 +242,7 @@ public class ClanManager extends ClanData {
 	public static void joinClan(Player player, String clan_owner) {
 
 		if (player.getClanMembership() != null) {
-			player.write(new SendMessagePacket("You're in a clan chat already."));
+			player.getActionSender().sendMessage("You're in a clan chat already.");
 			return;
 		}
 
@@ -253,10 +252,10 @@ public class ClanManager extends ClanData {
 			clan.join(player);
 		} else {
 			if (player.getName().equalsIgnoreCase(clan_owner)) {
-				player.write(new SendMessagePacket("You must setup your clan chat before joining it!"));
+				player.getActionSender().sendMessage("You must setup your clan chat before joining it!");
 				return;
 			}
-			player.write(new SendMessagePacket("This clan chat does not exist."));
+			player.getActionSender().sendMessage("This clan chat does not exist.");
 			return;
 		}
 	}
@@ -300,7 +299,7 @@ public class ClanManager extends ClanData {
 		player.setClanMembership(null);
 
 		if (!logout) {
-			player.write(new SendMessagePacket("You left the clan chat."));
+			player.getActionSender().sendMessage("You left the clan chat.");
 		}
 	}
 
@@ -313,17 +312,17 @@ public class ClanManager extends ClanData {
 	 */
 	public static void memberActions(Player player, String action, Object... objects) {
 		if (player.getClanMembership() == null) {
-			player.write(new SendMessagePacket("You must be in a clan chat to do this."));
+			player.getActionSender().sendMessage("You must be in a clan chat to do this.");
 			return;
 		}
 		Clan clan = clansMap.get(player.getClanMembership().getClanOwner().toLowerCase());
 		if (clan == null || objects.length == 0) {
-			player.write(new SendMessagePacket("You must be in a clan chat to do this."));
+			player.getActionSender().sendMessage("You must be in a clan chat to do this.");
 			return;
 		}
 		if (action.equals("KICK_MEMBER")) {
 			if(!player.rights.isStaff()) {
-				player.write(new SendMessagePacket("You don't have permissions to edit this clan."));
+				player.getActionSender().sendMessage("You don't have permissions to edit this clan.");
 				return;
 			}
 			int button_id = (int) objects[0];
@@ -362,18 +361,18 @@ public class ClanManager extends ClanData {
 
 			if (player.getClanMembership().getRank() == ClanRank.GUEST
 					&& clan.getSettings()[CAN_TALK] == SettingState.ANY_FRIENDS && !clan.isFriend(player.getName())) {
-				player.write(new SendMessagePacket("You don't have the necessary rank to join this clan chat."));
+				player.getActionSender().sendMessage("You don't have the necessary rank to join this clan chat.");
 				return;
 			}
 			
 			if(player.getClanPunishment()) {
-				player.write(new SendMessagePacket("You are muted in the clanchat"));
+				player.getActionSender().sendMessage("You are muted in the clanchat");
 				return;
 			}
 
 			if (clan.getSettings()[CAN_TALK].getRankRequired().ordinal() > player.getClanMembership().getRank()
 					.ordinal()) {
-				player.write(new SendMessagePacket("You don't have the necessary rank to join this clan chat."));
+				player.getActionSender().sendMessage("You don't have the necessary rank to join this clan chat.");
 				return;
 			}
 			List<String> invalids;
@@ -381,7 +380,7 @@ public class ClanManager extends ClanData {
 					"shit", "cock", "cunt", "asshole", "hitler", "niggers", "nigguh", "gay", "fag", "feg", "downie", "downsyndrome", "retard");
 			for (String string : invalids) {
 				if (message.contains(string)) {
-					player.write(new SendMessagePacket("Your message was not sent as it contained an illegal character."));
+					player.getActionSender().sendMessage("Your message was not sent as it contained an illegal character.");
 					return;
 				}
 			}
@@ -392,7 +391,7 @@ public class ClanManager extends ClanData {
 
 			if (clan.getSettings()[CAN_TOGGLE_LOOTSHARE].getRankRequired().ordinal() > player.getClanMembership()
 					.getRank().ordinal()) {
-				player.write(new SendMessagePacket("You don't have the necessary rank to edit this clan chat."));
+				player.getActionSender().sendMessage("You don't have the necessary rank to edit this clan chat.");
 				return;
 			}
 

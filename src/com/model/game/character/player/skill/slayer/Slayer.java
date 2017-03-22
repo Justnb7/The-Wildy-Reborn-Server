@@ -3,7 +3,6 @@ package com.model.game.character.player.skill.slayer;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.tasks.Task;
 
 /**
@@ -64,11 +63,11 @@ public class Slayer {
 				return false;
 			}
 			if(npc.npcId == 5534 && player.getSlayerTask() != 494) {
-				player.write(new SendMessagePacket("You must have Kraken's as a slayer-task to disturb these whirlpools."));
+				player.getActionSender().sendMessage("You must have Kraken's as a slayer-task to disturb these whirlpools.");
 				return false;
 			}
 			if (npc.npcId == 493 && player.getSlayerTask() != 492 || npc.npcId == 496 && player.getSlayerTask() != 494) {
-				player.write(new SendMessagePacket("You must have cave krakens as a slayer-task to attack"));
+				player.getActionSender().sendMessage("You must have cave krakens as a slayer-task to attack");
 				return false;
 			}
 		}

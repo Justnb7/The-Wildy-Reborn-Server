@@ -38,17 +38,17 @@ public class WoodcuttingEvent extends CycleEvent {
 			return;
 		}
 		if (!player.getItems().playerHasItem(axe.getItemId()) && !player.getItems().isWearingItem(axe.getItemId())) {
-			player.message("Your axe has dissapeared.");
+			player.getActionSender().sendMessage("Your axe has dissapeared.");
 			container.stop();
 			return;
 		}
 		if (player.getSkills().getLevel(Skills.WOODCUTTING) < axe.getLevelRequired()) {
-			player.message("You no longer have the level required to operate this hatchet.");
+			player.getActionSender().sendMessage("You no longer have the level required to operate this hatchet.");
 			container.stop();
 			return;
 		}
 		if (player.getItems().freeSlots() == 0) {
-			player.message("You have run out of free inventory space.");
+			player.getActionSender().sendMessage("You have run out of free inventory space.");
 			container.stop();
 			return;
 		}

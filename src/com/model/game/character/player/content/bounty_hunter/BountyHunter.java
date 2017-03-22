@@ -10,7 +10,6 @@ import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -118,7 +117,7 @@ public class BountyHunter extends ScheduledTask {
 		Player target = World.getWorld().getPlayers().get(player.getAttribute(BountyHunterConstants.BOUNTY_TARGET, 0));
 
 		if (target == null || !target.isActive()) {
-			player.write(new SendMessagePacket("@red@Your target has logged out, searching for new target."));
+			player.getActionSender().sendMessage("@red@Your target has logged out, searching for new target.");
 			return false;
 		}
 
@@ -128,11 +127,11 @@ public class BountyHunter extends ScheduledTask {
 			long elapsed = System.currentTimeMillis() - delay;
 
 			if (elapsed <= 1000) {
-				player.write(new SendMessagePacket("@red@You have 2 minutes to return to the Wilderness before you lose your target."));
+				player.getActionSender().sendMessage("@red@You have 2 minutes to return to the Wilderness before you lose your target.");
 			} else if (elapsed >= 60_000 && elapsed <= 60_599) {
-				player.write(new SendMessagePacket("@red@You have 1 minutes to return to the Wilderness before you lose your target."));
+				player.getActionSender().sendMessage("@red@You have 1 minutes to return to the Wilderness before you lose your target.");
 			} else if (System.currentTimeMillis() - delay >= 120_000) {
-				player.write(new SendMessagePacket("@red@You have abandoned your target."));
+				player.getActionSender().sendMessage("@red@You have abandoned your target.");
 				return false;
 			}
 		}
@@ -140,7 +139,7 @@ public class BountyHunter extends ScheduledTask {
 		if (!target.getArea().inWild()) {
 			long delay = target.getAttribute("left_wild_delay", 0L);
 			if (System.currentTimeMillis() - delay >= 120_000) {
-				player.write(new SendMessagePacket("@red@The target has left the wilderness, searching for new target."));
+				player.getActionSender().sendMessage("@red@The target has left the wilderness, searching for new target.");
 				return false;
 			}
 

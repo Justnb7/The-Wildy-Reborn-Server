@@ -3,7 +3,6 @@ package com.model.game.character.combat.weaponSpecial;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.weaponSpecial.impl.*;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -94,7 +93,7 @@ public class SpecialAttackHandler {
 		for (int i : BUTTONS) {
 			if (buttonId == i) {
 				if (player.getSpecialAmount() <= 0) {
-					player.write(new SendMessagePacket("You do not have the required special amount."));
+					player.getActionSender().sendMessage("You do not have the required special amount.");
 					return false;
 				}
 				
@@ -119,7 +118,7 @@ public class SpecialAttackHandler {
 							special.handleAttack(player, target);
 						}
 					} else {
-						player.write(new SendMessagePacket("You do not have the required special amount."));
+						player.getActionSender().sendMessage("You do not have the required special amount.");
 					}
 					Special.resetSpecial(player);
 					return true;

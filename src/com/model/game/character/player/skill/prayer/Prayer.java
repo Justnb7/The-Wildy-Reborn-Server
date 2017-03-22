@@ -8,7 +8,6 @@ import com.model.game.Constants;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -40,17 +39,17 @@ public class Prayer {
 	public void prayAltar(Position loc) {
 		if (player.getRights().isBetween(1, 7)) {
 			if (player.getLastAltarPrayer() < 120000) {
-				player.write(new SendMessagePacket("You can only use the altar to restore your special attack every 2 minutes"));
+				player.getActionSender().sendMessage("You can only use the altar to restore your special attack every 2 minutes");
 			} else {
 				player.setSpecialAmount(100);
 				player.setLastAltarPrayer(System.currentTimeMillis());
 				player.getSkills().increaseLevelToMaximum(Skills.HITPOINTS, player.getSkills().getLevelForExperience(Skills.HITPOINTS));
 			}
         } else if (Utility.random(4) == 0) {
-        	player.write(new SendMessagePacket("Did you know if you were a donator you'd restore special energy and hitpoints?"));
+        	player.getActionSender().sendMessage("Did you know if you were a donator you'd restore special energy and hitpoints?");
         }
 		if (player.getPrayerPoint() >= player.getSkills().getLevelForExperience(Skills.PRAYER)) {
-			player.write(new SendMessagePacket("You already have full prayer points."));
+			player.getActionSender().sendMessage("You already have full prayer points.");
 			return;
 		}
 		player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
@@ -60,7 +59,7 @@ public class Prayer {
 		}
 		player.playAnimation(Animation.create(645));
 		player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
-		player.write(new SendMessagePacket("You pray at the altar..."));
+		player.getActionSender().sendMessage("You pray at the altar...");
 	}
 
 	/**
@@ -76,12 +75,12 @@ public class Prayer {
 			return;
 		if (bone.getId() == item) {
 			player.playAnimation(Animation.create(827));
-			player.write(new SendMessagePacket("You dig a hole in the ground."));
+			player.getActionSender().sendMessage("You dig a hole in the ground.");
 			player.getItems().deleteItem(item, slot, 1);
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 				public void execute() {
 					player.getSkills().addExperience(Skills.PRAYER, bone.getXp() * Constants.PRAYER_EXP_MODIFIER);
-					player.write(new SendMessagePacket("You bury the bones..."));
+					player.getActionSender().sendMessage("You bury the bones...");
 					stop();
 				}
 			});
@@ -100,7 +99,7 @@ public class Prayer {
 		if (bone.getId() == item) {
 			player.playAnimation(Animation.create(883, 10));
 			player.getItems().deleteItem(item);
-			player.write(new SendMessagePacket("You use the bones on the altar."));
+			player.getActionSender().sendMessage("You use the bones on the altar.");
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 				public void execute() {
 					/**
@@ -114,7 +113,7 @@ public class Prayer {
 					 * We ran out of bones stop the task
 					 */
 					if (!player.getItems().playerHasItem(bone.getId())) {
-						player.write(new SendMessagePacket("You ran out of bones!"));
+						player.getActionSender().sendMessage("You ran out of bones!");
 						this.stop();
 						return;
 					}

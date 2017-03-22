@@ -1,7 +1,6 @@
 package com.model.game.character.player.content.rewards;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
 
@@ -64,7 +63,7 @@ public class RewardCasket {
 		
 		boolean hasAllPetsUnlocked = false;
 		if (hasAllPetsUnlocked) {
-			player.write(new SendMessagePacket("You've already collected all pets."));
+			player.getActionSender().sendMessage("You've already collected all pets.");
 			// looping bank+inv+equip = 800+28+13 for 28 items is hugely stressful, better to store a boolean
 			// as unlockedPets[28] and reference that. when you get a drop/drop a pet (interact with one) then unlock it.
 			return;
@@ -79,7 +78,7 @@ public class RewardCasket {
 				itemReceived = rollPet();
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 	}
 	
@@ -136,7 +135,7 @@ public class RewardCasket {
 				itemReceived = Utility.randomElement(COMMON_ARMOUR_CASKET_REWARDS);
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 	}
 	
@@ -172,7 +171,7 @@ public class RewardCasket {
 				itemReceived = Utility.randomElement(COMMON_WEAPON_CASKET_REWARDS);
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 	}
 	
@@ -209,7 +208,7 @@ public class RewardCasket {
 				itemReceived = Utility.randomElement(COMMON_COSMETIC_CASKET_REWARDS);
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 	}
 	
@@ -246,7 +245,7 @@ public class RewardCasket {
 				itemReceived = Utility.randomElement(COMMON_VENOM_CASKET_REWARDS);
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 	}
 	
@@ -283,7 +282,7 @@ public class RewardCasket {
 				itemReceived = Utility.randomElement(COMMON_ZENYTE_CASKET_REWARDS);
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 	}
 	
@@ -321,7 +320,7 @@ public class RewardCasket {
 				itemReceived = Utility.randomElement(COMMON_ADVANCED_ITEMS_CASKET_REWARDS);
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-			player.write(new SendMessagePacket("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest."));
+			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 			//player.sendMessage(player.getUsername()+" has rolled "+roll+" on the drop table. (25, 30, 21 and 23 are rare rolls.)");
 		}
 	}

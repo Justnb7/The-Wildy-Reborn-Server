@@ -1,7 +1,6 @@
 package com.model.game.character.player.content;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 
 /**
@@ -59,7 +58,7 @@ public class PotionCombinating {
 			return;
 		}
 		if (potion1.isFull(item1.getId()) || potion2.isFull(item2.getId())) {
-			player.write(new SendMessagePacket("You cannot mix a 4 dose potion."));
+			player.getActionSender().sendMessage("You cannot mix a 4 dose potion.");
 			return;
 		}
 		player.getItems().deleteItem(item1.getId(), item1.getAmount());

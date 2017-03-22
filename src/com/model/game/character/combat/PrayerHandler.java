@@ -13,7 +13,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 public class PrayerHandler {
 
@@ -105,26 +104,26 @@ public class PrayerHandler {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(session)) {
 				if (session.getRules().contains(Rule.NO_PRAYER)) {
-					player.write(new SendMessagePacket("Prayer has been disabled for this duel."));
+					player.getActionSender().sendMessage("Prayer has been disabled for this duel.");
 					resetAllPrayers(player);
 					return;
 				}
 			}
 		}
 		if (player.getSkills().getLevelForExperience(Skills.PRAYER) < prayer.getLevelRequirement()) {
-			player.write(new SendMessagePacket("You need a prayer level of at least " + prayer.getLevelRequirement() + " to use " + prayer.toString().toLowerCase().replaceAll("_", " ") + "."));
+			player.getActionSender().sendMessage("You need a prayer level of at least " + prayer.getLevelRequirement() + " to use " + prayer.toString().toLowerCase().replaceAll("_", " ") + ".");
 			deactivatePrayer(player, prayer);
 			return;
 		}
 		if (player.getSkills().getLevel(Skills.PRAYER) <= 0) {
-			player.write(new SendMessagePacket("You have run out of prayer points; recharge your prayer points at an altar."));
+			player.getActionSender().sendMessage("You have run out of prayer points; recharge your prayer points at an altar.");
 			deactivatePrayer(player, prayer);
 			return;
 		}
 		
 		if (prayer == Prayers.PROTECT_ITEM) {
 			if (!player.getAccount().getType().canUseItemProtection()) {
-				player.message("You're account is restricted from using protect item prayer.");
+				player.getActionSender().sendMessage("You're account is restricted from using protect item prayer.");
 				return;
 			}
 		}
@@ -247,7 +246,7 @@ public class PrayerHandler {
 			if (player.getSkills().getLevel(Skills.PRAYER) > 1) {
 				player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevel(Skills.PRAYER) - 1);
 			} else {
-				player.write(new SendMessagePacket("You have run out of prayer points."));
+				player.getActionSender().sendMessage("You have run out of prayer points.");
 				player.getSkills().setLevel(Skills.PRAYER, 0);
 				for (Prayers prayer : Prayers.values()) {
 					deactivatePrayer(player, prayer);
@@ -293,7 +292,7 @@ public class PrayerHandler {
 		int reduce = damage / 4;
 		if (player.isActivePrayer(Prayers.SMITE)) {
 			defender.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevel(Skills.PRAYER) - reduce);
-			//player.write(new SendMessagePacket("reduced " + defender.getName() + "'s prayer level by, " + reduce + ". Also dealt "+damage+" damage."));
+			//player.getActionSender().sendMessage("reduced " + defender.getName() + "'s prayer level by, " + reduce + ". Also dealt "+damage+" damage."));
 			
 			if (defender.getSkills().getLevel(Skills.PRAYER) <= 0) {
 				defender.getSkills().setLevel(Skills.PRAYER, 0);

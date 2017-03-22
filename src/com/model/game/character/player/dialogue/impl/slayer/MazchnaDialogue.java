@@ -4,7 +4,6 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerMasters;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
@@ -25,8 +24,8 @@ public class MazchnaDialogue extends Dialogue {
 			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Hello brave warrior. What would you like?");
 			setPhase(0);
 		} else {
-			player.write(new SendMessagePacket("You cannot talk to Mazchna as you are yet to start the 'Slayer' skill."));
-			player.write(new SendMessagePacket("Talk to @blu@Turael@bla@ in Edgeville to do so."));
+			player.getActionSender().sendMessage("You cannot talk to Mazchna as you are yet to start the 'Slayer' skill.");
+			player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ in Edgeville to do so.");
 		}
 		
 	}
@@ -45,11 +44,11 @@ public class MazchnaDialogue extends Dialogue {
 				} else if (!Slayer.hasTask(player) && Slayer.suitableMaster(player) == SlayerMasters.MAZCHNA) {
 					SlayerTaskManagement.easyTask(player);
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, your task is to kill " + player.getSlayerTaskAmount(), " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getName() + ".");
-					player.write(new SendMessagePacket("Remember you can use an Enchanted gem to remind you of your task."));
+					player.getActionSender().sendMessage("Remember you can use an Enchanted gem to remind you of your task.");
 					setPhase(3);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.TURAEL && !Slayer.hasTask(player)) {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "You are not strong enough to handle my assignments.", "Come back when you are a bit more experienced.");
-					player.write(new SendMessagePacket("You need a combat level of 20 to get an assignment from Mazchna."));
+					player.getActionSender().sendMessage("You need a combat level of 20 to get an assignment from Mazchna.");
 					setPhase(3);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.VANNAKA && !Slayer.hasTask(player)) {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Someone of your strength should go and see Vannaka.", "Would you like to get an assignment from him?");
@@ -93,7 +92,7 @@ public class MazchnaDialogue extends Dialogue {
 							} else {
 								if (getPhase() == 8) {
 									stop();
-									player.write(new SendMessagePacket("The @blu@Rewards@bla@ store can be accessed by speaking to Nieve."));
+									player.getActionSender().sendMessage("The @blu@Rewards@bla@ store can be accessed by speaking to Nieve.");
 								} else {
 									if (getPhase() == 9) {
 										SlayerTaskManagement.easyTask(player);
@@ -120,8 +119,8 @@ public class MazchnaDialogue extends Dialogue {
 				send(Type.PLAYER, Expression.DEFAULT, "Do you have anything for trade?");
 				if (!player.getFirstSlayerTask()) {
 					setPhase(3);
-					player.write(new SendMessagePacket("You do not have access to the Slayer store as you have not started the 'Slayer' skill."));
-					player.write(new SendMessagePacket("Talk to @blu@Turael@bla@ who is located in Edgeville to do."));
+					player.getActionSender().sendMessage("You do not have access to the Slayer store as you have not started the 'Slayer' skill.");
+					player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ who is located in Edgeville to do.");
 				} else {
 					setPhase(8);
 				}

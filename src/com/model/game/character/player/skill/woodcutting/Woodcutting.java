@@ -14,24 +14,24 @@ public class Woodcutting {
 		Tree tree = Tree.forObject(objectId);
 		player.face(player, new Position(x, y));
 		if (player.getSkills().getLevel(Skills.WOODCUTTING) < tree.getLevelRequired()) {
-			player.message("You do not have the woodcutting level required to cut this tree down.");
+			player.getActionSender().sendMessage("You do not have the woodcutting level required to cut this tree down.");
 			return;
 		}
 		Axe axe = Axe.getBest(player);
 		if (axe == null) {
-			player.message("You must have an axe and the level required to cut this tree down.");
+			player.getActionSender().sendMessage("You must have an axe and the level required to cut this tree down.");
 			return;
 		}
 		if (player.getItems().freeSlots() == 0) {
-			player.message("You must have at least one free inventory space to do this.");
+			player.getActionSender().sendMessage("You must have at least one free inventory space to do this.");
 			return;
 		}
 		if (Server.getGlobalObjects().exists(tree.getStumpId(), x, y)) {
-			player.message("This tree has been cut down to a stump, you must wait for it to grow.");
+			player.getActionSender().sendMessage("This tree has been cut down to a stump, you must wait for it to grow.");
 			return;
 		}
 		player.getSkillCyclesTask().stop();
-		player.message("You swing your axe at the tree.");
+		player.getActionSender().sendMessage("You swing your axe at the tree.");
 		player.playAnimation(axe.getAnimation());
 		player.getSkillCyclesTask().setSkill(Skills.WOODCUTTING);
 		CycleEvent woodcuttingEvent = new WoodcuttingEvent(player, tree, axe, objectId, x , y);

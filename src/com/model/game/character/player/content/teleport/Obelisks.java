@@ -14,7 +14,6 @@ import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
@@ -75,11 +74,11 @@ public class Obelisks {
 		}
 		boolean active = state.get(objectId);
 		if (CycleEventHandler.getSingleton().isAlive(location) || active) {
-			player.write(new SendMessagePacket("The obelisk is already active, please wait."));
+			player.getActionSender().sendMessage("The obelisk is already active, please wait.");
 			return;
 		}
 		if (player.teleTimer > 0) {
-			player.write(new SendMessagePacket("You cannot do this whilst teleporting."));
+			player.getActionSender().sendMessage("You cannot do this whilst teleporting.");
 			return;
 		}
 		player.usingObelisk = true;

@@ -7,7 +7,6 @@ import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
  
 /**
  * Challenging packet, for dueling.
@@ -45,7 +44,7 @@ public class ChallengePlayer implements PacketType {
            
             //We can't sent a request when we're already dueling
             if (Boundary.isIn(player, Boundary.DUEL_ARENAS) || Boundary.isIn(requested, Boundary.DUEL_ARENAS)) {
-                player.write(new SendMessagePacket("You cannot do this inside of the duel arena."));
+                player.getActionSender().sendMessage("You cannot do this inside of the duel arena.");
                 return;
             }
            

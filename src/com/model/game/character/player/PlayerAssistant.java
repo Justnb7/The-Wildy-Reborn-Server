@@ -101,7 +101,7 @@ public class PlayerAssistant {
             return;
         }
 		if (!player.lastSpear.elapsed(4000)) {
-			player.write(new SendMessagePacket("You're trying to move too fast."));
+			player.getActionSender().sendMessage("You're trying to move too fast.");
 			return;
 		}
         player.getMovementHandler().reset();
@@ -406,7 +406,7 @@ public class PlayerAssistant {
 
     public void openBank() {
     	if (!player.getAccount().getType().canBank()) {
-			player.message("You're restricted to bank because of your account type.");
+			player.getActionSender().sendMessage("You're restricted to bank because of your account type.");
 			return;
 		}
         if (player.takeAsNote)
@@ -419,7 +419,7 @@ public class PlayerAssistant {
         }
         
         if (player.getArea().inWild() && !(player.getRights().isBetween(2, 3))) {
-			player.write(new SendMessagePacket("You can't bank in the wilderness!"));
+			player.getActionSender().sendMessage("You can't bank in the wilderness!");
 			return;
 		}
 		

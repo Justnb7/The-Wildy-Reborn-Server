@@ -2,7 +2,6 @@ package com.model.game.character.combat.magic;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 
 public class MagicRequirements extends MagicData {
@@ -13,7 +12,7 @@ public class MagicRequirements extends MagicData {
 				return true;
 			}
 		}
-		player.write(new SendMessagePacket("You don't have enough runes to cast this spell!"));
+		player.getActionSender().sendMessage("You don't have enough runes to cast this spell!");
 		return false;
 	}
 
@@ -58,7 +57,7 @@ public class MagicRequirements extends MagicData {
 					(!player.getItems().playerHasItem(player.MAGIC_SPELLS[spell][10], player.MAGIC_SPELLS[spell][11]) && !wearingStaff(player, player.MAGIC_SPELLS[spell][10],  player.MAGIC_SPELLS[spell][11], false)) ||
 					(!player.getItems().playerHasItem(player.MAGIC_SPELLS[spell][12], player.MAGIC_SPELLS[spell][13]) && !wearingStaff(player, player.MAGIC_SPELLS[spell][12], player.MAGIC_SPELLS[spell][13], false)) ||
 					(!player.getItems().playerHasItem(player.MAGIC_SPELLS[spell][14], player.MAGIC_SPELLS[spell][15]) && !wearingStaff(player, player.MAGIC_SPELLS[spell][14], player.MAGIC_SPELLS[spell][15], false))){
-				player.write(new SendMessagePacket("You don't have the required runes to cast this spell."));
+				player.getActionSender().sendMessage("You don't have the required runes to cast this spell.");
 				return false;
 			} 
 		}
@@ -66,14 +65,14 @@ public class MagicRequirements extends MagicData {
 		int staffRequired = getStaffNeeded(player);
 		if(player.usingMagic && staffRequired > 0) { // staff required
 			if(player.playerEquipment[player.getEquipment().getWeaponId()] != staffRequired) {
-				player.write(new SendMessagePacket("You need a "+player.getItems().getItemName(staffRequired).toLowerCase()+" to cast this spell."));
+				player.getActionSender().sendMessage("You need a "+player.getItems().getItemName(staffRequired).toLowerCase()+" to cast this spell.");
 				return false;
 			}
 		}
 
 		if(player.usingMagic) { // check magic level
 			if(player.getSkills().getLevel(Skills.MAGIC) < player.MAGIC_SPELLS[spell][1]) {
-				player.write(new SendMessagePacket("You need to have a magic level of " +player.MAGIC_SPELLS[spell][1]+" to cast this spell."));
+				player.getActionSender().sendMessage("You need to have a magic level of " +player.MAGIC_SPELLS[spell][1]+" to cast this spell.");
 				return false;
 			}
 		}

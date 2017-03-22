@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 public class MultiplayerSessionListener {
 	
@@ -62,13 +61,13 @@ public class MultiplayerSessionListener {
 		if (playerMultiplayerSessions.size() > 1) {
 			playerMultiplayerSessions.forEach(session -> session
 					.finish(MultiplayerSessionFinalizeType.DISPOSE_ITEMS));
-			player.write(new SendMessagePacket("Trade declined and items lost, you existed in one or more trades."));
+			player.getActionSender().sendMessage("Trade declined and items lost, you existed in one or more trades.");
 			return true;
 		}
 		for (MultiplayerSession session : sessions) {
 			if (session.getPlayers().size() > MultiplayerSession.PLAYER_LIMIT) {
 				session.finish(MultiplayerSessionFinalizeType.DISPOSE_ITEMS);
-				player.write(new SendMessagePacket("Trace declined, items lost, more than two players in this trade."));
+				player.getActionSender().sendMessage("Trace declined, items lost, more than two players in this trade.");
 				return true;
 			}
 		}

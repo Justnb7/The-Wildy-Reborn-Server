@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.Optional;
 
 import com.model.game.World;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -23,7 +22,7 @@ public class PlayerUpdating {
 	 * @param message
 	 */
 	public static void executeGlobalMessage(String message) {
-		World.getWorld().getPlayers().forEach(p -> p.write(new SendMessagePacket(message)));
+		World.getWorld().getPlayers().forEach(p -> p.getActionSender().sendMessage(message));
 	}
 
 	/**
@@ -647,7 +646,7 @@ public class PlayerUpdating {
 			if (player != null) {
 				if (player.getRights().getValue() > 0 && player.getRights().getValue() < 3) {
 					Player client = player;
-					client.write(new SendMessagePacket("<col=255>[STAFF MESSAGE] " + message + "</col>"));
+					client.getActionSender().sendMessage("<col=255>[STAFF MESSAGE] " + message + "</col>");
 				}
 			}
 		}

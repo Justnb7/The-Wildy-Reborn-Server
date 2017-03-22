@@ -79,7 +79,7 @@ public class MiningEvent extends CycleEvent {
 			return;
 		}
 		if (!player.getItems().playerHasItem(pickaxe.getId()) && !player.getItems().isWearingItem(pickaxe.getId())) {
-			player.message("That is strange! The pickaxe could not be found.");
+			player.getActionSender().sendMessage("That is strange! The pickaxe could not be found.");
 			container.stop();
 			return;
 		}
@@ -90,7 +90,7 @@ public class MiningEvent extends CycleEvent {
 		}
 		if (objectId > 0) {
 			if (Server.getGlobalObjects().exists(Rock.EMPTY_ROCK, position.getX(), position.getY(), position.getZ())) {
-				player.message("This vein contains no more rocks.");
+				player.getActionSender().sendMessage("This vein contains no more rocks.");
 				container.stop();
 				return;
 			}

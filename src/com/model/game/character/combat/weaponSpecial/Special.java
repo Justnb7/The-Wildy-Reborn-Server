@@ -3,7 +3,6 @@ package com.model.game.character.combat.weaponSpecial;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  * The class which represents functionality for the special attack.
@@ -61,7 +60,7 @@ public class Special {
 					special.handleAttack(attacker, target);
 				}
 			} else {
-				attacker.write(new SendMessagePacket("You do not have the required special amount."));
+				attacker.getActionSender().sendMessage("You do not have the required special amount.");
 			}
 		}
 		resetSpecial(attacker);

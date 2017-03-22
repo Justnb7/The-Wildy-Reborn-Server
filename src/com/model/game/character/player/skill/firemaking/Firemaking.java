@@ -6,7 +6,6 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
@@ -34,12 +33,12 @@ public class Firemaking {
 				}
 				
 				if (Server.getGlobalObjects().exists(log.getFire(), x, y, z)) {
-					player.write(new SendMessagePacket("You can't light a fire on a fire!"));
+					player.getActionSender().sendMessage("You can't light a fire on a fire!");
 					return;
 				}
 				
 				if (player.getSkills().getLevel(Skills.FIREMAKING) < log.getLevel()) {
-					player.write(new SendMessagePacket("You need a firemaking level of " + log.getLevel() + " to light this."));
+					player.getActionSender().sendMessage("You need a firemaking level of " + log.getLevel() + " to light this.");
 					return;
 				}
 				
@@ -54,7 +53,7 @@ public class Firemaking {
 				}
 				
 				player.playAnimation(Animation.create(733));
-				player.write(new SendMessagePacket("You attempt to light the logs."));
+				player.getActionSender().sendMessage("You attempt to light the logs.");
 				
 				player.getItems().remove(new Item(log.getLog()));
 				
@@ -68,7 +67,7 @@ public class Firemaking {
 						if (item != null) {
 							GroundItemHandler.removeGroundItem(item);
 						}
-						player.message("The fire catches and the logs begin to burn.");
+						player.getActionSender().sendMessage("The fire catches and the logs begin to burn.");
 						walk(player, x, y, z);
 						player.getSkills().addExperience(Skills.FIREMAKING, log.getExperience());
 						Position face = new Position(fire.getX(), fire.getY());

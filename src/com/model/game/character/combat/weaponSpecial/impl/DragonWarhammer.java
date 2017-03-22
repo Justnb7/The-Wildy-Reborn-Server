@@ -4,17 +4,13 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
-import com.model.game.character.HitType;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.combat_data.CombatExperience;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 
 public class DragonWarhammer implements SpecialAttack {
@@ -41,7 +37,7 @@ public class DragonWarhammer implements SpecialAttack {
 				int current = targPlayer.getSkills().getLevel(Skills.DEFENCE);
 				int decrement = (int)(current * 0.7);
 				targPlayer.getSkills().decreaseLevelToZero(Skills.DEFENCE, decrement);
-				targPlayer.write(new SendMessagePacket("Your defence has been lowered."));
+				targPlayer.getActionSender().sendMessage("Your defence has been lowered.");
 			}
 		} else {
 			NPC targNpc = (NPC) target;

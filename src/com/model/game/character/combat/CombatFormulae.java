@@ -587,17 +587,17 @@ public class CombatFormulae {
         }
 		boolean protectPrayer = player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC);
 		if (dragonfireShield && dragonfirePotion) {
-			player.message("You shield absorbs most of the dragon fire!");
-			player.message("Your potion protects you from the heat of the dragon's breath!");
+			player.getActionSender().sendMessage("You shield absorbs most of the dragon fire!");
+			player.getActionSender().sendMessage("Your potion protects you from the heat of the dragon's breath!");
 			return 1;
 		} else if (dragonfireShield) {
-			player.message("You shield absorbs most of the dragon fire!");
+			player.getActionSender().sendMessage("You shield absorbs most of the dragon fire!");
 			return 0.8; // 80%
 		} else if (dragonfirePotion) {
-			player.message("Your potion protects you from the heat of the dragon's breath!");
+			player.getActionSender().sendMessage("Your potion protects you from the heat of the dragon's breath!");
 			return 0.8; // 80%
 		} else if (protectPrayer) {
-			player.message("Your prayers resist some of the dragon fire.");
+			player.getActionSender().sendMessage("Your prayers resist some of the dragon fire.");
 			return 0.6; // 60%
 		}
 		return 0;		

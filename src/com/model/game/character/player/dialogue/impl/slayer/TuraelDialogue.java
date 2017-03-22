@@ -4,7 +4,6 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerMasters;
@@ -110,7 +109,7 @@ public class TuraelDialogue extends Dialogue {
 														} else {
 															if (getPhase() == 15) {
 																send(Type.NPC, NPC_ID, Expression.DEFAULT, "Yes, but you have yet to start the 'Slayer' skill.");
-																player.write(new SendMessagePacket("You haven't started Slayer yet. Speak to Turael to do so."));
+																player.getActionSender().sendMessage("You haven't started Slayer yet. Speak to Turael to do so.");
 																setPhase(16);
 															} else {
 																if (getPhase() == 16) {
@@ -170,7 +169,7 @@ public class TuraelDialogue extends Dialogue {
 																				} else {
 																					if (getPhase() == 23) {
 																						stop();
-																						player.write(new SendMessagePacket("The @blu@Rewards@bla@ store can be accessed by speaking to Nieve."));
+																						player.getActionSender().sendMessage("The @blu@Rewards@bla@ store can be accessed by speaking to Nieve.");
 																					} else {
 																						if (getPhase() == 24) {
 																							send(Type.CHOICE, DEFAULT_OPTION_TITLE, "I'd like an assignment.", "Do you have anything for trade?", "Nevermind.");
@@ -264,7 +263,7 @@ public class TuraelDialogue extends Dialogue {
 				setPhase(2);
 			} else if (index == 2) {
 				stop();
-				player.write(new SendMessagePacket("The Slayer store cannot be opened as you have not started the 'Slayer' skill."));
+				player.getActionSender().sendMessage("The Slayer store cannot be opened as you have not started the 'Slayer' skill.");
 			} else if (index == 3) {
 				send(Type.PLAYER, Expression.DEFAULT, "Erm... nothing...");
 				setPhase(16);

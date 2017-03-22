@@ -113,7 +113,7 @@ public class FightCaves {
 					return;
 				}
 				if (player.waveId != 0 && player.waveId < wave.length)
-					player.message("You are now on wave " + (player.waveId + 1) + " of " + wave.length + ".");
+					player.getActionSender().sendMessage("You are now on wave " + (player.waveId + 1) + " of " + wave.length + ".");
 				setKillsRemaining(wave[player.waveId].length);
 				for (int i = 0; i < getKillsRemaining(); i++) {
 					int npcType = wave[player.waveId][i];
@@ -152,7 +152,7 @@ public class FightCaves {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(6529, tokkul), player.getX(), player.getY(), player.getHeight(), player));
 			}
 			player.dialogue().start("DIED_DURING_FIGHT_CAVE");
-			player.message("You have been defeated!");
+			player.getActionSender().sendMessage("You have been defeated!");
 		}
 		player.waveId = 0;
 		killAllSpawns();
@@ -164,7 +164,7 @@ public class FightCaves {
 	public void enterFightCaves() {
 		player.getActionSender().sendRemoveInterfacePacket();
 		player.getPA().movePlayer(2413, 5117, player.getIndex() * 4);
-		player.message("@red@Wave: 1");
+		player.getActionSender().sendMessage("@red@Wave: 1");
 		player.waveId = 0;
 		startWave();
 	}
@@ -251,7 +251,7 @@ public class FightCaves {
 			if (player.getFightCave().getKillsRemaining() == 0) {
 				player.waveId++;
 				player.getFightCave().startWave();
-				player.message("@red@Wave: " + player.waveId);
+				player.getActionSender().sendMessage("@red@Wave: " + player.waveId);
 			}
 		}
 	}
@@ -278,7 +278,7 @@ public class FightCaves {
 		player.setCompletedFightCaves();
 		player.getFightCave().stop();
 		player.waveId = 0;
-		player.message("You were victorious!!");
+		player.getActionSender().sendMessage("You were victorious!!");
 	}
 
 }

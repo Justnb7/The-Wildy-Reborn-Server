@@ -52,7 +52,7 @@ public class PestControlRewards {
 	public boolean click(int buttonId) {
 		if (buttonId == 144138) {
 			if (reward == null) {
-				player.message("You must select an option first before confirming.");
+				player.getActionSender().sendMessage("You must select an option first before confirming.");
 			} else {
 				reward.purchase(player);
 				player.getActionSender().sendString(Utility.insertCommas(Integer.toString(player.getPestControlPoints())) + " Pts", 37007);
@@ -195,16 +195,16 @@ public class PestControlRewards {
 		@Override
 		public void purchase(Player player) {
 			if (player.getPestControlPoints() < cost) {
-				player.message("You do not have the pest control points to purcahse this experience.");
+				player.getActionSender().sendMessage("You do not have the pest control points to purcahse this experience.");
 				return;
 			}
 			if (player.getSkills().getLevelForExperience(skillId) < REQUIRED_LEVEL) {
-				player.message("You need a level of " + REQUIRED_LEVEL + " to purchase this experience.");
+				player.getActionSender().sendMessage("You need a level of " + REQUIRED_LEVEL + " to purchase this experience.");
 				return;
 			}
 			player.setPestControlPoints(player.getPestControlPoints() - cost);
 			player.getSkills().addExperience(experience * cost, skillId);
-			player.message("You have received " + (experience * cost) + " experience in exchange for "+ cost + " points.");
+			player.getActionSender().sendMessage("You have received " + (experience * cost) + " experience in exchange for "+ cost + " points.");
 		}
 	}
 	
@@ -236,18 +236,18 @@ public class PestControlRewards {
 		@Override
 		void purchase(Player player) {
 			if (player.getPestControlPoints() < cost) {
-				player.message("You do not have the pest control points to purcahse this experience.");
+				player.getActionSender().sendMessage("You do not have the pest control points to purcahse this experience.");
 				return;
 			}
 			if (player.getItems().freeSlots() == 0) {
-				player.message("You need at least one free slot to purchase this item reward.");
+				player.getActionSender().sendMessage("You need at least one free slot to purchase this item reward.");
 				return;
 			}
 			player.setPestControlPoints(player.getPestControlPoints() - cost);
 			player.getItems().addItem(item.getId(), item.getAmount());
 			ItemDefinition itemDef = ItemDefinition.forId(item.getId());
 			String name = itemDef == null ? "a item" : itemDef.getName();
-			player.message("You have received a " + name + " in exchange for " + cost + " pc points.");
+			player.getActionSender().sendMessage("You have received a " + name + " in exchange for " + cost + " pc points.");
 		}
 		
 	}
@@ -328,11 +328,11 @@ public class PestControlRewards {
 		@Override
 		void purchase(Player player) {
 			if (player.getPestControlPoints() < cost) {
-				player.message("You do not have the pest control points to purcahse this experience.");
+				player.getActionSender().sendMessage("You do not have the pest control points to purcahse this experience.");
 				return;
 			}
 			if (player.getItems().freeSlots() < 5) {
-				player.message("You need at least 5 free slots to purchase this pack.");
+				player.getActionSender().sendMessage("You need at least 5 free slots to purchase this pack.");
 				return;
 			}
 			player.setPestControlPoints(player.getPestControlPoints() - cost);

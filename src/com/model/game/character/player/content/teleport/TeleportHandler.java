@@ -6,7 +6,6 @@ import java.util.HashMap;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 
 public class TeleportHandler {
@@ -233,7 +232,7 @@ public class TeleportHandler {
 	public static void teleport(Player player) {
 
 		if (player.getTeleportButton() == 0) {
-			player.write(new SendMessagePacket("Please select a teleport location first."));
+			player.getActionSender().sendMessage("Please select a teleport location first.");
 			return;
 		}
 
@@ -267,19 +266,19 @@ public class TeleportHandler {
 		if (currentData.getCost() != 0) {
 			if (player.getItems().playerHasItem(995, currentData.getCost())) {
 				player.getItems().deleteItem(995, currentData.getCost());
-				player.write(new SendMessagePacket("You have paid a fee of " + NumberFormat.getInstance().format(currentData.getCost()) + "."));
+				player.getActionSender().sendMessage("You have paid a fee of " + NumberFormat.getInstance().format(currentData.getCost()) + ".");
 				can = true;
 			} else {
-				player.write(new SendMessagePacket("You do not have enough coins to do this!"));
+				player.getActionSender().sendMessage("You do not have enough coins to do this!");
 			}
 		} else {
-			player.write(new SendMessagePacket("You did not have to pay a fee as the teleport was free."));
+			player.getActionSender().sendMessage("You did not have to pay a fee as the teleport was free.");
 			can = true;
 		}
 
 		if (can) {
 			TeleportExecutor.teleport(player, currentData.getLocation());
-			player.write(new SendMessagePacket("You have teleported to " + currentData.getName() + "."));
+			player.getActionSender().sendMessage("You have teleported to " + currentData.getName() + ".");
 		}
 	}
 

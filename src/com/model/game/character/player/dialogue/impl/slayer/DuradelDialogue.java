@@ -4,7 +4,6 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 
@@ -21,8 +20,8 @@ public class DuradelDialogue extends Dialogue {
 	@Override
 	protected void start(Object... parameters) {
 		if (!player.getFirstSlayerTask()) {
-			player.write(new SendMessagePacket("You cannot talk to Duradel as you are yet to start the 'Slayer' skill."));
-			player.write(new SendMessagePacket("Talk to @blu@Turael@bla@ in Edgeville to do so."));
+			player.getActionSender().sendMessage("You cannot talk to Duradel as you are yet to start the 'Slayer' skill.");
+			player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ in Edgeville to do so.");
 		} else {
 			send(Type.NPC, NPC_ID, Expression.DEFAULT, "What do you want?");
 			if (!player.getFirstBossSlayerTask()) {
@@ -90,7 +89,7 @@ public class DuradelDialogue extends Dialogue {
 				setPhase(1);
 			} else if (index == 2) {
 				send(Type.PLAYER, Expression.ANGRY, "No need to be so rude...");
-				player.write(new SendMessagePacket("Durael turns away with a look of disgust."));
+				player.getActionSender().sendMessage("Durael turns away with a look of disgust.");
 				setPhase(9);
 			} else if (index == 3) {
 				send(Type.PLAYER, Expression.DEFAULT, "Nevermind.");

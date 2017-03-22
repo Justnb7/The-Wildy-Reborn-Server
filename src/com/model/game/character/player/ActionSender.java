@@ -546,4 +546,15 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
+    
+	public ActionSender sendMessage(String message) {
+		if (player.getOutStream() != null) {
+			player.outStream.putFrameVarByte(253);
+			int offset = player.getOutStream().offset;
+			player.outStream.putRS2String(message);
+			player.outStream.writeByte(0);
+			player.outStream.putFrameSizeByte(offset);
+		}
+		return this;
+	}
 }

@@ -2,7 +2,6 @@ package com.model.game.character.player.packets.in;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 public class InputFieldOther implements PacketType {
 
@@ -11,7 +10,7 @@ public class InputFieldOther implements PacketType {
 		int id = player.inStream.readDWord();
 		String text = player.inStream.readString();
 		if (player.inDebugMode()) {
-			player.write(new SendMessagePacket("Component; "+id+", input; " + text));
+			player.getActionSender().sendMessage("Component; "+id+", input; " + text);
 		}
 		switch (id) {
 		

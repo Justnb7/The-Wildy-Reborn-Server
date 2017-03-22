@@ -66,7 +66,6 @@ import com.model.game.character.player.minigames.pest_control.PestControlRewards
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.player.packets.PacketEncoder;
 import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
@@ -1404,7 +1403,7 @@ public class Player extends Entity {
 					return;
 				}
 				
-				player.write(new SendMessagePacket("Welcome back to " + Constants.SERVER_NAME + "."));
+				player.getActionSender().sendMessage("Welcome back to " + Constants.SERVER_NAME + ".");
 				
 				if (!receivedStarter() && inTutorial()) {
 					player.dialogue().start("STARTER");
@@ -1412,7 +1411,7 @@ public class Player extends Entity {
 				}
 				
 				if (isMuted()) {
-					player.write(new SendMessagePacket("You are currently muted. Other players will not see your chat messages."));
+					player.getActionSender().sendMessage("You are currently muted. Other players will not see your chat messages.");
 				}
 				
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
@@ -1427,7 +1426,7 @@ public class Player extends Entity {
 					player.setDebugMode(true);
 				}
 				if (tempKey == null || tempKey.equals("") || tempKey.isEmpty()) {
-					player.write(new SendMessagePacket("<col=ff0033>We noticed you aren't in a clanchat, so we added you to the community clanchat!"));
+					player.getActionSender().sendMessage("<col=ff0033>We noticed you aren't in a clanchat, so we added you to the community clanchat!");
 					tempKey = "patrick";
 				}
 				if (tempKey != null) {
@@ -1460,7 +1459,7 @@ public class Player extends Entity {
 				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
 					player.getPA().movePlayer(2657, 2639, 0);
 				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
-					player.message("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
+					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
 					player.getFightCave().startWave();
 				}
 				ControllerManager.setControllerOnWalk(player);
@@ -1486,8 +1485,8 @@ public class Player extends Entity {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(this, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
 			if (duelSession.getStage().getStage() >= MultiplayerSessionStage.FURTHER_INTERACTION) {
-				message("You are not permitted to logout during a duel. If you forcefully logout you will");
-				message("lose all of your staked items, if any, to your opponent.");
+				getActionSender().sendMessage("You are not permitted to logout during a duel. If you forcefully logout you will");
+				getActionSender().sendMessage("lose all of your staked items, if any, to your opponent.");
 			}
 		}
 		
@@ -1498,7 +1497,7 @@ public class Player extends Entity {
 			properLogout = true;
 			World.getWorld().unregister(this);
 		} else {
-			write(new SendMessagePacket("You must wait 10 seconds before logging out."));
+			getActionSender().sendMessage("You must wait 10 seconds before logging out.");
 		}
 	}
 
@@ -1522,16 +1521,16 @@ public class Player extends Entity {
 				appendPoisonDamage();
 				setLastPoisonHit(System.currentTimeMillis());
 				infection = 1;
-				write(new SendMessagePacket("You have been poisoned!"));
+				getActionSender().sendMessage("You have been poisoned!");
 			}
 			
 			if (hasAttribute("antiFire")) {
 				if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 360000) {
 					if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 15000 && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 14000) {
-						message("Your anti fire potion is about to wear off!");
+						getActionSender().sendMessage("Your anti fire potion is about to wear off!");
 					}
 				} else if ((long)getAttribute("antiFire", 0L) > 0L && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 360000) {
-					message("Your resistance to dragon breath has worn off!");
+					getActionSender().sendMessage("Your resistance to dragon breath has worn off!");
 					removeAttribute("antiFire");
 				}
 			}
@@ -2163,20 +2162,20 @@ public class Player extends Entity {
 		if (poisonDamage <= 0) {
 			return;
 		}
-		Player client = this;
+		Player player = this;
 		if (poisonDamageHistory.size() >= 4) {
 			poisonDamageHistory.clear();
 			poisonDamage--;
 		}
 		if (poisonDamage <= 0) {
-			client.write(new SendMessagePacket("The poison has subsided."));
-			client.getPA().requestUpdates();
+			player.getActionSender().sendMessage("The poison has subsided.");
+			player.getPA().requestUpdates();
 			return;
 		}
 		poisonDamageHistory.add(poisonDamage);
 		
 		damage(new Hit(poisonDamage, HitType.POISON));
-		client.getPA().requestUpdates();
+		player.getPA().requestUpdates();
 	}
 	
 	/**
@@ -2568,7 +2567,7 @@ public class Player extends Entity {
 				for (int i = 0; i < ary.length; i++) {
 					switch (ary[i]) {
 					case "0":
-						player.write(new SendMessagePacket("We couldn't find your purchase in our system."));
+						player.getActionSender().sendMessage("We couldn't find your purchase in our system.");
 						break;
 					case "20355":
 						player.getItems().addOrSendToBank(13652, 1);
@@ -2930,7 +2929,7 @@ public class Player extends Entity {
 	 */
 	public void resetClueStatus(Player player) {
 		if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds())) {
-			player.write(new SendMessagePacket("It seems you have a clue scroll, please complete it."));
+			player.getActionSender().sendMessage("It seems you have a clue scroll, please complete it.");
 			return;
 		}
 		if(player.bossDifficulty != null) {
@@ -3068,13 +3067,9 @@ public class Player extends Entity {
 		return achievementHandler;
 	}
 
-	public void message(String string) {
-		write(new SendMessagePacket(string));
-	}
-
 	public void debug(String string) {
 		if (this.rights == Rights.ADMINISTRATOR) {
-			this.message(string);
+			this.getActionSender().sendMessage(string);
 		}
 	}
 	

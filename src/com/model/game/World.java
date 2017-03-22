@@ -25,7 +25,6 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.packets.out.SendFriendPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.service.Service;
 import com.model.task.ScheduledTask;
@@ -512,7 +511,7 @@ public class World implements Service {
 			if (Objects.isNull(player)) {
 				continue;
 			}
-			player.write(new SendMessagePacket(message));
+			player.getActionSender().sendMessage(message);
 		}
 	}
 	
@@ -520,7 +519,7 @@ public class World implements Service {
 		for (Player p : World.getWorld().getPlayers()) {
 			if (p == null || !p.isRunning() || p.isYellOff() || (forStaff && p.getRights().getValue() == 0))
 				continue;
-			p.write(new SendMessagePacket(message));
+			p.getActionSender().sendMessage(message);
 		}
 	}
 

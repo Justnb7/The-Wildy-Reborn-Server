@@ -10,7 +10,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.SubPacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 
 /**
@@ -33,8 +32,8 @@ public class WieldPacketHandler implements SubPacketType {
 		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
-			player.write(new SendMessagePacket("Your actions have declined the duel."));
-			duelSession.getOther(player).write(new SendMessagePacket("The challenger has declined the duel."));
+			player.getActionSender().sendMessage("Your actions have declined the duel.");
+			duelSession.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");
 			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 			return;
 		}

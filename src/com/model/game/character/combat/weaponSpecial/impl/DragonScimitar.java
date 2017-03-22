@@ -10,7 +10,6 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 
 public class DragonScimitar implements SpecialAttack {
@@ -44,8 +43,8 @@ public class DragonScimitar implements SpecialAttack {
 			if (hasProtection && damage > 0) {
 				targPlayer.setPrayerIcon(-1);
 				targPlayer.getPA().requestUpdates();
-				player.write(new SendMessagePacket("You have cancelled the protection prayer of " + targPlayer.getName() + "."));
-				targPlayer.write(new SendMessagePacket("Your protection prayer has been cancelled by " + player.getName()));
+				player.getActionSender().sendMessage("You have cancelled the protection prayer of " + targPlayer.getName() + ".");
+				targPlayer.getActionSender().sendMessage("Your protection prayer has been cancelled by " + player.getName());
 				targPlayer.cannotUsePrayer.reset();
 			}
 		}

@@ -172,7 +172,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 1219:
 			player.getSkills().setExpCounter(0);
 			player.getActionSender().sendExperienceCounter(0, 0);
-			player.write(new SendMessagePacket("You have reset your experience counter to zero."));
+			player.getActionSender().sendMessage("You have reset your experience counter to zero.");
 			break;
 
 		case 114230:
@@ -180,24 +180,24 @@ public class ActionButtonPacketHandler implements PacketType {
 				return;
 			}
 			if (player.onAuto) {
-				player.write(new SendMessagePacket("You can't switch spellbooks with Autocast enabled."));
+				player.getActionSender().sendMessage("You can't switch spellbooks with Autocast enabled.");
 				return;
 			}
 			switch (player.getSpellBook()) {
 			case MODERN:
 				player.setSpellBook(SpellBook.ANCIENT);
 				player.write(new SendSidebarInterfacePacket(6, 12855));
-				player.write(new SendMessagePacket("An ancient wisdom fills your mind."));
+				player.getActionSender().sendMessage("An ancient wisdom fills your mind.");
 				break;
 			case ANCIENT:
 				player.setSpellBook(SpellBook.LUNAR);
 				player.write(new SendSidebarInterfacePacket(6, 29999));
-				player.write(new SendMessagePacket("The power of the moon overpowers you."));
+				player.getActionSender().sendMessage("The power of the moon overpowers you.");
 				break;
 			case LUNAR:
 				player.setSpellBook(SpellBook.MODERN);
 				player.write(new SendSidebarInterfacePacket(6, 1151));
-				player.write(new SendMessagePacket("You feel a drain on your memory."));
+				player.getActionSender().sendMessage("You feel a drain on your memory.");
 				break;
 			}
 			player.autocastId = -1;
@@ -207,7 +207,7 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		case 114226:
 			QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
-			player.write(new SendMessagePacket("You refresh your information tab."));
+			player.getActionSender().sendMessage("You refresh your information tab.");
 			break;
 
 		case 19137:
@@ -326,7 +326,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			if (tab.getTabId() == player.getBank().getCurrentBankTab().getTabId())
 				return;
 			if (tab.size() <= 0 && tab.getTabId() != 0) {
-				player.write(new SendMessagePacket("Drag an item into the new tab slot to create a tab."));
+				player.getActionSender().sendMessage("Drag an item into the new tab slot to create a tab.");
 				return;
 			}
 			player.getBank().setCurrentBankTab(tab);
@@ -354,12 +354,12 @@ public class ActionButtonPacketHandler implements PacketType {
 															: button == 227007 ? 7 : button == 227018 ? 8 : -1;
 			tab = player.getBank().getBankTab(tabId);
 			if (tab == null || tab.getTabId() == 0 || tab.size() == 0) {
-				player.write(new SendMessagePacket("You cannot collapse this tab."));
+				player.getActionSender().sendMessage("You cannot collapse this tab.");
 				return;
 			}
 			if (tab.size() + player.getBank().getBankTab()[0].size() >= player.BANK_SIZE) {
-				player.write(new SendMessagePacket("You cannot collapse this tab. The contents of this tab and your"));
-				player.write(new SendMessagePacket("main tab are greater than " + player.BANK_SIZE + " unique items."));
+				player.getActionSender().sendMessage("You cannot collapse this tab. The contents of this tab and your");
+				player.getActionSender().sendMessage("main tab are greater than " + player.BANK_SIZE + " unique items.");
 				return;
 			}
 			if (player.getBank().getBankSearch().isSearching()) {
@@ -411,8 +411,8 @@ public class ActionButtonPacketHandler implements PacketType {
 				long tempValue = (long) (item.getId() - 1 == 995 ? 1 : itemDef.getGeneralPrice());
 				value += tempValue * item.getAmount();
 			}
-			player.write(new SendMessagePacket("<col=255>The total networth of tab " + tab.getTabId()
-					+ " is </col><col=600000>" + Utility.insertCommas(Long.toString(value)) + " gp</col>."));
+			player.getActionSender().sendMessage("<col=255>The total networth of tab " + tab.getTabId()
+					+ " is </col><col=600000>" + Utility.insertCommas(Long.toString(value)) + " gp</col>.");
 			break;
 
 		case 22024:
@@ -535,10 +535,10 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.usingMagic = true;
 			if (player.getCombat().checkMagicReqs(48)) {
 				if (System.currentTimeMillis() - player.godSpellDelay < 300000L) {
-					player.write(new SendMessagePacket("You still feel the charge in your body!"));
+					player.getActionSender().sendMessage("You still feel the charge in your body!");
 				} else {
 					player.godSpellDelay = System.currentTimeMillis();
-					player.write(new SendMessagePacket("You feel charged with a magical power!"));
+					player.getActionSender().sendMessage("You feel charged with a magical power!");
 					player.playGraphics(Graphic.create(player.MAGIC_SPELLS[48][3], 0, 0));
 					player.playAnimation(Animation.create(player.MAGIC_SPELLS[48][2]));
 					player.usingMagic = false;
@@ -573,29 +573,29 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		/** Settings */
 		case 140188:
-			player.write(new SendMessagePacket(":updateSettings:"));
+			player.getActionSender().sendMessage(":updateSettings:");
 			player.write(new SendSidebarInterfacePacket(11, 28400));
 			break;
 		case 110245:
-			player.write(new SendMessagePacket(":saveSettings:"));
+			player.getActionSender().sendMessage(":saveSettings:");
 			player.write(new SendSidebarInterfacePacket(11, 36000));
-			player.write(new SendMessagePacket("@red@Your settings have been saved!"));
+			player.getActionSender().sendMessage("@red@Your settings have been saved!");
 			break;
 		case 110248:
-			player.write(new SendMessagePacket(":defaultSettings:"));
-			player.write(new SendMessagePacket("@red@Your settings have been reset!"));
+			player.getActionSender().sendMessage(":defaultSettings:");
+			player.getActionSender().sendMessage("@red@Your settings have been reset!");
 			break;
 		case 140191:
 			player.write(new SendInterfacePacket(28200));
 			break;
 		case 110046:
-			player.write(new SendMessagePacket(":transparentTab:"));
+			player.getActionSender().sendMessage(":transparentTab:");
 			break;
 		case 110047:
-			player.write(new SendMessagePacket(":transparentChatbox:"));
+			player.getActionSender().sendMessage(":transparentChatbox:");
 			break;
 		case 110048:
-			player.write(new SendMessagePacket(":sideStones:"));
+			player.getActionSender().sendMessage(":sideStones:");
 			break;
 
 		case 4026:
@@ -630,17 +630,17 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 140186:
 			player.setEnableSound(!player.isEnableSound());
 			player.write(new SendConfigPacket(206, player.isEnableSound() ? 1 : 0));
-			player.write(new SendMessagePacket(String.format("You have %s sound effects.", player.isEnableSound() ? "enabled" : "disabled")));
+			player.getActionSender().sendMessage(String.format("You have %s sound effects.", player.isEnableSound() ? "enabled" : "disabled"));
 			break;
 			
 		case 140187:
 			player.setEnableMusic(!player.isEnableMusic());
 			player.write(new SendConfigPacket(207, player.isEnableMusic() ? 1 : 0));
 			if(player.isEnableMusic()) {
-				player.write(new SendMessagePacket("You've enabled your music player."));
+				player.getActionSender().sendMessage("You've enabled your music player.");
 				MusicData.playMusic(player);
 			} else if(!player.isEnableMusic()) {
-				player.write(new SendMessagePacket("You've disabled your music player."));
+				player.getActionSender().sendMessage("You've disabled your music player.");
 				player.write(new SendSongPacket(-1));
 			}
 			break;
@@ -776,7 +776,7 @@ public class ActionButtonPacketHandler implements PacketType {
 					return;
 				}
 				if (duelSession.getStage().getStage() != MultiplayerSessionStage.OFFER_ITEMS) {
-					player.write(new SendMessagePacket("You cannot change rules whilst on the second interface."));
+					player.getActionSender().sendMessage("You cannot change rules whilst on the second interface.");
 					return;
 				}
 				duelSession.getRules().reset();

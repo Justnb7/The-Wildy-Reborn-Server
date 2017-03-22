@@ -11,7 +11,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
@@ -142,21 +141,21 @@ public class PlayerVsNpcCombat {
 		}*/
 		
 		if (npc.isArmadylNpc() && player.getCombatType() == CombatStyle.MELEE) {
-			player.write(new SendMessagePacket("You can only use range or magic against this npc."));
+			player.getActionSender().sendMessage("You can only use range or magic against this npc.");
 			Combat.resetCombat(player);
 			return false;
 		}
 		
 		if ((npc.npcId == 6611 || npc.npcId == 6612) && npc.dogs > 0) {
 			Combat.resetCombat(player);
-			player.write(new SendMessagePacket("You must vanquish Vet'ions dogs."));
+			player.getActionSender().sendMessage("You must vanquish Vet'ions dogs.");
 			return false;
 		}
 		
 		if (npc.npcId == 2463 || npc.npcId == 2464) {
 			if (Boundary.isIn(player, WarriorsGuild.CYCLOPS_BOUNDARY)) {
 				if (!player.getWarriorsGuild().isActive()) {
-					player.message("You cannot attack a cyclops without talking to kamfreena.");
+					player.getActionSender().sendMessage("You cannot attack a cyclops without talking to kamfreena.");
 					Combat.resetCombat(player);
 					return false;
 				}
@@ -168,7 +167,7 @@ public class PlayerVsNpcCombat {
 			if (i != null && i.npcs != null && i.npcs[0] == npc) {
 				for (NPC n : i.npcs) {
 					if (n.npcId == 5534) {
-						player.write(new SendMessagePacket("You can't disturb the kraken while the whirlpools are undisturbed."));
+						player.getActionSender().sendMessage("You can't disturb the kraken while the whirlpools are undisturbed.");
 						Combat.resetCombat(player);
 						return false;
 					}
@@ -178,24 +177,24 @@ public class PlayerVsNpcCombat {
 
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS) && !Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
 			Combat.resetCombat(player);
-			player.write(new SendMessagePacket("You cannot attack that npc from outside the room."));
+			player.getActionSender().sendMessage("You cannot attack that npc from outside the room.");
 			return false;
 		}
 		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !npc.inMulti()) {
 			player.getCombat().reset();
-			player.write(new SendMessagePacket("This monster is already in combat."));
+			player.getActionSender().sendMessage("This monster is already in combat.");
 			return false;
 		}
 
 		if (Combat.incombat(player) && player.lastAttacker != npc && !player.getArea().inMulti() && !Boundary.isIn(player, Boundary.KRAKEN)) {
 			Combat.resetCombat(player);
-			player.write(new SendMessagePacket("I am already under attack."));
+			player.getActionSender().sendMessage("I am already under attack.");
 			return false;
 		}
 
 		if (npc.spawnedBy != player.getIndex() && npc.spawnedBy > 0) {
 			Combat.resetCombat(player);
-			player.write(new SendMessagePacket("This monster was not spawned for you."));
+			player.getActionSender().sendMessage("This monster was not spawned for you.");
 			return false;
 		}
 

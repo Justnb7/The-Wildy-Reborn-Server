@@ -5,7 +5,6 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 import java.util.Objects;
 
@@ -29,11 +28,11 @@ public class Trade implements PacketType {
 			return;
 		}
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
-			player.write(new SendMessagePacket("You cannot trade whilst inside the duel arena."));
+			player.getActionSender().sendMessage("You cannot trade whilst inside the duel arena.");
 			return;
 		}
 		if (Objects.equals(requested, player)) {
-			player.write(new SendMessagePacket("You cannot trade yourself."));
+			player.getActionSender().sendMessage("You cannot trade yourself.");
 			return;
 		}
 		if (tradeId != player.getIndex()) {

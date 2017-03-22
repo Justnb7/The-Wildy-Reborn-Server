@@ -9,7 +9,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.multiplayer.Multiplayer;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 
 
@@ -23,36 +22,36 @@ public class Duel extends Multiplayer {
 	public boolean requestable(Player requested) {
 		
 		if (Server.getMultiplayerSessionListener().requestAvailable(requested, player, MultiplayerSessionType.DUEL) != null) {
-			player.write(new SendMessagePacket("You have already sent a request to this player."));
+			player.getActionSender().sendMessage("You have already sent a request to this player.");
 			return false;
 		}
 		if (World.updateRunning) {
-			player.write(new SendMessagePacket("You cannot request or accept a duel request at this time."));
-			player.write(new SendMessagePacket("The server is currently being updated."));
+			player.getActionSender().sendMessage("You cannot request or accept a duel request at this time.");
+			player.getActionSender().sendMessage("The server is currently being updated.");
 			return false;
 		}
 		if (player.distanceToPoint(requested.getX(), requested.getY()) > 3) {
-			player.write(new SendMessagePacket("You are not close enough to the other player to request or accept."));
+			player.getActionSender().sendMessage("You are not close enough to the other player to request or accept.");
 			return false;
 		}
 		if (!player.getArea().inDuelArena()) {
-			player.write(new SendMessagePacket("You must be in the duel arena area to do this."));
+			player.getActionSender().sendMessage("You must be in the duel arena area to do this.");
 			return false;
 		}
 		if (!requested.getArea().inDuelArena()) {
-			player.write(new SendMessagePacket("The challenger must be in the duel arena area to do this."));
+			player.getActionSender().sendMessage("The challenger must be in the duel arena area to do this.");
 			return false;
 		}
 		if (Server.getMultiplayerSessionListener().inAnySession(player)) {
-			player.write(new SendMessagePacket("You cannot request a duel whilst in a session."));
+			player.getActionSender().sendMessage("You cannot request a duel whilst in a session.");
 			return false;
 		}
 		if (Server.getMultiplayerSessionListener().inAnySession(requested)) {
-			player.write(new SendMessagePacket("This player is currently is a session with another player."));
+			player.getActionSender().sendMessage("This player is currently is a session with another player.");
 			return false;
 		}
 		if (player.teleTimer > 0 || requested.teleTimer > 0) {
-			player.write(new SendMessagePacket("You cannot request or accept whilst you, or the other player are teleporting."));
+			player.getActionSender().sendMessage("You cannot request or accept whilst you, or the other player are teleporting.");
 			return false;
 		}
 		return true;
@@ -62,11 +61,11 @@ public class Duel extends Multiplayer {
 	public void request(Player requested) {
 		
 		if (Objects.isNull(requested)) {
-			player.write(new SendMessagePacket("The player cannot be found, try again shortly."));
+			player.getActionSender().sendMessage("The player cannot be found, try again shortly.");
 			return;
 		}
 		if (Objects.equals(player, requested)) {
-			player.write(new SendMessagePacket("You cannot trade yourself."));
+			player.getActionSender().sendMessage("You cannot trade yourself.");
 			return;
 		}
 		player.faceEntity(requested);
@@ -83,8 +82,8 @@ public class Duel extends Multiplayer {
 		} else {
 			session = new DuelSession(Arrays.asList(player, requested), MultiplayerSessionType.DUEL);
 			if (Server.getMultiplayerSessionListener().appendable(session)) {
-				player.write(new SendMessagePacket("Sending duel request..."));
-				requested.write(new SendMessagePacket(player.getName() + ":duelreq:"));
+				player.getActionSender().sendMessage("Sending duel request...");
+				requested.getActionSender().sendMessage(player.getName() + ":duelreq:");
 				session.getStage().setAttachment(player);
 				Server.getMultiplayerSessionListener().add(session);
 			}

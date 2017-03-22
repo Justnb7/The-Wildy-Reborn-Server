@@ -16,7 +16,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.game.item.ground.GroundItem;
@@ -53,8 +52,8 @@ public class ItemAssistant {
 	 */
 	public void addItemToBank(int itemId, int amount, boolean refresh) {
 		if (player.getArea().inWild()) {
-			player.write(new SendMessagePacket(
-					"You can't do that in the wilderness."));
+			player.getActionSender().sendMessage(
+					"You can't do that in the wilderness.");
 			return;
 		}
 		BankTab tab = player.getBank().getCurrentBankTab();
@@ -89,8 +88,8 @@ public class ItemAssistant {
 		if (isNotable(itemId))
 			item = new BankItem(itemId, amount);
 		if (tab.freeSlots(player) == 0) {
-			player.write(new SendMessagePacket(
-					"The item has been dropped on the floor."));
+			player.getActionSender().sendMessage(
+					"The item has been dropped on the floor.");
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
 					amount), player.getX(), player.getY(), player.getZ(),
 					player));
@@ -99,8 +98,8 @@ public class ItemAssistant {
 		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
 				.getAmount());
 		if (totalAmount >= Integer.MAX_VALUE) {
-			player.write(new SendMessagePacket(
-					"The item has been dropped on the floor."));
+			player.getActionSender().sendMessage(
+					"The item has been dropped on the floor.");
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
 					amount), player.getX(), player.getY(), player.getZ(),
 					player));
@@ -122,8 +121,8 @@ public class ItemAssistant {
 
 	public void addItemToBank(int itemId, int amount) {
 		if (player.getArea().inWild()) {
-			player.write(new SendMessagePacket(
-					"You can't do that in the wilderness."));
+			player.getActionSender().sendMessage(
+					"You can't do that in the wilderness.");
 			return;
 		}
 		BankTab tab = player.getBank().getCurrentBankTab();
@@ -158,8 +157,8 @@ public class ItemAssistant {
 		if (isNotable(itemId))
 			item = new BankItem(itemId, amount);
 		if (tab.freeSlots(player) == 0) {
-			player.write(new SendMessagePacket(
-					"The item has been dropped on the floor."));
+			player.getActionSender().sendMessage(
+					"The item has been dropped on the floor.");
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
 					amount), player.getX(), player.getY(), player.getZ(),
 					player));
@@ -168,8 +167,8 @@ public class ItemAssistant {
 		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
 				.getAmount());
 		if (totalAmount >= Integer.MAX_VALUE) {
-			player.write(new SendMessagePacket(
-					"The item has been dropped on the floor."));
+			player.getActionSender().sendMessage(
+					"The item has been dropped on the floor.");
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
 					amount), player.getX(), player.getY(), player.getZ(),
 					player));
@@ -187,8 +186,8 @@ public class ItemAssistant {
 
 	public void addItemToBank(String playerName, int itemId, int amount) {
 		if (player.getArea().inWild()) {
-			player.write(new SendMessagePacket(
-					"You can't do that in the wilderness."));
+			player.getActionSender().sendMessage(
+					"You can't do that in the wilderness.");
 			return;
 		}
 		BankTab tab = player.getBank().getCurrentBankTab();
@@ -223,8 +222,8 @@ public class ItemAssistant {
 		if (isNotable(itemId))
 			item = new BankItem(itemId, amount);
 		if (tab.freeSlots(player) == 0) {
-			player.write(new SendMessagePacket(
-					"The item has been dropped on the floor."));
+			player.getActionSender().sendMessage(
+					"The item has been dropped on the floor.");
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
 					amount), player.getX(), player.getY(), player.getZ(),
 					player));
@@ -235,8 +234,8 @@ public class ItemAssistant {
 		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
 				.getAmount());
 		if (totalAmount >= Integer.MAX_VALUE) {
-			player.write(new SendMessagePacket(
-					"The item has been dropped on the floor."));
+			player.getActionSender().sendMessage(
+					"The item has been dropped on the floor.");
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
 					amount), player.getX(), player.getY(), player.getZ(),
 					player));
@@ -400,8 +399,8 @@ public class ItemAssistant {
 		try {
 			if (player.deathShopEnabled) {
 				if (player.deathShop.getContainer().size() > 0)
-					player.write(new SendMessagePacket(
-							"You have died, so all of your previous death store items have been deleted!"));
+					player.getActionSender().sendMessage(
+							"You have died, so all of your previous death store items have been deleted!");
 				player.deathShop.getContainer().clear();
 			}
 
@@ -419,7 +418,7 @@ public class ItemAssistant {
 								.equals(Account.ULTIMATE_IRON_MAN_TYPE)
 						|| player.getAccount().getType()
 								.equals(Account.HARDCORE_IRON_MAN_TYPE)) {
-					player.message("<col=ff0033>You was killed by "
+					player.getActionSender().sendMessage("<col=ff0033>You was killed by "
 							+ killer.getName()
 							+ ", This means you can only loot your untradables.");
 					PlayerLogging.write(LogType.IRON_KILLED_PLAYER, player,
@@ -435,7 +434,7 @@ public class ItemAssistant {
 								.getType()
 								.attackableTypes()
 								.contains(player.getAccount().getType().alias())) {
-					killer.message("You do not receive drops from this player.");
+					killer.getActionSender().sendMessage("You do not receive drops from this player.");
 					return;
 				}
 			}
@@ -691,8 +690,8 @@ public class ItemAssistant {
 			return false;
 		} else {
 			resetItems(3214);
-			player.write(new SendMessagePacket(
-					"Not enough space in your inventory."));
+			player.getActionSender().sendMessage(
+					"Not enough space in your inventory.");
 			return false;
 		}
 	}
@@ -720,8 +719,8 @@ public class ItemAssistant {
 
 	public void addItemToBank(Item item) {
 		if (player.getArea().inWild()) {
-			player.write(new SendMessagePacket(
-					"You can't do that in the wilderness."));
+			player.getActionSender().sendMessage(
+					"You can't do that in the wilderness.");
 			return;
 		}
 		addItemToBank(item.getId(), item.getAmount());
@@ -822,71 +821,71 @@ public class ItemAssistant {
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getHelmetId()]
 							&& session.getRules().contains(Rule.NO_HELM)) {
-						player.write(new SendMessagePacket(
-								"Wearing helmets has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing helmets has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getAmuletId()]
 							&& session.getRules().contains(Rule.NO_AMULET)) {
-						player.write(new SendMessagePacket(
-								"Wearing amulets has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing amulets has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getQuiverId()]
 							&& session.getRules().contains(Rule.NO_ARROWS)) {
-						player.write(new SendMessagePacket(
-								"Wearing arrows has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing arrows has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getChestId()]
 							&& session.getRules().contains(Rule.NO_BODY)) {
-						player.write(new SendMessagePacket(
-								"Wearing platebodies has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing platebodies has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getBootsId()]
 							&& session.getRules().contains(Rule.NO_BOOTS)) {
-						player.write(new SendMessagePacket(
-								"Wearing boots has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing boots has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getGlovesId()]
 							&& session.getRules().contains(Rule.NO_GLOVES)) {
-						player.write(new SendMessagePacket(
-								"Wearing gloves has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing gloves has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getCapeId()]
 							&& session.getRules().contains(Rule.NO_CAPE)) {
-						player.write(new SendMessagePacket(
-								"Wearing capes has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing capes has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getLegsId()]
 							&& session.getRules().contains(Rule.NO_LEGS)) {
-						player.write(new SendMessagePacket(
-								"Wearing platelegs has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing platelegs has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getRingId()]
 							&& session.getRules().contains(Rule.NO_RINGS)) {
-						player.write(new SendMessagePacket(
-								"Wearing a ring has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing a ring has been disabled for this duel.");
 						return false;
 					}
 					if (targetSlot == player.playerEquipment[player
 							.getEquipment().getWeaponId()]
 							&& session.getRules().contains(Rule.NO_WEAPON)) {
-						player.write(new SendMessagePacket(
-								"Wearing weapons has been disabled for this duel."));
+						player.getActionSender().sendMessage(
+								"Wearing weapons has been disabled for this duel.");
 						return false;
 					}
 					if (session.getRules().contains(Rule.NO_SHIELD)) {
@@ -896,8 +895,8 @@ public class ItemAssistant {
 										.getEquipment().getWeaponId()]
 								&& player.getItems().is2handed(
 										getItemName(id).toLowerCase(), id)) {
-							player.write(new SendMessagePacket(
-									"Wearing shields and 2handed weapons has been disabled for this duel."));
+							player.getActionSender().sendMessage(
+									"Wearing shields and 2handed weapons has been disabled for this duel.");
 							return false;
 						}
 					}
@@ -947,8 +946,8 @@ public class ItemAssistant {
 							player.playerEquipmentN[targetSlot] = toEquipN;
 							removeItem(player.getEquipment().getShieldId());
 						} else {
-							player.write(new SendMessagePacket(
-									"You do not have enough inventory space to do this."));
+							player.getActionSender().sendMessage(
+									"You do not have enough inventory space to do this.");
 							return false;
 						}
 					} else if (wearingShield && !wearingWeapon) {
@@ -1258,13 +1257,13 @@ public class ItemAssistant {
 		if (item.getAmount() > getItemAmount(itemID))
 			item.setAmount(getItemAmount(itemID));
 		if (tab.getItemAmount(item) == Integer.MAX_VALUE) {
-			player.write(new SendMessagePacket(
+			player.getActionSender().sendMessage(
 					"Your bank is already holding the maximum amount of "
-							+ getItemName(itemID).toLowerCase() + " possible."));
+							+ getItemName(itemID).toLowerCase() + " possible.");
 			return false;
 		}
 		if (tab.freeSlots(player) == 0 && !tab.contains(item)) {
-			player.write(new SendMessagePacket("Your current bank tab is full."));
+			player.getActionSender().sendMessage("Your current bank tab is full.");
 			return false;
 		} else {
 			long totalAmount = ((long) tab.getItemAmount(item) + (long) item
@@ -1319,18 +1318,14 @@ public class ItemAssistant {
 					&& isNotable(itemId + 1)) {
 				noted = true;
 			} else
-				player.write(new SendMessagePacket(
-						"This item cannot be taken out as noted."));
+				player.getActionSender().sendMessage("This item cannot be taken out as noted.");
 		}
 		if (freeSlots() == 0 && !playerHasItem(itemId)) {
-			player.write(new SendMessagePacket(
-					"There is not enough space in your inventory."));
+			player.getActionSender().sendMessage("There is not enough space in your inventory.");
 			return;
 		}
 		if (getItemAmount(itemId) == Integer.MAX_VALUE) {
-			player.write(new SendMessagePacket(
-					"Your inventory is already holding the maximum amount of "
-							+ getItemName(itemId).toLowerCase() + " possible."));
+			player.getActionSender().sendMessage("Your inventory is already holding the maximum amount of " + getItemName(itemId).toLowerCase() + " possible.");
 			return;
 		}
 		if (isStackable(item.getId() - 1) || noted) {
@@ -1364,8 +1359,8 @@ public class ItemAssistant {
 	public boolean addEquipmentToBank(int itemID, int slot, int amount,
 			boolean updateView) {
 		if (player.getArea().inWild()) {
-			player.write(new SendMessagePacket(
-					"You can't do that in the wilderness."));
+			player.getActionSender().sendMessage(
+					"You can't do that in the wilderness.");
 			return false;
 		}
 		if (!player.isBanking())
@@ -1405,20 +1400,19 @@ public class ItemAssistant {
 		if (item.getAmount() > player.playerEquipmentN[slot])
 			item.setAmount(player.playerEquipmentN[slot]);
 		if (tab.getItemAmount(item) == Integer.MAX_VALUE) {
-			player.write(new SendMessagePacket(
-					"Your bank is already holding the maximum amount of "
-							+ getItemName(itemID).toLowerCase() + " possible."));
+			player.getActionSender().sendMessage(
+					"Your bank is already holding the maximum amount of " + getItemName(itemID).toLowerCase() + " possible.");
 			return false;
 		}
 		if (tab.freeSlots(player) == 0 && !tab.contains(item)) {
-			player.write(new SendMessagePacket("Your current bank tab is full."));
+			player.getActionSender().sendMessage("Your current bank tab is full.");
 			return false;
 		}
 		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
 				.getAmount());
 		if (totalAmount >= Integer.MAX_VALUE) {
-			player.write(new SendMessagePacket(
-					"Your bank is already holding the maximum amount of this item."));
+			player.getActionSender().sendMessage(
+					"Your bank is already holding the maximum amount of this item.");
 			return false;
 		} else
 			player.playerEquipmentN[slot] -= item.getAmount();
@@ -1529,8 +1523,7 @@ public class ItemAssistant {
 				if (tabId < 0)
 					tabId = 0;
 				if (tabId == player.getBank().getCurrentBankTab().getTabId()) {
-					player.write(new SendMessagePacket(
-							"You cannot add an item from it's tab to the same tab."));
+					player.getActionSender().sendMessage("You cannot add an item from it's tab to the same tab.");
 					resetBank();
 					return;
 				}
@@ -1545,8 +1538,7 @@ public class ItemAssistant {
 					return;
 				}
 				if (player.getBank().getBankTab()[tabId].size() >= player.BANK_SIZE) {
-					player.write(new SendMessagePacket(
-							"You cannot move anymore items to that tab."));
+					player.getActionSender().sendMessage("You cannot move anymore items to that tab.");
 					resetBank();
 					return;
 				}
@@ -1971,8 +1963,8 @@ public class ItemAssistant {
 	 */
 	public void sendItemToAnyTab(int itemId, int amount) {
 		if (player.getArea().inWild()) {
-			player.write(new SendMessagePacket(
-					"You can't do that in the wilderness."));
+			player.getActionSender().sendMessage(
+					"You can't do that in the wilderness.");
 			return;
 		}
 		BankItem item = new BankItem(itemId, amount);
@@ -1996,8 +1988,7 @@ public class ItemAssistant {
 
 	public void sendItemToAnyTabOffline(int itemId, int amount, boolean online) {
 		if (player.getArea().inWild()) {
-			player.write(new SendMessagePacket(
-					"You can't do that in the wilderness."));
+			player.getActionSender().sendMessage("You can't do that in the wilderness.");
 			return;
 		}
 		BankItem item = new BankItem(itemId, amount);
@@ -2166,8 +2157,7 @@ public class ItemAssistant {
 			addItem(item, amount);
 		} else {
 			addToBank(item, amount, true);
-			player.write(new SendMessagePacket(
-					"Invntory full, the item was sent to your bank."));
+			player.getActionSender().sendMessage("Invntory full, the item was sent to your bank.");
 		}
 	}
 
@@ -2177,10 +2167,10 @@ public class ItemAssistant {
 		} else if ((item.getAmount() > 1) && (!ItemDefinition.forId(item.getId()).isStackable())) {
 			for (int i = 0; i < item.getAmount(); i++)
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
-			player.write(new SendMessagePacket("Invntory full item placed underneath you."));
+			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
 		} else {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
-			player.write(new SendMessagePacket("Invntory full item placed underneath you."));
+			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
 		}
 	}
 

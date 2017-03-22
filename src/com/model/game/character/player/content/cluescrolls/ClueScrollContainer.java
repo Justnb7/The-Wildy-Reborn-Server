@@ -7,7 +7,6 @@ import java.util.Queue;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Chance;
 import com.model.utility.Utility;
 
@@ -47,7 +46,7 @@ public final class ClueScrollContainer {
 					return;
 				}
 				player.getItems().addItem(id, 1);
-				player.write(new SendMessagePacket("You dig for treasure and find another clue!"));
+				player.getActionSender().sendMessage("You dig for treasure and find another clue!");
 			}
 		});
 	}

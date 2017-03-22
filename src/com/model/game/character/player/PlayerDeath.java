@@ -22,7 +22,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.minigames.pest_control.PestControl;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.utility.Utility;
 
@@ -84,24 +83,24 @@ public class PlayerDeath {
 				}
 				
 				if (player.getAccount().getType().loseStatusOnDeath()) {
-					player.message("");
+					player.getActionSender().sendMessage("");
 				}
 				
-				player.write(new SendMessagePacket("Oh dear you are dead!"));
+				player.getActionSender().sendMessage("Oh dear you are dead!");
 				player.setAttribute(BountyHunterConstants.HUNTER_CURRENT, 0);
 				player.setAttribute(BountyHunterConstants.ROGUE_CURRENT, 0);
 			}
 
 			if (duelSession != null && duelSession.getStage().getStage() == MultiplayerSessionStage.FURTHER_INTERACTION) {
 				if (!duelSession.getWinner().isPresent()) {
-					player.write(new SendMessagePacket("You have lost the duel!"));
+					player.getActionSender().sendMessage("You have lost the duel!");
 					Player opponent = duelSession.getOther(player);
 					if (!duelSession.getWinner().isPresent()) {
 						duelSession.setWinner(opponent);
 					}
 					PlayerSerialization.saveGame(opponent);
 				} else {
-					player.write(new SendMessagePacket("Congratulations, you have won the duel."));
+					player.getActionSender().sendMessage("Congratulations, you have won the duel.");
 				}
 			}
 		}
@@ -180,7 +179,6 @@ public class PlayerDeath {
 			player.getController().onDeath(player);
 			if (player.rights == Rights.ADMINISTRATOR && player.getName().equalsIgnoreCase("test") && killedBy != null) {
 				player.getPA().movePlayer(killedBy.getPosition());
-				player.message("ease of use dude");
 			} else if (player.getController().getRespawnLocation(player) != null) {
 				player.getPA().movePlayer(player.getController().getRespawnLocation(player));
 	        } else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
@@ -222,8 +220,8 @@ public class PlayerDeath {
 
 		if (player.getArea().inWild() && player.killerId != player.getIndex()) {
 			if (player.getMacAddress().equals(killer.getMacAddress())) {
-				player.write(new SendMessagePacket("This fight doesn't have an effect on your PK reward."));
-				killer.write(new SendMessagePacket("This fight doesn't have an effect on your PK reward."));
+				player.getActionSender().sendMessage("This fight doesn't have an effect on your PK reward.");
+				killer.getActionSender().sendMessage("This fight doesn't have an effect on your PK reward.");
 				return;
 			}
 
@@ -242,7 +240,7 @@ public class PlayerDeath {
 			}
 
 			if (killer.getCurrentKillStreak() > killer.getHighestKillStreak()) {
-				killer.write(new SendMessagePacket("Congratulations, your highest kill streak has increased!"));
+				killer.getActionSender().sendMessage("Congratulations, your highest kill streak has increased!");
 				killer.setHighestKillStreak(killer.getCurrentKillStreak());
 			}
 
@@ -272,7 +270,7 @@ public class PlayerDeath {
 				// killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" +
 				// totalPoints + "@bla@)"));
 			} else {
-				killer.write(new SendMessagePacket(player.getName() + " wasn't risking enough for you to gain any rewards."));
+				killer.getActionSender().sendMessage(player.getName() + " wasn't risking enough for you to gain any rewards.");
 			}
 
 			if (player.getCurrentKillStreak() >= 5) {
@@ -288,7 +286,7 @@ public class PlayerDeath {
 			killer.getWeaponInterface().sendSpecialBar(killer.playerEquipment[killer.getEquipment().getWeaponId()]);
 			killer.getWeaponInterface().refreshSpecialAttack();
 			sendKillMessage(killer, player);
-			player.write(new SendMessagePacket(message_to_player[new java.util.Random().nextInt(message_to_player.length)]));
+			player.getActionSender().sendMessage(message_to_player[new java.util.Random().nextInt(message_to_player.length)]);
 		}
 	}
 
@@ -299,9 +297,9 @@ public class PlayerDeath {
 		int randomMessage = 2;
 		Utility.getRandom(randomMessage);
 		if (randomMessage == 1) {
-			killer.write(new SendMessagePacket(killer.getName() + "" + killMessage[new java.util.Random().nextInt(killMessage.length)] + "" + player.getName()));
+			killer.getActionSender().sendMessage(killer.getName() + "" + killMessage[new java.util.Random().nextInt(killMessage.length)] + "" + player.getName());
 		} else {
-			killer.write(new SendMessagePacket(player.getName() + " " + message[new java.util.Random().nextInt(message.length)]));
+			killer.getActionSender().sendMessage(player.getName() + " " + message[new java.util.Random().nextInt(message.length)]);
 		}
 	}
 

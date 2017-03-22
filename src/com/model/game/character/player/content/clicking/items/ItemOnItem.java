@@ -4,7 +4,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.content.PotionCombinating;
 import com.model.game.character.player.content.rewards.CrystalChest;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.crafting.GemCutting;
 import com.model.game.character.player.skill.crafting.Gems;
 import com.model.game.character.player.skill.firemaking.Firemaking;
@@ -39,7 +38,7 @@ public class ItemOnItem {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {
 				int amount = player.getItems().checkAmount(withItem.getId());
 				player.getItems().remove(new Item(withItem.getId(), amount));
-				player.message("Whee... "+ItemDefinition.forId(withItem.getId()).getName()+" All gone!");
+				player.getActionSender().sendMessage("Whee... "+ItemDefinition.forId(withItem.getId()).getName()+" All gone!");
 			}
 		}
 		
@@ -47,7 +46,7 @@ public class ItemOnItem {
 			if (PotionCombinating.get().matches(usedItem, withItem)) {
 				PotionCombinating.get().mix(player, usedItem, withItem);
 			} else {
-				player.write(new SendMessagePacket("You cannot combine two potions of different types."));
+				player.getActionSender().sendMessage("You cannot combine two potions of different types.");
 			}
 			return;
 		}

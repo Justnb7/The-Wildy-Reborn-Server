@@ -1,9 +1,12 @@
 package com.model.game.character;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.common.base.Preconditions;
 import com.model.Server;
-import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.World;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.CombatEffect;
@@ -20,10 +23,6 @@ import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.cache.map.Region;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Patrick van Elderen
@@ -459,16 +458,16 @@ public abstract class Entity {
 			}
 			if (combat_type == CombatStyle.MELEE && (victim_npc.npcId == 2267 || victim_npc.npcId == 2266)) {
 				if (attacker.isPlayer())
-					((Player)attacker).message("The dagannoth is currently resistant to that attack!");
+					((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 			//Rex and Supreme do not take range damage
 			if (combat_type == CombatStyle.RANGE && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
-				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
+				((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 			if (combat_type == CombatStyle.MAGIC && (victim_npc.npcId == 2265 || victim_npc.npcId == 2266)) {
-				((Player)attacker).message("The dagannoth is currently resistant to that attack!");
+				((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 			if (combat_type == CombatStyle.MAGIC && victim_npc.npcId == 5535) {

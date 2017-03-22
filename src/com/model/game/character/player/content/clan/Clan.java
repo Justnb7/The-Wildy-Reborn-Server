@@ -170,18 +170,18 @@ public class Clan extends ClanData {
 		}
 
 		if (member.getRank() == ClanRank.BANNED) {
-			player.message("You have been banned from this clan chat.");
+			player.getActionSender().sendMessage("You have been banned from this clan chat.");
 			return;
 		}
 
 		if (member.getRank() == ClanRank.GUEST && settings[CAN_JOIN] == SettingState.ANY_FRIENDS
 				&& !isFriend(player.getName())) {
-			player.message("You don't have the necessary rank to join this clan chat.");
+			player.getActionSender().sendMessage("You don't have the necessary rank to join this clan chat.");
 			return;
 		}
 
 		if (settings[CAN_JOIN].getRankRequired().ordinal() > member.getRank().ordinal()) {
-			player.message("You don't have the necessary rank to join this clan chat.");
+			player.getActionSender().sendMessage("You don't have the necessary rank to join this clan chat.");
 			return;
 		}
 

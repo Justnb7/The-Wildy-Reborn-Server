@@ -4,7 +4,6 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendConfigPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 
 public class Shortcut {
@@ -37,7 +36,7 @@ public class Shortcut {
 		if (anim != 0 && anim != -1) {
 			player.playAnimation(Animation.create(anim));
 		}
-		player.write(new SendMessagePacket(message));
+		player.getActionSender().sendMessage(message);
 	}
 
 	public static void processAgilityShortcut(Player player) {

@@ -6,7 +6,6 @@ import java.util.Map;
 import com.model.game.Constants;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.skill.prayer.Prayer;
 
@@ -192,10 +191,10 @@ public class Skills {
 			player.getActionSender().sendString("Your " + skillName + " is now " + getLevelForExperience(skillId) + ".", skill.getFrame2());
 			player.write(new SendChatBoxInterfacePacket(skill.getFrame3()));
 		} else {
-			player.write(new SendMessagePacket("Congralations, your " + skillName + " is now level " + getLevelForExperience(skillId) + "."));
+			player.getActionSender().sendMessage("Congralations, your " + skillName + " is now level " + getLevelForExperience(skillId) + ".");
 		}
 		if(getLevel(skill.getSkillId()) == 99) {
-			player.write(new SendMessagePacket("<col=8b0000>Well done! You've achieved the highest possible level in this skill!</col>"));
+			player.getActionSender().sendMessage("<col=8b0000>Well done! You've achieved the highest possible level in this skill!</col>");
 		}
 		if (skill.getSkillId() < 7 || skill.getSkillId() == 21) {
 			player.combatLevel = getCombatLevel();
@@ -447,7 +446,7 @@ public class Skills {
         exps[skillId] += experience * multi;
         expCounter += experience*multi;
         player.getActionSender().sendExperienceCounter(skillId, (int) (experience*multi));
-        //player.write(new SendMessagePacket("Exp received: "+experience+ " times "+multi+" so "+(experience*multi)));
+        //player.getActionSender().sendMessage("Exp received: "+experience+ " times "+multi+" so "+(experience*multi));
        
 		if (exps[skillId] > MAXIMUM_EXP) {
             exps[skillId] = MAXIMUM_EXP;

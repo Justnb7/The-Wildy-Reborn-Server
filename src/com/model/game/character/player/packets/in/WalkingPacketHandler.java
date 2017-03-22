@@ -12,7 +12,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 
 import java.util.Objects;
@@ -40,7 +39,7 @@ public class WalkingPacketHandler implements PacketType {
 				}
 			}
 			if (packetType != 98) {
-				player.write(new SendMessagePacket("A magical force stops you from moving."));
+				player.getActionSender().sendMessage("A magical force stops you from moving.");
 				player.getCombat().reset();
 			}
 			return;
@@ -77,8 +76,8 @@ public class WalkingPacketHandler implements PacketType {
 			}
 		}
 		if (Objects.nonNull(session) && session.getStage().getStage() > MultiplayerSessionStage.REQUEST && session.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
-			player.write(new SendMessagePacket("You have declined the duel."));
-			session.getOther(player).write(new SendMessagePacket("The challenger has declined the duel."));
+			player.getActionSender().sendMessage("You have declined the duel.");
+			session.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");
 			session.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 		}
 		

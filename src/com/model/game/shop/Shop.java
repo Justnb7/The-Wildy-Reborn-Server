@@ -13,7 +13,6 @@ import java.util.Set;
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
@@ -194,20 +193,20 @@ public final class Shop {
 			return;
 		}
 		if (!canSell) {
-			player.write(new SendMessagePacket("You cannot sell items here."));
+			player.getActionSender().sendMessage("You cannot sell items here.");
 			return;
 		}
 		if (Arrays.stream(Constants.SPAWNABLES).anyMatch($it -> $it.contains(itemName))) {
-			player.write(new SendMessagePacket("<col=ff0000>" + Utility.formatPlayerName(itemName) + " <col=0>may not be sold!"));
+			player.getActionSender().sendMessage("<col=ff0000>" + Utility.formatPlayerName(itemName) + " <col=0>may not be sold!");
 			return;
 		}
 		if (!container.contains(item.getId()) && !name.equalsIgnoreCase("General Store")) {
-			player.write(new SendMessagePacket("You can't sell " + itemName + " " + "to this store."));
+			player.getActionSender().sendMessage("You can't sell " + itemName + " " + "to this store.");
 			return;
 		}
 		
 		String formatPrice = Utility.sendCashToString((int) Math.floor(determinePrice(player, item)));
-		player.write(new SendMessagePacket(itemName + ": shop will buy for " + formatPrice + " " + currency + "."));
+		player.getActionSender().sendMessage(itemName + ": shop will buy for " + formatPrice + " " + currency + ".");
 	}
 
 	/**
@@ -226,39 +225,39 @@ public final class Shop {
 		if (shopItem == null)
 			return;
 		if (shopItem.getAmount() <= 0) {
-			player.write(new SendMessagePacket("There is none of this item left in stock!"));
+			player.getActionSender().sendMessage("There is none of this item left in stock!");
 			return;
 		}
 		if (!player.getAccount().getType().shopAccessible(player.getOpenShop())) {
-			player.message("You are not permitted to use this shop because of a restriction on your account.");
+			player.getActionSender().sendMessage("You are not permitted to use this shop because of a restriction on your account.");
 			return;
 		}
 		if (player.getOpenShop().equals("Vote Point shop")) {
-			player.write(new SendMessagePacket(item.getDefinition().getName() + " currently costs " + Utility.insertCommas(Integer.toString(determinePrice(player, item))) + " Vote points."));
+			player.getActionSender().sendMessage(item.getDefinition().getName() + " currently costs " + Utility.insertCommas(Integer.toString(determinePrice(player, item))) + " Vote points.");
 			return;
 		}
 		if (player.getOpenShop().equals("Gear Point Store")) {
-			player.write(new SendMessagePacket(item.getDefinition().getName() + " currently costs " + Utility.insertCommas(Integer.toString(determinePrice(player, item))) + " Gear points."));
+			player.getActionSender().sendMessage(item.getDefinition().getName() + " currently costs " + Utility.insertCommas(Integer.toString(determinePrice(player, item))) + " Gear points.");
 			return;
 		}
 		if (player.getOpenShop().equals("Slayer Shop")) {
-			player.write(new SendMessagePacket("You need a slayer level of " + slayerLevelReq(item.getId()) + " to buy "+player.getItems().getItemName(item.getId())+""));
+			player.getActionSender().sendMessage("You need a slayer level of " + slayerLevelReq(item.getId()) + " to buy "+player.getItems().getItemName(item.getId())+"");
 			return;
 		}
 		if (player.getOpenShop().equals("Achievement Rewards")) {
 			if (!player.getAchievements().hasBoughtItem(item.getId())) {
-				player.write(new SendMessagePacket(item.getDefinition().getName() + ": shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " APs. You only need to buy this once."));
+				player.getActionSender().sendMessage(item.getDefinition().getName() + ": shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " APs. You only need to buy this once.");
 			} else {
-				player.write(new SendMessagePacket(item.getDefinition().getName() + ": shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " coins."));
+				player.getActionSender().sendMessage(item.getDefinition().getName() + ": shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " coins.");
 			}
 			return;
 		}
 		//player.sendMessage("" + item.getDefinition().getId());
 		if (item.getDefinition() == null) {
-			player.write(new SendMessagePacket("NULLED ITEM: please notify the staff."));
+			player.getActionSender().sendMessage("NULLED ITEM: please notify the staff.");
 			return;
 		} else {
-			player.write(new SendMessagePacket(item.getDefinition().getName() + ": " + "shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " " + currency + "."));
+			player.getActionSender().sendMessage(item.getDefinition().getName() + ": " + "shop will sell for " + Utility.sendCashToString(determinePrice(player, item)) + " " + currency + ".");
 		}
 	}
 
@@ -278,19 +277,19 @@ public final class Shop {
 			return false;
 
 		if (shopItem.getAmount() <= 0) {
-			player.write(new SendMessagePacket("There is none of this item left in stock!"));
+			player.getActionSender().sendMessage("There is none of this item left in stock!");
 			return false;
 		}
 		if (shopItem.getDefinition() == null) {
-			player.write(new SendMessagePacket("NULL_ITEM: shop will not sell this item, please notify the staff."));
+			player.getActionSender().sendMessage("NULL_ITEM: shop will not sell this item, please notify the staff.");
 			return false;
 		}
 		if (!player.getAccount().getType().shopAccessible(player.getOpenShop())) {
-			player.message("You are not permitted to use this shop because of a restriction on your account.");
+			player.getActionSender().sendMessage("You are not permitted to use this shop because of a restriction on your account.");
 			return false;
 		}
 		if (player.getItems().alreadyHasItem(12791) && shopItem.getId() == 12791) {
-			player.write(new SendMessagePacket("You cannot own more then one rune pouch at the time."));
+			player.getActionSender().sendMessage("You cannot own more then one rune pouch at the time.");
 			return false;
 		}
 		if (player.getOpenShop().equals("Achievement Rewards")) {
@@ -307,14 +306,14 @@ public final class Shop {
 		if (!player.getItems().spaceFor(item)) {
 			item.setCount(player.getItems().freeSlots());
 			if (item.getAmount() == 0) {
-				player.write(new SendMessagePacket("You do not have enough space" + " in your inventory to buy this item!"));
+				player.getActionSender().sendMessage("You do not have enough space" + " in your inventory to buy this item!");
 				return false;
 			}
 		}
 		int value = determinePrice(player, item);
 		long totalCost = (long)value * (long)item.getAmount();
 		if (currency.getCurrency().currencyAmount(player) < totalCost) {
-			player.write(new SendMessagePacket("You do not have enough " + currency + " to buy this item."));
+			player.getActionSender().sendMessage("You do not have enough " + currency + " to buy this item.");
 			return false;
 		}
 		if (player.getItems().freeSlots() >= item.getAmount() && !item.getDefinition().isStackable()
@@ -329,7 +328,7 @@ public final class Shop {
 			currency.getCurrency().takeCurrency(player, (int)totalCost);
 			player.getItems().addItemtoInventory(item);
 		} else {
-			player.write(new SendMessagePacket("You don't have enough space in your inventory."));
+			player.getActionSender().sendMessage("You don't have enough space in your inventory.");
 			return false;
 		}
 		updateShop(player, true);
@@ -351,37 +350,37 @@ public final class Shop {
 		if (!Item.valid(item))
 			return false;
 		if (!canSell) {
-			player.write(new SendMessagePacket("You cannot sell items here."));
+			player.getActionSender().sendMessage("You cannot sell items here.");
 			return false;
 		}
 		if (player.getOpenShop().equals("Skillcape Shop")) {
 			return false;
 		}
 		if (item.getDefinition().getGeneralPrice() > 100_000_000) {
-			player.write(new SendMessagePacket("The shop keeper cannot afford your, "+item.getDefinition().getName()+"."));
+			player.getActionSender().sendMessage("The shop keeper cannot afford your, "+item.getDefinition().getName()+".");
 			return false;
 		}
 		if (!player.getAccount().getType().shopAccessible(player.getOpenShop())) {
-			player.message("You are not permitted to use this shop because of a restriction on your account.");
+			player.getActionSender().sendMessage("You are not permitted to use this shop because of a restriction on your account.");
 			return false;
 		}
 		if (!player.getItems().playerHasItem(item.getId()))
 			return false;
 		if (Arrays.stream(Constants.SPAWNABLES).anyMatch($it -> $it.equalsIgnoreCase(itemName))) {
-			player.write(new SendMessagePacket("<col=ff0000>" + Utility.formatPlayerName(itemName) + " <col=0>may not be sold!"));
+			player.getActionSender().sendMessage("<col=ff0000>" + Utility.formatPlayerName(itemName) + " <col=0>may not be sold!");
 			return false;
 		}
 		if (!container.contains(item.getId()) && !name.equalsIgnoreCase("General Store")
 				&& !name.equalsIgnoreCase("Iron Store")) {
-			player.write(new SendMessagePacket("You can't sell " + item.getDefinition().getName() + " to this store."));
+			player.getActionSender().sendMessage("You can't sell " + item.getDefinition().getName() + " to this store.");
 			return false;
 		}
 		if (!container.spaceFor(item)) {
-			player.write(new SendMessagePacket("There is no room in this store for the item you are trying to sell!"));
+			player.getActionSender().sendMessage("There is no room in this store for the item you are trying to sell!");
 			return false;
 		}
 		if (player.getItems().freeSlots() == 0 && !currency.getCurrency().canRecieveCurrency(player)) {
-			player.write(new SendMessagePacket("You do not have enough space in your inventory to sell this item!"));
+			player.getActionSender().sendMessage("You do not have enough space in your inventory to sell this item!");
 			return false;
 		}
 		if (player.isBusy()) {
@@ -451,13 +450,13 @@ public final class Shop {
 							player.getItems().addItem(skillCapes[j] + nn, 1);
 							player.getItems().addItem(skillCapes[j] + 2, 1);
 						} else {
-							player.write(new SendMessagePacket("You must have 99 in the skill of the cape you're trying to buy."));
+							player.getActionSender().sendMessage("You must have 99 in the skill of the cape you're trying to buy.");
 						}
 					} else {
-						player.write(new SendMessagePacket("You need 99,000 coins to buy this item."));
+						player.getActionSender().sendMessage("You need 99,000 coins to buy this item.");
 					}
 				} else {
-					player.write(new SendMessagePacket("You must have at least 1 free inventory space to buy this item."));
+					player.getActionSender().sendMessage("You must have at least 1 free inventory space to buy this item.");
 				}
 			}
 		}

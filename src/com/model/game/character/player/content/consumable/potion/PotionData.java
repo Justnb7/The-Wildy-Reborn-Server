@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 
 
@@ -644,7 +643,7 @@ public enum PotionData {
 	}
 	
 	public static void drinkAntiVenom(Player player, long duration) {
-		player.write(new SendMessagePacket("You have been cured of venom."));
+		player.getActionSender().sendMessage("You have been cured of venom.");
 		player.setVenomImmunity(duration);
 		player.infection = 0;
 		player.setLastVenomCure(System.currentTimeMillis());
@@ -654,7 +653,7 @@ public enum PotionData {
 	}
 	
 	public static void drinkAntiPoison(Player player, long duration) {
-		player.write(new SendMessagePacket("You have been cured of poison."));
+		player.getActionSender().sendMessage("You have been cured of poison.");
 		player.setPoisonDamage((byte) 0);
 		player.setPoisonImmunity(duration);
 		player.setLastPoisonCure(System.currentTimeMillis());
@@ -666,13 +665,13 @@ public enum PotionData {
 	
 	// shit naming of paramater - it's when you drank it in MS (sys.curtime) not how long it lasts
 	public static void drinkAntifire(Player player) {
-		player.message("You drink some of your antifire potion.");
+		player.getActionSender().sendMessage("You drink some of your antifire potion.");
 		player.setAttribute("antiFire", System.currentTimeMillis());//setting duration? this one :D
 		//so that would be better yes - hopping off back in 10 sure
 	}
 	
 	public static void drinkExtendedAntifire(Player player, long duration) {
-		player.message("You drink some of your extended antifire potion.");
+		player.getActionSender().sendMessage("You drink some of your extended antifire potion.");
 		player.setAttribute("extended_antiFire", duration);//setting duration?
 	}
 	

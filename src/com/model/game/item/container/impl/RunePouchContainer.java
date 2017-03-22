@@ -2,7 +2,6 @@ package com.model.game.item.container.impl;
 
 import com.google.common.collect.ImmutableSet;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
@@ -155,11 +154,11 @@ public final class RunePouchContainer extends Container {
 		boolean canAdd = RUNES.stream().filter(rune -> rune == item.getId()).findAny().isPresent();
 
 		if(!canAdd) {
-			player.write(new SendMessagePacket("Don't be silly."));
+			player.getActionSender().sendMessage("Don't be silly.");
 		}
 		
 		if(this.size() == this.capacity() && !this.spaceFor(item)) {
-			player.write(new SendMessagePacket("Your rune pouch is currently full."));
+			player.getActionSender().sendMessage("Your rune pouch is currently full.");
 			return false;
 		}
 

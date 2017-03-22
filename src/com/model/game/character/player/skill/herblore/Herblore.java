@@ -9,7 +9,6 @@ import java.util.Set;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -51,18 +50,18 @@ public class Herblore {
 		Optional<Herb> herb = HERBS.stream().filter(h -> h.getGrimy() == itemId).findFirst();
 		herb.ifPresent(h -> {
 			if (!player.getItems().playerHasItem(h.getGrimy())) {
-				player.write(new SendMessagePacket("You need the grimy herb to do this."));
+				player.getActionSender().sendMessage("You need the grimy herb to do this.");
 				return;
 			}
 			if (player.getSkills().getLevel(Skills.HERBLORE) < h.getLevel()) {
-				player.write(new SendMessagePacket("You need a herblore level of " + h.getLevel() + " to clean this grimy herb."));
+				player.getActionSender().sendMessage("You need a herblore level of " + h.getLevel() + " to clean this grimy herb.");
 				return;
 			}
 			ItemDefinition definition = ItemDefinition.forId(h.getClean());
 			player.getSkills().addExperience(Skills.HERBLORE, h.getExperience() * Constants.SKILL_MODIFIER);
 			player.getItems().deleteItem(h.getGrimy(), 1);
 			player.getItems().addItem(h.getClean(), 1);
-			player.write(new SendMessagePacket("You identify the herb as " + definition.getName() + "."));
+			player.getActionSender().sendMessage("You identify the herb as " + definition.getName() + ".");
 		});
 	}
 	
@@ -71,11 +70,11 @@ public class Herblore {
 		potion.ifPresent(p -> {
 			ItemDefinition definition = ItemDefinition.forId(p.getResult().getId());
 			if (player.getSkills().getLevel(Skills.HERBLORE) < p.getLevel()) {
-				player.write(new SendMessagePacket("You need a herblore level of " + p.getLevel() + " to make " + definition.getName() + "."));
+				player.getActionSender().sendMessage("You need a herblore level of " + p.getLevel() + " to make " + definition.getName() + ".");
 				return;
 			}
 			if (!player.getItems().playerHasItem(227)) {
-				player.write(new SendMessagePacket("You need a regular vial of water to do this."));
+				player.getActionSender().sendMessage("You need a regular vial of water to do this.");
 				return;
 			}
 			Arrays.asList(p.getIngredients()).stream().forEach(ing -> player.getItems().deleteItem(ing.getId(), ing.getAmount()));
@@ -83,7 +82,7 @@ public class Herblore {
 			player.getItems().deleteItem(p.getPrimary().getId(), p.getPrimary().getAmount());
 			player.getItems().addItem(p.getResult().getId(), p.getResult().getAmount());
 			player.getSkills().addExperience(Skills.HERBLORE, p.getExperience() * Constants.SKILL_MODIFIER);
-			player.write(new SendMessagePacket("You combine all of the ingredients and make a " + definition.getName() + "."));
+			player.getActionSender().sendMessage("You combine all of the ingredients and make a " + definition.getName() + ".");
 			//Achievements.increase(player, AchievementType.POTIONS, 1);
 		});
 	}

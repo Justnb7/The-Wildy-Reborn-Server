@@ -7,7 +7,6 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
@@ -135,12 +134,12 @@ public class Burying {
 				player.addBoneDelay(3000);
 				player.write(new SendSoundPacket(380, 1, 24));
 				player.playAnimation(Animation.create(BURY_ANIMATION));
-				player.write(new SendMessagePacket("You dig a hole in the ground..."));
+				player.getActionSender().sendMessage("You dig a hole in the ground...");
 				ItemDefinition itemDef = ItemDefinition.forId(itemId);
 				Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 					@Override
 					public void execute() {
-						player.write(new SendMessagePacket("You bury the " + itemDef.getName().toLowerCase()));
+						player.getActionSender().sendMessage("You bury the " + itemDef.getName().toLowerCase());
 						player.getItems().deleteItem(itemId, 1);
 						int xp = bone.getExperience();
 						player.getSkills().addExperience(Skills.PRAYER, xp);
@@ -176,14 +175,14 @@ public class Burying {
 							this.stop();
 						}
 						if (!player.getItems().playerHasItem(bone.getId())) {
-							player.write(new SendMessagePacket("You ran out of bones!"));
+							player.getActionSender().sendMessage("You ran out of bones!");
 							this.stop();
 							return;
 						}
 						player.playAnimation(Animation.create(ALTAR_ANIMATION));
 						player.getItems().deleteItem(itemId, 1);
 						player.getSkills().addExperience(Skills.PRAYER, bone.getExperience() * 2);
-						player.write(new SendMessagePacket("You interact the bones with altar and gain x2 experience!"));
+						player.getActionSender().sendMessage("You interact the bones with altar and gain x2 experience!");
 					}
 
 					@Override

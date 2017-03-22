@@ -14,7 +14,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.buttons.ActionButton;
 import com.model.game.character.player.packets.buttons.ActionButtonEvent;
 import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.TradeContainer;
 import com.model.task.impl.DistancedActionTask;
@@ -92,8 +91,8 @@ public class Trading {
 		player.getRequestManager().setRequestState(RequestState.REQUESTED);
 		player.getRequestManager().setAcquaintance(target);
 
-		player.write(new SendMessagePacket("Sending trade request..."));
-		target.write(new SendMessagePacket(player.getName() + RequestType.TRADE.getMessage()));
+		player.getActionSender().sendMessage("Sending trade request...");
+		target.getActionSender().sendMessage(player.getName() + RequestType.TRADE.getMessage());
 
 		/*
 		 * The other person is trading us so we open the trade
@@ -135,12 +134,12 @@ public class Trading {
 		}
 		
 		if (player.getAccount().getType().tradingPermitted()) {
-			player.message("You're restricted to trade because of your account type.");
+			player.getActionSender().sendMessage("You're restricted to trade because of your account type.");
 			return false;
 		}
 		
 		if (target.getAccount().getType().tradingPermitted()) {
-			player.message("You're restricted to trade because of your account type.");
+			player.getActionSender().sendMessage("You're restricted to trade because of your account type.");
 			return false;
 		}
 		
@@ -149,12 +148,12 @@ public class Trading {
 		}
 		
 		if (player.absX == target.absX && player.absY == target.absY) {
-			player.write(new SendMessagePacket("You cannot trade while standing on someone"));
+			player.getActionSender().sendMessage("You cannot trade while standing on someone");
 			return false;
 		}
 
 		if (target.isBusy() || target.isPlayerTransformed() || target.tradeStatus > 0) {
-			player.write(new SendMessagePacket("This player is currently busy."));
+			player.getActionSender().sendMessage("This player is currently busy.");
 			return false;
 		}
 
@@ -414,17 +413,17 @@ public class Trading {
 	 */
 	private static boolean cannotTrade(Player player, Player target, int id) {
 		if (player.getAccount().getType().tradingPermitted()) {
-			player.message("You're restricted to trade because of your account type.");
+			player.getActionSender().sendMessage("You're restricted to trade because of your account type.");
 			return false;
 		}
 		
 		if (target.getAccount().getType().tradingPermitted()) {
-			player.message("You're restricted to trade because of your account type.");
+			player.getActionSender().sendMessage("You're restricted to trade because of your account type.");
 			return false;
 		}
 		
 		if (!ItemDefinition.forId(id).isTradeable() || ClueDifficulty.isClue(id)) {
-			player.write(new SendMessagePacket("That item isn't tradeable."));
+			player.getActionSender().sendMessage("That item isn't tradeable.");
 			return false;
 		}
 		return true;
@@ -590,9 +589,9 @@ public class Trading {
 		reset(player);
 
 		if (tell)
-			player.write(new SendMessagePacket("The trade has been declined."));
+			player.getActionSender().sendMessage("The trade has been declined.");
 		else
-			player.write(new SendMessagePacket("The other player has declined the trade."));
+			player.getActionSender().sendMessage("The other player has declined the trade.");
 	}
 
 	/**
@@ -611,10 +610,10 @@ public class Trading {
 		int playerSize = player.getTradeContainer().size();
 		int targetSize = target.getTradeContainer().size();
 		if (target.getItems().freeSlots() < playerSize) {
-			player.write(new SendMessagePacket(target.getName() + " only has " + target.getItems().freeSlots()
-					+ " free slots, please remove " + (playerSize - target.getItems().freeSlots()) + " items."));
-			target.write(new SendMessagePacket(player.getName() + " has to remove " + (playerSize - target.getItems().freeSlots())
-					+ " items or you could offer them " + (targetSize - target.getItems().freeSlots()) + " items."));
+			player.getActionSender().sendMessage(target.getName() + " only has " + target.getItems().freeSlots()
+					+ " free slots, please remove " + (playerSize - target.getItems().freeSlots()) + " items.");
+			target.getActionSender().sendMessage(player.getName() + " has to remove " + (playerSize - target.getItems().freeSlots())
+					+ " items or you could offer them " + (targetSize - target.getItems().freeSlots()) + " items.");
 			player.getActionSender().sendString("Not enough inventory space...", 3431);
 			target.getActionSender().sendString("Not enough inventory space...", 3431);
 			return;

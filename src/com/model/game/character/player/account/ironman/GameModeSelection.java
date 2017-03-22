@@ -117,7 +117,7 @@ public class GameModeSelection {
 		for (GameModes type : GameModes.values()) {
 			if (type.getButtonId() == buttonId) {
 				if (selectedIronmanButton == buttonId) {
-					player.message("You've already selected this option.");
+					player.getActionSender().sendMessage("You've already selected this option.");
 				} else {
 					if (buttonId == 165162) {//Ironman button
 						selectedIronmanButton = 165162;
@@ -190,7 +190,7 @@ public class GameModeSelection {
 		boolean validButtons = selectedIronmanButton >= 165162 && selectedIronmanButton <= 165165;
 		
 		if(!validButtons) {
-			player.message("You have yet to select an game mode.");
+			player.getActionSender().sendMessage("You have yet to select an game mode.");
 			return;
 		}
 

@@ -8,7 +8,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.bank.BankItem;
@@ -47,7 +46,7 @@ public class WithdrawAllAction implements PacketType {
             if (player.getOpenShop().equals("Skillcape Shop")) {
                 return;
             } else if (player.getOpenShop().equals("Death Store")) {
-                player.write(new SendMessagePacket("You cannot sell items to this store!"));
+                player.getActionSender().sendMessage("You cannot sell items to this store!");
                 return;
             }
             Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(removeId, 10), removeSlot);

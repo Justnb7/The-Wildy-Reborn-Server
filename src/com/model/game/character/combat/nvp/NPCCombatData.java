@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.model.game.character.combat.npcs.BossScripts;
 import com.model.game.character.npc.NPC;
-import com.model.utility.json.definitions.NpcDefinition;
 
 /**
  * Holds all of the combat data for npc combat

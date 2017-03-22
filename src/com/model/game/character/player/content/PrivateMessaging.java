@@ -4,7 +4,6 @@ import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendFriendPacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
@@ -28,7 +27,7 @@ public class PrivateMessaging implements PacketType {
 			byte[] data = chatMessage;
 			player.getInStream().readBytes(chatMessage, size, 0);
 			if (player.isMuted) {
-	            player.write(new SendMessagePacket("You are muted for breaking a rule."));
+	            player.getActionSender().sendMessage("You are muted for breaking a rule.");
 				return;
 			}
 			/*
@@ -52,7 +51,7 @@ public class PrivateMessaging implements PacketType {
 			}
 			
 			if(player.isMuted) {
-				player.write(new SendMessagePacket("You are muted and therefore cannot private message players"));
+				player.getActionSender().sendMessage("You are muted and therefore cannot private message players");
 				return;
 			}
 
@@ -72,7 +71,7 @@ public class PrivateMessaging implements PacketType {
 			}
 
 			if (offline) {
-				player.write(new SendMessagePacket("That player is currently offline."));
+				player.getActionSender().sendMessage("That player is currently offline.");
 				return;
 			}
 

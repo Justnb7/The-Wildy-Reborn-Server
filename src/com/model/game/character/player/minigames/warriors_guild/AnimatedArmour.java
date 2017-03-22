@@ -87,16 +87,16 @@ public class AnimatedArmour {
 	
 	public static void itemOnAnimator(final Player player, int itemId) {
 		if(player.absX != 2851 || player.absY != 3537) {
-			player.message("You need to move closer.");
+			player.getActionSender().sendMessage("You need to move closer.");
 			return;
 		}
 		if(player.isAnimatedArmourSpawned) {
-			player.message("An Animated Armour npc is already spawned.");
+			player.getActionSender().sendMessage("An Animated Armour npc is already spawned.");
 			return;
 		}
 		final Armour armour = getArmourForItemId(itemId);
 		if(!player.getItems().playerHasItem(armour.getPlatebodyId(), 1) || !player.getItems().playerHasItem(armour.getPlatelegsId(), 1) || !player.getItems().playerHasItem(armour.getHelmId(), 1)) {
-			player.message("You need the helm, platebody, and platelegs to spawn the animated armour.");
+			player.getActionSender().sendMessage("You need the helm, platebody, and platelegs to spawn the animated armour.");
 			return;
 		}
 		player.isAnimatedArmourSpawned = true;
@@ -109,7 +109,7 @@ public class AnimatedArmour {
 			@Override
 			public void execute(CycleEventContainer event) {
 				NPCHandler.spawnNpc(player, armour.getNpcId(), SPAWN_X, SPAWN_Y, 0, 1, true, true, false);
-				player.message("An animated armour has spawned...");
+				player.getActionSender().sendMessage("An animated armour has spawned...");
 				event.stop();
 			}
 			

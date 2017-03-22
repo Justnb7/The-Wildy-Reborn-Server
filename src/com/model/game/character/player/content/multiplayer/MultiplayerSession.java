@@ -10,7 +10,6 @@ import java.util.Optional;
 
 import com.model.Server;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.GameItem;
 
@@ -94,7 +93,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		}
 		
 		if (player.getAccount().getType().stakingPermitted()) {
-			player.message("You're restricted to stake because of your account type.");
+			player.getActionSender().sendMessage("You're restricted to stake because of your account type.");
 			return;
 		}
 		
@@ -128,7 +127,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			return;
 		}
 		if (!presetListContains(player, id, amount)) {
-			player.write(new SendMessagePacket("You cannot offer an item that you didn't have before the session started."));
+			player.getActionSender().sendMessage("You cannot offer an item that you didn't have before the session started.");
 			finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 			return;
 		}
@@ -138,7 +137,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (getItems(player).size() >= 28) {
 			if (!containsItem(player, id) || containsItem(player, id)
 					&& !item.stackable) {
-				player.write(new SendMessagePacket("You have already offered the maximum possible items."));
+				player.getActionSender().sendMessage("You have already offered the maximum possible items.");
 				return;
 			}
 		}
@@ -199,7 +198,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		List<GameItem> items = this.items.get(player);
 		int freeSlots = player.getItems().freeSlots();
 		if (!items.stream().anyMatch(i -> i.id == id)) {
-			player.write(new SendMessagePacket("Tried to remove item that does not exist in list."));
+			player.getActionSender().sendMessage("Tried to remove item that does not exist in list.");
 			return;
 		}
 		for (GameItem gameItem : items) {
@@ -230,13 +229,13 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 							|| inventoryContainsIllegalItem(player,
 									new GameItem(id, amount))) {
 						items.remove(i);
-						player.write(new SendMessagePacket("You tried to remove an item from the screen that you did not have before"));
-						player.write(new SendMessagePacket("the session started, the item has been deleted because of this."));
+						player.getActionSender().sendMessage("You tried to remove an item from the screen that you did not have before");
+						player.getActionSender().sendMessage("the session started, the item has been deleted because of this.");
 						finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 						return;
 					}
 					if (!containsItem(player, id, amount)) {
-						player.write(new SendMessagePacket("Tried to remove item that does not exist in list."));
+						player.getActionSender().sendMessage("Tried to remove item that does not exist in list.");
 						return;
 					}
 					if (items.get(i).amount - amount > 0) {
@@ -260,13 +259,13 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			if (!presetListContains(player, id, amount)
 					|| inventoryContainsIllegalItem(player, item)) {
 				this.items.get(player).remove(slot);
-				player.write(new SendMessagePacket("You tried to remove an item from the trade screen that you did not have before"));
-				player.write(new SendMessagePacket("the trade started, the item has been deleted because of this."));
+				player.getActionSender().sendMessage("You tried to remove an item from the trade screen that you did not have before");
+				player.getActionSender().sendMessage("the trade started, the item has been deleted because of this.");
 				finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 				return;
 			}
 			if (!containsItem(player, id, amount)) {
-				player.write(new SendMessagePacket("Tried to remove item that does not exist in list."));
+				player.getActionSender().sendMessage("Tried to remove item that does not exist in list.");
 				return;
 			}
 			while (amount-- > 0) {

@@ -85,7 +85,7 @@ public class PestControl {
 		if (Boundary.isIn(player, GAME_BOUNDARY) || Boundary.isIn(player, LOBBY_BOUNDARY))
 			return;
 		if (player.combatLevel < 40) {
-			player.message("You need a combat level of atleast 40 to join in.");
+			player.getActionSender().sendMessage("You need a combat level of atleast 40 to join in.");
 			return;
 		}
 		if (!lobbyActive && lobbyMembers.size() == 0 && lobbyTime <= 0)
@@ -93,9 +93,9 @@ public class PestControl {
 		addLobbyMember(player);
 		player.getPA().movePlayer(2661, 2639, 0);
 		if (gameActive)
-			player.message("You have joined the pest control waiting lobby. There is currently a game going on.");
+			player.getActionSender().sendMessage("You have joined the pest control waiting lobby. There is currently a game going on.");
 		else
-			player.message("You have joined the pest control waiting lobby. A new game will start shortly.");
+			player.getActionSender().sendMessage("You have joined the pest control waiting lobby. A new game will start shortly.");
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class PestControl {
 		removeLobbyMember(player);
 		if (Boundary.isIn(player, LOBBY_BOUNDARY)) {
 			player.getPA().movePlayer(2657, 2639, 0);
-			player.message("You have left the pest control waiting lobby.");
+			player.getActionSender().sendMessage("You have left the pest control waiting lobby.");
 		}
 	}
 
@@ -218,12 +218,12 @@ public class PestControl {
 						Player player = gameMembers.get(i);
 						player.getPA().movePlayer(2657, 2639, 0);
 						if (player.pestControlDamage > MINIMUM_DAMAGE) {//TODO ask jak how to do this
-							player.message("You won! You obtain " + (POINT_REWARD) + " commendation points and " + coins + " coins as a bonus.");
+							player.getActionSender().sendMessage("You won! You obtain " + (POINT_REWARD) + " commendation points and " + coins + " coins as a bonus.");
 							player.setPestControlPoints(player.getPestControlPoints() + POINT_REWARD);
 							player.getItems().addItem(995, coins);
 						} else {
-							player.message("You won but you didn't deal enough damage on the portals.");
-							player.message("You must play your part in defeating the portals to get rewarded.");
+							player.getActionSender().sendMessage("You won but you didn't deal enough damage on the portals.");
+							player.getActionSender().sendMessage("You must play your part in defeating the portals to get rewarded.");
 						}
 						PrayerHandler.resetAllPrayers(player);
 						player.getSkills().setLevel(3, player.getSkills().getLevelForExperience(3));
@@ -237,7 +237,7 @@ public class PestControl {
 					if (Boundary.isIn(gameMembers.get(i), GAME_BOUNDARY)) {
 						Player player = gameMembers.get(i);
 						player.getPA().movePlayer(2657, 2639, 0);
-						player.message("You lost....better luck next time.");
+						player.getActionSender().sendMessage("You lost....better luck next time.");
 						PrayerHandler.resetAllPrayers(player);
 						player.getSkills().setLevel(3, player.getSkills().getLevelForExperience(3));
 						player.getSkills().setLevel(5, player.getSkills().getLevelForExperience(5));
@@ -271,7 +271,7 @@ public class PestControl {
 		//player.resetDamageReceived();
 		player.pestControlDamage = 0;
 		player.getPA().movePlayer(2656 + Utility.random(2), 2614 - Utility.random(3), 0);
-		player.message("Welcome to pest control, defeat all the portals within the time frame.");
+		player.getActionSender().sendMessage("Welcome to pest control, defeat all the portals within the time frame.");
 		player.setSpecialAmount(100);
 		player.getWeaponInterface().refreshSpecialAttack();
 		player.getSkills().setLevel(3, player.getSkills().getLevelForExperience(3));
@@ -416,7 +416,7 @@ public class PestControl {
 		for (Player p : lobbyMembers)
 			if (p != null)
 				if (Boundary.isIn(p, LOBBY_BOUNDARY))
-					p.message(string);
+					p.getActionSender().sendMessage(string);
 	}
 
 	/**
@@ -514,14 +514,14 @@ public class PestControl {
 	 *            The player
 	 */
 	public static void read(Player player) {
-		player.message("-------------------------------------------------------------");
-		player.message("Lobby Active: " + lobbyActive);
-		player.message("Game Active: " + gameActive);
-		player.message("Lobby Members: " + lobbyMembers.size());
-		player.message("Game Members: " + gameMembers.size());
-		player.message("Lobby Time: " + lobbyTime);
-		player.message("Game Time: " + gameTime);
-		player.message("-------------------------------------------------------------");
+		player.getActionSender().sendMessage("-------------------------------------------------------------");
+		player.getActionSender().sendMessage("Lobby Active: " + lobbyActive);
+		player.getActionSender().sendMessage("Game Active: " + gameActive);
+		player.getActionSender().sendMessage("Lobby Members: " + lobbyMembers.size());
+		player.getActionSender().sendMessage("Game Members: " + gameMembers.size());
+		player.getActionSender().sendMessage("Lobby Time: " + lobbyTime);
+		player.getActionSender().sendMessage("Game Time: " + gameTime);
+		player.getActionSender().sendMessage("-------------------------------------------------------------");
 	}
 
 	public static void spawnAllNpcs() {

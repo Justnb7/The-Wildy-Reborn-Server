@@ -57,7 +57,9 @@ public class TokXil extends AbstractBossCombat {
 				gfxDelay = 140;
 			}
 			int delay = (gfxDelay / 20) - 1;
-			npc.playProjectile(Projectile.create(npc.getPosition(), victim, 443, 25, 5, clientSpeed, 43, 36, 10, 48));
+			//n.getX() + 1, n.getY() + 1,
+			//offX, offY, 50, 86, 443, 73, 31, -client.getId() - 1, 66);
+			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 443, 25, 5, clientSpeed, 43, 36, 10, 48));
 			
 			hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false);
 

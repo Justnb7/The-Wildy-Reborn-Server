@@ -5,7 +5,6 @@ import com.model.game.World;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 
@@ -80,7 +79,7 @@ public class NpcInteractionPacketHandler implements PacketType {
             if (!npc.getDefinition().isAttackable())
                 return;
 			if (npc.maximumHealth == 0 || npc.npcId == 944) {
-				player.write(new SendMessagePacket("You can't attack this npc."));
+				player.getActionSender().sendMessage("You can't attack this npc.");
 				break;
 			}
 			for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {

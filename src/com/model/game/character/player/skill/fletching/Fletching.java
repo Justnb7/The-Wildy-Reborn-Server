@@ -300,7 +300,7 @@ public class Fletching {
 				player.getActionSender().sendRemoveInterfacePacket();
 				if (player.fletchItem > 0)
 					resetFletching(player);
-				player.message("You need a Fletching level of " + arrow.getLevelReq() + " to fletch a "
+				player.getActionSender().sendMessage("You need a Fletching level of " + arrow.getLevelReq() + " to fletch a "
 						+ player.getItems().getItemName(arrow.getArrow()));
 			}
 		} else {
@@ -325,7 +325,7 @@ public class Fletching {
 						player.getActionSender().sendRemoveInterfacePacket();
 						if (player.fletchItem > 0)
 							resetFletching(player);
-						player.message("You need a Fletching level of " + tip.getLevelReq() + " to fletch " + player.getItems().getItemName(tip.getReward().getId()));
+						player.getActionSender().sendMessage("You need a Fletching level of " + tip.getLevelReq() + " to fletch " + player.getItems().getItemName(tip.getReward().getId()));
 					}
 				} else {
 					player.getActionSender().sendRemoveInterfacePacket();
@@ -384,7 +384,7 @@ public class Fletching {
 			player.getActionSender().sendRemoveInterfacePacket();
 			if (player.fletchItem > 0)
 				resetFletching(player);
-			player.message("You need a Fletching level of " + levelRequirement + " to fletch " + player.getItems().getItemName(reward));
+			player.getActionSender().sendMessage("You need a Fletching level of " + levelRequirement + " to fletch " + player.getItems().getItemName(reward));
 		}
 		player.getActionSender().sendRemoveInterfacePacket();
 	}
@@ -419,7 +419,7 @@ public class Fletching {
 					player.getActionSender().sendRemoveInterfacePacket();
 					if (player.fletchItem > 0)
 						resetFletching(player);
-					player.message("You need a Fletching level of " + bow.getLevelReq() + " to fletch a " + player.getItems().getItemName(bow.getUnstrungCrossbow()));
+					player.getActionSender().sendMessage("You need a Fletching level of " + bow.getLevelReq() + " to fletch a " + player.getItems().getItemName(bow.getUnstrungCrossbow()));
 				}
 			}
 		}
@@ -442,7 +442,7 @@ public class Fletching {
 					player.getActionSender().sendRemoveInterfacePacket();
 					if (player.fletchItem > 0)
 						resetFletching(player);
-					player.message("You need a Fletching level of " + bow.getLevelReq() + " to fletch a "
+					player.getActionSender().sendMessage("You need a Fletching level of " + bow.getLevelReq() + " to fletch a "
 							+ player.getItems().getItemName(bow.getUnstrungCrossbow()));
 				}
 			}
@@ -466,7 +466,7 @@ public class Fletching {
 					player.getActionSender().sendRemoveInterfacePacket();
 					if (player.fletchItem > 0)
 						resetFletching(player);
-					player.message("You need a Fletching level of " + bow.getLevelReq() + " to string a "
+					player.getActionSender().sendMessage("You need a Fletching level of " + bow.getLevelReq() + " to string a "
 							+ player.getItems().getItemName(bow.getStrungBow()));
 				}
 			}
@@ -490,7 +490,7 @@ public class Fletching {
 					player.getActionSender().sendRemoveInterfacePacket();
 					if (player.fletchItem > 0)
 						resetFletching(player);
-					player.message("You need a Fletching level of " + bow.getLevelReq() + " to string a " + player.getItems().getItemName(bow.getCrossbow()));
+					player.getActionSender().sendMessage("You need a Fletching level of " + bow.getLevelReq() + " to string a " + player.getItems().getItemName(bow.getCrossbow()));
 				}
 			}
 		}
@@ -530,7 +530,7 @@ public class Fletching {
 			player.getActionSender().sendRemoveInterfacePacket();
 			if (player.fletchItem > 0)
 				resetFletching(player);
-			player.message(
+			player.getActionSender().sendMessage(
 					"You need a Fletching level of " + levelRequirement + " to fletch a " + player.getItems().getItemName(unstrungBow));
 		}
 		player.getActionSender().sendRemoveInterfacePacket();

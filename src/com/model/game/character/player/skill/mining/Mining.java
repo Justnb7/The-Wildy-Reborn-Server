@@ -40,16 +40,16 @@ public class Mining {
 			return;
 		}
 		if (player.getSkills().getLevel(Skills.MINING) < rock.getLevel()) {
-			player.message("You need a mining level of " + rock.getLevel() + " to mine this.");
+			player.getActionSender().sendMessage("You need a mining level of " + rock.getLevel() + " to mine this.");
 			return;
 		}
 		if (Server.getGlobalObjects().exists(Rock.EMPTY_ROCK, position.getX(), position.getY(), position.getZ())) {
-			player.message("This vein contains no more minerals.");
+			player.getActionSender().sendMessage("This vein contains no more minerals.");
 			return;
 		}
 		Pickaxe pickaxe = Pickaxe.getBestPickaxe(player);
 		if (pickaxe == null) {
-			player.message("You need a pickaxe to mine this vein.");
+			player.getActionSender().sendMessage("You need a pickaxe to mine this vein.");
 			return;
 		}
 		if (player.getItems().freeSlots() == 0) {
@@ -62,7 +62,7 @@ public class Mining {
 		if (extractionTime < MINIMUM_EXTRACTION_TIME) {
 			extractionTime = MINIMUM_EXTRACTION_TIME;
 		}
-		player.message("You swing your pickaxe at the rock.");
+		player.getActionSender().sendMessage("You swing your pickaxe at the rock.");
 		player.playAnimation(pickaxe.getAnimation());
 		player.face(player, new Position(position.getX(), position.getY()));
 		player.getSkillCyclesTask().stop();

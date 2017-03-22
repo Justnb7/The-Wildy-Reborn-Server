@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.NpcDefinition;
 
@@ -53,7 +52,7 @@ public class BossDeathTracker {
 			}
 			
 			tracker.put(b, kills);
-			player.write(new SendMessagePacket("<col=255>You have killed</col> <col=FF0000>" + kills + "</col> <col=255>" + Utility.capitalize(name) + ".</col>"));
+			player.getActionSender().sendMessage("<col=255>You have killed</col> <col=FF0000>" + kills + "</col> <col=255>" + Utility.capitalize(name) + ".</col>");
 		});
 	}
 	

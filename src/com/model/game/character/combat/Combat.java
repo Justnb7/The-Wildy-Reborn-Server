@@ -23,7 +23,6 @@ import com.model.game.character.player.PlayerAssistant;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -114,7 +113,7 @@ public class Combat {
             boolean crystal = wep >= 4212 && wep <= 4223;
             boolean blowp = wep == 12926;
             if (!crystal && !blowp && ammo < 1) {
-                player.write(new SendMessagePacket("There is no ammo left in your quiver."));
+                player.getActionSender().sendMessage("There is no ammo left in your quiver.");
                 player.stopMovement();
                 player.getCombat().reset();
                 return;
@@ -124,27 +123,27 @@ public class Combat {
                     && player.usingBow
                     && !player.getEquipment().usingCrystalBow(player)
                     && !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
-                player.write(new SendMessagePacket("You can't use " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase() + "s with a " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase() + "."));
+                player.getActionSender().sendMessage("You can't use " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase() + "s with a " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase() + ".");
                 player.stopMovement();
                 player.getCombat().reset();
                 return;
             }
             if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
-                player.write(new SendMessagePacket("You must use bolts with a crossbow."));
+                player.getActionSender().sendMessage("You must use bolts with a crossbow.");
                 player.stopMovement();
                 Combat.resetCombat(player);
                 return;
             }
 
             if (player.getEquipment().wearingBallista(player) && !player.getCombat().properJavalins()) {
-                player.write(new SendMessagePacket("You must use javalins with a ballista."));
+                player.getActionSender().sendMessage("You must use javalins with a ballista.");
                 player.stopMovement();
                 Combat.resetCombat(player);
                 return;
             }
 
             if (player.playerEquipment[player.getEquipment().getWeaponId()] == 4734 && !player.getCombat().properBoltRacks()) {
-                player.write(new SendMessagePacket("You must use bolt racks with this bow."));
+                player.getActionSender().sendMessage("You must use bolt racks with this bow.");
                 player.stopMovement();
                 Combat.resetCombat(player);
                 return;
@@ -160,7 +159,7 @@ public class Combat {
                 return;
             }
             if (player.getSpellBook() != SpellBook.MODERN && (player.playerEquipment[player.getEquipment().getWeaponId()] == 2415 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2416 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2417)) {
-                player.message("You must be on the modern spellbook to cast this spell.");
+                player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
                 return;
             }
         }
@@ -443,7 +442,7 @@ public class Combat {
                 target.freeze(spellFreezeTime);
                 if (target.isPlayer()) {
                     ((Player) target).getMovementHandler().resetWalkingQueue();
-                    ((Player) target).write(new SendMessagePacket("You have been frozen."));
+                    ((Player) target).getActionSender().sendMessage("You have been frozen.");
                     ((Player) target).frozenBy = player.getIndex();
                 }
             }
@@ -477,7 +476,7 @@ public class Combat {
                             Player defender = (Player) target;
                             if (defender.teleblock.elapsed(defender.teleblockLength)) {
                                 defender.teleblock.reset();
-                                defender.write(new SendMessagePacket("You have been teleblocked."));
+                                defender.getActionSender().sendMessage("You have been teleblocked.");
                                 defender.putInCombat(1);
                                 if (defender.isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MAGIC))
                                     defender.teleblockLength = 150000;

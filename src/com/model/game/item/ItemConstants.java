@@ -4,7 +4,6 @@ import com.model.game.character.player.EmotesManager;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.account.Account;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.Requirements;
 
@@ -78,7 +77,7 @@ public class ItemConstants {
 		Requirements requirement = Requirements.forId(id.getId());
 		for (int i = 0; i < requirement.getRequirement().length; i++) {
 			if (player.getSkills().getLevelForExperience(i) < requirement.getRequirement()[i]) {
-				player.write(new SendMessagePacket("You need an " + Skills.SKILL_NAME[i] + " level of " + requirement.getRequirement()[i] + " to wear this item."));
+				player.getActionSender().sendMessage("You need an " + Skills.SKILL_NAME[i] + " level of " + requirement.getRequirement()[i] + " to wear this item.");
 				return false;
 			}
 		}
@@ -88,7 +87,7 @@ public class ItemConstants {
          */
 		if (id.getId() == 6570) {
 			if(!player.hasCompletedFightCaves()) {
-				player.message("You need to complete at least once fight cave minigame to use this cape.");
+				player.getActionSender().sendMessage("You need to complete at least once fight cave minigame to use this cape.");
 				return false;
 			}
 		}
@@ -98,7 +97,7 @@ public class ItemConstants {
 		 */
 		if (id.getId() == 12810 || id.getId() == 12811 || id.getId() == 12812) {
 			if (!player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
-				player.message("You need to be an regular Ironman to wear this armour.");
+				player.getActionSender().sendMessage("You need to be an regular Ironman to wear this armour.");
 				return false;
 			}
 		}
@@ -108,7 +107,7 @@ public class ItemConstants {
 		 */
 		if (id.getId() == 12813 || id.getId() == 12814 || id.getId() == 12815) {
 			if (!player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
-				player.message("You need to be an Ultimate Ironman to wear this armour.");
+				player.getActionSender().sendMessage("You need to be an Ultimate Ironman to wear this armour.");
 				return false;
 			}
 		}
@@ -118,7 +117,7 @@ public class ItemConstants {
 		 */
 		if (id.getId() == 20792 || id.getId() == 20793 || id.getId() == 20794) {
 			if (!player.getAccount().getType().equals(Account.IRON_MAN_TYPE)) {
-				player.message("You need to be an Hardcore Ironman to wear this armour.");
+				player.getActionSender().sendMessage("You need to be an Hardcore Ironman to wear this armour.");
 				return false;
 			}
 		}
@@ -133,12 +132,12 @@ public class ItemConstants {
         /**
          * Fire cape && tokhaar-kal
          */
-		/*if (id.getId() == 6570 || id.getId() == 23659) {
+		if (id.getId() == 6570 || id.getId() == 23659) {
 			if(!player.hasCompletedFightCaves()) {
-				player.write(new SendMessagePacket("You need to complete at least once fight cave minigame to use this cape."));
+				player.getActionSender().sendMessage("You need to complete at least once fight cave minigame to use this cape.");
 				return false;
 			}
-		}*/
+		}
 		return true;
 	}
 	

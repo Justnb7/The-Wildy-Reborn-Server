@@ -1,8 +1,15 @@
 package com.model.game.character.npc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
+
 import com.model.Server;
 import com.model.game.World;
-import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
@@ -17,10 +24,6 @@ import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.NpcDefinition;
-
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 
 public class NPC extends Entity {
 
@@ -759,7 +762,8 @@ public class NPC extends Entity {
 	
 	@Override
 	public Position getCentreLocation() {
-		if (this.getWidth() == 1 && this.getHeight() == 1) return this.getPosition();
+		if (this.getWidth() == 1 && this.getHeight() == 1) 
+			return this.getPosition();
 		return Position.create(getPosition().getX() + getWidth() / 2, getPosition().getY() + getHeight() / 2, getPosition().getZ());
 	}
 	

@@ -6,7 +6,6 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 
 /**
  * Attack Player
@@ -64,7 +63,7 @@ public class AttackPlayer implements PacketType {
 			}
 			
 			if (!player.teleblock.elapsed(player.teleblockLength) && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
-				player.write(new SendMessagePacket("That player is already affected by this spell."));
+				player.getActionSender().sendMessage("That player is already affected by this spell.");
 				player.usingMagic = false;
 				player.stopMovement();
 				Combat.resetCombat(player);

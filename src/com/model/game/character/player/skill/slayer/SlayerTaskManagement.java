@@ -8,7 +8,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.slayer.tasks.Nieve;
 import com.model.game.character.player.skill.slayer.tasks.Task;
 import com.model.game.character.player.skill.slayer.tasks.Turael;
@@ -153,7 +152,7 @@ public class SlayerTaskManagement {
 		 */
 		public static void teleport(Player player) {
 			if(!player.canTeleportToSlayerTask()) {
-				player.write(new SendMessagePacket("You have yet to learn this ability."));
+				player.getActionSender().sendMessage("You have yet to learn this ability.");
 				return;
 			}
 			
@@ -161,9 +160,9 @@ public class SlayerTaskManagement {
 				for(Teleports teleTo : Teleports.values()) {
 					if(player.getSlayerTask() == teleTo.getTask()) {
 						TeleportExecutor.teleport(player, teleTo.getLocation());
-						player.write(new SendMessagePacket("You've teleported to the "+teleTo.getName()+", you have yet to kill "+player.getSlayerTaskAmount()+ " more."));
+						player.getActionSender().sendMessage("You've teleported to the "+teleTo.getName()+", you have yet to kill "+player.getSlayerTaskAmount()+ " more.");
 					} else {
-						player.write(new SendMessagePacket("You have no slayer task to teleport to."));
+						player.getActionSender().sendMessage("You have no slayer task to teleport to.");
 					}
 					break;
 				}
@@ -186,10 +185,10 @@ public class SlayerTaskManagement {
 			player.setSlayerTaskAmount(0);
 			player.getItems().deleteItem(13307, 10);
 			player.getActionSender().sendRemoveInterfacePacket();
-			player.write(new SendMessagePacket("Your slayer task has been reset, talk to any slayer master for a new one."));
+			player.getActionSender().sendMessage("Your slayer task has been reset, talk to any slayer master for a new one.");
 			return true;
 		} else {
-			player.write(new SendMessagePacket("You do not have enough blood money in order to reset your slayer task."));
+			player.getActionSender().sendMessage("You do not have enough blood money in order to reset your slayer task.");
 			player.getActionSender().sendRemoveInterfacePacket();
 			return false;
 		}
@@ -340,15 +339,15 @@ public class SlayerTaskManagement {
 			if (player.getSlayerTask() == npc.npcId) {
 				player.setSlayerTaskAmount(player.getSlayerTaskAmount() - 1);
 				player.getSkills().addExperience(Skills.SLAYER, npc.maximumHealth);
-				//player.write(new SendMessagePacket("Slayertask: "+Npc.getName(npc.npcId)+ " left: "+player.getSlayerTaskAmount()));
+				//player.getActionSender().sendMessage("Slayertask: "+Npc.getName(npc.npcId)+ " left: "+player.getSlayerTaskAmount()));
 				player.getActionSender().sendString("<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 29511);
 			}
 			
 			//Kills left messages
 			if(player.getSlayerTaskAmount() == 25) {
-				player.write(new SendMessagePacket("You still have to kill 25 more "+NPC.getName(npc.npcId)));
+				player.getActionSender().sendMessage("You still have to kill 25 more "+NPC.getName(npc.npcId));
 			} else if(player.getSlayerTaskAmount() == 10) {
-				player.write(new SendMessagePacket("You still have to kill 10 more "+NPC.getName(npc.npcId)));
+				player.getActionSender().sendMessage("You still have to kill 10 more "+NPC.getName(npc.npcId));
 			}
 			
 			// The player has completed their task, we can go ahead and reward them.
@@ -364,22 +363,22 @@ public class SlayerTaskManagement {
 				 * Beginner task (Turael).
 				 */
 				if (player.getSlayerTaskDifficulty() == 0) {
-					player.write(new SendMessagePacket("You have completed your slayer assignment. You don't gain any slayer"));
-					player.write(new SendMessagePacket("points for completing a task with Turael. Go back and speak to Turael"));
-					player.write(new SendMessagePacket("to get a new assignment."));
+					player.getActionSender().sendMessage("You have completed your slayer assignment. You don't gain any slayer");
+					player.getActionSender().sendMessage("points for completing a task with Turael. Go back and speak to Turael");
+					player.getActionSender().sendMessage("to get a new assignment.");
 
 					/**
 					 * Easy task (Mazchna).
 					 */
 				} else if (player.getSlayerTaskDifficulty() == 1) {
 					if (Constants.SLAYER_REWARDS) {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. Double Slayer points is active"));
-						player.write(new SendMessagePacket("meaining you get @blu@4@bla@ Slayer Points. Please speak to a Slayer Master"));
-						player.write(new SendMessagePacket("to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. Double Slayer points is active");
+						player.getActionSender().sendMessage("meaining you get @blu@4@bla@ Slayer Points. Please speak to a Slayer Master");
+						player.getActionSender().sendMessage("to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 4);
 					} else {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. You gain @blu@2@bla@ Slayer Points!"));
-						player.write(new SendMessagePacket("Please speak to a Slayer Master to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. You gain @blu@2@bla@ Slayer Points!");
+						player.getActionSender().sendMessage("Please speak to a Slayer Master to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 2);
 					}
 
@@ -388,13 +387,13 @@ public class SlayerTaskManagement {
 					 */
 				} else if (player.getSlayerTaskDifficulty() == 2) {
 					if (Constants.SLAYER_REWARDS) {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. Double Slayer points is active"));
-						player.write(new SendMessagePacket("meaining you get @blu@8@bla@ Slayer Points. Please speak to a Slayer Master"));
-						player.write(new SendMessagePacket("to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. Double Slayer points is active");
+						player.getActionSender().sendMessage("meaining you get @blu@8@bla@ Slayer Points. Please speak to a Slayer Master");
+						player.getActionSender().sendMessage("to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 8);
 					} else {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. You gain @blu@4@bla@ Slayer Points!"));
-						player.write(new SendMessagePacket("Please speak to a Slayer Master to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. You gain @blu@4@bla@ Slayer Points!");
+						player.getActionSender().sendMessage("Please speak to a Slayer Master to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 4);
 					}
 					/**
@@ -402,13 +401,13 @@ public class SlayerTaskManagement {
 					 */
 				} else if (player.getSlayerTaskDifficulty() == 3) {
 					if (Constants.SLAYER_REWARDS) {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. Double Slayer points is active"));
-						player.write(new SendMessagePacket("meaining you get @blu@12@bla@ Slayer Points. Please speak to a Slayer Master"));
-						player.write(new SendMessagePacket("to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. Double Slayer points is active");
+						player.getActionSender().sendMessage("meaining you get @blu@12@bla@ Slayer Points. Please speak to a Slayer Master");
+						player.getActionSender().sendMessage("to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 12);
 					} else {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. You gain @blu@6@bla@ Slayer Points!"));
-						player.write(new SendMessagePacket("Please speak to a Slayer Master to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. You gain @blu@6@bla@ Slayer Points!");
+						player.getActionSender().sendMessage("Please speak to a Slayer Master to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 6);
 					}
 
@@ -417,13 +416,13 @@ public class SlayerTaskManagement {
 					 */
 				} else if (player.getSlayerTaskDifficulty() == 4) {
 					if (Constants.SLAYER_REWARDS) {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. Double Slayer points is active"));
-						player.write(new SendMessagePacket("meaining you get @blu@16@bla@ Slayer Points. Please speak to a Slayer Master"));
-						player.write(new SendMessagePacket("to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. Double Slayer points is active");
+						player.getActionSender().sendMessage("meaining you get @blu@16@bla@ Slayer Points. Please speak to a Slayer Master");
+						player.getActionSender().sendMessage("to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 16);
 					} else {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. You gain @blu@8@bla@ Slayer Points!"));
-						player.write(new SendMessagePacket("Please speak to a Slayer Master to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. You gain @blu@8@bla@ Slayer Points!");
+						player.getActionSender().sendMessage("Please speak to a Slayer Master to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 8);
 					}
 
@@ -432,13 +431,13 @@ public class SlayerTaskManagement {
 					 */
 				} else if (player.getSlayerTaskDifficulty() == 5) {
 					if (Constants.SLAYER_REWARDS) {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. Double Slayer points is active"));
-						player.write(new SendMessagePacket("meaining you get @blu@20@bla@ Slayer Points. Please speak to a Slayer Master"));
-						player.write(new SendMessagePacket("to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. Double Slayer points is active");
+						player.getActionSender().sendMessage("meaining you get @blu@20@bla@ Slayer Points. Please speak to a Slayer Master");
+						player.getActionSender().sendMessage("to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 20);
 					} else {
-						player.write(new SendMessagePacket("You have completed your slayer assignment. You gain @blu@10@bla@ Slayer Points!"));
-						player.write(new SendMessagePacket("Please speak to a Slayer Master to retrieve an another assignment."));
+						player.getActionSender().sendMessage("You have completed your slayer assignment. You gain @blu@10@bla@ Slayer Points!");
+						player.getActionSender().sendMessage("Please speak to a Slayer Master to retrieve an another assignment.");
 						player.setSlayerPoints(player.getSlayerPoints() + 10);
 					}
 				}

@@ -9,7 +9,6 @@ import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.account.Account;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem.State;
 import com.model.game.location.Position;
@@ -191,7 +190,7 @@ public final class GroundItemHandler {
 						if (owner != null) {
 							if (owner.deathShopEnabled) {
 								owner.deathShop.getContainer().add(item.getItem());
-								owner.write(new SendMessagePacket("The " + item.getItem().getDefinition().getName() + "x" + item.getItem().getAmount() + " is now in your death store!"));
+								owner.getActionSender().sendMessage("The " + item.getItem().getDefinition().getName() + "x" + item.getItem().getAmount() + " is now in your death store!");
 							}
 						}
 					}
@@ -288,7 +287,7 @@ public final class GroundItemHandler {
 		}
 		
 		if (groundItem.getItem().getId() >= 2412 && groundItem.getItem().getId() <= 2414) {
-			player.write(new SendMessagePacket("The cape vanishes as it touches the ground."));
+			player.getActionSender().sendMessage("The cape vanishes as it touches the ground.");
 			return false;
 		}
 
@@ -302,7 +301,7 @@ public final class GroundItemHandler {
 
 					if (existing == -1) {
 						if (player != null) {
-							player.write(new SendMessagePacket("There is not enough room for your item on this tile."));
+							player.getActionSender().sendMessage("There is not enough room for your item on this tile.");
 						}
 						return false;
 					}
@@ -362,7 +361,7 @@ public final class GroundItemHandler {
 
 					if (player.getItems().freeSlots() == 0
 							&& !(player.getItems().playerHasItem(item.getId()) && item.getDefinition().isStackable())) {
-						player.write(new SendMessagePacket("You do not have enough inventory space to pick that up."));
+						player.getActionSender().sendMessage("You do not have enough inventory space to pick that up.");
 						stop();
 						return;
 					}

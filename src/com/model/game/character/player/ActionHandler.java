@@ -14,7 +14,6 @@ import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.skill.agility.Shortcut;
 import com.model.game.character.player.skill.fishing.Fishing;
@@ -43,7 +42,7 @@ public class ActionHandler {
 		ObjectDefinition def = ObjectDefinition.getObjectDef(id);
 		final Position loc = Position.create(x, y, player.heightLevel);
 		if (player.inDebugMode()) {
-			player.write(new SendMessagePacket("[Debug] First click object - ObjectId: [@red@" + id + "@bla@] objectX:[@red@" + x + "@bla@]@bla@] objectY:[@red@" + y + "@bla@]"));
+			player.getActionSender().sendMessage("[Debug] First click object - ObjectId: [@red@" + id + "@bla@] objectX:[@red@" + x + "@bla@]@bla@] objectY:[@red@" + y + "@bla@]");
 		}
 
 		player.clickObjectType = 0;
@@ -87,7 +86,7 @@ public class ActionHandler {
 				CrystalChest.searchChest(player, x, y);
 				return;
 			} else {
-				player.write(new SendMessagePacket("You need a key to open this chest."));
+				player.getActionSender().sendMessage("You need a key to open this chest.");
 			}
 			break;
 		
@@ -165,7 +164,7 @@ public class ActionHandler {
 		 */
 		case 11833:
 			if (Boundary.entitiesInArea(Boundary.FIGHT_CAVE) >= 50) {
-				player.message("There are too many people using the fight caves at the moment. Please try again later");
+				player.getActionSender().sendMessage("There are too many people using the fight caves at the moment. Please try again later");
 				return;
 			}
 			player.getFightCave().enterFightCaves();
@@ -246,24 +245,24 @@ public class ActionHandler {
 				return;
 			}
 			if (player.onAuto) {
-				player.write(new SendMessagePacket("You can't switch spellbooks with Autocast enabled."));
+				player.getActionSender().sendMessage("You can't switch spellbooks with Autocast enabled.");
 				return;
 			}
 			switch (player.getSpellBook()) {
 			case MODERN:
 				player.setSpellBook(SpellBook.ANCIENT);
 				player.write(new SendSidebarInterfacePacket(6, 12855));
-				player.write(new SendMessagePacket("An ancient wisdom fills your mind."));
+				player.getActionSender().sendMessage("An ancient wisdom fills your mind.");
 				break;
 			case ANCIENT:
 				player.setSpellBook(SpellBook.LUNAR);
 				player.write(new SendSidebarInterfacePacket(6, 29999));
-				player.write(new SendMessagePacket("The power of the moon overpowers you."));
+				player.getActionSender().sendMessage("The power of the moon overpowers you.");
 				break;
 			case LUNAR:
 				player.setSpellBook(SpellBook.MODERN);
 				player.write(new SendSidebarInterfacePacket(6, 1151));
-				player.write(new SendMessagePacket("You feel a drain on your memory."));
+				player.getActionSender().sendMessage("You feel a drain on your memory.");
 				break;
 			}
 			player.autocastId = -1;
@@ -496,24 +495,24 @@ public class ActionHandler {
 		 */
 		case 6552:
 			if (player.onAuto) {
-				player.write(new SendMessagePacket("You can't switch spellbooks with Autocast enabled."));
+				player.getActionSender().sendMessage("You can't switch spellbooks with Autocast enabled.");
 				return;
 			}
 			switch (player.getSpellBook()) {
 			case MODERN:
 				player.setSpellBook(SpellBook.ANCIENT);
 				player.write(new SendSidebarInterfacePacket(6, 12855));
-				player.write(new SendMessagePacket("An ancient wisdom fills your mind."));
+				player.getActionSender().sendMessage("An ancient wisdom fills your mind.");
 				break;
 			case ANCIENT:
 				player.setSpellBook(SpellBook.LUNAR);
 				player.write(new SendSidebarInterfacePacket(6, 29999));
-				player.write(new SendMessagePacket("The power of the moon overpowers you."));
+				player.getActionSender().sendMessage("The power of the moon overpowers you.");
 				break;
 			case LUNAR:
 				player.setSpellBook(SpellBook.MODERN);
 				player.write(new SendSidebarInterfacePacket(6, 1151));
-				player.write(new SendMessagePacket("You feel a drain on your memory."));
+				player.getActionSender().sendMessage("You feel a drain on your memory.");
 				break;
 			}
 			player.autocastId = -1;
@@ -603,7 +602,7 @@ public class ActionHandler {
 
 	public void secondClickObject(int id, int x, int y) {
 		if (player.inDebugMode()) {
-			player.write(new SendMessagePacket("[Debug] Second click object - ObjectId: [@red@" + id+"@bla@]"));
+			player.getActionSender().sendMessage("[Debug] Second click object - ObjectId: [@red@" + id+"@bla@]");
 		}
 		if (player.isTeleporting()) {
 			return;
@@ -661,7 +660,7 @@ public class ActionHandler {
 
 	public void thirdClickObject(int objectType, int obX, int obY) {
 		if (player.inDebugMode()) {
-			player.write(new SendMessagePacket("[Debug] Third click object - ObjectId: [@red@" + objectType+"@bla@]"));
+			player.getActionSender().sendMessage("[Debug] Third click object - ObjectId: [@red@" + objectType+"@bla@]");
 		}
 		player.clickObjectType = 0;
 
@@ -675,7 +674,7 @@ public class ActionHandler {
 		player.clickNpcType = 0;
 		
 		if (player.inDebugMode()) {
-			player.write(new SendMessagePacket("First click "+npc.npcId));
+			player.getActionSender().sendMessage("First click "+npc.npcId);
 		}
 		
 		if (FishingSpot.fishingNPC(npc.npcId)) {
@@ -734,8 +733,8 @@ public class ActionHandler {
 
 		case 5362:
 			Shop.SHOPS.get("Vote Rewards Shop").openShop(player);
-			player.write(new SendMessagePacket("You currently have @blu@" + player.getVotePoints()
-					+ "@bla@ vote points, and @blu@" + player.getTotalVotes() + "@bla@ total votes."));
+			player.getActionSender().sendMessage("You currently have @blu@" + player.getVotePoints()
+					+ "@bla@ vote points, and @blu@" + player.getTotalVotes() + "@bla@ total votes.");
 			break;
 
 		case 4058:
@@ -764,9 +763,9 @@ public class ActionHandler {
 
 		case 3951:
 			Shop.SHOPS.get("Gear Point Store").openShop(player);
-			player.write(new SendMessagePacket("@red@Gear points@bla@ refill to @blu@2500@bla@ every 5 minutes."));
-			player.write(new SendMessagePacket(
-					"@blu@Did you know, you can type ::food, ::veng, ::barrage, and ::pots, to spawn them?"));
+			player.getActionSender().sendMessage("@red@Gear points@bla@ refill to @blu@2500@bla@ every 5 minutes.");
+			player.getActionSender().sendMessage(
+					"@blu@Did you know, you can type ::food, ::veng, ::barrage, and ::pots, to spawn them?");
 			break;
 
 		case 508:
@@ -821,7 +820,7 @@ public class ActionHandler {
 		player.clickNpcType = 0;
 		
 		if (player.inDebugMode()) {
-			player.message("Second click: "+npc.npcId);
+			player.getActionSender().sendMessage("Second click: "+npc.npcId);
 		}
 		
 		if (Pet.pickup(player, npc)) {
@@ -870,7 +869,7 @@ public class ActionHandler {
 			case 7007:
 			case 539:
 				Shop.SHOPS.get("Vote Rewards Shop.").openShop(player);
-				player.write(new SendMessagePacket("You currently have @blu@" + player.getVotePoints() + "@bla@ vote points, and @blu@" + player.getTotalVotes() + "@bla@ total votes."));
+				player.getActionSender().sendMessage("You currently have @blu@" + player.getVotePoints() + "@bla@ vote points, and @blu@" + player.getTotalVotes() + "@bla@ total votes.");
 				break;
 
 			case 7008:
@@ -963,7 +962,7 @@ public class ActionHandler {
 		player.clickNpcType = 0;
 		
 		if (player.inDebugMode()) {
-			player.message("Third click: "+npc.npcId);
+			player.getActionSender().sendMessage("Third click: "+npc.npcId);
 		}
 		
 		switch (npc.npcId) {
@@ -1026,7 +1025,7 @@ public class ActionHandler {
 		player.clickNpcType = 0;
 		
 		if (player.inDebugMode()) {
-			player.message("Fourth click: "+npc.npcId);
+			player.getActionSender().sendMessage("Fourth click: "+npc.npcId);
 		}
 
 		switch (npc.npcId) {
@@ -1066,9 +1065,9 @@ public class ActionHandler {
 		player.playAnimation(Animation.create(451));
 		if (Utility.getRandom(2) == 0) {
 			player.getPA().removeWeb(objectX, objectY);
-			player.write(new SendMessagePacket("You slash through the web!"));
+			player.getActionSender().sendMessage("You slash through the web!");
 		} else
-			player.write(new SendMessagePacket("You fail to cut through the web."));
+			player.getActionSender().sendMessage("You fail to cut through the web.");
 	}
 
 }

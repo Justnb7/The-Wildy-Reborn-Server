@@ -3,7 +3,6 @@ package com.model.game.character.player.skill.cooking;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendMessagePacket;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -75,18 +74,18 @@ public class Cooking extends SkillTask {
 			return false;
 		}
 		if (player.getSkills().getLevel(Skills.COOKING) < cookable.getLvl()) {
-			player.message("You need a cooking level of " + cookable.getLvl() + " to cook this food.");
+			player.getActionSender().sendMessage("You need a cooking level of " + cookable.getLvl() + " to cook this food.");
 			return false;
 		}
 		if (!player.getItems().playerHasItem(cookable.getRawItem(), 1)) {
-			player.write(new SendMessagePacket("You have ran out of food to cook"));
+			player.getActionSender().sendMessage("You have ran out of food to cook");
 			return false;
 		}
 		if (cookable.isStoveOrRangeOnly()) {
 			if (objectDef.name.contains("stove") || objectDef.name.contains("range") || objectDef.name.contains("Cooking range")) {
 				return true;
 			} else {
-				player.message("You may only cook this on a stove or cooking range.");
+				player.getActionSender().sendMessage("You may only cook this on a stove or cooking range.");
 				return false;
 			}
 		}
@@ -121,21 +120,21 @@ public class Cooking extends SkillTask {
 			return;
 		}
 		if (!getPlayer().getItems().playerHasItem(cookables.getRawItem(), 1)) {
-			getPlayer().message("You have run out of food to cook.");
+			getPlayer().getActionSender().sendMessage("You have run out of food to cook.");
 			stop();
 			return;
 		}
-		getPlayer().write(new SendMessagePacket("You attempt to cook the " + ItemDefinition.forId(cookables.getProduct()).getName().toLowerCase() + "."));
+		getPlayer().getActionSender().sendMessage("You attempt to cook the " + ItemDefinition.forId(cookables.getProduct()).getName().toLowerCase() + ".");
 		getPlayer().playAnimation(Animation.create(896));
 		
 		if ((getPlayer().getSkills().getLevel(Skills.COOKING) >= cookables.getBurningLvl()) ? false : burned(cookables, getPlayer())) {
 			getPlayer().getItems().deleteItem(cookables.getRawItem(), 1);
 			getPlayer().getItems().addItem(cookables.getBurntId(), 1);
-			getPlayer().write(new SendMessagePacket("Oops.. you have accidentally burnt a " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + ""));
+			getPlayer().getActionSender().sendMessage("Oops.. you have accidentally burnt a " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + "");
 		} else {
 			getPlayer().getItems().deleteItem(cookables.getRawItem(), 1);
 			getPlayer().getItems().addItem(cookables.getProduct(), 1);
-			getPlayer().write(new SendMessagePacket("You successfully cook the " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + "."));
+			getPlayer().getActionSender().sendMessage("You successfully cook the " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + ".");
 			getPlayer().getSkills().addExperience(Skills.COOKING, cookables.getXp());
 		}
 	}

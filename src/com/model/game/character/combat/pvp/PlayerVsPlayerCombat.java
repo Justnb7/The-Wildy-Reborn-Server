@@ -56,24 +56,24 @@ public class PlayerVsPlayerCombat {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (!Objects.isNull(session)) {
 				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatStyle.RANGE)) {
-					player.message("<col=CC0000>Range has been disabled in this duel!");
+					player.getActionSender().sendMessage("<col=CC0000>Range has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
 				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatStyle.RANGE && !player.usingMagic)) {
-					player.message("<col=CC0000>Melee has been disabled in this duel!");
+					player.getActionSender().sendMessage("<col=CC0000>Melee has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
 				if (session.getRules().contains(Rule.NO_MAGE) && player.usingMagic) {
-					player.message("<col=CC0000>Magic has been disabled in this duel!");
+					player.getActionSender().sendMessage("<col=CC0000>Magic has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
 				if (session.getRules().contains(Rule.WHIP_AND_DDS)) {
 					String weaponName = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase();
 					if (!weaponName.contains("whip") && !weaponName.contains("dragon dagger") || weaponName.contains("tentacle")) {
-						player.message("<col=CC0000>You can only use a whip and dragon dagger in this duel.");
+						player.getActionSender().sendMessage("<col=CC0000>You can only use a whip and dragon dagger in this duel.");
 						Combat.resetCombat(player);
 						return false;
 					}

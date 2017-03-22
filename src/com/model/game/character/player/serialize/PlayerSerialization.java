@@ -959,24 +959,24 @@ public class PlayerSerialization {
 	// Runs File IO on a seperate thread so the gameserver is unaffected by lag/filesystem load speed.
 	public static void change_offline_password(Player wants_feedback, String forname, String newpass) {
 		if (BUSY_PROFILES.contains(forname)) {
-			wants_feedback.message(forname+"'s profile is in use, maybe they just logged in/out 1s ago");
+			wants_feedback.getActionSender().sendMessage(forname+"'s profile is in use, maybe they just logged in/out 1s ago");
 		} else {
 			BUSY_PROFILES.add(forname);
 			PlayerSerialization.executor.submit(new Runnable() {
 
 				@Override
 				public void run() {
-					wants_feedback.message("Loading profile of "+forname+"...");
+					wants_feedback.getActionSender().sendMessage("Loading profile of "+forname+"...");
 					// load, replace pw, save -> since this is on a diff thread
 					// we can be lasy a load the full profile instead of just the pw
 					Player target = new Player(forname);
 					PlayerSerialization.loadGame(target, forname, "", true);
-					wants_feedback.message("Loaded profile of "+forname+", now changing pw and saving...");
+					wants_feedback.getActionSender().sendMessage("Loaded profile of "+forname+", now changing pw and saving...");
 					target.setPassword("");
 					target.passHash = Utility.md5Hash(newpass);
 					writeData(target); // Write new data. SaveProfile(player) requires them to be online
 					BUSY_PROFILES.remove(forname);
-					wants_feedback.message("Profile of "+forname+" password updated to "+newpass);
+					wants_feedback.getActionSender().sendMessage("Profile of "+forname+" password updated to "+newpass);
 				}
 				
 			});

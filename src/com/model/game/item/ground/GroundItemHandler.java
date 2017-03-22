@@ -100,8 +100,7 @@ public final class GroundItemHandler {
 				continue;
 			}
 
-			player.getActionSender().removeGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
-					groundItem.getPosition().getY(), player.getZ());
+			player.getActionSender().sendRemoveGroundItem(groundItem);
 		}
 	}
 
@@ -135,39 +134,11 @@ public final class GroundItemHandler {
 				// online.
 				if (player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) <= 60
 						&& player.getPosition().getZ() == player.getPosition().getZ()) {
-					player.getActionSender().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
-							groundItem.getPosition().getY(), player.getZ(), groundItem.getItem().getAmount());
+					player.getActionSender().sendGroundItem(groundItem);
 				}
 			}
 		}
-
 	}
-
-	/*public static void pulse() {
-		Iterator<GroundItem> iterator = groundItems.iterator();
-		while (iterator.hasNext()) {
-			GroundItem item = iterator.next();
-
-			if (item.isRemoved()) {
-				iterator.remove();
-				continue;
-			}
-			
-			
-			if (item.decreaseTimer() < 1) {
-				if (item.getState() == State.GLOBAL) {
-					item.setRemoved(true);
-					iterator.remove();
-					removeRegionalItem(item);
-				}
-				if (item.getState() == State.PRIVATE) {
-					item.setState(State.GLOBAL);
-					item.setTimer(400);
-					addRegionalItem(item);
-				}
-			}
-		}
-	}*/
 	
 	public static void pulse() {
 		Iterator<GroundItem> iterator = groundItems.iterator();
@@ -254,10 +225,8 @@ public final class GroundItemHandler {
 				
 				if (groundItem.getState() == State.GLOBAL || groundItem.getOwnerHash() == player.usernameHash) {
 					//System.out.println(player.getLocation() + " : " + groundItem.getLocation());
-					player.getActionSender().removeGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
-							groundItem.getPosition().getY(), player.getZ());
-					player.getActionSender().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
-							groundItem.getPosition().getY(), player.getZ(), groundItem.getItem().getAmount());
+					player.getActionSender().sendRemoveGroundItem(groundItem);
+					player.getActionSender().sendGroundItem(groundItem);
 				}
 			}
 		}
@@ -318,8 +287,7 @@ public final class GroundItemHandler {
 		if (add(groundItem)) {
 			groundItem.setTimer(groundItem.getState() == State.GLOBAL ? 200 : 100);
 			if (player != null) {
-				player.getActionSender().createGroundItem(groundItem.getItem().getId(), groundItem.getPosition().getX(),
-                        groundItem.getPosition().getY(), player.getPosition().getZ(), groundItem.getItem().getAmount());
+				player.getActionSender().sendGroundItem(groundItem);
 				//System.out.println("Grounditem height: "+player.getLocation().getH());
 			}
 			if (groundItem.getState() == State.GLOBAL) {
@@ -330,7 +298,7 @@ public final class GroundItemHandler {
 		return true;
 	}
 
-	public static void pickup(Player player, int id, Position position/*int x, int y, int z*/) {
+	public static void pickup(Player player, int id, Position position) {
 		Optional<GroundItem> optionalGroundItem = get(id, position);
 		if (!optionalGroundItem.isPresent()) {
 			return;

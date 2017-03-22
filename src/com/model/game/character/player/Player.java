@@ -3158,4 +3158,17 @@ public class Player extends Entity {
 	public WarriorsGuild getWarriorsGuild() {
 		return warriorsGuild;
 	}
+	
+	/**
+	 * The progress bar.
+	 */
+	private int progressBar;
+
+	public int getProgressBar() {
+		return progressBar;
+	}
+
+	public void setProgressBar(int progressBar) {
+		this.progressBar = progressBar;
+	}
 }

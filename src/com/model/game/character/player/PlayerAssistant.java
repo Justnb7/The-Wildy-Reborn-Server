@@ -38,56 +38,6 @@ public class PlayerAssistant {
         player.teleportToY = y;
         requestUpdates();
     }
-
-    /**
-     * Objects, add and remove
-     */
-    public void object(int objectId, int objectX, int objectY, int face, int objectType) {
-        Region.addWorldObject(objectId, objectX, objectY, player.heightLevel);
-        if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(85);
-            player.getOutStream().writeByteC(objectY - (player.getMapRegionY() * 8));
-            player.getOutStream().writeByteC(objectX - (player.getMapRegionX() * 8));
-            player.getOutStream().writeFrame(101);
-            player.getOutStream().writeByteC((objectType << 2) + (face & 3));
-            player.getOutStream().writeByte(0);
-
-            if (objectId != -1) { // removing
-                player.getOutStream().writeFrame(151);
-                player.getOutStream().writeByteS(0);
-                player.getOutStream().writeWordBigEndian(objectId);
-                player.getOutStream().writeByteS((objectType << 2) + (face & 3));
-            }
-        }
-    }
-
-    public void checkObjectSpawn(int objectId, int objectX, int objectY, int face, int objectType) {
-        Region.addWorldObject(objectId, objectX, objectY, player.heightLevel);
-        if (player.distanceToPoint(objectX, objectY) > 60) {
-            return;
-        }
-        if (objectId == 1596) {
-            CollisionMap.setFlag(0, objectX, objectY, 0);
-            CollisionMap.setFlag(0, objectX + 1, objectY, 0);
-            CollisionMap.setFlag(0, objectX, objectY + 1, 0);
-            CollisionMap.setFlag(0, objectX - 1, objectY, 0);
-            CollisionMap.setFlag(0, objectX, objectY - 1, 0);
-        }
-        if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(85);
-            player.getOutStream().writeByteC(objectY - (player.getMapRegionY() * 8));
-            player.getOutStream().writeByteC(objectX - (player.getMapRegionX() * 8));
-            player.getOutStream().writeFrame(101);
-            player.getOutStream().writeByteC((objectType << 2) + (face & 3));
-            player.getOutStream().writeByte(0);
-            if (objectId != -1) { // removing
-                player.getOutStream().writeFrame(151);
-                player.getOutStream().writeByteS(0);
-                player.getOutStream().writeWordBigEndian(objectId);
-                player.getOutStream().writeByteS((objectType << 2) + (face & 3));
-            }
-        }
-    }
         
     public void resetTb() {
         player.teleblockLength = 0;
@@ -339,39 +289,6 @@ public class PlayerAssistant {
     public void requestUpdates() {
         player.updateRequired = true;
         player.appearanceUpdateRequired = true;
-    }
-    
-    public void removeWeb(int x, int y) {
-        if (player.getX() == 3105 && player.getY() == 3959) {
-            object(-1, x, y, 2, 10);
-            return;
-        }
-        if (player.getX() == 3105 && player.getY() == 3959) {
-            object(-1, x, y, 2, 10);
-            return;
-        }
-        if (player.getX() == 3106 && player.getY() == 3957) {
-            object(-1, x, y, 2, 10);
-            return;
-        }
-        if (player.getX() == 3105 && player.getY() == 3957) {
-            object(-1, x, y, 2, 10);
-            return;
-        }
-
-        if (player.getX() == 3158 && player.getY() == 3952) {
-            object(734, x, y, 1, 10);
-            return;
-        }
-        if (player.getX() == 3158 && player.getY() == 3950) {
-            object(734, x, y, 1, 10);
-            return;
-        }
-        if (player.getX() == 3093 && player.getY() == 3957) {
-            object(734, x, y, 2, 0);
-            return;
-        }
-        object(734, x, y, 0, 0);
     }
 
     public void useOperate(int itemId) {

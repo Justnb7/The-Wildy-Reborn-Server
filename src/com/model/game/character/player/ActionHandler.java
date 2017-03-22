@@ -24,6 +24,8 @@ import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.character.player.skill.woodcutting.Tree;
 import com.model.game.character.player.skill.woodcutting.Woodcutting;
 import com.model.game.location.Position;
+import com.model.game.object.GlobalObject;
+import com.model.game.object.SlashWebObject;
 import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -40,7 +42,7 @@ public class ActionHandler {
 	public void firstClickObject(int id, int x, int y) {
 
 		ObjectDefinition def = ObjectDefinition.getObjectDef(id);
-		final Position loc = Position.create(x, y, player.heightLevel);
+		final Position position = Position.create(x, y, player.heightLevel);
 		if (player.inDebugMode()) {
 			player.getActionSender().sendMessage("[Debug] First click object - ObjectId: [@red@" + id + "@bla@] objectX:[@red@" + x + "@bla@]@bla@] objectY:[@red@" + y + "@bla@]");
 		}
@@ -73,7 +75,7 @@ public class ActionHandler {
 			return;
 		}
 		if (def.getName().toLowerCase().contains("altar") && def.actions[0].toLowerCase().contains("pray")) {
-			player.getSkills().getPrayer().prayAltar(loc);
+			player.getSkills().getPrayer().prayAltar(position);
 			return;
 		}
 		switch (def.name.toLowerCase()) {
@@ -475,7 +477,9 @@ public class ActionHandler {
 		 * Webs
 		 */
 		case 733:
-			slashWeb(player, x, y);
+			//SlashWebObject.slashWeb(player, new Position(x, y), false);
+			//We need to find out how to replace the object, currently just adds object on top of one.
+			//TODO find out how to send object position
 			break;
 
 		/**
@@ -1059,15 +1063,6 @@ public class ActionHandler {
 			break;
 
 		}
-	}
-	
-	private static void slashWeb(Player player, int objectX, int objectY) {
-		player.playAnimation(Animation.create(451));
-		if (Utility.getRandom(2) == 0) {
-			player.getPA().removeWeb(objectX, objectY);
-			player.getActionSender().sendMessage("You slash through the web!");
-		} else
-			player.getActionSender().sendMessage("You fail to cut through the web.");
 	}
 
 }

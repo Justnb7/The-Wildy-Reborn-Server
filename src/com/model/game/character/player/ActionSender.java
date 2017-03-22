@@ -1,13 +1,18 @@
 package com.model.game.character.player;
 
 import com.model.game.character.combat.magic.SpellBook;
+import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
+import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.item.Item;
+import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Position;
+import com.model.game.object.GlobalObject;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
+import com.model.utility.cache.map.Region;
 
 /**
  * A utility class for sending packets.
@@ -30,6 +35,25 @@ public class ActionSender {
         this.player = player;
     }
 
+    public ActionSender sendProgressInterface() {
+    	player.write(new SendConfigPacket(406, player.getProgressBar()));
+		sendInterfaceConfig(1, 12224);
+		sendInterfaceConfig(1, 12225);
+		sendInterfaceConfig(1, 12226);
+		sendInterfaceConfig(1, 12227);
+		sendInterfaceConfig(0, 12161);
+		sendString("% Done", 12224);
+		player.write(new SendWalkableInterfacePacket(8680));
+		return this;
+	}
+
+	public ActionSender changeSidebar(int id) {
+		player.getOutStream().writeFrame(106);
+		player.getOutStream().writeByteC(id);
+		player.flushOutStream();
+		return this;
+	}
+    
     /**
      * Sends the player's skills.
      *
@@ -465,34 +489,57 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender createGroundItem(int itemID, int itemX, int itemY,
-			int height, int itemAmount) {
-		if (player != null) {
-			player.getOutStream().writeFrame(85);
-			int localX = itemX - 8 * player.mapRegionX;
-			int localY = itemY - 8 * player.mapRegionY;
-			player.getOutStream().writeByteC((localY));
-			player.getOutStream().writeByteC((localX));
-			player.getOutStream().writeFrame(44);
-			player.getOutStream().writeWordBigEndianA(itemID);
-			player.getOutStream().writeShort(itemAmount);
-			player.getOutStream().writeByte(0);
-			player.flushOutStream();
-		}
+	public ActionSender sendObject(int id, int x, int y, int h, int face, int objectType) {
+        Region.addWorldObject(id, x, y, player.heightLevel);
+        if (player.getOutStream() != null) {
+        	sendCoordinates(Position.create(x, y, h));
+        	// removing object
+            player.getOutStream().writeFrame(101);
+            player.getOutStream().writeByteC((objectType << 2) + (face & 3));
+            player.getOutStream().writeByte(0);
+
+            if (id != -1) { // adding object
+                player.getOutStream().writeFrame(151);
+                player.getOutStream().writeByteS(0);
+                player.getOutStream().writeWordBigEndian(id);
+                player.getOutStream().writeByteS((objectType << 2) + (face & 3));
+            }
+        }
+        return this;
+    }
+	
+	public ActionSender sendCoordinates(Position location) {
+		player.getOutStream().writeFrame(85);
+		int y = location.getY() - player.getMapRegionY() * 8;
+		int x = location.getX() - player.getMapRegionX() * 8;
+		player.getOutStream().writeByteC(y);
+		player.getOutStream().writeByteC(x);
+		player.flushOutStream();
 		return this;
 	}
-
-	public ActionSender removeGroundItem(int itemID, int itemX, int itemY,
-			int height) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().writeFrame(85);
-			player.getOutStream().writeByteC((itemY - 8 * player.mapRegionY));
-			player.getOutStream().writeByteC((itemX - 8 * player.mapRegionX));
-			player.getOutStream().writeFrame(156);
-			player.getOutStream().writeByteS(0);
-			player.getOutStream().writeShort(itemID);
-			player.flushOutStream();
-		}
+	
+	/**
+	 * Sends a ground item
+	 * 
+	 * @param groundItem
+	 * @return
+	 */
+	public ActionSender sendGroundItem(GroundItem groundItem) {
+		sendCoordinates(groundItem.getPosition());
+		player.getOutStream().writeFrame(44);
+		player.getOutStream().writeWordBigEndianA(groundItem.getItem().getId());
+		player.getOutStream().writeShort(groundItem.getItem().getAmount());
+		player.getOutStream().writeByte(0);
+		player.flushOutStream();
+		return this;
+	}
+	
+	public ActionSender sendRemoveGroundItem(GroundItem groundItem) {
+		sendCoordinates(groundItem.getPosition());
+		player.getOutStream().writeFrame(156);
+		player.getOutStream().writeByteS(0);
+		player.getOutStream().writeShort(groundItem.getItem().getId());
+		player.flushOutStream();
 		return this;
 	}
 	

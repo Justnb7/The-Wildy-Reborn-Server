@@ -771,8 +771,8 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "object":
     		int object = Integer.parseInt(cmd[1]);
-			player.getPA().object(object, player.absX, player.absY, 0, 10);
-    		return true;
+			player.getActionSender().sendObject(object, player.absX, player.absY, player.heightLevel, 0, 10);
+			return true;
     		
     	case "pnpc":
     		int value = Integer.parseInt(cmd[1]);

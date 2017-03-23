@@ -5,7 +5,7 @@ import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
 
 /**
- * The Olmet pet chat dialogue
+ * The Great olmet pet chat dialogue
  * 
  * @author Patrick van Elderen
  *

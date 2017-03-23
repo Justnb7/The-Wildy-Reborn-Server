@@ -681,6 +681,10 @@ public class ActionHandler {
 			player.getActionSender().sendMessage("First click "+npc.npcId);
 		}
 		
+		if (Pet.talktoPet(player, npc)) {
+			return;
+		}
+		
 		if (FishingSpot.fishingNPC(npc.npcId)) {
 			Fishing.attemptFishing(player, npc, 1);
 			return;

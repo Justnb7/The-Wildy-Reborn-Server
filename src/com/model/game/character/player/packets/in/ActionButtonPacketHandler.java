@@ -33,7 +33,6 @@ import com.model.utility.json.definitions.ItemDefinition;
 
 import java.util.Objects;
 
-
 /**
  * Handles clicking on most buttons in the interface.
  * 

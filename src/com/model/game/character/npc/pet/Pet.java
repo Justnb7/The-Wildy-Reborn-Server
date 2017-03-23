@@ -246,5 +246,159 @@ public class Pet extends NPC {
 		}
 		return false;
 	}
+	
+	/**
+	 * Right click option to start talking to your pet.
+	 * @param player
+	 *        The player who owns the pet
+	 * @param pet
+	 *        The pet
+	 * @return
+	 */
+	public static boolean talktoPet(Player player, NPC pet) {
+		Pet.Pets pets = Pet.Pets.fromNpc(pet.getId());
+		if (pets != null && player.isPetSpawned()) {
+			switch(pets) {
+			case ABYSSAL_ORPHAN:
+				break;
+			case BABY_CHINCHOMPA:
+				break;
+			case BABY_CHINCHOMPA_BLACK:
+				break;
+			case BABY_CHINCHOMPA_GOLD:
+				break;
+			case BABY_CHINCHOMPA_GREY:
+				break;
+			case BABY_MOLE:
+				break;
+			case BEAVER:
+				break;
+			case BLOODHOUND:
+				break;
+			case CALLISTO_CUB:
+				break;
+			case CHAOS_ELEMENTAL:
+				break;
+			case CHOMPY_CHICK:
+				break;
+			case DAGANNOTH_PRIME:
+				break;
+			case DAGANNOTH_REX:
+				break;
+			case DAGANNOTH_SUPREME:
+				break;
+			case DARK_CORE:
+				break;
+			case GENERAL_GRAARDOR:
+				break;
+			case GIANT_SQUIRREL:
+				break;
+			case HELLPUPPY:
+				break;
+			case HERON:
+				break;
+			case KALPHITE_PRINCESS_BUG:
+				break;
+			case KALPHITE_PRINCESS_FLY:
+				break;
+			case KRAKEN:
+				break;
+			case KREEARRA:
+				break;
+			case KRIL_TSUTSAROTH:
+				break;
+			case OLMLET:
+				player.dialogue().start("OLMLET");
+				break;
+			case PENANCE_PET:
+				break;
+			case PHOENIX:
+				break;
+			case PRINCE_BLACK_DRAGON:
+				break;
+			case RIFT_GUARDIAN_AIR:
+				break;
+			case RIFT_GUARDIAN_ASTRAL:
+				break;
+			case RIFT_GUARDIAN_BLOOD:
+				break;
+			case RIFT_GUARDIAN_BODY:
+				break;
+			case RIFT_GUARDIAN_CHAOS:
+				break;
+			case RIFT_GUARDIAN_COSMIC:
+				break;
+			case RIFT_GUARDIAN_DEATH:
+				break;
+			case RIFT_GUARDIAN_EARTH:
+				break;
+			case RIFT_GUARDIAN_FIRE:
+				break;
+			case RIFT_GUARDIAN_LAW:
+				break;
+			case RIFT_GUARDIAN_MIND:
+				break;
+			case RIFT_GUARDIAN_NATURE:
+				break;
+			case RIFT_GUARDIAN_SOUL:
+				break;
+			case RIFT_GUARDIAN_WATER:
+				break;
+			case ROCKY:
+				break;
+			case ROCK_GOLEM:
+				break;
+			case ROCK_GOLEM_ADAMANTITE:
+				break;
+			case ROCK_GOLEM_BLURITE:
+				break;
+			case ROCK_GOLEM_COAL:
+				break;
+			case ROCK_GOLEM_COPPER:
+				break;
+			case ROCK_GOLEM_GOLD:
+				break;
+			case ROCK_GOLEM_GRANITE:
+				break;
+			case ROCK_GOLEM_IRON:
+				break;
+			case ROCK_GOLEM_MITHRIL:
+				break;
+			case ROCK_GOLEM_RUNITE:
+				break;
+			case ROCK_GOLEM_SILVER:
+				break;
+			case ROCK_GOLEM_TIN:
+				break;
+			case SCORPIAS_OFFSPRING:
+				break;
+			case SMOKE_DEVIL:
+				break;
+			case SNAKELING:
+				break;
+			case SNAKELING_BLUE:
+				break;
+			case SNAKELING_RED:
+				break;
+			case TANGLEROOT:
+				break;
+			case TZREK_JAD:
+				break;
+			case VENENATIS_SPIDERLING:
+				break;
+			case VETION_ORANGE:
+				break;
+			case VETION_PURPLE:
+				break;
+			case ZILYANA:
+				break;
+			default:
+				break;
+			
+			}
+			return true;
+		}
+		return false;
+	}
 
 }

@@ -82,6 +82,7 @@ public class DialogueRepository {
 		 */
 		dialogues.put("OLMLET", Olmlet.class);
 		
+		
 		/**
 		 * Shop dialogues
 		 */

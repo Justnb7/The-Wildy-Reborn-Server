@@ -2,11 +2,14 @@ package com.model.game.character.combat.weaponSpecial.impl;
 
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
+import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
+import com.model.utility.Utility;
 
 public class ArmadylCrossbow implements SpecialAttack {
 
@@ -30,10 +33,21 @@ public class ArmadylCrossbow implements SpecialAttack {
 		//TODO implement gfx 301
 		int d = player.getPosition().distanceToEntity(player, target);
 		player.playProjectile(Projectile.create(player.getPosition(), target, 301, 60, 50, 65 + (d * 5), 43, 35, 10, 36));
-
 		player.getCombat().fireProjectileAtTarget();
 
-		Combat.hitEvent(player, target, 2, null, CombatStyle.RANGE);
+		// Step 1: calculate a hit
+		int dam1 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
+
+		// Step 2: check if it missed
+		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?
+			dam1 = 0;
+		}
+
+		// Step 3: check target's protection prayers
+		Hit hit = target.take_hit(player, dam1, CombatStyle.RANGE, false);
+
+		// Step 4: submit an Event where the hit appears.
+		Combat.hitEvent(player, target, 2, hit, CombatStyle.RANGE);
 	}
 
 	@Override

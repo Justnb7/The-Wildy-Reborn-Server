@@ -4,6 +4,7 @@ import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.npc.pet.Pets;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.skill.SkillTask;
@@ -133,7 +134,7 @@ public class Fishing extends SkillTask {
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.",
 						false);
 			} else {
-				Pet.Pets pets = Pet.Pets.HERON;
+				Pets pets = Pets.HERON;
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPetSpawned(true);
 				player.setPet(pets.getNpc());

@@ -2,6 +2,7 @@ package com.model.game.character.player.dialogue.impl.minigames.fight_caves;
 
 import com.model.game.World;
 import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.npc.pet.Pets;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
@@ -297,7 +298,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 													player.getItems().addOrSendToBank(13225, 1);
 													World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Tzrek Jad.", false);
 												} else {
-													Pet.Pets pets = Pet.Pets.TZREK_JAD;
+													Pets pets = Pets.TZREK_JAD;
 													Pet pet = new Pet(player, pets.getNpc());
 													player.setPetSpawned(true);
 													player.setPet(pets.getNpc());

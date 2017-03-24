@@ -4,6 +4,7 @@ import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.npc.pet.Pets;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.SimpleDialogues;
@@ -122,7 +123,7 @@ public class MiningEvent extends CycleEvent {
 				player.getItems().addOrSendToBank(13321, 1);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Rock Golem.", false);
 			} else {
-				Pet.Pets pets = Pet.Pets.ROCK_GOLEM;
+				Pets pets = Pets.ROCK_GOLEM;
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPetSpawned(true);
 				player.setPet(pets.getNpc());

@@ -343,10 +343,7 @@ public final class NPCHandler {
 
 		int targX = target.getX();
 		int targY = target.getY();
-		/*if (npc.isPet) { // always stand 1 south
-			targX = target.getX();
-			targY = target.getY() -1;
-		} */
+
 		//npc.forceChat("delta "+(npc.absX-targX)+" by "+(npc.absY-targY));
 
 		// At this point, the target is valid, don't start walking off randomly.
@@ -357,6 +354,11 @@ public final class NPCHandler {
 
 		if (npc.frozen()) {
 			// Don't reset, we just can't reach.
+			return;
+		}
+		boolean sameSpot = npc.getX() == target.getX() && npc.getY() == target.getY() && npc.getSize() == 1;
+		if (sameSpot) {
+			walkToNextTile(npc, targX, targY-1);
 			return;
 		}
 

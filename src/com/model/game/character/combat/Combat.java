@@ -12,7 +12,6 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
-import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.RangeData;
@@ -674,7 +673,7 @@ public class Combat {
 
                 if (attacker.isPlayer()) {
                 	Player player = (Player) attacker;
-                	NPC npc = (NPC) attacker;
+                	NPC npc = (NPC) target;
 	                // Range attack invoke block emote when hit appears.
 	                if (hit.cbType == CombatStyle.RANGE && target.isNPC()) {
 	                    if (((NPC) target).attackTimer < 5)

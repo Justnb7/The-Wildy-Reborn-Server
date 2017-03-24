@@ -1,13 +1,5 @@
 package com.model.game.character.npc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
-
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Entity;
@@ -24,6 +16,10 @@ import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.NpcDefinition;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 public class NPC extends Entity {
 
@@ -479,7 +475,7 @@ public class NPC extends Entity {
 			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);//whats the pointsin this
 			// none yet again duplicate INTs by PI
 			
-			if (currentHealth > 0 && !isDead) {
+			if ((currentHealth > 0 && !isDead) || isPet) {
 				
 				super.frozen_process();
 

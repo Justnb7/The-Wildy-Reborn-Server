@@ -673,13 +673,16 @@ public class Combat {
 
                 if (attacker.isPlayer()) {
                 	Player player = (Player) attacker;
-                	NPC npc = (NPC) target;
+
 	                // Range attack invoke block emote when hit appears.
-	                if (hit.cbType == CombatStyle.RANGE && target.isNPC()) {
-	                    if (((NPC) target).attackTimer < 5)
-	                        target.playAnimation(Animation.create(npc.getDefendAnimation()));
-	
-	                    player.setAttribute("ignore defence", false);
+	                if (hit.cbType == CombatStyle.RANGE) {
+                        player.setAttribute("ignore defence", false);
+
+	                    if (target.isNPC() && ((NPC) target).attackTimer < 5)
+	                        target.playAnimation(Animation.create(target.asNpc().getDefendAnimation()));
+	                    else if (target.isPlayer() && ((Player)target).attackDelay < 5)
+	                        target.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(target.asPlayer())));
+
 	                }
 	                if (hit.cbType == CombatStyle.MAGIC) {
 	                    if (player.getCombat().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX

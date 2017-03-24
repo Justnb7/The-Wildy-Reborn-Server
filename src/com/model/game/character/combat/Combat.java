@@ -665,7 +665,7 @@ public class Combat {
         // Schedule a task
         Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
             public void execute() {
-            	if (attacker.isPlayer())
+            	if (attacker.isPlayer() && hit != null)
             		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
             	
             	// Apply the damage inside Hit

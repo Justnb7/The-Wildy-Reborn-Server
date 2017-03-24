@@ -148,6 +148,7 @@ public class CombatAssistant {
 		// Reset all styles
 		player.usingMagic = player.usingBow = false;
 		player.setCombatType(null);
+		player.setFollowing(null);
 	}
 
 	public void setTarget(Entity target) {

@@ -561,13 +561,13 @@ public class ActionSender {
      */
     public ActionSender sendProjectile(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
     	int offsetX = (start.getX() - finish.getX()) * -1;
-		int offsetY = (start.getY() - finish.getY()) * -1;
+		int offsetY = (start.getY() - finish.getY()) * -1;//or this probs compare to old?
 
-        sendLocalCoordinates(start, -3, -2);
+        sendLocalCoordinates(start, -3, -2);//itll be this , not this right? tll intshere sti tbhis bit is fine
         player.getOutStream().writeFrame(117);
-        player.getOutStream().writeByte(0);
-        player.getOutStream().writeByte(offsetX);
+        player.getOutStream().writeByte(/*50*/angle);
         player.getOutStream().writeByte(offsetY);
+        player.getOutStream().writeByte(offsetX);
         player.getOutStream().writeShort(lockon);
         player.getOutStream().writeShort(id);
         player.getOutStream().writeByte(startHeight);
@@ -578,15 +578,17 @@ public class ActionSender {
         player.getOutStream().writeByte(radius);
 
         player.flushOutStream();
+        player.getActionSender().sendMessage("dif "+offsetX+"|"+offsetY+" from "+start+" to "+finish+" dist "+start.distance(finish));
         return this;
     }
 	
 	public ActionSender sendLocalCoordinates(Position position, int xOffset, int yOffset) {
 		player.getOutStream().writeFrame(85);
 		
+		int difx = position.getX(), dify = position.getY();
 		int regionX = player.getMapRegionX(), regionY = player.getMapRegionY();
-		player.getOutStream().writeByteC((position.getY() - ((regionY - 6) * 8)) + yOffset);
-		player.getOutStream().writeByteC((position.getX() - ((regionX - 6) * 8)) + xOffset);
+		player.getOutStream().writeByteC((dify - (regionY * 8)) + yOffset);
+		player.getOutStream().writeByteC((difx - (regionX * 8)) + xOffset);
 
 		player.flushOutStream();
 		return this;

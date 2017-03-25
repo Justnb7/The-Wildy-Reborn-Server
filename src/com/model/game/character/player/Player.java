@@ -1350,6 +1350,9 @@ public class Player extends Entity {
 		}
 		//Reset prayers before login
 		PrayerHandler.resetAllPrayers(this);
+		getActionSender().sendConfig(709, PrayerHandler.canActivate(this, Prayers.PRESERVE, false) ? 1 : 0);
+		getActionSender().sendConfig(711, PrayerHandler.canActivate(this, Prayers.RIGOUR, false) ? 1 : 0);
+		getActionSender().sendConfig(713, PrayerHandler.canActivate(this, Prayers.AUGURY, false) ? 1 : 0);
 		//Set our sidebars before login
 		getActionSender().sendSidebarInterfaces();
 		//Update inventory before login
@@ -3169,5 +3172,35 @@ public class Player extends Entity {
 
 	public void setProgressBar(int progressBar) {
 		this.progressBar = progressBar;
+	}
+	
+	private boolean preserveUnlocked;
+
+	public boolean isPreserveUnlocked() {
+		return preserveUnlocked;
+	}
+
+	public void setPreserveUnlocked(boolean preserveUnlocked) {
+		this.preserveUnlocked = preserveUnlocked;
+	}
+	
+	private boolean rigourUnlocked;
+
+	public boolean isRigourUnlocked() {
+		return rigourUnlocked;
+	}
+
+	public void setRigourUnlocked(boolean rigourUnlocked) {
+		this.rigourUnlocked = rigourUnlocked;
+	}
+	
+	private boolean auguryUnlocked;
+
+	public boolean isAuguryUnlocked() {
+		return auguryUnlocked;
+	}
+
+	public void setAuguryUnlocked(boolean auguryUnlocked) {
+		this.auguryUnlocked = auguryUnlocked;
 	}
 }

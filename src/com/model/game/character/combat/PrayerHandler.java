@@ -132,28 +132,62 @@ public class PrayerHandler {
 			}
 			return false;
 		}
-		return msg;
-	}
+		
+		if (prayer == Prayers.CHIVALRY && player.getSkills().getLevelForExperience(Skills.DEFENCE) < 60) {
+			if(msg) {
+				player.getActionSender().sendConfig(prayer.configId, 0);
+				player.getActionSender().sendMessage("You need a Defence level of at least 60 to use Chivalry.");
+			}
+			return false;
+		}
+		
+		if ((prayer == Prayers.PIETY || prayer == Prayers.RIGOUR || prayer == Prayers.AUGURY) && player.getSkills().getLevelForExperience(Skills.DEFENCE) < 70) {
+			if(msg) {
+				player.getActionSender().sendConfig(prayer.configId, 0);
+				player.getActionSender().sendMessage("You need a Defence level of at least 70 to use "+prayer.getPrayerName()+".");
+			}
+			return false;
+		}
+		
+		// Prayer locks
+		boolean locked = false;
 
-	private static void activatePrayer(final Player player, final Prayers prayer) {
+		if (prayer == Prayers.PRESERVE && !player.isPreserveUnlocked()
+				|| prayer == Prayers.RIGOUR && !player.isRigourUnlocked()
+				|| prayer == Prayers.AUGURY && !player.isAuguryUnlocked()) {
+			locked = true;
+		}
+
+		if (locked) {
+			if (msg) {
+				player.getActionSender().sendMessage("You have not unlocked that Prayer yet.");
+			}
+			return false;
+		}
+		
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(session)) {
 				if (session.getRules().contains(Rule.NO_PRAYER)) {
 					player.getActionSender().sendMessage("Prayer has been disabled for this duel.");
 					resetAllPrayers(player);
-					return;
+					return false;
 				}
 			}
 		}
-		if (player.getSkills().getLevelForExperience(Skills.PRAYER) < prayer.getLevelRequirement()) {
-			player.getActionSender().sendMessage("You need a prayer level of at least " + prayer.getLevelRequirement() + " to use " + prayer.toString().toLowerCase().replaceAll("_", " ") + ".");
-			deactivatePrayer(player, prayer);
-			return;
-		}
+		
+		return true;
+	}
+
+	private static void activatePrayer(final Player player, final Prayers prayer) {
+		
 		if (player.getSkills().getLevel(Skills.PRAYER) <= 0) {
 			player.getActionSender().sendMessage("You have run out of prayer points; recharge your prayer points at an altar.");
 			deactivatePrayer(player, prayer);
+			return;
+		}
+		
+		if(!canActivate(player, prayer, true)) {
 			return;
 		}
 		

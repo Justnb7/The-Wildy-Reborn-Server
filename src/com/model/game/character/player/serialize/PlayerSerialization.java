@@ -33,8 +33,6 @@ import com.model.utility.Utility;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 
-
-
 /**
  * Handles all player serialization
  *
@@ -197,6 +195,12 @@ public class PlayerSerialization {
                             p.isClanMuted = Boolean.parseBoolean(value);
 						} else if(key.equals("gear-points")) {
 							p.setGearPoints(Integer.parseInt(value));
+						} else if (key.equals("unlock-preserve")) {
+                            p.setPreserveUnlocked(Boolean.parseBoolean(value));
+						} else if (key.equals("unlock-rigour")) {
+                            p.setRigourUnlocked(Boolean.parseBoolean(value));
+						} else if (key.equals("unlock-augury")) {
+                            p.setAuguryUnlocked(Boolean.parseBoolean(value));
 						}
 						break;
 					
@@ -609,6 +613,12 @@ public class PlayerSerialization {
 			writer.write("clanChatPunishment = " + p.getClanPunishment());
             writer.newLine();
             writer.write("gear-points = " + p.getGearPoints());
+			writer.newLine();
+			writer.write("unlock-preserve = " + p.isPreserveUnlocked());
+			writer.newLine();
+			writer.write("unlock-rigour = " + p.isRigourUnlocked());
+			writer.newLine();
+			writer.write("unlock-augury = " + p.isAuguryUnlocked());
 			writer.newLine();
 			writer.newLine();
             

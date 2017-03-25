@@ -497,6 +497,20 @@ public class CommandPacketHandler implements PacketType {
     	
     	switch(cmd[0]) {
     	
+		case "unlock":
+			int type = Integer.parseInt(cmd[1]);
+			if (type == 0) {
+				player.setPreserveUnlocked(true);
+			} else if (type == 1) {
+				player.setRigourUnlocked(true);
+			} else if (type == 2) {
+				player.setAuguryUnlocked(true);
+			}
+			player.getActionSender().sendConfig(709, player.isPreserveUnlocked() ? 1 : 0);
+			player.getActionSender().sendConfig(711, player.isRigourUnlocked() ? 1 : 0);
+			player.getActionSender().sendConfig(713, player.isAuguryUnlocked() ? 1 : 0);
+			return true;
+    	
     	case "pet":
 			int id = Integer.parseInt(cmd[1]);
 			Pet pet = new Pet(player, id);

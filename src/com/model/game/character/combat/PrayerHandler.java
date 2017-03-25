@@ -149,6 +149,13 @@ public class PrayerHandler {
 			return false;
 		}
 		
+		if (prayer == Prayers.PROTECT_ITEM) {
+			if (!player.getAccount().getType().canUseItemProtection()) {
+				player.getActionSender().sendMessage("You're account is restricted from using protect item prayer.");
+				return false;
+			}
+		}
+		
 		// Prayer locks
 		boolean locked = false;
 
@@ -189,13 +196,6 @@ public class PrayerHandler {
 		
 		if(!canActivate(player, prayer, true)) {
 			return;
-		}
-		
-		if (prayer == Prayers.PROTECT_ITEM) {
-			if (!player.getAccount().getType().canUseItemProtection()) {
-				player.getActionSender().sendMessage("You're account is restricted from using protect item prayer.");
-				return;
-			}
 		}
 		
 		if (prayer != Prayers.PROTECT_ITEM)

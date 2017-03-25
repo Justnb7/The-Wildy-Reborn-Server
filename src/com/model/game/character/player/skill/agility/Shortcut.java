@@ -3,7 +3,6 @@ package com.model.game.character.player.skill.agility;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.task.ScheduledTask;
 
 public class Shortcut {
@@ -14,7 +13,7 @@ public class Shortcut {
 	public static void agilityWalk(final Player player, final int walkAnimation, final int x, final int y) {
 		player.setRunning(false);
 		player.getMovementHandler().setForcedMovement(true);
-		player.write(new SendConfigPacket(173, 0));
+		player.getActionSender().sendConfig(173, 0);
 		player.walkAnimation = walkAnimation;
 		player.getPA().requestUpdates();
 		player.getPA().walkTo(x, y);
@@ -270,7 +269,7 @@ public class Shortcut {
 
 	private static void setAnimationBack(Player player) {
 		player.setRunning(true);
-		player.write(new SendConfigPacket(173, 1));
+		player.getActionSender().sendConfig(173, 1);
 		player.walkAnimation = 0x333;
 		player.getPA().requestUpdates();
 	}

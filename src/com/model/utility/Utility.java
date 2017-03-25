@@ -112,6 +112,22 @@ public class Utility {
     public static String capitalize(String s) {
         return s.substring(0, 1).toUpperCase().concat(s.substring(1, s.length()));
     }
+    
+    /**
+	 * Capitalized all words split by a space char.
+	 * @param name	The string to format.
+	 */
+	public static String capitalizeWords(String name) {
+		StringBuilder builder = new StringBuilder(name.length());
+		String[] words = name.split("\\s");
+		for(int i = 0, l = words.length; i < l; ++i) {
+			if(i > 0)
+				builder.append(" ");      
+			builder.append(Character.toUpperCase(words[i].charAt(0))).append(words[i].substring(1));
+
+		}
+		return builder.toString();
+	}
 
     /**
      * Returns a pseudo-random {@code int} value between inclusive

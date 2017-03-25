@@ -9,7 +9,6 @@ import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -154,24 +153,24 @@ public class PestControl {
 				int hp = npc.isDead ? 0 : npc.currentHealth;
 				player.getActionSender().sendString(color + hp, 21111 + i);
 				if (npc.npcId == 1739 && hp < 275) {
-					player.write(new SendConfigPacket(1270, 0));
+					player.getActionSender().sendConfig(1270, 0);
 				} else {
-					player.write(new SendConfigPacket(1270, 1));
+					player.getActionSender().sendConfig(1270, 1);
 				}
 				if (npc.npcId == 1740 && hp < 275) {
-					player.write(new SendConfigPacket(1271, 0));
+					player.getActionSender().sendConfig(1271, 0);
 				} else {
-					player.write(new SendConfigPacket(1271, 1));
+					player.getActionSender().sendConfig(1271, 1);
 				}
 				if (npc.npcId == 1741 && hp < 275) {
-					player.write(new SendConfigPacket(1272, 0));
+					player.getActionSender().sendConfig(1272, 0);
 				} else {
-					player.write(new SendConfigPacket(1272, 1));
+					player.getActionSender().sendConfig(1272, 1);
 				}
 				if (npc.npcId == 1742 && hp < 275) {
-					player.write(new SendConfigPacket(1273, 0));
+					player.getActionSender().sendConfig(1273, 0);
 				} else {
-					player.write(new SendConfigPacket(1273, 1));
+					player.getActionSender().sendConfig(1273, 1);
 				}
 			}
 			if (gameTime <= 20)

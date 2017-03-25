@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 
 /**
@@ -124,7 +123,7 @@ public class WeaponInterface {
 				player.write(new SendSidebarInterfacePacket(0, 5855));
 				player.getActionSender().sendString("Unarmed", 5857);
 				player.setAttackStyle(0);
-				player.write(new SendConfigPacket(43, 0));
+				player.getActionSender().sendConfig(43, 0);
 				return;
 			}
 			if (name.contains(equipment.getWeaponType()) || name.endsWith(equipment.getWeaponType()) || name.startsWith(equipment.getWeaponType())) {

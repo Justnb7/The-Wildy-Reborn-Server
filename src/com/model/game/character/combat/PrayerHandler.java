@@ -12,7 +12,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.SendConfigPacket;
+import com.model.utility.Utility;
 
 public class PrayerHandler {
 
@@ -41,8 +41,11 @@ public class PrayerHandler {
 		RETRIBUTION(2171, 46, 0.5, 98), 
 		REDEMPTION(2172, 49, 1.0, 99), 
 		SMITE(2173, 52, 2.0, 100), 
+		PRESERVE(109097, 55, 1.0, 708),
 		CHIVALRY(77113, 60, 3.0, 706), 
-		PIETY(77115, 70, 4.0, 707);
+		PIETY(77115, 70, 4.0, 707),
+		RIGOUR(109100, 74, 4.0, 710),
+		AUGURY(109103, 77, 4.0, 712);
 
 		private int buttonId;
 
@@ -51,6 +54,11 @@ public class PrayerHandler {
 		private double drainRate;
 
 		private int configId;
+		
+		/**
+		 * The prayer's formatted name.
+		 */
+		private String name;
 
 		private Prayers(int buttonId, int level, double drain, int configId) {
 			this.buttonId = buttonId;
@@ -83,6 +91,16 @@ public class PrayerHandler {
 		public double getDrainRate() {
 			return drainRate;
 		}
+		
+		/**
+		 * Gets the prayer's formatted name.
+		 * @return	The prayer's name
+		 */
+		private final String getPrayerName() {
+			if (name == null)
+				return Utility.capitalizeWords(toString().toLowerCase().replaceAll("_", " "));
+			return name;
+		}
 	}
 
 	public static void togglePrayer(final Player player, final int buttonId) {
@@ -97,6 +115,24 @@ public class PrayerHandler {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Checks if the player can use the specified prayer.
+	 * @param player
+	 * @param prayer
+	 * @return
+	 */
+	public static boolean canActivate(Player player, final Prayers prayer, boolean msg) {
+		if (player.getSkills().getLevelForExperience(Skills.PRAYER) < prayer.getLevelRequirement()) {
+			if(msg) {
+				player.getActionSender().sendConfig(prayer.configId, 0);
+				player.getActionSender().sendMessage("You need a Prayer level of at least " + prayer.getLevelRequirement() + " to use " + prayer.getPrayerName() + ".");
+				deactivatePrayer(player, prayer);
+			}
+			return false;
+		}
+		return msg;
 	}
 
 	private static void activatePrayer(final Player player, final Prayers prayer) {
@@ -158,7 +194,7 @@ public class PrayerHandler {
 			player.getPA().requestUpdates();
 		}
 		player.setActivePrayer(prayer, true);
-		player.write(new SendConfigPacket(prayer.getConfigId(), 1));
+		player.getActionSender().sendConfig(prayer.getConfigId(), 1);
 		player.addPrayerDrainRate(prayer.getDrainRate());
 	}
 
@@ -169,7 +205,7 @@ public class PrayerHandler {
 			player.getPA().requestUpdates();
 		}
 		player.addPrayerDrainRate(-(prayer.getDrainRate()));
-		player.write(new SendConfigPacket(prayer.getConfigId(), 0));
+		player.getActionSender().sendConfig(prayer.getConfigId(), 0);
 	}
 
 	private static Prayers[] defensePrayers = { Prayers.THICK_SKIN, Prayers.ROCK_SKIN, Prayers.STEEL_SKIN,
@@ -190,13 +226,13 @@ public class PrayerHandler {
 
 	Prayers.CHIVALRY, Prayers.PIETY,
 
-	Prayers.EAGLE_EYE, Prayers.HAWK_EYE, Prayers.SHARP_EYE,
+	Prayers.EAGLE_EYE, Prayers.HAWK_EYE, Prayers.SHARP_EYE, Prayers.RIGOUR,
 
-	Prayers.MYSTIC_LORE, Prayers.MYSTIC_MIGHT, Prayers.MYSTIC_WILL
+	Prayers.MYSTIC_LORE, Prayers.MYSTIC_MIGHT, Prayers.MYSTIC_WILL, Prayers.AUGURY
 
 	};
 
-	private static Prayers[] restorePrayers = { Prayers.RAPID_RESTORE, Prayers.RAPID_HEAL
+	private static Prayers[] restorePrayers = { Prayers.RAPID_RESTORE, Prayers.RAPID_HEAL, Prayers.PRESERVE,
 
 	};
 	private static Prayers[] overheadPrayers = { Prayers.PROTECT_FROM_MAGIC, Prayers.PROTECT_FROM_MISSILE, Prayers.PROTECT_FROM_MELEE, Prayers.RETRIBUTION, Prayers.REDEMPTION, Prayers.SMITE

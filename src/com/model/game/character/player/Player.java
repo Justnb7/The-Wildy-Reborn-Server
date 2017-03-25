@@ -65,7 +65,6 @@ import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.minigames.pest_control.PestControlRewards;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.player.packets.PacketEncoder;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
@@ -447,7 +446,7 @@ public class Player extends Entity {
 	/**
 	 * The players current active prayers
 	 */
-	private boolean[] activePrayer = new boolean[26];
+	private boolean[] activePrayer = new boolean[29];
 
 	/**
 	 * The players current prayer icon
@@ -997,7 +996,7 @@ public class Player extends Entity {
 				Player c = World.getWorld().getPlayers().get(this.getIndex());
 				autoCast = true;
 				autocastId = autocastIds[j + 1];
-				c.write(new SendConfigPacket(108, 1));
+				c.getActionSender().sendConfig(108, 1);
 				c.write(new SendSidebarInterfacePacket(0, 328));
 				break;
 			}
@@ -1382,14 +1381,14 @@ public class Player extends Entity {
 		AttackStyle.adjustAttackStyleOnLogin(this);
 		this.setScreenBrightness((byte) 4);
 		getActionSender().sendString("100%", 149);
-		write(new SendConfigPacket(166, getScreenBrightness()));
-		write(new SendConfigPacket(207, isEnableMusic() ? 1 : 0));
-		write(new SendConfigPacket(206, isEnableSound() ? 1 : 0));
-		write(new SendConfigPacket(287, getSplitPrivateChat() ? 1 : 0));
-		write(new SendConfigPacket(205, getSplitPrivateChat() ? 1 : 0));
-		write(new SendConfigPacket(200, getAcceptAid() ? 1 : 0));
-		write(new SendConfigPacket(172, isAutoRetaliating() ? 1 : 0));
-		write(new SendConfigPacket(152, isRunning() ? 1 : 0));
+		getActionSender().sendConfig(166, getScreenBrightness());
+		getActionSender().sendConfig(207, isEnableMusic() ? 1 : 0);
+		getActionSender().sendConfig(206, isEnableSound() ? 1 : 0);
+		getActionSender().sendConfig(287, getSplitPrivateChat() ? 1 : 0);
+		getActionSender().sendConfig(205, getSplitPrivateChat() ? 1 : 0);
+		getActionSender().sendConfig(200, getAcceptAid() ? 1 : 0);
+		getActionSender().sendConfig(172, isAutoRetaliating() ? 1 : 0);
+		getActionSender().sendConfig(152, isRunning() ? 1 : 0);
 	}
 
 	private void submitAfterLogin() {

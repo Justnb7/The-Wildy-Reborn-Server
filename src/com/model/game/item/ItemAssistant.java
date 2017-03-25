@@ -15,7 +15,6 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.game.item.ground.GroundItem;
@@ -1126,15 +1125,15 @@ public class ItemAssistant {
 				player.getBank().getBankTab()[i + 1].getItems().clear();
 			}
 		}
-		player.write(new SendConfigPacket(600, 0));
+		player.getActionSender().sendConfig(600, 0);
 		player.getActionSender().sendUpdateItem(58040, -1, 0, 0);
 		int newSlot = -1;
 		for (int i = 0; i < player.getBank().getBankTab().length; i++) {
 			BankTab tab = player.getBank().getBankTab()[i];
 			if (i == tabId) {
-				player.write(new SendConfigPacket(600 + i, 1));
+				player.getActionSender().sendConfig(600 + i, 1);
 			} else {
-				player.write(new SendConfigPacket(600 + i, 0));
+				player.getActionSender().sendConfig(600 + i, 0);
 			}
 			if (tab.getTabId() != 0 && tab.size() > 0 && tab.getItem(0) != null) {
 				player.getActionSender().sendInterfaceConfig(0, 58050 + i);

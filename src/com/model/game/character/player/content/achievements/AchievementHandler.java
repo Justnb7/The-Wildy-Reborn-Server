@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.achievements.Achievements.Achievement;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 
 
@@ -62,9 +61,9 @@ public class AchievementHandler {
 		player.getActionSender().sendInterfaceConfig(tier == 0 ? 0 : 1, 49100);
 		player.getActionSender().sendInterfaceConfig(tier == 1 ? 0 : 1, 51100);
 		player.getActionSender().sendInterfaceConfig(tier == 2 ? 0 : 1, 53100);
-		player.write(new SendConfigPacket(800, tier == 0 ? 1 : 0));
-		player.write(new SendConfigPacket(801, tier == 1 ? 1 : 0));
-		player.write(new SendConfigPacket(802, tier == 2 ? 1 : 0));
+		player.getActionSender().sendConfig(800, tier == 0 ? 1 : 0);
+		player.getActionSender().sendConfig(801, tier == 1 ? 1 : 0);
+		player.getActionSender().sendConfig(802, tier == 2 ? 1 : 0);
 		player.getActionSender().sendString(Integer.toString(this.getPoints()), 49016);
 		int components = 0;
 		for(Achievement achievement : Achievement.ACHIEVEMENTS) {

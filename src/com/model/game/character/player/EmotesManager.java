@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.item.Item;
 
 public final class EmotesManager {
@@ -16,8 +15,6 @@ public final class EmotesManager {
 	 * @author Patrick van Elderen
 	 *
 	 */
-
-	
 	public enum EmoteData {
 		YES(168, 855, -1, 2000),
 		NO(169, 856, -1, 2000),
@@ -295,7 +292,7 @@ public final class EmotesManager {
 	
 	public static void onLogin(Player player) {
 		for (int i = 744; i <= 760; i++)
-			player.write(new SendConfigPacket(i, 1));
+			player.getActionSender().sendConfig(i, 1);
 	}
 	
 }

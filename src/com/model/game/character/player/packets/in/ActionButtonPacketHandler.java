@@ -599,7 +599,7 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		case 4026:
 			player.setRunning(!player.isRunning());
-			//player.write(new SendConfigPacket(152, player.isRunning() ? 1 : 0));
+			//player.getActionSender().sendConfig(152, player.isRunning() ? 1 : 0));
 			break;
 
 		case 3138:
@@ -617,24 +617,24 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		case 140181:
 			player.setAcceptAid(!player.getAcceptAid());
-			player.write(new SendConfigPacket(200, player.getAcceptAid() ? 1 : 0));
+			player.getActionSender().sendConfig(200, player.getAcceptAid() ? 1 : 0);
 			break;	
 			
 		case 140185:
 			player.setSplitPrivateChat(!player.getSplitPrivateChat());
-			player.write(new SendConfigPacket(287, player.getSplitPrivateChat() ? 1 : 0));
-			player.write(new SendConfigPacket(205, player.getSplitPrivateChat() ? 1 : 0));
+			player.getActionSender().sendConfig(287, player.getSplitPrivateChat() ? 1 : 0);
+			player.getActionSender().sendConfig(205, player.getSplitPrivateChat() ? 1 : 0);
 			break;
 			
 		case 140186:
 			player.setEnableSound(!player.isEnableSound());
-			player.write(new SendConfigPacket(206, player.isEnableSound() ? 1 : 0));
+			player.getActionSender().sendConfig(206, player.isEnableSound() ? 1 : 0);
 			player.getActionSender().sendMessage(String.format("You have %s sound effects.", player.isEnableSound() ? "enabled" : "disabled"));
 			break;
 			
 		case 140187:
 			player.setEnableMusic(!player.isEnableMusic());
-			player.write(new SendConfigPacket(207, player.isEnableMusic() ? 1 : 0));
+			player.getActionSender().sendConfig(207, player.isEnableMusic() ? 1 : 0);
 			if(player.isEnableMusic()) {
 				player.getActionSender().sendMessage("You've enabled your music player.");
 				MusicData.playMusic(player);

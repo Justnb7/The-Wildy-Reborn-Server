@@ -547,7 +547,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
     	case "sc":
-    		player.write(new SendConfigPacket(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])));
+    		player.getActionSender().sendConfig(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
     		player.getActionSender().sendMessage("Setting config: "+cmd[1]+" Type: "+cmd[2]);
     		return true;
     		

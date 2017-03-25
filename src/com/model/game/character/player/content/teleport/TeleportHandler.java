@@ -4,7 +4,6 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.location.Position;
 
@@ -146,10 +145,10 @@ public class TeleportHandler {
 			player.getActionSender().sendString("<col=ff7000>PvP", 57013);
 			player.getActionSender().sendString("</col>PvM", 57017);
 			player.getActionSender().sendString("</col>Minigames", 57021);
-			player.write(new SendConfigPacket(977, 0));
-			player.write(new SendConfigPacket(978, 1));
-			player.write(new SendConfigPacket(979, 0));
-			player.write(new SendConfigPacket(980, 0));
+			player.getActionSender().sendConfig(977, 0);
+			player.getActionSender().sendConfig(978, 1);
+			player.getActionSender().sendConfig(979, 0);
+			player.getActionSender().sendConfig(980, 0);
 			player.getActionSender().sendScrollBar(57050, 225);
 
 			break;
@@ -159,10 +158,10 @@ public class TeleportHandler {
 			player.getActionSender().sendString("</col>PvP", 57013);
 			player.getActionSender().sendString("<col=ff7000>PvM", 57017);
 			player.getActionSender().sendString("</col>Minigames", 57021);
-			player.write(new SendConfigPacket(977, 0));
-			player.write(new SendConfigPacket(978, 0));
-			player.write(new SendConfigPacket(979, 1));
-			player.write(new SendConfigPacket(980, 0));
+			player.getActionSender().sendConfig(977, 0);
+			player.getActionSender().sendConfig(978, 0);
+			player.getActionSender().sendConfig(979, 1);
+			player.getActionSender().sendConfig(980, 0);
 			player.getActionSender().sendScrollBar(57050, 490);
 			break;
 
@@ -171,10 +170,10 @@ public class TeleportHandler {
 			player.getActionSender().sendString("</col>PvP", 57013);
 			player.getActionSender().sendString("</col>PvM", 57017);
 			player.getActionSender().sendString("<col=ff7000>Minigames", 57021);
-			player.write(new SendConfigPacket(977, 0));
-			player.write(new SendConfigPacket(978, 0));
-			player.write(new SendConfigPacket(979, 0));
-			player.write(new SendConfigPacket(980, 1));
+			player.getActionSender().sendConfig(977, 0);
+			player.getActionSender().sendConfig(978, 0);
+			player.getActionSender().sendConfig(979, 0);
+			player.getActionSender().sendConfig(980, 1);
 			player.getActionSender().sendScrollBar(57050, 225);
 			break;
 
@@ -184,10 +183,10 @@ public class TeleportHandler {
 			player.getActionSender().sendString("</col>PvP", 57013);
 			player.getActionSender().sendString("</col>PvM", 57017);
 			player.getActionSender().sendString("</col>Minigames", 57021);
-			player.write(new SendConfigPacket(977, 1));
-			player.write(new SendConfigPacket(978, 0));
-			player.write(new SendConfigPacket(979, 0));
-			player.write(new SendConfigPacket(980, 0));
+			player.getActionSender().sendConfig(977, 1);
+			player.getActionSender().sendConfig(978, 0);
+			player.getActionSender().sendConfig(979, 0);
+			player.getActionSender().sendConfig(980, 0);
 			player.getActionSender().sendScrollBar(57050, 225);
 			break;
 		}

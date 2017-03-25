@@ -1,7 +1,6 @@
 package com.model.game.character.player;
 
 import com.model.game.character.combat.magic.SpellBook;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
@@ -9,7 +8,6 @@ import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Position;
-import com.model.game.object.GlobalObject;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
@@ -36,7 +34,7 @@ public class ActionSender {
     }
 
     public ActionSender sendProgressInterface() {
-    	player.write(new SendConfigPacket(406, player.getProgressBar()));
+    	sendConfig(406, player.getProgressBar());
 		sendInterfaceConfig(1, 12224);
 		sendInterfaceConfig(1, 12225);
 		sendInterfaceConfig(1, 12226);
@@ -604,4 +602,30 @@ public class ActionSender {
 		}
 		return this;
 	}
+	
+	/**
+	 * Sends a configuration button's state.
+	 * 
+	 * @param configId
+	 *            The id of the configuration button.
+	 * @param state
+	 *            The state to set it to.
+	 * @return The ActionSender instance.
+	 */
+	public ActionSender sendConfig(int id, int state) {
+		if (player.getOutStream() != null && player != null) {
+			//System.out.println("Varp update will be opcode "+(state<128 ? OPCODE:87)+" based on state:"+state);
+			if (state < 128) {
+				player.getOutStream().writeFrame(36);
+				player.getOutStream().writeWordBigEndian(id);
+				player.getOutStream().writeByte(state);
+			} else {
+				player.getOutStream().writeFrame(87);
+				player.getOutStream().writeWordBigEndian_dup(id);
+				player.getOutStream().writeDWord_v1(state);
+			}
+		}
+		return this;
+	}
+	
 }

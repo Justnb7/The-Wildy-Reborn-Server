@@ -3,7 +3,6 @@ package com.model.game.character.player.content;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendConfigPacket;
 import com.model.task.ScheduledTask;
 
 public class WildernessDitch {
@@ -83,7 +82,7 @@ public class WildernessDitch {
 	 */
 	private static void resetWalkIndex(Player player) {
 		player.setRunning(true);
-		player.write(new SendConfigPacket(173, 1));
+		player.getActionSender().sendConfig(173, 1);
 		player.walkAnimation = 0x333;
 		player.getPA().requestUpdates();
 	}

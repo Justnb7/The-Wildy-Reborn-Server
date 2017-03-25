@@ -15,7 +15,6 @@ import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.ItemDefinition;
-import org.omicron.jagex.runescape.CollisionMap;
 
 import java.text.DecimalFormat;
 
@@ -72,7 +71,7 @@ public class PlayerAssistant {
         player.autocastId = 0;
         player.onAuto = false;
         player.autoCast = false;
-        player.write(new SendConfigPacket(108, 0));
+        player.getActionSender().sendConfig(108, 0);
     }
 
     /**
@@ -327,9 +326,9 @@ public class PlayerAssistant {
 			return;
 		}
         if (player.takeAsNote)
-        	player.write(new SendConfigPacket(115, 1));
+        	player.getActionSender().sendConfig(115, 1);
         else
-        	player.write(new SendConfigPacket(115, 0));
+        	player.getActionSender().sendConfig(115, 0);
         
         if (Trading.isTrading(player)) {
             Trading.decline(player);

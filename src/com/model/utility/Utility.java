@@ -915,6 +915,17 @@ public class Utility {
 		boolean vowel = first == 'a' || first == 'e' || first == 'i' || first == 'o' || first == 'u';
 		return vowel ? "an" : "a";
 	}
+	
+	/**
+     * Appends the determined indefinite article to {@code thing}.
+     *
+     * @param thing
+     *            the thing to append.
+     * @return the {@code thing} after the indefinite article has been appended.
+     */
+    public static String appendIndefiniteArticle(String thing) {
+        return determineIndefiniteArticle(thing).concat(" " + thing);
+    }
 
 	/**
 	 * Generates an inclusive pseudo-random number with (approximately) equal

@@ -16,8 +16,8 @@ import com.model.game.item.equipment.Equipment;
 import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
+import com.model.utility.json.EquipmentRequirementLoader;
 import com.model.utility.json.ItemDefinitionLoader;
-import com.model.utility.json.RequirementsDefinitionLoader;
 import com.model.utility.json.ShopLoader;
 
 /**
@@ -52,7 +52,7 @@ public class GameDataLoader implements Runnable {
 			NpcDropSystem.get().loadRareDrops();
 			new ShopLoader().load();
 			new ItemDefinitionLoader().load();
-			new RequirementsDefinitionLoader().load();
+			new EquipmentRequirementLoader().load();
 			MobAttackSounds.declare();
 			PlayerSounds.declare();
 			Equipment.setMetalEquipment();

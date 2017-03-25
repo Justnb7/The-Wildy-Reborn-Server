@@ -33,7 +33,7 @@ public class Skills {
 	public static final String[] SKILL_NAME = { "Attack", "Defence", "Strength", "Hitpoints", "Range", "Prayer", "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming", "Runecrafting",
 	          "Hunter", "Construction" };
 	
-	public enum LevelUpData {
+	public enum SkillData {
 		ATTACK(0, 6248, 6249, 6247, "Attack"),
 		DEFENCE(1, 6254, 6255, 6253, "Defence"),
 		STRENGTH(2, 6207, 6208, 6206, "Strength"),
@@ -58,15 +58,15 @@ public class Skills {
 		HUNTER(21, 4268, 4269, 4267, "Hunter"), 
 		CONSTRUCTION(22, 4268, 4269, 4267, "Construction");
 
-		private static Map<Integer, LevelUpData> levelUp = new HashMap<Integer, LevelUpData>();
+		private static Map<Integer, SkillData> levelUp = new HashMap<Integer, SkillData>();
 
 		static {
-			for (LevelUpData data : values()) {
+			for (SkillData data : values()) {
 				levelUp.put(data.getSkillId(), data);
 			}
 		}
 
-		public static LevelUpData forId(int skillId) {
+		public static SkillData forId(int skillId) {
 			return levelUp.get(skillId);
 		}
 
@@ -74,7 +74,7 @@ public class Skills {
 
 		private String skillName;
 
-		LevelUpData(int skillId, int frame1, int frame2, int frame3, String name) {
+		SkillData(int skillId, int frame1, int frame2, int frame3, String name) {
 			this.skillId = skillId;
 			this.frame1 = frame1;
 			this.frame2 = frame2;
@@ -182,7 +182,7 @@ public class Skills {
     }
 	
 	public void handleLevelUp(int skillId) {
-		LevelUpData skill = LevelUpData.forId(skillId);
+		SkillData skill = SkillData.forId(skillId);
 		if (skill == null)
 			return;
 		String skillName = skill.getSkillName().toLowerCase();

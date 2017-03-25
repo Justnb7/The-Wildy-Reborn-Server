@@ -94,12 +94,24 @@ import com.model.net.network.rsa.ISAACRandomGen;
 import com.model.net.network.session.GameSession;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DistancedActionTask;
+import com.model.utility.MutableNumber;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	private final MutableNumber poisonImmunity = new MutableNumber();
+	
+	/**
+     * Gets the poison immunity counter value.
+     *
+     * @return the poison immunity counter.
+     */
+    public MutableNumber getPoisonImmunity() {
+        return poisonImmunity;
+    }
 	
 	//Fletching variables
 	public boolean isFletching = false, needsFletchDelay = false;
@@ -1519,13 +1531,6 @@ public class Player extends Entity {
 			
 			NPCAggression.process(this);
 			
-			if (getPoisonDamage() > 0 && System.currentTimeMillis() - getLastPoisonHit() > TimeUnit.MINUTES.toMillis(1)) {
-				appendPoisonDamage();
-				setLastPoisonHit(System.currentTimeMillis());
-				infection = 1;
-				getActionSender().sendMessage("You have been poisoned!");
-			}
-			
 			if (hasAttribute("antiFire")) {
 				if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 360000) {
 					if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 15000 && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 14000) {
@@ -1990,63 +1995,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Determines if the player is susceptible to poison but comparing
-	 * the duration of their immunity to the time of the last cure.
-	 * @return	true of they can be poisoned.
-	 */
-	public boolean isSusceptibleToPoison() {
-		return System.currentTimeMillis() - this.lastPoisonCure > this.poisonImmunity;
-	}
-
-	/**
-	 * The duration of time in milliseconds the player is immune to poison for
-	 * @return	the duration of time the player is immune to poison for
-	 */
-	public long getPoisonImmunity() {
-		return poisonImmunity;
-	}
-
-	/**
-	 * Modifies the current duration of poison immunity
-	 * @param duration	the new duration
-	 */
-	public void setPoisonImmunity(long duration) {
-		this.poisonImmunity = duration;
-	}
-
-	/**
-	 * The amount of damage received when hit by toxic
-	 * @return	the toxic damage
-	 */
-	public byte getPoisonDamage() {
-		return poisonDamage;
-	}
-
-	/**
-	 * Sets the current amount of damage received when hit by toxic
-	 * @param toxicDamage	the new amount of damage received
-	 */
-	public void setPoisonDamage(byte toxicDamage) {
-		this.poisonDamage = toxicDamage;
-	}
-
-	/**
-	 * The time in milliseconds of the last toxic damage the player received
-	 * @return	the time in milliseconds of the last toxic damage hit
-	 */
-	public long getLastPoisonHit() {
-		return lastPoisonHit;
-	}
-
-	/**
-	 * Sets the last time, in milliseconds, the toxic damaged the player
-	 * @param toxic	the time in milliseconds
-	 */
-	public void setLastPoisonHit(long toxic) {
-		lastPoisonHit = toxic;
-	}
-	
-	/**
 	 * Determines if the player is susceptible to venom by comparing
 	 * the duration of their immunity to the time of the last cure.
 	 * @return	true of they can be infected by venom.
@@ -2179,38 +2127,7 @@ public class Player extends Entity {
 		damage(new Hit(poisonDamage, HitType.POISON));
 		player.getPA().requestUpdates();
 	}
-	
-	/**
-	 * The time in milliseconds that the player healed themselves of poison
-	 * @return	the last time the player cured themself of poison
-	 */
-	public long getLastPoisonCure() {
-		return lastPoisonCure;
-	}
 
-	/**
-	 * Sets the time in milliseconds that the player cured themself of poison
-	 * @param lastPoisonCure	the last time the player cured themselves
-	 */
-	public void setLastPoisonCure(long lastPoisonCure) {
-		this.lastPoisonCure = lastPoisonCure;
-	}
-
-	public void setLastDragonfireShieldAttack(long lastAttack) {
-		this.lastDragonfireShieldAttack = lastAttack;
-	}
-
-	public long getLastDragonfireShieldAttack() {
-		return lastDragonfireShieldAttack;
-	}
-
-	public boolean isDragonfireShieldActive() {
-		return dragonfireShieldActive;
-	}
-
-	public void setDragonfireShieldActive(boolean dragonfireShieldActive) {
-		this.dragonfireShieldActive = dragonfireShieldActive;
-	}
 	/**
 	 * End of combat refferences
 	 */
@@ -3025,10 +2942,6 @@ public class Player extends Entity {
 	public long usernameHash;
 	private long lastVenomCure;
 	private long venomImmunity;
-	private long lastPoisonHit;
-	private long lastPoisonCure;
-	private long poisonImmunity;
-	private long lastDragonfireShieldAttack;
 	public long godSpellDelay;
 
 	/**

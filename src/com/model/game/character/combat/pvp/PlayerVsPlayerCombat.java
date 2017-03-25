@@ -25,8 +25,6 @@ import java.util.Objects;
  */
 public class PlayerVsPlayerCombat {
 
-	public static int[] poisonous = {5698, 13267, 13269, 13271};
-
 	/**
 	 * Validates that the attack can be made
 	 * 

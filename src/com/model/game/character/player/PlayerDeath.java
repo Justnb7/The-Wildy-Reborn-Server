@@ -110,7 +110,6 @@ public class PlayerDeath {
 		 */
 		player.faceEntity(player);
 		player.stopMovement();
-		player.setPoisonDamage((byte) 0);
 		player.getPA().restoreHealth();
 	}
 

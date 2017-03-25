@@ -4,7 +4,6 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatStyle;
-import com.model.game.character.combat.effect.impl.DragonfireShieldEffect;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.content.trade.Trading;
@@ -298,25 +297,6 @@ public class PlayerAssistant {
         	BossTracker.open(player);
             break;
             
-        case 11283:
-			DragonfireShieldEffect dfsEffect = new DragonfireShieldEffect();
-			
-			if (player.getCombat().noTarget()) {
-				return;
-			}
-			if (dfsEffect.isExecutable(player)) {
-				int damage = Utility.getRandom(25);
-                if (player.getCombat().noTarget()) {
-                    return;
-                }
-                player.attackDelay = 7;
-                if (player.getCombat().target.isPlayer())
-                    dfsEffect.execute(player, (Player)player.getCombat().target, damage);
-                else
-                    dfsEffect.execute(player, (NPC)player.getCombat().target, damage);
-                player.setLastDragonfireShieldAttack(System.currentTimeMillis());
-			}
-			break;
         }
     }
 
@@ -458,7 +438,6 @@ public class PlayerAssistant {
 		player.setVengeance(false);
 		player.setUsingSpecial(false);
 		player.attackDelay = 10;
-		player.setPoisonDamage((byte) 0);
 		player.infection = 0;
 		player.appearanceUpdateRequired = true;
 		player.skullIcon = -1;

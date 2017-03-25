@@ -148,13 +148,6 @@ public class NPC extends Entity {
 	
 	public long lastDamageTaken;
 	
-	public boolean isPoisoned() {
-		if (poisonDamage > 0)
-			return true;
-		else 
-			return false;
-	}
-	
 	/**
 	 * Our enemys maximum hit
 	 */

@@ -2,6 +2,8 @@ package com.model.game.character;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
 import com.model.Server;
@@ -9,8 +11,7 @@ import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
-import com.model.game.character.combat.effect.CombatEffect;
-import com.model.game.character.combat.effect.impl.RingOfRecoil;
+import com.model.game.character.combat.effect.BarrowsEffect;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.npc.NPC;
@@ -20,8 +21,11 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.minigames.pest_control.PestControl;
+import com.model.game.item.Item;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
+import com.model.task.impl.PoisonCombatTask;
+import com.model.utility.MutableNumber;
 import com.model.utility.Utility;
 
 /**
@@ -29,6 +33,11 @@ import com.model.utility.Utility;
  * @author Jak
  */
 public abstract class Entity {
+	
+	/**
+	 * The random identifier
+	 */
+	private Random random = new Random();
 
 	public Entity followTarget;
 
@@ -47,7 +56,6 @@ public abstract class Entity {
 	public int heightLevel;
 	public transient Object distanceEvent;
 	private boolean registered;
-	public int poisonDamage;
 	public int infection;
 	public boolean infected;
 	public Hit primary;
@@ -103,6 +111,16 @@ public abstract class Entity {
 	 * The mobile character is visible
 	 */
 	private boolean visible = true;
+	
+	/**
+     * The amount of poison damage this character has.
+     */
+    private final MutableNumber poisonDamage = new MutableNumber();
+
+    /**
+     * The type of poison that was previously applied.
+     */
+    private PoisonType poisonType;
 
 	public abstract Hit decrementHP(Hit hit);
 
@@ -124,6 +142,63 @@ public abstract class Entity {
 
 	public void setInCombat(boolean inCombat) {
 		this.inCombat = inCombat;
+	}
+	
+	/**
+     * Gets the amount of poison damage this character has.
+     *
+     * @return the amount of poison damage.
+     */
+    public final MutableNumber getPoisonDamage() {
+        return poisonDamage;
+    }
+	
+    /**
+     * Determines if this character is poisoned.
+     *
+     * @return {@code true} if this character is poisoned, {@code false}
+     *         otherwise.
+     */
+    public final boolean isPoisoned() {
+        return poisonDamage.get() > 0;
+    }
+    
+    /**
+     * Gets the type of poison that was previously applied.
+     * 
+     * @return the type of poison.
+     */
+    public PoisonType getPoisonType() {
+        return poisonType;
+    }
+
+    /**
+     * Sets the value for {@link CharacterNode#poisonType}.
+     * 
+     * @param poisonType
+     *            the new value to set.
+     */
+    public void setPoisonType(PoisonType poisonType) {
+        this.poisonType = poisonType;
+    }
+
+	public boolean poison(PoisonType poisonType) {
+		Entity entity = this;
+		if (entity.isPoisoned() || entity.getPoisonType() == null)
+			return false;
+		if (random.nextInt(3) == 0) {
+			if (entity.type == EntityType.PLAYER) {
+				Player player = (Player) entity;
+				if (player.getPoisonImmunity().get() > 0)
+					return false;
+				player.getActionSender().sendMessage("You have been poisoned!");
+				infection = 1;
+			}
+			entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
+			Server.getTaskScheduler().schedule(new PoisonCombatTask(this));
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -487,28 +562,21 @@ public abstract class Entity {
 					me.getCombat().vengeance(attacker, damage, 1);
 				}
 
-				RingOfRecoil recoil = new RingOfRecoil();
+				/*RingOfRecoil recoil = new RingOfRecoil();
 				if (recoil.isExecutable(me)) {
 					if (attacker.isPlayer())
 						recoil.execute(me, (Player)attacker, damage);
 					else
 						recoil.execute(me, (NPC)attacker, damage);
-				}
+				}*/
 
 			}
 
 			if (attacker.isPlayer()) {
 				Player pAttacker = (Player)attacker;
-				CombatEffect.applyRandomEffect(pAttacker, me, damage);
+				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
 				pAttacker.getCombat().applySmite(me, damage);
-
-				for (int i : PlayerVsPlayerCombat.poisonous) {
-					if (pAttacker.playerEquipment[pAttacker.getEquipment().getWeaponId()] == i) {
-						if (me.isSusceptibleToPoison() && Utility.getRandom(4) == 0) {
-							me.setPoisonDamage((byte) 6);
-						}
-					}
-				}
+				PoisonCombatTask.getPoisonType(new Item(pAttacker.playerEquipment[3])).ifPresent(attacker::poison);
 			}
 		}
 
@@ -826,10 +894,9 @@ public abstract class Entity {
 		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
 			Player p = World.getWorld().getPlayers().get(i);
 			if (p != null) {
-				Player person = p;
-				if (person.getOutStream() != null) {
-					if (person.getPosition().isWithinDistance(this.getPosition())) {
-						person.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(),  projectile.getSlope(), projectile.getRadius(), projectile.getLockon());
+				if (p.getOutStream() != null) {
+					if (p.getPosition().isWithinDistance(this.getPosition())) {
+						p.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(),  projectile.getSlope(), projectile.getRadius(), projectile.getLockon());
 					}
 				}
 			}

@@ -40,7 +40,7 @@ public class GlobalObject {
 	
 	/**
 	 * Creates the game object.
-	 * @param location The location.
+	 * @param Position The position.
 	 * @param type The type.
 	 * @param rotation The rotation.
 	 */

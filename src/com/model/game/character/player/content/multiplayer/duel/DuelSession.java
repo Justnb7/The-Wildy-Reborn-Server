@@ -328,7 +328,7 @@ public class DuelSession extends MultiplayerSession {
 		//Reset our combat variables
 		player.setVengeance(false);
 		player.lastVeng.reset();
-		player.setPoisonDamage((byte) 0);
+		
 		player.infection = 0;
 		player.infected = false;
 		player.poisonDamage = 0;

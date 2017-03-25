@@ -126,7 +126,7 @@ public class World implements Service {
 	 *
 	 * @param task
 	 */
-	private void schedule(ScheduledTask task) {
+	public void schedule(ScheduledTask task) {
 		Server.getTaskScheduler().schedule(task);
 	}
 

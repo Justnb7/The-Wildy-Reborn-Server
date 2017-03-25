@@ -654,9 +654,9 @@ public enum PotionData {
 	
 	public static void drinkAntiPoison(Player player, long duration) {
 		player.getActionSender().sendMessage("You have been cured of poison.");
-		player.setPoisonDamage((byte) 0);
+		/*player.setPoisonDamage((byte) 0);
 		player.setPoisonImmunity(duration);
-		player.setLastPoisonCure(System.currentTimeMillis());
+		player.setLastPoisonCure(System.currentTimeMillis());*/
 		player.infection = 0;
 		player.getPA().requestUpdates();
 		player.appearanceUpdateRequired = true;

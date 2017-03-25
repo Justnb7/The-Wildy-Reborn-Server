@@ -144,7 +144,6 @@ public class NPCDeathTask extends ScheduledTask {
             npc.playAnimation(Animation.create(808));
         }
         
-        npc.poisonDamage = 0;
         npc.animUpdateRequired = true; // might not be needed but leave incase it breaks somet
         npc.resetDamageReceived();
 
@@ -242,7 +241,6 @@ public class NPCDeathTask extends ScheduledTask {
         npc.freeze(0);
         npc.targetId = 0;
         npc.underAttack = false;
-        npc.poisonDamage = 0;
         npc.resetFace();
     }
 

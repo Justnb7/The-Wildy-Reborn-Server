@@ -36,6 +36,7 @@ public final class NPCDefinitionLoader extends JsonLoader {
         int maxHit = reader.get("maxHit").getAsInt();
         int hitpoints = reader.get("hitpoints").getAsInt();
         int attackSpeed = reader.get("attackSpeed").getAsInt();
+        
         int attackAnim = reader.get("attackAnim").getAsInt();
         int defenceAnim = reader.get("defenceAnim").getAsInt();
         int deathAnim = reader.get("deathAnim").getAsInt();

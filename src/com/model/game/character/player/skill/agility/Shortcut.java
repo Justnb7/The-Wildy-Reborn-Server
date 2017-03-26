@@ -14,7 +14,7 @@ public class Shortcut {
 		player.setRunning(false);
 		player.getMovementHandler().setForcedMovement(true);
 		player.getActionSender().sendConfig(173, 0);
-		player.walkAnimation = walkAnimation;
+/*		player.walkAnimation = walkAnimation;*/
 		player.getPA().requestUpdates();
 		player.getPA().walkTo(x, y);
 	}
@@ -270,7 +270,7 @@ public class Shortcut {
 	private static void setAnimationBack(Player player) {
 		player.setRunning(true);
 		player.getActionSender().sendConfig(173, 1);
-		player.walkAnimation = 0x333;
+		/*player.walkAnimation = 0x333;*/
 		player.getPA().requestUpdates();
 	}
 

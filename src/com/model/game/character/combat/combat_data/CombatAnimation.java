@@ -8,7 +8,6 @@ import com.model.game.character.player.Player;
  * @date 13-4-2016
  *
  */
-
 public class CombatAnimation {
 
 	/**
@@ -366,7 +365,7 @@ public class CombatAnimation {
 		return animation;
 	}
 	
-	public static void itemAnimations(Player player) {
+	/*public static void itemAnimations(Player player) {
 		String shieldName = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getShieldId()]).toLowerCase();
 		String name = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase();
 		@SuppressWarnings("unused")
@@ -445,7 +444,7 @@ public class CombatAnimation {
 			player.runAnimation = 1664;
 			return;
 		}
-		if (name.endsWith("crossbow")/* shadowy/jak */ && !name.contains("karil's")) {
+		if (name.endsWith("crossbow") shadowy/jak  && !name.contains("karil's")) {
 			player.standTurnAnimation = 4591;
 			return;
 		}
@@ -519,6 +518,6 @@ public class CombatAnimation {
 			player.runAnimation = 7221;
 			return;
 		}
-	}
+	}*/
 
 }

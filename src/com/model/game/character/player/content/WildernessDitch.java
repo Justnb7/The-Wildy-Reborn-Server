@@ -83,7 +83,6 @@ public class WildernessDitch {
 	private static void resetWalkIndex(Player player) {
 		player.setRunning(true);
 		player.getActionSender().sendConfig(173, 1);
-		player.walkAnimation = 0x333;
 		player.getPA().requestUpdates();
 	}
 }

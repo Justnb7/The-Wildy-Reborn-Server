@@ -6,7 +6,6 @@ import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
@@ -22,6 +21,7 @@ import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.shop.Currency;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
+import com.model.utility.json.definitions.WeaponAnimation;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 
@@ -1024,7 +1024,7 @@ public class ItemAssistant {
 			player.getPA().resetAutoCast();
 			player.autoCast = false;
 			writeBonus();
-			CombatAnimation.itemAnimations(player);
+			WeaponAnimation.execute(player, new Item(player.playerEquipment[player.getEquipment().getWeaponId()]));
 			player.getPA().requestUpdates();
 			player.getCombat().reset();
 			return true;
@@ -1049,15 +1049,12 @@ public class ItemAssistant {
 		player.getOutStream().putFrameSizeShort(offset);
 		player.playerEquipment[targetSlot] = wearID;
 		player.playerEquipmentN[targetSlot] = wearAmount;
-		player.getWeaponInterface().sendWeapon(
-				player.playerEquipment[player.getEquipment().getWeaponId()],
-				getItemName(player.playerEquipment[player.getEquipment()
-						.getWeaponId()]));
+		player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
 		player.getItems().resetBonus();
 		player.getItems().getBonus();
 		player.getPA().resetAutoCast();
 		player.getItems().writeBonus();
-		CombatAnimation.itemAnimations(player);
+		WeaponAnimation.execute(player, new Item(wearID));
 		player.updateRequired = true;
 		player.appearanceUpdateRequired = true;
 	}
@@ -1081,20 +1078,15 @@ public class ItemAssistant {
 	public void removeItem(int slot) {
 		if (player.getOutStream() != null && player != null) {
 			if (player.playerEquipment[slot] > -1) {
-				if (addItem(player.playerEquipment[slot],
-						player.playerEquipmentN[slot])) {
+				if (addItem(player.playerEquipment[slot], player.playerEquipmentN[slot])) {
 					player.playerEquipment[slot] = -1;
 					player.playerEquipmentN[slot] = 0;
-					player.getWeaponInterface().sendWeapon(
-							player.playerEquipment[player.getEquipment()
-									.getWeaponId()],
-							getItemName(player.playerEquipment[player
-									.getEquipment().getWeaponId()]));
+					player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
 					resetBonus();
 					getBonus();
 					player.autoCast = false;
 					writeBonus();
-					CombatAnimation.itemAnimations(player);
+					player.setWeaponAnimation(null);
 					player.getOutStream().writeFrame(34);
 					player.getOutStream().writeShort(6);
 					player.getOutStream().writeShort(1688);
@@ -2175,19 +2167,14 @@ public class ItemAssistant {
 	public void removeEquipment(int wearID, int slot) {
 		if (player.getOutStream() != null && player != null) {
 			if (player.playerEquipment[slot] > -1) {
-				if (addItem(player.playerEquipment[slot],
-						player.playerEquipmentN[slot])) {
+				if (addItem(player.playerEquipment[slot], player.playerEquipmentN[slot])) {
 					player.playerEquipment[slot] = -1;
 					player.playerEquipmentN[slot] = 0;
-					player.getWeaponInterface().sendWeapon(
-							player.playerEquipment[player.getEquipment()
-									.getWeaponId()],
-							getItemName(player.playerEquipment[player
-									.getEquipment().getWeaponId()]));
+					player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
 					resetBonus();
 					getBonus();
 					writeBonus();
-					CombatAnimation.itemAnimations(player);
+					player.setWeaponAnimation(null);
 					player.getOutStream().writeFrame(34);
 					player.getOutStream().writeShort(6);
 					player.getOutStream().writeShort(1688);

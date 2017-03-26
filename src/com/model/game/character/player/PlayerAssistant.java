@@ -279,8 +279,7 @@ public class PlayerAssistant {
      * reseting animation
      */
     public void resetAnimation() {
-    	CombatAnimation.itemAnimations(player);
-    	player.playAnimation(Animation.create(player.standTurnAnimation));
+    	player.playAnimation(Animation.create(-1));
         requestUpdates();
     }
 

@@ -550,14 +550,13 @@ public class PlayerUpdating {
 		player.getPlayerProps().writeByte(player.playerAppearance[10]);
 		player.getPlayerProps().writeByte(player.playerAppearance[11]);
 		player.getPlayerProps().writeByte(player.playerAppearance[12]);
-		player.getPlayerProps().writeShort(player.standTurnAnimation); // standAnimIndex
-		player.getPlayerProps().writeShort(player.turnAnimation); // standTurnAnimIndex
-																// er
-		player.getPlayerProps().writeShort(player.walkAnimation); // walkAnimIndex
-		player.getPlayerProps().writeShort(player.turn180Animation); // turn180AnimIndex
-		player.getPlayerProps().writeShort(player.turn90ClockWiseAnimation); // turn90CWAnimIndex
-		player.getPlayerProps().writeShort(player.turn90CounterClockWiseAnimation); // turn90CCWAnimIndex
-		player.getPlayerProps().writeShort(player.runAnimation); // runAnimIndex
+		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x328 : player.getWeaponAnimation().getStanding());
+		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x337 : player.getWeaponAnimation().getTurn());
+		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x333 : player.getWeaponAnimation().getWalking());
+		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x334 : player.getWeaponAnimation().turn180());
+		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x335 : player.getWeaponAnimation().turn90CW());
+		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x336 : player.getWeaponAnimation().turn90CCW());
+		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getRunning() == -1 ? 0x338 : player.getWeaponAnimation().getRunning());
 		
 		player.getPlayerProps().putRS2String(player.loyaltyTitle); // loyaltytitle
 		

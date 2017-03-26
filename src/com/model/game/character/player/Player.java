@@ -96,6 +96,7 @@ import com.model.task.impl.DistancedActionTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.WeaponAnimation;
 
 import io.netty.buffer.Unpooled;
 
@@ -2890,13 +2891,6 @@ public class Player extends Entity {
 	public int BANK_SIZE = 350;
 	public int bankItems[] = new int[BANK_SIZE];
 	public int bankItemsN[] = new int[BANK_SIZE];
-	public int standTurnAnimation = 0x328;
-	public int turnAnimation = 0x337;
-	public int walkAnimation = 0x333;
-	public int turn180Animation = 0x334;
-	public int turn90ClockWiseAnimation = 0x335;
-	public int turn90CounterClockWiseAnimation = 0x336;
-	public int runAnimation = 0x338;
 	public int[] playerEquipment = new int[14];
 	public int[] playerEquipmentN = new int[14];
 	private int x1 = -1;
@@ -3126,4 +3120,28 @@ public class Player extends Entity {
 	public void setAuguryUnlocked(boolean auguryUnlocked) {
 		this.auguryUnlocked = auguryUnlocked;
 	}
+	
+	/**
+     * The weapon animation for appearance updating.
+     */
+    private WeaponAnimation weaponAnimation;
+
+	/**
+     * Gets the weapon animation for appearance updating.
+     *
+     * @return the weapon animation.
+     */
+    public WeaponAnimation getWeaponAnimation() {
+        return weaponAnimation;
+    }
+
+    /**
+     * Sets the value for {@link Player#weaponAnimation}.
+     *
+     * @param weaponAnimation
+     *            the new value to set.
+     */
+    public void setWeaponAnimation(WeaponAnimation weaponAnimation) {
+        this.weaponAnimation = weaponAnimation;
+    }
 }

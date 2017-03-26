@@ -2,7 +2,9 @@ package com.model.game.item.equipment;
 
 import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Player;
+import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
+import com.model.utility.json.definitions.WeaponAnimation;
 
 
 public class Equipment {
@@ -113,7 +115,7 @@ public class Equipment {
 	public void updateEquipment(Player player) {
 		player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
 		player.getItems().setEquipment(player.playerEquipment[player.getEquipment().getWeaponId()], player.playerEquipmentN[player.getEquipment().getWeaponId()], player.getEquipment().getWeaponId());
-		CombatAnimation.itemAnimations(player);
+		WeaponAnimation.execute(player, new Item(player.playerEquipment[player.getEquipment().getWeaponId()]));
 		player.getItems().resetBonus();
 		player.getItems().getBonus();
 		player.getItems().writeBonus();

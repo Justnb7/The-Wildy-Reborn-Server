@@ -541,6 +541,18 @@ public class ActionSender {
 		return this;
 	}
 	
+	public ActionSender sendStillGFX(final int id, final int height, final Position loc) {
+        sendLocalCoordinates(loc, 0, 0);
+        player.getOutStream().writeFrame(4);
+        
+        player.getOutStream().writeByte(0);
+		player.getOutStream().writeShort(id);
+		player.getOutStream().writeByte(height);
+		player.getOutStream().writeByte(0);
+		player.flushOutStream();
+        return this;
+    }
+	
 	/**
      * Sends a projectile to a location.
      *
@@ -561,11 +573,11 @@ public class ActionSender {
      */
     public ActionSender sendProjectile(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
     	int offsetX = (start.getX() - finish.getX()) * -1;
-		int offsetY = (start.getY() - finish.getY()) * -1;//or this probs compare to old?
+		int offsetY = (start.getY() - finish.getY()) * -1;
 
-        sendLocalCoordinates(start, -3, -2);//itll be this , not this right? tll intshere sti tbhis bit is fine
+        sendLocalCoordinates(start, -3, -2);
         player.getOutStream().writeFrame(117);
-        player.getOutStream().writeByte(/*50*/angle);
+        player.getOutStream().writeByte(angle);
         player.getOutStream().writeByte(offsetY);
         player.getOutStream().writeByte(offsetX);
         player.getOutStream().writeShort(lockon);
@@ -578,7 +590,7 @@ public class ActionSender {
         player.getOutStream().writeByte(radius);
 
         player.flushOutStream();
-        player.getActionSender().sendMessage("dif "+offsetX+"|"+offsetY+" from "+start+" to "+finish+" dist "+start.distance(finish));
+        //player.getActionSender().sendMessage("dif "+offsetX+"|"+offsetY+" from "+start+" to "+finish+" dist "+start.distance(finish));
         return this;
     }
 	

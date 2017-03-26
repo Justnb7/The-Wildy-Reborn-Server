@@ -111,19 +111,6 @@ public class NpcVsPlayerCombat {
 				} else {
 					npc.attackTimer = npc.getDefinition().getAttackSpeed();
 					npc.playAnimation(Animation.create(npc.getAttackAnimation()));
-
-					if (npc.projectileId > 0) {
-						int nX = npc.getX();
-						int nY = npc.getY();
-						int pX = player.getX();
-						int pY = player.getY();
-						int offX = (nX - pX) * -1;
-						int offY = (nY - pY) * -1;
-						player.getProjectile().createPlayersProjectile(nX, nY, offX, offY, 50,
-								NPCCombatData.getProjectileSpeed(npc), npc.projectileId,
-								NPCCombatData.getProjectileStartHeight(npc.npcId, npc.projectileId),
-								NPCCombatData.getProjectileEndHeight(npc.npcId, npc.projectileId), -player.getId() - 1, 65);
-					}
 				}
 				player.lastAttacker = npc;
 				player.lastWasHitTime = System.currentTimeMillis();

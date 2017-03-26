@@ -4,7 +4,6 @@ import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.combat.npcs.BossScripts;
@@ -239,7 +238,7 @@ public class NpcVsPlayerCombat {
 			}
 			// block anim
 			if (player.attackDelay <= 3 || player.attackDelay == 0) {
-				player.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(player)));
+				//player.playAnimation(Animation.create(player.getWeaponDefinition().sendBlockAnimation(player)));
 			}
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());

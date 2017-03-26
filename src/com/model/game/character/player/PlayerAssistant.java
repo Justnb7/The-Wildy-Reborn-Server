@@ -2,7 +2,6 @@ package com.model.game.character.player;
 
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
-import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.content.BossTracker;

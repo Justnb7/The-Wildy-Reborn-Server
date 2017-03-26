@@ -1,6 +1,5 @@
 package com.model.game.item.equipment;
 
-import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;

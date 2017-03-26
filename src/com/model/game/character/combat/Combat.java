@@ -6,7 +6,6 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
-import com.model.game.character.combat.combat_data.CombatAnimation;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.impl.Venom;
@@ -24,6 +23,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.WeaponDefinition;
 
 public class Combat {
 
@@ -262,8 +262,24 @@ public class Combat {
 		 * Start the attack animation
 		 */
         if (!player.usingMagic && wep != 22494 && wep != 2415 && wep != 2416 && wep != 2417) {
-            player.playAnimation(Animation.create(CombatAnimation.getAttackAnimation(player, player.getItems().getItemName(wep).toLowerCase())));
-
+        	final WeaponDefinition def = WeaponDefinition.get(wep);
+        	if(wep <= 0) {
+        		switch(player.getAttackStyle()) {
+        		case 0:
+        			player.playAnimation(Animation.create(422));
+        			break;
+        		case 1:
+        			player.playAnimation(Animation.create(423));
+        			break;
+        		case 2:
+        			player.playAnimation(Animation.create(422));
+        			break;
+        		}
+        	} else {
+        		if (def != null) {
+        			player.playAnimation(Animation.create(def.getAttackAnimations()[player.getAttackStyle()]));
+        		}
+        	}
 
             // Npc block anim
             if (target.isNPC()) {
@@ -680,8 +696,8 @@ public class Combat {
 
 	                    if (target.isNPC() && ((NPC) target).attackTimer < 5)
 	                        target.playAnimation(Animation.create(target.asNpc().getDefendAnimation()));
-	                    else if (target.isPlayer() && ((Player)target).attackDelay < 5)
-	                        target.playAnimation(Animation.create(CombatAnimation.getDefendAnimation(target.asPlayer())));
+	                    /*else if (target.isPlayer() && ((Player)target).attackDelay < 5)
+	                        target.playAnimation(Animation.create(target.asPlayer().getWeaponDefinition().sendBlockAnimation(target.asPlayer())));*/
 
 	                }
 	                if (hit.cbType == CombatStyle.MAGIC) {

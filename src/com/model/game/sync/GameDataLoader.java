@@ -19,7 +19,7 @@ import com.model.utility.cache.map.MapLoading;
 import com.model.utility.json.loader.EquipmentRequirementLoader;
 import com.model.utility.json.loader.ItemDefinitionLoader;
 import com.model.utility.json.loader.ShopLoader;
-import com.model.utility.json.loader.WeaponAnimationLoader;
+import com.model.utility.json.loader.WeaponDefinitionLoader;
 
 /**
  * A class for loading all of the gamedata on server startup
@@ -54,7 +54,7 @@ public class GameDataLoader implements Runnable {
 			new ShopLoader().load();
 			new ItemDefinitionLoader().load();
 			new EquipmentRequirementLoader().load();
-			new WeaponAnimationLoader().load();
+			new WeaponDefinitionLoader().load();
 			MobAttackSounds.declare();
 			PlayerSounds.declare();
 			Equipment.setMetalEquipment();

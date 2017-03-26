@@ -7,7 +7,7 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 
 /**
- * The container class that represents all the weapon equipment animtions.
+ * The container class that represents all the weapon equipment animations.
  *
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  * Credits to Lare96

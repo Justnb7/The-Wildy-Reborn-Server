@@ -3,15 +3,6 @@ package com.model.game.character.combat.magic;
 import com.model.game.character.player.Player;
 
 public class MagicData {
-	
-	
-	public static int getMagicGraphic(Player c, int i) {
-		switch (c.MAGIC_SPELLS[c.oldSpellId][0]) {
-		case 12891:
-			return 369;
-		}
-		return c.MAGIC_SPELLS[c.oldSpellId][5];
-	}
 
 	public static int getStartGfxHeight(Player c) {
 		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {

@@ -16,8 +16,8 @@ import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
-import com.model.utility.json.NPCDefinitionLoader;
 import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.loader.NPCDefinitionLoader;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -726,18 +726,17 @@ public class ItemAssistant {
 	}
 
 	public void resetBonus() {
-		Arrays.fill(player.playerBonus, 0);
+		Arrays.fill(player.getBonuses(), 0);
 	}
 
 	public void writeBonus() {
 		int offset = 0;
 		String send;
-		for (int i = 0; i < player.playerBonus.length; i++) {
-			if (player.playerBonus[i] >= 0) {
-				send = Combat.BONUS_NAMES[i] + ": +" + player.playerBonus[i];
+		for (int i = 0; i < player.getBonuses().length; i++) {
+			if (player.getBonuses()[i] >= 0) {
+				send = Combat.BONUS_NAMES[i] + ": +" + player.getBonuses()[i];
 			} else {
-				send = Combat.BONUS_NAMES[i] + ": -"
-						+ java.lang.Math.abs(player.playerBonus[i]);
+				send = Combat.BONUS_NAMES[i] + ": -" + java.lang.Math.abs(player.getBonuses()[i]);
 			}
 
 			if (i == 10) {
@@ -753,7 +752,7 @@ public class ItemAssistant {
 				continue;
 			int[] values = ItemDefinition.forId(item).getBonus();
 			for (int i = 0; i < values.length; i++)
-				player.playerBonus[i] += values[i];
+				player.getBonuses()[i] += values[i];
 		}
 	}
 

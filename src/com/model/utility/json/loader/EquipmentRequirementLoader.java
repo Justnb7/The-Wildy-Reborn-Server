@@ -1,10 +1,11 @@
-package com.model.utility.json;
+package com.model.utility.json.loader;
 
 import java.util.Objects;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.model.utility.json.JsonLoader;
 import com.model.utility.json.definitions.Requirement;
 
 /**

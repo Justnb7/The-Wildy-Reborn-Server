@@ -16,9 +16,9 @@ import com.model.game.item.equipment.Equipment;
 import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
-import com.model.utility.json.EquipmentRequirementLoader;
-import com.model.utility.json.ItemDefinitionLoader;
-import com.model.utility.json.ShopLoader;
+import com.model.utility.json.loader.EquipmentRequirementLoader;
+import com.model.utility.json.loader.ItemDefinitionLoader;
+import com.model.utility.json.loader.ShopLoader;
 
 /**
  * A class for loading all of the gamedata on server startup

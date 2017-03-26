@@ -104,7 +104,7 @@ public class CombatFormulae {
                     att_prayer_bonus += 0.2;
                 }
 
-                att_equipment_bonus = p.playerBonus[p.getAttackStyle() <= 1 ? p.getAttackStyle() : 1];
+                att_equipment_bonus = p.getBonuses()[p.getAttackStyle() <= 1 ? p.getAttackStyle() : 1];
                 att_void_bonus = Equipment.wearingFullVoid(p, att_type) ? 1.1 : 1;
                 break;
             case 1:
@@ -120,7 +120,7 @@ public class CombatFormulae {
                      att_prayer_bonus += 0.15;
                  }
 
-                att_equipment_bonus = p.playerBonus[4];
+                att_equipment_bonus = p.getBonuses()[4];
                 att_void_bonus = Equipment.wearingFullVoid(p, att_type) ? 1.1 : 1;
                 break;
             case 2:
@@ -138,7 +138,7 @@ public class CombatFormulae {
 
                 att_spell_bonus += ((att_base_magic - p.MAGIC_SPELLS[p.oldSpellId][1]) * 0.3);
 
-                att_equipment_bonus = p.playerBonus[3];
+                att_equipment_bonus = p.getBonuses()[3];
                 att_void_bonus = Equipment.wearingFullVoid(p, att_type) ? 1.3 : 1;
                 break;
                 
@@ -200,14 +200,14 @@ public class CombatFormulae {
 
             switch (att_type) {
             case 0:
-                tar_equipment_bonus = t.playerBonus[attacker.isPlayer() ? attacker.toPlayer().getAttackStyle() <= 1
+                tar_equipment_bonus = t.getBonuses()[attacker.isPlayer() ? attacker.toPlayer().getAttackStyle() <= 1
                     ? attacker.toPlayer().getAttackStyle() + 5 : 6 : 6];
                 break;
             case 1:
-                tar_equipment_bonus = t.playerBonus[9];
+                tar_equipment_bonus = t.getBonuses()[9];
                 break;
             case 2:
-                tar_equipment_bonus = t.playerBonus[8];
+                tar_equipment_bonus = t.getBonuses()[8];
                 break;
             default:
                 break;
@@ -286,7 +286,7 @@ public class CombatFormulae {
 		Player player = (Player) attacker;
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
-		double strengthBonus = player.playerBonus[10];
+		double strengthBonus = player.getBonuses()[10];
 		double otherBonusMultiplier = 1;
 		int strengthLevel = player.getSkills().getLevel(Skills.STRENGTH);
 		int combatStyleBonus = weaponBonus(player);

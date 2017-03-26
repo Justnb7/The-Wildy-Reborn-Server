@@ -307,7 +307,7 @@ public class PrayerHandler {
 			}
 		}
 		if (toRemove > 0) {
-			toRemove /= (1 + (0.035 * player.playerBonus[11]));
+			toRemove /= (1 + (0.035 * player.getBonuses()[11]));
 		}
 		//System.out.println("Remove prayer point: "+toRemove);
 		player.setPrayerPoint(player.getPrayerPoint() - toRemove);

@@ -63,8 +63,8 @@ public class MagicCalculations {
 	 */
 	public static int calculateMagicAttack(Player player) {
 		int attack = player.getSkills().getLevel(Skills.MAGIC);
-		// TODO: void bonus
-		int magicBonus = player.playerBonus[3];
+
+		int magicBonus = player.getBonuses()[3];
 		if (player.isActivePrayer(Prayers.MYSTIC_WILL)) {
 			attack *= player.getSkills().getLevelForExperience(0) * 1.05;
 		} else if (player.isActivePrayer(Prayers.MYSTIC_LORE)) {

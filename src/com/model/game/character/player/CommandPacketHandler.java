@@ -20,11 +20,11 @@ import com.model.game.location.Position;
 import com.model.net.ConnectionHandler;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.json.ItemDefinitionLoader;
-import com.model.utility.json.NPCDefinitionLoader;
-import com.model.utility.json.ShopLoader;
 import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.loader.ItemDefinitionLoader;
+import com.model.utility.json.loader.NPCDefinitionLoader;
+import com.model.utility.json.loader.ShopLoader;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 

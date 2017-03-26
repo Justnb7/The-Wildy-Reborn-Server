@@ -6,20 +6,6 @@ import com.model.game.item.Item;
 
 public class MagicRequirements extends MagicData {
 
-	public static boolean hasRunes(Player player, int[] runes, int[] amount) {
-		for(int i = 0; i < runes.length; i++) {
-			if(player.getItems().playerHasItem(runes[i], amount[i]) || player.getRights().getValue() > 0) {
-				return true;
-			}
-		}
-		player.getActionSender().sendMessage("You don't have enough runes to cast this spell!");
-		return false;
-	}
-
-	public static boolean hasRequiredLevel(Player player, int i) {
-		return player.getSkills().getLevel(Skills.MAGIC) >= i;
-	}
-
 	public static boolean wearingStaff(Player player, int runeId, int amount, boolean deleteFromRunePouch) {
 		int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
 		switch (runeId) {

@@ -1,4 +1,4 @@
-package com.model.utility.json;
+package com.model.utility.json.loader;
 
 import java.util.Objects;
 
@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.model.game.item.Item;
 import com.model.game.shop.Currency;
 import com.model.game.shop.Shop;
+import com.model.utility.json.JsonLoader;
 
 /**
  * The {@link JsonLoader} implementation that loads all shops.

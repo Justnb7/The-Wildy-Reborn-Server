@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import com.model.Server;
 import com.model.game.Constants;
@@ -2859,6 +2858,20 @@ public class Player extends Entity {
 		}
 	}
 	
+	/**
+	 * Gets the players bonuses
+	 * 
+	 * @return
+	 */
+	public int[] getBonuses() {
+		return bonuses;
+	}
+	
+	/**
+	 * The players equipment bonuses
+	 */
+	private int[] bonuses = new int[12];
+	
     /**
      * Integers
      */
@@ -2895,7 +2908,6 @@ public class Player extends Entity {
 	private int direction = -1;
 
 	public int lastClickedItem;
-	public int[] playerBonus = new int[12];
 	public int[] itemKeptId = new int[4];
 	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
 			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
@@ -2916,14 +2928,12 @@ public class Player extends Entity {
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
 	public boolean chatTextUpdateRequired = false;
-	private boolean dragonfireShieldActive;
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
 	isSkulled, hasMultiSign, saveCharacter,
-	properLogout, playerIsFiremaking,
-	acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
+	properLogout, acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
 	
 	/**
 	 * Strings

@@ -164,18 +164,6 @@ public final class ItemDefinition {
     }
 
     /**
-     * Adds a new {@link ItemDefinition} to the memory.
-     *
-     * @param index
-     *         the index to add the definition on.
-     * @param def
-     *         the definition to add.
-     */
-    public static void add(int index, ItemDefinition def) {
-        DEFINITIONS[index] = def;
-    }
-
-    /**
      * Gets the item definition in memory for {@code id}.
      *
      * @param id
@@ -189,42 +177,6 @@ public final class ItemDefinition {
         	 //throw new IllegalStateException("Item definition is not initialised for id " + id);
         }
         return DEFINITIONS[id];
-    }
-
-
-    /**
-     * Gets the item identifier in memory for {@code name}.
-     *
-     * @param name
-     *         the name to get the item identifier of.
-     * @return the item identifier in memory for the name, or {@code -1} if none were
-     * found.
-     */
-    public static OptionalInt get(String name) {
-        for (ItemDefinition def : DEFINITIONS) {
-            if (def == null)
-                continue;
-            if (def.getName().equals(name))
-                return OptionalInt.of(def.getId());
-        }
-        return OptionalInt.empty();
-    }
-
-    /**
-     * Gets the item definition in memory taht matches the given predicate.
-     *
-     * @param filter
-     *         the predicate to get the item definition of.
-     * @return the item definition in memory for the predicate.
-     */
-    public static Optional<ItemDefinition> get(Predicate<String> filter) {
-        for (ItemDefinition def : DEFINITIONS) {
-            if (def == null)
-                continue;
-            if (filter.test(def.getName()))
-                return Optional.of(def);
-        }
-        return Optional.empty();
     }
 
     /**
@@ -390,18 +342,5 @@ public final class ItemDefinition {
     public boolean isTradeable() {
         return tradeable;
     }
-    
-    public static Map<Integer, ItemDefinition> getDefinitions() {
-		return definitions;
-	}
-
-	public static void setDefinitions(Map<Integer, ItemDefinition> definitions) {
-		ItemDefinition.definitions = definitions;
-	}
-
-	/**
-     * The definitions.
-     */
-    private static Map<Integer, ItemDefinition> definitions = new HashMap<>();
 
 }

@@ -7,6 +7,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.combat_data.CombatData;
+import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
@@ -166,7 +167,7 @@ public class Combat {
 		/*
 		 * Since we can attack, lets verify if we're close enough to attack
 		 */
-        if (target.isPlayer() && !CombatData.isWithinAttackDistance(player, (Player) target)) {
+        if (target.isPlayer() && !isWithinAttackDistance(player, (Player) target)) {
             return;
         }
 
@@ -196,7 +197,7 @@ public class Combat {
 
 
         if (player.getCombatType() == CombatStyle.MAGIC || player.getCombatType() == CombatStyle.RANGE ||
-                (CombatData.usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2))) {
+                (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2))) {
             player.stopMovement();
         }
 
@@ -212,7 +213,7 @@ public class Combat {
 		/*
 		 * Set our attack timer so we dont instantly hit again
 		 */
-        player.attackDelay = CombatData.getAttackDelay(player, player.getItems().getItemName(wep).toLowerCase());
+        player.attackDelay = WeaponDefinition.sendAttackSpeed(player);
 
 		/*
 		 * Add a skull if needed
@@ -668,7 +669,7 @@ public class Combat {
         // hasn't been set to magic/range.. must be melee.
         if (player.getCombatType() == null) {
             player.setCombatType(CombatStyle.MELEE);
-            if (CombatData.usingHalberd(player))
+            if (usingHalberd(player))
                 followDist = 2;
         }
         player.followDistance = followDist;
@@ -696,8 +697,8 @@ public class Combat {
 
 	                    if (target.isNPC() && ((NPC) target).attackTimer < 5)
 	                        target.playAnimation(Animation.create(target.asNpc().getDefendAnimation()));
-	                    /*else if (target.isPlayer() && ((Player)target).attackDelay < 5)
-	                        target.playAnimation(Animation.create(target.asPlayer().getWeaponDefinition().sendBlockAnimation(target.asPlayer())));*/
+	                    else if (target.isPlayer() && ((Player)target).attackDelay < 5)
+	                        target.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(target.asPlayer())));
 
 	                }
 	                if (hit.cbType == CombatStyle.MAGIC) {
@@ -723,4 +724,81 @@ public class Combat {
     public static boolean incombat(Player player) {
         return System.currentTimeMillis() - player.lastWasHitTime < 4000;
     }
+    
+    /**
+	 * Checks wether the player has equiped a halberd.
+	 * @param player
+	 *            The {@link Player} who has the halberd equiped.
+	 * @return We are checking for an equiped halberd.
+	 */
+	public static boolean usingHalberd(Player player) {
+		String weapon = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase();
+		
+		if (weapon.contains("halberd")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Determines the distance required before you can attack the other player
+	 * 
+	 * @param player
+	 *            The {@link Player} who is following/attacking the other player
+	 * @param victim
+	 *            The {@link Player} we are following/attacking
+	 * @param follow
+	 *            Determine if you are following the player
+	 * @return We are within distance to interact with the other player
+	 */
+	public static int calculateAttackDistance(Player player, Player victim, boolean follow) {
+		int distance = 1;
+		if (player.getCombatType() == CombatStyle.RANGE && player.getEquipment().isThrowingWeapon(player)) {
+			distance = 4;
+		} else if (usingHalberd(player) && player.getCombatType() == CombatStyle.MELEE) {
+			distance = 2;
+		} else if (player.usingBow) {
+			distance = 7;
+		} else if(player.playerEquipment[player.getEquipment().getWeaponId()] == 11785) {
+			distance = 9;
+		} else if (player.getEquipment().wearingBallista(player)) {
+			distance = 11;
+		} else if (player.getEquipment().wearingBlowpipe(player)) {
+			distance = 5;
+		} else if (player.usingMagic) {
+			distance = 10;
+		} else if (player.getCombatType() == CombatStyle.MELEE) {
+			if (player.getX() != victim.getX() && player.getY() != victim.getY() && player.distanceToPoint(victim.getX(), victim.getY()) < 2) {
+				distance = 2;
+			} else {
+				distance = CombatRequirements.getRequiredDistance(player);
+			}
+		}
+		if (victim.getMovementHandler().isMoving() && !follow) {
+			distance += 2;
+		}
+		return distance;
+	}
+	
+	/**
+	 * Checks for attack distance.
+	 * @param player
+	 * @param victim
+	 * @return
+	 */
+	public static boolean isWithinAttackDistance(Player player, Player victim) {
+		return player.goodDistance(player.getX(), player.getY(), victim.getX(), victim.getY(), calculateAttackDistance(player, victim, false));
+	}
+	
+	/**
+	 * Checks for follow distance.
+	 * @param player
+	 * @param victim
+	 * @return
+	 */
+	public static boolean isWithinAttackDistanceForStopFollow(Player player, Player victim) {
+		return player.goodDistance(player.getX(), player.getY(), victim.getX(), victim.getY(),
+				calculateAttackDistance(player, victim, true));
+	}
 }

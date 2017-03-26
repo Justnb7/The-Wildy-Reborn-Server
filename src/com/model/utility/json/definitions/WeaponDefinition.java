@@ -3,6 +3,7 @@ package com.model.utility.json.definitions;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 
@@ -137,28 +138,66 @@ public class WeaponDefinition {
 	public int[] getAttackAnimations() {
 		return attackAnimations;
 	}
+	
+	/**
+	 * Sends the attack speed for each weapon/ magic spell during combat.
+	 * 
+	 * @param player
+	 *            The player wielding the weapon/ performing a magic spell.
+	 * @return the attack speed
+	 */
+	public static int sendAttackSpeed(Player player) {
+		Item weapon = new Item(player.playerEquipment[3]);
 
-	public int sendBlockAnimation(Player player) {
-		Item shield = new Item(player.playerEquipment[player.getEquipment().getShieldId()]);
+		if (player.usingMagic) {
+			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
+			default:
+				return 5;
+			}
+		}
+
+		if (weapon.getId() <= 0) {
+			return 4;
+		} else if (weapon.getId() == 12926) {
+			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombat().target.isPlayer() ? 3 : 2 : player.getCombat().target.isPlayer() ? 4 : 3;
+		} else {
+			return WeaponDefinition.get(weapon.getId()).getAttackSpeed();
+		}
+	}
+
+	/**
+	 * Sends the players block animation during combat.
+	 * 
+	 * @param player
+	 *            The player doing the block animation.
+	 * @return the block animation
+	 */
+	public static int sendBlockAnimation(Player player) {
+		//weapon instance
+		Item weapon = new Item(player.playerEquipment[3]);
 		
-		String byName = shield.getName().toLowerCase();
-		
-		if (byName != null) {
-			if (byName.contains("shield") || byName.contains("kite") || byName.contains("ward")) {
+		//shield instance
+		Item shield = new Item(player.playerEquipment[5]);
+
+		//grab by name
+		String shieldName = shield.getName().toLowerCase();
+
+		if (shieldName != null) {
+			if (shieldName.contains("shield") || shieldName.contains("kite") || shieldName.contains("ward")) {
 				return 1156;
 			}
-			if (byName.endsWith("defender")) {
+			if (shieldName.endsWith("defender")) {
 				return 4177;
 			}
-			
-			if (byName.contains("toktz-ket-xil")) {
+
+			if (shieldName.contains("toktz-ket-xil")) {
 				return 1156;
 			}
-		} else {
-			return getBlockAnimation();
 		}
-		
-		return 424;
+		if (weapon.getId() == -1) // empty hands
+			return 424;
+		else
+			return WeaponDefinition.get(weapon.getId()).getBlockAnimation(); // wep anim
 	}
 	
 }

@@ -2,7 +2,6 @@ package com.model.game.character.combat.pvp;
 
 import com.model.Server;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Boundary;
@@ -21,7 +20,7 @@ import java.util.Objects;
  * 
  * @author Mobster
  * @author Sanity
- *
+ * @author Patrick van Elderen
  */
 public class PlayerVsPlayerCombat {
 
@@ -92,7 +91,7 @@ public class PlayerVsPlayerCombat {
 			Combat.resetCombat(player);
 			return false;
 		}
-		if (player.frozen() && !CombatData.isWithinAttackDistanceForStopFollow(player, target)) {
+		if (player.frozen() && !Combat.isWithinAttackDistanceForStopFollow(player, target)) {
 			return false;
 		}
 		// TODO split into 2 methods, canAttack and canTouch??

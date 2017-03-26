@@ -14,6 +14,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.WeaponDefinition;
 
 /**
  * Handles all Npc Vs Player combat methods
@@ -238,7 +239,8 @@ public class NpcVsPlayerCombat {
 			}
 			// block anim
 			if (player.attackDelay <= 3 || player.attackDelay == 0) {
-				//player.playAnimation(Animation.create(player.getWeaponDefinition().sendBlockAnimation(player)));
+				//tried to make a instance didnt work ether
+				player.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
 			}
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());

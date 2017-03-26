@@ -3,7 +3,6 @@ package com.model.game.character.combat.pvm;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
@@ -20,7 +19,7 @@ import com.model.task.ScheduledTask;
  * 
  * @author Sanity
  * @author Mobster
- *
+ * @author Patrick van Elderen
  */
 public class PlayerVsNpcCombat {
 	
@@ -275,7 +274,7 @@ public class PlayerVsNpcCombat {
 		boolean hasDistance = npc.npcId == 5535 ? true : false; // force 5535 tents to always be hittable
 		for (Position pos : npc.getTiles()) {
 			double distance = pos.distance(player.getPosition());
-			if(CombatData.usingHalberd(player) && distance <= 2) {
+			if(Combat.usingHalberd(player) && distance <= 2) {
 				hasDistance = true;
 				break;
 			}

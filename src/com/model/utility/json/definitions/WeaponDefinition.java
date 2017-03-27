@@ -148,7 +148,7 @@ public class WeaponDefinition {
 	 */
 	public static int sendAttackSpeed(Player player) {
 		Item weapon = new Item(player.playerEquipment[3]);
-
+		
 		if (player.usingMagic) {
 			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 			default:

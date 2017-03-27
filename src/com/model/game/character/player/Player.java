@@ -27,7 +27,6 @@ import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
-import com.model.game.character.combat.range.Projectile;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.combat.weapon.WeaponInterface;
 import com.model.game.character.npc.BossDeathTracker;
@@ -2383,12 +2382,6 @@ public class Player extends Entity {
 	
 	public WeaponInterface getWeaponInterface() {
 		return weaponInterface;
-	}
-	
-	private Projectile projectile = new Projectile(this);
-	
-	public Projectile getProjectile() {
-		return projectile;
 	}
 
 	/**

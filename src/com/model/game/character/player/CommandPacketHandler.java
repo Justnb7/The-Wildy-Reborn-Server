@@ -870,7 +870,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "stillgfx":
     		int stillgfx = Integer.parseInt(cmd[1]);
-			player.getProjectile().stillGfx(stillgfx, player.getX(), player.getY(), player.getZ(), 0);
+			player.getActionSender().sendStillGFX(stillgfx, player.getPosition().getZ(), new Position(player.getX(), player.getY()));
     		return true;
     		
     	}

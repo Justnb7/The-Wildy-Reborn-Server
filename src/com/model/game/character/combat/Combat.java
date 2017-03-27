@@ -22,6 +22,7 @@ import com.model.game.character.player.PlayerAssistant;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
+import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.WeaponDefinition;
@@ -430,9 +431,7 @@ public class Combat {
             int targetIndex = -player.getCombat().target.getIndex() - 1;
 
             if (player.MAGIC_SPELLS[player.getSpellId()][4] > 0) {
-                player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, 78,
-                        player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartHeight(),
-                        player.getCombat().getEndHeight(), targetIndex, player.getCombat().getStartDelay());
+            	player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartDelay(), 50, 78, player.getCombat().getStartHeight(), player.getCombat().getEndHeight(), target.getProjectileLockonIndex(), 16, 64));
             }
             if (player.autocastId > 0) {
                 player.followDistance = 5;
@@ -445,8 +444,7 @@ public class Combat {
             if (target.isPlayer()) {
                 Player ptarg = (Player) target;
                 if (player.MAGIC_SPELLS[player.oldSpellId][0] == 12891 && ptarg.getMovementHandler().isMoving()) {
-                    player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, 85, 368, 25, 25, targetIndex,
-                            player.getCombat().getStartDelay());
+                    player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), 368, player.getCombat().getStartDelay(), 50, 85, 25, 25, target.getProjectileLockonIndex(), 16, 64));
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.model.game.character.combat.range;
 
 import com.model.game.character.Entity;
+import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 
@@ -10,32 +11,19 @@ public class RangeData {
 
 	public static void fireProjectileAtTarget(Player player) {
 		Entity target = player.getCombat().target;
-		int pX = player.getX();
-		int pY = player.getY();
-		int oX = target.getX();
-		int oY = target.getY();
-		int offX = (pY - oY) * -1;
-		int offY = (pX - oX) * -1;
-		int targetIndex = -target.getIndex() - 1; // TODO confirm, maybe use clientIndex()?
 
-		player.getProjectile().createPlayersProjectile(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(),
-				player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, getProjectileShowDelay(player));
+		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), player.getCombat().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
+		
 
 		if (player.getCombat().usingDbow())
-			player.getProjectile().createProjectile3(pY, pX, offY, offX, player.getCombat().getRangeProjectileGFX(), 53, 31, 100, targetIndex);
+			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), 100, 50, getProjectileShowDelay(player), 53, 31, target.getProjectileLockonIndex(), 16, 64));
+		
 	}
 
 	public static void msbSpecProjectile(Player player) {
 		Entity target = player.getCombat().target;
-		int pX = player.getX();
-		int pY = player.getY();
-		int oX = target.getX();
-		int oY = target.getY();
-		int offX = (pY - oY) * -1;
-		int offY = (pX - oX) * -1;
-		int targetIndex = -target.getIndex() - 1; // TODO confirm, maybe use clientIndex()?
-		player.getProjectile().createPlayersProjectile2(pX, pY, offX, offY, 50, player.getCombat().getProjectileSpeed(),
-				player.getCombat().getRangeProjectileGFX(), 43, 31, targetIndex, getProjectileShowDelay(player), 10);
+		
+		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), player.getCombat().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 10, 64));
 	}
 
 	public static int getRangeStr(int i) {

@@ -15,7 +15,7 @@ import com.model.game.character.player.packets.in.SecondGroundOption;
 import com.model.game.character.player.packets.in.CharDesignPacketHandler;
 import com.model.game.character.player.packets.in.ChatPacketHandler;
 import com.model.game.character.player.packets.in.ClickOnGameScreen;
-import com.model.game.character.player.packets.in.ClickingObject;
+import com.model.game.character.player.packets.in.ObjectOptionPacketHandler;
 import com.model.game.character.player.packets.in.CloseInterfacePacketHandler;
 import com.model.game.character.player.packets.in.DialoguePacketHandler;
 import com.model.game.character.player.packets.in.EnterAmountPacketHandler;
@@ -89,7 +89,7 @@ public class PacketHandler {
 		packetId[253] = new SecondGroundOption();
 		packetId[14] = new ItemOnPlayerPacketHandler();
 		packetId[40] = new DialoguePacketHandler();
-		ClickingObject co = new ClickingObject();
+		ObjectOptionPacketHandler co = new ObjectOptionPacketHandler();
 		packetId[132] = co;
 		packetId[252] = co;
 		packetId[70] = co;

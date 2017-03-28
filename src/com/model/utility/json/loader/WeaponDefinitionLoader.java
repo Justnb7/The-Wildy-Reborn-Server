@@ -19,7 +19,7 @@ public final class WeaponDefinitionLoader extends JsonLoader {
      * Creates a new {@link WeaponDefinitionLoader}.
      */
     public WeaponDefinitionLoader() {
-        super("./data/json/equipment/weapon_animations.json");
+        super("./data/json/equipment/weapon_definitions.json");
     }
 
     @Override

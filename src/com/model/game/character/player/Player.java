@@ -39,6 +39,7 @@ import com.model.game.character.player.account.ironman.GameModeSelection;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
+import com.model.game.character.player.content.clicking.object.ObjectInteraction;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
 import com.model.game.character.player.content.consumable.Consumable;
@@ -1051,16 +1052,6 @@ public class Player extends Entity {
 		return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
 	}
 
-	public boolean destinationReached() {
-		Position player = new Position(absX, absY, heightLevel);
-		Position object = new Position(objectX, objectY, heightLevel);
-		if (player.equals(object) || player.withinDistance(object, objectDistance)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	private void hasDied() {
 		Server.getTaskScheduler().schedule(new ScheduledTask(1, true) {
 
@@ -1519,8 +1510,6 @@ public class Player extends Entity {
 		try {
 			refresh_inventory();
 			PrayerHandler.handlePrayerDraining(this);
-			if (clickObjectType > 0 && destinationReached())
-				handleObjectAction();
 
 			update_attack_style(); // also updates follow distance. Must be done before following & combat
 			process_following();
@@ -1633,18 +1622,6 @@ public class Player extends Entity {
 			hasMultiSign = true;
 			this.getActionSender().sendMultiway(1);
 		}
-	}
-
-	public void handleObjectAction() {
-		face(this, new Position(objectX, objectY));
-		if (clickObjectType == 1)
-			getActions().firstClickObject(objectId, objectX, objectY);
-		else if (clickObjectType == 2)
-			getActions().secondClickObject(objectId, objectX, objectY);
-		else if (clickObjectType == 3)
-			getActions().thirdClickObject(objectId, objectX, objectY);
-		else if (clickObjectType == 4)
-			UseItem.ItemonObject(this, objectId, objectX, objectY, itemUsedOn);
 	}
 
 	public int getChunckX() {
@@ -2905,9 +2882,8 @@ public class Player extends Entity {
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			wildLevel, teleTimer, killerId,
 			attackDelay, npcClickIndex, oldSpellId,
-			clickNpcType, clickObjectType, objectId, itemUsedOn, objectX, objectY, tradeStatus, tradeWith,
-			walkTutorial = 15, skullIcon = -1, bountyPoints;
-	public int objectDistance, teleHeight;
+			clickNpcType, tradeStatus, tradeWith,
+			walkTutorial = 15, skullIcon = -1, bountyPoints, teleHeight;
 	
 	/**
 	 * Booleans

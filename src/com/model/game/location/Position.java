@@ -437,6 +437,22 @@ public class Position {
 
 		return Math.abs(position.getX() - this.getX()) <= distance && Math.abs(position.getY() - this.getY()) <= distance;
 	}
+	
+	/**
+	 * Checks if this location is within interaction range of another.
+	 * 
+	 * @param other
+	 *            The other location.
+	 * @return <code>true</code> if the location is in range, <code>false</code>
+	 *         if not.
+	 */
+	public boolean isWithinInteractionDistance(Position other) {
+		if (z != other.z) {
+			return false;
+		}
+		int deltaX = other.x - x, deltaY = other.y - y;
+		return deltaX <= 2 && deltaX >= -3 && deltaY <= 2 && deltaY >= -3;
+	}
 
 	/**
 	 * Are the coordinates inside of the tile.

@@ -19,7 +19,7 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		
 		Item item = player.getItems().getItemFromSlot(slot);
 
-		int distanceRequired = player.objectDistance < 3 ? 1 : player.objectDistance;
+		int distanceRequired = 1;
 		
 		if (!player.getItems().playerHasItem(item.getId(), 1)) {
 			return;
@@ -28,7 +28,6 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		switch (item.getId()) {
 		
 		default:
-			player.clickObjectType = 4;
 			break;
 		
 		}

@@ -35,7 +35,7 @@ public class NpcUpdating {
 		Iterator<NPC> $it = player.localNpcs.iterator();
 		while ($it.hasNext()) {
 			NPC npc = $it.next();
-			if (World.getWorld().getNpcs().get(npc.getIndex()) != null && npc.isVisible() && player.withinDistance(npc) && !npc.getAttribute("teleporting", false)) {
+			if (World.getWorld().getNPCs().get(npc.getIndex()) != null && npc.isVisible() && player.withinDistance(npc) && !npc.getAttribute("teleporting", false)) {
 				updateNPCMovement(npc, buffer);
 				appendNPCUpdateBlock(npc, updateBlock);
 			} else {
@@ -47,7 +47,7 @@ public class NpcUpdating {
 
 		int added = 0;
 
-		for (NPC npc : World.getWorld().getNpcs()) {
+		for (NPC npc : World.getWorld().getNPCs()) {
 
 			if (player.localNpcs.size() >= 255) {
 				break;

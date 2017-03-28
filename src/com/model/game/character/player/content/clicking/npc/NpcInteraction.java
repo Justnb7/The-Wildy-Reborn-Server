@@ -1,53 +1,52 @@
-package com.model.game.character.player;
+package com.model.game.character.player.content.clicking.npc;
+
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.skill.fishing.Fishing;
 import com.model.game.character.player.skill.fishing.FishingSpot;
 import com.model.game.character.player.skill.thieving.Pickpocket;
 import com.model.game.shop.Shop;
 
-public class ActionHandler {
+public class NpcInteraction {
 
-	private Player player;
+	/**
+	 * First npc interaction
+	 * 
+	 * @param player
+	 *            The player interaction with the npc
+	 * @param npc
+	 *            The npc
+	 */
+	public static void firstOption(Player player, NPC npc) {
 
-	public ActionHandler(Player player) {
-		this.player = player;
-	}
-
-	public void firstClickNpc(NPC npc) {
-		player.clickNpcType = 0;
-		
-		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage("First click "+npc.npcId);
-		}
-		
 		if (Pet.talktoPet(player, npc)) {
 			return;
 		}
-		
+
 		if (FishingSpot.fishingNPC(npc.npcId)) {
 			Fishing.attemptFishing(player, npc, 1);
 			return;
 		}
-		
+
 		switch (npc.npcId) {
-		
+
 		/**
-		 * Kamfreena	
+		 * Kamfreena
 		 */
 		case 2461:
 			player.getWarriorsGuild().handleDoor();
 			break;
-		
+
 		case 3257:
 			player.getThieving().pickpocket(Pickpocket.FARMER, npc);
 			break;
-		
+
 		case 315:
 			player.dialogue().start("emblem_trader_dialogue", player);
 			break;
-		
+
 		case 5567:
 			if (!player.deathShopChat) {
 				player.dialogue().start("DEATH_SHOP_DIALOGUE", player);
@@ -164,38 +163,40 @@ public class ActionHandler {
 		}
 	}
 
-	public void secondClickNpc(NPC npc) {
-		
-		player.clickNpcType = 0;
-		
-		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage("Second click: "+npc.npcId);
-		}
-		
+	/**
+	 * Second interaction
+	 * 
+	 * @param player
+	 *            The player interaction with the npc
+	 * @param npc
+	 *            The npc
+	 */
+	public static void secondOption(Player player, NPC npc) {
+
 		if (Pet.pickup(player, npc)) {
 			return;
 		}
-		
+
 		if (FishingSpot.fishingNPC(npc.npcId)) {
 			Fishing.attemptFishing(player, npc, 2);
 			return;
 		}
 
 		switch (npc.npcId) {
-		
+
 		case 2180:
 			player.secondOption = true;
 			player.dialogue().start("FIGHT_CAVE");
 			break;
-		
+
 		case 3078:
 			player.getThieving().pickpocket(Pickpocket.MAN, npc);
 			break;
-		
+
 		case 315:
 			Shop.SHOPS.get("Bounty Hunter Store").openShop(player);
 			break;
-		
+
 		case 5567:
 			if (!player.deathShopChat) {
 				player.dialogue().start("DEATH_SHOP_DIALOGUE", player);
@@ -203,70 +204,52 @@ public class ActionHandler {
 				player.dialogue().start("DEATH_SHOP_DIALOGUE2", player);
 			}
 			break;
-		
-		/**
-		 * Dialogues
-		 */
-			
-			/**
-			 * Ending dialogues
-			 */
 
-			/**
-			 * Shops
-			 */
-			case 7007:
-			case 539:
-				Shop.SHOPS.get("Vote Rewards Shop.").openShop(player);
-				player.getActionSender().sendMessage("You currently have @blu@" + player.getVotePoints() + "@bla@ vote points, and @blu@" + player.getTotalVotes() + "@bla@ total votes.");
-				break;
+		case 7007:
+		case 539:
+			Shop.SHOPS.get("Vote Rewards Shop.").openShop(player);
+			player.getActionSender().sendMessage("You currently have @blu@" + player.getVotePoints()
+					+ "@bla@ vote points, and @blu@" + player.getTotalVotes() + "@bla@ total votes.");
+			break;
 
-			case 7008:
-			case 547:
-			case 6599:
-				Shop.SHOPS.get("Player Killing Reward Shop.").openShop(player);
-				break;
+		case 7008:
+		case 547:
+		case 6599:
+			Shop.SHOPS.get("Player Killing Reward Shop.").openShop(player);
+			break;
 
-			case 6060:
-				Shop.SHOPS.get("Ranged Equipment.").openShop(player);
-				break;
+		case 6060:
+			Shop.SHOPS.get("Ranged Equipment.").openShop(player);
+			break;
 
-			case 1052:
-				Shop.SHOPS.get("Betty's Magic Emporium.").openShop(player);
-				break;
+		case 1052:
+			Shop.SHOPS.get("Betty's Magic Emporium.").openShop(player);
+			break;
 
-			case 5251:
-				Shop.SHOPS.get("Tutab's Magical Market.").openShop(player);
-				break;
+		case 5251:
+			Shop.SHOPS.get("Tutab's Magical Market.").openShop(player);
+			break;
 
-			case 1791:
-				Shop.SHOPS.get("Food Shop.").openShop(player);
-				break;
+		case 1791:
+			Shop.SHOPS.get("Food Shop.").openShop(player);
+			break;
 
-			case 1174:
-				Shop.SHOPS.get("Potions Shop.").openShop(player);
-				break;
+		case 1174:
+			Shop.SHOPS.get("Potions Shop.").openShop(player);
+			break;
 
-			case 535:
-				Shop.SHOPS.get("Horvik's Armour Shop.").openShop(player);
-				break;
+		case 535:
+			Shop.SHOPS.get("Horvik's Armour Shop.").openShop(player);
+			break;
 
-			case 1944:
-				Shop.SHOPS.get("Weapons And Accessories Galore.").openShop(player);
-				break;
-				
-			case 508:
-			case 506:
-				Shop.SHOPS.get("General Store").openShop(player);
-				break;
+		case 1944:
+			Shop.SHOPS.get("Weapons And Accessories Galore.").openShop(player);
+			break;
 
-		/**
-		 * End of shops
-		 */
-
-		/**
-		 * Slayer dialogues
-		 */
+		case 508:
+		case 506:
+			Shop.SHOPS.get("General Store").openShop(player);
+			break;
 
 		case 401: // Turael
 			player.dialogue().start("TURAEL_DIALOGUE", player);
@@ -291,43 +274,24 @@ public class ActionHandler {
 			player.dialogue().start("NIEVE_DIALOGUE", player);
 			break;
 
-		/**
-		 * End of Slayer dialogues
-		 */
-
 		case 394:
 			player.getPA().openBank();
 			break;
-
-		/**
-		 * End of Bankers
-		 */
-
 		}
 	}
 
-	public void thirdClickNpc(NPC npc) {
-		
-		player.clickNpcType = 0;
-		
-		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage("Third click: "+npc.npcId);
-		}
-		
+	/**
+	 * Third npc interaction
+	 * 
+	 * @param player
+	 *            The player interaction with the npc
+	 * @param npc
+	 *            The npc
+	 */
+	public static void thirdOption(Player player, NPC npc) {
+
 		switch (npc.npcId) {
-
-		/**
-		 * Dialogues
-		 */
-
-		/**
-		 * Ending dialogues
-		 */
-
-		/**
-		 * Slayer masters
-		 */
-
+		
 		case 401: // Turael
 			Shop.SHOPS.get("Slayer Equipment").openShop(player);
 			break;
@@ -351,59 +315,45 @@ public class ActionHandler {
 			Shop.SHOPS.get("Slayer Equipment").openShop(player);
 			break;
 
-		/**
-		 * End of slayer masters
-		 */
-
-		/**
-		 * Shops
-		 */
 		case 6599:
 			Shop.SHOPS.get("PK Points Shop").openShop(player);
 			break;
-
-		/**
-		 * End of Shops
-		 */
-
 		}
 	}
 
-	public void fourthClickNpc(NPC npc) {
-		
-		player.clickNpcType = 0;
-		
-		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage("Fourth click: "+npc.npcId);
-		}
+	/**
+	 * Fourth npc interaction
+	 * 
+	 * @param player
+	 *            The player interaction with the npc
+	 * @param npc
+	 *            The npc
+	 */
+	public static void fourthOption(Player player, NPC npc) {
 
 		switch (npc.npcId) {
-		
-		/**
-		 * Slayer masters
-		 */
-		
+
 		case 401: // Turael
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);
 			break;
-			
-		case 402: //Mazchna
+
+		case 402: // Mazchna
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);
 			break;
 
-		case 403: //Vannaka
+		case 403: // Vannaka
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);
 			break;
 
-		case 404: //Chaeldar
+		case 404: // Chaeldar
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);
 			break;
 
-		case 405: //Duradel
+		case 405: // Duradel
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);
 			break;
-			
-		case 490: //Nieve
+
+		case 490: // Nieve
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);
 			break;
 

@@ -349,6 +349,10 @@ public class ObjectInteraction {
 	 *            The object
 	 */
 	public static void handleSecondClickAction(Player player, Position position, int id) {
+		if (player.inDebugMode()) {
+			System.out.println(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
+		}
+		
 		ObjectDefinition objectDef = ObjectDefinition.getObjectDef(id);
 		switch (objectDef.name.toLowerCase()) {
 
@@ -393,7 +397,9 @@ public class ObjectInteraction {
 	 *            The object
 	 */
 	public static void handleThirdClickAction(Player player, Position position, int id) {
-		// TODO Auto-generated method stub
+		if (player.inDebugMode()) {
+			System.out.println(String.format("[ObjectInteraction option 3] - position: %s object: %d ", position, id));
+		}
 	}
 
 }

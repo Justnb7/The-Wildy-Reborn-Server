@@ -631,7 +631,7 @@ public class CommandPacketHandler implements PacketType {
 					new NPCDefinitionLoader().load();
 					break;
 				case 2:
-					for (NPC npc : World.getWorld().getNpcs()) {
+					for (NPC npc : World.getWorld().getNPCs()) {
 						if (npc != null) {
 							World.getWorld().unregister(npc);
 						}

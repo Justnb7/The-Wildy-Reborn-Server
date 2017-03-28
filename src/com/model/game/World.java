@@ -200,9 +200,9 @@ public class World implements Service {
 			return true;
 		} else if (entity.getEntityType() == EntityType.NPC) {
 			NPC npc = (NPC) entity;
-			if (getNpcs().spaceLeft() == 0)
+			if (getNPCs().spaceLeft() == 0)
 				return false;
-			getNpcs().add(npc);
+			getNPCs().add(npc);
 			npc.setVisible(true);
 			npc.setOnTile(npc.absX, npc.absY, npc.heightLevel);
 			return true; // GO
@@ -480,7 +480,7 @@ public class World implements Service {
 	 *
 	 * @return A list of registered npcs to the game world
 	 */
-	public MobileCharacterList<NPC> getNpcs() {
+	public MobileCharacterList<NPC> getNPCs() {
 		return NPCS;
 	}
 

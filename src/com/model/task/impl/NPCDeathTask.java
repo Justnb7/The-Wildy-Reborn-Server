@@ -44,7 +44,7 @@ public class NPCDeathTask extends ScheduledTask {
     public void execute() {
         NPC npc = (NPC) getAttachment();
 
-        if (npc == null || World.getWorld().getNpcs().get(npc.getIndex()) == null) {
+        if (npc == null || World.getWorld().getNPCs().get(npc.getIndex()) == null) {
             stop();
             return;
         }
@@ -205,7 +205,7 @@ public class NPCDeathTask extends ScheduledTask {
 		}
 
 		if (npc.npcId == 6613 || npc.npcId == 6614) {
-        	for (NPC i : World.getWorld().getNpcs()) {
+        	for (NPC i : World.getWorld().getNPCs()) {
         		if(i == null)
         			continue;
         		if(i.npcId == 6611 || i.npcId == 6612 && i.dogs > 0) {

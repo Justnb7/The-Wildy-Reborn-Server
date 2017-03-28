@@ -13,7 +13,7 @@ public class ItemOnNpc implements PacketType {
 		int i = player.getInStream().readSignedWordA();
 		int slot = player.getInStream().readSignedWordBigEndian();
 
-		NPC npc = World.getWorld().getNpcs().get(i);
+		NPC npc = World.getWorld().getNPCs().get(i);
 		if (npc == null) {
 			return;
 		}

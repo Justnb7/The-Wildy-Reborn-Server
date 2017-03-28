@@ -16,17 +16,17 @@ public class ObjectOptionPacketHandler implements PacketType {
 	/**
 	 * Option 1 opcode.
 	 */
-	private static final int OPTION_1 = 132; 
+	private final int OPTION_1 = 132; 
 	
 	/**
 	 * Option 2 opcode.
 	 */
-	private static final int OPTION_2 = 252;
+	private final int OPTION_2 = 252;
 	
 	/**
 	 * Option 3 opcode.
 	 */
-	private static final int OPTION_3 = 70;
+	private final int OPTION_3 = 70;
 
 	@Override
 	public void handle(final Player player, int packet, int size) {

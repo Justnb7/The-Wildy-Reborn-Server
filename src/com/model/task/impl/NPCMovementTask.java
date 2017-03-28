@@ -30,8 +30,8 @@ public final class NPCMovementTask extends ScheduledTask {
 
 	@Override
 	public void execute() {
-		for (int index = 0; index < World.getWorld().getNpcs().capacity(); index++) {
-			NPC npc = World.getWorld().getNpcs().get(index);
+		for (int index = 0; index < World.getWorld().getNPCs().capacity(); index++) {
+			NPC npc = World.getWorld().getNPCs().get(index);
 			if (npc == null) {
 				continue;
 			}

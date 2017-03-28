@@ -39,7 +39,6 @@ import com.model.game.character.player.account.ironman.GameModeSelection;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
-import com.model.game.character.player.content.clicking.object.ObjectInteraction;
 import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
 import com.model.game.character.player.content.consumable.Consumable;
@@ -75,7 +74,6 @@ import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
-import com.model.game.item.UseItem;
 import com.model.game.item.bank.Bank;
 import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.LootingBagContainer;
@@ -1564,10 +1562,6 @@ public class Player extends Entity {
 	public CombatAssistant getCombat() {
 		return combatAssistant;
 	}
-
-	public ActionHandler getActions() {
-		return actionHandler;
-	}
 	
 	public void process_following() {
 		if (followTarget != null) {
@@ -1639,7 +1633,6 @@ public class Player extends Entity {
 	private ItemAssistant itemAssistant = new ItemAssistant(this);
 	private PlayerAssistant playerAssistant = new PlayerAssistant(this);
 	private CombatAssistant combatAssistant = new CombatAssistant(this);
-	private ActionHandler actionHandler = new ActionHandler(this);
 	private TradeContainer tradeContainer = new TradeContainer(this);
 	
 	private TradeState tradeState = TradeState.NONE;
@@ -2850,7 +2843,6 @@ public class Player extends Entity {
 	public int openInterface = -1;
 	public int countdown;
 	public int combatCountdown = 10;
-	public int distance;
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
 	public int mapRegionX, mapRegionY;
@@ -2881,8 +2873,8 @@ public class Player extends Entity {
 			followDistance,
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			wildLevel, teleTimer, killerId,
-			attackDelay, npcClickIndex, oldSpellId,
-			clickNpcType, tradeStatus, tradeWith,
+			attackDelay, oldSpellId,
+			tradeStatus, tradeWith,
 			walkTutorial = 15, skullIcon = -1, bountyPoints, teleHeight;
 	
 	/**

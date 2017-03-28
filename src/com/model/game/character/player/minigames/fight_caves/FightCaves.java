@@ -183,8 +183,8 @@ public class FightCaves {
 	 * Kill all spawns alive
 	 */
 	private void killAllSpawns() {
-		for (int i = 0; i < World.getWorld().getNpcs().capacity(); i++) {
-			NPC npc = World.getWorld().getNpcs().get(i);
+		for (int i = 0; i < World.getWorld().getNPCs().capacity(); i++) {
+			NPC npc = World.getWorld().getNPCs().get(i);
 			if (npc != null) {
 				if (isFightCaveNpc(npc)) {
 					if (NPCHandler.isSpawnedBy(player, npc)) {

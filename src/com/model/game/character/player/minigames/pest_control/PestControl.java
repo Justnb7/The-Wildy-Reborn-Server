@@ -546,14 +546,14 @@ public class PestControl {
 	}
 
 	private static NPC getNpc(int npcType, int x, int y) {
-		for (NPC npc : World.getWorld().getNpcs())
+		for (NPC npc : World.getWorld().getNPCs())
 			if (npc != null && npc.npcId == npcType && npc.absX == x && npc.absY == y)
 				return npc;
 		return null;
 	}
 
 	private static NPC getNpc(int npcType) {
-		for (NPC npc : World.getWorld().getNpcs())
+		for (NPC npc : World.getWorld().getNPCs())
 			if (npc != null && npc.npcId == npcType)
 				return npc;
 		return null;

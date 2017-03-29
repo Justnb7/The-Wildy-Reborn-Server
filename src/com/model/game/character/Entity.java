@@ -1,19 +1,22 @@
 package com.model.game.character;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 import com.google.common.base.Preconditions;
 import com.model.Server;
+import com.model.game.UpdateFlags;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.BarrowsEffect;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
-import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Boundary;
@@ -73,6 +76,39 @@ public abstract class Entity {
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 	public Position lastTile;
+	
+	/**
+	 * The list of local players.
+	 */
+	private final List<Player> localPlayers = new LinkedList<Player>();
+	
+	/**
+	 * The list of local npcs.
+	 */
+	private final List<NPC> localNpcs = new LinkedList<NPC>();
+	
+	/**
+	 * Gets the list of local players.
+	 * 
+	 * @return The list of local players.
+	 */
+	public List<Player> getLocalPlayers() {
+		return localPlayers;
+	}
+
+	/**
+	 * Gets the list of local npcs.
+	 * 
+	 * @return The list of local npcs.
+	 */
+	public List<NPC> getLocalNPCs() {
+		return localNpcs;
+	}
+	
+	/**
+	 * The update flags.
+	 */
+	private final UpdateFlags updateFlags = new UpdateFlags();
 
 	/**
 	 * The characters combat type, MELEE by default

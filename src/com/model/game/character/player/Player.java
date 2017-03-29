@@ -1028,9 +1028,6 @@ public class Player extends Entity {
 		return equipment;
 	}
 
-	public Set<Player> localPlayers = new LinkedHashSet<>(255);
-	public Set<NPC> localNpcs = new LinkedHashSet<>(255);
-
 	public boolean withinDistance(Player otherPlr) {
 		if (heightLevel != otherPlr.heightLevel) {
 			return false;

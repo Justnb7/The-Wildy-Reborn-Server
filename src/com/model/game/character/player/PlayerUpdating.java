@@ -139,9 +139,9 @@ public class PlayerUpdating {
 		/*
 		 * Write our local player size size
 		 */
-		buffer.writeBits(8, player.localPlayers.size());
+		buffer.writeBits(8, player.getLocalPlayers().size());
 
-		Iterator<Player> $it = player.localPlayers.iterator();
+		Iterator<Player> $it = player.getLocalPlayers().iterator();
 		/*
 		 * Iterate through our local players and update them if we can, else
 		 * remove them
@@ -169,16 +169,16 @@ public class PlayerUpdating {
 			if (amount == 15) {
 				break;
 			}
-			if (player.localPlayers.size() >= 255) {
+			if (player.getLocalPlayers().size() >= 255) {
 				break;
 			}
-			if (target == null || target.equals(player) || !target.isActive() || player.localPlayers.contains(target)
+			if (target == null || target.equals(player) || !target.isActive() || player.getLocalPlayers().contains(target)
 					|| !target.isVisible()) {
 				continue;
 			}
 
 			if (player.withinDistance(target)) {
-				player.localPlayers.add(target);
+				player.getLocalPlayers().add(target);
 				addNewPlayer(player, target, buffer);
 				appendPlayerUpdateBlock(target, updateBlock, true, target,
 						player.getFAI().hasIgnored(target.usernameHash));

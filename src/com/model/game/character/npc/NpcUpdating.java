@@ -30,9 +30,9 @@ public class NpcUpdating {
 		int start = buffer.offset;
 		buffer.initBitAccess();
 
-		buffer.writeBits(8, player.localNpcs.size());
+		buffer.writeBits(8, player.getLocalNPCs().size());
 
-		Iterator<NPC> $it = player.localNpcs.iterator();
+		Iterator<NPC> $it = player.getLocalNPCs().iterator();
 		while ($it.hasNext()) {
 			NPC npc = $it.next();
 			if (World.getWorld().getNPCs().get(npc.getIndex()) != null && npc.isVisible() && player.withinDistance(npc) && !npc.getAttribute("teleporting", false)) {
@@ -49,16 +49,16 @@ public class NpcUpdating {
 
 		for (NPC npc : World.getWorld().getNPCs()) {
 
-			if (player.localNpcs.size() >= 255) {
+			if (player.getLocalNPCs().size() >= 255) {
 				break;
 			}
 
-			if (npc == null || player.localNpcs.contains(npc) || !npc.isVisible()) {
+			if (npc == null || player.getLocalNPCs().contains(npc) || !npc.isVisible()) {
 				continue;
 			}
 
 			if (player.withinDistance(npc)) {
-				player.localNpcs.add(npc);
+				player.getLocalNPCs().add(npc);
 				npc.handleFacing();
 				addNewNPC(player, npc, buffer);
 				appendNPCUpdateBlock(npc, updateBlock);

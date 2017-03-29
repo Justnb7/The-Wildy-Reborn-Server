@@ -38,7 +38,7 @@ public final class NPCAggression {
      */
     public static void process(Player player) {
     	//System.out.println("agro check for "+player.getName());
-        for (NPC npc : player.localNpcs) {
+        for (NPC npc : player.getLocalNPCs()) {
             if (npc == null)
                 continue;
             // Can the Npc attack the <player>? Will check distance, clipping, slayer level req etc. 

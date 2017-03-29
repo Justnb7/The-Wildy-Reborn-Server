@@ -245,6 +245,7 @@ public class PlayerUpdating {
 		if (player.faceTileX != -1) {
 			updateMask |= 0x2;
 		}
+		
 		if (player.isHitUpdateRequired()) {
 			updateMask |= 0x20;
 		}

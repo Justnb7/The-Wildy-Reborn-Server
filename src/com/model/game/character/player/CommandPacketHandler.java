@@ -192,7 +192,7 @@ public class CommandPacketHandler implements PacketType {
 						player.getActionSender().sendMessage("You are teleblocked, You can't use this command!");
 					}
 					if (++timer >= 50) {
-						player.getPA().movePlayer(3094, 3473, 0);
+						player.getPA().move(new Position(3094, 3473, 0));
 						player.getActionSender().sendMessage("<col=255>You feel strange.. You magically end up home..</col>");
 						this.stop();
 					}
@@ -442,7 +442,7 @@ public class CommandPacketHandler implements PacketType {
 				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				return false;
 			} else
-				player.getPA().movePlayer(target.getX(), target.getY(), target.getZ());
+				player.getPA().move(new Position(target.getX(), target.getY(), target.getZ()));
 			player.getActionSender().sendMessage("You teleported to " + target.getName());
 			return true;
       		
@@ -455,7 +455,7 @@ public class CommandPacketHandler implements PacketType {
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
 				target.getActionSender().sendMessage("You have been teleported to " + player.getName());
-                target.getPA().movePlayer(player.getX(), player.getY(), player.heightLevel);
+                target.getPA().move(new Position(player.getX(), player.getY(), player.heightLevel));
     		 return true;
     		 
     		 
@@ -709,9 +709,9 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "tele":
             if (cmd.length > 3) {
-                player.getPA().movePlayer(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3]));
+                player.getPA().move(new Position(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3])));
             } else if (cmd.length == 3) {
-            	player.getPA().movePlayer(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.heightLevel);
+            	player.getPA().move(new Position(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.heightLevel));
             }
     		return true;
     		

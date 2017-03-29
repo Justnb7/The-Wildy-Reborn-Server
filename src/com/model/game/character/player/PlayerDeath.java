@@ -23,6 +23,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.serialize.PlayerSerialization;
+import com.model.game.location.Position;
 import com.model.utility.Utility;
 
 public class PlayerDeath {
@@ -177,11 +178,11 @@ public class PlayerDeath {
 			//TODO ask Jak if this is correct
 			player.getController().onDeath(player);
 			if (player.rights == Rights.ADMINISTRATOR && player.getName().equalsIgnoreCase("test") && killedBy != null) {
-				player.getPA().movePlayer(killedBy.getPosition());
+				player.getPA().move(killedBy.getPosition());
 			} else if (player.getController().getRespawnLocation(player) != null) {
-				player.getPA().movePlayer(player.getController().getRespawnLocation(player));
+				player.getPA().move(player.getController().getRespawnLocation(player));
 	        } else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
-				player.getPA().movePlayer(2656 + Utility.random(2), 2614 - Utility.random(3), 0);
+				player.getPA().move(new Position(2656 + Utility.random(2), 2614 - Utility.random(3), 0));
 	        } else if (Boundary.isIn(player, Boundary.FIGHT_CAVE)) {
 				player.getFightCave().exitCave(3);
 	        }

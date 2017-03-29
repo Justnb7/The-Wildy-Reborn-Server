@@ -1459,7 +1459,7 @@ public class Player extends Entity {
 				int x = teleportToX;
 				int y = teleportToY;
 				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
-					player.getPA().movePlayer(2657, 2639, 0);
+					player.getPA().move(new Position(2657, 2639, 0));
 				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
 					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
 					player.getFightCave().startWave();

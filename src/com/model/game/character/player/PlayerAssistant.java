@@ -6,6 +6,7 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.content.trade.Trading;
+import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
@@ -15,6 +16,7 @@ import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.ItemDefinition;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class PlayerAssistant {
 
@@ -28,20 +30,13 @@ public class PlayerAssistant {
     public void playerWalk(int x, int y) {
         PathFinder.getPathFinder().findRoute(player, x, y, true, 1, 1);
     }
-
-    public void movePlayer1(int x, int y) {
-        player.getMovementHandler().reset();
-        player.teleportToX = x;
-        player.teleportToY = y;
-        requestUpdates();
-    }
         
     public void resetTb() {
         player.teleblockLength = 0;
         player.teleblock.stop();
     }
 
-    public void movePlayer(int x, int y, int h) {
+    public void move(Position target) {
         if (player == null)
             return;
         if (player.isBusy()) {
@@ -52,17 +47,13 @@ public class PlayerAssistant {
 			return;
 		}
         player.getMovementHandler().reset();
-        player.teleportToX = x;
-        player.teleportToY = y;
-        player.teleHeight = h;
-        player.setTeleportTarget(Position.create(x, y, h));
+        player.teleportToX = target.getX();
+        player.teleportToY = target.getY();
+        player.teleHeight = target.getZ();
+        player.setTeleportTarget(target);
         requestUpdates();
         player.getSkillCyclesTask().stop();
-        //System.out.println("to "+Arrays.toString(new int[] {x,y,h}));
-    }
-
-    public void movePlayer(Position p) {
-        movePlayer(p.getX(), p.getY(), p.getZ());
+        System.out.println("to "+Arrays.toString(new int[] {target.getX(), target.getY(), target.getZ()}));
     }
     
     public void resetAutoCast() {

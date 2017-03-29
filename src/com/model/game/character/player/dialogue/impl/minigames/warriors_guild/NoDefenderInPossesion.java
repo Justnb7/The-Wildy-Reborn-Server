@@ -3,6 +3,7 @@ package com.model.game.character.player.dialogue.impl.minigames.warriors_guild;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
+import com.model.game.location.Position;
 
 public class NoDefenderInPossesion extends Dialogue {
 
@@ -27,7 +28,7 @@ public class NoDefenderInPossesion extends Dialogue {
 			switch (index) {
 			case 1:
 				if (player.getItems().playerHasItem(8851, 200)) {
-					player.getPA().movePlayer(2847, 3540, 2);
+					player.getPA().move(new Position(2847, 3540, 2));
 					player.getWarriorsGuild().cycle();
 					stop();
 				} else {

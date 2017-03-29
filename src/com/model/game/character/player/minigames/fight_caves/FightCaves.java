@@ -139,12 +139,12 @@ public class FightCaves {
 	 */
 	public void exitCave(int type) {
 		if (type == 1) {
-			player.getPA().movePlayer(OUTSIDE);
+			player.getPA().move(OUTSIDE);
 			player.dialogue().start("LEAVE_FIGHT_CAVE");
 		} else if (type == 2) {
 			// Teleport
 		} else {
-			player.getPA().movePlayer(OUTSIDE);
+			player.getPA().move(OUTSIDE);
 			int tokkul = getCurrentWave() * 8032 / Wave.WAVES.length;
 			if (player.getItems().freeSlots() > 1) {
 				player.getItems().addItem(TOKKUL.getId(), tokkul);
@@ -163,7 +163,7 @@ public class FightCaves {
 	 */
 	public void enterFightCaves() {
 		player.getActionSender().sendRemoveInterfacePacket();
-		player.getPA().movePlayer(2413, 5117, player.getIndex() * 4);
+		player.getPA().move(new Position(2413, 5117, player.getIndex() * 4));
 		player.getActionSender().sendMessage("@red@Wave: 1");
 		player.waveId = 0;
 		startWave();
@@ -174,7 +174,7 @@ public class FightCaves {
 	 */
 	public void stop() {
 		reward();
-		player.getPA().movePlayer(OUTSIDE);
+		player.getPA().move(OUTSIDE);
 		player.waveId = 0;
 		killAllSpawns();
 	}

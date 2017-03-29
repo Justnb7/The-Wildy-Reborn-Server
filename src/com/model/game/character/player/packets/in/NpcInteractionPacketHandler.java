@@ -4,10 +4,8 @@ import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.clicking.npc.NpcInteraction;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.location.Position;
-import com.model.task.ScheduledTask;
+import com.model.task.impl.WalkToNpcTask;
 
 /**
  * Handles all npc packet interaction
@@ -155,167 +153,51 @@ public class NpcInteractionPacketHandler implements PacketType {
 		int index = player.inStream.readSignedWordBigEndian();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
 
-		int distance = 1;
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[NpcInteractionPacketHandler] - npc: %d ", npc.getDefinition().getId()));
 		}
 		if (npc == null) {
 			return;
 		}
-		switch (npc.npcId) {
-		case 394:
-		case 306:
-			distance = 3;
-			break;
-		}
-		if (player.goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distance)) {
-			player.face(player, new Position(npc.getX(), npc.getY()));
-			npc.face(npc, new Position(player.getX(), player.getY()));
-			NpcInteraction.firstOption(player, npc);
-		} else {
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-				@Override
-				public void execute() {
-					if (!player.isActive()) {
-						stop();
-						return;
-					}
-					if (npc != null) {
-						if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 1)) {
-							player.face(player, new Position(npc.getX(), npc.getY()));
-							npc.face(npc, new Position(player.getX(), player.getY()));
-							NpcInteraction.firstOption(player, npc);
-							stop();
-						}
-					}
-				}
-
-				@Override
-				public void onStop() {
-				}
-			});
-		}
+		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 1));
 	}
 
 	private void handleSecondClickPacket(Player player, int packet) {
 		int index = player.inStream.readUnsignedWordBigEndianA();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
-		int distance = 1;
+		
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[NpcInteractionPacketHandler second option] - npc: %d ", npc.getDefinition().getId()));
 		}
 		if (npc == null) {
 			return;
 		}
-		// distance for certain npcs.. like bankers can be done over a bank
-		// booth
-		switch (npc.npcId) {
-		case 394:
-			distance = 3;
-			break;
-		}
-
-		// if within distance, handle
-		if (player.goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distance)) {
-			player.face(player, new Position(npc.getX(), npc.getY()));
-			npc.face(npc, new Position(player.getX(), player.getY()));
-			NpcInteraction.secondOption(player, npc);
-			// PI's terrible design
-		} else {
-			// we're not in distance. run towards then interact when close
-			// enough.
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-
-				@Override
-				public void execute() {
-					if (npc != null) {
-						if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 1)) {
-							player.face(player, new Position(npc.getX(), npc.getY()));
-							npc.face(npc, new Position(player.getX(), player.getY()));
-							NpcInteraction.secondOption(player, npc);
-							stop();
-						}
-					}
-				}
-
-				@Override
-				public void onStop() {
-				}
-			});
-		}
+		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 2));
 	}
 
 	private void handleThirdClickPacket(Player player, int packet) {
 		int index = player.inStream.readSignedWord();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
-		int distance = 1;
+		
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[NpcInteractionPacketHandler second option] - npc: %d ", npc.getDefinition().getId()));
+			System.out.println(String.format("[NpcInteractionPacketHandler third option] - npc: %d ", npc.getDefinition().getId()));
 		}
 		if (npc == null) {
 			return;
 		}
-		if (player.goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distance)) {
-			player.face(player, new Position(npc.getX(), npc.getY()));
-			npc.face(npc, new Position(player.getX(), player.getY()));
-			NpcInteraction.thirdOption(player, npc);
-		} else {
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-				@Override
-				public void execute() {
-					if (npc != null) {
-						if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 1)) {
-							player.face(player, new Position(npc.getX(), npc.getY()));
-							npc.face(npc, new Position(player.getX(), player.getY()));
-							NpcInteraction.thirdOption(player, npc);
-							stop();
-						}
-					}
-				}
-
-				@Override
-				public void onStop() {
-				}
-			});
-		}
+		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 3));
 	}
 
 	private void handleFourthClickPacket(Player player, int packet) {
 		int index = player.inStream.readSignedWordBigEndian();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
-		int distance = 1;
+
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[NpcInteractionPacketHandler second option] - npc: %d ", npc.getDefinition().getId()));
+			System.out.println(String.format("[NpcInteractionPacketHandler fourth option] - npc: %d ", npc.getDefinition().getId()));
 		}
 		if (npc == null) {
 			return;
 		}
-		if (player.goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distance)) {
-			player.face(player, new Position(npc.getX(), npc.getY()));
-			npc.face(npc, new Position(player.getX(), player.getY()));
-			NpcInteraction.fourthOption(player, npc);
-		} else {
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-				@Override
-				public void execute() {
-					if (!player.isActive()) {
-						stop();
-						return;
-					}
-					if (npc != null) {
-						if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 1)) {
-							player.face(player, new Position(npc.getX(), npc.getY()));
-							npc.face(npc, new Position(player.getX(), player.getY()));
-							NpcInteraction.fourthOption(player, npc);
-							stop();
-						}
-					}
-				}
-
-				@Override
-				public void onStop() {
-				}
-			});
-		}
+		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 4));
 	}
 }

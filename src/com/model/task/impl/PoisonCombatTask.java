@@ -3,7 +3,6 @@ package com.model.task.impl;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;

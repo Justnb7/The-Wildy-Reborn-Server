@@ -22,7 +22,7 @@ import com.model.game.character.player.packets.in.EnterAmountPacketHandler;
 import com.model.game.character.player.packets.in.FollowPlayer;
 import com.model.game.character.player.packets.in.IdleLogoutPacketHandler;
 import com.model.game.character.player.packets.in.InputDialogueStringPacketHandler;
-import com.model.game.character.player.packets.in.InputFieldOther;
+import com.model.game.character.player.packets.in.InputFieldPacketHandler;
 import com.model.game.character.player.packets.in.ItemOnNpc;
 import com.model.game.character.player.packets.in.ItemOnObjectPacketHandler;
 import com.model.game.character.player.packets.in.ItemOnPlayerPacketHandler;
@@ -84,7 +84,7 @@ public class PacketHandler {
 		packetId[238] = u;
 		packetId[234] = u;
 		packetId[150] = u;
-		packetId[142] = new InputFieldOther();
+		packetId[142] = new InputFieldPacketHandler();
 		packetId[202] = new IdleLogoutPacketHandler();
 		packetId[253] = new SecondGroundOption();
 		packetId[14] = new ItemOnPlayerPacketHandler();

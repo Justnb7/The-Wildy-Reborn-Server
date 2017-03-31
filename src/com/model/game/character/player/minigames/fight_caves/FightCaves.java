@@ -128,7 +128,7 @@ public class FightCaves {
 				setKillsRemaining(wave[player.waveId].length);
 				for (int i = 0; i < getKillsRemaining(); i++) {
 					Position spawnLoc = getRandomLocation(player);
-					NPCHandler.spawnNpc(player, wave[player.waveId][i], spawnLoc.getX(), spawnLoc.getY(), 0, 1, true, false, false);
+					NPCHandler.spawnNpc(player, wave[player.waveId][i], spawnLoc, 1, true, false, false);
 					//NPC npc = new NPC(wave[player.waveId][i], spawnLoc, 0);
 					//npc.setAbsX(spawnLoc.getX());
 					//npc.setAbsY(spawnLoc.getY());

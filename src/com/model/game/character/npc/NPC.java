@@ -449,13 +449,13 @@ public class NPC extends Entity {
 	
 	public void spawnVetDogs(Player player) {
 		if (npcId == 6611) {
-			NPCHandler.spawnNpc(player, 6613, absX - 1, absY, heightLevel, 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6613, absX - 1, absY, heightLevel, 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6613, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6613, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		} else if (npcId == 6612) {
-			NPCHandler.spawnNpc(player, 6614, absX - 1, absY, heightLevel, 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6614, absX - 1, absY, heightLevel, 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6614, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6614, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		}
@@ -492,8 +492,8 @@ public class NPC extends Entity {
 				}
 				else if (npcId == 6615) {
 					if (currentHealth <= 100 && !spawnedScorpiaMinions) {
-						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, getX()- 1, absY, heightLevel, 1, true, false, true);
-						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, getX() + 1, absY, heightLevel, 1, true, false, true);
+						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Position(getX()- 1, absY, heightLevel), 1, true, false, true);
+						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Position(getX() + 1, absY, heightLevel), 1, true, false, true);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);

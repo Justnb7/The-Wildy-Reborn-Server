@@ -1,5 +1,12 @@
 package com.model.game.character.npc;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Entity;
@@ -16,14 +23,6 @@ import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.NpcDefinition;
 import com.model.utility.json.loader.NPCDefinitionLoader;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
 
 public final class NPCHandler {
 
@@ -290,6 +289,7 @@ public final class NPCHandler {
 		} else if(player.getTotalAmountDonated() > 200) {
 			yourIncrease += 15;
 		}
+		NpcDropSystem.get().drop(player, npc, yourIncrease);
 	}
 	
 	

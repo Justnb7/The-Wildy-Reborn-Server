@@ -843,7 +843,7 @@ public class CommandPacketHandler implements PacketType {
 			try {
 				int npcId = Integer.parseInt(cmd[1]);
 				if (npcId > 0) {
-					NPC npc = NPCHandler.spawnNpc(player, npcId, player.getX() + 1, player.getY(), player.getZ(), 0, false, false, false);
+					NPC npc = NPCHandler.spawnNpc(player, npcId, new Position(player.getX() + 1, player.getY(), player.getZ()), 0, false, false, false);
 					if (cmd.length > 2) {
 						int hp = Integer.parseInt(cmd[2]);
 						npc.currentHealth = hp;

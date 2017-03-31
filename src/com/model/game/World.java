@@ -28,7 +28,6 @@ import com.model.game.character.player.packets.out.SendFriendPacket;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.service.Service;
 import com.model.task.ScheduledTask;
-import com.model.task.impl.GearPointsTask;
 import com.model.task.impl.InstanceFloorReset;
 import com.model.task.impl.NPCMovementTask;
 import com.model.task.impl.RestoreSpecialStats;
@@ -115,7 +114,6 @@ public class World implements Service {
 		schedule(new NPCMovementTask());
 		schedule(new RestoreSpecialStats());
 		schedule(new SavePlayers());
-		schedule(new GearPointsTask());
 		schedule(new BountyHunter());
 		schedule(new InstanceFloorReset());
 		TriviaBot.declare();

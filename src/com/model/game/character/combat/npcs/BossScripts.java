@@ -21,7 +21,7 @@ public class BossScripts {
 	
 	
 	private static final KetZek KET_ZEK = new KetZek(3125);
-	private static final TokXil TOK_XIL = new TokXil(3121);
+	private static final TokXil TOK_XIL = new TokXil(2193);
 	private static final TzTokJad JAD = new TzTokJad(3127);
 	
 	private static final AhrimTheBlighted AHRIM_THE_BLIGHTED = new AhrimTheBlighted(1672);

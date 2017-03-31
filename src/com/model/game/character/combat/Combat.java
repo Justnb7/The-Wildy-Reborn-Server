@@ -22,7 +22,6 @@ import com.model.game.character.player.PlayerAssistant;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.WeaponDefinition;
@@ -412,12 +411,6 @@ public class Combat {
 
         } else if (player.getCombatType() == CombatStyle.MAGIC) {
             player.oldSpellId = player.getSpellId();
-            int pX = player.getX();
-            int pY = player.getY();
-            int nX = target.getX();
-            int nY = target.getY();
-            int offX = (pY - nY) * -1;
-            int offY = (pX - nX) * -1;
             player.castingMagic = true;
 
             if (player.MAGIC_SPELLS[player.getSpellId()][3] > 0) {
@@ -427,8 +420,6 @@ public class Combat {
                     player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
                 }
             }
-
-            int targetIndex = -player.getCombat().target.getIndex() - 1;
 
             if (player.MAGIC_SPELLS[player.getSpellId()][4] > 0) {
             	player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartDelay(), 50, 78, player.getCombat().getStartHeight(), player.getCombat().getEndHeight(), target.getProjectileLockonIndex(), 16, 64));

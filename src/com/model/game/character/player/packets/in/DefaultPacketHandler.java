@@ -19,6 +19,6 @@ public class DefaultPacketHandler implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {
-		//logger.info("Packet : [opcode=" + id + " length=" + size + "]");
+		logger.info("Packet : [opcode=" + id + " length=" + size + "]");
 	}
 }

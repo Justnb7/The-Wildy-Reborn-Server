@@ -6,7 +6,6 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.RequestManager.RequestState;
 import com.model.game.character.player.RequestManager.RequestType;
-import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
@@ -422,7 +421,7 @@ public class Trading {
 			return false;
 		}
 		
-		if (!ItemDefinition.forId(id).isTradeable() || ClueDifficulty.isClue(id)) {
+		if (!ItemDefinition.forId(id).isTradeable()) {
 			player.getActionSender().sendMessage("That item isn't tradeable.");
 			return false;
 		}

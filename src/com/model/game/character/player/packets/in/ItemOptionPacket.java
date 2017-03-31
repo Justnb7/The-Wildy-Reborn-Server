@@ -1,8 +1,5 @@
 package com.model.game.character.player.packets.in;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
@@ -11,14 +8,9 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.BossTracker;
-import com.model.game.character.player.content.achievements.AchievementType;
-import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.clicking.items.ItemOnItem;
 import com.model.game.character.player.content.clicking.magic.MagicOnItems;
-import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
-import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
-import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
 import com.model.game.character.player.content.consumable.potion.PotionData;
 import com.model.game.character.player.content.rewards.Mysterybox;
 import com.model.game.character.player.content.rewards.RewardCasket;
@@ -36,7 +28,6 @@ import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Location;
 import com.model.game.location.Position;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DistancedActionTask;
@@ -257,7 +248,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 
 		//Special case for destroying items.
-		if(!ItemDefinition.forId(item.getId()).isTradeable() || ClueDifficulty.isClue(itemId)) {
+		if(!ItemDefinition.forId(item.getId()).isTradeable()) {
 			player.getPA().destroyItem(item);
 			player.setDestroyItem(item.getId());
 			return;
@@ -388,60 +379,7 @@ public class ItemOptionPacket implements PacketType {
 		case 4155: // Enchanted Gem
 			player.dialogue().start("ENCHANTED_GEM", player);
 			break;
-			
-		case 2677:
-		case 2801:
-		case 2722:
-		case 12073:
-			if (player.clueContainer == null) {
-				Optional<ClueDifficulty> cd = ClueDifficulty.getDifficulty(id);
-				if (!cd.isPresent())
-					return;
-				player.clueContainer = new ClueScrollContainer(player, ClueScrollHandler.getStages(cd.get()));
-			}
-			player.clueContainer.current(id);
-			break;
 
-		case 2714:
-			if (player.bossDifficulty == null) {
-				player.getActionSender().sendMessage("You have not completed a clue scroll!");
-				return;
-			}
-			
-			System.out.println("Difficulty is "+player.bossDifficulty);
-			Item[] items = ClueScrollHandler.determineReward(player, player.bossDifficulty);
-
-			if (player.getItems().freeSlots() < items.length + 1) {
-				player.getActionSender().sendMessage("You do not have enough space in your inventory!");
-				return;
-			}
-			if (player.bossDifficulty.equals(ClueDifficulty.EASY)) {
-				player.easyClue += 1;
-				player.getActionSender().sendMessage("<col=009900> You have now completed " + player.easyClue + " easy clues");
-			}
-			if (player.bossDifficulty.equals(ClueDifficulty.MEDIUM)) {
-				player.mediumClue += 1;
-				player.getActionSender().sendMessage("<col=FF5050> You have now completed " + player.mediumClue + " medium clues");
-				Achievements.increase(player, AchievementType.MEDIUM_CLUE, 1);
-			}
-			if (player.bossDifficulty.equals(ClueDifficulty.HARD)) {
-				player.hardClue += 1;
-				Achievements.increase(player, AchievementType.HARD_CLUE, 1);
-				player.getActionSender().sendMessage("<col=CC3300> You have now completed " + player.hardClue + " hard clues");
-			}
-			if (player.bossDifficulty.equals(ClueDifficulty.ELITE)) {
-				player.eliteClue += 1;
-				Achievements.increase(player, AchievementType.ELITE_CLUE, 1);
-				player.getActionSender().sendMessage("<col=5A0000> You have now completed " + player.eliteClue + " elite clues");
-			}
-			Achievements.increase(player, AchievementType.TREASURE_TRIAL, 1);
-			player.getItems().deleteItem(2714);
-			player.getPA().displayReward(items);
-			Arrays.stream(items).forEach(player.getItems()::addItem);
-			player.getActionSender().sendMessage("You open the casket and obtain your reward!");
-			player.bossDifficulty = null;
-			break;
-			
 		case 952:
 			handleShovel(player);
 			break;
@@ -554,21 +492,7 @@ public class ItemOptionPacket implements PacketType {
 	}
 
 	private void doShovelActions(Player player) {
-		if (!sendClue(player, player.getItems().search(ClueDifficulty.getClueIds()))) {
-			player.getActionSender().sendMessage("Nothing interesting happens.");
-		}
-	}
-	
-	private boolean sendClue(Player player, int id) {
-		if (player.clueContainer == null || id == -1) {
-			return false;
-		}
-		Location l = player.clueContainer.stages.peek().getLocation();
-		if (player.getPosition().inLocation(l)) {
-			player.clueContainer.next(id);
-			return true;
-		}
-		return false;
+		player.getActionSender().sendMessage("Nothing interesting happens.");
 	}
 	
 	/**

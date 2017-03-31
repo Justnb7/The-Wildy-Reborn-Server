@@ -1,9 +1,15 @@
 package com.model.game.character.player.minigames.fight_caves;
 
+/**
+ * The fight caves minigame waves data
+ * 
+ * @author Patrick van Elderen
+ *
+ */
 public class Wave {
 	
-	public static final int TZ_KIH = 3116, TZ_KEK_SPAWN = 3120, TZ_KEK = 3118,
-			TOK_XIL = 3121, YT_MEJKOT = 3123, KET_ZEK = 3125, TZTOK_JAD = 3127,
+	public static final int TZ_KIH =  2189, TZ_KEK_SPAWN = 2191, TZ_KEK = 2192,
+			TOK_XIL = 2193, YT_MEJKOT = 3124, KET_ZEK = 3125, TZTOK_JAD = 3127,
 			YTHURKOT = 3128;
 
 	public static final int[][] WAVES = { { TZ_KIH }, { TZ_KIH, TZ_KIH },
@@ -48,5 +54,19 @@ public class Wave {
 			{ KET_ZEK, YT_MEJKOT, TOK_XIL, TOK_XIL },
 			{ KET_ZEK, YT_MEJKOT, YT_MEJKOT }, { KET_ZEK, KET_ZEK },
 			{ TZTOK_JAD } };
+	
+	private int stage;
+
+	public void set(int stage) {
+		this.stage = stage;
+	}
+
+	public int[] spawns() {
+		return WAVES[stage];
+	}
+
+	public int getStage() {
+		return stage;
+	}
 
 }

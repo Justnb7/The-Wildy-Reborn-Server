@@ -20,7 +20,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		Entity entity = player.getCombat().target;
 		player.setCombatType(CombatStyle.RANGE);
 		player.playAnimation(Animation.create(4230));
 		player.getItems().deleteArrow();

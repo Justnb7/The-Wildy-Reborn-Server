@@ -14,11 +14,33 @@ import com.model.task.ScheduledTask;
  *
  */
 public class WalkToNpcTask extends ScheduledTask {
-	
+
+	/**
+	 * The npc we're interacting with
+	 * 
+	 */
 	private final NPC npc;
+
+	/**
+	 * The player interacting with the npc
+	 */
 	private final Player player;
+
+	/**
+	 * The option
+	 */
 	private final int clickType;
-	
+
+	/**
+	 * Create a new {@link WalkToNpcTask}.
+	 * 
+	 * @param npc
+	 *            the npc that we're interacting with.
+	 * @param player
+	 *            the player that is interacting with the npc.
+	 * @param clickType
+	 *            the click option, npcs have 4 click options
+	 */
 	public WalkToNpcTask(Player player, NPC npc, int clickType) {
 		super(1, false);
 		this.npc = npc;
@@ -28,90 +50,52 @@ public class WalkToNpcTask extends ScheduledTask {
 
 	@Override
 	public void execute() {
-		
-		switch (clickType) {
-		case 1:
-			if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
-				NpcInteraction.firstOption(player, npc);
-			} else {
-				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-					@Override
-					public void execute() {
-						if (!player.isActive()) {
-							stop();
-							return;
-						}
-						if (npc != null) {
-							if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
-								NpcInteraction.firstOption(player, npc);
-								stop();
-							}
-						}
-					}
-				});
-			}
-			break;
-		case 2:
-			if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
-				NpcInteraction.secondOption(player, npc);
-			} else {
-				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 
-					@Override
-					public void execute() {
-						if (npc != null) {
-							if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
-								NpcInteraction.secondOption(player, npc);
-								stop();
-							}
-						}
-					}
-				});
-			}
-			break;
-		case 3:
-			if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
+		if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
+			switch (clickType) {
+			case 1:
+				NpcInteraction.firstOption(player, npc);
+				break;
+			case 2:
+				NpcInteraction.secondOption(player, npc);
+				break;
+			case 3:
 				NpcInteraction.thirdOption(player, npc);
-			} else {
-				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-					@Override
-					public void execute() {
-						if (npc != null) {
-							if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
-								NpcInteraction.thirdOption(player, npc);
-								stop();
-							}
-						}
-					}
-				});
-			}
-			break;
-		case 4:
-			if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
+				break;
+			case 4:
 				NpcInteraction.fourthOption(player, npc);
-			} else {
-				Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-					@Override
-					public void execute() {
-						if (!player.isActive()) {
-							stop();
-							return;
-						}
-						if (npc != null) {
-							if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
-								NpcInteraction.fourthOption(player, npc);
-								stop();
-							}
+				break;
+			}
+		} else {
+			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+				@Override
+				public void execute() {
+					if (!player.isActive()) {
+						stop();
+						return;
+					}
+					if (npc != null) {
+						switch (clickType) {
+						case 1:
+							NpcInteraction.firstOption(player, npc);
+							break;
+						case 2:
+							NpcInteraction.secondOption(player, npc);
+							break;
+						case 3:
+							NpcInteraction.thirdOption(player, npc);
+							break;
+						case 4:
+							NpcInteraction.fourthOption(player, npc);
+							break;
 						}
 					}
-				});
-			}
-			break;
+				}
+			});
 		}
 		player.setFollowing(null);
 		player.face(player, npc.getPosition());
 		npc.face(npc, player.getPosition());
 		this.stop();
 	}
-
 }

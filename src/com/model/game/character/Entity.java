@@ -1,16 +1,12 @@
 package com.model.game.character;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-
 import com.google.common.base.Preconditions;
 import com.model.Server;
-import com.model.game.UpdateFlags;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.Projectile;
@@ -104,11 +100,6 @@ public abstract class Entity {
 	public List<NPC> getLocalNPCs() {
 		return localNpcs;
 	}
-	
-	/**
-	 * The update flags.
-	 */
-	private final UpdateFlags updateFlags = new UpdateFlags();
 
 	/**
 	 * The characters combat type, MELEE by default

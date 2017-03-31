@@ -1,11 +1,5 @@
 package com.model.utility.json.definitions;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.function.Predicate;
-
 /**
  * The container that represents an item definition.
  *

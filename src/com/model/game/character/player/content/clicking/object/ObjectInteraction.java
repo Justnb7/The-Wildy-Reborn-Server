@@ -155,12 +155,7 @@ public class ObjectInteraction {
 		 * Entering the Fight Caves.
 		 */
 		case 11833:
-			if (Boundary.entitiesInArea(Boundary.FIGHT_CAVE) >= 50) {
-				player.getActionSender().sendMessage(
-						"There are too many people using the fight caves at the moment. Please try again later");
-				return;
-			}
-			player.getFightCave().enterFightCaves();
+			player.getFCI().start(player);
 			break;
 
 		case 11834:

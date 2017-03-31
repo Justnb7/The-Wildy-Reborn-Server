@@ -20,7 +20,6 @@ public class KrakenInstance {
 	/**
 	 * The kraken instance
 	 */
-
 	private SingleInstancedArea instance;
 	
 	public NPC[] npcs;
@@ -29,7 +28,6 @@ public class KrakenInstance {
 	 * Begin the kraken instance
 	 * @param player
 	 */
-
 	public void start(Player player) {
 		instance = (SingleInstancedArea) InstancedAreaManager.getSingleton().createSingleInstancedArea(player, Boundary.KRAKEN);
 		player.getPA().move(new Position(3696, 5798, instance.getHeight()));

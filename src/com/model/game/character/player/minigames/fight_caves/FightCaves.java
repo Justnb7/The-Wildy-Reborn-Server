@@ -1,11 +1,14 @@
 package com.model.game.character.player.minigames.fight_caves;
 
+import java.util.Random;
+
 import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
@@ -23,6 +26,8 @@ import com.model.utility.Utility;
  *         <a href="http://www.rune-server.org/members/jason/">Jason</a> for the data being used
  */
 public class FightCaves {
+	
+	private static Random r = new Random();
 
 	/**
 	 * The player instance
@@ -70,9 +75,16 @@ public class FightCaves {
 	/**
 	 * Random set of spawn coordinates
 	 */
-	public int[][] SPAWN_DATA = { { 2403, 5079 }, { 2396, 5074 },
-			{ 2387, 5072 }, { 2388, 5085 }, { 2389, 5096 }, { 2403, 5097 },
-			{ 2410, 5087 } };
+	 public static Position getRandomLocation(Player player) {
+	        final int[] locationSet = LOCATIONS[r.nextInt(LOCATIONS.length)];
+	        final int x = r.nextInt(locationSet[2] - locationSet[0]) + locationSet[0];
+	        final int y = r.nextInt(locationSet[3] - locationSet[1]) + locationSet[1];
+	        final int z = player.getPosition().getZ();
+	        return Position.create(x, y, z);
+	    }
+
+	private static int[][] LOCATIONS = { { 2376, 5065, 2387, 5076 }, { 2376, 5099, 2387, 5112 },
+			{ 2408, 5103, 2419, 5113 }, { 2412, 5078, 2422, 5086 }, };
 
 	/**
 	 * A set of all waves, fight caves has 63 waves
@@ -97,7 +109,6 @@ public class FightCaves {
 			@Override
 			public void execute() {
 				final int[][] wave = getWaves(player);
-				player.dialogue().start("ENTER_FIGHT_CAVE");
 				if (player == null) {
 					this.stop();
 					return;
@@ -113,14 +124,15 @@ public class FightCaves {
 					return;
 				}
 				if (player.waveId != 0 && player.waveId < wave.length)
-					player.getActionSender().sendMessage("You are now on wave " + (player.waveId + 1) + " of " + wave.length + ".");
+					player.getActionSender().sendMessage("Wave: @red@" + (player.waveId + 1) + "@bla@.");
 				setKillsRemaining(wave[player.waveId].length);
 				for (int i = 0; i < getKillsRemaining(); i++) {
-					int npcType = wave[player.waveId][i];
-					int index = Utility.random(SPAWN_DATA.length - 1);
-					int x = SPAWN_DATA[index][0];
-					int y = SPAWN_DATA[index][1];
-					NPCHandler.spawnNpc(player, npcType, x, y, player.getIndex() * 4, 1, true, false, false);
+					Position spawnLoc = getRandomLocation(player);
+					NPCHandler.spawnNpc(player, wave[player.waveId][i], spawnLoc.getX(), spawnLoc.getY(), 0, 1, true, false, false);
+					//NPC npc = new NPC(wave[player.waveId][i], spawnLoc, 0);
+					//npc.setAbsX(spawnLoc.getX());
+					//npc.setAbsY(spawnLoc.getY());
+					//World.getWorld().register(npc);
 				}
 				this.stop();
 			}
@@ -154,26 +166,15 @@ public class FightCaves {
 			player.dialogue().start("DIED_DURING_FIGHT_CAVE");
 			player.getActionSender().sendMessage("You have been defeated!");
 		}
+		InstancedAreaManager.getSingleton().disposeOf(player.getFCI().getInstance());
 		player.waveId = 0;
 		killAllSpawns();
-	}
-
-	/**
-	 * We're now entering the caves, we can start the waves
-	 */
-	public void enterFightCaves() {
-		player.getActionSender().sendRemoveInterfacePacket();
-		player.getPA().move(new Position(2413, 5117, player.getIndex() * 4));
-		player.getActionSender().sendMessage("@red@Wave: 1");
-		player.waveId = 0;
-		startWave();
 	}
 
 	/**
 	 * Stop the minigame
 	 */
 	public void stop() {
-		reward();
 		player.getPA().move(OUTSIDE);
 		player.waveId = 0;
 		killAllSpawns();
@@ -251,7 +252,6 @@ public class FightCaves {
 			if (player.getFightCave().getKillsRemaining() == 0) {
 				player.waveId++;
 				player.getFightCave().startWave();
-				player.getActionSender().sendMessage("@red@Wave: " + player.waveId);
 			}
 		}
 	}
@@ -261,10 +261,9 @@ public class FightCaves {
 	 */
 	public void spawnHealers() {
 		for (int i = 0; i < 4; i++) {
-			int index = Utility.getRandom(SPAWN_DATA.length - 1);
-			int x = SPAWN_DATA[index][0];
-			int y = SPAWN_DATA[index][1];
-			NPCHandler.spawnNpc(player, Wave.YTHURKOT, x, y, player.getIndex() * 4, 1, true, false, false);
+			Position spawnLoc = getRandomLocation(player);
+			NPC npc = new NPC(Wave.YTHURKOT, spawnLoc, 0);
+			World.getWorld().getNPCs().add(npc);
 		}
 	}
 

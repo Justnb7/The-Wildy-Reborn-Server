@@ -13,7 +13,7 @@ public class InstanceFloorReset extends ScheduledTask {
 	@Override
 	public void execute() {
 		for (Player player : World.getWorld().getPlayers())
-			if(player != null) {
+			if (player != null) {
 				player.instanceFloorReset();
 			}
 	}

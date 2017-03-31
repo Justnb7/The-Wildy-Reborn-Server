@@ -10,8 +10,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
-import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
-import com.model.game.character.player.content.cluescrolls.ClueScrollHandler;
 import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.location.Position;
@@ -109,25 +107,18 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static NPC spawnNpc(Player player, int id, int x, int y, int heightLevel, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
+	public static NPC spawnNpc(Player player, int id, Position spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
 		NPC npc = new NPC(id);
 		
-		npc.setAbsX(x);
-		npc.setAbsY(y);
-		npc.makeX = x;
-		npc.makeY = y;
-		npc.heightLevel = heightLevel;
-		npc.currentHealth = npc.getDefinition().getHitpoints();
-        npc.maximumHealth = npc.getDefinition().getHitpoints();
-        npc.attack_bonus = npc.getDefinition().getAttackBonus();
-        npc.melee_defence = npc.getDefinition().getMeleeDefence();
-        npc.range_defence = npc.getDefinition().getRangedDefence();
-        npc.magic_defence = npc.getDefinition().getMagicDefence();
-        npc.maxHit = npc.getDefinition().getMaxHit();
+		npc.setAbsX(spawn.getX());
+		npc.setAbsY(spawn.getY());
+		npc.makeX = spawn.getX();
+		npc.makeY = spawn.getY();
+		npc.heightLevel = spawn.getZ();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
-		System.out.printf("Spawned npc id %d for player index %d%n", id, player.getIndex());
-		npc.setOnTile(x, y, heightLevel);
+		//System.out.printf("Spawned npc id %d for player index %d on position x %d, y %d%n", id, player.getIndex(), x, y);
+		npc.setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		npc.faceEntity(player);
 		if (attacksEnemy) {
 			npc.underAttack = true;
@@ -138,10 +129,11 @@ public final class NPCHandler {
 		if (hasHeadIcon) {
 			player.getActionSender().drawHeadIcon(1, npc.getIndex(), 0, 0);
 		}
-		if(bossOffspring) {
+		if (bossOffspring) {
 			npc.shouldRespawn = false;
 		}
 		World.getWorld().register(npc);
+		System.out.println("spawn: "+World.getWorld().register(npc)+" @ "+npc.getPosition());
 		return npc;
 	}
 	
@@ -297,9 +289,6 @@ public final class NPCHandler {
 			yourIncrease += 10;
 		} else if(player.getTotalAmountDonated() > 200) {
 			yourIncrease += 15;
-		}
-		if (!ClueScrollHandler.npcDrop(player, npc)) {
-			NpcDropSystem.get().drop(player, npc, yourIncrease);
 		}
 	}
 	
@@ -476,20 +465,6 @@ public final class NPCHandler {
 		mob.direction = direction;
 		mob.updateRequired = true;
 		mob.setOnTile(mob.absX, mob.absY, mob.heightLevel);
-	}
-
-	public static Optional<NPC> spawnNpc3(Player c, int npcType, int x, int y, int heightLevel, ClueDifficulty d) {
-		if (d == ClueDifficulty.EASY) {
-			////Player player, int id, int x, int y, int heightLevel, int walkingType, int health, int maxHit, int attackBonus, int meleeDefence, int rangeDefence, int magicDefence, boolean attacksEnemy, boolean hasHeadIcon
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
-		} else if (d == ClueDifficulty.MEDIUM) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
-		} else if (d == ClueDifficulty.HARD) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
-		} else if (d == ClueDifficulty.ELITE) {
-			return Optional.of(spawnNpc(c, npcType, x, y, heightLevel, 1, true, true, false));
-		}
-		return Optional.empty();
 	}
 
 	public static boolean isSpawnedBy(Player player, NPC npc) {

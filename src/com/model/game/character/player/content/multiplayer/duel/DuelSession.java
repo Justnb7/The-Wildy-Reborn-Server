@@ -6,7 +6,6 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
 import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
@@ -182,7 +181,7 @@ public class DuelSession extends MultiplayerSession {
 			player.getActionSender().sendMessage("You cannot stake this item, it is deemed as untradable.");
 			return false;
 		}
-		if (item.id == 12926 || item.id == 12931 || item.id == 12904 || ClueDifficulty.isClue(item.id)) {
+		if (item.id == 12926 || item.id == 12931 || item.id == 12904) {
 			player.getActionSender().sendMessage("You cannot stake this item, it is deemed as untradable.");
 			return false;
 		}

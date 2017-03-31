@@ -6,7 +6,6 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.content.BossTracker;
 import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;

@@ -8,14 +8,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.google.common.collect.Iterables;
 import com.model.game.World;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.BossDeathTracker.BossName;
@@ -24,9 +21,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
-import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
-import com.model.game.character.player.content.cluescrolls.ClueScroll;
-import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
 import com.model.game.item.Item;
 import com.model.game.item.bank.BankItem;
 import com.model.utility.Utility;
@@ -350,29 +344,7 @@ public class PlayerSerialization {
                      
 					// Clues crolls
 					case 19:
-						if (key.equals("clue-container")) {
-							try {
-								if (value == null || !value.equals("null")) {
-									List<ClueScroll> list = new ArrayList<>();
-									for (int i = 0; i < values.length; i++)
-										list.add(ClueScroll.valueOf(values[i]));
-									p.clueContainer = new ClueScrollContainer(p, Iterables.toArray(list, ClueScroll.class));
-								}
-							} catch (IllegalArgumentException e) {
-								p.clueContainer = null;
-							}
-						} else if (key.equals("clue-reward")) {
-							if (!value.equals("null"))
-								p.bossDifficulty = ClueDifficulty.valueOf(value);
-						} else if (key.equals("easy-clue")) {
-							p.easyClue = Integer.parseInt(value);
-						} else if (key.equals("medium-clue")) {
-							p.mediumClue = Integer.parseInt(value);
-						} else if (key.equals("hard-clue")) {
-							p.hardClue = Integer.parseInt(value);
-						} else if (key.equals("elite-clue")) {
-							p.eliteClue = Integer.parseInt(value);
-						}
+						
 						break;
                     
                     // Titles
@@ -821,30 +793,6 @@ public class PlayerSerialization {
 			writer.newLine();
 			
 			/* Clue scrolls */
-			writer.write("[CLUE-SCROLLS]");
-			writer.newLine();
-			writer.write("clue-container = ");
-			if (p.clueContainer == null || p.clueContainer.stages.peek() == null) {
-				writer.write("null");
-			} else {
-				for (ClueScroll c : p.clueContainer.stages)
-					writer.write(c.name() + "\t");
-			}
-			writer.newLine();
-			writer.write("clue-reward = ");
-			writer.write(p.bossDifficulty == null ? "null" : p.bossDifficulty.name());
-			writer.newLine();
-			writer.write("easy-clue = ");
-			writer.write(Integer.toString(p.easyClue));
-			writer.newLine();
-			writer.write("medium-clue = ");
-			writer.write(Integer.toString(p.mediumClue));
-			writer.newLine();
-			writer.write("hard-clue = ");
-			writer.write(Integer.toString(p.hardClue));
-			writer.newLine();
-			writer.write("elite-clue = ");
-			writer.write(Integer.toString(p.eliteClue));
 			writer.newLine();
 			writer.newLine();
 

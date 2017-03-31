@@ -201,7 +201,6 @@ public class NPC extends Entity {
 			magic_defence = definition.getMagicDefence();
 			melee_defence = definition.getMeleeDefence();
 			range_defence = definition.getRangedDefence();
-			//System.out.println("size: "+size+ " max: "+maxHit+" melee_def: "+melee_defence+" range_def: "+range_defence+" magic_def: "+magic_defence);
 		}
 	}
 

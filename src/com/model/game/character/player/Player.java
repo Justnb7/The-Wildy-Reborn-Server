@@ -7,12 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-
 import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
@@ -39,8 +36,6 @@ import com.model.game.character.player.account.ironman.GameModeSelection;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
-import com.model.game.character.player.content.cluescrolls.ClueDifficulty;
-import com.model.game.character.player.content.cluescrolls.ClueScrollContainer;
 import com.model.game.character.player.content.consumable.Consumable;
 import com.model.game.character.player.content.consumable.food.FoodConsumable;
 import com.model.game.character.player.content.consumable.potion.PotionData;
@@ -57,6 +52,7 @@ import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.controller.ControllerManager;
 import com.model.game.character.player.dialogue.DialogueManager;
 import com.model.game.character.player.instances.InstancedAreaManager;
+import com.model.game.character.player.instances.impl.FightCaveInstance;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.pest_control.PestControl;
@@ -2355,9 +2351,15 @@ public class Player extends Entity {
 	 * Handle the instanced floor reset
 	 */
 	public void instanceFloorReset() {
-		if (kraken != null) {
+		if(fci != null) {
+			if (!Boundary.isIn(this, Boundary.FIGHT_CAVE)) {
+				System.out.println("Restting fight cave instance for: " + this.getName());
+				if(fci.getInstance() != null)
+					InstancedAreaManager.getSingleton().disposeOf(fci.getInstance());
+			}
+		} else if (kraken != null) {
 			if (!Boundary.isIn(this, Boundary.KRAKEN)) {
-				System.out.println("Reset for player " + this.getName());
+				System.out.println("Resetting kraken instance for: " + this.getName());
 				if (kraken.getInstance() != null)
 					InstancedAreaManager.getSingleton().disposeOf(kraken.getInstance());
 			}
@@ -2370,6 +2372,14 @@ public class Player extends Entity {
 		if (kraken == null)
 			kraken = new KrakenInstance();
 		return kraken;
+	}
+	
+	private FightCaveInstance fci;
+	
+	public FightCaveInstance getFCI() {
+		if(fci == null)
+			fci = new FightCaveInstance();
+		return fci;
 	}
 
 	public void refresh_inventory() {
@@ -2789,34 +2799,6 @@ public class Player extends Entity {
 	
 	public GameBuffer getPlayerProps() {
 		return playerProps;
-	}
-	
-	// clue scroll
-	public ClueScrollContainer clueContainer;
-	public ClueDifficulty bossDifficulty;
-	public int randomClueReward = 0;
-	public int easyClue = 0;
-	public int mediumClue = 0;
-	public int hardClue = 0;
-	public int eliteClue = 0;
-	
-	/**
-	 * Temp solution to clue-scroll bug
-	 * - Allows player to reset his clue status 
-	 * - Allowing them to continue to gather clues
-	 * @param player
-	 */
-	public void resetClueStatus(Player player) {
-		if (player.getItems().playerOwnsAnyItems(ClueDifficulty.getClueIds())) {
-			player.getActionSender().sendMessage("It seems you have a clue scroll, please complete it.");
-			return;
-		}
-		if(player.bossDifficulty != null) {
-			player.bossDifficulty = null;
-		}
-		if(player.clueContainer != null) {
-			player.clueContainer = null;
-		}
 	}
 	
 	/**

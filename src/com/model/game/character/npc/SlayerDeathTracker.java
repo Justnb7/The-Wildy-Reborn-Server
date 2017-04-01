@@ -34,7 +34,7 @@ public class SlayerDeathTracker {
 			return;
 		}
 
-        NpcDefinition definition = NpcDefinition.getDefinitions()[npc.npcId];
+        NpcDefinition definition = NpcDefinition.getDefinitions()[npc.getId()];
 		if (definition == null) {
 			return;
 		}

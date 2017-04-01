@@ -40,7 +40,7 @@ public class NpcDropSystem {
 	/**
 	 * The directory of the npcdropsystem
 	 */
-	private static final String DIRECTORY = "./data/json/";
+	private static final String DIRECTORY = "./data/json/npc/";
 	
 	/**
 	 * The file to save to

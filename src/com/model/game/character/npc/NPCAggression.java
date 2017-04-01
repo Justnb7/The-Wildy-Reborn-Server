@@ -80,7 +80,7 @@ public final class NPCAggression {
         	return false;
         }
         // Bad distance
-        if (!npc.distance(p.absX, p.absY, npc.absX, npc.absY, AGGRESSION.getOrDefault(npc.npcId, TARGET_DISTANCE))) {
+        if (!npc.distance(p.absX, p.absY, npc.absX, npc.absY, AGGRESSION.getOrDefault(npc.getId(), TARGET_DISTANCE))) {
             return false;
         }
         // At a most basic level, if you get to here, the npc is alive, in distance etc

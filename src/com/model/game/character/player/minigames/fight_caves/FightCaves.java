@@ -108,7 +108,7 @@ public class FightCaves {
 		Server.getTaskScheduler().schedule(new ScheduledTask(player, 3, Walkable.WALKABLE, Stackable.STACKABLE) {
 			@Override
 			public void execute() {
-				final int[][] wave = getWaves(player);
+			
 				if (player == null) {
 					this.stop();
 					return;
@@ -118,21 +118,21 @@ public class FightCaves {
 					this.stop();
 					return;
 				}
+				
+				final int[][] wave = getWaves(player);
+				
 				if (player.waveId >= wave.length) {
 					reward();
 					this.stop();
 					return;
 				}
 				if (player.waveId != 0 && player.waveId < wave.length)
-					player.getActionSender().sendMessage("Wave: @red@" + (player.waveId + 1) + "@bla@.");
+					player.getActionSender().sendMessage("@red@Wave: " + (player.waveId + 1));
 				setKillsRemaining(wave[player.waveId].length);
-				for (int i = 0; i < getKillsRemaining(); i++) {
+				player.debug("remaining: "+getKillsRemaining());
+				for (int spawn = 0; spawn < getKillsRemaining(); spawn++) {
 					Position spawnLoc = getRandomLocation(player);
-					NPCHandler.spawnNpc(player, wave[player.waveId][i], spawnLoc, 1, true, false, false);
-					//NPC npc = new NPC(wave[player.waveId][i], spawnLoc, 0);
-					//npc.setAbsX(spawnLoc.getX());
-					//npc.setAbsY(spawnLoc.getY());
-					//World.getWorld().register(npc);
+					NPCHandler.spawnNpc(player, wave[player.waveId][spawn], spawnLoc, 1, true, false, false);
 				}
 				this.stop();
 			}
@@ -204,7 +204,7 @@ public class FightCaves {
 	public static boolean isFightCaveNpc(NPC npc) {
 		if (npc == null)
 			return false;
-		switch (npc.npcId) {
+		switch (npc.getId()) {
 		case Wave.TZ_KEK_SPAWN:
 		case Wave.TZ_KIH:
 		case Wave.TZ_KEK:
@@ -231,7 +231,7 @@ public class FightCaves {
 				if (player.getFightCave() != null) {
 					if (isFightCaveNpc(npc))
 						nextWave(player, npc);
-					if (npc != null && npc.npcId == 3127) {
+					if (npc != null && npc.getId() == 3127) {
 						player.getFightCave().reward();
 					}
 				}

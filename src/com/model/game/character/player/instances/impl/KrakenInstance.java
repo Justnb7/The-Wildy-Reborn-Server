@@ -67,7 +67,7 @@ public class KrakenInstance {
 			public void execute() {
 				if (player != null && instance != null) {
 					for (NPC n : npcs) {
-						if (n.npcId == 5534) {
+						if (n.getId() == 5534) {
 							//MINIONS
 							n.setVisible(true);
 						}
@@ -81,7 +81,7 @@ public class KrakenInstance {
 			public void execute() {
 				if (player != null && instance != null) {
 					for (NPC n : npcs) {
-						if (n.npcId == 496) {
+						if (n.getId() == 496) {
 							n.setVisible(true);
 						}
 					}

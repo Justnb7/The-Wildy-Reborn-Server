@@ -307,7 +307,7 @@ public class CombatFormulae {
 		if (target != null)
 			if (attacker.isPlayer() && target.isNPC()) {
 				final NPC npc = (NPC) target;
-				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.npcId && hasBlackMaskOrSlayerHelm(player)) {
+				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.getId() && hasBlackMaskOrSlayerHelm(player)) {
 					otherBonusMultiplier = 1.15;
 				}
 			}
@@ -403,7 +403,7 @@ public class CombatFormulae {
 		if (victim != null)
 			if (mob.isPlayer() && victim.isNPC()) {
 				final NPC npc = (NPC) victim;
-				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.npcId && hasBlackMaskOrSlayerHelm(player)) {
+				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.getId() && hasBlackMaskOrSlayerHelm(player)) {
 					otherBonusMultiplier = 1.15;
 				}
 			}

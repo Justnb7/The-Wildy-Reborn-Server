@@ -47,7 +47,7 @@ public class Fishing extends SkillTask {
 	 * @return
 	 */
 	public static boolean attemptFishing(Player player, NPC npc, int optionId) {
-		int spotId = npc.npcId;
+		int spotId = npc.getId();
 		
 		FishingSpot data = FishingSpot.forId(spotId, optionId);
 		

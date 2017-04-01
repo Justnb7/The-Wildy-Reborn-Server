@@ -12,6 +12,7 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
+import com.model.game.character.player.minigames.fight_caves.Wave;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.WeaponDefinition;
@@ -33,7 +34,7 @@ public class NpcVsPlayerCombat {
 	public static void handleCombatTimer(NPC npc) {
 		//npc.forceChat("attacktimer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
 		
-		boolean isBoss = BossScripts.isBoss(npc.npcId);
+		boolean isBoss = BossScripts.isBoss(npc.getId());
 
 		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
@@ -103,8 +104,8 @@ public class NpcVsPlayerCombat {
 					NPCCombatData.distanceRequired(npc))) {
 				npc.randomWalk = false;
 				
-				boolean isBoss = BossScripts.isBoss(npc.npcId);
-				AbstractBossCombat boss_cb = BossScripts.get(npc.npcId);
+				boolean isBoss = BossScripts.isBoss(npc.getId());
+				AbstractBossCombat boss_cb = BossScripts.get(npc.getId());
 				if (isBoss) {
 					boss_cb.execute(npc, player);
 					// don't do any code below this, boss script handles all.
@@ -142,13 +143,13 @@ public class NpcVsPlayerCombat {
 			return false;
 		}
 		
-		if (npc.npcId == 6617) {
+		if (npc.getId() == 6617) {
 			return false;
 		}
 		if (!player.isVisible()) {
 			return false;
 		}
-		if (npc.npcId != 5535 && npc.npcId != 494) { // small tent and kraken can attack in single
+		if (npc.getId() != 5535 && npc.getId() != 494) { // small tent and kraken can attack in single
 			if (!npc.inMulti() && npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex()) {
 				npc.targetId = 0;
 				return false;
@@ -228,6 +229,11 @@ public class NpcVsPlayerCombat {
 			if (player.attackDelay <= 3 || player.attackDelay == 0) {
 				//tried to make a instance didnt work ether
 				player.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
+			}
+			
+			if(npc.getId() == Wave.TZ_KIH) {
+				player.debug("decrease");
+				player.getSkills().decreasePrayerPoints(1);
 			}
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());

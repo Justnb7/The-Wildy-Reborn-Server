@@ -336,7 +336,7 @@ public class SlayerTaskManagement {
 			player = World.getWorld().getPlayers().get(npc.killedBy);
 			
 			//Decrease task
-			if (player.getSlayerTask() == npc.npcId) {
+			if (player.getSlayerTask() == npc.getId()) {
 				player.setSlayerTaskAmount(player.getSlayerTaskAmount() - 1);
 				player.getSkills().addExperience(Skills.SLAYER, npc.maximumHealth);
 				//player.getActionSender().sendMessage("Slayertask: "+Npc.getName(npc.npcId)+ " left: "+player.getSlayerTaskAmount()));
@@ -345,9 +345,9 @@ public class SlayerTaskManagement {
 			
 			//Kills left messages
 			if(player.getSlayerTaskAmount() == 25) {
-				player.getActionSender().sendMessage("You still have to kill 25 more "+NPC.getName(npc.npcId));
+				player.getActionSender().sendMessage("You still have to kill 25 more "+NPC.getName(npc.getId()));
 			} else if(player.getSlayerTaskAmount() == 10) {
-				player.getActionSender().sendMessage("You still have to kill 10 more "+NPC.getName(npc.npcId));
+				player.getActionSender().sendMessage("You still have to kill 10 more "+NPC.getName(npc.getId()));
 			}
 			
 			// The player has completed their task, we can go ahead and reward them.

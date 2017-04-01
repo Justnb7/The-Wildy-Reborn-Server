@@ -85,7 +85,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		if (npc == null) {
 			return;
 		}
-		if (npc.maximumHealth == 0 && npc.npcId != 493) {
+		if (npc.maximumHealth == 0 && npc.getId() != 493) {
 			player.getCombat().reset();
 			return;
 		}
@@ -126,7 +126,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		if (!npc.getDefinition().isAttackable())
 			return;
-		if (npc.maximumHealth == 0 || npc.npcId == 944) {
+		if (npc.maximumHealth == 0 || npc.getId() == 944) {
 			player.getActionSender().sendMessage("You can't attack this npc.");
 			return;
 		}

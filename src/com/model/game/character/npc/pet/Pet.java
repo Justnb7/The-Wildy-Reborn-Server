@@ -59,9 +59,10 @@ public class Pet extends NPC {
 						}
 						int delta = player.getPosition().distance(pet.getPosition());
 						if (delta >= 13 || delta <= -13) {
-							// TODO teleport npc to player thats itt
+							// TODO teleport npc to player
+							player.debug("tele");
 							Position move = new Position(player.getX(), player.getY() -1, player.getZ());
-							pet.setLocation(move);
+							pet.teleport(move);
 						}
 					}
 

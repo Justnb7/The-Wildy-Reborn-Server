@@ -71,10 +71,10 @@ public class Combat {
             player.getActionSender().sendString(ptarg.getName() + "-" + player.getSkills().getLevelForExperience(Skills.HITPOINTS) + "-" + ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName(), 35000);
         } else {
             NPC npc = (NPC) target;
-            if (npc.npcId != 493 || npc.npcId != 496 || npc.npcId != 5534) {
+            if (npc.getId() != 493 || npc.getId() != 496 || npc.getId() != 5534) {
                 Player attacker = World.getWorld().PLAYERS.get(npc.underAttackBy);
                 //System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
-                player.getActionSender().sendString(NPC.getName(npc.npcId).replaceAll("_", " ") + "-" + npc.maximumHealth + "-" + npc.currentHealth + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
+                player.getActionSender().sendString(NPC.getName(npc.getId()).replaceAll("_", " ") + "-" + npc.maximumHealth + "-" + npc.currentHealth + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
             }
         }
 
@@ -286,7 +286,7 @@ public class Combat {
             if (target.isNPC()) {
                 NPC npc = (NPC) target;
                 if (npc.maximumHealth > 0 && npc.attackTimer > 3) {
-                    if (npc.npcId != 2042 && npc.npcId != 2043 & npc.npcId != 2044 && npc.npcId != 3127) {
+                    if (npc.getId() != 2042 && npc.getId() != 2043 & npc.getId() != 2044 && npc.getId() != 3127) {
                         npc.playAnimation(Animation.create(npc.getDefendAnimation()));
                     }
                 }

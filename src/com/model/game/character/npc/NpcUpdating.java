@@ -174,7 +174,7 @@ public class NpcUpdating {
 		buffer.writeBits(5, yPos);
 		buffer.writeBits(5, xPos);
 		buffer.writeBits(1, 0);
-		buffer.writeBits(14, npc.npcId);
+		buffer.writeBits(14, npc.getId());
 		buffer.writeBits(npc.updateRequired);
 	}
 

@@ -58,7 +58,7 @@ public class NPCDeathTask extends ScheduledTask {
             if (killer != null && killer.getKraken() != null && killer.getKraken().npcs != null && killer.getKraken().npcs[0] != null) {
             	if (npc == killer.getKraken().npcs[0]) {
             		for (NPC n : killer.getKraken().npcs) {
-            			if (n.npcId == 5535) {
+            			if (n.getId() == 5535) {
             				// kill off tents
             				n.isDead = true;
             				Server.getTaskScheduler().schedule(new NPCDeathTask(n));
@@ -147,7 +147,7 @@ public class NPCDeathTask extends ScheduledTask {
         npc.animUpdateRequired = true; // might not be needed but leave incase it breaks somet
         npc.resetDamageReceived();
 
-        if (npc.npcId == 492 && npc.isDead) {
+        if (npc.getId() == 492 && npc.isDead) {
         	npc.requestTransform(493);
 			npc.transformUpdateRequired = true;
         }
@@ -172,13 +172,13 @@ public class NPCDeathTask extends ScheduledTask {
         } else {
             npc.killedBy = -1;
         }
-        if (npc.npcId == 6618 && npc.isDead) {
+        if (npc.getId() == 6618 && npc.isDead) {
         	npc.forceChat("Ow!");
         }
-        if (npc.npcId == 6615 && npc.isDead) {
+        if (npc.getId() == 6615 && npc.isDead) {
         	npc.spawnedScorpiaMinions = false;
         }
-        if (npc.npcId == 6611 && npc.transformId != 6612) {
+        if (npc.getId() == 6611 && npc.transformId != 6612) {
 			npc.requestTransform(6612);
 			npc.transformUpdateRequired = true;
 			npc.currentHealth = 255;
@@ -188,8 +188,8 @@ public class NPCDeathTask extends ScheduledTask {
 			stop();
 			return;
 		} else {
-			if (npc.npcId == 6612) {
-				npc.npcId = 6611;
+			if (npc.getId() == 6612) {
+				npc.setId(6611);
 				npc.spawnedVetionMinions = false;
 				npc.forceChat("Got'em");
 			}
@@ -197,24 +197,24 @@ public class NPCDeathTask extends ScheduledTask {
 		if (npc.killedBy >= 0) {
 			Player player = World.getWorld().getPlayers().get(npc.killedBy);
 			if (player != null) {
-				if (npc.npcId == player.getSlayerTask()) {
+				if (npc.getId() == player.getSlayerTask()) {
 					SlayerTaskManagement.decreaseTask(player, npc);
 				}
 				Combat.resetCombat(player);
 			}
 		}
 
-		if (npc.npcId == 6613 || npc.npcId == 6614) {
+		if (npc.getId() == 6613 || npc.getId() == 6614) {
         	for (NPC i : World.getWorld().getNPCs()) {
         		if(i == null)
         			continue;
-        		if(i.npcId == 6611 || i.npcId == 6612 && i.dogs > 0) {
+        		if(i.getId() == 6611 || i.getId() == 6612 && i.dogs > 0) {
         			i.dogs--;
         		}
         	}
         }
 		
-        if (npc.npcId != 6611) // vetion or somet
+        if (npc.getId() != 6611) // vetion or somet
 			npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead emote
         if (killer != null) {
         	FightCaves.sendDeath(killer, npc);

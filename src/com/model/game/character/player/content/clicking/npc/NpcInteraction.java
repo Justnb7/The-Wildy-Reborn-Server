@@ -25,12 +25,12 @@ public class NpcInteraction {
 			return;
 		}
 
-		if (FishingSpot.fishingNPC(npc.npcId)) {
+		if (FishingSpot.fishingNPC(npc.getId())) {
 			Fishing.attemptFishing(player, npc, 1);
 			return;
 		}
 
-		switch (npc.npcId) {
+		switch (npc.getId()) {
 
 		/**
 		 * Kamfreena
@@ -177,12 +177,12 @@ public class NpcInteraction {
 			return;
 		}
 
-		if (FishingSpot.fishingNPC(npc.npcId)) {
+		if (FishingSpot.fishingNPC(npc.getId())) {
 			Fishing.attemptFishing(player, npc, 2);
 			return;
 		}
 
-		switch (npc.npcId) {
+		switch (npc.getId()) {
 
 		case 2180:
 			player.secondOption = true;
@@ -290,7 +290,7 @@ public class NpcInteraction {
 	 */
 	public static void thirdOption(Player player, NPC npc) {
 
-		switch (npc.npcId) {
+		switch (npc.getId()) {
 		
 		case 401: // Turael
 			Shop.SHOPS.get("Slayer Equipment").openShop(player);
@@ -331,7 +331,7 @@ public class NpcInteraction {
 	 */
 	public static void fourthOption(Player player, NPC npc) {
 
-		switch (npc.npcId) {
+		switch (npc.getId()) {
 
 		case 401: // Turael
 			Shop.SHOPS.get("Slayer Rewards").openShop(player);

@@ -153,22 +153,22 @@ public class PestControl {
 				String color = npc.isDead ? "@red@" : npc.currentHealth > 0 && npc.currentHealth < 150 ? "@or1@" : "@gre@";
 				int hp = npc.isDead ? 0 : npc.currentHealth;
 				player.getActionSender().sendString(color + hp, 21111 + i);
-				if (npc.npcId == 1739 && hp < 275) {
+				if (npc.getId() == 1739 && hp < 275) {
 					player.getActionSender().sendConfig(1270, 0);
 				} else {
 					player.getActionSender().sendConfig(1270, 1);
 				}
-				if (npc.npcId == 1740 && hp < 275) {
+				if (npc.getId() == 1740 && hp < 275) {
 					player.getActionSender().sendConfig(1271, 0);
 				} else {
 					player.getActionSender().sendConfig(1271, 1);
 				}
-				if (npc.npcId == 1741 && hp < 275) {
+				if (npc.getId() == 1741 && hp < 275) {
 					player.getActionSender().sendConfig(1272, 0);
 				} else {
 					player.getActionSender().sendConfig(1272, 1);
 				}
-				if (npc.npcId == 1742 && hp < 275) {
+				if (npc.getId() == 1742 && hp < 275) {
 					player.getActionSender().sendConfig(1273, 0);
 				} else {
 					player.getActionSender().sendConfig(1273, 1);
@@ -548,14 +548,14 @@ public class PestControl {
 
 	private static NPC getNpc(int npcType, int x, int y) {
 		for (NPC npc : World.getWorld().getNPCs())
-			if (npc != null && npc.npcId == npcType && npc.absX == x && npc.absY == y)
+			if (npc != null && npc.getId() == npcType && npc.absX == x && npc.absY == y)
 				return npc;
 		return null;
 	}
 
 	private static NPC getNpc(int npcType) {
 		for (NPC npc : World.getWorld().getNPCs())
-			if (npc != null && npc.npcId == npcType)
+			if (npc != null && npc.getId() == npcType)
 				return npc;
 		return null;
 	}

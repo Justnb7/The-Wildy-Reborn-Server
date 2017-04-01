@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import com.google.common.base.Preconditions;
 import com.model.Server;
 import com.model.game.World;
@@ -548,31 +549,32 @@ public abstract class Entity {
 			if (victim_npc.currentHealth - damage < 0) {
 				damage = victim_npc.currentHealth;
 			}
+			
 			if (attacker.isPlayer())
 				PlayerVsNpcCombat.kraken((Player)attacker, victim_npc, damage);
-			if (victim_npc.npcId == 319) {
+			if (victim_npc.getId() == 319) {
 				if (attacker.isNPC() || (attacker.isPlayer() && !PlayerVsNpcCombat.isWearingSpear(((Player)attacker)))) {
 					damage /= 2;
 				}
 			}
-			if (victim_npc.npcId == 5535) {
+			if (victim_npc.getId() == 5535) {
 				damage = 0;
 			}
-			if (combat_type == CombatStyle.MELEE && (victim_npc.npcId == 2267 || victim_npc.npcId == 2266)) {
+			if (combat_type == CombatStyle.MELEE && (victim_npc.getId() == 2267 || victim_npc.getId() == 2266)) {
 				if (attacker.isPlayer())
 					((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 			//Rex and Supreme do not take range damage
-			if (combat_type == CombatStyle.RANGE && (victim_npc.npcId == 2265 || victim_npc.npcId == 2267)) {
+			if (combat_type == CombatStyle.RANGE && (victim_npc.getId() == 2265 || victim_npc.getId() == 2267)) {
 				((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
-			if (combat_type == CombatStyle.MAGIC && (victim_npc.npcId == 2265 || victim_npc.npcId == 2266)) {
+			if (combat_type == CombatStyle.MAGIC && (victim_npc.getId() == 2265 || victim_npc.getId() == 2266)) {
 				((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
-			if (combat_type == CombatStyle.MAGIC && victim_npc.npcId == 5535) {
+			if (combat_type == CombatStyle.MAGIC && victim_npc.getId() == 5535) {
 				damage = 0;
 			}
 		}

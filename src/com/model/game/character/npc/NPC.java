@@ -36,7 +36,14 @@ public class NPC extends Entity {
 		return npcId;
 	}
 	
-	public boolean forClue;
+	/**
+	 * Sets the npc ID
+	 * @param npcId
+	 *        The npc
+	 */
+	public void setId(int npcId) {
+		this.npcId = npcId;
+	}
 	
 	/**
 	 * Checks if the minions can be respawned
@@ -54,19 +61,9 @@ public class NPC extends Entity {
 	public int ownerId;
 	
 	/**
-	 * Checks if the minion should respawn
+	 * Checks if the npc should respawn
 	 */
-	public boolean shouldRespawn = true, needRespawn;
-	
-	/**
-	 * Last special attack delay
-	 */
-	public long lastSpecialAttack;
-	
-	/**
-	 * Determines wether the player was the first attacker
-	 */
-	public int firstAttacker;
+	public boolean shouldRespawn = true;
 	
 	/**
 	 * Stopwatch delay
@@ -127,7 +124,7 @@ public class NPC extends Entity {
 	/**
 	 * Representing the npc id
 	 */
-	public int npcId;
+	private int npcId;
 	
 	/**
 	 * npc Locations
@@ -233,14 +230,14 @@ public class NPC extends Entity {
 	 * @param y
 	 * @param z
 	 */
-	public void teleport(int x, int y, int z) {
-		setOnTile(x, y, z);
-		makeX = x;
-		makeY = y;
-		setAbsX(x);
-		setAbsY(y);
-		heightLevel = z;
-		setLocation(new Position(x, y, z));
+	public void teleport(Position position) {
+		setOnTile(position.getX(), position.getY(), position.getZ());
+		makeX = position.getX();
+		makeY = position.getY();
+		setAbsX(position.getX());
+		setAbsY(position.getY());
+		heightLevel = position.getZ();
+		setLocation(new Position(position.getX(), position.getY(), position.getZ()));
 		getAttributes().put("teleporting", true);
 	}
 

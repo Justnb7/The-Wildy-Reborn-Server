@@ -32,7 +32,7 @@ public class PlayerVsNpcCombat {
 	
 	public static void kraken(Player player, NPC npc, int damage) {
 		
-		if (npc.npcId == 5534 && npc.transformId != 5535) {
+		if (npc.getId() == 5534 && npc.transformId != 5535) {
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(3860));
 			npc.requestTransform(5535);
@@ -49,7 +49,7 @@ public class PlayerVsNpcCombat {
 				}
 			});
 		}
-		if (npc.npcId == 496 && npc.transformId != 494) { // small whirlpools of Cave_krakens
+		if (npc.getId() == 496 && npc.transformId != 494) { // small whirlpools of Cave_krakens
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(7135));
 			npc.requestTransform(494);
@@ -68,7 +68,7 @@ public class PlayerVsNpcCombat {
 		}
 		
 		//Cave kraken - NPCID = 492 // whirlpool (lvl 127) -> 493
-		if (npc.npcId == 493 && npc.transformId != 492) { // small whirlpools of Cave_krakens
+		if (npc.getId() == 493 && npc.transformId != 492) { // small whirlpools of Cave_krakens
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(7135));
 			npc.requestTransform(492);
@@ -145,13 +145,13 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 		
-		if ((npc.npcId == 6611 || npc.npcId == 6612) && npc.dogs > 0) {
+		if ((npc.getId() == 6611 || npc.getId() == 6612) && npc.dogs > 0) {
 			Combat.resetCombat(player);
 			player.getActionSender().sendMessage("You must vanquish Vet'ions dogs.");
 			return false;
 		}
 		
-		if (npc.npcId == 2463 || npc.npcId == 2464) {
+		if (npc.getId() == 2463 || npc.getId() == 2464) {
 			if (Boundary.isIn(player, WarriorsGuild.CYCLOPS_BOUNDARY)) {
 				if (!player.getWarriorsGuild().isActive()) {
 					player.getActionSender().sendMessage("You cannot attack a cyclops without talking to kamfreena.");
@@ -161,11 +161,11 @@ public class PlayerVsNpcCombat {
 			}
 		}
 
-		if (npc.npcId == 496 && npc.transformId != 494) {
+		if (npc.getId() == 496 && npc.transformId != 494) {
 			KrakenInstance i = player.getKraken();
 			if (i != null && i.npcs != null && i.npcs[0] == npc) {
 				for (NPC n : i.npcs) {
-					if (n.npcId == 5534) {
+					if (n.getId() == 5534) {
 						player.getActionSender().sendMessage("You can't disturb the kraken while the whirlpools are undisturbed.");
 						Combat.resetCombat(player);
 						return false;
@@ -271,7 +271,7 @@ public class PlayerVsNpcCombat {
 	}
 
 	public static boolean inDistance(Player player, NPC npc) {
-		boolean hasDistance = npc.npcId == 5535 ? true : false; // force 5535 tents to always be hittable
+		boolean hasDistance = npc.getId() == 5535 ? true : false; // force 5535 tents to always be hittable
 		for (Position pos : npc.getTiles()) {
 			double distance = pos.distance(player.getPosition());
 			if(Combat.usingHalberd(player) && distance <= 2) {

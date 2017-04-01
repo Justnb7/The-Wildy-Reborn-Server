@@ -23,7 +23,7 @@ public class NPCDropAnnouncement {
 		if (this.npc == null)
 			return;
 
-		NPCName npc = NPCName.get(NPC.getName(this.npc.npcId).replaceAll("_", " "));
+		NPCName npc = NPCName.get(NPC.getName(this.npc.getId()).replaceAll("_", " "));
 		
 		if (npc != null) {
 			for (Player regionalPlayer : World.getWorld().getPlayers()) {

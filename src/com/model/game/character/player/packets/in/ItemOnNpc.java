@@ -21,7 +21,7 @@ public class ItemOnNpc implements PacketType {
 			return;
 		}
 		@SuppressWarnings("unused")
-		int npcId = npc.npcId;
+		int npcId = npc.getId();
 		switch (itemId) {
 
 		}

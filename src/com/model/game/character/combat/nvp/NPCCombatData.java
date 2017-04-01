@@ -28,7 +28,7 @@ public class NPCCombatData {
 	 * @return The projectile speed for the npc
 	 */
 	public static int getProjectileSpeed(NPC npc) {
-		switch (npc.npcId) {
+		switch (npc.getId()) {
 		
 		case 5535:
 			return 100;
@@ -112,10 +112,10 @@ public class NPCCombatData {
 	* Distanced required to attack
 	**/	
 	public static int distanceRequired(NPC npc) {
-		if (BossScripts.isBoss(npc.npcId)) {
-			return BossScripts.get(npc.npcId).distance(null);
+		if (BossScripts.isBoss(npc.getId())) {
+			return BossScripts.get(npc.getId()).distance(null);
 		}
-		switch (npc.npcId) {
+		switch (npc.getId()) {
 		
 		case 1672: // Ahrim the Blighted
 		case 1675: // Karil the Tainted

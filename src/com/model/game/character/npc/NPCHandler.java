@@ -116,7 +116,7 @@ public final class NPCHandler {
 		npc.heightLevel = spawn.getZ();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
-		//System.out.printf("Spawned npc id %d for player index %d on position x %d, y %d%n", id, player.getIndex(), x, y);
+		System.out.printf("Spawned npc id %d for player index %d on position %s%n", id, player.getIndex(), npc.getPosition());
 		npc.setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		npc.faceEntity(player);
 		if (attacksEnemy) {
@@ -132,7 +132,6 @@ public final class NPCHandler {
 			npc.shouldRespawn = false;
 		}
 		World.getWorld().register(npc);
-		System.out.println("spawn: "+World.getWorld().register(npc)+" @ "+npc.getPosition());
 		return npc;
 	}
 	
@@ -211,10 +210,10 @@ public final class NPCHandler {
 
 		if (npc != null) {
 			player.getBossDeathTracker().add(npc);
-			if (npc.npcId == player.getSlayerTask())
+			if (npc.getId() == player.getSlayerTask())
 				player.getSlayerDeathTracker().add(npc);
 			
-			switch(npc.npcId) {
+			switch(npc.getId()) {
 			case 6610:
 				Achievements.increase(player, AchievementType.VENENATIS, 1);
 				break;
@@ -271,8 +270,8 @@ public final class NPCHandler {
 		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
 		
 		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
-		if(AnimatedArmour.isAnimatedArmourNpc(npc.npcId))
-			AnimatedArmour.dropTokens(player, npc.npcId, npc.absX, npc.absY);
+		if(AnimatedArmour.isAnimatedArmourNpc(npc.getId()))
+			AnimatedArmour.dropTokens(player, npc.getId(), npc.absX, npc.absY);
 		
 		// get the drop table
 		

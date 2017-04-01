@@ -58,15 +58,15 @@ public class Slayer {
 	 *         true else false.
 	 */
 	public static boolean canAttack(Player player, NPC npc) {
-		if (isSlayerTask(player, npc.npcId)) {
+		if (isSlayerTask(player, npc.getId())) {
 			if (player.getSkills().getLevel(Skills.SLAYER) < task.getSlayerReq()) {
 				return false;
 			}
-			if(npc.npcId == 5534 && player.getSlayerTask() != 494) {
+			if(npc.getId() == 5534 && player.getSlayerTask() != 494) {
 				player.getActionSender().sendMessage("You must have Kraken's as a slayer-task to disturb these whirlpools.");
 				return false;
 			}
-			if (npc.npcId == 493 && player.getSlayerTask() != 492 || npc.npcId == 496 && player.getSlayerTask() != 494) {
+			if (npc.getId() == 493 && player.getSlayerTask() != 492 || npc.getId() == 496 && player.getSlayerTask() != 494) {
 				player.getActionSender().sendMessage("You must have cave krakens as a slayer-task to attack");
 				return false;
 			}

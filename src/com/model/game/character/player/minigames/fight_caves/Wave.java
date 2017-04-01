@@ -55,18 +55,6 @@ public class Wave {
 			{ KET_ZEK, YT_MEJKOT, YT_MEJKOT }, { KET_ZEK, KET_ZEK },
 			{ TZTOK_JAD } };
 	
-	private int stage;
-
-	public void set(int stage) {
-		this.stage = stage;
-	}
-
-	public int[] spawns() {
-		return WAVES[stage];
-	}
-
-	public int getStage() {
-		return stage;
-	}
+	
 
 }

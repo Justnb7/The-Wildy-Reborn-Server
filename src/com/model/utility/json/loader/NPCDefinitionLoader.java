@@ -18,7 +18,7 @@ public final class NPCDefinitionLoader extends JsonLoader {
      * Creates a new {@link NPCDefinitionLoader}.
      */
     public NPCDefinitionLoader() {
-        super("./data/json/npc_definitions.json");
+        super("./data/json/npc/npc_definitions.json");
     }
 
     @Override

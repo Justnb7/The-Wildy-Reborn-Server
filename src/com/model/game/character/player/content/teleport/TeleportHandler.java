@@ -57,7 +57,8 @@ public class TeleportHandler {
 		
 		/* Minigame */
 		DUEL_ARENA(TeleportationTypes.MINIGAME, 222219, 57054, "Duel Arena", new Position(3365, 3265, 0), 0, "---", "---", false),
-		FIGHT_CAVES(TeleportationTypes.MINIGAME, 222223, 57058, "Fight Caves", new Position(2439, 5171, 0), 0, "---", "---", false);
+		FIGHT_CAVES(TeleportationTypes.MINIGAME, 222223, 57058, "Fight Caves", new Position(2439, 5171, 0), 0, "---", "---", false),
+		PEST_CONTROL(TeleportationTypes.MINIGAME, 222227, 57062, "Pest Control", new Position(2662, 2650, 0), 0, "---", "---", false);
 
 		private final TeleportationTypes teleportType;
 		private final int buttonId;

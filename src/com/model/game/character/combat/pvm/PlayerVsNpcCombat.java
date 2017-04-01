@@ -98,7 +98,8 @@ public class PlayerVsNpcCombat {
 	 * @return If the player can attack the npc
 	 */
 	public static boolean canTouch(Player player, NPC npc, boolean findpath) {
-		boolean ignoreClip = npc.getId() == 494 || npc.getId() == 492 || npc.getId() == 493 || npc.getId() == 496 || npc.getId() == 5534 || npc.getId() == 5535 || npc.getId() == 2054 || npc.getId() == 5947;
+		boolean ignoreClip = npc.getId() >= 1739 && npc.getId() <= 1742 || npc.getId() == 494 || npc.getId() == 492 || npc.getId() == 493 || npc.getId() == 496
+				|| npc.getId() == 5534 || npc.getId() == 5535 || npc.getId() == 2054 || npc.getId() == 5947;
 		if (ignoreClip)
 			return true;
 		boolean projectile = player.getCombatType() == CombatStyle.RANGE || player.getCombatType() == CombatStyle.MAGIC;
@@ -125,9 +126,9 @@ public class PlayerVsNpcCombat {
 	}
 
 	public static boolean canAttackNpc(Player player, NPC npc) {
-
 		if (npc.isDead || npc.maximumHealth <= 0 || player.isDead()) {
 			player.getCombat().reset();
+			player.debug("dead");
 			return false;
 		}
 		if (npc.transforming)

@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler;
-import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -69,10 +68,10 @@ public class PestControl {
 	}
 
 	private static final int[][] NPC_DATA = {
-		    { 1739, 2628, 2591, 250, 0, 150 }, // portal
-			{ 1740, 2680, 2588, 250, 0, 150 }, // portal
-			{ 1741, 2669, 2570, 250, 0, 150 }, // portal
-			{ 1742, 2645, 2569, 250, 0, 150 }, // portal
+		    { 1739, 2628, 2591, 250}, // portal
+			{ 1740, 2680, 2588, 250 }, // portal
+			{ 1741, 2669, 2570, 250 }, // portal
+			{ 1742, 2645, 2569, 250 }, // portal
 	};
 
 	/**
@@ -153,26 +152,20 @@ public class PestControl {
 				String color = npc.isDead ? "@red@" : npc.currentHealth > 0 && npc.currentHealth < 150 ? "@or1@" : "@gre@";
 				int hp = npc.isDead ? 0 : npc.currentHealth;
 				player.getActionSender().sendString(color + hp, 21111 + i);
-				if (npc.getId() == 1739 && hp < 275) {
-					player.getActionSender().sendConfig(1270, 0);
-				} else {
-					player.getActionSender().sendConfig(1270, 1);
-				}
-				if (npc.getId() == 1740 && hp < 275) {
-					player.getActionSender().sendConfig(1271, 0);
-				} else {
-					player.getActionSender().sendConfig(1271, 1);
-				}
-				if (npc.getId() == 1741 && hp < 275) {
-					player.getActionSender().sendConfig(1272, 0);
-				} else {
-					player.getActionSender().sendConfig(1272, 1);
-				}
-				if (npc.getId() == 1742 && hp < 275) {
-					player.getActionSender().sendConfig(1273, 0);
-				} else {
-					player.getActionSender().sendConfig(1273, 1);
-				}
+				
+				//Remove the config when damage was done to the portal
+				int purplePortal = npc.getId() == 1739 && hp < 275 ? 0 : 1;
+				player.getActionSender().sendConfig(1270, purplePortal);
+				
+				int bluePortal = npc.getId() == 1740 && hp < 275 ? 0 : 1;
+				player.getActionSender().sendConfig(1270, bluePortal);
+				
+				int yellowPortal = npc.getId() == 1741 && hp < 275 ? 0 : 1;
+				player.getActionSender().sendConfig(1270, yellowPortal);
+				
+				int redPortal = npc.getId() == 1742 && hp < 275 ? 0 : 1;
+				player.getActionSender().sendConfig(1270, redPortal);
+				
 			}
 			if (gameTime <= 20)
 				player.getActionSender().sendString("@red@Time Remaining: " + gameTime, 21117);
@@ -268,7 +261,6 @@ public class PestControl {
 	public static void addPlayerToGame(Player player) {
 		removeLobbyMember(player);
 		addGameMember(player);
-		//player.resetDamageReceived();
 		player.pestControlDamage = 0;
 		player.getPA().move(new Position(2656 + Utility.random(2), 2614 - Utility.random(3), 0));
 		player.getActionSender().sendMessage("Welcome to pest control, defeat all the portals within the time frame.");
@@ -510,7 +502,7 @@ public class PestControl {
 	/**
 	 * Outputs a list of data to the player for debug reasons
 	 * 
-	 * @param c
+	 * @param player
 	 *            The player
 	 */
 	public static void read(Player player) {
@@ -525,9 +517,12 @@ public class PestControl {
 	}
 
 	public static void spawnAllNpcs() {
-		int increase = gameMembers.size() * 25;
 		for (int i = 0; i < NPC_DATA.length; i++) {
-			NPCHandler.spawnNpc(NPC_DATA[i][0], NPC_DATA[i][1], NPC_DATA[i][2], 0, 0, NPC_DATA[i][3] + increase, 0, 0, 150);
+			NPC portal = new NPC(NPC_DATA[i][0]);
+			portal.setAbsX(NPC_DATA[i][1]);
+			portal.setAbsY(NPC_DATA[i][2]);
+			portal.setAbsZ(0);
+			World.getWorld().register(portal);
 		}
 	}
 

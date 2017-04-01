@@ -135,23 +135,6 @@ public final class NPCHandler {
 		return npc;
 	}
 	
-	public static void spawnNpc(int npcType, int x, int y, int heightLevel, int walkType, int health, int maxHit, int attack, int defence) {
-		NPC npc = new NPC(npcType);
-		
-		npc.absX = x;
-		npc.absY = y;
-		npc.makeX = x;
-		npc.makeY = y;
-		npc.heightLevel = heightLevel;
-		npc.walking_type = walkType;
-		npc.currentHealth = health;
-		npc.maximumHealth = health;
-		npc.maxHit = maxHit;
-		npc.attack_bonus = attack;
-		npc.melee_defence = npc.range_defence = npc.magic_defence = defence;
-		World.getWorld().register(npc);
-	}
-	
 	private static GroupRespawn tempGroup = null;
 	private static NPC tempboss = null;
 	

@@ -2,6 +2,7 @@ package com.model.game.item.container.impl;
 
 import com.google.common.collect.ImmutableSet;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
@@ -12,6 +13,21 @@ import com.model.utility.json.definitions.ItemDefinition;
  * @author <a href="http://www.rune-server.org/members/stand+up/">Stand Up</a>
  */
 public final class RunePouchContainer extends Container {
+	
+	/**
+	 * The rune pouch
+	 */
+	public final Item RUNE_POUCH_ID = new Item(12791);
+	
+	/**
+	 * The start of the item group widget
+	 */
+	private final static int START_ITEM_INTERFACE = 29908;
+	
+	/**
+	 * The start of the inventory interface widget
+	 */
+	private final int START_INVENTORY_INTERFACE = 29880;
 	
 	/**
 	 * The size of the container
@@ -51,15 +67,12 @@ public final class RunePouchContainer extends Container {
 	 * @param id			the item id that was clicked.
 	 * @return {@code true} if the interface was opened, {@code false} otherwise.
 	 */
-	public static boolean open(Player player, int id) {
+	public boolean open(Player player, int id) {
 		if(id != 12791) {
 			return false;
 		}
-
-
-		player.getItems().resetItems(5064);
-		player.getActionSender().sendInterfaceWithInventoryOverlay(41700, 5063);
-		player.getRunePouchContainer().refresh(player, 41710);
+		updatePouch();
+		player.write(new SendInterfacePacket(29875));
 		return true;
 	}
 
@@ -70,24 +83,25 @@ public final class RunePouchContainer extends Container {
 	 * @param amount	the amount that is being stored.
 	 * @return {@code true} if an item is stored, {@code false} otherwise.
 	 */
-	public static boolean store(Player player, int slot, int amount) {
-		Item item = player.getItems().getItemFromSlot(slot);
+	public boolean store(Player player, int id, int amount) {
+		Item item = player.getItems().getItemFromSlot(player.getItems().getItemSlot(id));
+		
 
+		//getInventory is a container method i never was able to fix the invneoty container
+		//so it wont work i guess kk
 		if (item == null) {
 			return false;
 		}
 		
-		if(ItemDefinition.forId(item.getId()).isStackable() && amount > player.playerItemsN[slot]) {
-			amount = player.playerItemsN[slot];
-		} else if (amount > player.getItems().getItemAmount(item.getId())) {
+		if (amount > player.getItems().getItemAmount(item.getId())) {
 			amount = player.getItems().getItemAmount(item.getId());
 		}
 		amount = Math.min(16000, amount);
 		
 		if(player.getRunePouchContainer().add(new Item(item.getId(), amount))) {
 			player.getItems().remove(new Item(item.getId(), amount));
-			player.getRunePouchContainer().refresh(player, 41710);
-			player.getItems().resetItems(5064);
+			player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + player.getRunePouchContainer().searchSlot(id), item.getId(), 0, amount);
+			updatePouch();
 			RunePouchContainer.sendCounts(player);
 		}
 		return true;
@@ -112,7 +126,7 @@ public final class RunePouchContainer extends Container {
 		sb.append(":");
 		sb.append(i3 == null ? "0" : ""+i3.amount);
 		sb.append("$");
-		
+
 		player2.getActionSender().sendString(sb.toString(), 49999); 
 	}
 
@@ -123,23 +137,20 @@ public final class RunePouchContainer extends Container {
 	 * @param amount	the amount that is being withdrawed.
 	 * @return {@code true} if an item is withdrawed, {@code false} otherwise.
 	 */
-	public static boolean withdraw(Player player, int slot, int amount) {
-		Item item = player.getRunePouchContainer().get(slot);
-
+	public boolean withdraw(Player player, int id, int amount) {
+		Item item = player.getRunePouchContainer().get(player.getRunePouchContainer().searchSlot(id));
 		if(item == null) {
 			return false;
 		}
 
-		if(ItemDefinition.forId(item.getId()).isStackable() && amount > player.getRunePouchContainer().amount(item.getId())) {
-			amount = player.playerItemsN[slot];
-		} else if (amount > player.getRunePouchContainer().amount(item.getId())) {
+		if (amount > player.getRunePouchContainer().amount(item.getId())) {
 			amount = player.getRunePouchContainer().amount(item.getId());
 		}
 
 		if(player.getRunePouchContainer().remove(new Item(item.getId(), amount))) {
 			player.getItems().addItem(new Item(item.getId(), amount));
-			player.getItems().resetItems(5064);
-			player.getRunePouchContainer().refresh(player, 41710);
+			player.getRunePouchContainer().refresh(player, START_ITEM_INTERFACE);
+			updatePouch();
 		}
 		return true;
 	}
@@ -151,10 +162,12 @@ public final class RunePouchContainer extends Container {
 
 	@Override
 	public boolean canAdd(Item item, int slot) {
+		player.debug("update?");
 		boolean canAdd = RUNES.stream().filter(rune -> rune == item.getId()).findAny().isPresent();
 
 		if(!canAdd) {
-			player.getActionSender().sendMessage("Don't be silly.");
+			player.getActionSender().sendMessage("Don't be silly. "+item.getId());
+			return false;
 		}
 		
 		if(this.size() == this.capacity() && !this.spaceFor(item)) {
@@ -163,5 +176,39 @@ public final class RunePouchContainer extends Container {
 		}
 
 		return canAdd;
+	}
+	
+	public boolean handleRunePouch(Player player, int id, int amount, int interfaceId) {
+		if (interfaceId >= START_ITEM_INTERFACE && (interfaceId <= START_ITEM_INTERFACE + 2)) {
+			withdraw(player, id, amount);
+			player.debug("withdrawing");
+			return true;
+		} else if (interfaceId >= START_INVENTORY_INTERFACE && (interfaceId <= START_INVENTORY_INTERFACE + 27)) {
+			store(player, id, amount);
+			player.debug("adding runes to pouch");
+			return true;
+		}
+		return false;
+	}
+	
+	private void sendInventoryItems() {
+		if (!player.getItems().playerHasItem(RUNE_POUCH_ID)) {
+			return;
+		}
+		for (int item = 0; item < 28; item++) {
+			int id = 0;
+			int amt = 0;
+
+			if (item < player.playerItems.length) {
+				id = player.playerItems[item];
+				amt = player.playerItemsN[item];
+			}
+			player.getActionSender().sendUpdateItem(START_INVENTORY_INTERFACE + item, id - 1, 0, amt);
+		}
+	}
+	
+	private void updatePouch() {
+		sendInventoryItems();
+		player.getRunePouchContainer().refresh(player, START_ITEM_INTERFACE);
 	}
 }

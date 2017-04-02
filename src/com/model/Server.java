@@ -6,12 +6,7 @@ import java.util.logging.Logger;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.player.Player;
-import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionListener;
-import com.model.game.character.player.content.questtab.QuestTabPageHandler;
-import com.model.game.character.player.content.questtab.QuestTabPages;
-import com.model.game.item.Item;
 import com.model.game.object.GlobalObjects;
 import com.model.game.sync.GameDataLoader;
 import com.model.game.sync.GameLogicService;
@@ -20,8 +15,6 @@ import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.handshake.HandshakeDecoder;
 import com.model.task.TaskScheduler;
 import com.model.utility.Stopwatch;
-import com.model.utility.Utility;
-import com.motiservice.Motivote;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -47,7 +40,7 @@ public class Server {
 	 */
 	private static final Logger logger = Logger.getLogger(Server.class.getName());
 
-	public static final Motivote MOTIVOTE = new Motivote("luzoxpk", "c01d05751b28441cfbbd1ff1f87add95");
+	//public static final Motivote MOTIVOTE = new Motivote("luzoxpk", "c01d05751b28441cfbbd1ff1f87add95");
 	
 	/**
 	 * The elapsed time the server has been running for.
@@ -102,7 +95,7 @@ public class Server {
 			bind(Constants.SERVER_PORT);
 			
 			logger.info(Constants.SERVER_NAME + " has been Succesfully started.");
-			MOTIVOTE.checkUnredeemedPeriodically((result) -> {
+			/*MOTIVOTE.checkUnredeemedPeriodically((result) -> {
 				result.votes().forEach((vote) -> {
 					boolean online = vote.username() != null && PlayerUpdating.isPlayerOn(vote.username());
 					
@@ -125,7 +118,7 @@ public class Server {
 						}
 					}
 				});
-			});
+			});*/
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("A fatal exception has been thrown!");

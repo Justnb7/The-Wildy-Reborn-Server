@@ -33,10 +33,7 @@ import com.model.game.character.player.packets.in.DefaultPacketHandler;
 import com.model.game.character.player.packets.in.Trade;
 import com.model.game.character.player.packets.in.WalkingPacketHandler;
 import com.model.game.character.player.packets.in.WieldPacketHandler;
-import com.model.game.character.player.packets.in.Withdraw10Action;
-import com.model.game.character.player.packets.in.Withdraw1Action;
-import com.model.game.character.player.packets.in.Withdraw5Action;
-import com.model.game.character.player.packets.in.WithdrawAllAction;
+import com.model.game.character.player.packets.in.WithdrawActionsPacketHandler;
 import com.model.game.character.player.packets.in.WithdrawAllButOneAction;
 
 public class PacketHandler {
@@ -47,6 +44,8 @@ public class PacketHandler {
 	static {
 
 		//Redone by Patrick van Elderen
+		
+		//Item options
 		ItemOptionPacket iop = new ItemOptionPacket();
 		packetId[122] = iop;
 		packetId[16] = iop;
@@ -56,6 +55,28 @@ public class PacketHandler {
 		packetId[53] = iop;
 		packetId[237] = iop;
 		packetId[25] = iop;
+		
+		//Object interactions
+		ObjectOptionPacketHandler co = new ObjectOptionPacketHandler();
+		packetId[132] = co;
+		packetId[252] = co;
+		packetId[70] = co;
+		
+		//Npc interactions
+		NpcInteractionPacketHandler cn = new NpcInteractionPacketHandler();
+		packetId[72] = cn;
+		packetId[131] = cn;
+		packetId[155] = cn;
+		packetId[17] = cn;
+		packetId[18] = cn;
+		packetId[21] = cn;
+		
+		//Withdraw actions
+		WithdrawActionsPacketHandler wap = new WithdrawActionsPacketHandler();
+		packetId[145] = wap;
+		packetId[117] = wap;
+		packetId[43] = wap;
+		packetId[129] = wap;
 		
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();
@@ -89,18 +110,7 @@ public class PacketHandler {
 		packetId[253] = new SecondGroundOption();
 		packetId[14] = new ItemOnPlayerPacketHandler();
 		packetId[40] = new DialoguePacketHandler();
-		ObjectOptionPacketHandler co = new ObjectOptionPacketHandler();
-		packetId[132] = co;
-		packetId[252] = co;
-		packetId[70] = co;
 		packetId[57] = new ItemOnNpc();
-		NpcInteractionPacketHandler cn = new NpcInteractionPacketHandler();
-		packetId[72] = cn;
-		packetId[131] = cn;
-		packetId[155] = cn;
-		packetId[17] = cn;
-		packetId[18] = cn;
-		packetId[21] = cn;
 		packetId[4] = new ChatPacketHandler();
 		packetId[185] = new ActionButtonPacketHandler();
 		packetId[130] = new CloseInterfacePacketHandler();
@@ -114,10 +124,6 @@ public class PacketHandler {
 		packetId[139] = new FollowPlayer();
 		packetId[140] = new WithdrawAllButOneAction();
 		packetId[141] = new BankModifiableX();
-		packetId[145] = new Withdraw1Action();
-		packetId[117] = new Withdraw5Action();
-		packetId[43] = new Withdraw10Action();
-		packetId[129] = new WithdrawAllAction();
 		packetId[101] = new CharDesignPacketHandler();
 		final PrivateMessaging pm = new PrivateMessaging();
 		packetId[188] = pm;

@@ -1,6 +1,7 @@
 package com.model.game.item.container.impl;
 
 import com.model.game.character.player.Player;
+import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
@@ -49,8 +50,7 @@ public final class LootingBagContainer extends Container {
 		if(id != 11941) {
 			return false;
 		}
-		//player.write(new SendSidebarInterface(3, 44000));
-		//player.getPA().sendInterfaceWithInventoryOverlay(26700, 26800);
+		player.write(new SendSidebarInterfacePacket(3, 36342));
 		return true;
 	}
 	

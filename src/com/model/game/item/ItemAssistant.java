@@ -14,6 +14,7 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.game.item.ground.GroundItem;
@@ -1859,6 +1860,7 @@ public class ItemAssistant {
 		return ItemDefinition.forId(ItemID).getName();
 	}
 
+	// returns the slot which matches itemID
 	public int getItemSlot(int ItemID) {
 		for (int i = 0; i < player.playerItems.length; i++) {
 			if ((player.playerItems[i] - 1) == ItemID) {
@@ -1868,6 +1870,7 @@ public class ItemAssistant {
 		return -1;
 	}
 
+	// returns Item instance of id,amount, using the slot. you have to know the slot.
 	public Item getItemFromSlot(int slot) {
 		if (slot == -1 || slot >= player.playerItems.length
 				|| player.playerItems[slot] == 0) {
@@ -2218,6 +2221,35 @@ public class ItemAssistant {
 		}
 		// System.out.println(found);
 		return found;
+	}
+
+	public List<Integer> deleteItemAndReturnAmount(int id, int amount) {
+		if (id <= 0) {
+			return null;
+		}
+		int count = 0;
+		List<Integer> amountsToReturn = new ArrayList<>();
+		for (int j = 0; j < player.playerItems.length; j++) {
+			if (count >= amount) {
+				break;
+			}
+			if (player.playerItems[j] == (id + 1)) {
+				if (player.playerItemsN[j] > amount) {
+					player.playerItemsN[j] -= amount;
+					count += amount;
+					amountsToReturn.add(amount);
+				} else {
+					count += player.playerItemsN[j];
+					amountsToReturn.add(player.playerItemsN[j]);
+					player.playerItemsN[j] = 0;
+					player.playerItems[j] = 0;
+				}
+			}
+		}
+		resetItems(3214);
+		PlayerSerialization.saveGame(player);
+
+		return amountsToReturn;
 	}
 
 }

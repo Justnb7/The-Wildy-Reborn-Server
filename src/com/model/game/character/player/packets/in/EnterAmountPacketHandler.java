@@ -34,6 +34,7 @@ public class EnterAmountPacketHandler implements PacketType {
 				return;
 			}
 		}
+
 		//System.out.println("Interface: "+player.xInterfaceId);
 		switch (player.xInterfaceId) {
 
@@ -41,14 +42,14 @@ public class EnterAmountPacketHandler implements PacketType {
 			if (!player.getItems().playerHasItem(player.xRemoveId, amount)) {
 				return;
 			}
-			if(player.openInterface == 41700) {
+			/*if(player.openInterface == 41700) {
 				RunePouchContainer.store(player, player.xRemoveSlot, amount > player.getItems().getItemAmount(player.xRemoveId) ? player.getItems().getItemAmount(player.xRemoveId) : amount);
-			} else
+			} else*/
 			player.getItems().addToBank(player.playerItems[player.xRemoveSlot] - 1, amount, true);
 			break;
 			
 		case 41710:
-			RunePouchContainer.withdraw(player, player.xRemoveSlot, amount > player.getRunePouchContainer().amount(player.xRemoveId) ? player.getRunePouchContainer().amount(player.xRemoveId) : amount);
+			player.getRunePouchContainer().withdraw(player, player.xRemoveSlot, amount > player.getRunePouchContainer().amount(player.xRemoveId) ? player.getRunePouchContainer().amount(player.xRemoveId) : amount);
 			break;
 			
 		case 5382:

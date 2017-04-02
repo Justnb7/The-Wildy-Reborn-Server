@@ -25,7 +25,6 @@ import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Teleports;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.LootingBagContainer;
-import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Position;
@@ -315,7 +314,11 @@ public class ItemOptionPacket implements PacketType {
 			TeleTabs.useTeleTab(player, slot, tabData);
 		}
 		
-		if(RunePouchContainer.open(player, item.getId())) {
+		/*if (player.runePouch.handleRunePouch(item.getId())) {
+			return;
+		}*/
+		
+		if(player.getRunePouchContainer().open(player, item.getId())) {
 			return;
 		}
 		

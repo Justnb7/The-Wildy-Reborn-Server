@@ -53,7 +53,7 @@ public class WithdrawAllAction implements PacketType {
             break;
 
         case 41710:
-        	RunePouchContainer.withdraw(player, removeSlot, player.getRunePouchContainer().amount(removeId));
+        	player.getRunePouchContainer().withdraw(player, removeSlot, player.getRunePouchContainer().amount(removeId));
         	break;
         	
         case 5064:
@@ -63,9 +63,9 @@ public class WithdrawAllAction implements PacketType {
              }
 			if (player.isBanking()) {
 				player.getItems().addToBank(removeId, player.getItems().getItemAmount(removeId), true);
-			} else {
+			}/* else {
 				RunePouchContainer.store(player, removeSlot, player.getItems().getItemAmount(removeId));
-			}
+			}*/
 			break;
 			
         case 5382:

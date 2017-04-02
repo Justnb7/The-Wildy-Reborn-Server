@@ -73,6 +73,15 @@ public class Item {
 		}
 		amount++;
 	}
+	
+	/**
+	 * Increment amount by given number
+	 * @param amount
+	 *        The amount we increment
+	 */
+	public void incrementAmount(int amount) {
+		this.amount += amount;
+	}
 
 	/**
 	 * Decrement the count by 1.

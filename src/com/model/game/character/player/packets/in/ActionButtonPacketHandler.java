@@ -237,6 +237,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 140162:
 		case 162235:
 		case 222170:
+		case 29877:
 			player.getActionSender().sendRemoveInterfacePacket();
 			break;
 			

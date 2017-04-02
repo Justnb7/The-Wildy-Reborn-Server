@@ -23,10 +23,11 @@ public class Withdraw5Action implements PacketType {
         int interfaceId = player.getInStream().readSignedWordBigEndianA();
         int removeId = player.getInStream().readSignedWordBigEndianA();
         int removeSlot = player.getInStream().readSignedWordBigEndian();
+        
         switch (interfaceId) {
             
 		case -23826:
-			RunePouchContainer.withdraw(player, removeSlot, 5);
+			player.getRunePouchContainer().withdraw(player, removeSlot, 5);
 			break;
 			
         case 1688:
@@ -54,9 +55,9 @@ public class Withdraw5Action implements PacketType {
         case 5064:
 			if (player.isBanking()) {
 				player.getItems().addToBank(removeId, 5, true);
-			} else {
+			}/* else {
 				RunePouchContainer.store(player, removeSlot, 5);
-			}
+			}*/
             break;
             
         case 5382:

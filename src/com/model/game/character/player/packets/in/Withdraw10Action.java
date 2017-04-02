@@ -30,7 +30,7 @@ public class Withdraw10Action implements PacketType {
         switch (interfaceId) {
         
 		case 41710:
-			RunePouchContainer.withdraw(player, removeSlot, 10);
+			player.getRunePouchContainer().withdraw(player, removeSlot, 10);
 		break;
         case 1688:
 			player.getPA().useOperate(removeId);
@@ -67,9 +67,9 @@ public class Withdraw10Action implements PacketType {
             }
             if (player.isBanking()) {
                 player.getItems().addToBank(removeId, 10, true);
-            } else {
+            }/* else {
             	RunePouchContainer.store(player, removeSlot, 10);
-            }
+            }*/
             DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 				player.getActionSender().sendMessage("You have declined the duel.");

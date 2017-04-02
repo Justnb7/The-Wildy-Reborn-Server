@@ -6,7 +6,6 @@ import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The class which represents functionality for the rune pouch container.
@@ -85,10 +84,7 @@ public final class RunePouchContainer extends Container {
 	 */
 	public boolean store(Player player, int id, int amount) {
 		Item item = player.getItems().getItemFromSlot(player.getItems().getItemSlot(id));
-		
 
-		//getInventory is a container method i never was able to fix the invneoty container
-		//so it wont work i guess kk
 		if (item == null) {
 			return false;
 		}
@@ -100,20 +96,25 @@ public final class RunePouchContainer extends Container {
 		
 		if(player.getRunePouchContainer().add(new Item(item.getId(), amount))) {
 			player.getItems().remove(new Item(item.getId(), amount));
-			player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + player.getRunePouchContainer().searchSlot(id), item.getId(), 0, amount);
 			updatePouch();
-			RunePouchContainer.sendCounts(player);
 		}
 		return true;
 	}
 
-	private static void sendCounts(Player player2) {
+	/**
+	 * Sends the runeIds to the client in form of a string. This will make the
+	 * spells light up.
+	 * 
+	 * @param sendToClient
+	 *            The player that sends the string to the client.
+	 */
+	private static void sendCounts(Player sendToClient) {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("#");
-		Item i1 = player2.getRunePouchContainer().get(0);
-		Item i2 = player2.getRunePouchContainer().get(1);
-		Item i3 = player2.getRunePouchContainer().get(2);
+		Item i1 = sendToClient.getRunePouchContainer().get(0);
+		Item i2 = sendToClient.getRunePouchContainer().get(1);
+		Item i3 = sendToClient.getRunePouchContainer().get(2);
 		sb.append(i1 == null ? "0" : ""+i1.id);
 		sb.append(":");
 		sb.append(i1 == null ? "0" : ""+i1.amount);
@@ -127,7 +128,7 @@ public final class RunePouchContainer extends Container {
 		sb.append(i3 == null ? "0" : ""+i3.amount);
 		sb.append("$");
 
-		player2.getActionSender().sendString(sb.toString(), 49999); 
+		sendToClient.getActionSender().sendString(sb.toString(), 49999);
 	}
 
 	/**
@@ -138,18 +139,19 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if an item is withdrawed, {@code false} otherwise.
 	 */
 	public boolean withdraw(Player player, int id, int amount) {
-		Item item = player.getRunePouchContainer().get(player.getRunePouchContainer().searchSlot(id));
+		Item item = player.getItems().getItemFromSlot(player.getItems().getItemSlot(id));
+		
 		if(item == null) {
 			return false;
 		}
 
+		// Ensure you can only take out what is actually inside the RP.
 		if (amount > player.getRunePouchContainer().amount(item.getId())) {
 			amount = player.getRunePouchContainer().amount(item.getId());
 		}
 
 		if(player.getRunePouchContainer().remove(new Item(item.getId(), amount))) {
 			player.getItems().addItem(new Item(item.getId(), amount));
-			player.getRunePouchContainer().refresh(player, START_ITEM_INTERFACE);
 			updatePouch();
 		}
 		return true;
@@ -162,35 +164,46 @@ public final class RunePouchContainer extends Container {
 
 	@Override
 	public boolean canAdd(Item item, int slot) {
-		player.debug("update?");
 		boolean canAdd = RUNES.stream().filter(rune -> rune == item.getId()).findAny().isPresent();
 
 		if(!canAdd) {
 			player.getActionSender().sendMessage("Don't be silly. "+item.getId());
-			return false;
 		}
 		
 		if(this.size() == this.capacity() && !this.spaceFor(item)) {
 			player.getActionSender().sendMessage("Your rune pouch is currently full.");
 			return false;
 		}
-
 		return canAdd;
 	}
 	
+	/**
+	 * Sends the withdraw or store method when adding/removing runes.
+	 * 
+	 * @param player
+	 *            The player storing or withdrawing runes.
+	 * @param id
+	 *            The runeId.
+	 * @param amount
+	 *            The amount we're storing.
+	 * @param interfaceId
+	 *            The widgetId
+	 * @return
+	 */
 	public boolean handleRunePouch(Player player, int id, int amount, int interfaceId) {
 		if (interfaceId >= START_ITEM_INTERFACE && (interfaceId <= START_ITEM_INTERFACE + 2)) {
 			withdraw(player, id, amount);
-			player.debug("withdrawing");
 			return true;
 		} else if (interfaceId >= START_INVENTORY_INTERFACE && (interfaceId <= START_INVENTORY_INTERFACE + 27)) {
 			store(player, id, amount);
-			player.debug("adding runes to pouch");
 			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * Updates the inventory widget of the rune pouch interface.
+	 */
 	private void sendInventoryItems() {
 		if (!player.getItems().playerHasItem(RUNE_POUCH_ID)) {
 			return;
@@ -207,8 +220,27 @@ public final class RunePouchContainer extends Container {
 		}
 	}
 	
+	/**
+	 * Update the contents of the rune pouch interface
+	 */
 	private void updatePouch() {
+		player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + 1, -1, 1, 0);
+		
+		//the rune pouch inventory group
 		sendInventoryItems();
-		player.getRunePouchContainer().refresh(player, START_ITEM_INTERFACE);
+
+		//The rune pouch item group
+		for (int slot = 0; slot < 3; slot++) {
+			int id = this.getId(slot);
+			if (id == -1) {
+				player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + slot, -1, 0, 0);
+				continue;
+			}
+			int amt = this.get(slot).amount;
+			player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + slot, id, 0, amt);
+		}
+		
+		//Custom method sending the runeIds to the client
+		sendCounts(this.player);
 	}
 }

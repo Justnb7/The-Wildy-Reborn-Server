@@ -128,7 +128,7 @@ public class ActionSender {
 		player.outStream.writeShort(6963);
 		player.outStream.writeShort(items.length);
 		for (int i = 0; i < items.length; i++) {
-			if (player.playerItemsN[i] > 254) {
+			if (player.itemAmount[i] > 254) {
 				player.outStream.writeByte(255);
 				player.outStream.writeDWord_v2(amounts[i]);
 			} else {

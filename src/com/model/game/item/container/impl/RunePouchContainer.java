@@ -16,7 +16,7 @@ public final class RunePouchContainer extends Container {
 	/**
 	 * The rune pouch
 	 */
-	public final Item RUNE_POUCH_ID = new Item(12791);
+	public final Item RUNE_POUCH = new Item(12791);
 	
 	/**
 	 * The start of the item group widget
@@ -48,7 +48,7 @@ public final class RunePouchContainer extends Container {
 
 	@Override
 	public boolean contains(Item item) {
-		return player.getItems().playerHasItem(12791) && super.contains(item);
+		return player.getItems().playerHasItem(RUNE_POUCH) && super.contains(item);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if the player does, {@code false} otherwise.
 	 */
 	public boolean hasPouch() {
-		return player.getItems().playerHasItem(12791) && this.size() > 0;
+		return player.getItems().playerHasItem(RUNE_POUCH) && this.size() > 0;
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if the interface was opened, {@code false} otherwise.
 	 */
 	public boolean open(Player player, int id) {
-		if(id != 12791) {
+		if(id != RUNE_POUCH.getId()) {
 			return false;
 		}
 		updatePouch();
@@ -205,16 +205,16 @@ public final class RunePouchContainer extends Container {
 	 * Updates the inventory widget of the rune pouch interface.
 	 */
 	private void sendInventoryItems() {
-		if (!player.getItems().playerHasItem(RUNE_POUCH_ID)) {
+		if (!player.getItems().playerHasItem(RUNE_POUCH)) {
 			return;
 		}
 		for (int item = 0; item < 28; item++) {
 			int id = 0;
 			int amt = 0;
 
-			if (item < player.playerItems.length) {
-				id = player.playerItems[item];
-				amt = player.playerItemsN[item];
+			if (item < player.playerInventory.length) {
+				id = player.playerInventory[item];
+				amt = player.itemAmount[item];
 			}
 			player.getActionSender().sendUpdateItem(START_INVENTORY_INTERFACE + item, id - 1, 0, amt);
 		}

@@ -224,8 +224,8 @@ public class PlayerSerialization {
 					// Inventory Items
 					case 6:
 						if (key.equals("character-item")) {
-							p.playerItems[Integer.parseInt(values[0])] = Integer.parseInt(values[1]);
-							p.playerItemsN[Integer.parseInt(values[0])] = Integer.parseInt(values[2]);
+							p.playerInventory[Integer.parseInt(values[0])] = Integer.parseInt(values[1]);
+							p.itemAmount[Integer.parseInt(values[0])] = Integer.parseInt(values[2]);
 						}
 						break;
 
@@ -641,14 +641,14 @@ public class PlayerSerialization {
             /* ITEMS */
             writer.write("[CHARACTER-ITEMS]");
             writer.newLine();
-            for (int i = 0; i < p.playerItems.length; i++) {
-                if (p.playerItems[i] > 0) {
+            for (int i = 0; i < p.playerInventory.length; i++) {
+                if (p.playerInventory[i] > 0) {
                     writer.write("character-item = ", 0, 17);
                     writer.write(Integer.toString(i), 0, Integer.toString(i).length());
                     writer.write("	", 0, 1);
-                    writer.write(Integer.toString(p.playerItems[i]), 0, Integer.toString(p.playerItems[i]).length());
+                    writer.write(Integer.toString(p.playerInventory[i]), 0, Integer.toString(p.playerInventory[i]).length());
                     writer.write("	", 0, 1);
-                    writer.write(Integer.toString(p.playerItemsN[i]), 0, Integer.toString(p.playerItemsN[i]).length());
+                    writer.write(Integer.toString(p.itemAmount[i]), 0, Integer.toString(p.itemAmount[i]).length());
                     writer.newLine();
                 }
             }

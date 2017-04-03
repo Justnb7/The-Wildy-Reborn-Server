@@ -410,9 +410,9 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 	public void populatePresetItems() {
 		for (Player player : players) {
 			List<GameItem> realItems = new ArrayList<>();
-			for (int i = 0; i < player.playerItems.length; i++) {
-				int itemId = player.playerItems[i] - 1;
-				int amount = player.playerItemsN[i];
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				int itemId = player.playerInventory[i] - 1;
+				int amount = player.itemAmount[i];
 				if (itemId > 0 && amount > 0) {
 					realItems.add(new GameItem(itemId, amount));
 				}

@@ -1247,9 +1247,9 @@ public class Player extends Entity {
 		super(EntityType.PLAYER);
 		this.username = username;
 		usernameHash = Utility.playerNameToInt64(username);
-		for (int i = 0; i < playerItems.length; i++) {
-			playerItems[i] = 0;
-			playerItemsN[i] = 0;
+		for (int i = 0; i < playerInventory.length; i++) {
+			playerInventory[i] = 0;
+			itemAmount[i] = 0;
 		}
 		for (int i = 0; i < BANK_SIZE; i++) {
 			bankItems[i] = 0;
@@ -2827,8 +2827,8 @@ public class Player extends Entity {
 	public int mapRegionX, mapRegionY;
 	public int currentX, currentY;
 	public int teleportToX = -1, teleportToY = -1;
-	public int playerItems[] = new int[28];
-	public int playerItemsN[] = new int[28];
+	public int playerInventory[] = new int[28];
+	public int itemAmount[] = new int[28];
 	public int BANK_SIZE = 350;
 	public int bankItems[] = new int[BANK_SIZE];
 	public int bankItemsN[] = new int[BANK_SIZE];

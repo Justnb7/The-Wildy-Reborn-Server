@@ -30,22 +30,22 @@ public class ItemOnDeath {
 				sendFrame34a(player, 10494, player.WillKeepItem4, 3, 1);
 
 			for (int ITEM = 0; ITEM < 28; ITEM++) {
-				if (player.playerItems[ITEM] - 1 > 0 && !(player.playerItems[ITEM] - 1 == player.WillKeepItem1 && ITEM == player.WillKeepItem1Slot)
-						&& !(player.playerItems[ITEM] - 1 == player.WillKeepItem2 && ITEM == player.WillKeepItem2Slot) && !(player.playerItems[ITEM] - 1 == player.WillKeepItem3 && ITEM == player.WillKeepItem3Slot)
-						&& !(player.playerItems[ITEM] - 1 == player.WillKeepItem4 && ITEM == player.WillKeepItem4Slot)) {
-					sendFrame34a(player, 10600, player.playerItems[ITEM] - 1, player.EquipStatus, player.playerItemsN[ITEM]);
+				if (player.playerInventory[ITEM] - 1 > 0 && !(player.playerInventory[ITEM] - 1 == player.WillKeepItem1 && ITEM == player.WillKeepItem1Slot)
+						&& !(player.playerInventory[ITEM] - 1 == player.WillKeepItem2 && ITEM == player.WillKeepItem2Slot) && !(player.playerInventory[ITEM] - 1 == player.WillKeepItem3 && ITEM == player.WillKeepItem3Slot)
+						&& !(player.playerInventory[ITEM] - 1 == player.WillKeepItem4 && ITEM == player.WillKeepItem4Slot)) {
+					sendFrame34a(player, 10600, player.playerInventory[ITEM] - 1, player.EquipStatus, player.itemAmount[ITEM]);
 					player.EquipStatus += 1;
-				} else if (player.playerItems[ITEM] - 1 > 0 && (player.playerItems[ITEM] - 1 == player.WillKeepItem1 && ITEM == player.WillKeepItem1Slot) && player.playerItemsN[ITEM] > player.WillKeepAmt1) {
-					sendFrame34a(player, 10600, player.playerItems[ITEM] - 1, player.EquipStatus, player.playerItemsN[ITEM] - player.WillKeepAmt1);
+				} else if (player.playerInventory[ITEM] - 1 > 0 && (player.playerInventory[ITEM] - 1 == player.WillKeepItem1 && ITEM == player.WillKeepItem1Slot) && player.itemAmount[ITEM] > player.WillKeepAmt1) {
+					sendFrame34a(player, 10600, player.playerInventory[ITEM] - 1, player.EquipStatus, player.itemAmount[ITEM] - player.WillKeepAmt1);
 					player.EquipStatus += 1;
-				} else if (player.playerItems[ITEM] - 1 > 0 && (player.playerItems[ITEM] - 1 == player.WillKeepItem2 && ITEM == player.WillKeepItem2Slot) && player.playerItemsN[ITEM] > player.WillKeepAmt2) {
-					sendFrame34a(player, 10600, player.playerItems[ITEM] - 1, player.EquipStatus, player.playerItemsN[ITEM] - player.WillKeepAmt2);
+				} else if (player.playerInventory[ITEM] - 1 > 0 && (player.playerInventory[ITEM] - 1 == player.WillKeepItem2 && ITEM == player.WillKeepItem2Slot) && player.itemAmount[ITEM] > player.WillKeepAmt2) {
+					sendFrame34a(player, 10600, player.playerInventory[ITEM] - 1, player.EquipStatus, player.itemAmount[ITEM] - player.WillKeepAmt2);
 					player.EquipStatus += 1;
-				} else if (player.playerItems[ITEM] - 1 > 0 && (player.playerItems[ITEM] - 1 == player.WillKeepItem3 && ITEM == player.WillKeepItem3Slot) && player.playerItemsN[ITEM] > player.WillKeepAmt3) {
-					sendFrame34a(player, 10600, player.playerItems[ITEM] - 1, player.EquipStatus, player.playerItemsN[ITEM] - player.WillKeepAmt3);
+				} else if (player.playerInventory[ITEM] - 1 > 0 && (player.playerInventory[ITEM] - 1 == player.WillKeepItem3 && ITEM == player.WillKeepItem3Slot) && player.itemAmount[ITEM] > player.WillKeepAmt3) {
+					sendFrame34a(player, 10600, player.playerInventory[ITEM] - 1, player.EquipStatus, player.itemAmount[ITEM] - player.WillKeepAmt3);
 					player.EquipStatus += 1;
-				} else if (player.playerItems[ITEM] - 1 > 0 && (player.playerItems[ITEM] - 1 == player.WillKeepItem4 && ITEM == player.WillKeepItem4Slot) && player.playerItemsN[ITEM] > 1) {
-					sendFrame34a(player, 10600, player.playerItems[ITEM] - 1, player.EquipStatus, player.playerItemsN[ITEM] - 1);
+				} else if (player.playerInventory[ITEM] - 1 > 0 && (player.playerInventory[ITEM] - 1 == player.WillKeepItem4 && ITEM == player.WillKeepItem4Slot) && player.itemAmount[ITEM] > 1) {
+					sendFrame34a(player, 10600, player.playerInventory[ITEM] - 1, player.EquipStatus, player.itemAmount[ITEM] - 1);
 					player.EquipStatus += 1;
 				}
 			}
@@ -168,19 +168,19 @@ public class ItemOnDeath {
 		player.WillKeepItem1 = 0;
 		player.WillKeepItem1Slot = 0;
 		for (int ITEM = 0; ITEM < 28; ITEM++) {
-			if (player.playerItems[ITEM] > 0) {
+			if (player.playerInventory[ITEM] > 0) {
 				ItemsContained += 1;
-				NextValue = (int) Math.floor(deathValue(player.playerItems[ITEM] - 1));
+				NextValue = (int) Math.floor(deathValue(player.playerInventory[ITEM] - 1));
 				if (NextValue > BestValue) {
 					BestValue = NextValue;
-					player.WillKeepItem1 = player.playerItems[ITEM] - 1;
+					player.WillKeepItem1 = player.playerInventory[ITEM] - 1;
 					player.WillKeepItem1Slot = ITEM;
-					if (player.playerItemsN[ITEM] > 2 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
+					if (player.itemAmount[ITEM] > 2 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt1 = 3;
-					} else if (player.playerItemsN[ITEM] > 3 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
+					} else if (player.itemAmount[ITEM] > 3 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt1 = 4;
 					} else {
-						player.WillKeepAmt1 = player.playerItemsN[ITEM];
+						player.WillKeepAmt1 = player.itemAmount[ITEM];
 					}
 				}
 			}
@@ -214,18 +214,18 @@ public class ItemOnDeath {
 		player.WillKeepItem2 = 0;
 		player.WillKeepItem2Slot = 0;
 		for (int ITEM = 0; ITEM < 28; ITEM++) {
-			if (player.playerItems[ITEM] > 0) {
-				NextValue = (int) Math.floor(deathValue(player.playerItems[ITEM] - 1));
-				if (NextValue > BestValue && !(ITEM == player.WillKeepItem1Slot && player.playerItems[ITEM] - 1 == player.WillKeepItem1)) {
+			if (player.playerInventory[ITEM] > 0) {
+				NextValue = (int) Math.floor(deathValue(player.playerInventory[ITEM] - 1));
+				if (NextValue > BestValue && !(ITEM == player.WillKeepItem1Slot && player.playerInventory[ITEM] - 1 == player.WillKeepItem1)) {
 					BestValue = NextValue;
-					player.WillKeepItem2 = player.playerItems[ITEM] - 1;
+					player.WillKeepItem2 = player.playerInventory[ITEM] - 1;
 					player.WillKeepItem2Slot = ITEM;
-					if (player.playerItemsN[ITEM] > 2 - player.WillKeepAmt1 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
+					if (player.itemAmount[ITEM] > 2 - player.WillKeepAmt1 && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt2 = 3 - player.WillKeepAmt1;
-					} else if (player.playerItemsN[ITEM] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
+					} else if (player.itemAmount[ITEM] > 3 - player.WillKeepAmt1 && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt2 = 4 - player.WillKeepAmt1;
 					} else {
-						player.WillKeepAmt2 = player.playerItemsN[ITEM];
+						player.WillKeepAmt2 = player.itemAmount[ITEM];
 					}
 				}
 			}
@@ -258,19 +258,19 @@ public class ItemOnDeath {
 		player.WillKeepItem3 = 0;
 		player.WillKeepItem3Slot = 0;
 		for (int ITEM = 0; ITEM < 28; ITEM++) {
-			if (player.playerItems[ITEM] > 0) {
-				NextValue = (int) Math.floor(deathValue(player.playerItems[ITEM] - 1));
-				if (NextValue > BestValue && !(ITEM == player.WillKeepItem1Slot && player.playerItems[ITEM] - 1 == player.WillKeepItem1)
-						&& !(ITEM == player.WillKeepItem2Slot && player.playerItems[ITEM] - 1 == player.WillKeepItem2)) {
+			if (player.playerInventory[ITEM] > 0) {
+				NextValue = (int) Math.floor(deathValue(player.playerInventory[ITEM] - 1));
+				if (NextValue > BestValue && !(ITEM == player.WillKeepItem1Slot && player.playerInventory[ITEM] - 1 == player.WillKeepItem1)
+						&& !(ITEM == player.WillKeepItem2Slot && player.playerInventory[ITEM] - 1 == player.WillKeepItem2)) {
 					BestValue = NextValue;
-					player.WillKeepItem3 = player.playerItems[ITEM] - 1;
+					player.WillKeepItem3 = player.playerInventory[ITEM] - 1;
 					player.WillKeepItem3Slot = ITEM;
-					if (player.playerItemsN[ITEM] > 2 - (player.WillKeepAmt1 + player.WillKeepAmt2) && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
+					if (player.itemAmount[ITEM] > 2 - (player.WillKeepAmt1 + player.WillKeepAmt2) && !player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt3 = 3 - (player.WillKeepAmt1 + player.WillKeepAmt2);
-					} else if (player.playerItemsN[ITEM] > 3 - (player.WillKeepAmt1 + player.WillKeepAmt2) && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
+					} else if (player.itemAmount[ITEM] > 3 - (player.WillKeepAmt1 + player.WillKeepAmt2) && player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 						player.WillKeepAmt3 = 4 - (player.WillKeepAmt1 + player.WillKeepAmt2);
 					} else {
-						player.WillKeepAmt3 = player.playerItemsN[ITEM];
+						player.WillKeepAmt3 = player.itemAmount[ITEM];
 					}
 				}
 			}
@@ -304,12 +304,12 @@ public class ItemOnDeath {
 		player.WillKeepItem4 = 0;
 		player.WillKeepItem4Slot = 0;
 		for (int ITEM = 0; ITEM < 28; ITEM++) {
-			if (player.playerItems[ITEM] > 0) {
-				NextValue = (int) Math.floor(deathValue(player.playerItems[ITEM] - 1));
-				if (NextValue > BestValue && !(ITEM == player.WillKeepItem1Slot && player.playerItems[ITEM] - 1 == player.WillKeepItem1)
-						&& !(ITEM == player.WillKeepItem2Slot && player.playerItems[ITEM] - 1 == player.WillKeepItem2) && !(ITEM == player.WillKeepItem3Slot && player.playerItems[ITEM] - 1 == player.WillKeepItem3)) {
+			if (player.playerInventory[ITEM] > 0) {
+				NextValue = (int) Math.floor(deathValue(player.playerInventory[ITEM] - 1));
+				if (NextValue > BestValue && !(ITEM == player.WillKeepItem1Slot && player.playerInventory[ITEM] - 1 == player.WillKeepItem1)
+						&& !(ITEM == player.WillKeepItem2Slot && player.playerInventory[ITEM] - 1 == player.WillKeepItem2) && !(ITEM == player.WillKeepItem3Slot && player.playerInventory[ITEM] - 1 == player.WillKeepItem3)) {
 					BestValue = NextValue;
-					player.WillKeepItem4 = player.playerItems[ITEM] - 1;
+					player.WillKeepItem4 = player.playerInventory[ITEM] - 1;
 					player.WillKeepItem4Slot = ITEM;
 				}
 			}

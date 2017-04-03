@@ -363,12 +363,12 @@ public class Trading {
 			return;
 		}
 
-		if ((player.playerItems[slot] - 1) != id) {
+		if ((player.playerInventory[slot] - 1) != id) {
 			return;
 		}
 
-		if (ItemDefinition.forId(id).isStackable() && amount > player.playerItemsN[slot]) {
-			amount = player.playerItemsN[slot];
+		if (ItemDefinition.forId(id).isStackable() && amount > player.itemAmount[slot]) {
+			amount = player.itemAmount[slot];
 		} else if (amount > player.getItems().getItemAmount(id)) {
 			amount = player.getItems().getItemAmount(id);
 		}
@@ -465,7 +465,7 @@ public class Trading {
 			amount = player.getTradeContainer().amount(id);
 		}
 
-		final int existing = player.playerItemsN[slot];
+		final int existing = player.itemAmount[slot];
 
 		long overflow = overflow(amount, existing);
 

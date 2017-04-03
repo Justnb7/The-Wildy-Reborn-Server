@@ -86,7 +86,7 @@ public class WithdrawAllAction implements PacketType {
 				session.addItem(player, new GameItem(removeId, player.getItems().getItemAmount(removeId)));
 			} else {
 				if (ItemDefinition.forId(removeId).isStackable()) {
-					Trading.tradeItem(player, removeId, player.playerItemsN[removeSlot], removeSlot);
+					Trading.tradeItem(player, removeId, player.itemAmount[removeSlot], removeSlot);
 				} else {
 					Trading.tradeItem(player, removeId, 28, removeSlot);
 				}
@@ -118,12 +118,12 @@ public class WithdrawAllAction implements PacketType {
 
 		case 7295:
 			if (ItemDefinition.forId(removeId).isStackable()) {
-				player.getItems().addToBank(player.playerItems[removeSlot],
-						player.playerItemsN[removeSlot], false);
+				player.getItems().addToBank(player.playerInventory[removeSlot],
+						player.itemAmount[removeSlot], false);
 				player.getItems().resetItems(7423);
 			} else {
-				player.getItems().addToBank(player.playerItems[removeSlot],
-				player.getItems().itemAmount(player.playerItems[removeSlot]), false);
+				player.getItems().addToBank(player.playerInventory[removeSlot],
+				player.getItems().itemAmount(player.playerInventory[removeSlot]), false);
 				player.getItems().resetItems(7423);
 			}
 			break;

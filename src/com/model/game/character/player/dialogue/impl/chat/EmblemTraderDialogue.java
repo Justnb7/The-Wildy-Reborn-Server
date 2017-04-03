@@ -43,7 +43,7 @@ public class EmblemTraderDialogue extends Dialogue {
 		} else if (isPhase(2)) {
 			send(Type.STATEMENT, "Calculating total points...");
 			totalPoints = 0;
-			for (int i : player.playerItems) {
+			for (int i : player.playerInventory) {
 				int id = i - 1;
 				if (id <= 0) {
 					continue;
@@ -81,8 +81,8 @@ public class EmblemTraderDialogue extends Dialogue {
 		} else if (isPhase(4)) {
 			if (index == 1) {
 				totalPoints = 0;
-				for (int i = 0; i < player.playerItems.length; i++) {
-					int id = player.playerItems[i] - 1;
+				for (int i = 0; i < player.playerInventory.length; i++) {
+					int id = player.playerInventory[i] - 1;
 					if (id <= 0) {
 						continue;
 					}

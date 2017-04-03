@@ -390,8 +390,8 @@ public final class Shop {
 		int amount = player.getItems().getItemAmount(item.getId());
 		if (item.getAmount() > amount && !item.getDefinition().isStackable()) {
 			item.setCount(amount);
-		} else if (item.getAmount() > player.playerItemsN[fromSlot] && item.getDefinition().isStackable()) {
-			item.setCount(player.playerItemsN[fromSlot]);
+		} else if (item.getAmount() > player.itemAmount[fromSlot] && item.getDefinition().isStackable()) {
+			item.setCount(player.itemAmount[fromSlot]);
 		}
 		player.getItems().remove(item);
 		currency.getCurrency().recieveCurrency(player, item.getAmount() * (int) Math.floor(determinePrice(player, item)));

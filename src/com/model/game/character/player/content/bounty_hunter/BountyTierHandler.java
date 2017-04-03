@@ -19,8 +19,8 @@ public class BountyTierHandler {
 	public static void upgrade(Player player) {
 		emb_loop: for (int x = BountyHunterEmblem.EMBLEMS.size() - 1; x >= 0; x--) {
 			BountyHunterEmblem emblem = BountyHunterEmblem.valueOf(x);
-			for (int i = 0; i < player.playerItems.length; i++) {
-				int id = player.playerItems[i] - 1;
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				int id = player.playerInventory[i] - 1;
 				if (emblem.getItemId() == id) {
 
 					/*

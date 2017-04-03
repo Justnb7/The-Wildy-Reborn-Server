@@ -258,9 +258,9 @@ public class ActionButtonPacketHandler implements PacketType {
 				return;
 			}
 			player.lastBankDeposit = System.currentTimeMillis();
-			for (int slot = 0; slot < player.playerItems.length; slot++) {
-				if (player.playerItems[slot] > 0 && player.playerItemsN[slot] > 0) {
-					player.getItems().addToBank(player.playerItems[slot] - 1, player.playerItemsN[slot], false);
+			for (int slot = 0; slot < player.playerInventory.length; slot++) {
+				if (player.playerInventory[slot] > 0 && player.itemAmount[slot] > 0) {
+					player.getItems().addToBank(player.playerInventory[slot] - 1, player.itemAmount[slot], false);
 				}
 			}
 			player.getItems().updateInventory();

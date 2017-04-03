@@ -382,8 +382,8 @@ public class BountyHunter extends ScheduledTask {
 	 */
 	public int getNetworthForEmblems(Player player) {
 		int worth = 0;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			int itemId = player.playerItems[i] - 1;
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			int itemId = player.playerInventory[i] - 1;
 			Optional<BountyHunterEmblem> containsItem = BountyHunterEmblem.EMBLEMS.stream().filter(emblem ->
 				emblem.getItemId() == itemId).findFirst();
 			if (containsItem.isPresent()) {

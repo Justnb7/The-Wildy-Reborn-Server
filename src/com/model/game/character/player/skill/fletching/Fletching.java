@@ -220,9 +220,9 @@ public class Fletching {
 				int Slot = player.getItems().getItemSlot(player.arrowShaft), amount = -1,
 						Slot2 = player.getItems().getItemSlot(getFeather()), amount2 = -1;
 				if (Slot != -1)
-					amount = player.playerItemsN[Slot];
+					amount = player.itemAmount[Slot];
 				if (Slot2 != -1)
-					amount2 = player.playerItemsN[Slot2];
+					amount2 = player.itemAmount[Slot2];
 				if (amount >= 15 && amount2 >= 15) {
 					player.getItems().deleteItem(player.arrowShaft, 15);
 					player.getItems().deleteItem(getFeather(), 15);
@@ -264,9 +264,9 @@ public class Fletching {
 						int Slot = player.getItems().getItemSlot(arrow.getTips()), amount = -1,
 								Slot2 = player.getItems().getItemSlot(getHeadless()), amount2 = -1;
 						if (Slot != -1)
-							amount = player.playerItemsN[Slot];
+							amount = player.itemAmount[Slot];
 						if (Slot2 != -1)
-							amount2 = player.playerItemsN[Slot2];
+							amount2 = player.itemAmount[Slot2];
 						if (amount >= 15 && amount2 >= 15) {
 							player.getItems().deleteItem(arrow.getTips(), 15);
 							player.getItems().deleteItem(getHeadless(), 15);
@@ -355,9 +355,9 @@ public class Fletching {
 		}
 		int firstSlot = player.getItems().getItemSlot(unfBolts), firstAmount = -1, secondSlot = player.getItems().getItemSlot(tips), secondAmount = -1;
 		if (firstSlot != -1)
-			firstAmount = player.playerItemsN[firstSlot];
+			firstAmount = player.itemAmount[firstSlot];
 		if (secondSlot != -1)
-			secondAmount = player.playerItemsN[secondSlot];
+			secondAmount = player.itemAmount[secondSlot];
 		if (fletchLevel >= levelRequirement) {
 			if (player.getItems().playerHasItem(unfBolts, 1) && player.getItems().playerHasItem(tips, 1)) {
 				if (firstAmount >= 15 && secondAmount >= 15) {

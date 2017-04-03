@@ -34,10 +34,10 @@ public class WeirdOldMan extends Dialogue {
 	public void fixAllBarrows() {
 		int totalCost = 0;
 		int cashAmount = player.getItems().getItemAmount(995);
-		for (int j = 0; j < player.playerItems.length; j++) {
+		for (int j = 0; j < player.playerInventory.length; j++) {
 			boolean breakOut = false;
 			for (int i = 0; i < brokenBarrows.length; i++) {
-				if (player.playerItems[j]-1 == brokenBarrows[i][1]) {					
+				if (player.playerInventory[j]-1 == brokenBarrows[i][1]) {					
 					if (totalCost + 50000 > cashAmount) {
 						breakOut = true;
 						player.getActionSender().sendMessage("You need 50 000 coins to repair a piece of Barrows' armour!");
@@ -46,7 +46,7 @@ public class WeirdOldMan extends Dialogue {
 					} else {
 						totalCost += 50000;
 					}
-					player.playerItems[j] = brokenBarrows[i][0]+1;
+					player.playerInventory[j] = brokenBarrows[i][0]+1;
 					player.getActionSender().sendMessage("You repair your "+player.getItems().getItemName(brokenBarrows[i][0]+1)+".");
 				}		
 			}

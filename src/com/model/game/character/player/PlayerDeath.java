@@ -123,12 +123,12 @@ public class PlayerDeath {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (!player.getController().isSafe() && duelSession == null) {
 			player.getItems().resetKeepItems();
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if (player.playerItems[i] - 1 > 0) {
-					if (BountyHunterEmblem.get(player.playerItems[i] - 1) != null) {
-						int newId = BountyTierHandler.downgrade(player, player.playerItems[i] - 1);
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if (player.playerInventory[i] - 1 > 0) {
+					if (BountyHunterEmblem.get(player.playerInventory[i] - 1) != null) {
+						int newId = BountyTierHandler.downgrade(player, player.playerInventory[i] - 1);
 						if (newId != -1) {
-							player.playerItems[i] = newId + 1;
+							player.playerInventory[i] = newId + 1;
 						}
 					}
 				}

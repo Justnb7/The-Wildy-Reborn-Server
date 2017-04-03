@@ -24,7 +24,6 @@ import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Teleports;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Position;
@@ -254,10 +253,10 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//We can go ahead and drop the item on the ground.
-		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.playerItemsN[slot]), player.getX(), player.getY(), player.getZ(), player));
+		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.itemAmount[slot]), player.getX(), player.getY(), player.getZ(), player));
 		
 		//After we've dropped our item, the server deletes it from our inventory.
-		player.getItems().deleteItem(item.getId(), slot, player.playerItemsN[slot]);
+		player.getItems().deleteItem(item.getId(), slot, player.itemAmount[slot]);
 		
 		//When dropping items combat resets.
 		Combat.resetCombat(player);
@@ -295,7 +294,7 @@ public class ItemOptionPacket implements PacketType {
 		player.lastClickedItem = id;
 		
 		//if its an invalid item, refresh the inventory
-		if ((slot < 0) || (slot > 27) || (id != player.playerItems[slot] - 1) || (player.playerItemsN[slot] <= 0)) {
+		if ((slot < 0) || (slot > 27) || (id != player.playerInventory[slot] - 1) || (player.itemAmount[slot] <= 0)) {
 			player.getItems().resetItems(3214);
 			return;
 		}
@@ -322,7 +321,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if(LootingBagContainer.open(player, item.getId())) {
+		if(player.getLootingBagContainer().open(player, item.getId())) {
 			return;
 		}
 
@@ -459,7 +458,7 @@ public class ItemOptionPacket implements PacketType {
 		player.lastClickedItem = item.getId();
 
 		// if its an invalid item, refresh the inventory
-		if ((slot < 0) || (slot > 27) || (item.getId() != player.playerItems[slot] - 1) || (player.playerItemsN[slot] <= 0)) {
+		if ((slot < 0) || (slot > 27) || (item.getId() != player.playerInventory[slot] - 1) || (player.itemAmount[slot] <= 0)) {
 			player.getItems().resetItems(3214);
 			return;
 		}

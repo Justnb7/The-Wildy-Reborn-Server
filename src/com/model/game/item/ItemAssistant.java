@@ -280,16 +280,16 @@ public class ItemAssistant {
 			player.getOutStream().putFrameVarShort(53);
 			int offset = player.getOutStream().offset;
 			player.getOutStream().writeShort(WriteFrame);
-			player.getOutStream().writeShort(player.playerItems.length);
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if (player.playerItemsN[i] > 254) {
+			player.getOutStream().writeShort(player.playerInventory.length);
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if (player.itemAmount[i] > 254) {
 					player.getOutStream().writeByte(255);
-					player.getOutStream().writeDWord_v2(player.playerItemsN[i]);
+					player.getOutStream().writeDWord_v2(player.itemAmount[i]);
 				} else {
-					player.getOutStream().writeByte(player.playerItemsN[i]);
+					player.getOutStream().writeByte(player.itemAmount[i]);
 				}
 				player.getOutStream()
-						.writeWordBigEndianA(player.playerItems[i]);
+						.writeWordBigEndianA(player.playerInventory[i]);
 			}
 			player.getOutStream().putFrameSizeShort(offset);
 			player.flushOutStream();
@@ -324,16 +324,16 @@ public class ItemAssistant {
 		int item = 0;
 		int slotId = 0;
 		boolean itemInInventory = false;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] - 1 > 0) {
-				if (BountyHunterEmblem.get(player.playerItems[i] - 1) != null) {
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if (player.playerInventory[i] - 1 > 0) {
+				if (BountyHunterEmblem.get(player.playerInventory[i] - 1) != null) {
 					continue;
 				}
 				int inventoryItemValue = Currency.COINS.calculateCurrency(
-						player, player.playerItems[i] - 1);
+						player, player.playerInventory[i] - 1);
 				if (inventoryItemValue > value && (!player.invSlot[i])) {
 					value = inventoryItemValue;
-					item = player.playerItems[i] - 1;
+					item = player.playerInventory[i] - 1;
 					slotId = i;
 					itemInInventory = true;
 				}
@@ -354,8 +354,8 @@ public class ItemAssistant {
 		if (itemInInventory) {
 			player.invSlot[slotId] = true;
 			if (deleteItem) {
-				deleteItem(player.playerItems[slotId] - 1,
-						getItemSlot(player.playerItems[slotId] - 1), 1);
+				deleteItem(player.playerInventory[slotId] - 1,
+						getItemSlot(player.playerInventory[slotId] - 1), 1);
 			}
 		} else {
 			player.equipSlot[slotId] = true;
@@ -388,10 +388,10 @@ public class ItemAssistant {
 		for (int i1 = 0; i1 < player.playerEquipment.length; i1++) {
 			deleteEquipmentSlot(player.playerEquipment[i1], i1);
 		}
-		for (int i = 0; i < player.playerItems.length; i++) {
-			deleteItem(player.playerItems[i] - 1,
-					getItemSlot(player.playerItems[i] - 1),
-					player.playerItemsN[i]);
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			deleteItem(player.playerInventory[i] - 1,
+					getItemSlot(player.playerInventory[i] - 1),
+					player.itemAmount[i]);
 		}
 	}
 
@@ -448,7 +448,7 @@ public class ItemAssistant {
 						.getPosition(), killer));
 				killer.setAttribute("receive_emblem", false);
 			}
-			for (int i = 0; i < player.playerItems.length; i++) {
+			for (int i = 0; i < player.playerInventory.length; i++) {
 
 				if (killer != null) {
 					if (player.getRunePouchContainer().hasPouch()) {
@@ -464,28 +464,28 @@ public class ItemAssistant {
 										.getX(), player.getY(), player.getZ(),
 										killer)));
 					}
-					if (isTradeable(player.playerItems[i] - 1)) {
+					if (isTradeable(player.playerInventory[i] - 1)) {
 						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerItems[i] - 1,
-										player.playerItemsN[i]), player.getX(),
+								new Item(player.playerInventory[i] - 1,
+										player.itemAmount[i]), player.getX(),
 								player.getY(), player.getZ(), killer));
 					} else {
 						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerItems[i] - 1,
-										player.playerItemsN[i]), player.getX(),
+								new Item(player.playerInventory[i] - 1,
+										player.itemAmount[i]), player.getX(),
 								player.getY(), player.getZ(), player));
 					}
 				} else {
-					if (player.playerItems[i] - 1 != 995) {
+					if (player.playerInventory[i] - 1 != 995) {
 						GroundItem item = new GroundItem(new Item(
-								player.playerItems[i] - 1,
-								player.playerItemsN[i]), player.getX(),
+								player.playerInventory[i] - 1,
+								player.itemAmount[i]), player.getX(),
 								player.getY(), player.getZ(), player);
 						GroundItemHandler.createGroundItem(item);
 					} else {
 						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerItems[i] - 1,
-										player.playerItemsN[i]), player.getX(),
+								new Item(player.playerInventory[i] - 1,
+										player.itemAmount[i]), player.getX(),
 								player.getY(), player.getZ(), player));
 					}
 				}
@@ -522,10 +522,10 @@ public class ItemAssistant {
 
 	public long getWealth() {
 		LinkedList<Item> all = new LinkedList<>();
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] <= 0)
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if (player.playerInventory[i] <= 0)
 				continue;
-			all.add(new Item(player.playerItems[i] - 1, player.playerItemsN[i]));
+			all.add(new Item(player.playerInventory[i] - 1, player.itemAmount[i]));
 		}
 		for (int i = 0; i < player.playerEquipment.length; i++) {
 			if (player.playerEquipment[i] <= 0)
@@ -593,16 +593,16 @@ public class ItemAssistant {
 				|| ((freeSlots() > 0) && !ItemDefinition.forId(item)
 						.isStackable())) {
 
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if ((player.playerItems[i] == (item + 1))
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if ((player.playerInventory[i] == (item + 1))
 						&& ItemDefinition.forId(item).isStackable()
-						&& (player.playerItems[i] > 0)) {
+						&& (player.playerInventory[i] > 0)) {
 					return true;
 				}
 			}
 
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if (player.playerItems[i] <= 0) {
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if (player.playerInventory[i] <= 0) {
 					if ((amount < Integer.MAX_VALUE) && (amount > -1)) {
 						if (amount > 1) {
 							return true;
@@ -638,30 +638,30 @@ public class ItemAssistant {
 				.forId(item).isStackable())
 				|| ((freeSlots() > 0) && !ItemDefinition.forId(item)
 						.isStackable())) {
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if ((player.playerItems[i] == (item + 1))
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if ((player.playerInventory[i] == (item + 1))
 						&& ItemDefinition.forId(item).isStackable()
-						&& (player.playerItems[i] > 0)) {
-					player.playerItems[i] = (item + 1);
-					if (((player.playerItemsN[i] + amount) < Constants.MAXITEM_AMOUNT)
-							&& ((player.playerItemsN[i] + amount) > -1)) {
-						player.playerItemsN[i] += amount;
+						&& (player.playerInventory[i] > 0)) {
+					player.playerInventory[i] = (item + 1);
+					if (((player.itemAmount[i] + amount) < Constants.MAXITEM_AMOUNT)
+							&& ((player.itemAmount[i] + amount) > -1)) {
+						player.itemAmount[i] += amount;
 					} else {
-						player.playerItemsN[i] = Constants.MAXITEM_AMOUNT;
+						player.itemAmount[i] = Constants.MAXITEM_AMOUNT;
 					}
 					if (player.getOutStream() != null && player != null) {
 						player.getOutStream().putFrameVarShort(34);
 						int offset = player.getOutStream().offset;
 						player.getOutStream().writeShort(3214);
 						player.getOutStream().writeByte(i);
-						player.getOutStream().writeShort(player.playerItems[i]);
-						if (player.playerItemsN[i] > 254) {
+						player.getOutStream().writeShort(player.playerInventory[i]);
+						if (player.itemAmount[i] > 254) {
 							player.getOutStream().writeByte(255);
 							player.getOutStream()
-									.putInt(player.playerItemsN[i]);
+									.putInt(player.itemAmount[i]);
 						} else {
 							player.getOutStream().writeByte(
-									player.playerItemsN[i]);
+									player.itemAmount[i]);
 						}
 						player.getOutStream().putFrameSizeShort(offset);
 						player.flushOutStream();
@@ -670,17 +670,17 @@ public class ItemAssistant {
 					return true;
 				}
 			}
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if (player.playerItems[i] <= 0) {
-					player.playerItems[i] = item + 1;
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if (player.playerInventory[i] <= 0) {
+					player.playerInventory[i] = item + 1;
 					if ((amount < Constants.MAXITEM_AMOUNT) && (amount > -1)) {
-						player.playerItemsN[i] = 1;
+						player.itemAmount[i] = 1;
 						if (amount > 1) {
 							player.getItems().addItem(item, amount - 1);
 							return true;
 						}
 					} else {
-						player.playerItemsN[i] = Constants.MAXITEM_AMOUNT;
+						player.itemAmount[i] = Constants.MAXITEM_AMOUNT;
 					}
 					resetItems(3214);
 					i = 30;
@@ -793,11 +793,11 @@ public class ItemAssistant {
 			return false;
 
 		if (!player.getItems().playerHasItem(id)
-				|| player.playerItems[slotId] - 1 != id
-				|| player.playerItemsN[slotId] <= 0) {
+				|| player.playerInventory[slotId] - 1 != id
+				|| player.itemAmount[slotId] <= 0) {
 			return false;
 		}
-		int wearAmount = player.playerItemsN[slotId];
+		int wearAmount = player.itemAmount[slotId];
 		if (wearAmount < 1) {
 			return false;
 		}
@@ -808,8 +808,8 @@ public class ItemAssistant {
 			}
 		}
 		if (slotId >= 0 && id >= 0) {
-			int toEquip = player.playerItems[slotId];
-			int toEquipN = player.playerItemsN[slotId];
+			int toEquip = player.playerInventory[slotId];
+			int toEquipN = player.itemAmount[slotId];
 			int toRemove = player.playerEquipment[targetSlot];
 			int toRemoveN = player.playerEquipmentN[targetSlot];
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
@@ -906,8 +906,8 @@ public class ItemAssistant {
 				deleteItem(toRemove, getItemSlot(toRemove), toEquipN);
 				player.playerEquipmentN[targetSlot] += toEquipN;
 			} else if (targetSlot != 5 && targetSlot != 3) {
-				player.playerItems[slotId] = toRemove + 1;
-				player.playerItemsN[slotId] = toRemoveN;
+				player.playerInventory[slotId] = toRemove + 1;
+				player.itemAmount[slotId] = toRemoveN;
 				player.playerEquipment[targetSlot] = toEquip - 1;
 				player.playerEquipmentN[targetSlot] = toEquipN;
 			} else if (targetSlot == 5) {
@@ -926,8 +926,8 @@ public class ItemAssistant {
 					player.playerEquipmentN[player.getEquipment().getWeaponId()] = 0;
 					updateSlot(player.getEquipment().getWeaponId());
 				}
-				player.playerItems[slotId] = toRemove + 1;
-				player.playerItemsN[slotId] = toRemoveN;
+				player.playerInventory[slotId] = toRemove + 1;
+				player.itemAmount[slotId] = toRemoveN;
 				player.playerEquipment[targetSlot] = toEquip - 1;
 				player.playerEquipmentN[targetSlot] = toEquipN;
 			} else if (targetSlot == 3) {
@@ -939,8 +939,8 @@ public class ItemAssistant {
 				if (is2h) {
 					if (wearingShield && wearingWeapon) {
 						if (freeSlots() > 0) {
-							player.playerItems[slotId] = toRemove + 1;
-							player.playerItemsN[slotId] = toRemoveN;
+							player.playerInventory[slotId] = toRemove + 1;
+							player.itemAmount[slotId] = toRemoveN;
 							player.playerEquipment[targetSlot] = toEquip - 1;
 							player.playerEquipmentN[targetSlot] = toEquipN;
 							removeItem(player.getEquipment().getShieldId());
@@ -950,9 +950,9 @@ public class ItemAssistant {
 							return false;
 						}
 					} else if (wearingShield && !wearingWeapon) {
-						player.playerItems[slotId] = player.playerEquipment[player
+						player.playerInventory[slotId] = player.playerEquipment[player
 								.getEquipment().getShieldId()] + 1;
-						player.playerItemsN[slotId] = player.playerEquipmentN[player
+						player.itemAmount[slotId] = player.playerEquipmentN[player
 								.getEquipment().getShieldId()];
 						player.playerEquipment[targetSlot] = toEquip - 1;
 						player.playerEquipmentN[targetSlot] = toEquipN;
@@ -965,12 +965,12 @@ public class ItemAssistant {
 						int remove_slot = getItemSlot(toRemove);
 						if (toRemove != -1 && remove_slot != -1
 								&& ItemDefinition.forId(toRemove).isStackable()) {
-							player.playerItems[slotId] = 0;
-							player.playerItemsN[slotId] = 0;
-							player.playerItemsN[remove_slot] += toRemoveN;
+							player.playerInventory[slotId] = 0;
+							player.itemAmount[slotId] = 0;
+							player.itemAmount[remove_slot] += toRemoveN;
 						} else {
-							player.playerItems[slotId] = toRemove + 1;
-							player.playerItemsN[slotId] = toRemoveN;
+							player.playerInventory[slotId] = toRemove + 1;
+							player.itemAmount[slotId] = toRemoveN;
 						}
 						player.playerEquipment[targetSlot] = toEquip - 1;
 						player.playerEquipmentN[targetSlot] = toEquipN;
@@ -979,12 +979,12 @@ public class ItemAssistant {
 					int remove_slot = getItemSlot(toRemove);
 					if (toRemove != -1 && remove_slot != -1
 							&& ItemDefinition.forId(toRemove).isStackable()) {
-						player.playerItems[slotId] = 0;
-						player.playerItemsN[slotId] = 0;
-						player.playerItemsN[remove_slot] += toRemoveN;
+						player.playerInventory[slotId] = 0;
+						player.itemAmount[slotId] = 0;
+						player.itemAmount[remove_slot] += toRemoveN;
 					} else {
-						player.playerItems[slotId] = toRemove + 1;
-						player.playerItemsN[slotId] = toRemoveN;
+						player.playerInventory[slotId] = toRemove + 1;
+						player.itemAmount[slotId] = toRemoveN;
 					}
 					player.playerEquipment[targetSlot] = toEquip - 1;
 					player.playerEquipmentN[targetSlot] = toEquipN;
@@ -1185,8 +1185,8 @@ public class ItemAssistant {
 
 	public void resetTempItems() {
 		int itemCount = 0;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] > -1) {
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if (player.playerInventory[i] > -1) {
 				itemCount = i;
 			}
 		}
@@ -1195,16 +1195,16 @@ public class ItemAssistant {
 		player.getOutStream().writeShort(5064);
 		player.getOutStream().writeShort(itemCount + 1);
 		for (int i = 0; i < itemCount + 1; i++) {
-			if (player.playerItemsN[i] > 254) {
+			if (player.itemAmount[i] > 254) {
 				player.getOutStream().writeByte(255);
-				player.getOutStream().writeDWord_v2(player.playerItemsN[i]);
+				player.getOutStream().writeDWord_v2(player.itemAmount[i]);
 			} else {
-				player.getOutStream().writeByte(player.playerItemsN[i]);
+				player.getOutStream().writeByte(player.itemAmount[i]);
 			}
-			if (player.playerItems[i] > 25000 || player.playerItems[i] < 0) {
-				player.playerItems[i] = 25000;
+			if (player.playerInventory[i] > 25000 || player.playerInventory[i] < 0) {
+				player.playerInventory[i] = 25000;
 			}
-			player.getOutStream().writeWordBigEndianA(player.playerItems[i]);
+			player.getOutStream().writeWordBigEndianA(player.playerInventory[i]);
 		}
 		player.getOutStream().putFrameSizeShort(offset);
 		player.flushOutStream();
@@ -1429,9 +1429,9 @@ public class ItemAssistant {
 	 */
 	public int itemAmount(int itemID) {
 		int tempAmount = 0;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] == itemID) {
-				tempAmount += player.playerItemsN[i];
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if (player.playerInventory[i] == itemID) {
+				tempAmount += player.itemAmount[i];
 			}
 		}
 		return tempAmount;
@@ -1491,12 +1491,12 @@ public class ItemAssistant {
 		if (moveWindow == 3214) {
 			int tempI;
 			int tempN;
-			tempI = player.playerItems[from];
-			tempN = player.playerItemsN[from];
-			player.playerItems[from] = player.playerItems[to];
-			player.playerItemsN[from] = player.playerItemsN[to];
-			player.playerItems[to] = tempI;
-			player.playerItemsN[to] = tempN;
+			tempI = player.playerInventory[from];
+			tempN = player.itemAmount[from];
+			player.playerInventory[from] = player.playerInventory[to];
+			player.itemAmount[from] = player.itemAmount[to];
+			player.playerInventory[to] = tempI;
+			player.itemAmount[to] = tempN;
 		}
 		if (moveWindow == 5382) {
 			if (!player.isBanking()) {
@@ -1570,13 +1570,13 @@ public class ItemAssistant {
 		if (moveWindow == 5064) {
 			int tempI;
 			int tempN;
-			tempI = player.playerItems[from];
-			tempN = player.playerItemsN[from];
+			tempI = player.playerInventory[from];
+			tempN = player.itemAmount[from];
 
-			player.playerItems[from] = player.playerItems[to];
-			player.playerItemsN[from] = player.playerItemsN[to];
-			player.playerItems[to] = tempI;
-			player.playerItemsN[to] = tempN;
+			player.playerInventory[from] = player.playerInventory[to];
+			player.itemAmount[from] = player.itemAmount[to];
+			player.playerInventory[to] = tempI;
+			player.itemAmount[to] = tempN;
 			resetItems(3214);
 		}
 		resetTempItems();
@@ -1620,21 +1620,21 @@ public class ItemAssistant {
 		if (id <= 0) {
 			return;
 		}
-		for (int j = 0; j < player.playerItems.length; j++) {
+		for (int j = 0; j < player.playerInventory.length; j++) {
 			if (amount <= 0) {
 				break;
 			}
-			if (player.playerItems[j] == id + 1) {
-				if (player.playerItemsN[j] > amount) {
-					player.playerItemsN[j] -= amount;
-					if (player.playerItemsN[j] < 0) {
-						player.playerItemsN[j] = 0;
-						player.playerItems[j] = 0;
+			if (player.playerInventory[j] == id + 1) {
+				if (player.itemAmount[j] > amount) {
+					player.itemAmount[j] -= amount;
+					if (player.itemAmount[j] < 0) {
+						player.itemAmount[j] = 0;
+						player.playerInventory[j] = 0;
 					}
 					amount = 0;
 				} else {
-					player.playerItems[j] = 0;
-					player.playerItemsN[j] = 0;
+					player.playerInventory[j] = 0;
+					player.itemAmount[j] = 0;
 					amount--;
 				}
 			}
@@ -1650,12 +1650,12 @@ public class ItemAssistant {
 		if (id <= 0 || slot < 0) {
 			return;
 		}
-		if (player.playerItems[slot] == (id + 1)) {
-			if (player.playerItemsN[slot] > amount) {
-				player.playerItemsN[slot] -= amount;
+		if (player.playerInventory[slot] == (id + 1)) {
+			if (player.itemAmount[slot] > amount) {
+				player.itemAmount[slot] -= amount;
 			} else {
-				player.playerItemsN[slot] = 0;
-				player.playerItems[slot] = 0;
+				player.itemAmount[slot] = 0;
+				player.playerInventory[slot] = 0;
 			}
 			resetItems(3214);
 		}
@@ -1815,8 +1815,8 @@ public class ItemAssistant {
 
 	public int freeSlots() {
 		int freeS = 0;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] <= 0) {
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if (player.playerInventory[i] <= 0) {
 				freeS++;
 			}
 		}
@@ -1826,9 +1826,9 @@ public class ItemAssistant {
 	public boolean spaceFor(Item item) {
 		boolean stackable = isStackable(item.getId());
 		if (stackable) {
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if (player.playerItems[i] == item.getId()) {
-					int totalCount = item.getAmount() + player.playerItemsN[i];
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if (player.playerInventory[i] == item.getId()) {
+					int totalCount = item.getAmount() + player.itemAmount[i];
 					if (totalCount >= Integer.MAX_VALUE || totalCount < 1) {
 						return false;
 					}
@@ -1862,8 +1862,8 @@ public class ItemAssistant {
 
 	// returns the slot which matches itemID
 	public int getItemSlot(int ItemID) {
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if ((player.playerItems[i] - 1) == ItemID) {
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if ((player.playerInventory[i] - 1) == ItemID) {
 				return i;
 			}
 		}
@@ -1872,11 +1872,11 @@ public class ItemAssistant {
 
 	// returns Item instance of id,amount, using the slot. you have to know the slot.
 	public Item getItemFromSlot(int slot) {
-		if (slot == -1 || slot >= player.playerItems.length
-				|| player.playerItems[slot] == 0) {
+		if (slot == -1 || slot >= player.playerInventory.length
+				|| player.playerInventory[slot] == 0) {
 			return null;
 		}
-		return new Item(player.playerItems[slot] - 1, player.playerItemsN[slot]);
+		return new Item(player.playerInventory[slot] - 1, player.itemAmount[slot]);
 	}
 
 	/**
@@ -1888,9 +1888,9 @@ public class ItemAssistant {
 	 */
 	public int getItemAmount(int item) {
 		int amount = 0;
-		for (int inventory = 0; inventory < player.playerItems.length; inventory++) {
-			if ((player.playerItems[inventory] - 1) == item) {
-				amount += player.playerItemsN[inventory];
+		for (int inventory = 0; inventory < player.playerInventory.length; inventory++) {
+			if ((player.playerInventory[inventory] - 1) == item) {
+				amount += player.itemAmount[inventory];
 			}
 		}
 		return amount;
@@ -1899,10 +1899,10 @@ public class ItemAssistant {
 	public boolean playerHasItem(int itemID, int amt, int slot) {
 		itemID++;
 		int found = 0;
-		if (player.playerItems[slot] == (itemID)) {
-			for (int i = 0; i < player.playerItems.length; i++) {
-				if (player.playerItems[i] == itemID) {
-					if (player.playerItemsN[i] >= amt) {
+		if (player.playerInventory[slot] == (itemID)) {
+			for (int i = 0; i < player.playerInventory.length; i++) {
+				if (player.playerInventory[i] == itemID) {
+					if (player.itemAmount[i] >= amt) {
 						return true;
 					} else {
 						found++;
@@ -1916,8 +1916,8 @@ public class ItemAssistant {
 
 	public boolean playerHasItem(int item) {
 		item++;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] == item)
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if (player.playerInventory[i] == item)
 				return true;
 		}
 		return false;
@@ -1934,9 +1934,9 @@ public class ItemAssistant {
 	public boolean playerHasItem(int itemID, int amt) {
 		itemID++;
 		int found = 0;
-		for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] == itemID) {
-				if (player.playerItemsN[i] >= amt) {
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			if (player.playerInventory[i] == itemID) {
+				if (player.itemAmount[i] >= amt) {
 					return true;
 				} else {
 					found++;
@@ -2089,8 +2089,8 @@ public class ItemAssistant {
 	public void clearSlot(int slot) {
 		if (slot < 0 || slot > 27)
 			return;
-		player.playerItems[slot] = 0;
-		player.playerItemsN[slot] = 0;
+		player.playerInventory[slot] = 0;
+		player.itemAmount[slot] = 0;
 		resetItems(3214);
 	}
 
@@ -2106,27 +2106,27 @@ public class ItemAssistant {
 		if (item <= 0) {
 			return false;
 		}
-		if (player.playerItems[slot] > 0 || player.playerItemsN[slot] > 0) {
+		if (player.playerInventory[slot] > 0 || player.itemAmount[slot] > 0) {
 			return addItem(item, amount);
 		}
-		player.playerItems[slot] = (item + 1);
-		if (player.playerItemsN[slot] + amount < Integer.MAX_VALUE
-				&& player.playerItemsN[slot] + amount > -1) {
-			player.playerItemsN[slot] += amount;
+		player.playerInventory[slot] = (item + 1);
+		if (player.itemAmount[slot] + amount < Integer.MAX_VALUE
+				&& player.itemAmount[slot] + amount > -1) {
+			player.itemAmount[slot] += amount;
 		} else {
-			player.playerItemsN[slot] = Integer.MAX_VALUE;
+			player.itemAmount[slot] = Integer.MAX_VALUE;
 		}
 		if (player.getOutStream() != null && player != null) {
 			player.getOutStream().putFrameVarShort(34);
 			int offset = player.getOutStream().offset;
 			player.getOutStream().writeShort(3214);
 			player.getOutStream().writeByte(slot);
-			player.getOutStream().writeShort(player.playerItems[slot]);
-			if (player.playerItemsN[slot] > 254) {
+			player.getOutStream().writeShort(player.playerInventory[slot]);
+			if (player.itemAmount[slot] > 254) {
 				player.getOutStream().writeByte(255);
-				player.getOutStream().putInt(player.playerItemsN[slot]);
+				player.getOutStream().putInt(player.itemAmount[slot]);
 			} else {
-				player.getOutStream().writeByte(player.playerItemsN[slot]);
+				player.getOutStream().writeByte(player.itemAmount[slot]);
 			}
 			player.getOutStream().putFrameSizeShort(offset);
 			player.flushOutStream();
@@ -2138,10 +2138,10 @@ public class ItemAssistant {
 		if (player.getArea().inWild() && player.rights != Rights.ADMINISTRATOR) {
 			return;
 		}
-		for (int i = 0; i < player.playerItems.length; i++) {
-			deleteItem(player.playerItems[i] - 1, player.getItems()
-					.getItemSlot(player.playerItems[i] - 1),
-					player.playerItemsN[i]);
+		for (int i = 0; i < player.playerInventory.length; i++) {
+			deleteItem(player.playerInventory[i] - 1, player.getItems()
+					.getItemSlot(player.playerInventory[i] - 1),
+					player.itemAmount[i]);
 		}
 	}
 
@@ -2209,13 +2209,13 @@ public class ItemAssistant {
 	public int checkAmount(int item) {
 		int found = 0;
 		boolean stackable = new Item(item).getDefinition().isStackable();
-		for (int i = 0; i < player.playerItems.length; i++) {
+		for (int i = 0; i < player.playerInventory.length; i++) {
 			// System.out.println("item["+i+"]="+player.playerItems[i]);
-			if (player.playerItems[i] == (item + 1)) {
+			if (player.playerInventory[i] == (item + 1)) {
 				if (stackable) {
-					return player.playerItemsN[i];
+					return player.itemAmount[i];
 				} else {
-					found += player.playerItemsN[i];
+					found += player.itemAmount[i];
 				}
 			}
 		}
@@ -2229,20 +2229,20 @@ public class ItemAssistant {
 		}
 		int count = 0;
 		List<Integer> amountsToReturn = new ArrayList<>();
-		for (int j = 0; j < player.playerItems.length; j++) {
+		for (int j = 0; j < player.playerInventory.length; j++) {
 			if (count >= amount) {
 				break;
 			}
-			if (player.playerItems[j] == (id + 1)) {
-				if (player.playerItemsN[j] > amount) {
-					player.playerItemsN[j] -= amount;
+			if (player.playerInventory[j] == (id + 1)) {
+				if (player.itemAmount[j] > amount) {
+					player.itemAmount[j] -= amount;
 					count += amount;
 					amountsToReturn.add(amount);
 				} else {
-					count += player.playerItemsN[j];
-					amountsToReturn.add(player.playerItemsN[j]);
-					player.playerItemsN[j] = 0;
-					player.playerItems[j] = 0;
+					count += player.itemAmount[j];
+					amountsToReturn.add(player.itemAmount[j]);
+					player.itemAmount[j] = 0;
+					player.playerInventory[j] = 0;
 				}
 			}
 		}

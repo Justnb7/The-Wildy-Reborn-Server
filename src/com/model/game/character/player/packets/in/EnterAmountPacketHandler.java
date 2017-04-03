@@ -45,7 +45,7 @@ public class EnterAmountPacketHandler implements PacketType {
 			/*if(player.openInterface == 41700) {
 				RunePouchContainer.store(player, player.xRemoveSlot, amount > player.getItems().getItemAmount(player.xRemoveId) ? player.getItems().getItemAmount(player.xRemoveId) : amount);
 			} else*/
-			player.getItems().addToBank(player.playerItems[player.xRemoveSlot] - 1, amount, true);
+			player.getItems().addToBank(player.playerInventory[player.xRemoveSlot] - 1, amount, true);
 			break;
 			
 		case 41710:

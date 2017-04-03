@@ -71,11 +71,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		// Debug mode
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[withdrawOneAction] - Item: %s Interface: %d Slot: %d%n", item.toString(),
-					interfaceIndex, slot));
+			System.out.println(String.format("[withdrawOneAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
 		}
 
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, id, 1, interfaceIndex)) {
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), 1, interfaceIndex)) {
 			return;
 		}
 
@@ -153,22 +152,34 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		int id = player.getInStream().readSignedWordBigEndianA();
 		int slot = player.getInStream().readSignedWordBigEndian();
 
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, id, 5, interfaceIndex)) {
+		Item item = new Item(id);
+
+		// Safety checks
+		if (player.isDead() || player.isTeleporting()) {
+			return;
+		}
+		
+		// Debug mode
+		if (player.inDebugMode()) {
+			System.out.println(String.format("[withdrawFiveAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
+		}
+		
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), 5, interfaceIndex)) {
 			return;
 		}
 
 		switch (interfaceIndex) {
 
 		case 1688:
-			player.getPA().useOperate(id);
+			player.getPA().useOperate(item.getId());
 			break;
 
 		case 3900:
 			if (player.getOpenShop().equals("Skillcape Shop")) {
-				Shop.skillBuy(player, id);
+				Shop.skillBuy(player, item.getId());
 				return;
 			}
-			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(id, 1));
+			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 1));
 			break;
 
 		case 3823:
@@ -178,34 +189,34 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getActionSender().sendMessage("You cannot sell items to this store!");
 				return;
 			}
-			Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(id, 5), slot);
+			Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(item.getId(), 5), slot);
 			break;
 
 		case 5064:
 			if (player.isBanking()) {
-				player.getItems().addToBank(id, 5, true);
+				player.getItems().addToBank(item.getId(), 5, true);
 			}
 			break;
 
 		case 5382:
 			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(id, 5);
+				player.getBank().getBankSearch().removeItem(item.getId(), 5);
 				return;
 			}
-			player.getItems().removeFromBank(id, 5, true);
+			player.getItems().removeFromBank(item.getId(), 5, true);
 			break;
 
 		case 3322:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
-				session.addItem(player, new GameItem(id, 5));
+				session.addItem(player, new GameItem(item.getId(), 5));
 			} else {
-				Trading.tradeItem(player, id, 5, slot);
+				Trading.tradeItem(player, item.getId(), 5, slot);
 			}
 			break;
 
 		case 3415:
-			Trading.takeItem(player, id, 5, slot);
+			Trading.takeItem(player, item.getId(), 5, slot);
 			break;
 
 		case 6669:
@@ -214,7 +225,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (session instanceof DuelSession) {
-				session.removeItem(player, slot, new GameItem(id, 5));
+				session.removeItem(player, slot, new GameItem(item.getId(), 5));
 			}
 			break;
 
@@ -226,14 +237,26 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		int id = player.getInStream().readUnsignedWordA();
 		int slot = player.getInStream().readUnsignedWordA();
 
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, id, 10, interfaceIndex)) {
+		Item item = new Item(id);
+
+		// Safety checks
+		if (player.isDead() || player.isTeleporting()) {
+			return;
+		}
+		
+		// Debug mode
+		if (player.inDebugMode()) {
+			System.out.println(String.format("[withdrawTenAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
+		}
+		
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), 10, interfaceIndex)) {
 			return;
 		}
 
 		switch (interfaceIndex) {
 
 		case 1688:
-			player.getPA().useOperate(id);
+			player.getPA().useOperate(item.getId());
 			break;
 
 		case 3900:
@@ -241,10 +264,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				Trading.decline(player);
 			}
 			if (player.getOpenShop().equals("Skillcape Shop")) {
-				Shop.skillBuy(player, id);
+				Shop.skillBuy(player, item.getId());
 				return;
 			}
-			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(id, 5));// <5?
+			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 5));
 			break;
 
 		case 3823:
@@ -257,7 +280,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getActionSender().sendMessage("You cannot sell items to this store!");
 				return;
 			}
-			Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(id, 5), slot);
+			Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(item.getId(), 5), slot);
 			break;
 
 		case 5064:
@@ -266,12 +289,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (player.isBanking()) {
-				player.getItems().addToBank(id, 10, true);
+				player.getItems().addToBank(item.getId(), 10, true);
 			}
-			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player,
-					MultiplayerSessionType.DUEL);
-			if (Objects.nonNull(duelSession)
-					&& duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
+			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
+			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 				player.getActionSender().sendMessage("You have declined the duel.");
 				duelSession.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");
 				duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
@@ -284,23 +305,23 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				Trading.decline(player);
 			}
 			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(id, 10);
+				player.getBank().getBankSearch().removeItem(item.getId(), 10);
 				return;
 			}
-			player.getItems().removeFromBank(id, 10, true);
+			player.getItems().removeFromBank(item.getId(), 10, true);
 			break;
 
 		case 3322:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
-				session.addItem(player, new GameItem(id, 10));
+				session.addItem(player, new GameItem(item.getId(), 10));
 			} else {
-				Trading.tradeItem(player, id, 10, slot);
+				Trading.tradeItem(player, item.getId(), 10, slot);
 			}
 			break;
 
 		case 3415:
-			Trading.takeItem(player, id, 10, slot);
+			Trading.takeItem(player, item.getId(), 10, slot);
 			break;
 
 		case 6669:
@@ -309,7 +330,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (session instanceof DuelSession) {
-				session.removeItem(player, slot, new GameItem(id, 10));
+				session.removeItem(player, slot, new GameItem(item.getId(), 10));
 
 			}
 			break;
@@ -323,8 +344,19 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		int interfaceIndex = player.getInStream().readUnsignedWord();
 		int id = player.getInStream().readUnsignedWordA();
 
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, id, player.getRunePouchContainer().amount(id),
-				interfaceIndex)) {
+		Item item = new Item(id);
+
+		// Safety checks
+		if (player.isDead() || player.isTeleporting()) {
+			return;
+		}
+		
+		// Debug mode
+		if (player.inDebugMode()) {
+			System.out.println(String.format("[withdrawAllAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
+		}
+		
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), player.getRunePouchContainer().amount(item.getId()), interfaceIndex)) {
 			return;
 		}
 		switch (interfaceIndex) {
@@ -334,10 +366,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				Trading.decline(player);
 			}
 			if (player.getOpenShop().equals("Skillcape Shop")) {
-				Shop.skillBuy(player, id);
+				Shop.skillBuy(player, item.getId());
 				return;
 			}
-			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(id, 10));
+			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 10));
 			break;
 
 		case 3823:
@@ -350,7 +382,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getActionSender().sendMessage("You cannot sell items to this store!");
 				return;
 			}
-			Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(id, 10), slot);
+			Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(item.getId(), 10), slot);
 			break;
 
 		case 5064:
@@ -359,7 +391,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (player.isBanking()) {
-				player.getItems().addToBank(id, player.getItems().getItemAmount(id), true);
+				player.getItems().addToBank(item.getId(), player.getItems().getItemAmount(item.getId()), true);
 			}
 			break;
 
@@ -368,36 +400,34 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(id,
-						player.getBank().getCurrentBankTab().getItemAmount(new BankItem(id + 1)));
+				player.getBank().getBankSearch().removeItem(item.getId(), player.getBank().getCurrentBankTab().getItemAmount(new BankItem(item.getId() + 1)));
 				return;
 			}
-			player.getItems().removeFromBank(id,
-					player.getBank().getCurrentBankTab().getItemAmount(new BankItem(id + 1)), true);
+			player.getItems().removeFromBank(item.getId(), player.getBank().getCurrentBankTab().getItemAmount(new BankItem(item.getId() + 1)), true);
 			break;
 
 		case 3322:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
-				session.addItem(player, new GameItem(id, player.getItems().getItemAmount(id)));
+				session.addItem(player, new GameItem(item.getId(), player.getItems().getItemAmount(item.getId())));
 			} else {
-				if (ItemDefinition.forId(id).isStackable()) {
-					Trading.tradeItem(player, id, player.itemAmount[slot], slot);
+				if (ItemDefinition.forId(item.getId()).isStackable()) {
+					Trading.tradeItem(player, item.getId(), player.itemAmount[slot], slot);
 				} else {
-					Trading.tradeItem(player, id, 28, slot);
+					Trading.tradeItem(player, item.getId(), 28, slot);
 				}
 			}
 			break;
 
 		case 3415:
-			if (ItemDefinition.forId(id).isStackable()) {
+			if (ItemDefinition.forId(item.getId()).isStackable()) {
 				for (Item itemId : player.getTradeContainer().container()) {
-					if (itemId != null && itemId.id == id) {
+					if (itemId != null && itemId.id == item.getId()) {
 						Trading.takeItem(player, itemId.id, player.getTradeContainer().get(slot).getAmount(), slot);
 					}
 				}
 			} else {
-				Trading.takeItem(player, id, 28, slot);
+				Trading.takeItem(player, item.getId(), 28, slot);
 
 			}
 			break;
@@ -408,17 +438,16 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (session instanceof DuelSession) {
-				session.removeItem(player, slot, new GameItem(id, Integer.MAX_VALUE));
+				session.removeItem(player, slot, new GameItem(item.getId(), Integer.MAX_VALUE));
 			}
 			break;
 
 		case 7295:
-			if (ItemDefinition.forId(id).isStackable()) {
+			if (ItemDefinition.forId(item.getId()).isStackable()) {
 				player.getItems().addToBank(player.playerInventory[slot], player.itemAmount[slot], false);
 				player.getItems().resetItems(7423);
 			} else {
-				player.getItems().addToBank(player.playerInventory[slot],
-						player.getItems().itemAmount(player.playerInventory[slot]), false);
+				player.getItems().addToBank(player.playerInventory[slot], player.getItems().itemAmount(player.playerInventory[slot]), false);
 				player.getItems().resetItems(7423);
 			}
 			break;

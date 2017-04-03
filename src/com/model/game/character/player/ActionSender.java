@@ -642,4 +642,18 @@ public class ActionSender {
 		return this;
 	}
 	
+	public void sendStrings(int startId, int endId, String[] strings) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
+		player.getOutStream().createFrameVarSizeWord(229);
+		player.getOutStream().writeWord(startId);
+		player.getOutStream().writeWord(endId);
+		player.getOutStream().writeByte(strings.length);
+		for (String s : strings)
+			player.getOutStream().putRS2String(s);
+		player.getOutStream().endFrameVarSizeWord();
+		player.flushOutStream();
+	}
+	
 }

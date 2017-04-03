@@ -241,6 +241,10 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.getActionSender().sendRemoveInterfacePacket();
 			break;
 			
+		case 142131:
+			player.write(new SendSidebarInterfacePacket(3, 3213));
+			break;
+			
 		case 55095:
 			player.getPA().handleDestroyItem();
 			break;

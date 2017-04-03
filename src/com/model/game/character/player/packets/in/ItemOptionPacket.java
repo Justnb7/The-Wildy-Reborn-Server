@@ -413,6 +413,10 @@ public class ItemOptionPacket implements PacketType {
 		// Last clicked item
 		player.lastClickedItem = item.getId();
 		
+		if(player.getLootingBagContainer().deposit(player, item.getId())) {
+			return;
+		}
+		
 		switch (item.getId()) {
 		case 5733: // rotten potato jagex item
 			if (player.rights == Rights.ADMINISTRATOR) {

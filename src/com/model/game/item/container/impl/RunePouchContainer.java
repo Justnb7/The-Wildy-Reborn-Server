@@ -10,6 +10,8 @@ import com.model.game.item.container.ItemContainerPolicy;
 /**
  * The class which represents functionality for the rune pouch container.
  * @author <a href="http://www.rune-server.org/members/stand+up/">Stand Up</a>
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
+ * @author <a href="http://www.rune-server.org/members/Shadowy/">Jak</a>
  */
 public final class RunePouchContainer extends Container {
 	
@@ -102,36 +104,6 @@ public final class RunePouchContainer extends Container {
 	}
 
 	/**
-	 * Sends the runeIds to the client in form of a string. This will make the
-	 * spells light up.
-	 * 
-	 * @param sendToClient
-	 *            The player that sends the string to the client.
-	 */
-	private static void sendCounts(Player sendToClient) {
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append("#");
-		Item i1 = sendToClient.getRunePouchContainer().get(0);
-		Item i2 = sendToClient.getRunePouchContainer().get(1);
-		Item i3 = sendToClient.getRunePouchContainer().get(2);
-		sb.append(i1 == null ? "0" : ""+i1.id);
-		sb.append(":");
-		sb.append(i1 == null ? "0" : ""+i1.amount);
-		sb.append("-");
-		sb.append(i2 == null ? "0" : ""+i2.id);
-		sb.append(":");
-		sb.append(i2 == null ? "0" : ""+i2.amount);
-		sb.append("-");
-		sb.append(i3 == null ? "0" : ""+i3.id);
-		sb.append(":");
-		sb.append(i3 == null ? "0" : ""+i3.amount);
-		sb.append("$");
-
-		sendToClient.getActionSender().sendString(sb.toString(), 49999);
-	}
-
-	/**
 	 * Attempts to withdraw an item from the container by the specified {@code amount}.
 	 * @param player	the player to withdraw this item for.
 	 * @param slot		the slot this item is stored from.
@@ -178,6 +150,36 @@ public final class RunePouchContainer extends Container {
 	}
 	
 	/**
+	 * Sends the runeIds to the client in form of a string. This will make the
+	 * spells light up.
+	 * 
+	 * @param sendToClient
+	 *            The player that sends the string to the client.
+	 */
+	private static void sendCounts(Player sendToClient) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("#");
+		Item i1 = sendToClient.getRunePouchContainer().get(0);
+		Item i2 = sendToClient.getRunePouchContainer().get(1);
+		Item i3 = sendToClient.getRunePouchContainer().get(2);
+		sb.append(i1 == null ? "0" : ""+i1.id);
+		sb.append(":");
+		sb.append(i1 == null ? "0" : ""+i1.amount);
+		sb.append("-");
+		sb.append(i2 == null ? "0" : ""+i2.id);
+		sb.append(":");
+		sb.append(i2 == null ? "0" : ""+i2.amount);
+		sb.append("-");
+		sb.append(i3 == null ? "0" : ""+i3.id);
+		sb.append(":");
+		sb.append(i3 == null ? "0" : ""+i3.amount);
+		sb.append("$");
+
+		sendToClient.getActionSender().sendString(sb.toString(), 49999);
+	}
+	
+	/**
 	 * Sends the withdraw or store method when adding/removing runes.
 	 * 
 	 * @param player
@@ -190,7 +192,7 @@ public final class RunePouchContainer extends Container {
 	 *            The widgetId
 	 * @return
 	 */
-	public boolean handleRunePouch(Player player, int id, int amount, int interfaceId) {
+	public boolean storeOrWithdrawRunes(Player player, int id, int amount, int interfaceId) {
 		if (interfaceId >= START_ITEM_INTERFACE && (interfaceId <= START_ITEM_INTERFACE + 2)) {
 			withdraw(player, id, amount);
 			return true;

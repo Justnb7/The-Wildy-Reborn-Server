@@ -2703,25 +2703,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * The teleporting flag.
-	 */
-	private boolean teleport = false;
-
-	/**
-	 * @return we're teleporting
-	 */
-	public boolean isTeleporting() {
-		return teleport;
-	}
-
-	/**
-	 * @param set teleport true or false
-	 */
-	public void setTeleporting(boolean teleport) {
-		this.teleport = teleport;
-	}
-	
-	/**
 	 * @param set shopping true or false
 	 */
 	public void setShopping(boolean shopping) {

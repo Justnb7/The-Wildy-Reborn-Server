@@ -564,7 +564,6 @@ public class World implements Service {
 			}
 		}
 		return amount;
-		
 	}
 
 }

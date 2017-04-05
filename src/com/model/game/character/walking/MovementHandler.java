@@ -64,28 +64,28 @@ public class MovementHandler {
 	 */
 	public void process() {
 		try {
-			player.mapRegionDidChange = (false);
-			player.didTeleport = false;
+			player.setMapRegionChanging(false);
+			player.setTeleporting(false);
 			setWalkingDirection(-1);
 			setRunningDirection(-1);
 
 			if (player.teleportToX != -1 && player.teleportToY != -1) {
-				player.mapRegionDidChange = (true);
+				player.setMapRegionChanging(true);
 				if (player.mapRegionX != -1 && player.mapRegionY != -1) {
 					int relX = player.teleportToX - (player.mapRegionX << 3), relY = player.teleportToY - (player.mapRegionY << 3);
 
 					if (relX >= 2 << 3 && relX < 11 << 3 && relY >= 2 << 3 && relY < 11 << 3) {
-						player.mapRegionDidChange = (false);
+						player.setMapRegionChanging(false);
 					}
 				}
 				
 				boolean zChange = false;
 				if (player.teleHeight != -1 && (player.teleHeight != player.heightLevel)) {
 					zChange = true;
-					player.mapRegionDidChange = true;
+					player.setMapRegionChanging(true);
 				}
 				
-				if (player.mapRegionDidChange) {
+				if (player.isMapRegionChanging()) {
 					player.mapRegionX = (player.teleportToX >> 3) - 6;
 					player.mapRegionY = (player.teleportToY >> 3) - 6;
 				}
@@ -102,7 +102,7 @@ public class MovementHandler {
 				player.lastTile = new Position(player.absX, player.absY+1, player.heightLevel);
 				reset();
 				player.teleportToX = player.teleportToY = player.teleHeight = -1;
-				player.didTeleport = true;
+				player.setTeleporting(true);
 				player.updateWalkEntities();
 				/*
 				 * Check if we've moved and the height level doesn't match, if so reload ground items and objects
@@ -147,7 +147,7 @@ public class MovementHandler {
 			if (deltaX < 16 || deltaX >= 88 || deltaY < 16 || deltaY > 88) {
 				player.mapRegionX = (player.absX >> 3) - 6;
 				player.mapRegionY = (player.absY >> 3) - 6;
-				player.mapRegionDidChange = true;
+				player.setMapRegionChanging(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -75,6 +75,49 @@ public abstract class Entity {
 	public Position lastTile;
 	
 	/**
+	 * Map region changing flag.
+	 */
+	private boolean mapRegionChanging = false;
+	
+	/**
+	 * Checks if the map region has changed in this cycle.
+	 * 
+	 * @return The map region changed flag.
+	 */
+	public boolean isMapRegionChanging() {
+		return mapRegionChanging;
+	}
+
+	/**
+	 * Sets the map region changing flag.
+	 * 
+	 * @param mapRegionChanging
+	 *            The map region changing flag.
+	 */
+	public void setMapRegionChanging(boolean mapRegionChanging) {
+		this.mapRegionChanging = mapRegionChanging;
+	}
+	
+	/**
+	 * The teleporting flag.
+	 */
+	private boolean teleport = false;
+
+	/**
+	 * @return we're teleporting
+	 */
+	public boolean isTeleporting() {
+		return teleport;
+	}
+
+	/**
+	 * @param set teleport true or false
+	 */
+	public void setTeleporting(boolean teleport) {
+		this.teleport = teleport;
+	}
+	
+	/**
 	 * The list of local players.
 	 */
 	private final List<Player> localPlayers = new LinkedList<Player>();

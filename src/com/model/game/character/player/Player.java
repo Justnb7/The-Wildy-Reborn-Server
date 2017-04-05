@@ -2867,7 +2867,7 @@ public class Player extends Entity {
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
 	isSkulled, hasMultiSign, saveCharacter,
-	properLogout, acceptedTrade, saveFile, takeAsNote, didTeleport, mapRegionDidChange;
+	properLogout, acceptedTrade, saveFile, takeAsNote;
 	
 	/**
 	 * Strings

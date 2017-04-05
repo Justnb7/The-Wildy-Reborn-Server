@@ -85,19 +85,14 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if an item is stored, {@code false} otherwise.
 	 */
 	public boolean store(Player player, int id, int amount) {
-		Item item = player.getItems().getItemFromSlot(player.getItems().getItemSlot(id));
-
-		if (item == null) {
-			return false;
-		}
 		
-		if (amount > player.getItems().getItemAmount(item.getId())) {
-			amount = player.getItems().getItemAmount(item.getId());
+		if (amount > player.getItems().getItemAmount(id)) {
+			amount = player.getItems().getItemAmount(id);
 		}
 		amount = Math.min(16000, amount);
 		
-		if(player.getRunePouchContainer().add(new Item(item.getId(), amount))) {
-			player.getItems().remove(new Item(item.getId(), amount));
+		if(player.getRunePouchContainer().add(new Item(id, amount))) {
+			player.getItems().remove(new Item(id, amount));
 			updatePouch();
 		}
 		return true;
@@ -111,19 +106,14 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if an item is withdrawed, {@code false} otherwise.
 	 */
 	public boolean withdraw(Player player, int id, int amount) {
-		Item item = player.getItems().getItemFromSlot(player.getItems().getItemSlot(id));
-		
-		if(item == null) {
-			return false;
-		}
 
 		// Ensure you can only take out what is actually inside the RP.
-		if (amount > player.getRunePouchContainer().amount(item.getId())) {
-			amount = player.getRunePouchContainer().amount(item.getId());
+		if (amount > player.getRunePouchContainer().amount(id)) {
+			amount = player.getRunePouchContainer().amount(id);
 		}
 
-		if(player.getRunePouchContainer().remove(new Item(item.getId(), amount))) {
-			player.getItems().addItem(new Item(item.getId(), amount));
+		if(player.getRunePouchContainer().remove(new Item(id, amount))) {
+			player.getItems().addItem(new Item(id, amount));
 			updatePouch();
 		}
 		return true;

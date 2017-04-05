@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.model.game.character.combat.npcs.script.AhrimTheBlighted;
+import com.model.game.character.combat.npcs.script.GeneralGraardor;
 import com.model.game.character.combat.npcs.script.KetZek;
 import com.model.game.character.combat.npcs.script.TokXil;
 import com.model.game.character.combat.npcs.script.TzTokJad;
@@ -26,6 +27,8 @@ public class BossScripts {
 	
 	private static final AhrimTheBlighted AHRIM_THE_BLIGHTED = new AhrimTheBlighted(1672);
 	
+	private static final GeneralGraardor GENERAL_GRAARDOR = new GeneralGraardor(2215);
+	
 	private static final int[] DRAGONS = {247, 252, 264, 268, 270, 273, 274};
 	
 	static {
@@ -35,6 +38,7 @@ public class BossScripts {
 		bosses.put(TOK_XIL.npcId, TOK_XIL);
 		
 		bosses.put(AHRIM_THE_BLIGHTED.npcId, AHRIM_THE_BLIGHTED);
+		bosses.put(GENERAL_GRAARDOR.npcId, GENERAL_GRAARDOR);
 
 	}
 	

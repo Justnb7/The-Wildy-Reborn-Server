@@ -541,17 +541,24 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendStillGFX(final int id, final int height, final Position loc) {
-        sendLocalCoordinates(loc, 0, 0);
-        player.getOutStream().writeFrame(4);
-        
-        player.getOutStream().writeByte(0);
-		player.getOutStream().writeShort(id);
-		player.getOutStream().writeByte(height);
-		player.getOutStream().writeByte(0);
-		player.flushOutStream();
-        return this;
-    }
+	public ActionSender sendStillGFX(int id, int x, int y, int height, int time) {
+		if (id >= 65535) {
+			throw new IllegalArgumentException("Identification value for the still graphic is prohibited; " + id);
+		}
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(85);
+			player.getOutStream().writeByteC(y - (player.getMapRegionY() * 8));
+			player.getOutStream().writeByteC(x - (player.getMapRegionX() * 8));
+			
+			//Still gfx packet
+			player.getOutStream().writeFrame(4);
+			player.getOutStream().writeByte(0);
+			player.getOutStream().writeShort(id);
+			player.getOutStream().writeByte(height);
+			player.getOutStream().writeShort(time);
+		}
+		return this;
+	}
 	
 	/**
      * Sends a projectile to a location.

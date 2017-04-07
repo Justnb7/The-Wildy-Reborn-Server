@@ -10,7 +10,6 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.shop.Shop;
 
 /**
@@ -23,6 +22,7 @@ public class EnterAmountPacketHandler implements PacketType {
 	public void handle(Player player, int packetType, int packetSize) {
 		
 		int amount = player.getInStream().readDWord();
+		
 		if (amount <= 0) {
 			amount = 0;
 		}
@@ -34,7 +34,10 @@ public class EnterAmountPacketHandler implements PacketType {
 				return;
 			}
 		}
-
+		
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, player.xRemoveId, amount > player.getItems().getItemAmount(player.xRemoveId) ? player.getItems().getItemAmount(player.xRemoveId) : amount, player.xInterfaceId)) {
+			return;
+		}
 		//System.out.println("Interface: "+player.xInterfaceId);
 		switch (player.xInterfaceId) {
 
@@ -42,9 +45,6 @@ public class EnterAmountPacketHandler implements PacketType {
 			if (!player.getItems().playerHasItem(player.xRemoveId, amount)) {
 				return;
 			}
-			/*if(player.openInterface == 41700) {
-				RunePouchContainer.store(player, player.xRemoveSlot, amount > player.getItems().getItemAmount(player.xRemoveId) ? player.getItems().getItemAmount(player.xRemoveId) : amount);
-			} else*/
 			player.getItems().addToBank(player.playerInventory[player.xRemoveSlot] - 1, amount, true);
 			break;
 			

@@ -144,7 +144,6 @@ public class NPCDeathTask extends ScheduledTask {
             npc.playAnimation(Animation.create(808));
         }
         
-        npc.animUpdateRequired = true; // might not be needed but leave incase it breaks somet
         npc.resetDamageReceived();
 
         if (npc.getId() == 492 && npc.isDead) {

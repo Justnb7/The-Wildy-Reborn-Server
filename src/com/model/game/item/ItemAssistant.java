@@ -14,7 +14,6 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.game.item.ground.GroundItem;
@@ -2150,7 +2149,7 @@ public class ItemAssistant {
 			addItem(item, amount);
 		} else {
 			addToBank(item, amount, true);
-			player.getActionSender().sendMessage("Invntory full, the item was sent to your bank.");
+			player.getActionSender().sendMessage("Inventory full, the item was sent to your bank.");
 		}
 	}
 
@@ -2221,35 +2220,6 @@ public class ItemAssistant {
 		}
 		// System.out.println(found);
 		return found;
-	}
-
-	public List<Integer> deleteItemAndReturnAmount(int id, int amount) {
-		if (id <= 0) {
-			return null;
-		}
-		int count = 0;
-		List<Integer> amountsToReturn = new ArrayList<>();
-		for (int j = 0; j < player.playerInventory.length; j++) {
-			if (count >= amount) {
-				break;
-			}
-			if (player.playerInventory[j] == (id + 1)) {
-				if (player.itemAmount[j] > amount) {
-					player.itemAmount[j] -= amount;
-					count += amount;
-					amountsToReturn.add(amount);
-				} else {
-					count += player.itemAmount[j];
-					amountsToReturn.add(player.itemAmount[j]);
-					player.itemAmount[j] = 0;
-					player.playerInventory[j] = 0;
-				}
-			}
-		}
-		resetItems(3214);
-		PlayerSerialization.saveGame(player);
-
-		return amountsToReturn;
 	}
 
 }

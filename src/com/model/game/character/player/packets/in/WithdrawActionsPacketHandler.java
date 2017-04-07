@@ -356,7 +356,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			System.out.println(String.format("[withdrawAllAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
 		}
 		
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), player.getRunePouchContainer().amount(item.getId()), interfaceIndex)) {
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), player.getItems().getItemAmount(item.getId()), interfaceIndex)) {
+			System.out.println(""+player.getItems().getItemAmount(item.getId()));
 			return;
 		}
 		switch (interfaceIndex) {

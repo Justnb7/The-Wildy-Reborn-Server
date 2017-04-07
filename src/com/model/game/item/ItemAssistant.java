@@ -1056,7 +1056,6 @@ public class ItemAssistant {
 		player.getPA().resetAutoCast();
 		player.getItems().writeBonus();
 		WeaponAnimation.execute(player, new Item(wearID));
-		player.updateRequired = true;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
@@ -1095,7 +1094,6 @@ public class ItemAssistant {
 					player.getOutStream().writeShort(0);
 					player.getOutStream().writeByte(0);
 					player.flushOutStream();
-					player.updateRequired = true;
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
 			}
@@ -1471,7 +1469,6 @@ public class ItemAssistant {
 		player.flushOutStream();
 		player.playerEquipment[targetSlot] = wearID;
 		player.playerEquipmentN[targetSlot] = amount;
-		player.updateRequired = true;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
@@ -1612,7 +1609,6 @@ public class ItemAssistant {
 		resetBonus();
 		getBonus();
 		writeBonus();
-		player.updateRequired = true;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
@@ -1719,7 +1715,6 @@ public class ItemAssistant {
 			player.flushOutStream();
 			player.playerEquipmentN[player.getEquipment().getQuiverId()] -= 1;
 		}
-		player.updateRequired = true;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
@@ -1756,7 +1751,6 @@ public class ItemAssistant {
 			player.flushOutStream();
 			player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
 		}
-		player.updateRequired = true;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
@@ -1785,7 +1779,6 @@ public class ItemAssistant {
 			player.flushOutStream();
 			player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
 		}
-		player.updateRequired = true;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
@@ -2185,7 +2178,6 @@ public class ItemAssistant {
 					player.getOutStream().writeShort(0);
 					player.getOutStream().writeByte(0);
 					player.flushOutStream();
-					player.updateRequired = true;
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
 			}

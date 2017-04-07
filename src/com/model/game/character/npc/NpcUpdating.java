@@ -94,9 +94,6 @@ public class NpcUpdating {
 	 */
 	private static void appendNPCUpdateBlock(NPC npc, GameBuffer buffer) {
 		
-		if (!npc.updateRequired)
-			return;
-		
 		/*
 		 * Calculate the mask.
 		 */
@@ -160,7 +157,7 @@ public class NpcUpdating {
 	 */
 	private static void updateNPCMovement(NPC npc, GameBuffer str) {
 		if (npc.direction == -1) {
-			if (npc.updateRequired) {
+			if (npc.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
 				str.writeBits(2, 0);
 			} else {
@@ -170,7 +167,7 @@ public class NpcUpdating {
 			str.writeBits(1, 1);
 			str.writeBits(2, 1);
 			str.writeBits(3, npc.direction);
-			if (npc.updateRequired) {
+			if (npc.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
 			} else {
 				str.writeBits(1, 0);
@@ -193,7 +190,7 @@ public class NpcUpdating {
 		buffer.writeBits(5, xPos);
 		buffer.writeBits(1, 0);
 		buffer.writeBits(14, npc.getId());
-		buffer.writeBits(npc.updateRequired);
+		buffer.writeBits(npc.getUpdateFlags().isUpdateRequired());
 	}
 
 	private static void appendHitUpdate(NPC npc, GameBuffer str) {

@@ -64,7 +64,6 @@ public abstract class Entity {
 	public Hit secondary;
 	public boolean hitUpdateRequired;
 	public boolean hitUpdateRequired2;
-	public boolean updateRequired = true;
 	public boolean faceUpdateRequired = false;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
@@ -220,7 +219,6 @@ public abstract class Entity {
 		secondary = null;
 		hitUpdateRequired = false;
 		hitUpdateRequired2 = false;
-		updateRequired = false;
 	}
 
 	private boolean inCombat;
@@ -317,13 +315,11 @@ public abstract class Entity {
 
 	private void primaryDamage(Hit hit) {
 		primary = decrementHP(hit);
-		updateRequired = true;
 		hitUpdateRequired = true;
 	}
 
 	private void secondaryDamage(Hit hit) {
 		secondary = decrementHP(hit);
-		updateRequired = true;
 		hitUpdateRequired2 = true;
 	}
 
@@ -779,7 +775,6 @@ public abstract class Entity {
 			faceTileY = position.getY();
 		}
 		faceUpdateRequired = true;
-		updateRequired = true;
 	}
 	
 	/**
@@ -798,7 +793,6 @@ public abstract class Entity {
 		// If we're a player, facing players = 32k+pid.. facing npcs= raw index
 		entityFaceIndex = e.clientIndex();
 		faceUpdateRequired = true;
-		updateRequired = true;
 		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
 	}
 
@@ -810,7 +804,6 @@ public abstract class Entity {
 	public void resetFace() {
 		this.entityFaceIndex = -1;
 		faceUpdateRequired = true;
-		updateRequired = true;
 		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
 	}
 	
@@ -873,7 +866,6 @@ public abstract class Entity {
 	public void playGraphics(Graphic graphic) {
 		currentGraphic = graphic;
 		this.getUpdateFlags().flag(UpdateFlag.GRAPHICS);
-		updateRequired = true;
 	}
 	
 	/**
@@ -899,7 +891,6 @@ public abstract class Entity {
 		this.currentAnimation = animation;
 		if (animation != null) {
 			this.getUpdateFlags().flag(UpdateFlag.ANIMATION);
-			updateRequired = true;
 		}
 	}
 	

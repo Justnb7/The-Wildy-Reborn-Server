@@ -259,7 +259,7 @@ public class PlayerUpdating {
 	 *            Don't update if its the same player
 	 */
 	private static void appendPlayerUpdateBlock(Player player, GameBuffer buffer, boolean forceAppearance, Player target, boolean noChat) {
-		if (!player.updateRequired && !forceAppearance) {
+		if (!player.getUpdateFlags().isUpdateRequired() && !forceAppearance) {
 			return;
 		}
 
@@ -400,7 +400,7 @@ public class PlayerUpdating {
 			 * This flag indicates if an update block is appended.
 			 */
 			buffer.writeBits(true);
-			buffer.writeBits(player.updateRequired);
+			buffer.writeBits(player.getUpdateFlags().isUpdateRequired());
 			/*
 			 * These are the positions.
 			 */
@@ -414,7 +414,7 @@ public class PlayerUpdating {
 				/*
 				 * The player didn't move. Check if an update is required.
 				 */
-				if (player.updateRequired) {
+				if (player.getUpdateFlags().isUpdateRequired()) {
 					/*
 					 * Signifies an update is required.
 					 */
@@ -446,7 +446,7 @@ public class PlayerUpdating {
 					/*
 					 * This flag indicates an update block is appended.
 					 */
-					if (player.updateRequired) {
+					if (player.getUpdateFlags().isUpdateRequired()) {
 						buffer.writeBits(true);
 					} else {
 						buffer.writeBits(1, 0);
@@ -467,7 +467,7 @@ public class PlayerUpdating {
 					/*
 					 * This flag indicates an update block is appended.
 					 */
-					if (player.updateRequired) {
+					if (player.getUpdateFlags().isUpdateRequired()) {
 						buffer.writeBits(true);
 					} else {
 						buffer.writeBits(1, 0);
@@ -487,7 +487,7 @@ public class PlayerUpdating {
 	 */
 	private static void updatePlayerMovement(Player player, GameBuffer str) {// valid
 		if (player.getMovementHandler().getWalkingDirection() == -1) {
-			if (player.updateRequired || player.isChatTextUpdateRequired()) {
+			if (player.getUpdateFlags().isUpdateRequired() || player.isChatTextUpdateRequired()) {
 
 				str.writeBits(1, 1);
 				str.writeBits(2, 0);
@@ -498,13 +498,13 @@ public class PlayerUpdating {
 			str.writeBits(1, 1);
 			str.writeBits(2, 1);
 			str.writeBits(3, player.getMovementHandler().getWalkingDirection());
-			str.writeBits(1, (player.updateRequired || player.isChatTextUpdateRequired()) ? 1 : 0);
+			str.writeBits(1, (player.getUpdateFlags().isUpdateRequired() || player.isChatTextUpdateRequired()) ? 1 : 0);
 		} else {
 			str.writeBits(1, 1);
 			str.writeBits(2, 2);
 			str.writeBits(3, player.getMovementHandler().getWalkingDirection());
 			str.writeBits(3, player.getMovementHandler().getRunningDirection());
-			str.writeBits(1, (player.updateRequired || player.isChatTextUpdateRequired()) ? 1 : 0);
+			str.writeBits(1, (player.getUpdateFlags().isUpdateRequired() || player.isChatTextUpdateRequired()) ? 1 : 0);
 		}
 	}
 

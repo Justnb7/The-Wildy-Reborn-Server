@@ -3,6 +3,8 @@ package com.model.game.character.player;
 import java.util.Iterator;
 import java.util.Optional;
 
+import com.model.UpdateFlags;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
@@ -256,25 +258,31 @@ public class PlayerUpdating {
 	 * @param samePlayer
 	 *            Don't update if its the same player
 	 */
-	private static void appendPlayerUpdateBlock(Player player, GameBuffer buffer, boolean forceAppearance,
-			Player target, boolean noChat) {
+	private static void appendPlayerUpdateBlock(Player player, GameBuffer buffer, boolean forceAppearance, Player target, boolean noChat) {
 		if (!player.updateRequired && !forceAppearance) {
 			return;
 		}
 
+		/*
+		 * Calculate the bitmask.
+		 */
 		int updateMask = 0;
+		final UpdateFlags flags = player.getUpdateFlags();
 		boolean samePlayer = player.usernameHash == target.usernameHash;
 		if (player.getUpdateBlock() != null && !samePlayer && !forceAppearance && !noChat) {
 			buffer.writeBytes(player.getUpdateBlock().buffer, player.getUpdateBlock().offset);
 			return;
 		}
-		if (player.gfxUpdateRequired) {
+		
+		if (flags.get(UpdateFlag.GRAPHICS)) {
 			updateMask |= 0x100;
 		}
-		if (player.animUpdateRequired) {
+		
+		if (flags.get(UpdateFlag.ANIMATION) && player.getCurrentAnimation() != null) {
 			updateMask |= 0x8;
 		}
-		if (player.forcedChatUpdateRequired) {
+		
+		if (flags.get(UpdateFlag.FORCED_CHAT)) {
 			updateMask |= 0x4;
 		}
 		if (player.isChatTextUpdateRequired() && !noChat) {
@@ -310,14 +318,14 @@ public class PlayerUpdating {
 
 		// now writing the various update blocks itself - note that their order
 		// crucial
-		if (player.gfxUpdateRequired) {
-			appendMask100Update(player, updateBlock);
+		if (flags.get(UpdateFlag.GRAPHICS)) {
+			appendGraphicsUpdate(player, updateBlock);
 		}
-		if (player.animUpdateRequired) {
-			appendAnimationRequest(player, updateBlock);
+		if (flags.get(UpdateFlag.ANIMATION)) {
+			appendAnimationUpdate(player, updateBlock);
 		}
-		if (player.forcedChatUpdateRequired) {
-			appendForcedChat(player, updateBlock);
+		if (flags.get(UpdateFlag.FORCED_CHAT)) {
+			updateBlock.putRS2String(player.getUpdateFlags().getForcedMessage());
 		}
 		if (player.isChatTextUpdateRequired() && !noChat) {
 			appendPlayerChatText(player, updateBlock);
@@ -508,22 +516,9 @@ public class PlayerUpdating {
 	 * @param str
 	 *            The {@link GameBuffer} to write data on
 	 */
-	private static void appendMask100Update(Player player, GameBuffer str) {
-		str.writeWordBigEndian(player.gfx.getId());
-		str.putInt(player.gfx.getDelay() + (65536 * player.gfx.getHeight()));
-
-	}
-
-	/**
-	 * Updates the forced chat mask
-	 * 
-	 * @param player
-	 *            The {@link Player} to update the mask for
-	 * @param str
-	 *            The {@link GameBuffer} to write data on
-	 */
-	private static void appendForcedChat(Player player, GameBuffer str) {
-		str.putRS2String(player.getForcedChatMessage());
+	private static void appendGraphicsUpdate(Player player, GameBuffer str) {
+		str.writeWordBigEndian(player.getCurrentGraphic().getId());
+		str.putInt(player.getCurrentGraphic().getDelay() + (65536 * player.getCurrentGraphic().getHeight()));
 	}
 
 	/**
@@ -689,9 +684,9 @@ public class PlayerUpdating {
 	 * @param str
 	 *            The {@link GameBuffer} to write data on
 	 */
-	private static void appendAnimationRequest(Player player, GameBuffer str) {
-		str.writeWordBigEndian((player.anim.getId() == -1) ? 65535 : player.anim.getId());
-		str.writeByteC(player.anim.getDelay());
+	private static void appendAnimationUpdate(Player player, GameBuffer str) {
+        str.writeWordBigEndian((player.getCurrentAnimation().getId() == -1) ? 65535 : player.getCurrentAnimation().getId());
+        str.writeByteC(player.getCurrentAnimation().getDelay());
 	}
 
 	/**

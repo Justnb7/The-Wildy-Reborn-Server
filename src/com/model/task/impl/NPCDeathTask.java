@@ -172,7 +172,7 @@ public class NPCDeathTask extends ScheduledTask {
             npc.killedBy = -1;
         }
         if (npc.getId() == 6618 && npc.isDead) {
-        	npc.forceChat("Ow!");
+        	npc.sendForcedMessage("Ow!");
         }
         if (npc.getId() == 6615 && npc.isDead) {
         	npc.spawnedScorpiaMinions = false;
@@ -183,14 +183,14 @@ public class NPCDeathTask extends ScheduledTask {
 			npc.currentHealth = 255;
 			npc.isDead = false;
 			npc.spawnedVetionMinions = false;
-			npc.forceChat("Do it again!!");
+			npc.sendForcedMessage("Do it again!!");
 			stop();
 			return;
 		} else {
 			if (npc.getId() == 6612) {
 				npc.setId(6611);
 				npc.spawnedVetionMinions = false;
-				npc.forceChat("Got'em");
+				npc.sendForcedMessage("Got'em");
 			}
 		}
 		if (npc.killedBy >= 0) {

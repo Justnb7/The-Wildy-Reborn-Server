@@ -8,6 +8,8 @@ import java.util.Random;
 
 import com.google.common.base.Preconditions;
 import com.model.Server;
+import com.model.UpdateFlags;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.Projectile;
@@ -62,10 +64,6 @@ public abstract class Entity {
 	public Hit secondary;
 	public boolean hitUpdateRequired;
 	public boolean hitUpdateRequired2;
-	public Animation anim;
-	public boolean animUpdateRequired;
-	public Graphic gfx;
-	public boolean gfxUpdateRequired;
 	public boolean forcedChatUpdateRequired;
 	public boolean updateRequired = true;
 	public boolean appearanceUpdateRequired = true;
@@ -78,6 +76,16 @@ public abstract class Entity {
 	 * Map region changing flag.
 	 */
 	private boolean mapRegionChanging = false;
+
+	/**
+	 * The current animation.
+	 */
+	private Animation currentAnimation;
+
+	/**
+	 * The current graphic.
+	 */
+	private Graphic currentGraphic;
 	
 	/**
 	 * Checks if the map region has changed in this cycle.
@@ -118,6 +126,11 @@ public abstract class Entity {
 	}
 	
 	/**
+	 * The update flags.
+	 */
+	private final UpdateFlags updateFlags = new UpdateFlags();
+	
+	/**
 	 * The list of local players.
 	 */
 	private final List<Player> localPlayers = new LinkedList<Player>();
@@ -143,6 +156,15 @@ public abstract class Entity {
 	 */
 	public List<NPC> getLocalNPCs() {
 		return localNpcs;
+	}
+	
+	/**
+	 * Gets the update flags.
+	 * 
+	 * @return The update flags.
+	 */
+	public UpdateFlags getUpdateFlags() {
+		return updateFlags;
 	}
 
 	/**
@@ -848,58 +870,60 @@ public abstract class Entity {
 		return location;
 	}
 	
-	/**
-	 * The text to display with the force chat mask.
-	 */
-	private String forcedChat;
 	
-	/**
-	 * Creates the force chat mask.
-	 *
-	 * @param message
-	 */
-	public void forceChat(String message) {
-		forcedChat = message;
-		forcedChatUpdateRequired = true;
-		updateRequired = true;
-	}
-	
-	/**
-	 * Creates the force chat mask.
-	 *
-	 * @param message
-	 */
-	public void setForceChat(String message) {
-		forcedChat = message;
-	}
-
-	/**
-	 * Gets the message to display with the force chat mask.
-	 *
-	 * @return The message to display with the force chat mask.
-	 */
-	public String getForcedChatMessage() {
-		return forcedChat;
-	}
 
 	public void playGraphics(Graphic graphic) {
-		gfx = graphic;
-		this.gfxUpdateRequired = true;
+		currentGraphic = graphic;
+		this.getUpdateFlags().flag(UpdateFlag.GRAPHICS);
 		updateRequired = true;
 	}
 	
 	/**
-	 * Animations
-	 *            The animation id.
+	 * Gets the current graphic.
+	 * 
+	 * @return The current graphic.
+	 */
+	public Graphic getCurrentGraphic() {
+		return currentGraphic;
+	}
+	
+	/**
+	 * Animates the entity.
+	 *
+	 * @param animation
+	 *            The animation.
 	 */
 	public void playAnimation(Animation animation) {
-		// Purpose: anims are unique to npcs to this shops the npc deforming after transforming.
+		// Purpose: anims are unique to npcs so this shops the npc deforming after transforming.
 		if (this.isNPC() && ((NPC)this).transformUpdateRequired) { 
 			return;
 		}
-		anim = animation;
-		this.animUpdateRequired = true;
-		updateRequired = true;
+		this.currentAnimation = animation;
+		if (animation != null) {
+			this.getUpdateFlags().flag(UpdateFlag.ANIMATION);
+			updateRequired = true;
+		}
+	}
+	
+	/**
+	 * Gets the current animation.
+	 * 
+	 * @return The current animation;
+	 */
+	public Animation getCurrentAnimation() {
+		return currentAnimation;
+	}
+	
+	public void sendForcedMessage(String message) {
+		this.getUpdateFlags().setForcedMessage(message);
+	}
+	
+	/**
+	 * Resets attributes after an update cycle.
+	 */
+	public void reset() {
+		this.currentAnimation = null;
+		this.currentGraphic = null;
 	}
 	
 	public int frozenForTicks, refreezeTicks;

@@ -231,7 +231,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "kdr":
     		double KDR = ((double)player.getKillCount())/((double)player.getDeathCount());
-			player.forceChat("My Kill/Death ratio is "+player.getKillCount()+"/"+player.getDeathCount()+"; "+KDR);
+			player.sendForcedMessage("My Kill/Death ratio is "+player.getKillCount()+"/"+player.getDeathCount()+"; "+KDR);
     		return true;
     		
     	case "skull":

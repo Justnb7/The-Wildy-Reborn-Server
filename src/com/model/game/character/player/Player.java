@@ -1108,6 +1108,7 @@ public class Player extends Entity {
 	}
 
 	public void clearUpdateFlags() {
+		this.reset();
 		forceMovementUpdateRequired = false;
 		updateRequired = false;
 		appearanceUpdateRequired = false;
@@ -1115,8 +1116,6 @@ public class Player extends Entity {
 		setHitUpdateRequired(false);
 		hitUpdateRequired2 = false;
 		forcedChatUpdateRequired = false;
-		this.gfxUpdateRequired = false;
-		this.animUpdateRequired = false;
 		setTeleporting(false);
 		faceTileX = -1;
 		faceTileY = -1;
@@ -1124,6 +1123,7 @@ public class Player extends Entity {
 		entityFaceIndex = 65535;
 		setUpdateBlock(null);
 		super.clear();
+		this.getUpdateFlags().reset();
 	}
 
 	public boolean isAppearanceUpdateRequired() {

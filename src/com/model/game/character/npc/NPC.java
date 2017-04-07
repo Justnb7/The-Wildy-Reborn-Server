@@ -394,16 +394,14 @@ public class NPC extends Entity {
 		forcedChatUpdateRequired = false;
 		hitUpdateRequired = false;
 		hitUpdateRequired2 = false;
-		this.animUpdateRequired = false;
+		this.reset();
 		this.faceUpdateRequired = false;
 		if (transformUpdateRequired) {
 			transformUpdateRequired = false;
 			this.npcId = this.transformId;
 			this.transformId = -1;
 	        this.maximumHealth = this.getDefinition() == null ? currentHealth : this.getDefinition().getHitpoints();
-			
 		}
-		this.gfxUpdateRequired = false;
 		moveX = 0;
 		moveY = 0;
 		direction = -1;
@@ -416,6 +414,7 @@ public class NPC extends Entity {
 			setAttribute("teleporting", false);
 		}
 		super.clear();
+		this.getUpdateFlags().reset();
 	}
 
 	/**

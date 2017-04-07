@@ -42,7 +42,7 @@ public class CombatSpells {
 					if (attacker.isDead()) {
 						hit = 0;
 					}
-					venger.forceChat("Taste vengeance!");
+					venger.sendForcedMessage("Taste vengeance!");
 					venger.updateRequired = true;
 					venger.setVengeance(false);
 					attacker.damage(new Hit(hit > attacker.getSkills().getLevel(Skills.HITPOINTS) ? attacker.getSkills().getLevel(Skills.HITPOINTS) : hit));
@@ -68,7 +68,7 @@ public class CombatSpells {
 					if (attacker_npc.isDead) {
 						hit = 0;
 					}
-					venger.forceChat("Taste vengeance!");
+					venger.sendForcedMessage("Taste vengeance!");
 					venger.updateRequired = true;
 					venger.setVengeance(false);
 					attacker_npc.damage(new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED));

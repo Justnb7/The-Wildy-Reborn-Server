@@ -2,6 +2,8 @@ package com.model.game.character.npc;
 
 import java.util.Iterator;
 
+import com.model.UpdateFlags;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.net.network.rsa.GameBuffer;
@@ -94,17 +96,26 @@ public class NpcUpdating {
 		
 		if (!npc.updateRequired)
 			return;
+		
+		/*
+		 * Calculate the mask.
+		 */
 		int updateMask = 0;
-		if (npc.animUpdateRequired)
+		final UpdateFlags flags = npc.getUpdateFlags();
+		
+		if(flags.get(UpdateFlag.ANIMATION)) {
 			updateMask |= 0x10;
+		}
 		if (npc.hitUpdateRequired2)
 			updateMask |= 8;
-		if (npc.gfxUpdateRequired)
+		if(flags.get(UpdateFlag.GRAPHICS)) {
 			updateMask |= 0x80;
+		}
 		if (npc.faceUpdateRequired)
 			updateMask |= 0x20;
-		if (npc.forcedChatUpdateRequired)
-			updateMask |= 1;
+		if(flags.get(UpdateFlag.FORCED_CHAT)) {
+			updateMask |= 0x1;
+		}
 		if (npc.hitUpdateRequired)
 			updateMask |= 0x40;
 		if (npc.transformUpdateRequired)
@@ -114,16 +125,23 @@ public class NpcUpdating {
 
 		buffer.writeByte(updateMask);
 
-		if (npc.animUpdateRequired)
-			appendAnimUpdate(npc, buffer);
+		if(flags.get(UpdateFlag.ANIMATION)) {
+			if (npc.getCurrentAnimation() != null) {
+				buffer.writeWordBigEndian(npc.getCurrentAnimation().getId());
+				buffer.writeByte(npc.getCurrentAnimation().getDelay());
+			}
+		}
+		
 		if (npc.hitUpdateRequired2)
 			appendHitUpdate2(npc, buffer);
-		if (npc.gfxUpdateRequired)
-			appendMask80Update(npc, buffer);
+		if(flags.get(UpdateFlag.GRAPHICS)) {
+			buffer.writeShort(npc.getCurrentGraphic().getId());
+			buffer.putInt(npc.getCurrentGraphic().getDelay() + (65536 * npc.getCurrentGraphic().getHeight()));
+		}
 		if (npc.faceUpdateRequired)
 			appendFaceEntity(npc, buffer);
-		if (npc.forcedChatUpdateRequired) {
-			buffer.putRS2String(npc.getForcedChatMessage());
+		if(flags.get(UpdateFlag.FORCED_CHAT)) {
+			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());
 		}
 		if (npc.hitUpdateRequired)
 			appendHitUpdate(npc, buffer);
@@ -192,16 +210,6 @@ public class NpcUpdating {
 	private static void appendSetFocusDestination(NPC npc, GameBuffer str) {
 		str.writeWordBigEndian(npc.faceTileX * 2 + 1);
 		str.writeWordBigEndian(npc.faceTileY * 2 + 1);
-	}
-
-	private static void appendAnimUpdate(NPC npc, GameBuffer str) {
-		str.writeWordBigEndian(npc.anim.getId());
-		str.writeByte(npc.anim.getDelay());
-	}
-
-	private static void appendMask80Update(NPC npc, GameBuffer str) {
-		str.writeShort(npc.gfx.getId());
-		str.putInt(npc.gfx.getDelay() + (65536 * npc.gfx.getHeight()));
 	}
 
 	private static void appendHitUpdate2(NPC npc, GameBuffer str) {

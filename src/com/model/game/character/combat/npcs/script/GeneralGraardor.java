@@ -46,7 +46,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 
 		// Sent a random shout
 		if (random.nextInt(3) == 2 && System.currentTimeMillis() - lastMessage > 3000) {
-			((NPC) attacker).forceChat(MESSAGES[random.nextInt(MESSAGES.length)]);
+			attacker.sendForcedMessage(MESSAGES[random.nextInt(MESSAGES.length)]);
 			lastMessage = System.currentTimeMillis();
 		}
 

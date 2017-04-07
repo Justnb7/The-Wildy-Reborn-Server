@@ -299,11 +299,11 @@ public class DuelSession extends MultiplayerSession {
 				}
 			}
 			if (time <= 0) {
-				players.stream().filter(Objects::nonNull).forEach(p -> p.forceChat("FIGHT!"));
+				players.stream().filter(Objects::nonNull).forEach(p -> p.sendForcedMessage("FIGHT!"));
 				attackingOperationable = true;
 				container.stop();
 			} else if (time > 0) {
-				players.stream().filter(Objects::nonNull).forEach(p -> p.forceChat(Integer.toString(time)));
+				players.stream().filter(Objects::nonNull).forEach(p -> p.sendForcedMessage(Integer.toString(time)));
 				time--;
 			} else {
 				container.stop();

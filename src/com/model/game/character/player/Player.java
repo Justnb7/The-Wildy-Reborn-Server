@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+
 import com.model.Server;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -1111,11 +1113,9 @@ public class Player extends Entity {
 		this.reset();
 		forceMovementUpdateRequired = false;
 		updateRequired = false;
-		appearanceUpdateRequired = false;
 		chatTextUpdateRequired = false;
 		setHitUpdateRequired(false);
 		hitUpdateRequired2 = false;
-		forcedChatUpdateRequired = false;
 		setTeleporting(false);
 		faceTileX = -1;
 		faceTileY = -1;
@@ -1125,11 +1125,6 @@ public class Player extends Entity {
 		super.clear();
 		this.getUpdateFlags().reset();
 	}
-
-	public boolean isAppearanceUpdateRequired() {
-		return appearanceUpdateRequired;
-	}
-	
 
 	public void stopMovement() {
 		getMovementHandler().reset();
@@ -1255,19 +1250,7 @@ public class Player extends Entity {
 			bankItems[i] = 0;
 			bankItemsN[i] = 0;
 		}
-		playerAppearance[0] = 0; // gender
-		playerAppearance[1] = 0; // head
-		playerAppearance[2] = 18;// Torso
-		playerAppearance[3] = 26; // arms
-		playerAppearance[4] = 33; // hands
-		playerAppearance[5] = 36; // legs
-		playerAppearance[6] = 42; // feet
-		playerAppearance[7] = 10; // beard
-		playerAppearance[8] = 0; // hair colour
-		playerAppearance[9] = 0; // torso colour
-		playerAppearance[10] = 0; // legs colour
-		playerAppearance[11] = 0; // feet colour
-		playerAppearance[12] = 0; // skin colour
+		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
 		playerEquipment[getEquipment().getHelmetId()] = -1;
 		playerEquipment[getEquipment().getCapeId()] = -1;
@@ -1580,7 +1563,7 @@ public class Player extends Entity {
 					attackedPlayers.clear();
 					skullIcon = -1;
 					skullTimer = -1;
-					getPA().requestUpdates();
+					getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
 			}
 
@@ -2068,26 +2051,6 @@ public class Player extends Entity {
 
 	public void resetDamageReceived() {
 		damageReceived.clear();
-	}
-	
-	public void appendPoisonDamage() {
-		if (poisonDamage <= 0) {
-			return;
-		}
-		Player player = this;
-		if (poisonDamageHistory.size() >= 4) {
-			poisonDamageHistory.clear();
-			poisonDamage--;
-		}
-		if (poisonDamage <= 0) {
-			player.getActionSender().sendMessage("The poison has subsided.");
-			player.getPA().requestUpdates();
-			return;
-		}
-		poisonDamageHistory.add(poisonDamage);
-		
-		damage(new Hit(poisonDamage, HitType.POISON));
-		player.getPA().requestUpdates();
 	}
 
 	/**

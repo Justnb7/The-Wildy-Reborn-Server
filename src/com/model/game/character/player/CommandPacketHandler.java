@@ -1,6 +1,7 @@
 package com.model.game.character.player;
 
 import com.model.Server;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -239,7 +240,7 @@ public class CommandPacketHandler implements PacketType {
 			player.isSkulled = true;
 			player.skullTimer = 500;
 			player.skullIcon = 0;
-			player.getPA().requestUpdates();
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.getActionSender().sendMessage("@blu@You are now skulled.");
     		return true;
     		
@@ -262,7 +263,7 @@ public class CommandPacketHandler implements PacketType {
 			player.isSkulled = false;
 			player.skullTimer = -1;
 			player.skullIcon = -1;
-			player.getPA().requestUpdates();
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.attackedPlayers.clear();
 			player.getActionSender().sendMessage("@blu@You are now unskulled.");
     		return true;
@@ -585,7 +586,6 @@ public class CommandPacketHandler implements PacketType {
     		player.combatLevel = player.getSkills().getCombatLevel();
     		player.totalLevel = player.getSkills().getTotalLevel();
     		player.updateRequired = true;
-    		player.appearanceUpdateRequired = true;
     		break;
     	
          case "saveall":
@@ -737,7 +737,7 @@ public class CommandPacketHandler implements PacketType {
     	case "unpc":
     		player.setPlayerTransformed(false);
     		player.setPnpc(-1);
-			player.appearanceUpdateRequired = true;
+    		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.updateRequired = true;
     		return true;
     		
@@ -792,7 +792,7 @@ public class CommandPacketHandler implements PacketType {
     		int value = Integer.parseInt(cmd[1]);
     		player.setPnpc(value);
     		player.setPlayerTransformed(true);
-			player.appearanceUpdateRequired = true;
+    		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.updateRequired = true;
 			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
@@ -809,7 +809,7 @@ public class CommandPacketHandler implements PacketType {
     	case "shield":
     		value = 336;
     		player.setPnpc(value);
-			player.appearanceUpdateRequired = true;
+    		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.updateRequired = true;
 			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
@@ -817,7 +817,7 @@ public class CommandPacketHandler implements PacketType {
     	case "sigil":
     		value = 335;
     		player.setPnpc(value);
-			player.appearanceUpdateRequired = true;
+    		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.updateRequired = true;
 			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
@@ -860,7 +860,6 @@ public class CommandPacketHandler implements PacketType {
     	case "anim":
     		int animation = Integer.parseInt(cmd[1]);
 			player.playAnimation(Animation.create(animation));
-			player.getPA().requestUpdates();
     		return true;
     		
     	case "gfx":

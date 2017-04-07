@@ -3,6 +3,7 @@ package com.model.game.character.player;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
@@ -200,7 +201,6 @@ public class Skills {
 			player.combatLevel = getCombatLevel();
 			getCombatLevel();
 			player.getActionSender().sendString("Combat Level: " + player.getSkills().getCombatLevel(), 3983);
-			player.getPA().requestUpdates();
 		}
 		player.getSkillCyclesTask().stop();
 	}
@@ -294,7 +294,7 @@ public class Skills {
 		player.write(new SendSkillPacket(skill));
 		int newLvl = getLevelForExperience(skill);
 		if (oldLvl != newLvl) {
-			player.getPA().requestUpdates();
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		}
 	}
 
@@ -456,7 +456,7 @@ public class Skills {
         int levelDiff = newLevel - oldLevel;
         if (levelDiff > 0) {
             levels[skillId] += levelDiff;
-			player.getPA().requestUpdates();
+            player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.playGraphics(Graphic.highGraphic(199));
 			handleLevelUp(skillId);
         }

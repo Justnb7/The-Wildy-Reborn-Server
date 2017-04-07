@@ -1,6 +1,7 @@
 package com.model.task.impl;
 
 import com.model.Server;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
@@ -236,7 +237,7 @@ public class NPCDeathTask extends ScheduledTask {
     
     public static void reset(NPC npc) {
     	npc.infected = false;
-        npc.appearanceUpdateRequired = true;
+    	npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
         npc.freeze(0);
         npc.targetId = 0;
         npc.underAttack = false;

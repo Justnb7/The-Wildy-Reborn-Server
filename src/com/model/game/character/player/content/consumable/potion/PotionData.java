@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendSkillPacket;
@@ -647,8 +648,7 @@ public enum PotionData {
 		player.setVenomImmunity(duration);
 		player.infection = 0;
 		player.setLastVenomCure(System.currentTimeMillis());
-		player.getPA().requestUpdates();
-		player.appearanceUpdateRequired = true;
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		player.updateRequired = true;
 	}
 	
@@ -658,8 +658,7 @@ public enum PotionData {
 		player.setPoisonImmunity(duration);
 		player.setLastPoisonCure(System.currentTimeMillis());*/
 		player.infection = 0;
-		player.getPA().requestUpdates();
-		player.appearanceUpdateRequired = true;
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		player.updateRequired = true;
 	}
 	

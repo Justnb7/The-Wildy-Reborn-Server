@@ -64,9 +64,7 @@ public abstract class Entity {
 	public Hit secondary;
 	public boolean hitUpdateRequired;
 	public boolean hitUpdateRequired2;
-	public boolean forcedChatUpdateRequired;
 	public boolean updateRequired = true;
-	public boolean appearanceUpdateRequired = true;
 	public boolean faceUpdateRequired = false;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
@@ -914,6 +912,11 @@ public abstract class Entity {
 		return currentAnimation;
 	}
 	
+	/**
+	 * Sends a message above the entitys head.
+	 * @param message
+	 *        The message being sent;
+	 */
 	public void sendForcedMessage(String message) {
 		this.getUpdateFlags().setForcedMessage(message);
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.model.Server;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -225,7 +226,7 @@ public class PrayerHandler {
 				break;
 			}
 			player.setPrayerIcon(headIcon);
-			player.getPA().requestUpdates();
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		}
 		player.setActivePrayer(prayer, true);
 		player.getActionSender().sendConfig(prayer.getConfigId(), 1);
@@ -236,7 +237,7 @@ public class PrayerHandler {
 		player.setActivePrayer(prayer, false);
 		if (prayer.equals(Prayers.PROTECT_FROM_MAGIC) || prayer.equals(Prayers.PROTECT_FROM_MISSILE) || prayer.equals(Prayers.PROTECT_FROM_MELEE) || prayer.equals(Prayers.RETRIBUTION) || prayer.equals(Prayers.REDEMPTION) || prayer.equals(Prayers.SMITE)) {
 			player.setPrayerIcon(-1);
-			player.getPA().requestUpdates();
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		}
 		player.addPrayerDrainRate(-(prayer.getDrainRate()));
 		player.getActionSender().sendConfig(prayer.getConfigId(), 0);

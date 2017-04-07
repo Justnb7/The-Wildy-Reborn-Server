@@ -1,6 +1,7 @@
 package com.model.game.character.player.content;
 
 import com.model.Server;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
@@ -29,7 +30,7 @@ public class WildernessDitch {
 		player.getMovementHandler().resetWalkingQueue();
 		player.teleportToX = x;
        	player.teleportToY = y;
-		player.getPA().requestUpdates();
+       	player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
 	/**
@@ -83,6 +84,6 @@ public class WildernessDitch {
 	private static void resetWalkIndex(Player player) {
 		player.setRunning(true);
 		player.getActionSender().sendConfig(173, 1);
-		player.getPA().requestUpdates();
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 }

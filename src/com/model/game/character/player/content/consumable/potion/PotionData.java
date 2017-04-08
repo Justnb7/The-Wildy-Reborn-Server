@@ -649,7 +649,6 @@ public enum PotionData {
 		player.infection = 0;
 		player.setLastVenomCure(System.currentTimeMillis());
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		player.updateRequired = true;
 	}
 	
 	public static void drinkAntiPoison(Player player, long duration) {
@@ -659,7 +658,6 @@ public enum PotionData {
 		player.setLastPoisonCure(System.currentTimeMillis());*/
 		player.infection = 0;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		player.updateRequired = true;
 	}
 	
 	// shit naming of paramater - it's when you drank it in MS (sys.curtime) not how long it lasts

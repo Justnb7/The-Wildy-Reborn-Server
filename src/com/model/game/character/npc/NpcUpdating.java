@@ -7,7 +7,6 @@ import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.net.network.rsa.GameBuffer;
-import com.model.utility.Utility;
 
 /**
  * Handles updating all of the npcs for a single {@link Player}

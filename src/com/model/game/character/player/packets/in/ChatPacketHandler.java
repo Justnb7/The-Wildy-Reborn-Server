@@ -40,7 +40,6 @@ public class ChatPacketHandler implements PacketType {
 		PlayerLogging.write(LogType.PUBLIC_CHAT, player, "Spoke = "+term);
 
 		player.getUpdateFlags().flag(UpdateFlag.CHAT);
-		player.updateRequired = true;
 
 	}
 }

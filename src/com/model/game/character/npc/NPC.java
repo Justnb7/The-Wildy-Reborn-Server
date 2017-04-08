@@ -434,7 +434,8 @@ public class NPC extends Entity {
 			setOnTile(absX, absY, heightLevel);
 			setAttribute("teleporting", false);
 		}
-		super.clear();
+		this.getUpdateFlags().primary = null;
+		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();
 	}
 

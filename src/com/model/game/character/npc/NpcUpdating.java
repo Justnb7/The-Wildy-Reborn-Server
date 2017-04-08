@@ -93,7 +93,7 @@ public class NpcUpdating {
 	 */
 	private static void appendNPCUpdateBlock(NPC npc, GameBuffer buffer) {
 		
-		if (!npc.updateRequired)
+		if (!npc.getUpdateFlags().isUpdateRequired())
 			return;
 		
 		/*
@@ -150,8 +150,8 @@ public class NpcUpdating {
 			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());
 		}
 		if(flags.get(UpdateFlag.HIT_2)) {
-			buffer.writeByteC(npc.getUpdateFlags().getDamage2());
-			buffer.writeByteS((byte) npc.getUpdateFlags().getHitType2());
+			buffer.writeByteC(npc.getUpdateFlags().secondary.getDamage());
+			buffer.writeByteS(npc.getUpdateFlags().secondary.getType().getId());
 			buffer.writeByteS((byte) npc.getHitpoints());
 			buffer.writeByteC(npc.getMaxHitpoints());
 		}
@@ -172,7 +172,7 @@ public class NpcUpdating {
 	 */
 	private static void updateNPCMovement(NPC npc, GameBuffer str) {
 		if (npc.direction == -1) {
-			if (npc.updateRequired) {
+			if(npc.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
 				str.writeBits(2, 0);
 			} else {
@@ -182,7 +182,7 @@ public class NpcUpdating {
 			str.writeBits(1, 1);
 			str.writeBits(2, 1);
 			str.writeBits(3, npc.direction);
-			if (npc.updateRequired) {
+			if(npc.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
 			} else {
 				str.writeBits(1, 0);
@@ -205,7 +205,7 @@ public class NpcUpdating {
 		buffer.writeBits(5, xPos);
 		buffer.writeBits(1, 0);
 		buffer.writeBits(14, npc.getId());
-		buffer.writeBits(npc.updateRequired);
+		buffer.writeBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 	}
 
 	private static void appendFaceEntity(NPC npc, GameBuffer str) {
@@ -218,8 +218,8 @@ public class NpcUpdating {
 	}
 	
 	private static void appendHitUpdate1(NPC npc, GameBuffer str) {
-		str.putByteA(npc.getUpdateFlags().getDamage1());
-		str.writeByteC(npc.getUpdateFlags().getHitType1());
+		str.putByteA(npc.getUpdateFlags().primary.getDamage());
+		str.writeByteC(npc.getUpdateFlags().primary.getType().getId());
 		str.putByteA(npc.getHitpoints());
 		str.writeByte((byte) npc.getMaxHitpoints());
 	}

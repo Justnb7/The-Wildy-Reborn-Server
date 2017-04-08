@@ -485,7 +485,7 @@ public class PlayerUpdating {
 	 * @param str
 	 *            The {@link GameBuffer} To write data on
 	 */
-	private static void updatePlayerMovement(Player player, GameBuffer str) {// valid
+	private static void updatePlayerMovement(Player player, GameBuffer str) {
 		if (player.getMovementHandler().getWalkingDirection() == -1) {
 			if (player.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
@@ -710,10 +710,10 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data on
 	 */
 	private static void appendHitUpdate(Player player, GameBuffer str) {
-		if (player.primary == null)
+		if (player.getUpdateFlags().primary == null)
 			return;
-		str.writeByte(player.primary.getDamage());
-		str.putByteA(player.primary.getType().getId());
+		str.writeByte(player.getUpdateFlags().primary.getDamage());
+		str.putByteA(player.getUpdateFlags().primary.getType().getId());
 		str.writeByteC(player.getSkills().getLevel(3));
 		str.writeByte(player.getSkills().getLevelForExperience(3));
 	}
@@ -727,10 +727,10 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data on
 	 */
 	private static void appendHitUpdate2(Player player, GameBuffer str) {
-		if (player.secondary == null)
+		if (player.getUpdateFlags().secondary == null)
 			return;
-		str.writeByte(player.secondary.getDamage());
-		str.writeByteS(player.secondary.getType().getId());
+		str.writeByte(player.getUpdateFlags().secondary.getDamage());
+		str.writeByteS(player.getUpdateFlags().secondary.getType().getId());
 		str.writeByte(player.getSkills().getLevel(3));
 		str.writeByteC(player.getSkills().getLevelForExperience(3));
 	}

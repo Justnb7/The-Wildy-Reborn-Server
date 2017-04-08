@@ -18,7 +18,6 @@ import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
-import com.model.game.character.HitType;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatAssistant;
 import com.model.game.character.combat.CombatDamage;
@@ -29,8 +28,8 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.combat.weapon.WeaponInterface;
 import com.model.game.character.npc.BossDeathTracker;
-import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.SlayerDeathTracker;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.account.Account;
@@ -1116,7 +1115,8 @@ public class Player extends Entity {
 		faceTileY = -1;
 		entityFaceIndex = 65535;
 		setUpdateBlock(null);
-		super.clear();
+		this.getUpdateFlags().primary = null;
+		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();
 	}
 

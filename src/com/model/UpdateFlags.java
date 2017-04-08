@@ -2,6 +2,8 @@ package com.model;
 
 import java.util.BitSet;
 
+import com.model.game.character.Hit;
+
 /**
  * Holds update flags.
  * @author Graham Edgecombe
@@ -75,22 +77,12 @@ public class UpdateFlags {
 	/**
 	 * Damage mask 1 damage
 	 */
-	private int damage_1;
+	public Hit primary;
 	
 	/**
 	 * Damage mask 2 damage
 	 */
-	private int damage_2;
-	
-	/**
-	 * The hitmask for damage 1
-	 */
-	private int hit_type_1;
-	
-	/**
-	 * The hitmask for damage 2
-	 */
-	private int hit_type_2;
+	public Hit secondary;
 	
 	/**
 	 * The forced message the entity will send
@@ -137,79 +129,6 @@ public class UpdateFlags {
 	 */
 	public void reset() {
 		flags.clear();
-	}
-
-	/**
-	 * Gets the first hit type damage
-	 * 
-	 * @return
-	 */
-	public int getDamage1() {
-		return damage_1;
-	}
-
-	/**
-	 * Sets the first hit type damage
-	 * 
-	 * @param damage
-	 */
-	public void setDamage1(int damage) {
-		this.damage_1 = damage;
-	}
-
-	/**
-	 * Gets the second hit type damage
-	 * 
-	 * @return
-	 */
-	public int getDamage2() {
-		return damage_2;
-	}
-
-	/**
-	 * Sets the second hit type damage
-	 * 
-	 * @param damage
-	 */
-	public void setDamage2(int damage) {
-		this.damage_2 = damage;
-	}
-
-	/**
-	 * Gets the first hit type
-	 * 
-	 * @return
-	 */
-	public int getHitType1() {
-		return hit_type_1;
-	}
-
-	/**
-	 * Sets the first hit type
-	 * 
-	 * @param type
-	 */
-	public void setHitType1(int type) {
-		this.hit_type_1 = type;
-	}
-
-	/**
-	 * Gets the second hit type
-	 * 
-	 * @return
-	 */
-	public int getHitType2() {
-		return hit_type_2;
-	}
-
-	/**
-	 * Sets the second hit type
-	 * 
-	 * @param type
-	 *            The type of hit
-	 */
-	public void setHitType2(int type) {
-		this.hit_type_2 = type;
 	}
 
 	/**

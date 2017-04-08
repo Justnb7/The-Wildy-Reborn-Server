@@ -60,9 +60,6 @@ public abstract class Entity {
 	private boolean registered;
 	public int infection;
 	public boolean infected;
-	public Hit primary;
-	public Hit secondary;
-	//public boolean updateRequired = true;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 	public Position lastTile;
@@ -212,11 +209,6 @@ public abstract class Entity {
 
 	public abstract Hit decrementHP(Hit hit);
 
-	public void clear() {
-		primary = null;
-		secondary = null;
-	}
-
 	private boolean inCombat;
 	public long lastWasHitTime;
 	public Entity lastAttacker;
@@ -310,12 +302,12 @@ public abstract class Entity {
 	}
 
 	private void primaryDamage(Hit hit) {
-		primary = decrementHP(hit);
+		getUpdateFlags().primary = decrementHP(hit);
 		this.getUpdateFlags().flag(UpdateFlag.HIT);
 	}
 
 	private void secondaryDamage(Hit hit) {
-		secondary = decrementHP(hit);
+		getUpdateFlags().secondary = decrementHP(hit);
 		this.getUpdateFlags().flag(UpdateFlag.HIT_2);
 	}
 

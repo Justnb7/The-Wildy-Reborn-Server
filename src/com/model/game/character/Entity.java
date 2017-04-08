@@ -62,7 +62,7 @@ public abstract class Entity {
 	public boolean infected;
 	public Hit primary;
 	public Hit secondary;
-	public boolean updateRequired = true;
+	//public boolean updateRequired = true;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 	public Position lastTile;

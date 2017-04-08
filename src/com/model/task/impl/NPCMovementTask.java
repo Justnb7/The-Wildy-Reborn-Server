@@ -61,7 +61,6 @@ public final class NPCMovementTask extends ScheduledTask {
 					npc.moveX = GetMove(npc.absX, npc.walkX);
 					npc.moveY = GetMove(npc.absY, npc.walkY);
 					npc.getNextNPCMovement(npc);
-					npc.updateRequired = true;
 				}
 				int random = Utility.getRandom(3);
 				

@@ -109,7 +109,6 @@ public class NPC extends Entity {
 	public void requestTransform(int Id) {
 		transformId = Id;
 		getUpdateFlags().flag(UpdateFlag.TRANSFORM);
-		updateRequired = true;
 	}
 
 	/**
@@ -423,7 +422,6 @@ public class NPC extends Entity {
 	}
 
 	public void clearUpdateFlags() {
-		updateRequired = false;
 		this.reset();
 		moveX = 0;
 		moveY = 0;
@@ -626,10 +624,6 @@ public class NPC extends Entity {
 	public int distanceToPoint(int pointX, int pointY) {
 		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
 	}
-	
-	public void requestUpdates() {
-        this.updateRequired = true;
-    }
 	
 	public int walkX, walkY;
 

@@ -160,7 +160,6 @@ public class NPCDeathTask extends ScheduledTask {
      *            The {@link NPC} which as just died
      */
     private void initialDeath(NPC npc) {
-        npc.updateRequired = true;
         npc.resetFace();
 
         String killerName = npc.getKiller();

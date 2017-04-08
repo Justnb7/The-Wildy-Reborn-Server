@@ -290,6 +290,7 @@ public class ActionSender {
 		if (player != null) {
             player.outStream.writeFrame(61);
             player.outStream.writeByte(icon);
+            player.updateRequired = true;
             player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
         }
 		return this;

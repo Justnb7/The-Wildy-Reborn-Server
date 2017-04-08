@@ -1096,6 +1096,7 @@ public class Player extends Entity {
         this.speed2 = speedd2;
         this.direction = directionn;
         this.forceMovementUpdateRequired = true;
+        this.updateRequired = true;
     }
 
 	public void appendMask400Update(GameBuffer str) {
@@ -1111,6 +1112,7 @@ public class Player extends Entity {
 	public void clearUpdateFlags() {
 		this.reset();
 		forceMovementUpdateRequired = false;
+		updateRequired = false;
 		chatTextUpdateRequired = false;
 		setHitUpdateRequired(false);
 		hitUpdateRequired2 = false;

@@ -585,6 +585,7 @@ public class CommandPacketHandler implements PacketType {
 			}
     		player.combatLevel = player.getSkills().getCombatLevel();
     		player.totalLevel = player.getSkills().getTotalLevel();
+    		player.updateRequired = true;
     		break;
     	
          case "saveall":
@@ -737,6 +738,7 @@ public class CommandPacketHandler implements PacketType {
     		player.setPlayerTransformed(false);
     		player.setPnpc(-1);
     		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			player.updateRequired = true;
     		return true;
     		
     	case "update":
@@ -791,6 +793,7 @@ public class CommandPacketHandler implements PacketType {
     		player.setPnpc(value);
     		player.setPlayerTransformed(true);
     		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			player.updateRequired = true;
 			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
     		
@@ -807,6 +810,7 @@ public class CommandPacketHandler implements PacketType {
     		value = 336;
     		player.setPnpc(value);
     		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			player.updateRequired = true;
 			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
     		
@@ -814,6 +818,7 @@ public class CommandPacketHandler implements PacketType {
     		value = 335;
     		player.setPnpc(value);
     		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			player.updateRequired = true;
 			player.getActionSender().sendMessage("You transform into a " + NPC.getName(value) + ".");
     		return true;
     	

@@ -445,6 +445,7 @@ public final class NPCHandler {
 		mob.absX = x + Constants.DIRECTION_DELTA_X[direction];
 		mob.absY = y + Constants.DIRECTION_DELTA_Y[direction];
 		mob.direction = direction;
+		mob.updateRequired = true;
 		mob.setOnTile(mob.absX, mob.absY, mob.heightLevel);
 	}
 

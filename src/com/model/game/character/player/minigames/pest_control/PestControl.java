@@ -531,6 +531,7 @@ public class PestControl {
 			NPC npc = getNpc(NPC_DATA[i][0]);
 			if (npc != null) {
 				npc.isDead = true;
+				npc.updateRequired = true;
 				npc = null;
 			}
 		}

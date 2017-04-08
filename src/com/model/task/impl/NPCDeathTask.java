@@ -139,7 +139,7 @@ public class NPCDeathTask extends ScheduledTask {
         npc.setVisible(false);
         npc.setAbsX(npc.makeX);
         npc.setAbsY(npc.makeY);
-        npc.currentHealth = npc.maximumHealth;
+        npc.setHitpoints(npc.getMaxHitpoints());
 		
         if (!npc.noDeathEmote) {
             npc.playAnimation(Animation.create(808));
@@ -149,7 +149,7 @@ public class NPCDeathTask extends ScheduledTask {
 
         if (npc.getId() == 492 && npc.isDead) {
         	npc.requestTransform(493);
-			npc.transformUpdateRequired = true;
+        	npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
         }
     }
 
@@ -180,8 +180,8 @@ public class NPCDeathTask extends ScheduledTask {
         }
         if (npc.getId() == 6611 && npc.transformId != 6612) {
 			npc.requestTransform(6612);
-			npc.transformUpdateRequired = true;
-			npc.currentHealth = 255;
+			npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
+			npc.setHitpoints(255);
 			npc.isDead = false;
 			npc.spawnedVetionMinions = false;
 			npc.sendForcedMessage("Do it again!!");
@@ -221,7 +221,7 @@ public class NPCDeathTask extends ScheduledTask {
 		}
         if (npc.transformId == 6612) {
 			npc.requestTransform(6611);
-			npc.transformUpdateRequired = true;
+			npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
 		}
        
         if (!npc.noDeathEmote) {

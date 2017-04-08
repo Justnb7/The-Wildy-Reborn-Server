@@ -1,6 +1,7 @@
 package com.model.game.character.npc;
 
 import com.model.Server;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
@@ -90,11 +91,6 @@ public class NPC extends Entity {
 	 * Cannot attack npcs while transforming
 	 */
 	public boolean transforming;
-
-	/**
-	 * Sets the transformation update
-	 */
-	public boolean transformUpdateRequired = false;
 	
 	/**
 	 * Transformation identity
@@ -112,7 +108,7 @@ public class NPC extends Entity {
 	 */
 	public void requestTransform(int Id) {
 		transformId = Id;
-		transformUpdateRequired = true;
+		getUpdateFlags().flag(UpdateFlag.TRANSFORM);
 		updateRequired = true;
 	}
 
@@ -131,8 +127,46 @@ public class NPC extends Entity {
 	 */
 	public int makeX, makeY, moveX, moveY;
 	
-	public int combatLevel, spawnedBy, currentHealth, maximumHealth,
+	public int combatLevel, spawnedBy,
 			attackTimer, killedBy, oldIndex, underAttackBy, walking_type;
+	
+	/**
+	 * The hitpoints of the npc
+	 */
+	private int hitpoints;
+
+	/**
+	 * The maximum amount of hitpoints of the npc
+	 */
+	private int maxHitpoints;
+	
+	/**
+	 * Gets the npcs hitpoints
+	 * 
+	 * @return The npcs hitpoints
+	 */
+	public int getHitpoints() {
+		return hitpoints;
+	}
+
+	/**
+	 * Sets the npcs hitpoints
+	 * 
+	 * @param hitpoints
+	 *            The hitpoints of the npc
+	 */
+	public void setHitpoints(int hitpoints) {
+		this.hitpoints = hitpoints;
+	}
+
+	/**
+	 * Gets the npcs max hitpoints
+	 * 
+	 * @return The npcs max hitpoints
+	 */
+	public int getMaxHitpoints() {
+		return maxHitpoints;
+	}
 	
 	/**
 	 * The Index of our Target - the Player we're attacking. PLAYER ONLY. TODO make this Entity instead of Int
@@ -191,8 +225,7 @@ public class NPC extends Entity {
 				size = 1;
 			}
 			combatLevel = definition == null ? 1 : definition.getCombatLevel();
-			currentHealth = definition.getHitpoints();
-			maximumHealth = definition.getHitpoints();
+			hitpoints = maxHitpoints = definition.getHitpoints();
 			maxHit = definition.getMaxHit();
 			attack_bonus = definition.getAttackBonus();
 			magic_defence = definition.getMagicDefence();
@@ -244,14 +277,14 @@ public class NPC extends Entity {
 	@Override
 	public Hit decrementHP(Hit hit) {
 		int damage = hit.getDamage();
-		if (damage > this.currentHealth)
-			damage = this.currentHealth;
-		this.currentHealth -= damage;
+		if (damage > this.getHitpoints())
+			damage = this.getHitpoints();
+		this.setHitpoints(this.getHitpoints() - damage);
 
 		/*
 		 * Start our death task since we are now dead
 		 */
-		if (currentHealth <= 0 && !isDead) {
+		if (this.getHitpoints() <= 0 && !isDead) {
 			isDead = true;
 			Server.getTaskScheduler().schedule(new NPCDeathTask(this));
 		}
@@ -391,16 +424,7 @@ public class NPC extends Entity {
 
 	public void clearUpdateFlags() {
 		updateRequired = false;
-		hitUpdateRequired = false;
-		hitUpdateRequired2 = false;
 		this.reset();
-		this.faceUpdateRequired = false;
-		if (transformUpdateRequired) {
-			transformUpdateRequired = false;
-			this.npcId = this.transformId;
-			this.transformId = -1;
-	        this.maximumHealth = this.getDefinition() == null ? currentHealth : this.getDefinition().getHitpoints();
-		}
 		moveX = 0;
 		moveY = 0;
 		direction = -1;
@@ -462,7 +486,7 @@ public class NPC extends Entity {
 			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);//whats the pointsin this
 			// none yet again duplicate INTs by PI
 			
-			if ((currentHealth > 0 && !isDead) || isPet) {
+			if ((this.getHitpoints() > 0 && !isDead) || isPet) {
 				
 				super.frozen_process();
 
@@ -481,12 +505,12 @@ public class NPC extends Entity {
 				}
 				
 				if (npcId == 6611 || npcId == 6612) {
-					if (currentHealth < (maximumHealth / 2) && !spawnedVetionMinions) {
+					if (this.getHitpoints() < (this.getMaxHitpoints() / 2) && !spawnedVetionMinions) {
 						spawnVetDogs(spawnedByPlr);
 					}
 				}
 				else if (npcId == 6615) {
-					if (currentHealth <= 100 && !spawnedScorpiaMinions) {
+					if (this.getHitpoints() <= 100 && !spawnedScorpiaMinions) {
 						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Position(getX()- 1, absY, heightLevel), 1, true, false, true);
 						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Position(getX() + 1, absY, heightLevel), 1, true, false, true);
 						// attributes not used atm

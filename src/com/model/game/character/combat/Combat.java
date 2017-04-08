@@ -75,7 +75,7 @@ public class Combat {
             if (npc.getId() != 493 || npc.getId() != 496 || npc.getId() != 5534) {
                 Player attacker = World.getWorld().PLAYERS.get(npc.underAttackBy);
                 //System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
-                player.getActionSender().sendString(NPC.getName(npc.getId()).replaceAll("_", " ") + "-" + npc.maximumHealth + "-" + npc.currentHealth + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
+                player.getActionSender().sendString(NPC.getName(npc.getId()).replaceAll("_", " ") + "-" + npc.getMaxHitpoints() + "-" + npc.getHitpoints() + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
             }
         }
 
@@ -286,7 +286,7 @@ public class Combat {
             // Npc block anim
             if (target.isNPC()) {
                 NPC npc = (NPC) target;
-                if (npc.maximumHealth > 0 && npc.attackTimer > 3) {
+                if (npc.getMaxHitpoints() > 0 && npc.attackTimer > 3) {
                     if (npc.getId() != 2042 && npc.getId() != 2043 && npc.getId() != 2044 && npc.getId() != 3127 || npc.getId() != 1739 || npc.getId() != 1740 || npc.getId() != 1741 || npc.getId() != 1742) {
                         npc.playAnimation(Animation.create(npc.getDefendAnimation()));
                     }
@@ -535,8 +535,7 @@ public class Combat {
                 defender.playGraphics(Graphic.create(754, 0, 0));
                 int selfDamage = (int) (attacker.getSkills().getLevel(Skills.HITPOINTS) * 0.1);
                 if (selfDamage < attacker.getSkills().getLevel(Skills.HITPOINTS)) {
-                    int opHP = defender.isPlayer() ? ((Player) defender).getSkills().getLevel(Skills.HITPOINTS)
-                            : ((NPC) defender).currentHealth;
+                    int opHP = defender.isPlayer() ? ((Player) defender).getSkills().getLevel(Skills.HITPOINTS) : ((NPC) defender).getHitpoints();
                     dam1 += opHP * 0.2;
                     attacker.damage(new Hit(selfDamage));
                 }

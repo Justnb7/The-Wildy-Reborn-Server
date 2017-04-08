@@ -62,10 +62,7 @@ public abstract class Entity {
 	public boolean infected;
 	public Hit primary;
 	public Hit secondary;
-	public boolean hitUpdateRequired;
-	public boolean hitUpdateRequired2;
 	public boolean updateRequired = true;
-	public boolean faceUpdateRequired = false;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 	public Position lastTile;
@@ -218,8 +215,6 @@ public abstract class Entity {
 	public void clear() {
 		primary = null;
 		secondary = null;
-		hitUpdateRequired = false;
-		hitUpdateRequired2 = false;
 		updateRequired = false;
 	}
 
@@ -318,20 +313,20 @@ public abstract class Entity {
 	private void primaryDamage(Hit hit) {
 		primary = decrementHP(hit);
 		updateRequired = true;
-		hitUpdateRequired = true;
+		this.getUpdateFlags().flag(UpdateFlag.HIT);
 	}
 
 	private void secondaryDamage(Hit hit) {
 		secondary = decrementHP(hit);
 		updateRequired = true;
-		hitUpdateRequired2 = true;
+		this.getUpdateFlags().flag(UpdateFlag.HIT_2);
 	}
 
 	private void sendDamage(Hit hit) {
-		if (hitUpdateRequired) {
+		/*if (hitUpdateRequired) {
 			secondaryDamage(hit);
 			return;
-		}
+		}*/
 		primaryDamage(hit);
 	}
 
@@ -609,8 +604,8 @@ public abstract class Entity {
 		} else if (this.isNPC()) {
 			NPC victim_npc = (NPC) this;
 			// You can't hit over an Npcs current health. Recent update on 07 means you can in PVP though.
-			if (victim_npc.currentHealth - damage < 0) {
-				damage = victim_npc.currentHealth;
+			if (victim_npc.getHitpoints() - damage < 0) {
+				victim_npc.setHitpoints(victim_npc.getHitpoints() - damage);
 			}
 			
 			if (attacker.isPlayer())
@@ -778,7 +773,7 @@ public abstract class Entity {
 			faceTileX = position.getX();
 			faceTileY = position.getY();
 		}
-		faceUpdateRequired = true;
+		this.getUpdateFlags().flag(UpdateFlag.FACE_COORDINATE);
 		updateRequired = true;
 	}
 	
@@ -797,7 +792,7 @@ public abstract class Entity {
 		// If WE are an npc, faceIndex is 'raw' - not +32k. 
 		// If we're a player, facing players = 32k+pid.. facing npcs= raw index
 		entityFaceIndex = e.clientIndex();
-		faceUpdateRequired = true;
+		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		updateRequired = true;
 		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
 	}
@@ -809,7 +804,7 @@ public abstract class Entity {
 	 */
 	public void resetFace() {
 		this.entityFaceIndex = -1;
-		faceUpdateRequired = true;
+		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		updateRequired = true;
 		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
 	}
@@ -892,10 +887,6 @@ public abstract class Entity {
 	 *            The animation.
 	 */
 	public void playAnimation(Animation animation) {
-		// Purpose: anims are unique to npcs so this shops the npc deforming after transforming.
-		if (this.isNPC() && ((NPC)this).transformUpdateRequired) { 
-			return;
-		}
 		this.currentAnimation = animation;
 		if (animation != null) {
 			this.getUpdateFlags().flag(UpdateFlag.ANIMATION);

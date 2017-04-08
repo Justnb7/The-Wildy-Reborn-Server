@@ -338,7 +338,7 @@ public class SlayerTaskManagement {
 			//Decrease task
 			if (player.getSlayerTask() == npc.getId()) {
 				player.setSlayerTaskAmount(player.getSlayerTaskAmount() - 1);
-				player.getSkills().addExperience(Skills.SLAYER, npc.maximumHealth);
+				player.getSkills().addExperience(Skills.SLAYER, npc.getMaxHitpoints());
 				//player.getActionSender().sendMessage("Slayertask: "+Npc.getName(npc.npcId)+ " left: "+player.getSlayerTaskAmount()));
 				player.getActionSender().sendString("<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 29511);
 			}

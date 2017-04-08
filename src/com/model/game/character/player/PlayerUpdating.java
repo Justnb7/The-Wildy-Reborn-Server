@@ -285,24 +285,24 @@ public class PlayerUpdating {
 		if (flags.get(UpdateFlag.FORCED_CHAT)) {
 			updateMask |= 0x4;
 		}
-		if (player.isChatTextUpdateRequired() && !noChat) {
+		if (flags.get(UpdateFlag.CHAT) && !noChat) {
 			updateMask |= 0x80;
 		}
-		if (player.faceUpdateRequired) {
+		if(flags.get(UpdateFlag.FACE_ENTITY)) {
 			updateMask |= 0x1;
 		}
 		if (flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			updateMask |= 0x10;
 		}
-		if (player.faceTileX != -1) {
+		if (flags.get(UpdateFlag.FACE_COORDINATE)) {
 			updateMask |= 0x2;
 		}
 		
-		if (player.isHitUpdateRequired()) {
+		if (flags.get(UpdateFlag.HIT)) {
 			updateMask |= 0x20;
 		}
-
-		if (player.hitUpdateRequired2) {
+		
+		if (flags.get(UpdateFlag.HIT_2)) {
 			updateMask |= 0x200;
 		}
 
@@ -327,22 +327,22 @@ public class PlayerUpdating {
 		if (flags.get(UpdateFlag.FORCED_CHAT)) {
 			updateBlock.putRS2String(player.getUpdateFlags().getForcedMessage());
 		}
-		if (player.isChatTextUpdateRequired() && !noChat) {
+		if (flags.get(UpdateFlag.CHAT) && !noChat) {
 			appendPlayerChatText(player, updateBlock);
 		}
-		if (player.faceUpdateRequired) {
+		if(flags.get(UpdateFlag.FACE_ENTITY)) {
 			appendFaceUpdate(player, updateBlock);
 		}
 		if (flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			appendPlayerAppearanceUpdate(player, updateBlock);
 		}
-		if (player.faceTileX != -1) {
+		if (flags.get(UpdateFlag.FACE_COORDINATE)) {
 			appendSetFocusDestination(player, updateBlock);
 		}
-		if (player.isHitUpdateRequired()) {
+		if (flags.get(UpdateFlag.HIT)) {
 			appendHitUpdate(player, updateBlock);
 		}
-		if (player.hitUpdateRequired2) {
+		if (flags.get(UpdateFlag.HIT_2)) {
 			appendHitUpdate2(player, updateBlock);
 		}
 		if (!samePlayer && !forceAppearance && !noChat) {
@@ -487,7 +487,7 @@ public class PlayerUpdating {
 	 */
 	private static void updatePlayerMovement(Player player, GameBuffer str) {// valid
 		if (player.getMovementHandler().getWalkingDirection() == -1) {
-			if (player.updateRequired || player.isChatTextUpdateRequired()) {
+			if (player.updateRequired) {
 
 				str.writeBits(1, 1);
 				str.writeBits(2, 0);
@@ -498,13 +498,13 @@ public class PlayerUpdating {
 			str.writeBits(1, 1);
 			str.writeBits(2, 1);
 			str.writeBits(3, player.getMovementHandler().getWalkingDirection());
-			str.writeBits(1, (player.updateRequired || player.isChatTextUpdateRequired()) ? 1 : 0);
+			str.writeBits(1, player.updateRequired ? 1 : 0);
 		} else {
 			str.writeBits(1, 1);
 			str.writeBits(2, 2);
 			str.writeBits(3, player.getMovementHandler().getWalkingDirection());
 			str.writeBits(3, player.getMovementHandler().getRunningDirection());
-			str.writeBits(1, (player.updateRequired || player.isChatTextUpdateRequired()) ? 1 : 0);
+			str.writeBits(1, player.updateRequired ? 1 : 0);
 		}
 	}
 

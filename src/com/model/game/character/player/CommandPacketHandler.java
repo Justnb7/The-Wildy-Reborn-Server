@@ -846,7 +846,7 @@ public class CommandPacketHandler implements PacketType {
 					NPC npc = NPCHandler.spawnNpc(player, npcId, new Position(player.getX() + 1, player.getY(), player.getZ()), 0, false, false, false);
 					if (cmd.length > 2) {
 						int hp = Integer.parseInt(cmd[2]);
-						npc.currentHealth = hp;
+						npc.setHitpoints(hp);
 					}
 					player.getActionSender().sendMessage("You spawn a Npc.");
 				} else {

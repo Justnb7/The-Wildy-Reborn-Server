@@ -1,5 +1,6 @@
 package com.model.game.character.player.packets.in;
 
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 import com.model.utility.Utility;
@@ -38,7 +39,7 @@ public class ChatPacketHandler implements PacketType {
 		
 		PlayerLogging.write(LogType.PUBLIC_CHAT, player, "Spoke = "+term);
 
-		player.chatTextUpdateRequired = true;
+		player.getUpdateFlags().flag(UpdateFlag.CHAT);
 		player.updateRequired = true;
 
 	}

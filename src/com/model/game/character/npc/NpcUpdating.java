@@ -106,22 +106,27 @@ public class NpcUpdating {
 		if(flags.get(UpdateFlag.ANIMATION)) {
 			updateMask |= 0x10;
 		}
-		if (npc.hitUpdateRequired2)
+		if(flags.get(UpdateFlag.HIT)) {
 			updateMask |= 8;
+		}
 		if(flags.get(UpdateFlag.GRAPHICS)) {
 			updateMask |= 0x80;
 		}
-		if (npc.faceUpdateRequired)
+		if(flags.get(UpdateFlag.FACE_ENTITY)) {
 			updateMask |= 0x20;
+		}
 		if(flags.get(UpdateFlag.FORCED_CHAT)) {
 			updateMask |= 0x1;
 		}
-		if (npc.hitUpdateRequired)
+		if(flags.get(UpdateFlag.HIT_2)) {
 			updateMask |= 0x40;
-		if (npc.transformUpdateRequired)
+		}
+		if (flags.get(UpdateFlag.TRANSFORM)) {
 			updateMask |= 2;
-		if (npc.faceTileX != -1)
+		}
+		if (flags.get(UpdateFlag.FACE_COORDINATE)) {
 			updateMask |= 4;
+		}
 
 		buffer.writeByte(updateMask);
 
@@ -132,23 +137,31 @@ public class NpcUpdating {
 			}
 		}
 		
-		if (npc.hitUpdateRequired2)
-			appendHitUpdate2(npc, buffer);
+		if(flags.get(UpdateFlag.HIT)) {
+			appendHitUpdate1(npc, buffer);
+		}
 		if(flags.get(UpdateFlag.GRAPHICS)) {
 			buffer.writeShort(npc.getCurrentGraphic().getId());
 			buffer.putInt(npc.getCurrentGraphic().getDelay() + (65536 * npc.getCurrentGraphic().getHeight()));
 		}
-		if (npc.faceUpdateRequired)
+		if(flags.get(UpdateFlag.FACE_ENTITY)) {
 			appendFaceEntity(npc, buffer);
+		}
 		if(flags.get(UpdateFlag.FORCED_CHAT)) {
 			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());
 		}
-		if (npc.hitUpdateRequired)
-			appendHitUpdate(npc, buffer);
-		if (npc.transformUpdateRequired)
+		if(flags.get(UpdateFlag.HIT_2)) {
+			buffer.writeByteC(npc.getUpdateFlags().getDamage2());
+			buffer.writeByteS((byte) npc.getUpdateFlags().getHitType2());
+			buffer.writeByteS((byte) npc.getHitpoints());
+			buffer.writeByteC(npc.getMaxHitpoints());
+		}
+		if (flags.get(UpdateFlag.TRANSFORM)) {
 			appendTransformUpdate(npc, buffer);
-		if (npc.faceTileX != -1)
+		}
+		if (flags.get(UpdateFlag.FACE_COORDINATE)) {
 			appendSetFocusDestination(npc, buffer);
+		}
 
 	}
 
@@ -196,13 +209,6 @@ public class NpcUpdating {
 		buffer.writeBits(npc.updateRequired);
 	}
 
-	private static void appendHitUpdate(NPC npc, GameBuffer str) {
-		str.writeByteC(npc.primary.getDamage());
-		str.writeByteS(npc.primary.getType().getId());
-		str.writeByteS(Utility.getCurrentHP(npc.currentHealth, npc.maximumHealth, 100));
-		str.writeByteC(100);
-	}
-
 	private static void appendFaceEntity(NPC npc, GameBuffer str) {
 		str.writeShort(npc.entityFaceIndex);
 	}
@@ -211,12 +217,12 @@ public class NpcUpdating {
 		str.writeWordBigEndian(npc.faceTileX * 2 + 1);
 		str.writeWordBigEndian(npc.faceTileY * 2 + 1);
 	}
-
-	private static void appendHitUpdate2(NPC npc, GameBuffer str) {
-		str.putByteA(npc.secondary.getDamage());
-		str.writeByteC(npc.secondary.getType().getId());
-		str.putByteA(Utility.getCurrentHP(npc.currentHealth, npc.maximumHealth, 100));
-		str.writeByte(100);
+	
+	private static void appendHitUpdate1(NPC npc, GameBuffer str) {
+		str.putByteA(npc.getUpdateFlags().getDamage1());
+		str.writeByteC(npc.getUpdateFlags().getHitType1());
+		str.putByteA(npc.getHitpoints());
+		str.writeByte((byte) npc.getMaxHitpoints());
 	}
 
 	private static void appendTransformUpdate(NPC npc, GameBuffer str) {

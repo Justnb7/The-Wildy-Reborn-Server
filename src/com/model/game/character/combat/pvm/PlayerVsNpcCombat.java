@@ -37,8 +37,8 @@ public class PlayerVsNpcCombat {
 			npc.playAnimation(Animation.create(3860));
 			npc.requestTransform(5535);
 			npc.aggressive = true;
-			npc.currentHealth = 120;//reset hp when disturbed
-			npc.currentHealth -= damage;
+			npc.setHitpoints(120);//reset hp when disturbed
+			npc.setHitpoints(npc.getHitpoints() - damage);
 
 			Server.getTaskScheduler().schedule(new ScheduledTask(3) {
 				
@@ -54,8 +54,8 @@ public class PlayerVsNpcCombat {
 			npc.playAnimation(Animation.create(7135));
 			npc.requestTransform(494);
 			npc.aggressive = true;
-			npc.currentHealth = 255;//reset hp when disturbed
-			npc.currentHealth -= damage;
+			npc.setHitpoints(255);//reset hp when disturbed
+			npc.setHitpoints(npc.getHitpoints() - damage);
 
 			Server.getTaskScheduler().schedule(new ScheduledTask(3) {
 				
@@ -73,8 +73,8 @@ public class PlayerVsNpcCombat {
 			npc.playAnimation(Animation.create(7135));
 			npc.requestTransform(492);
 			
-			npc.currentHealth = 125;//reset hp when disturbed
-			npc.currentHealth -= damage;
+			npc.setHitpoints(125);//reset hp when disturbed
+			npc.setHitpoints(npc.getHitpoints() - damage);
 
 			Server.getTaskScheduler().schedule(new ScheduledTask(3) {
 				
@@ -126,7 +126,7 @@ public class PlayerVsNpcCombat {
 	}
 
 	public static boolean canAttackNpc(Player player, NPC npc) {
-		if (npc.isDead || npc.maximumHealth <= 0 || player.isDead()) {
+		if (npc.isDead || npc.getMaxHitpoints() <= 0 || player.isDead()) {
 			player.getCombat().reset();
 			player.debug("dead");
 			return false;

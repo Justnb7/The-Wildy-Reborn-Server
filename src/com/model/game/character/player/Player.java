@@ -1113,13 +1113,9 @@ public class Player extends Entity {
 		this.reset();
 		forceMovementUpdateRequired = false;
 		updateRequired = false;
-		chatTextUpdateRequired = false;
-		setHitUpdateRequired(false);
-		hitUpdateRequired2 = false;
 		setTeleporting(false);
 		faceTileX = -1;
 		faceTileY = -1;
-		this.faceUpdateRequired = false;
 		entityFaceIndex = 65535;
 		setUpdateBlock(null);
 		super.clear();
@@ -1146,26 +1142,6 @@ public class Player extends Entity {
 		return heightLevel;
 	}
 
-	public void setHitUpdateRequired(boolean hitUpdateRequired) {
-		this.hitUpdateRequired = hitUpdateRequired;
-	}
-
-	public void setHitUpdateRequired2(boolean hitUpdateRequired2) {
-		this.hitUpdateRequired2 = hitUpdateRequired2;
-	}
-
-	public boolean isHitUpdateRequired() {
-		return hitUpdateRequired;
-	}
-
-	public boolean getHitUpdateRequired() {
-		return hitUpdateRequired;
-	}
-
-	public boolean getHitUpdateRequired2() {
-		return hitUpdateRequired2;
-	}
-
 	public void setChatTextEffects(int chatTextEffects) {
 		this.chatTextEffects = chatTextEffects;
 	}
@@ -1180,10 +1156,6 @@ public class Player extends Entity {
 
 	public byte getChatTextSize() {
 		return chatTextSize;
-	}
-
-	public boolean isChatTextUpdateRequired() {
-		return chatTextUpdateRequired;
 	}
 
 	public void setChatText(byte chatText[]) {
@@ -2805,7 +2777,6 @@ public class Player extends Entity {
 	 */
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
-	public boolean chatTextUpdateRequired = false;
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean usingCross;
@@ -2839,7 +2810,6 @@ public class Player extends Entity {
 	private byte chatTextSize = 0;
 	public byte venomDamage;
 	public byte poisonDamage;
-	private List<Byte> poisonDamageHistory = new ArrayList<>(4);
 	
 	/**
 	 * Timers

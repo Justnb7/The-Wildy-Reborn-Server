@@ -1111,6 +1111,7 @@ public class Player extends Entity {
 	public void clearUpdateFlags() {
 		this.reset();
 		forceMovementUpdateRequired = false;
+		chatTextUpdateRequired = false;
 		setHitUpdateRequired(false);
 		hitUpdateRequired2 = false;
 		setTeleporting(false);
@@ -1177,6 +1178,10 @@ public class Player extends Entity {
 
 	public byte getChatTextSize() {
 		return chatTextSize;
+	}
+
+	public boolean isChatTextUpdateRequired() {
+		return chatTextUpdateRequired;
 	}
 
 	public void setChatText(byte chatText[]) {
@@ -2798,6 +2803,7 @@ public class Player extends Entity {
 	 */
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
+	public boolean chatTextUpdateRequired = false;
 	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean usingCross;

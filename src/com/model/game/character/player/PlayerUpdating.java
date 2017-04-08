@@ -285,7 +285,7 @@ public class PlayerUpdating {
 		if (flags.get(UpdateFlag.FORCED_CHAT)) {
 			updateMask |= 0x4;
 		}
-		if (flags.get(UpdateFlag.CHAT) && !noChat) {
+		if (player.isChatTextUpdateRequired() && !noChat) {
 			updateMask |= 0x80;
 		}
 		if (player.faceUpdateRequired) {
@@ -327,8 +327,8 @@ public class PlayerUpdating {
 		if (flags.get(UpdateFlag.FORCED_CHAT)) {
 			updateBlock.putRS2String(player.getUpdateFlags().getForcedMessage());
 		}
-		if (flags.get(UpdateFlag.CHAT) && !noChat) {
-			appendChatUpdate(player, updateBlock);
+		if (player.isChatTextUpdateRequired() && !noChat) {
+			appendPlayerChatText(player, updateBlock);
 		}
 		if (player.faceUpdateRequired) {
 			appendFaceUpdate(player, updateBlock);
@@ -485,68 +485,26 @@ public class PlayerUpdating {
 	 * @param str
 	 *            The {@link GameBuffer} To write data on
 	 */
-	private static void updatePlayerMovement(Player player, GameBuffer str) {
-		/*
-		 * Check which type of movement took place.
-		 */
+	private static void updatePlayerMovement(Player player, GameBuffer str) {// valid
 		if (player.getMovementHandler().getWalkingDirection() == -1) {
-			/*
-			 * If no movement did, check if an update is required.
-			 */
-			if (player.getUpdateFlags().isUpdateRequired()) {
-				/*
-				 * Signify that an update happened.
-				 */
+			if (player.getUpdateFlags().isUpdateRequired() || player.isChatTextUpdateRequired()) {
+
 				str.writeBits(1, 1);
-				/*
-				 * Signify that there was no movement.
-				 */
 				str.writeBits(2, 0);
 			} else {
-				/*
-				 * Signify that nothing changed.
-				 */
 				str.writeBits(1, 0);
 			}
 		} else if (player.getMovementHandler().getRunningDirection() == -1) {
-			/*
-			 * The player moved but didn't run. Signify that an update is
-			 * required.
-			 */
 			str.writeBits(1, 1);
-			/*
-			 * Signify we moved one tile.
-			 */
 			str.writeBits(2, 1);
-			/*
-			 * Write the primary sprite (i.e. walk direction).
-			 */
 			str.writeBits(3, player.getMovementHandler().getWalkingDirection());
-			/*
-			 * Write a flag indicating if a block update happened.
-			 */
-			str.writeBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
+			str.writeBits(1, (player.getUpdateFlags().isUpdateRequired() || player.isChatTextUpdateRequired()) ? 1 : 0);
 		} else {
-			/*
-			 * The player ran. Signify that an update happened.
-			 */
 			str.writeBits(1, 1);
-			/*
-			 * Signify that we moved two tiles.
-			 */
 			str.writeBits(2, 2);
-			/*
-			 * Write the primary sprite (i.e. walk direction).
-			 */
 			str.writeBits(3, player.getMovementHandler().getWalkingDirection());
-			/*
-			 * Write the secondary sprite (i.e. run direction).
-			 */
 			str.writeBits(3, player.getMovementHandler().getRunningDirection());
-			/*
-			 * Write a flag indicating if a block update happened.
-			 */
-			str.writeBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
+			str.writeBits(1, (player.getUpdateFlags().isUpdateRequired() || player.isChatTextUpdateRequired()) ? 1 : 0);
 		}
 	}
 
@@ -571,7 +529,7 @@ public class PlayerUpdating {
 	 * @param str
 	 *            The {@link GameBuffer} to write data on
 	 */
-	private static void appendChatUpdate(Player player, GameBuffer str) {
+	private static void appendPlayerChatText(Player player, GameBuffer str) {
 		str.writeWordBigEndian(((player.getChatTextColor() & 0xFF) << 8) + (player.getChatTextEffects() & 0xFF));
 		str.writeByte(player.getRights().getValue());
 		str.writeByteC(player.getChatTextSize());

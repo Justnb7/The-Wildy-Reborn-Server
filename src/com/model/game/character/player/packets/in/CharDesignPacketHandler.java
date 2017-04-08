@@ -1,5 +1,6 @@
 package com.model.game.character.player.packets.in;
 
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 
@@ -71,7 +72,7 @@ public class CharDesignPacketHandler implements PacketType {
 			player.playerAppearance[12] = colors[4]; // skin colour
 
 			player.getActionSender().sendRemoveInterfacePacket();
-			player.getPA().requestUpdates();
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			
 	}
 

@@ -193,7 +193,6 @@ public class PlayerDeath {
 		player.attackedPlayers.clear();
 		PlayerSerialization.saveGame(player);
 		Combat.resetCombat(player);
-		player.getPA().resetAnimation();
 		player.playAnimation(Animation.create(65535));
 		player.getPA().resetTb();
 		player.isSkulled = false;
@@ -202,7 +201,6 @@ public class PlayerDeath {
 		player.skullTimer = -1;
 		player.killerId = -1;
 		player.resetDamageReceived();
-		player.getPA().requestUpdates();
 		killedBy = null; // reset
 	}
 

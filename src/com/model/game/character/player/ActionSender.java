@@ -1,5 +1,6 @@
 package com.model.game.character.player;
 
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
@@ -290,7 +291,7 @@ public class ActionSender {
             player.outStream.writeFrame(61);
             player.outStream.writeByte(icon);
             player.updateRequired = true;
-            player.appearanceUpdateRequired = true;
+            player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
         }
 		return this;
 	}

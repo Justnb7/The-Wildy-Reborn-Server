@@ -1,6 +1,5 @@
 package com.model.game.character.player;
 
-import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
@@ -51,6 +50,7 @@ public class PlayerAssistant {
         player.teleportToY = target.getY();
         player.teleHeight = target.getZ();
         player.setTeleportTarget(target);
+        requestUpdates();
         player.getSkillCyclesTask().stop();
         System.out.println("to "+Arrays.toString(new int[] {target.getX(), target.getY(), target.getZ()}));
     }
@@ -264,6 +264,19 @@ public class PlayerAssistant {
         player.getMovementHandler().finish();
     }
 
+    /**
+     * reseting animation
+     */
+    public void resetAnimation() {
+    	player.playAnimation(Animation.create(-1));
+        requestUpdates();
+    }
+
+    public void requestUpdates() {
+        player.updateRequired = true;
+        player.appearanceUpdateRequired = true;
+    }
+
     public void useOperate(int itemId) {
     	
         switch (itemId) {
@@ -414,9 +427,11 @@ public class PlayerAssistant {
 		player.setUsingSpecial(false);
 		player.attackDelay = 10;
 		player.infection = 0;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.appearanceUpdateRequired = true;
 		player.skullIcon = -1;
-		player.playAnimation(Animation.create(65535));
+		requestUpdates();
+		requestUpdates();
+		resetAnimation();
 		resetTb();
         player.setFollowing(null);
 		player.getActionSender().sendRemoveInterfacePacket();

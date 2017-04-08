@@ -46,6 +46,7 @@ public class RottenPotato extends Dialogue {
 	    		player.combatLevel = player.getSkills().getCombatLevel();
 	    		player.totalLevel = player.getSkills().getTotalLevel();
 	    		player.updateRequired = true;
+	    		player.appearanceUpdateRequired = true;
 	    		stop();
 				break;
 			case 2:

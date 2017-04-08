@@ -1,7 +1,6 @@
 package com.model.game.character.combat;
 
 import com.model.Server;
-import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
@@ -227,7 +226,7 @@ public class Combat {
                     player.isSkulled = true;
                     player.skullTimer = 500;
                     player.skullIcon = 0;
-                    player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+                    player.getPA().requestUpdates();
                 }
             }
             if (ptarg.infection != 2 && player.getEquipment().canInfect(player)) {

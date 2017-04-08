@@ -1,7 +1,6 @@
 package com.model.game.item;
 
 import com.model.Server;
-import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Entity;
@@ -1026,7 +1025,7 @@ public class ItemAssistant {
 			player.autoCast = false;
 			writeBonus();
 			WeaponAnimation.execute(player, new Item(player.playerEquipment[player.getEquipment().getWeaponId()]));
-			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			player.getPA().requestUpdates();
 			player.getCombat().reset();
 			return true;
 		} else {
@@ -1057,7 +1056,7 @@ public class ItemAssistant {
 		player.getItems().writeBonus();
 		WeaponAnimation.execute(player, new Item(wearID));
 		player.updateRequired = true;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.appearanceUpdateRequired = true;
 	}
 
 	public void updateSlot(int slot) {
@@ -1096,7 +1095,7 @@ public class ItemAssistant {
 					player.getOutStream().writeByte(0);
 					player.flushOutStream();
 					player.updateRequired = true;
-					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+					player.appearanceUpdateRequired = true;
 				}
 			}
 		}
@@ -1472,7 +1471,7 @@ public class ItemAssistant {
 		player.playerEquipment[targetSlot] = wearID;
 		player.playerEquipmentN[targetSlot] = amount;
 		player.updateRequired = true;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.appearanceUpdateRequired = true;
 	}
 
 	/**
@@ -1613,7 +1612,7 @@ public class ItemAssistant {
 		getBonus();
 		writeBonus();
 		player.updateRequired = true;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.appearanceUpdateRequired = true;
 	}
 
 	public void deleteItem(final int id, int amount) {
@@ -1720,7 +1719,7 @@ public class ItemAssistant {
 			player.playerEquipmentN[player.getEquipment().getQuiverId()] -= 1;
 		}
 		player.updateRequired = true;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.appearanceUpdateRequired = true;
 	}
 
 	public void deleteAmmo() {
@@ -1757,7 +1756,7 @@ public class ItemAssistant {
 			player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
 		}
 		player.updateRequired = true;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.appearanceUpdateRequired = true;
 	}
 
 	public void removeEquipment() {
@@ -1786,7 +1785,7 @@ public class ItemAssistant {
 			player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
 		}
 		player.updateRequired = true;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.appearanceUpdateRequired = true;
 	}
 
 	/**
@@ -2186,7 +2185,7 @@ public class ItemAssistant {
 					player.getOutStream().writeByte(0);
 					player.flushOutStream();
 					player.updateRequired = true;
-					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+					player.appearanceUpdateRequired = true;
 				}
 			}
 		}

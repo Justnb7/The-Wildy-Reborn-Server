@@ -2,7 +2,6 @@ package com.model.game.character.player.content.multiplayer.duel;
 
 import com.model.Server;
 import com.model.game.Constants;
-import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.player.Boundary;
@@ -355,7 +354,7 @@ public class DuelSession extends MultiplayerSession {
 		player.getActionSender().sendRemoveInterfacePacket();
 		
 		//reset player variables
-		player.playAnimation(Animation.create(65535));
+		player.getPA().resetAnimation();
 		player.setFollowing(null);
 	}
 

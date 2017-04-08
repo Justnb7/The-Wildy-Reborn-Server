@@ -391,6 +391,7 @@ public class NPC extends Entity {
 
 	public void clearUpdateFlags() {
 		updateRequired = false;
+		forcedChatUpdateRequired = false;
 		hitUpdateRequired = false;
 		hitUpdateRequired2 = false;
 		this.reset();

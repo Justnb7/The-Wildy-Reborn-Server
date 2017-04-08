@@ -1,7 +1,6 @@
 package com.model.game.character.combat.effect.impl;
 
 import com.model.Server;
-import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
 import com.model.game.character.npc.NPC;
@@ -38,6 +37,7 @@ public class Venom {
 		player.infected = true;
 		if(player != null){
 			player.damage(new Hit(damage, HitType.VENOM));
+			player.appearanceUpdateRequired = true;
 			damage = (damage + 2 > 20 ? 20 : damage + 2);
 			Server.getTaskScheduler().schedule(new ScheduledTask(20) {
 				@Override
@@ -48,8 +48,8 @@ public class Venom {
 					}
 					player.damage(new Hit(damage, HitType.VENOM));
 					player.getActionSender().sendMessage("You have been hit by the venom infection.");
+					player.appearanceUpdateRequired = true;
 					damage = (damage + 2 > 20 ? 20 : damage + 2);
-					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
 			}.attach(player));
 		}

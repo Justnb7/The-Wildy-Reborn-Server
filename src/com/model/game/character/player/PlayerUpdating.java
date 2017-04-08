@@ -291,7 +291,7 @@ public class PlayerUpdating {
 		if (player.faceUpdateRequired) {
 			updateMask |= 0x1;
 		}
-		if (flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
+		if (player.isAppearanceUpdateRequired() || forceAppearance) {
 			updateMask |= 0x10;
 		}
 		if (player.faceTileX != -1) {
@@ -333,8 +333,8 @@ public class PlayerUpdating {
 		if (player.faceUpdateRequired) {
 			appendFaceUpdate(player, updateBlock);
 		}
-		if (flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
-			appendPlayerAppearanceUpdate(player, updateBlock);
+		if (player.isAppearanceUpdateRequired() || forceAppearance) {
+			appendPlayerAppearance(player, updateBlock);
 		}
 		if (player.faceTileX != -1) {
 			appendSetFocusDestination(player, updateBlock);
@@ -544,7 +544,7 @@ public class PlayerUpdating {
 	 * @param str
 	 *            The {@link GameBuffer} to write data on
 	 */
-	private static void appendPlayerAppearanceUpdate(Player player, GameBuffer str) {
+	private static void appendPlayerAppearance(Player player, GameBuffer str) {
 		player.getPlayerProps().offset = 0;
 		player.getPlayerProps().writeByte(player.playerAppearance[0]); // gender
 		player.getPlayerProps().writeByte(player.getPrayerIcon());

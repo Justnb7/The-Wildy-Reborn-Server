@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import com.model.Server;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.GameItem;
 
@@ -399,7 +400,8 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 					player.getActionSender().sendRemoveInterfacePacket();
 				}
 			}
-			PlayerSerialization.saveGame(player);
+			//PlayerSerialization.saveGame(player);
+			PlayerSave.save(player);
 		}
 		Server.getMultiplayerSessionListener().remove(this);
 	}

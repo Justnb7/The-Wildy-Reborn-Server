@@ -128,7 +128,7 @@ public class PlayerUpdating {
 		 * Updates this player.
 		 */
 		updateThisPlayerMovement(player, buffer);
-		appendPlayerUpdateBlock(player, updateBlock, false, player, true);
+		updatePlayer(player, updateBlock, false, player, true);
 
 		/*
 		 * Write the current size of the player list.
@@ -156,7 +156,7 @@ public class PlayerUpdating {
 				/*
 				 * Check if an update is required, and if so, send the update.
 				 */
-				appendPlayerUpdateBlock(otherPlayer, updateBlock, false, otherPlayer, player.getFAI().hasIgnored(otherPlayer.usernameHash));
+				updatePlayer(otherPlayer, updateBlock, false, otherPlayer, player.getFAI().hasIgnored(otherPlayer.usernameHash));
 			} else {
 				/*
 				 * Otherwise, remove the player from the list.
@@ -213,7 +213,7 @@ public class PlayerUpdating {
 				/*
 				 * Update the player, forcing the appearance flag.
 				 */
-				appendPlayerUpdateBlock(otherPlayer, updateBlock, true, otherPlayer, player.getFAI().hasIgnored(otherPlayer.usernameHash));
+				updatePlayer(otherPlayer, updateBlock, true, otherPlayer, player.getFAI().hasIgnored(otherPlayer.usernameHash));
 				amount++;
 			}
 		}
@@ -258,7 +258,12 @@ public class PlayerUpdating {
 	 * @param samePlayer
 	 *            Don't update if its the same player
 	 */
-	private static void appendPlayerUpdateBlock(Player player, GameBuffer buffer, boolean forceAppearance, Player target, boolean noChat) {
+	private static void updatePlayer(Player player, GameBuffer buffer, boolean forceAppearance, Player target, boolean noChat) {
+		
+		/*
+		 * If no update is required and we don't have to force an appearance
+		 * update, don't write anything.
+		 */
 		if (!player.getUpdateFlags().isUpdateRequired() && !forceAppearance) {
 			return;
 		}
@@ -269,6 +274,10 @@ public class PlayerUpdating {
 		int updateMask = 0;
 		final UpdateFlags flags = player.getUpdateFlags();
 		boolean samePlayer = player.usernameHash == target.usernameHash;
+		
+		/*
+		 * We can used the cached update block!
+		 */
 		if (player.getUpdateBlock() != null && !samePlayer && !forceAppearance && !noChat) {
 			buffer.writeBytes(player.getUpdateBlock().buffer, player.getUpdateBlock().offset);
 			return;

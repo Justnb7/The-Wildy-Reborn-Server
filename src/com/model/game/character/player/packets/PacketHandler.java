@@ -12,7 +12,7 @@ import com.model.game.character.player.packets.in.BankX1;
 import com.model.game.character.player.packets.in.ChallengePlayer;
 import com.model.game.character.player.packets.in.RegionChangePacketHandler;
 import com.model.game.character.player.packets.in.SecondGroundOption;
-import com.model.game.character.player.packets.in.CharDesignPacketHandler;
+import com.model.game.character.player.packets.in.SetAppearancePacketHandler;
 import com.model.game.character.player.packets.in.ChatPacketHandler;
 import com.model.game.character.player.packets.in.ClickOnGameScreen;
 import com.model.game.character.player.packets.in.ObjectOptionPacketHandler;
@@ -124,7 +124,7 @@ public class PacketHandler {
 		packetId[139] = new FollowPlayer();
 		packetId[140] = new WithdrawAllButOneAction();
 		packetId[141] = new BankModifiableX();
-		packetId[101] = new CharDesignPacketHandler();
+		packetId[101] = new SetAppearancePacketHandler();
 		final PrivateMessaging pm = new PrivateMessaging();
 		packetId[188] = pm;
 		packetId[126] = pm;

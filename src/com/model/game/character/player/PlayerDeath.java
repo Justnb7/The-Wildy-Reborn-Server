@@ -22,6 +22,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.minigames.pest_control.PestControl;
+import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
@@ -79,8 +80,10 @@ public class PlayerDeath {
 				if (player.getArea().inWild() || killer.getArea().inWild() && player.killerId != player.getIndex()) {
 					killedPlayer(player, killer);
 					BountyHunter.handleOnDeath(player, killer);
-					PlayerSerialization.saveGame(killer);
-					PlayerSerialization.saveGame(player);
+					//PlayerSerialization.saveGame(killer);
+					//PlayerSerialization.saveGame(player);
+					PlayerSave.save(killer);
+					PlayerSave.save(player);
 				}
 				
 				if (player.getAccount().getType().loseStatusOnDeath()) {
@@ -99,7 +102,8 @@ public class PlayerDeath {
 					if (!duelSession.getWinner().isPresent()) {
 						duelSession.setWinner(opponent);
 					}
-					PlayerSerialization.saveGame(opponent);
+					//PlayerSerialization.saveGame(opponent);
+					PlayerSave.save(opponent);
 				} else {
 					player.getActionSender().sendMessage("Congratulations, you have won the duel.");
 				}
@@ -171,7 +175,8 @@ public class PlayerDeath {
 				if (opponent != null) {
 					opponent.getActionSender().createPlayerHint(10, -1);
 					duelSession.finish(MultiplayerSessionFinalizeType.GIVE_ITEMS);
-					PlayerSerialization.saveGame(player);
+					//PlayerSerialization.saveGame(player);
+					PlayerSave.save(player);
 				}
 			}
 		} else {
@@ -191,7 +196,8 @@ public class PlayerDeath {
 		player.isSkulled = false;
 		player.skullTimer = 0;
 		player.attackedPlayers.clear();
-		PlayerSerialization.saveGame(player);
+		//PlayerSerialization.saveGame(player);
+		PlayerSave.save(player);
 		Combat.resetCombat(player);
 		player.playAnimation(Animation.create(65535));
 		player.getPA().resetTb();

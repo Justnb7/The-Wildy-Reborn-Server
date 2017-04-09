@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import com.model.Appearance;
 import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
@@ -63,6 +64,7 @@ import com.model.game.character.player.packets.PacketEncoder;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.skill.SkillCyclesTask;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
@@ -96,6 +98,20 @@ import com.model.utility.json.definitions.WeaponAnimation;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	/**
+	 * The player's appearance information.
+	 */
+	public Appearance appearance = new Appearance();
+	
+	/**
+	 * Gets the player's appearance.
+	 *
+	 * @return The player's appearance.
+	 */
+	public Appearance getAppearance() {
+		return appearance;
+	}
 	
 	private final MutableNumber poisonImmunity = new MutableNumber();
 	
@@ -1279,6 +1295,7 @@ public class Player extends Entity {
 	}
 	
 	public void initialize() {
+		
 		//set flags, 0 is flagged as bot i believe
 		outStream.writeFrame(249);
 		outStream.putByteA(0);

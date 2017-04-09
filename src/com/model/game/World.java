@@ -25,6 +25,7 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.packets.out.SendFriendPacket;
+import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.service.Service;
 import com.model.task.ScheduledTask;
@@ -195,6 +196,12 @@ public class World implements Service {
 				return false;
 			getPlayers().add(player);
 			player.initialize();
+			try {
+				PlayerSave.load(player);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return true;
 		} else if (entity.getEntityType() == EntityType.NPC) {
 			NPC npc = (NPC) entity;
@@ -319,7 +326,8 @@ public class World implements Service {
 		/*
 		 * Once we're done disconnecting our player, we'll go ahead and save him
 		 */
-		PlayerSerialization.saveGame(player);
+		//PlayerSerialization.saveGame(player);
+		PlayerSave.save(player);
 
 		/*
 		 * Remove from clan
@@ -367,7 +375,8 @@ public class World implements Service {
 						player.getOutStream().writeFrame(109);
 						player.flushOutStream();
 						unregister(player);
-						PlayerSerialization.saveGame(player);
+						//PlayerSerialization.saveGame(player);
+						PlayerSave.save(player);
 						System.exit(1);
 					}
 				}

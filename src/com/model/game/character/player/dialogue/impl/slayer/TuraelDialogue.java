@@ -4,6 +4,7 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
+import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerMasters;
@@ -104,7 +105,8 @@ public class TuraelDialogue extends Dialogue {
 														if (getPhase() == 14) {
 															send(Type.PLAYER, Expression.DEFAULT, "Okay, great!");
 															player.setFirstSlayerTask(true);
-															PlayerSerialization.saveGame(player);
+															//PlayerSerialization.saveGame(player);
+															PlayerSave.save(player);
 															setPhase(16);
 														} else {
 															if (getPhase() == 15) {

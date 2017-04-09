@@ -15,6 +15,7 @@ import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.*;
+import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
@@ -109,7 +110,8 @@ public class CommandPacketHandler implements PacketType {
     			}
     			player.setUsername(newName);
     			player.logout();
-    			PlayerSerialization.saveGame(player);
+    			//PlayerSerialization.saveGame(player);
+    			PlayerSave.save(player);
     			File old = new File("data/characters/"+oldname+".txt");
     			if (old.exists()) {
     				old.delete();
@@ -590,7 +592,8 @@ public class CommandPacketHandler implements PacketType {
          case "saveall":
 			for (Player players : World.getWorld().getPlayers()) {
 				if (players != null && players.isActive()) {
-					PlayerSerialization.saveGame(player);
+					//PlayerSerialization.saveGame(player);
+					PlayerSave.save(player);
 				}
 			}
              player.getActionSender().sendMessage(World.getWorld().getActivePlayers() + " players have been saved!");

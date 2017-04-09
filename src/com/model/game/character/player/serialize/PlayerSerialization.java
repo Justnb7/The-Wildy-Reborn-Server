@@ -209,7 +209,6 @@ public class PlayerSerialization {
 					// Look
 					case 4:
 						if (key.equals("character-look")) {
-							p.playerAppearance[Integer.parseInt(values[0])] = Integer.parseInt(values[1]);
 						}
 						break;
 

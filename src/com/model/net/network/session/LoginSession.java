@@ -1,12 +1,20 @@
 package com.model.net.network.session;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
+import com.model.game.character.player.serialize.PlayerSave;
+import com.model.game.character.player.serialize.PlayerSave.PlayerSaveDetail;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.sync.GameLogicService;
 import com.model.net.ConnectionHandler;
@@ -15,6 +23,7 @@ import com.model.net.network.codec.RS2Decoder;
 import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.login.LoginCredential;
 import com.model.net.network.login.LoginResponse;
+import com.model.utility.NameUtils;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -23,6 +32,8 @@ import io.netty.channel.ChannelHandlerContext;
 
 public class LoginSession extends Session {
 
+	private static final Logger logger = LoggerFactory.getLogger(LoginSession.class);
+	
 	private final ChannelHandlerContext ctx;
 
 	public LoginSession(Channel channel, ChannelHandlerContext ctx) {
@@ -120,13 +131,28 @@ public class LoginSession extends Session {
 		}
 		if (returnCode == 2) {
 			System.out.println("Enter logincode: "+returnCode);
-			int load = PlayerSerialization.loadGame(player, name, pass);
+			File file = new File("data/characters/details/" + NameUtils.formatNameForProtocol(credential.getName()) + ".json");
+			if (!file.exists()) {
+				System.out.println("File not here: data/characters/details/ " + NameUtils.formatNameForProtocol(credential.getName()) + ".json");
+			}
+			if (file.exists()) {
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(file));
+					final PlayerSaveDetail details = PlayerSave.GSON.fromJson(reader, PlayerSaveDetail.class);
+					name = details.user();
+					pass = details.password();
+					
+					System.out.printf("pass check '%s' vs '%s' %n", pass, credential.getPassword());
+					if (!name.equals(NameUtils.formatName(credential.getName())) || !pass.equals(credential.getPassword())) {
+						sendReturnCode(ctx.channel(), 3);
+					}
+				} catch(IOException ex) {
+					logger.error("Unexpected problem occurred.", ex);
+					sendReturnCode(ctx.channel(), 3);
+				}
+			}
 			if (credential.getRequestType().equals("register")) {
 				System.out.println("register");
-				/*if (DisplayName.displayExists(name)) {
-					sendReturnCode(ctx.channel(), 24);
-					return;
-				}*/
 				if (PlayerSerialization.playerExists(name)) {
 					System.out.println("player exists");
 					try {
@@ -150,11 +176,11 @@ public class LoginSession extends Session {
 					return;
 				}
 			}
-			if (load == 3) {
+			/*if (load == 3) {
 				player.saveFile = false;
 				sendReturnCode(ctx.channel(), 3);
 				return;
-			}
+			}*/
 		}
 		
 		for (String disabled : Constants.BAD_USERNAMES) {

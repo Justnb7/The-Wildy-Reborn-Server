@@ -5,7 +5,6 @@ import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
 import com.model.game.character.player.serialize.PlayerSave;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerMasters;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;

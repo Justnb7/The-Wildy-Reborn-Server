@@ -15,7 +15,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.serialize.PlayerSave;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.GameItem;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.ground.GroundItemHandler;

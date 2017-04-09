@@ -238,5 +238,10 @@ public class PlayerSave {
 			}
 		}
 	}
-
+	
+	public static boolean playerExists(String name) {
+        File file = null;
+        file = new File("./data/characters/" + name + ".txt");
+        return file != null && file.exists();
+    }
 }

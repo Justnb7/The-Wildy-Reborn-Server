@@ -41,7 +41,7 @@ public class PlayerSounds {
 		
 
 		if (hit) {
-			int id = player.playerAppearance[0] == 0 ? 816 : 818;
+			int id = player.getAppearance().getGender() == 0 ? 816 : 818;
 			player.sendGlobalSound(player, id, 0, 0);
 		} else {
 			player.sendGlobalSound(player, 75, 10, 0);

@@ -3,6 +3,7 @@ package com.model.game.character.player;
 import java.util.Iterator;
 import java.util.Optional;
 
+import com.model.Appearance;
 import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
@@ -554,7 +555,12 @@ public class PlayerUpdating {
 	 */
 	private static void appendPlayerAppearanceUpdate(Player player, GameBuffer str) {
 		player.getPlayerProps().offset = 0;
-		player.getPlayerProps().writeByte(player.playerAppearance[0]); // gender
+		
+		Appearance app = player.getAppearance();
+		
+		//Update the appearance gender, 0 = male, 1 = female
+		player.getPlayerProps().writeByte(app.getGender());
+		
 		player.getPlayerProps().writeByte(player.getPrayerIcon());
 		player.getPlayerProps().writeByte(player.infection);
 		player.getPlayerProps().writeByte(player.skullIcon);
@@ -598,7 +604,7 @@ public class PlayerUpdating {
 			if (player.playerEquipment[player.getEquipment().getChestId()] > 1) {
 				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getChestId()]);
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.playerAppearance[2]);
+				player.getPlayerProps().writeShort(0x100 + app.getChest());
 			}
 
 			if (player.playerEquipment[player.getEquipment().getShieldId()] > 1) {
@@ -608,7 +614,7 @@ public class PlayerUpdating {
 			}
 
 			if (!ItemDefinition.forId(player.playerEquipment[player.getEquipment().getChestId()]).isPlatebody()) {
-				player.getPlayerProps().writeShort(0x100 + player.playerAppearance[3]);
+				player.getPlayerProps().writeShort(0x100 + app.getArms());
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
@@ -616,12 +622,12 @@ public class PlayerUpdating {
 			if (player.playerEquipment[player.getEquipment().getLegsId()] > 1) {
 				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getLegsId()]);
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.playerAppearance[5]);
+				player.getPlayerProps().writeShort(0x100 + app.getLegs());
 			}
 
 			ItemDefinition def = ItemDefinition.forId(player.playerEquipment[player.getEquipment().getHelmetId()]);
 			if (!def.isFullMask() && !def.isFullHelm()) {
-				player.getPlayerProps().writeShort(0x100 + player.playerAppearance[1]);
+				player.getPlayerProps().writeShort(0x100 + app.getHead());
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
@@ -629,17 +635,17 @@ public class PlayerUpdating {
 			if (player.playerEquipment[player.getEquipment().getGlovesId()] > 1) {
 				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getGlovesId()]);
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.playerAppearance[4]);
+				player.getPlayerProps().writeShort(0x100 + app.getHands());
 			}
 
 			if (player.playerEquipment[player.getEquipment().getBootsId()] > 1) {
 				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getBootsId()]);
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.playerAppearance[6]);
+				player.getPlayerProps().writeShort(0x100 + app.getFeet());
 			}
 
-			if (!def.isFullMask() && player.playerAppearance[0] != 1) {
-				player.getPlayerProps().writeShort(0x100 + player.playerAppearance[7]);
+			if (!def.isFullMask() && app.getGender() != 1) {
+				player.getPlayerProps().writeShort(0x100 + app.getBeard());
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
@@ -649,11 +655,11 @@ public class PlayerUpdating {
 													// being a npc
 			player.getPlayerProps().writeShort(player.getPnpc());// send NpcID
 		}
-		player.getPlayerProps().writeByte(player.playerAppearance[8]);
-		player.getPlayerProps().writeByte(player.playerAppearance[9]);
-		player.getPlayerProps().writeByte(player.playerAppearance[10]);
-		player.getPlayerProps().writeByte(player.playerAppearance[11]);
-		player.getPlayerProps().writeByte(player.playerAppearance[12]);
+		player.getPlayerProps().writeByte(app.getHairColour());
+		player.getPlayerProps().writeByte(app.getTorsoColour());
+		player.getPlayerProps().writeByte(app.getLegColour());
+		player.getPlayerProps().writeByte(app.getFeetColour());
+		player.getPlayerProps().writeByte(app.getSkinColour());
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x328 : player.getWeaponAnimation().getStanding());
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x337 : player.getWeaponAnimation().getTurn());
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x333 : player.getWeaponAnimation().getWalking());

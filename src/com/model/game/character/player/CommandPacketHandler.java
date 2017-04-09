@@ -16,7 +16,6 @@ import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.player.serialize.PlayerSave;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.location.Position;
 import com.model.net.ConnectionHandler;
@@ -104,7 +103,7 @@ public class CommandPacketHandler implements PacketType {
     				player.getActionSender().sendMessage("You're name can only be 12 characters long.");
     				return false;
     			}
-    			if (PlayerSerialization.playerExists(newName)) {
+    			if (PlayerSave.playerExists(newName)) {
     				player.getActionSender().sendMessage("That username was already taken.");
     				return false;
     			}
@@ -532,22 +531,6 @@ public class CommandPacketHandler implements PacketType {
     		}
     		player.getActionSender().sendMessage("item id = " + item.getId() + ", item amount = " + item.getAmount());
     		return true;
-    	
-		case "changepassother":
-			String n = cmd[1];
-			String password = cmd[2];
-			Player t = World.getWorld().getPlayerByName(n);
-			if(t == null) {
-				player.getActionSender().sendMessage("Couldn't find player " + n + ".");
-				// player here is the person that will get feedback from this process as it executes
-				PlayerSerialization.change_offline_password(player, n, password);
-			} else {
-				// This is fine for a player thats already online
-				t.setPassword(""); // when savig, if pw is null/len=0 we save the passHash instead
-				t.passHash = Utility.md5Hash(password);
-				player.getActionSender().sendMessage("You changed their password!");
-			}
-			return true;
     	
     	case "song":
     		int song = Integer.parseInt(cmd[1]);

@@ -23,7 +23,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.serialize.PlayerSave;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
 

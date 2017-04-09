@@ -15,7 +15,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.serialize.PlayerSave.PlayerSaveDetail;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.sync.GameLogicService;
 import com.model.net.ConnectionHandler;
 import com.model.net.network.NetworkConstants;
@@ -153,21 +152,15 @@ public class LoginSession extends Session {
 			}
 			if (credential.getRequestType().equals("register")) {
 				System.out.println("register");
-				if (PlayerSerialization.playerExists(name)) {
+				if (PlayerSave.playerExists(name)) {
 					System.out.println("player exists");
-					try {
-						if (PlayerSerialization.passwordMatches(name, pass)) {
-							sendReturnCode(ctx.channel(), 22);
-							System.out.println("create profile for existing player");
-							return;
-						} else {
-							sendReturnCode(ctx.channel(), 23);
-							System.out.println("unable to register the profile");
-							return;
-						}
-					} catch (IOException e) {
+					if (name.equals(NameUtils.formatName(credential.getName())) || !pass.equals(credential.getPassword())) {
+						sendReturnCode(ctx.channel(), 22);
+						System.out.println("create profile for existing player");
+						return;
+					} else {
 						sendReturnCode(ctx.channel(), 23);
-						System.out.println("unable to register the profile, 2");
+						System.out.println("unable to register the profile");
 						return;
 					}
 				} else {

@@ -64,7 +64,6 @@ import com.model.game.character.player.packets.PacketEncoder;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.skill.SkillCyclesTask;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
@@ -2749,7 +2748,6 @@ public class Player extends Entity {
     /**
      * Integers
      */
-	public int playerAppearance[] = new int[13];
 	public int openInterface = -1;
 	public int countdown;
 	public int combatCountdown = 10;

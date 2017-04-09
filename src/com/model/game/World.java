@@ -26,7 +26,6 @@ import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.packets.out.SendFriendPacket;
 import com.model.game.character.player.serialize.PlayerSave;
-import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.service.Service;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.InstanceFloorReset;

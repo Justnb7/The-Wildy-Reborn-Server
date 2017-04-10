@@ -17,6 +17,8 @@ import com.model.game.character.player.account.Account;
 import com.model.game.character.player.account.AccountType;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.item.Item;
+import com.model.game.item.bank.BankItem;
+import com.model.game.item.bank.BankTab;
 import com.model.game.item.container.impl.RunePouchContainer;
 
 /**
@@ -388,6 +390,16 @@ public class PlayerSave {
 						player.runePouchContainer.set(i, details.runePouch[i]);
 					}
 				}
+				for (int tab = 0; tab < details.tabs.length; tab++) {
+					player.getBank().setBankTab(tab, details.tabs[tab]);
+					for (int tabItem = 0; tabItem < details.tabs[tab].getItems().size(); tabItem++) {
+						BankItem bankItem = details.tabs[tab].getItems().get(tabItem);
+						if (bankItem == null || bankItem.getId() == -1)
+							continue;
+						player.bankItems[tabItem] = bankItem.getId();
+						player.bankItemsN[tabItem] = bankItem.getAmount();
+					}
+				}
 				
 			} finally {
 				if (reader != null) {
@@ -399,9 +411,11 @@ public class PlayerSave {
 		}
 
 		private final Item[] runePouch;
+		private final BankTab[] tabs;
 
 		public PlayerContainer(Player player) {
 			runePouch = player.runePouchContainer.toArray();
+			tabs = player.getBank().getBankTab();
 		}
 
 		public void parseDetails(Player player) throws IOException {

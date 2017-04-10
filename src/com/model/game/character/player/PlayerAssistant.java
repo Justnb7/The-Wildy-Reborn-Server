@@ -10,6 +10,7 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.item.Item;
+import com.model.game.item.bank.BankTab;
 import com.model.game.location.Position;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
@@ -276,25 +277,35 @@ public class PlayerAssistant {
     }
 
     public void openBank() {
-    	if (!player.getAccount().getType().canBank()) {
+        player.stopSkillTask();
+    	
+		if (!player.getAccount().getType().canBank()) {
 			player.getActionSender().sendMessage("You're restricted to bank because of your account type.");
 			return;
 		}
-        if (player.takeAsNote)
-        	player.getActionSender().sendConfig(115, 1);
-        else
-        	player.getActionSender().sendConfig(115, 0);
-        
-        if (Trading.isTrading(player)) {
-            Trading.decline(player);
-        }
-        
+		
         if (player.getArea().inWild() && !(player.getRights().isBetween(2, 3))) {
 			player.getActionSender().sendMessage("You can't bank in the wilderness!");
 			return;
 		}
+        
+        if (Trading.isTrading(player)) {
+            Trading.decline(player);
+        }
 		
-        player.stopSkillTask();
+        if (player.takeAsNote)
+        	player.getActionSender().sendConfig(115, 1);
+        else
+        	player.getActionSender().sendConfig(115, 0);
+    	
+    	boolean openFirstTab = !player.isBanking();
+    	
+    	if(openFirstTab) {
+    		//cheap hax for sending the main tab
+        	BankTab tab = player.getBank().getBankTab(0);
+    		player.getBank().setCurrentBankTab(tab);
+    	}
+		
         if (player.getBank().getBankSearch().isSearching()) {
             player.getBank().getBankSearch().reset();
         }

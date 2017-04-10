@@ -192,4 +192,14 @@ public class Item {
 		return def == null ? "Unarmed" : def.getName();
 	}
 
+	/**
+	 * Determines if the item is stackable.
+	 * 
+	 * @return The items stackability.
+	 */
+	public boolean isStackable() {
+		final ItemDefinition def = ItemDefinition.forId(getId());
+		return def != null && (def.isStackable() || def.isNoted());
+	}
+
 }

@@ -561,21 +561,16 @@ public class PlayerUpdating {
 		//Update the appearance gender, 0 = male, 1 = female
 		player.getPlayerProps().writeByte(app.getGender());
 		
+		//Update the head icon
 		player.getPlayerProps().writeByte(player.getPrayerIcon());
-		player.getPlayerProps().writeByte(player.infection);
+		
+		//Update the PK skull
 		player.getPlayerProps().writeByte(player.skullIcon);
-		player.getPlayerProps().writeByte(player.getRights().getValue());
-		StringBuilder sb = new StringBuilder(player.getCurrentTitle());
-		if (player.getCurrentTitle().equalsIgnoreCase("None")) {
-			sb.delete(0, sb.length());
-		}
-		player.getPlayerProps().putRS2String(sb.toString());
-		sb = new StringBuilder(player.getCurrentTitleColor());
-		if (player.getCurrentTitle().equalsIgnoreCase("None")) {
-			sb.delete(0, sb.length());
-		}
-		player.getPlayerProps().putRS2String(sb.toString());
-		//get ur client up
+		
+		//Update the player infection 0 = healthy, 1 poison and 2 is venomed
+		player.getPlayerProps().writeByte(player.infection);
+		
+		//Update Equipment
 		if (!player.isPlayerTransformed()) {
 			if (player.playerEquipment[player.getEquipment().getHelmetId()] > 1) {
 				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getHelmetId()]);
@@ -651,15 +646,18 @@ public class PlayerUpdating {
 			}
 
 		} else {
-			player.getPlayerProps().writeShort(-1);// Tells client that were
-													// being a npc
+			player.getPlayerProps().writeShort(-1);// Tells client that were being a npc
 			player.getPlayerProps().writeShort(player.getPnpc());// send NpcID
 		}
+		
+		//Update appearance
 		player.getPlayerProps().writeByte(app.getHairColour());
 		player.getPlayerProps().writeByte(app.getTorsoColour());
 		player.getPlayerProps().writeByte(app.getLegColour());
 		player.getPlayerProps().writeByte(app.getFeetColour());
 		player.getPlayerProps().writeByte(app.getSkinColour());
+		
+		//Update character animations
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x328 : player.getWeaponAnimation().getStanding());
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x337 : player.getWeaponAnimation().getTurn());
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x333 : player.getWeaponAnimation().getWalking());
@@ -668,12 +666,30 @@ public class PlayerUpdating {
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x336 : player.getWeaponAnimation().turn90CCW());
 		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getRunning() == -1 ? 0x338 : player.getWeaponAnimation().getRunning());
 		
-		player.getPlayerProps().putRS2String(player.loyaltyTitle); // loyaltytitle
-		
+		//Sent the username to the client
 		player.getPlayerProps().putLong(Utility.playerNameToInt64(player.getName()));
-		player.getPlayerProps().writeByte((byte) player.getSkills().getCombatLevel()); // combat level
+		
+		//Custom title
+		StringBuilder sb = new StringBuilder(player.getCurrentTitle());
+		if (player.getCurrentTitle().equalsIgnoreCase("None")) {
+			sb.delete(0, sb.length());
+		}
+		player.getPlayerProps().putRS2String(sb.toString());
+		
+		//Custom title color
+		sb = new StringBuilder(player.getCurrentTitleColor());
+		if (player.getCurrentTitle().equalsIgnoreCase("None")) {
+			sb.delete(0, sb.length());
+		}
+		player.getPlayerProps().putRS2String(sb.toString());
+		
+		//Sent the combat level to the client
+		player.getPlayerProps().writeByte((byte) player.getSkills().getCombatLevel());
+		
+		//Update the player rights
 		player.getPlayerProps().writeByte(player.rights.getValue());
-		player.getPlayerProps().writeShort(0);
+		
+		//And lastly update the appearanceHash
 		str.writeByteC(player.getPlayerProps().offset);
 		str.writeBytes(player.getPlayerProps().buffer, player.getPlayerProps().offset, 0);
 	}

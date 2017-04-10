@@ -172,7 +172,7 @@ public class NpcDropSystem {
 						
 						for(GameItem item : items)
 						{
-							player.getItems().sendItemToAnyTab(item.getId(), item.getAmount());
+							player.getBank().addToBank(item.getId(), item.getAmount(), false);
 						}
 					}
 					

@@ -195,12 +195,6 @@ public class World implements Service {
 				return false;
 			getPlayers().add(player);
 			player.initialize();
-			try {
-				PlayerSave.load(player);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return true;
 		} else if (entity.getEntityType() == EntityType.NPC) {
 			NPC npc = (NPC) entity;

@@ -305,8 +305,8 @@ public class PlayerAssistant {
         if (player.getOutStream() != null && player != null) {
         	player.setBanking(true);
             player.getItems().resetItems(5064);
-            player.getItems().resetBank();
-            player.getItems().resetTempItems();
+            player.getBank().resetBank();
+            player.getBank().resetTempItems();
             player.getOutStream().writeFrame(248);
             player.getOutStream().writeWordA(5292);
             player.getOutStream().writeShort(5063);

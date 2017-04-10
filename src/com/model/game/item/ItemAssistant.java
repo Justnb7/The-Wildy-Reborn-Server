@@ -16,7 +16,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.item.bank.BankItem;
-import com.model.game.item.bank.BankTab;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.shop.Currency;
@@ -39,216 +38,6 @@ public class ItemAssistant {
 
 	public void updateInventory() {
 		this.resetItems(3214);
-	}
-
-	/**
-	 * Adds an item to the bank without checking if the player has it in there
-	 * inventory
-	 *
-	 * @param itemId
-	 *            the id of the item were banking
-	 * @param amount
-	 *            amount of items to bank
-	 */
-	public void addItemToBank(int itemId, int amount, boolean refresh) {
-		if (player.getArea().inWild()) {
-			player.getActionSender().sendMessage(
-					"You can't do that in the wilderness.");
-			return;
-		}
-		BankTab tab = player.getBank().getCurrentBankTab();
-		BankItem item = new BankItem(itemId + 1, amount);
-		Iterator<BankTab> iterator = Arrays.asList(
-				player.getBank().getBankTab()).iterator();
-		while (iterator.hasNext()) {
-			BankTab t = iterator.next();
-			if (t != null && t.size() > 0) {
-				Iterator<BankItem> iterator2 = t.getItems().iterator();
-				while (iterator2.hasNext()) {
-					BankItem i = iterator2.next();
-					if (i.getId() == item.getId() && !isNotable(itemId)) {
-						if (t.getTabId() != tab.getTabId()) {
-							tab = t;
-							player.getBank().setCurrentBankTab(tab);
-							resetBank();
-						}
-					} else {
-						if (isNotable(itemId) && i.getId() == item.getId() - 1) {
-							item = new BankItem(itemId, amount);
-							if (t.getTabId() != tab.getTabId()) {
-								tab = t;
-								player.getBank().setCurrentBankTab(tab);
-								resetBank();
-							}
-						}
-					}
-				}
-			}
-		}
-		if (isNotable(itemId))
-			item = new BankItem(itemId, amount);
-		if (tab.freeSlots(player) == 0) {
-			player.getActionSender().sendMessage(
-					"The item has been dropped on the floor.");
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
-					amount), player.getX(), player.getY(), player.getZ(),
-					player));
-			return;
-		}
-		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
-				.getAmount());
-		if (totalAmount >= Integer.MAX_VALUE) {
-			player.getActionSender().sendMessage(
-					"The item has been dropped on the floor.");
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
-					amount), player.getX(), player.getY(), player.getZ(),
-					player));
-			// ItemHandler.createGroundItem(c, itemId, c.absX, c.absY,
-			// c.heightLevel, amount);
-			return;
-		}
-		tab.add(item);
-		if (refresh) {
-			resetTempItems();
-		}
-		if (player.isBanking())
-			resetBank();
-		if (refresh) {
-			// c.sendMessage(getItemName(itemId) + " x" + item.getAmount() +
-			// " has been added to your bank.");
-		}
-	}
-
-	public void addItemToBank(int itemId, int amount) {
-		if (player.getArea().inWild()) {
-			player.getActionSender().sendMessage(
-					"You can't do that in the wilderness.");
-			return;
-		}
-		BankTab tab = player.getBank().getCurrentBankTab();
-		BankItem item = new BankItem(itemId + 1, amount);
-		Iterator<BankTab> iterator = Arrays.asList(
-				player.getBank().getBankTab()).iterator();
-		while (iterator.hasNext()) {
-			BankTab t = iterator.next();
-			if (t != null && t.size() > 0) {
-				Iterator<BankItem> iterator2 = t.getItems().iterator();
-				while (iterator2.hasNext()) {
-					BankItem i = iterator2.next();
-					if (i.getId() == item.getId() && !isNotable(itemId)) {
-						if (t.getTabId() != tab.getTabId()) {
-							tab = t;
-							player.getBank().setCurrentBankTab(tab);
-							resetBank();
-						}
-					} else {
-						if (isNotable(itemId) && i.getId() == item.getId() - 1) {
-							item = new BankItem(itemId, amount);
-							if (t.getTabId() != tab.getTabId()) {
-								tab = t;
-								player.getBank().setCurrentBankTab(tab);
-								resetBank();
-							}
-						}
-					}
-				}
-			}
-		}
-		if (isNotable(itemId))
-			item = new BankItem(itemId, amount);
-		if (tab.freeSlots(player) == 0) {
-			player.getActionSender().sendMessage(
-					"The item has been dropped on the floor.");
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
-					amount), player.getX(), player.getY(), player.getZ(),
-					player));
-			return;
-		}
-		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
-				.getAmount());
-		if (totalAmount >= Integer.MAX_VALUE) {
-			player.getActionSender().sendMessage(
-					"The item has been dropped on the floor.");
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
-					amount), player.getX(), player.getY(), player.getZ(),
-					player));
-			// ItemHandler.createGroundItem(c, itemId, c.absX, c.absY,
-			// c.heightLevel, amount);
-			return;
-		}
-		tab.add(item);
-		resetTempItems();
-		if (player.isBanking())
-			resetBank();
-		// c.sendMessage(getItemName(itemId) + " x" + item.getAmount() +
-		// " has been added to your bank.");
-	}
-
-	public void addItemToBank(String playerName, int itemId, int amount) {
-		if (player.getArea().inWild()) {
-			player.getActionSender().sendMessage(
-					"You can't do that in the wilderness.");
-			return;
-		}
-		BankTab tab = player.getBank().getCurrentBankTab();
-		BankItem item = new BankItem(itemId + 1, amount);
-		Iterator<BankTab> iterator = Arrays.asList(
-				player.getBank().getBankTab()).iterator();
-		while (iterator.hasNext()) {
-			BankTab t = iterator.next();
-			if (t != null && t.size() > 0) {
-				Iterator<BankItem> iterator2 = t.getItems().iterator();
-				while (iterator2.hasNext()) {
-					BankItem i = iterator2.next();
-					if (i.getId() == item.getId() && !isNotable(itemId)) {
-						if (t.getTabId() != tab.getTabId()) {
-							tab = t;
-							player.getBank().setCurrentBankTab(tab);
-							resetBank();
-						}
-					} else {
-						if (isNotable(itemId) && i.getId() == item.getId() - 1) {
-							item = new BankItem(itemId, amount);
-							if (t.getTabId() != tab.getTabId()) {
-								tab = t;
-								player.getBank().setCurrentBankTab(tab);
-								resetBank();
-							}
-						}
-					}
-				}
-			}
-		}
-		if (isNotable(itemId))
-			item = new BankItem(itemId, amount);
-		if (tab.freeSlots(player) == 0) {
-			player.getActionSender().sendMessage(
-					"The item has been dropped on the floor.");
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
-					amount), player.getX(), player.getY(), player.getZ(),
-					player));
-			// temHandler.createGroundItem(c, itemId, c.absX, c.absY,
-			// c.heightLevel, amount);
-			return;
-		}
-		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
-				.getAmount());
-		if (totalAmount >= Integer.MAX_VALUE) {
-			player.getActionSender().sendMessage(
-					"The item has been dropped on the floor.");
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId,
-					amount), player.getX(), player.getY(), player.getZ(),
-					player));
-			// ItemHandler.createGroundItem(c, itemId, c.absX, c.absY,
-			// c.heightLevel, amount);
-			return;
-		}
-		tab.add(item);
-		resetTempItems();
-		if (player.isBanking())
-			resetBank();
-		// c.sendMessage(getItemName(itemId) + " x" + item.getAmount() +
-		// " has been added to your bank.");
 	}
 
 	/**
@@ -295,20 +84,6 @@ public class ItemAssistant {
 			player.flushOutStream();
 		}
 		// }
-	}
-
-	public boolean isNotable(int itemId) {
-		boolean withdrawAsNote = ItemDefinition.forId(itemId).isNoted();
-
-		if (withdrawAsNote)
-			return true;
-		/*
-		 * for (ItemList list : Server.itemHandler.ItemList) if (list != null)
-		 * if (list.itemId == itemId) if
-		 * (list.itemDescription.startsWith("Swap this note at any bank"))
-		 * return true;
-		 */
-		return false;
 	}
 
 	/**
@@ -717,15 +492,6 @@ public class ItemAssistant {
 		addItem(item.getId(), item.getAmount());
 	}
 
-	public void addItemToBank(Item item) {
-		if (player.getArea().inWild()) {
-			player.getActionSender().sendMessage(
-					"You can't do that in the wilderness.");
-			return;
-		}
-		addItemToBank(item.getId(), item.getAmount());
-	}
-
 	public void resetBonus() {
 		Arrays.fill(player.getBonuses(), 0);
 	}
@@ -1101,325 +867,6 @@ public class ItemAssistant {
 		}
 	}
 
-	public void resetBank() {
-		int tabId = player.getBank().getCurrentBankTab().getTabId();
-		for (int i = 0; i < player.getBank().getBankTab().length; i++) {
-			if (i == 0)
-				continue;
-			if (i != player.getBank().getBankTab().length - 1
-					&& player.getBank().getBankTab()[i].size() == 0
-					&& player.getBank().getBankTab()[i + 1].size() > 0) {
-				for (BankItem item : player.getBank().getBankTab()[i + 1]
-						.getItems()) {
-					player.getBank().getBankTab()[i].add(item);
-				}
-				player.getBank().getBankTab()[i + 1].getItems().clear();
-			}
-		}
-		player.getActionSender().sendConfig(600, 0);
-		player.getActionSender().sendUpdateItem(58040, -1, 0, 0);
-		int newSlot = -1;
-		for (int i = 0; i < player.getBank().getBankTab().length; i++) {
-			BankTab tab = player.getBank().getBankTab()[i];
-			if (i == tabId) {
-				player.getActionSender().sendConfig(600 + i, 1);
-			} else {
-				player.getActionSender().sendConfig(600 + i, 0);
-			}
-			if (tab.getTabId() != 0 && tab.size() > 0 && tab.getItem(0) != null) {
-				player.getActionSender().sendInterfaceConfig(0, 58050 + i);
-				player.getActionSender()
-						.sendUpdateItem(
-								58040 + i,
-								player.getBank().getBankTab()[i].getItem(0)
-										.getId() - 1,
-								0,
-								player.getBank().getBankTab()[i].getItem(0)
-										.getAmount());
-			} else if (i != 0) {
-				if (newSlot == -1) {
-					newSlot = i;
-					player.getActionSender()
-							.sendUpdateItem(58040 + i, -1, 0, 0);
-					player.getActionSender().sendInterfaceConfig(0, 58050 + i);
-					continue;
-				}
-				player.getActionSender().sendUpdateItem(58040 + i, -1, 0, 0);
-				player.getActionSender().sendInterfaceConfig(1, 58050 + i);
-			}
-		}
-		player.getOutStream().putFrameVarShort(53);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().writeShort(5382); // bank
-		player.getOutStream().writeShort(player.BANK_SIZE);
-		BankTab tab = player.getBank().getCurrentBankTab();
-		for (int i = 0; i < player.BANK_SIZE; i++) {
-			if (i > tab.size() - 1) {
-				player.getOutStream().writeByte(0);
-				player.getOutStream().writeWordBigEndianA(0);
-				continue;
-			} else {
-				BankItem item = tab.getItem(i);
-				if (item == null)
-					item = new BankItem(-1, 0);
-				if (item.getAmount() > 254) {
-					player.getOutStream().writeByte(255);
-					player.getOutStream().writeDWord_v2(item.getAmount());
-				} else {
-					player.getOutStream().writeByte(item.getAmount());
-				}
-				if (item.getAmount() < 1)
-					item.setAmount(0);
-				if (item.getId() > 25000 || item.getId() < 0)
-					item.setId(-1);
-				player.getOutStream().writeWordBigEndianA(item.getId());
-			}
-		}
-		player.getOutStream().putFrameSizeShort(offset);
-		player.flushOutStream();
-		player.getActionSender().sendString(
-				"" + player.getBank().getCurrentBankTab().size(), 58061);
-		player.getActionSender().sendString(Integer.toString(tabId), 5292);
-	}
-
-	public void resetTempItems() {
-		int itemCount = 0;
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			if (player.playerInventory[i] > -1) {
-				itemCount = i;
-			}
-		}
-		player.getOutStream().putFrameVarShort(53);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().writeShort(5064);
-		player.getOutStream().writeShort(itemCount + 1);
-		for (int i = 0; i < itemCount + 1; i++) {
-			if (player.itemAmount[i] > 254) {
-				player.getOutStream().writeByte(255);
-				player.getOutStream().writeDWord_v2(player.itemAmount[i]);
-			} else {
-				player.getOutStream().writeByte(player.itemAmount[i]);
-			}
-			if (player.playerInventory[i] > 25000 || player.playerInventory[i] < 0) {
-				player.playerInventory[i] = 25000;
-			}
-			player.getOutStream().writeWordBigEndianA(player.playerInventory[i]);
-		}
-		player.getOutStream().putFrameSizeShort(offset);
-		player.flushOutStream();
-	}
-
-	public boolean addToBank(int itemID, int amount, boolean updateView) {
-		if (!player.isBanking())
-			return false;
-		if (!player.getItems().playerHasItem(itemID))
-			return false;
-		if (player.getBank().getBankSearch().isSearching()) {
-			player.getBank().getBankSearch().reset();
-			return false;
-		}
-
-		BankTab tab = player.getBank().getCurrentBankTab();
-		BankItem item = new BankItem(itemID + 1, amount);
-		for (BankTab t : player.getBank().getBankTab()) {
-			if (t == null || t.size() == 0)
-				continue;
-			for (BankItem i : t.getItems()) {
-				if (i.getId() == item.getId() && !isNotable(itemID)) {
-					if (t.getTabId() != tab.getTabId()) {
-						tab = t;
-						break;
-					}
-				} else {
-					if (isNotable(itemID) && i.getId() == item.getId() - 1) {
-						item = new BankItem(itemID, amount);
-						if (t.getTabId() != tab.getTabId()) {
-							tab = t;
-							break;
-						}
-					}
-				}
-			}
-		}
-		if (isNotable(itemID)) {
-			item = new BankItem(itemID, amount);
-		}
-		if (item.getAmount() > getItemAmount(itemID))
-			item.setAmount(getItemAmount(itemID));
-		if (tab.getItemAmount(item) == Integer.MAX_VALUE) {
-			player.getActionSender().sendMessage(
-					"Your bank is already holding the maximum amount of "
-							+ getItemName(itemID).toLowerCase() + " possible.");
-			return false;
-		}
-		if (tab.freeSlots(player) == 0 && !tab.contains(item)) {
-			player.getActionSender().sendMessage("Your current bank tab is full.");
-			return false;
-		} else {
-			long totalAmount = ((long) tab.getItemAmount(item) + (long) item
-					.getAmount());
-			if (totalAmount >= Integer.MAX_VALUE) {
-				int difference = Integer.MAX_VALUE - tab.getItemAmount(item);
-				item.setAmount(difference);
-				deleteItem(itemID, difference);
-			} else {
-				deleteItem(itemID, item.getAmount());
-			}
-			tab.add(item);
-			if (updateView) {
-				resetTempItems();
-				resetBank();
-			}
-			return true;
-		}
-	}
-
-	public boolean bankContains(int itemId) {
-
-		for (BankTab tab : player.getBank().getBankTab())
-			if (tab.contains(new BankItem(itemId + 1)))
-				return true;
-		return false;
-	}
-
-	public void removeFromBank(int itemId, int itemAmount, boolean updateView) {
-		System.out.println("enter");
-		BankTab tab = player.getBank().getCurrentBankTab();
-		BankItem item = new BankItem(itemId + 1, itemAmount);
-		boolean noted = false;
-		if (!player.isBanking()) {
-			return;
-		}
-		if (itemAmount <= 0)
-			return;
-
-		if (System.currentTimeMillis() - player.lastBankDeposit < 250)
-			return;
-		if (!player.isBusy()) {
-			System.out.println("block: " + player.isBanking());
-			player.getActionSender().sendRemoveInterfacePacket();
-			return;
-		}
-		if (!tab.contains(item))
-			return;
-		if (player.takeAsNote) {
-			if (getItemName(itemId).trim().equalsIgnoreCase(
-					getItemName(itemId + 1).trim())
-					&& isNotable(itemId + 1)) {
-				noted = true;
-			} else
-				player.getActionSender().sendMessage("This item cannot be taken out as noted.");
-		}
-		if (freeSlots() == 0 && !playerHasItem(itemId)) {
-			player.getActionSender().sendMessage("There is not enough space in your inventory.");
-			return;
-		}
-		if (getItemAmount(itemId) == Integer.MAX_VALUE) {
-			player.getActionSender().sendMessage("Your inventory is already holding the maximum amount of " + getItemName(itemId).toLowerCase() + " possible.");
-			return;
-		}
-		if (isStackable(item.getId() - 1) || noted) {
-			long totalAmount = (long) getItemAmount(itemId) + (long) itemAmount;
-			if (totalAmount > Integer.MAX_VALUE)
-				item.setAmount(tab.getItemAmount(item) - getItemAmount(itemId));
-		}
-		if (tab.getItemAmount(item) < itemAmount) {
-			item.setAmount(tab.getItemAmount(item));
-		}
-		if (!isStackable(item.getId() - 1) && !noted) {
-			if (freeSlots() < item.getAmount())
-				item.setAmount(freeSlots());
-		}
-		if (item.getAmount() < 0)
-			item.setAmount(0);
-		if (!noted)
-			addItem(item.getId() - 1, item.getAmount());
-		else
-			addItem(item.getId(), item.getAmount());
-		tab.remove(item);
-		if (tab.size() == 0) {
-			player.getBank().setCurrentBankTab(player.getBank().getBankTab(0));
-		}
-		if (updateView) {
-			resetBank();
-		}
-		player.getItems().resetItems(5064);
-	}
-
-	public boolean addEquipmentToBank(int itemID, int slot, int amount,
-			boolean updateView) {
-		if (player.getArea().inWild()) {
-			player.getActionSender().sendMessage(
-					"You can't do that in the wilderness.");
-			return false;
-		}
-		if (!player.isBanking())
-			return false;
-		if (player.playerEquipment[slot] != itemID
-				|| player.playerEquipmentN[slot] <= 0)
-			return false;
-		BankTab tab = player.getBank().getCurrentBankTab();
-		BankItem item = new BankItem(itemID + 1, amount);
-		Iterator<BankTab> iterator = Arrays.asList(
-				player.getBank().getBankTab()).iterator();
-		while (iterator.hasNext()) {
-			BankTab t = iterator.next();
-			if (t != null && t.size() > 0) {
-				Iterator<BankItem> iterator2 = t.getItems().iterator();
-				while (iterator2.hasNext()) {
-					BankItem i = iterator2.next();
-					if (i.getId() == item.getId() && !isNotable(itemID)) {
-						if (t.getTabId() != tab.getTabId()) {
-							tab = t;
-							break;
-						}
-					} else {
-						if (isNotable(itemID) && i.getId() == item.getId() - 1) {
-							item = new BankItem(itemID, amount);
-							if (t.getTabId() != tab.getTabId()) {
-								tab = t;
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		if (isNotable(itemID))
-			item = new BankItem(itemID, amount);
-		if (item.getAmount() > player.playerEquipmentN[slot])
-			item.setAmount(player.playerEquipmentN[slot]);
-		if (tab.getItemAmount(item) == Integer.MAX_VALUE) {
-			player.getActionSender().sendMessage(
-					"Your bank is already holding the maximum amount of " + getItemName(itemID).toLowerCase() + " possible.");
-			return false;
-		}
-		if (tab.freeSlots(player) == 0 && !tab.contains(item)) {
-			player.getActionSender().sendMessage("Your current bank tab is full.");
-			return false;
-		}
-		long totalAmount = ((long) tab.getItemAmount(item) + (long) item
-				.getAmount());
-		if (totalAmount >= Integer.MAX_VALUE) {
-			player.getActionSender().sendMessage(
-					"Your bank is already holding the maximum amount of this item.");
-			return false;
-		} else
-			player.playerEquipmentN[slot] -= item.getAmount();
-		if (player.playerEquipmentN[slot] <= 0) {
-			player.playerEquipmentN[slot] = -1;
-			player.playerEquipment[slot] = -1;
-		}
-		player.getItems().wearItem(-1, 0, slot);
-		tab.add(item);
-		if (updateView) {
-			resetTempItems();
-			resetBank();
-			updateSlot(slot);
-		}
-		return true;
-	}
-
 	/**
 	 * Checking item amounts.
 	 * 
@@ -1441,6 +888,14 @@ public class ItemAssistant {
 			return false;
 		}
 		return ItemDefinition.forId(itemId).isStackable();
+	}
+	
+	public boolean isNotable(int itemId) {
+		boolean withdrawAsNote = ItemDefinition.forId(itemId).isNoted();
+
+		if (withdrawAsNote)
+			return true;
+		return false;
 	}
 
 	/**
@@ -1476,15 +931,6 @@ public class ItemAssistant {
 	/**
 	 * Move Items
 	 */
-
-	public void swapBankItem(int from, int to) {
-		BankItem item = player.getBank().getCurrentBankTab().getItem(from);
-		player.getBank()
-				.getCurrentBankTab()
-				.setItem(from, player.getBank().getCurrentBankTab().getItem(to));
-		player.getBank().getCurrentBankTab().setItem(to, item);
-	}
-
 	public void swap(int from, int to, int moveWindow, boolean insertMode) {
 		if (moveWindow == 3214) {
 			int tempI;
@@ -1499,7 +945,7 @@ public class ItemAssistant {
 		if (moveWindow == 5382) {
 			if (!player.isBanking()) {
 				player.getActionSender().sendRemoveInterfacePacket();
-				resetBank();
+				player.getBank().resetBank();
 				return;
 			}
 			if (player.getBank().getBankSearch().isSearching()) {
@@ -1513,57 +959,49 @@ public class ItemAssistant {
 					tabId = 0;
 				if (tabId == player.getBank().getCurrentBankTab().getTabId()) {
 					player.getActionSender().sendMessage("You cannot add an item from it's tab to the same tab.");
-					resetBank();
+					player.getBank().resetBank();
 					return;
 				}
 				if (from >= player.getBank().getCurrentBankTab().size()) {
-					resetBank();
+					player.getBank().resetBank();
 					return;
 				}
-				BankItem item = player.getBank().getCurrentBankTab()
-						.getItem(from);
+				BankItem item = player.getBank().getCurrentBankTab().getItem(from);
 				if (item == null) {
-					resetBank();
+					player.getBank().resetBank();
 					return;
 				}
 				if (player.getBank().getBankTab()[tabId].size() >= player.BANK_SIZE) {
 					player.getActionSender().sendMessage("You cannot move anymore items to that tab.");
-					resetBank();
+					player.getBank().resetBank();
 					return;
 				}
 				player.getBank().getCurrentBankTab().remove(item);
 				player.getBank().getBankTab()[tabId].add(item);
 			} else {
-				if (from > player.getBank().getCurrentBankTab().size() - 1
-						|| to > player.getBank().getCurrentBankTab().size() - 1) {
-					resetBank();
+				if (from > player.getBank().getCurrentBankTab().size() - 1 || to > player.getBank().getCurrentBankTab().size() - 1) {
+					player.getBank().resetBank();
 					return;
 				}
 				if (!insertMode) {
-					BankItem item = player.getBank().getCurrentBankTab()
-							.getItem(from);
-					player.getBank()
-							.getCurrentBankTab()
-							.setItem(
-									from,
-									player.getBank().getCurrentBankTab()
-											.getItem(to));
+					BankItem item = player.getBank().getCurrentBankTab().getItem(from);
+					player.getBank().getCurrentBankTab().setItem(from, player.getBank().getCurrentBankTab().getItem(to));
 					player.getBank().getCurrentBankTab().setItem(to, item);
 				} else {
 					int tempFrom = from;
 					for (int tempTo = to; tempFrom != tempTo;)
 						if (tempFrom > tempTo) {
-							swapBankItem(tempFrom, tempFrom - 1);
+							player.getBank().swapBankItem(tempFrom, tempFrom - 1);
 							tempFrom--;
 						} else if (tempFrom < tempTo) {
-							swapBankItem(tempFrom, tempFrom + 1);
+							player.getBank().swapBankItem(tempFrom, tempFrom + 1);
 							tempFrom++;
 						}
 				}
 			}
 		}
 		if (moveWindow == 5382) {
-			resetBank();
+			player.getBank().resetBank();
 		}
 		if (moveWindow == 5064) {
 			int tempI;
@@ -1577,7 +1015,7 @@ public class ItemAssistant {
 			player.itemAmount[to] = tempN;
 			resetItems(3214);
 		}
-		resetTempItems();
+		player.getBank().resetTempItems();
 		if (moveWindow == 3214) {
 			resetItems(3214);
 		}
@@ -1837,16 +1275,6 @@ public class ItemAssistant {
 		return slots >= item.getAmount();
 	}
 
-	public int freeBankSlots() {
-		int freeS = 0;
-		for (int i = 0; i < player.bankItems.length; i++) {
-			if (player.bankItems[i] <= 0) {
-				freeS++;
-			}
-		}
-		return freeS;
-	}
-
 	public String getItemName(int ItemID) {
 		if (ItemID < 0 || ItemDefinition.forId(ItemID) == null) {
 			return "Unarmed";
@@ -1940,53 +1368,12 @@ public class ItemAssistant {
 		return found >= amt;
 	}
 
-	/**
-	 * Sends an item to the bank in any tab possible.
-	 *
-	 * @param itemId
-	 *            the item id
-	 * @param amount
-	 *            the item amount
-	 */
-	public void sendItemToAnyTab(int itemId, int amount) {
-		if (player.getArea().inWild()) {
-			player.getActionSender().sendMessage(
-					"You can't do that in the wilderness.");
-			return;
-		}
-		BankItem item = new BankItem(itemId, amount);
-		for (BankTab tab : player.getBank().getBankTab()) {
-			if (tab.freeSlots(player) > 0 || tab.contains(item)) {
-				player.getBank().setCurrentBankTab(tab);
-				addItemToBank(itemId, amount);
-				return;
-			}
-		}
-		addItemToBank(itemId, amount);
-	}
-
 	public boolean alreadyHasItem(int id) {
-		return playerHasItem(id) || bankContains(id);
+		return playerHasItem(id) || player.getBank().bankContains(id);
 	}
 
 	public boolean playerOwnsAnyItems(int... ids) {
 		return Arrays.stream(ids).anyMatch(this::alreadyHasItem);
-	}
-
-	public void sendItemToAnyTabOffline(int itemId, int amount, boolean online) {
-		if (player.getArea().inWild()) {
-			player.getActionSender().sendMessage("You can't do that in the wilderness.");
-			return;
-		}
-		BankItem item = new BankItem(itemId, amount);
-		for (BankTab tab : player.getBank().getBankTab()) {
-			if (tab.freeSlots(player) > 0 || tab.contains(item)) {
-				player.getBank().setCurrentBankTab(tab);
-				addItemToBank(itemId, amount, online);
-				return;
-			}
-		}
-		addItemToBank(itemId, amount, online);
 	}
 
 	/**
@@ -2001,83 +1388,8 @@ public class ItemAssistant {
 	 */
 	public void addItemUnderAnyCircumstance(int itemId, int amount) {
 		if (!addItem(itemId, amount)) {
-			sendItemToAnyTabOrDrop(new BankItem(itemId, amount), player.getX(),
-					player.getY());
+			player.getBank().sendItemToAnyTabOrDrop(new BankItem(itemId, amount), player.getX(), player.getY());
 		}
-	}
-
-	/**
-	 * The x and y represents the possible x and y location of the dropped item
-	 * if in fact it cannot be added to the bank.
-	 * 
-	 * @param item
-	 * @param x
-	 * @param y
-	 */
-	public void sendItemToAnyTabOrDrop(BankItem item, int x, int y) {
-		item = new BankItem(item.getId() + 1, item.getAmount());
-		if (bankContains(item.getId() - 2)) {
-			if (isBankSpaceAvailable(item)) {
-				sendItemToAnyTab(item.getId() - 1, item.getAmount());
-			} else {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(item
-						.getId(), item.getAmount()), player.getX(), player
-						.getY(), player.getZ(), player));
-			}
-		} else {
-			sendItemToAnyTab(item.getId() - 1, item.getAmount());
-		}
-	}
-
-	public boolean isBankSpaceAvailable(BankItem item) {
-		for (BankTab tab : player.getBank().getBankTab()) {
-			if (tab.contains(item)) {
-				return tab.spaceAvailable(item);
-			}
-		}
-		return false;
-	}
-
-	public boolean removeFromAnyTabWithoutAdding(int itemId, int itemAmount,
-			boolean updateView) {
-		BankTab tab = null;
-		BankItem item = new BankItem(itemId + 1, itemAmount);
-		for (BankTab searchedTab : player.getBank().getBankTab()) {
-			if (searchedTab.contains(item)) {
-				tab = searchedTab;
-				break;
-			}
-		}
-		if (tab == null) {
-			return false;
-		}
-		if (itemAmount <= 0)
-			return false;
-		if (!tab.contains(item))
-			return false;
-		if (tab.getItemAmount(item) < itemAmount) {
-			item.setAmount(tab.getItemAmount(item));
-		}
-		if (item.getAmount() < 0)
-			item.setAmount(0);
-		tab.remove(item);
-		if (tab.size() == 0) {
-			player.getBank().setCurrentBankTab(player.getBank().getBankTab(0));
-		}
-		if (updateView) {
-			resetBank();
-		}
-		player.getItems().resetItems(5064);
-		return true;
-	}
-
-	public boolean bankContains(int itemId, int itemAmount) {
-		for (BankTab tab : player.getBank().getBankTab()) {
-			if (tab.containsAmount(new BankItem(itemId + 1, itemAmount))) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void clearSlot(int slot) {
@@ -2136,15 +1448,6 @@ public class ItemAssistant {
 			deleteItem(player.playerInventory[i] - 1, player.getItems()
 					.getItemSlot(player.playerInventory[i] - 1),
 					player.itemAmount[i]);
-		}
-	}
-
-	public void addOrSendToBank(int item, int amount) {
-		if (freeSlots() > 0) {
-			addItem(item, amount);
-		} else {
-			addToBank(item, amount, true);
-			player.getActionSender().sendMessage("Inventory full, the item was sent to your bank.");
 		}
 	}
 

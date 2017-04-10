@@ -22,7 +22,7 @@ public class BankModifiableX implements PacketType {
 				player.getBank().getBankSearch().removeItem(item, amount);
 				return;
 			}
-			player.getItems().removeFromBank(item, amount, true);
+			player.getBank().removeFromBank(item, amount, true);
 			break;
 		}
 	}

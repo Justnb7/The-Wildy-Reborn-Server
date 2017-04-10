@@ -158,7 +158,7 @@ public class NpcInteraction {
 		 * Appearance npc
 		 */
 		case 1306:
-			player.write(new SendInterfacePacket(3559));
+			//player.write(new SendInterfacePacket(3559));
 			break;
 		}
 	}

@@ -131,14 +131,6 @@ public class CommandPacketHandler implements PacketType {
     			return false;
     		}
     		return true;
-    	
-		case "claimreward":
-			try {
-				player.rspsdata(player, player.getName());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return true;
     
     	case "players":
 			player.getActionSender().sendMessage("There are currently @red@" + Utility.format(World.getWorld().getActivePlayers()) + "</col> players online.");

@@ -81,7 +81,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		switch (interfaceIndex) {
 
 		case 7423:
-			player.getItems().addToBank(item.getId(), 1, false);
+			player.getBank().addToBank(item.getId(), 1, false);
 			player.getItems().resetItems(7423);
 			break;
 
@@ -91,7 +91,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case 5064:
 			if (player.isBanking()) {
-				player.getItems().addToBank(item.getId(), 1, true);
+				player.getBank().addToBank(item.getId(), 1, true);
 			}
 			break;
 
@@ -100,7 +100,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getBank().getBankSearch().removeItem(item.getId(), 1);
 				return;
 			}
-			player.getItems().removeFromBank(item.getId(), 1, true);
+			player.getBank().removeFromBank(item.getId(), 1, true);
 			break;
 
 		case 3900:
@@ -194,7 +194,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case 5064:
 			if (player.isBanking()) {
-				player.getItems().addToBank(item.getId(), 5, true);
+				player.getBank().addToBank(item.getId(), 5, true);
 			}
 			break;
 
@@ -203,7 +203,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getBank().getBankSearch().removeItem(item.getId(), 5);
 				return;
 			}
-			player.getItems().removeFromBank(item.getId(), 5, true);
+			player.getBank().removeFromBank(item.getId(), 5, true);
 			break;
 
 		case 3322:
@@ -289,7 +289,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (player.isBanking()) {
-				player.getItems().addToBank(item.getId(), 10, true);
+				player.getBank().addToBank(item.getId(), 10, true);
 			}
 			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
@@ -308,7 +308,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getBank().getBankSearch().removeItem(item.getId(), 10);
 				return;
 			}
-			player.getItems().removeFromBank(item.getId(), 10, true);
+			player.getBank().removeFromBank(item.getId(), 10, true);
 			break;
 
 		case 3322:
@@ -392,7 +392,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			if (player.isBanking()) {
-				player.getItems().addToBank(item.getId(), player.getItems().getItemAmount(item.getId()), true);
+				player.getBank().addToBank(item.getId(), player.getItems().getItemAmount(item.getId()), true);
 			}
 			break;
 
@@ -404,7 +404,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getBank().getBankSearch().removeItem(item.getId(), player.getBank().getCurrentBankTab().getItemAmount(new BankItem(item.getId() + 1)));
 				return;
 			}
-			player.getItems().removeFromBank(item.getId(), player.getBank().getCurrentBankTab().getItemAmount(new BankItem(item.getId() + 1)), true);
+			player.getBank().removeFromBank(item.getId(), player.getBank().getCurrentBankTab().getItemAmount(new BankItem(item.getId() + 1)), true);
 			break;
 
 		case 3322:
@@ -445,10 +445,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case 7295:
 			if (ItemDefinition.forId(item.getId()).isStackable()) {
-				player.getItems().addToBank(player.playerInventory[slot], player.itemAmount[slot], false);
+				player.getBank().addToBank(player.playerInventory[slot], player.itemAmount[slot], false);
 				player.getItems().resetItems(7423);
 			} else {
-				player.getItems().addToBank(player.playerInventory[slot], player.getItems().itemAmount(player.playerInventory[slot]), false);
+				player.getBank().addToBank(player.playerInventory[slot], player.getItems().itemAmount(player.playerInventory[slot]), false);
 				player.getItems().resetItems(7423);
 			}
 			break;

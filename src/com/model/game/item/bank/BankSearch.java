@@ -40,20 +40,20 @@ public class BankSearch {
 			for(BankItem bankItem : tab.getItems()) {
 				if(itemId == bankItem.getId() - 1) {
 					player.getBank().setCurrentBankTab(tab);
-					player.getItems().removeFromBank(itemId, amount, false);
+					player.getBank().removeFromBank(itemId, amount, false);
 					break;
 				}
 			}
 		}
 		player.getBank().setCurrentBankTab(tab);
 		updateItems();
-		player.getItems().resetBank();
+		player.getBank().resetBank();
 	}
 	
 	public void reset() {
 		if(player.getBank().getBankSearch().isSearching()) {
 			player.getBank().setCurrentBankTab(player.getBank().getBankTab(0));
-			player.getItems().resetBank();
+			player.getBank().resetBank();
 			player.getActionSender().sendMessage("Search results reset.");
 			player.getActionSender().sendString("", 58063);
 			searching = false;
@@ -63,7 +63,7 @@ public class BankSearch {
 	public void reset(int tabId) {
 		if(player.getBank().getBankSearch().isSearching()) {
 			player.getBank().setCurrentBankTab(player.getBank().getBankTab(tabId));
-			player.getItems().resetBank();
+			player.getBank().resetBank();
 			player.getActionSender().sendMessage("Search results reset.");
 			player.getActionSender().sendString("", 58063);
 			searching = false;

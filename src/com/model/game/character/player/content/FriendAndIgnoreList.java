@@ -1,6 +1,6 @@
 package com.model.game.character.player.content;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.model.game.World;
@@ -55,12 +55,12 @@ public class FriendAndIgnoreList {
 	/**
 	 * A {@link List} of friends
 	 */
-	private List<Long> friends = new LinkedList<>();
+	private List<Long> friendList = new ArrayList<Long>(200);
 
 	/**
 	 * A {@link List} of ignores
 	 */
-	private List<Long> ignores = new LinkedList<>();
+	private List<Long> ignoreList = new ArrayList<Long>(100);
 
 	/**
 	 * Adds a player to the friends list
@@ -70,12 +70,19 @@ public class FriendAndIgnoreList {
 	 */
 	public void addFriend(Long username) {
 		
+		/*
+		 * We can't add ourself to the list
+		 */
 		if (username == player.usernameHash) {
 			player.getActionSender().sendMessage("You cannot add yourself.");
 			return;
 		}
-		int size = player.rights.getValue() > 0 ? 200 : 100;
-		if (getFriendsList().size() >= size) {
+		
+		/*
+		 * Check if we can add anymore friends
+		 */
+		if (friendList.size() >= 200) {
+			player.getActionSender().sendMessage("Your friend list is full!");
 			return;
 		}
 		
@@ -98,7 +105,7 @@ public class FriendAndIgnoreList {
 		/*
 		 * Add the player to our list
 		 */
-		friends.add(username);
+		friendList.add(username);
 		
 		/*
 		 * Updates the clan's friends list.
@@ -131,7 +138,7 @@ public class FriendAndIgnoreList {
 	 *            The username hash of the friend
 	 */
 	public void removeFriend(long username) {
-		if (friends.remove(username)) {
+		if (friendList.remove(username)) {
 			
 			/*
 			 * Updates the clan's friends list.
@@ -159,36 +166,42 @@ public class FriendAndIgnoreList {
 	 */
 	public void addIgnore(long username) {
 		
+		/*
+		 * We can't add ourself to the list
+		 */
 		if (username == player.usernameHash) {
 			player.getActionSender().sendMessage("You cannot add yourself.");
 			return;
 		}
 		
-		if (getIgnoreList().size() >= 100) {
-			player.getActionSender().sendMessage("You cannot ignore more then 100 people at a time.");
+		/*
+		 * Check if we can add anymore ignores
+		 */
+		if (ignoreList.size() >= 100) {
+			player.getActionSender().sendMessage("Your ignore list is full!");
 			return;
 		}
 		
 		/*
-		 * check if our ignore list contains the username first
-		 */
-		if (hasIgnored(username)) {
-			player.getActionSender().sendMessage(Utility.longToPlayerName(username) + " is already on your ignore list.");
-			return;
-		}
-
-		/*
 		 * Check if our friends list contains the username first
 		 */
-		if (hasFriend(username)) {
-			player.getActionSender().sendMessage("Please remove " + Utility.longToPlayerName(username) + " from  your friends list first.");
+		if (friendList.contains(username)) {
+			player.getActionSender().sendMessage(String.format("Please remove %s from your friend list first.", Utility.longToPlayerName(username)));
+			return;
+		}
+		
+		/*
+		 * Check if we already have the player in out ignore list
+		 */
+		if (ignoreList.contains(username)) {
+			player.getActionSender().sendMessage("This user is already on your ignore list.");
 			return;
 		}
 
 		/*
 		 * Add the username hash to our ignore list
 		 */
-		ignores.add(username);
+		ignoreList.add(username);
 
 		/*
 		 * Find our target if hes online
@@ -201,6 +214,7 @@ public class FriendAndIgnoreList {
 		if (target != null && target.getFAI().hasFriend(player.usernameHash)) {
 			target.write(new SendFriendPacket(player.usernameHash, 0));
 		}
+		
 	}
 
 	/**
@@ -210,7 +224,7 @@ public class FriendAndIgnoreList {
 	 *            The username hash to remove from the ignore list
 	 */
 	public void removeIgnore(long username) {
-		if (ignores.remove(username)) {
+		if (ignoreList.remove(username)) {
 			Player target = World.getWorld().getPlayerByNameHash(username);
 			if (target != null) {
 				if (player.privateChat == 0 && target.getFAI().hasFriend(player.usernameHash)) {
@@ -249,7 +263,7 @@ public class FriendAndIgnoreList {
 	public void sendIgnoreList() {
 		player.getOutStream().putFrameVarShort(214);
 		int offset = player.getOutStream().offset;
-		for (Long usernameHash : ignores) {
+		for (Long usernameHash : ignoreList) {
 			player.getOutStream().putLong(usernameHash);
 		}
 		player.getOutStream().putFrameSizeShort(offset);
@@ -263,7 +277,7 @@ public class FriendAndIgnoreList {
 		/*
 		 * Write all of our friends
 		 */
-		for (long hash : friends) {
+		for (long hash : friendList) {
 			Player target = World.getWorld().getPlayerByNameHash(hash);
 			/*
 			 * Don't send them online if they are null, they have us ignored, they dont have us added and have friends only, or they have their private chat off
@@ -281,7 +295,7 @@ public class FriendAndIgnoreList {
 	 * @return If the player has the username hash added
 	 */
 	public boolean hasFriend(long usernameHash) {
-		return friends.contains(usernameHash);
+		return friendList.contains(usernameHash);
 	}
 
 	/**
@@ -292,9 +306,9 @@ public class FriendAndIgnoreList {
 	 * @return If the player has the username hash ignored
 	 */
 	public boolean hasIgnored(long usernameHash) {
-		return ignores.contains(usernameHash);
+		return ignoreList.contains(usernameHash);
 	}
-
+	
 	/**
 	 * Gets the ignore list containing all of the ignored players user name
 	 * hashes
@@ -302,7 +316,7 @@ public class FriendAndIgnoreList {
 	 * @return A {@link List} of ignored users
 	 */
 	public List<Long> getIgnoreList() {
-		return ignores;
+		return ignoreList;
 	}
 
 	/**
@@ -311,7 +325,21 @@ public class FriendAndIgnoreList {
 	 * @return A {@link List} of friends
 	 */
 	public List<Long> getFriendsList() {
-		return friends;
+		return friendList;
+	}
+	
+	/**
+	 * @param friendList the friendList to set
+	 */
+	public void setFriendsList(List<Long> friendList) {
+		this.friendList = friendList;
+	}
+
+	/**
+	 * @param ignoreList the ignoreList to set
+	 */
+	public void setIgnoreList(List<Long> ignoreList) {
+		this.ignoreList = ignoreList;
 	}
 
 }

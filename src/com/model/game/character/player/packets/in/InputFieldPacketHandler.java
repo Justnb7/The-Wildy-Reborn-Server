@@ -21,7 +21,7 @@ public class InputFieldPacketHandler implements PacketType {
 				if (text.length() > 2) {
 					player.getBank().getBankSearch().updateItems();
 					player.getBank().setCurrentBankTab(player.getBank().getBankSearch().getTab());
-					player.getItems().resetBank();
+					player.getBank().resetBank();
 					player.getBank().getBankSearch().setSearching(true);
 				} else {
 					if (player.getBank().getBankSearch().isSearching())

@@ -142,7 +142,7 @@ public class Mysterybox {
 			default:
 				itemReceived = Utility.randomElement(COMMON_REWARDS);
 			}
-			player.getItems().addOrSendToBank(itemReceived.getId(), itemReceived.getAmount());
+			player.getBank().addOrSendToBank(itemReceived.getId(), itemReceived.getAmount());
 			player.getActionSender().sendMessage("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + ".");
 			player.getItems().deleteItems(MYSTERY_BOX);
 		}

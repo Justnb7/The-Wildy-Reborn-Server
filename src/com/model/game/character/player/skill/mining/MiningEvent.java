@@ -120,7 +120,7 @@ public class MiningEvent extends CycleEvent {
 		
 		if (random == 0) {
 			if(player.isPetSpawned()) {
-				player.getItems().addOrSendToBank(13321, 1);
+				player.getBank().addOrSendToBank(13321, 1);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Rock Golem.", false);
 			} else {
 				Pets pets = Pets.ROCK_GOLEM;

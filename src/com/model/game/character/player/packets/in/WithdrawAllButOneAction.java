@@ -25,7 +25,7 @@ public class WithdrawAllButOneAction implements PacketType {
 				return;
 			}
 			if ((player.getBank().getCurrentBankTab().getItemAmount(new BankItem(itemId + 1)) - 1) > 1)
-				player.getItems().removeFromBank(itemId, amount - 1, true);
+				player.getBank().removeFromBank(itemId, amount - 1, true);
 			break;
 		}
 	}

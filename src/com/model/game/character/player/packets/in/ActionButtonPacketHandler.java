@@ -264,12 +264,12 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.lastBankDeposit = System.currentTimeMillis();
 			for (int slot = 0; slot < player.playerInventory.length; slot++) {
 				if (player.playerInventory[slot] > 0 && player.itemAmount[slot] > 0) {
-					player.getItems().addToBank(player.playerInventory[slot] - 1, player.itemAmount[slot], false);
+					player.getBank().addToBank(player.playerInventory[slot] - 1, player.itemAmount[slot], false);
 				}
 			}
 			player.getItems().updateInventory();
-			player.getItems().resetBank();
-			player.getItems().resetTempItems();
+			player.getBank().resetBank();
+			player.getBank().resetTempItems();
 			break;
 
 		case 226170:
@@ -284,14 +284,14 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.lastBankDeposit = System.currentTimeMillis();
 			for (int slot = 0; slot < player.playerEquipment.length; slot++) {
 				if (player.playerEquipment[slot] > 0 && player.playerEquipmentN[slot] > 0) {
-					if (!player.getItems().addEquipmentToBank(player.playerEquipment[slot], slot,
+					if (!player.getBank().addEquipmentToBank(player.playerEquipment[slot], slot,
 							player.playerEquipmentN[slot], false))
 						break;
 				}
 			}
 			player.getItems().updateInventory();
-			player.getItems().resetBank();
-			player.getItems().resetTempItems();
+			player.getBank().resetBank();
+			player.getBank().resetTempItems();
 			break;
 
 		case 226186:

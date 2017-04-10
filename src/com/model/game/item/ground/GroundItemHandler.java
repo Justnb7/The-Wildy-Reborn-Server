@@ -224,7 +224,7 @@ public final class GroundItemHandler {
 					|| groundItem.getOwnerHash() == player.usernameHash) {
 				
 				if (groundItem.getState() == State.GLOBAL || groundItem.getOwnerHash() == player.usernameHash) {
-					//System.out.println(player.getLocation() + " : " + groundItem.getLocation());
+					//System.out.println(player.getPosition() + " : " + groundItem.getPosition());
 					player.getActionSender().sendRemoveGroundItem(groundItem);
 					player.getActionSender().sendGroundItem(groundItem);
 				}

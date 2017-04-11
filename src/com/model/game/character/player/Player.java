@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.model.Appearance;
 import com.model.Server;
@@ -24,7 +25,6 @@ import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.combat.weapon.WeaponInterface;
-import com.model.game.character.npc.BossDeathTracker;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.SlayerDeathTracker;
@@ -32,6 +32,8 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.account.Account;
 import com.model.game.character.player.account.ironman.GameModeSelection;
 import com.model.game.character.player.content.FriendAndIgnoreList;
+import com.model.game.character.player.content.KillTracker;
+import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
 import com.model.game.character.player.content.consumable.Consumable;
@@ -1370,7 +1372,7 @@ public class Player extends Entity {
 					stop();
 					return;
 				}
-				
+				KillTracker.loadDefault(player);
 				player.getActionSender().sendMessage("Welcome back to " + Constants.SERVER_NAME + ".");
 				
 				if (!receivedStarter() && inTutorial()) {
@@ -2447,12 +2449,14 @@ public class Player extends Entity {
 		this.pnpc = pnpc;
 	}
 	
-	private BossDeathTracker bossTracker;
+	public CopyOnWriteArrayList<KillEntry> getKillTracker() {
+		return killTracker;
+	}
+	
+	private CopyOnWriteArrayList<KillEntry> killTracker = new CopyOnWriteArrayList<KillEntry>();
 
-	public BossDeathTracker getBossDeathTracker() {
-		if (bossTracker == null)
-			bossTracker = new BossDeathTracker(this);
-		return bossTracker;
+	public void setKillTracker(CopyOnWriteArrayList<KillEntry> entry) {
+		this.killTracker = entry;
 	}
 	
 

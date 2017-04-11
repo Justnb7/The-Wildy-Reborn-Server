@@ -5,7 +5,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
-import com.model.game.character.player.content.BossTracker;
+import com.model.game.character.player.content.KillTracker;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.walking.PathFinder;
@@ -270,7 +270,7 @@ public class PlayerAssistant {
         switch (itemId) {
 			
         case 2572:
-        	BossTracker.open(player);
+        	KillTracker.open(player);
             break;
             
         }

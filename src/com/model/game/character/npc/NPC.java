@@ -810,4 +810,18 @@ public class NPC extends Entity {
 	public int getDefendAnimation() {
 		return getDefinition().getDefenceAnimation();
 	}
+	
+	/**
+	 * Array of all bosses.
+	 */
+	public static final int[] BOSSES = { 
+		6609, //Callisto
+		2054, //Chaos Elemental
+		6619, //Chaos Fanatic
+		2205, //Commander Zilyana
+		319, //Corporeal Beast
+		239, //King Black Dragon
+		3129, //K'ril Tsutsaroth
+		2215, //General Graardor
+	};
 }

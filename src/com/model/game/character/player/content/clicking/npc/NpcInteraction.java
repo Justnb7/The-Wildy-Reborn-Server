@@ -3,7 +3,6 @@ package com.model.game.character.player.content.clicking.npc;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.skill.fishing.Fishing;
 import com.model.game.character.player.skill.fishing.FishingSpot;
 import com.model.game.character.player.skill.thieving.Pickpocket;

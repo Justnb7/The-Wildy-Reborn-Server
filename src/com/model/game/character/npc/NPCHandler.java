@@ -15,6 +15,8 @@ import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
+import com.model.game.character.player.content.KillTracker;
+import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
@@ -192,7 +194,12 @@ public final class NPCHandler {
 		}
 
 		if (npc != null) {
-			player.getBossDeathTracker().add(npc);
+			/* Add kills to tracker */
+			for (int id : NPC.BOSSES) {
+				if (npc.getId() == id) {
+					KillTracker.submit(player, new KillEntry(npc.getName(), 1), true);
+				}
+			}
 			if (npc.getId() == player.getSlayerTask())
 				player.getSlayerDeathTracker().add(npc);
 			

@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,6 +16,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.account.Account;
 import com.model.game.character.player.account.AccountType;
+import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.item.Item;
 import com.model.game.item.bank.BankItem;
@@ -173,6 +175,9 @@ public class PlayerSave {
 				player.setAttribute("music_volume", details.musicVolume);
 				player.setEnableSound(details.sounds);
 				player.setAttribute("sound_volume", details.soundsVolume);
+				if (details.killTracker != null) {
+					player.setKillTracker(details.killTracker);
+				}
 				if (details.friendList.size() > 0) {
 					player.getFAI().setFriendsList(details.friendList);
 				}
@@ -255,6 +260,7 @@ public class PlayerSave {
 		private final int musicVolume;
 		private final boolean sounds;
 		private final int soundsVolume;
+		private CopyOnWriteArrayList<KillEntry> killTracker = new CopyOnWriteArrayList<KillEntry>();
 		private final List<Long> friendList;
 		private final List<Long> ignoreList;
 		private final int[] look;
@@ -336,6 +342,7 @@ public class PlayerSave {
 			musicVolume = player.getAttribute("music_volume", 3);
 			sounds = player.isEnableSound();
 			soundsVolume = player.getAttribute("sound_volume", 3);
+			killTracker = player.getKillTracker();	
 			friendList = player.getFAI().getFriendsList();
 			ignoreList = player.getFAI().getIgnoreList();
 			look = player.appearance.getLook();

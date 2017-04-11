@@ -7,7 +7,7 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.content.BossTracker;
+import com.model.game.character.player.content.KillTracker;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.clicking.items.ItemOnItem;
 import com.model.game.character.player.content.clicking.magic.MagicOnItems;
@@ -430,7 +430,7 @@ public class ItemOptionPacket implements PacketType {
 			break;
 
 		case 2572:
-			BossTracker.open(player);
+			KillTracker.open(player);
 			break;
 		}
 		

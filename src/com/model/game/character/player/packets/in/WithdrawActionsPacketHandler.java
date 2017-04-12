@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.model.Server;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.content.KillTracker;
 import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
@@ -171,7 +172,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		switch (interfaceIndex) {
 
 		case 1688:
-			player.getPA().useOperate(item.getId());
+			switch (item.getId()) {
+			case 2572:
+				KillTracker.open(player);
+				break;
+			}
 			break;
 
 		case 3900:
@@ -256,7 +261,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		switch (interfaceIndex) {
 
 		case 1688:
-			player.getPA().useOperate(item.getId());
+			switch (item.getId()) {
+			case 2572:
+				KillTracker.open(player);
+				break;
+			}
 			break;
 
 		case 3900:

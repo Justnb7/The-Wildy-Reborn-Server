@@ -649,10 +649,7 @@ public class ActionSender {
 		return this;
 	}
 	
-	public void sendStrings(int startId, int endId, String[] strings) {
-		if (player == null || player.getOutStream() == null) {
-			return;
-		}
+	public ActionSender sendStrings(int startId, int endId, String[] strings) {
 		player.getOutStream().createFrameVarSizeWord(229);
 		player.getOutStream().writeWord(startId);
 		player.getOutStream().writeWord(endId);
@@ -661,6 +658,14 @@ public class ActionSender {
 			player.getOutStream().putRS2String(s);
 		player.getOutStream().endFrameVarSizeWord();
 		player.flushOutStream();
+		return this;
 	}
 	
+	public ActionSender sendFriendServerStatus(final int status) {
+		if (this.player.getOutStream() != null && this.player != null) {
+            this.player.getOutStream().writeFrame(221);
+            this.player.getOutStream().writeByte(status);
+        }
+		return this;
+	}
 }

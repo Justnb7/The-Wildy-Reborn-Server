@@ -3,6 +3,7 @@ package com.model.game.character.player;
 import java.util.Objects;
 
 import com.model.Server;
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -114,7 +115,7 @@ public class PlayerDeath {
 		 */
 		player.faceEntity(player);
 		player.stopMovement();
-		player.getPA().restoreHealth();
+		restoreHealth();
 	}
 
 	public void giveLife() {
@@ -195,11 +196,11 @@ public class PlayerDeath {
 		player.isSkulled = false;
 		player.skullTimer = 0;
 		player.attackedPlayers.clear();
-		//PlayerSerialization.saveGame(player);
 		PlayerSave.save(player);
 		Combat.resetCombat(player);
 		player.playAnimation(Animation.create(65535));
-		player.getPA().resetTb();
+		player.teleblockLength = 0;
+        player.teleblock.stop();
 		player.isSkulled = false;
 		player.attackedPlayers.clear();
 		player.skullIcon = -1;
@@ -313,5 +314,22 @@ public class PlayerDeath {
 	private final String[] message_to_player = { "You just got smashed.", "Wow you got obliterated." };
 
 	private final String[] killStreakMessage = { "wrecked", "destroyed", "ended", "cleared", "ruined" };
+	
+	private final void restoreHealth() {
+		player.faceEntity(player);
+		player.stopMovement();
+		player.setSpecialAmount(100);
+		player.getWeaponInterface().restoreWeaponAttributes();
+		player.lastVeng.reset();
+		player.setVengeance(false);
+		player.setUsingSpecial(false);
+		player.attackDelay = 10;
+		player.infection = 0;
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.skullIcon = -1;
+		player.playAnimation(Animation.create(65535));
+		player.setFollowing(null);
+		player.getActionSender().sendRemoveInterfacePacket();
+	}
 
 }

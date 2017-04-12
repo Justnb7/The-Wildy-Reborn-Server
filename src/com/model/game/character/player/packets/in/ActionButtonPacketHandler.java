@@ -334,7 +334,7 @@ public class ActionButtonPacketHandler implements PacketType {
 				return;
 			}
 			player.getBank().setCurrentBankTab(tab);
-			player.getPA().openBank();
+			player.getBank().open();
 			break;
 
 		case 226197:
@@ -377,7 +377,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			if (tab.size() == 0) {
 				player.getBank().setCurrentBankTab(player.getBank().getBankTab(0));
 			}
-			player.getPA().openBank();
+			player.getBank().open();
 			break;
 
 		case 226185:
@@ -417,11 +417,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			}
 			player.getActionSender().sendMessage("<col=255>The total networth of tab " + tab.getTabId()
 					+ " is </col><col=600000>" + Utility.insertCommas(Long.toString(value)) + " gp</col>.");
-			break;
-
-		case 22024:
-		case 86008:
-			player.getPA().openBank();
 			break;
 
 		case 9190:

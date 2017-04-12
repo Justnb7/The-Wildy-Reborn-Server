@@ -238,7 +238,7 @@ public class FriendAndIgnoreList {
 	 * Handles the updates on login
 	 */
 	public void handleLogin() {
-		player.getPA().sendFriendServerStatus(2);
+		player.getActionSender().sendFriendServerStatus(2);
 		sendIgnoreList();
 		sendFriendsList();
 		

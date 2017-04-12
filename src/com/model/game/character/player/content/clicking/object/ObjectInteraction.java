@@ -115,7 +115,7 @@ public class ObjectInteraction {
 
 		case "bank":
 		case "bank booth":
-			player.getPA().openBank();
+			player.getBank().open();
 			break;
 
 		case "crevice":
@@ -355,7 +355,7 @@ public class ObjectInteraction {
 		case "Bank":
 		case "bank booth":
 		case "booth":
-			player.getPA().openBank();
+			player.getBank().open();
 			break;
 			
 		}

@@ -653,7 +653,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "openbank":
-    		player.getPA().openBank();
+    		player.getBank().open();
     		return true;
     		
     	case "demote":

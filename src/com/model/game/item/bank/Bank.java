@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import com.model.game.character.player.Player;
+import com.model.game.character.player.content.trade.Trading;
+import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
@@ -448,5 +450,54 @@ public class Bank {
 			player.getActionSender().sendMessage("Inventory full, the item was sent to your bank.");
 		}
 	}
+	
+	public void open() {
+        player.stopSkillTask();
+    	
+		if (!player.getAccount().getType().canBank()) {
+			player.getActionSender().sendMessage("You're restricted to bank because of your account type.");
+			return;
+		}
+		
+        if (player.getArea().inWild() && !(player.getRights().isBetween(2, 3))) {
+			player.getActionSender().sendMessage("You can't bank in the wilderness!");
+			return;
+		}
+        
+        if (Trading.isTrading(player)) {
+            Trading.decline(player);
+        }
+		
+        if (player.takeAsNote)
+        	player.getActionSender().sendConfig(115, 1);
+        else
+        	player.getActionSender().sendConfig(115, 0);
+    	
+    	boolean openFirstTab = !player.isBanking();
+    	
+    	if(openFirstTab) {
+    		//cheap hax for sending the main tab
+        	BankTab tab = player.getBank().getBankTab(0);
+    		player.getBank().setCurrentBankTab(tab);
+    	}
+		
+        if (player.getBank().getBankSearch().isSearching()) {
+            player.getBank().getBankSearch().reset();
+        }
+        
+        player.write(new SendSoundPacket(1457, 0, 0));
+        player.getActionSender().sendString("Search", 58113);
+        
+        if (player.getOutStream() != null && player != null) {
+        	player.setBanking(true);
+            player.getItems().resetItems(5064);
+            player.getBank().resetBank();
+            player.getBank().resetTempItems();
+            player.getOutStream().writeFrame(248);
+            player.getOutStream().writeWordA(5292);
+            player.getOutStream().writeShort(5063);
+            player.getActionSender().sendString(player.getName() + "'s Bank", 58064);
+        }
+    }
 
 }

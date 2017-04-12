@@ -1,17 +1,12 @@
 package com.model.game.character.player;
 
-import com.model.UpdateFlags.UpdateFlag;
-import com.model.game.character.Animation;
-import com.model.game.character.player.content.KillTracker;
-import com.model.game.character.player.content.trade.Trading;
-import com.model.game.character.player.packets.out.*;
-import com.model.game.item.Item;
-import com.model.game.item.bank.BankTab;
-import com.model.game.location.Position;
-import com.model.utility.json.definitions.ItemDefinition;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
+
+import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
+import com.model.game.item.Item;
+import com.model.game.location.Position;
+import com.model.utility.json.definitions.ItemDefinition;
 
 public class PlayerAssistant {
 
@@ -20,11 +15,6 @@ public class PlayerAssistant {
 
     public PlayerAssistant(Player Client) {
         this.player = Client;
-    }
-        
-    public void resetTb() {
-        player.teleblockLength = 0;
-        player.teleblock.stop();
     }
 
     public void move(Position target) {
@@ -51,73 +41,6 @@ public class PlayerAssistant {
         player.onAuto = false;
         player.autoCast = false;
         player.getActionSender().sendConfig(108, 0);
-    }
-
-    public void useOperate(int itemId) {
-    	
-        switch (itemId) {
-			
-        case 2572:
-        	KillTracker.open(player);
-            break;
-            
-        }
-    }
-
-    public void openBank() {
-        player.stopSkillTask();
-    	
-		if (!player.getAccount().getType().canBank()) {
-			player.getActionSender().sendMessage("You're restricted to bank because of your account type.");
-			return;
-		}
-		
-        if (player.getArea().inWild() && !(player.getRights().isBetween(2, 3))) {
-			player.getActionSender().sendMessage("You can't bank in the wilderness!");
-			return;
-		}
-        
-        if (Trading.isTrading(player)) {
-            Trading.decline(player);
-        }
-		
-        if (player.takeAsNote)
-        	player.getActionSender().sendConfig(115, 1);
-        else
-        	player.getActionSender().sendConfig(115, 0);
-    	
-    	boolean openFirstTab = !player.isBanking();
-    	
-    	if(openFirstTab) {
-    		//cheap hax for sending the main tab
-        	BankTab tab = player.getBank().getBankTab(0);
-    		player.getBank().setCurrentBankTab(tab);
-    	}
-		
-        if (player.getBank().getBankSearch().isSearching()) {
-            player.getBank().getBankSearch().reset();
-        }
-        
-        player.write(new SendSoundPacket(1457, 0, 0));
-        player.getActionSender().sendString("Search", 58113);
-        
-        if (player.getOutStream() != null && player != null) {
-        	player.setBanking(true);
-            player.getItems().resetItems(5064);
-            player.getBank().resetBank();
-            player.getBank().resetTempItems();
-            player.getOutStream().writeFrame(248);
-            player.getOutStream().writeWordA(5292);
-            player.getOutStream().writeShort(5063);
-            player.getActionSender().sendString(player.getName() + "'s Bank", 58064);
-        }
-    }
-
-    public void sendFriendServerStatus(final int i) { // friends and ignore list status
-        if (this.player.getOutStream() != null && this.player != null) {
-            this.player.getOutStream().writeFrame(221);
-            this.player.getOutStream().writeByte(i);
-        }
     }
 	
 	DecimalFormat format = new DecimalFormat("##.##");
@@ -156,69 +79,5 @@ public class PlayerAssistant {
 			}
 		}
 	}
-
-	public void displayReward(Item... items) {
-		player.outStream.createFrameVarSizeWord(53);
-		player.outStream.writeWord(6963);
-		player.outStream.writeWord(items.length);
-
-		for (Item item : items) {
-			if (item.amount > 254) {
-				player.outStream.writeByte(255);
-				player.outStream.writeDWord_v2(item.amount);
-			} else {
-				player.outStream.writeByte(item.amount);
-			}
-			if (item.id > 0) {
-				player.outStream.writeWordBigEndianA(item.id + 1);
-			} else {
-				player.outStream.writeWordBigEndianA(0);
-			}
-		}
-		player.outStream.endFrameVarSizeWord();
-		player.flushOutStream();
-		player.write(new SendInterfacePacket(6960));
-	}
-
-	public void sendItems(Item... items) {
-		player.outStream.createFrameVarSizeWord(53);
-		player.outStream.writeWord(6963);
-		player.outStream.writeWord(items.length);
-
-		for (Item item : items) {
-			if (item.amount > 254) {
-				player.outStream.writeByte(255);
-				player.outStream.writeDWord_v2(item.amount);
-			} else {
-				player.outStream.writeByte(item.amount);
-			}
-			if (item.id > 0) {
-				player.outStream.writeWordBigEndianA(item.id + 1);
-			} else {
-				player.outStream.writeWordBigEndianA(0);
-			}
-		}
-		player.outStream.endFrameVarSizeWord();
-		player.flushOutStream();
-		player.write(new SendInterfacePacket(6960));
-	}
-
-	public void restoreHealth() {
-    	player.faceEntity(player);
-		player.stopMovement();
-		player.setSpecialAmount(100);
-		player.getWeaponInterface().restoreWeaponAttributes();
-		player.lastVeng.reset();
-		player.setVengeance(false);
-		player.setUsingSpecial(false);
-		player.attackDelay = 10;
-		player.infection = 0;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		player.skullIcon = -1;
-		player.playAnimation(Animation.create(65535));
-		resetTb();
-        player.setFollowing(null);
-		player.getActionSender().sendRemoveInterfacePacket();
-    }
 	
 }

@@ -1,5 +1,6 @@
 package com.model.game.sync;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,8 +17,10 @@ import com.model.game.item.equipment.Equipment;
 import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
+import com.model.utility.json.definitions.NpcDefinition;
 import com.model.utility.json.loader.EquipmentRequirementLoader;
 import com.model.utility.json.loader.ItemDefinitionLoader;
+import com.model.utility.json.loader.NPCDefinitionLoader;
 import com.model.utility.json.loader.ShopLoader;
 import com.model.utility.json.loader.WeaponDefinitionLoader;
 
@@ -49,6 +52,8 @@ public class GameDataLoader implements Runnable {
 			CollisionMap.load("Data/data/collisiondata.dat");
 			// Everything else..
 			NPCHandler.declare();
+			Arrays.fill(NpcDefinition.getDefinitions(), null);
+	        new NPCDefinitionLoader().load();
 			NpcDropSystem.get().loadDrops();
 			NpcDropSystem.get().loadRareDrops();
 			new ShopLoader().load();

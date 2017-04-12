@@ -5,27 +5,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.model.game.World;
-import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.KillTracker;
-import com.model.game.character.player.content.KillTracker.KillEntry;
-import com.model.game.character.player.content.achievements.AchievementType;
-import com.model.game.character.player.content.achievements.Achievements;
-import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
-import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.location.Position;
-import com.model.utility.Utility;
-import com.model.utility.json.definitions.NpcDefinition;
-import com.model.utility.json.loader.NPCDefinitionLoader;
 
 public final class NPCHandler {
 
 	public static void declare() {
-        Arrays.fill(NpcDefinition.getDefinitions(), null);
-        new NPCDefinitionLoader().load();
         loadAutoSpawn("./Data/text_files/npc_spawns.txt");
 	}
 

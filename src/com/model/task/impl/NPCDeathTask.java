@@ -8,12 +8,19 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.GroupRespawn;
 import com.model.game.character.npc.NPC;
-import com.model.game.character.npc.NPCHandler;
+import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.content.KillTracker;
+import com.model.game.character.player.content.KillTracker.KillEntry;
+import com.model.game.character.player.content.achievements.AchievementType;
+import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.minigames.fight_caves.FightCaves;
+import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
+import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 import com.model.task.ScheduledTask;
+import com.model.utility.Utility;
 
 /**
  * Handles respawning an {@link NPC} which has just died
@@ -135,7 +142,7 @@ public class NPCDeathTask extends ScheduledTask {
      */
     public static void setNpcToInvisible(NPC npc) {
         npc.removeFromTile();
-        NPCHandler.dropItems(npc);
+        onDeath(npc);
         npc.setVisible(false);
         npc.setAbsX(npc.makeX);
         npc.setAbsY(npc.makeY);
@@ -254,5 +261,103 @@ public class NPCDeathTask extends ScheduledTask {
         npc.isDead = false;
         npc.setOnTile(npc.absX, npc.absY, npc.heightLevel);
     }
+    
+    private final static void onDeath(NPC npc) {
+		if (npc.killedBy == -1) {
+			return;
+		}
+		
+		Player player = World.getWorld().getPlayers().get(npc.killedBy);
+		if (player == null) {
+			return;
+		}
+
+		if (npc != null) {
+			/* Add kills to tracker */
+			for (int id : NPC.BOSSES) {
+				if (npc.getId() == id) {
+					KillTracker.submit(player, new KillEntry(npc.getName(), 1), true);
+				}
+			}
+			if (npc.getId() == player.getSlayerTask())
+				player.getSlayerDeathTracker().add(npc);
+			
+			switch(npc.getId()) {
+			case 6610:
+				Achievements.increase(player, AchievementType.VENENATIS, 1);
+				break;
+			case 2054:
+				Achievements.increase(player, AchievementType.CHAOS_ELEMENTAL, 1);
+				break;
+			case 6619:
+				Achievements.increase(player, AchievementType.CHAOS_FANATIC, 1);
+				break;
+			case 319:
+				Achievements.increase(player, AchievementType.CORPOREAL_BEAST, 1);
+				break;
+			case 6609:
+				Achievements.increase(player, AchievementType.CALLISTO, 1);
+				break;
+			case 6611:
+				Achievements.increase(player, AchievementType.VETION, 1);
+				break;
+			case 6615:
+				Achievements.increase(player, AchievementType.SCORPIA, 1);
+				break;
+			case 494:
+				Achievements.increase(player, AchievementType.KRAKEN, 1);
+				break;
+			case 3162:
+				Achievements.increase(player, AchievementType.KREE_ARRA, 1);
+				break;
+			case 3131:
+				Achievements.increase(player, AchievementType.KRIL_TSUTSAROTH, 1);
+				break;
+			case 2205:
+				Achievements.increase(player, AchievementType.COMMANDER_ZILYANA, 1);
+				break;
+			case 2215:
+				Achievements.increase(player, AchievementType.GENERAL_GRAARDOR, 1);
+				break;
+			case 239:
+				Achievements.increase(player, AchievementType.KING_BLACK_DRAGON, 1);
+				break;
+			case 6342:
+				Achievements.increase(player, AchievementType.BARRELCHEST, 1);
+				break;
+			case 3359:
+				Achievements.increase(player, AchievementType.ZOMBIE_CHAMPION, 1);
+				break;
+			case 6618:
+				Achievements.increase(player, AchievementType.CRAZY_ARCHAEOLOGIST, 1);
+				break;
+			}
+		}
+	
+		
+		int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
+		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
+		
+		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
+		if(AnimatedArmour.isAnimatedArmourNpc(npc.getId()))
+			AnimatedArmour.dropTokens(player, npc.getId(), npc.absX, npc.absY);
+		
+		// get the drop table
+		
+		float yourIncrease = 0;
+
+		if (player.playerEquipment[player.getEquipment().getRingId()] == 2572) {
+			yourIncrease += 2;
+		}
+		if (player.playerEquipment[player.getEquipment().getRingId()] == 12785) {
+			yourIncrease += 5;
+		}
+		if(player.getTotalAmountDonated() > 100 && player.getTotalAmountDonated() < 200) {
+			yourIncrease += 10;
+		} else if(player.getTotalAmountDonated() > 200) {
+			yourIncrease += 15;
+		}
+		NpcDropSystem.get().drop(player, npc, yourIncrease);
+	}
 
 }

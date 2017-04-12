@@ -1,8 +1,8 @@
 package com.model.task.impl;
 
 import com.model.game.World;
+import com.model.game.character.following.NPCFollowing;
 import com.model.game.character.npc.NPC;
-import com.model.game.character.npc.NPCHandler;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -54,7 +54,7 @@ public final class NPCMovementTask extends ScheduledTask {
 					npc.walkingHome = false;
 					npc.randomWalk = true;
 				} else if (npc.walkingHome) {
-					NPCHandler.walkToNextTile(npc, npc.makeX, npc.makeY);
+					NPCFollowing.walkToNextTile(npc, npc.makeX, npc.makeY);
 				}
 			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.walking_type == 1)) {
 				if (npc.walking_type == 1337 && ((npc.absX != npc.walkX) || (npc.absY != npc.walkY))) {
@@ -132,7 +132,7 @@ public final class NPCMovementTask extends ScheduledTask {
 						}
 
 					}
-					NPCHandler.walkToNextTile(npc, npc.absX + npc.moveX, npc.absY + npc.moveY);
+					NPCFollowing.walkToNextTile(npc, npc.absX + npc.moveX, npc.absY + npc.moveY);
 				}
 			}
 		}

@@ -7,6 +7,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.nvp.NpcVsPlayerCombat;
+import com.model.game.character.following.NPCFollowing;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -497,10 +498,10 @@ public class NPC extends Entity {
 						ownerId = -1;
 					} else {
 						//System.out.println("NPC Following player");
-						NPCHandler.attemptFollowEntity(this, ownerPlr);
+						NPCFollowing.attemptFollowEntity(this, ownerPlr);
 					}
 				} else if (this.followTarget != null) {
-					NPCHandler.attemptFollowEntity(this, followTarget);
+					NPCFollowing.attemptFollowEntity(this, followTarget);
 				}
 				
 				if (npcId == 6611 || npcId == 6612) {

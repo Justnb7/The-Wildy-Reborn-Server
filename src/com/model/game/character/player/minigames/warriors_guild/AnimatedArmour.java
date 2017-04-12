@@ -104,7 +104,7 @@ public class AnimatedArmour {
 		player.getItems().deleteItem(armour.getPlatebodyId(), 1);
 		player.getItems().deleteItem(armour.getPlatelegsId(), 1);
 		player.getItems().deleteItem(armour.getHelmId(), 1);
-		player.getPA().walkTo(0, +5);
+		player.getPlayerFollowing().walkTo(0, +5);
 		CycleEventHandler.getSingleton().addEvent(player, new CycleEvent() {
 			
 			@Override

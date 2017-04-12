@@ -25,6 +25,7 @@ import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.combat.weapon.WeaponInterface;
+import com.model.game.character.following.PlayerFollowing;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NPCAggression;
 import com.model.game.character.npc.SlayerDeathTracker;
@@ -1526,6 +1527,12 @@ public class Player extends Entity {
 	public PlayerAssistant getPA() {
 		return playerAssistant;
 	}
+	
+	private PlayerFollowing player_following = new PlayerFollowing(this);
+	
+	public PlayerFollowing getPlayerFollowing() {
+		return player_following;
+	}
 
 	public CombatAssistant getCombat() {
 		return combatAssistant;
@@ -1534,9 +1541,9 @@ public class Player extends Entity {
 	public void process_following() {
 		if (followTarget != null) {
 			if (followTarget.isNPC())
-				getPA().followNpc(followTarget);
+				getPlayerFollowing().followNpc(followTarget);
 			else
-				getPA().followPlayer(!asPlayer().getCombat().noTarget(), followTarget);
+				getPlayerFollowing().followPlayer(!asPlayer().getCombat().noTarget(), followTarget);
 		}
 	}
 

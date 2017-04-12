@@ -17,9 +17,9 @@ import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
+import com.model.game.character.following.PlayerFollowing;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.PlayerAssistant;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
@@ -88,7 +88,7 @@ public class Combat {
             if (target.isPlayer())
                 player.setFollowing(target);
             else
-                player.getPA().walkTo(0, 1); // TODO following Npcs properly
+                player.getPlayerFollowing().walkTo(0, 1); // TODO following Npcs properly
             return;
         }
         if (target.isNPC()) {
@@ -177,7 +177,7 @@ public class Combat {
             if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
                 if (player.getX() != ptarg.getX() && ptarg.getY() != player.getY()
                         && player.getCombatType() == CombatStyle.MELEE) {
-                    PlayerAssistant.stopDiagonal(player, ptarg.getX(), ptarg.getY());
+                    PlayerFollowing.stopDiagonal(player, ptarg.getX(), ptarg.getY());
                     return;
                 }
             }
@@ -188,7 +188,7 @@ public class Combat {
             if (npc.getSize() == 1) {
                 if (player.getX() != npc.getX() && npc.getY() != player.getY()
                         && player.getCombatType() == CombatStyle.MELEE) {
-                    PlayerAssistant.stopDiagonal(player, npc.getX(), npc.getY());
+                    PlayerFollowing.stopDiagonal(player, npc.getX(), npc.getY());
                     return;
                 }
             }

@@ -33,17 +33,17 @@ public class BrimhavenVines {
 
 	public static void moveThroughVinesX(Player c, int originX, int x1, int y1, int x2, int y2) {
 		if (c.getX() <= originX) {
-			c.getPA().walkTo(x1, y1);
+			c.getPlayerFollowing().walkTo(x1, y1);
 		} else {
-			c.getPA().walkTo(x2, y2);
+			c.getPlayerFollowing().walkTo(x2, y2);
 		}
 	}
 
 	public static void moveThroughVinesY(Player c, int originY, int x1, int y1, int x2, int y2) {
 		if (c.getY() <= originY) {
-			c.getPA().walkTo(x1, y1);
+			c.getPlayerFollowing().walkTo(x1, y1);
 		} else {
-			c.getPA().walkTo(x2, y2);
+			c.getPlayerFollowing().walkTo(x2, y2);
 		}
 	}
 

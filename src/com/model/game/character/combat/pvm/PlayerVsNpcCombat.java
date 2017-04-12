@@ -266,7 +266,7 @@ public class PlayerVsNpcCombat {
 			}
 
 			if (lowX > 0 && lowY > 0) {
-				player.getPA().playerWalk(lowX, lowY);
+				player.getPlayerFollowing().playerWalk(lowX, lowY);
 			}
 		}
 	}

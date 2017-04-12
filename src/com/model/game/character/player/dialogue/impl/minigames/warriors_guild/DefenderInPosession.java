@@ -28,7 +28,7 @@ public class DefenderInPosession extends Dialogue {
 			switch (index) {
 			case 1:
 				if (player.getItems().playerHasItem(8851, 200)) {
-					player.getPA().move(new Position(2847, 3540, 2));
+					player.move(new Position(2847, 3540, 2));
 					player.getWarriorsGuild().cycle();
 					stop();
 				} else {

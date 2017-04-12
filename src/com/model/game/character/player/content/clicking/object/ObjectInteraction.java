@@ -94,7 +94,7 @@ public class ObjectInteraction {
 					@Override
 					public void execute() {
 						player.getMovementHandler().setForcedMovement(false);
-						player.getPA().move(new Position(3017, 3850, 0));
+						player.move(new Position(3017, 3850, 0));
 						this.stop();
 					}
 				});
@@ -106,7 +106,7 @@ public class ObjectInteraction {
 					@Override
 					public void execute() {
 						player.getMovementHandler().setForcedMovement(false);
-						player.getPA().move(new Position(3069, 10255, 0));
+						player.move(new Position(3069, 10255, 0));
 						this.stop();
 					}
 				});
@@ -122,23 +122,23 @@ public class ObjectInteraction {
 			if (player.getY() == 9797) {
 				player.getKraken().start(player);
 			} else if (player.getY() == 5798) {
-				player.getPA().move(new Position(2486, 9797, 0));
+				player.move(new Position(2486, 9797, 0));
 			} else if (player.getX() == 2444) {
-				player.getPA().move(new Position(2430, 3424, 0));
+				player.move(new Position(2430, 3424, 0));
 			}
 			break;
 
 		case "cave":
 			if (player.getX() == 2430) {
-				player.getPA().move(new Position(2444, 9825, 0));
+				player.move(new Position(2444, 9825, 0));
 			}
 			break;
 
 		case "passage":
 			if (player.getX() == 2970) {
-				player.getPA().move(new Position(2974, 4384, 2));
+				player.move(new Position(2974, 4384, 2));
 			} else if (player.getX() == 2974) {
-				player.getPA().move(new Position(2970, 4384, 2));
+				player.move(new Position(2970, 4384, 2));
 			}
 			break;
 
@@ -188,9 +188,9 @@ public class ObjectInteraction {
 			if (player.heightLevel == 0) {
 				if (player.absX == 2855 || player.absX == 2854) {
 					if (player.absY == 3546)
-						player.getPA().move(new Position(player.absX, player.absY - 1, 0));
+						player.move(new Position(player.absX, player.absY - 1, 0));
 					else if (player.absY == 3545)
-						player.getPA().move(new Position(player.absX, player.absY + 1, 0));
+						player.move(new Position(player.absX, player.absY + 1, 0));
 				}
 			}
 			break;
@@ -200,33 +200,33 @@ public class ObjectInteraction {
 		 */
 		case 26502:
 			if (player.getY() == 5294) {
-				player.getPA().move(new Position(2839, 5295, 2));
+				player.move(new Position(2839, 5295, 2));
 			} else if (player.getY() == 5295 || player.getY() == 5296) {
-				player.getPA().move(new Position(2839, 5294, 2));
+				player.move(new Position(2839, 5294, 2));
 			}
 			break;
 
 		case 26503:
 			if (player.getX() == 2862) {
-				player.getPA().move(new Position(2863, 5354, 2));
+				player.move(new Position(2863, 5354, 2));
 			} else if (player.getX() == 2863) {
-				player.getPA().move(new Position(2862, 5354, 2));
+				player.move(new Position(2862, 5354, 2));
 			}
 			break;
 
 		case 26504:
 			if (player.getX() == 2909) {
-				player.getPA().move(new Position(2908, 5265, 0));
+				player.move(new Position(2908, 5265, 0));
 			} else if (player.getX() == 2908) {
-				player.getPA().move(new Position(2909, 5265, 0));
+				player.move(new Position(2909, 5265, 0));
 			}
 			break;
 
 		case 26505:
 			if (player.getY() == 5333) {
-				player.getPA().move(new Position(2925, 5332, 2));
+				player.move(new Position(2925, 5332, 2));
 			} else if (player.getY() == 5332) {
-				player.getPA().move(new Position(2925, 5333, 2));
+				player.move(new Position(2925, 5333, 2));
 			}
 			break;
 
@@ -292,11 +292,11 @@ public class ObjectInteraction {
 		 * Scorpia pit
 		 */
 		case 26762:
-			player.getPA().move(new Position(3243, 10351, 0));
+			player.move(new Position(3243, 10351, 0));
 			break;
 
 		case 26763:
-			player.getPA().move(new Position(3232, 3950, 0));
+			player.move(new Position(3232, 3950, 0));
 			break;
 
 		/**
@@ -313,11 +313,11 @@ public class ObjectInteraction {
 		 * Sparkling pool
 		 */
 		case 2879:
-			player.getPA().move(new Position(2538, 4716, 0));
+			player.move(new Position(2538, 4716, 0));
 			break;
 
 		case 2878:
-			player.getPA().move(new Position(2509, 4689, 0));
+			player.move(new Position(2509, 4689, 0));
 			break;
 
 		/**

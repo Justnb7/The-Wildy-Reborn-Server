@@ -17,7 +17,7 @@ public class FightCaveInstance {
 
 	public void startUp(Player player) {
 		if (player != null && instance != null) {
-			player.getPA().move(new Position(2413, 5117, instance.getHeight()));
+			player.move(new Position(2413, 5117, instance.getHeight()));
 			enterFightCaves(player);
 		}
 	}

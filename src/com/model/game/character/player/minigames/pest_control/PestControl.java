@@ -90,7 +90,7 @@ public class PestControl {
 		if (!lobbyActive && lobbyMembers.size() == 0 && lobbyTime <= 0)
 			createNewLobby();
 		addLobbyMember(player);
-		player.getPA().move(new Position(2661, 2639, 0));
+		player.move(new Position(2661, 2639, 0));
 		if (gameActive)
 			player.getActionSender().sendMessage("You have joined the pest control waiting lobby. There is currently a game going on.");
 		else
@@ -106,7 +106,7 @@ public class PestControl {
 	public static void removeFromLobby(Player player) {
 		removeLobbyMember(player);
 		if (Boundary.isIn(player, LOBBY_BOUNDARY)) {
-			player.getPA().move(new Position(2657, 2639, 0));
+			player.move(new Position(2657, 2639, 0));
 			player.getActionSender().sendMessage("You have left the pest control waiting lobby.");
 		}
 	}
@@ -209,7 +209,7 @@ public class PestControl {
 				if (gameMembers.get(i) != null) {
 					if (Boundary.isIn(gameMembers.get(i), GAME_BOUNDARY)) {
 						Player player = gameMembers.get(i);
-						player.getPA().move(new Position(2657, 2639, 0));
+						player.move(new Position(2657, 2639, 0));
 						if (player.pestControlDamage > MINIMUM_DAMAGE) {//TODO ask jak how to do this
 							player.getActionSender().sendMessage("You won! You obtain " + (POINT_REWARD) + " commendation points and " + coins + " coins as a bonus.");
 							player.setPestControlPoints(player.getPestControlPoints() + POINT_REWARD);
@@ -229,7 +229,7 @@ public class PestControl {
 				if (gameMembers.get(i) != null) {
 					if (Boundary.isIn(gameMembers.get(i), GAME_BOUNDARY)) {
 						Player player = gameMembers.get(i);
-						player.getPA().move(new Position(2657, 2639, 0));
+						player.move(new Position(2657, 2639, 0));
 						player.getActionSender().sendMessage("You lost....better luck next time.");
 						PrayerHandler.resetAllPrayers(player);
 						player.getSkills().setLevel(3, player.getSkills().getLevelForExperience(3));
@@ -262,7 +262,7 @@ public class PestControl {
 		removeLobbyMember(player);
 		addGameMember(player);
 		player.pestControlDamage = 0;
-		player.getPA().move(new Position(2656 + Utility.random(2), 2614 - Utility.random(3), 0));
+		player.move(new Position(2656 + Utility.random(2), 2614 - Utility.random(3), 0));
 		player.getActionSender().sendMessage("Welcome to pest control, defeat all the portals within the time frame.");
 		player.setSpecialAmount(100);
 		player.getWeaponInterface().refreshSpecialAttack();

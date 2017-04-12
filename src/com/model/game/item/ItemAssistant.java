@@ -788,7 +788,7 @@ public class ItemAssistant {
 									.getEquipment().getWeaponId()]));
 			resetBonus();
 			getBonus();
-			player.getPA().resetAutoCast();
+			player.resetAutoCast();
 			player.autoCast = false;
 			writeBonus();
 			WeaponAnimation.execute(player, new Item(player.playerEquipment[player.getEquipment().getWeaponId()]));
@@ -819,7 +819,7 @@ public class ItemAssistant {
 		player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
 		player.getItems().resetBonus();
 		player.getItems().getBonus();
-		player.getPA().resetAutoCast();
+		player.resetAutoCast();
 		player.getItems().writeBonus();
 		WeaponAnimation.execute(player, new Item(wearID));
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);

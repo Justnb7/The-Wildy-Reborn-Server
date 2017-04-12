@@ -14,7 +14,7 @@ public class HomeQuestTabPage extends QuestTabPage {
 
 	@Override
 	public void write(Player player) {
-		write(player, "<img=12><col=FFFFFF>Kill death ratio: <col=00CC00>"+player.getPA().displayRatio(player), 1);
+		write(player, "<img=12><col=FFFFFF>Kill death ratio: <col=00CC00>"+player.displayRatio(player), 1);
 		write(player, "<img=27><col=FFFFFF>Kills: <col=00CC00>"+ player.getKillCount(), 2);
 		write(player, "<img=27><col=FFFFFF>Deaths: <col=00CC00>"+ player.getDeathCount(), 3);
 		write(player, "<img=27><col=FFFFFF>Current killstreak: <col=00CC00>"+ player.getCurrentKillStreak(), 4);

@@ -1,5 +1,6 @@
 package com.model.game.character.player;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1428,7 +1429,7 @@ public class Player extends Entity {
 				int x = teleportToX;
 				int y = teleportToY;
 				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
-					player.getPA().move(new Position(2657, 2639, 0));
+					player.move(new Position(2657, 2639, 0));
 				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
 					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
 					player.getFightCave().startWave();
@@ -1524,10 +1525,6 @@ public class Player extends Entity {
 		return itemAssistant;
 	}
 
-	public PlayerAssistant getPA() {
-		return playerAssistant;
-	}
-	
 	private PlayerFollowing player_following = new PlayerFollowing(this);
 	
 	public PlayerFollowing getPlayerFollowing() {
@@ -1606,7 +1603,6 @@ public class Player extends Entity {
 	}
 
 	private ItemAssistant itemAssistant = new ItemAssistant(this);
-	private PlayerAssistant playerAssistant = new PlayerAssistant(this);
 	private CombatAssistant combatAssistant = new CombatAssistant(this);
 	private TradeContainer tradeContainer = new TradeContainer(this);
 	
@@ -2923,5 +2919,44 @@ public class Player extends Entity {
      */
     public void setWeaponAnimation(WeaponAnimation weaponAnimation) {
         this.weaponAnimation = weaponAnimation;
+    }
+    
+    DecimalFormat format = new DecimalFormat("##.##");
+
+	public static double getRatio(int kills, int deaths) {
+		double ratio = kills / Math.max(1D, deaths);
+		return ratio;
+	}
+
+	public double getRatio(Player player) {
+		return getRatio(player.getKillCount(), player.getDeathCount());
+	}
+
+	public String displayRatio(Player player) {
+		return format.format(getRatio(player));
+	}
+
+	public void resetAutoCast() {
+        autocastId = 0;
+        onAuto = false;
+        autoCast = false;
+        getActionSender().sendConfig(108, 0);
+    }
+	
+	public void move(Position target) {
+        if (this.isBusy()) {
+            return;
+        }
+		if (!this.lastSpear.elapsed(4000)) {
+			this.getActionSender().sendMessage("You're trying to move too fast.");
+			return;
+		}
+		this.getMovementHandler().reset();
+		this.teleportToX = target.getX();
+		this.teleportToY = target.getY();
+		this.teleHeight = target.getZ();
+		this.setTeleportTarget(target);
+		this.getSkillCyclesTask().stop();
+        System.out.println("to "+Arrays.toString(new int[] {target.getX(), target.getY(), target.getZ()}));
     }
 }

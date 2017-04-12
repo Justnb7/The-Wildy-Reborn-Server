@@ -183,11 +183,11 @@ public class PlayerDeath {
 			//TODO ask Jak if this is correct
 			player.getController().onDeath(player);
 			if (player.rights == Rights.ADMINISTRATOR && player.getName().equalsIgnoreCase("test") && killedBy != null) {
-				player.getPA().move(killedBy.getPosition());
+				player.move(killedBy.getPosition());
 			} else if (player.getController().getRespawnLocation(player) != null) {
-				player.getPA().move(player.getController().getRespawnLocation(player));
+				player.move(player.getController().getRespawnLocation(player));
 	        } else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
-				player.getPA().move(new Position(2656 + Utility.random(2), 2614 - Utility.random(3), 0));
+				player.move(new Position(2656 + Utility.random(2), 2614 - Utility.random(3), 0));
 	        } else if (Boundary.isIn(player, Boundary.FIGHT_CAVE)) {
 				player.getFightCave().exitCave(3);
 	        }

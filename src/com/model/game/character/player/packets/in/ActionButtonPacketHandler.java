@@ -200,7 +200,7 @@ public class ActionButtonPacketHandler implements PacketType {
 				break;
 			}
 			player.autocastId = -1;
-			player.getPA().resetAutoCast();
+			player.resetAutoCast();
 			player.onAuto = false;
 			break;
 
@@ -246,7 +246,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 			
 		case 55095:
-			player.getPA().handleDestroyItem();
+			handleDestroyItem(player);
 			break;
 
 		/*
@@ -653,7 +653,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 7217:
 		case 7212:
 		case 24017:
-			player.getPA().resetAutoCast();
+			player.resetAutoCast();
 			player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], ItemDefinition.forId(player.playerEquipment[player.getEquipment().getWeaponId()]).getName());
 			break;
 			
@@ -662,7 +662,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 1097:
 			player.onAuto = true;
 			if (player.autocastId > 0) {
-				player.getPA().resetAutoCast();
+				player.resetAutoCast();
 			} else {
 				if (player.getSpellBook() == SpellBook.ANCIENT) {
 					player.write(new SendSidebarInterfacePacket(0, 1689));
@@ -908,6 +908,16 @@ public class ActionButtonPacketHandler implements PacketType {
 		}
 		if (player.isAutoButton(button)) {
 			player.assignAutocast(button);
+		}
+	}
+
+	private final void handleDestroyItem(Player player) {
+		if (player.getDestroyItem() != -1) {
+			if (player.getItems().playerHasItem(player.getDestroyItem())) {
+				player.getItems().deleteItem(player.getDestroyItem());
+				player.setDestroyItem(-1);
+				player.getActionSender().sendRemoveInterfacePacket();
+			}
 		}
 	}
 }

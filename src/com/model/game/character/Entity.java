@@ -540,13 +540,6 @@ public abstract class Entity {
 		return isNPC() ? null : (Player) this;
 	}
 	
-	/**
-	 * Returns the packet sender for the entity, mainly used for players
-	 * 
-	 * @return
-	 */
-	public abstract ActionSender getActionSender();
-	
 	public Hit take_hit(Entity attacker, int damage) {
 		return take_hit(attacker, damage, null);
 	}
@@ -848,8 +841,6 @@ public abstract class Entity {
 	public Position getPosition() {
 		return location;
 	}
-	
-	
 
 	public void playGraphics(Graphic graphic) {
 		currentGraphic = graphic;
@@ -1003,5 +994,12 @@ public abstract class Entity {
 	 * @return The projectile lockon index of this mob.
 	 */
 	public abstract int getProjectileLockonIndex();
+	
+	/**
+	 * Returns the packet sender for the entity, mainly used for players
+	 * 
+	 * @return
+	 */
+	public abstract ActionSender getActionSender();
 	
 }

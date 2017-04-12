@@ -19,6 +19,7 @@ import com.model.game.character.player.content.teleport.TeleTabs.TabData;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.packets.PacketType;
+import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
@@ -247,7 +248,7 @@ public class ItemOptionPacket implements PacketType {
 
 		//Special case for destroying items.
 		if(!ItemDefinition.forId(item.getId()).isTradeable()) {
-			player.getPA().destroyItem(item);
+			destroyItem(player, item);
 			player.setDestroyItem(item.getId());
 			return;
 		}
@@ -266,6 +267,18 @@ public class ItemOptionPacket implements PacketType {
 		
 		//Once completed all checks we can go ahead and send the sound
 		player.write(new SendSoundPacket(376, 1, 0));
+	}
+
+	private final void destroyItem(Player player, Item item) {
+		player.getActionSender().sendUpdateItem(14171, item.getId(), 0, 1);
+		player.getActionSender().sendString("Are you sure you want to drop this item?", 14174);
+		player.getActionSender().sendString("Yes.", 14175);
+		player.getActionSender().sendString("No.", 14176);
+		player.getActionSender().sendString("", 14177);
+		player.getActionSender().sendString("This item is valuable, you will not", 14182);
+		player.getActionSender().sendString("get it back once lost.", 14183);
+		player.getActionSender().sendString(ItemDefinition.forId(item.getId()).getName(), 14184);
+		player.write(new SendChatBoxInterfacePacket(14170));
 	}
 
 	/**

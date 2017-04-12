@@ -83,7 +83,7 @@ public class WarriorsGuild {
 	public void handleDoor() {
 		if(player.absX == 2847 && player.absY == 3540 || player.absX == 2847 && player.absY == 3541) {
 			CycleEventHandler.getSingleton().stopEvents(this);
-			player.getPA().move(new Position(player.absX - 1, player.absY, 2));
+			player.move(new Position(player.absX - 1, player.absY, 2));
 		} else if(player.absX == 2846 && player.absY == 3540 || player.absX == 2846 && player.absY == 3541 || Boundary.isIn(player, WAITING_ROOM_BOUNDARY)) {
 			if(player.getItems().playerHasItem(8851, 200)) {
 				int current = currentDefender();
@@ -174,7 +174,7 @@ public class WarriorsGuild {
 	
 	public void removeFromRoom() {
 		if (Boundary.isIn(player, CYCLOPS_BOUNDARY)) {
-			player.getPA().move(new Position(2846, 3540, 2));
+			player.move(new Position(2846, 3540, 2));
 			player.dialogue().start("OUT_OF_TOKENS");
 		}
 	}

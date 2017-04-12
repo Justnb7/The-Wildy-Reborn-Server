@@ -30,7 +30,7 @@ public class KrakenInstance {
 	 */
 	public void start(Player player) {
 		instance = (SingleInstancedArea) InstancedAreaManager.getSingleton().createSingleInstancedArea(player, Boundary.KRAKEN);
-		player.getPA().move(new Position(3696, 5798, instance.getHeight()));
+		player.move(new Position(3696, 5798, instance.getHeight()));
 		startUp(player);
 	}
 	

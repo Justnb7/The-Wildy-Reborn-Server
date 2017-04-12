@@ -372,11 +372,28 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data too
 	 */
 	private static void addNewPlayer(Player myPlayer, Player otherPlayer, GameBuffer buffer) {
+		/*
+		 * Write the player index.
+		 */
 		buffer.writeBits(11, otherPlayer.getIndex());
+		
+		/*
+		 * Write two flags here: the first indicates an update is required (this
+		 * is always true as we add the appearance after adding a player) and
+		 * the second to indicate we should discard client-side walk queues.
+		 */
 		buffer.writeBits(true);
 		buffer.writeBits(true);
+		
+		/*
+		 * Calculate the x and y offsets.
+		 */
 		int yPos = otherPlayer.getY() - myPlayer.getY();
 		int xPos = otherPlayer.getX() - myPlayer.getX();
+		
+		/*
+		 * Write the x and y offsets.
+		 */
 		buffer.writeBits(5, yPos);
 		buffer.writeBits(5, xPos);
 	}

@@ -185,29 +185,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * The players game mode, can either be PKER or TRAINED.
-	 */
-    private String gameMode = "PKER";
-	
-    /**
-     * Gets the players game mode.
-     * 
-     * @return
-     */
-	public String getGameMode() {
-		return gameMode;
-	}
-	
-	/**
-	 * Sets the players game mode.
-	 * 
-	 * @param gameMode
-	 */
-	public void setGameMode(String gameMode) {
-		this.gameMode = gameMode;
-	}
-	
-	/**
 	 * The player is still in the tutorial
 	 */
     private boolean tutorial = true;
@@ -449,19 +426,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Gear points are given every 5 minutes.
-	 */
-	private int gearPoints;
-	
-	public int getGearPoints() {
-		return gearPoints;
-	}
-	
-	public void setGearPoints(int gearPoints) {
-		this.gearPoints = gearPoints;
-	}
-	
-	/**
 	 * The players current prayer points
 	 */
 	private double prayerPoint = 1.0;
@@ -697,36 +661,72 @@ public class Player extends Entity {
 	 */
 	public SpellBook spell = SpellBook.MODERN;
 	
+	/**
+	 * Get the players current spellbook
+	 * 
+	 * @return the spellbook
+	 */
 	public SpellBook getSpellBook() {
 		return spell;
 	}
 
+	/**
+	 * Set the players spellbook
+	 * 
+	 * @param the
+	 *            spellbook
+	 */
 	public void setSpellBook(SpellBook spell) {
 		this.spell = spell;
 	}
 	
+	/**
+	 * A custom yell color
+	 */
 	private String yellColor = "ff0000";
 	
+	/**
+	 * Get the custom yell colot
+	 * 
+	 * @return the custom color
+	 */
 	public String getYellColor() {
 		return yellColor;
 	}
 
+	/**
+	 * Set the custom yell color
+	 * 
+	 * @param the
+	 *            custom yellColor
+	 */
 	public void setYellColor(String yellColor) {
 		this.yellColor = yellColor;
-	}
-	
-	public boolean inDebugMode() {
-		return debugMode;
-	}
-	
-	public void setDebugMode(boolean on) {
-		this.debugMode = on;
 	}
 	
 	/**
 	 * The player is in debug mode
 	 */
 	private boolean debugMode;
+	
+	/**
+	 * Are we using the debug mode?
+	 * 
+	 * @return the debug option
+	 */
+	public boolean inDebugMode() {
+		return debugMode;
+	}
+	
+	/**
+	 * Activate the debug mode
+	 * 
+	 * @param We're
+	 *            activating the debug option
+	 */
+	public void setDebugMode(boolean on) {
+		this.debugMode = on;
+	}
 
 	/**
 	 * The shop that you currently have open.
@@ -863,21 +863,6 @@ public class Player extends Entity {
 	}
 
 	public long teleblockLength;
-
-	public boolean WithinDistance(int objectX, int objectY, int playerX, int playerY, int distance) {
-		for (int i = 0; i <= distance; i++) {
-			for (int j = 0; j <= distance; j++) {
-				if ((objectX + i) == playerX && ((objectY + j) == playerY || (objectY - j) == playerY || objectY == playerY)) {
-					return true;
-				} else if ((objectX - i) == playerX && ((objectY + j) == playerY || (objectY - j) == playerY || objectY == playerY)) {
-					return true;
-				} else if (objectX == playerX && ((objectY + j) == playerY || (objectY - j) == playerY || objectY == playerY)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
 	public int[][] MAGIC_SPELLS = { { 1152, 1, 711, 90, 91, 92, 2, 5, 556, 1, 558, 1, 0, 0, 0, 0, 993 }, // wind
 																												// strike
@@ -1101,31 +1086,9 @@ public class Player extends Entity {
 	}
 
 	private GameBuffer updateBlock = null;
-	
-	public void setForceMovement(int xx1, int yy1, int xx2, int yy2, int speedd1, int speedd2, int directionn) {
-        this.x1 = xx1;
-        this.y1 = yy1;
-        this.x2 = xx2;
-        this.y2 = yy2;
-        this.speed1 = speedd1;
-        this.speed2 = speedd2;
-        this.direction = directionn;
-        this.forceMovementUpdateRequired = true;
-    }
-
-	public void appendMask400Update(GameBuffer str) {
-		str.writeByteS(x1);
-		str.writeByteS(y1);
-		str.writeByteS(x2);
-		str.writeByteS(y2);
-		str.writeWordBigEndianA(speed1);
-		str.writeWordA(speed2);
-		str.writeByteS(direction);
-	}
 
 	public void clearUpdateFlags() {
 		this.reset();
-		forceMovementUpdateRequired = false;
 		setTeleporting(false);
 		faceTileX = -1;
 		faceTileY = -1;
@@ -1217,11 +1180,6 @@ public class Player extends Entity {
 
 	public String setIdentity(String identity) {
 		return this.identity = identity;
-	}
-
-	public void mapData(boolean s) {
-		outStream.writeFrame(99);
-		outStream.writeByte(s ? 2 : 0);
 	}
 
 	public Player(String username) {
@@ -2002,18 +1960,7 @@ public class Player extends Entity {
 
 	public int packetSize = 0, packetType = -1;
 	
-	private long lastContainerSearch;
-	
-	public long getLastContainerSearch() {
-		return lastContainerSearch;
-	}
-
-	public void setLastContainerSearch(long lastContainerSearch) {
-		this.lastContainerSearch = lastContainerSearch;
-	}
-	
 	public long lastCast;
-	public int projectileStage;
 	public boolean usingObelisk = false;
 
 	public int getMaximumHealth() {
@@ -2672,13 +2619,6 @@ public class Player extends Entity {
 	public int bankItemsN[] = new int[BANK_SIZE];
 	public int[] playerEquipment = new int[14];
 	public int[] playerEquipmentN = new int[14];
-	private int x1 = -1;
-	private int y1 = -1;
-	private int x2 = -1;
-	private int y2 = -1;
-	private int speed1 = -1;
-	private int speed2 = -1;
-	private int direction = -1;
 
 	public int lastClickedItem;
 	public int[] itemKeptId = new int[4];
@@ -2699,12 +2639,11 @@ public class Player extends Entity {
 	 */
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
-	public boolean forceMovementUpdateRequired = false;
 	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
-	isSkulled, hasMultiSign, saveCharacter,
-	properLogout, acceptedTrade, saveFile, takeAsNote;
+	isSkulled, hasMultiSign,
+	properLogout, acceptedTrade, takeAsNote;
 	
 	/**
 	 * Strings

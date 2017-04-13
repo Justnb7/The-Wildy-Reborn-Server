@@ -70,7 +70,6 @@ public class LoginSession extends Session {
 		player.setInStreamDecryption(credential.getDecryptor());
 		player.setOutStreamDecryption(credential.getEncryptor());
 		player.outStream.packetEncryption = credential.getEncryptor();
-		player.saveCharacter = false;
 		
 		if (ConnectionHandler.isNamedBanned(player.getName())) {
 			sendReturnCode(ctx.channel(), 4);
@@ -189,7 +188,6 @@ public class LoginSession extends Session {
 				player.playerEquipmentN[i] = 0;
 			}
 		}
-		player.saveCharacter = true;
 		
 		/*
 		 * This bit should be done after the players loaded

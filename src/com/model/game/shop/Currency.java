@@ -55,33 +55,6 @@ public enum Currency {
 			return Shop.getDonateValue(id);
 		}
 	},
-	FREE_POINTS(new GeneralCurrency() {
-		@Override
-		public void takeCurrency(Player player, int amount) {
-			player.setGearPoints(player.getGearPoints() - amount);
-		}
-
-		@Override
-		public void recieveCurrency(Player player, int amount) {
-			player.setGearPoints(player.getGearPoints() + amount);
-			
-		}
-
-		@Override
-		public int currencyAmount(Player player) {
-			return player.getGearPoints();
-		}
-
-		@Override
-		public boolean canRecieveCurrency(Player player) {
-			return true;
-		}
-	}) {
-		@Override
-		public int calculateCurrency(Player player, int id) {
-			return Shop.getFreePointsValue(id);
-		}
-	},
 	SLAYER_POINTS(new GeneralCurrency() {
 		@Override
 		public void takeCurrency(Player player, int amount) {

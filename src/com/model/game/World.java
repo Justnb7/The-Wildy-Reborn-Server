@@ -300,12 +300,6 @@ public class World implements Service {
 		}
 
 		/*
-		 * Finally allow ourself to be saved
-		 */
-		player.saveFile = true;
-		player.saveCharacter = true;
-
-		/*
 		 * Stop all of the players tasks
 		 */
 

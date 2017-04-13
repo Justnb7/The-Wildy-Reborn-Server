@@ -264,9 +264,7 @@ public class PlayerDeath {
 					break;
 
 				}
-				if (player.getGameMode() == "TRAINED") {
-					trainedBonus = Utility.random(1, 5);
-				}
+
 				int reward = (int) (blood_Money + memberBonus + trainedBonus);
 				killer.getItems().addItemUnderAnyCircumstance(13307, reward);
 				// killer.setPkPoints(killer.getPkPoints() + totalPoints);

@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
 public class TeleTabs {
@@ -56,7 +56,7 @@ public class TeleTabs {
 			Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 				@Override
 				public void execute() {
-					TeleportExecutor.teleport(c, new Teleport(new Position(data.posX, data.posY, 0), TeleportType.TABLET), false);
+					TeleportExecutor.teleport(c, new Teleport(new Location(data.posX, data.posY, 0), TeleportType.TABLET), false);
 					this.stop();
 				}
 

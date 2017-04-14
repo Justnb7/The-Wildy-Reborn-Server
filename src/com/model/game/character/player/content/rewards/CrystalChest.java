@@ -3,7 +3,7 @@ package com.model.game.character.player.content.rewards;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.utility.Utility;
 
 /**
@@ -52,7 +52,7 @@ public class CrystalChest {
 	 * @param x
 	 * @param y
 	 */
-	public static void searchChest(final Player player, Position position) {
+	public static void searchChest(final Player player, Location position) {
 		if (!player.getItems().playerHasItem(989)) {
 			return;
 		}

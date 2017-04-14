@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.SimpleDialogues;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 /**
  * The {@link Mining} class will manage all operations that the mining skill entails. 
@@ -34,7 +34,7 @@ public class Mining {
 	 * @param objectId	the object the player is trying to mine from
 	 * @param position	the location of the object
 	 */
-	public void mine(int objectId, Position position) {
+	public void mine(int objectId, Location position) {
 		Rock rock = Rock.forObjectId(objectId);
 		if (rock == null) {
 			return;
@@ -64,7 +64,7 @@ public class Mining {
 		}
 		player.getActionSender().sendMessage("You swing your pickaxe at the rock.");
 		player.playAnimation(pickaxe.getAnimation());
-		player.face(player, new Position(position.getX(), position.getY()));
+		player.face(player, new Location(position.getX(), position.getY()));
 		player.getSkillCyclesTask().stop();
 		player.getSkillCyclesTask().setSkill(Skills.MINING);
 		player.getSkillCyclesTask().add(new MiningEvent(player, objectId, position, rock, pickaxe), extractionTime);

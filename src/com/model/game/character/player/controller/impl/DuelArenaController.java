@@ -5,11 +5,11 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public class DuelArenaController extends Controller {
 
-	private final Position RESPAWN = new Position(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0);
+	private final Location RESPAWN = new Location(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0);
 
 	@Override
 	public void tick(Player player) {
@@ -65,7 +65,7 @@ public class DuelArenaController extends Controller {
 	}
 
 	@Override
-	public Position getRespawnLocation(Player player) {
+	public Location getRespawnLocation(Player player) {
 		return RESPAWN;
 	}
 

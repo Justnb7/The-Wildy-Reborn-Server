@@ -6,7 +6,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -36,7 +36,7 @@ public class LunarSpells {
 	}
 	
 	private void castHomeTeleport() {
-		TeleportExecutor.teleport(player, new Position(3096, 3503, 0));
+		TeleportExecutor.teleport(player, new Location(3096, 3503, 0));
 	}
 
 	public void castVengeance() {

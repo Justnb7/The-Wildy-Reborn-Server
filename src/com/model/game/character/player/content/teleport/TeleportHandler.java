@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public class TeleportHandler {
 
@@ -19,58 +19,58 @@ public class TeleportHandler {
 	public enum TeleportData {
 
 		/* Skilling */
-		WOODCUTTING(TeleportationTypes.SKILLING, 222219, 57054, "Woodcutting", new Position(2726, 3490), 0, "---", "Safe", false),
-		MINING(TeleportationTypes.SKILLING, 222223, 57058, "Mining", new Position(3253, 3421, 0), 0, "---", "<col=ff0000>Safe", true),
-		FISHING_AND_COOKING(TeleportationTypes.SKILLING, 222227, 57062, "Fishing & Cooking", new Position(2809, 3440, 0), 0, "---", "<col=ff0000>Danger", false),
-		AGILITY(TeleportationTypes.SKILLING, 222231, 57066, "Agility", new Position(3222, 3218, 0), 0, "---", "<col=ff0000>Danger", true),
-		FARMING(TeleportationTypes.SKILLING, 222235, 57070, "Farming", new Position(2964, 3378, 0), 0, "---", "<col=ff0000>Danger <col=ff7000>+ Multi", false),
+		WOODCUTTING(TeleportationTypes.SKILLING, 222219, 57054, "Woodcutting", new Location(2726, 3490), 0, "---", "Safe", false),
+		MINING(TeleportationTypes.SKILLING, 222223, 57058, "Mining", new Location(3253, 3421, 0), 0, "---", "<col=ff0000>Safe", true),
+		FISHING_AND_COOKING(TeleportationTypes.SKILLING, 222227, 57062, "Fishing & Cooking", new Location(2809, 3440, 0), 0, "---", "<col=ff0000>Danger", false),
+		AGILITY(TeleportationTypes.SKILLING, 222231, 57066, "Agility", new Location(3222, 3218, 0), 0, "---", "<col=ff0000>Danger", true),
+		FARMING(TeleportationTypes.SKILLING, 222235, 57070, "Farming", new Location(2964, 3378, 0), 0, "---", "<col=ff0000>Danger <col=ff7000>+ Multi", false),
 
 		/* Player Vs Player */
-		WILDERNESS(TeleportationTypes.PVP, 222219, 57054, "Wilderness", new Position(3093, 3523), 0, "---", "---", false),
-		MAGE_BANK(TeleportationTypes.PVP, 222223, 57058, "Mage Bank", new Position(2540, 4717, 0), 0, "---", "---", false),
-		EAST_DRAGONS(TeleportationTypes.PVP, 222227, 57062, "East Dragons", new Position(3333, 3666, 0), 0, "---", "---", false),
-		CASTLE(TeleportationTypes.PVP, 222231, 57066, "Castle", new Position(3002, 3626, 0), 0, "---", "---", false),
+		WILDERNESS(TeleportationTypes.PVP, 222219, 57054, "Wilderness", new Location(3093, 3523), 0, "---", "---", false),
+		MAGE_BANK(TeleportationTypes.PVP, 222223, 57058, "Mage Bank", new Location(2540, 4717, 0), 0, "---", "---", false),
+		EAST_DRAGONS(TeleportationTypes.PVP, 222227, 57062, "East Dragons", new Location(3333, 3666, 0), 0, "---", "---", false),
+		CASTLE(TeleportationTypes.PVP, 222231, 57066, "Castle", new Location(3002, 3626, 0), 0, "---", "---", false),
 
 		/* Player Vs Monster */
-		KING_BLACK_DRAGON(TeleportationTypes.PVM, 222219, 57054, "King Black Dragon", new Position(2997, 3849, 0), 0, "High combat", "40+ Wilderness", false),
-		CHAOS_ELEMENT(TeleportationTypes.PVM, 222223, 57058, "Chaos Elemental", new Position(3284, 3913, 0), 0, "---", "50+ Combat", false),
-		KRAKEN(TeleportationTypes.PVM, 222227, 57062, "Kraken", new Position(2481, 9799, 0), 0, "---", "---", false),
-		CORPOREAL_BEAST(TeleportationTypes.PVM, 222231, 57066, "Corporeal Beast", new Position(2948, 4385, 2), 0, "High combat", "Team Based", false),
-		CHAOS_FANATIC(TeleportationTypes.PVM, 222235, 57070, "Chaos Fanatic", new Position(2981, 3837, 0), 0, "High combat", "40+ Wild", false),
-		CRAZY_ARCHAEOLOGIST(TeleportationTypes.PVM, 222239, 57074, "Crazy Archaeologist", new Position(2975, 3715, 0), 0, "High combat", "20+ Wild", false),
-		CALLISTO(TeleportationTypes.PVM, 222243, 57078, "Callisto", new Position(3283, 3853, 0), 0, "High combat", "40+ Wild", false),
-		VETION(TeleportationTypes.PVM, 222247, 57082, "Vet'ion", new Position(3210, 3780, 0), 0, "High combat", "30+ Wild", false),
-		SCORPIA(TeleportationTypes.PVM, 222251, 57086, "Scorpia", new Position(3233, 3943, 0), 0, "High combat", "50+ Wild", false),
-		VENENATIS(TeleportationTypes.PVM, 222255, 57090, "Venenatis", new Position(3334, 3741, 0), 0, "High combat", "40+ Wild", false),
-		COMMANDER_ZILYANA(TeleportationTypes.PVM, 223003, 57094, "Commander Zilyana", new Position(2912, 5266, 0), 0, "High combat", "Team Based", false),
-		GENERAL_GRAARDOR(TeleportationTypes.PVM, 223007, 57098, "General Graardor", new Position(2857, 5354, 2), 0, "High combat", "Team Based", false),
-		KRIL_TSUTSAROTH(TeleportationTypes.PVM, 223011, 57102, "K'ril Tsutsaroth", new Position(2924, 5340, 2), 0, "High combat", "Team Based", false),
-		KREE_ARRA(TeleportationTypes.PVM, 223015, 57106, "Kree'arra", new Position(2840, 5289, 2), 0, "High combat", "Team Based", false),
-		BARRELCHEST(TeleportationTypes.PVM, 223019, 57110, "Barrelchest", new Position(3277, 3882, 0), 0, "High combat", "Team Based", false),
-		ZOMBIE_CHAMPION(TeleportationTypes.PVM, 223023, 57114, "Zombie Champion", new Position(3020, 3631, 0), 0, "High combat", "Team Based", false),
-		ROCK_CRABS(TeleportationTypes.PVM, 223027, 57118, "Rock Crabs", new Position(2671, 3712, 0), 0, "High combat", "Team Based", false),
-		TAVERLY_DUNGEON(TeleportationTypes.PVM, 223031, 57122, "Taverly", new Position(2884, 9799, 0), 0, "High combat", "Team Based", false),
-		RELEKKA_DUNGEON(TeleportationTypes.PVM, 223035, 57126, "Relekka", new Position(2806, 10000, 0), 0, "High combat", "Team Based", false),
-		BRMIHAVE_DUNGEON(TeleportationTypes.PVM, 223039, 57130, "Brimhaven", new Position(2709, 9564, 0), 0, "High combat", "Team Based", false),
-		SLAYER_TOWER(TeleportationTypes.PVM, 223043, 57134, "Slayer Tower", new Position(3428, 3538, 0), 0, "High combat", "Team Based", false),
-		SLAYER_CAVE(TeleportationTypes.PVM, 223047, 57138, "Slayer Cave", new Position(2439, 9824, 0), 0, "High combat", "Team Based", false),
+		KING_BLACK_DRAGON(TeleportationTypes.PVM, 222219, 57054, "King Black Dragon", new Location(2997, 3849, 0), 0, "High combat", "40+ Wilderness", false),
+		CHAOS_ELEMENT(TeleportationTypes.PVM, 222223, 57058, "Chaos Elemental", new Location(3284, 3913, 0), 0, "---", "50+ Combat", false),
+		KRAKEN(TeleportationTypes.PVM, 222227, 57062, "Kraken", new Location(2481, 9799, 0), 0, "---", "---", false),
+		CORPOREAL_BEAST(TeleportationTypes.PVM, 222231, 57066, "Corporeal Beast", new Location(2948, 4385, 2), 0, "High combat", "Team Based", false),
+		CHAOS_FANATIC(TeleportationTypes.PVM, 222235, 57070, "Chaos Fanatic", new Location(2981, 3837, 0), 0, "High combat", "40+ Wild", false),
+		CRAZY_ARCHAEOLOGIST(TeleportationTypes.PVM, 222239, 57074, "Crazy Archaeologist", new Location(2975, 3715, 0), 0, "High combat", "20+ Wild", false),
+		CALLISTO(TeleportationTypes.PVM, 222243, 57078, "Callisto", new Location(3283, 3853, 0), 0, "High combat", "40+ Wild", false),
+		VETION(TeleportationTypes.PVM, 222247, 57082, "Vet'ion", new Location(3210, 3780, 0), 0, "High combat", "30+ Wild", false),
+		SCORPIA(TeleportationTypes.PVM, 222251, 57086, "Scorpia", new Location(3233, 3943, 0), 0, "High combat", "50+ Wild", false),
+		VENENATIS(TeleportationTypes.PVM, 222255, 57090, "Venenatis", new Location(3334, 3741, 0), 0, "High combat", "40+ Wild", false),
+		COMMANDER_ZILYANA(TeleportationTypes.PVM, 223003, 57094, "Commander Zilyana", new Location(2912, 5266, 0), 0, "High combat", "Team Based", false),
+		GENERAL_GRAARDOR(TeleportationTypes.PVM, 223007, 57098, "General Graardor", new Location(2857, 5354, 2), 0, "High combat", "Team Based", false),
+		KRIL_TSUTSAROTH(TeleportationTypes.PVM, 223011, 57102, "K'ril Tsutsaroth", new Location(2924, 5340, 2), 0, "High combat", "Team Based", false),
+		KREE_ARRA(TeleportationTypes.PVM, 223015, 57106, "Kree'arra", new Location(2840, 5289, 2), 0, "High combat", "Team Based", false),
+		BARRELCHEST(TeleportationTypes.PVM, 223019, 57110, "Barrelchest", new Location(3277, 3882, 0), 0, "High combat", "Team Based", false),
+		ZOMBIE_CHAMPION(TeleportationTypes.PVM, 223023, 57114, "Zombie Champion", new Location(3020, 3631, 0), 0, "High combat", "Team Based", false),
+		ROCK_CRABS(TeleportationTypes.PVM, 223027, 57118, "Rock Crabs", new Location(2671, 3712, 0), 0, "High combat", "Team Based", false),
+		TAVERLY_DUNGEON(TeleportationTypes.PVM, 223031, 57122, "Taverly", new Location(2884, 9799, 0), 0, "High combat", "Team Based", false),
+		RELEKKA_DUNGEON(TeleportationTypes.PVM, 223035, 57126, "Relekka", new Location(2806, 10000, 0), 0, "High combat", "Team Based", false),
+		BRMIHAVE_DUNGEON(TeleportationTypes.PVM, 223039, 57130, "Brimhaven", new Location(2709, 9564, 0), 0, "High combat", "Team Based", false),
+		SLAYER_TOWER(TeleportationTypes.PVM, 223043, 57134, "Slayer Tower", new Location(3428, 3538, 0), 0, "High combat", "Team Based", false),
+		SLAYER_CAVE(TeleportationTypes.PVM, 223047, 57138, "Slayer Cave", new Location(2439, 9824, 0), 0, "High combat", "Team Based", false),
 		
 		/* Minigame */
-		DUEL_ARENA(TeleportationTypes.MINIGAME, 222219, 57054, "Duel Arena", new Position(3365, 3265, 0), 0, "---", "---", false),
-		FIGHT_CAVES(TeleportationTypes.MINIGAME, 222223, 57058, "Fight Caves", new Position(2439, 5171, 0), 0, "---", "---", false),
-		PEST_CONTROL(TeleportationTypes.MINIGAME, 222227, 57062, "Pest Control", new Position(2662, 2650, 0), 0, "---", "---", false);
+		DUEL_ARENA(TeleportationTypes.MINIGAME, 222219, 57054, "Duel Arena", new Location(3365, 3265, 0), 0, "---", "---", false),
+		FIGHT_CAVES(TeleportationTypes.MINIGAME, 222223, 57058, "Fight Caves", new Location(2439, 5171, 0), 0, "---", "---", false),
+		PEST_CONTROL(TeleportationTypes.MINIGAME, 222227, 57062, "Pest Control", new Location(2662, 2650, 0), 0, "---", "---", false);
 
 		private final TeleportationTypes teleportType;
 		private final int buttonId;
 		private final int stringId;
 		private final String name;
-		private final Position location;
+		private final Location location;
 		private final int cost;
 		private final String requirement;
 		private final String other;
 		private final boolean special;
 
-		private TeleportData(TeleportationTypes teleportType, int buttonId, int stringId, String name, Position location, int cost, String requirement, String other, boolean special) {
+		private TeleportData(TeleportationTypes teleportType, int buttonId, int stringId, String name, Location location, int cost, String requirement, String other, boolean special) {
 			this.teleportType = teleportType;
 			this.buttonId = buttonId;
 			this.stringId = stringId;
@@ -98,7 +98,7 @@ public class TeleportHandler {
 			return name;
 		}
 
-		public final Position getLocation() {
+		public final Location getLocation() {
 			return location;
 		}
 

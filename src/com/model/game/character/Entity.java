@@ -24,7 +24,7 @@ import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
 import com.model.utility.MutableNumber;
@@ -62,7 +62,7 @@ public abstract class Entity {
 	public boolean infected;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
-	public Position lastTile;
+	public Location lastTile;
 	
 	/**
 	 * Map region changing flag.
@@ -678,7 +678,7 @@ public abstract class Entity {
 	/**
 	 * The default, i.e. spawn, location.
 	 */
-	public static final Position DEFAULT_LOCATION = new Position(3087, 3495, 0);
+	public static final Location DEFAULT_LOCATION = new Location(3087, 3495, 0);
 
     /**
      * The index of the entity
@@ -688,17 +688,12 @@ public abstract class Entity {
     /**
 	 * The current location.
 	 */
-	private Position location;
-	
-	/**
-	 * The teleportation target.
-	 */
-	private Position teleportTarget = null;
+	private Location location;
 
 	/**
 	 * The last known map region.
 	 */
-	private Position lastKnownRegion = this.getPosition();
+	private Location lastKnownRegion = this.getPosition();
 
     private final EntityType type;
 
@@ -726,7 +721,7 @@ public abstract class Entity {
 	 * @param lastKnownRegion
 	 *            The last known map region.
 	 */
-	public void setLastKnownRegion(Position lastKnownRegion) {
+	public void setLastKnownRegion(Location lastKnownRegion) {
 		this.lastKnownRegion = lastKnownRegion;
 	}
 
@@ -735,7 +730,7 @@ public abstract class Entity {
 	 * 
 	 * @return The last known map region.
 	 */
-	public Position getLastKnownRegion() {
+	public Location getLastKnownRegion() {
 		return lastKnownRegion;
 	}
 	
@@ -745,7 +740,7 @@ public abstract class Entity {
 	 * @param position
 	 *            The position to face.
 	 */
-	public void face(Entity entity, Position position) {
+	public void face(Entity entity, Location position) {
 		//Faces the player
 		if(entity.getEntityType() == EntityType.PLAYER) {
 			faceTileX = 2 * position.getX() + 1;
@@ -789,47 +784,12 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * Checks if this entity has a target to teleport to.
-	 * 
-	 * @return <code>true</code> if so, <code>false</code> if not.
-	 */
-	public boolean hasTeleportTarget() {
-		return teleportTarget != null;
-	}
-
-	/**
-	 * Gets the teleport target.
-	 * 
-	 * @return The teleport target.
-	 */
-	public Position getTeleportTarget() {
-		return teleportTarget;
-	}
-
-	/**
-	 * Sets the teleport target.
-	 * 
-	 * @param teleportTarget
-	 *            The target location.
-	 */
-	public void setTeleportTarget(Position teleportTarget) {
-		this.teleportTarget = teleportTarget;
-	}
-
-	/**
-	 * Resets the teleport target.
-	 */
-	public void resetTeleportTarget() {
-		this.teleportTarget = null;
-	}
-	
-	/**
 	 * Sets the current location.
 	 * 
 	 * @param location
 	 *            The current location.
 	 */
-	public void setLocation(Position location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 
@@ -838,7 +798,7 @@ public abstract class Entity {
 	 * 
 	 * @return The current location.
 	 */
-	public Position getPosition() {
+	public Location getPosition() {
 		return location;
 	}
 
@@ -986,7 +946,7 @@ public abstract class Entity {
 	 * Gets the centre location of the entity.
 	 * @return The centre location of the entity.
 	 */
-	public abstract Position getCentreLocation();
+	public abstract Location getCentreLocation();
 	
 	/**
 	 * Gets the projectile lockon index of this mob.

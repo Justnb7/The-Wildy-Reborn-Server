@@ -8,7 +8,7 @@ import com.model.game.Constants;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -36,7 +36,7 @@ public class Prayer {
 	 * @param loc
 	 *         The location of the alter
 	 */
-	public void prayAltar(Position loc) {
+	public void prayAltar(Location loc) {
 		if (player.getRights().isBetween(1, 7)) {
 			if (player.getLastAltarPrayer() < 120000) {
 				player.getActionSender().sendMessage("You can only use the altar to restore your special attack every 2 minutes");

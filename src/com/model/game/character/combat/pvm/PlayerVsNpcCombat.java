@@ -11,7 +11,7 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
 /**
@@ -104,13 +104,13 @@ public class PlayerVsNpcCombat {
 			return true;
 		boolean projectile = player.getCombatType() == CombatStyle.RANGE || player.getCombatType() == CombatStyle.MAGIC;
 		if (projectile) {
-			for (Position pos : npc.getBorder()) {
+			for (Location pos : npc.getBorder()) {
 				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
 					return true;
 				}
 			}
 		} else {
-			for (Position pos : npc.getBorder()) {
+			for (Location pos : npc.getBorder()) {
 				if (ProjectilePathFinder.isInteractionPathClear(player.getPosition(), pos)) {
 					//player.write(new SendGameMessage("debug");
 					return true;
@@ -210,7 +210,7 @@ public class PlayerVsNpcCombat {
 
 		boolean inside = false;
 		boolean projectiles = player.getCombatType() != CombatStyle.MELEE;
-		for (Position tile : npc.getTiles()) {
+		for (Location tile : npc.getTiles()) {
 			if (player.absX == tile.getX() && player.absY == tile.getY()) {
 				inside = true;
 				break;
@@ -249,7 +249,7 @@ public class PlayerVsNpcCombat {
 						y3--;
 					}
 
-					Position location = new Position(x3, y3, z);
+					Location location = new Location(x3, y3, z);
 					double d = location.distance(player.getPosition());
 					if (d < lowDist) {
 						if (ignoreClip || !projectiles || projectiles
@@ -273,7 +273,7 @@ public class PlayerVsNpcCombat {
 
 	public static boolean inDistance(Player player, NPC npc) {
 		boolean hasDistance = npc.getId() == 5535 ? true : false; // force 5535 tents to always be hittable
-		for (Position pos : npc.getTiles()) {
+		for (Location pos : npc.getTiles()) {
 			double distance = pos.distance(player.getPosition());
 			if(Combat.usingHalberd(player) && distance <= 2) {
 				hasDistance = true;

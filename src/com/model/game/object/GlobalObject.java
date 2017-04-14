@@ -1,6 +1,6 @@
 package com.model.game.object;
 
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 /**
  * A global object is a visual model that is viewed by all players within a region.
@@ -36,15 +36,15 @@ public class GlobalObject {
 	/**
 	 * The location.
 	 */
-	private Position position;
+	private Location position;
 	
 	/**
 	 * Creates the game object.
-	 * @param Position The position.
+	 * @param Location The position.
 	 * @param type The type.
 	 * @param rotation The rotation.
 	 */
-	public GlobalObject(Position position, int face, int type) {
+	public GlobalObject(Location position, int face, int type) {
 		this.position = position;
 		this.type = type;
 		this.face = face;
@@ -120,7 +120,7 @@ public class GlobalObject {
 	 * Gets the position.
 	 * @return The position.
 	 */
-	public Position getPosition() {
+	public Location getPosition() {
 		return position;
 	}
 

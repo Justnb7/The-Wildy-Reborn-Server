@@ -8,7 +8,7 @@ import com.model.game.character.npc.pet.Pets;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.SimpleDialogues;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -55,7 +55,7 @@ public class MiningEvent extends CycleEvent {
 	/**
 	 * The position of the object we're mining
 	 */
-	private Position position;
+	private Location position;
 	
 	/**
 	 * Constructs a new {@link MiningEvent} for a single player
@@ -65,7 +65,7 @@ public class MiningEvent extends CycleEvent {
 	 * @param mineral	the mineral being mined
 	 * @param pickaxe	the pickaxe being used to mine
 	 */
-	public MiningEvent(Player player, int objectId, Position position, Rock rock, Pickaxe pickaxe) {
+	public MiningEvent(Player player, int objectId, Location position, Rock rock, Pickaxe pickaxe) {
 		this.player = player;
 		this.objectId = objectId;
 		this.position = position;
@@ -113,7 +113,7 @@ public class MiningEvent extends CycleEvent {
 				Server.getGlobalObjects().add(new GlobalObject(Rock.EMPTY_ROCK, position.getX(), position.getY(), position.getZ(), 0, 10, rock.getRespawnRate(), objectId));
 			}
 		//}
-		player.face(player, new Position(position.getX(), position.getY()));
+		player.face(player, new Location(position.getX(), position.getY()));
 		player.getItems().addItem(rock.getMineral(), 1);
 		player.getSkills().addExperience(Skills.MINING, rock.getExperience());
 		int random = Utility.random(rock.getPetChance());

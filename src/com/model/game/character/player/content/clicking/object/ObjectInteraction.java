@@ -16,7 +16,7 @@ import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.character.player.skill.woodcutting.Tree;
 import com.model.game.character.player.skill.woodcutting.Woodcutting;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.utility.cache.ObjectDefinition;
 
@@ -39,7 +39,7 @@ public class ObjectInteraction {
 	 * @param id
 	 *            The object
 	 */
-	public static void handleFirstClickAction(Player player, Position position, int id) {
+	public static void handleFirstClickAction(Player player, Location position, int id) {
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[ObjectInteraction] - position: %s object: %d ", position, id));
 		}
@@ -94,7 +94,7 @@ public class ObjectInteraction {
 					@Override
 					public void execute() {
 						player.getMovementHandler().setForcedMovement(false);
-						player.move(new Position(3017, 3850, 0));
+						player.move(new Location(3017, 3850, 0));
 						this.stop();
 					}
 				});
@@ -106,7 +106,7 @@ public class ObjectInteraction {
 					@Override
 					public void execute() {
 						player.getMovementHandler().setForcedMovement(false);
-						player.move(new Position(3069, 10255, 0));
+						player.move(new Location(3069, 10255, 0));
 						this.stop();
 					}
 				});
@@ -122,30 +122,30 @@ public class ObjectInteraction {
 			if (player.getY() == 9797) {
 				player.getKraken().start(player);
 			} else if (player.getY() == 5798) {
-				player.move(new Position(2486, 9797, 0));
+				player.move(new Location(2486, 9797, 0));
 			} else if (player.getX() == 2444) {
-				player.move(new Position(2430, 3424, 0));
+				player.move(new Location(2430, 3424, 0));
 			}
 			break;
 
 		case "cave":
 			if (player.getX() == 2430) {
-				player.move(new Position(2444, 9825, 0));
+				player.move(new Location(2444, 9825, 0));
 			}
 			break;
 
 		case "passage":
 			if (player.getX() == 2970) {
-				player.move(new Position(2974, 4384, 2));
+				player.move(new Location(2974, 4384, 2));
 			} else if (player.getX() == 2974) {
-				player.move(new Position(2970, 4384, 2));
+				player.move(new Location(2970, 4384, 2));
 			}
 			break;
 
 		case "lever":
 			if (player.getX() == 3153)
 				TeleportExecutor.executeLeverTeleport(player,
-						new Teleport(new Position(3090, 3475, player.getZ()), TeleportType.LEVER));
+						new Teleport(new Location(3090, 3475, player.getZ()), TeleportType.LEVER));
 			break;
 		}
 
@@ -188,9 +188,9 @@ public class ObjectInteraction {
 			if (player.heightLevel == 0) {
 				if (player.absX == 2855 || player.absX == 2854) {
 					if (player.absY == 3546)
-						player.move(new Position(player.absX, player.absY - 1, 0));
+						player.move(new Location(player.absX, player.absY - 1, 0));
 					else if (player.absY == 3545)
-						player.move(new Position(player.absX, player.absY + 1, 0));
+						player.move(new Location(player.absX, player.absY + 1, 0));
 				}
 			}
 			break;
@@ -200,33 +200,33 @@ public class ObjectInteraction {
 		 */
 		case 26502:
 			if (player.getY() == 5294) {
-				player.move(new Position(2839, 5295, 2));
+				player.move(new Location(2839, 5295, 2));
 			} else if (player.getY() == 5295 || player.getY() == 5296) {
-				player.move(new Position(2839, 5294, 2));
+				player.move(new Location(2839, 5294, 2));
 			}
 			break;
 
 		case 26503:
 			if (player.getX() == 2862) {
-				player.move(new Position(2863, 5354, 2));
+				player.move(new Location(2863, 5354, 2));
 			} else if (player.getX() == 2863) {
-				player.move(new Position(2862, 5354, 2));
+				player.move(new Location(2862, 5354, 2));
 			}
 			break;
 
 		case 26504:
 			if (player.getX() == 2909) {
-				player.move(new Position(2908, 5265, 0));
+				player.move(new Location(2908, 5265, 0));
 			} else if (player.getX() == 2908) {
-				player.move(new Position(2909, 5265, 0));
+				player.move(new Location(2909, 5265, 0));
 			}
 			break;
 
 		case 26505:
 			if (player.getY() == 5333) {
-				player.move(new Position(2925, 5332, 2));
+				player.move(new Location(2925, 5332, 2));
 			} else if (player.getY() == 5332) {
-				player.move(new Position(2925, 5333, 2));
+				player.move(new Location(2925, 5333, 2));
 			}
 			break;
 
@@ -250,53 +250,53 @@ public class ObjectInteraction {
 		 */
 		case 5960:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(3090, 3956, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(3090, 3956, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 5959:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(2539, 4712, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(2539, 4712, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 1814:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(3158, 3953, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(3158, 3953, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 4950:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(3087, 3500, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(3087, 3500, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 1816:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(2271, 4680, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(2271, 4680, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 1817:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(3067, 10253, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(3067, 10253, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 26761:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(3153, 3923, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(3153, 3923, player.getZ()), TeleportType.LEVER));
 			break;
 
 		case 1815:
 			TeleportExecutor.executeLeverTeleport(player,
-					new Teleport(new Position(3090, 3475, player.getZ()), TeleportType.LEVER));
+					new Teleport(new Location(3090, 3475, player.getZ()), TeleportType.LEVER));
 			break;
 
 		/**
 		 * Scorpia pit
 		 */
 		case 26762:
-			player.move(new Position(3243, 10351, 0));
+			player.move(new Location(3243, 10351, 0));
 			break;
 
 		case 26763:
-			player.move(new Position(3232, 3950, 0));
+			player.move(new Location(3232, 3950, 0));
 			break;
 
 		/**
@@ -313,22 +313,22 @@ public class ObjectInteraction {
 		 * Sparkling pool
 		 */
 		case 2879:
-			player.move(new Position(2538, 4716, 0));
+			player.move(new Location(2538, 4716, 0));
 			break;
 
 		case 2878:
-			player.move(new Position(2509, 4689, 0));
+			player.move(new Location(2509, 4689, 0));
 			break;
 
 		/**
 		 * Lever Mage arena
 		 */
 		case 9706:
-			TeleportExecutor.teleport(player, new Teleport(new Position(3105, 3951, 0), TeleportType.NORMAL), false);
+			TeleportExecutor.teleport(player, new Teleport(new Location(3105, 3951, 0), TeleportType.NORMAL), false);
 			break;
 
 		case 9707:
-			TeleportExecutor.teleport(player, new Teleport(new Position(3105, 3956, 0), TeleportType.NORMAL), false);
+			TeleportExecutor.teleport(player, new Teleport(new Location(3105, 3956, 0), TeleportType.NORMAL), false);
 			break;
 		}
 	}
@@ -343,7 +343,7 @@ public class ObjectInteraction {
 	 * @param id
 	 *            The object
 	 */
-	public static void handleSecondClickAction(Player player, Position position, int id) {
+	public static void handleSecondClickAction(Player player, Location position, int id) {
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
 		}
@@ -391,7 +391,7 @@ public class ObjectInteraction {
 	 * @param id
 	 *            The object
 	 */
-	public static void handleThirdClickAction(Player player, Position position, int id) {
+	public static void handleThirdClickAction(Player player, Location position, int id) {
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[ObjectInteraction option 3] - position: %s object: %d ", position, id));
 		}

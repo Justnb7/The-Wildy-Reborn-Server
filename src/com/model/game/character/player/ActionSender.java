@@ -8,7 +8,7 @@ import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
@@ -490,7 +490,7 @@ public class ActionSender {
 	public ActionSender sendObject(int id, int x, int y, int h, int face, int objectType) {
         Region.addWorldObject(id, x, y, player.heightLevel);
         if (player.getOutStream() != null) {
-        	sendCoordinates(Position.create(x, y, h));
+        	sendCoordinates(Location.create(x, y, h));
         	// removing object
             player.getOutStream().writeFrame(101);
             player.getOutStream().writeByteC((objectType << 2) + (face & 3));
@@ -506,7 +506,7 @@ public class ActionSender {
         return this;
     }
 	
-	public ActionSender sendCoordinates(Position location) {
+	public ActionSender sendCoordinates(Location location) {
 		player.getOutStream().writeFrame(85);
 		int y = location.getY() - player.getMapRegionY() * 8;
 		int x = location.getX() - player.getMapRegionX() * 8;
@@ -578,7 +578,7 @@ public class ActionSender {
      *                    projectile from.
      * @return The action sender instance, for chaining.
      */
-    public ActionSender sendProjectile(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
+    public ActionSender sendProjectile(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
     	int offsetX = (start.getX() - finish.getX()) * -1;
 		int offsetY = (start.getY() - finish.getY()) * -1;
 
@@ -601,7 +601,7 @@ public class ActionSender {
         return this;
     }
 	
-	public ActionSender sendLocalCoordinates(Position position, int xOffset, int yOffset) {
+	public ActionSender sendLocalCoordinates(Location position, int xOffset, int yOffset) {
 		player.getOutStream().writeFrame(85);
 		
 		int difx = position.getX(), dify = position.getY();

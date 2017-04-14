@@ -3,7 +3,7 @@ package com.model.game.character.walking;
 import java.util.ArrayList;
 
 import com.model.game.character.player.Player;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.utility.cache.map.Region;
 
 public class PathFinder {
@@ -195,18 +195,18 @@ public class PathFinder {
 		int pathX = (regionX) + tileQueueX.get(tail);
 		int pathY = (regionY) + tileQueueY.get(tail);
 
-		player.getMovementHandler().addToPath(new Position(pathX, pathY, player.getZ()));
+		player.getMovementHandler().addToPath(new Location(pathX, pathY, player.getZ()));
 		for (int i = 1; i < size; i++) {
 			tail--;
 			pathX = (regionX) + tileQueueX.get(tail);
 			pathY = (regionY) + tileQueueY.get(tail);
-			player.getMovementHandler().addToPath(new Position(pathX, pathY, player.getZ()));
+			player.getMovementHandler().addToPath(new Location(pathX, pathY, player.getZ()));
 		}
 
 		player.getMovementHandler().finish();
 	}
 	
-	public boolean findroute2(Position c, int destX, int destY, boolean moveNear, int xLength, int yLength) {
+	public boolean findroute2(Location c, int destX, int destY, boolean moveNear, int xLength, int yLength) {
 		final int regionX = ((c.getX() >> 3) - 6) << 3;
 		final int regionY = ((c.getY() >> 3) - 6) << 3;
 		final int localX = c.getX() - 8 * ((c.getX() >> 3) - 6);

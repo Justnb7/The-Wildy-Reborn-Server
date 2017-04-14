@@ -13,7 +13,7 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.minigames.fight_caves.Wave;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.WeaponDefinition;
 
@@ -186,13 +186,13 @@ public class NpcVsPlayerCombat {
 
 		// Always last
 		if (npc.getCombatType() != CombatStyle.MELEE) {
-			for (Position pos : npc.getBorder()) {
+			for (Location pos : npc.getBorder()) {
 				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
 					return true;
 				}
 			}
 		} else {
-			for (Position pos : npc.getBorder()) {
+			for (Location pos : npc.getBorder()) {
 				if (ProjectilePathFinder.isInteractionPathClear(player.getPosition(), pos)) {
 					return true;
 				}

@@ -9,7 +9,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.game.object.GlobalObject;
 import com.model.task.ScheduledTask;
 import com.model.utility.cache.map.Region;
@@ -70,7 +70,7 @@ public class Firemaking {
 						player.getActionSender().sendMessage("The fire catches and the logs begin to burn.");
 						walk(player, x, y, z);
 						player.getSkills().addExperience(Skills.FIREMAKING, log.getExperience());
-						Position face = new Position(fire.getX(), fire.getY());
+						Location face = new Location(fire.getX(), fire.getY());
 						player.face(player, face);
 						player.setLastFire(System.currentTimeMillis());
 						stop();

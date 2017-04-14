@@ -4,7 +4,7 @@ import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.clicking.npc.NpcInteraction;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
 /**
@@ -51,7 +51,7 @@ public class WalkToNpcTask extends ScheduledTask {
 	@Override
 	public void execute() {
 
-		if (player.getPosition().isWithinInteractionDistance(new Position(npc.getX(), npc.getY()))) {
+		if (player.getPosition().isWithinInteractionDistance(new Location(npc.getX(), npc.getY()))) {
 			switch (clickType) {
 			case 1:
 				NpcInteraction.firstOption(player, npc);

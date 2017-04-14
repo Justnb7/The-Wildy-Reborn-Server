@@ -17,7 +17,7 @@ import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -139,7 +139,7 @@ public class CommandPacketHandler implements PacketType {
     	case "dz":
     	case "donzatorzone":
     		if (player.getRights().isDonator() || player.getRights().isSuperDonator() || player.getRights().isExtremeDonator() || player.getRights().isAdministrator())
-    		TeleportExecutor.teleport(player, new Position(2721, 4912, 0));
+    		TeleportExecutor.teleport(player, new Location(2721, 4912, 0));
     		return true;
     	
     	case "owner":
@@ -186,7 +186,7 @@ public class CommandPacketHandler implements PacketType {
 						player.getActionSender().sendMessage("You are teleblocked, You can't use this command!");
 					}
 					if (++timer >= 50) {
-						player.move(new Position(3094, 3473, 0));
+						player.move(new Location(3094, 3473, 0));
 						player.getActionSender().sendMessage("<col=255>You feel strange.. You magically end up home..</col>");
 						this.stop();
 					}
@@ -424,7 +424,7 @@ public class CommandPacketHandler implements PacketType {
       		return true;
       		
     	 case "staffzone":
-    		 TeleportExecutor.teleport(player, new Position(2912, 5475, 0));
+    		 TeleportExecutor.teleport(player, new Location(2912, 5475, 0));
       		return true;
       		
 		case "teleto":
@@ -436,7 +436,7 @@ public class CommandPacketHandler implements PacketType {
 				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				return false;
 			} else
-				player.move(new Position(target.getX(), target.getY(), target.getZ()));
+				player.move(new Location(target.getX(), target.getY(), target.getZ()));
 			player.getActionSender().sendMessage("You teleported to " + target.getName());
 			return true;
       		
@@ -449,7 +449,7 @@ public class CommandPacketHandler implements PacketType {
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
 				target.getActionSender().sendMessage("You have been teleported to " + player.getName());
-                target.move(new Position(player.getX(), player.getY(), player.heightLevel));
+                target.move(new Location(player.getX(), player.getY(), player.heightLevel));
     		 return true;
     		 
     		 
@@ -686,9 +686,9 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "tele":
             if (cmd.length > 3) {
-                player.move(new Position(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3])));
+                player.move(new Location(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3])));
             } else if (cmd.length == 3) {
-            	player.move(new Position(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.heightLevel));
+            	player.move(new Location(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.heightLevel));
             }
     		return true;
     		
@@ -816,7 +816,7 @@ public class CommandPacketHandler implements PacketType {
 			try {
 				int npcId = Integer.parseInt(cmd[1]);
 				if (npcId > 0) {
-					NPC npc = NPCHandler.spawnNpc(player, npcId, new Position(player.getX() + 1, player.getY(), player.getZ()), 0, false, false, false);
+					NPC npc = NPCHandler.spawnNpc(player, npcId, new Location(player.getX() + 1, player.getY(), player.getZ()), 0, false, false, false);
 					if (cmd.length > 2) {
 						int hp = Integer.parseInt(cmd[2]);
 						npc.setHitpoints(hp);

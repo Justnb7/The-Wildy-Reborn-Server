@@ -5,13 +5,13 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 
 
 public class WildernessController extends Controller {
 
-	private final Position WILDERNESS_RESPAWN = new Position(3096, 3503, 0);
+	private final Location WILDERNESS_RESPAWN = new Location(3096, 3503, 0);
 
 	@Override
 	public void tick(Player player) {
@@ -67,7 +67,7 @@ public class WildernessController extends Controller {
 	}
 
 	@Override
-	public Position getRespawnLocation(Player player) {
+	public Location getRespawnLocation(Player player) {
 		return WILDERNESS_RESPAWN;
 	}
 

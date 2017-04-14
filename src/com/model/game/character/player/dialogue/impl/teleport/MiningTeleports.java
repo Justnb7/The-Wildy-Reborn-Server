@@ -3,7 +3,7 @@ package com.model.game.character.player.dialogue.impl.teleport;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 /**
  * The class which represents functionality for the mining teleports.
@@ -39,7 +39,7 @@ public class MiningTeleports extends Dialogue {
 			if(index == 4) {
 				player.getActionSender().sendRemoveInterfacePacket();
 			} else {
-				TeleportExecutor.teleport(player, new Position(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
+				TeleportExecutor.teleport(player, new Location(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
 			}
 		}
 	}

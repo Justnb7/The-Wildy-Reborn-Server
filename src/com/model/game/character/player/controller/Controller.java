@@ -1,7 +1,7 @@
 package com.model.game.character.player.controller;
 
 import com.model.game.character.player.Player;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 
 
@@ -29,7 +29,7 @@ public abstract class Controller {
 
 	public abstract void onDeath(Player player);
 
-	public abstract Position getRespawnLocation(Player player);
+	public abstract Location getRespawnLocation(Player player);
 
 	public abstract boolean canLogOut(Player player);
 

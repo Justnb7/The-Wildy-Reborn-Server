@@ -81,7 +81,7 @@ import com.model.game.item.container.impl.TradeContainer;
 import com.model.game.item.equipment.Equipment;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.game.shop.Currency;
 import com.model.game.shop.Shop;
 import com.model.net.network.Packet;
@@ -811,12 +811,12 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public Position getPosition() {
-		return new Position(absX, absY, heightLevel);
+	public Location getPosition() {
+		return new Location(absX, absY, heightLevel);
 	}
 	
 	@Override
-	public Position getCentreLocation() {
+	public Location getCentreLocation() {
 		return getPosition();
 	}
 	
@@ -1207,7 +1207,6 @@ public class Player extends Entity {
 		playerEquipment[getEquipment().getRingId()] = -1;
 		playerEquipment[getEquipment().getQuiverId()] = -1;
 		playerEquipment[getEquipment().getWeaponId()] = -1;
-		heightLevel = 0;
 		teleportToX = 3087;
 		teleportToY = 3499;
 		absX = absY = -1;
@@ -1387,7 +1386,7 @@ public class Player extends Entity {
 				int x = teleportToX;
 				int y = teleportToY;
 				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
-					player.move(new Position(2657, 2639, 0));
+					player.move(new Location(2657, 2639, 0));
 				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
 					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
 					player.getFightCave().startWave();
@@ -2882,7 +2881,7 @@ public class Player extends Entity {
         getActionSender().sendConfig(108, 0);
     }
 	
-	public void move(Position target) {
+	public void move(Location target) {
         if (this.isBusy()) {
             return;
         }
@@ -2894,7 +2893,6 @@ public class Player extends Entity {
 		this.teleportToX = target.getX();
 		this.teleportToY = target.getY();
 		this.teleHeight = target.getZ();
-		this.setTeleportTarget(target);
 		this.getSkillCyclesTask().stop();
         System.out.println("to "+Arrays.toString(new int[] {target.getX(), target.getY(), target.getZ()}));
     }

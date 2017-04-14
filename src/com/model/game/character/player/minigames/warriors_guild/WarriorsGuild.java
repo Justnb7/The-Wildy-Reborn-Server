@@ -8,7 +8,7 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -83,7 +83,7 @@ public class WarriorsGuild {
 	public void handleDoor() {
 		if(player.absX == 2847 && player.absY == 3540 || player.absX == 2847 && player.absY == 3541) {
 			CycleEventHandler.getSingleton().stopEvents(this);
-			player.move(new Position(player.absX - 1, player.absY, 2));
+			player.move(new Location(player.absX - 1, player.absY, 2));
 		} else if(player.absX == 2846 && player.absY == 3540 || player.absX == 2846 && player.absY == 3541 || Boundary.isIn(player, WAITING_ROOM_BOUNDARY)) {
 			if(player.getItems().playerHasItem(8851, 200)) {
 				int current = currentDefender();
@@ -174,7 +174,7 @@ public class WarriorsGuild {
 	
 	public void removeFromRoom() {
 		if (Boundary.isIn(player, CYCLOPS_BOUNDARY)) {
-			player.move(new Position(2846, 3540, 2));
+			player.move(new Location(2846, 3540, 2));
 			player.dialogue().start("OUT_OF_TOKENS");
 		}
 	}

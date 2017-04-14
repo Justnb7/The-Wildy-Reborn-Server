@@ -6,7 +6,7 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.ProjectilePathFinder;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public class NPCFollowing {
 	
@@ -72,7 +72,7 @@ public class NPCFollowing {
 		 * If close enough, stop following
 		 */
 		
-		for (Position pos : npc.getTiles()) {
+		for (Location pos : npc.getTiles()) {
 			double distance = pos.distance(target.getPosition());
 			boolean magic = npc.getCombatType() == CombatStyle.MAGIC;
 			boolean ranged = !magic && npc.getCombatType() == CombatStyle.RANGE;

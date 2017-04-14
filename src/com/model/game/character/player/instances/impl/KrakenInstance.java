@@ -7,7 +7,7 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.SingleInstancedArea;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
 
@@ -30,7 +30,7 @@ public class KrakenInstance {
 	 */
 	public void start(Player player) {
 		instance = (SingleInstancedArea) InstancedAreaManager.getSingleton().createSingleInstancedArea(player, Boundary.KRAKEN);
-		player.move(new Position(3696, 5798, instance.getHeight()));
+		player.move(new Location(3696, 5798, instance.getHeight()));
 		startUp(player);
 	}
 	
@@ -41,11 +41,11 @@ public class KrakenInstance {
 	public void startUp(Player player) {
 		if (player != null && instance != null) {
 			npcs = new NPC[5];
-			npcs[0] = NPCHandler.spawnNpc(player, 496, new Position(3694, 5810, instance.getHeight()), 0, false, false, false);
-			npcs[1] = NPCHandler.spawnNpc(player, 5534, new Position(3691, 5810, instance.getHeight()), 0, false, false, false);
-			npcs[2] = NPCHandler.spawnNpc(player, 5534, new Position(3691, 5814, instance.getHeight()), 0, false, false, false);
-			npcs[3] = NPCHandler.spawnNpc(player, 5534, new Position(3700, 5814, instance.getHeight()), 0, false, false, false);
-			npcs[4] = NPCHandler.spawnNpc(player, 5534, new Position(3700, 5810, instance.getHeight()), 0, false, false, false);
+			npcs[0] = NPCHandler.spawnNpc(player, 496, new Location(3694, 5810, instance.getHeight()), 0, false, false, false);
+			npcs[1] = NPCHandler.spawnNpc(player, 5534, new Location(3691, 5810, instance.getHeight()), 0, false, false, false);
+			npcs[2] = NPCHandler.spawnNpc(player, 5534, new Location(3691, 5814, instance.getHeight()), 0, false, false, false);
+			npcs[3] = NPCHandler.spawnNpc(player, 5534, new Location(3700, 5814, instance.getHeight()), 0, false, false, false);
+			npcs[4] = NPCHandler.spawnNpc(player, 5534, new Location(3700, 5810, instance.getHeight()), 0, false, false, false);
 		}
 	}
 	
@@ -54,11 +54,11 @@ public class KrakenInstance {
 	 * @param player
 	 */
 	public void spawnNextWave(Player player) { 
-		npcs[0] = NPCHandler.spawnNpc(player, 496, new Position(3694, 5810, instance.getHeight()), 0, false, false, false);
-		npcs[1] = NPCHandler.spawnNpc(player, 5534, new Position(3691, 5810, instance.getHeight()), 0, false, false, false);
-		npcs[2] = NPCHandler.spawnNpc(player, 5534, new Position(3691, 5814, instance.getHeight()), 0, false, false, false);
-		npcs[3] = NPCHandler.spawnNpc(player, 5534, new Position(3700, 5814, instance.getHeight()), 0, false, false, false);
-		npcs[4] = NPCHandler.spawnNpc(player, 5534, new Position(3700, 5810, instance.getHeight()), 0, false, false, false);
+		npcs[0] = NPCHandler.spawnNpc(player, 496, new Location(3694, 5810, instance.getHeight()), 0, false, false, false);
+		npcs[1] = NPCHandler.spawnNpc(player, 5534, new Location(3691, 5810, instance.getHeight()), 0, false, false, false);
+		npcs[2] = NPCHandler.spawnNpc(player, 5534, new Location(3691, 5814, instance.getHeight()), 0, false, false, false);
+		npcs[3] = NPCHandler.spawnNpc(player, 5534, new Location(3700, 5814, instance.getHeight()), 0, false, false, false);
+		npcs[4] = NPCHandler.spawnNpc(player, 5534, new Location(3700, 5810, instance.getHeight()), 0, false, false, false);
 		for (NPC n : npcs) {
 			n.setVisible(false);
 		}

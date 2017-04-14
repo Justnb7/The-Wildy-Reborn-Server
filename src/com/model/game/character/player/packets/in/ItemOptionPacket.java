@@ -27,7 +27,7 @@ import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Telepor
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DistancedActionTask;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -140,7 +140,7 @@ public class ItemOptionPacket implements PacketType {
 		final int itemUsedSlot = player.getInStream().readSignedWordBigEndianA();
 		final int gItemX = player.getInStream().readUnsignedWord();
 
-		Position position = new Position(gItemX, gItemY, player.getPosition().getZ());
+		Location position = new Location(gItemX, gItemY, player.getPosition().getZ());
 		
 		if (player.inDebugMode()) {
 			System.out.println("ItemUsed: " + itemUsed + " groundItem: " + groundItem + " itemUsedSlot: " + itemUsedSlot + " gItemX: " + gItemX + " gItemY: " + gItemY + " a1: " + a1);
@@ -159,7 +159,7 @@ public class ItemOptionPacket implements PacketType {
 		
 		Item item = new Item(id);
 		
-		Position position = new Position(x, y, player.getPosition().getZ());
+		Location position = new Location(x, y, player.getPosition().getZ());
 		
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[handlePickup] - Item: %s Location: %s", item.toString(), position.toString()));
@@ -530,7 +530,7 @@ public class ItemOptionPacket implements PacketType {
 	 * @param z
 	 *            The z coordinate of the item
 	 */
-	private void pickup(Player player, int id, Position position/*int x, int y, int z*/) {
+	private void pickup(Player player, int id, Location position/*int x, int y, int z*/) {
 		if (GroundItemHandler.get(id, position) != null) {
 			player.write(new SendSoundPacket(356, 0, 0));
 			GroundItemHandler.pickup(player, id, position);
@@ -549,7 +549,7 @@ public class ItemOptionPacket implements PacketType {
 	 *            The z location
 	 * @return If the player is standing on this spot
 	 */
-	private boolean onSpot(Player player, Position position) {
+	private boolean onSpot(Player player, Location position) {
 		return player.absX == position.getX() && player.absY == position.getY() && player.heightLevel == position.getZ();
 	}
 

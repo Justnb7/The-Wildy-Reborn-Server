@@ -4,7 +4,7 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.SingleInstancedArea;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public class FightCaveInstance {
 	
@@ -17,7 +17,7 @@ public class FightCaveInstance {
 
 	public void startUp(Player player) {
 		if (player != null && instance != null) {
-			player.move(new Position(2413, 5117, instance.getHeight()));
+			player.move(new Location(2413, 5117, instance.getHeight()));
 			enterFightCaves(player);
 		}
 	}

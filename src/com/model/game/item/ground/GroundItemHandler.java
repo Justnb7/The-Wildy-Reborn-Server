@@ -11,7 +11,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.account.Account;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem.State;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -53,7 +53,7 @@ public final class GroundItemHandler {
 	 * @param itemIndex
 	 *            the item index
 	 */
-	public static GroundItem find(Position position, int itemIndex) {
+	public static GroundItem find(Location position, int itemIndex) {
 		for (GroundItem groundItem : groundItems) {
 			if (groundItem == null) {
 				continue;
@@ -65,7 +65,7 @@ public final class GroundItemHandler {
 		return null;
 	}
 
-	public static Optional<GroundItem> get(int id, Position position/*int x, int y, int z*/) {
+	public static Optional<GroundItem> get(int id, Location position/*int x, int y, int z*/) {
 		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getPosition().getX() == position.getX()
 				&& item.getPosition().getY() == position.getY() && item.getPosition().getZ() == position.getZ()).findFirst();
 	}
@@ -298,7 +298,7 @@ public final class GroundItemHandler {
 		return true;
 	}
 
-	public static void pickup(Player player, int id, Position position) {
+	public static void pickup(Player player, int id, Location position) {
 		Optional<GroundItem> optionalGroundItem = get(id, position);
 		if (!optionalGroundItem.isPresent()) {
 			return;

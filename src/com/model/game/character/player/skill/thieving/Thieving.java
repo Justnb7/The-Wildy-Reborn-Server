@@ -5,7 +5,7 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.utility.Utility;
 
 /**
@@ -96,7 +96,7 @@ public class Thieving {
 	 */
 	public void pickpocket(Pickpocket pickpocket, NPC npc) {
 		//face the npc
-		player.face(player, new Position(npc.getX(), npc.getY()));
+		player.face(player, new Location(npc.getX(), npc.getY()));
 		
 		//We can only pickpocket once per 2 seconds
 		if (System.currentTimeMillis() - lastInteraction < INTERACTION_DELAY) {

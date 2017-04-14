@@ -6,7 +6,7 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 
@@ -121,12 +121,12 @@ public class PlayerFollowing {
                 }
             }
 
-            Position[] locs = { new Position(otherX + 1, otherY, player.getZ()), new Position(otherX - 1, otherY, player.getZ()), new Position(otherX, otherY + 1, player.getZ()),
-                    new Position(otherX, otherY - 1, player.getZ()), };
+            Location[] locs = { new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
+                    new Location(otherX, otherY - 1, player.getZ()), };
 
-            Position followLoc = null;
+            Location followLoc = null;
 
-            for (Position i : locs) {
+            for (Location i : locs) {
                 if (followLoc == null || player.getPosition().getDistance(i) < player.getPosition().getDistance(followLoc)) {
                     followLoc = i;
                 }
@@ -182,7 +182,7 @@ public class PlayerFollowing {
         NPC npc = (NPC) targ;
 
         boolean inside = false;
-        for (Position tile : npc.getTiles()) {
+        for (Location tile : npc.getTiles()) {
             if (player.absX == tile.getX() && player.absY == tile.getY()) {
                 inside = true;
                 break;
@@ -190,7 +190,7 @@ public class PlayerFollowing {
         }
 
         if (!inside) {
-            for (Position npcloc : npc.getTiles()) {
+            for (Location npcloc : npc.getTiles()) {
                 double distance = npcloc.distance(player.getPosition());
                 if (distance <= player.followDistance) {
                     player.stopMovement();
@@ -216,12 +216,12 @@ public class PlayerFollowing {
                 break;
             }
         } else {
-        	Position[] locs = { new Position(otherX + 1, otherY, player.getZ()), new Position(otherX - 1, otherY, player.getZ()), new Position(otherX, otherY + 1, player.getZ()),
-                    new Position(otherX, otherY - 1, player.getZ()), };
+        	Location[] locs = { new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
+                    new Location(otherX, otherY - 1, player.getZ()), };
 
-            Position followLoc = null;
+            Location followLoc = null;
 
-            for (Position i : locs) {
+            for (Location i : locs) {
                 if (followLoc == null || player.getPosition().getDistance(i) < player.getPosition().getDistance(followLoc)) {
                     followLoc = i;
                 }
@@ -256,7 +256,7 @@ public class PlayerFollowing {
             yMove = targetY - player.getY();
         }
 
-        player.getMovementHandler().addToPath(new Position(player.getX() + xMove, player.getY() + yMove, 0));
+        player.getMovementHandler().addToPath(new Location(player.getX() + xMove, player.getY() + yMove, 0));
     }
 
 	/**
@@ -269,7 +269,7 @@ public class PlayerFollowing {
 	 */
     public void walkTo(int moveX, int moveY) {
         player.getMovementHandler().reset();
-        player.getMovementHandler().addToPath(new Position(player.getX() + moveX, player.getY() + moveY, player.getZ()));
+        player.getMovementHandler().addToPath(new Location(player.getX() + moveX, player.getY() + moveY, player.getZ()));
         player.getMovementHandler().finish();
     }
 

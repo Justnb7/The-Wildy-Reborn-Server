@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.utility.cache.Direction;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.WorldObject;
@@ -16,7 +16,7 @@ import com.model.utility.cache.WorldObject;
 public class Region {
 	
 	private int id;
-	private LinkedList<Position> npcs = null;
+	private LinkedList<Location> npcs = null;
 	private final int[][][] clips;
 	private final int[][][] shootable;
 	private RSObject[][][] objects;
@@ -465,11 +465,11 @@ public class Region {
 			return;
 		
 		if (region.npcs == null) {
-			region.npcs = new LinkedList<Position>();
+			region.npcs = new LinkedList<Location>();
 		}
 		
-		if (!region.npcs.contains(new Position(x, y, z)))
-			region.npcs.add(new Position(x, y, z));
+		if (!region.npcs.contains(new Location(x, y, z)))
+			region.npcs.add(new Location(x, y, z));
 	}
 	
 	public static void removeNpcFromTile(int x, int y, int z) {
@@ -481,7 +481,7 @@ public class Region {
 			return;
 		}
 		
-		region.npcs.remove(new Position(x, y, z));
+		region.npcs.remove(new Location(x, y, z));
 	}
 	
 	public static boolean isNpcOnTile(int x, int y, int z) {
@@ -493,7 +493,7 @@ public class Region {
 			return false;
 		}
 		
-		return region.npcs.contains(new Position(x, y, z));
+		return region.npcs.contains(new Location(x, y, z));
 	}
 	
 	private static void addClippingAlternate(boolean before, int shift, int x, int y, int height) {
@@ -923,7 +923,7 @@ public class Region {
 	 *            the direction.
 	 * @return if the direction is walkable.
 	 */
-	public static boolean canMove(Position location, int direction) {
+	public static boolean canMove(Location location, int direction) {
 		int x = location.getX();
 		int y = location.getY();
 		int z = location.getZ();
@@ -947,7 +947,7 @@ public class Region {
 		return false;
 	}
 	
-	public static boolean canShoot(Position location, int direction) {
+	public static boolean canShoot(Location location, int direction) {
 		int x = location.getX();
 		int y = location.getY();
 		int z = location.getZ();

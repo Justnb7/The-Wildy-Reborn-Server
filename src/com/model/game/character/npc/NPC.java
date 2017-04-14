@@ -12,7 +12,7 @@ import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.impl.NPCDeathTask;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
@@ -101,7 +101,7 @@ public class NPC extends Entity {
 	/**
 	 * Checks the last location the npc was on
 	 */
-	private Position lastLocation = null;
+	private Location lastLocation = null;
 
 	/**
 	 * Requesting the transformation
@@ -208,7 +208,7 @@ public class NPC extends Entity {
 		this(_npcType, null, -1);
 	}
 	
-	public NPC(int id, Position spawn, int dir) {
+	public NPC(int id, Location spawn, int dir) {
 		super(EntityType.NPC);
 		direction = dir;
 		if (spawn != null)
@@ -240,9 +240,9 @@ public class NPC extends Entity {
 	 */
 	public void setOnTile(int x, int y, int z) {
 		removeFromTile();
-		for (Position tile : getTiles(new Position(x, y, z)))
+		for (Location tile : getTiles(new Location(x, y, z)))
 			Region.putNpcOnTile(tile.getX(), tile.getY(), tile.getZ());
-		lastLocation = new Position(x, y, z);
+		lastLocation = new Location(x, y, z);
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class NPC extends Entity {
 	 */
 	public void removeFromTile() {
 		if (lastLocation != null) {
-			for (Position tile : getTiles(lastLocation))
+			for (Location tile : getTiles(lastLocation))
 				Region.removeNpcFromTile(tile.getX(), tile.getY(), tile.getZ());
 			lastLocation = null;
 		}
@@ -263,14 +263,14 @@ public class NPC extends Entity {
 	 * @param y
 	 * @param z
 	 */
-	public void teleport(Position position) {
+	public void teleport(Location position) {
 		setOnTile(position.getX(), position.getY(), position.getZ());
 		makeX = position.getX();
 		makeY = position.getY();
 		setAbsX(position.getX());
 		setAbsY(position.getY());
 		heightLevel = position.getZ();
-		setLocation(new Position(position.getX(), position.getY(), position.getZ()));
+		setLocation(new Location(position.getX(), position.getY(), position.getZ()));
 		getAttributes().put("teleporting", true);
 	}
 
@@ -291,8 +291,8 @@ public class NPC extends Entity {
 		return new Hit(damage, hit.getType());
 	}
 
-	public Position getPosition() {
-		return new Position(absX, absY, heightLevel);
+	public Location getPosition() {
+		return new Location(absX, absY, heightLevel);
 	}
 
 	public NpcDefinition getDefinition() {
@@ -302,22 +302,22 @@ public class NPC extends Entity {
         return def;
 	}
 
-	public Position[] getTiles(Position location) {
-		Position[] tiles = new Position[getSize() == 1 ? 1 : (int) Math.pow(getSize(), 2)];
+	public Location[] getTiles(Location location) {
+		Location[] tiles = new Location[getSize() == 1 ? 1 : (int) Math.pow(getSize(), 2)];
 		int index = 0;
 
 		for (int i = 1; i < getSize() + 1; i++) {
 			for (int k = 0; k < SIZE_DELTA_COORDINATES[i].length; k++) {
 				int x3 = location.getX() + SIZE_DELTA_COORDINATES[i][k][0];
 				int y3 = location.getY() + SIZE_DELTA_COORDINATES[i][k][1];
-				tiles[index] = new Position(x3, y3, location.getZ());
+				tiles[index] = new Location(x3, y3, location.getZ());
 				index++;
 			}
 		}
 		return tiles;
 	}
 
-	public Position[] getTiles() {
+	public Location[] getTiles() {
 		return getTiles(getPosition());
 	}
 
@@ -327,18 +327,18 @@ public class NPC extends Entity {
 	 * @return the border around the edges of the npc, depending on the npc's
 	 *         size.
 	 */
-	public Position[] getBorder() {
+	public Location[] getBorder() {
 		int x = getPosition().getX();
 		int y = getPosition().getY();
 		int size = getSize();
 		if (size <= 1) {
-			return new Position[] { getPosition() };
+			return new Location[] { getPosition() };
 		}
 
-		Position[] border = new Position[(size) + (size - 1) + (size - 1) + (size - 2)];
+		Location[] border = new Location[(size) + (size - 1) + (size - 1) + (size - 2)];
 		int j = 0;
 
-		border[0] = new Position(x, y, 0);
+		border[0] = new Location(x, y, 0);
 
 		for (int i = 0; i < 4; i++) {
 			for (int k = 0; k < (i < 3 ? (i == 0 || i == 2 ? size : size) - 1 : (i == 0 || i == 2 ? size : size) - 2); k++) {
@@ -351,7 +351,7 @@ public class NPC extends Entity {
 				else if (i == 3) {
 					y--;
 				}
-				border[(++j)] = new Position(x, y, 0);
+				border[(++j)] = new Location(x, y, 0);
 			}
 		}
 
@@ -368,7 +368,7 @@ public class NPC extends Entity {
 	 * @return if this actor can move from it's current location to the
 	 *         destination
 	 */
-	public boolean canMoveTo(Position src, int direction) {
+	public boolean canMoveTo(Location src, int direction) {
 		int x = src.getX();
 		int y = src.getY();
 		int z = src.getZ() > 3 ? src.getZ() % 4 : src.getZ();
@@ -384,10 +384,10 @@ public class NPC extends Entity {
 				int x2 = x5 + SIZE_DELTA_COORDINATES[i][k][0];
 				int y2 = y5 + SIZE_DELTA_COORDINATES[i][k][1];
 
-				Position a = new Position(x3, y3, z);
-				Position b = new Position(x2, y2, z);
+				Location a = new Location(x3, y3, z);
+				Location b = new Location(x2, y2, z);
 
-				if (Position.isWithinBlock(x, y, size, x2, y2)) {
+				if (Location.isWithinBlock(x, y, size, x2, y2)) {
 					continue;
 				}
 
@@ -400,7 +400,7 @@ public class NPC extends Entity {
 				}
 
 				for (int dir = 0; dir < 8; dir++) {
-					if (Position.isWithinBlock(x5, y5, getSize(), x2 + DIRECTION_DELTA_X[dir], y2 + DIRECTION_DELTA_Y[dir])) {
+					if (Location.isWithinBlock(x5, y5, getSize(), x2 + DIRECTION_DELTA_X[dir], y2 + DIRECTION_DELTA_Y[dir])) {
 						if (!Region.canMove(b, dir)) {
 							return false;
 						}
@@ -468,13 +468,13 @@ public class NPC extends Entity {
 	
 	public void spawnVetDogs(Player player) {
 		if (npcId == 6611) {
-			NPCHandler.spawnNpc(player, 6613, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6613, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6613, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6613, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		} else if (npcId == 6612) {
-			NPCHandler.spawnNpc(player, 6614, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6614, new Position(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6614, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6614, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		}
@@ -511,8 +511,8 @@ public class NPC extends Entity {
 				}
 				else if (npcId == 6615) {
 					if (this.getHitpoints() <= 100 && !spawnedScorpiaMinions) {
-						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Position(getX()- 1, absY, heightLevel), 1, true, false, true);
-						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Position(getX() + 1, absY, heightLevel), 1, true, false, true);
+						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX()- 1, absY, heightLevel), 1, true, false, true);
+						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX() + 1, absY, heightLevel), 1, true, false, true);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);
@@ -579,16 +579,16 @@ public class NPC extends Entity {
 
 	public void handleFacing() {
 		if (walking_type == 2) {
-			face(this, new Position(getX() + 1, getY()));
+			face(this, new Location(getX() + 1, getY()));
 			// face east
 		} else if (walking_type == 3) {
-			face(this, new Position(getX(), getY() - 1));
+			face(this, new Location(getX(), getY() - 1));
 			// face south
 		} else if (walking_type == 4) {
-			face(this, new Position(getX() - 1, getY()));
+			face(this, new Location(getX() - 1, getY()));
 			// face west
 		} else if (walking_type == 5) {
-			face(this, new Position(getX(), getY() + 1));
+			face(this, new Location(getX(), getY() + 1));
 			// face north
 		}
 	}
@@ -764,10 +764,10 @@ public class NPC extends Entity {
 	}
 	
 	@Override
-	public Position getCentreLocation() {
+	public Location getCentreLocation() {
 		if (this.getWidth() == 1 && this.getHeight() == 1) 
 			return this.getPosition();
-		return Position.create(getPosition().getX() + getWidth() / 2, getPosition().getY() + getHeight() / 2, getPosition().getZ());
+		return Location.create(getPosition().getX() + getWidth() / 2, getPosition().getY() + getHeight() / 2, getPosition().getZ());
 	}
 	
 	@Override

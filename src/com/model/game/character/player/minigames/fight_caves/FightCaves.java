@@ -12,7 +12,7 @@ import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -60,7 +60,7 @@ public class FightCaves {
 	/**
 	 * We're outside the fightcaves
 	 */
-	private final Position OUTSIDE = new Position(2438, 5168, 0);
+	private final Location OUTSIDE = new Location(2438, 5168, 0);
 	
 	/**
 	 * The firecape item reward
@@ -75,12 +75,12 @@ public class FightCaves {
 	/**
 	 * Random set of spawn coordinates
 	 */
-	 public static Position getRandomLocation(Player player) {
+	 public static Location getRandomLocation(Player player) {
 	        final int[] locationSet = LOCATIONS[r.nextInt(LOCATIONS.length)];
 	        final int x = r.nextInt(locationSet[2] - locationSet[0]) + locationSet[0];
 	        final int y = r.nextInt(locationSet[3] - locationSet[1]) + locationSet[1];
 	        final int z = player.getPosition().getZ();
-	        return Position.create(x, y, z);
+	        return Location.create(x, y, z);
 	    }
 
 	private static int[][] LOCATIONS = { { 2376, 5065, 2387, 5076 }, { 2376, 5099, 2387, 5112 },
@@ -131,7 +131,7 @@ public class FightCaves {
 				setKillsRemaining(wave[player.waveId].length);
 				player.debug("remaining: "+getKillsRemaining());
 				for (int spawn = 0; spawn < getKillsRemaining(); spawn++) {
-					Position spawnLoc = getRandomLocation(player);
+					Location spawnLoc = getRandomLocation(player);
 					NPCHandler.spawnNpc(player, wave[player.waveId][spawn], spawnLoc, 1, true, false, false);
 				}
 				this.stop();
@@ -261,7 +261,7 @@ public class FightCaves {
 	 */
 	public void spawnHealers() {
 		for (int i = 0; i < 4; i++) {
-			Position spawnLoc = getRandomLocation(player);
+			Location spawnLoc = getRandomLocation(player);
 			NPC npc = new NPC(Wave.YTHURKOT, spawnLoc, 0);
 			World.getWorld().getNPCs().add(npc);
 		}

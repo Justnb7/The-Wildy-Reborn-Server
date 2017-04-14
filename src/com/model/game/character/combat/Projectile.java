@@ -1,7 +1,7 @@
 package com.model.game.character.combat;
 
 import com.model.game.character.Entity;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 /**
  * Represents a moving graphic.
@@ -10,11 +10,11 @@ import com.model.game.location.Position;
  */
 public class Projectile {
 		
-	public static Projectile create(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int lockon, int slope, int radius) {
+	public static Projectile create(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int lockon, int slope, int radius) {
 		return new Projectile(start, finish, id, delay, angle, speed, startHeight, endHeight, lockon, slope, radius);
 	}
 
-	public static Projectile convert(int id, Position start, Position finish, int angle, int speed, int startHeight, int endHeight, int slope) {
+	public static Projectile convert(int id, Location start, Location finish, int angle, int speed, int startHeight, int endHeight, int slope) {
 		return new Projectile(start, finish, id, 0, angle, speed, startHeight, endHeight, 0, slope, 64);
 	}
 	
@@ -24,7 +24,7 @@ public class Projectile {
 	 * @param delay The delay.
 	 * @return The new graphic object.
 	 */
-	public static Projectile create(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
+	public static Projectile create(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
 		return new Projectile(start, finish, id, delay, angle, speed, startHeight, endHeight, slope, radius);
 	}
 	
@@ -34,7 +34,7 @@ public class Projectile {
 	 * @param delay The delay.
 	 * @return The new graphic object.
 	 */
-	public static Projectile create(Position start, Entity target, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
+	public static Projectile create(Location start, Entity target, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
 		return new Projectile(start, target, id, delay, angle, speed, startHeight, endHeight, slope, radius);
 	}
 	
@@ -81,12 +81,12 @@ public class Projectile {
 	/**
 	 * The starting location
 	 */
-	private Position start;
+	private Location start;
 
 	/**
 	 * The finishing location
 	 */
-	private Position finish;
+	private Location finish;
 	
 	/**
 	 * The radius that the projectile is launched from.
@@ -100,7 +100,7 @@ public class Projectile {
 	 * @param id The id.
 	 * @param delay The delay.
 	 */
-	private Projectile(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
+	private Projectile(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
 		this.id = id;
 		this.delay = delay;
 		this.start = start;
@@ -118,7 +118,7 @@ public class Projectile {
 	 * @param id The id.
 	 * @param delay The delay.
 	 */
-	private Projectile(Position start, Entity target, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
+	private Projectile(Location start, Entity target, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius) {
 		this.id = id;
 		this.delay = delay;
 		this.start = start;
@@ -131,7 +131,7 @@ public class Projectile {
 		this.radius = radius;
 	}
 	
-	private Projectile(Position start, Position finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int lockon, int slope, int radius) {
+	private Projectile(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int lockon, int slope, int radius) {
 		this.id = id;
 		this.delay = delay;
 		this.start = start;
@@ -213,7 +213,7 @@ public class Projectile {
 	 * Gets the starting location.
 	 * @return The starting location.
 	 */
-	public Position getStart() {
+	public Location getStart() {
 		return start;
 	}
 
@@ -221,7 +221,7 @@ public class Projectile {
 	 * Gets the finishing location.
 	 * @return The finishing location.
 	 */
-	public Position getFinish() {
+	public Location getFinish() {
 		return target != null ? target.getCentreLocation() : finish;
 	}
 

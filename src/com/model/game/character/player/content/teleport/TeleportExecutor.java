@@ -13,7 +13,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
 
@@ -32,9 +32,9 @@ public class TeleportExecutor {
 	 * @param player
 	 *            The {@link Player} trying to teleport
 	 * @param location
-	 *            The {@link Position} the player is teleporting too
+	 *            The {@link Location} the player is teleporting too
 	 */
-	public static void teleport(Player player, Position location) {
+	public static void teleport(Player player, Location location) {
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST) {
 			player.getActionSender().sendMessage("You can't teleport while being in a duel.");
@@ -155,7 +155,7 @@ public class TeleportExecutor {
 					/**
 					 * Finalize our location by setting our coordinates
 					 */
-					player.move(new Position(teleport.getLocation().getX(), teleport.getLocation().getY(), teleport.getLocation().getZ()));
+					player.move(new Location(teleport.getLocation().getX(), teleport.getLocation().getY(), teleport.getLocation().getZ()));
 
 					/**
 					 * Check if we need to play our end animation

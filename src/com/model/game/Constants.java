@@ -1,6 +1,6 @@
 package com.model.game;
 
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public class Constants {
 	
@@ -102,17 +102,17 @@ public class Constants {
 	/**
 	 * Starting location
 	 */
-	public static final Position START_PLAYER_LOCATION = new Position(3087, 3499, 0);
+	public static final Location START_PLAYER_LOCATION = new Location(3087, 3499, 0);
 	
 	/**
 	 * Donator zone location
 	 */
-	public static final Position START_DZ_LOCATION = new Position(2721, 4912, 0);
+	public static final Location START_DZ_LOCATION = new Location(2721, 4912, 0);
 	
 	/**
 	 * Respawn location
 	 */
-	public static final Position RESPAWN_PLAYER_LOCATION = new Position(3099, 3503, 0);
+	public static final Location RESPAWN_PLAYER_LOCATION = new Location(3099, 3503, 0);
 	
 	/**
 	 * The maximum time for a player skull with an extension in the length.

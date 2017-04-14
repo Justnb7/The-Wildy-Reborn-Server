@@ -2,7 +2,7 @@ package com.model.game.item.ground;
 
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 
 public final class GroundItem {
@@ -22,18 +22,18 @@ public final class GroundItem {
 	private State state = State.PRIVATE;
 
 	public GroundItem(Item item, int x, int y, int z, Player owner) {
-		this(item, new Position(x, y, z), owner);
+		this(item, new Location(x, y, z), owner);
 	}
 
-	public GroundItem(Item item, Position position, Player owner) {
+	public GroundItem(Item item, Location position, Player owner) {
 		this.item = item;
 		this.setLocation(position);
 		this.owner = owner;
 	}
 
-	private Position position;
+	private Location position;
 	
-	public void setLocation(Position position) {
+	public void setLocation(Location position) {
 		this.position = position;
 	}
 	
@@ -41,7 +41,7 @@ public final class GroundItem {
 	 * Returns the items position
 	 * @return
 	 */
-	public Position getPosition() {
+	public Location getPosition() {
 		return position;
 	}
 

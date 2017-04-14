@@ -3,7 +3,7 @@ package com.model.game.character.player.dialogue.impl.teleport;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 /**
  * The class which represents functionality for the clue scroll teleports.
@@ -57,14 +57,14 @@ public class TeleportCard extends Dialogue {
 				phase = 1;
 				send(Type.CHOICE, DEFAULT_OPTION_TITLE, OPTION_2[0], OPTION_2[1], OPTION_2[2], OPTION_2[3], OPTION_2[4]);
 			} else {
-				TeleportExecutor.teleport(player, new Position(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
+				TeleportExecutor.teleport(player, new Location(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
 			}
 		} else if (phase == 1) {
 			if (index == 3) {
 				phase = 0;
 				send(Type.CHOICE, DEFAULT_OPTION_TITLE, OPTION_1[0], OPTION_1[1], OPTION_1[2], OPTION_1[3], OPTION_1[4]);
 			} else {
-				TeleportExecutor.teleport(player, new Position(OPTION_2_TELEPORT[index - 1][0], OPTION_2_TELEPORT[index - 1][1], OPTION_2_TELEPORT[index - 1][2]));
+				TeleportExecutor.teleport(player, new Location(OPTION_2_TELEPORT[index - 1][0], OPTION_2_TELEPORT[index - 1][1], OPTION_2_TELEPORT[index - 1][2]));
 			}
 		}
 	}

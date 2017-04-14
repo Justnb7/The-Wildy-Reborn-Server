@@ -3,7 +3,7 @@ package com.model.game.character.player.packets.in;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.clicking.object.ObjectInteraction;
 import com.model.game.character.player.packets.PacketType;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 /**
  * Object option packet handler.
@@ -55,7 +55,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		int x = player.getInStream().readSignedWordBigEndianA();
 		int id = player.getInStream().readUnsignedWord();
 		int y = player.getInStream().readUnsignedWordA();
-		Position position = Position.create(x, y, player.getPosition().getZ());
+		Location position = Location.create(x, y, player.getPosition().getZ());
 		
 		//Safety check
 		if (player.isTeleporting()) {
@@ -80,7 +80,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		int id = player.getInStream().readUnsignedWordBigEndianA();
 		int y = player.getInStream().readSignedWordBigEndian();
 		int x = player.getInStream().readUnsignedWordA();
-		Position position = Position.create(x, y, player.getPosition().getZ());
+		Location position = Location.create(x, y, player.getPosition().getZ());
 		
 		// Safety check
 		if (player.isTeleporting()) {
@@ -105,7 +105,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		int x = player.getInStream().readSignedWordBigEndian();
 		int y = player.getInStream().readUnsignedWord();
 		int id = player.getInStream().readUnsignedWordBigEndianA();
-		Position position = Position.create(x, y, player.getPosition().getZ());
+		Location position = Location.create(x, y, player.getPosition().getZ());
 		
 		//Safety check
 		if (player.isTeleporting()) {

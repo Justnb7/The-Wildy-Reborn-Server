@@ -7,7 +7,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -57,27 +57,27 @@ public class Runecrafting extends SkillTask {
 		}
 		if (item != null) {
 			if(item.getId() == 1438) {//Air talisman
-				TeleportExecutor.teleport(player, new Position(2841, 4829, 0));
+				TeleportExecutor.teleport(player, new Location(2841, 4829, 0));
 			} else if(item.getId() == 1448) {//Mind talisman
-				TeleportExecutor.teleport(player, new Position(2792, 4827, 0));
+				TeleportExecutor.teleport(player, new Location(2792, 4827, 0));
 			} else if(item.getId() == 1444) {//Water talisman
-				TeleportExecutor.teleport(player, new Position(3482, 4838, 0));
+				TeleportExecutor.teleport(player, new Location(3482, 4838, 0));
 			} else if(item.getId() == 1440) {//Earth talisman
-				TeleportExecutor.teleport(player, new Position(2655, 4830, 0));
+				TeleportExecutor.teleport(player, new Location(2655, 4830, 0));
 			} else if(item.getId() == 1442) {//Fire talisman
-				TeleportExecutor.teleport(player, new Position(2574, 4848, 0));
+				TeleportExecutor.teleport(player, new Location(2574, 4848, 0));
 			} else if(item.getId() == 1446) {//Body talisman
-				TeleportExecutor.teleport(player, new Position(2522, 4825, 0));
+				TeleportExecutor.teleport(player, new Location(2522, 4825, 0));
 			} else if(item.getId() == 1454) {//Cosmic talisman
-				TeleportExecutor.teleport(player, new Position(2122, 4833, 0));
+				TeleportExecutor.teleport(player, new Location(2122, 4833, 0));
 			} else if(item.getId() == 1452) {//Chaos talisman
-				TeleportExecutor.teleport(player, new Position(2281, 4837, 0));
+				TeleportExecutor.teleport(player, new Location(2281, 4837, 0));
 			} else if(item.getId() == 1462) {//Nature talisman
-				TeleportExecutor.teleport(player, new Position(2400, 4835, 0));
+				TeleportExecutor.teleport(player, new Location(2400, 4835, 0));
 			} else if(item.getId() == 1458) {//Law talisman
-				TeleportExecutor.teleport(player, new Position(2464, 4818, 0));
+				TeleportExecutor.teleport(player, new Location(2464, 4818, 0));
 			} else if(item.getId() == 1456) {//Death talisman
-				TeleportExecutor.teleport(player, new Position(2208, 4830, 0));
+				TeleportExecutor.teleport(player, new Location(2208, 4830, 0));
 			}
 		}
 		return false;

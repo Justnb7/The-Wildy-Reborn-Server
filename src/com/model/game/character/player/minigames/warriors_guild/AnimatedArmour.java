@@ -5,7 +5,7 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -109,7 +109,7 @@ public class AnimatedArmour {
 			
 			@Override
 			public void execute(CycleEventContainer event) {
-				NPCHandler.spawnNpc(player, armour.getNpcId(), new Position(SPAWN_X, SPAWN_Y, 0), 1, true, true, false);
+				NPCHandler.spawnNpc(player, armour.getNpcId(), new Location(SPAWN_X, SPAWN_Y, 0), 1, true, true, false);
 				player.getActionSender().sendMessage("An animated armour has spawned...");
 				event.stop();
 			}

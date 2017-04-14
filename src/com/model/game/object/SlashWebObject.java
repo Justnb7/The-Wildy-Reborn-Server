@@ -3,7 +3,7 @@ package com.model.game.object;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -12,7 +12,7 @@ public class SlashWebObject {
 	/**
 	 * Handles the slash web action for the player.
 	 */
-	public static void slashWeb(final Player player, Position position, boolean usingKnife) {
+	public static void slashWeb(final Player player, Location position, boolean usingKnife) {
 		if (!usingKnife) {
 			
 			int weapon = player.playerEquipment[3];

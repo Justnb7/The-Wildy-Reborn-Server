@@ -4,7 +4,7 @@ import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public class DefaultController extends Controller {
 
@@ -67,7 +67,7 @@ public class DefaultController extends Controller {
 	}
 
 	@Override
-	public Position getRespawnLocation(Player player) {
+	public Location getRespawnLocation(Player player) {
 		return Constants.RESPAWN_PLAYER_LOCATION;
 	}
 

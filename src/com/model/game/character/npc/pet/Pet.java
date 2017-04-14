@@ -5,7 +5,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -61,7 +61,7 @@ public class Pet extends NPC {
 						if (delta >= 13 || delta <= -13) {
 							// TODO teleport npc to player
 							player.debug("tele");
-							Position move = new Position(player.getX(), player.getY() -1, player.getZ());
+							Location move = new Location(player.getX(), player.getY() -1, player.getZ());
 							pet.teleport(move);
 						}
 					}

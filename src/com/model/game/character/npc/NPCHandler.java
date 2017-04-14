@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public final class NPCHandler {
 
@@ -89,7 +89,7 @@ public final class NPCHandler {
 		}
 	}
 	
-	public static NPC spawnNpc(Player player, int id, Position spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
+	public static NPC spawnNpc(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
 		NPC npc = new NPC(id);
 		
 		npc.setAbsX(spawn.getX());

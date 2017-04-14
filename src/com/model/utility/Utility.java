@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.location.Position;
+import com.model.game.location.Location;
 
 public class Utility {
 	
@@ -288,8 +288,8 @@ public class Utility {
 	 *            the second position.
 	 * @return the delta coordinates contained within a position.
 	 */
-	public static Position delta(Position a, Position b) {
-		return new Position(b.getX() - a.getX(), b.getY() - a.getY());
+	public static Location delta(Location a, Location b) {
+		return new Location(b.getX() - a.getX(), b.getY() - a.getY());
 	}
 
     public static String md5Hash(String md5) {
@@ -996,7 +996,7 @@ public class Utility {
 	 * @param b
 	 * @return
 	 */
-	public static int getManhattanDistance(Position a, Position b) {
+	public static int getManhattanDistance(Location a, Location b) {
 	return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
 	}
 

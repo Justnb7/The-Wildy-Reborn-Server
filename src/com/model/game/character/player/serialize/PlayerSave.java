@@ -116,8 +116,8 @@ public class PlayerSave {
 				Rights right = Rights.get(details.rights);
 				player.setRights(right);
 				System.out.printf("Rights check: Name %s v Rights %d right %s%n", details.username, details.rights, right);
-				player.teleportToX = details.x;
-				player.teleportToY = details.y;
+				player.teleportToX = player.inTutorial() ? 3087 : details.x;
+				player.teleportToY = player.inTutorial() ? 3499 : details.y;
 				player.teleHeight = details.z;
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);

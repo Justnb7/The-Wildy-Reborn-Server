@@ -42,7 +42,7 @@ public class Container implements Iterable<Item> {
     /**
      * The items contained by this container.
      */
-    private Item[] items;
+    protected Item[] items;
 
     /**
      * Creates a new {@link Container}.

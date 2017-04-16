@@ -17,6 +17,7 @@ import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.item.Item;
+import com.model.game.item.container.impl.Equipment;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.task.ScheduledTask;
@@ -680,7 +681,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "spec":
     		player.setSpecialAmount(100);
-    		player.getWeaponInterface().sendSpecialBar(player.playerEquipment[player.getEquipment().getWeaponId()]);
+    		player.getWeaponInterface().sendSpecialBar(player.getEquipment().getId(Equipment.WEAPON_SLOT));
     		player.getWeaponInterface().refreshSpecialAttack();
     		return true;
     		

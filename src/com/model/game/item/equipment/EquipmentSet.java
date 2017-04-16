@@ -77,7 +77,7 @@ public enum EquipmentSet {
 		for (int[] set : equipment) {
 			int wornAmount = 0;
 			for (int setItem : set) {
-				if (player.getItems().isWearingItem(setItem)) {
+				if (player.getEquipment().contains(setItem)) {
 					wornAmount++;
 				}
 			}
@@ -96,7 +96,7 @@ public enum EquipmentSet {
 		int[] items = new int[4];
 		for (int col = 0; col < 4; col++) {
 			for(int row = 0; row < 5; row++) {
-				if (player.getItems().isWearingItem(equipment[row][col])) {
+				if (player.getEquipment().contains(equipment[row][col])) {
 					items[col] = equipment[row][col];
 					break;
 				}

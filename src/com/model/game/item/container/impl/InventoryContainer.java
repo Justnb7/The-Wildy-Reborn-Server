@@ -10,7 +10,7 @@ import com.model.game.item.container.ItemContainerPolicy;
  *
  * @author lare96 <http://github.com/lare96>
  */
-public final class Inventory extends Container {
+public final class InventoryContainer extends Container {
 	
 	/**
 	 * The size of the inventory container.
@@ -28,12 +28,12 @@ public final class Inventory extends Container {
     private final Player player;
 
     /**
-     * Create a new {@link Inventory}.
+     * Create a new {@link InventoryContainer}.
      *
      * @param player
      *            the player who's inventory is being managed.
      */
-    public Inventory(Player player) {
+    public InventoryContainer(Player player) {
         super(ItemContainerPolicy.NORMAL, 28);
         this.player = player;
     }

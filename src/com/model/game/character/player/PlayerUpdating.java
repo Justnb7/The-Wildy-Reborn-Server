@@ -7,6 +7,7 @@ import com.model.Appearance;
 import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
+import com.model.game.item.container.impl.Equipment;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -587,71 +588,75 @@ public class PlayerUpdating {
 		//Update the player infection 0 = healthy, 1 poison and 2 is venomed
 		player.getPlayerProps().writeByte(player.infection);
 		
-		//Update Equipment
+		// Update Equipment
 		if (!player.isPlayerTransformed()) {
-			if (player.playerEquipment[player.getEquipment().getHelmetId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getHelmetId()]);
+			if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.HEAD_SLOT));
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
 
-			if (player.playerEquipment[player.getEquipment().getCapeId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getCapeId()]);
+			if (player.getEquipment().getId(Equipment.CAPE_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.CAPE_SLOT));
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
 
-			if (player.playerEquipment[player.getEquipment().getAmuletId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getAmuletId()]);
+			if (player.getEquipment().getId(Equipment.AMULET_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.AMULET_SLOT));
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
 
-			if (player.playerEquipment[player.getEquipment().getWeaponId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getWeaponId()]);
+			if (player.getEquipment().getId(Equipment.WEAPON_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.WEAPON_SLOT));
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
 
-			if (player.playerEquipment[player.getEquipment().getChestId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getChestId()]);
+			if (player.getEquipment().getId(Equipment.CHEST_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.CHEST_SLOT));
 			} else {
 				player.getPlayerProps().writeShort(0x100 + app.getChest());
 			}
 
-			if (player.playerEquipment[player.getEquipment().getShieldId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getShieldId()]);
+			if (player.getEquipment().getId(Equipment.SHIELD_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.SHIELD_SLOT));
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
+			
+			if (player.getEquipment().getId(Equipment.CHEST_SLOT) > 1) {
+                if (!player.getEquipment().get(Equipment.CHEST_SLOT).getDefinition().isPlatebody()) {
+                	player.getPlayerProps().writeShort(0x100 + app.getArms());
+                } else {
+                	player.getPlayerProps().writeByte(0);
+                }
+            } else {
+            	player.getPlayerProps().writeShort(0x100 + app.getArms());
+            }
 
-			if (!ItemDefinition.forId(player.playerEquipment[player.getEquipment().getChestId()]).isPlatebody()) {
-				player.getPlayerProps().writeShort(0x100 + app.getArms());
-			} else {
-				player.getPlayerProps().writeByte(0);
-			}
-
-			if (player.playerEquipment[player.getEquipment().getLegsId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getLegsId()]);
+			if (player.getEquipment().getId(Equipment.LEGS_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.LEGS_SLOT));
 			} else {
 				player.getPlayerProps().writeShort(0x100 + app.getLegs());
 			}
 
-			ItemDefinition def = ItemDefinition.forId(player.playerEquipment[player.getEquipment().getHelmetId()]);
+			ItemDefinition def = ItemDefinition.forId(player.getEquipment().getId(Equipment.HEAD_SLOT));
 			if (!def.isFullMask() && !def.isFullHelm()) {
 				player.getPlayerProps().writeShort(0x100 + app.getHead());
 			} else {
 				player.getPlayerProps().writeByte(0);
 			}
 
-			if (player.playerEquipment[player.getEquipment().getGlovesId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getGlovesId()]);
+			if (player.getEquipment().getId(Equipment.HANDS_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.HANDS_SLOT));
 			} else {
 				player.getPlayerProps().writeShort(0x100 + app.getHands());
 			}
 
-			if (player.playerEquipment[player.getEquipment().getBootsId()] > 1) {
-				player.getPlayerProps().writeShort(0x200 + player.playerEquipment[player.getEquipment().getBootsId()]);
+			if (player.getEquipment().getId(Equipment.FEET_SLOT) > 1) {
+				player.getPlayerProps().writeShort(0x200 + player.getEquipment().getId(Equipment.FEET_SLOT));
 			} else {
 				player.getPlayerProps().writeShort(0x100 + app.getFeet());
 			}
@@ -663,7 +668,8 @@ public class PlayerUpdating {
 			}
 
 		} else {
-			player.getPlayerProps().writeShort(-1);// Tells client that were being a npc
+			player.getPlayerProps().writeShort(-1);// Tells client that were
+													// being a npc
 			player.getPlayerProps().writeShort(player.getPnpc());// send NpcID
 		}
 		

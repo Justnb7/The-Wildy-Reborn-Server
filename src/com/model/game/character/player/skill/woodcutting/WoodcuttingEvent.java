@@ -8,6 +8,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
+import com.model.game.item.container.impl.Equipment;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -37,7 +38,7 @@ public class WoodcuttingEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (!player.getItems().playerHasItem(axe.getItemId()) && !player.getItems().isWearingItem(axe.getItemId())) {
+		if (!player.getItems().playerHasItem(axe.getItemId()) && !player.getEquipment().contains(axe.getItemId())) {
 			player.getActionSender().sendMessage("Your axe has dissapeared.");
 			container.stop();
 			return;
@@ -90,10 +91,10 @@ public class WoodcuttingEvent extends CycleEvent {
 	}
 	
 	private boolean wearingLumberjackOutfit() {
-		if (player.playerEquipment[player.getEquipment().getHelmetId()] == 10941
-				&& player.playerEquipment[player.getEquipment().getChestId()] == 10939
-				&& player.playerEquipment[player.getEquipment().getLegsId()] == 10940
-				&& player.playerEquipment[player.getEquipment().getBootsId()] == 10933)
+		if (player.getEquipment().getId(Equipment.HEAD_SLOT) == 10941
+				&& player.getEquipment().getId(Equipment.CHEST_SLOT) == 10939
+				&& player.getEquipment().getId(Equipment.LEGS_SLOT) == 10940
+				&& player.getEquipment().getId(Equipment.FEET_SLOT) == 10933)
 			return true;
 		return false;
 	}

@@ -7,6 +7,7 @@ import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.magic.MagicRequirements;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Equipment;
 
 public class CombatAssistant {
 
@@ -23,7 +24,7 @@ public class CombatAssistant {
 	}
 
 	public boolean usingDbow() {
-		return player.playerEquipment[player.getEquipment().getWeaponId()] == 11235;
+		return player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235;
 	}
 
 	/**
@@ -59,19 +60,19 @@ public class CombatAssistant {
 	}
 	
 	public boolean properJavalins() {
-		return usingJavalins(player.playerEquipment[player.getEquipment().getQuiverId()]);
+		return usingJavalins(player.getEquipment().getId(Equipment.ARROWS_SLOT));
 	}
 
 	public boolean properBolts() {
-		return usingBolts(player.playerEquipment[player.getEquipment().getQuiverId()]);
+		return usingBolts(player.getEquipment().getId(Equipment.ARROWS_SLOT));
 	}
 
 	public boolean properDarts() {
-		return usingDarts(player.playerEquipment[player.getEquipment().getQuiverId()]);
+		return usingDarts(player.getEquipment().getId(Equipment.ARROWS_SLOT));
 	}
 
 	public boolean properBoltRacks() {
-		return usingRackBolts(player.playerEquipment[player.getEquipment().getQuiverId()]);
+		return usingRackBolts(player.getEquipment().getId(Equipment.ARROWS_SLOT));
 	}
 
 	public void castOtherVengeance() {

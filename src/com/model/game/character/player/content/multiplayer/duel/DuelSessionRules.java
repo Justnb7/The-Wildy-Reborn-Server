@@ -54,14 +54,13 @@ public class DuelSessionRules {
 
 					@Override
 					public boolean meets(Player player) {
-						ItemAssistant items = player.getItems();
 						int weapons[][] = new int[][] { { 4151 },
 								{ 1215, 1231, 5680, 5698 } };
 						int weaponCount = 0;
 						for (int[] weaponGroup : weapons) {
 							for (int weapon : weaponGroup) {
-								if (items.playerHasItem(weapon)
-										|| items.isWearingItem(weapon)) {
+								if (player.getItems().playerHasItem(weapon)
+										|| player.getEquipment().contains(weapon)) {
 									weaponCount++;
 									break;
 								}

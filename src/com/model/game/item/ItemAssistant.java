@@ -16,6 +16,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.item.bank.BankItem;
+import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.shop.Currency;
@@ -56,13 +57,6 @@ public class ItemAssistant {
 		return true;
 	}
 
-	public int getWornItemSlot(int itemId) {
-		for (int i = 0; i < player.playerEquipment.length; i++)
-			if (player.playerEquipment[i] == itemId)
-				return i;
-		return -1;
-	}
-
 	public void resetItems(int WriteFrame) {
 		// synchronized (c) {
 		if (player.getOutStream() != null && player != null) {
@@ -84,256 +78,6 @@ public class ItemAssistant {
 			player.flushOutStream();
 		}
 		// }
-	}
-
-	/**
-	 * Item kept on death
-	 *
-	 * @param keepItem
-	 *            Keep item id
-	 * @param deleteItem
-	 *            Delete item id
-	 */
-	public void keepItem(int keepItem, boolean deleteItem) {
-		int value = 0;
-		int item = 0;
-		int slotId = 0;
-		boolean itemInInventory = false;
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			if (player.playerInventory[i] - 1 > 0) {
-				if (BountyHunterEmblem.get(player.playerInventory[i] - 1) != null) {
-					continue;
-				}
-				int inventoryItemValue = Currency.COINS.calculateCurrency(
-						player, player.playerInventory[i] - 1);
-				if (inventoryItemValue > value && (!player.invSlot[i])) {
-					value = inventoryItemValue;
-					item = player.playerInventory[i] - 1;
-					slotId = i;
-					itemInInventory = true;
-				}
-			}
-		}
-		for (int i1 = 0; i1 < player.playerEquipment.length; i1++) {
-			if (player.playerEquipment[i1] > 0) {
-				int equipmentItemValue = Currency.COINS.calculateCurrency(
-						player, player.playerEquipment[i1]);
-				if (equipmentItemValue > value && (!player.equipSlot[i1])) {
-					value = equipmentItemValue;
-					item = player.playerEquipment[i1];
-					slotId = i1;
-					itemInInventory = false;
-				}
-			}
-		}
-		if (itemInInventory) {
-			player.invSlot[slotId] = true;
-			if (deleteItem) {
-				deleteItem(player.playerInventory[slotId] - 1,
-						getItemSlot(player.playerInventory[slotId] - 1), 1);
-			}
-		} else {
-			player.equipSlot[slotId] = true;
-			if (deleteItem) {
-				deleteEquipmentSlot(item, slotId);
-			}
-		}
-		player.itemKeptId[keepItem] = item;
-	}
-
-	/**
-	 * Reset items kept on death
-	 */
-	public void resetKeepItems() {
-		for (int i = 0; i < player.itemKeptId.length; i++) {
-			player.itemKeptId[i] = -1;
-		}
-		for (int i1 = 0; i1 < player.invSlot.length; i1++) {
-			player.invSlot[i1] = false;
-		}
-		for (int i2 = 0; i2 < player.equipSlot.length; i2++) {
-			player.equipSlot[i2] = false;
-		}
-	}
-
-	/**
-	 * delete all items
-	 */
-	public void deleteAllItems() {
-		for (int i1 = 0; i1 < player.playerEquipment.length; i1++) {
-			deleteEquipmentSlot(player.playerEquipment[i1], i1);
-		}
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			deleteItem(player.playerInventory[i] - 1,
-					getItemSlot(player.playerInventory[i] - 1),
-					player.itemAmount[i]);
-		}
-	}
-
-	public void dropAllItems() {
-		try {
-			if (player.deathShopEnabled) {
-				if (player.deathShop.getContainer().size() > 0)
-					player.getActionSender().sendMessage(
-							"You have died, so all of your previous death store items have been deleted!");
-				player.deathShop.getContainer().clear();
-			}
-
-			/**
-			 * What you might want to start doing is logging information at this
-			 * point.
-			 */
-			Player killer = ((player.killerId != -1 && player.killerId != player
-					.getIndex()) ? World.getWorld().getPlayers()
-					.get(player.killerId) : null);
-
-			if (killer != null) {
-				if (player.getAccount().getType().equals(Account.IRON_MAN_TYPE)
-						|| player.getAccount().getType()
-								.equals(Account.ULTIMATE_IRON_MAN_TYPE)
-						|| player.getAccount().getType()
-								.equals(Account.HARDCORE_IRON_MAN_TYPE)) {
-					player.getActionSender().sendMessage("<col=ff0033>You was killed by "
-							+ killer.getName()
-							+ ", This means you can only loot your untradables.");
-					PlayerLogging.write(LogType.IRON_KILLED_PLAYER, player,
-							"Killed by " + killer.getName());
-				}
-			}
-
-			if (Objects.nonNull(killer)) {
-				if (killer.getAccount() != null
-						&& player.getAccount() != null
-						&& !killer
-								.getAccount()
-								.getType()
-								.attackableTypes()
-								.contains(player.getAccount().getType().alias())) {
-					killer.getActionSender().sendMessage("You do not receive drops from this player.");
-					return;
-				}
-			}
-
-			/*
-			 * Handle giving the emblem to the killer
-			 */
-			if (killer != null && killer.getAttribute("receive_emblem", false)) {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(
-						BountyHunterEmblem.TIER_1.getItemId()), player
-						.getPosition(), killer));
-				killer.setAttribute("receive_emblem", false);
-			}
-			for (int i = 0; i < player.playerInventory.length; i++) {
-
-				if (killer != null) {
-					if (player.getRunePouchContainer().hasPouch()) {
-						List<Item> runes = player.getRunePouchContainer()
-								.stream().filter(Objects::nonNull)
-								.collect(Collectors.toList());
-
-						player.getRunePouchContainer().clear();
-						player.getItems().deleteItem(12791);
-						runes.forEach(item -> GroundItemHandler
-								.createGroundItem(new GroundItem(new Item(item
-										.getId(), item.getAmount()), player
-										.getX(), player.getY(), player.getZ(),
-										killer)));
-					}
-					if (isTradeable(player.playerInventory[i] - 1)) {
-						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerInventory[i] - 1,
-										player.itemAmount[i]), player.getX(),
-								player.getY(), player.getZ(), killer));
-					} else {
-						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerInventory[i] - 1,
-										player.itemAmount[i]), player.getX(),
-								player.getY(), player.getZ(), player));
-					}
-				} else {
-					if (player.playerInventory[i] - 1 != 995) {
-						GroundItem item = new GroundItem(new Item(
-								player.playerInventory[i] - 1,
-								player.itemAmount[i]), player.getX(),
-								player.getY(), player.getZ(), player);
-						GroundItemHandler.createGroundItem(item);
-					} else {
-						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerInventory[i] - 1,
-										player.itemAmount[i]), player.getX(),
-								player.getY(), player.getZ(), player));
-					}
-				}
-			}
-			for (int e = 0; e < player.playerEquipment.length; e++) {
-				if (killer != null) {
-					if (isTradeable(player.playerEquipment[e])) {
-						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerEquipment[e],
-										player.playerEquipmentN[e]), player
-										.getX(), player.getY(), player.getZ(),
-								killer));
-					} else {
-						GroundItemHandler.createGroundItem(new GroundItem(
-								new Item(player.playerEquipment[e],
-										player.playerEquipmentN[e]), player
-										.getX(), player.getY(), player.getZ(),
-								player));
-					}
-				} else {
-					GroundItemHandler.createGroundItem(new GroundItem(new Item(
-							player.playerEquipment[e],
-							player.playerEquipmentN[e]), player.getX(), player
-							.getY(), player.getZ(), player));
-				}
-			}
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(526, 1),
-					player.getX(), player.getY(), player.getZ(),
-					killer != null ? killer : player));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public long getWealth() {
-		LinkedList<Item> all = new LinkedList<>();
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			if (player.playerInventory[i] <= 0)
-				continue;
-			all.add(new Item(player.playerInventory[i] - 1, player.itemAmount[i]));
-		}
-		for (int i = 0; i < player.playerEquipment.length; i++) {
-			if (player.playerEquipment[i] <= 0)
-				continue;
-			all.add(new Item(player.playerEquipment[i],
-					player.playerEquipmentN[i]));
-		}
-		int finalamount = player.isSkulled ? 0 : 3;
-		if (player.isActivePrayer(Prayers.PROTECT_ITEM))
-			finalamount++;
-		int amount = finalamount;
-		if (amount > 0) {
-			all.sort(Collections.reverseOrder((one, two) -> Double.compare(one
-					.getDefinition().getGeneralPrice(), two.getDefinition()
-					.getGeneralPrice())));
-			for (Iterator<Item> it = all.iterator(); it.hasNext();) {
-				Item next = it.next();
-				if (amount == 0) {
-					break;
-				}
-				if (next.getDefinition().isStackable() && next.getAmount() > 1) {
-					next.amount -= finalamount == 0 ? 1 : finalamount;
-				} else {
-					it.remove();
-				}
-				amount--;
-			}
-		}
-		long wealth = 0;
-		for (Item i : all) {
-			wealth += (i.getDefinition().getGeneralPrice() * i.amount);
-		}
-		return wealth;
 	}
 
 	public boolean isTradeable(int itemId) {
@@ -475,51 +219,44 @@ public class ItemAssistant {
 		addItem(item.getId(), item.getAmount());
 	}
 
-	public boolean isWearingItem(int itemID) {
-		for (int i = 0; i < 12; i++) {
-			if (player.playerEquipment[i] == itemID) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isWearingItem(Item item) {
-		return isWearingItem(item.getId());
-	}
-
 	public void addItem(Item item) {
 		addItem(item.getId(), item.getAmount());
 	}
-
-	public void resetBonus() {
-		Arrays.fill(player.getBonuses(), 0);
+	
+	public void deleteArrow() {
+		if (player.getEquipment().getId(Equipment.CAPE_SLOT) == 10499 && Utility.getRandom(5) != 1 || player.getEquipment().getId(Equipment.CAPE_SLOT) == 19111 && Utility.getRandom(5) != 1 && player.getEquipment().getId(Equipment.ARROWS_SLOT) != 4740)
+			return;
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
-	public void writeBonus() {
-		int offset = 0;
-		String send;
-		for (int i = 0; i < player.getBonuses().length; i++) {
-			if (player.getBonuses()[i] >= 0) {
-				send = Combat.BONUS_NAMES[i] + ": +" + player.getBonuses()[i];
-			} else {
-				send = Combat.BONUS_NAMES[i] + ": -" + java.lang.Math.abs(player.getBonuses()[i]);
-			}
-
-			if (i == 10) {
-				offset = 1;
-			}
-			player.getActionSender().sendString(send, (1675 + i + offset));
+	public void deleteAmmo() {
+		boolean avaSave = player.getEquipment().getId(Equipment.CAPE_SLOT) == 10499;
+		boolean otherSave = player.getEquipment().getId(Equipment.CAPE_SLOT) == 19111;
+		if (Utility.getRandom(5) != 1 && (avaSave || otherSave)) {
+			// arrow saved
+			return;
 		}
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
-	public void getBonus() {
-		for (int item : player.playerEquipment) {
-			if (item <= 0)
-				continue;
-			int[] values = ItemDefinition.forId(item).getBonus();
-			for (int i = 0; i < values.length; i++)
-				player.getBonuses()[i] += values[i];
+	/**
+	 * Dropping Arrows
+	 */
+	public void dropArrowUnderTarget() {
+		// Chinchompas: don't drop ammo
+		if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 10033 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 10034) {
+			return;
+		}
+		Entity target = player.getCombat().target;
+		int enemyX = target.getX();
+		int enemyY = target.getY();
+		int enemyHeight = target.heightLevel;
+		// Avas equipment: don't drop ammo
+		if (player.getEquipment().getId(Equipment.CAPE_SLOT) == 10499 || player.getEquipment().getId(Equipment.CAPE_SLOT) == 19111)
+			return;
+		int ammoId = player.getEquipment().getId(Equipment.ARROWS_SLOT);
+		if (Utility.getRandom(10) >= 4) {
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(ammoId), enemyX, enemyY, enemyHeight, player));
 		}
 	}
 
@@ -538,333 +275,6 @@ public class ItemAssistant {
 		if (Handed)
 			return true;
 		return false;
-	}
-
-	/**
-	 * Wear Item
-	 *
-	 * @param id
-	 *            the item id
-	 * @param slotId
-	 *            the slot
-	 * @return return;
-	 */
-	public boolean wearItem(int id, int slotId) {
-
-		Item item = player.getItems().getItemFromSlot(slotId);
-
-		int targetSlot = ItemDefinition.forId(id).getEquipmentSlot();
-
-		if (!ItemConstants.canWear(item, player))
-			return false;
-
-		if (!player.getItems().playerHasItem(id)
-				|| player.playerInventory[slotId] - 1 != id
-				|| player.itemAmount[slotId] <= 0) {
-			return false;
-		}
-		int wearAmount = player.itemAmount[slotId];
-		if (wearAmount < 1) {
-			return false;
-		}
-
-		if (targetSlot == player.getEquipment().getWeaponId()) {
-			if (player.usingBow) {
-				player.usingBow = false;
-			}
-		}
-		if (slotId >= 0 && id >= 0) {
-			int toEquip = player.playerInventory[slotId];
-			int toEquipN = player.itemAmount[slotId];
-			int toRemove = player.playerEquipment[targetSlot];
-			int toRemoveN = player.playerEquipmentN[targetSlot];
-			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
-				DuelSession session = (DuelSession) Server
-						.getMultiplayerSessionListener().getMultiplayerSession(
-								player, MultiplayerSessionType.DUEL);
-				if (!Objects.isNull(session)) {
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getHelmetId()]
-							&& session.getRules().contains(Rule.NO_HELM)) {
-						player.getActionSender().sendMessage(
-								"Wearing helmets has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getAmuletId()]
-							&& session.getRules().contains(Rule.NO_AMULET)) {
-						player.getActionSender().sendMessage(
-								"Wearing amulets has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getQuiverId()]
-							&& session.getRules().contains(Rule.NO_ARROWS)) {
-						player.getActionSender().sendMessage(
-								"Wearing arrows has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getChestId()]
-							&& session.getRules().contains(Rule.NO_BODY)) {
-						player.getActionSender().sendMessage(
-								"Wearing platebodies has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getBootsId()]
-							&& session.getRules().contains(Rule.NO_BOOTS)) {
-						player.getActionSender().sendMessage(
-								"Wearing boots has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getGlovesId()]
-							&& session.getRules().contains(Rule.NO_GLOVES)) {
-						player.getActionSender().sendMessage(
-								"Wearing gloves has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getCapeId()]
-							&& session.getRules().contains(Rule.NO_CAPE)) {
-						player.getActionSender().sendMessage(
-								"Wearing capes has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getLegsId()]
-							&& session.getRules().contains(Rule.NO_LEGS)) {
-						player.getActionSender().sendMessage(
-								"Wearing platelegs has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getRingId()]
-							&& session.getRules().contains(Rule.NO_RINGS)) {
-						player.getActionSender().sendMessage(
-								"Wearing a ring has been disabled for this duel.");
-						return false;
-					}
-					if (targetSlot == player.playerEquipment[player
-							.getEquipment().getWeaponId()]
-							&& session.getRules().contains(Rule.NO_WEAPON)) {
-						player.getActionSender().sendMessage(
-								"Wearing weapons has been disabled for this duel.");
-						return false;
-					}
-					if (session.getRules().contains(Rule.NO_SHIELD)) {
-						if (targetSlot == player.playerEquipment[player
-								.getEquipment().getShieldId()]
-								|| targetSlot == player.playerEquipment[player
-										.getEquipment().getWeaponId()]
-								&& player.getItems().is2handed(
-										getItemName(id).toLowerCase(), id)) {
-							player.getActionSender().sendMessage(
-									"Wearing shields and 2handed weapons has been disabled for this duel.");
-							return false;
-						}
-					}
-				}
-			}
-			if (toEquip == toRemove + 1
-					&& ItemDefinition.forId(toRemove).isStackable()) {
-				deleteItem(toRemove, getItemSlot(toRemove), toEquipN);
-				player.playerEquipmentN[targetSlot] += toEquipN;
-			} else if (targetSlot != 5 && targetSlot != 3) {
-				player.playerInventory[slotId] = toRemove + 1;
-				player.itemAmount[slotId] = toRemoveN;
-				player.playerEquipment[targetSlot] = toEquip - 1;
-				player.playerEquipmentN[targetSlot] = toEquipN;
-			} else if (targetSlot == 5) {
-				boolean wearing2h = is2handed(
-						getItemName(
-								player.playerEquipment[player.getEquipment()
-										.getWeaponId()]).toLowerCase(),
-						player.playerEquipment[player.getEquipment()
-								.getWeaponId()]);
-				if (wearing2h) {
-					toRemove = player.playerEquipment[player.getEquipment()
-							.getWeaponId()];
-					toRemoveN = player.playerEquipmentN[player.getEquipment()
-							.getWeaponId()];
-					player.playerEquipment[player.getEquipment().getWeaponId()] = -1;
-					player.playerEquipmentN[player.getEquipment().getWeaponId()] = 0;
-					updateSlot(player.getEquipment().getWeaponId());
-				}
-				player.playerInventory[slotId] = toRemove + 1;
-				player.itemAmount[slotId] = toRemoveN;
-				player.playerEquipment[targetSlot] = toEquip - 1;
-				player.playerEquipmentN[targetSlot] = toEquipN;
-			} else if (targetSlot == 3) {
-				boolean is2h = is2handed(getItemName(id).toLowerCase(), id);
-				boolean wearingShield = player.playerEquipment[player
-						.getEquipment().getShieldId()] > 0;
-				boolean wearingWeapon = player.playerEquipment[player
-						.getEquipment().getWeaponId()] > 0;
-				if (is2h) {
-					if (wearingShield && wearingWeapon) {
-						if (freeSlots() > 0) {
-							player.playerInventory[slotId] = toRemove + 1;
-							player.itemAmount[slotId] = toRemoveN;
-							player.playerEquipment[targetSlot] = toEquip - 1;
-							player.playerEquipmentN[targetSlot] = toEquipN;
-							removeItem(player.getEquipment().getShieldId());
-						} else {
-							player.getActionSender().sendMessage(
-									"You do not have enough inventory space to do this.");
-							return false;
-						}
-					} else if (wearingShield && !wearingWeapon) {
-						player.playerInventory[slotId] = player.playerEquipment[player
-								.getEquipment().getShieldId()] + 1;
-						player.itemAmount[slotId] = player.playerEquipmentN[player
-								.getEquipment().getShieldId()];
-						player.playerEquipment[targetSlot] = toEquip - 1;
-						player.playerEquipmentN[targetSlot] = toEquipN;
-						player.playerEquipment[player.getEquipment()
-								.getShieldId()] = -1;
-						player.playerEquipmentN[player.getEquipment()
-								.getShieldId()] = 0;
-						updateSlot(player.getEquipment().getShieldId());
-					} else {
-						int remove_slot = getItemSlot(toRemove);
-						if (toRemove != -1 && remove_slot != -1
-								&& ItemDefinition.forId(toRemove).isStackable()) {
-							player.playerInventory[slotId] = 0;
-							player.itemAmount[slotId] = 0;
-							player.itemAmount[remove_slot] += toRemoveN;
-						} else {
-							player.playerInventory[slotId] = toRemove + 1;
-							player.itemAmount[slotId] = toRemoveN;
-						}
-						player.playerEquipment[targetSlot] = toEquip - 1;
-						player.playerEquipmentN[targetSlot] = toEquipN;
-					}
-				} else {
-					int remove_slot = getItemSlot(toRemove);
-					if (toRemove != -1 && remove_slot != -1
-							&& ItemDefinition.forId(toRemove).isStackable()) {
-						player.playerInventory[slotId] = 0;
-						player.itemAmount[slotId] = 0;
-						player.itemAmount[remove_slot] += toRemoveN;
-					} else {
-						player.playerInventory[slotId] = toRemove + 1;
-						player.itemAmount[slotId] = toRemoveN;
-					}
-					player.playerEquipment[targetSlot] = toEquip - 1;
-					player.playerEquipmentN[targetSlot] = toEquipN;
-				}
-			}
-			if (targetSlot == 3) {
-				player.setUsingSpecial(false);
-				player.getWeaponInterface().sendSpecialBar(id);
-			}
-			if (player.getOutStream() != null && player != null) {
-				player.getOutStream().putFrameVarShort(34);
-				int offset = player.getOutStream().offset;
-				player.getOutStream().writeShort(1688);
-				player.getOutStream().writeByte(targetSlot);
-				player.getOutStream().writeShort(id + 1);
-
-				if (player.playerEquipmentN[targetSlot] > 254) {
-					player.getOutStream().writeByte(255);
-					player.getOutStream().putInt(
-							player.playerEquipmentN[targetSlot]);
-				} else {
-					player.getOutStream().writeByte(
-							player.playerEquipmentN[targetSlot]);
-				}
-
-				player.getOutStream().putFrameSizeShort(offset);
-				player.flushOutStream();
-			}
-
-			player.getWeaponInterface()
-					.sendWeapon(
-							player.playerEquipment[player.getEquipment()
-									.getWeaponId()],
-							getItemName(player.playerEquipment[player
-									.getEquipment().getWeaponId()]));
-			resetBonus();
-			getBonus();
-			player.resetAutoCast();
-			player.autoCast = false;
-			writeBonus();
-			WeaponAnimation.execute(player, new Item(player.playerEquipment[player.getEquipment().getWeaponId()]));
-			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-			player.getCombat().reset();
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public void wearItem(int wearID, int wearAmount, int targetSlot) {
-		player.getOutStream().putFrameVarShort(34);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().writeShort(1688);
-		player.getOutStream().writeByte(targetSlot);
-		player.getOutStream().writeShort(wearID + 1);
-
-		if (wearAmount > 254) {
-			player.getOutStream().writeByte(255);
-			player.getOutStream().putInt(wearAmount);
-		} else {
-			player.getOutStream().writeByte(wearAmount);
-		}
-		player.getOutStream().putFrameSizeShort(offset);
-		player.playerEquipment[targetSlot] = wearID;
-		player.playerEquipmentN[targetSlot] = wearAmount;
-		player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
-		player.getItems().resetBonus();
-		player.getItems().getBonus();
-		player.resetAutoCast();
-		player.getItems().writeBonus();
-		WeaponAnimation.execute(player, new Item(wearID));
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-	}
-
-	public void updateSlot(int slot) {
-		player.getOutStream().putFrameVarShort(34);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().writeShort(1688);
-		player.getOutStream().writeByte(slot);
-		player.getOutStream().writeShort(player.playerEquipment[slot] + 1);
-		if (player.playerEquipmentN[slot] > 254) {
-			player.getOutStream().writeByte(255);
-			player.getOutStream().putInt(player.playerEquipmentN[slot]);
-		} else {
-			player.getOutStream().writeByte(player.playerEquipmentN[slot]);
-		}
-		player.getOutStream().putFrameSizeShort(offset);
-
-	}
-
-	public void removeItem(int slot) {
-		if (player.getOutStream() != null && player != null) {
-			if (player.playerEquipment[slot] > -1) {
-				if (addItem(player.playerEquipment[slot], player.playerEquipmentN[slot])) {
-					player.playerEquipment[slot] = -1;
-					player.playerEquipmentN[slot] = 0;
-					player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
-					resetBonus();
-					getBonus();
-					player.autoCast = false;
-					writeBonus();
-					player.setWeaponAnimation(null);
-					player.getOutStream().writeFrame(34);
-					player.getOutStream().writeShort(6);
-					player.getOutStream().writeShort(1688);
-					player.getOutStream().writeByte(slot);
-					player.getOutStream().writeShort(0);
-					player.getOutStream().writeByte(0);
-					player.flushOutStream();
-
-					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-				}
-			}
-		}
 	}
 
 	/**
@@ -896,36 +306,6 @@ public class ItemAssistant {
 		if (withdrawAsNote)
 			return true;
 		return false;
-	}
-
-	/**
-	 * Update Equip tab
-	 *
-	 * @param wearID
-	 *            the wear id
-	 * @param amount
-	 *            the amount
-	 * @param targetSlot
-	 *            the target slot
-	 */
-
-	public void setEquipment(int wearID, int amount, int targetSlot) {
-		player.getOutStream().putFrameVarShort(34);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().writeShort(1688);
-		player.getOutStream().writeByte(targetSlot);
-		player.getOutStream().writeShort(wearID + 1);
-		if (amount > 254) {
-			player.getOutStream().writeByte(255);
-			player.getOutStream().putInt(amount);
-		} else {
-			player.getOutStream().writeByte(amount);
-		}
-		player.getOutStream().putFrameSizeShort(offset);
-		player.flushOutStream();
-		player.playerEquipment[targetSlot] = wearID;
-		player.playerEquipmentN[targetSlot] = amount;
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
 	/**
@@ -1022,35 +402,6 @@ public class ItemAssistant {
 
 	}
 
-	/**
-	 * delete Item
-	 */
-	public void deleteEquipmentSlot(int id, int slot) {
-
-		if (World.getWorld().getPlayers().get(player.getIndex()) == null) {
-			return;
-		}
-		if (id < 0) {
-			return;
-		}
-		player.playerEquipment[slot] = -1;
-		player.playerEquipmentN[slot] = player.playerEquipmentN[slot] - 1;
-		player.getOutStream().writeFrame(34);
-		player.getOutStream().writeShort(6);
-		player.getOutStream().writeShort(1688);
-		player.getOutStream().writeByte(slot);
-		player.getOutStream().writeShort(0);
-		player.getOutStream().writeByte(0);
-		getBonus();
-		if (slot == player.getEquipment().getWeaponId()) {
-			player.getWeaponInterface().sendWeapon(-1, "Unarmed");
-		}
-		resetBonus();
-		getBonus();
-		writeBonus();
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-	}
-
 	public void deleteItem(final int id, int amount) {
 		if (id <= 0) {
 			return;
@@ -1110,139 +461,6 @@ public class ItemAssistant {
 
 	public void remove(Item item, int slot) {
 		deleteItem(item.id, slot, item.amount);
-	}
-
-	/**
-	 * Delete Arrows
-	 */
-	public void deleteArrow() {
-		if (player.playerEquipment[player.getEquipment().getCapeId()] == 10499
-				&& Utility.getRandom(5) != 1
-				|| player.playerEquipment[player.getEquipment().getCapeId()] == 19111
-				&& Utility.getRandom(5) != 1
-				&& player.playerEquipment[player.getEquipment().getQuiverId()] != 4740)
-			return;
-		if (player.playerEquipmentN[player.getEquipment().getQuiverId()] == 1) {
-			player.getItems()
-					.deleteEquipmentSlot(
-							player.playerEquipment[player.getEquipment()
-									.getQuiverId()],
-							player.getEquipment().getQuiverId());
-		}
-
-		if (player.playerEquipmentN[player.getEquipment().getQuiverId()] != 0) {
-			player.getOutStream().putFrameVarShort(34);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(1688);
-			player.getOutStream()
-					.writeByte(player.getEquipment().getQuiverId());
-			player.getOutStream()
-					.writeShort(
-							player.playerEquipment[player.getEquipment()
-									.getQuiverId()] + 1);
-			if (player.playerEquipmentN[player.getEquipment().getQuiverId()] - 1 > 254) {
-				player.getOutStream().writeByte(255);
-				player.getOutStream().putInt(
-						player.playerEquipmentN[player.getEquipment()
-								.getQuiverId()] - 1);
-			} else {
-				player.getOutStream().writeByte(
-						player.playerEquipmentN[player.getEquipment()
-								.getQuiverId()] - 1);
-			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
-			player.playerEquipmentN[player.getEquipment().getQuiverId()] -= 1;
-		}
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-	}
-
-	public void deleteAmmo() {
-		boolean avaSave = player.playerEquipment[player.getEquipment()
-				.getCapeId()] == 10499;
-		boolean otherSave = player.playerEquipment[player.getEquipment()
-				.getCapeId()] == 19111;
-		if (Utility.getRandom(5) != 1 && (avaSave || otherSave)) {
-			// arrow saved
-			return;
-		}
-		if (player.playerEquipmentN[player.getEquipment().getWeaponId()] != 0) {
-			player.getOutStream().putFrameVarShort(34);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(1688);
-			player.getOutStream()
-					.writeByte(player.getEquipment().getWeaponId());
-			player.getOutStream()
-					.writeShort(
-							player.playerEquipment[player.getEquipment()
-									.getWeaponId()] + 1);
-			if (player.playerEquipmentN[player.getEquipment().getWeaponId()] - 1 > 254) {
-				player.getOutStream().writeByte(255);
-				player.getOutStream().putInt(
-						player.playerEquipmentN[player.getEquipment()
-								.getWeaponId()] - 1);
-			} else {
-				player.getOutStream().writeByte(
-						player.playerEquipmentN[player.getEquipment()
-								.getWeaponId()] - 1);
-			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
-			player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
-		}
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-	}
-
-	public void removeEquipment() {
-		if (player.playerEquipmentN[player.getEquipment().getWeaponId()] != 0) {
-			player.getOutStream().putFrameVarShort(34);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(1688);
-			player.getOutStream()
-					.writeByte(player.getEquipment().getWeaponId());
-			player.getOutStream()
-					.writeShort(
-							player.playerEquipment[player.getEquipment()
-									.getWeaponId()] + 1);
-			if (player.playerEquipmentN[player.getEquipment().getWeaponId()] - 1 > 254) {
-				player.getOutStream().writeByte(255);
-				player.getOutStream().putInt(
-						player.playerEquipmentN[player.getEquipment()
-								.getWeaponId()] - 1);
-			} else {
-				player.getOutStream().writeByte(
-						player.playerEquipmentN[player.getEquipment()
-								.getWeaponId()] - 1);
-			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
-			player.playerEquipmentN[player.getEquipment().getWeaponId()] -= 1;
-		}
-		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-	}
-
-	/**
-	 * Dropping Arrows
-	 */
-	public void dropArrowUnderTarget() {
-		// Chinchompas: don't drop ammo
-		if (player.playerEquipment[player.getEquipment().getWeaponId()] == 10033
-				|| player.playerEquipment[player.getEquipment().getWeaponId()] == 10034) {
-			return;
-		}
-		Entity target = player.getCombat().target;
-		int enemyX = target.getX();
-		int enemyY = target.getY();
-		int enemyHeight = target.heightLevel;
-		// Avas equipment: don't drop ammo
-		if (player.playerEquipment[player.getEquipment().getCapeId()] == 10499
-				|| player.playerEquipment[player.getEquipment().getCapeId()] == 19111)
-			return;
-		int ammoId = player.playerEquipment[player.getEquipment().getQuiverId()];
-		if (Utility.getRandom(10) >= 4) {
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(ammoId),
-					enemyX, enemyY, enemyHeight, player));
-		}
 	}
 
 	public int freeSlots() {
@@ -1461,30 +679,6 @@ public class ItemAssistant {
 		} else {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
 			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
-		}
-	}
-
-	public void removeEquipment(int wearID, int slot) {
-		if (player.getOutStream() != null && player != null) {
-			if (player.playerEquipment[slot] > -1) {
-				if (addItem(player.playerEquipment[slot], player.playerEquipmentN[slot])) {
-					player.playerEquipment[slot] = -1;
-					player.playerEquipmentN[slot] = 0;
-					player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]));
-					resetBonus();
-					getBonus();
-					writeBonus();
-					player.setWeaponAnimation(null);
-					player.getOutStream().writeFrame(34);
-					player.getOutStream().writeShort(6);
-					player.getOutStream().writeShort(1688);
-					player.getOutStream().writeByte(slot);
-					player.getOutStream().writeShort(0);
-					player.getOutStream().writeByte(0);
-					player.flushOutStream();
-					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-				}
-			}
 		}
 	}
 

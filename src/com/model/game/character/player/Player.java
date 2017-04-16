@@ -74,11 +74,11 @@ import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
 import com.model.game.item.bank.Bank;
-import com.model.game.item.container.impl.Inventory;
+import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.impl.InventoryContainer;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.item.container.impl.TradeContainer;
-import com.model.game.item.equipment.Equipment;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
@@ -169,14 +169,28 @@ public class Player extends Entity {
      *
      * @return the container for the inventory.
      */
-    public Inventory getInventory() {
+    public InventoryContainer getInventory() {
         return inventory;
     }
     
     /**
      * The container that holds the inventory items.
      */
-    private final Inventory inventory = new Inventory(this);
+    private final InventoryContainer inventory = new InventoryContainer(this);
+    
+    /**
+     * The container that holds the equipment items.
+     */
+    private final Equipment equipment = new Equipment(this);
+    
+    /**
+     * Gets the container that holds the equipment items.
+     *
+     * @return the container for the equipment.
+     */
+    public Equipment getEquipment() {
+        return equipment;
+    }
 	
 	private Duel duelSession = new Duel(this);
 	
@@ -1010,21 +1024,6 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
-	public int[] playerEquipment() {
-		return playerEquipment;
-	}
-	
-	private Equipment equipment = new Equipment();
-	
-	/**
-	 * Gets the player's equipment.
-	 * 
-	 * @return The player's equipment.
-	 */
-	public Equipment getEquipment() {
-		return equipment;
-	}
 
 	public boolean withinDistance(Player otherPlr) {
 		if (heightLevel != otherPlr.heightLevel) {
@@ -1196,20 +1195,8 @@ public class Player extends Entity {
 		}
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
-		playerEquipment[getEquipment().getHelmetId()] = -1;
-		playerEquipment[getEquipment().getCapeId()] = -1;
-		playerEquipment[getEquipment().getAmuletId()] = -1;
-		playerEquipment[getEquipment().getChestId()] = -1;
-		playerEquipment[getEquipment().getShieldId()] = -1;
-		playerEquipment[getEquipment().getLegsId()] = -1;
-		playerEquipment[getEquipment().getGlovesId()] = -1;
-		playerEquipment[getEquipment().getBootsId()] = -1;
-		playerEquipment[getEquipment().getRingId()] = -1;
-		playerEquipment[getEquipment().getQuiverId()] = -1;
-		playerEquipment[getEquipment().getWeaponId()] = -1;
 		teleportToX = 3087;
 		teleportToY = 3499;
-		absX = absY = -1;
 		mapRegionX = mapRegionY = -1;
 		currentX = currentY = 0;
 		getMovementHandler().resetWalkingQueue();
@@ -1285,7 +1272,7 @@ public class Player extends Entity {
 		//Update inventory before login
 		getItems().resetItems(3214);
 		//Update equipment before login
-		getEquipment().updateEquipment(this);
+		equipment.refresh();
 		//Update friends and ignores
 		getFAI().handleLogin();
 		//Update right click menu
@@ -1897,7 +1884,7 @@ public class Player extends Entity {
 	 * @return	true of they can be infected by venom.
 	 */
 	public boolean isSusceptibleToVenom() {
-		return System.currentTimeMillis() - lastVenomCure > venomImmunity && !getItems().isWearingItem(12931) && !getItems().isWearingItem(13197) && !getItems().isWearingItem(13199);
+		return System.currentTimeMillis() - lastVenomCure > venomImmunity && !getEquipment().contains(12931) && !getEquipment().contains(13197) && !getEquipment().contains(13199);
 	}
 	
 	/**
@@ -2616,8 +2603,6 @@ public class Player extends Entity {
 	public int BANK_SIZE = 350;
 	public int bankItems[] = new int[BANK_SIZE];
 	public int bankItemsN[] = new int[BANK_SIZE];
-	public int[] playerEquipment = new int[14];
-	public int[] playerEquipmentN = new int[14];
 
 	public int lastClickedItem;
 	public int[] itemKeptId = new int[4];
@@ -2649,7 +2634,6 @@ public class Player extends Entity {
 	 */
 	public String connectedFrom = "";
 	private String username = null;
-	public String passHash;
 	private String password = "";
 	public String lastClanChat = "";
 	private String identity;
@@ -2895,5 +2879,23 @@ public class Player extends Entity {
 		this.teleHeight = target.getZ();
 		this.getSkillCyclesTask().stop();
         System.out.println("to "+Arrays.toString(new int[] {target.getX(), target.getY(), target.getZ()}));
+    }
+	
+	/**
+     * Calculates and writes the attack and defence bonuses to the equipment
+     * sidebar interface.
+     */
+    public void sendBonus() {
+        Arrays.fill(bonuses, 0);
+        for (Item item : equipment) {
+            if (!Item.valid(item))
+                continue;
+            for (int i = 0; i < bonuses.length; i++) {
+                bonuses[i] += item.getDefinition().getBonus()[i];
+            }
+        }
+        for (int i = 0; i < bonuses.length; i++) {
+            getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (bonuses[i] >= 0 ? "+" : "") + bonuses[i], (1675 + i + (i == 10 || i == 11 ? 1 : 0)));
+        }
     }
 }

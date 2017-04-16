@@ -9,7 +9,6 @@ import com.model.game.character.combat.weapon.AttackStyle.FightType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttackHandler;
 import com.model.game.character.player.EmotesManager.EmoteData;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.ItemOnDeath;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
@@ -28,6 +27,7 @@ import com.model.game.character.player.packets.out.*;
 import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
+import com.model.game.item.container.impl.Equipment;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -223,10 +223,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.write(new SendInterfacePacket(15106));
 			break;
 
-		case 108006:
-			ItemOnDeath.activateItemsOnDeath(player);
-			break;
-
 		case 108020:
 			break;
 
@@ -282,12 +278,12 @@ public class ActionButtonPacketHandler implements PacketType {
 				return;
 			}
 			player.lastBankDeposit = System.currentTimeMillis();
-			for (int slot = 0; slot < player.playerEquipment.length; slot++) {
-				if (player.playerEquipment[slot] > 0 && player.playerEquipmentN[slot] > 0) {
+			for (int slot = 0; slot < player.getEquipment().size(); slot++) {
+				/*if (player.getEquipment().get(slot) > 0 && player.playerEquipmentN[slot] > 0) {
 					if (!player.getBank().addEquipmentToBank(player.playerEquipment[slot], slot,
 							player.playerEquipmentN[slot], false))
 						break;
-				}
+				}*/
 			}
 			player.getItems().updateInventory();
 			player.getBank().resetBank();
@@ -654,7 +650,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 7212:
 		case 24017:
 			player.resetAutoCast();
-			player.getWeaponInterface().sendWeapon(player.playerEquipment[player.getEquipment().getWeaponId()], ItemDefinition.forId(player.playerEquipment[player.getEquipment().getWeaponId()]).getName());
+			player.getWeaponInterface().sendWeapon(player.getEquipment().getId(Equipment.WEAPON_SLOT), ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName());
 			break;
 			
 		case 1093:

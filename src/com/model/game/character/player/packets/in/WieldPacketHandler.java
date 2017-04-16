@@ -57,7 +57,7 @@ public class WieldPacketHandler implements SubPacketType {
 					return;
 				}
 				
-				player.getItems().wearItem(item.getId(), wearSlot);
+				player.getEquipment().equipItem(wearSlot);
 			}
 
 			break;

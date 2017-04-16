@@ -75,7 +75,7 @@ public class Duel extends Multiplayer {
 			session.getStage().setStage(MultiplayerSessionStage.OFFER_ITEMS);
 			session.populatePresetItems();
 			session.updateMainComponent();
-			session.sendDuelEquipment();
+			//session.sendDuelEquipment();
 			Server.getMultiplayerSessionListener().removeOldRequests(player);
 			Server.getMultiplayerSessionListener().removeOldRequests(requested);
 			session.getStage().setAttachment(null);

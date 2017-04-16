@@ -2,6 +2,7 @@ package com.model.game.character.combat.combat_data;
 
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Equipment;
 
 public class CombatData {
 
@@ -19,10 +20,10 @@ public class CombatData {
 			}
 		}
 		
-		if (player.playerEquipment[player.getEquipment().getWeaponId()] == -1)
+		if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == -1)
 			return 4;// unarmed
 		
-		switch (player.playerEquipment[player.getEquipment().getWeaponId()]) {
+		switch (player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
 		
 		case 11235:
 			return 9;
@@ -209,7 +210,7 @@ public class CombatData {
 				return 4;
 			}
 
-			switch (player.playerEquipment[player.getEquipment().getWeaponId()]) {
+			switch (player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
 			
 			case 6522:
 				return 3;

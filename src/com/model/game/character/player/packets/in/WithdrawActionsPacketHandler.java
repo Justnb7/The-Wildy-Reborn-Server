@@ -87,7 +87,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 1688:
-			player.getItems().removeEquipment(item.getId(), slot);
+			//player.getItems().removeEquipment(item.getId(), slot);
 			break;
 
 		case 5064:

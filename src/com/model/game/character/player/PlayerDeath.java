@@ -24,6 +24,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.serialize.PlayerSave;
+import com.model.game.item.container.impl.Equipment;
 import com.model.game.location.Location;
 import com.model.utility.Utility;
 
@@ -126,7 +127,7 @@ public class PlayerDeath {
 		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (!player.getController().isSafe() && duelSession == null) {
-			player.getItems().resetKeepItems();
+			//player.getItems().resetKeepItems();
 			for (int i = 0; i < player.playerInventory.length; i++) {
 				if (player.playerInventory[i] - 1 > 0) {
 					if (BountyHunterEmblem.get(player.playerInventory[i] - 1) != null) {
@@ -137,7 +138,7 @@ public class PlayerDeath {
 					}
 				}
 			}
-			if (!player.isSkulled) {
+			/*if (!player.isSkulled) {
 				player.getItems().keepItem(0, true);
 				player.getItems().keepItem(1, true);
 				player.getItems().keepItem(2, true);
@@ -147,7 +148,7 @@ public class PlayerDeath {
 				player.getItems().keepItem(3, true);
 			}
 			player.getItems().dropAllItems();
-			player.getItems().deleteAllItems();
+			player.getItems().deleteAllItems();*/
 			if (!player.isSkulled) {
 				for (int i1 = 0; i1 < 3; i1++) {
 					if (player.itemKeptId[i1] > 0) {
@@ -160,7 +161,7 @@ public class PlayerDeath {
 					player.getItems().addItem(player.itemKeptId[3], 1);
 				}
 			}
-			player.getItems().resetKeepItems();
+			//player.getItems().resetKeepItems();
 		}
 
 		PrayerHandler.resetAllPrayers(player);
@@ -214,7 +215,7 @@ public class PlayerDeath {
 	
 	private void killedPlayer(Player player, Player killer) {
 
-		long wealth = player.getItems().getWealth();
+		//long wealth = player.getItems().getWealth();
 		double memberBonus = 1;
 		int blood_Money = 3;
 
@@ -229,8 +230,8 @@ public class PlayerDeath {
 				return;
 			}
 
-			if (wealth > Constants.PK_POINTS_WEALTH)
-				BountyHunter.handleBountyHunterKill(player, killer);
+			/*if (wealth > Constants.PK_POINTS_WEALTH)
+				BountyHunter.handleBountyHunterKill(player, killer);*/
 
 			killer.setCurrentKillStreak(killer.getCurrentKillStreak() + 1);
 			killer.setWildernessKillStreak(killer.getWildernessKillStreak() + 1);
@@ -248,7 +249,7 @@ public class PlayerDeath {
 				killer.setHighestKillStreak(killer.getCurrentKillStreak());
 			}
 
-			if (wealth > Constants.PK_POINTS_WEALTH) {
+			//if (wealth > Constants.PK_POINTS_WEALTH) {
 				switch (killer.getRights().getValue()) {
 				case 3:
 					memberBonus += Utility.isWeekend() ? 4 : 8;
@@ -271,9 +272,9 @@ public class PlayerDeath {
 				// killer.write(new SendMessagePacket("You now have @blu@" +
 				// killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" +
 				// totalPoints + "@bla@)"));
-			} else {
+			/*} else {
 				killer.getActionSender().sendMessage(player.getName() + " wasn't risking enough for you to gain any rewards.");
-			}
+			}*/
 
 			if (player.getCurrentKillStreak() >= 5) {
 				PlayerUpdating.executeGlobalMessage("<img=12>[@red@Server@bla@]: @red@" + killer.getName() + "@red@ just " + killMessage[new java.util.Random().nextInt(killStreakMessage.length)] + " @red@" + player.getName() + "'s@red@ " + player.getCurrentKillStreak() + " killstreak!");
@@ -285,7 +286,7 @@ public class PlayerDeath {
 			player.setDeathCount(player.getDeathCount() + 1);
 			player.setCurrentKillStreak(0);
 			killer.setSpecialAmount(100);
-			killer.getWeaponInterface().sendSpecialBar(killer.playerEquipment[killer.getEquipment().getWeaponId()]);
+			killer.getWeaponInterface().sendSpecialBar(killer.getEquipment().getId(Equipment.WEAPON_SLOT));
 			killer.getWeaponInterface().refreshSpecialAttack();
 			sendKillMessage(killer, player);
 			player.getActionSender().sendMessage(message_to_player[new java.util.Random().nextInt(message_to_player.length)]);

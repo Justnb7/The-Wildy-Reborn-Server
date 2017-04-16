@@ -13,7 +13,6 @@ import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.item.equipment.Equipment;
 import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
@@ -62,7 +61,6 @@ public class GameDataLoader implements Runnable {
 			new WeaponDefinitionLoader().load();
 			MobAttackSounds.declare();
 			PlayerSounds.declare();
-			Equipment.setMetalEquipment();
 			ClanManager.init();
 			ConnectionHandler.initialize();
 			Server.state = ServerState.LOADED;

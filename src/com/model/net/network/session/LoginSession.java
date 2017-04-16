@@ -181,13 +181,6 @@ public class LoginSession extends Session {
 				return;
 			}
 		}
-
-		for (int i = 0; i < player.playerEquipment.length; i++) {
-			if (player.playerEquipment[i] == 0) {
-				player.playerEquipment[i] = -1;
-				player.playerEquipmentN[i] = 0;
-			}
-		}
 		
 		/*
 		 * This bit should be done after the players loaded

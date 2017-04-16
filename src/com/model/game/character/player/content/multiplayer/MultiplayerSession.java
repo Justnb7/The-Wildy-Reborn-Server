@@ -418,13 +418,13 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 					realItems.add(new GameItem(itemId, amount));
 				}
 			}
-			for (int i = 0; i < player.playerEquipment.length; i++) {
+			/*for (int i = 0; i < player.playerEquipment.length; i++) {
 				int itemId = player.playerEquipment[i];
 				int amount = player.playerEquipmentN[i];
 				if (itemId > 0 && amount > 0) {
 					realItems.add(new GameItem(itemId, amount));
 				}
-			}
+			}*/
 			presetItems.put(player, realItems);
 		}
 	}

@@ -19,6 +19,7 @@ import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
+import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -335,7 +336,7 @@ public class NPCDeathTask extends ScheduledTask {
 		}
 	
 		
-		int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
+		int weapon = player.getEquipment().getId(Equipment.WEAPON_SLOT);
 		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
 		
 		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
@@ -346,10 +347,10 @@ public class NPCDeathTask extends ScheduledTask {
 		
 		float yourIncrease = 0;
 
-		if (player.playerEquipment[player.getEquipment().getRingId()] == 2572) {
+		if (player.getEquipment().getId(Equipment.RING_SLOT) == 2572) {
 			yourIncrease += 2;
 		}
-		if (player.playerEquipment[player.getEquipment().getRingId()] == 12785) {
+		if (player.getEquipment().getId(Equipment.RING_SLOT) == 12785) {
 			yourIncrease += 5;
 		}
 		if(player.getTotalAmountDonated() > 100 && player.getTotalAmountDonated() < 200) {

@@ -3,6 +3,7 @@ package com.model.game.character.combat.weaponSpecial;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.weaponSpecial.impl.*;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Equipment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +98,7 @@ public class SpecialAttackHandler {
 					return false;
 				}
 				
-				int weapon = player.playerEquipment[player.getEquipment().getWeaponId()];
+				int weapon = player.getEquipment().getId(Equipment.WEAPON_SLOT);
 
 				if (weapon == 4153) {
 					if(player.lastAttacker == null) { // nobody hit us

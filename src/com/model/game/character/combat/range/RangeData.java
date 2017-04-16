@@ -4,6 +4,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Equipment;
 
 
 
@@ -49,8 +50,8 @@ public class RangeData {
 		return str;
 	}
 
-	public static int getRangeStartGFX(Player c) {
-		int ammo = c.playerEquipment[c.getEquipment().getQuiverId()];
+	public static int getRangeStartGFX(Player player) {
+		int ammo = player.getEquipment().getId(Equipment.ARROWS_SLOT);
 		switch (ammo) {
 		case 4212:
 				return -1;
@@ -89,13 +90,13 @@ public class RangeData {
 				str = data[l][1];
 			}
 		}
-		if(c.playerEquipment[3] == 11235 || c.playerEquipment[3] == 12765 || c.playerEquipment[3] == 12766 || c.playerEquipment[3] == 12767 || c.playerEquipment[3] == 12768) {
+		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12765 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12766 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12767 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12768) {
 			int[][] moreD = {
 				{882, 1104}, {884, 1105}, {886, 1106}, {888, 1107},
 				{890, 1108}, {892, 1109}, {11212, 1111},
 			};
 			for(int l = 0; l < moreD.length; l++) {
-				if(c.playerEquipment[c.getEquipment().getQuiverId()] == moreD[l][0]) {
+				if(player.getEquipment().getId(Equipment.ARROWS_SLOT) == moreD[l][0]) {
 					str = moreD[l][1];
 				}
 			}
@@ -104,15 +105,15 @@ public class RangeData {
 	}
 
 	public static int getRangeProjectileGFX(Player player) {
-		int ammo = player.playerEquipment[player.getEquipment().getQuiverId()];
-		int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
+		int ammo = player.getEquipment().getId(Equipment.ARROWS_SLOT);
+		int wep = player.getEquipment().getId(Equipment.WEAPON_SLOT);
 		boolean spec = player.isUsingSpecial();
-		if (player.getItems().isWearingItem(12926)) {
+		if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12926) {
 			return 1123;
 		}
 		
 		if (spec && wep == 11235) {
-			return player.playerEquipment[player.getEquipment().getQuiverId()] == 11212 ? 1099 : 1101;
+			return player.getEquipment().getId(Equipment.ARROWS_SLOT) == 11212 ? 1099 : 1101;
 		}
 		
 		if (wep == 12424)
@@ -172,13 +173,13 @@ public class RangeData {
 		return str;
 	}
 
-	public static int[] getRangeEndGFX(Player c) {
+	public static int[] getRangeEndGFX(Player player) {
 		int[] info = new int[] {-1, -1};
 		int[][] data = {
 			{10033, 157, 100}, {10034, 157, 100},
 		};
 		for(int l = 0; l < data.length; l++) {
-			if(c.playerEquipment[c.getEquipment().getWeaponId()] == data[l][0]) {
+			if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == data[l][0]) {
 				info[0] = data[l][1];
 				info[1] = data[l][2];
 			}
@@ -187,7 +188,7 @@ public class RangeData {
 	}
 
 	public static int correctBowAndArrows(Player player) {
-		switch(player.playerEquipment[player.getEquipment().getWeaponId()]) {
+		switch(player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
 			
 			case 839:
 			case 841:
@@ -246,9 +247,9 @@ public class RangeData {
 	}
 
 	public static int getProjectileSpeed(Player player) {
-		if (player.isUsingSpecial() && player.playerEquipment[3] == 11235)
+		if (player.isUsingSpecial() && player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235)
 			return 100;
-		switch(player.playerEquipment[3]) {
+		switch(player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
 			case 10033:
 			case 10034:
 				return 60;
@@ -263,7 +264,7 @@ public class RangeData {
 		};
 		int str = 53;
 		for(int i = 0; i < data.length; i++) {
-			if(player.playerEquipment[player.getEquipment().getWeaponId()] == data[i]) {
+			if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == data[i]) {
 				str = 32;
 			}
 		}

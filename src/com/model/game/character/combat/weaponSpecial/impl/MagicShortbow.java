@@ -10,6 +10,7 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -60,7 +61,7 @@ public class MagicShortbow implements SpecialAttack {
 		if (player.usingBow) {
 			return true;
 		}
-		if (player.playerEquipment[player.getEquipment().getQuiverId()] < 2) {
+		if (player.getEquipment().getId(Equipment.ARROWS_SLOT) < 2) {
 			player.getActionSender().sendMessage("You need atleast 2 arrows to perform this special.");
 			player.setUsingSpecial(false);
 			return false;

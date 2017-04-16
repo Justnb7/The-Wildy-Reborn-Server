@@ -23,6 +23,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
+import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.WeaponDefinition;
@@ -109,8 +110,8 @@ public class Combat {
          * Verify if we have the proper arrows/bolts
 		 */
         if (player.getCombatType() == CombatStyle.RANGE) {
-            int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
-            int ammo = player.playerEquipment[player.getEquipment().getQuiverId()];
+            int wep = player.getEquipment().getId(Equipment.WEAPON_SLOT);
+            int ammo = player.getEquipment().getId(Equipment.ARROWS_SLOT);
             boolean crystal = wep >= 4212 && wep <= 4223;
             boolean blowp = wep == 12926;
             if (!crystal && !blowp && ammo < 1) {
@@ -120,11 +121,11 @@ public class Combat {
                 return;
             }
 
-            if (player.getCombat().correctBowAndArrows() < player.playerEquipment[player.getEquipment().getQuiverId()]
+            if (player.getCombat().correctBowAndArrows() < player.getEquipment().getId(Equipment.ARROWS_SLOT)
                     && player.usingBow
                     && !player.getEquipment().usingCrystalBow(player)
                     && !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
-                player.getActionSender().sendMessage("You can't use " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getQuiverId()]).toLowerCase() + "s with a " + player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase() + ".");
+                player.getActionSender().sendMessage("You can't use " + player.getItems().getItemName(player.getEquipment().getId(Equipment.ARROWS_SLOT)).toLowerCase() + "s with a " + player.getItems().getItemName(player.getEquipment().getId(Equipment.WEAPON_SLOT)).toLowerCase() + ".");
                 player.stopMovement();
                 player.getCombat().reset();
                 return;
@@ -143,7 +144,7 @@ public class Combat {
                 return;
             }
 
-            if (player.playerEquipment[player.getEquipment().getWeaponId()] == 4734 && !player.getCombat().properBoltRacks()) {
+            if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 4734 && !player.getCombat().properBoltRacks()) {
                 player.getActionSender().sendMessage("You must use bolt racks with this bow.");
                 player.stopMovement();
                 Combat.resetCombat(player);
@@ -159,7 +160,7 @@ public class Combat {
                 Combat.resetCombat(player);
                 return;
             }
-            if (player.getSpellBook() != SpellBook.MODERN && (player.playerEquipment[player.getEquipment().getWeaponId()] == 2415 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2416 || player.playerEquipment[player.getEquipment().getWeaponId()] == 2417)) {
+            if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2415 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2416 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2417)) {
                 player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
                 return;
             }
@@ -210,7 +211,7 @@ public class Combat {
         }
 
         // ##### BEGIN ATTACK - WE'RE IN VALID DISTANCE AT THIS POINT #######
-        int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
+        int wep = player.getEquipment().getId(Equipment.WEAPON_SLOT);
 		/*
 		 * Set our attack timer so we dont instantly hit again
 		 */
@@ -355,15 +356,12 @@ public class Combat {
             boolean hand_thrown = false;
             if (hand_thrown) {
 
-                if (player.playerEquipment[3] == 21000) {
-                    player.getItems().removeEquipment();
-                } else {
-                    player.getItems().deleteAmmo(); // here
-                }
+                player.getItems().deleteAmmo(); // here
+                
             } else {
 
-                if (player.playerEquipment[3] == 11235 || player.playerEquipment[3] == 12765 || player.playerEquipment[3] == 12766
-                        || player.playerEquipment[3] == 12767 || player.playerEquipment[3] == 12768) {
+                if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12765 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12766
+                        || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12767 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12768) {
                     player.getItems().deleteArrow();
                 }
 
@@ -376,7 +374,7 @@ public class Combat {
                 if (dropArrows) {
                     player.getItems().dropArrowUnderTarget();
                     player.getItems().deleteArrow();
-                    if (player.playerEquipment[3] == 11235) { // Dark bow, 2nd arrow
+                    if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235) { // Dark bow, 2nd arrow
                         player.getItems().dropArrowUnderTarget();
                     }
                 }
@@ -512,7 +510,7 @@ public class Combat {
 
     private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
         if (dam1 == 0) return dam1;
-        switch (attacker.playerEquipment[attacker.getEquipment().getQuiverId()]) {
+        switch (attacker.getEquipment().getId(Equipment.ARROWS_SLOT)) {
             case 9236: // Lucky Lightning
                 defender.playGraphics(Graphic.create(749, 0, 0));
                 break;
@@ -563,7 +561,7 @@ public class Combat {
                     dam1 *= 1.15;
                 }
                 boolean fire = true;
-                int shield = defender.isPlayer() ? ((Player) defender).playerEquipment[((Player) defender).getEquipment().getShieldId()] : -1;
+                int shield = defender.isPlayer() ? ((Player) defender).getEquipment().getId(Equipment.SHIELD_SLOT) : -1;
                 if (shield == 11283 || shield == 1540) {
                     fire = false;
                 }
@@ -619,7 +617,7 @@ public class Combat {
             player.usingMagic = true;
             player.setCombatType(CombatStyle.MAGIC);
         }
-        int wep = player.playerEquipment[player.getEquipment().getWeaponId()];
+        int wep = player.getEquipment().getId(Equipment.WEAPON_SLOT);
         if (wep == 11907) {
             player.spellId = 52;
             player.castingMagic = true;
@@ -721,7 +719,7 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
-		String weapon = player.getItems().getItemName(player.playerEquipment[player.getEquipment().getWeaponId()]).toLowerCase();
+		String weapon = player.getItems().getItemName(player.getEquipment().getId(Equipment.WEAPON_SLOT)).toLowerCase();
 		
 		if (weapon.contains("halberd")) {
 			return true;
@@ -749,7 +747,7 @@ public class Combat {
 			distance = 2;
 		} else if (player.usingBow) {
 			distance = 7;
-		} else if(player.playerEquipment[player.getEquipment().getWeaponId()] == 11785) {
+		} else if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11785) {
 			distance = 9;
 		} else if (player.getEquipment().wearingBallista(player)) {
 			distance = 11;

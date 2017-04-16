@@ -6,7 +6,7 @@ import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.item.equipment.Equipment;
+import com.model.game.item.container.impl.Equipment;
 import com.model.utility.Utility;
 
 /**
@@ -105,7 +105,7 @@ public class CombatFormulae {
                 }
 
                 att_equipment_bonus = p.getBonuses()[p.getAttackStyle() <= 1 ? p.getAttackStyle() : 1];
-                att_void_bonus = Equipment.wearingFullVoid(p, att_type) ? 1.1 : 1;
+                att_void_bonus = wearingFullVoid(p, att_type) ? 1.1 : 1;
                 break;
             case 1:
             	 if (p.isActivePrayer(Prayers.SHARP_EYE)) {
@@ -121,7 +121,7 @@ public class CombatFormulae {
                  }
 
                 att_equipment_bonus = p.getBonuses()[4];
-                att_void_bonus = Equipment.wearingFullVoid(p, att_type) ? 1.1 : 1;
+                att_void_bonus = wearingFullVoid(p, att_type) ? 1.1 : 1;
                 break;
             case 2:
             	 if (p.isActivePrayer(Prayers.MYSTIC_WILL)) {
@@ -139,14 +139,14 @@ public class CombatFormulae {
                 att_spell_bonus += ((att_base_magic - p.MAGIC_SPELLS[p.oldSpellId][1]) * 0.3);
 
                 att_equipment_bonus = p.getBonuses()[3];
-                att_void_bonus = Equipment.wearingFullVoid(p, att_type) ? 1.3 : 1;
+                att_void_bonus = wearingFullVoid(p, att_type) ? 1.3 : 1;
                 break;
                 
             default:
                 break;
             }
 
-            if (p.playerEquipment[3] > 0 && att_type != 2) {
+            if (p.getEquipment().getId(Equipment.WEAPON_SLOT) > 0 && att_type != 2) {
                 att_weapon_bonus += (((att_type == 0 ? att_base_attack : att_base_range) - (att_type = 0)) * 0.3);
             }
 
@@ -329,7 +329,7 @@ public class CombatFormulae {
 		double base = (13 + effectiveStrengthDamage + (strengthBonus / 8) + ((effectiveStrengthDamage * strengthBonus) * 0.016865)) / 10;
 
 		if (player.isUsingSpecial()) {
-			switch (player.playerEquipment[player.getEquipment().getWeaponId()]) {
+			switch (player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
 			case 11802:
 				specialMultiplier = 1.42375;
 				break;
@@ -387,16 +387,16 @@ public class CombatFormulae {
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
 		double otherBonusMultiplier = 1;
-		int rangedStrength = RangeData.getRangeStr(player.playerEquipment[player.getEquipment().getQuiverId()]);
+		int rangedStrength = RangeData.getRangeStr(player.getEquipment().getId(Equipment.ARROWS_SLOT));
 		
-		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 4222) {
+		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 4222) {
 			/**
 			 * Crystal Bow does not use arrows, so we don't use the arrows range strength bonus.
 			 */
 			rangedStrength = 70;
 		}
 		
-		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 12926) {
+		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12926) {
 			rangedStrength = 60;
 		}
 		
@@ -427,7 +427,7 @@ public class CombatFormulae {
 		double baseDamage = 1.3 + (effectiveRangeDamage / 10) + (rangedStrength / 80) + ((effectiveRangeDamage * rangedStrength) / 640);
 		
 		if (player.isUsingSpecial()) {
-			switch (player.playerEquipment[player.getEquipment().getQuiverId()]) {
+			switch (player.getEquipment().getId(Equipment.ARROWS_SLOT)) {
 			case 9243:
 				specialMultiplier = 1.15;
 				break;
@@ -447,22 +447,22 @@ public class CombatFormulae {
 			case 890:
 			case 892:
 			case 11212:
-				if (player.playerEquipment[player.getEquipment().getWeaponId()] == 11235) {
+				if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235) {
 					specialMultiplier = 1.3;
-					if (player.playerEquipment[player.getEquipment().getQuiverId()] == 11212)
+					if (player.getEquipment().getId(Equipment.ARROWS_SLOT) == 11212)
 						specialMultiplier += .5;
 				}
-				if (player.playerEquipment[player.getEquipment().getQuiverId()] == 11212)
+				if (player.getEquipment().getId(Equipment.ARROWS_SLOT) == 11212)
 					specialMultiplier = 1.5;
 				break;
 			}
 		}
 		
 		maxHit = (int) (baseDamage * specialMultiplier);
-		if(player.playerEquipment[player.getEquipment().getWeaponId()] == -1) {
+		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == -1) {
 			maxHit = 0;
 		}
-		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 12926) {
+		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12926) {
         	if (player.isUsingSpecial()) {
         		maxHit *= 1.65;
         	} else {
@@ -470,69 +470,69 @@ public class CombatFormulae {
         	}
         }
 		
-		if(player.playerEquipment[player.getEquipment().getWeaponId()] == 20997) {
+		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 20997) {
 			maxHit *= 2.22;
         }
 		
-		if(player.playerEquipment[player.getEquipment().getAmuletId()] == 19547) {
+		if(player.getEquipment().getId(Equipment.AMULET_SLOT) == 19547) {
 			maxHit += 1;
         }
 		return maxHit;
 	}
 
 	public static boolean hasAmuletOfTheDamned(Player player) {
-		return player.getItems().isWearingItem(12851);
+		return player.getEquipment().contains(12851);
 	}
 
 	public static boolean hasBerserkerNecklaceBonus(Player player) {
-		return player.getItems().isWearingItem(11128)
-				&& (player.getItems().isWearingItem(6523) || player.getItems().isWearingItem(6528)
-						|| player.getItems().isWearingItem(6527) || player.getItems().isWearingItem(6525));
+		return player.getEquipment().contains(11128)
+				&& (player.getEquipment().contains(6523) || player.getEquipment().contains(6528)
+						|| player.getEquipment().contains(6527) || player.getEquipment().contains(6525));
 	}
 
 	public static boolean hasBlackMaskOrSlayerHelm(Player player) {
-		return player.getItems().isWearingItem(8901) || player.getItems().isWearingItem(11864)
-				|| player.getItems().isWearingItem(11865);
+		return player.getEquipment().contains(8901) || player.getEquipment().contains(11864)
+				|| player.getEquipment().contains(11865);
 	}
 
 	public static boolean hasImbuedSlayerHelm(Player player) {
-		return player.getItems().isWearingItem(11865);
+		return player.getEquipment().contains(11865);
 	}
 
 	public static boolean fullGuthan(Player player) {
-		return player.getItems().isWearingItem(4724) && player.getItems().isWearingItem(4726)
-				&& player.getItems().isWearingItem(4728) && player.getItems().isWearingItem(4730);
+		return player.getEquipment().contains(4724) && player.getEquipment().contains(4726)
+				&& player.getEquipment().contains(4728) && player.getEquipment().contains(4730);
 	}
 
 	public static boolean fullTorag(Player player) {
-		return player.getItems().isWearingItem(4745) && player.getItems().isWearingItem(4747)
-				&& player.getItems().isWearingItem(4749) && player.getItems().isWearingItem(4751);
+		return player.getEquipment().contains(4745) && player.getEquipment().contains(4747)
+				&& player.getEquipment().contains(4749) && player.getEquipment().contains(4751);
 	}
 
 	public static boolean fullKaril(Player player) {
-		return player.getItems().isWearingItem(4732) && player.getItems().isWearingItem(4734)
-				&& player.getItems().isWearingItem(4736) && player.getItems().isWearingItem(4738);
+		return player.getEquipment().contains(4732) && player.getEquipment().contains(4734)
+				&& player.getEquipment().contains(4736) && player.getEquipment().contains(4738);
 	}
 
 	public static boolean fullAhrim(Player player) {
-		return player.getItems().isWearingItem(4708) && player.getItems().isWearingItem(4710)
-				&& player.getItems().isWearingItem(4712) && player.getItems().isWearingItem(4714);
+		return player.getEquipment().contains(4708) && player.getEquipment().contains(4710)
+				&& player.getEquipment().contains(4712) && player.getEquipment().contains(4714);
 	}
 
 	public static boolean fullAhrimDamned(Player player) {
-		return player.getItems().isWearingItem(4708) && player.getItems().isWearingItem(4710)
-				&& player.getItems().isWearingItem(4712) && player.getItems().isWearingItem(4714)
-				&& player.getItems().isWearingItem(12851);
+		return player.getEquipment().contains(4708) && player.getEquipment().contains(4710)
+				&& player.getEquipment().contains(4712) && player.getEquipment().contains(4714)
+				&& player.getEquipment().contains(12851);
 	}
 
 	public static boolean fullDharok(Player player) {
-		return player.getItems().isWearingItem(4716) && player.getItems().isWearingItem(4718)
-				&& player.getItems().isWearingItem(4720) && player.getItems().isWearingItem(4722);
+		return player.getEquipment().contains(4716) && player.getEquipment().contains(4718)
+				&& player.getEquipment().contains(4720) && player.getEquipment().contains(4722);
 	}
 
 	public static boolean fullVerac(Player player) {
-		return player.getItems().isWearingItem(4753) && player.getItems().isWearingItem(4755)
-				&& player.getItems().isWearingItem(4757) && player.getItems().isWearingItem(4759);
+		return player.getEquipment().contains(4753) && player.getEquipment().contains(4755)
+				&& player.getEquipment().contains(4757) && player.getEquipment().contains(4759);
 	}
 
 	/**
@@ -548,15 +548,15 @@ public class CombatFormulae {
 			return false;
 		}
 
-		boolean helmet = player.playerEquipment[0] == (type == 0 ? 11665 : type == 1 ? 11663 : 11664);
+		boolean helmet = player.getEquipment().getId(Equipment.HEAD_SLOT) == (type == 0 ? 11665 : type == 1 ? 11663 : 11664);
 
-		boolean hasGloves = player.playerEquipment[9] == 8842;
+		boolean hasGloves = player.getEquipment().getId(Equipment.HANDS_SLOT) == 8842;
 
-		boolean hasDeflector = player.playerEquipment[5] == 19712;
+		boolean hasDeflector = player.getEquipment().getId(Equipment.SHIELD_SLOT) == 19712;
 
-		boolean hasLegs = player.playerEquipment[7] == 8840 || player.playerEquipment[7] == 13073;
+		boolean hasLegs = player.getEquipment().getId(Equipment.LEGS_SLOT) == 8840 || player.getEquipment().getId(Equipment.LEGS_SLOT) == 13073;
 
-		boolean hasPlate = player.playerEquipment[4] == 8839 || player.playerEquipment[4] == 13072;
+		boolean hasPlate = player.getEquipment().getId(Equipment.CHEST_SLOT) == 8839 || player.getEquipment().getId(Equipment.CHEST_SLOT) == 13072;
 
 		if (helmet) {
 			complete++;
@@ -578,7 +578,7 @@ public class CombatFormulae {
 	 */
 	public static double dragonfireReduction(Entity entity) {
 		Player player = (Player) entity;
-		boolean dragonfireShield = player.getItems().isWearingItem(1540) || player.getItems().isWearingItem(11283) || player.getItems().isWearingItem(11284) || player.getItems().isWearingItem(11285);
+		boolean dragonfireShield = player.getEquipment().contains(1540) || player.getEquipment().contains(11283) || player.getEquipment().contains(11284) || player.getEquipment().contains(11285);
 		boolean dragonfirePotion = false;
 		if (entity.hasAttribute("antiFire")) {
 			dragonfirePotion = System.currentTimeMillis() - (long)entity.getAttribute("antiFire", 0L) < 360000;

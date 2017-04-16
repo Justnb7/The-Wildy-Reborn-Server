@@ -249,14 +249,14 @@ public class BountyHunter extends ScheduledTask {
 		/*
 		 * Determine our carried wealth
 		 */
-		long carried_wealth = player.getItems().getWealth();
+		//long carried_wealth = player.getItems().getWealth();
 
 		int configId = -1;
 
 		/*
 		 * Determine which config to send based on the current bounty wealth
 		 */
-		if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
+		/*if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
 			configId = BountyHunterConstants.V_HIGH_WEALTH_CONFIG;
 			player.setAttribute("bounty_wealth", "Wealth: V. High");
 		} else if ((carried_wealth >= BountyHunterConstants.HIGH_WEALTH) && (carried_wealth < BountyHunterConstants.V_HIGH_WEALTH)) {
@@ -271,7 +271,7 @@ public class BountyHunter extends ScheduledTask {
 		} else {
 			configId = BountyHunterConstants.V_LOW_WEALTH_CONFIG;
 			player.setAttribute("bounty_wealth", "Wealth: V. Low");
-		}
+		}*/
 
 		target.getActionSender().sendConfig(configId, 1);
 		target.getActionSender().sendConfig(BountyHunterConstants.DEFAULT_CONFIG, 1);
@@ -348,10 +348,10 @@ public class BountyHunter extends ScheduledTask {
 	 *            The {@link Player} that killed the target
 	 */
 	private static boolean handleItemGiving(Player player, Player killer) {
-		long carried_wealth = player.getItems().getWealth();
+		//long carried_wealth = player.getItems().getWealth();
 
 		int random = 0;
-		if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
+		/*if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
 			random = 1;
 		} else if ((carried_wealth >= BountyHunterConstants.HIGH_WEALTH) && (carried_wealth < BountyHunterConstants.V_HIGH_WEALTH)) {
 			random = 2;
@@ -361,7 +361,7 @@ public class BountyHunter extends ScheduledTask {
 			random = 4;
 		} else {
 			random = 5;
-		}
+		}*/
 
 		int randomChance = Utility.getRandom(random);
 		return randomChance == 1;

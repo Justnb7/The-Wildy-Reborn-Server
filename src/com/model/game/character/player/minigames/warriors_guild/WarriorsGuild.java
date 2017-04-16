@@ -106,7 +106,7 @@ public class WarriorsGuild {
 	public int currentDefender() {
 		for(int index = DEFENDER_DATA.length - 1; index > -1; index--) {
 			int[] defender = DEFENDER_DATA[index];
-			if (player.getItems().playerHasItem(defender[0]) || player.getItems().isWearingItem(defender[0])) {
+			if (player.getItems().playerHasItem(defender[0]) || player.getEquipment().contains(defender[0])) {
 				return defender[0];
 			}
 		}

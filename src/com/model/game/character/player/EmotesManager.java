@@ -278,7 +278,7 @@ public final class EmotesManager {
 					// TODO max cape - not related to one specific skill
 				}
 
-				else if (player.getItems().isWearingItem(item)) {
+				else if (player.getEquipment().contains(item)) {
 					player.playAnimation(Animation.create(cape.getAnimation()));
 					player.playGraphics(Graphic.create(cape.getGfx(), 0, 0));
 					player.setAttribute("lastEmoteTime", System.currentTimeMillis());

@@ -2,6 +2,7 @@ package com.model.game.character.combat.effect;
 
 import com.model.game.character.Graphic;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Equipment;
 import com.model.utility.Utility;
 
 /**
@@ -16,7 +17,7 @@ public class BarrowsEffect {
 	 * Applies the veracs flail effect to the victim.
 	 */
 	private static void applyVeracsFlailEffect(Player attacker, int damage) {
-		boolean isWearingGear = attacker.getEquipment().getChestId() == 4728 && attacker.getEquipment().getLegsId() == 4730 && attacker.getEquipment().getHelmetId() == 4724;
+		boolean isWearingGear = attacker.getEquipment().getId(Equipment.CHEST_SLOT) == 4728 && attacker.getEquipment().getId(Equipment.LEGS_SLOT) == 4730 && attacker.getEquipment().getId(Equipment.HEAD_SLOT) == 4724;
 		boolean randomEffect = Utility.getRandom(2) == 0;
 		
 		if (isWearingGear && randomEffect) {
@@ -28,7 +29,7 @@ public class BarrowsEffect {
 	 * Applies the guthan warspear effect to the victim.
 	 */
 	private static void applyWarspearEffect(Player attacker, Player victim, int damage) {
-		boolean isWearingGear = attacker.getEquipment().getChestId() == 4728 && attacker.getEquipment().getLegsId() == 4730 && attacker.getEquipment().getHelmetId() == 4724;
+		boolean isWearingGear = attacker.getEquipment().getId(Equipment.CHEST_SLOT) == 4728 && attacker.getEquipment().getId(Equipment.LEGS_SLOT) == 4730 && attacker.getEquipment().getId(Equipment.HEAD_SLOT) == 4724;
 		boolean randomEffect = Utility.getRandom(2) == 0;
 
 		if (isWearingGear) {
@@ -45,7 +46,7 @@ public class BarrowsEffect {
 	 * Applies the torag's hammer effect on hit.
 	 */
 	private static void applyHammerEffect(Player attacker, Player victim, int damage) {
-		boolean isWearingGear = attacker.getEquipment().getChestId() == 4749 && attacker.getEquipment().getLegsId() == 4751 && attacker.getEquipment().getHelmetId() == 4745;
+		boolean isWearingGear = attacker.getEquipment().getId(Equipment.CHEST_SLOT) == 4749 && attacker.getEquipment().getId(Equipment.LEGS_SLOT) == 4751 && attacker.getEquipment().getId(Equipment.HEAD_SLOT) == 4745;
 		boolean randomEffect = Utility.getRandom(10) == 5;
 
 		if (isWearingGear && randomEffect) {
@@ -62,12 +63,12 @@ public class BarrowsEffect {
 	 */
 	public static void applyRandomEffect(Player attacker, Player victim, int damage) {
 		if (!attacker.isNPC()) {
-			int weapon = attacker.playerEquipment[attacker.getEquipment().getWeaponId()];
+			int weapon = attacker.getEquipment().getId(Equipment.WEAPON_SLOT);
 
 			if (weapon == -1) {
 				return;
 			}
-			if (attacker.getEquipment().getChestId() == -1 || attacker.getEquipment().getLegsId() == -1 || attacker.getEquipment().getHelmetId() == -1) {
+			if (attacker.getEquipment().getId(Equipment.CHEST_SLOT) == -1 || attacker.getEquipment().getId(Equipment.LEGS_SLOT) == -1 || attacker.getEquipment().getId(Equipment.HEAD_SLOT) == -1) {
 				return;
 			}
 			switch (weapon) {

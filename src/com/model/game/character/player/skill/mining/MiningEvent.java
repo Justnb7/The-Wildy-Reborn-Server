@@ -79,7 +79,7 @@ public class MiningEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (!player.getItems().playerHasItem(pickaxe.getId()) && !player.getItems().isWearingItem(pickaxe.getId())) {
+		if (!player.getItems().playerHasItem(pickaxe.getId()) && !player.getEquipment().contains(pickaxe.getId())) {
 			player.getActionSender().sendMessage("That is strange! The pickaxe could not be found.");
 			container.stop();
 			return;

@@ -1,6 +1,7 @@
 package com.model.game.character.combat.weapon;
 
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Equipment;
 
 /**
  * The class which represents functionality for the attack style.
@@ -169,7 +170,7 @@ public class AttackStyle {
 	 * Adjusts the player's attack style.
 	 */
 	public static void adjustAttackStyle(Player player) {
-		if (player.getEquipment().getWeaponId() == -1) {
+		if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == -1) {
 			switch(player.getAttackStyleConfig()) {
 			case 0:
 				 player.getActionSender().sendConfig(43, 0);
@@ -181,7 +182,7 @@ public class AttackStyle {
 				player.getActionSender().sendConfig(43, 2);
 				break;
 			}
-		} else if(player.getEquipment().getWeaponId() > 0) {
+		} else if(player.getEquipment().getId(Equipment.WEAPON_SLOT) > 0) {
 			switch(player.getAttackStyle()) {
 			case 0:
 				 player.getActionSender().sendConfig(43, 0);
@@ -207,7 +208,7 @@ public class AttackStyle {
 	 * @param player
 	 */
 	public static void adjustAttackStyleOnLogin(Player player) {
-		if (player.getEquipment().getWeaponId() == -1) {
+		if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == -1) {
 			player.setAttackStyle(0);
 			player.getActionSender().sendConfig(43, 0);
 		} else {

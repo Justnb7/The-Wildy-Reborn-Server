@@ -17,6 +17,7 @@ import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.item.GameItem;
 import com.model.game.item.bank.BankItem;
+import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.task.events.CycleEvent;
@@ -313,7 +314,7 @@ public class DuelSession extends MultiplayerSession {
 	}
 
 	public void moveAndClearAttributes(Player player) {
-		player.getWeaponInterface().sendSpecialBar(player.playerEquipment[3]);
+		player.getWeaponInterface().sendSpecialBar(player.getEquipment().getId(Equipment.WEAPON_SLOT));
 		player.getActionSender().createPlayerHint(10, -1);
 		player.move(new Location(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0));
 		restorePlayerAttributes(player);
@@ -395,7 +396,7 @@ public class DuelSession extends MultiplayerSession {
 		player.flushOutStream();
 	}
 
-	public void sendDuelEquipment() {
+	/*public void sendDuelEquipment() {
 		players.stream().filter(Objects::nonNull).forEach(c -> {
 			for (int i = 0; i < c.playerEquipment.length; i++) {
 				c.getOutStream().createFrameVarSizeWord(34);
@@ -416,7 +417,7 @@ public class DuelSession extends MultiplayerSession {
 				c.flushOutStream();
 			}
 		});
-	}
+	}*/
 
 	public void toggleRule(Player player, Rule rule) {
 		if (stage.getStage() != MultiplayerSessionStage.OFFER_ITEMS) {
@@ -473,9 +474,9 @@ public class DuelSession extends MultiplayerSession {
 			if (equipmentSlot == 6 || equipmentSlot == 8 || equipmentSlot == 11) {
 				continue;
 			}
-			if (player.playerEquipment[equipmentSlot] > -1) {
+			/*if (player.playerEquipment[equipmentSlot] > -1) {
 				count++;
-			}
+			}*/
 		}
 		return count;
 	}
@@ -502,9 +503,9 @@ public class DuelSession extends MultiplayerSession {
 			if (equipmentSlot == 6 || equipmentSlot == 8 || equipmentSlot == 11) {
 				continue;
 			}
-			if (player.playerEquipment[equipmentSlot] > -1) {
+			/*if (player.playerEquipment[equipmentSlot] > -1) {
 				player.getItems().removeEquipment(player.playerEquipment[equipmentSlot], equipmentSlot);
-			}
+			}*/
 		}
 	}
 

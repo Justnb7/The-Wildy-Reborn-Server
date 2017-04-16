@@ -376,8 +376,8 @@ public class Bank {
 		}
 		if (!player.isBanking())
 			return false;
-		if (player.playerEquipment[slot] != itemID || player.playerEquipmentN[slot] <= 0)
-			return false;
+		/*if (player.playerEquipment[slot] != itemID || player.playerEquipmentN[slot] <= 0)
+			return false;*/
 		BankTab tab = player.getBank().getCurrentBankTab();
 		BankItem bankItem = new BankItem(itemID + 1, amount);
 		Iterator<BankTab> iterator = Arrays.asList(player.getBank().getBankTab()).iterator();
@@ -406,8 +406,8 @@ public class Bank {
 		}
 		if (player.getItems().isNotable(itemID))
 			bankItem = new BankItem(itemID, amount);
-		if (bankItem.getAmount() > player.playerEquipmentN[slot])
-			bankItem.setAmount(player.playerEquipmentN[slot]);
+		/*if (bankItem.getAmount() > player.playerEquipmentN[slot])
+			bankItem.setAmount(player.playerEquipmentN[slot]);*/
 		if (tab.getItemAmount(bankItem) == Integer.MAX_VALUE) {
 			player.getActionSender().sendMessage("Your bank is already holding the maximum amount of " + player.getItems().getItemName(itemID).toLowerCase() + " possible.");
 			return false;
@@ -420,18 +420,18 @@ public class Bank {
 		if (totalAmount >= Integer.MAX_VALUE) {
 			player.getActionSender().sendMessage("Your bank is already holding the maximum amount of this item.");
 			return false;
-		} else
+		}/* else
 			player.playerEquipmentN[slot] -= bankItem.getAmount();
 		if (player.playerEquipmentN[slot] <= 0) {
 			player.playerEquipmentN[slot] = -1;
 			player.playerEquipment[slot] = -1;
 		}
-		player.getItems().wearItem(-1, 0, slot);
+		player.getItems().wearItem(-1, 0, slot);*/
 		tab.add(bankItem);
 		if (updateView) {
 			resetTempItems();
 			resetBank();
-			player.getItems().updateSlot(slot);
+			//player.getItems().updateSlot(slot);
 		}
 		return true;
 	}

@@ -160,7 +160,7 @@ public enum Pickaxe {
 	public static Pickaxe getBestPickaxe(Player player) {
 		Pickaxe pickaxe = null;
 		for (Pickaxe pick : pickaxes) {
-			if (player.getItems().playerHasItem(pick.id) || player.getItems().isWearingItem(pick.id)) {
+			if (player.getItems().playerHasItem(pick.id) || player.getEquipment().contains(pick.id)) {
 				if (player.getSkills().getLevel(Skills.MINING) >= pick.level) {
 					if (pickaxe == null || pick.priority > pickaxe.priority) {
 						pickaxe = pick;

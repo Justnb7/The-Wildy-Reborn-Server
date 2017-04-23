@@ -289,6 +289,10 @@ public class NpcInteraction {
 	 */
 	public static void thirdOption(Player player, NPC npc) {
 
+		if (Pet.transformPet(player, npc)) {
+			return;
+		}
+		
 		switch (npc.getId()) {
 		
 		case 401: // Turael

@@ -32,7 +32,7 @@ public class Constants {
 	public static final boolean DOUBLE_EXPERIENCE = false;
 	
 	/**
-	 * Slayer exp modifier
+	 * Prayer exp modifier
 	 */
 	public static final int PRAYER_EXP_MODIFIER = 10;
 	
@@ -83,11 +83,6 @@ public class Constants {
 	 * the speed of world in ms
 	 */
 	public static final int WORLD_CYCLE_TIME = 600;
-	
-	/**
-	 * How far does the npc walk
-	 */
-	public static final int NPC_FOLLOW_DISTANCE = 15;
 	
 	/**
 	 * Maximum amount of items supported by the server

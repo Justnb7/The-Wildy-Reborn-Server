@@ -101,7 +101,7 @@ public class CombatFormulae {
                 }
 
                 if (p.isActivePrayer(Prayers.PIETY)) {
-                    att_prayer_bonus += 0.2;
+                    att_prayer_bonus += 0.20;
                 }
 
                 att_equipment_bonus = p.getBonuses()[p.getAttackStyle() <= 1 ? p.getAttackStyle() : 1];

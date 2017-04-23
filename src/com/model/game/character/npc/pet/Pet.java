@@ -1,5 +1,6 @@
 package com.model.game.character.npc.pet;
 
+import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.NPC;
@@ -245,6 +246,33 @@ public class Pet extends NPC {
 				break;
 			
 			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Sends the pet transform mask.
+	 * 
+	 * @param player
+	 *            The player owning the pet.
+	 * @param pet
+	 *            The pet being transformed.
+	 */
+	public static boolean transformPet(Player player, NPC pet) {
+		Pets pets = Pets.fromNpc(pet.getId());
+		int morphId = -1;
+		if (pets != null && player.isPetSpawned()) {
+			switch(pets) {
+			case SNAKELING:
+				morphId = 2131;
+				break;
+			default:
+				break;
+			
+			}
+			pet.requestTransform(morphId);
+			player.setPet(morphId);
 			return true;
 		}
 		return false;

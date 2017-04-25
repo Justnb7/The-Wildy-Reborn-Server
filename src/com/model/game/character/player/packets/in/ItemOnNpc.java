@@ -11,13 +11,14 @@ public class ItemOnNpc implements PacketType {
 	public void handle(Player player, int packetType, int packetSize) {
 		int itemId = player.getInStream().readSignedWordA();
 		int i = player.getInStream().readSignedWordA();
+		@SuppressWarnings("unused")
 		int slot = player.getInStream().readSignedWordBigEndian();
 
 		NPC npc = World.getWorld().getNPCs().get(i);
 		if (npc == null) {
 			return;
 		}
-		if (!player.getItems().playerHasItem(itemId, 1, slot)) {
+		if (!player.getInventory().playerHasItem(itemId)) {
 			return;
 		}
 		@SuppressWarnings("unused")

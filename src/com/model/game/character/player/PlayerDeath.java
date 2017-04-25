@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
-import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;

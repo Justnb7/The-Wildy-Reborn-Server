@@ -490,8 +490,8 @@ public class Bank {
         
         if (player.getOutStream() != null && player != null) {
         	player.setBanking(true);
-        	
-            player.getItems().resetItems(5064);
+        	 player.getActionSender().sendItemsOnInterface(5064, player.getInventory().container());
+            //player.getItems().resetItems(5064);
             player.getBank().resetBank();
             player.getBank().resetTempItems();
             player.getOutStream().writeFrame(248);

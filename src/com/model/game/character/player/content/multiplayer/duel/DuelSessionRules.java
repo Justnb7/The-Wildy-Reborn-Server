@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.ItemAssistant;
 
 
 public class DuelSessionRules {

@@ -21,6 +21,8 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunterConstan
 import com.model.game.item.Item;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
+import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.RunePouchContainer;
 
 /**
@@ -392,11 +394,18 @@ public class PlayerSave {
 			try {
 				final PlayerContainer details = PlayerSave.GSON.fromJson(reader, PlayerContainer.class);
 				
-				if (details.runePouch != null) {
-					for(int i = 0; i < RunePouchContainer.SIZE; i++) {
-						player.runePouchContainer.set(i, details.runePouch[i]);
+				if (details.equipment != null) {
+					for (int i = 0; i < Equipment.SIZE; i++) {
+						player.getEquipment().set(i, details.equipment[i]);
 					}
 				}
+				
+				if (details.inventory != null) {
+					for (int i = 0; i < Inventory.SIZE; i++) {
+						player.getInventory().set(i, details.inventory[i]);
+					}
+				}
+				
 				for (int tab = 0; tab < details.tabs.length; tab++) {
 					player.getBank().setBankTab(tab, details.tabs[tab]);
 					for (int tabItem = 0; tabItem < details.tabs[tab].getItems().size(); tabItem++) {
@@ -405,6 +414,12 @@ public class PlayerSave {
 							continue;
 						player.bankItems[tabItem] = bankItem.getId();
 						player.bankItemsN[tabItem] = bankItem.getAmount();
+					}
+				}
+				
+				if (details.runePouch != null) {
+					for(int i = 0; i < RunePouchContainer.SIZE; i++) {
+						player.runePouchContainer.set(i, details.runePouch[i]);
 					}
 				}
 				
@@ -417,12 +432,16 @@ public class PlayerSave {
 			return true;
 		}
 
-		private final Item[] runePouch;
+		private final Item[] equipment;
+		private final Item[] inventory;
 		private final BankTab[] tabs;
+		private final Item[] runePouch;
 
 		public PlayerContainer(Player player) {
-			runePouch = player.runePouchContainer.toArray();
+			inventory = player.getInventory().toArray();
+			equipment = player.getEquipment().toArray();
 			tabs = player.getBank().getBankTab();
+			runePouch = player.runePouchContainer.toArray();
 		}
 
 		public void parseDetails(Player player) throws IOException {

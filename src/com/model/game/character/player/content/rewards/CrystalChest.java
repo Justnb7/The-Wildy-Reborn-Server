@@ -26,9 +26,9 @@ public class CrystalChest {
 	 * @param player
 	 */
 	public static boolean createKey(final Player player) {
-		if (player.getItems().playerHasItems(KEY_HALVES)) {
-			player.getItems().remove(KEY_HALVES[0]);
-			player.getItems().remove(KEY_HALVES[1]);
+		if (player.getInventory().containsAll(KEY_HALVES)) {
+			player.getInventory().remove(KEY_HALVES[0]);
+			player.getInventory().remove(KEY_HALVES[1]);
 			player.getItems().addOrCreateGroundItem(new Item(989));
 			player.getActionSender().sendMessage("You have combined the two parts to form a key.");
 			return true;
@@ -53,11 +53,11 @@ public class CrystalChest {
 	 * @param y
 	 */
 	public static void searchChest(final Player player, Location position) {
-		if (!player.getItems().playerHasItem(989)) {
+		if (!player.getInventory().playerHasItem(989)) {
 			return;
 		}
 		player.getActionSender().sendMessage("You unlock the chest with your key.");
-		player.getItems().deleteItem(989);
+		player.getInventory().remove(new Item(989));
 		player.playAnimation(Animation.create(881));
 		Item itemReceived;
 		switch (Utility.getRandom(50)) {

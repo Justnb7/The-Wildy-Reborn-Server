@@ -59,7 +59,7 @@ public class DuelSessionRules {
 						int weaponCount = 0;
 						for (int[] weaponGroup : weapons) {
 							for (int weapon : weaponGroup) {
-								if (player.getItems().playerHasItem(weapon)
+								if (player.getInventory().playerHasItem(weapon)
 										|| player.getEquipment().contains(weapon)) {
 									weaponCount++;
 									break;

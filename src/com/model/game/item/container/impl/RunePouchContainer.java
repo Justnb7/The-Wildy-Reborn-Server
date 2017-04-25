@@ -50,7 +50,7 @@ public final class RunePouchContainer extends Container {
 
 	@Override
 	public boolean contains(Item item) {
-		return player.getItems().playerHasItem(RUNE_POUCH) && super.contains(item);
+		return player.getInventory().playerHasItem(RUNE_POUCH) && super.contains(item);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if the player does, {@code false} otherwise.
 	 */
 	public boolean hasPouch() {
-		return player.getItems().playerHasItem(RUNE_POUCH) && this.size() > 0;
+		return player.getInventory().playerHasItem(RUNE_POUCH) && this.size() > 0;
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public final class RunePouchContainer extends Container {
 		amount = Math.min(16000, amount);
 		
 		if(player.getRunePouchContainer().add(new Item(id, amount))) {
-			player.getItems().remove(new Item(id, amount));
+			player.getInventory().remove(new Item(id, amount));
 			updatePouch();
 		}
 		return true;
@@ -113,7 +113,7 @@ public final class RunePouchContainer extends Container {
 		}
 
 		if(player.getRunePouchContainer().remove(new Item(id, amount))) {
-			player.getItems().addItem(new Item(id, amount));
+			player.getInventory().add(new Item(id, amount));
 			updatePouch();
 		}
 		return true;
@@ -197,7 +197,7 @@ public final class RunePouchContainer extends Container {
 	 * Updates the inventory widget of the rune pouch interface.
 	 */
 	private void sendInventoryItems() {
-		if (!player.getItems().playerHasItem(RUNE_POUCH)) {
+		if (!player.getInventory().playerHasItem(RUNE_POUCH)) {
 			return;
 		}
 		for (int item = 0; item < 28; item++) {

@@ -120,36 +120,6 @@ public class ActionSender {
 		}
 		return this;
 	}
-
-	public ActionSender displayReward(int first_item, int first_amount, int second_item, int second_amount, int third_item, int third_amount) {
-		int[] items = { first_item, second_item, third_item };
-		int[] amounts = { first_amount, second_amount, third_amount };
-		player.outStream.putFrameVarShort(53);
-		int offset = player.getOutStream().offset;
-		player.outStream.writeShort(6963);
-		player.outStream.writeShort(items.length);
-		for (int i = 0; i < items.length; i++) {
-			if (player.itemAmount[i] > 254) {
-				player.outStream.writeByte(255);
-				player.outStream.writeDWord_v2(amounts[i]);
-			} else {
-				player.outStream.writeByte(amounts[i]);
-			}
-			if (items[i] > 0) {
-				player.outStream.writeWordBigEndianA(items[i] + 1);
-			} else {
-				player.outStream.writeWordBigEndianA(0);
-			}
-		}
-		player.outStream.putFrameSizeShort(offset);
-		player.flushOutStream();
-		player.getItems().addItem(first_item, first_amount);
-		player.getItems().addItem(second_item, second_amount);
-		player.getItems().addItem(third_item, third_amount);
-		player.write(new SendInterfacePacket(3322));
-		return this;
-	}
-
 	
 	public ActionSender drawHeadIcon(int i, int j, int k, int l) {
 		player.outStream.writeFrame(254);

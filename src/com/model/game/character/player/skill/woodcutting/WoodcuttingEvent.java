@@ -8,6 +8,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
@@ -38,7 +39,7 @@ public class WoodcuttingEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (!player.getItems().playerHasItem(axe.getItemId()) && !player.getEquipment().contains(axe.getItemId())) {
+		if (!player.getInventory().playerHasItem(axe.getItemId()) && !player.getEquipment().contains(axe.getItemId())) {
 			player.getActionSender().sendMessage("Your axe has dissapeared.");
 			container.stop();
 			return;
@@ -68,7 +69,7 @@ public class WoodcuttingEvent extends CycleEvent {
 			} else if(!tree.equals(Tree.RED_WOOD)) {
 				Server.getGlobalObjects().add(new GlobalObject(tree.getStumpId(), x, y, player.heightLevel, face, 10, tree.getRespawnTime(), objectId));
 			}
-			player.getItems().addItem(tree.getWood(), 1);
+			player.getInventory().add(new Item(tree.getWood(), 1));
 			if (wearingLumberjackOutfit()) {
 				player.getSkills().addExperience(Skills.WOODCUTTING, tree.getExperience());
 			} else {
@@ -80,7 +81,7 @@ public class WoodcuttingEvent extends CycleEvent {
 		if (!tree.equals(Tree.NORMAL)) {
 			if (Utility.random(chopChance) == 0 || chops >= tree.getChopsRequired()) {
 				chops = 0;
-				player.getItems().addItem(tree.getWood(), 1);
+				player.getInventory().add(new Item(tree.getWood(), 1));
 				player.getSkills().addExperience(Skills.WOODCUTTING, tree.getExperience());
 				Achievements.increase(player, AchievementType.WOODCUTTING, 1);
 			}

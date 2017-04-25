@@ -79,7 +79,7 @@ public class Thieving {
 		
 		//Reward the player
 		Item lootReceived = Utility.randomElement(stall.getLoot());
-		player.getItems().addItem(lootReceived.getId(), lootReceived.getAmount());
+		player.getInventory().add(new Item(lootReceived.getId(), lootReceived.getAmount()));
 		
 		//Finish, we receive experience and now we can set the delay.
 		player.getSkills().addExperience(Skills.THIEVING, stall.getExperience());
@@ -120,7 +120,7 @@ public class Thieving {
 		
 		//Reward the player
 		Item lootReceived = Utility.randomElement(pickpocket.getLoot());
-		player.getItems().addItem(lootReceived.getId(), lootReceived.getAmount());
+		player.getInventory().add(new Item(lootReceived.getId(), lootReceived.getAmount()));
 		
 		//Finish, we receive experience and now we can set the delay.
 		player.getSkills().addExperience(Skills.THIEVING, pickpocket.getExperience());

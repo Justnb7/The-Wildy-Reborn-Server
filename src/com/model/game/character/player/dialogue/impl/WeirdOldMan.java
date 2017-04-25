@@ -2,6 +2,7 @@ package com.model.game.character.player.dialogue.impl;
 
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
+import com.model.game.item.Item;
 import com.model.game.shop.Shop;
 
 public class WeirdOldMan extends Dialogue {
@@ -54,7 +55,7 @@ public class WeirdOldMan extends Dialogue {
 				break;
 		}
 		if (totalCost > 0)
-			player.getItems().deleteItem(995, player.getItems().getItemSlot(995), totalCost);	
+			player.getInventory().remove(new Item(995, player.getItems().getItemSlot(995)), totalCost);	
 		player.getActionSender().sendRemoveInterfacePacket();
 	}
 	

@@ -8,6 +8,7 @@ import com.model.game.character.npc.pet.Pets;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.SimpleDialogues;
+import com.model.game.item.Item;
 import com.model.game.location.Location;
 import com.model.game.object.GlobalObject;
 import com.model.task.events.CycleEvent;
@@ -79,7 +80,7 @@ public class MiningEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (!player.getItems().playerHasItem(pickaxe.getId()) && !player.getEquipment().contains(pickaxe.getId())) {
+		if (!player.getInventory().playerHasItem(pickaxe.getId()) && !player.getEquipment().contains(pickaxe.getId())) {
 			player.getActionSender().sendMessage("That is strange! The pickaxe could not be found.");
 			container.stop();
 			return;
@@ -114,7 +115,7 @@ public class MiningEvent extends CycleEvent {
 			}
 		//}
 		player.face(player, new Location(position.getX(), position.getY()));
-		player.getItems().addItem(rock.getMineral(), 1);
+		player.getInventory().add(new Item(rock.getMineral(), 1));
 		player.getSkills().addExperience(Skills.MINING, rock.getExperience());
 		int random = Utility.random(rock.getPetChance());
 		

@@ -57,7 +57,7 @@ public class WarriorsGuild {
 					event.stop();
 					return;
 				}
-				if(!player.getItems().playerHasItem(8851, 10)) {
+				if(!player.getInventory().playerHasItem(8851, 10)) {
 					removeFromRoom();
 					setActive(false);
 					event.stop();
@@ -68,7 +68,7 @@ public class WarriorsGuild {
 					event.stop();
 					return;
 				}
-				player.getItems().deleteItem(8851, 20);
+				player.getInventory().remove(new Item(8851, 20));
 				player.getActionSender().sendMessage("You notice some of your warrior guild tokens dissapear..");
 			}
 
@@ -85,7 +85,7 @@ public class WarriorsGuild {
 			CycleEventHandler.getSingleton().stopEvents(this);
 			player.move(new Location(player.absX - 1, player.absY, 2));
 		} else if(player.absX == 2846 && player.absY == 3540 || player.absX == 2846 && player.absY == 3541 || Boundary.isIn(player, WAITING_ROOM_BOUNDARY)) {
-			if(player.getItems().playerHasItem(8851, 200)) {
+			if(player.getInventory().playerHasItem(8851, 200)) {
 				int current = currentDefender();
 				if (current == -1) {
 					player.dialogue().start("NO_DEFENDER");
@@ -106,7 +106,7 @@ public class WarriorsGuild {
 	public int currentDefender() {
 		for(int index = DEFENDER_DATA.length - 1; index > -1; index--) {
 			int[] defender = DEFENDER_DATA[index];
-			if (player.getItems().playerHasItem(defender[0]) || player.getEquipment().contains(defender[0])) {
+			if (player.getInventory().playerHasItem(defender[0]) || player.getEquipment().contains(defender[0])) {
 				return defender[0];
 			}
 		}

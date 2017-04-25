@@ -4,6 +4,7 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
+import com.model.game.item.Item;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 
@@ -48,19 +49,19 @@ public class TeleTabs {
 		}
 	}
 
-	public static void useTeleTab(final Player c, int slot, final TabData data) {
+	public static void useTeleTab(final Player player, int slot, final TabData data) {
 
-		if (TeleportExecutor.canTeleport(c)) {
-			c.playAnimation(Animation.create(4069));
-			c.getItems().deleteItem(data.getItemId(), slot, 1);
+		if (TeleportExecutor.canTeleport(player)) {
+			player.playAnimation(Animation.create(4069));
+			player.getInventory().remove(new Item(data.getItemId()), slot);
 			Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 				@Override
 				public void execute() {
-					TeleportExecutor.teleport(c, new Teleport(new Location(data.posX, data.posY, 0), TeleportType.TABLET), false);
+					TeleportExecutor.teleport(player, new Teleport(new Location(data.posX, data.posY, 0), TeleportType.TABLET), false);
 					this.stop();
 				}
 
-			}.attach(c));
+			}.attach(player));
 		}
 	}
 

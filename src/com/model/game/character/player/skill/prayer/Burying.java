@@ -8,6 +8,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.item.Item;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -140,7 +141,7 @@ public class Burying {
 					@Override
 					public void execute() {
 						player.getActionSender().sendMessage("You bury the " + itemDef.getName().toLowerCase());
-						player.getItems().deleteItem(itemId, 1);
+						player.getInventory().remove(new Item(itemId, 1));
 						int xp = bone.getExperience();
 						player.getSkills().addExperience(Skills.PRAYER, xp);
 						//player.write(new SendGameMessage("prayer exp received: "+bone.getExperience());
@@ -174,13 +175,13 @@ public class Burying {
 						if(!player.isActive()) {
 							this.stop();
 						}
-						if (!player.getItems().playerHasItem(bone.getId())) {
+						if (!player.getInventory().playerHasItem(bone.getId())) {
 							player.getActionSender().sendMessage("You ran out of bones!");
 							this.stop();
 							return;
 						}
 						player.playAnimation(Animation.create(ALTAR_ANIMATION));
-						player.getItems().deleteItem(itemId, 1);
+						player.getInventory().remove(new Item(itemId, 1));
 						player.getSkills().addExperience(Skills.PRAYER, bone.getExperience() * 2);
 						player.getActionSender().sendMessage("You interact the bones with altar and gain x2 experience!");
 					}

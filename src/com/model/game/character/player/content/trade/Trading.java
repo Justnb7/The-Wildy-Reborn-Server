@@ -359,7 +359,7 @@ public class Trading {
 			return;
 		}
 
-		if (!player.getItems().contains(id)) {
+		if (!player.getInventory().contains(id)) {
 			return;
 		}
 
@@ -385,7 +385,7 @@ public class Trading {
 			amount = Integer.MAX_VALUE - existing;
 		}
 
-		player.getItems().deleteItem(id, amount);
+		player.getInventory().remove(new Item(id, amount));
 
 		player.getTradeContainer().add(new Item(id, amount));
 
@@ -478,7 +478,7 @@ public class Trading {
 		
 		if (player.getItems().isItemAddable(id, amount) && container.isRemovable(item, -1)) {
 			container.remove(item);
-			player.getItems().addItem(id, amount);
+			player.getInventory().add(new Item(id, amount));
 			player.setTradeState(TradeState.TRADE_SCREEN);
 			target.setTradeState(TradeState.TRADE_SCREEN);
 			update(player, TradeState.TRADE_SCREEN);
@@ -575,7 +575,7 @@ public class Trading {
 
 		for (Item item : player.getTradeContainer().container()) {
 			if (item != null) {
-				player.getItems().addItem(item);
+				player.getInventory().add(item);
 			}
 		}
 
@@ -718,7 +718,7 @@ public class Trading {
 		 */
 		for (Item item : target.getTradeContainer().container()) {
 			if (item != null) {
-				player.getItems().addItem(item);
+				player.getInventory().add(item);
 			}
 		}
 	}

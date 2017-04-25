@@ -16,6 +16,7 @@ import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.item.GameItem;
+import com.model.game.item.Item;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.ground.GroundItemHandler;
@@ -61,10 +62,10 @@ public class DuelSession extends MultiplayerSession {
 			if (items.get(winner.get()).size() > 0) {
 				for (GameItem item : items.get(winner.get())) {
 					long totalSum = (long) winner.get().getItems().getItemAmount(item.id) + item.amount;
-					if (winner.get().getItems().freeSlots() == 0 || winner.get().getItems().playerHasItem(item.id) && totalSum > Integer.MAX_VALUE) {
+					if (winner.get().getItems().freeSlots() == 0 || winner.get().getInventory().playerHasItem(item.id) && totalSum > Integer.MAX_VALUE) {
 						winner.get().getBank().sendItemToAnyTabOrDrop(new BankItem(item.id, item.amount), Constants.DUELING_RESPAWN_X + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)), Constants.DUELING_RESPAWN_Y + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)));
 					} else {
-						winner.get().getItems().addItem(item.id, item.amount);
+						winner.get().getInventory().add(new Item(item.id, item.amount));
 					}
 				}
 			}
@@ -92,7 +93,7 @@ public class DuelSession extends MultiplayerSession {
 				continue;
 			}
 			for (GameItem item : items.get(player)) {
-				player.getItems().addItem(item.id, item.amount);
+				player.getInventory().add(new Item(item.id, item.amount));
 			}
 		}
 	}

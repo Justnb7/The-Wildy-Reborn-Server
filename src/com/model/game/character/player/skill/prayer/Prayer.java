@@ -8,6 +8,7 @@ import com.model.game.Constants;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.item.Item;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -69,14 +70,14 @@ public class Prayer {
 	 * @param slot
 	 *         The inventory slot we remove the bone from
 	 */
-	public void bury(final int item, int slot) {
-		Bone bone = Bone.forId(item);
+	public void bury(final Item item, int slot) {
+		Bone bone = Bone.forId(item.getId());
 		if (bone == null)
 			return;
-		if (bone.getId() == item) {
+		if (bone.getId() == item.getId()) {
 			player.playAnimation(Animation.create(827));
 			player.getActionSender().sendMessage("You dig a hole in the ground.");
-			player.getItems().deleteItem(item, slot, 1);
+			player.getInventory().remove(item, slot);
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 				public void execute() {
 					player.getSkills().addExperience(Skills.PRAYER, bone.getXp() * Constants.PRAYER_EXP_MODIFIER);
@@ -92,13 +93,13 @@ public class Prayer {
 	 * @param item
 	 *         The bone we offer
 	 */
-	public void bonesOnAltar(int item) {
-		Bone bone = Bone.forId(item);
+	public void bonesOnAltar(Item item) {
+		Bone bone = Bone.forId(item.getId());
 		if (bone == null)
 			return;
-		if (bone.getId() == item) {
+		if (bone.getId() == item.getId()) {
 			player.playAnimation(Animation.create(883, 10));
-			player.getItems().deleteItem(item);
+			player.getInventory().remove(item);
 			player.getActionSender().sendMessage("You use the bones on the altar.");
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 				public void execute() {
@@ -112,7 +113,7 @@ public class Prayer {
 					/**
 					 * We ran out of bones stop the task
 					 */
-					if (!player.getItems().playerHasItem(bone.getId())) {
+					if (!player.getInventory().playerHasItem(bone.getId())) {
 						player.getActionSender().sendMessage("You ran out of bones!");
 						this.stop();
 						return;
@@ -199,7 +200,7 @@ public class Prayer {
 	 * @return If the player has a bone crusher
 	 */
 	public boolean isHoldingBoneCrusher(Player player) {
-		if (player.getItems().playerHasItem(BONE_CRUSHER_ID)) {
+		if (player.getInventory().playerHasItem(BONE_CRUSHER_ID)) {
 			return true;
 		}
 		return false;

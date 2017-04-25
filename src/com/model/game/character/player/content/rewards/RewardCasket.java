@@ -15,13 +15,13 @@ public class RewardCasket {
 	/**
 	 * Constants
 	 */
-	public static int ARMOUR_CASKET = 21999;
-	public static int WEAPON_CASKET = 22000;
-	public static int PET_CASKET = 22001;
-	public static int COSMETIC_CASKET = 22002;
-	public static int VENOM_CASKET = 22003;
-	public static int ZENYTE_CASKET = 22004;
-	public static int ADVANCED_ITEMS_CASKET = 22005;
+	public static Item ARMOUR_CASKET = new Item(21999);
+	public static Item WEAPON_CASKET = new Item(22000);
+	public static Item PET_CASKET = new Item(22001);
+	public static Item COSMETIC_CASKET = new Item(22002);
+	public static Item VENOM_CASKET = new Item(22003);
+	public static Item ZENYTE_CASKET = new Item(22004);
+	public static Item ADVANCED_ITEMS_CASKET = new Item(22005);
 	
 	/**
 	 * Rewards
@@ -70,11 +70,11 @@ public class RewardCasket {
 		}
 		
 		
-		if (player.getItems().playerHasItem(PET_CASKET)) {
-			player.getItems().deleteItem(PET_CASKET);
+		if (player.getInventory().playerHasItem(PET_CASKET)) {
+			player.getInventory().remove(PET_CASKET);
 			Item itemReceived = rollPet();
 			// Loops forever until we don't have the rolled pet.
-			while (player.getItems().alreadyHasItem(itemReceived.id)) {
+			while (player.getInventory().alreadyHasItem(itemReceived.id)) {
 				itemReceived = rollPet();
 			}
 			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
@@ -109,8 +109,8 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void armourCasket(Player player) {
-		if (player.getItems().playerHasItem(ARMOUR_CASKET)) {
-			player.getItems().deleteItem(ARMOUR_CASKET);
+		if (player.getInventory().playerHasItem(ARMOUR_CASKET)) {
+			player.getInventory().remove(ARMOUR_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
 			case 0:
@@ -145,8 +145,8 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void weaponCasket(Player player) {
-		if (player.getItems().playerHasItem(WEAPON_CASKET)) {
-			player.getItems().deleteItem(WEAPON_CASKET);
+		if (player.getInventory().playerHasItem(WEAPON_CASKET)) {
+			player.getInventory().remove(WEAPON_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
 			case 0:
@@ -181,8 +181,8 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void cosmeticCasket(Player player) {
-		if (player.getItems().playerHasItem(COSMETIC_CASKET)) {
-			player.getItems().deleteItem(COSMETIC_CASKET);
+		if (player.getInventory().playerHasItem(COSMETIC_CASKET)) {
+			player.getInventory().remove(COSMETIC_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
 			case 0:
@@ -218,8 +218,8 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void venomCasket(Player player) {
-		if (player.getItems().playerHasItem(VENOM_CASKET)) {
-			player.getItems().deleteItem(VENOM_CASKET);
+		if (player.getInventory().playerHasItem(VENOM_CASKET)) {
+			player.getInventory().remove(VENOM_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
 			case 0:
@@ -255,8 +255,8 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void zenyteCasket(Player player) {
-		if (player.getItems().playerHasItem(ZENYTE_CASKET)) {
-			player.getItems().deleteItem(ZENYTE_CASKET);
+		if (player.getInventory().playerHasItem(ZENYTE_CASKET)) {
+			player.getInventory().remove(ZENYTE_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
 			case 0:
@@ -292,8 +292,8 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void advancedItemsCasket(Player player) {
-		if (player.getItems().playerHasItem(ADVANCED_ITEMS_CASKET)) {
-			player.getItems().deleteItem(ADVANCED_ITEMS_CASKET);
+		if (player.getInventory().playerHasItem(ADVANCED_ITEMS_CASKET)) {
+			player.getInventory().remove(ADVANCED_ITEMS_CASKET);
 			Item itemReceived;
 			int roll = Utility.random(30);
 			switch (roll) {

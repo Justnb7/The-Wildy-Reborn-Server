@@ -24,6 +24,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.serialize.PlayerSave;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.location.Location;
 import com.model.utility.Utility;
@@ -152,13 +153,13 @@ public class PlayerDeath {
 			if (!player.isSkulled) {
 				for (int i1 = 0; i1 < 3; i1++) {
 					if (player.itemKeptId[i1] > 0) {
-						player.getItems().addItem(player.itemKeptId[i1], 1);
+						player.getInventory().add(new Item(player.itemKeptId[i1], 1));
 					}
 				}
 			}
 			if (player.isActivePrayer(Prayers.PROTECT_ITEM)) {
 				if (player.itemKeptId[3] > 0) {
-					player.getItems().addItem(player.itemKeptId[3], 1);
+					player.getInventory().add(new Item(player.itemKeptId[3], 1));
 				}
 			}
 			//player.getItems().resetKeepItems();

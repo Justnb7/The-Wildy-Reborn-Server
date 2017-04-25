@@ -5,6 +5,7 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.packets.out.SendSoundPacket;
+import com.model.game.item.Item;
 import com.model.utility.Utility;
 
 import java.util.HashMap;
@@ -177,14 +178,15 @@ public class FoodConsumable {
 			player.attackDelay += 2;
 			player.playAnimation(Animation.create(829));
 			player.write(new SendSoundPacket(317, 1, 2));
-			player.getItems().deleteItem(id, slot, 1);
+			player.getInventory().remove(new Item(id), slot);
+			
 			
 			if (f.hasEffect()) {
 				//TODO implement effects
 			}
 			
 			if (f.replaceWith() > 0) {
-				player.getItems().addItem(f.replaceWith(), 1);
+				player.getInventory().add(new Item(f.replaceWith(), 1));
 			}
 			
 			if (f.getType().equalsIgnoreCase("Food")) {

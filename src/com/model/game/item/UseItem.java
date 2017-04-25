@@ -23,9 +23,9 @@ public class UseItem {
 	 * @param objectY
 	 * @param item
 	 */
-	public static void ItemonObject(Player player, int object, int objectX, int objectY, int item) {
+	public static void ItemonObject(Player player, int object, int objectX, int objectY, Item item) {
 		ObjectDefinition def = ObjectDefinition.getObjectDef(object);
-		if (!player.getItems().playerHasItem(item, 1))
+		if (!player.getInventory().playerHasItem(item.getId()))
 			return;
 		if (def.getName().toLowerCase().contains("altar") && def.actions[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().bonesOnAltar(item);
@@ -38,8 +38,8 @@ public class UseItem {
 		case "cooking range":
 		case "stove":
 		case "fire":
-			if (Cookables.isCookable(item)) {
-				Cooking.attemptCooking(player, item, object);
+			if (Cookables.isCookable(item.getId())) {
+				Cooking.attemptCooking(player, item.getId(), object);
 				return;
 			}
 			break;

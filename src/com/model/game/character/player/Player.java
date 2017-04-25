@@ -75,7 +75,7 @@ import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
 import com.model.game.item.bank.Bank;
 import com.model.game.item.container.impl.Equipment;
-import com.model.game.item.container.impl.InventoryContainer;
+import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
 import com.model.game.item.container.impl.TradeContainer;
@@ -169,14 +169,14 @@ public class Player extends Entity {
      *
      * @return the container for the inventory.
      */
-    public InventoryContainer getInventory() {
+    public Inventory getInventory() {
         return inventory;
     }
     
     /**
      * The container that holds the inventory items.
      */
-    private final InventoryContainer inventory = new InventoryContainer(this);
+    private final Inventory inventory = new Inventory(this);
     
     /**
      * The container that holds the equipment items.

@@ -21,7 +21,7 @@ public class ItemOnObjectPacketHandler implements PacketType {
 
 		int distanceRequired = 1;
 		
-		if (!player.getItems().playerHasItem(item.getId(), 1)) {
+		if (!player.getInventory().playerHasItem(item.getId(), 1)) {
 			return;
 		}
 		

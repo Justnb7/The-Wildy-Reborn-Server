@@ -42,7 +42,7 @@ public class Firemaking {
 					return;
 				}
 				
-				if (!player.getItems().playerHasItem(590, 1)) {
+				if (!player.getInventory().playerHasItem(590, 1)) {
 					return;
 				}
 				
@@ -55,7 +55,7 @@ public class Firemaking {
 				player.playAnimation(Animation.create(733));
 				player.getActionSender().sendMessage("You attempt to light the logs.");
 				
-				player.getItems().remove(new Item(log.getLog()));
+				player.getInventory().remove(new Item(log.getLog()));
 				
 				GlobalObject fire = new GlobalObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 100);
 				Server.getTaskScheduler().schedule(new ScheduledTask(lightDelay(player, log.getLog())) {

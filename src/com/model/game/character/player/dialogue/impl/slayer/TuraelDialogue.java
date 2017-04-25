@@ -8,6 +8,7 @@ import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerMasters;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
+import com.model.game.item.Item;
 
 /**
  * The dialogue enacted by Turael the beginner slayer master (Beginner Tasks)
@@ -77,7 +78,7 @@ public class TuraelDialogue extends Dialogue {
 								} else {
 									if (getPhase() == 8) {
 										send(Type.STATEMENT, "Turael hands you an @blu@Enchanted gem@bla@.");
-										player.getItems().addItem(4155, 1);
+										player.getInventory().add(new Item(4155, 1));
 										setPhase(9);
 									} else {
 										if (getPhase() == 9) {

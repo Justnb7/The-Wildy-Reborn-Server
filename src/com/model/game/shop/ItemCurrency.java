@@ -1,6 +1,7 @@
 package com.model.game.shop;
 
 import com.model.game.character.player.Player;
+import com.model.game.item.Item;
 
 /**
  * The currency that provides basic functionality for all tangible currencies.
@@ -27,12 +28,12 @@ public final class ItemCurrency implements GeneralCurrency {
 
     @Override
     public void takeCurrency(Player player, int amount) {
-        player.getItems().deleteItem(id, amount);
+        player.getInventory().remove(new Item(id, amount));
     }
 
     @Override
     public void recieveCurrency(Player player, int amount) {
-        player.getItems().addItem(id, amount);
+        player.getInventory().add(new Item(id, amount));
     }
 
     @Override
@@ -42,7 +43,7 @@ public final class ItemCurrency implements GeneralCurrency {
 
     @Override
     public boolean canRecieveCurrency(Player player) {
-        return player.getItems().playerHasItem(id);
+        return player.getInventory().playerHasItem(id);
     }
 
     /**

@@ -37,7 +37,7 @@ public class ItemOnItem {
 		if (player.rights == Rights.ADMINISTRATOR) {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {
 				int amount = player.getItems().checkAmount(withItem.getId());
-				player.getItems().remove(new Item(withItem.getId(), amount));
+				player.getInventory().remove(new Item(withItem.getId(), amount));
 				player.getActionSender().sendMessage("Whee... "+ItemDefinition.forId(withItem.getId()).getName()+" All gone!");
 			}
 		}
@@ -95,72 +95,72 @@ public class ItemOnItem {
 		}
 		
 		if (usedItem.getId() == 11810 && withItem.getId() == 11798 || usedItem.getId() == 11798 && withItem.getId() == 11810) {
-			player.getItems().remove(new Item(11810, 1));
-			player.getItems().remove(new Item(11798, 1));
-			player.getItems().addItem(new Item(11802, 1));
+			player.getInventory().remove(new Item(11810, 1));
+			player.getInventory().remove(new Item(11798, 1));
+			player.getInventory().add(new Item(11802, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11812 && withItem.getId() == 11798 || usedItem.getId() == 11798 && withItem.getId() == 11812) {
-			player.getItems().remove(new Item(11812, 1));
-			player.getItems().remove(new Item(11798, 1));
-			player.getItems().addItem(new Item(11804, 1));
+			player.getInventory().remove(new Item(11812, 1));
+			player.getInventory().remove(new Item(11798, 1));
+			player.getInventory().add(new Item(11804, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11814 && withItem.getId() == 11798 || usedItem.getId() == 11798 && withItem.getId() == 11814) {
-			player.getItems().remove(new Item(11814, 1));
-			player.getItems().remove(new Item(11798, 1));
-			player.getItems().addItem(new Item(11806, 1));
+			player.getInventory().remove(new Item(11814, 1));
+			player.getInventory().remove(new Item(11798, 1));
+			player.getInventory().add(new Item(11806, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11816 && withItem.getId() == 11798 || usedItem.getId() == 11798 && withItem.getId() == 11816) {
-			player.getItems().remove(new Item(11816, 1));
-			player.getItems().remove(new Item(11798, 1));
-			player.getItems().addItem(new Item(11808, 1));
+			player.getInventory().remove(new Item(11816, 1));
+			player.getInventory().remove(new Item(11798, 1));
+			player.getInventory().add(new Item(11808, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11800 && withItem.getId() == 11818 || usedItem.getId() == 11818 && withItem.getId() == 11800) {
-			player.getItems().remove(new Item(11818, 1));
-			player.getItems().remove(new Item(11800, 1));
-			player.getItems().addItem(new Item(11798, 1));
+			player.getInventory().remove(new Item(11818, 1));
+			player.getInventory().remove(new Item(11800, 1));
+			player.getInventory().add(new Item(11798, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11820 && withItem.getId() == 11796 || usedItem.getId() == 11796 && withItem.getId() == 11820) {
-			player.getItems().remove(new Item(11796, 1));
-			player.getItems().remove(new Item(11820, 1));
-			player.getItems().addItem(new Item(11798, 1));
+			player.getInventory().remove(new Item(11796, 1));
+			player.getInventory().remove(new Item(11820, 1));
+			player.getInventory().add(new Item(11798, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11822 && withItem.getId() == 11794 || usedItem.getId() == 11794 && withItem.getId() == 11822) {
-			player.getItems().remove(new Item(11794, 1));
-			player.getItems().remove(new Item(11822, 1));
-			player.getItems().addItem(new Item(11798, 1));
+			player.getInventory().remove(new Item(11794, 1));
+			player.getInventory().remove(new Item(11822, 1));
+			player.getInventory().add(new Item(11798, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11818 && withItem.getId() == 11820 || usedItem.getId() == 11820 && withItem.getId() == 11818) {
-			player.getItems().remove(new Item(11818, 1));
-			player.getItems().remove(new Item(11820, 1));
-			player.getItems().addItem(new Item(11794, 1));
+			player.getInventory().remove(new Item(11818, 1));
+			player.getInventory().remove(new Item(11820, 1));
+			player.getInventory().add(new Item(11794, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11822 && withItem.getId() == 11818 || usedItem.getId() == 11818 && withItem.getId() == 11822) {
-			player.getItems().remove(new Item(11818, 1));
-			player.getItems().remove(new Item(11822, 1));
-			player.getItems().addItem(new Item(11796, 1));
+			player.getInventory().remove(new Item(11818, 1));
+			player.getInventory().remove(new Item(11822, 1));
+			player.getInventory().add(new Item(11796, 1));
 			return;
 		}
 		
 		if (usedItem.getId() == 11820 && withItem.getId() == 11822 || usedItem.getId() == 11822 && withItem.getId() == 11820) {
-			player.getItems().remove(new Item(11820, 1));
-			player.getItems().remove(new Item(11822, 1));
-			player.getItems().addItem(new Item(11800, 1));
+			player.getInventory().remove(new Item(11820, 1));
+			player.getInventory().remove(new Item(11822, 1));
+			player.getInventory().add(new Item(11800, 1));
 			return;
 		}
 		

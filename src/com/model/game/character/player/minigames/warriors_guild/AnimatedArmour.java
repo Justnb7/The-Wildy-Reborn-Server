@@ -96,14 +96,14 @@ public class AnimatedArmour {
 			return;
 		}
 		final Armour armour = getArmourForItemId(itemId);
-		if(!player.getItems().playerHasItem(armour.getPlatebodyId(), 1) || !player.getItems().playerHasItem(armour.getPlatelegsId(), 1) || !player.getItems().playerHasItem(armour.getHelmId(), 1)) {
+		if(!player.getInventory().playerHasItem(armour.getPlatebodyId(), 1) || !player.getInventory().playerHasItem(armour.getPlatelegsId(), 1) || !player.getInventory().playerHasItem(armour.getHelmId(), 1)) {
 			player.getActionSender().sendMessage("You need the helm, platebody, and platelegs to spawn the animated armour.");
 			return;
 		}
 		player.isAnimatedArmourSpawned = true;
-		player.getItems().deleteItem(armour.getPlatebodyId(), 1);
-		player.getItems().deleteItem(armour.getPlatelegsId(), 1);
-		player.getItems().deleteItem(armour.getHelmId(), 1);
+		player.getInventory().remove(new Item(armour.getPlatebodyId(), 1));
+		player.getInventory().remove(new Item(armour.getPlatelegsId(), 1));
+		player.getInventory().remove(new Item(armour.getHelmId(), 1));
 		player.getPlayerFollowing().walkTo(0, +5);
 		CycleEventHandler.getSingleton().addEvent(player, new CycleEvent() {
 			

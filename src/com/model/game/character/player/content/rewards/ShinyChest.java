@@ -29,7 +29,7 @@ public class ShinyChest {
 	 */
 	public static void searchChest(final Player player, Location position) {
 			player.getActionSender().sendMessage("You unlock the chest with your key.");
-			player.getItems().deleteItem(85);
+			player.getInventory().remove(new Item(85));
 			player.playAnimation(Animation.create(881));
 			player.playGraphics(Graphic.create(390));
 			

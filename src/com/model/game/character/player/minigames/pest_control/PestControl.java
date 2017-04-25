@@ -9,6 +9,7 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
+import com.model.game.item.Item;
 import com.model.game.location.Location;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -213,7 +214,7 @@ public class PestControl {
 						if (player.pestControlDamage > MINIMUM_DAMAGE) {//TODO ask jak how to do this
 							player.getActionSender().sendMessage("You won! You obtain " + (POINT_REWARD) + " commendation points and " + coins + " coins as a bonus.");
 							player.setPestControlPoints(player.getPestControlPoints() + POINT_REWARD);
-							player.getItems().addItem(995, coins);
+							player.getInventory().add(new Item(995, coins));
 						} else {
 							player.getActionSender().sendMessage("You won but you didn't deal enough damage on the portals.");
 							player.getActionSender().sendMessage("You must play your part in defeating the portals to get rewarded.");

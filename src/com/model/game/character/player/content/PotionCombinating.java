@@ -46,10 +46,10 @@ public class PotionCombinating {
 	 * @param potion2	the second potion
 	 */
 	public void mix(Player player, Item item1, Item item2) {
-		if (!player.getItems().playerHasItem(item1.getId(), item1.getAmount())) {
+		if (!player.getInventory().playerHasItem(item1.getId(), item1.getAmount())) {
 			return;
 		}
-		if (!player.getItems().playerHasItem(item2.getId(), item2.getAmount())) {
+		if (!player.getInventory().playerHasItem(item2.getId(), item2.getAmount())) {
 			return;
 		}
 		Potion potion1 = Potion.get(item1.getId()); 
@@ -61,8 +61,8 @@ public class PotionCombinating {
 			player.getActionSender().sendMessage("You cannot mix a 4 dose potion.");
 			return;
 		}
-		player.getItems().deleteItem(item1.getId(), item1.getAmount());
-		player.getItems().deleteItem(item2.getId(), item2.getAmount());
+		player.getInventory().remove(new Item(item1.getId(), item1.getAmount()));
+		player.getInventory().remove(new Item(item2.getId(), item2.getAmount()));
 		int dose1 = potion1.getDosage(item1.getId());
 		int dose2 = potion2.getDosage(item2.getId());
 		int sum = dose1 + dose2;
@@ -77,8 +77,8 @@ public class PotionCombinating {
 			item1 = new Item(potion1.getItemId(sum));
 			item2 = new Item(229);
 		}
-		player.getItems().addItem(item1.getId(), item1.getAmount());
-		player.getItems().addItem(item2.getId(), item2.getAmount());
+		player.getInventory().add(new Item(item1.getId(), item1.getAmount()));
+		player.getInventory().add(new Item(item2.getId(), item2.getAmount()));
 	}
 	
 	/**

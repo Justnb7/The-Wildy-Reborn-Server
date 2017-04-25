@@ -159,7 +159,7 @@ public class FightCaves {
 			player.move(OUTSIDE);
 			int tokkul = getCurrentWave() * 8032 / Wave.WAVES.length;
 			if (player.getItems().freeSlots() > 1) {
-				player.getItems().addItem(TOKKUL.getId(), tokkul);
+				player.getInventory().add(new Item(TOKKUL.getId(), tokkul));
 			} else {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(6529, tokkul), player.getX(), player.getY(), player.getHeight(), player));
 			}
@@ -272,8 +272,8 @@ public class FightCaves {
 	 */
 	public void reward() {
 		player.dialogue().start("WON_FIGHT_CAVE");
-		player.getItems().addItem(FIRE_CAPE.getId(), 1);
-		player.getItems().addItem(TOKKUL.getId(), 10000 + Utility.random(5000));
+		player.getInventory().add(new Item(FIRE_CAPE.getId(), 1));
+		player.getInventory().add(new Item(TOKKUL.getId(), 10000 + Utility.random(5000)));
 		player.setCompletedFightCaves();
 		player.getFightCave().stop();
 		player.waveId = 0;

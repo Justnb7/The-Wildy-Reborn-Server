@@ -216,7 +216,6 @@ public class CommandPacketHandler implements PacketType {
     	case "clearinventory":
     		if(player.getArea().inWild())
     			return false;
-    		player.getItems().reset();
     		player.getInventory().clear();
     		player.getInventory().refresh();
     		player.getActionSender().sendMessage("You empty your inventory.");

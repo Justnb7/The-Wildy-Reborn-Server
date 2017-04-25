@@ -8,14 +8,14 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
+import com.model.game.character.player.skill.slayer.tasks.Chaeldar;
+import com.model.game.character.player.skill.slayer.tasks.Duradel;
+import com.model.game.character.player.skill.slayer.tasks.Mazchna;
 import com.model.game.character.player.skill.slayer.tasks.Nieve;
 import com.model.game.character.player.skill.slayer.tasks.Task;
 import com.model.game.character.player.skill.slayer.tasks.Turael;
 import com.model.game.character.player.skill.slayer.tasks.Vannaka;
 import com.model.game.location.Location;
-import com.model.game.character.player.skill.slayer.tasks.Chaeldar;
-import com.model.game.character.player.skill.slayer.tasks.Duradel;
-import com.model.game.character.player.skill.slayer.tasks.Mazchna;
 import com.model.utility.Utility;
 
 /**
@@ -180,15 +180,15 @@ public class SlayerTaskManagement {
 		if (!Slayer.hasTask(player)) {
 			return false;
 		}
-		if(player.getItems().playerHasItem(13307, 10)) {
+		if(player.getInventory().playerHasItem(13307, 10)) {
 			player.setSlayerTask(0);
 			player.setSlayerTaskAmount(0);
-			player.getItems().deleteItem(13307, 10);
+			player.setSlayerPoints(player.getSlayerPoints() - 10);
 			player.getActionSender().sendRemoveInterfacePacket();
 			player.getActionSender().sendMessage("Your slayer task has been reset, talk to any slayer master for a new one.");
 			return true;
 		} else {
-			player.getActionSender().sendMessage("You do not have enough blood money in order to reset your slayer task.");
+			player.getActionSender().sendMessage("You do not have enough slayer points in order to reset your slayer task.");
 			player.getActionSender().sendRemoveInterfacePacket();
 			return false;
 		}

@@ -4,6 +4,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.skill.SkillTask;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -78,7 +79,7 @@ public class Cooking extends SkillTask {
 			player.getActionSender().sendMessage("You need a cooking level of " + cookable.getLvl() + " to cook this food.");
 			return false;
 		}
-		if (!player.getItems().playerHasItem(cookable.getRawItem(), 1)) {
+		if (!player.getInventory().playerHasItem(cookable.getRawItem(), 1)) {
 			player.getActionSender().sendMessage("You have ran out of food to cook");
 			return false;
 		}
@@ -120,7 +121,7 @@ public class Cooking extends SkillTask {
 			stop();
 			return;
 		}
-		if (!getPlayer().getItems().playerHasItem(cookables.getRawItem(), 1)) {
+		if (!getPlayer().getInventory().playerHasItem(cookables.getRawItem(), 1)) {
 			getPlayer().getActionSender().sendMessage("You have run out of food to cook.");
 			stop();
 			return;
@@ -129,12 +130,12 @@ public class Cooking extends SkillTask {
 		getPlayer().playAnimation(Animation.create(896));
 		
 		if ((getPlayer().getSkills().getLevel(Skills.COOKING) >= cookables.getBurningLvl()) ? false : burned(cookables, getPlayer())) {
-			getPlayer().getItems().deleteItem(cookables.getRawItem(), 1);
-			getPlayer().getItems().addItem(cookables.getBurntId(), 1);
+			getPlayer().getInventory().remove(new Item(cookables.getRawItem(), 1));
+			getPlayer().getInventory().add(new Item(cookables.getBurntId(), 1));
 			getPlayer().getActionSender().sendMessage("Oops.. you have accidentally burnt a " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + "");
 		} else {
-			getPlayer().getItems().deleteItem(cookables.getRawItem(), 1);
-			getPlayer().getItems().addItem(cookables.getProduct(), 1);
+			getPlayer().getInventory().remove(new Item(cookables.getRawItem(), 1));
+			getPlayer().getInventory().add(new Item(cookables.getProduct(), 1));
 			getPlayer().getActionSender().sendMessage("You successfully cook the " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + ".");
 			getPlayer().getSkills().addExperience(Skills.COOKING, cookables.getXp());
 		}

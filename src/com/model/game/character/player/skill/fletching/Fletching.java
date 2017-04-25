@@ -4,6 +4,7 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.item.Item;
 import com.model.task.ScheduledTask;
 
 /**
@@ -215,8 +216,8 @@ public class Fletching {
 	}
 
 	public static void headless(Player player) {
-		if (player.getItems().playerHasItem(player.arrowShaft, 1)) {
-			if (player.getItems().playerHasItem(getFeather(), 1)) {
+		if (player.getInventory().playerHasItem(player.arrowShaft, 1)) {
+			if (player.getInventory().playerHasItem(getFeather(), 1)) {
 				int Slot = player.getItems().getItemSlot(player.arrowShaft), amount = -1,
 						Slot2 = player.getItems().getItemSlot(getFeather()), amount2 = -1;
 				if (Slot != -1)
@@ -224,20 +225,20 @@ public class Fletching {
 				if (Slot2 != -1)
 					amount2 = player.itemAmount[Slot2];
 				if (amount >= 15 && amount2 >= 15) {
-					player.getItems().deleteItem(player.arrowShaft, 15);
-					player.getItems().deleteItem(getFeather(), 15);
-					player.getItems().addItem(getHeadless(), 15);
+					player.getInventory().remove(new Item(player.arrowShaft, 15));
+					player.getInventory().remove(new Item(getFeather(), 15));
+					player.getInventory().add(new Item(getHeadless(), 15));
 					player.getSkills().addExperience(Skills.FLETCHING, 15);
 				} else {
 					if (amount <= amount2) {
-						player.getItems().deleteItem(player.arrowShaft, amount);
-						player.getItems().deleteItem(getFeather(), amount);
-						player.getItems().addItem(getHeadless(), amount);
+						player.getInventory().remove(new Item(player.arrowShaft, amount));
+						player.getInventory().remove(new Item(getFeather(), amount));
+						player.getInventory().add(new Item(getHeadless(), amount));
 						player.getSkills().addExperience(Skills.FLETCHING, 15);
 					} else {
-						player.getItems().deleteItem(player.arrowShaft, amount2);
-						player.getItems().deleteItem(getFeather(), amount2);
-						player.getItems().addItem(getHeadless(), amount2);
+						player.getInventory().remove(new Item(player.arrowShaft, amount2));
+						player.getInventory().remove(new Item(getFeather(), amount2));
+						player.getInventory().add(new Item(getHeadless(), amount2));
 						player.getSkills().addExperience(Skills.FLETCHING, 15);
 					}
 				}
@@ -259,8 +260,8 @@ public class Fletching {
 		if (Arrows.forId(player.fletchItem) != null) {
 			Arrows arrow = Arrows.forId(player.fletchItem);
 			if (fletchLevel >= arrow.getLevelReq()) {
-				if (player.getItems().playerHasItem(arrow.getTips(), 1)) {
-					if (player.getItems().playerHasItem(getHeadless(), 1)) {
+				if (player.getInventory().playerHasItem(arrow.getTips(), 1)) {
+					if (player.getInventory().playerHasItem(getHeadless(), 1)) {
 						int Slot = player.getItems().getItemSlot(arrow.getTips()), amount = -1,
 								Slot2 = player.getItems().getItemSlot(getHeadless()), amount2 = -1;
 						if (Slot != -1)
@@ -268,20 +269,20 @@ public class Fletching {
 						if (Slot2 != -1)
 							amount2 = player.itemAmount[Slot2];
 						if (amount >= 15 && amount2 >= 15) {
-							player.getItems().deleteItem(arrow.getTips(), 15);
-							player.getItems().deleteItem(getHeadless(), 15);
-							player.getItems().addItem(arrow.getArrow(), 15);
+							player.getInventory().remove(new Item(arrow.getTips(), 15));
+							player.getInventory().remove(new Item(getHeadless(), 15));
+							player.getInventory().add(new Item(arrow.getArrow(), 15));
 							player.getSkills().addExperience(Skills.FLETCHING, arrow.getExperience() * 15);
 						} else {
 							if (amount <= amount2) {
-								player.getItems().deleteItem(arrow.getTips(), amount);
-								player.getItems().deleteItem(getHeadless(), amount);
-								player.getItems().addItem(arrow.getArrow(), amount);
+								player.getInventory().remove(new Item(arrow.getTips(), amount));
+								player.getInventory().remove(new Item(getHeadless(), amount));
+								player.getInventory().add(new Item(arrow.getArrow(), amount));
 								player.getSkills().addExperience(Skills.FLETCHING, arrow.getExperience());
 							} else {
-								player.getItems().deleteItem(arrow.getTips(), amount2);
-								player.getItems().deleteItem(getHeadless(), amount2);
-								player.getItems().addItem(arrow.getArrow(), amount2);
+								player.getInventory().remove(new Item(arrow.getTips(), amount2));
+								player.getInventory().remove(new Item(getHeadless(), amount2));
+								player.getInventory().add(new Item(arrow.getArrow(), amount2));
 								player.getSkills().addExperience(Skills.FLETCHING, arrow.getExperience());
 							}
 						}
@@ -314,10 +315,10 @@ public class Fletching {
 	public static void boltTips(Player player, int fletchLevel) {
 		for (final BoltTips tip : BoltTips.values())
 			if (tip.getGem() == player.fletchItem)
-				if (player.getItems().playerHasItem(tip.getGem(), 1)) {
+				if (player.getInventory().playerHasItem(tip.getGem(), 1)) {
 					if (fletchLevel >= tip.getLevelReq()) {
-						player.getItems().deleteItem(tip.getGem(), 1);
-						player.getItems().addItem(tip.getReward());
+						player.getInventory().remove(new Item(tip.getGem(), 1));
+						player.getInventory().add(tip.getReward());
 						player.getSkills().addExperience(Skills.FLETCHING, tip.getExperience());
 						player.getActionSender().sendRemoveInterfacePacket();
 						player.lastFletch = System.currentTimeMillis();
@@ -359,22 +360,22 @@ public class Fletching {
 		if (secondSlot != -1)
 			secondAmount = player.itemAmount[secondSlot];
 		if (fletchLevel >= levelRequirement) {
-			if (player.getItems().playerHasItem(unfBolts, 1) && player.getItems().playerHasItem(tips, 1)) {
+			if (player.getInventory().playerHasItem(unfBolts, 1) && player.getInventory().playerHasItem(tips, 1)) {
 				if (firstAmount >= 15 && secondAmount >= 15) {
-					player.getItems().deleteItem(unfBolts, 15);
-					player.getItems().deleteItem(tips, 15);
-					player.getItems().addItem(reward, 15);
+					player.getInventory().remove(new Item(unfBolts, 15));
+					player.getInventory().remove(new Item(tips, 15));
+					player.getInventory().add(new Item(reward, 15));
 					player.getSkills().addExperience(Skills.FLETCHING, (experience) * 15);
 				} else {
 					if (firstAmount <= secondAmount) {
-						player.getItems().deleteItem(unfBolts, firstAmount);
-						player.getItems().deleteItem(tips, firstAmount);
-						player.getItems().addItem(reward, firstAmount);
+						player.getInventory().remove(new Item(unfBolts, firstAmount));
+						player.getInventory().remove(new Item(tips, firstAmount));
+						player.getInventory().add(new Item(reward, firstAmount));
 						player.getSkills().addExperience(Skills.FLETCHING, experience);
 					} else {
-						player.getItems().deleteItem(unfBolts, secondAmount);
-						player.getItems().deleteItem(tips, secondAmount);
-						player.getItems().addItem(reward, secondAmount);
+						player.getInventory().remove(new Item(unfBolts, secondAmount));
+						player.getInventory().remove(new Item(tips, secondAmount));
+						player.getInventory().add(new Item(reward, secondAmount));
 						player.getSkills().addExperience(Skills.FLETCHING, experience);
 					}
 				}
@@ -390,9 +391,9 @@ public class Fletching {
 	}
 
 	public static void shaft(Player player) {
-		if (player.getItems().playerHasItem(player.fletchItem, 1)) {
-			player.getItems().deleteItem(player.fletchItem, 1);
-			player.getItems().addItem(player.arrowShaft, 15);
+		if (player.getInventory().playerHasItem(player.fletchItem, 1)) {
+			player.getInventory().remove(new Item(player.fletchItem, 1));
+			player.getInventory().add(new Item(player.arrowShaft, 15));
 			player.getSkills().addExperience(Skills.FLETCHING, 5);
 			player.getActionSender().sendRemoveInterfacePacket();
 			player.playAnimation(Animation.create(1248));
@@ -408,9 +409,9 @@ public class Fletching {
 		for (final CrossBow bow : CrossBow.values()) {
 			if (player.fletchItem == bow.getLog()) {
 				if (fletchLevel >= bow.getLevelReq()) {
-					if (player.getItems().playerHasItem(bow.getLog()) && player.getItems().playerHasItem(getKnife())) {
-						player.getItems().deleteItem(bow.getLog(), 1);
-						player.getItems().addItem(bow.getStock(), 1);
+					if (player.getInventory().playerHasItem(bow.getLog()) && player.getInventory().playerHasItem(getKnife())) {
+						player.getInventory().remove(new Item(bow.getLog(), 1));
+						player.getInventory().add(new Item(bow.getStock(), 1));
 						player.getSkills().addExperience(Skills.FLETCHING, bow.getExp1());
 						player.playAnimation(Animation.create(1248));
 						player.lastFletch = System.currentTimeMillis();
@@ -430,11 +431,11 @@ public class Fletching {
 		for (final CrossBow bow : CrossBow.values()) {
 			if (player.fletchItem == bow.getStock()) {
 				if (fletchLevel >= bow.getLevelReq()) {
-					if (player.getItems().playerHasItem(bow.getStock())
-							&& player.getItems().playerHasItem(bow.getLimbs())) {
-						player.getItems().deleteItem(bow.getStock(), 1);
-						player.getItems().deleteItem(bow.getLimbs(), 1);
-						player.getItems().addItem(bow.getUnstrungCrossbow(), 1);
+					if (player.getInventory().playerHasItem(bow.getStock())
+							&& player.getInventory().playerHasItem(bow.getLimbs())) {
+						player.getInventory().remove(new Item(bow.getStock(), 1));
+						player.getInventory().remove(new Item(bow.getLimbs(), 1));
+						player.getInventory().add(new Item(bow.getUnstrungCrossbow(), 1));
 						player.getSkills().addExperience(Skills.FLETCHING, bow.getExp1());
 						player.lastFletch = System.currentTimeMillis();
 					}
@@ -454,10 +455,10 @@ public class Fletching {
 		for (final Bows bow : Bows.values()) {
 			if (player.fletchItem == bow.getUnstrungBow()) {
 				if (fletchLevel >= bow.getLevelReq()) {
-					if (player.getItems().playerHasItem(getBS()) && player.getItems().playerHasItem(bow.getUnstrungBow())) {
-						player.getItems().deleteItem(bow.getUnstrungBow(), 1);
-						player.getItems().deleteItem(getBS(), 1);
-						player.getItems().addItem(bow.getStrungBow(), 1);
+					if (player.getInventory().playerHasItem(getBS()) && player.getInventory().playerHasItem(bow.getUnstrungBow())) {
+						player.getInventory().remove(new Item(bow.getUnstrungBow(), 1));
+						player.getInventory().remove(new Item(getBS(), 1));
+						player.getInventory().add(new Item(bow.getStrungBow(), 1));
 						player.getSkills().addExperience(Skills.FLETCHING, bow.getExperience());
 						player.playAnimation(bow.getAnimation());
 						player.lastFletch = System.currentTimeMillis();
@@ -478,10 +479,10 @@ public class Fletching {
 		for (final CrossBow bow : CrossBow.values()) {
 			if (player.fletchItem == bow.getUnstrungCrossbow()) {
 				if (fletchLevel >= bow.getLevelReq()) {
-					if (player.getItems().playerHasItem(getCBS()) && player.getItems().playerHasItem(bow.getUnstrungCrossbow())) {
-						player.getItems().deleteItem(bow.getUnstrungCrossbow(), 1);
-						player.getItems().deleteItem(getCBS(), 1);
-						player.getItems().addItem(bow.getCrossbow(), 1);
+					if (player.getInventory().playerHasItem(getCBS()) && player.getInventory().playerHasItem(bow.getUnstrungCrossbow())) {
+						player.getInventory().remove(new Item(bow.getUnstrungCrossbow(), 1));
+						player.getInventory().remove(new Item(getCBS(), 1));
+						player.getInventory().add(new Item(bow.getCrossbow(), 1));
 						player.getSkills().addExperience(Skills.FLETCHING, bow.getExp2());
 						player.playAnimation(bow.getAnimation());
 						player.lastFletch = System.currentTimeMillis();
@@ -515,9 +516,9 @@ public class Fletching {
 			}
 		}
 		if (fletchLevel >= levelRequirement) {
-			if (player.getItems().playerHasItem(log, 1)) {
-				player.getItems().deleteItem(log, 1);
-				player.getItems().addItem(unstrungBow, 1);
+			if (player.getInventory().playerHasItem(log, 1)) {
+				player.getInventory().remove(new Item(log, 1));
+				player.getInventory().add(new Item(unstrungBow, 1));
 				player.playAnimation(Animation.create(1248));
 				player.lastFletch = System.currentTimeMillis();
 				player.getSkills().addExperience(Skills.FLETCHING, experience);

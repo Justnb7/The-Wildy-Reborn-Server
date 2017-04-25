@@ -49,7 +49,7 @@ public class Herblore {
 	public void clean(int itemId) {
 		Optional<Herb> herb = HERBS.stream().filter(h -> h.getGrimy() == itemId).findFirst();
 		herb.ifPresent(h -> {
-			if (!player.getItems().playerHasItem(h.getGrimy())) {
+			if (!player.getInventory().playerHasItem(h.getGrimy())) {
 				player.getActionSender().sendMessage("You need the grimy herb to do this.");
 				return;
 			}
@@ -59,8 +59,8 @@ public class Herblore {
 			}
 			ItemDefinition definition = ItemDefinition.forId(h.getClean());
 			player.getSkills().addExperience(Skills.HERBLORE, h.getExperience() * Constants.SKILL_MODIFIER);
-			player.getItems().deleteItem(h.getGrimy(), 1);
-			player.getItems().addItem(h.getClean(), 1);
+			player.getInventory().remove(new Item(h.getGrimy(), 1));
+			player.getInventory().add(new Item(h.getClean(), 1));
 			player.getActionSender().sendMessage("You identify the herb as " + definition.getName() + ".");
 		});
 	}
@@ -73,14 +73,14 @@ public class Herblore {
 				player.getActionSender().sendMessage("You need a herblore level of " + p.getLevel() + " to make " + definition.getName() + ".");
 				return;
 			}
-			if (!player.getItems().playerHasItem(227)) {
+			if (!player.getInventory().playerHasItem(227)) {
 				player.getActionSender().sendMessage("You need a regular vial of water to do this.");
 				return;
 			}
-			Arrays.asList(p.getIngredients()).stream().forEach(ing -> player.getItems().deleteItem(ing.getId(), ing.getAmount()));
-			player.getItems().deleteItem(227, 1);
-			player.getItems().deleteItem(p.getPrimary().getId(), p.getPrimary().getAmount());
-			player.getItems().addItem(p.getResult().getId(), p.getResult().getAmount());
+			Arrays.asList(p.getIngredients()).stream().forEach(ing -> player.getInventory().remove(new Item(ing.getId(), ing.getAmount())));
+			player.getInventory().remove(new Item(227, 1));
+			player.getInventory().remove(new Item(p.getPrimary().getId(), p.getPrimary().getAmount()));
+			player.getInventory().add(new Item(p.getResult().getId(), p.getResult().getAmount()));
 			player.getSkills().addExperience(Skills.HERBLORE, p.getExperience() * Constants.SKILL_MODIFIER);
 			player.getActionSender().sendMessage("You combine all of the ingredients and make a " + definition.getName() + ".");
 			//Achievements.increase(player, AchievementType.POTIONS, 1);
@@ -95,7 +95,7 @@ public class Herblore {
 	private boolean containsSecondaries(Potion potion) {
 		int required = potion.getIngredients().length;
 		for (Item ingredient : potion.getIngredients()) {
-			if (player.getItems().playerHasItem(ingredient.getId(), ingredient.getAmount())) {
+			if (player.getInventory().playerHasItem(ingredient.getId(), ingredient.getAmount())) {
 				required--;
 			}
 		}

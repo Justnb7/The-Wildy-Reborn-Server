@@ -244,7 +244,7 @@ public class PestControlRewards {
 				return;
 			}
 			player.setPestControlPoints(player.getPestControlPoints() - cost);
-			player.getItems().addItem(item.getId(), item.getAmount());
+			player.getInventory().add(new Item(item.getId(), item.getAmount()));
 			ItemDefinition itemDef = ItemDefinition.forId(item.getId());
 			String name = itemDef == null ? "a item" : itemDef.getName();
 			player.getActionSender().sendMessage("You have received a " + name + " in exchange for " + cost + " pc points.");
@@ -345,7 +345,7 @@ public class PestControlRewards {
 				receive.add(item);
 				list.remove(item);
 			}
-			receive.forEach(item -> player.getItems().addItem(item.getId(), item.getAmount()));
+			receive.forEach(item -> player.getInventory().add(new Item(item.getId(), item.getAmount())));
 		}
 	}
 

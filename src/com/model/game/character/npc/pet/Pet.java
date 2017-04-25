@@ -1,6 +1,5 @@
 package com.model.game.character.npc.pet;
 
-import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.NPC;
@@ -48,7 +47,7 @@ public class Pet extends NPC {
 				player.setPetSpawned(true);
 				player.setPet(petIds.getNpc());
 				World.getWorld().register(pet);
-				player.getItems().remove(item);
+				player.getInventory().remove(item);
 				CycleEventHandler.getSingleton().addEvent(player, new CycleEvent() {
 
 					@Override
@@ -87,7 +86,7 @@ public class Pet extends NPC {
 		if (pets != null && player.getItems().freeSlots() < 28) {
 			if (player.isPetSpawned()) {
 				player.playAnimation(Animation.create(827));
-				player.getItems().addItemtoInventory(new Item(pets.getItem()));
+				player.getInventory().add(new Item(pets.getItem()));
 				World.getWorld().unregister(pet);
 				player.setPetSpawned(false);
 				player.setPet(-1);

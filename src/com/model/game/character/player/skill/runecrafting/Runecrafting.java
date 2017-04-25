@@ -97,11 +97,11 @@ public class Runecrafting extends SkillTask {
 				player.getActionSender().sendMessage("You do not have the required level to craft these runes.");
 				return false;
 			}
-			if(!player.getItems().playerHasItem(7936) && !player.getItems().playerHasItem(1436)) {
+			if(!player.getInventory().playerHasItem(7936) && !player.getInventory().playerHasItem(1436)) {
 				player.getActionSender().sendMessage("Did you forget something?");
 				return false;
 			}
-			if(Talisman.getTalismanByAltar(talisman.getAlterId()).pureEssOnly() && !player.getItems().playerHasItem(7936)) {
+			if(Talisman.getTalismanByAltar(talisman.getAlterId()).pureEssOnly() && !player.getInventory().playerHasItem(7936)) {
 				player.getActionSender().sendMessage("You do not have the right essence.");
 				return false;
 			}
@@ -128,8 +128,8 @@ public class Runecrafting extends SkillTask {
 		getPlayer().getSkills().addExperience(Skills.RUNECRAFTING, talisman.getExperience()*essCount);
 		
 		//Delete essence and reward runes
-		getPlayer().getItems().deleteItem(getEssType(getPlayer(), talisman), amount);
-		getPlayer().getItems().addItem(new Item(talisman.getRuneReward(), amount));
+		getPlayer().getInventory().remove(new Item(getEssType(getPlayer(), talisman), amount));
+		getPlayer().getInventory().add(new Item(talisman.getRuneReward(), amount));
 		
 		//Stop task
 		stop();
@@ -274,9 +274,9 @@ public class Runecrafting extends SkillTask {
 	 *        The talisman/tiara
 	 */
 	private int getEssType(Player player, Talisman talisman) {
-		if (player.getItems().playerHasItem(7936)) {
+		if (player.getInventory().playerHasItem(7936)) {
 			return 7936;
-		} else if (player.getItems().playerHasItem(1436) && !talisman.pureEssOnly()) {
+		} else if (player.getInventory().playerHasItem(1436) && !talisman.pureEssOnly()) {
 			return 1436;
 		}
 		return -1;

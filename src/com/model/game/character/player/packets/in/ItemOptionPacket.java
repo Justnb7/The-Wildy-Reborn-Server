@@ -116,7 +116,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if (!player.getItems().playerHasItem(with.getId(), 1) || !player.getItems().playerHasItem(used.getId(), 1)) {
+		if (!player.getInventory().playerHasItem(with.getId(), 1) || !player.getInventory().playerHasItem(used.getId(), 1)) {
 			return;
 		}
 		
@@ -146,7 +146,7 @@ public class ItemOptionPacket implements PacketType {
 			System.out.println("ItemUsed: " + itemUsed + " groundItem: " + groundItem + " itemUsedSlot: " + itemUsedSlot + " gItemX: " + gItemX + " gItemY: " + gItemY + " a1: " + a1);
 		}
 		
-		if (!player.getItems().playerHasItem(itemUsed, 1, itemUsedSlot) || GroundItemHandler.get(groundItem, position) == null) {
+		if (!player.getInventory().playerHasItem(itemUsed) || GroundItemHandler.get(groundItem, position) == null) {
 			return;
 		}
 		
@@ -205,14 +205,14 @@ public class ItemOptionPacket implements PacketType {
 		player.getInStream().readUnsignedByte();
 		int slot = player.getInStream().readUnsignedWordA();
 		
-		final Item item = player.getItems().getItemFromSlot(slot);
+		final Item item = player.getInventory().get(slot);
 		
-		if (item == null || item.getId() != itemId) {
+		if (item != null && item.getId() != itemId) {
 			return;
 		}
 		
 		//We don't even have the item
-		if (!player.getItems().playerHasItem(item.getId(), 1, slot)) {
+		if (!player.getInventory().playerHasItem(item.getId())) {
 			return;
 		}
 		
@@ -257,7 +257,7 @@ public class ItemOptionPacket implements PacketType {
 		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.itemAmount[slot]), player.getX(), player.getY(), player.getZ(), player));
 		
 		//After we've dropped our item, the server deletes it from our inventory.
-		player.getItems().deleteItem(item.getId(), slot, player.itemAmount[slot]);
+		player.getInventory().remove(item, slot);
 		
 		//When dropping items combat resets.
 		Combat.resetCombat(player);
@@ -340,7 +340,7 @@ public class ItemOptionPacket implements PacketType {
 
 		Bone bone = Bone.forId(item.getId());
 		if (bone != null) {
-			player.getSkills().getPrayer().bury(item.getId(), slot);
+			player.getSkills().getPrayer().bury(item, slot);
 			return;
 		}
 

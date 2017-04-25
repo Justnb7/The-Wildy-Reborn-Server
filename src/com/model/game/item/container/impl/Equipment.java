@@ -15,6 +15,11 @@ import com.model.utility.json.definitions.WeaponAnimation;
  * @author lare96 <http://github.com/lare96>
  */
 public final class Equipment extends Container {
+	
+	/**
+	 * The size of the equipment container.
+	 */
+	public static final int SIZE = 14;
 
     /**
      * The head identification equipment slot.

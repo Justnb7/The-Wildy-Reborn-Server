@@ -25,6 +25,7 @@ import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
 import com.model.game.character.player.packets.out.*;
 import com.model.game.character.player.skill.fletching.Fletching;
+import com.model.game.item.Item;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.bank.BankTab;
 import com.model.game.item.container.impl.Equipment;
@@ -909,8 +910,8 @@ public class ActionButtonPacketHandler implements PacketType {
 
 	private final void handleDestroyItem(Player player) {
 		if (player.getDestroyItem() != -1) {
-			if (player.getItems().playerHasItem(player.getDestroyItem())) {
-				player.getItems().deleteItem(player.getDestroyItem());
+			if (player.getInventory().playerHasItem(player.getDestroyItem())) {
+				player.getInventory().remove(new Item(player.getDestroyItem()));
 				player.setDestroyItem(-1);
 				player.getActionSender().sendRemoveInterfacePacket();
 			}

@@ -28,7 +28,7 @@ public class Zilyana_Jr extends Dialogue {
 			setPhase(1);
 			break;
 		case 1:
-			if(player.getItems().playerHasItem(11806)) {
+			if(player.getInventory().playerHasItem(11806)) {
 				send(Type.PLAYER, Expression.DEFAULT, "I FOUND THE GODSWORD!");
 				setPhase(2);
 			} else {

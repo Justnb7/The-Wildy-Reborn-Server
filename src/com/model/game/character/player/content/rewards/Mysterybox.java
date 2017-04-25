@@ -120,7 +120,7 @@ public class Mysterybox {
 	
 	
 	public static void open(Player player) {
-		if(player.getItems().playerHasItem(MYSTERY_BOX)) {
+		if(player.getInventory().playerHasItem(MYSTERY_BOX)) {
 			Item itemReceived;
 			switch (Utility.getRandom(50)) {
 			case 0:
@@ -144,7 +144,7 @@ public class Mysterybox {
 			}
 			player.getBank().addOrSendToBank(itemReceived.getId(), itemReceived.getAmount());
 			player.getActionSender().sendMessage("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + ".");
-			player.getItems().deleteItems(MYSTERY_BOX);
+			player.getInventory().remove(MYSTERY_BOX);
 		}
 	}
 

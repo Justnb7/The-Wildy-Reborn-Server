@@ -1,6 +1,7 @@
 package com.model.game.character.player.content.bounty_hunter;
 
 import com.model.game.character.player.Player;
+import com.model.game.item.Item;
 
 /**
  * Handles the bounty hunter tiers
@@ -30,7 +31,7 @@ public class BountyTierHandler {
 						continue;
 					}
 
-					player.getItems().replaceSlot(BountyHunterEmblem.getNext(emblem).getItemId(), i);
+					player.getInventory().set(i, new Item(BountyHunterEmblem.getNext(emblem).getItemId()));
 					break emb_loop;
 				}
 			}

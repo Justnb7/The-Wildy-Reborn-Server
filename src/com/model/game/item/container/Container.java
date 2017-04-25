@@ -602,6 +602,25 @@ public class Container implements Iterable<Item> {
         }
         return -1;
     }
+    
+    /**
+	 * Gets a slot by id.
+	 * 
+	 * @param id
+	 *            The id.
+	 * @return The slot, or <code>-1</code> if it could not be found.
+	 */
+	public int getSlotById(int id) {
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] == null) {
+				continue;
+			}
+			if (items[i].getId() == id) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
     /**
      * Retrieves the item located on {@code slot}.
@@ -844,6 +863,26 @@ public class Container implements Iterable<Item> {
 	 */
 	public Item[] toArray() {
 		return items;
+	}
+	
+	public boolean playerHasItem(Item item) {
+		return playerHasItem(item.getId(), item.getAmount());
+	}
+
+	public boolean playerHasItem(int id) {
+		return getSlotById(id) > -1;
+	}
+
+	public boolean playerHasItem(int id, int amount) {
+		if (!playerHasItem(id))
+			return false;
+		return amount(id) >= amount;
+	}
+
+	public boolean playerHasExactItem(int id, int amount) {
+		if (!playerHasItem(id))
+			return false;
+		return amount(id) == amount;
 	}
     
 }

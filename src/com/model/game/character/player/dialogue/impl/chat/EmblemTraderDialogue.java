@@ -6,6 +6,7 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Expression;
 import com.model.game.character.player.dialogue.Type;
+import com.model.game.item.Item;
 import com.model.game.shop.Shop;
 import com.model.utility.Utility;
 
@@ -89,7 +90,7 @@ public class EmblemTraderDialogue extends Dialogue {
 					BountyHunterEmblem emblem = BountyHunterEmblem.get(id);
 					if (emblem != null) {
 						totalPoints += emblem.getBounties();
-						player.getItems().deleteItem(emblem.getItemId(), i, 1);
+						player.getInventory().remove(new Item(emblem.getItemId(), 1), i);
 					}
 				}
 				if(player.getBountyPoints() == Integer.MAX_VALUE) {

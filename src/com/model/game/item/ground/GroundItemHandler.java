@@ -328,13 +328,14 @@ public final class GroundItemHandler {
 						&& player.getPosition().getY() == groundItem.getPosition().getY()) {
 
 					if (player.getItems().freeSlots() == 0
-							&& !(player.getItems().playerHasItem(item.getId()) && item.getDefinition().isStackable())) {
+							&& !(player.getInventory().playerHasItem(item.getId()) && item.getDefinition().isStackable())) {
 						player.getActionSender().sendMessage("You do not have enough inventory space to pick that up.");
 						stop();
 						return;
 					}
 					removeGroundItem(groundItem);
-					player.getItems().addItemtoInventory(item);
+					player.getInventory().add(item);
+					player.getInventory().refresh();
 					PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Item Dropped: " + groundItem.getItem().getId() + " Items picked up by : " + player.getName() + " Amount:  " + groundItem.getItem().getAmount() );
 					stop();
 				}

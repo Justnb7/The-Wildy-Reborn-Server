@@ -64,7 +64,7 @@ public class Potions extends Consumable {
 		getPlayer().attackDelay += 2;
 		getPlayer().playAnimation(Animation.create(829));
 		getPlayer().write(new SendSoundPacket(334, 1, 2));
-		getPlayer().getItems().replaceSlot(data.getReplacement(), slot);
+		getPlayer().getInventory().set(slot, new Item(data.getReplacement()));
 		data.getPotionEffect().handle(getPlayer());
 		String message = data.getReplacement() != 229 ? "You drink a dose of the " + item.getDefinition().getName() + "." : "You drink the last dose of your " + item.getDefinition().getName() + ".";
 		getPlayer().getActionSender().sendMessage(message);

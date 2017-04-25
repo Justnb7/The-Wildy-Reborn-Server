@@ -70,10 +70,10 @@ public class ObjectInteraction {
 		}
 		switch (definition.name.toLowerCase()) {
 		case "open chest":
-			if (player.getItems().playerHasItem(85)) {
+			if (player.getInventory().playerHasItem(85)) {
 				ShinyChest.searchChest(player, position);
 				return;
-			} else if (player.getItems().playerHasItem(989)) {
+			} else if (player.getInventory().playerHasItem(989)) {
 				CrystalChest.searchChest(player, position);
 				return;
 			} else {

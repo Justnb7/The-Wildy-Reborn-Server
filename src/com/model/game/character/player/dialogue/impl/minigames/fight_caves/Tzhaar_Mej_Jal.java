@@ -17,7 +17,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 	
 	@Override
 	protected void start(Object... parameters) {
-		if (player.getItems().playerHasItem(6570) && player.secondOption) {
+		if (player.getInventory().playerHasItem(6570) && player.secondOption) {
 			send(Type.PLAYER, Expression.DEFAULT, "I have a fire cape here.");
 			setPhase(36);
 		} else {
@@ -264,7 +264,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 								if (getPhase() == 37) {
 									switch (index) {
 									case 1:
-										player.getItems().deleteItem(6570);
+										player.getInventory().remove(new Item(6570));
 										player.getItems().addOrCreateGroundItem(new Item(6529, 8000));
 										player.getActionSender().sendRemoveInterfacePacket();
 										break;
@@ -281,12 +281,12 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 									if (getPhase() == 38) {
 										switch (index) {
 										case 1:
-											if (player.getItems().alreadyHasItem(13225)) {
+											if (player.getInventory().alreadyHasItem(13225)) {
 												player.getActionSender().sendMessage("You already have a pet jad.");
 												player.getActionSender().sendRemoveInterfacePacket();
 												return;
 											}
-											player.getItems().deleteItem(6570);
+											player.getInventory().remove(new Item(6570));
 											int roll = Utility.getRandom(25);
 											if (roll == 1 || player.getRights().isAdministrator()) {
 												receivedPet = true;

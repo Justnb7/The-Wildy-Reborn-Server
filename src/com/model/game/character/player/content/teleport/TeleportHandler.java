@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
+import com.model.game.item.Item;
 import com.model.game.location.Location;
 
 public class TeleportHandler {
@@ -264,8 +265,8 @@ public class TeleportHandler {
 		boolean can = false;
 
 		if (currentData.getCost() != 0) {
-			if (player.getItems().playerHasItem(995, currentData.getCost())) {
-				player.getItems().deleteItem(995, currentData.getCost());
+			if (player.getInventory().playerHasItem(995, currentData.getCost())) {
+				player.getInventory().remove(new Item(995, currentData.getCost()));
 				player.getActionSender().sendMessage("You have paid a fee of " + NumberFormat.getInstance().format(currentData.getCost()) + ".");
 				can = true;
 			} else {

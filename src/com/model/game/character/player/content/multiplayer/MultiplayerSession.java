@@ -12,6 +12,7 @@ import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.item.GameItem;
+import com.model.game.item.Item;
 
 
 
@@ -102,7 +103,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			return;
 		}*/
 		
-		if (!player.getItems().playerHasItem(id)) {
+		if (!player.getInventory().playerHasItem(id)) {
 			return;
 		}
 		if (!Server.getMultiplayerSessionListener().inAnySession(player)) {
@@ -123,7 +124,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (amount < 0 || id < 0) {
 			return;
 		}
-		if (!player.getItems().playerHasItem(id, amount)) {
+		if (!player.getInventory().playerHasItem(id, amount)) {
 			return;
 		}
 		if (!presetListContains(player, id, amount)) {
@@ -147,26 +148,23 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 					long total = ((long) i.amount + (long) amount);
 					if (total > Integer.MAX_VALUE) {
 						items.get(player).remove(i);
-						player.getItems().deleteItem(id,
-								Integer.MAX_VALUE - i.amount);
-						items.get(player).add(
-								new GameItem(id, Integer.MAX_VALUE));
+						player.getInventory().remove(new Item(id, Integer.MAX_VALUE - i.amount));
+						items.get(player).add(new GameItem(id, Integer.MAX_VALUE));
 					} else {
 						items.get(player).remove(i);
-						items.get(player).add(
-								new GameItem(id, i.amount + amount));
-						player.getItems().deleteItem(id, amount);
+						items.get(player).add(new GameItem(id, i.amount + amount));
+						player.getInventory().remove(new Item(id, amount));
 					}
 					break;
 				}
 			}
 		} else if (item.stackable && !listContainsItem) {
 			items.get(player).add(new GameItem(id, amount));
-			player.getItems().deleteItem(id, amount);
+			player.getInventory().remove(new Item(id, amount));
 		} else {
 			while (amount-- > 0) {
 				items.get(player).add(new GameItem(id, 1));
-				player.getItems().deleteItem(id, 1);
+				player.getInventory().remove(new Item(id, 1));
 			}
 		}
 		stage.setAttachment(null);
@@ -239,13 +237,13 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 						return;
 					}
 					if (items.get(i).amount - amount > 0) {
-						if (player.getItems().addItem(id, amount)) {
+						if (player.getInventory().add(new Item(id, amount))) {
 							int previousAmount = items.get(i).amount;
 							items.set(i, new GameItem(id, previousAmount
 									- amount));
 						}
 					} else {
-						if (player.getItems().addItem(id, amount)) {
+						if (player.getInventory().add(new Item(id, amount))) {
 							items.remove(i);
 						}
 					}
@@ -269,7 +267,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 				return;
 			}
 			while (amount-- > 0) {
-				if (player.getItems().addItem(id, 1)) {
+				if (player.getInventory().add(new Item(id, 1))) {
 					for (GameItem i : items) {
 						if (i.id == id) {
 							items.remove(i);
@@ -585,7 +583,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			if (!playerItem.stackable) {
 				continue;
 			}
-			if (!recipient.getItems().playerHasItem(playerItem.id)) {
+			if (!recipient.getInventory().playerHasItem(playerItem.id)) {
 				continue;
 			}
 			long amount = ((long) playerItem.amount + (long) recipient

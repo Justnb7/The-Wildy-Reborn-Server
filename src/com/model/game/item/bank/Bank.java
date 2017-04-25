@@ -186,7 +186,7 @@ public class Bank {
 	public boolean addToBank(int itemID, int amount, boolean updateView) {
 		if (!player.isBanking())
 			return false;
-		if (!player.getItems().playerHasItem(itemID))
+		if (!player.getInventory().playerHasItem(itemID))
 			return false;
 		if (player.getBank().getBankSearch().isSearching()) {
 			player.getBank().getBankSearch().reset();
@@ -232,9 +232,9 @@ public class Bank {
 			if (totalAmount >= Integer.MAX_VALUE) {
 				int difference = Integer.MAX_VALUE - tab.getItemAmount(bankItem);
 				bankItem.setAmount(difference);
-				player.getItems().deleteItem(itemID, difference);
+				player.getInventory().remove(new Item(itemID, difference));
 			} else {
-				player.getItems().deleteItem(itemID, bankItem.getAmount());
+				player.getInventory().remove(new Item(itemID, bankItem.getAmount()));
 			}
 			tab.add(bankItem);
 			if (updateView) {
@@ -333,7 +333,7 @@ public class Bank {
 			} else
 				player.getActionSender().sendMessage("This item cannot be taken out as noted.");
 		}
-		if (player.getItems().freeSlots() == 0 && !player.getItems().playerHasItem(itemId)) {
+		if (player.getItems().freeSlots() == 0 && !player.getInventory().playerHasItem(itemId)) {
 			player.getActionSender().sendMessage("There is not enough space in your inventory.");
 			return;
 		}
@@ -356,9 +356,9 @@ public class Bank {
 		if (bankItem.getAmount() < 0)
 			bankItem.setAmount(0);
 		if (!noted)
-			player.getItems().addItem(bankItem.getId() - 1, bankItem.getAmount());
+			player.getInventory().add(new Item(bankItem.getId() - 1, bankItem.getAmount()));
 		else
-			player.getItems().addItem(bankItem.getId(), bankItem.getAmount());
+			player.getInventory().add(new Item(bankItem.getId(), bankItem.getAmount()));
 		tab.remove(bankItem);
 		if (tab.size() == 0) {
 			player.getBank().setCurrentBankTab(player.getBank().getBankTab(0));
@@ -444,7 +444,7 @@ public class Bank {
 	
 	public void addOrSendToBank(int item, int amount) {
 		if (player.getItems().freeSlots() > 0) {
-			player.getItems().addItem(item, amount);
+			player.getInventory().add(new Item(item, amount));
 		} else {
 			addToBank(item, amount, true);
 			player.getActionSender().sendMessage("Inventory full, the item was sent to your bank.");
@@ -490,6 +490,7 @@ public class Bank {
         
         if (player.getOutStream() != null && player != null) {
         	player.setBanking(true);
+        	
             player.getItems().resetItems(5064);
             player.getBank().resetBank();
             player.getBank().resetTempItems();

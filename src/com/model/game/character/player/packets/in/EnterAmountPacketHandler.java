@@ -42,7 +42,7 @@ public class EnterAmountPacketHandler implements PacketType {
 		switch (player.xInterfaceId) {
 
 		case 5064:
-			if (!player.getItems().playerHasItem(player.xRemoveId, amount)) {
+			if (!player.getInventory().playerHasItem(player.xRemoveId, amount)) {
 				return;
 			}
 			player.getBank().addToBank(player.playerInventory[player.xRemoveSlot] - 1, amount, true);

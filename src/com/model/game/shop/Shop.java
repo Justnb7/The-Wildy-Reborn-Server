@@ -288,7 +288,7 @@ public final class Shop {
 			player.getActionSender().sendMessage("You are not permitted to use this shop because of a restriction on your account.");
 			return false;
 		}
-		if (player.getItems().alreadyHasItem(12791) && shopItem.getId() == 12791) {
+		if (player.getInventory().alreadyHasItem(12791) && shopItem.getId() == 12791) {
 			player.getActionSender().sendMessage("You cannot own more then one rune pouch at the time.");
 			return false;
 		}
@@ -298,7 +298,7 @@ public final class Shop {
 			player.getActionSender().sendString("Bounties: " + Utility.insertCommas(Integer.toString(player.getBountyPoints())), 28052);
 		} else if (player.getOpenShop().equals("Blood money rewards")) {
 			if (item.getId() == 19484) {
-				player.getItems().addItem(item.getId(), 9);
+				player.getInventory().add(new Item(item.getId(), 9));
 			}
 		}
 		if (item.getAmount() > shopItem.getAmount())
@@ -318,7 +318,7 @@ public final class Shop {
 		}
 		if (player.getItems().freeSlots() >= item.getAmount() && !item.getDefinition().isStackable()
 				|| player.getItems().freeSlots() >= 1 && item.getDefinition().isStackable()
-				|| player.getItems().playerHasItem(item.getId()) && item.getDefinition().isStackable()) {
+				|| player.getInventory().playerHasItem(item.getId()) && item.getDefinition().isStackable()) {
 
 			if (itemCache.containsKey(item.getId()) && !player.getOpenShop().equals("Gear Point Store") && !player.getOpenShop().equals("Donator Ticket Shop") && !player.getOpenShop().equals("Bounty Hunter Store")) {
 				container.searchItem(item.getId()).ifPresent(i -> i.decrementAmountBy(item.getAmount()));
@@ -326,7 +326,7 @@ public final class Shop {
 				container.remove(item);
 			}
 			currency.getCurrency().takeCurrency(player, (int)totalCost);
-			player.getItems().addItemtoInventory(item);
+			player.getInventory().add(item);
 		} else {
 			player.getActionSender().sendMessage("You don't have enough space in your inventory.");
 			return false;
@@ -364,7 +364,7 @@ public final class Shop {
 			player.getActionSender().sendMessage("You are not permitted to use this shop because of a restriction on your account.");
 			return false;
 		}
-		if (!player.getItems().playerHasItem(item.getId()))
+		if (!player.getInventory().playerHasItem(item.getId()))
 			return false;
 		if (Arrays.stream(Constants.SPAWNABLES).anyMatch($it -> $it.equalsIgnoreCase(itemName))) {
 			player.getActionSender().sendMessage("<col=ff0000>" + Utility.formatPlayerName(itemName) + " <col=0>may not be sold!");
@@ -393,7 +393,7 @@ public final class Shop {
 		} else if (item.getAmount() > player.itemAmount[fromSlot] && item.getDefinition().isStackable()) {
 			item.setCount(player.itemAmount[fromSlot]);
 		}
-		player.getItems().remove(item);
+		player.getInventory().remove(item);
 		currency.getCurrency().recieveCurrency(player, item.getAmount() * (int) Math.floor(determinePrice(player, item)));
 		if (!player.getOpenShop().equals("Iron Store")) {
 			if (container.contains(item.getId())) {
@@ -444,11 +444,11 @@ public final class Shop {
 		for (int j = 0; j < skillCapes.length; j++) {
 			if (skillCapes[j] == item || skillCapes[j] + 1 == item) {
 				if (player.getItems().freeSlots() > 1) {
-					if (player.getItems().playerHasItem(995, 99000)) {
+					if (player.getInventory().playerHasItem(995, 99000)) {
 						if (player.getSkills().getLevelForExperience(j) >= 99) {
-							player.getItems().deleteItem(995, player.getItems().getItemSlot(995), 99000);
-							player.getItems().addItem(skillCapes[j] + nn, 1);
-							player.getItems().addItem(skillCapes[j] + 2, 1);
+							player.getInventory().remove(new Item(995, player.getItems().getItemSlot(995)), 99000);
+							player.getInventory().add(new Item(skillCapes[j] + nn, 1));
+							player.getInventory().add(new Item(skillCapes[j] + 2, 1));
 						} else {
 							player.getActionSender().sendMessage("You must have 99 in the skill of the cape you're trying to buy.");
 						}

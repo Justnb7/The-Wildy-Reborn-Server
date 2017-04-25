@@ -77,7 +77,7 @@ public enum Axe {
 	public static Axe getBest(Player player) {
 		Axe hatchet = null;
 		for (Axe h : values()){
-			if ((player.getItems().playerHasItem(h.itemId) || player.getEquipment().contains(h.itemId)) && player.getSkills().getLevel(Skills.WOODCUTTING) >= h.levelRequired) {
+			if ((player.getInventory().playerHasItem(h.itemId) || player.getEquipment().contains(h.itemId)) && player.getSkills().getLevel(Skills.WOODCUTTING) >= h.levelRequired) {
 				if (hatchet == null) {
 					hatchet = h;
 					continue;

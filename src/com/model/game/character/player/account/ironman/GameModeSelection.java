@@ -165,7 +165,7 @@ public class GameModeSelection {
 			new Item(557, 500), new Item(1323, 1), new Item(1153, 1), new Item(1115, 1), new Item(1067, 1), new Item(1191, 1), new Item(1712, 1), new Item(3105, 1)
 			};
 			for (Item item : starterItems) {
-				player.getItems().addItem(item);;
+				player.getInventory().add(item);
 			}
 			break;
 		}

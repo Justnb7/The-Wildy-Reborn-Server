@@ -1420,7 +1420,6 @@ public class Player extends Entity {
 	@Override
 	public void process() {
 		try {
-			refresh_inventory();
 			PrayerHandler.handlePrayerDraining(this);
 
 			update_attack_style(); // also updates follow distance. Must be done before following & combat

@@ -1,7 +1,5 @@
 package com.model.game.character.player.packets.in;
 
-import java.util.Objects;
-
 import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
@@ -11,6 +9,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.SubPacketType;
 import com.model.game.item.Item;
+
+import java.util.Objects;
 
 /**
  * Handles the 'wield' option on items.
@@ -25,10 +25,14 @@ public class WieldPacketHandler implements SubPacketType {
 		final int wearId = player.getInStream().readUnsignedWord();
 		final int wearSlot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();
-		
+
+		if (player.inDebugMode()) {
+			player.debug("" + wearId+" "+wearSlot+" "+interfaceId);
+		}
 		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.isTeleporting()) {
 			return;
 		}
+
 		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
@@ -40,9 +44,10 @@ public class WieldPacketHandler implements SubPacketType {
 		
 		switch (interfaceId) {
 		case 3214: // Inventory
-			final Item item = player.getItems().getItemFromSlot(wearSlot);
+			final Item item = player.getInventory().get(wearSlot);
 
 			if (item == null || item.getId() != wearId) {
+				player.debug("wat??!  "+wearId+" v "+item.getId());
 				return;
 			}
 			
@@ -54,6 +59,7 @@ public class WieldPacketHandler implements SubPacketType {
 			} else {
 				// Try equipping the item
 				if (!player.getController().canEquip(player, wearId, wearSlot)) {
+					player.debug("ntylolz");
 					return;
 				}
 				

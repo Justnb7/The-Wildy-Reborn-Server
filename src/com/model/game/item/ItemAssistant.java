@@ -1,33 +1,18 @@
 package com.model.game.item;
 
-import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
-import com.model.game.World;
 import com.model.game.character.Entity;
-import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
-import com.model.game.character.player.account.Account;
-import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
-import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
-import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.item.bank.BankItem;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.shop.Currency;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
-import com.model.utility.json.definitions.WeaponAnimation;
-import com.model.utility.logging.PlayerLogging;
-import com.model.utility.logging.PlayerLogging.LogType;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
 
 public class ItemAssistant {
 
@@ -58,8 +43,9 @@ public class ItemAssistant {
 	}
 
 	public void resetItems(int WriteFrame) {
+		System.out.println("nty");
 		// synchronized (c) {
-		if (player.getOutStream() != null && player != null) {
+		/*if (player.getOutStream() != null && player != null) {
 			player.getOutStream().putFrameVarShort(53);
 			int offset = player.getOutStream().offset;
 			player.getOutStream().writeShort(WriteFrame);
@@ -76,7 +62,7 @@ public class ItemAssistant {
 			}
 			player.getOutStream().putFrameSizeShort(offset);
 			player.flushOutStream();
-		}
+		}*/
 		// }
 	}
 

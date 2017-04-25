@@ -452,7 +452,7 @@ public class ActionSender {
 					} else {
 						player.getOutStream().writeByte(item.getAmount());
 					}
-					player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+					player.getOutStream().writeWordBigEndianA(item.getId()+1); // WHY does the client LITERALLY REQUIRE +1??? maybe its an anti leech dating back 10 years? or is 317 just weird AF?
 				} else {
 					player.getOutStream().writeByte(0);
 					player.getOutStream().writeWordBigEndianA(0);

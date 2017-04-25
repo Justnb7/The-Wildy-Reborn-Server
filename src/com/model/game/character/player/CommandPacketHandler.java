@@ -217,6 +217,8 @@ public class CommandPacketHandler implements PacketType {
     		if(player.getArea().inWild())
     			return false;
     		player.getItems().reset();
+    		player.getInventory().clear();
+    		player.getInventory().refresh();
     		player.getActionSender().sendMessage("You empty your inventory.");
     		return true;
     		
@@ -748,13 +750,10 @@ public class CommandPacketHandler implements PacketType {
     		int spawnItem = Integer.parseInt(cmd[1]);
 			if (cmd.length == 3) {
 				int amount = Integer.parseInt(cmd[2]);
-				//player.getInventory().add(new Item(spawnItem, amount));
-				player.getItems().addItem(new Item(spawnItem, amount));
-				System.out.println("adding item "+spawnItem+" amount "+amount);
+				boolean kk = player.getInventory().add(new Item(spawnItem, amount));
+				System.out.println("adding item "+spawnItem+" amount "+amount+" "+kk);
 			} else if (cmd.length == 2) {
-				player.getItems().addItem(new Item(spawnItem, 1));
-				//player.getInventory().add(new Item(spawnItem, 1));
-				System.out.println("adding item "+spawnItem);
+				player.getInventory().add(new Item(spawnItem, 1));
 			} else {
 				player.getActionSender().sendMessage("Invalid Format - ::item <id> <amount>");
 			}

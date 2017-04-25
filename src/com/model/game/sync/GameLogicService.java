@@ -1,5 +1,12 @@
 package com.model.game.sync;
 
+import com.google.common.base.Preconditions;
+import com.model.Server;
+import com.model.game.World;
+import com.model.game.character.player.Player;
+import com.model.game.item.ground.GroundItemHandler;
+import com.model.task.events.CycleEventHandler;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Queue;
@@ -9,13 +16,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
-
-import com.google.common.base.Preconditions;
-import com.model.Server;
-import com.model.game.World;
-import com.model.game.character.player.Player;
-import com.model.game.item.ground.GroundItemHandler;
-import com.model.task.events.CycleEventHandler;
 
 /**
  * A service dedicated to handling all game logic. This service executes packets
@@ -66,7 +66,6 @@ public final class GameLogicService implements Runnable {
 			if (player != null) {
 				player.getSession().processSubQueuedPackets();
 				player.getSession().processQueuedPackets();
-				player.refresh_inventory();
 			}
 		}
 	}

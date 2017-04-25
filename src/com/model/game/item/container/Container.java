@@ -1,21 +1,13 @@
 package com.model.game.item.container;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
 import com.google.common.base.Preconditions;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * The container that represents a collection of items.
@@ -580,6 +572,7 @@ public class Container implements Iterable<Item> {
      */
     public void set(int slot, Item item) {
         items[slot] = item;
+        System.out.println("["+slot+"]="+item);
     }
 
     /**

@@ -249,7 +249,6 @@ public class PlayerDeath {
 				killer.setHighestKillStreak(killer.getCurrentKillStreak());
 			}
 
-			//if (wealth > Constants.PK_POINTS_WEALTH) {
 				switch (killer.getRights().getValue()) {
 				case 3:
 					memberBonus += Utility.isWeekend() ? 4 : 8;
@@ -267,14 +266,10 @@ public class PlayerDeath {
 				}
 
 				int reward = (int) (blood_Money + memberBonus + trainedBonus);
-				killer.getItems().addItemUnderAnyCircumstance(13307, reward);
-				// killer.setPkPoints(killer.getPkPoints() + totalPoints);
-				// killer.write(new SendMessagePacket("You now have @blu@" +
-				// killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" +
-				// totalPoints + "@bla@)"));
-			/*} else {
-				killer.getActionSender().sendMessage(player.getName() + " wasn't risking enough for you to gain any rewards.");
-			}*/
+				
+				 killer.setPkPoints(killer.getPkPoints() + reward);
+				 killer.getActionSender().sendMessage("You now have @blu@" + killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" + reward + "@bla@)");
+			}
 
 			if (player.getCurrentKillStreak() >= 5) {
 				PlayerUpdating.executeGlobalMessage("<img=12>[@red@Server@bla@]: @red@" + killer.getName() + "@red@ just " + killMessage[new java.util.Random().nextInt(killStreakMessage.length)] + " @red@" + player.getName() + "'s@red@ " + player.getCurrentKillStreak() + " killstreak!");
@@ -290,7 +285,6 @@ public class PlayerDeath {
 			killer.getWeaponInterface().refreshSpecialAttack();
 			sendKillMessage(killer, player);
 			player.getActionSender().sendMessage(message_to_player[new java.util.Random().nextInt(message_to_player.length)]);
-		}
 	}
 
 	/**

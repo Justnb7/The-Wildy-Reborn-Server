@@ -12,17 +12,14 @@ public class BankModifiableX implements PacketType {
 	public void handle(Player player, int id, int size) {
 		player.getInStream().readUnsignedWordA();
 		int component = player.getInStream().readUnsignedWord();
+		@SuppressWarnings("unused")
 		int item = player.getInStream().readUnsignedWordA();
 		int amount = player.getInStream().readDWord();
 		if (amount <= 0)
 			return;
 		switch (component) {
 		case 5382:
-			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(item, amount);
-				return;
-			}
-			player.getBank().removeFromBank(item, amount, true);
+
 			break;
 		}
 	}

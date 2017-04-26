@@ -73,7 +73,6 @@ import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
-import com.model.game.item.bank.Bank;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.LootingBagContainer;
@@ -1189,10 +1188,6 @@ public class Player extends Entity {
 			playerInventory[i] = 0;
 			itemAmount[i] = 0;
 		}
-		for (int i = 0; i < BANK_SIZE; i++) {
-			bankItems[i] = 0;
-			bankItemsN[i] = 0;
-		}
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
 		teleportToX = 3087;
@@ -2043,12 +2038,6 @@ public class Player extends Entity {
 		this.killer = killer;
 	}
 
-	public Bank getBank() {
-		if (bank == null)
-			bank = new Bank(this);
-		return bank;
-	}
-
 	public int getSessionExperience() {
 		return sessionExperience;
 	}
@@ -2071,7 +2060,6 @@ public class Player extends Entity {
 	private RequestManager requestManager = new RequestManager(this);
 	private ScheduledTask distancedTask;
 	private SkillTask skillTask;
-	private Bank bank;
 	private int sessionExperience;
 	private LunarSpells lunar = new LunarSpells(this);
 	
@@ -2599,15 +2587,10 @@ public class Player extends Entity {
 	public int teleportToX = -1, teleportToY = -1;
 	public int playerInventory[] = new int[28];
 	public int itemAmount[] = new int[28];
-	public int BANK_SIZE = 350;
-	public int bankItems[] = new int[BANK_SIZE];
-	public int bankItemsN[] = new int[BANK_SIZE];
 
 	public int lastClickedItem;
 	public int[] itemKeptId = new int[4];
-	public int WillKeepAmt1, WillKeepAmt2, WillKeepAmt3, WillKeepAmt4, WillKeepItem1, WillKeepItem2, WillKeepItem3,
-			WillKeepItem4, WillKeepItem1Slot, WillKeepItem2Slot, WillKeepItem3Slot, WillKeepItem4Slot, EquipStatus;
-	
+
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance,

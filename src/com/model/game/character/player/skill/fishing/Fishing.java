@@ -130,7 +130,7 @@ public class Fishing extends SkillTask {
 		int random = Utility.random(spot.getPetChance());
 		if (random == 0) {
 			if (player.isPetSpawned()) {
-				player.getBank().addOrSendToBank(13320, 1);
+				//TODO spawn item in inv or bank
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.",
 						false);
 			} else {

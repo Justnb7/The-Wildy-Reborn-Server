@@ -121,7 +121,7 @@ public class MiningEvent extends CycleEvent {
 		
 		if (random == 0) {
 			if(player.isPetSpawned()) {
-				player.getBank().addOrSendToBank(13321, 1);
+				//TODO spawn pet in inv or bank
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Rock Golem.", false);
 			} else {
 				Pets pets = Pets.ROCK_GOLEM;

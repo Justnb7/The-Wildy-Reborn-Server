@@ -142,7 +142,7 @@ public class Mysterybox {
 			default:
 				itemReceived = Utility.randomElement(COMMON_REWARDS);
 			}
-			player.getBank().addOrSendToBank(itemReceived.getId(), itemReceived.getAmount());
+			//TODO spawn pet in inv or bank
 			player.getActionSender().sendMessage("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + ".");
 			player.getInventory().remove(MYSTERY_BOX);
 		}

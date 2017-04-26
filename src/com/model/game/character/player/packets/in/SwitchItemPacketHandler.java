@@ -3,6 +3,7 @@ package com.model.game.character.player.packets.in;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
+import com.model.game.item.container.impl.Inventory;
 
 /**
  * Switch item packet handler.
@@ -14,7 +15,6 @@ public class SwitchItemPacketHandler implements PacketType {
 	@Override
 	public void handle(Player player, int id, int size) {
 		int interfaceId = player.getInStream().readUnsignedWordBigEndianA();
-		boolean insertMode = player.getInStream().readSignedByteC() == 1;
 		int fromSlot = player.getInStream().readUnsignedWordBigEndianA();
 		int toSlot = player.getInStream().readUnsignedWordBigEndian();
 		
@@ -22,9 +22,17 @@ public class SwitchItemPacketHandler implements PacketType {
         	Trading.decline(player);
         }
 		
+		switch(interfaceId) {
+		case Inventory.INTERFACE:
+			if(fromSlot >= 0 && fromSlot < Inventory.SIZE && toSlot >= 0 && toSlot < Inventory.SIZE && toSlot != fromSlot) {
+				player.getInventory().swap(fromSlot, toSlot);
+			}
+			break;
+		}
+		
 		//Stop active skilling tasks
 		player.stopSkillTask();
 		
-		player.getItems().swap(fromSlot, toSlot, interfaceId, insertMode);
+		//player.getItems().swap(fromSlot, toSlot, interfaceId, insertMode);
 	}
 }

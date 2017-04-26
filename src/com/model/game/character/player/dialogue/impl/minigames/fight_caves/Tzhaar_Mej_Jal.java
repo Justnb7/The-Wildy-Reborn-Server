@@ -295,7 +295,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 											if (receivedPet) {
 												send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You lucky. Better train him good else TzTok-Jad find", "you JalYt.");
 												if (player.isPetSpawned()) {
-													player.getBank().addOrSendToBank(13225, 1);
+													//TODO spawn pet in inv or bank
 													World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Tzrek Jad.", false);
 												} else {
 													Pets pets = Pets.TZREK_JAD;

@@ -14,7 +14,6 @@ import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
-import com.model.game.item.bank.BankItem;
 import com.model.game.shop.Shop;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -82,8 +81,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		switch (interfaceIndex) {
 
 		case 7423:
-			player.getBank().addToBank(item.getId(), 1, false);
-			player.getItems().resetItems(7423);
+
 			break;
 
 		case 1688:
@@ -91,17 +89,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-			if (player.isBanking()) {
-				player.getBank().addToBank(item.getId(), 1, true);
-			}
+
 			break;
 
 		case 5382:
-			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(item.getId(), 1);
-				return;
-			}
-			player.getBank().removeFromBank(item.getId(), 1, true);
+
 			break;
 
 		case 3900:
@@ -198,17 +190,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-			if (player.isBanking()) {
-				player.getBank().addToBank(item.getId(), 5, true);
-			}
+			
 			break;
 
 		case 5382:
-			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(item.getId(), 5);
-				return;
-			}
-			player.getBank().removeFromBank(item.getId(), 5, true);
+		
 			break;
 
 		case 3322:
@@ -297,9 +283,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				Trading.decline(player);
 				return;
 			}
-			if (player.isBanking()) {
-				player.getBank().addToBank(item.getId(), 10, true);
-			}
+
 			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 				player.getActionSender().sendMessage("You have declined the duel.");
@@ -310,14 +294,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5382:
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-			}
-			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(item.getId(), 10);
-				return;
-			}
-			player.getBank().removeFromBank(item.getId(), 10, true);
+	
 			break;
 
 		case 3322:
@@ -396,24 +373,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-				return;
-			}
-			if (player.isBanking()) {
-				player.getBank().addToBank(item.getId(), player.getItems().getItemAmount(item.getId()), true);
-			}
+
 			break;
 
 		case 5382:
-			if (!player.isBanking()) {
-				return;
-			}
-			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(item.getId(), player.getBank().getCurrentBankTab().getItemAmount(new BankItem(item.getId() + 1)));
-				return;
-			}
-			player.getBank().removeFromBank(item.getId(), player.getBank().getCurrentBankTab().getItemAmount(new BankItem(item.getId() + 1)), true);
+			
 			break;
 
 		case 3322:
@@ -453,13 +417,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 7295:
-			if (ItemDefinition.forId(item.getId()).isStackable()) {
-				player.getBank().addToBank(player.playerInventory[slot], player.itemAmount[slot], false);
-				player.getItems().resetItems(7423);
-			} else {
-				player.getBank().addToBank(player.playerInventory[slot], player.getItems().itemAmount(player.playerInventory[slot]), false);
-				player.getItems().resetItems(7423);
-			}
+
 			break;
 
 		}

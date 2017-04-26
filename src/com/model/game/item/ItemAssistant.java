@@ -3,7 +3,6 @@ package com.model.game.item;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.Entity;
 import com.model.game.character.player.Player;
-import com.model.game.item.bank.BankItem;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
@@ -187,100 +186,6 @@ public class ItemAssistant {
 		return false;
 	}
 
-	/**
-	 * Move Items
-	 */
-	public void swap(int from, int to, int moveWindow, boolean insertMode) {
-		if (moveWindow == 3214) {
-			int tempI;
-			int tempN;
-			tempI = player.playerInventory[from];
-			tempN = player.itemAmount[from];
-			player.playerInventory[from] = player.playerInventory[to];
-			player.itemAmount[from] = player.itemAmount[to];
-			player.playerInventory[to] = tempI;
-			player.itemAmount[to] = tempN;
-		}
-		if (moveWindow == 5382) {
-			if (!player.isBanking()) {
-				player.getActionSender().sendRemoveInterfacePacket();
-				player.getBank().resetBank();
-				return;
-			}
-			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().reset();
-				return;
-			}
-
-			if (to > 999) {
-				int tabId = to - 1000;
-				if (tabId < 0)
-					tabId = 0;
-				if (tabId == player.getBank().getCurrentBankTab().getTabId()) {
-					player.getActionSender().sendMessage("You cannot add an item from it's tab to the same tab.");
-					player.getBank().resetBank();
-					return;
-				}
-				if (from >= player.getBank().getCurrentBankTab().size()) {
-					player.getBank().resetBank();
-					return;
-				}
-				BankItem item = player.getBank().getCurrentBankTab().getItem(from);
-				if (item == null) {
-					player.getBank().resetBank();
-					return;
-				}
-				if (player.getBank().getBankTab()[tabId].size() >= player.BANK_SIZE) {
-					player.getActionSender().sendMessage("You cannot move anymore items to that tab.");
-					player.getBank().resetBank();
-					return;
-				}
-				player.getBank().getCurrentBankTab().remove(item);
-				player.getBank().getBankTab()[tabId].add(item);
-			} else {
-				if (from > player.getBank().getCurrentBankTab().size() - 1 || to > player.getBank().getCurrentBankTab().size() - 1) {
-					player.getBank().resetBank();
-					return;
-				}
-				if (!insertMode) {
-					BankItem item = player.getBank().getCurrentBankTab().getItem(from);
-					player.getBank().getCurrentBankTab().setItem(from, player.getBank().getCurrentBankTab().getItem(to));
-					player.getBank().getCurrentBankTab().setItem(to, item);
-				} else {
-					int tempFrom = from;
-					for (int tempTo = to; tempFrom != tempTo;)
-						if (tempFrom > tempTo) {
-							player.getBank().swapBankItem(tempFrom, tempFrom - 1);
-							tempFrom--;
-						} else if (tempFrom < tempTo) {
-							player.getBank().swapBankItem(tempFrom, tempFrom + 1);
-							tempFrom++;
-						}
-				}
-			}
-		}
-		if (moveWindow == 5382) {
-			player.getBank().resetBank();
-		}
-		if (moveWindow == 5064) {
-			int tempI;
-			int tempN;
-			tempI = player.playerInventory[from];
-			tempN = player.itemAmount[from];
-
-			player.playerInventory[from] = player.playerInventory[to];
-			player.itemAmount[from] = player.itemAmount[to];
-			player.playerInventory[to] = tempI;
-			player.itemAmount[to] = tempN;
-			resetItems(3214);
-		}
-		player.getBank().resetTempItems();
-		if (moveWindow == 3214) {
-			resetItems(3214);
-		}
-
-	}
-
 	public int freeSlots() {
 		int freeS = 0;
 		for (int i = 0; i < player.playerInventory.length; i++) {
@@ -370,22 +275,6 @@ public class ItemAssistant {
 			return found >= amt;
 		}
 		return false;
-	}
-
-	/**
-	 * Adds an item to the players inventory, bank, or drops it. It will do this
-	 * under any circumstance so if it cannot be added to the inventory it will
-	 * next try to send it to the bank and if it cannot, it will drop it.
-	 * 
-	 * @param itemId
-	 *            the item
-	 * @param amount
-	 *            the amount of said item
-	 */
-	public void addItemUnderAnyCircumstance(int itemId, int amount) {
-		if (!player.getInventory().add(new Item(itemId, amount))) {
-			player.getBank().sendItemToAnyTabOrDrop(new BankItem(itemId, amount), player.getX(), player.getY());
-		}
 	}
 
 	public void addOrCreateGroundItem(Item item) {

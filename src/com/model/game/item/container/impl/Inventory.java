@@ -80,7 +80,7 @@ public final class Inventory extends Container {
     }
 
     public boolean alreadyHasItem(int id) {
-		return playerHasItem(id) || player.getBank().bankContains(id);
+		return playerHasItem(id);
 	}
 
 	public boolean playerOwnsAnyItems(int... ids) {

@@ -42,10 +42,7 @@ public class EnterAmountPacketHandler implements PacketType {
 		switch (player.xInterfaceId) {
 
 		case 5064:
-			if (!player.getInventory().playerHasItem(player.xRemoveId, amount)) {
-				return;
-			}
-			player.getBank().addToBank(player.playerInventory[player.xRemoveSlot] - 1, amount, true);
+
 			break;
 			
 		case 41710:
@@ -53,11 +50,7 @@ public class EnterAmountPacketHandler implements PacketType {
 			break;
 			
 		case 5382:
-			if (player.getBank().getBankSearch().isSearching()) {
-				player.getBank().getBankSearch().removeItem(player.getBank().getCurrentBankTab().getItem(player.xRemoveSlot).getId() - 1, amount);
-				return;
-			}
-			player.getBank().removeFromBank(player.getBank().getCurrentBankTab().getItem(player.xRemoveSlot).getId() - 1, amount, true);
+			
 			break;
 
 		case 3322:

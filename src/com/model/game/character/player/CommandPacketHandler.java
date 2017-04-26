@@ -655,7 +655,6 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "openbank":
-    		player.getBank().open();
     		return true;
     		
     	case "demote":

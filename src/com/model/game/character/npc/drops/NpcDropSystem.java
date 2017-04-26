@@ -156,32 +156,6 @@ public class NpcDropSystem {
 	 * The list of all npc drops
 	 */
 	private List<NpcDropData> npcDropData = new ArrayList<>();
-
-	public void bankLoot(Player player, int npc, int kills, float increase)
-	{
-		
-		for(NpcDropData drops : npcDropData)
-		{
-			for(int npcs : drops.getNpcList())
-			{
-				if(npcs == npc)
-				{
-					for(int i = 0; i < kills; i++)
-					{
-						List<GameItem> items = drops.generateDropList(increase);
-						
-						for(GameItem item : items)
-						{
-							player.getBank().addToBank(item.getId(), item.getAmount(), false);
-						}
-					}
-					
-				}
-				
-			}
-			
-		}
-	}
 	
 	/**
 	 * drops items for a player from an npc

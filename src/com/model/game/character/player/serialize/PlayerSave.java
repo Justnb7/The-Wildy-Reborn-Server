@@ -19,8 +19,6 @@ import com.model.game.character.player.account.AccountType;
 import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.item.Item;
-import com.model.game.item.bank.BankItem;
-import com.model.game.item.bank.BankTab;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.RunePouchContainer;
@@ -406,17 +404,6 @@ public class PlayerSave {
 					}
 				}
 				
-				for (int tab = 0; tab < details.tabs.length; tab++) {
-					player.getBank().setBankTab(tab, details.tabs[tab]);
-					for (int tabItem = 0; tabItem < details.tabs[tab].getItems().size(); tabItem++) {
-						BankItem bankItem = details.tabs[tab].getItems().get(tabItem);
-						if (bankItem == null || bankItem.getId() == -1)
-							continue;
-						player.bankItems[tabItem] = bankItem.getId();
-						player.bankItemsN[tabItem] = bankItem.getAmount();
-					}
-				}
-				
 				if (details.runePouch != null) {
 					for(int i = 0; i < RunePouchContainer.SIZE; i++) {
 						player.runePouchContainer.set(i, details.runePouch[i]);
@@ -434,13 +421,11 @@ public class PlayerSave {
 
 		private final Item[] equipment;
 		private final Item[] inventory;
-		private final BankTab[] tabs;
 		private final Item[] runePouch;
 
 		public PlayerContainer(Player player) {
 			inventory = player.getInventory().toArray();
 			equipment = player.getEquipment().toArray();
-			tabs = player.getBank().getBankTab();
 			runePouch = player.runePouchContainer.toArray();
 		}
 

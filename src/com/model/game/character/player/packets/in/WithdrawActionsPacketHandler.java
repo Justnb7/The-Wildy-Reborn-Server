@@ -374,7 +374,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				session.addItem(player, new GameItem(item.getId(), player.getInventory().amount(item.getId())));
 			} else {
 				if (ItemDefinition.forId(item.getId()).isStackable()) {
-					Trading.tradeItem(player, item.getId(), player.itemAmount[slot], slot);
+					Trading.tradeItem(player, item.getId(), player.getInventory().get(slot).getAmount(), slot);
 				} else {
 					Trading.tradeItem(player, item.getId(), 28, slot);
 				}

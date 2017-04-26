@@ -17,34 +17,6 @@ public class ItemAssistant {
 		this.player = client;
 	}
 
-	public void updateInventory() {
-		this.resetItems(3214);
-	}
-
-	public void resetItems(int WriteFrame) {
-		System.out.println("nty");
-		// synchronized (c) {
-		/*if (player.getOutStream() != null && player != null) {
-			player.getOutStream().putFrameVarShort(53);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(WriteFrame);
-			player.getOutStream().writeShort(player.playerInventory.length);
-			for (int i = 0; i < player.playerInventory.length; i++) {
-				if (player.itemAmount[i] > 254) {
-					player.getOutStream().writeByte(255);
-					player.getOutStream().writeDWord_v2(player.itemAmount[i]);
-				} else {
-					player.getOutStream().writeByte(player.itemAmount[i]);
-				}
-				player.getOutStream()
-						.writeWordBigEndianA(player.playerInventory[i]);
-			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
-		}*/
-		// }
-	}
-
 	public boolean isTradeable(int itemId) {
 		boolean tradable = ItemDefinition.forId(itemId).isTradeable();
 		if (tradable)
@@ -72,10 +44,9 @@ public class ItemAssistant {
 			return false;
 		}
 
-		if ((((freeSlots() >= 1) || player.getInventory().playerHasItem(item, 1)) && ItemDefinition
+		if ((((player.getInventory().remaining() >= 1) || player.getInventory().playerHasItem(item, 1)) && ItemDefinition
 				.forId(item).isStackable())
-				|| ((freeSlots() > 0) && !ItemDefinition.forId(item)
-						.isStackable())) {
+				|| ((player.getInventory().remaining() > 0) && !ItemDefinition.forId(item).isStackable())) {
 
 			for (int i = 0; i < player.playerInventory.length; i++) {
 				if ((player.playerInventory[i] == (item + 1))
@@ -155,22 +126,6 @@ public class ItemAssistant {
 		return false;
 	}
 
-	/**
-	 * Checking item amounts.
-	 * 
-	 * @param itemID
-	 * @return
-	 */
-	public int itemAmount(int itemID) {
-		int tempAmount = 0;
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			if (player.playerInventory[i] == itemID) {
-				tempAmount += player.itemAmount[i];
-			}
-		}
-		return tempAmount;
-	}
-
 	public boolean isStackable(int itemId) {
 		if (ItemDefinition.forId(itemId) == null) {
 			return false;
@@ -194,7 +149,7 @@ public class ItemAssistant {
 	}
 
 	public void addOrCreateGroundItem(Item item) {
-		if (freeSlots() > 0) {
+		if (player.getInventory().remaining() > 0) {
 			player.getInventory().add(new Item(item.getId(), item.getAmount()));
 		} else if ((item.getAmount() > 1) && (!ItemDefinition.forId(item.getId()).isStackable())) {
 			for (int i = 0; i < item.getAmount(); i++)

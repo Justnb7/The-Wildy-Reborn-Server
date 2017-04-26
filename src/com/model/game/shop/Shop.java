@@ -133,7 +133,7 @@ public final class Shop {
 			player.getActionSender().sendInterfaceConfig(1, 28050);
 		}
 		player.setShopping(true);
-		player.getItems().resetItems(3823);
+		player.getActionSender().sendItemsOnInterface(3823, player.getInventory().container());
 		player.getActionSender().sendItemsOnInterface(3900, container.container(), container.size());
 		player.setOpenShop(name);
 		player.getActionSender().sendInterfaceWithInventoryOverlay(3824, 3822);
@@ -151,7 +151,7 @@ public final class Shop {
 	 *            if the stock should be checked.
 	 */
 	public void updateShop(Player player, boolean checkStock) {
-		player.getItems().resetItems(3823);
+		player.getActionSender().sendItemsOnInterface(3823, player.getInventory().container());
 		int size = container.size();
 		players.stream().filter(Objects::nonNull).forEach(p -> p.getActionSender().sendItemsOnInterface(3900, container.container(), size));
 
@@ -390,8 +390,8 @@ public final class Shop {
 		int amount = player.getInventory().amount(item.getId());
 		if (item.getAmount() > amount && !item.getDefinition().isStackable()) {
 			item.setCount(amount);
-		} else if (item.getAmount() > player.itemAmount[fromSlot] && item.getDefinition().isStackable()) {
-			item.setCount(player.itemAmount[fromSlot]);
+		} else if (item.getAmount() > player.getInventory().get(fromSlot).getAmount() && item.getDefinition().isStackable()) {
+			item.setCount(player.getInventory().get(fromSlot).getAmount());
 		}
 		player.getInventory().remove(item);
 		currency.getCurrency().recieveCurrency(player, item.getAmount() * (int) Math.floor(determinePrice(player, item)));

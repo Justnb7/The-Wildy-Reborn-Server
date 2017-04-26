@@ -254,7 +254,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//We can go ahead and drop the item on the ground.
-		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.itemAmount[slot]), player.getX(), player.getY(), player.getZ(), player));
+		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.getInventory().get(slot).getAmount()), player.getX(), player.getY(), player.getZ(), player));
 		
 		//After we've dropped our item, the server deletes it from our inventory.
 		player.getInventory().remove(item, slot);
@@ -307,8 +307,8 @@ public class ItemOptionPacket implements PacketType {
 		player.lastClickedItem = id;
 		
 		//if its an invalid item, refresh the inventory
-		if ((slot < 0) || (slot > 27) || (id != player.playerInventory[slot] - 1) || (player.itemAmount[slot] <= 0)) {
-			player.getItems().resetItems(3214);
+		if ((slot < 0) || (slot > 27) || (id != player.playerInventory[slot] - 1) || (player.getInventory().get(slot).getAmount() <= 0)) {
+			player.getActionSender().sendItemsOnInterface(3214, player.getInventory().container());
 			return;
 		}
 		
@@ -475,8 +475,8 @@ public class ItemOptionPacket implements PacketType {
 		player.lastClickedItem = item.getId();
 
 		// if its an invalid item, refresh the inventory
-		if ((slot < 0) || (slot > 27) || (item.getId() != player.playerInventory[slot] - 1) || (player.itemAmount[slot] <= 0)) {
-			player.getItems().resetItems(3214);
+		if ((slot < 0) || (slot > 27) || (item.getId() != player.playerInventory[slot] - 1) || (player.getInventory().get(slot).getAmount() <= 0)) {
+			player.getActionSender().sendItemsOnInterface(3214, player.getInventory().container());
 			return;
 		}
 		

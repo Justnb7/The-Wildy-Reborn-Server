@@ -1184,10 +1184,6 @@ public class Player extends Entity {
 		super(EntityType.PLAYER);
 		this.username = username;
 		usernameHash = Utility.playerNameToInt64(username);
-		for (int i = 0; i < playerInventory.length; i++) {
-			playerInventory[i] = 0;
-			itemAmount[i] = 0;
-		}
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
 		teleportToX = 3087;
@@ -1265,7 +1261,7 @@ public class Player extends Entity {
 		//Set our sidebars before login
 		getActionSender().sendSidebarInterfaces();
 		//Update inventory before login
-		getItems().resetItems(3214);
+		inventory.refresh();
 		//Update equipment before login
 		equipment.refresh();
 		//Update friends and ignores
@@ -2259,13 +2255,6 @@ public class Player extends Entity {
 			fci = new FightCaveInstance();
 		return fci;
 	}
-
-	public void refresh_inventory() {
-		// Makes switching faster .. send our inventory straight after packets (switching items)
-		// is processed rather than maybe a couple milliseconds later after other processing like
-		// combat, following, npc agro etc etc. those couple MS make a big diff w/ lots of plrs. 
-		this.getItems().resetItems(3214);
-	}
 	
 	/**
 	 * Gets the players current consumable type
@@ -2585,12 +2574,8 @@ public class Player extends Entity {
 	public int mapRegionX, mapRegionY;
 	public int currentX, currentY;
 	public int teleportToX = -1, teleportToY = -1;
-	public int playerInventory[] = new int[28];
-	public int itemAmount[] = new int[28];
-
 	public int lastClickedItem;
 	public int[] itemKeptId = new int[4];
-
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance,
@@ -2605,7 +2590,6 @@ public class Player extends Entity {
 	 */
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
-	public boolean[] invSlot = new boolean[28], equipSlot = new boolean[14];
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted,
 	isSkulled, hasMultiSign,

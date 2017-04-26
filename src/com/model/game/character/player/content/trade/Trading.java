@@ -180,7 +180,7 @@ public class Trading {
 		if (state == TradeState.TRADE_SCREEN) {
 			player.setTradeState(TradeState.TRADE_SCREEN);
 			update(player, TradeState.TRADE_SCREEN);
-			player.getItems().resetItems(3322);
+			player.getActionSender().sendItemsOnInterface(3322, player.getInventory().container());
 			player.getActionSender().sendString("", 3431);
 			target.getActionSender().sendString("" + formatPlayerName(player.getName()) + "", 3451);
 			player.getActionSender().sendString("" + formatPlayerName(target.getName()) + "", 3451);
@@ -244,7 +244,7 @@ public class Trading {
 		case TRADE_SCREEN:
 			resetItems(player);
 			resetItems(target);
-			player.getItems().resetItems(3322);
+			player.getActionSender().sendItemsOnInterface(3322, player.getInventory().container());
 			player.getActionSender().sendString("", 3431);
 			target.getActionSender().sendString("", 3431);
 			break;
@@ -276,7 +276,7 @@ public class Trading {
 	private static void writeConfirmScreen(Player player, Player target) {
 		target.getActionSender().sendString("Waiting for other player...", 3535);
 		player.getActionSender().sendString("Waiting for other player...", 3535);
-		player.getItems().resetItems(3214);
+		player.getActionSender().sendItemsOnInterface(3214, player.getInventory().container());
 		String SendTrade = "Absolutely nothing!";
 		String SendAmount;
 		int Count = 0;
@@ -367,8 +367,8 @@ public class Trading {
 			return;
 		}
 
-		if (ItemDefinition.forId(id).isStackable() && amount > player.itemAmount[slot]) {
-			amount = player.itemAmount[slot];
+		if (ItemDefinition.forId(id).isStackable() && amount > player.getInventory().get(slot).getAmount()) {
+			amount = player.getInventory().get(slot).getAmount();
 		} else if (amount > player.getInventory().amount(id)) {
 			amount = player.getInventory().amount(id);
 		}
@@ -465,7 +465,7 @@ public class Trading {
 			amount = player.getTradeContainer().amount(id);
 		}
 
-		final int existing = player.itemAmount[slot];
+		final int existing = player.getInventory().get(slot).getAmount();
 
 		long overflow = overflow(amount, existing);
 

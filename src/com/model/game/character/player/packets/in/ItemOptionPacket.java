@@ -16,7 +16,6 @@ import com.model.game.character.player.content.rewards.Mysterybox;
 import com.model.game.character.player.content.rewards.RewardCasket;
 import com.model.game.character.player.content.teleport.TeleTabs;
 import com.model.game.character.player.content.teleport.TeleTabs.TabData;
-import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
@@ -25,6 +24,7 @@ import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Teleports;
 import com.model.game.item.Item;
+import com.model.game.item.container.impl.Trade;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
@@ -231,15 +231,15 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//Check if player is in combat, in combat we cannot drop items worth more then 10,000 gold
-		if (Combat.incombat(player) && (ItemDefinition.forId(itemId).getGeneralPrice()* .75) > 10_000) {
+		if (Combat.incombat(player) && (ItemDefinition.forId(itemId).getGeneralPrice()) > 10_000) {
 			player.getActionSender().sendMessage("You can't drop items worth over 10,000 gold in combat.");
 			return;
 		}
 		
 		//When dropping items during trade, trade resets.
-		if (Trading.isTrading(player)) {
-        	Trading.decline(player);
-        }
+		if (Trade.inTrade(player)) {
+			Trade.declineTrade(player);
+		}
 		
 		// We are dropping an pet item.
 		if (!Pet.drop(player, item)) {

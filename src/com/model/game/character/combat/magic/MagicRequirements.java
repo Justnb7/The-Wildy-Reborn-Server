@@ -4,6 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
+import com.model.utility.json.definitions.ItemDefinition;
 
 public class MagicRequirements extends MagicData {
 
@@ -52,7 +53,7 @@ public class MagicRequirements extends MagicData {
 		int staffRequired = getStaffNeeded(player);
 		if(player.usingMagic && staffRequired > 0) { // staff required
 			if(player.getEquipment().getId(Equipment.WEAPON_SLOT) != staffRequired) {
-				player.getActionSender().sendMessage("You need a "+player.getItems().getItemName(staffRequired).toLowerCase()+" to cast this spell.");
+				player.getActionSender().sendMessage("You need a "+ItemDefinition.forId(staffRequired).getName().toLowerCase()+" to cast this spell.");
 				return false;
 			}
 		}

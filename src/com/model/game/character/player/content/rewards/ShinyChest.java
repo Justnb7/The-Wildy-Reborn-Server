@@ -55,7 +55,7 @@ public class ShinyChest {
 				itemReceived = Utility.randomElement(COMMON_CHEST_REWARDS);
 			}
 			
-			player.getItems().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
+			player.getInventory().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
 			player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
 		}
 }

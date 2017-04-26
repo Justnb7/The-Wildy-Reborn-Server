@@ -6,6 +6,7 @@ import java.util.Map;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.item.container.impl.Equipment;
+import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The class which represents functionality for the weapons interface.
@@ -233,7 +234,7 @@ public class WeaponInterface {
 		player.getActionSender().moveComponent(specAmount >= 20 ? 500 : 0, 0, (--barId));
 		player.getActionSender().moveComponent(specAmount >= 10 ? 500 : 0, 0, (--barId));
 		refreshSpecialAttack();
-		sendWeapon(weapon, player.getItems().getItemName(weapon));
+		sendWeapon(weapon, ItemDefinition.forId(weapon).getName());
 	}
 
 	public void refreshSpecialAttack() {
@@ -247,7 +248,7 @@ public class WeaponInterface {
 	public void restoreWeaponAttributes() {
 		refreshSpecialAttack();
 		sendSpecialBar(player.getEquipment().getId(Equipment.WEAPON_SLOT));
-		sendWeapon(player.getEquipment().getId(Equipment.WEAPON_SLOT), player.getItems().getItemName(player.getEquipment().getId(Equipment.WEAPON_SLOT)));
+		sendWeapon(player.getEquipment().getId(Equipment.WEAPON_SLOT), ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName());
 		
 	}
 }

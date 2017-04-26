@@ -14,6 +14,7 @@ import com.model.game.character.walking.PathFinder;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
+import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * Handles Player Vs Npc combat
@@ -25,7 +26,7 @@ import com.model.task.ScheduledTask;
 public class PlayerVsNpcCombat {
 	
 	public static boolean isWearingSpear(Player player) {
-		String weapon = player.getItems().getItemName(player.getEquipment().getId(Equipment.WEAPON_SLOT)).toLowerCase();
+		String weapon = ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName().toLowerCase();
 		if (weapon.contains("spear") || weapon.contains("hasta"))
 			return true;
 		return false;

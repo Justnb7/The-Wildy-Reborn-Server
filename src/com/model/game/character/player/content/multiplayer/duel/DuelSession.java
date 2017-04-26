@@ -24,6 +24,7 @@ import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.ItemDefinition;
 
 import java.util.List;
 import java.util.Objects;
@@ -131,7 +132,7 @@ public class DuelSession extends MultiplayerSession {
 			for (Player p : players) {
 				GameItem overlap = getOverlappedItem(p);
 				if (overlap != null) {
-					p.getActionSender().sendString("Too many of one item! The other player has " + Utility.getValueRepresentation(overlap.amount) + " " + p.getItems().getItemName(overlap.id) + " in their inventory.", 6684);
+					p.getActionSender().sendString("Too many of one item! The other player has " + Utility.getValueRepresentation(overlap.amount) + " " + ItemDefinition.forId(overlap.id) + " in their inventory.", 6684);
 					getOther(p).getActionSender().sendString("The other player has offered too many of one item, they must remove some.", 6684);
 					return;
 				}
@@ -180,7 +181,7 @@ public class DuelSession extends MultiplayerSession {
 
 	@Override
 	public boolean itemAddable(Player player, GameItem item) {
-		if (!player.getItems().isTradeable(item.id)) {
+		if (!player.getInventory().isTradeable(item.id)) {
 			player.getActionSender().sendMessage("You cannot stake this item, it is deemed as untradable.");
 			return false;
 		}
@@ -229,7 +230,7 @@ public class DuelSession extends MultiplayerSession {
 				List<GameItem> items = getItems(player);
 				for (GameItem item : items) {
 					if (item.id > 0 && item.amount > 0) {
-						itemList.append(player.getItems().getItemName(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
+						itemList.append(ItemDefinition.forId(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
 					}
 				}
 				player.getActionSender().sendString(itemList.toString(), 6516);
@@ -237,7 +238,7 @@ public class DuelSession extends MultiplayerSession {
 				items = getItems(recipient);
 				for (GameItem item : items) {
 					if (item.id > 0 && item.amount > 0) {
-						itemList.append(player.getItems().getItemName(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
+						itemList.append(ItemDefinition.forId(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
 					}
 				}
 				player.getActionSender().sendString(itemList.toString(), 6517);
@@ -388,8 +389,8 @@ public class DuelSession extends MultiplayerSession {
 			} else {
 				player.getOutStream().writeByte(item.amount);
 			}
-			if (item.id > Constants.ITEM_LIMIT || item.id < 0) {
-				item = new GameItem(Constants.ITEM_LIMIT, item.id);
+			if (item.id > Constants.MAX_ITEMS || item.id < 0) {
+				item = new GameItem(Constants.MAX_ITEMS, item.id);
 			}
 			player.getOutStream().writeWordBigEndianA(item.id + 1);
 		}

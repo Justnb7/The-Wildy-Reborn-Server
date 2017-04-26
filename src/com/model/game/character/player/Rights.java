@@ -200,6 +200,48 @@ public enum Rights {
 		return Arrays.asList(values()).stream().filter(element -> element.right == value).findFirst().orElse(PLAYER);
 	}
 	
+	/**
+     * Determines if this right is greater than the argued right. Please note
+     * that this method <b>does not</b> compare the Objects themselves, but
+     * instead compares the value behind them as specified by {@code value} in
+     * the enumerated type.
+     *
+     * @param other
+     *            the argued right to compare.
+     * @return {@code true} if this right is greater, {@code false} otherwise.
+     */
+    public final boolean greater(Rights other) {
+        return right > other.right;
+    }
+
+    /**
+     * Determines if this right is lesser than the argued right. Please note
+     * that this method <b>does not</b> compare the Objects themselves, but
+     * instead compares the value behind them as specified by {@code value} in
+     * the enumerated type.
+     *
+     * @param other
+     *            the argued right to compare.
+     * @return {@code true} if this right is lesser, {@code false} otherwise.
+     */
+    public final boolean less(Rights other) {
+        return right < other.right;
+    }
+
+    /**
+     * Determines if this right is equal in power to the argued right. Please
+     * note that this method <b>does not</b> compare the Objects themselves, but
+     * instead compares the value behind them as specified by {@code value} in
+     * the enumerated type.
+     *
+     * @param other
+     *            the argued right to compare.
+     * @return {@code true} if this right is equal, {@code false} otherwise.
+     */
+    public final boolean equal(Rights other) {
+        return right == other.right;
+    }
+	
 	@Override
 	public String toString() {
 		return Utility.capitalize(name().toLowerCase());
@@ -213,4 +255,5 @@ public enum Rights {
 	public int toInteger() {
 		return right;
 	}
+
 }

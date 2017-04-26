@@ -26,6 +26,7 @@ import com.model.game.character.player.packets.buttons.ActionButtonEventListener
 import com.model.game.character.player.packets.out.*;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.impl.Trade;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -65,6 +66,10 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181
 				&& button != 14067 && button != 9154) {
+			return;
+		}
+		
+		if (Trade.handleTradeButtons(player, button)) {
 			return;
 		}
 
@@ -722,7 +727,7 @@ public class ActionButtonPacketHandler implements PacketType {
 					duelSession.accept(player, MultiplayerSessionStage.CONFIRM_DECISION);
 				}
 				break;
-
+				
 		}
 		if (player.isAutoButton(button)) {
 			player.assignAutocast(button);

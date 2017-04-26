@@ -30,7 +30,7 @@ import com.model.game.character.player.packets.in.ItemOptionPacket;
 import com.model.game.character.player.packets.in.NpcInteractionPacketHandler;
 import com.model.game.character.player.packets.in.SwitchItemPacketHandler;
 import com.model.game.character.player.packets.in.DefaultPacketHandler;
-import com.model.game.character.player.packets.in.Trade;
+import com.model.game.character.player.packets.in.TradePacketHandler;
 import com.model.game.character.player.packets.in.WalkingPacketHandler;
 import com.model.game.character.player.packets.in.WieldPacketHandler;
 import com.model.game.character.player.packets.in.WithdrawActionsPacketHandler;
@@ -120,7 +120,7 @@ public class PacketHandler {
 		packetId[73] = ap;
 		packetId[249] = ap;
 		packetId[128] = new ChallengePlayer();
-		packetId[39] = new Trade();
+		packetId[39] = new TradePacketHandler();
 		packetId[139] = new FollowPlayer();
 		packetId[140] = new WithdrawAllButOneAction();
 		packetId[141] = new BankModifiableX();

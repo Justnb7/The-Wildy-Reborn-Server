@@ -10,12 +10,11 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
+import com.model.game.item.container.impl.Trade;
 import com.model.game.shop.Shop;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class WithdrawActionsPacketHandler implements PacketType {
 
@@ -114,18 +113,21 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 			Shop.SHOPS.get(player.getOpenShop()).sendSellingPrice(player, new Item(item.getId()));
 			break;
-
-		case 3322:
+			
+		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), 1));
 			} else {
-				Trading.tradeItem(player, item.getId(), 1, slot);
+				if (slot >= 0 && slot < Trade.SIZE) {
+					Trade.offerItem(player, id, slot, 1);
+				}
 			}
 			break;
-
-		case 3415:
-			Trading.takeItem(player, item.getId(), 1, slot);
+		case Trade.TRADE_INVENTORY_INTERFACE:
+			if (slot >= 0 && slot < Trade.SIZE) {
+				Trade.takeItem(player, id, slot, 1);
+			}
 			break;
 
 		case 6669:
@@ -192,18 +194,21 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case 5382:
 		
 			break;
-
-		case 3322:
+			
+		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), 5));
 			} else {
-				Trading.tradeItem(player, item.getId(), 5, slot);
+				if (slot >= 0 && slot < Trade.SIZE) {
+					Trade.offerItem(player, id, slot, 5);
+				}
 			}
 			break;
-
-		case 3415:
-			Trading.takeItem(player, item.getId(), 5, slot);
+		case Trade.TRADE_INVENTORY_INTERFACE:
+			if (slot >= 0 && slot < Trade.SIZE) {
+				Trade.takeItem(player, id, slot, 5);
+			}
 			break;
 
 		case 6669:
@@ -251,19 +256,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 3900:
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-			}
 			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 5));
 			break;
 
 		case 3823:
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-			}
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				return;
-			} else if (player.getOpenShop().equals("Death Store")) {
+			if (player.getOpenShop().equals("Death Store")) {
 				player.getActionSender().sendMessage("You cannot sell items to this store!");
 				return;
 			}
@@ -271,11 +268,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-				return;
-			}
-
 			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 				player.getActionSender().sendMessage("You have declined the duel.");
@@ -289,19 +281,22 @@ public class WithdrawActionsPacketHandler implements PacketType {
 	
 			break;
 
-		case 3322:
+		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), 10));
 			} else {
-				Trading.tradeItem(player, item.getId(), 10, slot);
+				if (slot >= 0 && slot < Trade.SIZE) {
+					Trade.offerItem(player, id, slot, 10);
+				}
 			}
 			break;
-
-		case 3415:
-			Trading.takeItem(player, item.getId(), 10, slot);
+		case Trade.TRADE_INVENTORY_INTERFACE:
+			if (slot >= 0 && slot < Trade.SIZE) {
+				Trade.takeItem(player, id, slot, 10);
+			}
 			break;
-
+		
 		case 6669:
 			session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.isNull(session)) {
@@ -341,19 +336,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		switch (interfaceIndex) {
 
 		case 3900:
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-			}
 			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 10));
 			break;
 
 		case 3823:
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-			}
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				return;
-			} else if (player.getOpenShop().equals("Death Store")) {
+			if (player.getOpenShop().equals("Death Store")) {
 				player.getActionSender().sendMessage("You cannot sell items to this store!");
 				return;
 			}
@@ -367,30 +354,21 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case 5382:
 			
 			break;
-
-		case 3322:
+			
+		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), player.getInventory().amount(item.getId())));
 			} else {
-				if (ItemDefinition.forId(item.getId()).isStackable()) {
-					Trading.tradeItem(player, item.getId(), player.getInventory().get(slot).getAmount(), slot);
-				} else {
-					Trading.tradeItem(player, item.getId(), 28, slot);
+				if (slot >= 0 && slot < Trade.SIZE) {
+					Trade.offerItem(player, id, slot, player.getInventory().amount(id));
 				}
 			}
 			break;
-
-		case 3415:
-			if (ItemDefinition.forId(item.getId()).isStackable()) {
-				for (Item itemId : player.getTradeContainer().container()) {
-					if (itemId != null && itemId.id == item.getId()) {
-						Trading.takeItem(player, itemId.id, player.getTradeContainer().get(slot).getAmount(), slot);
-					}
-				}
-			} else {
-				Trading.takeItem(player, item.getId(), 28, slot);
-
+			
+		case Trade.TRADE_INVENTORY_INTERFACE:
+			if (slot >= 0 && slot < Trade.SIZE) {
+				Trade.takeItem(player, id, slot, player.getTrade().amount(id));
 			}
 			break;
 

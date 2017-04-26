@@ -49,7 +49,7 @@ public class PlayerSounds {
 		sounds[1] = new Sound[] { new Sound(417, 18), new Sound(418, 18),
 				new Sound(417, 18), new Sound(417, 18), new Sound(0) };
 
-		for (int i = 0; i < Constants.ITEM_LIMIT; i++) {
+		for (int i = 0; i < 25000; i++) {
 			if (ItemDefinition.forId(i) != null) {
 				String check = ItemDefinition.forId(i).getName().toLowerCase();
 				if (check.contains("abyssal whip")) {

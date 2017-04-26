@@ -6,6 +6,7 @@ import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.item.Item;
+import com.model.game.item.container.Container;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
@@ -353,12 +354,22 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendInterfaceWithInventoryOverlay(int mainFrame, int subFrame) {
+	/**
+     * The message that opens an interface and displays another interface over
+     * the inventory area.
+     *
+     * @param open
+     *            the interface to open.
+     * @param overlay
+     *            the interface to send on the inventory area.
+     * @return an instance of this encoder.
+     */
+	public ActionSender sendInterfaceWithInventoryOverlay(int open, int overlay) {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(248);
-			player.getOutStream().writeWordA(mainFrame);
-			player.getOutStream().writeShort(subFrame);
-			player.openInterface = mainFrame;
+			player.getOutStream().writeWordA(open);
+			player.getOutStream().writeShort(overlay);
+			player.openInterface = open;
 		}
 		return this;
 	}
@@ -449,6 +460,33 @@ public class ActionSender {
 					player.getOutStream().writeByte(item.getAmount());
 				}
 				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+			}
+			player.getOutStream().putFrameSizeShort(offset);
+			player.flushOutStream();
+		}
+		return this;
+	}
+	
+	public ActionSender sendItemsOnInterface(int interfaceId, Container container) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().putFrameVarShort(53);
+			int offset = player.getOutStream().offset;
+			player.getOutStream().writeShort(interfaceId);
+			player.getOutStream().writeShort(container.toArray().length);
+			for (Item item : container.toArray()) {
+				if (item != null) {
+					int amount = item.getAmount();
+					if (amount > 254) {
+						player.getOutStream().writeByte(255);
+						player.getOutStream().writeDWord_v2(item.getAmount());
+					} else {
+						player.getOutStream().writeByte(item.getAmount());
+					}
+					player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+				} else {
+					player.getOutStream().writeByte(0);
+					player.getOutStream().writeWordBigEndianA(0);
+				}
 			}
 			player.getOutStream().putFrameSizeShort(offset);
 			player.flushOutStream();

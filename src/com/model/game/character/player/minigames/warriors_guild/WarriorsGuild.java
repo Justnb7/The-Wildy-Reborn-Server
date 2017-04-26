@@ -13,6 +13,7 @@ import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * 
@@ -167,7 +168,7 @@ public class WarriorsGuild {
 			int item = current == -1 ? DEFENDER_DATA[0][0] : nextDefender();
 			if (Utility.random(chance) == 0) {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(item, 1), x, y, 2, player));
-				player.getActionSender().sendMessage("The cyclops dropped a "+player.getItems().getItemName(item)+" on the ground.");
+				player.getActionSender().sendMessage("The cyclops dropped a "+ItemDefinition.forId(item).getName()+" on the ground.");
 			}
 		}
 	}

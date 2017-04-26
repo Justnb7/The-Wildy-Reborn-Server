@@ -1,8 +1,8 @@
 package com.model.game.character.player.packets.out;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketEncoder;
+import com.model.game.item.container.impl.Trade;
 
 public class SendSidebarInterfacePacket implements PacketEncoder {
 
@@ -30,9 +30,8 @@ public class SendSidebarInterfacePacket implements PacketEncoder {
 	public void encode(Player player) {
 		if (player != null) {
 			player.stopSkillTask();
-			if (Trading.isTrading(player)) {
-				Trading.decline(player);
-				return;
+			if (Trade.inTrade(player)) {
+				Trade.declineTrade(player);
 			}
 			if (player.getOutStream() != null) {
 				player.outStream.writeFrame(OPCODE);

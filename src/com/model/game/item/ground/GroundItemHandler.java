@@ -126,7 +126,7 @@ public final class GroundItemHandler {
 				 * 
 				 */
 
-				if (!player.getItems().isTradeable(groundItem.getItem().getId())) {
+				if (!player.getInventory().isTradeable(groundItem.getItem().getId())) {
 					continue;
 				}
 
@@ -220,7 +220,7 @@ public final class GroundItemHandler {
 				}
 			}
 			
-			if (player.getItems().isTradeable(groundItem.getItem().getId())
+			if (player.getInventory().isTradeable(groundItem.getItem().getId())
 					|| groundItem.getOwnerHash() == player.usernameHash) {
 				
 				if (groundItem.getState() == State.GLOBAL || groundItem.getOwnerHash() == player.usernameHash) {

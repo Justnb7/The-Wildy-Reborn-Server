@@ -49,7 +49,6 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportHandler.TeleportationTypes;
-import com.model.game.character.player.content.trade.TradeState;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.character.player.controller.ControllerManager;
 import com.model.game.character.player.dialogue.DialogueManager;
@@ -73,11 +72,14 @@ import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.ItemAssistant;
+import com.model.game.item.container.Container;
+import com.model.game.item.container.ItemContainerPolicy;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.LootingBagContainer;
 import com.model.game.item.container.impl.RunePouchContainer;
-import com.model.game.item.container.impl.TradeContainer;
+import com.model.game.item.container.impl.Trade;
+import com.model.game.item.container.impl.Trade.TradeStatus;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
@@ -176,6 +178,20 @@ public class Player extends Entity {
      * The container that holds the inventory items.
      */
     private final Inventory inventory = new Inventory(this);
+    
+    /**
+	 * The trade container
+	 */
+	private final Container trade = new Container(ItemContainerPolicy.NORMAL, Trade.SIZE);
+	
+	/**
+	 * Returns the list of traded items
+	 * 
+	 * @return
+	 */
+	public Container getTrade() {
+		return trade;
+	}
     
     /**
      * The container that holds the equipment items.
@@ -760,7 +776,52 @@ public class Player extends Entity {
 	 * Using the death shop chat
 	 */
 	public boolean deathShopChat;
+	
+	/**
+	 * The player we are trading
+	 */
+	private Player tradedPlayer;
+	
+	/**
+	 * Sets the traded player
+	 * 
+	 * @param player
+	 */
+	public void setTradedPlayer(Player player) {
+		this.tradedPlayer = player;
+	}
 
+	/**
+	 * Gets the traded player
+	 * 
+	 * @return
+	 */
+	public Player getTradedPlayer() {
+		return tradedPlayer;
+	}
+
+	/**
+	 * The players current trade status
+	 */
+	private TradeStatus tradeStatus;
+
+	/**
+	 * Gets the players current trade status
+	 * 
+	 * @return
+	 */
+	public TradeStatus getTradeStatus() {
+		return tradeStatus;
+	}
+
+	/**
+	 * Sets the trade status of the player
+	 * 
+	 * @param status
+	 */
+	public void setTradeStatus(TradeStatus status) {
+		this.tradeStatus = status;
+	}
 	
 	/**
 	 * Reload ground items.
@@ -1538,9 +1599,6 @@ public class Player extends Entity {
 
 	private ItemAssistant itemAssistant = new ItemAssistant(this);
 	private CombatAssistant combatAssistant = new CombatAssistant(this);
-	private TradeContainer tradeContainer = new TradeContainer(this);
-	
-	private TradeState tradeState = TradeState.NONE;
 
 	@Override
 	public EntityType getEntityType() {
@@ -1636,18 +1694,6 @@ public class Player extends Entity {
 	@Override
 	public String toString() {
 		return "Player [username=" + getName() + ", index: " + getIndex() + "]";
-	}
-
-	public TradeState getTradeState() {
-		return tradeState;
-	}
-
-	public void setTradeState(TradeState state) {
-		this.tradeState = state;
-	}
-
-	public TradeContainer getTradeContainer() {
-		return tradeContainer;
 	}
 
 	public RequestManager getRequestManager() {
@@ -2582,7 +2628,7 @@ public class Player extends Entity {
 			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
 			wildLevel, teleTimer, killerId,
 			attackDelay, oldSpellId,
-			tradeStatus, tradeWith,
+			tradeWith,
 			walkTutorial = 15, skullIcon = -1, bountyPoints, teleHeight;
 	
 	/**
@@ -2863,5 +2909,14 @@ public class Player extends Entity {
         for (int i = 0; i < bonuses.length; i++) {
             getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (bonuses[i] >= 0 ? "+" : "") + bonuses[i], (1675 + i + (i == 10 || i == 11 ? 1 : 0)));
         }
+    }
+
+	/**
+     * Gets the formatted version of the username for this player.
+     *
+     * @return the formatted username.
+     */
+    public String getFormatUsername() {
+        return Utility.capitalize(username);
     }
 }

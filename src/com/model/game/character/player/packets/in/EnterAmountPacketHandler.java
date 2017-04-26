@@ -6,7 +6,6 @@ import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.multiplayer.MultiplayerSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
@@ -59,12 +58,12 @@ public class EnterAmountPacketHandler implements PacketType {
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(player.xRemoveId, amount));
 			} else {
-				Trading.tradeItem(player, player.xRemoveId, amount > player.getInventory().amount(player.xRemoveId) ? player.getInventory().amount(player.xRemoveId) : amount, player.xRemoveSlot);
+				//Trading.tradeItem(player, player.xRemoveId, amount > player.getInventory().amount(player.xRemoveId) ? player.getInventory().amount(player.xRemoveId) : amount, player.xRemoveSlot);
 			}
 			break;
 
 		case 3415:
-			Trading.takeItem(player, player.xRemoveId, amount > player.getTradeContainer().amount(player.xRemoveId) ? player.getTradeContainer().amount(player.xRemoveId) : amount, player.xRemoveSlot);
+			//Trading.takeItem(player, player.xRemoveId, amount > player.getTradeContainer().amount(player.xRemoveId) ? player.getTradeContainer().amount(player.xRemoveId) : amount, player.xRemoveSlot);
 			break;
 
 		case 6669:

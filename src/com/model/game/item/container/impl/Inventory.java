@@ -6,6 +6,9 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
+import com.model.game.item.ground.GroundItem;
+import com.model.game.item.ground.GroundItemHandler;
+import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The container that manages the inventory for a player.
@@ -86,5 +89,25 @@ public final class Inventory extends Container {
 	public boolean playerOwnsAnyItems(int... ids) {
 		return Arrays.stream(ids).anyMatch(this::alreadyHasItem);
 	}
+	
+	public void addOrCreateGroundItem(Item item) {
+		if (remaining() > 0) {
+			add(new Item(item.getId(), item.getAmount()));
+		} else if ((item.getAmount() > 1) && (!ItemDefinition.forId(item.getId()).isStackable())) {
+			for (int i = 0; i < item.getAmount(); i++)
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
+			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
+		} else {
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
+			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
+		}
+	}
     
+	public boolean isTradeable(int itemId) {
+		boolean tradable = ItemDefinition.forId(itemId).isTradeable();
+		if (tradable)
+			return true;
+
+		return false;
+	}
 }

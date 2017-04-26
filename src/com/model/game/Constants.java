@@ -85,9 +85,9 @@ public class Constants {
 	public static final int WORLD_CYCLE_TIME = 600;
 	
 	/**
-	 * Maximum amount of items supported by the server
+	 * The maximum amount of items in a stack.
 	 */
-	public static final int ITEM_LIMIT = 25_000;
+	public static final int MAX_ITEMS = Integer.MAX_VALUE;
 	
 	/**
 	 * Maximum amount a player can hold

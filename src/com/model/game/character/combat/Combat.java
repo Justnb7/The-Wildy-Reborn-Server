@@ -26,6 +26,7 @@ import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.WeaponDefinition;
 
 public class Combat {
@@ -125,7 +126,7 @@ public class Combat {
                     && player.usingBow
                     && !player.getEquipment().usingCrystalBow(player)
                     && !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
-                player.getActionSender().sendMessage("You can't use " + player.getItems().getItemName(player.getEquipment().getId(Equipment.ARROWS_SLOT)).toLowerCase() + "s with a " + player.getItems().getItemName(player.getEquipment().getId(Equipment.WEAPON_SLOT)).toLowerCase() + ".");
+                player.getActionSender().sendMessage("You can't use " + ItemDefinition.forId(player.getEquipment().getId(Equipment.ARROWS_SLOT)).getName().toLowerCase() + "s with a " + ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName().toLowerCase() + ".");
                 player.stopMovement();
                 player.getCombat().reset();
                 return;
@@ -322,7 +323,7 @@ public class Combat {
 		/*
 		 * Set the delay before the damage is applied
 		 */
-        int hitDelay = CombatData.getHitDelay(player, player.getItems().getItemName(wep).toLowerCase());
+        int hitDelay = CombatData.getHitDelay(player, ItemDefinition.forId(wep).getName().toLowerCase());
 
 
 		/*
@@ -719,7 +720,7 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
-		String weapon = player.getItems().getItemName(player.getEquipment().getId(Equipment.WEAPON_SLOT)).toLowerCase();
+		String weapon = ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName().toLowerCase();
 		
 		if (weapon.contains("halberd")) {
 			return true;

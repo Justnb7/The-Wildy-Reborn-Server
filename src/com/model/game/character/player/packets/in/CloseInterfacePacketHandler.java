@@ -8,8 +8,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
+import com.model.game.item.container.impl.Trade;
 
 /**
  * A packet handler that is called when an interface is closed.
@@ -27,15 +27,12 @@ public class CloseInterfacePacketHandler implements PacketType {
 		}
 		
 		//Decline trade when closing an interface
-		if (Trading.isTrading(player)) {
-			Trading.decline(player);
+		if (Trade.inTrade(player)) {
+			Trade.declineTrade(player);
 		}
 		
 		//Decline duel when closing an interface
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
-		if (Trading.isTrading(player) && duelSession == null) {
-			Trading.decline(player);
-		}
 		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 			player.getActionSender().sendMessage("You have declined the duel.");
 			duelSession.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");

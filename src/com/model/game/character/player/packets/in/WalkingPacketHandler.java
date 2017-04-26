@@ -10,8 +10,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.content.trade.Trading;
 import com.model.game.character.player.packets.PacketType;
+import com.model.game.item.container.impl.Trade;
 import com.model.game.location.Location;
 
 import java.util.Objects;
@@ -63,9 +63,9 @@ public class WalkingPacketHandler implements PacketType {
 		}
 		
 		//When walking during a trade we decline
-		if (Trading.isTrading(player)) {
-            Trading.decline(player);
-        }
+		if (Trade.inTrade(player)) {
+			Trade.declineTrade(player);
+		}
 		
 		//When walking we close our duel invitation
 		DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);

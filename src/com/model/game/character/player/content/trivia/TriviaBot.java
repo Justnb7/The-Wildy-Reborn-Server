@@ -109,7 +109,7 @@ public class TriviaBot {
 	public static void reward(Player player, String answer) {
 		Item reward = Utility.randomElement(REWARDS);
 		World.getWorld().sendWorldMessage("<img=12><col=0066FF><shad=222222>[Trivia]: Congratulations, "+Utility.formatPlayerName(player.getName())+" has won "+reward.getName()+".", false);
-		player.getItems().addOrCreateGroundItem(reward);
+		player.getInventory().addOrCreateGroundItem(reward);
 		reset();
 	}
 

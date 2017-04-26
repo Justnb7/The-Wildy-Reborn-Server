@@ -265,7 +265,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 									switch (index) {
 									case 1:
 										player.getInventory().remove(new Item(6570));
-										player.getItems().addOrCreateGroundItem(new Item(6529, 8000));
+										player.getInventory().addOrCreateGroundItem(new Item(6529, 8000));
 										player.getActionSender().sendRemoveInterfacePacket();
 										break;
 									case 2:

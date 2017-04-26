@@ -17,6 +17,7 @@ import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The container that represents a shop players can buy and sell items from.
@@ -241,7 +242,7 @@ public final class Shop {
 			return;
 		}
 		if (player.getOpenShop().equals("Slayer Shop")) {
-			player.getActionSender().sendMessage("You need a slayer level of " + slayerLevelReq(item.getId()) + " to buy "+player.getItems().getItemName(item.getId())+"");
+			player.getActionSender().sendMessage("You need a slayer level of " + slayerLevelReq(item.getId()) + " to buy "+ItemDefinition.forId(item.getId())+"");
 			return;
 		}
 		if (player.getOpenShop().equals("Achievement Rewards")) {

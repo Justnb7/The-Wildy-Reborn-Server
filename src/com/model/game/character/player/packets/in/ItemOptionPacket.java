@@ -236,11 +236,6 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		//When dropping items during trade, trade resets.
-		if (Trade.inTrade(player)) {
-			Trade.declineTrade(player);
-		}
-		
 		// We are dropping an pet item.
 		if (!Pet.drop(player, item)) {
 			return;

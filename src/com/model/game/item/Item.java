@@ -41,12 +41,27 @@ public class Item {
 	public static boolean valid(Item item) {
 		return item != null && item.id > 0 && item.amount > 0;
 	}
+	
+	/**
+     * Gets the identification of this item.
+     *
+     * @return the identification.
+     */
+    public final int getId() {
+        return id;
+    }
 
-	public int getId() {
-		return id;
-	}
+    /**
+     * Sets the identification of this item.
+     *
+     * @param id
+     *            the new identification of this item.
+     */
+    public final void setId(int id) {
+        this.id = id;
+    }
 
-	public void setCount(int i) {
+	public void setAmount(int i) {
 		this.amount = i;
 	}
 
@@ -201,5 +216,4 @@ public class Item {
 		final ItemDefinition def = ItemDefinition.forId(getId());
 		return def != null && (def.isStackable() || def.isNoted());
 	}
-
 }

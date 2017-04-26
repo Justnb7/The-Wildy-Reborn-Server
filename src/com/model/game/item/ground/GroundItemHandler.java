@@ -276,7 +276,7 @@ public final class GroundItemHandler {
 					}
 
 					if (existing > 0) {
-						other.getItem().setCount(existing);
+						other.getItem().setAmount(existing);
 						other.setTimer(groundItem.getState() == State.GLOBAL ? 200 : 100);
 						return true;
 					}

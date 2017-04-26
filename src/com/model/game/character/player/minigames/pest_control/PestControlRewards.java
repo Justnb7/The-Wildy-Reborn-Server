@@ -341,7 +341,7 @@ public class PestControlRewards {
 			List<Item> receive = new ArrayList<>(amount);
 			while (amount-- > 0) {
 				Item item = list.get(Utility.random(list.size() - 1));
-				item.setCount(1 + Utility.random(item.getAmount()));
+				item.setAmount(1 + Utility.random(item.getAmount()));
 				receive.add(item);
 				list.remove(item);
 			}

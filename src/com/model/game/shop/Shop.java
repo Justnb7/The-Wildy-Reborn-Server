@@ -303,9 +303,9 @@ public final class Shop {
 			}
 		}
 		if (item.getAmount() > shopItem.getAmount())
-			item.setCount(shopItem.getAmount());
+			item.setAmount(shopItem.getAmount());
 		if (!player.getInventory().spaceFor(item)) {
-			item.setCount(player.getInventory().remaining());
+			item.setAmount(player.getInventory().remaining());
 			if (item.getAmount() == 0) {
 				player.getActionSender().sendMessage("You do not have enough space" + " in your inventory to buy this item!");
 				return false;
@@ -390,9 +390,9 @@ public final class Shop {
 
 		int amount = player.getInventory().amount(item.getId());
 		if (item.getAmount() > amount && !item.getDefinition().isStackable()) {
-			item.setCount(amount);
+			item.setAmount(amount);
 		} else if (item.getAmount() > player.getInventory().get(fromSlot).getAmount() && item.getDefinition().isStackable()) {
-			item.setCount(player.getInventory().get(fromSlot).getAmount());
+			item.setAmount(player.getInventory().get(fromSlot).getAmount());
 		}
 		player.getInventory().remove(item);
 		currency.getCurrency().recieveCurrency(player, item.getAmount() * (int) Math.floor(determinePrice(player, item)));

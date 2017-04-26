@@ -377,7 +377,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 226154:
-			player.takeAsNote = !player.takeAsNote;// rerun that
+			player.setWithdrawAsNote(player.isWithdrawAsNote() != player.isWithdrawAsNote());
 			break;
 
 		case 39178:

@@ -125,13 +125,6 @@ public class Player extends Entity {
         return poisonImmunity;
     }
 	
-	//Fletching variables
-	public boolean isFletching = false, needsFletchDelay = false;
-	public long lastFletch = 0;
-	public int fletchDelay = -1, fletchAmount = -1, arrowShaft = 52, fletchItem = -1, fletchIndex = -1;
-	public String fletchThis = "";
-	public int[] fletchSprites = { -1, -1, -1, -1, -1 };
-	
     private SkillCyclesTask skillCyclesTask = new SkillCyclesTask(this);
 	
 	public SkillCyclesTask getSkillCyclesTask() {
@@ -212,6 +205,57 @@ public class Player extends Entity {
 	public Duel getDuel() {
 		return duelSession;
 	}
+	
+	/**
+     * The flag that determines if items should be inserted when banking.
+     */
+    private boolean insertItem;
+	
+	/**
+     * Determines if items should be inserted when banking.
+     *
+     * @return {@code true} if items should be inserted, {@code false}
+     *         otherwise.
+     */
+    public boolean isInsertItem() {
+        return insertItem;
+    }
+
+    /**
+     * Sets the value for {@link Player#insertItem}.
+     *
+     * @param insertItem
+     *            the new value to set.
+     */
+    public void setInsertItem(boolean insertItem) {
+        this.insertItem = insertItem;
+    }
+    
+
+    /**
+     * The flag that determines if a bank item should be withdrawn as a note.
+     */
+    private boolean withdrawAsNote;
+
+    /**
+     * Determines if a bank item should be withdrawn as a note.
+     *
+     * @return {@code true} if items should be withdrawn as notes, {@code false}
+     *         otherwise.
+     */
+    public boolean isWithdrawAsNote() {
+        return withdrawAsNote;
+    }
+
+    /**
+     * Sets the value for {@link Player#withdrawAsNote}.
+     *
+     * @param withdrawAsNote
+     *            the new value to set.
+     */
+    public void setWithdrawAsNote(boolean withdrawAsNote) {
+        this.withdrawAsNote = withdrawAsNote;
+    }
 	
 	/**
 	 * The player is still in the tutorial
@@ -2625,11 +2669,7 @@ public class Player extends Entity {
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy,
-			wildLevel, teleTimer, killerId,
-			attackDelay, oldSpellId,
-			tradeWith,
-			walkTutorial = 15, skullIcon = -1, bountyPoints, teleHeight;
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, killerId, attackDelay, oldSpellId, walkTutorial = 15, skullIcon = -1, bountyPoints, teleHeight;
 	
 	/**
 	 * Booleans
@@ -2637,9 +2677,7 @@ public class Player extends Entity {
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
 	public boolean usingCross;
-	public boolean isMuted, isClanMuted,
-	isSkulled, hasMultiSign,
-	properLogout, acceptedTrade, takeAsNote;
+	public boolean isMuted, isClanMuted, isSkulled, hasMultiSign, properLogout;
 	
 	/**
 	 * Strings

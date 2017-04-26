@@ -198,7 +198,7 @@ public class Trade {
 			}
 		}
 
-		item.setCount(amount);
+		item.setAmount(amount);
 
 		player.getTrade().add(item);
 
@@ -276,7 +276,7 @@ public class Trade {
 			}
 		}
 
-		item.setCount(amount);
+		item.setAmount(amount);
 
 		player.getInventory().add(item);
 
@@ -485,10 +485,10 @@ public class Trade {
 	 */
 	public static boolean handleTradeButtons(Player player, int button) {
 		switch (button) {
-		case 3420:
+		case 13092:
 			acceptTradeScreen(player);
 			break;
-		case 3546:
+		case 13218:
 			acceptConfirmScreen(player);
 			break;
 		}

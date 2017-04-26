@@ -140,7 +140,7 @@ public class Container implements Iterable<Item> {
         }
         int remainingSlots = remaining();
         if (item.getAmount() > remainingSlots && !item.getDefinition().isStackable()) {
-            item.setCount(remainingSlots);
+            item.setAmount(remainingSlots);
         }
         for (int i = 0; i < item.getAmount(); i++) {
             set(slot > -1 ? newSlot : freeSlot(), new Item(item.getId(), 1));

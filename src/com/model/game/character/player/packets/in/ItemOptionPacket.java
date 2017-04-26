@@ -109,8 +109,8 @@ public class ItemOptionPacket implements PacketType {
 		final int usedWithSlot = player.getInStream().readUnsignedWord();
 		final int itemUsedSlot = player.getInStream().readUnsignedWordA();
 
-		final Item used = player.getItems().getItemFromSlot(usedWithSlot);
-		final Item with = player.getItems().getItemFromSlot(itemUsedSlot);
+		final Item used = player.getInventory().get(usedWithSlot);
+		final Item with = player.getInventory().get(itemUsedSlot);
 		
 		if (used == null || with == null) {
 			return;

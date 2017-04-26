@@ -233,15 +233,6 @@ public class ItemAssistant {
 		return -1;
 	}
 
-	// returns Item instance of id,amount, using the slot. you have to know the slot.
-	public Item getItemFromSlot(int slot) {
-		if (slot == -1 || slot >= player.playerInventory.length
-				|| player.playerInventory[slot] == 0) {
-			return null;
-		}
-		return new Item(player.playerInventory[slot] - 1, player.itemAmount[slot]);
-	}
-
 	public void addOrCreateGroundItem(Item item) {
 		if (freeSlots() > 0) {
 			player.getInventory().add(new Item(item.getId(), item.getAmount()));

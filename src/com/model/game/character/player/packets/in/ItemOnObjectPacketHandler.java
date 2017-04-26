@@ -17,7 +17,7 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		final int objectX = player.getInStream().readSignedWordBigEndianA();
 		final int itemId = player.getInStream().readUnsignedWord();
 		
-		Item item = player.getItems().getItemFromSlot(slot);
+		Item item = player.getInventory().get(slot);
 
 		int distanceRequired = 1;
 		

@@ -95,7 +95,7 @@ public final class LootingBagContainer extends Container {
 	 * @return {@code true} if an item is stored, {@code false} otherwise.
 	 */
 	public static boolean store(Player player, int slot, int amount) {
-		Item item = player.getItems().getItemFromSlot(slot);
+		Item item = player.getInventory().get(slot);
 
 		if (item == null) {
 			return false;

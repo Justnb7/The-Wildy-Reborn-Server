@@ -517,7 +517,7 @@ public class CommandPacketHandler implements PacketType {
 			
     	case "testslot":
     		int slot = Integer.parseInt(cmd[1]);
-    		Item item = player.getItems().getItemFromSlot(slot);
+    		Item item = player.getInventory().get(slot);
     		
     		if(item == null) {
     			player.getActionSender().sendMessage("no item on this slot");

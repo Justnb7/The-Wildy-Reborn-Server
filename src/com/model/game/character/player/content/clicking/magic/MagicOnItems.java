@@ -42,7 +42,7 @@ public class MagicOnItems {
 			System.out.println(String.format("[MagicOnItem] - ItemId: %d Slot: %d ChildId: %d SpellId: %d", itemId, slot, childId, spellId));
 		}
 
-		final Item item = player.getItems().getItemFromSlot(slot);
+		final Item item = player.getInventory().get(slot);
 
 		if (item == null || item.getId() != itemId) {
 			return;

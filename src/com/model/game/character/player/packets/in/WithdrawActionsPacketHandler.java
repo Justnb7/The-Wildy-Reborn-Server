@@ -15,6 +15,7 @@ import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Trade;
 import com.model.game.shop.Shop;
+import com.model.utility.json.definitions.ItemDefinition;
 
 public class WithdrawActionsPacketHandler implements PacketType {
 
@@ -79,35 +80,24 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		switch (interfaceIndex) {
 
-		case 7423:
-
-			break;
-
 		case 1688:
             player.getEquipment().unequipItem(slot, true);
             break;
-
+			
 		case 5064:
-
+			player.getBank().depositFromInventory(slot, 1);
 			break;
-
+			
 		case 5382:
-
+			player.getBank().withdraw(slot, 1, true);
 			break;
 
 		case 3900:
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				player.getActionSender().sendMessage("All items in this shop cost 99K coins.");
-				return;
-			}
 			Shop.SHOPS.get(player.getOpenShop()).sendPurchasePrice(player, new Item(item.getId()));
 			break;
 
 		case 3823:
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				player.getActionSender().sendMessage("Items cannot be sold to this shop.");
-				return;
-			} else if (player.getOpenShop().equals("Death Store")) {
+			if (player.getOpenShop().equals("Death Store")) {
 				player.getActionSender().sendMessage("You cannot sell items to this store!");
 				return;
 			}
@@ -188,12 +178,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-			
-			break;
-
-		case 5382:
-		
-			break;
+            player.getBank().depositFromInventory(slot, 5);
+            break;
+        case 5382:
+            player.getBank().withdraw(slot, 5, true);
+            break;
 			
 		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
@@ -274,11 +263,13 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				duelSession.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");
 				duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 				return;
+			} else {
+				player.getBank().depositFromInventory(slot, 10);
 			}
 			break;
 
 		case 5382:
-	
+			player.getBank().withdraw(slot, 10, true);
 			break;
 
 		case Trade.PLAYER_INVENTORY_INTERFACE:
@@ -348,12 +339,20 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
+            player.getBank().depositFromInventory(slot, player.getInventory().amount(player.getInventory().getId(slot)));
+            break;
 
-			break;
+        case 5382:
+            int amount = 0;
+            if (player.isWithdrawAsNote()) {
+                amount = player.getBank().amount(item.getId());
+            } else {
+                Item itemWithdrew = new Item(item.getId(), 1);
+                amount = ItemDefinition.DEFINITIONS[itemWithdrew.getId()].isStackable() ? player.getBank().amount(item.getId()) : 28;
+            }
 
-		case 5382:
-			
-			break;
+            player.getBank().withdraw(slot, amount, true);
+            break;
 			
 		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);

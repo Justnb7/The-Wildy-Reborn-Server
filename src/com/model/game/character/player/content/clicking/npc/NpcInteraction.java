@@ -69,7 +69,6 @@ public class NpcInteraction {
 		/**
 		 * Shops
 		 */
-
 		case 3254:
 			Shop.SHOPS.get("Donator Ticket Shop").openShop(player);
 			break;
@@ -274,7 +273,7 @@ public class NpcInteraction {
 			break;
 
 		case 394:
-			
+			player.getBank().open();
 			break;
 		}
 	}

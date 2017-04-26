@@ -1,6 +1,5 @@
 package com.model.game.character.player.content.music.sounds;
 
-import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.item.container.impl.Equipment;

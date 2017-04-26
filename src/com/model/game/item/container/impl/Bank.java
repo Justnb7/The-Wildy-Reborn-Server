@@ -13,6 +13,11 @@ import com.model.game.item.container.ItemContainerPolicy;
 public final class Bank extends Container {
 
     /**
+	 * The bank size.
+	 */
+	public static final int SIZE = 520;
+	
+	/**
      * The player who's bank is being managed.
      */
     private final Player player;

@@ -23,6 +23,15 @@ public class SwitchItemPacketHandler implements PacketType {
 				player.getInventory().swap(fromSlot, toSlot);
 			}
 			break;
+			
+		case 5382:
+            if (player.isInsertItem()) {
+                player.getBank().swap(fromSlot, toSlot);
+            } else {
+                player.getBank().transfer(fromSlot, toSlot);
+            }
+            player.getBank().refresh();
+            break;
 		}
 		
 		//Stop active skilling tasks

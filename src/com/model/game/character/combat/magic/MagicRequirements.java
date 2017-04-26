@@ -66,19 +66,19 @@ public class MagicRequirements extends MagicData {
 		if(player.usingMagic) {
 			if(player.MAGIC_SPELLS[spell][8] > 0) { // deleting runes
 				if (!wearingStaff(player, player.MAGIC_SPELLS[spell][8], player.MAGIC_SPELLS[spell][9], true))
-					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][8], player.getItems().getItemSlot(player.MAGIC_SPELLS[spell][8])), player.MAGIC_SPELLS[spell][9]);
+					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][8], player.getInventory().getId(player.MAGIC_SPELLS[spell][8])), player.MAGIC_SPELLS[spell][9]);
 			}
 			if(player.MAGIC_SPELLS[spell][10] > 0) {
 				if (!wearingStaff(player, player.MAGIC_SPELLS[spell][10], player.MAGIC_SPELLS[spell][11], true))
-					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][10], player.getItems().getItemSlot(player.MAGIC_SPELLS[spell][10])), player.MAGIC_SPELLS[spell][11]);
+					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][10], player.getInventory().getId(player.MAGIC_SPELLS[spell][10])), player.MAGIC_SPELLS[spell][11]);
 			}
 			if(player.MAGIC_SPELLS[spell][12] > 0) {
 				if (!wearingStaff(player, player.MAGIC_SPELLS[spell][12], player.MAGIC_SPELLS[spell][13], true))
-					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][12], player.getItems().getItemSlot(player.MAGIC_SPELLS[spell][12])), player.MAGIC_SPELLS[spell][13]);
+					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][12], player.getInventory().getId(player.MAGIC_SPELLS[spell][12])), player.MAGIC_SPELLS[spell][13]);
 			}
 			if(player.MAGIC_SPELLS[spell][14] > 0) {
 				if (!wearingStaff(player, player.MAGIC_SPELLS[spell][14], player.MAGIC_SPELLS[spell][15], true))
-					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][14], player.getItems().getItemSlot(player.MAGIC_SPELLS[spell][14])), player.MAGIC_SPELLS[spell][15]);
+					player.getInventory().remove(new Item(player.MAGIC_SPELLS[spell][14], player.getInventory().getId(player.MAGIC_SPELLS[spell][14])), player.MAGIC_SPELLS[spell][15]);
 			}
 		}
 		return true;

@@ -6,7 +6,6 @@ import java.util.Map;
 import com.model.game.character.player.dialogue.impl.Imbue;
 import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.dialogue.impl.SigmundTheMerchant;
-import com.model.game.character.player.dialogue.impl.WeirdOldMan;
 import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue;
 import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue2;
 import com.model.game.character.player.dialogue.impl.chat.EmblemTraderDialogue;
@@ -97,7 +96,6 @@ public class DialogueRepository {
 		/**
 		 * Barrows
 		 */
-		dialogues.put("BARROWS", WeirdOldMan.class);
 		dialogues.put("BARROWS_TUNNEL", BarrowsTunnel.class);
 		
 		/**

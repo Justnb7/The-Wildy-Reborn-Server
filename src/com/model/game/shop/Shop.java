@@ -434,37 +434,6 @@ public final class Shop {
 		return count;
 	}
 
-	public static void skillBuy(Player player, int item) {
-		int nn = get99Count(player);
-		if (nn > 1) {
-			nn = 1;
-		} else {
-			nn = 0;
-		}
-		for (int j = 0; j < skillCapes.length; j++) {
-			if (skillCapes[j] == item || skillCapes[j] + 1 == item) {
-				if (player.getItems().freeSlots() > 1) {
-					if (player.getInventory().playerHasItem(995, 99000)) {
-						if (player.getSkills().getLevelForExperience(j) >= 99) {
-							player.getInventory().remove(new Item(995, player.getItems().getItemSlot(995)), 99000);
-							player.getInventory().add(new Item(skillCapes[j] + nn, 1));
-							player.getInventory().add(new Item(skillCapes[j] + 2, 1));
-						} else {
-							player.getActionSender().sendMessage("You must have 99 in the skill of the cape you're trying to buy.");
-						}
-					} else {
-						player.getActionSender().sendMessage("You need 99,000 coins to buy this item.");
-					}
-				} else {
-					player.getActionSender().sendMessage("You must have at least 1 free inventory space to buy this item.");
-				}
-			}
-		}
-		player.getItems().resetItems(3823);
-	}
-
-	
-
 	/**
 	 * Determines if the items in the container need to be restocked.
 	 *

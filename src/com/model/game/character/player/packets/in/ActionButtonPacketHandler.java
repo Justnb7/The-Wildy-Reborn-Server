@@ -24,7 +24,6 @@ import com.model.game.character.player.content.teleport.Teleports;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
 import com.model.game.character.player.packets.out.*;
-import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.utility.Utility;
@@ -91,13 +90,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		if (ClanManager.handleButtons(player, button)) {
 			return;
 		}
-		
-		for (int fletchingButton = 0; fletchingButton < Fletching.otherButtons.length; fletchingButton++) {
-			if (button == Fletching.otherButtons[fletchingButton][0]) {
-				Fletching.handleFletchingClick(player, button);
-				return;
-			}
-		}
+
 		player.getPestControlRewards().click(button);
 		/*Obelisks.chooseTeleport(player, button);*/
 		PrayerHandler.togglePrayer(player, button);

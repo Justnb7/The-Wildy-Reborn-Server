@@ -172,10 +172,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 3900:
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				Shop.skillBuy(player, item.getId());
-				return;
-			}
 			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 1));
 			break;
 
@@ -257,10 +253,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case 3900:
 			if (Trading.isTrading(player)) {
 				Trading.decline(player);
-			}
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				Shop.skillBuy(player, item.getId());
-				return;
 			}
 			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 5));
 			break;
@@ -351,10 +343,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case 3900:
 			if (Trading.isTrading(player)) {
 				Trading.decline(player);
-			}
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				Shop.skillBuy(player, item.getId());
-				return;
 			}
 			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 10));
 			break;

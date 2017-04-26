@@ -223,16 +223,6 @@ public class ItemAssistant {
 		return ItemDefinition.forId(ItemID).getName();
 	}
 
-	// returns the slot which matches itemID
-	public int getItemSlot(int ItemID) {
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			if ((player.playerInventory[i] - 1) == ItemID) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
 	public void addOrCreateGroundItem(Item item) {
 		if (freeSlots() > 0) {
 			player.getInventory().add(new Item(item.getId(), item.getAmount()));

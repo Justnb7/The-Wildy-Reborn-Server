@@ -19,23 +19,9 @@ public class BankX1 implements PacketType {
             player.xInterfaceId = player.getInStream().readUnsignedWordA();
             player.xRemoveId = player.getInStream().readSignedWordBigEndian();
         }
-
-        if (player.xInterfaceId == 3900) {
-            if (player.getOpenShop().equals("Skillcape Shop")) {
-                Shop.skillBuy(player, player.xRemoveId);
-                return;
-            }
-            Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(player.xRemoveId, 100));
-            player.xRemoveSlot = 0;
-            player.xInterfaceId = 0;
-            player.xRemoveId = 0;
-            return;
-        }
         
         if (player.xInterfaceId == 3823) {
-            if (player.getOpenShop().equals("Skillcape Shop")) {
-                return;
-            } else if (player.getOpenShop().equals("Death Store")) {
+            if (player.getOpenShop().equals("Death Store")) {
                 player.getActionSender().sendMessage("You cannot sell items to this store!");
                 return;
             }

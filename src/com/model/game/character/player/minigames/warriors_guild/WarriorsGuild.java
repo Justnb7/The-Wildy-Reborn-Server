@@ -160,7 +160,7 @@ public class WarriorsGuild {
 	}
 	
 	public void dropDefender(int x, int y) {
-		int amount = player.getItems().getItemAmount(8851);
+		int amount = player.getInventory().amount(8851);
 		if(isActive() && Boundary.isIn(player, CYCLOPS_BOUNDARY) && !Boundary.isIn(player, WAITING_ROOM_BOUNDARY) && amount > 1) {
 			int chance = chance();
 			int current = currentDefender();

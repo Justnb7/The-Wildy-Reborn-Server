@@ -242,41 +242,6 @@ public class ItemAssistant {
 		return new Item(player.playerInventory[slot] - 1, player.itemAmount[slot]);
 	}
 
-	/**
-	 * Checks how many {@code item} the player has in his inventory
-	 * 
-	 * @param item
-	 *            The item we're checking
-	 * @return The amount
-	 */
-	public int getItemAmount(int item) {
-		int amount = 0;
-		for (int inventory = 0; inventory < player.playerInventory.length; inventory++) {
-			if ((player.playerInventory[inventory] - 1) == item) {
-				amount += player.itemAmount[inventory];
-			}
-		}
-		return amount;
-	}
-
-	public boolean playerHasItem(int itemID, int amt, int slot) {
-		itemID++;
-		int found = 0;
-		if (player.playerInventory[slot] == (itemID)) {
-			for (int i = 0; i < player.playerInventory.length; i++) {
-				if (player.playerInventory[i] == itemID) {
-					if (player.itemAmount[i] >= amt) {
-						return true;
-					} else {
-						found++;
-					}
-				}
-			}
-			return found >= amt;
-		}
-		return false;
-	}
-
 	public void addOrCreateGroundItem(Item item) {
 		if (freeSlots() > 0) {
 			player.getInventory().add(new Item(item.getId(), item.getAmount()));
@@ -288,30 +253,6 @@ public class ItemAssistant {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
 			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
 		}
-	}
-
-	/**
-	 * Checks how many we have of an certain item
-	 * 
-	 * @param item
-	 *            The item we're deleting
-	 * @return The amount of the {linkplain item} we've found.
-	 */
-	public int checkAmount(int item) {
-		int found = 0;
-		boolean stackable = new Item(item).getDefinition().isStackable();
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			// System.out.println("item["+i+"]="+player.playerItems[i]);
-			if (player.playerInventory[i] == (item + 1)) {
-				if (stackable) {
-					return player.itemAmount[i];
-				} else {
-					found += player.itemAmount[i];
-				}
-			}
-		}
-		// System.out.println(found);
-		return found;
 	}
 	
 

@@ -342,8 +342,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			System.out.println(String.format("[withdrawAllAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
 		}
 		
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), player.getItems().getItemAmount(item.getId()), interfaceIndex)) {
-			System.out.println(""+player.getItems().getItemAmount(item.getId()));
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), player.getInventory().amount(item.getId()), interfaceIndex)) {
+			System.out.println(""+player.getInventory().amount(item.getId()));
 			return;
 		}
 		switch (interfaceIndex) {
@@ -383,7 +383,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case 3322:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
-				session.addItem(player, new GameItem(item.getId(), player.getItems().getItemAmount(item.getId())));
+				session.addItem(player, new GameItem(item.getId(), player.getInventory().amount(item.getId())));
 			} else {
 				if (ItemDefinition.forId(item.getId()).isStackable()) {
 					Trading.tradeItem(player, item.getId(), player.itemAmount[slot], slot);

@@ -387,7 +387,7 @@ public final class Shop {
 			return false;
 		}
 
-		int amount = player.getItems().getItemAmount(item.getId());
+		int amount = player.getInventory().amount(item.getId());
 		if (item.getAmount() > amount && !item.getDefinition().isStackable()) {
 			item.setCount(amount);
 		} else if (item.getAmount() > player.itemAmount[fromSlot] && item.getDefinition().isStackable()) {

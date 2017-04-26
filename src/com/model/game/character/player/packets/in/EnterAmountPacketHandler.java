@@ -35,7 +35,7 @@ public class EnterAmountPacketHandler implements PacketType {
 			}
 		}
 		
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, player.xRemoveId, amount > player.getItems().getItemAmount(player.xRemoveId) ? player.getItems().getItemAmount(player.xRemoveId) : amount, player.xInterfaceId)) {
+		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, player.xRemoveId, amount > player.getInventory().amount(player.xRemoveId) ? player.getInventory().amount(player.xRemoveId) : amount, player.xInterfaceId)) {
 			return;
 		}
 		//System.out.println("Interface: "+player.xInterfaceId);
@@ -59,7 +59,7 @@ public class EnterAmountPacketHandler implements PacketType {
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(player.xRemoveId, amount));
 			} else {
-				Trading.tradeItem(player, player.xRemoveId, amount > player.getItems().getItemAmount(player.xRemoveId) ? player.getItems().getItemAmount(player.xRemoveId) : amount, player.xRemoveSlot);
+				Trading.tradeItem(player, player.xRemoveId, amount > player.getInventory().amount(player.xRemoveId) ? player.getInventory().amount(player.xRemoveId) : amount, player.xRemoveSlot);
 			}
 			break;
 

@@ -60,7 +60,7 @@ public class DuelSession extends MultiplayerSession {
 			items.get(winner.get()).addAll(items.get(getOther(winner.get())));
 			if (items.get(winner.get()).size() > 0) {
 				for (GameItem item : items.get(winner.get())) {
-					long totalSum = (long) winner.get().getItems().getItemAmount(item.id) + item.amount;
+					long totalSum = (long) winner.get().getInventory().amount(item.id) + item.amount;
 					if (winner.get().getItems().freeSlots() == 0 || winner.get().getInventory().playerHasItem(item.id) && totalSum > Integer.MAX_VALUE) {
 						//TODO sent item to bank or drop on floor
 						//winner.get().getBank().sendItemToAnyTabOrDrop(new BankItem(item.id, item.amount), Constants.DUELING_RESPAWN_X + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)), Constants.DUELING_RESPAWN_Y + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)));

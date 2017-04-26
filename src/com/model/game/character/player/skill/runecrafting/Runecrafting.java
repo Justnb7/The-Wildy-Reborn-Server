@@ -121,7 +121,7 @@ public class Runecrafting extends SkillTask {
 		
 		Talisman talisman = Talisman.getTalismanByAltar(getObject());
 		int amount = getAmount(getPlayer(), talisman);
-		int essCount = getPlayer().getItems().getItemAmount(getEssType(getPlayer(), talisman));
+		int essCount = getPlayer().getInventory().amount(getEssType(getPlayer(), talisman));
 		
 		//Grant experience
 		getPlayer().getActionSender().sendMessage("You bind the temple's power into "+ItemDefinition.forId(talisman.getRuneReward()).getName()+"s");
@@ -165,7 +165,7 @@ public class Runecrafting extends SkillTask {
 	 */
 	private int getAmount(Player player, Talisman talisman) {
 		int rcLevel = player.getSkills().getLevel(Skills.RUNECRAFTING);
-		int essCount = player.getItems().getItemAmount(getEssType(player, talisman));
+		int essCount = player.getInventory().amount(getEssType(player, talisman));
 		if (talisman.equals(Talisman.AIR_TALISMAN)) {
 			if (rcLevel < 11) {
 				return essCount;

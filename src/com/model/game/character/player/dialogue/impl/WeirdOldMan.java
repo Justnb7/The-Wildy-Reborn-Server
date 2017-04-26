@@ -34,7 +34,7 @@ public class WeirdOldMan extends Dialogue {
 	
 	public void fixAllBarrows() {
 		int totalCost = 0;
-		int cashAmount = player.getItems().getItemAmount(995);
+		int cashAmount = player.getInventory().amount(995);
 		for (int j = 0; j < player.playerInventory.length; j++) {
 			boolean breakOut = false;
 			for (int i = 0; i < brokenBarrows.length; i++) {

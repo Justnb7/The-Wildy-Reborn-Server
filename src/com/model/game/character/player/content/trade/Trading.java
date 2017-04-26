@@ -369,8 +369,8 @@ public class Trading {
 
 		if (ItemDefinition.forId(id).isStackable() && amount > player.itemAmount[slot]) {
 			amount = player.itemAmount[slot];
-		} else if (amount > player.getItems().getItemAmount(id)) {
-			amount = player.getItems().getItemAmount(id);
+		} else if (amount > player.getInventory().amount(id)) {
+			amount = player.getInventory().amount(id);
 		}
 
 		if (amount <= 0) {

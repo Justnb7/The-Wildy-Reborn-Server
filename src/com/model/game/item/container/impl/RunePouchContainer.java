@@ -86,8 +86,8 @@ public final class RunePouchContainer extends Container {
 	 */
 	public boolean store(Player player, int id, int amount) {
 		
-		if (amount > player.getItems().getItemAmount(id)) {
-			amount = player.getItems().getItemAmount(id);
+		if (amount > player.getInventory().amount(id)) {
+			amount = player.getInventory().amount(id);
 		}
 		amount = Math.min(16000, amount);
 		

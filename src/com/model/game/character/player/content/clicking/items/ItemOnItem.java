@@ -36,8 +36,8 @@ public class ItemOnItem {
 		
 		if (player.rights == Rights.ADMINISTRATOR) {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {
-				int amount = player.getItems().checkAmount(withItem.getId());
-				player.getInventory().remove(new Item(withItem.getId(), amount));
+				//int amount = player.getItems().checkAmount(withItem.getId());
+				//player.getInventory().remove(new Item(withItem.getId(), amount));
 				player.getActionSender().sendMessage("Whee... "+ItemDefinition.forId(withItem.getId()).getName()+" All gone!");
 			}
 		}

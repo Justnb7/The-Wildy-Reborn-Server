@@ -117,7 +117,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (!itemAddable(player, item)) {
 			return;
 		}
-		int inventoryAmount = player.getItems().getItemAmount(id);
+		int inventoryAmount = player.getInventory().amount(id);
 		if (amount > inventoryAmount) {
 			amount = inventoryAmount;
 		}
@@ -216,9 +216,9 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (item.stackable) {
 			for (int i = 0; i < items.size(); i++) {
 				if (items.get(i).id == id) {
-					long total = ((long) amount + (long) player.getItems().getItemAmount(id));
+					long total = ((long) amount + (long) player.getInventory().amount(id));
 					if (total > Integer.MAX_VALUE) {
-						amount = Integer.MAX_VALUE - player.getItems().getItemAmount(id);
+						amount = Integer.MAX_VALUE - player.getInventory().amount(id);
 					}
 					if (amount > items.get(i).amount) {
 						amount = items.get(i).amount;
@@ -472,7 +472,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			}
 			amount = op.get().amount;
 		}
-		return player.getItems().getItemAmount(i.id)
+		return player.getInventory().amount(i.id)
 				+ this.getItemAmount(player, i.id) > amount;
 	}
 
@@ -586,11 +586,9 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			if (!recipient.getInventory().playerHasItem(playerItem.id)) {
 				continue;
 			}
-			long amount = ((long) playerItem.amount + (long) recipient
-					.getItems().getItemAmount(playerItem.id));
+			long amount = ((long) playerItem.amount + (long) recipient.getInventory().amount(playerItem.id));
 			if (amount > Integer.MAX_VALUE) {
-				return new GameItem(playerItem.id, recipient.getItems()
-						.getItemAmount(playerItem.id));
+				return new GameItem(playerItem.id, recipient.getInventory().amount(playerItem.id));
 			}
 		}
 		return null;

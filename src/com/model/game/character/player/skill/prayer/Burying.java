@@ -210,8 +210,8 @@ public class Burying {
 	 * @return If the player has a bone crusher
 	 */
 	public static boolean isHoldingBoneCrusher(Player player) {
-		for (int i : player.playerInventory) {
-			int id = i - 1;
+		for (Item i : player.getInventory().toArray()) {
+			int id = i.getId() - 1;
 			if (id == BONE_CRUSHER_ID) {
 				return true;
 			}

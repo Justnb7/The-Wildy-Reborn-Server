@@ -35,7 +35,7 @@ public class ItemAssistant {
 	 *            the amount of the item
 	 * @return {@code true} if the item can be added, otherwise {@code false}
 	 */
-	public boolean isItemAddable(int item, int amount) {
+	/*public boolean isItemAddable(int item, int amount) {
 		if (amount < 1) {
 			amount = 1;
 		}
@@ -70,7 +70,7 @@ public class ItemAssistant {
 			return false;
 		}
 		return false;
-	}
+	}*/
 	
 	public void deleteArrow() {
 		if (player.getEquipment().getId(Equipment.CAPE_SLOT) == 10499 && Utility.getRandom(5) != 1 || player.getEquipment().getId(Equipment.CAPE_SLOT) == 19111 && Utility.getRandom(5) != 1 && player.getEquipment().getId(Equipment.ARROWS_SLOT) != 4740)

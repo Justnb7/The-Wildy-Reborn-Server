@@ -363,9 +363,9 @@ public class Trading {
 			return;
 		}
 
-		if ((player.playerInventory[slot] - 1) != id) {
+		/*if ((player.playerInventory[slot] - 1) != id) {
 			return;
-		}
+		}*/
 
 		if (ItemDefinition.forId(id).isStackable() && amount > player.getInventory().get(slot).getAmount()) {
 			amount = player.getInventory().get(slot).getAmount();
@@ -476,13 +476,13 @@ public class Trading {
 		Item item = new Item(id, amount);
 		TradeContainer container = player.getTradeContainer();
 		
-		if (player.getItems().isItemAddable(id, amount) && container.isRemovable(item, -1)) {
+		/*if (player.getItems().isItemAddable(id, amount) && container.isRemovable(item, -1)) {
 			container.remove(item);
 			player.getInventory().add(new Item(id, amount));
 			player.setTradeState(TradeState.TRADE_SCREEN);
 			target.setTradeState(TradeState.TRADE_SCREEN);
 			update(player, TradeState.TRADE_SCREEN);
-		}
+		}*/
 	}
 
 	/**

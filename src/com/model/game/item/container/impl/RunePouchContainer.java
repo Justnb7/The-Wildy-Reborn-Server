@@ -204,8 +204,8 @@ public final class RunePouchContainer extends Container {
 			int id = 0;
 			int amt = 0;
 
-			if (item < player.playerInventory.length) {
-				id = player.playerInventory[item];
+			if (item < player.getInventory().size()) {
+				id = player.getInventory().getId(item);
 				amt = player.getInventory().get(item).getAmount();
 			}
 			player.getActionSender().sendUpdateItem(START_INVENTORY_INTERFACE + item, id - 1, 0, amt);

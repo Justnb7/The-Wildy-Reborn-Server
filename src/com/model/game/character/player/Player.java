@@ -2575,7 +2575,7 @@ public class Player extends Entity {
 	public int currentX, currentY;
 	public int teleportToX = -1, teleportToY = -1;
 	public int lastClickedItem;
-	public int[] itemKeptId = new int[4];
+
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId, skullTimer,
 			followDistance,

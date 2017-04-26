@@ -127,41 +127,7 @@ public class PlayerDeath {
 		
 		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 		if (!player.getController().isSafe() && duelSession == null) {
-			//player.getItems().resetKeepItems();
-			for (int i = 0; i < player.playerInventory.length; i++) {
-				if (player.playerInventory[i] - 1 > 0) {
-					if (BountyHunterEmblem.get(player.playerInventory[i] - 1) != null) {
-						int newId = BountyTierHandler.downgrade(player, player.playerInventory[i] - 1);
-						if (newId != -1) {
-							player.playerInventory[i] = newId + 1;
-						}
-					}
-				}
-			}
-			/*if (!player.isSkulled) {
-				player.getItems().keepItem(0, true);
-				player.getItems().keepItem(1, true);
-				player.getItems().keepItem(2, true);
-			}
-
-			if (player.isActivePrayer(Prayers.PROTECT_ITEM) && player.lastProtItem.elapsed(700)) {
-				player.getItems().keepItem(3, true);
-			}
-			player.getItems().dropAllItems();
-			player.getItems().deleteAllItems();*/
-			if (!player.isSkulled) {
-				for (int i1 = 0; i1 < 3; i1++) {
-					if (player.itemKeptId[i1] > 0) {
-						player.getInventory().add(new Item(player.itemKeptId[i1], 1));
-					}
-				}
-			}
-			if (player.isActivePrayer(Prayers.PROTECT_ITEM)) {
-				if (player.itemKeptId[3] > 0) {
-					player.getInventory().add(new Item(player.itemKeptId[3], 1));
-				}
-			}
-			//player.getItems().resetKeepItems();
+			
 		}
 
 		PrayerHandler.resetAllPrayers(player);

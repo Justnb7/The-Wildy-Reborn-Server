@@ -142,8 +142,8 @@ public final class LootingBagContainer extends Container {
 			int id = 0;
 			int amt = 0;
 
-			if (inventory_item < player.playerInventory.length) {
-				id = player.playerInventory[inventory_item];
+			if (inventory_item < player.getInventory().size()) {
+				id = player.getInventory().getId(inventory_item);
 				amt = player.getInventory().get(inventory_item).getAmount();
 			}
 			player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + inventory_item, id - 1, 0, amt);

@@ -306,12 +306,6 @@ public class ItemOptionPacket implements PacketType {
 		//Last clicked item
 		player.lastClickedItem = id;
 		
-		//if its an invalid item, refresh the inventory
-		if ((slot < 0) || (slot > 27) || (id != player.playerInventory[slot] - 1) || (player.getInventory().get(slot).getAmount() <= 0)) {
-			player.getActionSender().sendItemsOnInterface(3214, player.getInventory().container());
-			return;
-		}
-		
 		PotionData potion = PotionData.forId(item.getId());
 		if (potion != null) {
 			player.sendConsumable("potion", potion.getPotionId(), slot);
@@ -325,10 +319,6 @@ public class ItemOptionPacket implements PacketType {
 		if (tabData != null) {
 			TeleTabs.useTeleTab(player, slot, tabData);
 		}
-		
-		/*if (player.runePouch.handleRunePouch(item.getId())) {
-			return;
-		}*/
 		
 		if(player.getRunePouchContainer().open(player, item.getId())) {
 			return;
@@ -473,12 +463,6 @@ public class ItemOptionPacket implements PacketType {
 
 		// Last clicked item
 		player.lastClickedItem = item.getId();
-
-		// if its an invalid item, refresh the inventory
-		if ((slot < 0) || (slot > 27) || (item.getId() != player.playerInventory[slot] - 1) || (player.getInventory().get(slot).getAmount() <= 0)) {
-			player.getActionSender().sendItemsOnInterface(3214, player.getInventory().container());
-			return;
-		}
 		
 		if(Runecrafting.locateTalisman(player, item)) {
 			return;

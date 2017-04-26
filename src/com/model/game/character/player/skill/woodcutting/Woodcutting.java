@@ -22,7 +22,7 @@ public class Woodcutting {
 			player.getActionSender().sendMessage("You must have an axe and the level required to cut this tree down.");
 			return;
 		}
-		if (player.getItems().freeSlots() == 0) {
+		if (player.getInventory().remaining() == 0) {
 			player.getActionSender().sendMessage("You must have at least one free inventory space to do this.");
 			return;
 		}

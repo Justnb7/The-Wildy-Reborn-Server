@@ -186,36 +186,6 @@ public class ItemAssistant {
 		return false;
 	}
 
-	public int freeSlots() {
-		int freeS = 0;
-		for (int i = 0; i < player.playerInventory.length; i++) {
-			if (player.playerInventory[i] <= 0) {
-				freeS++;
-			}
-		}
-		return freeS;
-	}
-
-	public boolean spaceFor(Item item) {
-		boolean stackable = isStackable(item.getId());
-		if (stackable) {
-			for (int i = 0; i < player.playerInventory.length; i++) {
-				if (player.playerInventory[i] == item.getId()) {
-					int totalCount = item.getAmount() + player.itemAmount[i];
-					if (totalCount >= Integer.MAX_VALUE || totalCount < 1) {
-						return false;
-					}
-					return true;
-				}
-			}
-			int slot = freeSlots();
-			return slot != -1;
-		}
-
-		int slots = freeSlots();
-		return slots >= item.getAmount();
-	}
-
 	public String getItemName(int ItemID) {
 		if (ItemID < 0 || ItemDefinition.forId(ItemID) == null) {
 			return "Unarmed";

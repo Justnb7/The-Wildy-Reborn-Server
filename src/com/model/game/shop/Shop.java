@@ -303,8 +303,8 @@ public final class Shop {
 		}
 		if (item.getAmount() > shopItem.getAmount())
 			item.setCount(shopItem.getAmount());
-		if (!player.getItems().spaceFor(item)) {
-			item.setCount(player.getItems().freeSlots());
+		if (!player.getInventory().spaceFor(item)) {
+			item.setCount(player.getInventory().remaining());
 			if (item.getAmount() == 0) {
 				player.getActionSender().sendMessage("You do not have enough space" + " in your inventory to buy this item!");
 				return false;
@@ -316,8 +316,8 @@ public final class Shop {
 			player.getActionSender().sendMessage("You do not have enough " + currency + " to buy this item.");
 			return false;
 		}
-		if (player.getItems().freeSlots() >= item.getAmount() && !item.getDefinition().isStackable()
-				|| player.getItems().freeSlots() >= 1 && item.getDefinition().isStackable()
+		if (player.getInventory().remaining() >= item.getAmount() && !item.getDefinition().isStackable()
+				|| player.getInventory().remaining() >= 1 && item.getDefinition().isStackable()
 				|| player.getInventory().playerHasItem(item.getId()) && item.getDefinition().isStackable()) {
 
 			if (itemCache.containsKey(item.getId()) && !player.getOpenShop().equals("Gear Point Store") && !player.getOpenShop().equals("Donator Ticket Shop") && !player.getOpenShop().equals("Bounty Hunter Store")) {
@@ -379,7 +379,7 @@ public final class Shop {
 			player.getActionSender().sendMessage("There is no room in this store for the item you are trying to sell!");
 			return false;
 		}
-		if (player.getItems().freeSlots() == 0 && !currency.getCurrency().canRecieveCurrency(player)) {
+		if (player.getInventory().remaining() == 0 && !currency.getCurrency().canRecieveCurrency(player)) {
 			player.getActionSender().sendMessage("You do not have enough space in your inventory to sell this item!");
 			return false;
 		}

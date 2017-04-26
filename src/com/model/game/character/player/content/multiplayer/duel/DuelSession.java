@@ -61,7 +61,7 @@ public class DuelSession extends MultiplayerSession {
 			if (items.get(winner.get()).size() > 0) {
 				for (GameItem item : items.get(winner.get())) {
 					long totalSum = (long) winner.get().getInventory().amount(item.id) + item.amount;
-					if (winner.get().getItems().freeSlots() == 0 || winner.get().getInventory().playerHasItem(item.id) && totalSum > Integer.MAX_VALUE) {
+					if (winner.get().getInventory().remaining() == 0 || winner.get().getInventory().playerHasItem(item.id) && totalSum > Integer.MAX_VALUE) {
 						//TODO sent item to bank or drop on floor
 						//winner.get().getBank().sendItemToAnyTabOrDrop(new BankItem(item.id, item.amount), Constants.DUELING_RESPAWN_X + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)), Constants.DUELING_RESPAWN_Y + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)));
 					} else {
@@ -113,12 +113,12 @@ public class DuelSession extends MultiplayerSession {
 				player.getActionSender().sendString("A rule was changed in recently, you cannot accept yet.", 6684);
 				return;
 			}
-			if (recipient.getItems().freeSlots() < getItems(player).size()) {
+			if (recipient.getInventory().remaining() < getItems(player).size()) {
 				player.getActionSender().sendString("You have offered more items than " + recipient.getName() + " has free space.", 6684);
 				recipient.getActionSender().sendString("You do not have enough inventory space to continue.", 6684);
 				return;
 			}
-			if (recipient.getItems().freeSlots() < getDisabledEquipmentCount(recipient)) {
+			if (recipient.getInventory().remaining() < getDisabledEquipmentCount(recipient)) {
 				player.getActionSender().sendString("Player doesn't have enough space to unequip the disabled items.", 6684);
 				recipient.getActionSender().sendString("Not enough space to remove the disabled equipped items.", 6684);
 				return;

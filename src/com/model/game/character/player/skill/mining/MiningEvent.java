@@ -85,7 +85,7 @@ public class MiningEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (player.getItems().freeSlots() == 0) {
+		if (player.getInventory().remaining() == 0) {
 			SimpleDialogues.sendStatement(player, "You have no more free slots.");
 			container.stop();
 			return;

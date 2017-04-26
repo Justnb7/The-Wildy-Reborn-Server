@@ -194,7 +194,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			return;
 		}
 		List<GameItem> items = this.items.get(player);
-		int freeSlots = player.getItems().freeSlots();
+		int freeSlots = player.getInventory().remaining();
 		if (!items.stream().anyMatch(i -> i.id == id)) {
 			player.getActionSender().sendMessage("Tried to remove item that does not exist in list.");
 			return;

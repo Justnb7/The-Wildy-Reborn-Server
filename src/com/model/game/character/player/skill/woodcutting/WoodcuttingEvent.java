@@ -49,7 +49,7 @@ public class WoodcuttingEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (player.getItems().freeSlots() == 0) {
+		if (player.getInventory().remaining() == 0) {
 			player.getActionSender().sendMessage("You have run out of free inventory space.");
 			container.stop();
 			return;

@@ -239,7 +239,7 @@ public class PestControlRewards {
 				player.getActionSender().sendMessage("You do not have the pest control points to purcahse this experience.");
 				return;
 			}
-			if (player.getItems().freeSlots() == 0) {
+			if (player.getInventory().remaining() == 0) {
 				player.getActionSender().sendMessage("You need at least one free slot to purchase this item reward.");
 				return;
 			}
@@ -331,7 +331,7 @@ public class PestControlRewards {
 				player.getActionSender().sendMessage("You do not have the pest control points to purcahse this experience.");
 				return;
 			}
-			if (player.getItems().freeSlots() < 5) {
+			if (player.getInventory().remaining() < 5) {
 				player.getActionSender().sendMessage("You need at least 5 free slots to purchase this pack.");
 				return;
 			}

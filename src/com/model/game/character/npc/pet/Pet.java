@@ -83,7 +83,7 @@ public class Pet extends NPC {
 	 */
 	public static boolean pickup(Player player, NPC pet) {
 		Pets pets = Pets.fromNpc(pet.getId());
-		if (pets != null && player.getItems().freeSlots() < 28) {
+		if (pets != null && player.getInventory().remaining() < 28) {
 			if (player.isPetSpawned()) {
 				player.playAnimation(Animation.create(827));
 				player.getInventory().add(new Item(pets.getItem()));

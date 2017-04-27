@@ -1,7 +1,6 @@
 package com.model.game.character.player.packets.in;
 
 import com.model.Server;
-import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.MusicData;
 import com.model.game.character.player.packets.PacketType;
@@ -15,11 +14,6 @@ public class RegionChangePacketHandler implements PacketType {
 	public final void handle(Player player, int packetType, int packetSize) {
 		GroundItemHandler.reloadGroundItems(player);
 		Server.getGlobalObjects().updateRegionObjects(player);
-		if (player.skullTimer > 0) {
-			player.isSkulled = true;
-			player.skullIcon = 0;
-			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		}
 		if (player.isEnableMusic()) {
 			MusicData.playMusic(player);
 		}

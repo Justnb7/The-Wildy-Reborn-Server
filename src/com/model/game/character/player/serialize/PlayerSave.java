@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
@@ -142,7 +143,8 @@ public class PlayerSave {
 				player.teleblock.reset();
 				player.teleblockLength = details.teleblockDuration;
 				player.isMuted = details.muted;
-				player.skullTimer = details.skullDuartion;
+				player.setSkullType(details.skullType);
+				player.setSkullTimer(details.skullDuration);
 				player.infection = details.infectionType;
 				player.setSlayerTask(details.slayertask);
 				player.setSlayerTaskAmount(details.slayerTaskAmount);
@@ -226,7 +228,8 @@ public class PlayerSave {
 		private final int totalAmountDonated;
 		private final int teleblockDuration;
 		private final boolean muted;
-		private final int skullDuartion;
+		private final SkullType skullType;
+		private final int skullDuration;
 		private final int infectionType;
 		private final int slayertask;
 		private final int slayerTaskAmount;
@@ -305,7 +308,8 @@ public class PlayerSave {
             final int tbTime = time > 300000 || time < 0 ? 0 : time;
 			teleblockDuration = tbTime;
 			muted = player.isMuted;
-			skullDuartion = player.skullTimer;
+			skullType = player.getSkullType();
+			skullDuration = player.getSkullTimer();
 			infectionType = player.infection;
 			slayertask = player.getSlayerTask();
 			slayerTaskAmount = player.getSlayerTaskAmount();

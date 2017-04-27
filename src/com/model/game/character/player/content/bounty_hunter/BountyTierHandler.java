@@ -27,7 +27,7 @@ public class BountyTierHandler {
 					/*
 					 * Can't upgrade a tier 10 as its already as high as it goes
 					 */
-					if (emblem.getIndex() == BountyHunterEmblem.TIER_10.getIndex()) {
+					if (emblem.getIndex() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_10.getIndex()) {
 						continue;
 					}
 
@@ -51,7 +51,7 @@ public class BountyTierHandler {
 		}
 		
 		if (emblem.getIndex() == 0) {
-			return BountyHunterEmblem.TIER_1.getItemId();
+			return BountyHunterEmblem.MYSTERIOUS_EMBLEM_1.getItemId();
 		} else {
 			return BountyHunterEmblem.getPrevious(emblem).getItemId();
 		}

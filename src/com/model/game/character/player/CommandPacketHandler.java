@@ -7,6 +7,7 @@ import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.pet.Pet;
@@ -232,9 +233,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "skull":
     		if(!player.getArea().inDuelArena())
-			player.isSkulled = true;
-			player.skullTimer = 500;
-			player.skullIcon = 0;
+    			Combat.skull(player, SkullType.SKULL, 300);
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.getActionSender().sendMessage("@blu@You are now skulled.");
     		return true;
@@ -255,9 +254,7 @@ public class CommandPacketHandler implements PacketType {
 				return false;
 			if (player.getArea().inWild())
 				return false;
-			player.isSkulled = false;
-			player.skullTimer = -1;
-			player.skullIcon = -1;
+			Combat.skull(player, SkullType.NONE, -1);
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.attackedPlayers.clear();
 			player.getActionSender().sendMessage("@blu@You are now unskulled.");

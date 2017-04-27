@@ -14,16 +14,16 @@ import java.util.Set;
 public enum BountyHunterEmblem
 {
 
-	TIER_1(12746, 50_000, 0),
-	TIER_2(12748, 100_000, 1),
-	TIER_3(12749, 200_000, 2),
-	TIER_4(12750, 400_000, 3),
-	TIER_5(12751, 750_000, 4),
-	TIER_6(12752, 1_250_000, 5),
-	TIER_7(12753, 1_750_000, 6),
-	TIER_8(12754, 2_500_000, 7),
-	TIER_9(12755, 3_500_000, 8),
-	TIER_10(12756, 5_000_000, 9);
+	MYSTERIOUS_EMBLEM_1(12746, 50_000, 0),
+	MYSTERIOUS_EMBLEM_2(12748, 100_000, 1),
+	MYSTERIOUS_EMBLEM_3(12749, 200_000, 2),
+	MYSTERIOUS_EMBLEM_4(12750, 400_000, 3),
+	MYSTERIOUS_EMBLEM_5(12751, 750_000, 4),
+	MYSTERIOUS_EMBLEM_6(12752, 1_250_000, 5),
+	MYSTERIOUS_EMBLEM_7(12753, 1_750_000, 6),
+	MYSTERIOUS_EMBLEM_8(12754, 2_500_000, 7),
+	MYSTERIOUS_EMBLEM_9(12755, 3_500_000, 8),
+	MYSTERIOUS_EMBLEM_10(12756, 5_000_000, 9);
 
 	private final int itemId;
 	private final int bounties;
@@ -54,7 +54,7 @@ public enum BountyHunterEmblem
 	{
 		if (index >= EMBLEMS.size())
 		{
-			return BountyHunterEmblem.TIER_10;
+			return BountyHunterEmblem.MYSTERIOUS_EMBLEM_10;
 		}
 
 		for (BountyHunterEmblem emblem : EMBLEMS)
@@ -65,7 +65,7 @@ public enum BountyHunterEmblem
 			}
 		}
 
-		return BountyHunterEmblem.TIER_1;
+		return BountyHunterEmblem.MYSTERIOUS_EMBLEM_1;
 	}
 
 	public static BountyHunterEmblem getNext(BountyHunterEmblem emblem)

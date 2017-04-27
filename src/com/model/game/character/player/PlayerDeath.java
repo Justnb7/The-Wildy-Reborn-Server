@@ -10,6 +10,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.effect.PKHandler;
+import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
@@ -155,19 +156,13 @@ public class PlayerDeath {
 				player.getFightCave().exitCave(3);
 	        }
 		}
-
-		player.isSkulled = false;
-		player.skullTimer = 0;
+		Combat.skull(player, SkullType.NONE, -1);
 		player.attackedPlayers.clear();
 		PlayerSave.save(player);
 		Combat.resetCombat(player);
 		player.playAnimation(Animation.create(65535));
 		player.teleblockLength = 0;
         player.teleblock.stop();
-		player.isSkulled = false;
-		player.attackedPlayers.clear();
-		player.skullIcon = -1;
-		player.skullTimer = -1;
 		player.killerId = -1;
 		player.resetDamageReceived();
 		killedBy = null; // reset
@@ -281,7 +276,6 @@ public class PlayerDeath {
 		player.attackDelay = 10;
 		player.infection = 0;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		player.skullIcon = -1;
 		player.playAnimation(Animation.create(65535));
 		player.setFollowing(null);
 		player.getActionSender().sendRemoveInterfacePacket();

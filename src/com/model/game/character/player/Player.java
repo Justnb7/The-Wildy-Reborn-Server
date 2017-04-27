@@ -22,6 +22,7 @@ import com.model.game.character.combat.CombatAssistant;
 import com.model.game.character.combat.CombatDamage;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayers;
+import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.weapon.AttackStyle;
@@ -757,7 +758,7 @@ public class Player extends Entity {
 	public SpellBook getSpellBook() {
 		return spell;
 	}
-
+	
 	/**
 	 * Set the players spellbook
 	 * 
@@ -766,6 +767,72 @@ public class Player extends Entity {
 	 */
 	public void setSpellBook(SpellBook spell) {
 		this.spell = spell;
+	}
+	
+	/**
+	 * The player's skulltype.
+	 */
+	private SkullType skullType = SkullType.NONE;
+	
+	/**
+	 * Get the players current skulltype
+	 * 
+	 * @return the skulltype
+	 */
+	public SkullType getSkullType() {
+		return skullType;
+	}
+
+	/**
+	 * Set the players skullType
+	 * 
+	 * @param the
+	 *            skullType
+	 */
+	public void setSkullType(SkullType skullType) {
+		this.skullType = skullType;
+	}
+	
+	/**
+	 * The player's skull timer.
+	 */
+	private int skullTimer;
+
+	/**
+	 * Is the player skulled
+	 * 
+	 * @return {@code true} if the player does, {@code false} otherwise.
+	 */
+	public boolean isSkulled() {
+		return skullTimer > 0;
+	}
+
+	/**
+	 * Set The player's skull timer
+	 * 
+	 * @param the
+	 *            time the player remains skulled for
+	 */
+	public void setSkullTimer(int skullTimer) {
+		this.skullTimer = skullTimer;
+	}
+
+	/**
+	 * Removes ticks from the skull timer
+	 * 
+	 * @return the ticks
+	 */
+	public int decrementSkullTimer() {
+		return this.skullTimer--;
+	}
+
+	/**
+	 * Get the players skull timer
+	 * 
+	 * @return the skulltimer
+	 */
+	public int getSkullTimer() {
+		return this.skullTimer;
 	}
 	
 	/**
@@ -1606,13 +1673,12 @@ public class Player extends Entity {
 			if (singleCombatDelay2.elapsed(6000)) {
 				resetDamageReceived();
 			}
-			if (skullTimer > 0) {
-				skullTimer--;
-				if (skullTimer == 1) {
-					isSkulled = false;
+			if (getSkullTimer() > 0) {
+				decrementSkullTimer();
+				if (getSkullTimer() == 1) {
 					attackedPlayers.clear();
-					skullIcon = -1;
-					skullTimer = -1;
+					setSkullType(SkullType.NONE);
+					setSkullTimer(0);
 					getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
 			}
@@ -2682,9 +2748,9 @@ public class Player extends Entity {
 	public int lastClickedItem;
 
 	public int totalLevel,
-			lastChatId = 1, privateChat, specBarId, skullTimer,
+			lastChatId = 1, privateChat, specBarId,
 			followDistance,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, killerId, attackDelay, oldSpellId, walkTutorial = 15, skullIcon = -1, bountyPoints, teleHeight;
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, killerId, attackDelay, oldSpellId, walkTutorial = 15, bountyPoints, teleHeight;
 	
 	/**
 	 * Booleans
@@ -2692,7 +2758,7 @@ public class Player extends Entity {
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean isDead = false;
 	public boolean usingCross;
-	public boolean isMuted, isClanMuted, isSkulled, hasMultiSign, properLogout;
+	public boolean isMuted, isClanMuted, hasMultiSign, properLogout;
 	
 	/**
 	 * Strings

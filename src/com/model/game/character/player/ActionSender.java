@@ -256,6 +256,14 @@ public class ActionSender {
 		return this;
 	}
 	
+	public ActionSender clearItemOnInterface(int frame) {
+		player.outStream.putFrameVarShort(72);
+        int offset = player.getOutStream().offset;
+        player.outStream.writeShort(frame);
+		player.outStream.putFrameSizeShort(offset);
+		return this;
+	}
+	
 	public ActionSender sendMultiway(int icon) {
 		if (player != null) {
             player.outStream.writeFrame(61);

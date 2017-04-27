@@ -583,7 +583,7 @@ public class PlayerUpdating {
 		player.getPlayerProps().writeByte(player.getPrayerIcon());
 		
 		//Update the PK skull
-		player.getPlayerProps().writeByte(player.skullIcon);
+		player.getPlayerProps().writeByte(player.getSkullType().getId());
 		
 		//Update the player infection 0 = healthy, 1 poison and 2 is venomed
 		player.getPlayerProps().writeByte(player.infection);

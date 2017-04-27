@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.item.Item;
 import com.model.game.location.Location;
 
 public class Utility {
@@ -998,6 +999,15 @@ public class Utility {
 	 */
 	public static int getManhattanDistance(Location a, Location b) {
 	return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
+	}
+
+	public static Item[] concat(Item[] inventory, Item[] equipment) {
+		int inventory_items = inventory.length;
+		int equipment_items = equipment.length;
+		Item[] c= new Item[inventory_items+equipment_items];
+		System.arraycopy(inventory, 0, c, 0, inventory_items);
+		System.arraycopy(equipment, 0, c, inventory_items, equipment_items);
+		return c;
 	}
 
 }

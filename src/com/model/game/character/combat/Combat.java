@@ -7,9 +7,11 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
 import com.model.game.character.Hit;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
+import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.combat.effect.impl.Venom;
 import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
@@ -30,6 +32,24 @@ import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.WeaponDefinition;
 
 public class Combat {
+	
+	/**
+	 * Skulls the specified player
+	 * @param player
+	 * @param type
+	 * @param seconds
+	 */
+	public static void skull(Player player, SkullType type, int seconds) {
+		player.setSkullType(type);
+		player.setSkullTimer(seconds);
+		if(type == SkullType.RED_SKULL) {
+			player.getActionSender().sendMessage("@bla@You have received a @red@red skull@bla@! You can no longer use the protect item prayer!");
+			PrayerHandler.deactivatePrayer(player, Prayers.PROTECT_ITEM);		
+		} else if(type == SkullType.SKULL) {
+			player.getActionSender().sendMessage("You've been skulled!");
+		}
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+	}
 
     /**
      * The names of all the bonuses in their exact identified slots.
@@ -226,10 +246,7 @@ public class Combat {
             if (player != null && player.attackedPlayers != null && ptarg.attackedPlayers != null && !ptarg.getArea().inDuelArena()) {
                 if (!player.attackedPlayers.contains(target.getIndex()) && !ptarg.attackedPlayers.contains(player.getIndex())) {
                     player.attackedPlayers.add(target.getIndex());
-                    player.isSkulled = true;
-                    player.skullTimer = 500;
-                    player.skullIcon = 0;
-                    player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+                    skull(ptarg, SkullType.SKULL, 300);
                 }
             }
             if (ptarg.infection != 2 && player.getEquipment().canInfect(player)) {

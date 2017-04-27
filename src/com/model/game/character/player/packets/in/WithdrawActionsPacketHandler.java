@@ -13,6 +13,7 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.packets.PacketType;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
+import com.model.game.item.container.impl.Bank;
 import com.model.game.item.container.impl.Trade;
 import com.model.game.shop.Shop;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -88,7 +89,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.getBank().depositFromInventory(slot, 1);
 			break;
 			
-		case 5382:
+		case Bank.CONTAINER_START:
 			player.getBank().withdraw(slot, 1, true);
 			break;
 
@@ -180,7 +181,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case 5064:
             player.getBank().depositFromInventory(slot, 5);
             break;
-        case 5382:
+        case Bank.CONTAINER_START:
             player.getBank().withdraw(slot, 5, true);
             break;
 			
@@ -268,7 +269,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 			break;
 
-		case 5382:
+		case Bank.CONTAINER_START:
 			player.getBank().withdraw(slot, 10, true);
 			break;
 
@@ -342,7 +343,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
             player.getBank().depositFromInventory(slot, player.getInventory().amount(player.getInventory().getId(slot)));
             break;
 
-        case 5382:
+        case Bank.CONTAINER_START:
             int amount = 0;
             if (player.isWithdrawAsNote()) {
                 amount = player.getBank().amount(item.getId());

@@ -231,6 +231,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 162235:
 		case 222170:
 		case 116181:
+		case 195081:
 			player.getActionSender().sendRemoveInterfacePacket();
 			break;
 			
@@ -376,8 +377,20 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.getActionSender().sendRemoveInterfacePacket();
 			break;
 
-		case 226154:
-			player.setWithdrawAsNote(player.isWithdrawAsNote() != player.isWithdrawAsNote());
+		case 21010:
+			player.setWithdrawAsNote(true);
+			break;
+			
+		case 21011:
+			player.setWithdrawAsNote(false);
+			break;
+			
+		case 31194:
+			player.setInsertItem(true);
+			break;
+			
+		case 31195:
+			player.setInsertItem(false);
 			break;
 
 		case 39178:

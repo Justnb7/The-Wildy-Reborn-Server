@@ -1,120 +1,137 @@
 package com.model.game.character.player.content;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.math.BigInteger;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.bounty_hunter.BountyHunterEmblem;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
-import com.model.utility.Utility;
+import com.model.game.item.Item.ItemComparator;
 
 /**
- * Handles items kept on death.
- * @author Swiffy
+ * The class which represents functionality for the items kept on death container.
+ * 
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
+ * @author Battle-OS team members for certain parts of the code.
  */
 public class ItemsKeptOnDeath {
 
+
 	/**
-	 * Sends the items kept on death interface for a player.
-	 * @param player	Player to send the items kept on death interface for.
+	 * Opens the items kept on death interface.
+	 * 
+	 * @param player
+	 *            The player viewing the items kept on death interface.
 	 */
 	public static void open(Player player) {
-		clearInterfaceData(player); //To prevent sending multiple layers of items.
-		sendInterfaceData(player); //Send info on the interface.
-		player.write(new SendInterfacePacket(17100)); //Open the interface.
-	}
+		int kept = 0;
 
-	/**
-	 * Sends the items kept on death data for a player.
-	 * @param player	Player to send the items kept on death data for.
-	 */
-	public static void sendInterfaceData(Player player) {
-
-		player.getActionSender().sendString(""+getAmountToKeep(player), 17107);
-
-		ArrayList<Item> toKeep = getItemsToKeep(player);
-		for(int i = 0; i < toKeep.size(); i++) {
-			player.getActionSender().sendUpdateItem(17108+i, toKeep.get(i).getId(), 0, 1);
+		// Are we skulled if we are keep only 1 item when using the protect item
+		// otherwise keep 0
+		if (player.isSkulled()) {
+			kept = player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0;
+		} else {
+			// We're not skulled we keep 3 items unless we're using protect item
+			// then we keep 4
+			kept = player.isActivePrayer(Prayers.PROTECT_ITEM) ? 4 : 3;
 		}
 
-		int toSend = 17112;
-		for(Item item : Utility.concat(player.getInventory().toArray(), player.getEquipment().toArray())) {
-			if(item == null || item.getId() <= 0 || item.getAmount() <= 0 || !item.getDefinition().isTradeable() || toKeep.contains(item)) {
-				continue;
+		final Item[] keep = new Item[kept];
+
+		final Queue<Item> items = new PriorityQueue<Item>(ItemComparator.SHOP_VALUE_COMPARATOR);
+
+		//Loops through our inventory
+		for (final Item item : player.getInventory().toNonNullArray()) {
+			if (item != null) {
+				items.add(item.copy());
 			}
-			player.getActionSender().sendUpdateItem(toSend, item.getId(), 0, item.getAmount());
-			toSend++;
 		}
-	}
 
-	/**
-	 * Clears the items kept on death interface for a player.
-	 * @param player	Player to clear the items kept on death interface for.
-	 */
-	public static void clearInterfaceData(Player player) {
-		for(int i = 17108; i <= 17152; i++)
-			player.getActionSender().clearItemOnInterface(i);
-	}
-
-	/**
-	 * Sets the items to keep on death for a player.
-	 * @param player	Player to set items for.
-	 */
-	public static ArrayList<Item> getItemsToKeep(Player player) {
-		ArrayList<Item> items = new ArrayList<Item>();
-		for(Item item : Utility.concat(player.getInventory().toArray(), player.getEquipment().toArray())) {
-			if(item == null || item.getId() <= 0 || item.getAmount() <= 0 || !item.getDefinition().isTradeable()) {
-				continue;
+		//Loops through our equipment
+		for (final Item item : player.getEquipment().toNonNullArray()) {
+			if (item != null) {
+				items.add(item.copy());
 			}
-
-			//Dont keep emblems
-			if(item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_1.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_2.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_3.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_4.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_5.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_6.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_7.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_8.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_9.getItemId() ||
-					item.getId() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_10.getItemId()) {
-				continue;
-			}
-
-			items.add(item);
 		}
-		Collections.sort(items, new Comparator<Item>() {
-			@Override
-			public int compare(Item item, Item item2) {
-				int value1 = item.getDefinition().getGeneralPrice();
-				int value2 = item2.getDefinition().getGeneralPrice();
-				if (value1 == value2) {
-					return 0;
-				} else if (value1 > value2) {
-					return -1;
-				} else {
-					return 1;
+
+		final Queue<Item> temp = new PriorityQueue<>(items);
+
+		for (int index = 0, taken = 0; index < keep.length; index++) {
+			keep[index] = temp.poll();
+			items.remove(keep[index]);
+
+			if (keep[index] != null) {
+				if (keep[index].getAmount() == keep.length - taken) {
+					break;
 				}
+
+				if (keep[index].getAmount() > keep.length - taken) {
+					items.add(new Item(keep[index].getId(), keep[index].getAmount() - (keep.length - taken)));
+					keep[index].setAmount(keep.length - taken);
+					break;
+				}
+
+				taken += keep[index].getAmount();
 			}
-		});
-		ArrayList<Item> toKeep = new ArrayList<Item>();
-		int amountToKeep = getAmountToKeep(player);
-		for(int i = 0; i < amountToKeep && i < items.size(); i++) {
-			toKeep.add(items.get(i));
 		}
-		return toKeep;
+
+		player.getActionSender().sendString("~ " + kept + " ~", 17112);
+
+		//Sends the strings to the interface
+		switch (kept) {
+		case 0:
+		default:
+			player.getActionSender().sendString("You're marked with a \\n<col=ff0000>skull. </col>This reduces the \\nitems you keep from \\nthree to zero!", 17110);
+			break;
+		case 1:
+			player.getActionSender().sendString("You're marked with a \\n<col=ff0000>skull. </col>This reduces the \\nitems you keep from \\nthree to zero! \\nHowever, you also have the \\n<col=ff0000>Protect </col>Items prayer \\nactive, which saves you \\none extra item!", 17110);
+			break;
+		case 3:
+			player.getActionSender().sendString("You have no factors affecting \\nthe items you keep.", 17110);
+			break;
+		case 4:
+			player.getActionSender().sendString("You have the <col=ff0000>Protect Item</col> \\nprayer active, which saves \\nyou none extra item!", 17110);
+			break;
+		}
+
+		//Sends our carried wealth string
+		final BigInteger carrying = BigInteger.valueOf(player.getInventory().containerValue()).add(BigInteger.valueOf(player.getEquipment().containerValue()));
+		if (carrying.equals(BigInteger.ZERO)) {
+			player.getActionSender().sendString("Carried wealth: \\n<col=ff0000>Nothing!", 17115);
+		} else {
+			player.getActionSender().sendString("Carried wealth: \\n<col=ff0000>" + NumberFormat.getNumberInstance(Locale.US).format(carrying) + "</col> coins.", 17115);
+		}
+
+		final Item[] dropped = items.toArray(new Item[0]);
+
+		BigInteger risked = BigInteger.ZERO;
+		while (items.peek() != null) {
+			final Item dropping = items.poll();
+
+			if (dropping == null) {
+				continue;
+			}
+
+			risked = risked.add(new BigInteger(String.valueOf(dropping.getValue())).multiply(new BigInteger(String.valueOf(dropping.getAmount()))));
+		}
+
+		//Sent the risked wealth string
+		player.getActionSender().sendString("Risked wealth:", 17124);
+
+		if (risked.equals(BigInteger.ZERO)) {
+			player.getActionSender().sendString("Risked wealth: \\n<col=ff0000>Nothing!", 17116);
+		} else {
+			player.getActionSender().sendString("Risked wealth: \\n<col=ff0000>" + NumberFormat.getNumberInstance(Locale.US).format(risked) + "</col> coins.", 17116);
+		}
+
+		player.getActionSender().sendItemsOnInterface(17113, keep);
+		player.getActionSender().sendItemsOnInterface(17114, dropped);
+		player.write(new SendInterfacePacket(17100));
 	}
 
-	public static int getAmountToKeep(Player player) {
-		if(player.getSkullTimer() > 0) {
-			if(player.getSkullType() == SkullType.RED_SKULL) {
-				return 0;
-			}
-		}
-		return (player.getSkullTimer() > 0 ? 0 : 3) + (player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0);
-	}
+	
 }

@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -1008,6 +1009,14 @@ public class Utility {
 		System.arraycopy(inventory, 0, c, 0, inventory_items);
 		System.arraycopy(equipment, 0, c, inventory_items, equipment_items);
 		return c;
+	}
+
+	public static <T> int sumNullElements(T[] array) {
+		return Math.toIntExact(Arrays.stream(array).filter(Objects::isNull).count());
+	}
+
+	public static <T> int sumNonNullElements(T[] array) {
+		return Math.toIntExact(Arrays.stream(array).filter(Objects::nonNull).count());
 	}
 
 }

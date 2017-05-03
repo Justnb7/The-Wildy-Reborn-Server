@@ -295,7 +295,7 @@ public class PlayerVsNpcCombat {
 		}
 
 		if (hasDistance) {
-			player.stopMovement();
+			player.getMovementHandler().stopMovement();
 		} else {
 			//player.write(new SendGameMessage("No fucking distance?");
 			return false;

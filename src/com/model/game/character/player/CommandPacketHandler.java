@@ -255,7 +255,6 @@ public class CommandPacketHandler implements PacketType {
 			if (player.getArea().inWild())
 				return false;
 			Combat.skull(player, SkullType.NONE, -1);
-			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.attackedPlayers.clear();
 			player.getActionSender().sendMessage("@blu@You are now unskulled.");
     		return true;

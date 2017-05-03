@@ -283,4 +283,14 @@ public abstract class ScheduledTask {
 	public Object getAttachment() {
 		return attachment;
 	}
+
+	/**
+     * The method executed when {@code execute()} throws an error.
+     *
+     * @param t
+     *            the error thrown by execution of the task.
+     */
+    public void onThrowable(Throwable t) {
+
+    }
 }

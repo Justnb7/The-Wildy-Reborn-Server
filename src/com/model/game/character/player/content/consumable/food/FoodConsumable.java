@@ -163,7 +163,7 @@ public class FoodConsumable {
 			return;
 		}
 		
-		if (player.isDead || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 			return;
 		}
 		if (!player.lastSpear.elapsed(4000)) {

@@ -193,7 +193,7 @@ public class PlayerFollowing {
             for (Location npcloc : npc.getTiles()) {
                 double distance = npcloc.distance(player.getPosition());
                 if (distance <= player.followDistance) {
-                    player.stopMovement();
+                    player.getMovementHandler().stopMovement();
                     return;
                 }
             }

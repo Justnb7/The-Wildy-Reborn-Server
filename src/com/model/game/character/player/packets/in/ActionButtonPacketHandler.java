@@ -9,6 +9,7 @@ import com.model.game.character.combat.weapon.AttackStyle.FightType;
 import com.model.game.character.combat.weaponSpecial.SpecialAttackHandler;
 import com.model.game.character.player.EmotesManager.EmoteData;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.content.ItemsKeptOnDeath;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
@@ -39,6 +40,8 @@ import java.util.Objects;
  * 
  */
 public class ActionButtonPacketHandler implements PacketType {
+	
+	private static final int OPEN_ITEMS_KEPT_ON_DEATH_SCREEN = 108006;
 
 	@Override
 	public void handle(final Player player, int id, int size) {
@@ -105,6 +108,14 @@ public class ActionButtonPacketHandler implements PacketType {
 		// AttackStyle.switchAttackStyle(player, buttonId);
 		ActionButtonEventListener.onButtonClick(player, button);
 		switch (button) {
+		
+		case OPEN_ITEMS_KEPT_ON_DEATH_SCREEN:
+			if (player.getLastCombatAction().elapsed(0)) {
+				ItemsKeptOnDeath.open(player);
+			} else {
+				player.getActionSender().sendMessage("You cannot view items kept on death while in combat!");
+			}
+			break;
 		
 		case 114220:
 			player.getAchievements().drawInterface(0);

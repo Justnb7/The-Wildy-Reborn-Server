@@ -776,11 +776,6 @@ public class NPC extends Entity {
 	}
 
 	@Override
-	public boolean isDead() {
-		return isDead;
-	}
-
-	@Override
 	public int clientIndex() {
 		return this.getIndex();
 	}

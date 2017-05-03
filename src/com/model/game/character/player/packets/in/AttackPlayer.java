@@ -65,7 +65,7 @@ public class AttackPlayer implements PacketType {
 			if (!player.teleblock.elapsed(player.teleblockLength) && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
 				player.getActionSender().sendMessage("That player is already affected by this spell.");
 				player.usingMagic = false;
-				player.stopMovement();
+				player.getMovementHandler().stopMovement();
 				Combat.resetCombat(player);
 			}
 			if (player.usingMagic) {

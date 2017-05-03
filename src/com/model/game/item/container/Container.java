@@ -865,6 +865,39 @@ public class Container implements Iterable<Item> {
 		return items;
 	}
 	
+	/**
+	 * Returns the container's stack without null values.
+	 * 
+	 * @return The container's stack.
+	 */
+	public Item[] toNonNullArray() {
+		return Arrays.stream(items).filter(Objects::nonNull).toArray(size -> new Item[size]);
+	}
+	
+	/**
+	 * Gets the total worth of the container using the item's values.
+	 * 
+	 * @return The total container worth.
+	 */
+	public long containerValue() {
+		long value = 0;
+		final Item[] trimmed = toNonNullArray();
+
+		if (trimmed == null) {
+			return 0;
+		}
+
+		for (final Item item : trimmed) {
+			if (value >= Long.MAX_VALUE - item.getValue() * item.getAmount()) {
+				return Long.MAX_VALUE;
+			}
+
+			value += item.getValue() * item.getAmount();
+		}
+
+		return value;
+	}
+	
 	public boolean playerHasItem(Item item) {
 		return playerHasItem(item.getId(), item.getAmount());
 	}

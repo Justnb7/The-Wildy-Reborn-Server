@@ -23,7 +23,7 @@ import com.model.game.item.Item;
 import com.model.game.item.container.impl.Bank;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.Inventory;
-import com.model.game.item.container.impl.RunePouchContainer;
+import com.model.game.item.container.impl.RunePouch;
 
 /**
  * Handles saving a player's container and details into a json file.
@@ -416,7 +416,7 @@ public class PlayerSave {
 				}
 				
 				if (details.runePouch != null) {
-					for(int i = 0; i < RunePouchContainer.SIZE; i++) {
+					for(int i = 0; i < RunePouch.SIZE; i++) {
 						player.runePouchContainer.set(i, details.runePouch[i]);
 					}
 				}

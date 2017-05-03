@@ -38,6 +38,30 @@ import com.model.utility.Utility;
 public abstract class Entity {
 	
 	/**
+     * The flag determining if this character is dead.
+     */
+    private boolean dead;
+
+	/**
+     * Determines if this character is dead or not.
+     *
+     * @return {@code true} if this character is dead, {@code false} otherwise.
+     */
+    public final boolean isDead() {
+        return dead;
+    }
+
+    /**
+     * Sets the value for {@link CharacterNode#dead}.
+     *
+     * @param dead
+     *            the new value to set.
+     */
+    public final void setDead(boolean dead) {
+        this.dead = dead;
+    }
+	
+	/**
 	 * The random identifier
 	 */
 	private Random random = new Random();
@@ -940,8 +964,6 @@ public abstract class Entity {
 	 * @return The width of the entity.
 	 */
 	public abstract int getHeight();
-
-	public abstract boolean isDead();
 	
 	/**
 	 * Gets the centre location of the entity.

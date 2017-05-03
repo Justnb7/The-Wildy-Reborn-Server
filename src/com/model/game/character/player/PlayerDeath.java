@@ -112,7 +112,7 @@ public class PlayerDeath {
 		 * Update player
 		 */
 		player.faceEntity(player);
-		player.stopMovement();
+		player.getMovementHandler().reset();
 		restoreHealth();
 	}
 
@@ -267,7 +267,6 @@ public class PlayerDeath {
 	
 	private final void restoreHealth() {
 		player.faceEntity(player);
-		player.stopMovement();
 		player.setSpecialAmount(100);
 		player.getWeaponInterface().restoreWeaponAttributes();
 		player.lastVeng.reset();

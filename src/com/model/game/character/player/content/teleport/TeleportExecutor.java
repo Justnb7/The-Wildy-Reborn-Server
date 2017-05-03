@@ -132,7 +132,7 @@ public class TeleportExecutor {
 			}
 		}
 		Combat.resetCombat(player);
-		player.stopMovement();
+		player.getMovementHandler().stopMovement();
 		player.getActionSender().sendRemoveInterfacePacket();
 		player.getCombat().reset();
 		player.resetFace();
@@ -221,7 +221,7 @@ public class TeleportExecutor {
 			player.getActionSender().sendMessage("Please finish what you're doing first.");
 			return false;
 		}
-		if (player.isDead || player.isTeleporting()) {
+		if (player.isDead() || player.isTeleporting()) {
 			return false;
 		}
 		if (!player.teleblock.elapsed(player.teleblockLength)) {

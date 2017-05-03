@@ -35,7 +35,7 @@ public class WoodcuttingEvent extends CycleEvent {
 
 	@Override
 	public void execute(CycleEventContainer container) {
-		if(player == null || !player.isActive() || player.isTeleporting() || player.isDead || container.getOwner() == null) {
+		if(player == null || !player.isActive() || player.isTeleporting() || player.isDead() || container.getOwner() == null) {
 			container.stop();
 			return;
 		}

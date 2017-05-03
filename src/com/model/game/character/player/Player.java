@@ -78,8 +78,8 @@ import com.model.game.item.container.ItemContainerPolicy;
 import com.model.game.item.container.impl.Bank;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.Inventory;
-import com.model.game.item.container.impl.LootingBagContainer;
-import com.model.game.item.container.impl.RunePouchContainer;
+import com.model.game.item.container.impl.LootingBag;
+import com.model.game.item.container.impl.RunePouch;
 import com.model.game.item.container.impl.Trade;
 import com.model.game.item.container.impl.Trade.TradeStatus;
 import com.model.game.item.ground.GroundItemHandler;
@@ -722,26 +722,26 @@ public class Player extends Entity {
 	/**
 	 * Constructs a new {@link LootingBag}.
 	 */
-	private final LootingBagContainer lootingbagContainer = new LootingBagContainer(this);
+	private final LootingBag lootingbagContainer = new LootingBag(this);
 	
 	/**
 	 * @see {@link #lootingbagContainer}.
 	 * <b>no point in documentating a getter</b>
 	 */
-	public LootingBagContainer getLootingBagContainer() {
+	public LootingBag getLootingBagContainer() {
 		return lootingbagContainer;
 	}
 	
 	/**
-	 * Constructs a new {@link RunePouchContainer}.
+	 * Constructs a new {@link RunePouch}.
 	 */
-	public final RunePouchContainer runePouchContainer = new RunePouchContainer(this);
+	public final RunePouch runePouchContainer = new RunePouch(this);
 	
 	/**
 	 * @see {@link #runePouchContainer}.
 	 * <b>no point in documentating a getter</b>
 	 */
-	public RunePouchContainer getRunePouchContainer() {
+	public RunePouch getRunePouchContainer() {
 		return runePouchContainer;
 	}
 	
@@ -1282,10 +1282,6 @@ public class Player extends Entity {
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();
-	}
-
-	public void stopMovement() {
-		getMovementHandler().reset();
 	}
 
 	public MovementHandler getMovementHandler() {
@@ -1861,14 +1857,6 @@ public class Player extends Entity {
 		if (distancedTask != null && distancedTask.isRunning()) {
 			distancedTask.stop();
 		}
-	}
-
-	public boolean isDead() {
-		return isDead;
-	}
-
-	public void setDead(boolean isDead) {
-		this.isDead = isDead;
 	}
 	
 	public void onControllerFinish() {
@@ -2756,7 +2744,6 @@ public class Player extends Entity {
 	 * Booleans
 	 */
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
-	public boolean isDead = false;
 	public boolean usingCross;
 	public boolean isMuted, isClanMuted, hasMultiSign, properLogout;
 	

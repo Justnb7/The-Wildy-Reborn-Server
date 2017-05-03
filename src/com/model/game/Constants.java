@@ -164,4 +164,13 @@ public class Constants {
 			'(', ')', '-', '+', '=', ':', ';', '.', '>', '<', ',', '"', '[',
 			']', '|', '?', '/', '`' };
 
+	/**
+     * Messages chosen a random to be sent to a player that has killed another
+     * player. {@code -victim-} is replaced with the player's name that was
+     * killed, while {@code -killer-} is replaced with the killer's name.
+     */
+    public static final String[] DEATH_MESSAGES = { "You have just killed -victim-!", "You have completely slaughtered -victim-!",
+            "I bet -victim- will think twice before messing with you again!",
+            "Your killing style is impeccable, -victim- didn't stand a chance!" };
+
 }

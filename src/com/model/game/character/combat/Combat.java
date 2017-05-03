@@ -137,7 +137,7 @@ public class Combat {
             boolean blowp = wep == 12926;
             if (!crystal && !blowp && ammo < 1) {
                 player.getActionSender().sendMessage("There is no ammo left in your quiver.");
-                player.stopMovement();
+                player.getMovementHandler().stopMovement();
                 player.getCombat().reset();
                 return;
             }
@@ -147,27 +147,27 @@ public class Combat {
                     && !player.getEquipment().usingCrystalBow(player)
                     && !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
                 player.getActionSender().sendMessage("You can't use " + ItemDefinition.forId(player.getEquipment().getId(Equipment.ARROWS_SLOT)).getName().toLowerCase() + "s with a " + ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName().toLowerCase() + ".");
-                player.stopMovement();
+                player.getMovementHandler().stopMovement();
                 player.getCombat().reset();
                 return;
             }
             if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
                 player.getActionSender().sendMessage("You must use bolts with a crossbow.");
-                player.stopMovement();
+                player.getMovementHandler().stopMovement();
                 Combat.resetCombat(player);
                 return;
             }
 
             if (player.getEquipment().wearingBallista(player) && !player.getCombat().properJavalins()) {
                 player.getActionSender().sendMessage("You must use javalins with a ballista.");
-                player.stopMovement();
+                player.getMovementHandler().stopMovement();
                 Combat.resetCombat(player);
                 return;
             }
 
             if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 4734 && !player.getCombat().properBoltRacks()) {
                 player.getActionSender().sendMessage("You must use bolt racks with this bow.");
-                player.stopMovement();
+                player.getMovementHandler().stopMovement();
                 Combat.resetCombat(player);
                 return;
             }
@@ -177,7 +177,7 @@ public class Combat {
 		 */
         if (player.getCombatType() == CombatStyle.MAGIC) {
             if (!player.getCombat().checkMagicReqs(player.getSpellId())) {
-                player.stopMovement();
+                player.getMovementHandler().stopMovement();
                 Combat.resetCombat(player);
                 return;
             }
@@ -221,7 +221,7 @@ public class Combat {
 
         if (player.getCombatType() == CombatStyle.MAGIC || player.getCombatType() == CombatStyle.RANGE ||
                 (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2))) {
-            player.stopMovement();
+            player.getMovementHandler().stopMovement();
         }
 
         //player.getCombat().checkVenomousItems();
@@ -246,7 +246,7 @@ public class Combat {
             if (player != null && player.attackedPlayers != null && ptarg.attackedPlayers != null && !ptarg.getArea().inDuelArena()) {
                 if (!player.attackedPlayers.contains(target.getIndex()) && !ptarg.attackedPlayers.contains(player.getIndex())) {
                     player.attackedPlayers.add(target.getIndex());
-                    skull(ptarg, SkullType.SKULL, 300);
+                    skull(player, SkullType.SKULL, 300);
                 }
             }
             if (ptarg.infection != 2 && player.getEquipment().canInfect(player)) {
@@ -316,7 +316,7 @@ public class Combat {
             player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
 
             if (!player.autoCast) { // Not autocast = a one-time attack. Doesn't continue following.
-                player.stopMovement();
+                player.getMovementHandler().stopMovement();
                 player.setFollowing(null);
             }
         }

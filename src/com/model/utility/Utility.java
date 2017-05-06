@@ -16,6 +16,9 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.Range;
+
+import com.google.common.base.Preconditions;
 import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
@@ -1017,6 +1020,23 @@ public class Utility {
 
 	public static <T> int sumNonNullElements(T[] array) {
 		return Math.toIntExact(Arrays.stream(array).filter(Objects::nonNull).count());
+	}
+
+	public static double preciseRandom(Range<Double> range) {
+		Preconditions.checkArgument(range.getMinimum() <= range.getMaximum(), "The maximum range cannot be less than the minimum range.");
+		return range.getMinimum() + (new Random().nextDouble() * (range.getMaximum() - range.getMinimum()));
+	}
+
+	public static String getValueWithoutRepresentation(long amount) {
+		StringBuilder bldr = new StringBuilder();
+		if (amount < 1_000) {
+			bldr.append(amount);
+		} else if (amount >= 1_000 && amount < 1_000_000) {
+			bldr.append(Long.toString(amount / 1_000) + "K");
+		} else if (amount >= 1_000_000) {
+			bldr.append(Long.toString(amount / 1_000_000) + "M");
+		}
+		return bldr.toString();
 	}
 
 }

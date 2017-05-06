@@ -1,29 +1,60 @@
 package com.model.game.character.npc.drops;
 
-import com.model.game.item.GameItem;
+import com.google.common.base.Preconditions;
 
 public class Drop {
-
-	private final GameItem item;
-	private final int rarity;
-	private final int random;
-
-	public Drop(int itemId, int itemAmount, int rarity, int random) {
-		this.item = new GameItem(itemId, itemAmount);
-		this.rarity = rarity;
-		this.random = random;
-	}
-
-	public GameItem getItem() {
-		return item;
-	}
-
-	public int getRarity() {
-		return rarity;
-	}
-
-	public int getRandom() {
-		return random;
+	
+	/**
+	 * The item identification value 
+	 */
+	private final int itemId;
+	
+	/**
+	 * The minimum amount of the item you can receive
+	 */
+	private final int minimumAmount;
+	
+	/**
+	 * The maximum amount of the item you can receive
+	 */
+	private final int maximumAmount;
+	
+	/**
+	 * A new {@link Drop} that exists within a particular {@link Table}
+	 * @param itemId		the id of the item in the drop
+	 * @param minimumAmount	the minimum amount received
+	 * @param maximumAmount	the maximum amount received
+	 */
+	public Drop(int itemId, int minimumAmount, int maximumAmount) {
+		Preconditions.checkArgument(minimumAmount <= maximumAmount, 
+				"The minimum amount must be less than or equal to the maximum amount.", minimumAmount, maximumAmount);
+		this.itemId = itemId;
+		this.minimumAmount = minimumAmount;
+		this.maximumAmount = maximumAmount;
 	}
 	
+	/**
+	 * The item identification value
+	 * @return	the item id
+	 */
+	public int getItemId() {
+		return itemId;
+	}
+	
+	/**
+	 * The absolute minimum amount received from a particular drop.
+	 * @return	the minimum amount
+	 */
+	public int getMinimumAmount() {
+		return minimumAmount;
+	}
+	
+	/**
+	 * The maximum amount of an item that can be received from a singular drop
+	 * @return	the maximum amount
+	 */
+	public int getMaximumAmount() {
+		return maximumAmount;
+	}
+
 }

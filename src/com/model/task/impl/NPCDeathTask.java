@@ -1,14 +1,16 @@
 package com.model.task.impl;
 
+import java.util.concurrent.TimeUnit;
+
 import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
+import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.GroupRespawn;
 import com.model.game.character.npc.NPC;
-import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.KillTracker;
 import com.model.game.character.player.content.KillTracker.KillEntry;
@@ -21,6 +23,7 @@ import com.model.game.character.player.packets.out.SendKillFeedPacket;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
+import com.model.utility.Location3D;
 import com.model.utility.Utility;
 
 /**
@@ -264,6 +267,10 @@ public class NPCDeathTask extends ScheduledTask {
     }
     
     private final static void onDeath(NPC npc) {
+    	int dropX = npc.absX;
+		int dropY = npc.absY;
+		int dropHeight = npc.heightLevel;
+    	
 		if (npc.killedBy == -1) {
 			return;
 		}
@@ -344,21 +351,12 @@ public class NPCDeathTask extends ScheduledTask {
 			AnimatedArmour.dropTokens(player, npc.getId(), npc.absX, npc.absY);
 		
 		// get the drop table
-		
-		float yourIncrease = 0;
-
-		if (player.getEquipment().getId(Equipment.RING_SLOT) == 2572) {
-			yourIncrease += 2;
+		Location3D location = new Location3D(dropX, dropY, dropHeight);
+		int amountOfDrops = 1;
+		if (Constants.DOUBLE_DROPS && player.getLastIncentive() > 0 && (System.currentTimeMillis() - player.getLastIncentive()) < TimeUnit.DAYS.toMillis(1)) {
+			amountOfDrops++;
 		}
-		if (player.getEquipment().getId(Equipment.RING_SLOT) == 12785) {
-			yourIncrease += 5;
-		}
-		if(player.getTotalAmountDonated() > 100 && player.getTotalAmountDonated() < 200) {
-			yourIncrease += 10;
-		} else if(player.getTotalAmountDonated() > 200) {
-			yourIncrease += 15;
-		}
-		NpcDropSystem.get().drop(player, npc, yourIncrease);
+		Server.getDropManager().create(player, npc, location, amountOfDrops);
 	}
 
 }

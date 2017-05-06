@@ -30,6 +30,7 @@ public class Constants {
 	public static final boolean PK_REWARDS = false;
 	public static final boolean SLAYER_REWARDS = false;
 	public static final boolean DOUBLE_EXPERIENCE = false;
+	public static final boolean DOUBLE_DROPS = false;
 	
 	/**
 	 * Prayer exp modifier

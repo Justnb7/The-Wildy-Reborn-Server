@@ -72,6 +72,11 @@ public class ActionButtonPacketHandler implements PacketType {
 			return;
 		}
 		
+		if (button >= 166035 && button < 166136) {
+			Server.getDropManager().select(player, button);
+			return;
+		}
+		
 		if (Trade.handleTradeButtons(player, button)) {
 			return;
 		}

@@ -9,7 +9,6 @@ import org.omicron.jagex.runescape.CollisionMap;
 import com.model.Server;
 import com.model.ServerState;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.npc.drops.NpcDropSystem;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
@@ -53,8 +52,6 @@ public class GameDataLoader implements Runnable {
 			NPCHandler.declare();
 			Arrays.fill(NpcDefinition.getDefinitions(), null);
 	        new NPCDefinitionLoader().load();
-			NpcDropSystem.get().loadDrops();
-			NpcDropSystem.get().loadRareDrops();
 			new ShopLoader().load();
 			new ItemDefinitionLoader().load();
 			new EquipmentRequirementLoader().load();

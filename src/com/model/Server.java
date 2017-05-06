@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
+import com.model.game.character.player.content.DropManager;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionListener;
 import com.model.game.object.GlobalObjects;
 import com.model.game.sync.GameDataLoader;
@@ -64,6 +65,12 @@ public class Server {
 	public static ServerState state = ServerState.STARTED;
 
 	public static NPCHandler npcHandler = new NPCHandler();
+	
+	private static final DropManager dropManager = new DropManager();
+	
+	public static DropManager getDropManager() {
+		return dropManager;
+	}
 
 	/**
 	 * Starts up the server
@@ -90,7 +97,7 @@ public class Server {
 			GameLogicService.initialize();
 			World.getWorld().init();
 			globalObjects.pulse();
-			globalObjects.pulse();
+			dropManager.read();
 			ResourceLeakDetector.setLevel(io.netty.util.ResourceLeakDetector.Level.PARANOID);
 			bind(Constants.SERVER_PORT);
 			

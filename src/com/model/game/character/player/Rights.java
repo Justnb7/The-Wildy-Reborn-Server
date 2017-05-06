@@ -256,4 +256,8 @@ public enum Rights {
 		return right;
 	}
 
+	public boolean contains(Rights right) {
+		return right.contains(right);
+	}
+
 }

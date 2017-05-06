@@ -2720,7 +2720,7 @@ public class Player extends Entity {
 	/**
 	 * The players equipment bonuses
 	 */
-	private int[] bonuses = new int[12];
+	private int[] bonuses = new int[16];
 	
     /**
      * Integers
@@ -2745,6 +2745,7 @@ public class Player extends Entity {
 	 */
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean usingCross;
+	public boolean dropListSorted;
 	public boolean isMuted, isClanMuted, hasMultiSign, properLogout;
 	
 	/**
@@ -2764,6 +2765,7 @@ public class Player extends Entity {
 	private long lastVenomCure;
 	private long venomImmunity;
 	public long godSpellDelay;
+	public long lastDropTableSelected;
 
 	/**
 	 * Bytes
@@ -3012,9 +3014,43 @@ public class Player extends Entity {
                 bonuses[i] += item.getDefinition().getBonus()[i];
             }
         }
-        for (int i = 0; i < bonuses.length; i++) {
-            getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (bonuses[i] >= 0 ? "+" : "") + bonuses[i], (1675 + i + (i == 10 || i == 11 ? 1 : 0)));
+        //Bonuses sent to the original interface frames
+        for (int i = 0; i < 10; i++) {
+            getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (bonuses[i] >= 0 ? "+" : "") + bonuses[i], (1675 + i));
         }
+        //Bonuses sent to the custom made frames
+        for (int bonus = 10; bonus < 16; bonus++) {
+			if (bonus == 12 || bonus == 14 || bonus == 15) {
+				getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (bonuses[bonus] >= 0 ? "+" : "") + bonuses[bonus] + "%", (15115 + bonus - 10));
+			} else {
+				getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (bonuses[bonus] >= 0 ? "+" : "") + bonuses[bonus], (15115 + bonus - 10));
+			}
+			
+			//Debug
+			//getActionSender().sendMessage(Combat.BONUS_NAMES[bonus]+" VS "+ (bonuses[bonus] >= 0 ? "+" : "")+ " VS "+ (15115 + bonus - 10));
+		}
+        
+        calculateWeight();
+    }
+    
+	/**
+	 * Calculates and writes the players weight to the equipment equipment
+	 * sidebar interface.
+	 */
+    private double calculateWeight() {
+    	double weight = 0;
+    	int weightToInt = (int) weight;
+    	getActionSender().sendString(weightToInt+" kg", 15122);
+    	return weight;
+    	/*
+    	for(int equipmentIndex = 0; equipmentIndex < 12; equipmentIndex++) {
+    		this.getEquipment().getId(equipmentIndex);
+    		
+    		if (this.getEquipment().getId(equipmentIndex) > 1) {
+    			
+    		}
+    	}*/
+    	
     }
 
 	/**
@@ -3025,4 +3061,45 @@ public class Player extends Entity {
     public String getFormatUsername() {
         return Utility.capitalize(username);
     }
+    
+	private boolean dropWarning = true;
+	
+	/**
+	 * Determines whether a warning will be shown when dropping an item.
+	 * 
+	 * @return True if it's the case, False otherwise.
+	 */
+	public boolean showDropWarning() {
+		return dropWarning;
+	}
+
+	/**
+	 * Change whether a warning will be shown when dropping items.
+	 * 
+	 * @param shown
+	 *            True in case a warning must be shown, False otherwise.
+	 */
+	public void setDropWarning(boolean shown) {
+		dropWarning = shown;
+	}
+    
+	private long lastIncentive;
+	
+    public long getLastIncentive() {
+		return lastIncentive;
+	}
+
+	public void setLastIncentive(long lastIncentive) {
+		this.lastIncentive = lastIncentive;
+	}
+	
+	private boolean incentiveWarning;
+
+	public boolean receivedIncentiveWarning() {
+		return this.incentiveWarning;
+	}
+
+	public void updateIncentiveWarning() {
+		this.incentiveWarning = true;
+	}
 }

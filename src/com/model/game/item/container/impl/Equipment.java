@@ -108,22 +108,22 @@ public final class Equipment extends Container {
      * @return {@code true} if the item was equipped, {@code false} otherwise.
      */
     public boolean equipItem(int inventorySlot) {
-    	System.out.println("Enter");
+    	//System.out.println("Enter");
         Item item = player.getInventory().get(inventorySlot);
         if (!Item.valid(item)) {
-        	System.out.println("Oops");
+        	//System.out.println("Oops");
             return false;
         }
         if (!Requirement.canEquip(player, item)) {
-        	System.out.println("Can we even equip");
+        	//System.out.println("Can we even equip");
             return false;
         }
         if (item.getDefinition().isStackable()) {
-        	System.out.println("Enter next part");
+        	//System.out.println("Enter next part");
             int designatedSlot = item.getDefinition().getEquipmentSlot();
             Item equipItem = get(designatedSlot);
             if (used(designatedSlot)) {
-            	System.out.println("Enter part 3");
+            	//System.out.println("Enter part 3");
                 if (item.getId() == equipItem.getId()) {
                     set(designatedSlot, new Item(item.getId(), item.getAmount() + equipItem.getAmount()));
                     System.out.println("Set equipment");
@@ -131,25 +131,25 @@ public final class Equipment extends Container {
                     player.getInventory().set(inventorySlot, equipItem);
                     player.getInventory().refresh();
                     set(designatedSlot, item);
-                    System.out.println("Don't know what this does");
+                   // System.out.println("Don't know what this does");
                 }
             } else {
                 set(designatedSlot, item);
-                System.out.println("Same here");
+                //System.out.println("Same here");
             }
             player.getInventory().remove(item, inventorySlot);
         } else {
             int designatedSlot = item.getDefinition().getEquipmentSlot();
             if (designatedSlot == Equipment.WEAPON_SLOT && item.getDefinition().isTwoHanded() && used(Equipment.SHIELD_SLOT)) {
                 if (!unequipItem(Equipment.SHIELD_SLOT, true)) {
-                    System.out.println("Uneqip?");
+                    //System.out.println("Uneqip?");
                     return false;
                 }
             }
             if (designatedSlot == Equipment.SHIELD_SLOT && used(Equipment.WEAPON_SLOT)) {
                 if (get(Equipment.WEAPON_SLOT).getDefinition().isTwoHanded()) {
                     if (!unequipItem(Equipment.WEAPON_SLOT, true)) {
-                        System.out.println("2h?");
+                        //System.out.println("2h?");
                         return false;
                     }
                 }
@@ -169,8 +169,8 @@ public final class Equipment extends Container {
             set(designatedSlot, new Item(item.getId(), item.getAmount()));
         }
         if (item.getDefinition().getEquipmentSlot() == Equipment.WEAPON_SLOT) {
-            player.getWeaponInterface().sendWeapon(item.getId(), ItemDefinition.forId(item.getId()).getName());
             WeaponAnimation.execute(player, item);
+            player.getWeaponInterface().restoreWeaponAttributes();
             player.spellId = -1;
             player.autocastId = -1;
             player.autoCast = false;
@@ -180,7 +180,7 @@ public final class Equipment extends Container {
         }
         refresh();
         player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-        System.out.println("Finally update");
+        //System.out.println("Finally update");
         return true;
     }
 

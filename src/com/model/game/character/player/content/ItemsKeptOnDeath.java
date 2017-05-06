@@ -88,22 +88,14 @@ public class ItemsKeptOnDeath {
 			player.getActionSender().sendString("You're marked with a \\n<col=ff0000>skull. </col>This reduces the \\nitems you keep from \\nthree to zero!", 17110);
 			break;
 		case 1:
-			player.getActionSender().sendString("You're marked with a \\n<col=ff0000>skull. </col>This reduces the \\nitems you keep from \\nthree to zero! \\nHowever, you also have the \\n<col=ff0000>Protect </col>Items prayer \\nactive, which saves you \\none extra item!", 17110);
+			player.getActionSender().sendString("You're marked with a \\n<col=ff0000>skull. </col>This reduces the \\nitems you keep from \\nthree to zero! \\nHowever, you also have the \\n<col=ff0000>Protect </col>Items prayer \\nactive, which saves you \\one extra item!", 17110);
 			break;
 		case 3:
 			player.getActionSender().sendString("You have no factors affecting \\nthe items you keep.", 17110);
 			break;
 		case 4:
-			player.getActionSender().sendString("You have the <col=ff0000>Protect Item</col> \\nprayer active, which saves \\nyou none extra item!", 17110);
+			player.getActionSender().sendString("You have the <col=ff0000>Protect Item</col> \\nprayer active, which saves \\nyou one extra item!", 17110);
 			break;
-		}
-
-		//Sends our carried wealth string
-		final BigInteger carrying = BigInteger.valueOf(player.getInventory().containerValue()).add(BigInteger.valueOf(player.getEquipment().containerValue()));
-		if (carrying.equals(BigInteger.ZERO)) {
-			player.getActionSender().sendString("Carried wealth: \\n<col=ff0000>Nothing!", 17115);
-		} else {
-			player.getActionSender().sendString("Carried wealth: \\n<col=ff0000>" + NumberFormat.getNumberInstance(Locale.US).format(carrying) + "</col> coins.", 17115);
 		}
 
 		final Item[] dropped = items.toArray(new Item[0]);
@@ -120,12 +112,12 @@ public class ItemsKeptOnDeath {
 		}
 
 		//Sent the risked wealth string
-		player.getActionSender().sendString("Risked wealth:", 17124);
-
 		if (risked.equals(BigInteger.ZERO)) {
-			player.getActionSender().sendString("Risked wealth: \\n<col=ff0000>Nothing!", 17116);
+			player.getActionSender().sendString("Value of lost items:", 17115);
+			player.getActionSender().sendString("0 gp", 17116);
 		} else {
-			player.getActionSender().sendString("Risked wealth: \\n<col=ff0000>" + NumberFormat.getNumberInstance(Locale.US).format(risked) + "</col> coins.", 17116);
+			player.getActionSender().sendString("Value of lost items:", 17115);
+			player.getActionSender().sendString(""+ NumberFormat.getNumberInstance(Locale.US).format(risked) + "gp", 17116);
 		}
 
 		player.getActionSender().sendItemsOnInterface(17113, keep);

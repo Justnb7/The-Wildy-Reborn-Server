@@ -55,7 +55,7 @@ public class Combat {
      * The names of all the bonuses in their exact identified slots.
      */
     public static final String[] BONUS_NAMES = {"Stab", "Slash", "Crush", "Magic", "Range", "Stab", "Slash", "Crush", "Magic", "Range",
-            "Strength", "Prayer", "", ""};
+            "Melee Strength", "Ranged strength", "Magic damage", "Prayer", "Undead", "Slayer"};
 
     public static void resetCombat(Player player) {
         player.usingMagic = false;

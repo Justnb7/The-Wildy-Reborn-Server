@@ -78,6 +78,8 @@ public class WeaponInterface {
 		BLESSED_SARADOMIN_SWORD("Saradomin's blessed sword", 4705, 4708, 4708), 
 		GODSWORD("godsword", 4705, 4708, 4708),
 		KORASI("Korasi's sword", 2423, 2426, 2424);
+		/*STAFF_OF_THE_DEATH("Staff of the dead", 28500, 28500, 331),
+		TOXIC_STAFF_OF_THE_DEATH("Toxic staff of the dead", 28500, 28500, 331);*/
 
 		private String weaponType;
 		private int interfaceId;
@@ -151,6 +153,7 @@ public class WeaponInterface {
 		MACE_INTERFACE(new int[] { 1434, 10887 }, 7624, 7636),
 		CLAWS(new int[] { 13652 }, 7800, 7812),
 		BLOWPIPE(new int[] { 12926 }, 7649, 7661);
+		//STAFF_OF_THE_DEATH(new int[] { 11791, 12904 }, 28500, 28500);
 
 		private int[] itemIds;
 		private int configId, specialBarId;

@@ -59,7 +59,7 @@ public class WieldPacketHandler implements SubPacketType {
 			} else {
 				// Try equipping the item
 				if (!player.getController().canEquip(player, wearId, wearSlot)) {
-					player.debug("ntylolz");
+					//player.debug("ntylolz");
 					return;
 				}
 				

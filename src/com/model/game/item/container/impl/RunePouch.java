@@ -200,15 +200,18 @@ public final class RunePouch extends Container {
 		if (!player.getInventory().playerHasItem(RUNE_POUCH)) {
 			return;
 		}
+		//player.getActionSender().sendItemsOnInterface(START_INVENTORY_INTERFACE, player.getInventory());
 		for (int item = 0; item < 28; item++) {
-			int id = 0;
+			//player.getActionSender().sendItemsOnInterface(START_INVENTORY_INTERFACE, player.getInventory());
+			/*int id = 0;
 			int amt = 0;
 
 			if (item < player.getInventory().size()) {
 				id = player.getInventory().getId(item);
 				amt = player.getInventory().get(item).getAmount();
-			}
-			player.getActionSender().sendUpdateItem(START_INVENTORY_INTERFACE + item, id - 1, 0, amt);
+			}*/
+			
+			//player.getActionSender().sendUpdateItem(START_INVENTORY_INTERFACE + item, player.getInventory(), 0, 0);
 		}
 	}
 	

@@ -2,7 +2,7 @@ package com.model.game.character.player.content.music.sounds;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.out.SendSoundPacket;
-import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.definitions.NPCDefinitions;
 
 public class MobAttackSounds {
 	
@@ -70,9 +70,9 @@ public class MobAttackSounds {
 	}
 
 	public static void declare() {
-		for (int i = 0; i < NpcDefinition.getDefinitions().length; i++) {
+		for (int i = 0; i < NPCDefinitions.getDefinitions().length; i++) {
 
-			NpcDefinition def = NpcDefinition.getDefinitions()[i];
+			NPCDefinitions def = NPCDefinitions.getDefinitions()[i];
 
 			if (def != null && def.getName() != null) {
 				String s = def.getName().toLowerCase();

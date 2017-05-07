@@ -17,7 +17,7 @@ import com.model.task.impl.NPCDeathTask;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
-import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.definitions.NPCDefinitions;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -218,7 +218,7 @@ public class NPC extends Entity {
 		isDead = false;
 		randomWalk = true;
 		
-		NpcDefinition definition = NpcDefinition.getDefinitions()[id];
+		NPCDefinitions definition = NPCDefinitions.get(id);
 		if (definition != null) {
 			size = definition.getSize();
 			if (size < 1) {
@@ -295,10 +295,10 @@ public class NPC extends Entity {
 		return new Location(absX, absY, heightLevel);
 	}
 
-	public NpcDefinition getDefinition() {
-        NpcDefinition def = NpcDefinition.getDefinitions()[npcId];
+	public NPCDefinitions getDefinition() {
+        NPCDefinitions def = NPCDefinitions.get(npcId);
         if (def == null)
-            return NpcDefinition.getDefinitions()[1];
+            return NPCDefinitions.get(1);
         return def;
 	}
 
@@ -688,14 +688,14 @@ public class NPC extends Entity {
 	}
 
 	public static String getName(int npcId) {
-		if (NpcDefinition.getDefinitions()[npcId] == null || npcId < 0 || npcId >= NpcDefinition.MOB_LIMIT) {
+		if (NPCDefinitions.get(npcId) == null || npcId < 0 || npcId >= NPCDefinitions.NPCS) {
 			return "None";
 		}
-		return NpcDefinition.getDefinitions()[npcId].getName();
+		return NPCDefinitions.get(npcId).getName();
 	}
 	
 	public String getName() {
-		return NpcDefinition.getDefinitions()[getId()].getName();
+		return NPCDefinitions.get(getId()).getName();
 	}
 
 	public boolean inMulti() {

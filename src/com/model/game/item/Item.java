@@ -271,6 +271,11 @@ public class Item {
 		final ItemDefinition def = ItemDefinition.forId(getId());
 		return def == null ? "Unarmed" : def.getName();
 	}
+	
+	public static String getName(int name) {
+		final ItemDefinition def = ItemDefinition.forId(name);
+		return def == null ? "Unarmed" : def.getName();
+	}
 
 	/**
 	 * Determines if the item is stackable.
@@ -281,4 +286,6 @@ public class Item {
 		final ItemDefinition def = ItemDefinition.forId(getId());
 		return def != null && (def.isStackable() || def.isNoted());
 	}
+
+	
 }

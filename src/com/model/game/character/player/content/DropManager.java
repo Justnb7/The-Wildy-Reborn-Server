@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
@@ -31,19 +33,22 @@ import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.definitions.ItemDefinition;
+import com.model.utility.json.definitions.NPCDefinitions;
 
 public class DropManager {
 
 	private static final DecimalFormat PERCENTILE_FORMAT = new DecimalFormat("#.###");
-	
+
+	public static int AMOUNT_OF_TABLES = 0;
+
 	private static final Comparator<Integer> COMPARE_NAMES = new Comparator<Integer>() {
-		
+
 		@Override
 		public int compare(Integer o1, Integer o2) {
-				String name1 = NpcDefinition.get(o1).getName();
-				String name2 = NpcDefinition.get(o2).getName();
-				return name1.compareToIgnoreCase(name2);
+			String name1 = NPCDefinitions.get(o1).getName(); 
+			String name2 = NPCDefinitions.get(o2).getName();
+			return name1.compareToIgnoreCase(name2);
 		}
 	};
 
@@ -55,21 +60,22 @@ public class DropManager {
 	public void read() {
 		JSONParser parser = new JSONParser();
 		try {
-			JSONArray data = (JSONArray) parser.parse(new FileReader("./Data/json/npc_droptable.json"));
+			fileReader = new FileReader("./Data/json/npc/npc_droptable.json");
+			JSONArray data = (JSONArray) parser.parse(fileReader);
 			Iterator<?> drops = data.iterator();
 
 			while (drops.hasNext()) {
 				JSONObject drop = (JSONObject) drops.next();
-				
+
 				List<Integer> npcIds = new ArrayList<>();
-				
+
 				if (drop.get("npc_id") instanceof JSONArray) {
 					JSONArray idArray = (JSONArray) drop.get("npc_id");
 					idArray.forEach(id -> npcIds.add(((Long) id).intValue()));
 				} else {
 					npcIds.add(((Long) drop.get("npc_id")).intValue());
 				}
-				
+
 				TableGroup group = new TableGroup(npcIds);
 
 				for (TablePolicy policy : TablePolicy.POLICIES) {
@@ -86,33 +92,49 @@ public class DropManager {
 						int id = ((Long) item.get("item")).intValue();
 						int minimumAmount = ((Long) item.get("minimum")).intValue();
 						int maximumAmount = ((Long) item.get("maximum")).intValue();
-						table.add(new Drop(id, minimumAmount, maximumAmount));
+						table.add(new Drop(npcIds, id, minimumAmount, maximumAmount));
 					}
 					group.add(table);
 				}
 				groups.put(npcIds, group);
 			}
 			ordered.clear();
-			
+
 			for (TableGroup group : groups.values()) {
 				if (group.getNpcIds().size() == 1) {
 					ordered.add(group.getNpcIds().get(0));
 					continue;
 				}
 				for (int id : group.getNpcIds()) {
-					String name = NpcDefinition.get(id).getName();
-					if (ordered.stream().noneMatch(i -> NpcDefinition.get(i).getName().equals(name))) {
+					String name = NPCDefinitions.get(id).getName();
+					if (ordered.stream().noneMatch(i -> NPCDefinitions.get(i).getName().equals(name))) {
 						ordered.add(id);
 					}
 				}
 			}
-			
+
 			ordered.sort(COMPARE_NAMES);
 			Utility.println("Loaded " + ordered.size() + " drop tables.");
+			AMOUNT_OF_TABLES = ordered.size();
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Attempts to create a drop for a player after killing a non-playable character
+	 * 
+	 * @param player the player receiving a possible drop
+	 * @param npc the npc dropping the items
+	 */
+	static boolean test = false;
+	
+	static int[] bosses = { 
+			/* Misc bosses */
+			6619, 6618, 6615, 6766, 963, 965, 5890, 6609, 319, 6610, 6611, 5779, 6342, 2205, 2215, 3129, 3162, 2054, 2265, 2266, 2267,
+			/* Godwars minions */ 
+			2206, 2207, 2208, 3130, 3131, 3132, 2216, 2217, 2218, 3163, 3164, 3165
+	};
 
 	/**
 	 * Attempts to create a drop for a player after killing a non-playable
@@ -133,17 +155,12 @@ public class DropManager {
 			for (Item item : drops) {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location.getX(), location.getY(), location.getZ(), player));
 			}
-			if (Utility.random(150) == 1) {
-				if (npc.getDefinition().getCombatLevel() > 0 && npc.getDefinition().getCombatLevel() <= 80) {
-					GroundItemHandler.createGroundItem(new GroundItem(new Item(2677, 1), location.getX(), location.getY(), location.getZ(), player));
-				} else if (npc.getDefinition().getCombatLevel() > 80 && npc.getDefinition().getCombatLevel() <= 160) {
-					GroundItemHandler.createGroundItem(new GroundItem(new Item(2801, 1), location.getX(), location.getY(), location.getZ(), player));
-				} else if (npc.getDefinition().getCombatLevel() > 160) {
-					GroundItemHandler.createGroundItem(new GroundItem(new Item(2722, 1), location.getX(), location.getY(), location.getZ(), player));
-				}
-			}
 			
+			/**
+			 * Crystal keys
+			 */
 			if (Utility.random(115) == 1) {
+				player.getActionSender().sendMessage("@pur@You sense a crystal key being dropped to the ground.");
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(989, 1), location.getX(), location.getY(), location.getZ(), player));
 			}
 		});
@@ -165,15 +182,80 @@ public class DropManager {
 		}
 		return modifier;
 	}
-	
-	public void open(Player player) {
-		if (!player.dropListSorted) {
-			for (int index = 0; index < ordered.size(); index++) {
-				player.getActionSender().sendString(StringUtils.capitalize(NpcDefinition.get(ordered.get(index)).getName().toLowerCase().replaceAll("_", " ")), 42531 + index);
-			}
-			player.dropListSorted = true;
+
+	public void clear(Player player) {
+		for(int i = 0; i < 150; i++) {
+			player.getActionSender().sendString("", 42531 + i);
 		}
+		player.searchList.clear();
+	}
+
+	public void open(Player player) {
+		clear(player);
+		
+		for (int index = 0; index < ordered.size(); index++) {
+			player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(ordered.get(index)).getName().toLowerCase().replaceAll("_", " ")), 42531 + index);
+		}
+
 		player.write(new SendInterfacePacket(42500));
+	}
+
+	public void search(Player player, String name) {
+		if(name.matches("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$")) {
+			player.getActionSender().sendMessage("You may not search for alphabetical and numerical combinations.");
+			return;
+		}
+		if (System.currentTimeMillis() - player.lastDropTableSearch < TimeUnit.SECONDS.toMillis(5)) {
+			player.getActionSender().sendMessage("You can only do this once every 5 seconds.");
+			return;
+		}
+		player.lastDropTableSearch = System.currentTimeMillis();
+		
+		clear(player);
+
+		List<Integer> definitions = ordered.stream().filter(Objects::nonNull).filter(def -> NPCDefinitions.get(def).getName() != null).filter(def -> NPCDefinitions.get(def).getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
+
+		if(definitions.isEmpty()) {
+			definitions = ordered.stream().filter(Objects::nonNull).collect(Collectors.toList());
+			List<Integer> npcs = new ArrayList<>();
+			int count = 0;
+			for(Integer index : definitions) {
+				Optional<TableGroup> group = groups.values().stream().filter(g -> g.getNpcIds().contains(NPCDefinitions.get(index).getId())).findFirst();
+				if(group.isPresent()) {
+					TableGroup g = group.get();
+					
+					for(TablePolicy policy : TablePolicy.values()) {
+						Optional<Table> table = g.stream().filter(t -> t.getPolicy() == policy).findFirst();
+						if(table.isPresent()) {
+							for(Drop drop : table.get()) {
+								if(drop == null) {
+									continue;
+								}
+								
+								if(ItemDefinition.forId(drop.getItemId()).getName().toLowerCase().contains(name.toLowerCase())) {
+									npcs.add(index);
+									player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(NPCDefinitions.get(index).getId()).getName().toLowerCase().replaceAll("_", " ")), 42531 + count);
+									count++;
+								}
+							}
+						}
+					}
+				};
+			}
+			
+			player.searchList = npcs;
+			return;
+			
+		}
+		
+		for(int index = 0; index < definitions.size(); index++) {
+			if(index >= 150) {
+				break;
+			}
+			player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(index).getName().toLowerCase().replaceAll("_", " ")), 42531 + index);
+		}
+
+		player.searchList = definitions;
 	}
 
 	public void select(Player player, int button) {
@@ -181,7 +263,8 @@ public class DropManager {
 		if (listIndex < 0 || listIndex > ordered.size() - 1) {
 			return;
 		}
-		int npcId = ordered.get(listIndex);
+
+		int npcId = player.searchList.isEmpty() ? ordered.get(listIndex) : player.searchList.get(listIndex);
 
 		Optional<TableGroup> group = groups.values().stream().filter(g -> g.getNpcIds().contains(npcId)).findFirst();
 
@@ -190,19 +273,27 @@ public class DropManager {
 				player.getActionSender().sendMessage("You can only do this once every 5 seconds.");
 				return;
 			}
-	
+
 			player.lastDropTableSelected = System.currentTimeMillis();
-			String name = StringUtils.capitalize(NpcDefinition.get(npcId).getName().toLowerCase().replaceAll("_", " "));
+			String name = StringUtils.capitalize(NPCDefinitions.get(npcId).getName().toLowerCase().replaceAll("_", " "));
 			player.getActionSender().sendString(name + " (" + npcId + ")", 42502);
 			double modifier = getModifier(player);
 			for (TablePolicy policy : TablePolicy.POLICIES) {
 				Optional<Table> table = g.stream().filter(t -> t.getPolicy() == policy).findFirst();
 				if (table.isPresent()) {
 					double chance = (1.0 / (double) (table.get().getAccessibility() * modifier)) * 100D;
+					int in_kills = (int) (100 / chance);
 					if (chance > 100.0) {
 						chance = 100.0;
 					}
-					player.getActionSender().sendString(PERCENTILE_FORMAT.format(chance) + "%", 42514 + policy.ordinal());
+					if (in_kills == 0) {
+						in_kills = 1;
+					}
+					if (player.dropRateInKills) {
+						player.getActionSender().sendString("1/"+in_kills+"" + "", 42514 + policy.ordinal());
+					} else {
+						player.getActionSender().sendString(PERCENTILE_FORMAT.format(chance) + "%", 42514 + policy.ordinal());
+					}
 					updateAmounts(player, policy, table.get());
 					updateTable(player, table.get());
 				} else {
@@ -263,15 +354,32 @@ public class DropManager {
 		}
 	}
 
+	static int amountt = 0;
+
+	private FileReader fileReader;
+
+	/**
+	 * Testing droptables of chosen npcId
+	 * @param player		The player who is testing the droptable
+	 * @param npcId			The npc who of which the player is testing the droptable from
+	 * @param amount		The amount of times the player want to grab a drop from the npc droptable
+	 */
 	public void test(Player player, int npcId, int amount) {
-		TableGroup group = groups.get(npcId);
-		if (group == null) {
-			return;
-		}
+		Optional<TableGroup> group = groups.values().stream().filter(g -> g.getNpcIds().contains(npcId)).findFirst();
+
+		amountt = amount;
+
 		while (amount-- > 0) {
-			List<Item> drops = group.access(player, 1.0, 1);
-			drops.forEach(item -> player.getBank().add(new Item(item.getId(), item.getAmount())));
+			group.ifPresent(g -> {
+				List<Item> drops = g.access(player, 1.0, 1);
+
+				for (Item item : drops) {
+					player.getBank().add(new Item(item.getId(), item.getAmount()));
+				}
+			});
 		}
+		player.getActionSender().sendMessage("Completed @blu@" + amountt + "@bla@ drops from @blu@" + NPCDefinitions.get(npcId).getName() + "@bla@.");
 	}
+
 
 }

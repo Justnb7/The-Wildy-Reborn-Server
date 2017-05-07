@@ -96,8 +96,6 @@ public class Server {
 
 			GameLogicService.initialize();
 			World.getWorld().init();
-			globalObjects.pulse();
-			dropManager.read();
 			ResourceLeakDetector.setLevel(io.netty.util.ResourceLeakDetector.Level.PARANOID);
 			bind(Constants.SERVER_PORT);
 			

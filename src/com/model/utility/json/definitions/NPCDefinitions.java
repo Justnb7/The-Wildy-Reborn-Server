@@ -5,126 +5,157 @@ package com.model.utility.json.definitions;
  *
  * @author lare96 <http://github.com/lare96>
  */
-public final class NpcDefinition {
+public final class NPCDefinitions {
+
+	public static int NPCS = 20_000;
+
+	private static NPCDefinitions[] definitions = new NPCDefinitions[NPCS];
 
 	/**
-	 * The maximum amount of mobs present in a #129 old school revision.
+	 * @return the definitions
 	 */
-	public static final int MOB_LIMIT = 7_621;
-
-	private static final NpcDefinition[] DEFINITIONS = new NpcDefinition[MOB_LIMIT];
-
-	public static NpcDefinition get(int id) {
-		if (id >= MOB_LIMIT || id < 0) {
-			return null;
-		}
-		
-		return DEFINITIONS[id];
+	public static NPCDefinitions[] getDefinitions() {
+		return definitions;
 	}
 
-	public static NpcDefinition[] getDefinitions() {
-		return DEFINITIONS;
+	/**
+	 * The NPCDefinitions object for the associated npc identification value
+	 * 
+	 * @param npcId the npc id
+	 * @return the {@link NPCDefinitions} object
+	 */
+	public static NPCDefinitions get(int npcId) {
+		if (definitions[npcId] == null) {
+			definitions[npcId] = new NPCDefinitions(npcId);
+		}
+		return definitions[npcId];
+	}
+
+	/**
+	 * Attempts to retrieve the {@link NPCDefinitions} object with the exact same name as specified.
+	 * 
+	 * <p>
+	 * <b>Please note that this is a fairly resource intensive function as we are sifting through thousands of definitions in hopes to retrieve a definition with the same name.</b>
+	 * </p>
+	 * 
+	 * @param name the name of the npc
+	 * @return the definition with the same name if possible, otherwise null
+	 */
+	public static NPCDefinitions get(String name) {
+		for (NPCDefinitions definition : definitions) {
+			if (definition == null || definition.name == null) {
+				continue;
+			}
+			if (definition.name.equalsIgnoreCase(name)) {
+				return definition;
+			}
+		}
+		return null;
+	}
+	
+	public NPCDefinitions(int id) {
+		 this.id = id;
 	}
 
     /**
      * The identification for this NPC.
      */
-    private final int id;
+    private int id;
 
     /**
      * The name of this NPC.
      */
-    private final String name;
+    private String name;
 
     /**
      * The description of this NPC.
      */
-    private final String description;
+    private String description;
 
     /**
      * The combat level of this NPC.
      */
-    private final int combatLevel;
+    private int combatLevel;
 
     /**
      * The size of this NPC.
      */
-    private final int size;
+    private int size;
 
     /**
      * Determines if this NPC can be attacked.
      */
-    private final boolean attackable;
+    private boolean attackable;
 
     /**
      * Determines if this NPC is aggressive.
      */
-    private final boolean aggressive;
+    private boolean aggressive;
 
     /**
      * Determines if this NPC retreats.
      */
-    private final boolean retreats;
+    private boolean retreats;
 
     /**
      * Determines if this NPC is poisonous.
      */
-    private final boolean poisonous;
+    private boolean poisonous;
 
     /**
      * The time it takes for this NPC to respawn.
      */
-    private final int respawnTime;
+    private int respawnTime;
 
     /**
      * The max hit of this NPC.
      */
-    private final int maxHit;
+    private int maxHit;
 
     /**
      * The maximum amount of hitpoints this NPC has.
      */
-    private final int hitpoints;
+    private int hitpoints;
 
     /**
      * The attack speed of this NPC.
      */
-    private final int attackSpeed;
+    private int attackSpeed;
 
     /**
      * The attack animation of this NPC.
      */
-    private final int attackAnimation;
+    private int attackAnimation;
 
     /**
      * The defence animation of this NPC.
      */
-    private final int defenceAnimation;
+    private int defenceAnimation;
 
     /**
      * The death animation of this NPC.
      */
-    private final int deathAnimation;
+    private int deathAnimation;
 
     /**
      * The attack bonus of this NPC.
      */
-    private final int attackBonus;
+    private int attackBonus;
 
     /**
      * The melee defence bonus of this NPC.
      */
-    private final int meleeDefence;
+    private int meleeDefence;
 
     /**
      * The ranged defence of this NPC.
      */
-    private final int rangedDefence;
+    private int rangedDefence;
 
     /**
      * The magic defence of this NPC.
      */
-    private final int magicDefence;
+    private int magicDefence;
 
     /**
      * Creates a new {@link NpcDefintion}.
@@ -170,7 +201,7 @@ public final class NpcDefinition {
      * @param magicDefence
      *            the magic defence of this NPC.
      */
-    public NpcDefinition(int id, String name, String description, int combatLevel, int size, boolean attackable, boolean aggressive,
+    public NPCDefinitions(int id, String name, String description, int combatLevel, int size, boolean attackable, boolean aggressive,
         boolean retreats, boolean poisonous, int respawnTime, int maxHit, int hitpoints, int attackSpeed, int attackAnimation,
         int defenceAnimation, int deathAnimation, int attackBonus, int meleeDefence, int rangedDefence, int magicDefence) {
         this.id = id;

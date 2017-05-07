@@ -1,5 +1,6 @@
 package com.model.game.character.player.packets.in;
 
+import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.packets.PacketType;
 
@@ -13,6 +14,10 @@ public class InputFieldPacketHandler implements PacketType {
 			player.getActionSender().sendMessage("Component; "+id+", input; " + text);
 		}
 		switch (id) {
+		
+		case 42521:
+			Server.getDropManager().search(player, text);
+			break;
 		
 		case 58063:
 			

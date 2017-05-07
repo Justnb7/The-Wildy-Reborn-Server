@@ -24,7 +24,7 @@ import com.model.net.ConnectionHandler;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
-import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.definitions.NPCDefinitions;
 import com.model.utility.json.loader.ItemDefinitionLoader;
 import com.model.utility.json.loader.NPCDefinitionLoader;
 import com.model.utility.json.loader.ShopLoader;
@@ -91,7 +91,9 @@ public class CommandPacketHandler implements PacketType {
     		player.getPestControlRewards().showInterface();
     		return true;
     		
-    		
+    	case "drop":
+    		Server.getDropManager().open(player);
+    		return true;
     	
     	case "exp":
     		player.getSkills().addExperience(Skills.HUNTER, 1000);
@@ -599,8 +601,8 @@ public class CommandPacketHandler implements PacketType {
 					player.getActionSender().sendMessage("Succesfully reloaded itemdefinitions");
 					break;
 				case 1:
-					for (int i = 0; i < NpcDefinition.getDefinitions().length; i++) {
-						NpcDefinition.getDefinitions()[i] = null;
+					for (int i = 0; i < NPCDefinitions.getDefinitions().length; i++) {
+						NPCDefinitions.getDefinitions()[i] = null;
 					}
 					player.getActionSender().sendMessage("Succesfully reloaded npcdefinitions");
 					new NPCDefinitionLoader().load();

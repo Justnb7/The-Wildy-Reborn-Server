@@ -2722,6 +2722,8 @@ public class Player extends Entity {
 	 */
 	private int[] bonuses = new int[16];
 	
+	public List<Integer> searchList = new ArrayList<>();
+	
     /**
      * Integers
      */
@@ -2746,6 +2748,7 @@ public class Player extends Entity {
 	public boolean usingBow, usingMagic, castingMagic, magicFailed;
 	public boolean usingCross;
 	public boolean dropListSorted;
+	public boolean dropRateInKills;
 	public boolean isMuted, isClanMuted, hasMultiSign, properLogout;
 	
 	/**
@@ -2766,6 +2769,7 @@ public class Player extends Entity {
 	private long venomImmunity;
 	public long godSpellDelay;
 	public long lastDropTableSelected;
+	public long lastDropTableSearch;
 
 	/**
 	 * Bytes

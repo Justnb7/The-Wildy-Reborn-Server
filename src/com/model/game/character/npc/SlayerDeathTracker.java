@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.model.game.character.player.Player;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.definitions.NPCDefinitions;
 
 /**
  * 
@@ -34,7 +34,7 @@ public class SlayerDeathTracker {
 			return;
 		}
 
-        NpcDefinition definition = NpcDefinition.getDefinitions()[npc.getId()];
+        NPCDefinitions definition = NPCDefinitions.get(npc.getId());
 		if (definition == null) {
 			return;
 		}

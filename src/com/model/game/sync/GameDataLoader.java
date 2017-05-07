@@ -15,7 +15,7 @@ import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
-import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.definitions.NPCDefinitions;
 import com.model.utility.json.loader.EquipmentRequirementLoader;
 import com.model.utility.json.loader.ItemDefinitionLoader;
 import com.model.utility.json.loader.NPCDefinitionLoader;
@@ -49,8 +49,9 @@ public class GameDataLoader implements Runnable {
 			MapLoading.load();
 			CollisionMap.load("Data/data/collisiondata.dat");
 			// Everything else..
+			Server.getDropManager().read();
 			NPCHandler.declare();
-			Arrays.fill(NpcDefinition.getDefinitions(), null);
+			Arrays.fill(NPCDefinitions.getDefinitions(), null);
 	        new NPCDefinitionLoader().load();
 			new ShopLoader().load();
 			new ItemDefinitionLoader().load();

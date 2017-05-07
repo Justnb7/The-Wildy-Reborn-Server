@@ -5,7 +5,7 @@ import java.util.Objects;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.model.utility.json.JsonLoader;
-import com.model.utility.json.definitions.NpcDefinition;
+import com.model.utility.json.definitions.NPCDefinitions;
 
 /**
  * The {@link JsonLoader} implementation that loads all npc definitions.
@@ -45,7 +45,7 @@ public final class NPCDefinitionLoader extends JsonLoader {
         int rangedDefence = reader.get("defenceRange").getAsInt();
         int magicDefence = reader.get("defenceMage").getAsInt();
 
-        NpcDefinition.getDefinitions()[index] = new NpcDefinition(index, name, description, combatLevel, size, attackable, aggressive, retreats,
+        NPCDefinitions.getDefinitions()[index] = new NPCDefinitions(index, name, description, combatLevel, size, attackable, aggressive, retreats,
             poisonous, respawnTime, maxHit, hitpoints, attackSpeed, attackAnim, defenceAnim, deathAnim, attackBonus, meleeDefence,
             rangedDefence, magicDefence);
     }

@@ -13,9 +13,19 @@ import com.model.game.item.container.ItemContainerPolicy;
 public final class Bank extends Container {
 	
 	/**
-	 * The size of the inventory container.
+	 * The bank size.
 	 */
 	public static final int SIZE = 352;
+
+	/**
+	 * The player inventory interface.
+	 */
+	public static final int PLAYER_INVENTORY_INTERFACE = 5064;
+
+	/**
+	 * The bank inventory interface.
+	 */
+	public static final int BANK_INVENTORY_INTERFACE = 5382;
 
     /**
      * The player who's bank is being managed.

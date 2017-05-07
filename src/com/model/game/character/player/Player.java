@@ -1369,8 +1369,6 @@ public class Player extends Entity {
 		usernameHash = Utility.playerNameToInt64(username);
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
-		teleportToX = 3087;
-		teleportToY = 3499;
 		mapRegionX = mapRegionY = -1;
 		currentX = currentY = 0;
 		getMovementHandler().resetWalkingQueue();

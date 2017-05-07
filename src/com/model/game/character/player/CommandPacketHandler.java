@@ -14,7 +14,6 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
-import com.model.game.character.player.packets.out.*;
 import com.model.game.character.player.serialize.PlayerSave;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;

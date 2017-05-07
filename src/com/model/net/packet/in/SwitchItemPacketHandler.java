@@ -1,6 +1,7 @@
 package com.model.net.packet.in;
 
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.Bank;
 import com.model.game.item.container.impl.Inventory;
 import com.model.net.packet.PacketType;
 
@@ -14,6 +15,8 @@ public class SwitchItemPacketHandler implements PacketType {
 	@Override
 	public void handle(Player player, int id, int size) {
 		int interfaceId = player.getInStream().readUnsignedWordBigEndianA();
+		@SuppressWarnings("unused")
+		boolean insertMode = player.getInStream().readSignedByteC() == 1;
 		int fromSlot = player.getInStream().readUnsignedWordBigEndianA();
 		int toSlot = player.getInStream().readUnsignedWordBigEndian();
 		
@@ -21,21 +24,26 @@ public class SwitchItemPacketHandler implements PacketType {
 			System.out.printf("SwitchItemPacketHandler: interfaceId %d - fromSlot %d - toSlot %d%n", interfaceId, fromSlot, toSlot);
 		}
 		
+		if (interfaceId < 0 || fromSlot < 0 || toSlot < 0)
+            return;
+		
 		switch(interfaceId) {
+		case Bank.PLAYER_INVENTORY_INTERFACE:
 		case Inventory.INTERFACE:
-			if(fromSlot >= 0 && fromSlot < Inventory.SIZE && toSlot >= 0 && toSlot < Inventory.SIZE && toSlot != fromSlot) {
+			if (fromSlot >= 0 && fromSlot < Inventory.SIZE && toSlot >= 0 && toSlot < Inventory.SIZE && toSlot != fromSlot) {
 				player.getInventory().swap(fromSlot, toSlot);
 			}
 			break;
 			
-		case 5382:
-            if (player.isInsertItem()) {
-                player.getBank().swap(fromSlot, toSlot);
-            } else {
-                player.getBank().transfer(fromSlot, toSlot);
-            }
-            player.getBank().refresh();
-            break;
+		case Bank.BANK_INVENTORY_INTERFACE:
+			if(fromSlot >= 0 && fromSlot < Bank.SIZE && toSlot >= 0 && toSlot < Bank.SIZE && toSlot != fromSlot) {
+				if(player.isInsertItem()) {
+					player.getBank().swap(fromSlot, toSlot);
+				} else {
+					player.getBank().transfer(fromSlot, toSlot);
+				}
+			}
+			break;
 		}
 		
 		//Stop active skilling tasks

@@ -49,8 +49,7 @@ public class GameDataLoader implements Runnable {
 			MapLoading.load();
 			CollisionMap.load("Data/data/collisiondata.dat");
 			// Everything else..
-			Server.getDropManager().read();
-			NPCHandler.declare();
+			Server.npcHandler.declare();
 			Arrays.fill(NPCDefinitions.getDefinitions(), null);
 	        new NPCDefinitionLoader().load();
 			new ShopLoader().load();
@@ -61,6 +60,7 @@ public class GameDataLoader implements Runnable {
 			PlayerSounds.declare();
 			ClanManager.init();
 			ConnectionHandler.initialize();
+	        Server.getDropManager().read();
 			Server.state = ServerState.LOADED;
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Failed to load the game data.", e);

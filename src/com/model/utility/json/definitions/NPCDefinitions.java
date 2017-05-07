@@ -7,7 +7,7 @@ package com.model.utility.json.definitions;
  */
 public final class NPCDefinitions {
 
-	public static int NPCS = 20_000;
+	public static int NPCS = 7520;
 
 	private static NPCDefinitions[] definitions = new NPCDefinitions[NPCS];
 
@@ -243,6 +243,10 @@ public final class NPCDefinitions {
     public String getName() {
         return name;
     }
+    
+    public void setName(String name) {
+		this.name = name;
+	}
 
     /**
      * Gets the description of this NPC.

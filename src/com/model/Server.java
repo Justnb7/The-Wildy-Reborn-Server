@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
-import com.model.game.character.player.content.DropManager;
+import com.model.game.character.npc.drops.DropManager;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionListener;
 import com.model.game.object.GlobalObjects;
 import com.model.game.sync.GameDataLoader;

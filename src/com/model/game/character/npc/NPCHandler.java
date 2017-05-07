@@ -11,8 +11,8 @@ import com.model.game.location.Location;
 
 public final class NPCHandler {
 
-	public static void declare() {
-        loadAutoSpawn("./Data/text_files/npc_spawns.txt");
+	public void declare() {
+        loadAutoSpawn("./data/text_files/npc_spawns.txt");
 	}
 
 	public static boolean loadAutoSpawn(String FileName) {

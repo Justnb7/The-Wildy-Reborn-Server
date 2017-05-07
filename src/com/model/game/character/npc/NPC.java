@@ -111,6 +111,8 @@ public class NPC extends Entity {
 		transformId = Id;
 		getUpdateFlags().flag(UpdateFlag.TRANSFORM);
 	}
+	
+	private String npcName;
 
 	/**
 	 * Npc direction
@@ -224,6 +226,7 @@ public class NPC extends Entity {
 			if (size < 1) {
 				size = 1;
 			}
+			npcName = definition.getName();
 			combatLevel = definition == null ? 1 : definition.getCombatLevel();
 			hitpoints = maxHitpoints = definition.getHitpoints();
 			maxHit = definition.getMaxHit();
@@ -695,7 +698,7 @@ public class NPC extends Entity {
 	}
 	
 	public String getName() {
-		return NPCDefinitions.get(getId()).getName();
+		return npcName;
 	}
 
 	public boolean inMulti() {

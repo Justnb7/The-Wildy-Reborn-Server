@@ -70,9 +70,9 @@ public class MobAttackSounds {
 	}
 
 	public static void declare() {
-		for (int i = 0; i < NPCDefinitions.getDefinitions().length; i++) {
+		for (int i = 0; i < NPCDefinitions.NPCS; i++) {
 
-			NPCDefinitions def = NPCDefinitions.getDefinitions()[i];
+			NPCDefinitions def = NPCDefinitions.get(i);
 
 			if (def != null && def.getName() != null) {
 				String s = def.getName().toLowerCase();

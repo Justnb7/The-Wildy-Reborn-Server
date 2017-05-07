@@ -1,4 +1,4 @@
-package com.model.game.character.player.content;
+package com.model.game.character.npc.drops;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,10 +21,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.model.game.character.npc.NPC;
-import com.model.game.character.npc.drops.Drop;
-import com.model.game.character.npc.drops.Table;
-import com.model.game.character.npc.drops.TableGroup;
-import com.model.game.character.npc.drops.TablePolicy;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.packets.out.SendInterfacePacket;
@@ -60,7 +56,7 @@ public class DropManager {
 	public void read() {
 		JSONParser parser = new JSONParser();
 		try {
-			fileReader = new FileReader("./Data/json/npc/npc_droptable.json");
+			FileReader fileReader = new FileReader("./Data/json/npc/npc_droptable.json");
 			JSONArray data = (JSONArray) parser.parse(fileReader);
 			Iterator<?> drops = data.iterator();
 
@@ -106,7 +102,8 @@ public class DropManager {
 					continue;
 				}
 				for (int id : group.getNpcIds()) {
-					String name = NPCDefinitions.get(id).getName();
+					//String name = NPCDefinitions.get(id).getName();
+					String name = NPC.getName(id);
 					if (ordered.stream().noneMatch(i -> NPCDefinitions.get(i).getName().equals(name))) {
 						ordered.add(id);
 					}
@@ -120,21 +117,6 @@ public class DropManager {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Attempts to create a drop for a player after killing a non-playable character
-	 * 
-	 * @param player the player receiving a possible drop
-	 * @param npc the npc dropping the items
-	 */
-	static boolean test = false;
-	
-	static int[] bosses = { 
-			/* Misc bosses */
-			6619, 6618, 6615, 6766, 963, 965, 5890, 6609, 319, 6610, 6611, 5779, 6342, 2205, 2215, 3129, 3162, 2054, 2265, 2266, 2267,
-			/* Godwars minions */ 
-			2206, 2207, 2208, 3130, 3131, 3132, 2216, 2217, 2218, 3163, 3164, 3165
-	};
 
 	/**
 	 * Attempts to create a drop for a player after killing a non-playable
@@ -353,33 +335,4 @@ public class DropManager {
 			player.getActionSender().sendString("", 42739 + collumnOffset + (index * 2));
 		}
 	}
-
-	static int amountt = 0;
-
-	private FileReader fileReader;
-
-	/**
-	 * Testing droptables of chosen npcId
-	 * @param player		The player who is testing the droptable
-	 * @param npcId			The npc who of which the player is testing the droptable from
-	 * @param amount		The amount of times the player want to grab a drop from the npc droptable
-	 */
-	public void test(Player player, int npcId, int amount) {
-		Optional<TableGroup> group = groups.values().stream().filter(g -> g.getNpcIds().contains(npcId)).findFirst();
-
-		amountt = amount;
-
-		while (amount-- > 0) {
-			group.ifPresent(g -> {
-				List<Item> drops = g.access(player, 1.0, 1);
-
-				for (Item item : drops) {
-					player.getBank().add(new Item(item.getId(), item.getAmount()));
-				}
-			});
-		}
-		player.getActionSender().sendMessage("Completed @blu@" + amountt + "@bla@ drops from @blu@" + NPCDefinitions.get(npcId).getName() + "@bla@.");
-	}
-
-
 }

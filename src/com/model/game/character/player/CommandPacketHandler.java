@@ -601,7 +601,7 @@ public class CommandPacketHandler implements PacketType {
 					player.getActionSender().sendMessage("Succesfully reloaded itemdefinitions");
 					break;
 				case 1:
-					for (int i = 0; i < NPCDefinitions.getDefinitions().length; i++) {
+					for (int i = 0; i < NPCDefinitions.NPCS; i++) {
 						NPCDefinitions.getDefinitions()[i] = null;
 					}
 					player.getActionSender().sendMessage("Succesfully reloaded npcdefinitions");

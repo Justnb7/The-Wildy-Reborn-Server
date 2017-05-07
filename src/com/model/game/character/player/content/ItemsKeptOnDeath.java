@@ -8,9 +8,9 @@ import java.util.Queue;
 
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.Item.ItemComparator;
+import com.model.net.packet.out.SendInterfacePacket;
 
 /**
  * The class which represents functionality for the items kept on death container.

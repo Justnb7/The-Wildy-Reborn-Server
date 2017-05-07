@@ -2,10 +2,10 @@ package com.model.game.character.player.dialogue;
 
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
-import com.model.game.character.player.packets.out.SendPlayerHeadToInterfacePacket;
-import com.model.game.character.player.packets.out.SendInterfaceAnimationPacket;
-import com.model.game.character.player.packets.out.SendNpcHeadToInterfacePacket;
+import com.model.net.packet.out.SendChatBoxInterfacePacket;
+import com.model.net.packet.out.SendInterfaceAnimationPacket;
+import com.model.net.packet.out.SendNpcHeadToInterfacePacket;
+import com.model.net.packet.out.SendPlayerHeadToInterfacePacket;
 
 /**
  * Represents a single dialogue

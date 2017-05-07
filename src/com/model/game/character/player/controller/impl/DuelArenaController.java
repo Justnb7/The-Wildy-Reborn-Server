@@ -4,8 +4,8 @@ import com.model.game.Constants;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
-import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.location.Location;
+import com.model.net.packet.out.SendWalkableInterfacePacket;
 
 public class DuelArenaController extends Controller {
 

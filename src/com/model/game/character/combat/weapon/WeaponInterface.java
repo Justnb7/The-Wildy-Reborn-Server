@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.item.container.impl.Equipment;
+import com.model.net.packet.out.SendSidebarInterfacePacket;
 import com.model.utility.json.definitions.ItemDefinition;
 
 /**

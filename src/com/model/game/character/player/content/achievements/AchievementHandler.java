@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.achievements.Achievements.Achievement;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
+import com.model.net.packet.out.SendInterfacePacket;
 
 
 

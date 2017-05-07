@@ -2,8 +2,8 @@ package com.model.game.character.player.content;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.PacketType;
-import com.model.game.character.player.packets.out.SendFriendPacket;
+import com.model.net.packet.PacketType;
+import com.model.net.packet.out.SendFriendPacket;
 import com.model.utility.Utility;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;

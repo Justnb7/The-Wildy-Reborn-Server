@@ -11,8 +11,8 @@ import com.model.game.character.player.content.consumable.Consumable;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.item.Item;
+import com.model.net.packet.out.SendSoundPacket;
 
 /**
  * Handles drinking potions

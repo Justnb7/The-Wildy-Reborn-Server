@@ -1,10 +1,10 @@
 package com.model.game.item.container.impl;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
+import com.model.net.packet.out.SendSidebarInterfacePacket;
 
 /**
  * The class which represents functionality for the looting bag container.

@@ -2,14 +2,14 @@ package com.model.game.character.player;
 
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.combat.magic.SpellBook;
-import com.model.game.character.player.packets.out.SendSidebarInterfacePacket;
-import com.model.game.character.player.packets.out.SendSkillPacket;
-import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
+import com.model.net.packet.out.SendSidebarInterfacePacket;
+import com.model.net.packet.out.SendSkillPacket;
+import com.model.net.packet.out.SendWalkableInterfacePacket;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 

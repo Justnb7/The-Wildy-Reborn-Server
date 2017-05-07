@@ -22,11 +22,10 @@ import org.json.simple.parser.ParseException;
 
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.Rights;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
+import com.model.net.packet.out.SendInterfacePacket;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -102,8 +101,7 @@ public class DropManager {
 					continue;
 				}
 				for (int id : group.getNpcIds()) {
-					//String name = NPCDefinitions.get(id).getName();
-					String name = NPC.getName(id);
+					String name = NPCDefinitions.get(id).getName();
 					if (ordered.stream().noneMatch(i -> NPCDefinitions.get(i).getName().equals(name))) {
 						ordered.add(id);
 					}
@@ -155,11 +153,11 @@ public class DropManager {
 		} else if (player.getEquipment().contains(12785)) {
 			modifier -= .05;
 		}
-		if (player.getRights().contains(Rights.ELITE_DONATOR)) {
+		if (player.getRights().isExtremeDonator()) {
 			modifier -= 0.050;
-		} else if (player.getRights().contains(Rights.SUPER_DONATOR)) {
+		} else if (player.getRights().isSuperDonator()) {
 			modifier -= 0.035;
-		} else if (player.getRights().contains(Rights.DONATOR)) {
+		} else if (player.getRights().isDonator()) {
 			modifier -= 0.020;
 		}
 		return modifier;
@@ -243,6 +241,7 @@ public class DropManager {
 	public void select(Player player, int button) {
 		int listIndex = button - 166035;
 		if (listIndex < 0 || listIndex > ordered.size() - 1) {
+			System.out.println("index is below 0");
 			return;
 		}
 
@@ -255,10 +254,9 @@ public class DropManager {
 				player.getActionSender().sendMessage("You can only do this once every 5 seconds.");
 				return;
 			}
-
 			player.lastDropTableSelected = System.currentTimeMillis();
 			String name = StringUtils.capitalize(NPCDefinitions.get(npcId).getName().toLowerCase().replaceAll("_", " "));
-			player.getActionSender().sendString(name + " (" + npcId + ")", 42502);
+			player.getActionSender().sendString(name, 42502);
 			double modifier = getModifier(player);
 			for (TablePolicy policy : TablePolicy.POLICIES) {
 				Optional<Table> table = g.stream().filter(t -> t.getPolicy() == policy).findFirst();

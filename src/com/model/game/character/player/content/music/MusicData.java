@@ -1,7 +1,7 @@
 package com.model.game.character.player.content.music;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendSongPacket;
+import com.model.net.packet.out.SendSongPacket;
 import com.model.utility.Utility;
 
 /**

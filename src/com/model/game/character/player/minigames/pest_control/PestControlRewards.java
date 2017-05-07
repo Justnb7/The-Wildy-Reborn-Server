@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
+import com.model.net.packet.out.SendInterfacePacket;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 

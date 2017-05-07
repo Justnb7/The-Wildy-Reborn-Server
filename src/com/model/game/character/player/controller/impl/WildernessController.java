@@ -4,8 +4,8 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.controller.Controller;
-import com.model.game.character.player.packets.out.SendWalkableInterfacePacket;
 import com.model.game.location.Location;
+import com.model.net.packet.out.SendWalkableInterfacePacket;
 
 
 

@@ -8,8 +8,8 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.account.Account;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
+import com.model.net.packet.out.SendInterfacePacket;
 
 /**
  * The class which represents functionality for selecting your game mode.

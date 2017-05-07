@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendSkillPacket;
+import com.model.net.packet.out.SendSkillPacket;
 
 
 

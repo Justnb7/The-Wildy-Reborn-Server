@@ -13,37 +13,11 @@ import com.model.game.item.container.ItemContainerPolicy;
 public final class Bank extends Container {
 	
 	/**
-	 * The scroll bar in the bank - interface id
-	 */
-	public static final int BANK_SCROLL_BAR_INTERFACE_ID = 5385;
-	
-	/**
-	 * The bank tabs interface id, used when switching an items' tab.
-	 */
-	public static final int BANK_TAB_INTERFACE_ID = 5383;
-
-	/**
-	 * The bank inventory interface id.
-	 */
-	public static final int INVENTORY_INTERFACE_ID = 5064;
-	
-	/**
-	 * The bank interface id.
-	 */	
-	public static final int TOTAL_BANK_TABS = 11;
-	public static final int CONTAINER_START = 50300;
-
-	/**
-	 * The bank reserved for bank searches.
-	 */
-	public static final int BANK_SEARCH_TAB_INDEX = TOTAL_BANK_TABS - 1;
-
-    /**
-	 * The bank size.
+	 * The size of the inventory container.
 	 */
 	public static final int SIZE = 352;
-	
-	/**
+
+    /**
      * The player who's bank is being managed.
      */
     private final Player player;
@@ -55,7 +29,7 @@ public final class Bank extends Container {
      *            the player who's bank is being managed.
      */
     public Bank(Player player) {
-        super(ItemContainerPolicy.STACK_ALWAYS, 352);
+        super(ItemContainerPolicy.STACK_ALWAYS, SIZE);
         this.player = player;
     }
 
@@ -75,7 +49,7 @@ public final class Bank extends Container {
      * Refreshes the contents of this bank container to the interface.
      */
     public void refresh() {
-        refresh(player, CONTAINER_START);
+        refresh(player, 5382);
     }
 
     /**

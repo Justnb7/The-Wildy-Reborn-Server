@@ -4,9 +4,9 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.out.SendInterfacePacket;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
+import com.model.net.packet.out.SendInterfacePacket;
 
 public class TeleportHandler {
 

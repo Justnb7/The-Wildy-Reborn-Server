@@ -6,9 +6,9 @@ import java.util.Map;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.character.Graphic;
-import com.model.game.character.player.packets.out.SendChatBoxInterfacePacket;
-import com.model.game.character.player.packets.out.SendSkillPacket;
 import com.model.game.character.player.skill.prayer.Prayer;
+import com.model.net.packet.out.SendChatBoxInterfacePacket;
+import com.model.net.packet.out.SendSkillPacket;
 
 /**
  * Represents a player's skill and experience levels.

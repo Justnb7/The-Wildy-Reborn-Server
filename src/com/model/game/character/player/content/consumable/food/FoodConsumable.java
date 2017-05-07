@@ -4,8 +4,8 @@ import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.packets.out.SendSoundPacket;
 import com.model.game.item.Item;
+import com.model.net.packet.out.SendSoundPacket;
 import com.model.utility.Utility;
 
 import java.util.HashMap;

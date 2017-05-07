@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.model.game.character.player.Player;
-import com.model.game.character.player.packets.buttons.ActionButton;
-import com.model.game.character.player.packets.buttons.ActionButtonEvent;
-import com.model.game.character.player.packets.buttons.ActionButtonEventListener;
-import com.model.game.character.player.packets.out.SendSongPacket;
+import com.model.net.packet.buttons.ActionButton;
+import com.model.net.packet.buttons.ActionButtonEvent;
+import com.model.net.packet.buttons.ActionButtonEventListener;
+import com.model.net.packet.out.SendSongPacket;
 
 /**
  *

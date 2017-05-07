@@ -276,7 +276,7 @@ public class Player extends Entity {
 	/**
 	 * The player is still in the tutorial
 	 */
-    private boolean tutorial = true;
+    private boolean tutorial;
 	
     /**
 	 * Gets if the player is in the tutorial

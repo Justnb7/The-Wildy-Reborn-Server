@@ -122,7 +122,7 @@ public class WeaponInterface {
 	 */
 	public void sendWeapon(int id, String name) {
 		for (final weaponInterface equipment : weaponInterface.values()) {
-			if (name == null || name == "Unarmed") {
+			if (name == null || name == "Unarmed" || id < 0) {
 				player.setAttackStyle(0);
 				player.write(new SendSidebarInterfacePacket(0, 5855));
 				player.getActionSender().sendString("Unarmed", 5857);

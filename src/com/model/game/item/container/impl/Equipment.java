@@ -5,7 +5,6 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
-import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.Requirement;
 import com.model.utility.json.definitions.WeaponAnimation;
 

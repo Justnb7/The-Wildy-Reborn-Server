@@ -69,7 +69,7 @@ public class QuestTabPageHandler {
 	 * @return The id for the quest page line
 	 */
 	public static int getQuestLine(int line) {
-		return 29501 + line;
+		return 29161 + line;
 	}
 
 	/**

@@ -3,7 +3,6 @@ package com.model.game.character.player;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -14,12 +13,11 @@ import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
-import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatAssistant;
-import com.model.game.character.combat.CombatDamage;
+import com.model.game.character.combat.DamageMap;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.effect.SkullType;
@@ -92,6 +90,7 @@ import com.model.net.packet.out.SendSidebarInterfacePacket;
 import com.model.net.packet.out.SendSkillPacket;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
+import com.model.task.impl.DeathEvent;
 import com.model.task.impl.DistancedActionTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Stopwatch;
@@ -101,6 +100,20 @@ import com.model.utility.json.definitions.WeaponAnimation;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	/**
+	 * The players damage map
+	 */
+	private DamageMap damageMap = new DamageMap();
+	
+	/**
+	 * Gets the players damage map
+	 * 
+	 * @return
+	 */
+	public DamageMap getDamageMap() {
+		return damageMap;
+	}
 	
 	/**
 	 * The player's appearance information.
@@ -1230,46 +1243,6 @@ public class Player extends Entity {
 		return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
 	}
 
-	private void hasDied() {
-		Server.getTaskScheduler().schedule(new ScheduledTask(1, true) {
-
-			@Override
-			public void execute() {
-				if (!isRegistered() || !isDead()) {
-					stop();
-					return;
-				}
-				switch (countdown) {
-				case 0:
-					setDead(true);
-					getMovementHandler().resetWalkingQueue();
-					break;
-				case 1:
-					playAnimation(Animation.create(0x900));
-					poisonDamage = -1;
-					infection = 0;
-					infected = false;
-					break;
-				case 4:
-					getPlayerDeath().characterDeath();
-					break;
-				case 5:
-					getPlayerDeath().giveLife();
-					setDead(false);
-					stop();
-					break;
-				}
-				countdown++;
-			}
-
-			@Override
-			public void onStop() {
-				setDead(false);
-				countdown = 0;
-			}
-		}.attach(this));
-	}
-
 	private GameBuffer updateBlock = null;
 
 	public void clearUpdateFlags() {
@@ -1385,6 +1358,7 @@ public class Player extends Entity {
 			damage = this.getSkills().getLevel(3);
 			//System.out.println("["+this.getName()+"] dmg was over current hp ("+getSkills().getLevel(3)+"), adjusted to "+damage);
 		}
+		
 		//System.out.println("you're defo using the right method btw "+damage+" vs "+this.getSkills().getLevel(3));
 		if (!this.hasAttribute("infhp"))
 			this.getSkills().setLevel(3, this.getSkills().getLevel(3) - damage);
@@ -1393,9 +1367,10 @@ public class Player extends Entity {
 		 * Check if our player has died, if so start the death task
 		 * 
 		 */
-		if (this.getSkills().getLevel(3) <= 0 && !isDead()) {
+		if (getSkills().getLevel(3) < 1 && !isDead()) {
+			debug("dead");
 			setDead(true);
-			hasDied();
+			Server.getTaskScheduler().schedule(new DeathEvent(this));
 		}
 		return new Hit(damage, hit.getType());
 	}
@@ -1445,6 +1420,7 @@ public class Player extends Entity {
 		inventory.refresh();
 		//Update equipment before login
 		equipment.refresh();
+		getWeaponInterface().restoreWeaponAttributes();
 		//Update friends and ignores
 		getFAI().handleLogin();
 		//Update right click menu
@@ -1592,6 +1568,10 @@ public class Player extends Entity {
 	@Override
 	public void process() {
 		try {
+			if (this.getTimePlayed() < Integer.MAX_VALUE) {
+				this.setTimePlayed(this.getTimePlayed() + 1);
+			}
+			
 			PrayerHandler.handlePrayerDraining(this);
 
 			update_attack_style(); // also updates follow distance. Must be done before following & combat
@@ -1665,7 +1645,7 @@ public class Player extends Entity {
 				setInCombat(false);
 			}
 			if (singleCombatDelay2.elapsed(6000)) {
-				resetDamageReceived();
+				getDamageMap().resetDealtDamage();
 			}
 			if (getSkullTimer() > 0) {
 				decrementSkullTimer();
@@ -2100,21 +2080,6 @@ public class Player extends Entity {
 		int base = this.getSkills().getLevelForExperience(Skills.HITPOINTS);
 		return base;
 	}
-	
-	/**
-	 * Combat refferences
-	 */
-	public void addDamageReceived(String player, int damage) {
-		if (damage <= 0) {
-			return;
-		}
-		CombatDamage combatDamage = new CombatDamage(damage);
-		if (damageReceived.containsKey(player)) {
-			damageReceived.get(player).add(new CombatDamage(damage));
-		} else {
-			damageReceived.put(player, new ArrayList<CombatDamage>(Arrays.asList(combatDamage)));
-		}
-	}
 
 	public void updateLastCombatAction() {
 		lastCombatAction.reset();
@@ -2122,10 +2087,6 @@ public class Player extends Entity {
 
 	public Stopwatch getLastCombatAction() {
 		return lastCombatAction;
-	}
-
-	public void resetDamageReceived() {
-		damageReceived.clear();
 	}
 
 	/**
@@ -2181,16 +2142,6 @@ public class Player extends Entity {
 		return dialogue;
 	}
 
-	private String killer;
-
-	public String getKiller() {
-		return killer;
-	}
-
-	public void setKiller(String killer) {
-		this.killer = killer;
-	}
-
 	public int getSessionExperience() {
 		return sessionExperience;
 	}
@@ -2208,7 +2159,6 @@ public class Player extends Entity {
 	 */
 	private DialogueManager dialogue;
 	private MovementHandler movementHandler = new MovementHandler(this);
-	private HashMap<String, ArrayList<CombatDamage>> damageReceived = new HashMap<>();
 	private FriendAndIgnoreList friendAndIgnores = new FriendAndIgnoreList(this);
 	private RequestManager requestManager = new RequestManager(this);
 	private ScheduledTask distancedTask;
@@ -3103,5 +3053,27 @@ public class Player extends Entity {
 
 	public void updateIncentiveWarning() {
 		this.incentiveWarning = true;
+	}
+	
+	private long timePlayed;
+	
+	public void setTimePlayed(long time) {
+		this.timePlayed = time;
+	}
+	
+	public long getTimePlayed() {
+		return this.timePlayed;
+	}
+	
+	public boolean didYouKnow;
+	
+	public void setDidYouKnow(boolean active) {
+		this.didYouKnow = active;
+	}
+	
+	public boolean trivia;
+	
+	public void setTrivia(boolean active) {
+		this.trivia = active;
 	}
 }

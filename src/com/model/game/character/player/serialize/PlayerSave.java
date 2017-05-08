@@ -130,6 +130,8 @@ public class PlayerSave {
 				AccountType type = Account.get(details.gameMode);
 				if (type != null)
 					player.getAccount().setType(type);
+				player.setDidYouKnow(details.didYouKnowActivated);
+				player.setTrivia(details.triviaActivated);
 				player.setSpecialAmount(details.specialAmount);
 				player.setSpellBook(details.spellbook);
 				player.getSkills().setExpCounter(details.expCounter);
@@ -211,11 +213,13 @@ public class PlayerSave {
 		private final int x, y, z;
 		private final String identity;
 		private final String mac;
+		private final boolean petSpawned;
+		private final int pet;
 		private final boolean inTutorial;
 		private final boolean starterReceived;
 		private final String gameMode;
-		private final boolean petSpawned;
-		private final int pet;
+		private final boolean didYouKnowActivated;
+		private final boolean triviaActivated;
 		private final int specialAmount;
 		private final SpellBook spellbook;
 		private final int expCounter;
@@ -289,11 +293,13 @@ public class PlayerSave {
 			z = player.getZ();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
+			petSpawned = player.isPetSpawned();
+			pet = player.getPet();
 			inTutorial = player.inTutorial();
 			starterReceived = player.receivedStarter();
 			gameMode = player.getAccount().getType().alias();
-			petSpawned = player.isPetSpawned();
-			pet = player.getPet();
+			didYouKnowActivated = player.didYouKnow;
+			triviaActivated = player.trivia;
 			specialAmount = player.getSpecialAmount();
 			spellbook = player.getSpellBook();
 			expCounter = player.getSkills().getExpCounter();

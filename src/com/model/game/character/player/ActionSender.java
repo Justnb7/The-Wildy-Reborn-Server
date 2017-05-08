@@ -143,7 +143,7 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendSidebarInterfaces() {
-		int[] interfaces = { 2423, 3917, 29400, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 36000, 147, -1, -1 };//15
+		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 36000, 147, -1, -1 };//15
 		for (int i = 0; i < 15; i++) {
 			player.write(new SendSidebarInterfacePacket(i, interfaces[i]));
 		}

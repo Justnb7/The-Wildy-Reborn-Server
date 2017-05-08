@@ -28,6 +28,7 @@ import com.model.game.item.container.impl.Trade;
 import com.model.net.packet.out.SendFriendPacket;
 import com.model.service.Service;
 import com.model.task.ScheduledTask;
+import com.model.task.impl.DidYouKnowEvent;
 import com.model.task.impl.InstanceFloorReset;
 import com.model.task.impl.NPCMovementTask;
 import com.model.task.impl.RestoreSpecialStats;
@@ -110,6 +111,7 @@ public class World implements Service {
 	 * Initializes the game world
 	 */
 	public void init() {
+		schedule(new DidYouKnowEvent());
 		schedule(new RestoreStats());
 		schedule(new NPCMovementTask());
 		schedule(new RestoreSpecialStats());

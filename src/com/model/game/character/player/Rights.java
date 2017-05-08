@@ -122,6 +122,14 @@ public enum Rights {
 	}
 	
 	/**
+	 * Determines if the players rights equal that of {@linkplain ELITE_DONATOR}
+	 * @return	true if they are of type elite donator
+	 */	
+	public boolean isEliteDonator() {
+		return equals(ELITE_DONATOR);
+	}
+	
+	/**
 	 * Determines if the players rights equal that of {@linkplain EXTREME_DONATOR}
 	 * @return	true if they are of type extreme donator
 	 */	

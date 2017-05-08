@@ -341,7 +341,7 @@ public class DuelSession extends MultiplayerSession {
 		player.killerId = -1;
 		Combat.resetCombat(player);
 		player.attackedPlayers.clear();
-		player.resetDamageReceived();
+		player.getDamageMap().resetDealtDamage();
 		
 		//refresh prayers
 		PrayerHandler.resetAllPrayers(player);

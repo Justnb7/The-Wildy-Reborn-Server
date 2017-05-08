@@ -679,13 +679,13 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			victim_npc.retaliate(attacker);
-			victim_npc.addDamageReceived(attacker_player.getName(), damage);
+			victim_npc.getDamageMap().appendDamage(attacker_player.getName(), damage);
 			if (Boundary.isIn(attacker_player, PestControl.GAME_BOUNDARY)) {
 				attacker_player.pestControlDamage += damage;
 			}
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		} else if (isPlayer() && attacker.isPlayer()) {
-			((Player)this).addDamageReceived(((Player)attacker).getName(), damage);
+			((Player)this).getDamageMap().appendDamage(((Player)attacker).getName(), damage);
 		}
 
 		// Update hit instance since we've changed the 'damage' value

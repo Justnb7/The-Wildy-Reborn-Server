@@ -6,6 +6,7 @@ import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.CombatDamage;
+import com.model.game.character.combat.DamageMap;
 import com.model.game.character.combat.nvp.NpcVsPlayerCombat;
 import com.model.game.character.following.NPCFollowing;
 import com.model.game.character.player.ActionSender;
@@ -26,9 +27,18 @@ import java.util.concurrent.TimeUnit;
 public class NPC extends Entity {
 
 	/**
-	 * Adds the damage received into a list
+	 * The damage map for the npc
 	 */
-	public Map<String, ArrayList<CombatDamage>> damageReceived = new HashMap<>();
+	private DamageMap damageMap = new DamageMap();
+	
+	/**
+	 * Gets the npcs damage map
+	 * 
+	 * @return
+	 */
+	public DamageMap getDamageMap() {
+		return damageMap;
+	}
 
 	/**
 	 * gets the npc ID
@@ -542,42 +552,6 @@ public class NPC extends Entity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void addDamageReceived(String player, int damage) {
-		if (damage <= 0) {
-			return;
-		}
-		CombatDamage combatDamage = new CombatDamage(damage);
-		if (damageReceived.containsKey(player)) {
-			damageReceived.get(player).add(new CombatDamage(damage));
-		} else {
-			damageReceived.put(player, new ArrayList<CombatDamage>(Arrays.asList(combatDamage)));
-		}
-	}
-
-	public void resetDamageReceived() {
-		damageReceived.clear();
-	}
-
-	public String getKiller() {
-		String killer = null;
-		long totalDamage = 0;
-		for (Entry<String, ArrayList<CombatDamage>> entry : damageReceived.entrySet()) {
-			String player = entry.getKey();
-			ArrayList<CombatDamage> damageList = entry.getValue();
-			int damage = 0;
-			for (CombatDamage cd : damageList) {
-				if (System.currentTimeMillis() - cd.getTimeInMillis() < TimeUnit.MINUTES.toMillis(5)) {
-					damage += cd.getDamage();
-				}
-			}
-			if (totalDamage == 0 || damage > totalDamage || killer == null) {
-				totalDamage = damage;
-				killer = player;
-			}
-		}
-		return killer;
 	}
 
 	public void handleFacing() {

@@ -1,6 +1,8 @@
 package com.model.utility;
 
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -19,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.Range;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.Gson;
 import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
@@ -749,6 +752,13 @@ public class Utility {
 		return TimeUnit.MILLISECONDS.convert(time, unit) / 600;
 	}
 	
+	public static int toCyclesOrDefault(long time, int def, TimeUnit unit) {
+		if (time > Integer.MAX_VALUE) {
+			time = def;
+		}
+		return (int) TimeUnit.MILLISECONDS.convert(time, unit) / 600;
+	}
+	
 	public static long cyclesToMinutes(int cycles) {
 		return cycles / 100;
 	}
@@ -1037,6 +1047,26 @@ public class Utility {
 			bldr.append(Long.toString(amount / 1_000_000) + "M");
 		}
 		return bldr.toString();
+	}
+
+	public static <T> List<T> jsonArrayToList(Path path, Class<T[]> clazz) {
+		try {
+			T[] collection = new Gson().fromJson(Files.newBufferedReader(path), clazz);
+			return new ArrayList<T>(Arrays.asList(collection));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static <T> List<T> jsonObjectToList(Path path, Class<T> clazz) {
+		try {
+			T collection = new Gson().fromJson(Files.newBufferedReader(path), clazz);
+			return new ArrayList<T>(Arrays.asList(collection));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

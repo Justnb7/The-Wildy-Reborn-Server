@@ -156,7 +156,7 @@ public class NPCDeathTask extends ScheduledTask {
             npc.playAnimation(Animation.create(808));
         }
         
-        npc.resetDamageReceived();
+        npc.getDamageMap().resetDealtDamage();
 
         if (npc.getId() == 492 && npc.isDead) {
         	npc.requestTransform(493);
@@ -173,9 +173,7 @@ public class NPCDeathTask extends ScheduledTask {
     private void initialDeath(NPC npc) {
         npc.resetFace();
 
-        String killerName = npc.getKiller();
-
-        Player killer = World.getWorld().getPlayerByName(killerName);
+        final Player killer = World.getWorld().getPlayerByName(npc.getDamageMap().getKiller());
 
         if (killer != null) {
             npc.killedBy = killer.getIndex();

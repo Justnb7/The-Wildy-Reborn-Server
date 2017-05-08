@@ -164,7 +164,7 @@ public class PlayerDeath {
 		player.teleblockLength = 0;
         player.teleblock.stop();
 		player.killerId = -1;
-		player.resetDamageReceived();
+		player.getDamageMap().resetDealtDamage();
 		killedBy = null; // reset
 	}
 

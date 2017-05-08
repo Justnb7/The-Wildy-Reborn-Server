@@ -37,9 +37,7 @@ public class Special {
 		if (attacker.getCombat().target.isPlayer()) { // playerIndex is the indexId of the player we're attacking
 			Player targPlayer = (Player) target; // type cast
 			targPlayer.putInCombat(attacker.getIndex());
-			targPlayer.killerId = attacker.getIndex();
 			targPlayer.logoutDelay.reset();
-			targPlayer.singleCombatDelay.reset();
 			attacker.updateLastCombatAction();
 			attacker.setInCombat(true);
 		}

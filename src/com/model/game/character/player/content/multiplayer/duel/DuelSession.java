@@ -338,7 +338,6 @@ public class DuelSession extends MultiplayerSession {
 		player.poisonDamage = 0;
 		player.venomDamage = 0;
 		player.freeze(0);
-		player.killerId = -1;
 		Combat.resetCombat(player);
 		player.attackedPlayers.clear();
 		player.getDamageMap().resetDealtDamage();

@@ -7,6 +7,7 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
+import com.model.game.item.ground.GroundItemType;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
 import com.model.net.packet.out.SendWalkableInterfacePacket;
 
@@ -25,10 +26,14 @@ public class DeathDropHandler {
 	 */
 	public static void handleDeathDrop(Player player) {
 
-		Player killer = World.getWorld().getPlayerByName(player.getDamageMap().getKiller());
+		String asdf = player.getDamageMap().getKiller();
+		player.debug("killed by: "+asdf);
+		Player killer = World.getWorld().getPlayerByName(asdf);
 
 		if (killer == null) {
+			player.debug("Killer not found, you can run back for your stuff.");
 			killer = player;
+			killer.debug("i am the killer: "+killer.getName());
 		}
 
 		Item[] keep = new Item[3 + (player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0)];
@@ -89,6 +94,7 @@ public class DeathDropHandler {
 		for (Item item : drop) {
 			if (item != null) {
 				GroundItem x = new GroundItem(item, player.getPosition(), killer);
+				x.setGroundItemType(GroundItemType.PRIVATE);
 				GroundItemHandler.register(x);
 				killer.getActionSender().sendGroundItem(x);
 			}

@@ -685,7 +685,10 @@ public abstract class Entity {
 			}
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		} else if (isPlayer() && attacker.isPlayer()) {
+			//pvp
 			((Player)this).getDamageMap().appendDamage(((Player)attacker).getName(), damage);
+			Player self = (Player) this;
+			self.debug("damage; "+damage+ " killer; "+((Player)attacker).getName());
 		}
 
 		// Update hit instance since we've changed the 'damage' value

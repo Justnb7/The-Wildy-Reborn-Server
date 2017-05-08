@@ -1313,7 +1313,6 @@ public class Player extends Entity {
 
 	public void putInCombat(int attacker) {
 		logoutDelay.reset();
-		singleCombatDelay.reset();
 		updateLastCombatAction();
 		setInCombat(true);
 	}
@@ -1641,12 +1640,10 @@ public class Player extends Entity {
 
 	public void combatProcessing() {
 		try {
-			if (singleCombatDelay.elapsed(6000)) {
+			if (lastCombatAction.elapsed(6000)) {
 				setInCombat(false);
 			}
-			if (singleCombatDelay2.elapsed(6000)) {
-				getDamageMap().resetDealtDamage();
-			}
+
 			if (getSkullTimer() > 0) {
 				decrementSkullTimer();
 				if (getSkullTimer() == 1) {
@@ -2316,12 +2313,6 @@ public class Player extends Entity {
 		return acceptAid;
 	}
 	
-	private final PlayerDeath player_death = new PlayerDeath(this);
-	
-	public PlayerDeath getPlayerDeath() {
-		return player_death;
-	}
-	
     private final WeaponInterface weaponInterface = new WeaponInterface(this);
 	
 	public WeaponInterface getWeaponInterface() {
@@ -2688,7 +2679,7 @@ public class Player extends Entity {
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId,
 			followDistance,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, killerId, attackDelay, oldSpellId, walkTutorial = 15, bountyPoints, teleHeight;
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, attackDelay, oldSpellId, walkTutorial = 15, bountyPoints, teleHeight;
 	
 	/**
 	 * Booleans
@@ -2733,8 +2724,6 @@ public class Player extends Entity {
 	private Stopwatch lastCombatAction = new Stopwatch();
 	public Stopwatch switchDelay = new Stopwatch();
 	public Stopwatch aggressionTolerance = new Stopwatch();
-	public Stopwatch singleCombatDelay = new Stopwatch();
-	public Stopwatch singleCombatDelay2 = new Stopwatch();
 	public Stopwatch ditchDelay = new Stopwatch();
 	public Stopwatch foodDelay = new Stopwatch();
 	public Stopwatch teleblock = new Stopwatch();

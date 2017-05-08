@@ -23,13 +23,16 @@ public class DamageMap {
 		}
 		if (!isAdded) {
 			dealtDamage.add(new Damage(player, damage));
+			System.out.println("adding damage to map: "+damage);
 		}
 	}
 
 	public String getKiller() {
-		String killer = "";
+		String killer = "";//this string isnt being filled
 		int mostDamage = 0;
+		System.out.println("map size: "+dealtDamage.size());
 		for (Damage aDealtDamage : dealtDamage) {
+			System.out.println(mostDamage+" vs. "+aDealtDamage.damage);//try
 			if (aDealtDamage.getDamage() > mostDamage) {
 				killer = aDealtDamage.getPlayer();
 				mostDamage = aDealtDamage.getDamage();

@@ -326,7 +326,6 @@ public class Combat {
 		 */
         if (target.isPlayer()) {
             ((Player) target).putInCombat(player.getIndex());
-            ((Player) target).killerId = player.getIndex();
             target.getActionSender().sendRemoveInterfacePacket();
         }
         player.updateLastCombatAction();

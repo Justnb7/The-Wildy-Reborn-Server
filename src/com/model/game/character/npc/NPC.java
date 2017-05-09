@@ -756,6 +756,11 @@ public class NPC extends Entity {
 	public int clientIndex() {
 		return this.getIndex();
 	}
+	
+	@Override
+	public void setDefaultAnimations() {
+
+	}
 
 	public void retaliate(Entity attacker) {
 

@@ -13,6 +13,7 @@ import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
+import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
@@ -1036,6 +1037,17 @@ public class Player extends Entity {
 	@Override
 	public int getProjectileLockonIndex() {
 		return -getIndex() - 1;
+	}
+	
+	@Override
+	public void setDefaultAnimations() {
+		setStandAnimation(Animation.create(808).getId());
+		setRunAnimation(Animation.create(824).getId());
+		setWalkAnimation(Animation.create(819).getId());
+		setStandTurnAnimation(Animation.create(823).getId());
+		setTurn180Animation(Animation.create(820).getId());
+		setTurn90ClockwiseAnimation(Animation.create(821).getId());
+		setTurn90CounterClockwiseAnimation(Animation.create(822).getId());
 	}
 
 	public long lastBankDeposit;
@@ -2882,28 +2894,144 @@ public class Player extends Entity {
 	}
 	
 	/**
-     * The weapon animation for appearance updating.
-     */
-    private WeaponAnimation weaponAnimation;
+	 * @return the standAnimation
+	 */
+	public int getStandAnimation() {
+		return standAnimation;
+	}
 
 	/**
-     * Gets the weapon animation for appearance updating.
-     *
-     * @return the weapon animation.
-     */
-    public WeaponAnimation getWeaponAnimation() {
-        return weaponAnimation;
-    }
+	 * @param standAnimation
+	 *            the standAnimation to set
+	 */
+	public void setStandAnimation(int standAnimation) {
+		this.standAnimation = standAnimation;
+	}
 
-    /**
-     * Sets the value for {@link Player#weaponAnimation}.
-     *
-     * @param weaponAnimation
-     *            the new value to set.
-     */
-    public void setWeaponAnimation(WeaponAnimation weaponAnimation) {
-        this.weaponAnimation = weaponAnimation;
-    }
+	/**
+	 * @return the runAnimation
+	 */
+	public int getRunAnimation() {
+		return runAnimation;
+	}
+
+	/**
+	 * @param runAnimation
+	 *            the runAnimation to set
+	 */
+	public void setRunAnimation(int runAnimation) {
+		this.runAnimation = runAnimation;
+	}
+
+	/**
+	 * @return the walkAnimation
+	 */
+	public int getWalkAnimation() {
+		return walkAnimation;
+	}
+
+	/**
+	 * @param walkAnimation
+	 *            the walkAnimation to set
+	 */
+	public void setWalkAnimation(int walkAnimation) {
+		this.walkAnimation = walkAnimation;
+	}
+
+	/**
+	 * @return the standTurnAnimation
+	 */
+	public int getStandTurnAnimation() {
+		return standTurnAnimation;
+	}
+
+	/**
+	 * @param standTurnAnimation
+	 *            the standTurnAnimation to set
+	 */
+	public void setStandTurnAnimation(int standTurnAnimation) {
+		this.standTurnAnimation = standTurnAnimation;
+	}
+
+	/**
+	 * @return the turn90ClockwiseAnimation
+	 */
+	public int getTurn90ClockwiseAnimation() {
+		return turn90ClockwiseAnimation;
+	}
+
+	/**
+	 * @param turn90ClockwiseAnimation
+	 *            the turn90ClockwiseAnimation to set
+	 */
+	public void setTurn90ClockwiseAnimation(int turn90ClockwiseAnimation) {
+		this.turn90ClockwiseAnimation = turn90ClockwiseAnimation;
+	}
+
+	/**
+	 * @return the turn90CounterClockwiseAnimation
+	 */
+	public int getTurn90CounterClockwiseAnimation() {
+		return turn90CounterClockwiseAnimation;
+	}
+
+	/**
+	 * @param turn90CounterClockwiseAnimation
+	 *            the turn90CounterClockwiseAnimation to set
+	 */
+	public void setTurn90CounterClockwiseAnimation(int turn90CounterClockwiseAnimation) {
+		this.turn90CounterClockwiseAnimation = turn90CounterClockwiseAnimation;
+	}
+
+	/**
+	 * @return the turn180Animation
+	 */
+	public int getTurn180Animation() {
+		return turn180Animation;
+	}
+
+	/**
+	 * @param turn180Animation
+	 *            the turn180Animation to set
+	 */
+	public void setTurn180Animation(int turn180Animation) {
+		this.turn180Animation = turn180Animation;
+	}
+	
+	/**
+	 * The stand animation.
+	 */
+	private int standAnimation = Animation.create(808).getId();
+
+	/**
+	 * The run animation.
+	 */
+	private int runAnimation = Animation.create(824).getId();
+
+	/**
+	 * The walk animation.
+	 */
+	private int walkAnimation = Animation.create(819).getId();
+
+	/**
+	 * The stand-turn animation.
+	 */
+	private int standTurnAnimation = Animation.create(823).getId();
+
+	/**
+	 * The turn 90 clockwise animation.
+	 */
+	private int turn90ClockwiseAnimation = Animation.create(821).getId();
+
+	/**
+	 * The turn 90 counter clockwise animation.
+	 */
+	private int turn90CounterClockwiseAnimation = Animation.create(822).getId();
+
+	/**
+	 * The turn 180 animation.
+	 */
+	private int turn180Animation = Animation.create(820).getId();
     
     DecimalFormat format = new DecimalFormat("##.##");
 

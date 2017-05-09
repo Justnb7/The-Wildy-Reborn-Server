@@ -692,13 +692,13 @@ public class PlayerUpdating {
 		player.getPlayerProps().writeByte(app.getSkinColour());
 		
 		//Update character animations
-		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x328 : player.getWeaponAnimation().getStanding());
-		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getStanding() == -1 ? 0x337 : player.getWeaponAnimation().getTurn());
-		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x333 : player.getWeaponAnimation().getWalking());
-		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x334 : player.getWeaponAnimation().turn180());
-		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x335 : player.getWeaponAnimation().turn90CW());
-		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getWalking() == -1 ? 0x336 : player.getWeaponAnimation().turn90CCW());
-		player.getPlayerProps().writeShort(player.getWeaponAnimation() == null || player.getWeaponAnimation().getRunning() == -1 ? 0x338 : player.getWeaponAnimation().getRunning());
+		player.getPlayerProps().writeShort((short) player.getStandAnimation()); // stand
+		player.getPlayerProps().writeShort((short) player.getStandTurnAnimation()); // stand turn
+		player.getPlayerProps().writeShort((short) player.getWalkAnimation()); // walk
+		player.getPlayerProps().writeShort((short) player.getTurn180Animation()); // turn 180
+		player.getPlayerProps().writeShort((short) player.getTurn90ClockwiseAnimation()); // turn 90 cw
+		player.getPlayerProps().writeShort((short) player.getTurn90CounterClockwiseAnimation()); // turn 90 ccw
+		player.getPlayerProps().writeShort((short) player.getRunAnimation()); // run
 		
 		//Sent the username to the client
 		player.getPlayerProps().putLong(Utility.playerNameToInt64(player.getName()));

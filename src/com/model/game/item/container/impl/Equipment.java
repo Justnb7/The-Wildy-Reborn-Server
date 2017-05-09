@@ -209,7 +209,7 @@ public final class Equipment extends Container {
             player.autocastId = -1;
             player.autoCast = false;
             player.getActionSender().sendConfig(108, 0);
-            player.setWeaponAnimation(null);
+            player.setDefaultAnimations();
             player.getActionSender().sendConfig(301, 0);
             player.setUsingSpecial(false);
         }

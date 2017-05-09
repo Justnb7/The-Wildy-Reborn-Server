@@ -106,7 +106,12 @@ public final class WeaponAnimation {
         if (item == null)
             return;
         WeaponAnimation animation = ANIMATIONS.get(item.getId());
-        player.setWeaponAnimation(animation == null ? null : animation.copy());
+        player.setWalkAnimation(animation.getWalking());
+        player.setRunAnimation(animation.getRunning());
+        player.setStandTurnAnimation(animation.getTurn());
+        player.setTurn90ClockwiseAnimation(animation.turn90CW());
+        player.setTurn90CounterClockwiseAnimation(animation.turn90CCW());
+        player.setTurn180Animation(animation.turn180());
     }
 
     /**

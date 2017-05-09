@@ -511,4 +511,23 @@ public class Location {
 		int deltaY = y - other.y;
 		return (int) Math.ceil(Math.sqrt(deltaX * deltaX + deltaY * deltaY));
 	}
+
+	/**
+	 * Creates a new location based on this location.
+	 * 
+	 * @param diffX
+	 *            X difference.
+	 * @param diffY
+	 *            Y difference.
+	 * @param diffZ
+	 *            Z difference.
+	 * @return The new location.
+	 */
+	public Location transform(int diffX, int diffY, int diffZ) {
+		return Location.create(x + diffX, y + diffY, z + diffZ);
+	}
+
+	public Location transform(int diffX, int diffY) {
+		return new Location(z, x + diffX, y + diffY);
+	}
 }

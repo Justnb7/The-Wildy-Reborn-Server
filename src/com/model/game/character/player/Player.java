@@ -1255,6 +1255,7 @@ public class Player extends Entity {
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();
+		this.setForceWalk(new int[0], false);
 	}
 
 	public MovementHandler getMovementHandler() {
@@ -1520,7 +1521,7 @@ public class Player extends Entity {
 				int x = teleportToX;
 				int y = teleportToY;
 				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
-					player.move(new Location(2657, 2639, 0));
+					player.movePlayer(new Location(2657, 2639, 0));
 				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
 					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
 					player.getFightCave().startWave();
@@ -2673,13 +2674,13 @@ public class Player extends Entity {
 	private int chatTextEffects = 0;
 	public int mapRegionX, mapRegionY;
 	public int currentX, currentY;
-	public int teleportToX = -1, teleportToY = -1;
+	public int teleportToX = -1, teleportToY = -1, teleHeight;
 	public int lastClickedItem;
 
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId,
 			followDistance,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, attackDelay, oldSpellId, walkTutorial = 15, bountyPoints, teleHeight;
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, attackDelay, oldSpellId, walkTutorial = 15, bountyPoints;
 	
 	/**
 	 * Booleans
@@ -2924,22 +2925,6 @@ public class Player extends Entity {
         onAuto = false;
         autoCast = false;
         getActionSender().sendConfig(108, 0);
-    }
-	
-	public void move(Location target) {
-        if (this.isBusy()) {
-            return;
-        }
-		if (!this.lastSpear.elapsed(4000)) {
-			this.getActionSender().sendMessage("You're trying to move too fast.");
-			return;
-		}
-		this.getMovementHandler().reset();
-		this.teleportToX = target.getX();
-		this.teleportToY = target.getY();
-		this.teleHeight = target.getZ();
-		this.getSkillCyclesTask().stop();
-        System.out.println("to "+Arrays.toString(new int[] {target.getX(), target.getY(), target.getZ()}));
     }
 	
 	/**

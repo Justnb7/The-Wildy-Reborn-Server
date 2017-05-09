@@ -72,6 +72,11 @@ public class UpdateFlags {
 		 * Update flag used to transform npc to another.
 		 */
 		TRANSFORM,
+		
+		/**
+		 * Update flag to move the entity.
+		 */
+		FORCE_MOVEMENT,
 	}
 	
 	/**

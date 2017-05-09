@@ -1,5 +1,6 @@
 package com.model.game.character;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -987,5 +988,61 @@ public abstract class Entity {
 	 * @return
 	 */
 	public abstract ActionSender getActionSender();
+	
+	/**
+	 * The force walk variables.
+	 */
+	private int[] forceWalk;
+	
+	/**
+	 * Gets the force movements values
+	 * @return
+	 */
+	public int[] getForceWalk() {
+		return forceWalk;
+	}
+
+	/**
+	 * Sets the force walk data
+	 * @param forceWalk
+	 * @param removeAttribute
+	 */
+	public void setForceWalk(final int[] forceWalk, final boolean removeAttribute) {
+		this.forceWalk = forceWalk;
+		if(forceWalk.length > 0) {
+			
+			Server.getTaskScheduler().submit(new ScheduledTask(forceWalk[7]) {
+				@Override
+				public void execute() {
+					movePlayer(getPosition().transform(forceWalk[2], forceWalk[3], 0));
+					if(removeAttribute) {
+						getAttributes().remove("busy");
+					}
+					this.stop();
+				}
+			});
+		}
+	}
+	
+	/**
+	 * Sets the teleport target.
+	 * @param teleportTarget The target location.
+	 */
+	public void movePlayer(Location teleportTarget) {
+		Player player = (Player) this;
+		if (player.isBusy()) {
+            return;
+        }
+		if (!player.lastSpear.elapsed(4000)) {
+			player.getActionSender().sendMessage("You're trying to move too fast.");
+			return;
+		}
+		player.getMovementHandler().reset();
+		player.teleportToX = teleportTarget.getX();
+		player.teleportToY = teleportTarget.getY();
+		player.teleHeight = teleportTarget.getZ();
+		player.getSkillCyclesTask().stop();
+        System.out.println("to "+Arrays.toString(new int[] {teleportTarget.getX(), teleportTarget.getY(), teleportTarget.getZ()}));
+	}
 	
 }

@@ -8,6 +8,7 @@ import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.item.container.impl.Equipment;
+import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -285,6 +286,10 @@ public class PlayerUpdating {
 			return;
 		}
 		
+		if (flags.get(UpdateFlag.FORCE_MOVEMENT)) {
+			updateMask |= 0x400;
+		}
+		
 		if (flags.get(UpdateFlag.GRAPHICS)) {
 			updateMask |= 0x100;
 		}
@@ -329,6 +334,11 @@ public class PlayerUpdating {
 
 		// now writing the various update blocks itself - note that their order
 		// crucial
+		
+		if (flags.get(UpdateFlag.FORCE_MOVEMENT)) {
+			appendForceMovement(player, updateBlock);
+		}
+		
 		if (flags.get(UpdateFlag.GRAPHICS)) {
 			appendGraphicsUpdate(player, updateBlock);
 		}
@@ -788,6 +798,19 @@ public class PlayerUpdating {
 		str.writeByte(player.getSkills().getLevel(3));
 		str.writeByteC(player.getSkills().getLevelForExperience(3));
 	}
+	
+	private static void appendForceMovement(Player player, final GameBuffer packet) {
+		Location myLocation = player.getLastKnownRegion();
+		Location location = player.getPosition();
+		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[0]));
+		packet.writeByte((byte) (location.getLocalY(myLocation) + player.getForceWalk()[1]));
+		packet.putByteA((byte) (location.getLocalX(myLocation) + player.getForceWalk()[2]));
+		packet.writeByte((byte) (location.getLocalY(myLocation) + player.getForceWalk()[3]));
+																				
+		packet.writeShort(player.getForceWalk()[4]);
+		packet.writeWordBigEndian(player.getForceWalk()[5]);
+		packet.putByteA((byte) player.getForceWalk()[6]);
+	}
 
 	public static void sendMessageToStaff(String message) {
 		for (Player player : World.getWorld().getPlayers()) {
@@ -819,5 +842,4 @@ public class PlayerUpdating {
 	public static Player getPlayerByName(String playerName) {
 		return World.getWorld().getPlayers().search(p -> p.getName().equalsIgnoreCase(playerName)).orElse(null);
 	}
-	
 }

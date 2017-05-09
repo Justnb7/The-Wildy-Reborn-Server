@@ -50,7 +50,7 @@ public class DeathEvent extends EntityEvent {
 				DeathDropHandler.handleDeathDrop(p);
 			} else if (timer == 1) {
 				if (p != null) {
-					p.move(Entity.DEFAULT_LOCATION);
+					p.movePlayer(Entity.DEFAULT_LOCATION);
 					p.getSkills().setLevel(Skills.HITPOINTS, p.getSkills().getLevelForExperience(Skills.HITPOINTS));
 					p.getActionSender().sendMessage("Oh dear, you are dead!");
 					p.setDead(false);

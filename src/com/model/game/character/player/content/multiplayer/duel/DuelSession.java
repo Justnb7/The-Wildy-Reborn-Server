@@ -157,8 +157,8 @@ public class DuelSession extends MultiplayerSession {
 				arenaBoundary = rules.contains(Rule.OBSTACLES) ? OBSTACLE_ARENA : NO_OBSTACLE_ARENA;
 				int teleportX = arenaBoundary.getMinimumX() + 6 + Utility.exclusiveRandom(12);
 				int teleportY = arenaBoundary.getMinimumY() + 1 + Utility.exclusiveRandom(11);
-				player.move(new Location(teleportX, teleportY, 0));
-				opponent.move(new Location(teleportX, teleportY - 1, 0));
+				player.movePlayer(new Location(teleportX, teleportY, 0));
+				opponent.movePlayer(new Location(teleportX, teleportY - 1, 0));
 				player.getActionSender().createPlayerHint(10, opponent.getIndex());
 				opponent.getActionSender().createPlayerHint(10, player.getIndex());
 				player.getActionSender().sendRemoveInterfacePacket();
@@ -318,7 +318,7 @@ public class DuelSession extends MultiplayerSession {
 	public void moveAndClearAttributes(Player player) {
 		player.getWeaponInterface().sendSpecialBar(player.getEquipment().getId(Equipment.WEAPON_SLOT));
 		player.getActionSender().createPlayerHint(10, -1);
-		player.move(new Location(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0));
+		player.movePlayer(new Location(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0));
 		restorePlayerAttributes(player);
 		player.getWeaponInterface().restoreWeaponAttributes();
 	}

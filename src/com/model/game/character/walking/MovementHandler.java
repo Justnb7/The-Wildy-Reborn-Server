@@ -47,8 +47,6 @@ public class MovementHandler {
 
 	public boolean followPath = false;
 
-	private boolean forcedMovement;
-
 	/**
 	 * Creates a new MovementHandler.
 	 *
@@ -88,6 +86,7 @@ public class MovementHandler {
 				if (player.isMapRegionChanging()) {
 					player.mapRegionX = (player.teleportToX >> 3) - 6;
 					player.mapRegionY = (player.teleportToY >> 3) - 6;
+					player.setLastKnownRegion(player.getPosition());
 				}
 				
 				/*
@@ -130,13 +129,13 @@ public class MovementHandler {
 			}
 			
 			if (walkPoint != null && walkPoint.getDirection() != -1) {
-				if (canMove(walkPoint.getDirection()) || isForcedMovement()) {
+				if (canMove(walkPoint.getDirection()) || player.isForcedMovement()) {
 					move(walkPoint.getDirection());
 				}
 			}
 
 			if (runPoint != null && runPoint.getDirection() != -1) {
-				if (canMove(runPoint.getDirection()) || isForcedMovement()) {
+				if (canMove(runPoint.getDirection()) || player.isForcedMovement()) {
 					move(runPoint.getDirection());
 				}
 			}
@@ -409,14 +408,6 @@ public class MovementHandler {
 			return direction;
 		}
 
-	}
-
-	public boolean isForcedMovement() {
-		return forcedMovement;
-	}
-
-	public void setForcedMovement(boolean b) {
-		this.forcedMovement = b;
 	}
 	
 	public void walkTo(int x, int y) {

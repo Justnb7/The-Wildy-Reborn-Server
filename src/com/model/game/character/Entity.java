@@ -989,6 +989,16 @@ public abstract class Entity {
 	 */
 	public abstract ActionSender getActionSender();
 	
+	private boolean forcedMovement;
+	
+	public void setForcedMovement(boolean active) {
+		this.forcedMovement = active;
+	}
+	
+	public boolean isForcedMovement() {
+		return forcedMovement;
+	}
+	
 	/**
 	 * The force walk variables.
 	 */
@@ -1014,10 +1024,14 @@ public abstract class Entity {
 			Server.getTaskScheduler().submit(new ScheduledTask(forceWalk[7]) {
 				@Override
 				public void execute() {
+					setForcedMovement(true);
+					System.out.println("force movement: "+isForcedMovement());
 					movePlayer(getPosition().transform(forceWalk[2], forceWalk[3], 0));
 					if(removeAttribute) {
 						getAttributes().remove("busy");
 					}
+					setForcedMovement(false);
+					System.out.println("force movement: "+isForcedMovement());
 					this.stop();
 				}
 			});
@@ -1037,10 +1051,10 @@ public abstract class Entity {
 			player.getActionSender().sendMessage("You're trying to move too fast.");
 			return;
 		}
-		player.getMovementHandler().reset();
 		player.teleportToX = teleportTarget.getX();
 		player.teleportToY = teleportTarget.getY();
 		player.teleHeight = teleportTarget.getZ();
+		player.getMovementHandler().reset();
 		player.getSkillCyclesTask().stop();
         System.out.println("to "+Arrays.toString(new int[] {teleportTarget.getX(), teleportTarget.getY(), teleportTarget.getZ()}));
 	}

@@ -4,7 +4,6 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.WildernessDitch;
 import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.content.rewards.ShinyChest;
 import com.model.game.character.player.content.teleport.Obelisks;
@@ -12,6 +11,7 @@ import com.model.game.character.player.content.teleport.Teleport;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.character.player.minigames.pest_control.PestControl;
+import com.model.game.character.player.skill.agility.Agility;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.character.player.skill.woodcutting.Tree;
@@ -89,11 +89,11 @@ public class ObjectInteraction {
 			// KBD ladder
 			if (player.getArea().inWild() && player.getX() == 3069 && player.getY() == 10255) {
 				player.playAnimation(Animation.create(828));
-				player.getMovementHandler().setForcedMovement(true);
+				player.setForcedMovement(true);
 				Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 					@Override
 					public void execute() {
-						player.getMovementHandler().setForcedMovement(false);
+						player.setForcedMovement(false);
 						player.movePlayer(new Location(3017, 3850, 0));
 						this.stop();
 					}
@@ -101,11 +101,11 @@ public class ObjectInteraction {
 			}
 			if (player.getArea().inWild() && player.getX() == 3017 && player.getY() == 3850) {
 				player.playAnimation(Animation.create(828));
-				player.getMovementHandler().setForcedMovement(true);
+				player.setForcedMovement(true);
 				Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 					@Override
 					public void execute() {
-						player.getMovementHandler().setForcedMovement(false);
+						player.setForcedMovement(false);
 						player.movePlayer(new Location(3069, 10255, 0));
 						this.stop();
 					}
@@ -234,16 +234,22 @@ public class ObjectInteraction {
 		 * Wilderness ditch
 		 */
 		case 23271:
-			if (!player.ditchDelay.elapsed(1000)) {
+			if (position.getX() == 2996) {
 				return;
 			}
-			player.face(player, position);
-			player.ditchDelay.reset();
-			if (player.getY() >= 3523) {
-				WildernessDitch.leave(player);
-			} else
-				WildernessDitch.enter(player);
-			break;
+			player.getAttributes().put("busy", true);
+			int yPos = 0;
+			int direction = 0;
+			if (player.getPosition().getY() == 3523) {
+				yPos = -3;
+				direction = 2;
+			} else if (player.getPosition().getY() == 3520) {
+				yPos = 3;
+				direction = 0;
+			}
+			int[] forceMovementVars = { 0, 0, 0, yPos, 33, 60, direction, 2 };
+			Agility.jumpDitch(player, 6132, forceMovementVars, 0, true);
+		break;
 
 		/**
 		 * Lever objects

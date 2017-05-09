@@ -989,6 +989,12 @@ public abstract class Entity {
 	 */
 	public abstract ActionSender getActionSender();
 	
+	/**
+	 * Resets the mob's animations.
+	 * @return Resets the mob's animations.
+	 */
+	public abstract void setDefaultAnimations();
+	
 	private boolean forcedMovement;
 	
 	public void setForcedMovement(boolean active) {

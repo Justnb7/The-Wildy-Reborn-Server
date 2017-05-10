@@ -27,6 +27,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
+import com.model.utility.RandomGenerator;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.WeaponDefinition;
@@ -804,5 +805,51 @@ public class Combat {
 	public static boolean isWithinAttackDistanceForStopFollow(Player player, Player victim) {
 		return player.goodDistance(player.getX(), player.getY(), victim.getX(), victim.getY(),
 				calculateAttackDistance(player, victim, true));
+	}
+	
+	/**
+	 * Is the attacker wearing an ava's device?
+	 * @param mob
+	 * @return
+	 */
+	public boolean wearingAccumulator(Player player) {
+		return (player.getEquipment().getId(Equipment.CAPE_SLOT) == 10499);
+	}
+	
+	/**
+	 * Is the attacker wearing an attractor device?
+	 * @param mob
+	 * @return
+	 */
+	public boolean wearingAttractor(Player player) {
+		return (player.getEquipment().getId(Equipment.CAPE_SLOT) == 10498);
+	}
+	
+	/**
+	 * Removes the ammunition from the arrow slot
+	 * @param attacker
+	 * @param ammunition
+	 */
+	public void apply_ammunition_saving(Player attacker) {
+		if (!attacker.isNPC()) {
+			return;
+		}
+		boolean accumulator = wearingAccumulator(attacker);
+		boolean attractor = wearingAttractor(attacker);
+		if (accumulator) {
+			int chance = RandomGenerator.nextInt(8);
+			if (chance > 6) {
+				return;
+			}
+			attacker.getAttributes().put("ammo_saving", true);
+		} else if (attractor) {
+			int chance = RandomGenerator.random(3);
+			if (chance > 1) {
+				return;
+			}
+			attacker.getAttributes().put("ammo_saving", true);
+		} else {
+			attacker.getAttributes().remove("ammo_saving");
+		}
 	}
 }

@@ -12,6 +12,7 @@ import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.skill.agility.Agility;
+import com.model.game.character.player.skill.agility.Agility.Obstacle;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.character.player.skill.woodcutting.Tree;
@@ -45,6 +46,8 @@ public class ObjectInteraction {
 		}
 
 		ObjectDefinition definition = ObjectDefinition.getObjectDef(id);
+		
+		final Obstacle obstacle = Obstacle.forLocation(position);
 
 		player.getMining().mine(id, position);
 
@@ -58,6 +61,10 @@ public class ObjectInteraction {
 
 		if (Runecrafting.handleObject(player, id)) {
 			return;
+		}
+		
+		if (obstacle != null) {
+			Agility.tackleObstacle(player, obstacle, id);
 		}
 
 		if (definition.name == null || definition.name.length() == 0) {

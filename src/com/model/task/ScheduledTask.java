@@ -26,11 +26,6 @@ public abstract class ScheduledTask {
 	private Object attachment;
 
 	/**
-	 * The number of cycles between consecutive executions of this task.
-	 */
-	private final int delay;
-
-	/**
 	 * A flag which indicates if this task should be executed once immediately.
 	 */
 	private final boolean immediate;
@@ -49,7 +44,12 @@ public abstract class ScheduledTask {
 	 * The current 'count down' value. When this reaches zero the task will be
 	 * executed.
 	 */
-	private int countdown;
+	private int remainingTicks;
+	
+	/**
+	 * The ticks to reset to once executed if the tickable still runs.
+	 */
+	private int tickDelay;
 
 	/**
 	 * A flag which indicates if this task is still running.
@@ -93,8 +93,8 @@ public abstract class ScheduledTask {
 
 	public ScheduledTask(Player player, int delay, boolean immediate, Walkable walkable, Stackable stackable) {
 		checkDelay(delay);
-		this.delay = delay;
-		this.countdown = delay;
+		this.tickDelay = delay;
+		this.remainingTicks = delay;
 		this.immediate = immediate;
 		this.stackable = stackable;
 		this.walkable = walkable;
@@ -128,8 +128,8 @@ public abstract class ScheduledTask {
 	 */
 	public ScheduledTask(int delay, boolean immediate) {
 		checkDelay(delay);
-		this.delay = delay;
-		this.countdown = delay;
+		this.tickDelay = delay;
+		this.remainingTicks = delay;
 		this.immediate = immediate;
 		this.attach(DEFAULT_ATTACHMENT);
 	}
@@ -174,7 +174,7 @@ public abstract class ScheduledTask {
 
 	/**
 	 * This method should be called by the scheduling class every cycle. It
-	 * updates the {@link #countdown} and calls the {@link #execute()} method if
+	 * updates the {@link #remainingTicks} and calls the {@link #execute()} method if
 	 * necessary.
 	 */
 	public void tick() {
@@ -191,9 +191,11 @@ public abstract class ScheduledTask {
 				}
 			}
 		}
-		if (running && --countdown == 0) {
-			execute();
-			countdown = delay;
+		if(remainingTicks-- <= 1) {
+			remainingTicks = tickDelay;
+			if(isRunning()) {
+				execute();
+			}
 		}
 	}
 
@@ -228,17 +230,15 @@ public abstract class ScheduledTask {
 	}
 
 	/**
-	 * Changes the delay of this task.
-	 * 
-	 * @param delay
-	 *            The number of cycles between consecutive executions of this
-	 *            task.
-	 * @throws IllegalArgumentException
-	 *             if the {@code delay} is not positive.
+	 * Sets the tick delay.
+	 * @param ticks The amount of ticks to set.
+	 * @throws IllegalArgumentException if the delay is negative.
 	 */
-	public void setDelay(int delay) {
-		checkDelay(delay);
-		delay = 0;
+	public void setTickDelay(int ticks) {
+		if(ticks < 0) {
+			throw new IllegalArgumentException("Tick amount must be positive.");
+		}
+		this.tickDelay = ticks;
 	}
 
 	/**
@@ -273,6 +273,14 @@ public abstract class ScheduledTask {
 	private void checkDelay(int delay) {
 		if (delay <= 0)
 			throw new IllegalArgumentException("Delay must be positive.");
+	}
+	
+	/**
+	 * Gets the tick delay.
+	 * @return The delay, in ticks.
+	 */
+	public int getTickDelay() {
+		return tickDelay;
 	}
 
 	/**

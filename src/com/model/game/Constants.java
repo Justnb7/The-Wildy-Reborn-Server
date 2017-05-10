@@ -225,4 +225,9 @@ public class Constants {
             "I bet -victim- will think twice before messing with you again!",
             "Your killing style is impeccable, -victim- didn't stand a chance!" };
 
+	/**
+	 * The directory for the engine scripts.
+	 */
+	public static final String SCRIPTS_DIRECTORY = "./data/scripts/";
+
 }

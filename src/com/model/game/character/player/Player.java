@@ -96,7 +96,6 @@ import com.model.task.impl.DistancedActionTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.WeaponAnimation;
 
 import io.netty.buffer.Unpooled;
 

@@ -800,6 +800,7 @@ public class PlayerUpdating {
 		str.writeByteC(player.getSkills().getLevelForExperience(3));
 	}
 	
+	//Maybe its because of the packets? That i used the wrong vars
 	private static void appendForceMovement(Player player, final GameBuffer packet) {
 		Location myLocation = player.getLastKnownRegion();
 		Location location = player.getPosition();

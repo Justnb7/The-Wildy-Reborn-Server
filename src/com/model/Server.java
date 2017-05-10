@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.model.game.Constants;
+import com.model.game.ScriptManager;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.drops.DropManager;
@@ -93,7 +94,7 @@ public class Server {
 			while (state != ServerState.LOADED) {
 				Thread.sleep(20);
 			}
-
+			ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
 			GameLogicService.initialize();
 			World.getWorld().init();
 			ResourceLeakDetector.setLevel(io.netty.util.ResourceLeakDetector.Level.PARANOID);

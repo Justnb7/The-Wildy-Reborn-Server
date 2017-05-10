@@ -30,7 +30,7 @@ import com.model.game.location.Location;
 
 public class Utility {
 	
-	public static final RandomGen r = new RandomGen();
+	public static final RandomGenerator r = new RandomGenerator();
 	
 	/**
 	 * Random instance, used to generate pseudo-random primitive types.

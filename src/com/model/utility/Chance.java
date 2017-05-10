@@ -8,7 +8,7 @@ package com.model.utility;
 public enum Chance {
     ALWAYS(1, 1) {
         @Override
-        public boolean successful(RandomGen random) {
+        public boolean successful(RandomGenerator random) {
             return true;
         }
     },
@@ -47,7 +47,7 @@ public enum Chance {
      *            the random number generator used to determine this.
      * @return {@code true} if the drop was successful, {@code false} otherwise.
      */
-    public boolean successful(RandomGen random) {
+    public boolean successful(RandomGenerator random) {
         return (random.inclusive(numerator, denominator)) % numerator == 0;
     }
 

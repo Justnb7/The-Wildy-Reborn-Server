@@ -800,18 +800,18 @@ public class PlayerUpdating {
 		str.writeByteC(player.getSkills().getLevelForExperience(3));
 	}
 	
-	//Maybe its because of the packets? That i used the wrong vars
 	private static void appendForceMovement(Player player, final GameBuffer packet) {
 		Location myLocation = player.getLastKnownRegion();
 		Location location = player.getPosition();
 		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[0]));
-		packet.writeByte((byte) (location.getLocalY(myLocation) + player.getForceWalk()[1]));
-		packet.putByteA((byte) (location.getLocalX(myLocation) + player.getForceWalk()[2]));
-		packet.writeByte((byte) (location.getLocalY(myLocation) + player.getForceWalk()[3]));
+		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[1]));
+		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[2]));
+		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[3]));
 																				
-		packet.writeShort(player.getForceWalk()[4]);
-		packet.writeWordBigEndian(player.getForceWalk()[5]);
-		packet.putByteA((byte) player.getForceWalk()[6]);
+		packet.writeWordBigEndianA(player.getForceWalk()[4]);
+		packet.writeWordA(player.getForceWalk()[5]);
+		packet.writeByteS((byte) player.getForceWalk()[6]);
+		
 	}
 
 	public static void sendMessageToStaff(String message) {

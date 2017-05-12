@@ -1,4 +1,4 @@
-package com.model.game.character.combat.npcs.script;
+package com.model.game.character.combat.npcs.script.fight_cave;
 
 import com.model.Server;
 import com.model.game.character.Animation;

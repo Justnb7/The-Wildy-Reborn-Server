@@ -1,4 +1,4 @@
-package com.model.game.character.combat.npcs.script;
+package com.model.game.character.combat.npcs.script.barrows;
 
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;

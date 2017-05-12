@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.model.game.character.combat.npcs.script.AhrimTheBlighted;
-import com.model.game.character.combat.npcs.script.GeneralGraardor;
-import com.model.game.character.combat.npcs.script.KetZek;
-import com.model.game.character.combat.npcs.script.TokXil;
-import com.model.game.character.combat.npcs.script.TzTokJad;
+import com.model.game.character.combat.npcs.script.barrows.AhrimTheBlighted;
+import com.model.game.character.combat.npcs.script.fight_cave.KetZek;
+import com.model.game.character.combat.npcs.script.fight_cave.TokXil;
+import com.model.game.character.combat.npcs.script.fight_cave.TzTokJad;
+import com.model.game.character.combat.npcs.script.godwars.GeneralGraardor;
 
 
 /**

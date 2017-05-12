@@ -54,8 +54,9 @@ public final class RunePouch extends Container {
 	}
 
 	/**
-	 * Checks if the underlying player has a rune pouch in his inventory
-	 * and that the pouch consists of atleast 1 or more runes.
+	 * Checks if the underlying player has a rune pouch in his inventory and
+	 * that the pouch consists of atleast 1 or more runes.
+	 * 
 	 * @return {@code true} if the player does, {@code false} otherwise.
 	 */
 	public boolean hasPouch() {
@@ -64,9 +65,13 @@ public final class RunePouch extends Container {
 	
 	/**
 	 * Opens the rune pouch interface.
-	 * @param player		the player to open this for.
-	 * @param id			the item id that was clicked.
-	 * @return {@code true} if the interface was opened, {@code false} otherwise.
+	 * 
+	 * @param player
+	 *            the player to open this for.
+	 * @param id
+	 *            the item id that was clicked.
+	 * @return {@code true} if the interface was opened, {@code false}
+	 *         otherwise.
 	 */
 	public boolean open(Player player, int id) {
 		if(id != RUNE_POUCH.getId()) {
@@ -76,48 +81,87 @@ public final class RunePouch extends Container {
 		player.write(new SendInterfacePacket(29875));
 		return true;
 	}
+	
 
 	/**
-	 * Attempts to store an item to the container by the specified {@code amount}.
-	 * @param player	the player to store this item for.
-	 * @param slot		the slot this item is stored from.
-	 * @param amount	the amount that is being stored.
+	 * Attempts to store an item to the container by the specified
+	 * {@code amount}.
+	 * 
+	 * @param id
+	 *            the item that is being stored.
+	 * @param amount
+	 *            the amount that is being stored.
+	 * @param slot
+	 *            the slot this item is stored from.
 	 * @return {@code true} if an item is stored, {@code false} otherwise.
 	 */
-	public boolean store(Player player, int id, int amount) {
+	public void addItem(int id, int amount, int slot) {
 		
-		if (amount > player.getInventory().amount(id)) {
-			amount = player.getInventory().amount(id);
+		int containerSize = player.getRunePouch().size();
+		Item rune = player.getInventory().getSlot(slot);
+		boolean containsRune = player.getRunePouch().contains(id);
+		if (rune == null) {
+			return;
 		}
-		amount = Math.min(16000, amount);
-		
-		if(player.getRunePouchContainer().add(new Item(id, amount))) {
-			player.getInventory().remove(new Item(id, amount));
+		if (rune.getId() != id) {
+			return;
+		}
+		int existing_count = player.getRunePouch().getCount(rune.getId());
+		if (existing_count + amount > 16_000) {
+			player.getActionSender().sendMessage("Your pouch cannot carry anymore of this rune.");
+			return;
+		}
+		if (containerSize >= 3 && !containsRune) {
+			player.getActionSender().sendMessage("Your pouch cannot hold anymore runes.");
+			return;
+		}
+
+		try {
+			int transferAmount = player.getInventory().getCount(id);
+			if (transferAmount >= amount) {
+				transferAmount = amount;
+			} else if (transferAmount == 0) {
+				return;
+			}
+			if (player.getRunePouch().add(new Item(rune.getId(), transferAmount), -1)) {
+				player.getInventory().remove(new Item(rune.getId(), transferAmount));
+			}
+
+		} finally {
+
 			updatePouch();
+
 		}
-		return true;
 	}
 
 	/**
-	 * Attempts to withdraw an item from the container by the specified {@code amount}.
-	 * @param player	the player to withdraw this item for.
-	 * @param slot		the slot this item is stored from.
-	 * @param amount	the amount that is being withdrawed.
-	 * @return {@code true} if an item is withdrawed, {@code false} otherwise.
+	 * Removes an item from the pouch
+	 * @param id
+	 * @param amount
+	 * @param slot
 	 */
-	public boolean withdraw(Player player, int id, int amount) {
-
-		// Ensure you can only take out what is actually inside the RP.
-		if (amount > player.getRunePouchContainer().amount(id)) {
-			amount = player.getRunePouchContainer().amount(id);
-		}
-
-		if(player.getRunePouchContainer().remove(new Item(id, amount))) {
-			player.getInventory().add(new Item(id, amount));
+	public void removeItem(int id, int amount, int slot) {
+		Item rune = player.getRunePouch().get(slot);
+		
+		try {
+			if (rune == null || rune.getId() != id) {
+				return;
+			}
+			int transferAmount = player.getRunePouch().getCount(id);
+			if (transferAmount >= amount) {
+				transferAmount = amount;
+			} else if (transferAmount == 0) {
+				return;
+			}
+			
+			if (player.getInventory().add(new Item(rune.getId(), transferAmount))) {
+				player.getRunePouch().remove(new Item(rune.getId(), transferAmount));
+			}
+		} finally {
 			updatePouch();
 		}
-		return true;
 	}
+	
 
 	/**
 	 * The runes which can be added to this container.
@@ -129,7 +173,7 @@ public final class RunePouch extends Container {
 		boolean canAdd = RUNES.stream().filter(rune -> rune == item.getId()).findAny().isPresent();
 
 		if(!canAdd) {
-			player.getActionSender().sendMessage("Don't be silly. "+item.getId());
+			player.getActionSender().sendMessage("Don't be silly.");
 		}
 		
 		if(this.size() == this.capacity() && !this.spaceFor(item)) {
@@ -150,9 +194,9 @@ public final class RunePouch extends Container {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("#");
-		Item i1 = sendToClient.getRunePouchContainer().get(0);
-		Item i2 = sendToClient.getRunePouchContainer().get(1);
-		Item i3 = sendToClient.getRunePouchContainer().get(2);
+		Item i1 = sendToClient.getRunePouch().get(0);
+		Item i2 = sendToClient.getRunePouch().get(1);
+		Item i3 = sendToClient.getRunePouch().get(2);
 		sb.append(i1 == null ? "0" : ""+i1.id);
 		sb.append(":");
 		sb.append(i1 == null ? "0" : ""+i1.amount);
@@ -170,56 +214,21 @@ public final class RunePouch extends Container {
 	}
 	
 	/**
-	 * Sends the withdraw or store method when adding/removing runes.
-	 * 
-	 * @param player
-	 *            The player storing or withdrawing runes.
-	 * @param id
-	 *            The runeId.
-	 * @param amount
-	 *            The amount we're storing.
-	 * @param interfaceId
-	 *            The widgetId
-	 * @return
-	 */
-	public boolean storeOrWithdrawRunes(Player player, int id, int amount, int interfaceId) {
-		if (interfaceId >= START_ITEM_INTERFACE && (interfaceId <= START_ITEM_INTERFACE + 2)) {
-			withdraw(player, id, amount);
-			return true;
-		} else if (interfaceId >= START_INVENTORY_INTERFACE && (interfaceId <= START_INVENTORY_INTERFACE + 27)) {
-			store(player, id, amount);
-			return true;
-		}
-		return false;
-	}
-	
-	/**
 	 * Updates the inventory widget of the rune pouch interface.
 	 */
 	private void sendInventoryItems() {
 		if (!player.getInventory().playerHasItem(RUNE_POUCH)) {
 			return;
 		}
-		//player.getActionSender().sendItemsOnInterface(START_INVENTORY_INTERFACE, player.getInventory());
-		for (int item = 0; item < 28; item++) {
-			//player.getActionSender().sendItemsOnInterface(START_INVENTORY_INTERFACE, player.getInventory());
-			/*int id = 0;
-			int amt = 0;
-
-			if (item < player.getInventory().size()) {
-				id = player.getInventory().getId(item);
-				amt = player.getInventory().get(item).getAmount();
-			}*/
-			
-			//player.getActionSender().sendUpdateItem(START_INVENTORY_INTERFACE + item, player.getInventory(), 0, 0);
-		}
+		//Sent the items on the interface
+		player.getActionSender().sendUpdateItems(START_INVENTORY_INTERFACE, player.getInventory().container());
 	}
 	
 	/**
 	 * Update the contents of the rune pouch interface
 	 */
 	private void updatePouch() {
-		player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + 1, -1, 1, 0);
+		//player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + 1, -1, 1, 0);
 		
 		//the rune pouch inventory group
 		sendInventoryItems();

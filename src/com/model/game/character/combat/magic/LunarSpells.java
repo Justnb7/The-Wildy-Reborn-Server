@@ -129,10 +129,10 @@ public class LunarSpells {
 			if (weaponId == 1387) // fire staff
 				return true;
 		}
-		if(player.getRunePouchContainer().contains(new Item(runeId, amount))) {
+		if(player.getRunePouch().contains(new Item(runeId, amount))) {
 			if(deleteFromRunePouch) {
-				player.getRunePouchContainer().remove(new Item(runeId, amount));
-				player.getRunePouchContainer().refresh(player, 41710);
+				player.getRunePouch().remove(new Item(runeId, amount));
+				player.getRunePouch().refresh(player, 41710);
 			}
 			return true;
 		}

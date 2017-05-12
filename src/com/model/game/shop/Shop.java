@@ -134,7 +134,7 @@ public final class Shop {
 			player.getActionSender().sendInterfaceConfig(1, 28050);
 		}
 		player.setShopping(true);
-		player.getActionSender().sendItemsOnInterface(3823, player.getInventory().container());
+		player.getActionSender().sendUpdateItems(3823, player.getInventory().container());
 		player.getActionSender().sendItemsOnInterface(3900, container.container(), container.size());
 		player.setOpenShop(name);
 		player.getActionSender().sendInterfaceWithInventoryOverlay(3824, 3822);
@@ -152,7 +152,7 @@ public final class Shop {
 	 *            if the stock should be checked.
 	 */
 	public void updateShop(Player player, boolean checkStock) {
-		player.getActionSender().sendItemsOnInterface(3823, player.getInventory().container());
+		player.getActionSender().sendUpdateItems(3823, player.getInventory().container());
 		int size = container.size();
 		players.stream().filter(Objects::nonNull).forEach(p -> p.getActionSender().sendItemsOnInterface(3900, container.container(), size));
 

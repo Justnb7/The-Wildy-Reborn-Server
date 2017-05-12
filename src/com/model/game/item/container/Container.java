@@ -507,7 +507,7 @@ public class Container implements Iterable<Item> {
      *         the interface to refresh the contents of this container on.
      */
     public void refresh(Player player, int widget) {
-        player.getActionSender().sendItemsOnInterface(widget, container());
+        player.getActionSender().sendUpdateItems(widget, container());
     }
 
     /**
@@ -621,6 +621,25 @@ public class Container implements Iterable<Item> {
 		}
 		return -1;
 	}
+	
+	/**
+	 * Gets the total amount of an item, including the items in stacks.
+	 * 
+	 * @param id
+	 *            The id.
+	 * @return The amount.
+	 */
+	public int getCount(int id) {
+		int total = 0;
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] != null) {
+				if (items[i].getId() == id) {
+					total += items[i].getAmount();
+				}
+			}
+		}
+		return total;
+	}
 
     /**
      * Retrieves the item located on {@code slot}.
@@ -634,6 +653,10 @@ public class Container implements Iterable<Item> {
             return null;
         return items[slot];
     }
+	
+	public Item getSlot(int slot) {
+		return items[slot];
+	}
 
     /**
      * Retrieves the identifier for the item located on {@code slot}.

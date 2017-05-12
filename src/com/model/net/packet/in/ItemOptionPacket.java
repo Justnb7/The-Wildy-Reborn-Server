@@ -314,7 +314,7 @@ public class ItemOptionPacket implements PacketType {
 			TeleTabs.useTeleTab(player, slot, tabData);
 		}
 		
-		if(player.getRunePouchContainer().open(player, item.getId())) {
+		if(player.getRunePouch().open(player, item.getId())) {
 			return;
 		}
 		

@@ -120,8 +120,8 @@ public class ItemsKeptOnDeath {
 			player.getActionSender().sendString(""+ NumberFormat.getNumberInstance(Locale.US).format(risked) + "gp", 17116);
 		}
 
-		player.getActionSender().sendItemsOnInterface(17113, keep);
-		player.getActionSender().sendItemsOnInterface(17114, dropped);
+		player.getActionSender().sendUpdateItems(17113, keep);
+		player.getActionSender().sendUpdateItems(17114, dropped);
 		player.write(new SendInterfacePacket(17100));
 	}
 

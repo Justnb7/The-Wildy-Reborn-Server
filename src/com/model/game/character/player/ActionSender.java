@@ -426,29 +426,37 @@ public class ActionSender {
 		return this;
 	}
 
-	public ActionSender sendItemsOnInterface(int widget, Item[] container) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().putFrameVarShort(53);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(widget);
-			player.getOutStream().writeShort(container.length);
-			for (Item item : container) {
-				if (item != null) {
-					if (item.getAmount() > 254) {
-						player.getOutStream().writeByte(255);
-						player.getOutStream().writeDWord_v2(item.getAmount());
-					} else {
-						player.getOutStream().writeByte(item.getAmount());
-					}
-					player.getOutStream().writeWordBigEndianA(item.getId()+1); // WHY does the client LITERALLY REQUIRE +1??? maybe its an anti leech dating back 10 years? or is 317 just weird AF?
+	/**
+	 * Sends a packet to update a group of items.
+	 * 
+	 * @param interfaceId
+	 *             The interface id.
+	 * @param items
+	 *             The items.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendUpdateItems(int interfaceId, Item[] items) {
+		player.getOutStream().putFrameVarShort(53);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().writeShort(interfaceId);
+		player.getOutStream().writeShort(items.length);
+		for (Item item : items) {
+			if (item != null && item.getId() > -1) {
+				int count = item.getAmount();
+				if (count > 254) {
+					player.getOutStream().writeByte((byte) 255);
+					player.getOutStream().writeDWord_v2(count);
 				} else {
-					player.getOutStream().writeByte(0);
-					player.getOutStream().writeWordBigEndianA(0);
+					player.getOutStream().writeByte((byte) count);
 				}
+				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+			} else {
+				player.getOutStream().writeByte((byte) 0);
+				player.getOutStream().writeWordBigEndianA(0);
 			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
 		}
+		player.getOutStream().putFrameSizeShort(offset);
+		player.flushOutStream();
 		return this;
 	}
 

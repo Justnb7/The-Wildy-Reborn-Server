@@ -52,7 +52,7 @@ public final class Bank extends Container {
         player.getActionSender().sendConfig(115, 0);
         player.getActionSender().sendInterfaceWithInventoryOverlay(5292, 5063);
         refresh();
-        player.getActionSender().sendItemsOnInterface(5064, player.getInventory().container());
+        player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
     }
 
     /**
@@ -87,7 +87,7 @@ public final class Bank extends Container {
         if (deposit(item.copy())) {
             player.getInventory().remove(item, inventorySlot);
             refresh();
-            player.getActionSender().sendItemsOnInterface(5064, player.getInventory().container());
+            player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
             return true;
         }
         return false;
@@ -173,7 +173,7 @@ public final class Bank extends Container {
         if (addItem)
             player.getInventory().add(item);
         refresh();
-        player.getActionSender().sendItemsOnInterface(5064, player.getInventory().container());
+        player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
         return true;
     }
 

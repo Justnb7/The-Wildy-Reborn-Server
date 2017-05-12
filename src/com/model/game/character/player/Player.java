@@ -754,7 +754,7 @@ public class Player extends Entity {
 	 * @see {@link #runePouchContainer}.
 	 * <b>no point in documentating a getter</b>
 	 */
-	public RunePouch getRunePouchContainer() {
+	public RunePouch getRunePouch() {
 		return runePouchContainer;
 	}
 	

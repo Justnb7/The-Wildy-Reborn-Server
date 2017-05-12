@@ -34,18 +34,19 @@ public class EnterAmountPacketHandler implements PacketType {
 			}
 		}
 		
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, player.xRemoveId, amount > player.getInventory().amount(player.xRemoveId) ? player.getInventory().amount(player.xRemoveId) : amount, player.xInterfaceId)) {
-			return;
-		}
 		//System.out.println("Interface: "+player.xInterfaceId);
 		switch (player.xInterfaceId) {
+		
+		case 29880:
+			player.getRunePouch().addItem(player.xRemoveId, amount, player.xRemoveSlot);
+			break;
+			
+		case 29910:
+			player.getRunePouch().removeItem(player.xRemoveSlot, amount > player.getRunePouch().amount(player.xRemoveId) ? player.getRunePouch().amount(player.xRemoveId) : amount, player.xRemoveSlot);
+			break;
 
 		case 5064:
 
-			break;
-			
-		case 41710:
-			player.getRunePouchContainer().withdraw(player, player.xRemoveSlot, amount > player.getRunePouchContainer().amount(player.xRemoveId) ? player.getRunePouchContainer().amount(player.xRemoveId) : amount);
 			break;
 			
 		case 5382:

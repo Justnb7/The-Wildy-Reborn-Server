@@ -74,11 +74,15 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			System.out.println(String.format("[withdrawOneAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
 		}
 
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), 1, interfaceIndex)) {
-			return;
-		}
-
 		switch (interfaceIndex) {
+		
+		case 29880:
+			player.getRunePouch().addItem(item.getId(), 1, slot);
+			break;
+			
+		case 29910:
+			player.getRunePouch().removeItem(item.getId(), 1, slot);
+			break;
 
 		case 1688:
             player.getEquipment().unequipItem(slot, true);
@@ -148,12 +152,16 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[withdrawFiveAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
 		}
-		
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), 5, interfaceIndex)) {
-			return;
-		}
 
 		switch (interfaceIndex) {
+		
+		case 29880:
+			player.getRunePouch().addItem(item.getId(), 5, slot);
+			break;
+			
+		case 29910:
+			player.getRunePouch().removeItem(item.getId(), 5, slot);
+			break;
 
 		case 1688:
 			switch (item.getId()) {
@@ -229,12 +237,16 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[withdrawTenAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
 		}
-		
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), 10, interfaceIndex)) {
-			return;
-		}
 
 		switch (interfaceIndex) {
+		
+		case 29880:
+			player.getRunePouch().addItem(item.getId(), 10, slot);
+			break;
+			
+		case 29910:
+			player.getRunePouch().removeItem(item.getId(), 10, slot);
+			break;
 
 		case 1688:
 			switch (item.getId()) {
@@ -308,6 +320,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		int interfaceIndex = player.getInStream().readUnsignedWord();
 		int id = player.getInStream().readUnsignedWordA();
 
+		int amount = 0;
+		
 		Item item = new Item(id);
 
 		// Safety checks
@@ -320,12 +334,19 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			System.out.println(String.format("[withdrawAllAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
 		}
 		
-		if (player.getRunePouchContainer().storeOrWithdrawRunes(player, item.getId(), player.getInventory().amount(item.getId()), interfaceIndex)) {
-			System.out.println(""+player.getInventory().amount(item.getId()));
-			return;
-		}
+
 		switch (interfaceIndex) {
 
+		case 29880:
+			amount = player.getInventory().get(slot).getAmount();
+			player.getRunePouch().addItem(item.getId(), amount, slot);
+			break;
+			
+		case 29910:
+			amount = player.getRunePouch().get(slot).getAmount();
+			player.getRunePouch().removeItem(item.getId(), amount, slot);
+			break;
+		
 		case 3900:
 			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 10));
 			break;
@@ -343,7 +364,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
             break;
 
         case 5382:
-            int amount = 0;
             if (player.isWithdrawAsNote()) {
                 amount = player.getBank().amount(item.getId());
             } else {

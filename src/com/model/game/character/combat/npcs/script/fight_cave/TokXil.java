@@ -13,10 +13,6 @@ import com.model.utility.Utility;
 
 public class TokXil extends AbstractBossCombat {
 
-	public TokXil(int npcId) {
-		super(npcId);
-	}
-
 	@Override
 	public void execute(Entity attacker, Entity victim) {
 		if(!attacker.isNPC()) {

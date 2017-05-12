@@ -6,7 +6,6 @@ import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
-import com.model.game.character.combat.npcs.BossScripts;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
@@ -34,7 +33,7 @@ public class NpcVsPlayerCombat {
 	public static void handleCombatTimer(NPC npc) {
 		//npc.forceChat("attacktimer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
 		
-		boolean isBoss = BossScripts.isBoss(npc.getId());
+		boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
 
 		// Delay before we can attack again
 		if (npc.attackTimer > 0) {
@@ -104,8 +103,8 @@ public class NpcVsPlayerCombat {
 					NPCCombatData.distanceRequired(npc))) {
 				npc.randomWalk = false;
 				
-				boolean isBoss = BossScripts.isBoss(npc.getId());
-				AbstractBossCombat boss_cb = BossScripts.get(npc.getId());
+				boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
+				AbstractBossCombat boss_cb = AbstractBossCombat.get(npc.getId());
 				if (isBoss) {
 					boss_cb.execute(npc, player);
 					// don't do any code below this, boss script handles all.

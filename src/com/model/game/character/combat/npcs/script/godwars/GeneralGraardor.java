@@ -16,10 +16,6 @@ import com.model.utility.Utility;
 
 public class GeneralGraardor extends AbstractBossCombat {
 
-	public GeneralGraardor(int npcId) {
-		super(npcId);
-	}
-
 	/**
 	 * All graardors message stored in a single String
 	 */

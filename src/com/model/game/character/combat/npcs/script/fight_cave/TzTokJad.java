@@ -16,10 +16,6 @@ import com.model.utility.Utility;
 
 public class TzTokJad extends AbstractBossCombat {
 
-	public TzTokJad(int npcId) {
-		super(npcId);
-	}
-
 	/**
 	 * The ranged animation.
 	 */

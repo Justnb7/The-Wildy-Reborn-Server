@@ -3,7 +3,7 @@ package com.model.game.character.combat.nvp;
 import java.util.Arrays;
 import java.util.List;
 
-import com.model.game.character.combat.npcs.BossScripts;
+import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.npc.NPC;
 
 /**
@@ -112,8 +112,8 @@ public class NPCCombatData {
 	* Distanced required to attack
 	**/	
 	public static int distanceRequired(NPC npc) {
-		if (BossScripts.isBoss(npc.getId())) {
-			return BossScripts.get(npc.getId()).distance(null);
+		if (AbstractBossCombat.isBoss(npc.getId())) {
+			return AbstractBossCombat.get(npc.getId()).distance(null);
 		}
 		switch (npc.getId()) {
 		

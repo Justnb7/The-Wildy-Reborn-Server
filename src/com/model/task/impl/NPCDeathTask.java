@@ -1,13 +1,11 @@
 package com.model.task.impl;
 
-import java.util.concurrent.TimeUnit;
-
 import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
-import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.combat.nvp.NPCCombatData;
 import com.model.game.character.npc.GroupRespawn;
 import com.model.game.character.npc.NPC;
@@ -288,6 +286,12 @@ public class NPCDeathTask extends ScheduledTask {
 			if (npc.getId() == player.getSlayerTask())
 				player.getSlayerDeathTracker().add(npc);
 			
+			AbstractBossCombat boss = AbstractBossCombat.get(npc.getId());
+			
+			if (boss != null) {
+				boss.dropLoot(player, npc);
+			}
+			
 			switch(npc.getId()) {
 			case 6610:
 				Achievements.increase(player, AchievementType.VENENATIS, 1);
@@ -351,9 +355,6 @@ public class NPCDeathTask extends ScheduledTask {
 		// get the drop table
 		Location3D location = new Location3D(dropX, dropY, dropHeight);
 		int amountOfDrops = 1;
-		if (Constants.DOUBLE_DROPS && player.getLastIncentive() > 0 && (System.currentTimeMillis() - player.getLastIncentive()) < TimeUnit.DAYS.toMillis(1)) {
-			amountOfDrops++;
-		}
 		Server.getDropManager().create(player, npc, location, amountOfDrops);
 	}
 

@@ -16,10 +16,6 @@ import com.model.utility.Utility;
 
 public class KetZek extends AbstractBossCombat {
 
-	public KetZek(int npcId) {
-		super(npcId);
-	}
-
 	@Override
 	public void execute(Entity attacker, Entity victim) {
 		

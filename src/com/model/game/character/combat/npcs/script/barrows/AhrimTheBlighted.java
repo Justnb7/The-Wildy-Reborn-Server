@@ -14,10 +14,6 @@ import com.model.utility.Utility;
 
 public class AhrimTheBlighted extends AbstractBossCombat {
 
-	public AhrimTheBlighted(int npcId) {
-		super(npcId);
-	}
-
 	@Override
 	public void execute(Entity attacker, Entity victim) {
 		if(!attacker.isNPC()) {

@@ -1,6 +1,8 @@
 package com.model.game.character.combat.npcs;
 
 import com.model.game.character.Entity;
+import com.model.game.character.npc.NPC;
+import com.model.game.character.player.Player;
 
 /**
  * An abstract bossing system.
@@ -20,5 +22,7 @@ public abstract class AbstractBossCombat {
 	public abstract void execute(Entity attacker, Entity victim);
 	
 	public abstract int distance(Entity attacker);
+	
+	public abstract void dropLoot(Player player, NPC npc);
 	
 }

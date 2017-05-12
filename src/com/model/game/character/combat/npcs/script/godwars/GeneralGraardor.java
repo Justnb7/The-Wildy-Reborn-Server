@@ -11,6 +11,7 @@ import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
 public class GeneralGraardor extends AbstractBossCombat {
@@ -116,6 +117,11 @@ public class GeneralGraardor extends AbstractBossCombat {
 	public int distance(Entity attacker) {
 		// Graardor has a attack distance of 3 tiles, not sure on this.
 		return 3;
+	}
+	
+	@Override
+	public void dropLoot(Player player, NPC npc) {
+		
 	}
 
 }

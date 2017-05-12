@@ -9,6 +9,7 @@ import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.player.Player;
 import com.model.utility.Utility;
 
 public class AhrimTheBlighted extends AbstractBossCombat {
@@ -55,6 +56,11 @@ public class AhrimTheBlighted extends AbstractBossCombat {
 	@Override
 	public int distance(Entity attacker) {
 		return 4;
+	}
+
+	@Override
+	public void dropLoot(Player player, NPC npc) {
+		
 	}
 
 }

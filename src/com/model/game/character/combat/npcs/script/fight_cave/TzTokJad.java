@@ -10,6 +10,7 @@ import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -133,5 +134,10 @@ public class TzTokJad extends AbstractBossCombat {
 	@Override
 	public int distance(Entity attacker) {
 		return 8;
+	}
+	
+	@Override
+	public void dropLoot(Player player, NPC npc) {
+		
 	}
 }

@@ -14,7 +14,6 @@ public class RangeData {
 		Entity target = player.getCombat().target;
 
 		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), player.getCombat().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
-		
 
 		if (player.getCombat().usingDbow())
 			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), 100, 50, getProjectileShowDelay(player), 53, 31, target.getProjectileLockonIndex(), 16, 64));

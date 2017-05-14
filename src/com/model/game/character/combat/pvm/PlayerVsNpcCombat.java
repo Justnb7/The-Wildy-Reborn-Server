@@ -33,7 +33,7 @@ public class PlayerVsNpcCombat {
 	}
 	
 	public static void kraken(Player player, NPC npc, int damage) {
-		
+		System.out.println("ok");
 		if (npc.getId() == 5534 && npc.transformId != 5535) {
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(3860));
@@ -130,7 +130,6 @@ public class PlayerVsNpcCombat {
 	public static boolean canAttackNpc(Player player, NPC npc) {
 		if (npc.isDead || npc.getMaxHitpoints() <= 0 || player.isDead()) {
 			player.getCombat().reset();
-			player.debug("dead");
 			return false;
 		}
 		if (npc.transforming)

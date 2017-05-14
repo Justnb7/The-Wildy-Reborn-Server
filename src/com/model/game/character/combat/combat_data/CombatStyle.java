@@ -20,5 +20,15 @@ public enum CombatStyle {
     /**
      * The magic combat type, includes things like fire blast and ice barrage.
      */
-    MAGIC
+    MAGIC,
+    
+    /**
+     * The dragon fire combat type.
+     */
+    DRAGON_FIRE, 
+    
+    /**
+     * The special combat type, includes things like callisto's setback.
+     */
+    SPECIAL;
 }

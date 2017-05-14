@@ -5,8 +5,12 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.model.game.character.Entity;
+import com.model.game.character.combat.npcs.script.Kraken;
 import com.model.game.character.combat.npcs.script.SkeletalWyvern;
 import com.model.game.character.combat.npcs.script.barrows.AhrimTheBlighted;
+import com.model.game.character.combat.npcs.script.dagannoths.DagannothPrime;
+import com.model.game.character.combat.npcs.script.dagannoths.DagannothRex;
+import com.model.game.character.combat.npcs.script.dagannoths.DagannothSupreme;
 import com.model.game.character.combat.npcs.script.fight_cave.KetZek;
 import com.model.game.character.combat.npcs.script.fight_cave.TokXil;
 import com.model.game.character.combat.npcs.script.fight_cave.TzTokJad;
@@ -35,6 +39,12 @@ public abstract class AbstractBossCombat {
 		bosses.put(2215, new GeneralGraardor());
 		
 		bosses.put(465, new SkeletalWyvern());
+		
+		bosses.put(494, new Kraken());
+		
+		bosses.put(2267, new DagannothRex());
+		bosses.put(2266, new DagannothPrime());
+		bosses.put(2265, new DagannothSupreme());
 
 	}
 	

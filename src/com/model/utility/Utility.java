@@ -1069,4 +1069,10 @@ public class Utility {
 		return null;
 	}
 
+	public static int getDistance(Location loc1, Location loc2) {
+		int deltaX = loc2.getX() - loc1.getX();
+		int deltaY = loc2.getY() - loc1.getY();
+		return ((int) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
+	}
+
 }

@@ -121,7 +121,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 
 		}
 
-		((NPC) attacker).attackTimer = 4;
+		((NPC) attacker).attackTimer = 6;
 	}
 
 	@Override

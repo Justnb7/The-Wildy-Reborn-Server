@@ -2,7 +2,6 @@ package com.model.game.character.combat;
 
 import com.model.game.character.Entity;
 import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
@@ -387,7 +386,7 @@ public class CombatFormulae {
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
 		double otherBonusMultiplier = 1;
-		int rangedStrength = RangeData.getRangeStr(player.getEquipment().getId(Equipment.ARROWS_SLOT));
+		int rangedStrength = player.getBonuses()[(player.getEquipment().getId(Equipment.ARROWS_SLOT))];
 		
 		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 4222) {
 			/**

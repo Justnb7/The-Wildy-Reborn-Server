@@ -81,6 +81,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 			
 		case 29910:
+		case 29909:
+		case 29908:
 			player.getRunePouch().removeItem(item.getId(), 1, slot);
 			break;
 
@@ -160,6 +162,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 			
 		case 29910:
+		case 29909:
+		case 29908:
 			player.getRunePouch().removeItem(item.getId(), 5, slot);
 			break;
 
@@ -245,6 +249,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 			
 		case 29910:
+		case 29909:
+		case 29908:
 			player.getRunePouch().removeItem(item.getId(), 10, slot);
 			break;
 
@@ -343,6 +349,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 			
 		case 29910:
+		case 29909:
+		case 29908:
 			amount = player.getRunePouch().get(slot).getAmount();
 			player.getRunePouch().removeItem(item.getId(), amount, slot);
 			break;

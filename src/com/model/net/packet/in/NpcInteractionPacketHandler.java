@@ -89,8 +89,9 @@ public class NpcInteractionPacketHandler implements PacketType {
 			player.getCombat().reset();
 			return;
 		}
-		if (!npc.getDefinition().isAttackable())
+		if (!npc.getDefinition().isAttackable()) {
 			return;
+		}
 		if (player.autocastId > 0) {
 			player.autoCast = true;
 		}

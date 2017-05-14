@@ -14,7 +14,6 @@ import com.model.task.ScheduledTask;
 /**
  * @author Patrick van Elderen
  */
-
 public class KrakenInstance {
 	
 	/**

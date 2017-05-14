@@ -63,16 +63,15 @@ public class DagannothPrime extends AbstractBossCombat {
 				randomHit = player.getSkills().getLevel(Skills.HITPOINTS);
 			}
 			hit = randomHit;
-			
+			// Create the hit instance
+			Hit hitInfo = victim.take_hit(attacker, hit, style, false);
+			// Send the hit task
+			Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);
 			Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
 				@Override
 				public void execute() {
 					this.stop();
 					victim.playGraphics(Graphic.create(163, 0, 100));
-					// Create the hit instance
-					Hit hitInfo = victim.take_hit(attacker, hit, style, false);
-					// Send the hit task
-					Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);
 				}
 			});
 			break;

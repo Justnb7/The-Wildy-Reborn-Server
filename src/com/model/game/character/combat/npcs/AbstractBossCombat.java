@@ -14,7 +14,7 @@ import com.model.game.character.combat.npcs.script.dagannoths.DagannothSupreme;
 import com.model.game.character.combat.npcs.script.fight_cave.KetZek;
 import com.model.game.character.combat.npcs.script.fight_cave.TokXil;
 import com.model.game.character.combat.npcs.script.fight_cave.TzTokJad;
-import com.model.game.character.combat.npcs.script.godwars.GeneralGraardor;
+import com.model.game.character.combat.npcs.script.godwars.bandos.GeneralGraardor;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 

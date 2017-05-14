@@ -227,7 +227,7 @@ public final class RunePouch extends Container {
 	/**
 	 * Update the contents of the rune pouch interface
 	 */
-	private void updatePouch() {
+	public void updatePouch() {
 		//player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + 1, -1, 1, 0);
 		
 		//the rune pouch inventory group

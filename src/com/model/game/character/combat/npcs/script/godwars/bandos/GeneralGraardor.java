@@ -1,4 +1,4 @@
-package com.model.game.character.combat.npcs.script.godwars;
+package com.model.game.character.combat.npcs.script.godwars.bandos;
 
 import java.util.Random;
 

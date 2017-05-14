@@ -584,7 +584,7 @@ public abstract class Entity {
 			player_me.putInCombat(attacker.getIndex()); // we're taking a hit. we can't logout for 10s.
 			
 			// The victim (this) has protection prayer enabled.
-			if (combat_type != null) {
+			if (combat_type != null && !troughPrayer) {
 				// 40% Protection from player attacks, 100% protection from Npc attacks
 				double prayProtection = attacker.isPlayer() ? 0.6D : 0.0D;
 				if (combat_type == CombatStyle.MELEE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {

@@ -15,6 +15,8 @@ import com.model.game.character.combat.npcs.script.fight_cave.KetZek;
 import com.model.game.character.combat.npcs.script.fight_cave.TokXil;
 import com.model.game.character.combat.npcs.script.fight_cave.TzTokJad;
 import com.model.game.character.combat.npcs.script.godwars.bandos.GeneralGraardor;
+import com.model.game.character.combat.npcs.script.godwars.zamorak.KrilTsutsaroth;
+import com.model.game.character.combat.npcs.script.godwars.zamorak.ZaklnGritch;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 
@@ -45,6 +47,9 @@ public abstract class AbstractBossCombat {
 		bosses.put(2267, new DagannothRex());
 		bosses.put(2266, new DagannothPrime());
 		bosses.put(2265, new DagannothSupreme());
+		
+		bosses.put(3129, new KrilTsutsaroth());
+		bosses.put(3131, new ZaklnGritch());
 
 	}
 	

@@ -100,11 +100,11 @@ public class PlayerVsPlayerCombat {
 
 		// Always last
 		if (player.getCombatType() != CombatStyle.MELEE) {
-			if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), target.getPosition())) {
+			if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation())) {
 				return true;
 			}
 		} else {
-			if (ProjectilePathFinder.isInteractionPathClear(player.getPosition(), target.getPosition())) {
+			if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), target.getLocation())) {
 				return true;
 			}
 		}

@@ -49,7 +49,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 
 		// Sends the combat style 1 tile away sends Melee attacks and more then
 		// 1 sends Ranging attacks
-		CombatStyle style = attacker.getPosition().distanceToEntity(attacker, victim) <= 1 ? CombatStyle.MELEE : CombatStyle.RANGE;
+		CombatStyle style = attacker.getLocation().distanceToEntity(attacker, victim) <= 1 ? CombatStyle.MELEE : CombatStyle.RANGE;
 
 		// The npc instance
 		NPC npc = (NPC) attacker;
@@ -77,11 +77,11 @@ public class GeneralGraardor extends AbstractBossCombat {
 
 			// Set the projectile speed based on distance
 			int speedEquation;
-			if (attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+			if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				speedEquation = 70;
-			} else if (attacker.getPosition().isWithinDistance(attacker, victim, 5)) {
+			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 				speedEquation = 90;
-			} else if (attacker.getPosition().isWithinDistance(attacker, victim, 8)) {
+			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 				speedEquation = 110;
 			} else {
 				speedEquation = 130;

@@ -307,7 +307,7 @@ public class Location {
 	public int distanceToEntity(Entity attacker, Entity victim) {
 		if (attacker.getWidth() == 1 && attacker.getHeight() == 1 && victim.getWidth() == 1
 				&& victim.getHeight() == 1) {
-			return distanceToPoint(victim.getPosition());
+			return distanceToPoint(victim.getLocation());
 		}
 		int lowestDistance = 100;
 		List<Location> myTiles = entityTiles(attacker);
@@ -332,7 +332,7 @@ public class Location {
 	public boolean isWithinDistance(Entity attacker, Entity victim, int distance) {
 		if (attacker.getWidth() == 1 && attacker.getHeight() == 1 &&
 				victim.getWidth() == 1 && victim.getHeight() == 1 && distance == 1) {
-			return distance(victim.getPosition()) <= distance;
+			return distance(victim.getLocation()) <= distance;
 		}
 		List<Location> myTiles = entityTiles(attacker);
 		List<Location> theirTiles = entityTiles(victim);
@@ -377,24 +377,24 @@ public class Location {
 	 */
 	public List<Location> entityTiles(Entity entity) {
 		List<Location> myTiles = new ArrayList<Location>();
-		myTiles.add(entity.getPosition());
+		myTiles.add(entity.getLocation());
 		if (entity.getWidth() > 1) {
 			for (int i = 1; i < entity.getWidth(); i++) {
-				myTiles.add(Location.create(entity.getPosition().getX() + i,
-						entity.getPosition().getY(), entity.getPosition().getZ()));
+				myTiles.add(Location.create(entity.getLocation().getX() + i,
+						entity.getLocation().getY(), entity.getLocation().getZ()));
 			}
 		}
 		if (entity.getHeight() > 1) {
 			for (int i = 1; i < entity.getHeight(); i++) {
-				myTiles.add(Location.create(entity.getPosition().getX(),
-						entity.getPosition().getY() + i, entity.getPosition().getZ()));
+				myTiles.add(Location.create(entity.getLocation().getX(),
+						entity.getLocation().getY() + i, entity.getLocation().getZ()));
 			}
 		}
 		int myHighestVal = (entity.getWidth() > entity.getHeight() ? entity.getWidth() : entity.getHeight());
 		if (myHighestVal > 1) {
 			for (int i = 1; i < myHighestVal; i++) {
-				myTiles.add(Location.create(entity.getPosition().getX() + i,
-						entity.getPosition().getY() + i, entity.getPosition().getZ()));
+				myTiles.add(Location.create(entity.getLocation().getX() + i,
+						entity.getLocation().getY() + i, entity.getLocation().getZ()));
 			}
 		}
 		return myTiles;

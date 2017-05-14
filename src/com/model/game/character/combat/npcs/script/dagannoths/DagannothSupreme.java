@@ -37,13 +37,13 @@ public class DagannothSupreme extends AbstractBossCombat {
 			maxHit = npc.getDefinition().getMaxHit();
 			int clientSpeed;
 			int gfxDelay;
-			if(attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				clientSpeed = 70;
 				gfxDelay = 80;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 5)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 				clientSpeed = 90;
 				gfxDelay = 100;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 8)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 				clientSpeed = 110;
 				gfxDelay = 120;
 			} else {

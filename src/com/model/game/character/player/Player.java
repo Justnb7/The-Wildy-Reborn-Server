@@ -1024,13 +1024,13 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public Location getPosition() {
+	public Location getLocation() {
 		return new Location(absX, absY, heightLevel);
 	}
 	
 	@Override
 	public Location getCentreLocation() {
-		return getPosition();
+		return getLocation();
 	}
 	
 	@Override

@@ -99,7 +99,7 @@ public final class NPCHandler {
 		npc.heightLevel = spawn.getZ();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
-		System.out.printf("Spawned npc id %d for player index %d on position %s%n", id, player.getIndex(), npc.getPosition());
+		System.out.printf("Spawned npc id %d for player index %d on position %s%n", id, player.getIndex(), npc.getLocation());
 		npc.setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		npc.faceEntity(player);
 		if (attacksEnemy) {

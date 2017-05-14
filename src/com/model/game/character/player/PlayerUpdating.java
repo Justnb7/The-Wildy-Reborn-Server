@@ -102,7 +102,7 @@ public class PlayerUpdating {
 			player.getOutStream().writeFrame(73);
 			player.getOutStream().writeWordA(player.mapRegionX + 6);
 			player.getOutStream().writeShort(player.mapRegionY + 6);
-			player.setLastKnownRegion(player.getPosition());
+			player.setLastKnownRegion(player.getLocation());
 		}
 
 		/*
@@ -802,7 +802,7 @@ public class PlayerUpdating {
 	
 	private static void appendForceMovement(Player player, final GameBuffer packet) {
 		Location myLocation = player.getLastKnownRegion();
-		Location location = player.getPosition();
+		Location location = player.getLocation();
 		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[0]));
 		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[1]));
 		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[2]));

@@ -79,7 +79,7 @@ public class FightCaves {
 	        final int[] locationSet = LOCATIONS[r.nextInt(LOCATIONS.length)];
 	        final int x = r.nextInt(locationSet[2] - locationSet[0]) + locationSet[0];
 	        final int y = r.nextInt(locationSet[3] - locationSet[1]) + locationSet[1];
-	        final int z = player.getPosition().getZ();
+	        final int z = player.getLocation().getZ();
 	        return Location.create(x, y, z);
 	    }
 

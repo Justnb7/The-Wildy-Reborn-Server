@@ -29,7 +29,7 @@ public class ItemOnItem {
 			System.out.println(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", usedItem.getId(), withItem.getId()));
 		}
 		
-		Firemaking.startFire(player, usedItem.getId(), withItem.getId(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+		Firemaking.startFire(player, usedItem.getId(), withItem.getId(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
 		
 		if (player.rights == Rights.ADMINISTRATOR) {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {

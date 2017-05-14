@@ -127,7 +127,7 @@ public class PlayerFollowing {
             Location followLoc = null;
 
             for (Location i : locs) {
-                if (followLoc == null || player.getPosition().getDistance(i) < player.getPosition().getDistance(followLoc)) {
+                if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
                     followLoc = i;
                 }
             }
@@ -191,7 +191,7 @@ public class PlayerFollowing {
 
         if (!inside) {
             for (Location npcloc : npc.getTiles()) {
-                double distance = npcloc.distance(player.getPosition());
+                double distance = npcloc.distance(player.getLocation());
                 if (distance <= player.followDistance) {
                     player.getMovementHandler().stopMovement();
                     return;
@@ -222,7 +222,7 @@ public class PlayerFollowing {
             Location followLoc = null;
 
             for (Location i : locs) {
-                if (followLoc == null || player.getPosition().getDistance(i) < player.getPosition().getDistance(followLoc)) {
+                if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
                     followLoc = i;
                 }
             }

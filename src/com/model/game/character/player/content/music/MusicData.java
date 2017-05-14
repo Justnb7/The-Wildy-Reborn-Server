@@ -70,7 +70,7 @@ public class MusicData {
 	 * @return
 	 */
 	private static MusicData getMusicId(Player player) {
-		int x = player.getPosition().getX(), y = player.getPosition().getY();
+		int x = player.getLocation().getX(), y = player.getLocation().getY();
 		for (MusicData song : songs) {
 			if (x >= song.swX && x <= song.neX && y >= song.swY && y <= song.neY) {
 				which = song;

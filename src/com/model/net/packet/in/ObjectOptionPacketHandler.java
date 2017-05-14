@@ -55,7 +55,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		int x = player.getInStream().readSignedWordBigEndianA();
 		int id = player.getInStream().readUnsignedWord();
 		int y = player.getInStream().readUnsignedWordA();
-		Location position = Location.create(x, y, player.getPosition().getZ());
+		Location position = Location.create(x, y, player.getLocation().getZ());
 		
 		//Safety check
 		if (player.isTeleporting()) {
@@ -63,7 +63,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		}
 		
 		//Check if we've reached destination
-		if (player.getPosition().isWithinInteractionDistance(position)) {
+		if (player.getLocation().isWithinInteractionDistance(position)) {
 			player.face(player, position);
 			ObjectInteraction.handleFirstClickAction(player, position, id);
 		}
@@ -80,7 +80,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		int id = player.getInStream().readUnsignedWordBigEndianA();
 		int y = player.getInStream().readSignedWordBigEndian();
 		int x = player.getInStream().readUnsignedWordA();
-		Location position = Location.create(x, y, player.getPosition().getZ());
+		Location position = Location.create(x, y, player.getLocation().getZ());
 		
 		// Safety check
 		if (player.isTeleporting()) {
@@ -88,7 +88,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		}
 
 		// Check if we've reached destination
-		if (player.getPosition().isWithinInteractionDistance(position)) {
+		if (player.getLocation().isWithinInteractionDistance(position)) {
 			player.face(player, position);
 			ObjectInteraction.handleSecondClickAction(player, position, id);
 		}
@@ -105,7 +105,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		int x = player.getInStream().readSignedWordBigEndian();
 		int y = player.getInStream().readUnsignedWord();
 		int id = player.getInStream().readUnsignedWordBigEndianA();
-		Location position = Location.create(x, y, player.getPosition().getZ());
+		Location position = Location.create(x, y, player.getLocation().getZ());
 		
 		//Safety check
 		if (player.isTeleporting()) {
@@ -113,7 +113,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		}
 		
 		//Check if we've reached destination
-		if (player.getPosition().isWithinInteractionDistance(position)) {
+		if (player.getLocation().isWithinInteractionDistance(position)) {
 			player.face(player, position);
 			ObjectInteraction.handleThirdClickAction(player, position, id);
 		}

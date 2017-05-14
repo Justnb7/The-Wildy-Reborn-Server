@@ -51,7 +51,7 @@ public class WalkToNpcTask extends ScheduledTask {
 	@Override
 	public void execute() {
 
-		if (player.getPosition().isWithinInteractionDistance(new Location(npc.getX(), npc.getY()))) {
+		if (player.getLocation().isWithinInteractionDistance(new Location(npc.getX(), npc.getY()))) {
 			switch (clickType) {
 			case 1:
 				NpcInteraction.firstOption(player, npc);
@@ -94,8 +94,8 @@ public class WalkToNpcTask extends ScheduledTask {
 			});
 		}
 		player.setFollowing(null);
-		player.face(player, npc.getPosition());
-		npc.face(npc, player.getPosition());
+		player.face(player, npc.getLocation());
+		npc.face(npc, player.getLocation());
 		this.stop();
 	}
 }

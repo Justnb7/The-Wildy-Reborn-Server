@@ -53,7 +53,7 @@ public class ObjectInteraction {
 
 		Tree tree = Tree.forObject(id);
 		if (tree != null) {
-			Woodcutting.getInstance().chop(player, id, player.getPosition().getX(), player.getPosition().getY());
+			Woodcutting.getInstance().chop(player, id, player.getLocation().getX(), player.getLocation().getY());
 			return;
 		}
 
@@ -247,10 +247,10 @@ public class ObjectInteraction {
 			player.getAttributes().put("busy", true);
 			int yPos = 0;
 			int direction = 0;
-			if (player.getPosition().getY() == 3523) {
+			if (player.getLocation().getY() == 3523) {
 				yPos = -3;
 				direction = 2;
-			} else if (player.getPosition().getY() == 3520) {
+			} else if (player.getLocation().getY() == 3520) {
 				yPos = 3;
 				direction = 0;
 			}

@@ -18,7 +18,7 @@ public class TokXil extends AbstractBossCombat {
 		if(!attacker.isNPC()) {
 			return;
 		}
-		CombatStyle style = attacker.getPosition().distanceToEntity(attacker, victim) <= 1 ? CombatStyle.MELEE : CombatStyle.RANGE;
+		CombatStyle style = attacker.getLocation().distanceToEntity(attacker, victim) <= 1 ? CombatStyle.MELEE : CombatStyle.RANGE;
 		NPC npc = (NPC) attacker;
 
 		int maxHit = style == CombatStyle.RANGE ? 14 : 13;
@@ -40,13 +40,13 @@ public class TokXil extends AbstractBossCombat {
 			randomHit = Utility.random(maxHit);
 			int clientSpeed;
 			int gfxDelay;
-			if(attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				clientSpeed = 70;
 				gfxDelay = 80;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 5)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 				clientSpeed = 90;
 				gfxDelay = 100;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 8)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 				clientSpeed = 110;
 				gfxDelay = 120;
 			} else {

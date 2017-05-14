@@ -185,13 +185,13 @@ public class NpcVsPlayerCombat {
 		// Always last
 		if (npc.getCombatType() != CombatStyle.MELEE) {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
+				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), pos)) {
 					return true;
 				}
 			}
 		} else {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isInteractionPathClear(player.getPosition(), pos)) {
+				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), pos)) {
 					return true;
 				}
 			}

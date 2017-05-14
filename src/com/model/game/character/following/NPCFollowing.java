@@ -73,7 +73,7 @@ public class NPCFollowing {
 		 */
 		
 		for (Location pos : npc.getTiles()) {
-			double distance = pos.distance(target.getPosition());
+			double distance = pos.distance(target.getLocation());
 			boolean magic = npc.getCombatType() == CombatStyle.MAGIC;
 			boolean ranged = !magic && npc.getCombatType() == CombatStyle.RANGE;
 			boolean melee = !magic && !ranged;
@@ -143,31 +143,31 @@ public class NPCFollowing {
 
 		int toDir = ProjectilePathFinder.getDirection(x, y, x + toX, y + toY);
 
-		if (mob.canMoveTo(mob.getPosition(), toDir)) {
+		if (mob.canMoveTo(mob.getLocation(), toDir)) {
 			direction = toDir;
 		} else {
 			if (toDir == 0) {
-				if (mob.canMoveTo(mob.getPosition(), 3)) {
+				if (mob.canMoveTo(mob.getLocation(), 3)) {
 					direction = 3;
-				} else if (mob.canMoveTo(mob.getPosition(), 1)) {
+				} else if (mob.canMoveTo(mob.getLocation(), 1)) {
 					direction = 1;
 				}
 			} else if (toDir == 2) {
-				if (mob.canMoveTo(mob.getPosition(), 1)) {
+				if (mob.canMoveTo(mob.getLocation(), 1)) {
 					direction = 1;
-				} else if (mob.canMoveTo(mob.getPosition(), 4)) {
+				} else if (mob.canMoveTo(mob.getLocation(), 4)) {
 					direction = 4;
 				}
 			} else if (toDir == 5) {
-				if (mob.canMoveTo(mob.getPosition(), 3)) {
+				if (mob.canMoveTo(mob.getLocation(), 3)) {
 					direction = 3;
-				} else if (mob.canMoveTo(mob.getPosition(), 6)) {
+				} else if (mob.canMoveTo(mob.getLocation(), 6)) {
 					direction = 6;
 				}
 			} else if (toDir == 7) {
-				if (mob.canMoveTo(mob.getPosition(), 4)) {
+				if (mob.canMoveTo(mob.getLocation(), 4)) {
 					direction = 4;
-				} else if (mob.canMoveTo(mob.getPosition(), 6)) {
+				} else if (mob.canMoveTo(mob.getLocation(), 6)) {
 					direction = 6;
 				}
 			}

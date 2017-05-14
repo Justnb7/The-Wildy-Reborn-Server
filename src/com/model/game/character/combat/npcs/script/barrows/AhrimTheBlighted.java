@@ -22,13 +22,13 @@ public class AhrimTheBlighted extends AbstractBossCombat {
 		
 		int clientSpeed;
 		int gfxDelay;
-		if(attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+		if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 			clientSpeed = 70;
 			gfxDelay = 80;
-		} else if(attacker.getPosition().isWithinDistance(attacker, victim, 5)) {
+		} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 			clientSpeed = 90;
 			gfxDelay = 100;
-		} else if(attacker.getPosition().isWithinDistance(attacker, victim, 8)) {
+		} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 			clientSpeed = 110;
 			gfxDelay = 120;
 		} else {
@@ -38,7 +38,7 @@ public class AhrimTheBlighted extends AbstractBossCombat {
 		int delay = (gfxDelay / 20) - 1;
 		attacker.playAnimation(Animation.create(727));
 		attacker.playGraphics(Graphic.create(155, 0, 0));
-		attacker.playProjectile(Projectile.create(attacker.getPosition(), victim.getCentreLocation(), 156, 45, 50, clientSpeed, 43, 31, victim.getProjectileLockonIndex(), 0, 36));
+		attacker.playProjectile(Projectile.create(attacker.getLocation(), victim.getCentreLocation(), 156, 45, 50, clientSpeed, 43, 31, victim.getProjectileLockonIndex(), 0, 36));
 		int randomHit = Utility.random(25);
 		victim.playGraphics(randomHit <= 0 ? Graphic.create(85, gfxDelay, 100) : Graphic.create(157, gfxDelay, 100));
 		

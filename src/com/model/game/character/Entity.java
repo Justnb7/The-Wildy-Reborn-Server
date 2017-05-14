@@ -724,7 +724,7 @@ public abstract class Entity {
 	/**
 	 * The last known map region.
 	 */
-	private Location lastKnownRegion = this.getPosition();
+	private Location lastKnownRegion = this.getLocation();
 
     private final EntityType type;
 
@@ -829,7 +829,7 @@ public abstract class Entity {
 	 * 
 	 * @return The current location.
 	 */
-	public Location getPosition() {
+	public Location getLocation() {
 		return location;
 	}
 
@@ -951,7 +951,7 @@ public abstract class Entity {
 			Player p = World.getWorld().getPlayers().get(i);
 			if (p != null) {
 				if (p.getOutStream() != null) {
-					if (p.getPosition().isWithinDistance(this.getPosition())) {
+					if (p.getLocation().isWithinDistance(this.getLocation())) {
 						p.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(),  projectile.getSlope(), projectile.getRadius(), projectile.getLockon());
 					}
 				}
@@ -1034,7 +1034,7 @@ public abstract class Entity {
 				public void execute() {
 					setForcedMovement(true);
 					System.out.println("force movement: "+isForcedMovement());
-					movePlayer(getPosition().transform(forceWalk[2], forceWalk[3], 0));
+					movePlayer(getLocation().transform(forceWalk[2], forceWalk[3], 0));
 					if(removeAttribute) {
 						getAttributes().remove("busy");
 					}

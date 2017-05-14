@@ -304,7 +304,7 @@ public class NPC extends Entity {
 		return new Hit(damage, hit.getType());
 	}
 
-	public Location getPosition() {
+	public Location getLocation() {
 		return new Location(absX, absY, heightLevel);
 	}
 
@@ -331,7 +331,7 @@ public class NPC extends Entity {
 	}
 
 	public Location[] getTiles() {
-		return getTiles(getPosition());
+		return getTiles(getLocation());
 	}
 
 	/**
@@ -341,11 +341,11 @@ public class NPC extends Entity {
 	 *         size.
 	 */
 	public Location[] getBorder() {
-		int x = getPosition().getX();
-		int y = getPosition().getY();
+		int x = getLocation().getX();
+		int y = getLocation().getY();
 		int size = getSize();
 		if (size <= 1) {
-			return new Location[] { getPosition() };
+			return new Location[] { getLocation() };
 		}
 
 		Location[] border = new Location[(size) + (size - 1) + (size - 1) + (size - 2)];
@@ -743,8 +743,8 @@ public class NPC extends Entity {
 	@Override
 	public Location getCentreLocation() {
 		if (this.getWidth() == 1 && this.getHeight() == 1) 
-			return this.getPosition();
-		return Location.create(getPosition().getX() + getWidth() / 2, getPosition().getY() + getHeight() / 2, getPosition().getZ());
+			return this.getLocation();
+		return Location.create(getLocation().getX() + getWidth() / 2, getLocation().getY() + getHeight() / 2, getLocation().getZ());
 	}
 	
 	@Override

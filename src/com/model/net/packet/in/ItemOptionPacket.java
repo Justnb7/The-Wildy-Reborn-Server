@@ -139,7 +139,7 @@ public class ItemOptionPacket implements PacketType {
 		final int itemUsedSlot = player.getInStream().readSignedWordBigEndianA();
 		final int gItemX = player.getInStream().readUnsignedWord();
 
-		Location position = new Location(gItemX, gItemY, player.getPosition().getZ());
+		Location position = new Location(gItemX, gItemY, player.getLocation().getZ());
 		
 		if (player.inDebugMode()) {
 			System.out.println("ItemUsed: " + itemUsed + " groundItem: " + groundItem + " itemUsedSlot: " + itemUsedSlot + " gItemX: " + gItemX + " gItemY: " + gItemY + " a1: " + a1);
@@ -158,13 +158,13 @@ public class ItemOptionPacket implements PacketType {
 		
 		Item item = new Item(id);
 		
-		Location position = new Location(x, y, player.getPosition().getZ());
+		Location position = new Location(x, y, player.getLocation().getZ());
 		
 		if (player.inDebugMode()) {
 			System.out.println(String.format("[handlePickup] - Item: %s Location: %s", item.toString(), position.toString()));
 		}
 		
-		if (Math.abs(player.getPosition().getX() - x) > 25 || Math.abs(player.getPosition().getY() - y) > 25) {
+		if (Math.abs(player.getLocation().getX() - x) > 25 || Math.abs(player.getLocation().getY() - y) > 25) {
 			player.getMovementHandler().resetWalkingQueue();
 			return;
 		}

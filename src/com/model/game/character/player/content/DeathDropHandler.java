@@ -93,7 +93,7 @@ public class DeathDropHandler {
 
 		for (Item item : drop) {
 			if (item != null) {
-				GroundItem x = new GroundItem(item, player.getPosition(), killer);
+				GroundItem x = new GroundItem(item, player.getLocation(), killer);
 				x.setGroundItemType(GroundItemType.PRIVATE);
 				GroundItemHandler.register(x);
 				killer.getActionSender().sendGroundItem(x);

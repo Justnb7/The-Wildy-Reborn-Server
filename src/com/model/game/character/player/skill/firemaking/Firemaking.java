@@ -46,7 +46,7 @@ public class Firemaking {
 					return;
 				}
 				
-				final GroundItem item = new GroundItem(new Item(log.getLog()), player.getPosition(), player);
+				final GroundItem item = new GroundItem(new Item(log.getLog()), player.getLocation(), player);
 				
 				if (GroundItemHandler.register(item)) {
 					GroundItemHandler.createGroundItem(item);
@@ -95,16 +95,16 @@ public class Firemaking {
 	 */
 	private static void walk(Player player, int x, int y, int z) {
 		int[] walkDir = { 0, 0 };
-		if (Region.getClipping(x - 1, y - 1, player.getPosition().getZ(), -1, 0)) {
+		if (Region.getClipping(x - 1, y - 1, player.getLocation().getZ(), -1, 0)) {
 			walkDir[0] = -1;
 			walkDir[1] = 0;
-		} else if (Region.getClipping(x - +1, y, player.getPosition().getZ(), 1, 0)) {
+		} else if (Region.getClipping(x - +1, y, player.getLocation().getZ(), 1, 0)) {
 			walkDir[0] = 1;
 			walkDir[1] = 0;
-		} else if (Region.getClipping(x, y - 1, player.getPosition().getZ(), 0, -1)) {
+		} else if (Region.getClipping(x, y - 1, player.getLocation().getZ(), 0, -1)) {
 			walkDir[0] = 0;
 			walkDir[1] = -1;
-		} else if (Region.getClipping(x, y + 1, player.getPosition().getZ(), 0, 1)) {
+		} else if (Region.getClipping(x, y + 1, player.getLocation().getZ(), 0, 1)) {
 			walkDir[0] = 0;
 			walkDir[1] = 1;
 		}

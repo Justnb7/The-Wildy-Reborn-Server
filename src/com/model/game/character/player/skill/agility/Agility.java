@@ -415,8 +415,8 @@ public class Agility {
 			public void execute() {
 				player.playAnimation(Animation.create(animation));
 				int amount = 0;
-				int i = player.getPosition().getY();
-				int x = player.getPosition().getX();
+				int i = player.getLocation().getY();
+				int x = player.getLocation().getX();
 				if (atY == 3520) {
 					while (i != 3523 && !(i > 3523)) {
 						i++;

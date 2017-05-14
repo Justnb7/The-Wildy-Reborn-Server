@@ -86,7 +86,7 @@ public class MovementHandler {
 				if (player.isMapRegionChanging()) {
 					player.mapRegionX = (player.teleportToX >> 3) - 6;
 					player.mapRegionY = (player.teleportToY >> 3) - 6;
-					player.setLastKnownRegion(player.getPosition());
+					player.setLastKnownRegion(player.getLocation());
 				}
 				
 				/*

@@ -22,7 +22,7 @@ public class KetZek extends AbstractBossCombat {
 		if(!attacker.isNPC()) {
 			return;
 		}
-		CombatStyle style = attacker.getPosition().distanceToEntity(attacker, victim) <= 1 ? CombatStyle.MELEE : CombatStyle.MAGIC;
+		CombatStyle style = attacker.getLocation().distanceToEntity(attacker, victim) <= 1 ? CombatStyle.MELEE : CombatStyle.MAGIC;
 		NPC npc = (NPC) attacker;
 		
 		int maxHit = style == CombatStyle.MAGIC ? 48 : 54;
@@ -41,13 +41,13 @@ public class KetZek extends AbstractBossCombat {
 			npc.playAnimation(Animation.create(2647));
 			int clientSpeed;
 			int gfxDelay;
-			if(attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				clientSpeed = 70;
 				gfxDelay = 80;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 5)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 				clientSpeed = 90;
 				gfxDelay = 100;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 8)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 				clientSpeed = 110;
 				gfxDelay = 120;
 			} else {
@@ -57,7 +57,7 @@ public class KetZek extends AbstractBossCombat {
 			int delay = (gfxDelay / 20) - 1;
 			
 			
-			npc.playProjectile(Projectile.create(npc.getPosition(), victim, 445, 25, 5, clientSpeed, 43, 36, 10, 48));
+			npc.playProjectile(Projectile.create(npc.getLocation(), victim, 445, 25, 5, clientSpeed, 43, 36, 10, 48));
 			
 			randomHit = Utility.random(maxHit);
 			

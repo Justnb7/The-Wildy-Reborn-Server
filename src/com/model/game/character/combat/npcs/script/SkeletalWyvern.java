@@ -34,8 +34,8 @@ public class SkeletalWyvern extends AbstractBossCombat {
 
 		CombatStyle style = CombatStyle.MAGIC;
 
-		boolean projectile = attacker.getPosition().distance(victim.getPosition()) > 1;
-		if (attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+		boolean projectile = attacker.getLocation().distance(victim.getLocation()) > 1;
+		if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 			switch (random.nextInt(3)) {
 			case 0:
 			case 1:
@@ -69,13 +69,13 @@ public class SkeletalWyvern extends AbstractBossCombat {
 			attacker.playAnimation(anim);
 			attacker.playGraphics(Graphic.create(499, 0, 100));
 			if (projectile) {
-				if (attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+				if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 					clientSpeed = 50;
 					gfxDelay = 60;
-				} else if (attacker.getPosition().isWithinDistance(attacker, victim, 5)) {
+				} else if (attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 					clientSpeed = 70;
 					gfxDelay = 80;
-				} else if (attacker.getPosition().isWithinDistance(attacker, victim, 8)) {
+				} else if (attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 					clientSpeed = 90;
 					gfxDelay = 100;
 				} else {

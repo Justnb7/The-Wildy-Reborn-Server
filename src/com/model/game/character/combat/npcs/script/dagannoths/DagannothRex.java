@@ -29,7 +29,7 @@ public class DagannothRex extends AbstractBossCombat {
 		CombatStyle style = CombatStyle.MELEE;
 		
 		//Are we in attack distance
-		if(Utility.getDistance(attacker.getPosition(), victim.getPosition()) > 4) {
+		if(Utility.getDistance(attacker.getLocation(), victim.getLocation()) > 4) {
 			return;
 		}
 		

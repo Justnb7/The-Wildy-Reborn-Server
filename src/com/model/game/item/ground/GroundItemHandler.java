@@ -106,7 +106,7 @@ public final class GroundItemHandler {
 
 	private static void addRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player == null || player.getPosition().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+			if (player == null || player.getLocation().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
 				continue;
 			}
 			
@@ -133,7 +133,7 @@ public final class GroundItemHandler {
 				// get the owner of the item by name and see if they are
 				// online.
 				if (player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) <= 60
-						&& player.getPosition().getZ() == player.getPosition().getZ()) {
+						&& player.getLocation().getZ() == player.getLocation().getZ()) {
 					player.getActionSender().sendGroundItem(groundItem);
 				}
 			}
@@ -204,7 +204,7 @@ public final class GroundItemHandler {
 
 	public static void reloadGroundItems(Player player) {
 		for (GroundItem groundItem : groundItems) {
-			if (player.getPosition().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+			if (player.getLocation().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
 				continue;
 			}
 			
@@ -324,8 +324,8 @@ public final class GroundItemHandler {
 
 				Item item = groundItem.getItem();
 
-				if (player.getPosition().getX() == groundItem.getPosition().getX()
-						&& player.getPosition().getY() == groundItem.getPosition().getY()) {
+				if (player.getLocation().getX() == groundItem.getPosition().getX()
+						&& player.getLocation().getY() == groundItem.getPosition().getY()) {
 
 					if (player.getInventory().remaining() == 0
 							&& !(player.getInventory().playerHasItem(item.getId()) && item.getDefinition().isStackable())) {

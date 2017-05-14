@@ -53,7 +53,7 @@ public class TzTokJad extends AbstractBossCombat {
 		}
         
         NPC npc = (NPC) attacker;
-        CombatStyle style = attacker.getPosition().distance(victim.getPosition()) <= 2 ? CombatStyle.MELEE : Utility.random(9) <= 4 ? CombatStyle.MAGIC : CombatStyle.RANGE;
+        CombatStyle style = attacker.getLocation().distance(victim.getLocation()) <= 2 ? CombatStyle.MELEE : Utility.random(9) <= 4 ? CombatStyle.MAGIC : CombatStyle.RANGE;
 		int maxHit = 97;
 		
 		switch (style) {
@@ -96,13 +96,13 @@ public class TzTokJad extends AbstractBossCombat {
 			
 			int clientSpeed;
 			int gfxDelay;
-			if(attacker.getPosition().isWithinDistance(attacker, victim, 1)) {
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				clientSpeed = 70;
 				gfxDelay = 80;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 5)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 				clientSpeed = 90;
 				gfxDelay = 100;
-			} else if(attacker.getPosition().isWithinDistance(attacker, victim, 8)) {
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 				clientSpeed = 110;
 				gfxDelay = 120;
 			} else {

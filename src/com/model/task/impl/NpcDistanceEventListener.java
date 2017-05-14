@@ -39,6 +39,6 @@ public abstract class NpcDistanceEventListener extends EventListener {
 			return true;
 		}
 
-		return npc.getPosition().withinDistance(player.getPosition(), 7) && player.isActive();
+		return npc.getLocation().withinDistance(player.getLocation(), 7) && player.isActive();
 	}
 }

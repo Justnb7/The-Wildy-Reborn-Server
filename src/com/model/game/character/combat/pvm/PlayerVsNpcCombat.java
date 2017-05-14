@@ -107,13 +107,13 @@ public class PlayerVsNpcCombat {
 		boolean projectile = player.getCombatType() == CombatStyle.RANGE || player.getCombatType() == CombatStyle.MAGIC;
 		if (projectile) {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isProjectilePathClear(player.getPosition(), pos)) {
+				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), pos)) {
 					return true;
 				}
 			}
 		} else {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isInteractionPathClear(player.getPosition(), pos)) {
+				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), pos)) {
 					//player.write(new SendGameMessage("debug");
 					return true;
 				}
@@ -251,12 +251,12 @@ public class PlayerVsNpcCombat {
 					}
 
 					Location location = new Location(x3, y3, z);
-					double d = location.distance(player.getPosition());
+					double d = location.distance(player.getLocation());
 					if (d < lowDist) {
 						if (ignoreClip || !projectiles || projectiles
-								&& ProjectilePathFinder.isProjectilePathClear(location, npc.getPosition())) {
+								&& ProjectilePathFinder.isProjectilePathClear(location, npc.getLocation())) {
 							if (ignoreClip || projectiles || !projectiles
-									&& ProjectilePathFinder.isInteractionPathClear(location, npc.getPosition())) {
+									&& ProjectilePathFinder.isInteractionPathClear(location, npc.getLocation())) {
 								lowDist = d;
 								lowX = x3;
 								lowY = y3;
@@ -275,7 +275,7 @@ public class PlayerVsNpcCombat {
 	public static boolean inDistance(Player player, NPC npc) {
 		boolean hasDistance = npc.getId() == 5535 ? true : false; // force 5535 tents to always be hittable
 		for (Location pos : npc.getTiles()) {
-			double distance = pos.distance(player.getPosition());
+			double distance = pos.distance(player.getLocation());
 			if(Combat.usingHalberd(player) && distance <= 2) {
 				hasDistance = true;
 				break;

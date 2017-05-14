@@ -19,7 +19,7 @@ public class Pet extends NPC {
 
 	//Create pet instance
 	public Pet(Player owner, int id) {
-		super(id, owner.getPosition(), 0);
+		super(id, owner.getLocation(), 0);
 		this.setAbsX(owner.getX());
 		this.setAbsY(owner.getY() - 1);
 		this.isPet = true;
@@ -57,7 +57,7 @@ public class Pet extends NPC {
 							container.stop();
 							return;
 						}
-						int delta = player.getPosition().distance(pet.getPosition());
+						int delta = player.getLocation().distance(pet.getLocation());
 						if (delta >= 13 || delta <= -13) {
 							// TODO teleport npc to player
 							player.debug("tele");

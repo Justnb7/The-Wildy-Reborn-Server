@@ -4,7 +4,6 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
 import com.model.game.item.Item;
-import com.model.net.packet.out.SendSkillPacket;
 
 public class RottenPotato extends Dialogue {
 
@@ -41,7 +40,7 @@ public class RottenPotato extends Dialogue {
 				for (int i = 0; i < Skills.SKILL_COUNT; i++) {
 					player.getSkills().setLevel(i, 99);
 					player.getSkills().setExperience(i, 13034431);
-					player.write(new SendSkillPacket(i));
+					player.getActionSender().sendSkillLevel(i);
 				}
 	    		player.combatLevel = player.getSkills().getCombatLevel();
 	    		player.totalLevel = player.getSkills().getTotalLevel();

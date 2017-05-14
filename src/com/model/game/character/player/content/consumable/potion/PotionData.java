@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.net.packet.out.SendSkillPacket;
 
 
 
@@ -613,7 +612,7 @@ public enum PotionData {
 
 	public static void enhanceStat(Player player, int skillID, boolean sup) {
 		player.getSkills().setLevel(skillID, player.getSkills().getLevel(skillID) + getBoostedStat(player, skillID, sup));
-		player.write(new SendSkillPacket(skillID));
+		player.getActionSender().sendSkillLevel(skillID);
 	}
 
 	public static int getBrewStat(Player player, int skill, double amount) {
@@ -638,7 +637,7 @@ public enum PotionData {
 			player.getSkills().setLevel(5, player.getSkills().getLevel(Skills.PRAYER) + 1);
 		if (player.getSkills().getLevel(5) > player.getSkills().getLevelForExperience(5))
 			player.getSkills().setLevel(5, player.getSkills().getLevelForExperience(5));
-		player.write(new SendSkillPacket(5));
+		player.getActionSender().sendSkillLevel(5);
 		if (rest)
 			restoreStats(player);
 	}
@@ -674,7 +673,7 @@ public enum PotionData {
 	
 	public static void enchanceMagic(Player player, int skillID, boolean sup) {
 		player.getSkills().setLevel(skillID, player.getSkills().getLevel(skillID) + getBoostedMagic(player, skillID, sup));
-		player.write(new SendSkillPacket(skillID));
+		player.getActionSender().sendSkillLevel(skillID);
 	}
 
 	public static int getBoostedMagic(Player player, int skill, boolean sup) {

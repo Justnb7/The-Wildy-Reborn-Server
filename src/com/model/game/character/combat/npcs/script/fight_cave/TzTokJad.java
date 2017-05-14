@@ -61,7 +61,7 @@ public class TzTokJad extends AbstractBossCombat {
 			npc.playAnimation(MELEE_ANIMATION);
 			
 			int randomHit = Utility.getRandom(maxHit);
-			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false);
+			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false);
 			Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
 			break;
 		case RANGE:
@@ -75,7 +75,7 @@ public class TzTokJad extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					final Hit hitInfo2 = victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false); // 2 ticks later, check for protection prayers. hope ur fast enogu!
+					final Hit hitInfo2 = victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false); // 2 ticks later, check for protection prayers. hope ur fast enogu!
 		            Combat.hitEvent(attacker, victim, 3 - 2, hitInfo2, CombatStyle.RANGE); // the delay needs to be 2 shorter now, cos we've already waited 2 ticks.
 				}
 			});
@@ -117,7 +117,7 @@ public class TzTokJad extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					final Hit hitInfo3 = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false); // 2 ticks later, check for protection prayers. hope ur fast enogu!
+					final Hit hitInfo3 = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false); // 2 ticks later, check for protection prayers. hope ur fast enogu!
 		            Combat.hitEvent(attacker, victim, delay - 2, hitInfo3, CombatStyle.MAGIC); // the delay needs to be 2 shorter now, cos we've already waited 2 ticks.
 				}
 			});

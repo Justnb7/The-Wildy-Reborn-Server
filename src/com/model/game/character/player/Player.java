@@ -88,7 +88,6 @@ import com.model.net.network.rsa.ISAACRandomGen;
 import com.model.net.network.session.GameSession;
 import com.model.net.packet.PacketEncoder;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
-import com.model.net.packet.out.SendSkillPacket;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DeathEvent;
@@ -1418,7 +1417,7 @@ public class Player extends Entity {
 		totalLevel = getSkills().getTotalLevel();
 		//Update our skills before login
 		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
-			this.write(new SendSkillPacket(i));
+			this.getActionSender().sendSkillLevel(i);
 		}
 		//Reset prayers before login
 		PrayerHandler.resetAllPrayers(this);

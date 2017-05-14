@@ -51,7 +51,7 @@ public class DagannothRex extends AbstractBossCombat {
 			hit = randomHit;
 			
 			// Create the hit instance
-			Hit hitInfo = victim.take_hit(attacker, hit, style, false);
+			Hit hitInfo = victim.take_hit(attacker, hit, style, false, false);
 
 			// Send the hit task
 			Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);

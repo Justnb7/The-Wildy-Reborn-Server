@@ -65,7 +65,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 			int randomHit = Utility.random(maxHit);
 
 			// Create the hit instance
-			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false);
+			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false);
 
 			// Send the hit task
 			Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
@@ -94,7 +94,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 			randomHit = Utility.random(maxHit);
 
 			// Create the hit instance
-			hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false);
+			hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false);
 
 			// Send the hit task
 			Combat.hitEvent(attacker, victim, 2, hitInfo, CombatStyle.RANGE);

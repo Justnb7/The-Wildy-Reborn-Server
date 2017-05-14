@@ -44,7 +44,7 @@ public class ArmadylCrossbow implements SpecialAttack {
 		}
 
 		// Step 3: check target's protection prayers
-		Hit hit = target.take_hit(player, dam1, CombatStyle.RANGE, false);
+		Hit hit = target.take_hit(player, dam1, CombatStyle.RANGE, false, false);
 
 		// Step 4: submit an Event where the hit appears.
 		Combat.hitEvent(player, target, 2, hit, CombatStyle.RANGE);

@@ -57,7 +57,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 			int randomHit = Utility.random(maxHit);
 
 			// Create the hit instance
-			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false);
+			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false);
 
 			// Send the hit task
 			Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
@@ -98,7 +98,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 				}
 
 				// Create the hit instance
-				hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false);
+				hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false);
 
 				// Send the hit task
 				Combat.hitEvent(attacker, victim, hitDelay, hitInfo, CombatStyle.MAGIC);

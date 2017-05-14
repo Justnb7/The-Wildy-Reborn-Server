@@ -2,7 +2,6 @@ package com.model.task.impl;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.net.packet.out.SendSkillPacket;
 import com.model.task.ScheduledTask;
 
 public class RestoreStats extends ScheduledTask {
@@ -19,11 +18,11 @@ public class RestoreStats extends ScheduledTask {
 					if (player.getSkills().getLevel(level) < player.getSkills().getLevelForExperience(level)) {
 						if (level != 5) { // prayer doesn't restore
 							player.getSkills().setLevel(level, player.getSkills().getLevel(level) + 1);
-							player.write(new SendSkillPacket(level));
+							player.getActionSender().sendSkillLevel(level);
 						}
 					} else if (player.getSkills().getLevel(level) > player.getSkills().getLevelForExperience(level)) {
 						player.getSkills().setLevel(level, player.getSkills().getLevel(level) - 1);
-						player.write(new SendSkillPacket(level));
+						player.getActionSender().sendSkillLevel(level);
 					}
 				}
 			}

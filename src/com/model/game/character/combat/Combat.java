@@ -358,7 +358,7 @@ public class Combat {
             }
             
             //setup the Hit
-            Hit hitInfo = target.take_hit(player, dam1, CombatStyle.MELEE, false).giveXP(player);
+            Hit hitInfo = target.take_hit(player, dam1, CombatStyle.MELEE, false, false).giveXP(player);
             // (2) Here: submit an event that applies the Hit X ticks later
             Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MELEE);
 
@@ -411,7 +411,7 @@ public class Combat {
             }
 
             // Apply dmg.
-            Hit hitInfo = target.take_hit(player, dam1, CombatStyle.RANGE, false).giveXP(player);
+            Hit hitInfo = target.take_hit(player, dam1, CombatStyle.RANGE, false, false).giveXP(player);
             Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.RANGE);
 
             int[] endGfx = RangeData.getRangeEndGFX(player);

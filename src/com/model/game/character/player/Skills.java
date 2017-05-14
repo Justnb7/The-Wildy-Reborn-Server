@@ -8,7 +8,6 @@ import com.model.game.Constants;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.skill.prayer.Prayer;
 import com.model.net.packet.out.SendChatBoxInterfacePacket;
-import com.model.net.packet.out.SendSkillPacket;
 
 /**
  * Represents a player's skill and experience levels.
@@ -156,7 +155,7 @@ public class Skills {
         player.setPrayerPoint(prayerPoints);
         int lvlAfter = (int) Math.ceil(player.getPrayerPoint());
         if (update && (lvlBefore - lvlAfter >= 1 || lvlAfter - lvlBefore >= 1) && player != null) {
-        	player.write(new SendSkillPacket(PRAYER));
+        	player.getActionSender().sendSkillLevel(PRAYER);
         }
     }
 
@@ -263,7 +262,7 @@ public class Skills {
 	public void setSkill(int skill, int level, double exp) {
 		levels[skill] = level;
 		exps[skill] = exp;
-		player.write(new SendSkillPacket(skill));
+		player.getActionSender().sendSkillLevel(skill);
 	}
 	
 	/**
@@ -276,7 +275,7 @@ public class Skills {
 	 */
 	public void setLevel(int skill, int level) {
 		levels[skill] = level;
-		player.write(new SendSkillPacket(skill));
+		player.getActionSender().sendSkillLevel(skill);
 		//System.out.println("skill "+skill+ " level "+level);
 	}
 
@@ -291,7 +290,7 @@ public class Skills {
 	public void setExperience(int skill, double exp) {
 		int oldLvl = getLevelForExperience(skill);
 		exps[skill] = exp;
-		player.write(new SendSkillPacket(skill));
+		player.getActionSender().sendSkillLevel(skill);
 		int newLvl = getLevelForExperience(skill);
 		if (oldLvl != newLvl) {
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
@@ -306,7 +305,7 @@ public class Skills {
 	 */
 	public void incrementLevel(int skill) {
 		levels[skill]++;
-		player.write(new SendSkillPacket(skill));
+		player.getActionSender().sendSkillLevel(skill);
 	}
 
 	/**
@@ -317,7 +316,7 @@ public class Skills {
 	 */
 	public void decrementLevel(int skill) {
 		levels[skill]--;
-		player.write(new SendSkillPacket(skill));
+		player.getActionSender().sendSkillLevel(skill);
 	}
 
 	/**
@@ -336,7 +335,7 @@ public class Skills {
 			amount = levels[skill];
 		}
 		levels[skill] = levels[skill] - amount;
-		player.write(new SendSkillPacket(skill));
+		player.getActionSender().sendSkillLevel(skill);
 	}
 
 	/**
@@ -349,10 +348,10 @@ public class Skills {
 		int norm = getLevelForExperience(skill);
 		if (levels[skill] > norm) {
 			levels[skill]--;
-			player.write(new SendSkillPacket(skill));
+			player.getActionSender().sendSkillLevel(skill);
 		} else if (levels[skill] < norm) {
 			levels[skill]++;
-			player.write(new SendSkillPacket(skill));
+			player.getActionSender().sendSkillLevel(skill);
 		}
 	}
 
@@ -461,7 +460,7 @@ public class Skills {
 			handleLevelUp(skillId);
         }
         if (player != null) {
-        	player.write(new SendSkillPacket(skillId));
+        	player.getActionSender().sendSkillLevel(skillId);
         }
     }
 	
@@ -524,6 +523,19 @@ public class Skills {
             setLevel(skill, levels[skill] + modification >= (getLevelForExperience(skill) + modification) ? (getLevelForExperience(skill) + modification) : levels[skill] + modification);
         }
     }
+    
+    /**
+     * Decreases a level.
+     *
+     * @param skill  The skill to decrease.
+     * @param amount The amount to decrease the skill by.
+     */
+    public void decreaseLevel(int skill, int amount) {
+        levels[skill] -= amount;
+        if (player.getActionSender() != null) {
+        	player.getActionSender().sendSkillLevel(skill);
+        }
+    }
 
 	public void addLevel(int skill, int amount) {
 		if (levels[skill] == 0) {
@@ -533,7 +545,7 @@ public class Skills {
 			amount = levels[skill];
 		}
 		levels[skill] = levels[skill] + amount;
-		player.write(new SendSkillPacket(skill));
+		player.getActionSender().sendSkillLevel(skill);
 	}
 
 	public int[] getLevels() {

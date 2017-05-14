@@ -572,10 +572,10 @@ public abstract class Entity {
 
 	// Since damage gets reduced you need to add XP after this method.
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type) {
-		return take_hit(attacker, damage, combat_type, true);
+		return take_hit(attacker, damage, combat_type, true, false);
 	}
 
-	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly) {
+	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean troughPrayer) {
 
 		// ALWAYS: FIRST APPLY DAMAGE REDUCTIONS, ABSORBS ETC. Protection pray/ely.
 		// The entity taking damage is a player. 

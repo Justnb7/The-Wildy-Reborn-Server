@@ -8,7 +8,6 @@ import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
-import com.model.net.packet.out.SendSkillPacket;
 import com.model.net.packet.out.SendWalkableInterfacePacket;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
@@ -60,7 +59,7 @@ public class ActionSender {
      */
 	public ActionSender sendSkills() {
 		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
-			player.write(new SendSkillPacket(i));
+			player.getActionSender().sendSkillLevel(i);
 		}
 		return this;
 	}
@@ -690,5 +689,15 @@ public class ActionSender {
             this.player.getOutStream().writeByte(status);
         }
 		return this;
+	}
+
+	public void sendSkillLevel(int skill) {
+		if (player.getOutStream() != null) {
+            player.getOutStream().writeFrame(134);
+            player.getOutStream().writeByte((byte) skill);
+            player.getOutStream().writeDWord_v1((int) player.getSkills().getExperience(skill));
+            player.getOutStream().writeByte((byte) player.getSkills().getLevel(skill));
+            //System.out.printf("skill - %s exp %s lvl %s %n", skill, player.getSkills().getExperience(skill), player.getSkills().getLevel(skill));
+        }
 	}
 }

@@ -32,7 +32,7 @@ public class KetZek extends AbstractBossCombat {
 			npc.playAnimation(Animation.create(npc.getDefinition().getAttackAnimation()));
 			int randomHit = Utility.random(maxHit);
 			
-            Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false);
+            Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false);
 
             Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
 			
@@ -61,7 +61,7 @@ public class KetZek extends AbstractBossCombat {
 			
 			randomHit = Utility.random(maxHit);
 			
-            hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false);
+            hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false);
 
             Combat.hitEvent(attacker, victim, delay, hitInfo, CombatStyle.MAGIC);
             

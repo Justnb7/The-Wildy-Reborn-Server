@@ -236,7 +236,7 @@ public class NpcVsPlayerCombat {
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
 			// Set up a Hit instance
-            Hit hitInfo = player.take_hit(npc, damage, npc.getCombatType(), false);
+            Hit hitInfo = player.take_hit(npc, damage, npc.getCombatType(), false, false);
 
             // apply damage - call this, change the 'delay' param to whatever you want the delay to be
             // and the method submits the Event

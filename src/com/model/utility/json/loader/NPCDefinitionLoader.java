@@ -36,7 +36,11 @@ public final class NPCDefinitionLoader extends JsonLoader {
         int maxHit = reader.get("maxHit").getAsInt();
         int hitpoints = reader.get("hitpoints").getAsInt();
         int attackSpeed = reader.get("attackSpeed").getAsInt();
-        
+        final int standAnimation = reader.get("standAnimation").getAsInt();
+		final int walkAnimation = reader.get("walkAnimation").getAsInt();
+		final int turn180Animation = reader.get("turn180Animation").getAsInt();
+		final int turn90CWAnimation = reader.get("turn90CWAnimation").getAsInt();
+		final int turn90CCWAnimation = reader.get("turn90CCWAnimation").getAsInt();
         int attackAnim = reader.get("attackAnim").getAsInt();
         int defenceAnim = reader.get("defenceAnim").getAsInt();
         int deathAnim = reader.get("deathAnim").getAsInt();
@@ -46,7 +50,7 @@ public final class NPCDefinitionLoader extends JsonLoader {
         int magicDefence = reader.get("defenceMage").getAsInt();
 
         NPCDefinitions.getDefinitions()[index] = new NPCDefinitions(index, name, description, combatLevel, size, attackable, aggressive, retreats,
-            poisonous, respawnTime, maxHit, hitpoints, attackSpeed, attackAnim, defenceAnim, deathAnim, attackBonus, meleeDefence,
+            poisonous, respawnTime, maxHit, hitpoints, attackSpeed, standAnimation, walkAnimation, turn180Animation, turn90CWAnimation, turn90CCWAnimation, attackAnim, defenceAnim, deathAnim, attackBonus, meleeDefence,
             rangedDefence, magicDefence);
     }
 }

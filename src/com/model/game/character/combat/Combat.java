@@ -18,7 +18,6 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.RangeData;
-import com.model.game.character.combat.range.Ranged;
 import com.model.game.character.combat.weaponSpecial.Special;
 import com.model.game.character.following.PlayerFollowing;
 import com.model.game.character.npc.NPC;
@@ -380,14 +379,7 @@ public class Combat {
             } else {
 
                 if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12765 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12766 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12767 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12768) {
-            		if (arrows != null) {
-            			if (arrows.getAmount() > 1) {
-            				player.getEquipment().set(Equipment.ARROWS_SLOT, new Item(arrows.getId(), arrows.getAmount() - 1));
-            			} else {
-            				player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
-            			}
-            			Ranged.getSingleton().dropShootersArrow(player, target, arrows);
-            		}
+                	//TODO add arrow removement
                 }
 
                 //Arrows check
@@ -397,17 +389,7 @@ public class Combat {
                 }
 
                 if (dropArrows) {
-        			if (arrows != null) {
-        				if (arrows.getAmount() > 1) {
-        					player.getEquipment().set(Equipment.ARROWS_SLOT, new Item(arrows.getId(), arrows.getAmount() - 1));
-        				} else {
-        					player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
-        				}
-        				 if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235) { // Dark bow, 2nd arrow
-                             Ranged.getSingleton().dropShootersArrow(player, target, arrows);
-                         }
-        				Ranged.getSingleton().dropShootersArrow(player, target, arrows);
-        			}
+                	//TODO add arrow removement
                 }
             }
 

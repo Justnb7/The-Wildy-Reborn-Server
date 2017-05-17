@@ -7,10 +7,8 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
-import com.model.game.character.combat.range.Ranged;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
-import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.utility.Utility;
 
@@ -25,15 +23,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		player.setCombatType(CombatStyle.RANGE);
 		player.playAnimation(Animation.create(4230));
-		Item arrows = player.getEquipment().get(Equipment.ARROWS_SLOT);
-		if (arrows != null) {
-			if (arrows.getAmount() > 1) {
-				player.getEquipment().set(Equipment.ARROWS_SLOT, new Item(arrows.getId(), arrows.getAmount() - 1));
-			} else {
-				player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
-			}
-			Ranged.getSingleton().dropShootersArrow(player, target, arrows);
-		}
 
 		player.setCombatType(CombatStyle.RANGE);
 		

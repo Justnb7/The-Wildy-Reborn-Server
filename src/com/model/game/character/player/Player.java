@@ -67,7 +67,6 @@ import com.model.game.character.player.skill.mining.Mining;
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
-import com.model.game.item.ItemAssistant;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
 import com.model.game.item.container.impl.Bank;
@@ -1626,10 +1625,6 @@ public class Player extends Entity {
 		return outStream;
 	}
 
-	public ItemAssistant getItems() {
-		return itemAssistant;
-	}
-
 	private PlayerFollowing player_following = new PlayerFollowing(this);
 	
 	public PlayerFollowing getPlayerFollowing() {
@@ -1704,7 +1699,6 @@ public class Player extends Entity {
 		return ((getChunckX() << 8) + getChunckY());
 	}
 
-	private ItemAssistant itemAssistant = new ItemAssistant(this);
 	private CombatAssistant combatAssistant = new CombatAssistant(this);
 
 	@Override

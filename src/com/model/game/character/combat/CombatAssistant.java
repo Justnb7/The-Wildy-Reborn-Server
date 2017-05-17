@@ -35,20 +35,12 @@ public class CombatAssistant {
 		CombatSpells.vengeance(player, attacker, damage, delay);
 	}
 
-	public int getRangeStr(int i) {
-		return RangeData.getRangeStr(i);
-	}
-
 	public int getRangeStartGFX() {
 		return RangeData.getRangeStartGFX(player);
 	}
 
 	public int getRangeProjectileGFX() {
 		return RangeData.getRangeProjectileGFX(player);
-	}
-
-	public int correctBowAndArrows() {
-		return RangeData.correctBowAndArrows(player);
 	}
 
 	public int getProjectileShowDelay() {

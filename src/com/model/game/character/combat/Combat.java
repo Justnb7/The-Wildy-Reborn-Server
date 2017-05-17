@@ -17,6 +17,7 @@ import com.model.game.character.combat.magic.MagicCalculations;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
+import com.model.game.character.combat.range.ArrowRequirements;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
 import com.model.game.character.following.PlayerFollowing;
@@ -143,35 +144,8 @@ public class Combat {
                 return;
             }
 
-            if (player.getCombat().correctBowAndArrows() < player.getEquipment().getId(Equipment.ARROWS_SLOT)
-                    && player.usingBow
-                    && !player.getEquipment().usingCrystalBow(player)
-                    && !player.getEquipment().isCrossbow(player) && !player.getEquipment().wearingBlowpipe(player)) {
-                player.getActionSender().sendMessage("You can't use " + ItemDefinition.forId(player.getEquipment().getId(Equipment.ARROWS_SLOT)).getName().toLowerCase() + "s with a " + ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName().toLowerCase() + ".");
-                player.getMovementHandler().stopMovement();
-                player.getCombat().reset();
-                return;
-            }
-            if (player.getEquipment().isCrossbow(player) && !player.getCombat().properBolts()) {
-                player.getActionSender().sendMessage("You must use bolts with a crossbow.");
-                player.getMovementHandler().stopMovement();
-                Combat.resetCombat(player);
-                return;
-            }
+            ArrowRequirements.canUseArrowWithBow(player);
 
-            if (player.getEquipment().wearingBallista(player) && !player.getCombat().properJavalins()) {
-                player.getActionSender().sendMessage("You must use javalins with a ballista.");
-                player.getMovementHandler().stopMovement();
-                Combat.resetCombat(player);
-                return;
-            }
-
-            if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 4734 && !player.getCombat().properBoltRacks()) {
-                player.getActionSender().sendMessage("You must use bolt racks with this bow.");
-                player.getMovementHandler().stopMovement();
-                Combat.resetCombat(player);
-                return;
-            }
         }
 		/*
 		 * Verify we can use the spell

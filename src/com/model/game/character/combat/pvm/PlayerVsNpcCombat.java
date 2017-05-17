@@ -129,7 +129,7 @@ public class PlayerVsNpcCombat {
 
 	public static boolean canAttackNpc(Player player, NPC npc) {
 		if (npc.isDead || npc.getMaxHitpoints() <= 0 || player.isDead()) {
-			player.getCombat().reset();
+			player.getCombatState().reset();
 			return false;
 		}
 		if (npc.transforming)
@@ -182,7 +182,7 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !npc.inMulti()) {
-			player.getCombat().reset();
+			player.getCombatState().reset();
 			player.getActionSender().sendMessage("This monster is already in combat.");
 			return false;
 		}

@@ -25,8 +25,8 @@ public class AbyssalDagger implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int firstHit = Utility.random(player.getCombat().calculateMeleeMaxHit());
-		int secondHit = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int firstHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
+		int secondHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		final int finalDamage = secondHit;
 		
 		player.playAnimation(Animation.create(3300));
@@ -53,7 +53,7 @@ public class AbyssalDagger implements SpecialAttack {
 			}
 			
 			if (player.hasVengeance()) {
-				targPlayer.getCombat().vengeance(targPlayer, firstHit, 1);
+				targPlayer.getCombatState().vengeance(targPlayer, firstHit, 1);
 			}
 			
 			CombatExperience.handleCombatExperience(player, firstHit, CombatStyle.MELEE);

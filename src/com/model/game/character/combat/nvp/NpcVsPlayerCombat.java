@@ -215,9 +215,9 @@ public class NpcVsPlayerCombat {
 				return;
 			}
 			// Autoretal
-			if (player.getCombat().noTarget()) {
+			if (player.getCombatState().noTarget()) {
 				if (player.isAutoRetaliating()) {
-					player.getCombat().setTarget(npc);
+					player.getCombatState().setTarget(npc);
 				}
 			}
 			// block anim

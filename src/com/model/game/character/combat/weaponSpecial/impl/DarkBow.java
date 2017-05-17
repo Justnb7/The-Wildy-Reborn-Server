@@ -27,17 +27,17 @@ public class DarkBow implements SpecialAttack {
 		player.setCombatType(CombatStyle.RANGE);
 		player.playAnimation(Animation.create(426));
 		
-		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
+		player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
 		
 		// On rapid, the attack delay is 1 tick faster.
 		if (player.getAttackStyle() == 2)
 			player.attackDelay--;
 		
 		// Send the projectile TODO adjust the height and duration for the 2nd arrow
-		player.getCombat().fireProjectileAtTarget();
+		player.getCombatState().fireProjectileAtTarget();
 		
-		int first = Utility.random(player.getCombat().calculateRangeMaxHit());
-		int second = Utility.random(player.getCombat().calculateRangeMaxHit());
+		int first = Utility.random(player.getCombatState().calculateRangeMaxHit());
+		int second = Utility.random(player.getCombatState().calculateRangeMaxHit());
 		
 		boolean success = CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (!success) {

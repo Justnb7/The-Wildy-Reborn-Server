@@ -35,8 +35,8 @@ public class MagicShortbow implements SpecialAttack {
 			}
 		});
 
-		int dam1 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
-		int dam2 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
+		int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
+		int dam2 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
 		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?
 			dam1 = 0;
 		}

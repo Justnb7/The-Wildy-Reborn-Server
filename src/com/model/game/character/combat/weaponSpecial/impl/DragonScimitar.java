@@ -23,7 +23,7 @@ public class DragonScimitar implements SpecialAttack {
 	@Override
 	public void handleAttack(Player player, Entity target) {
 		
-		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1872));
 		player.playGraphics(Graphic.create(347, (100 << 16)));
 		

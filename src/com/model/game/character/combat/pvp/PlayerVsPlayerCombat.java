@@ -80,7 +80,7 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 		if (target.isDead()) {
-			player.getCombat().reset();
+			player.getCombatState().reset();
 			Combat.resetCombat(player);
 			return false;
 		}

@@ -30,10 +30,10 @@ public class ArmadylCrossbow implements SpecialAttack {
 		//TODO implement gfx 301
 		int d = player.getLocation().distanceToEntity(player, target);
 		player.playProjectile(Projectile.create(player.getLocation(), target, 301, 60, 50, 65 + (d * 5), 43, 35, 10, 36));
-		player.getCombat().fireProjectileAtTarget();
+		player.getCombatState().fireProjectileAtTarget();
 
 		// Step 1: calculate a hit
-		int dam1 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
+		int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
 
 		// Step 2: check if it missed
 		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?

@@ -16,7 +16,7 @@ public class AttackPlayer implements PacketType {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
-		player.getCombat().reset();
+		player.getCombatState().reset();
 		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
 		}
@@ -33,10 +33,10 @@ public class AttackPlayer implements PacketType {
 			
 			if (targetIndex < 0 || player.getIndex() < 0 || player.isDead()) {
 				System.out.println("index below 0 or player dead");
-				player.getCombat().reset();
+				player.getCombatState().reset();
 				return;
 			}
-			player.getCombat().setTarget(targ);
+			player.getCombatState().setTarget(targ);
 			break;
 
 		/**
@@ -49,7 +49,7 @@ public class AttackPlayer implements PacketType {
 			targ = World.getWorld().getPlayers().get(targetIdx);
 
 			if (targ == null || player.isDead()) {
-				player.getCombat().reset();
+				player.getCombatState().reset();
 				break;
 			}
 
@@ -69,7 +69,7 @@ public class AttackPlayer implements PacketType {
 				Combat.resetCombat(player);
 			}
 			if (player.usingMagic) {
-				player.getCombat().setTarget(targ);
+				player.getCombatState().setTarget(targ);
 			} else {
 				System.err.println("Unsupported combat situation, is the spell you're using supported?");
 			}

@@ -1610,10 +1610,10 @@ public class Player extends Entity {
 	private void update_attack_style() {
 
 		// Every game tick, update our combat style for worn items. This means we'll keep pathing towards any non-null target properly.
-		if (getCombat().target != null) {
+		if (getCombatState().target != null) {
 			Combat.setCombatStyle(this);
-			faceEntity(getCombat().target);
-			setFollowing(getCombat().target);
+			faceEntity(getCombatState().target);
+			setFollowing(getCombatState().target);
 		}
 	}
 
@@ -1631,8 +1631,8 @@ public class Player extends Entity {
 		return player_following;
 	}
 
-	public CombatState getCombat() {
-		return combatAssistant;
+	public CombatState getCombatState() {
+		return combatState;
 	}
 	
 	public void process_following() {
@@ -1640,7 +1640,7 @@ public class Player extends Entity {
 			if (followTarget.isNPC())
 				getPlayerFollowing().followNpc(followTarget);
 			else
-				getPlayerFollowing().followPlayer(!asPlayer().getCombat().noTarget(), followTarget);
+				getPlayerFollowing().followPlayer(!asPlayer().getCombatState().noTarget(), followTarget);
 		}
 	}
 
@@ -1699,7 +1699,7 @@ public class Player extends Entity {
 		return ((getChunckX() << 8) + getChunckY());
 	}
 
-	private CombatState combatAssistant = new CombatState(this);
+	private CombatState combatState = new CombatState(this);
 
 	@Override
 	public EntityType getEntityType() {

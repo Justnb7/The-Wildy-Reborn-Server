@@ -108,11 +108,11 @@ public class CombatState {
 	}
 	
 	public int calculateMeleeMaxHit() {
-		return CombatFormulae.calculateMeleeMaxHit(player, player.getCombat().target);
+		return CombatFormulae.calculateMeleeMaxHit(player, player.getCombatState().target);
 	}
 	
 	public int calculateRangeMaxHit() {
-		return CombatFormulae.calculateRangeMaxHit(player, player.getCombat().target, player.isUsingSpecial());
+		return CombatFormulae.calculateRangeMaxHit(player, player.getCombatState().target, player.isUsingSpecial());
 	}
 
 	public void reset() {
@@ -131,6 +131,11 @@ public class CombatState {
 	public boolean noTarget() {
 		return target == null;
 	}
+	
+	/**
+	 * The attack delay. (Each value of 1 counts for 600ms, e.g. 3 = 1800ms).
+	 */
+	private int attackDelay;
 	
 	/**
 	 * Gets the current attack delay.

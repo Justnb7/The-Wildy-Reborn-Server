@@ -23,7 +23,7 @@ public class DragonClaws implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int first = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int first = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		int second = first / 2;
 		int third = second / 2;
 		int fourth = second / 2;
@@ -51,7 +51,7 @@ public class DragonClaws implements SpecialAttack {
 			}
 
 			if (targPlayer.hasVengeance()) {
-				targPlayer.getCombat().vengeance(player, damage, 1);
+				targPlayer.getCombatState().vengeance(player, damage, 1);
 			}
 
 			CombatExperience.handleCombatExperience(player, first, CombatStyle.MELEE);

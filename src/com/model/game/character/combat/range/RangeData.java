@@ -11,19 +11,19 @@ import com.model.game.item.container.impl.Equipment;
 public class RangeData {
 
 	public static void fireProjectileAtTarget(Player player) {
-		Entity target = player.getCombat().target;
+		Entity target = player.getCombatState().target;
 
-		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), player.getCombat().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
+		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
 
-		if (player.getCombat().usingDbow())
-			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), 100, 50, getProjectileShowDelay(player), 53, 31, target.getProjectileLockonIndex(), 16, 64));
+		if (player.getCombatState().usingDbow())
+			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), 100, 50, getProjectileShowDelay(player), 53, 31, target.getProjectileLockonIndex(), 16, 64));
 		
 	}
 
 	public static void msbSpecProjectile(Player player) {
-		Entity target = player.getCombat().target;
+		Entity target = player.getCombatState().target;
 		
-		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombat().getRangeProjectileGFX(), player.getCombat().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 10, 64));
+		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 10, 64));
 	}
 
 	public static int getRangeStartGFX(Player player) {

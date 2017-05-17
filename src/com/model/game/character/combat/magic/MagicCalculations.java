@@ -17,7 +17,7 @@ public class MagicCalculations {
 	public static int magicMaxHitModifier(Player player) {
         int maxhit = player.MAGIC_SPELLS[player.oldSpellId][6];
 
-        if (player.getCombat().godSpells()) {
+        if (player.getCombatState().godSpells()) {
             if (System.currentTimeMillis() - player.godSpellDelay < 300000) {
                 maxhit += 10;
             }

@@ -377,7 +377,7 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		case 4169: // god spell charge
 			player.usingMagic = true;
-			if (player.getCombat().checkMagicReqs(48)) {
+			if (player.getCombatState().checkMagicReqs(48)) {
 				if (System.currentTimeMillis() - player.godSpellDelay < 300000L) {
 					player.getActionSender().sendMessage("You still feel the charge in your body!");
 				} else {
@@ -504,7 +504,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 89061:
 			System.out.println("tick: " +player.isAutoRetaliating());
 			player.setAutoRetaliating(!player.isAutoRetaliating());
-			player.getCombat().reset();
+			player.getCombatState().reset();
 			break;
 			
 		case 7217:

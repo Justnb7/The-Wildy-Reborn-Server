@@ -134,7 +134,7 @@ public class TeleportExecutor {
 		Combat.resetCombat(player);
 		player.getMovementHandler().stopMovement();
 		player.getActionSender().sendRemoveInterfacePacket();
-		player.getCombat().reset();
+		player.getCombatState().reset();
 		player.resetFace();
 		player.teleTimer = initialDelay;
 		player.setTeleporting(true);
@@ -228,11 +228,11 @@ public class TeleportExecutor {
 			player.getActionSender().sendMessage("You are teleblocked and can't teleport.");
 			return false;
 		}
-		if (!player.getCombat().noTarget()) {
+		if (!player.getCombatState().noTarget()) {
 			Combat.resetCombat(player);
 		}
 		player.getActionSender().sendRemoveInterfacePacket();
-		player.getCombat().reset();
+		player.getCombatState().reset();
 		player.faceEntity(player);
 		return true;
 	}

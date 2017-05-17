@@ -30,18 +30,18 @@ public class WalkingPacketHandler implements PacketType {
 			return;
 		}
 		
-		Entity combattarg = player.getCombat().target;
+		Entity combattarg = player.getCombatState().target;
 		//We're frozen we can't walk
 		if (player.frozen()) {
 			if (combattarg != null) {
 				if (player.goodDistance(player.getX(), player.getY(), combattarg.getX(), combattarg.getY(), 1) && packetType != 98) {
-					player.getCombat().reset();
+					player.getCombatState().reset();
 					return;
 				}
 			}
 			if (packetType != 98) {
 				player.getActionSender().sendMessage("A magical force stops you from moving.");
-				player.getCombat().reset();
+				player.getCombatState().reset();
 			}
 			return;
 		}
@@ -85,7 +85,7 @@ public class WalkingPacketHandler implements PacketType {
 		//When walking reset the following variables
 		if (packetType == 248 || packetType == 164) {
 			player.faceEntity(null);
-			player.getCombat().reset();
+			player.getCombatState().reset();
 			player.setOpenShop(null);
 			Combat.resetCombat(player);
 			player.setFollowing(null);

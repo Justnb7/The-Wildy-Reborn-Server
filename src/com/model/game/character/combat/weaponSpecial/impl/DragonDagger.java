@@ -23,8 +23,8 @@ public class DragonDagger implements SpecialAttack {
 
 	@Override
 	public void handleAttack(final Player player, final Entity target) {
-		int firstHit = Utility.random(player.getCombat().calculateMeleeMaxHit());
-		int secondHit = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int firstHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
+		int secondHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		final int finalDamage = secondHit;
 		
 		player.playAnimation(Animation.create(1062));

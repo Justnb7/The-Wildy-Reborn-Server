@@ -20,7 +20,7 @@ public class GraniteMaul implements SpecialAttack {
 
 	@Override
 	public void handleAttack(final Player player, final Entity target) {
-		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		
 		player.playAnimation(Animation.create(1667));
 		player.playGraphics(Graphic.create(337, 0, 100));

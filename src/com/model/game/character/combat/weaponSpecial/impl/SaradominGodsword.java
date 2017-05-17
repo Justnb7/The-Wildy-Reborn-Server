@@ -21,7 +21,7 @@ public class SaradominGodsword implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		int hitpointsHeal = damage / 2;
 		int prayerHeal = damage / 4;
 		

@@ -30,9 +30,9 @@ public class Ballista implements SpecialAttack {
 		if (player.getAttackStyle() == 2)
 			player.attackDelay--;
 
-		player.getCombat().fireProjectileAtTarget();
+		player.getCombatState().fireProjectileAtTarget();
 		
-		int damage = Utility.random(player.getCombat().calculateRangeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateRangeMaxHit());
 		boolean success = CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (!success) {
 			damage = 0;

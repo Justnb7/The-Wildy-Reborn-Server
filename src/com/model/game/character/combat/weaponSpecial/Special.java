@@ -34,7 +34,7 @@ public class Special {
 		attacker.setCombatType(CombatStyle.MELEE);
 		attacker.logoutDelay.reset();
 		
-		if (attacker.getCombat().target.isPlayer()) { // playerIndex is the indexId of the player we're attacking
+		if (attacker.getCombatState().target.isPlayer()) { // playerIndex is the indexId of the player we're attacking
 			Player targPlayer = (Player) target; // type cast
 			targPlayer.putInCombat(attacker.getIndex());
 			targPlayer.logoutDelay.reset();

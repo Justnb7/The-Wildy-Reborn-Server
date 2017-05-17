@@ -13,7 +13,7 @@ public class FollowPlayer implements PacketType {
 		if (op == null) {
 			return;
 		}
-		player.getCombat().reset();
+		player.getCombatState().reset();
 		player.setFollowing(op);
 	}
 }

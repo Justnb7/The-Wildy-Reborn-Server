@@ -62,17 +62,17 @@ public class Combat {
     public static void resetCombat(Player player) {
         player.usingMagic = false;
         player.faceEntity(null);
-        player.getCombat().reset();
+        player.getCombatState().reset();
         player.setFollowing(null);
         player.setInCombat(false);
         player.getActionSender().sendString("", 35000);
     }
 
     public static void playerVsEntity(Player player) {
-        if (player.getCombat().noTarget())
+        if (player.getCombatState().noTarget())
             return;
 
-        Entity target = player.getCombat().target;
+        Entity target = player.getCombatState().target;
 
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
@@ -140,7 +140,7 @@ public class Combat {
             if (!crystal && !blowp && ammo < 1) {
                 player.getActionSender().sendMessage("There is no ammo left in your quiver.");
                 player.getMovementHandler().stopMovement();
-                player.getCombat().reset();
+                player.getCombatState().reset();
                 return;
             }
 
@@ -151,7 +151,7 @@ public class Combat {
 		 * Verify we can use the spell
 		 */
         if (player.getCombatType() == CombatStyle.MAGIC) {
-            if (!player.getCombat().checkMagicReqs(player.getSpellId())) {
+            if (!player.getCombatState().checkMagicReqs(player.getSpellId())) {
                 player.getMovementHandler().stopMovement();
                 Combat.resetCombat(player);
                 return;
@@ -325,7 +325,7 @@ public class Combat {
 
 
             // First, calc hits.
-            int dam1 = Utility.getRandom(player.getCombat().calculateMeleeMaxHit());
+            int dam1 = Utility.getRandom(player.getCombatState().calculateMeleeMaxHit());
 
             // Second, calc accuracy. If miss, dam=0
             if (!(CombatFormulae.getAccuracy(player, target, 0, 1.0))) {
@@ -342,8 +342,8 @@ public class Combat {
             if (player.getAttackStyle() == 2)
                 player.attackDelay--;
 
-            player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
-            player.getCombat().fireProjectileAtTarget();
+            player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
+            player.getCombatState().fireProjectileAtTarget();
             Item arrows = player.getEquipment().get(Equipment.ARROWS_SLOT);
             boolean hand_thrown = false;
             if (hand_thrown) {
@@ -368,7 +368,7 @@ public class Combat {
             }
 
             // Random dmg
-            int dam1 = Utility.getRandom(player.getCombat().calculateRangeMaxHit());
+            int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
 
             // Bolt special increases damage.
             boolean boltSpec = player.getEquipment().isCrossbow(player) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;
@@ -400,7 +400,7 @@ public class Combat {
             player.castingMagic = true;
 
             if (player.MAGIC_SPELLS[player.getSpellId()][3] > 0) {
-                if (player.getCombat().getStartGfxHeight() == 100) {
+                if (player.getCombatState().getStartGfxHeight() == 100) {
                     player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
                 } else {
                     player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
@@ -408,7 +408,7 @@ public class Combat {
             }
 
             if (player.MAGIC_SPELLS[player.getSpellId()][4] > 0) {
-            	player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombat().getStartDelay(), 50, 78, player.getCombat().getStartHeight(), player.getCombat().getEndHeight(), target.getProjectileLockonIndex(), 16, 64));
+            	player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombatState().getStartDelay(), 50, 78, player.getCombatState().getStartHeight(), player.getCombatState().getEndHeight(), target.getProjectileLockonIndex(), 16, 64));
             }
             if (player.autocastId > 0) {
                 player.followDistance = 5;
@@ -421,13 +421,13 @@ public class Combat {
             if (target.isPlayer()) {
                 Player ptarg = (Player) target;
                 if (player.MAGIC_SPELLS[player.oldSpellId][0] == 12891 && ptarg.getMovementHandler().isMoving()) {
-                    player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), 368, player.getCombat().getStartDelay(), 50, 85, 25, 25, target.getProjectileLockonIndex(), 16, 64));
+                    player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), 368, player.getCombatState().getStartDelay(), 50, 85, 25, 25, target.getProjectileLockonIndex(), 16, 64));
                 }
             }
 
             boolean splash = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
 
-            int spellFreezeTime = player.getCombat().getFreezeTime();
+            int spellFreezeTime = player.getCombatState().getFreezeTime();
             if (spellFreezeTime > 0 && !target.frozen() && !splash) {
 
                 target.freeze(spellFreezeTime);
@@ -439,14 +439,14 @@ public class Combat {
             }
             // One time attack!
             if (!player.autoCast) {
-                player.getCombat().reset();
+                player.getCombatState().reset();
             }
 
             int dam1 = MagicCalculations.magicMaxHitModifier(player);
 
             // Graphic that appears when hit appears.
             final int endGfx = player.MAGIC_SPELLS[player.oldSpellId][5];
-            final int endH = player.getCombat().getEndGfxHeight();
+            final int endH = player.getCombatState().getEndGfxHeight();
             Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
                 @Override
                 public void execute() {
@@ -633,7 +633,7 @@ public class Combat {
             boolean handthrown = player.getEquipment().isThrowingWeapon(player);
             player.usingCross = player.getEquipment().isCrossbow(player);
             boolean bolt = player.getEquipment().isBolt(player);
-            boolean javalin = player.getCombat().properJavalins();
+            boolean javalin = player.getCombatState().properJavalins();
 
             if (handthrown || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
                 player.setCombatType(CombatStyle.RANGE);
@@ -676,10 +676,10 @@ public class Combat {
 
 	                }
 	                if (hit.cbType == CombatStyle.MAGIC) {
-	                    if (player.getCombat().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX
+	                    if (player.getCombatState().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX
 	                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 100));
 	                    } else if (!player.magicFailed) {
-	                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombat().getEndGfxHeight()));
+	                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombatState().getEndGfxHeight()));
 	                    } else if (player.magicFailed) {
 	                        target.playGraphics(Graphic.create(85, 0, 100));
 	                    }

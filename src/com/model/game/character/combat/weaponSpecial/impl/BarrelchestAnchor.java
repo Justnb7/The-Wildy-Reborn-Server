@@ -18,7 +18,7 @@ public class BarrelchestAnchor implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(5870));
 		player.playGraphics(Graphic.highGraphic(1027));

@@ -21,7 +21,7 @@ public class AbyssalTentacle implements SpecialAttack {
 	@Override
 	public void handleAttack(Player player, Entity target) {
 
-		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1658));
         target.playGraphics(Graphic.highGraphic(341));
 		

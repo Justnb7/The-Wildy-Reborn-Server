@@ -20,7 +20,7 @@ public class SaradominSword implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int damage = Utility.random(player.getCombat().calculateMeleeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(1132));
 		target.playGraphics(Graphic.highGraphic(1196));

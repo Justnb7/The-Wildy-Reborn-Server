@@ -160,7 +160,7 @@ public class WeaponDefinition {
 		if (weapon.getId() <= 0) {
 			return 4;
 		} else if (weapon.getId() == 12926) {
-			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombat().target.isPlayer() ? 3 : 2 : player.getCombat().target.isPlayer() ? 4 : 3;
+			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombatState().target.isPlayer() ? 3 : 2 : player.getCombatState().target.isPlayer() ? 4 : 3;
 		} else {
 			return WeaponDefinition.get(weapon.getId()).getAttackSpeed();
 		}

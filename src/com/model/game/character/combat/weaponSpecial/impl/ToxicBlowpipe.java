@@ -21,7 +21,7 @@ public class ToxicBlowpipe implements SpecialAttack {
 	@Override
 	public void handleAttack(Player player, Entity target) {
 		player.setCombatType(CombatStyle.RANGE);
-		int damage = Utility.random(player.getCombat().calculateRangeMaxHit());
+		int damage = Utility.random(player.getCombatState().calculateRangeMaxHit());
 		player.playAnimation(Animation.create(5061));
 
 		//TODO implement gfx 1043

@@ -47,7 +47,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 	@Override
 	public void handle(final Player player, int packet, int size) {
-		player.getCombat().reset();
+		player.getCombatState().reset();
 		player.setFollowing(null);
 		if (player.isPlayerTransformed() || player.isTeleporting()) {
 			return;
@@ -86,7 +86,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			return;
 		}
 		if (npc.getMaxHitpoints() == 0 && npc.getId() != 493) {
-			player.getCombat().reset();
+			player.getCombatState().reset();
 			return;
 		}
 		if (!npc.getDefinition().isAttackable()) {
@@ -113,7 +113,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			player.getMovementHandler().stopMovement();
 		}
 
-		player.getCombat().setTarget(npc);
+		player.getCombatState().setTarget(npc);
 	}
 
 	private void handleMagicOnNpcPacket(Player player, int packet) {
@@ -146,7 +146,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 			if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 6)) {
 				player.getMovementHandler().stopMovement();
 			}
-			player.getCombat().setTarget(npc);
+			player.getCombatState().setTarget(npc);
 		}
 	}
 

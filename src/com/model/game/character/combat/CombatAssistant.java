@@ -140,7 +140,7 @@ public class CombatAssistant {
 	}
 	
 	public int calculateRangeMaxHit() {
-		return CombatFormulae.calculateRangeMaxHit(player, player.getCombat().target);
+		return CombatFormulae.calculateRangeMaxHit(player, player.getCombat().target, player.isUsingSpecial());
 	}
 
 	public void reset() {

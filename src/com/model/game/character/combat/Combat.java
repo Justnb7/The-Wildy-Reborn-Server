@@ -18,6 +18,7 @@ import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.RangeData;
+import com.model.game.character.combat.range.Ranged;
 import com.model.game.character.combat.weaponSpecial.Special;
 import com.model.game.character.following.PlayerFollowing;
 import com.model.game.character.npc.NPC;
@@ -25,6 +26,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -369,17 +371,23 @@ public class Combat {
 
             player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
             player.getCombat().fireProjectileAtTarget();
-
+            Item arrows = player.getEquipment().get(Equipment.ARROWS_SLOT);
             boolean hand_thrown = false;
             if (hand_thrown) {
 
-                player.getItems().deleteAmmo(); // here
+            	player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
                 
             } else {
 
-                if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12765 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12766
-                        || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12767 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12768) {
-                    player.getItems().deleteArrow();
+                if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12765 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12766 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12767 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12768) {
+            		if (arrows != null) {
+            			if (arrows.getAmount() > 1) {
+            				player.getEquipment().set(Equipment.ARROWS_SLOT, new Item(arrows.getId(), arrows.getAmount() - 1));
+            			} else {
+            				player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
+            			}
+            			Ranged.getSingleton().dropShootersArrow(player, target, arrows);
+            		}
                 }
 
                 //Arrows check
@@ -389,11 +397,17 @@ public class Combat {
                 }
 
                 if (dropArrows) {
-                    player.getItems().dropArrowUnderTarget();
-                    player.getItems().deleteArrow();
-                    if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235) { // Dark bow, 2nd arrow
-                        player.getItems().dropArrowUnderTarget();
-                    }
+        			if (arrows != null) {
+        				if (arrows.getAmount() > 1) {
+        					player.getEquipment().set(Equipment.ARROWS_SLOT, new Item(arrows.getId(), arrows.getAmount() - 1));
+        				} else {
+        					player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
+        				}
+        				 if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235) { // Dark bow, 2nd arrow
+                             Ranged.getSingleton().dropShootersArrow(player, target, arrows);
+                         }
+        				Ranged.getSingleton().dropShootersArrow(player, target, arrows);
+        			}
                 }
             }
 

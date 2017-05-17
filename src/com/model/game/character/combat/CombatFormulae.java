@@ -5,6 +5,7 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.utility.Utility;
 
@@ -379,104 +380,63 @@ public class CombatFormulae {
 	/**
 	 * Calculates a mob's range max hit.
 	 */
-	public static int calculateRangeMaxHit(Entity mob, Entity victim) {
+	public static int calculateRangeMaxHit(Entity mob, Entity victim, boolean special) {
 		Player player = (Player) mob;
 		
-		int maxHit = 0;
 		double specialMultiplier = 1;
-		double prayerMultiplier = 1;
 		double otherBonusMultiplier = 1;
-		int rangedStrength = player.getBonuses()[(player.getEquipment().getId(Equipment.ARROWS_SLOT))];
-		
-		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 4222) {
-			/**
-			 * Crystal Bow does not use arrows, so we don't use the arrows range strength bonus.
-			 */
-			rangedStrength = 70;
+		double prayerMultiplier = 1;
+		int rangeLvl = player.getSkills().getLevel(Skills.RANGE);
+		Item weapon = player.getEquipment().get(Equipment.WEAPON_SLOT);
+		Item arrows = player.getEquipment().get(Equipment.ARROWS_SLOT);
+		double maxHit = (1.05 + (rangeLvl * 0.00125)) + (rangeLvl * 0.11);
+
+		if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 800 || weapon.getDefinition().getId() == 806 || weapon.getDefinition().getId() == 825 || weapon.getDefinition().getId() == 864) {
+			maxHit *= 0.7;
+		} else if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 801 || weapon.getDefinition().getId() == 807 || weapon.getDefinition().getId() == 820 || weapon.getDefinition().getId() == 863) {
+			maxHit *= 0.72;
+		} else if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 802 || weapon.getDefinition().getId() == 808 || weapon.getDefinition().getId() == 827 || weapon.getDefinition().getId() == 865) {
+			maxHit *= 0.79;
+		} else if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 803 || weapon.getDefinition().getId() == 809 || weapon.getDefinition().getId() == 828 || weapon.getDefinition().getId() == 866) {
+			maxHit *= 0.84;
+		} else if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 804 || weapon.getDefinition().getId() == 810 || weapon.getDefinition().getId() == 829 || weapon.getDefinition().getId() == 867) {
+			maxHit *= 0.99;
+		} else if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 805 || weapon.getDefinition().getId() == 811 || weapon.getDefinition().getId() == 830 || weapon.getDefinition().getId() == 868) {
+			maxHit *= 1.24;
+		} else if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 6522) {
+			maxHit *= 1.64;
+		} else if (weapon != null && weapon.getDefinition() != null && weapon.getDefinition().getId() == 4212 || weapon.getDefinition().getId() == 4214) {
+			maxHit *= 2.25;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 882 || arrows.getDefinition().getId() == 883) {
+			maxHit *= 1.042;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 884 || arrows.getDefinition().getId() == 885) {
+			maxHit *= 1.044;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 886 || arrows.getDefinition().getId() == 887) {
+			maxHit *= 1.134;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 888 || arrows.getDefinition().getId() == 889) {
+			maxHit *= 1.2;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 890 || arrows.getDefinition().getId() == 891) {
+			maxHit *= 1.35;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 892 || arrows.getDefinition().getId() == 893) {
+			maxHit *= 1.6;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 4740) {
+			maxHit *= 1.95;
+		} else if (arrows != null && arrows.getDefinition() != null && arrows.getDefinition().getId() == 9244) {
+			maxHit *= 2.6;
 		}
-		
-		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12926) {
-			rangedStrength = 60;
-		}
-		
-		if (victim != null)
-			if (mob.isPlayer() && victim.isNPC()) {
-				final NPC npc = (NPC) victim;
-				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.getId() && hasBlackMaskOrSlayerHelm(player)) {
-					otherBonusMultiplier = 1.15;
-				}
-			}
-		
-		int rangeLevel = player.getSkills().getLevel(Skills.RANGE);
-		int combatStyleBonus = player.getAttackStyle() == 0 ? 3 : 0;
-		
-		if (player.isActivePrayer(Prayers.SHARP_EYE)) {
-			rangeLevel *= 1.05;
-        } else if (player.isActivePrayer(Prayers.HAWK_EYE)) {
-        	rangeLevel *= 1.10;
-        } else if (player.isActivePrayer(Prayers.EAGLE_EYE)) {
-        	rangeLevel *= 1.15;
-        }
-		
-		if(wearingFullVoid(player, 2)) {
-			otherBonusMultiplier = 1.2;
-		}
-		
-		int effectiveRangeDamage = (int) ((rangeLevel * prayerMultiplier * otherBonusMultiplier) + combatStyleBonus);
-		double baseDamage = 1.3 + (effectiveRangeDamage / 10) + (rangedStrength / 80) + ((effectiveRangeDamage * rangedStrength) / 640);
-		
-		if (player.isUsingSpecial()) {
-			switch (player.getEquipment().getId(Equipment.ARROWS_SLOT)) {
-			case 9243:
-				specialMultiplier = 1.15;
-				break;
-			case 9244:
-				specialMultiplier = 1.45;
-				break;
-			case 9245:
-				specialMultiplier = 1.15;
-				break;
-			case 9236:
-				specialMultiplier = 1.25;
-				break;
-			case 882:
-			case 884:
-			case 886:
-			case 888:
-			case 890:
-			case 892:
-			case 11212:
-				if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235) {
-					specialMultiplier = 1.3;
-					if (player.getEquipment().getId(Equipment.ARROWS_SLOT) == 11212)
-						specialMultiplier += .5;
-				}
-				if (player.getEquipment().getId(Equipment.ARROWS_SLOT) == 11212)
-					specialMultiplier = 1.5;
+		if (special) {
+			switch (weapon.getDefinition().getId()) {
+			case 861:
+				specialMultiplier = 1.05;
 				break;
 			}
 		}
-		
-		maxHit = (int) (baseDamage * specialMultiplier);
-		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == -1) {
-			maxHit = 0;
+
+		if (wearingFullVoid(player, 1)) {
+			maxHit *= 1.05;
 		}
-		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12926) {
-        	if (player.isUsingSpecial()) {
-        		maxHit *= 1.65;
-        	} else {
-        		maxHit *= 1.13;
-        	}
-        }
-		
-		if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 20997) {
-			maxHit *= 2.22;
-        }
-		
-		if(player.getEquipment().getId(Equipment.AMULET_SLOT) == 19547) {
-			maxHit += 1;
-        }
-		return maxHit;
+
+		return (int) Math.ceil(maxHit * otherBonusMultiplier * prayerMultiplier * specialMultiplier);
 	}
 
 	public static boolean hasAmuletOfTheDamned(Player player) {

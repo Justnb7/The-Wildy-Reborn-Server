@@ -9,8 +9,10 @@ import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatStyle;
+import com.model.game.character.combat.range.Ranged;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
@@ -27,8 +29,16 @@ public class DarkBow implements SpecialAttack {
 		player.setCombatType(CombatStyle.RANGE);
 		player.playAnimation(Animation.create(426));
 		
-		player.getItems().deleteArrow();
-		player.getItems().deleteArrow();
+		Item arrows = player.getEquipment().get(Equipment.ARROWS_SLOT);
+		if (arrows != null) {
+			if (arrows.getAmount() > 1) {
+				player.getEquipment().set(Equipment.ARROWS_SLOT, new Item(arrows.getId(), arrows.getAmount() - 1));
+			} else {
+				player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
+			}
+			Ranged.getSingleton().dropShootersArrow(player, target, arrows);
+			Ranged.getSingleton().dropShootersArrow(player, target, arrows);
+		}
 		
 		player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 100));
 		

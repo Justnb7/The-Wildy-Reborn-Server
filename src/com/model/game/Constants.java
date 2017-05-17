@@ -230,4 +230,6 @@ public class Constants {
 	 */
 	public static final String SCRIPTS_DIRECTORY = "./data/scripts/";
 
+	public static final int TOTAL_MOBS = 7520;
+
 }

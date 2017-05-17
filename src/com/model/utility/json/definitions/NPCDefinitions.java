@@ -1,5 +1,7 @@
 package com.model.utility.json.definitions;
 
+import com.model.game.Constants;
+
 /**
  * The container that represents an NPC definition.
  *
@@ -7,7 +9,7 @@ package com.model.utility.json.definitions;
  */
 public final class NPCDefinitions {
 
-	public static int NPCS = 7520;
+	public static int NPCS = Constants.TOTAL_MOBS;
 
 	private static NPCDefinitions[] definitions = new NPCDefinitions[NPCS];
 
@@ -121,16 +123,6 @@ public final class NPCDefinitions {
      * The attack speed of this NPC.
      */
     private int attackSpeed;
-    
-	private int standAnimation;
-
-	private int walkAnimation;
-
-	private int turn180Animation;
-
-	private int turn90CWAnimation;
-
-	private int turn90CCWAnimation;
 
     /**
      * The attack animation of this NPC.
@@ -212,7 +204,7 @@ public final class NPCDefinitions {
      *            the magic defence of this NPC.
      */
     public NPCDefinitions(int id, String name, String description, int combatLevel, int size, boolean attackable, boolean aggressive,
-        boolean retreats, boolean poisonous, int respawnTime, int maxHit, int hitpoints, int attackSpeed, int standAnimation, int walkAnimation, int turn180Animation, int turn90CWAnimation, int turn90CCWAnimation, int attackAnimation,
+        boolean retreats, boolean poisonous, int respawnTime, int maxHit, int hitpoints, int attackSpeed, int attackAnimation,
         int defenceAnimation, int deathAnimation, int attackBonus, int meleeDefence, int rangedDefence, int magicDefence) {
         this.id = id;
         this.name = name;
@@ -227,11 +219,6 @@ public final class NPCDefinitions {
         this.maxHit = maxHit;
         this.hitpoints = hitpoints;
         this.attackSpeed = attackSpeed;
-        this.standAnimation = standAnimation;
-		this.walkAnimation = walkAnimation;
-		this.turn180Animation = turn180Animation;
-		this.turn90CWAnimation = turn90CWAnimation;
-		this.turn90CCWAnimation = turn90CCWAnimation;
         this.attackAnimation = attackAnimation;
         this.defenceAnimation = defenceAnimation;
         this.deathAnimation = deathAnimation;
@@ -239,7 +226,6 @@ public final class NPCDefinitions {
         this.meleeDefence = meleeDefence;
         this.rangedDefence = rangedDefence;
         this.magicDefence = magicDefence;
-        
     }
 
     /**
@@ -363,51 +349,6 @@ public final class NPCDefinitions {
     public int getAttackSpeed() {
         return attackSpeed;
     }
-    
-	/**
-	 * Gets the standing animation
-	 * 
-	 * @return the standAnimation
-	 */
-	public int getStandAnimation() {
-		return standAnimation;
-	}
-
-	/**
-	 * Gets the walking animation
-	 * 
-	 * @return the walkAnimation
-	 */
-	public int getWalkAnimation() {
-		return walkAnimation;
-	}
-
-	/**
-	 * Get the 180 degrees turn animation
-	 * 
-	 * @return the turn180Animation
-	 */
-	public int getTurn180Animation() {
-		return turn180Animation;
-	}
-
-	/**
-	 * Gets the 90 degrees clock wise turning animation
-	 * 
-	 * @return the turn90CWAnimation
-	 */
-	public int getTurn90CWAnimation() {
-		return turn90CWAnimation;
-	}
-
-	/**
-	 * Gets the 90 degrees counter clock wise turning animation
-	 * 
-	 * @return the turn90CCWAnimation
-	 */
-	public int getTurn90CCWAnimation() {
-		return turn90CCWAnimation;
-	}
 
     /**
      * Gets the attack animation of this NPC.

@@ -139,8 +139,7 @@ public class NPC extends Entity {
 	 */
 	public int makeX, makeY, moveX, moveY;
 	
-	public int combatLevel, spawnedBy,
-			attackTimer, killedBy, oldIndex, underAttackBy, walking_type;
+	public int combatLevel, spawnedBy, killedBy, oldIndex, underAttackBy, walking_type;
 	
 	/**
 	 * The hitpoints of the npc

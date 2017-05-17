@@ -208,9 +208,6 @@ public class NpcVsPlayerCombat {
 	public static void executeDamage(NPC npc) {
 		
 		if (npc != null) {
-			if (World.getWorld().getPlayers().get(npc.oldIndex) == null) {
-				return;
-			}
 
 			Player player = World.getWorld().getPlayers().get(npc.oldIndex);
 

@@ -9,13 +9,13 @@ import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.Equipment;
 
-public class CombatAssistant {
+public class CombatState {
 
 	private Player player;
 
 	public Entity target;
 
-	public CombatAssistant(Player player) {
+	public CombatState(Player player) {
 		this.player = player;
 	}
 
@@ -58,22 +58,6 @@ public class CombatAssistant {
 	public boolean properBolts() {
 		return usingBolts(player.getEquipment().getId(Equipment.ARROWS_SLOT));
 	}
-
-	public boolean properDarts() {
-		return usingDarts(player.getEquipment().getId(Equipment.ARROWS_SLOT));
-	}
-
-	public boolean properBoltRacks() {
-		return usingRackBolts(player.getEquipment().getId(Equipment.ARROWS_SLOT));
-	}
-
-	public void castOtherVengeance() {
-		// CastOnOther.castOtherVengeance(c);
-	}
-
-	public boolean usingRackBolts(int i) {
-		return (i == 4740);
-	}
 	
 	public boolean usingJavalins(int javalin) {
 		return (javalin >= 825 && javalin <= 830) || javalin == 19484;
@@ -81,10 +65,6 @@ public class CombatAssistant {
 
 	public boolean usingBolts(int i) {
 		return (i >= 9140 && i <= 9145) || i >= 9334 && i <= 9344 || (i >= 9236 && i <= 9245) || i == 11875;
-	}
-
-	public boolean usingDarts(int i) {
-		return (i >= 806 && i <= 817);
 	}
 
 	public boolean checkMagicReqs(int spell) {
@@ -150,5 +130,37 @@ public class CombatAssistant {
 
 	public boolean noTarget() {
 		return target == null;
+	}
+	
+	/**
+	 * Gets the current attack delay.
+	 * @return The current attack delay.
+	 */
+	public int getAttackDelay() {
+		return attackDelay;
+	}
+
+	/**
+	 * Sets the current attack delay.
+	 * @param attackDelay The attack delay to set.
+	 */
+	public void setAttackDelay(int attackDelay) {
+		this.attackDelay = attackDelay;
+	}
+
+	/**
+	 * Decreases the current attack delay.
+	 * @param amount The amount to decrease by.
+	 */
+	public void decreaseAttackDelay(int amount) {
+		this.attackDelay -= amount;
+	}
+
+	/**
+	 * Increases the current attack delay.
+	 * @param amount The amount to increase by.
+	 */
+	public void increaseAttackDelay(int amount) {
+		this.attackDelay += amount;
 	}
 }

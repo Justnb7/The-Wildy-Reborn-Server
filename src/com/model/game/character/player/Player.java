@@ -17,7 +17,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.CombatAssistant;
+import com.model.game.character.combat.CombatState;
 import com.model.game.character.combat.DamageMap;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayers;
@@ -1631,7 +1631,7 @@ public class Player extends Entity {
 		return player_following;
 	}
 
-	public CombatAssistant getCombat() {
+	public CombatState getCombat() {
 		return combatAssistant;
 	}
 	
@@ -1699,7 +1699,7 @@ public class Player extends Entity {
 		return ((getChunckX() << 8) + getChunckY());
 	}
 
-	private CombatAssistant combatAssistant = new CombatAssistant(this);
+	private CombatState combatAssistant = new CombatState(this);
 
 	@Override
 	public EntityType getEntityType() {
@@ -2684,7 +2684,7 @@ public class Player extends Entity {
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId,
 			followDistance,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, attackDelay, oldSpellId, walkTutorial = 15, bountyPoints;
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, oldSpellId, walkTutorial = 15, bountyPoints;
 	
 	/**
 	 * Booleans

@@ -66,7 +66,7 @@ public class DagannothSupreme extends AbstractBossCombat {
 			Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);
 			break;
 		}
-		((NPC)attacker).attackTimer = 6;
+		attacker.getCombatState().setAttackDelay(6);
 	}
 
 	@Override

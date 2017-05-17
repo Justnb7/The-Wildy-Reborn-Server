@@ -106,7 +106,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 		}
 
 		// Graardor has a attacker timer of 3.6 seconds A.K.A 6 ticks
-		((NPC) attacker).attackTimer = 6;
+		attacker.getCombatState().setAttackDelay(6);
 	}
 
 	@Override

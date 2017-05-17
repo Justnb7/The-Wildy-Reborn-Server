@@ -124,7 +124,7 @@ public class TzTokJad extends AbstractBossCombat {
 
 			break;
 		}
-		((NPC)attacker).attackTimer = 7;
+		attacker.getCombatState().setAttackDelay(7);
 	}
 
 	@Override

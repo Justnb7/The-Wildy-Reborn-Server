@@ -72,7 +72,7 @@ public class Combat {
         if (player.getCombatState().noTarget())
             return;
 
-        Entity target = player.getCombatState().target;
+        Entity target = player.getCombatState().getTarget();
 
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
@@ -201,7 +201,7 @@ public class Combat {
 
         //player.getCombat().checkVenomousItems();
 
-        if (player.attackDelay > 0) {
+        if (player.getCombatState().getAttackDelay() > 0) {
             // don't attack as our timer hasnt reached 0 yet
             return;
         }
@@ -211,7 +211,7 @@ public class Combat {
 		/*
 		 * Set our attack timer so we dont instantly hit again
 		 */
-        player.attackDelay = WeaponDefinition.sendAttackSpeed(player);
+        player.getCombatState().setAttackDelay(WeaponDefinition.sendAttackSpeed(player));
 
 		/*
 		 * Add a skull if needed
@@ -280,7 +280,7 @@ public class Combat {
             // Npc block anim
             if (target.isNPC()) {
                 NPC npc = (NPC) target;
-                if (npc.getMaxHitpoints() > 0 && npc.attackTimer > 3) {
+                if (npc.getMaxHitpoints() > 0 && npc.getCombatState().getAttackDelay() > 3) {
                     if (npc.getId() != 2042 && npc.getId() != 2043 && npc.getId() != 2044 && npc.getId() != 3127 || npc.getId() != 1739 || npc.getId() != 1740 || npc.getId() != 1741 || npc.getId() != 1742) {
                         npc.playAnimation(Animation.create(npc.getDefendAnimation()));
                     }
@@ -339,8 +339,8 @@ public class Combat {
 
         } else if (player.getCombatType() == CombatStyle.RANGE) {
 
-            if (player.getAttackStyle() == 2)
-                player.attackDelay--;
+			if (player.getAttackStyle() == 2)
+				player.getCombatState().setAttackDelay(-1);
 
             player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
             player.getCombatState().fireProjectileAtTarget();
@@ -669,9 +669,9 @@ public class Combat {
 	                if (hit.cbType == CombatStyle.RANGE) {
                         player.setAttribute("ignore defence", false);
 
-	                    if (target.isNPC() && ((NPC) target).attackTimer < 5)
+	                    if (target.isNPC() && ((NPC) target).getCombatState().getAttackDelay() < 5)
 	                        target.playAnimation(Animation.create(target.asNpc().getDefendAnimation()));
-	                    else if (target.isPlayer() && ((Player)target).attackDelay < 5)
+	                    else if (target.isPlayer() && ((Player)target).getCombatState().getAttackDelay() < 5)
 	                        target.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(target.asPlayer())));
 
 	                }

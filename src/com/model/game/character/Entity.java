@@ -13,6 +13,7 @@ import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayers;
+import com.model.game.character.combat.CombatState;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.BarrowsEffect;
@@ -656,7 +657,7 @@ public abstract class Entity {
 			if (damage > 0) {
 				// Trigger veng once the damage has been reduced by effects/protection prayers
 				if (me.hasVengeance()) {
-					me.getCombat().vengeance(attacker, damage, 1);
+					me.getCombatState().vengeance(attacker, damage, 1);
 				}
 
 				/*RingOfRecoil recoil = new RingOfRecoil();
@@ -672,7 +673,7 @@ public abstract class Entity {
 			if (attacker.isPlayer()) {
 				Player pAttacker = (Player)attacker;
 				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
-				pAttacker.getCombat().applySmite(me, damage);
+				pAttacker.getCombatState().applySmite(me, damage);
 				PoisonCombatTask.getPoisonType(new Item(pAttacker.getEquipment().getId(Equipment.WEAPON_SLOT))).ifPresent(attacker::poison);
 			}
 		}
@@ -802,7 +803,7 @@ public abstract class Entity {
 		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
 	}
-
+	
 	public abstract int clientIndex();
 
 	/**
@@ -1065,6 +1066,19 @@ public abstract class Entity {
 		player.getMovementHandler().reset();
 		player.getSkillCyclesTask().stop();
         System.out.println("to "+Arrays.toString(new int[] {teleportTarget.getX(), teleportTarget.getY(), teleportTarget.getZ()}));
+	}
+	
+	/**
+	 * The combat state.
+	 */
+	private final CombatState combatState = new CombatState(this);
+	
+	/**
+	 * Gets the combat state.
+	 * @return The combat state.
+	 */
+	public CombatState getCombatState() {
+		return combatState;
 	}
 	
 }

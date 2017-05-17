@@ -10,21 +10,51 @@ import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.Equipment;
 
 public class CombatState {
+	
+	/**
+	 * The mob whose combat state this is.
+	 */
+	private Entity mob;
+	
+	/**
+	 * Creates the combat state class for the specified entity.
+	 * @param entity The entity.
+	 */
+	public CombatState(Entity entity) {
+		this.mob = entity;
+	}
+	
+	/**
+	 * The mob's target
+	 */
+	private Entity target;
+	
+	/**
+	 * Gets the target of the attack action
+	 * @return
+	 */
+	public Entity getTarget() {
+		return target;
+	}
+	
+	/**
+	 * Sets the target
+	 * @param target
+	 */
+	public void setTarget(Entity target) {
+		this.target = target;
+	}
 
-	private Player player;
-
-	public Entity target;
-
-	public CombatState(Player player) {
-		this.player = player;
+	public boolean noTarget() {
+		return target == null;
 	}
 
 	public void applySmite(Player defender, int damage) {
-		PrayerHandler.handleSmite(player, defender, damage);
+		PrayerHandler.handleSmite(mob.asPlayer(), defender, damage);
 	}
 
 	public boolean usingDbow() {
-		return player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235;
+		return mob.asPlayer().getEquipment().getId(Equipment.WEAPON_SLOT) == 11235;
 	}
 
 	/**
@@ -32,31 +62,31 @@ public class CombatState {
 	 * @param attacker The person who is hitting someone. The target is the one with veng active.
 	 */
 	public void vengeance(Entity attacker, int damage, int delay) {
-		CombatSpells.vengeance(player, attacker, damage, delay);
+		CombatSpells.vengeance(mob.asPlayer(), attacker, damage, delay);
 	}
 
 	public int getRangeStartGFX() {
-		return RangeData.getRangeStartGFX(player);
+		return RangeData.getRangeStartGFX(mob.asPlayer());
 	}
 
 	public int getRangeProjectileGFX() {
-		return RangeData.getRangeProjectileGFX(player);
+		return RangeData.getRangeProjectileGFX(mob.asPlayer());
 	}
 
 	public int getProjectileShowDelay() {
-		return RangeData.getProjectileShowDelay(player);
+		return RangeData.getProjectileShowDelay(mob.asPlayer());
 	}
 
 	public int getProjectileSpeed() {
-		return RangeData.getProjectileSpeed(player);
+		return RangeData.getProjectileSpeed(mob.asPlayer());
 	}
 	
 	public boolean properJavalins() {
-		return usingJavalins(player.getEquipment().getId(Equipment.ARROWS_SLOT));
+		return usingJavalins(mob.asPlayer().getEquipment().getId(Equipment.ARROWS_SLOT));
 	}
 
 	public boolean properBolts() {
-		return usingBolts(player.getEquipment().getId(Equipment.ARROWS_SLOT));
+		return usingBolts(mob.asPlayer().getEquipment().getId(Equipment.ARROWS_SLOT));
 	}
 	
 	public boolean usingJavalins(int javalin) {
@@ -68,68 +98,61 @@ public class CombatState {
 	}
 
 	public boolean checkMagicReqs(int spell) {
-		return MagicRequirements.checkMagicReqs(player, spell);
+		return MagicRequirements.checkMagicReqs(mob.asPlayer(), spell);
 	}
 
 	public int getFreezeTime() {
-		return MagicData.getFreezeTime(player);
+		return MagicData.getFreezeTime(mob.asPlayer());
 	}
 
 	public int getStartHeight() {
-		return MagicData.getStartHeight(player);
+		return MagicData.getStartHeight(mob.asPlayer());
 	}
 
 	public int getEndHeight() {
-		return MagicData.getEndHeight(player);
+		return MagicData.getEndHeight(mob.asPlayer());
 	}
 
 	public int getStartDelay() {
-		return MagicData.getStartDelay(player);
+		return MagicData.getStartDelay(mob.asPlayer());
 	}
 
 	public int getStaffNeeded() {
-		return MagicData.getStaffNeeded(player);
+		return MagicData.getStaffNeeded(mob.asPlayer());
 	}
 
 	public boolean godSpells() {
-		return MagicData.godSpells(player);
+		return MagicData.godSpells(mob.asPlayer());
 	}
 
 	public int getEndGfxHeight() {
-		return MagicData.getEndGfxHeight(player);
+		return MagicData.getEndGfxHeight(mob.asPlayer());
 	}
 
 	public int getStartGfxHeight() {
-		return MagicData.getStartGfxHeight(player);
+		return MagicData.getStartGfxHeight(mob.asPlayer());
 	}
 
 	public void fireProjectileAtTarget() {
-		RangeData.fireProjectileAtTarget(player);
+		RangeData.fireProjectileAtTarget(mob.asPlayer());
 	}
 	
 	public int calculateMeleeMaxHit() {
-		return CombatFormulae.calculateMeleeMaxHit(player, player.getCombatState().target);
+		return CombatFormulae.calculateMeleeMaxHit(mob.asPlayer(), mob.asPlayer().getCombatState().target);
 	}
 	
 	public int calculateRangeMaxHit() {
-		return CombatFormulae.calculateRangeMaxHit(player, player.getCombatState().target, player.isUsingSpecial());
+		return CombatFormulae.calculateRangeMaxHit(mob.asPlayer(), mob.asPlayer().getCombatState().target, mob.asPlayer().isUsingSpecial());
 	}
 
 	public void reset() {
 		// Nullify target
 		target = null;
 		// Reset all styles
-		player.usingMagic = player.usingBow = false;
-		player.setCombatType(null);
-		player.setFollowing(null);
-	}
-
-	public void setTarget(Entity target) {
-		this.target = target;
-	}
-
-	public boolean noTarget() {
-		return target == null;
+		mob.asPlayer().usingMagic = mob.asPlayer().usingBow = false;
+		mob.asPlayer().setCombatType(null);
+		mob.asPlayer().setFollowing(null);
+		setAttackDelay(0);
 	}
 	
 	/**

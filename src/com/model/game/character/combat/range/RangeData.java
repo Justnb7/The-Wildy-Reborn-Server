@@ -11,7 +11,7 @@ import com.model.game.item.container.impl.Equipment;
 public class RangeData {
 
 	public static void fireProjectileAtTarget(Player player) {
-		Entity target = player.getCombatState().target;
+		Entity target = player.getCombatState().getTarget();
 
 		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
 
@@ -21,7 +21,7 @@ public class RangeData {
 	}
 
 	public static void msbSpecProjectile(Player player) {
-		Entity target = player.getCombatState().target;
+		Entity target = player.getCombatState().getTarget();
 		
 		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 10, 64));
 	}

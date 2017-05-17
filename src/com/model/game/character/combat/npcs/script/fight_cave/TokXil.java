@@ -63,7 +63,7 @@ public class TokXil extends AbstractBossCombat {
 		default:
 			break;
 		}
-		((NPC)attacker).attackTimer = 6;
+		attacker.getCombatState().setAttackDelay(6);
 	}
 
 	@Override

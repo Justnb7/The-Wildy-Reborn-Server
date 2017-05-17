@@ -58,7 +58,7 @@ public class DagannothRex extends AbstractBossCombat {
 			break;
 		}		
 		
-		((NPC)attacker).attackTimer = 6;
+		attacker.getCombatState().setAttackDelay(6);
 	}
 
 	@Override

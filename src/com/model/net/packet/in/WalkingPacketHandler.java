@@ -30,7 +30,7 @@ public class WalkingPacketHandler implements PacketType {
 			return;
 		}
 		
-		Entity combattarg = player.getCombatState().target;
+		Entity combattarg = player.getCombatState().getTarget();
 		//We're frozen we can't walk
 		if (player.frozen()) {
 			if (combattarg != null) {

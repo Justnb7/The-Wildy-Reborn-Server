@@ -153,7 +153,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 			break;
 		
 		}
-		((NPC)attacker).attackTimer = 4;
+		attacker.getCombatState().setAttackDelay(4);
 	}
 
 	@Override

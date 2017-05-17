@@ -36,13 +36,13 @@ public class NpcVsPlayerCombat {
 		boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
 
 		// Delay before we can attack again
-		if (npc.attackTimer > 0) {
-			npc.attackTimer--;
+		if (npc.getCombatState().getAttackDelay() > 0) {
+			npc.getCombatState().decreaseAttackDelay(1);
 			//npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
 		}
 		
 		if(!isBoss) {
-			if (npc.attackTimer == 1) {
+			if (npc.getCombatState().getAttackDelay() == 1) {
 				executeDamage(npc);
 			}
 		}
@@ -65,7 +65,7 @@ public class NpcVsPlayerCombat {
 				npc.underAttack = false;
 				npc.resetFace();
 			} else {
-				if (npc.attackTimer == 0) {
+				if (npc.getCombatState().getAttackDelay() == 0) {
 					NpcVsPlayerCombat.attackPlayer(player, npc);
 				}
 				// Following called in process()
@@ -109,7 +109,7 @@ public class NpcVsPlayerCombat {
 					boss_cb.execute(npc, player);
 					// don't do any code below this, boss script handles all.
 				} else {
-					npc.attackTimer = npc.getDefinition().getAttackSpeed();
+					npc.getCombatState().setAttackDelay(npc.getDefinition().getAttackSpeed());
 					npc.playAnimation(Animation.create(npc.getAttackAnimation()));
 				}
 				player.lastAttacker = npc;
@@ -221,7 +221,7 @@ public class NpcVsPlayerCombat {
 				}
 			}
 			// block anim
-			if (player.attackDelay <= 3 || player.attackDelay == 0) {
+			if (player.getCombatState().getAttackDelay() <= 3 || player.getCombatState().getAttackDelay() == 0) {
 				//tried to make a instance didnt work ether
 				player.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
 			}

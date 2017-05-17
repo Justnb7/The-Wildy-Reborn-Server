@@ -21,6 +21,7 @@ import com.model.game.character.combat.CombatState;
 import com.model.game.character.combat.DamageMap;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayers;
+import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
@@ -1610,10 +1611,10 @@ public class Player extends Entity {
 	private void update_attack_style() {
 
 		// Every game tick, update our combat style for worn items. This means we'll keep pathing towards any non-null target properly.
-		if (getCombatState().target != null) {
+		if (getCombatState().getTarget() != null) {
 			Combat.setCombatStyle(this);
-			faceEntity(getCombatState().target);
-			setFollowing(getCombatState().target);
+			faceEntity(getCombatState().getTarget());
+			setFollowing(getCombatState().getTarget());
 		}
 	}
 
@@ -1629,10 +1630,6 @@ public class Player extends Entity {
 	
 	public PlayerFollowing getPlayerFollowing() {
 		return player_following;
-	}
-
-	public CombatState getCombatState() {
-		return combatState;
 	}
 	
 	public void process_following() {
@@ -1662,10 +1659,11 @@ public class Player extends Entity {
 
 			super.frozen_process();
 
-			if (attackDelay > 0) {
-				attackDelay--;
+			if (getCombatState().getAttackDelay() > 0) {
+				getCombatState().decreaseAttackDelay(1);
 			}
-			if (attackDelay == 0) {
+			
+			if (getCombatState().getAttackDelay() == 0) {
 				// Now attack a target if we have one
 				Combat.playerVsEntity(this);
 			}
@@ -1698,8 +1696,6 @@ public class Player extends Entity {
 	public int getRegionId() {
 		return ((getChunckX() << 8) + getChunckY());
 	}
-
-	private CombatState combatState = new CombatState(this);
 
 	@Override
 	public EntityType getEntityType() {

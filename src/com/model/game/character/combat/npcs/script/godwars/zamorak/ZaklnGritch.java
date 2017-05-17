@@ -60,7 +60,7 @@ public class ZaklnGritch extends AbstractBossCombat {
 		// Send the hit task
 		Combat.hitEvent(attacker, victim, hitDelay, hitInfo, CombatStyle.RANGE);
 		
-		((NPC) attacker).attackTimer = 6;
+		attacker.getCombatState().setAttackDelay(6);
 	}
 
 	@Override

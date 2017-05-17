@@ -61,7 +61,9 @@ public class Potions extends Consumable {
 		}
 		Item item = new Item(data.getPotionId());
 		Combat.resetCombat(getPlayer());
-		getPlayer().attackDelay += 2;
+		if(getPlayer().getCombatState().getAttackDelay() + 1 <= getPlayer().getCombatCooldownDelay() + 2) {
+			getPlayer().getCombatState().increaseAttackDelay(1);
+		}
 		getPlayer().playAnimation(Animation.create(829));
 		getPlayer().write(new SendSoundPacket(334, 1, 2));
 		getPlayer().getInventory().set(slot, new Item(data.getReplacement()));

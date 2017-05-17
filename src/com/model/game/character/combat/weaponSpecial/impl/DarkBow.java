@@ -31,7 +31,7 @@ public class DarkBow implements SpecialAttack {
 		
 		// On rapid, the attack delay is 1 tick faster.
 		if (player.getAttackStyle() == 2)
-			player.attackDelay--;
+			player.getCombatState().setAttackDelay(-1);
 		
 		// Send the projectile TODO adjust the height and duration for the 2nd arrow
 		player.getCombatState().fireProjectileAtTarget();

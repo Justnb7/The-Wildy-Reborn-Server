@@ -31,7 +31,7 @@ public class CombatRequirements {
 	}
 	
 	public static boolean canAttackVictim(Player player) {
-		Entity target = player.getCombatState().target;
+		Entity target = player.getCombatState().getTarget();
 		if(target == null || target == player) {
 			return false;
 		}

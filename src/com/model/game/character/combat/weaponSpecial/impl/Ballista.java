@@ -28,7 +28,7 @@ public class Ballista implements SpecialAttack {
 		
 		// On rapid, the attack delay is 1 tick faster.
 		if (player.getAttackStyle() == 2)
-			player.attackDelay--;
+			player.getCombatState().setAttackDelay(-1);
 
 		player.getCombatState().fireProjectileAtTarget();
 		

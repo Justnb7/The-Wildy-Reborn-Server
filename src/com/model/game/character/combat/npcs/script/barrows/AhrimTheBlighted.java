@@ -46,7 +46,7 @@ public class AhrimTheBlighted extends AbstractBossCombat {
 
          Combat.hitEvent(attacker, victim, delay, hitInfo, CombatStyle.MAGIC);
          
-         ((NPC)attacker).attackTimer = 5;
+         attacker.getCombatState().setAttackDelay(5);
 	}
 
 	@Override

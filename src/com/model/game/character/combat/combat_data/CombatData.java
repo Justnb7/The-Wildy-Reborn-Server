@@ -1,5 +1,6 @@
 package com.model.game.character.combat.combat_data;
 
+import com.model.game.character.Entity;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.Equipment;
@@ -48,7 +49,7 @@ public class CombatData {
 		}
 		
 		if (weapon.contains("blowpipe")) {
-			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombatState().target.isPlayer() ? 3 : 2 : player.getCombatState().target.isPlayer() ? 4 : 3;
+			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombatState().getTarget().isPlayer() ? 3 : 2 : player.getCombatState().getTarget().isPlayer() ? 4 : 3;
 		}
 		
 		if (weapon.endsWith("greataxe"))

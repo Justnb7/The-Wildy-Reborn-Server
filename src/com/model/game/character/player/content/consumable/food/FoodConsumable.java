@@ -175,7 +175,9 @@ public class FoodConsumable {
 		
 		if ((player.foodDelay.elapsed(1500) || eatingKarambwam) && player.getSkills().getLevel(Skills.HITPOINTS) > 0) {
 			Combat.resetCombat(player);
-			player.attackDelay += 2;
+			if (player.getCombatState().getAttackDelay() + 1 <= player.getCombatCooldownDelay() + 2) {
+				player.getCombatState().increaseAttackDelay(1);
+			}
 			player.playAnimation(Animation.create(829));
 			player.write(new SendSoundPacket(317, 1, 2));
 			player.getInventory().remove(new Item(id), slot);

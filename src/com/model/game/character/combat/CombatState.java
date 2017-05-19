@@ -152,7 +152,6 @@ public class CombatState {
 		mob.asPlayer().usingMagic = mob.asPlayer().usingBow = false;
 		mob.asPlayer().setCombatType(null);
 		mob.asPlayer().setFollowing(null);
-		setAttackDelay(0);
 	}
 	
 	/**

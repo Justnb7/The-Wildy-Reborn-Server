@@ -612,10 +612,6 @@ public abstract class Entity {
 
 		} else if (this.isNPC()) {
 			NPC victim_npc = (NPC) this;
-			// You can't hit over an Npcs current health. Recent update on 07 means you can in PVP though.
-			if (victim_npc.getHitpoints() - damage < 0) {
-				victim_npc.setHitpoints(victim_npc.getHitpoints() - damage);
-			}
 			
 			if (attacker.isPlayer())
 				PlayerVsNpcCombat.kraken((Player)attacker, victim_npc, damage);

@@ -5,7 +5,7 @@ import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
-import com.model.game.character.combat.CombatDamage;
+import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.DamageMap;
 import com.model.game.character.combat.nvp.NpcVsPlayerCombat;
 import com.model.game.character.following.NPCFollowing;
@@ -21,8 +21,6 @@ import com.model.utility.cache.map.Region;
 import com.model.utility.json.definitions.NPCDefinitions;
 
 import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 
 public class NPC extends Entity {
 
@@ -289,16 +287,25 @@ public class NPC extends Entity {
 
 	@Override
 	public Hit decrementHP(Hit hit) {
+		
 		int damage = hit.getDamage();
-		if (damage > this.getHitpoints())
-			damage = this.getHitpoints();
-		this.setHitpoints(this.getHitpoints() - damage);
+
+		// You can't hit over an Npcs current health. Recent update on 07 means you can in PVP though.
+		if (hitpoints - damage < 0) {
+			damage = hitpoints;
+		}
+		
+		hitpoints -= damage;
+		
+		if (hitpoints < 0)
+			hitpoints = 0;
 
 		/*
 		 * Start our death task since we are now dead
 		 */
-		if (this.getHitpoints() <= 0 && !isDead) {
-			isDead = true;
+		if (hitpoints == 0) {
+			setDead(true);
+			Combat.resetCombat(this);
 			Server.getTaskScheduler().schedule(new NPCDeathTask(this));
 		}
 		return new Hit(damage, hit.getType());

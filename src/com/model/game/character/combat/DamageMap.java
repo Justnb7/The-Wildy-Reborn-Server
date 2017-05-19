@@ -28,11 +28,9 @@ public class DamageMap {
 	}
 
 	public String getKiller() {
-		String killer = "";//this string isnt being filled
+		String killer = "";
 		int mostDamage = 0;
-		System.out.println("map size: "+dealtDamage.size());
 		for (Damage aDealtDamage : dealtDamage) {
-			System.out.println(mostDamage+" vs. "+aDealtDamage.damage);//try
 			if (aDealtDamage.getDamage() > mostDamage) {
 				killer = aDealtDamage.getPlayer();
 				mostDamage = aDealtDamage.getDamage();

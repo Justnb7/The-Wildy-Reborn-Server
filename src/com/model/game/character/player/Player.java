@@ -1382,7 +1382,6 @@ public class Player extends Entity {
 		 * 
 		 */
 		if (getSkills().getLevel(3) < 1 && !isDead()) {
-			debug("dead");
 			setDead(true);
 			Server.getTaskScheduler().schedule(new DeathEvent(this));
 		}

@@ -33,7 +33,6 @@ public class PlayerVsNpcCombat {
 	}
 	
 	public static void kraken(Player player, NPC npc, int damage) {
-		System.out.println("ok");
 		if (npc.getId() == 5534 && npc.transformId != 5535) {
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(3860));

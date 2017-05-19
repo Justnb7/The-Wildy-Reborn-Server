@@ -1081,4 +1081,10 @@ public abstract class Entity {
 		return combatState;
 	}
 	
+	/**
+	 * Gets the current combat cooldown delay in milliseconds.
+	 * @return The current combat cooldown delay.
+	 */
+	public abstract int getCombatCooldownDelay();
+	
 }

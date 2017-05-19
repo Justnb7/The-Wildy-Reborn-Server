@@ -243,6 +243,7 @@ public class NPC extends Entity {
 			magic_defence = definition.getMagicDefence();
 			melee_defence = definition.getMeleeDefence();
 			range_defence = definition.getRangedDefence();
+			setCombatCooldownDelay(definition.getAttackSpeed());
 		}
 	}
 
@@ -801,4 +802,22 @@ public class NPC extends Entity {
 		3129, //K'ril Tsutsaroth
 		2215, //General Graardor
 	};
+	
+	/**
+	 * The combat cooldown delay.
+	 */
+	private int combatCooldownDelay = 4;
+	
+	@Override
+	public int getCombatCooldownDelay() {
+		return combatCooldownDelay;
+	}
+
+	/**
+	 * @param combatCooldownDelay
+	 *            the combatCooldownDelay to set
+	 */
+	public void setCombatCooldownDelay(int combatCooldownDelay) {
+		this.combatCooldownDelay = combatCooldownDelay;
+	}
 }

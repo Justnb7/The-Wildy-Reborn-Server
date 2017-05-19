@@ -2,11 +2,14 @@ package com.model.game.character.combat;
 
 import com.model.game.character.Entity;
 import com.model.game.character.combat.PrayerHandler.Prayers;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.utility.Utility;
+import com.model.utility.json.definitions.WeaponDefinition;
 
 /**
  * Handles the combat's accuracy and max hit formulas.
@@ -571,6 +574,27 @@ public class CombatFormulae {
 			return 0.6; // 60%
 		}
 		return 0;		
+	}
+	
+	/**
+	 * Get the attackers' weapon speed.
+	 * 
+	 * @param player The player for whose weapon we are getting the speed value.
+	 * @return A <code>long</code>-type value of the weapon speed.
+	 */
+	public static int getCombatCooldownDelay(Entity entity) {
+		Player p = (Player) entity;
+		Item weapon = new Item(p.getEquipment().getId(Equipment.WEAPON_SLOT));
+		int extra = 0;
+		if(entity.getCombatType() == CombatStyle.RANGE) {
+			if(p.attackStyle != 1) {
+				/**
+				 * If we are ranging and are not on rapid, combat speed is increased by 1 cycle
+				 */
+				extra = 1;
+			}
+		}
+		return (p.getEquipment() != null && p.getEquipment().get(3) != null) ? WeaponDefinition.get(weapon.getId()).getAttackSpeed() + extra : 4;
 	}
 
 }

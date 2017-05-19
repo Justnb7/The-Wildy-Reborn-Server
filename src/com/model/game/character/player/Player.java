@@ -17,11 +17,10 @@ import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.CombatState;
+import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.DamageMap;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.PrayerHandler.Prayers;
-import com.model.game.character.combat.combat_data.CombatData;
 import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.combat.magic.LunarSpells;
 import com.model.game.character.combat.magic.SpellBook;
@@ -1000,6 +999,11 @@ public class Player extends Entity {
 	
 	public Skills getSkills() {
 		return skills;
+	}
+	
+	@Override
+	public int getCombatCooldownDelay() {
+		return CombatFormulae.getCombatCooldownDelay(this);
 	}
 	
 	@Override

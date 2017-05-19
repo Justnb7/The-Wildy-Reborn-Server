@@ -32,6 +32,16 @@ public class ActionSender {
     public ActionSender(Player player) {
         this.player = player;
     }
+    
+    public ActionSender sendMapRegionPacket() {
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(73);
+			player.getOutStream().writeWordA(player.mapRegionX + 6);
+			player.getOutStream().writeShort(player.mapRegionY + 6);
+			player.setLastKnownRegion(player.getLocation());
+		}
+		return this;
+    }
 
     public ActionSender sendProgressInterface() {
     	sendConfig(406, player.getProgressBar());

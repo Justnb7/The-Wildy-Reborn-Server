@@ -339,10 +339,10 @@ public abstract class Entity {
 	}
 
 	private void sendDamage(Hit hit) {
-		/*if (hitUpdateRequired) {
+		if (getUpdateFlags().get(UpdateFlag.HIT)) {
 			secondaryDamage(hit);
 			return;
-		}*/
+		}
 		primaryDamage(hit);
 	}
 

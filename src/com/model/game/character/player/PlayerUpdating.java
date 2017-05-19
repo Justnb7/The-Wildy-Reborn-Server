@@ -32,10 +32,6 @@ public class PlayerUpdating {
 		return World.getWorld().getPlayers().search(p -> p.getName().equalsIgnoreCase(name));
 	}
 
-	public static Optional<Player> getPlayer2(long name) {
-		return World.getWorld().getPlayers().search(p -> p.usernameHash == name);
-	}
-
 	/**
 	 * Gets a player by their username
 	 * 
@@ -99,10 +95,7 @@ public class PlayerUpdating {
 		 * the client can begin loading it before the actual packet is received.
 		 */
 		if (player.isMapRegionChanging()) {
-			player.getOutStream().writeFrame(73);
-			player.getOutStream().writeWordA(player.mapRegionX + 6);
-			player.getOutStream().writeShort(player.mapRegionY + 6);
-			player.setLastKnownRegion(player.getLocation());
+			player.getActionSender().sendMapRegionPacket();
 		}
 
 		/*
@@ -771,16 +764,14 @@ public class PlayerUpdating {
 	 * 
 	 * @param player
 	 *            The {@link Player} to update the mask for
-	 * @param str
+	 * @param updateBlock
 	 *            The {@link GameBuffer} to write data on
 	 */
-	private static void appendHitUpdate(Player player, GameBuffer str) {
-		if (player.getUpdateFlags().primary == null)
-			return;
-		str.writeByte(player.getUpdateFlags().primary.getDamage());
-		str.putByteA(player.getUpdateFlags().primary.getType().getId());
-		str.writeByteC(player.getSkills().getLevel(3));
-		str.writeByte(player.getSkills().getLevelForExperience(3));
+	private static void appendHitUpdate(Player player, GameBuffer updateBlock) {
+		updateBlock.writeByte(player.getUpdateFlags().primary.getDamage());
+		updateBlock.putByteA(player.getUpdateFlags().primary.getType().getId());
+		updateBlock.writeByteC(player.getSkills().getLevel(3));
+		updateBlock.writeByte(player.getSkills().getLevelForExperience(3));
 	}
 
 	/**
@@ -788,16 +779,14 @@ public class PlayerUpdating {
 	 * 
 	 * @param player
 	 *            The {@link Player} to update the mask for
-	 * @param str
+	 * @param updateBlock
 	 *            The {@link GameBuffer} to write data on
 	 */
-	private static void appendHitUpdate2(Player player, GameBuffer str) {
-		if (player.getUpdateFlags().secondary == null)
-			return;
-		str.writeByte(player.getUpdateFlags().secondary.getDamage());
-		str.writeByteS(player.getUpdateFlags().secondary.getType().getId());
-		str.writeByte(player.getSkills().getLevel(3));
-		str.writeByteC(player.getSkills().getLevelForExperience(3));
+	private static void appendHitUpdate2(Player player, GameBuffer updateBlock) {
+		updateBlock.writeByte(player.getUpdateFlags().secondary.getDamage());
+		updateBlock.writeByteS(player.getUpdateFlags().secondary.getType().getId());
+		updateBlock.writeByte(player.getSkills().getLevel(3));
+		updateBlock.writeByteC(player.getSkills().getLevelForExperience(3));
 	}
 	
 	private static void appendForceMovement(Player player, final GameBuffer packet) {

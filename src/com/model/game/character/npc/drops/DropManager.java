@@ -25,7 +25,6 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -177,7 +176,7 @@ public class DropManager {
 			player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(ordered.get(index)).getName().toLowerCase().replaceAll("_", " ")), 42531 + index);
 		}
 
-		player.write(new SendInterfacePacket(42500));
+		player.getActionSender().sendInterface(42500);
 	}
 
 	public void search(Player player, String name) {

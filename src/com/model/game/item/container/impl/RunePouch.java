@@ -5,7 +5,6 @@ import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
-import com.model.net.packet.out.SendInterfacePacket;
 
 /**
  * The class which represents functionality for the rune pouch container.
@@ -78,7 +77,7 @@ public final class RunePouch extends Container {
 			return false;
 		}
 		updatePouch();
-		player.write(new SendInterfacePacket(29875));
+		player.getActionSender().sendInterface(29875);
 		return true;
 	}
 	

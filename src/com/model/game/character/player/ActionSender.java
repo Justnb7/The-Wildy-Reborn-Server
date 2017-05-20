@@ -701,7 +701,7 @@ public class ActionSender {
 		return this;
 	}
 
-	public void sendSkillLevel(int skill) {
+	public ActionSender sendSkillLevel(int skill) {
 		if (player.getOutStream() != null) {
             player.getOutStream().writeFrame(134);
             player.getOutStream().writeByte((byte) skill);
@@ -709,5 +709,25 @@ public class ActionSender {
             player.getOutStream().writeByte((byte) player.getSkills().getLevel(skill));
             //System.out.printf("skill - %s exp %s lvl %s %n", skill, player.getSkills().getExperience(skill), player.getSkills().getLevel(skill));
         }
+		return this;
 	}
+	
+	/**
+	 * Sends a packet to the client in order to open an interface
+	 * 
+	 * @param id
+	 *            The interface
+	 */
+	public ActionSender sendInterface(int id) {
+		if (player != null) {
+        	player.stopSkillTask();
+            if (player.getOutStream() != null) {
+                player.getOutStream().writeFrame(87);
+                player.getOutStream().writeShort(id);
+                player.openInterface = id;
+            }
+        }
+		return this;
+	}
+	
 }

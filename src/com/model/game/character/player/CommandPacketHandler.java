@@ -21,7 +21,6 @@ import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
 import com.model.net.packet.out.SendChatBoxInterfacePacket;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.net.packet.out.SendSongPacket;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.net.packet.out.SendWalkableInterfacePacket;
@@ -245,7 +244,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "staff":
-			player.write(new SendInterfacePacket(8134));
+			player.getActionSender().sendInterface(8134);
 			player.getActionSender().sendString("@red@Venenatis Staff@bla@", 8144);
 			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Patrick - " + World.getWorld().getOnlineStatus("patrick"), 8145);
 			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Matthew - " + World.getWorld().getOnlineStatus("matthew"), 8146);
@@ -638,7 +637,7 @@ public class CommandPacketHandler implements PacketType {
     	
     	case "interface":
     		int interfaceId = Integer.parseInt(cmd[1]);
-    		player.write(new SendInterfacePacket(interfaceId));
+    		player.getActionSender().sendInterface(interfaceId);
     		return true;
     		
     	case "wi":

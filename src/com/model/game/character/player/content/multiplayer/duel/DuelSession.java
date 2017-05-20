@@ -18,7 +18,6 @@ import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
@@ -377,7 +376,7 @@ public class DuelSession extends MultiplayerSession {
 		}
 		player.getActionSender().sendString(Integer.toString(getOther(player).combatLevel), 6839);
 		player.getActionSender().sendString(getOther(player).getName(), 6840);
-		player.write(new SendInterfacePacket(6733));
+		player.getActionSender().sendInterface(6733);
 		player.getOutStream().createFrameVarSizeWord(53);
 		player.getOutStream().writeWord(6822);
 		player.getOutStream().writeWord(itemList.size());

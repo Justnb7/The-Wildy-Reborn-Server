@@ -2,7 +2,6 @@ package com.model.game.character.player.content;
 
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.utility.Utility;
 
 public class KillTracker {
@@ -78,7 +77,7 @@ public class KillTracker {
 		
 		player.getActionSender().sendScrollBar(45010, 200);
 
-		player.write(new SendInterfacePacket(45000));
+		player.getActionSender().sendInterface(45000);
 	}
 	
 	public static final void loadDefault(Player player) {

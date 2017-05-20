@@ -10,7 +10,6 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -538,7 +537,7 @@ public class PestControl {
 	}
 
 	public static void drawRewardInterface(Player player) {
-		player.write(new SendInterfacePacket(35_000));
+		player.getActionSender().sendInterface(35_000);
 	}
 
 	private static NPC getNpc(int npcType, int x, int y) {

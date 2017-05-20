@@ -9,7 +9,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.account.Account;
 import com.model.game.item.Item;
-import com.model.net.packet.out.SendInterfacePacket;
 
 /**
  * The class which represents functionality for selecting your game mode.
@@ -65,7 +64,7 @@ public class GameModeSelection {
 		player.getActionSender().sendChangeSprite(42403, (byte) 0);//Hardcore ironman
 		player.getActionSender().sendChangeSprite(42404, (byte) 0);//Ultimate ironman
 		player.getActionSender().sendChangeSprite(42405, (byte) 2);//None option
-		player.write(new SendInterfacePacket(42400));
+		player.getActionSender().sendInterface(42400);
 		selectedIronmanButton = 165165;
 	}
 	
@@ -223,7 +222,7 @@ public class GameModeSelection {
 		}
 		player.getActionSender().sendRemoveInterfacePacket();
 		//Open make-over interface
-		player.write(new SendInterfacePacket(3559));
+		player.getActionSender().sendInterface(3559);
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -46,7 +45,7 @@ public class PestControlRewards {
 		player.getActionSender().moveComponent(0, - 100, 37084);
 		player.getActionSender().sendString("Unselected", 37003);
 		player.getActionSender().sendString(Utility.insertCommas(Integer.toString(player.getPestControlPoints())) + " Pts", 37007);
-		player.write(new SendInterfacePacket(37000));
+		player.getActionSender().sendInterface(37000);
 	}
 	
 	public boolean click(int buttonId) {

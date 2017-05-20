@@ -15,7 +15,6 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
 import com.model.game.object.GlobalObject;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -182,7 +181,7 @@ public class Obelisks {
 			line++;			
 			player.getActionSender().sendString("<col=46320a>" + strings, line);
 		}
-		player.write(new SendInterfacePacket(38100));
+		player.getActionSender().sendInterface(38100);
 	}
 	
 	

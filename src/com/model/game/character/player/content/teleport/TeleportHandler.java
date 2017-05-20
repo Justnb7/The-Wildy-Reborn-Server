@@ -6,7 +6,6 @@ import java.util.HashMap;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
-import com.model.net.packet.out.SendInterfacePacket;
 
 public class TeleportHandler {
 
@@ -196,7 +195,7 @@ public class TeleportHandler {
 		player.setTeleportationType(type);
 		// player.setTeleportButton(0);
 		display(player, type, 0);
-		player.write(new SendInterfacePacket(57000));
+		player.getActionSender().sendInterface(57000);
 	}
 
 	public static boolean select(Player player, int button) {

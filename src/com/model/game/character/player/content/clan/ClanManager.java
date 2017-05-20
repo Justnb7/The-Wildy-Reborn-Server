@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.utility.NameUtils;
 import com.model.utility.Utility;
 
@@ -95,7 +94,7 @@ public class ClanManager extends ClanData {
 			}
 		}
 		
-		player.write(new SendInterfacePacket(48000));
+		player.getActionSender().sendInterface(48000);
 	}
 
 	/**

@@ -10,7 +10,6 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.Item.ItemComparator;
-import com.model.net.packet.out.SendInterfacePacket;
 
 /**
  * The class which represents functionality for the items kept on death container.
@@ -122,7 +121,7 @@ public class ItemsKeptOnDeath {
 
 		player.getActionSender().sendUpdateItems(17113, keep);
 		player.getActionSender().sendUpdateItems(17114, dropped);
-		player.write(new SendInterfacePacket(17100));
+		player.getActionSender().sendInterface(17100);
 	}
 
 	

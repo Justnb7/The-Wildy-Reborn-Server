@@ -990,4 +990,15 @@ public final class Shop {
 		}
 		return Integer.MAX_VALUE;
 	}
+
+	public void openSlayerShop(Player player) {
+		if (Server.getMultiplayerSessionListener().inAnySession(player)) {
+			return;
+		}
+		player.setShopping(true);
+		player.getActionSender().sendItemsOnInterface(23016, container.container(), container.size());
+		player.setOpenShop(name);
+		player.getActionSender().sendString(name, 3901);
+		players.add(player);
+	}
 }

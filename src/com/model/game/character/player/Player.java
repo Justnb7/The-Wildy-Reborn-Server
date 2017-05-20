@@ -64,6 +64,7 @@ import com.model.game.character.player.skill.SkillCyclesTask;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
 import com.model.game.character.player.skill.mining.Mining;
+import com.model.game.character.player.skill.slayer.interfaceController.SlayerInterface;
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
@@ -3168,5 +3169,88 @@ public class Player extends Entity {
 	
 	public void setTrivia(boolean active) {
 		this.trivia = active;
+	}
+
+	public int slayerSelectionHolder;
+	
+	public String slayerSelectString;
+	
+	public int ordinal;
+	
+	public int slayerNpcId;
+	
+	public int type;
+	
+	public void setSlayerSelection(int buttonId, int slayerNpcId, String name, int ordinal , int type) {
+		this.slayerSelectionHolder = buttonId;
+		this.slayerNpcId = slayerNpcId;
+		this.slayerSelectString = name;
+		this.ordinal = ordinal;
+		this.type = type;
+	}
+	
+	public int getType() {
+		return type;
+	}
+	
+	public String getSlayerSelectionName(){
+		return slayerSelectString;
+	}
+	
+	public int getSlayerSelection() {
+		return slayerSelectionHolder;
+	}
+	
+	public int getSlayerNpcId() {
+		return slayerNpcId;
+	}
+	
+	public int getSlayerOrdinal() {
+		return ordinal;
+	}
+	
+	SlayerInterface slayerInterface = new SlayerInterface();
+
+	public int[] tasksBlocked = new int[6];
+
+	public int[] getBlockedTask() {
+		return tasksBlocked;
+	}
+	
+	public int getBlockedTaskIndex(int index) {
+		return tasksBlocked[index];
+	}
+	
+	public void blockTask(int index, int value) {
+		this.tasksBlocked[index] = value;
+	}
+	
+	public SlayerInterface getSlayerInterface() {
+		return slayerInterface;
+	}
+	
+	/**
+	 * Represents slayer streak record
+	 */
+	private int slayerStreak;
+	
+	public int getSlayerStreak() {
+		return slayerStreak;
+	}
+	
+	public void setSlayerStreak(int slayerStreak) {
+		this.slayerStreak = slayerStreak;
+	}
+	/**
+	 * Represents slayer streak record
+	 */
+	private int slayerStreakRecord;
+	
+	public int getSlayerStreakRecord() {
+		return slayerStreakRecord;
+	}
+	
+	public void setSlayerStreakRecord(int slayerStreakRecord) {
+		this.slayerStreakRecord = slayerStreakRecord;
 	}
 }

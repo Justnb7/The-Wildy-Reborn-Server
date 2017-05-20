@@ -28,7 +28,6 @@ import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.Trade;
 import com.model.net.packet.PacketType;
 import com.model.net.packet.buttons.ActionButtonEventListener;
-import com.model.net.packet.out.SendInterfacePacket;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
 import com.model.net.packet.out.SendSongPacket;
 import com.model.utility.Utility;
@@ -72,6 +71,10 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181
 				&& button != 14067 && button != 9154) {
+			return;
+		}
+		
+		if (player.getSlayerInterface().controlPanel(player, button)) {
 			return;
 		}
 		
@@ -237,7 +240,7 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		/** Equipment screen */
 		case 108005:
-			player.write(new SendInterfacePacket(15106));
+			player.getActionSender().sendInterface(15106);
 			break;
 
 		case 108020:
@@ -424,7 +427,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 70212:
-			player.write(new SendInterfacePacket(18300));
+			player.getActionSender().sendInterface(18300);
 			break;
 
 		/** Settings */
@@ -442,7 +445,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.getActionSender().sendMessage("@red@Your settings have been reset!");
 			break;
 		case 140191:
-			player.write(new SendInterfacePacket(28200));
+			player.getActionSender().sendInterface(28200);
 			break;
 		case 110046:
 			player.getActionSender().sendMessage(":transparentTab:");

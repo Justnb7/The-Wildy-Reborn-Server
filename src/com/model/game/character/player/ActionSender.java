@@ -201,6 +201,17 @@ public class ActionSender {
 	}
 	
 	/**
+	 * Sends the enter amount interface.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendEnterAmountInterface(int interfaceId, Item item) {
+		if (player.getOutStream() != null) {
+            player.getOutStream().writeFrame(27);
+        }
+		return this;
+	}
+	
+	/**
 	 * Sends the player an option.
 	 * 
 	 * @param slot
@@ -382,12 +393,12 @@ public class ActionSender {
      *            the interface to send on the inventory area.
      * @return an instance of this encoder.
      */
-	public ActionSender sendInterfaceWithInventoryOverlay(int open, int overlay) {
+	public ActionSender sendInterfaceWithInventoryOverlay(int interfaceId, int overlay) {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(248);
-			player.getOutStream().writeWordA(open);
+			player.getOutStream().writeWordA(interfaceId);
 			player.getOutStream().writeShort(overlay);
-			player.openInterface = open;
+			player.getInterfaceState().interfaceOpened(interfaceId);
 		}
 		return this;
 	}
@@ -725,7 +736,7 @@ public class ActionSender {
             if (player.getOutStream() != null) {
                 player.getOutStream().writeFrame(97);
                 player.getOutStream().writeShort(id);
-                player.openInterface = id;
+                player.getInterfaceState().interfaceOpened(id);
             }
         }
 		return this;

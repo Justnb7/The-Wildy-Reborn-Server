@@ -21,7 +21,7 @@ public class CloseInterfacePacketHandler implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {
-		
+		player.getInterfaceState().interfaceClosed();
 		if (player.inDebugMode()) {
 			System.out.println("[CloseInterface] - Closed Window");
 		}

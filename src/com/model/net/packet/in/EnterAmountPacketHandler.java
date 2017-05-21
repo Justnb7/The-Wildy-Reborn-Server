@@ -1,14 +1,6 @@
 package com.model.net.packet.in;
 
-import java.util.Objects;
-
-import com.model.Server;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.multiplayer.MultiplayerSession;
-import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.item.GameItem;
-import com.model.game.item.Item;
-import com.model.game.shop.Shop;
 import com.model.net.packet.PacketType;
 
 /**
@@ -19,8 +11,11 @@ import com.model.net.packet.PacketType;
 public class EnterAmountPacketHandler implements PacketType {
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
-		
 		int amount = player.getInStream().readDWord();
+		
+		if(player.getInterfaceState().isEnterAmountInterfaceOpen()) {
+			player.getInterfaceState().closeEnterAmountInterface(amount);
+		}
 		
 		if (amount <= 0) {
 			amount = 0;
@@ -32,59 +27,6 @@ public class EnterAmountPacketHandler implements PacketType {
 			if (player.dialogue().input(amount)) {
 				return;
 			}
-		}
-		
-		//System.out.println("Interface: "+player.xInterfaceId);
-		switch (player.xInterfaceId) {
-		
-		case 29880:
-			player.getRunePouch().addItem(player.xRemoveId, amount, player.xRemoveSlot);
-			break;
-			
-		case 29910:
-			player.getRunePouch().removeItem(player.xRemoveSlot, amount > player.getRunePouch().amount(player.xRemoveId) ? player.getRunePouch().amount(player.xRemoveId) : amount, player.xRemoveSlot);
-			break;
-
-		case 5064:
-
-			break;
-			
-		case 5382:
-			
-			break;
-
-		case 3322:
-			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
-			
-			if (Objects.nonNull(session)) {
-				session.addItem(player, new GameItem(player.xRemoveId, amount));
-			} else {
-				//Trading.tradeItem(player, player.xRemoveId, amount > player.getInventory().amount(player.xRemoveId) ? player.getInventory().amount(player.xRemoveId) : amount, player.xRemoveSlot);
-			}
-			break;
-
-		case 3415:
-			//Trading.takeItem(player, player.xRemoveId, amount > player.getTradeContainer().amount(player.xRemoveId) ? player.getTradeContainer().amount(player.xRemoveId) : amount, player.xRemoveSlot);
-			break;
-
-		case 6669:
-			session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
-			if (Objects.isNull(session)) {
-				return;
-			}
-			if (session instanceof DuelSession) {
-				session.removeItem(player, player.xRemoveSlot, new GameItem(player.xRemoveId, amount));
-			}
-			break;
-			
-		case 3900:
-			if (player.getOpenShop().equals("Skillcape Shop")) {
-				player.getActionSender().sendMessage("All items in this shop cost 99K coins.");
-				return;
-			}
-			Shop.SHOPS.get(player.getOpenShop()).sendPurchasePrice(player, new Item(100));
-			break;
-
 		}
 	}
 }

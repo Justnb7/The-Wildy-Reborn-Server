@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.model.Appearance;
+import com.model.InterfaceState;
 import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
@@ -2671,7 +2672,6 @@ public class Player extends Entity {
     /**
      * Integers
      */
-	public int openInterface = -1;
 	public int countdown;
 	public int combatCountdown = 10;
 	private int chatTextColor = 0;
@@ -3252,6 +3252,20 @@ public class Player extends Entity {
 	
 	public void setSlayerStreakRecord(int slayerStreakRecord) {
 		this.slayerStreakRecord = slayerStreakRecord;
+	}
+
+	/**
+	 * The interface state.
+	 */
+	private final InterfaceState interfaceState = new InterfaceState(this);
+	
+	/**
+	 * Gets the interface state.
+	 * 
+	 * @return The interface state.
+	 */
+	public InterfaceState getInterfaceState() {
+		return interfaceState;
 	}
 
 }

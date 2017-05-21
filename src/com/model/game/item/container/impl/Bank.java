@@ -73,18 +73,22 @@ public final class Bank extends Container {
      *            the amount of the item being deposited.
      * @return {@code true} if the item was deposited, {@code false} otherwise.
      */
-    public boolean depositFromInventory(int inventorySlot, int amount) {
-        Item invItem = player.getInventory().get(inventorySlot);
-        if(invItem == null)
-            return false;
-        Item item = new Item(invItem.getId(), amount);
-        int count = player.getInventory().amount(item.getId());
-
-        if (item.getAmount() > count) {
-            item.setAmount(count);
-        }
-
-        if (deposit(item.copy())) {
+    public boolean depositFromInventory(int inventorySlot, int id, int amount) {
+    	Item item = player.getInventory().get(inventorySlot);
+		if (item == null) {
+			return false; // invalid packet, or client out of sync
+		}
+		if (item.getId() != id) {
+			return false; // invalid packet, or client out of sync
+		}
+		int transferAmount = player.getInventory().getCount(id);
+		if (transferAmount >= amount) {
+			transferAmount = amount;
+		} else if (transferAmount == 0) {
+			return false; // invalid packet, or client out of sync
+		}
+		
+		if (deposit(item.copy())) {
             player.getInventory().remove(item, inventorySlot);
             refresh();
             player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
@@ -129,12 +133,15 @@ public final class Bank extends Container {
      *            after being withdrawn.
      * @return {@code true} if the item was withdrawn, {@code false} otherwise.
      */
-    public boolean withdraw(int bankSlot, int amount, boolean addItem) {
-
+    public boolean withdraw(int bankSlot, int id, int amount, boolean addItem) {
         Item item = new Item(get(bankSlot).getId(), amount);
         boolean withdrawItemNoted = item.getDefinition().isNoteable();
         int withdrawAmount = amount(item.getId());
 
+		if (item.getId() != id || item == null) {
+			return false; // invalid packet, or client out of sync
+		}
+        
         if (player.isWithdrawAsNote() && !withdrawItemNoted) {
             player.getActionSender().sendMessage("This item can't be withdrawn as " + "a note.");
             player.setWithdrawAsNote(false);
@@ -147,7 +154,9 @@ public final class Bank extends Container {
 
         if (item.getAmount() > withdrawAmount) {
             item.setAmount(withdrawAmount);
-        }
+        } else if (withdrawAmount == 0) {
+			return false; // invalid packet, or client out of sync
+		}
 
         if (item.getAmount() > player.getInventory().remaining() && !item.getDefinition().isStackable() && !player.isWithdrawAsNote()) {
             item.setAmount(player.getInventory().remaining());
@@ -175,43 +184,5 @@ public final class Bank extends Container {
         refresh();
         player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
         return true;
-    }
-
-    /**
-     * Withdraws {@code item} from this bank.
-     *
-     * @param item
-     *            the item to withdraw.
-     * @param addItem
-     *            if the item should be added back into the player's inventory
-     *            after being withdrawn.
-     * @return {@code true} if the item was withdrawn, {@code false} otherwise.
-     */
-    public boolean withdraw(Item item, boolean addItem) {
-        return withdraw(searchSlot(item.getId()), item.getAmount(), addItem);
-    }
-
-    /**
-     * This method is not supported by this container implementation.
-     *
-     * @throws UnsupportedOperationException
-     *             if this method is invoked by default, this method will always
-     *             throw an exception.
-     */
-    @Override
-    public boolean add(Item item, int slot) {
-        throw new UnsupportedOperationException("This method is not supported" + " by this container implementation!");
-    }
-
-    /**
-     * This method is not supported by this container implementation.
-     *
-     * @throws UnsupportedOperationException
-     *             if this method is invoked by default, this method will always
-     *             throw an exception.
-     */
-    @Override
-    public boolean remove(Item item, int slot) {
-        throw new UnsupportedOperationException("This method is not supported" + " by this container implementation!");
     }
 }

@@ -30,6 +30,10 @@ public class WalkingPacketHandler implements PacketType {
 			return;
 		}
 		
+		if (player.getInterfaceState().getCurrentInterface() > 0) {
+			player.getActionSender().sendRemoveInterfacePacket();
+		}
+		
 		Entity combattarg = player.getCombatState().getTarget();
 		//We're frozen we can't walk
 		if (player.frozen()) {

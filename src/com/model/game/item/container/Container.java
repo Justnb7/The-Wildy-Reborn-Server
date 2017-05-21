@@ -651,6 +651,25 @@ public class Container implements Iterable<Item> {
 	}
 	
 	/**
+	 * Gets an item by id.
+	 * 
+	 * @param id
+	 *            The id.
+	 * @return The item, or <code>null</code> if it could not be found.
+	 */
+	public Item getById(int id) {
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] == null) {
+				continue;
+			}
+			if (items[i].getId() == id) {
+				return items[i];
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Gets the total amount of an item, including the items in stacks.
 	 * 
 	 * @param id

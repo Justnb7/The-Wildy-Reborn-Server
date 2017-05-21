@@ -12,6 +12,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
+import com.model.game.item.container.impl.Bank;
+import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.Trade;
 import com.model.game.shop.Shop;
 import com.model.net.packet.PacketType;
@@ -38,6 +40,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 	 * Withdraw all opcode.
 	 */
 	private static final int WITHDRAW_ALL = 129;
+	
+	/**
+	 * Withdraw X opcode.
+	 */
+	private static final int WITHDRAW_X = 135;
 
 	@Override
 	public void handle(Player player, int id, int size) {
@@ -53,6 +60,9 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 		case WITHDRAW_ALL:
 			withdrawAllAction(player, id);
+			break;
+		case WITHDRAW_X:
+			withdrawXAction(player, id);
 			break;
 		}
 	}
@@ -91,11 +101,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
             break;
 			
 		case 5064:
-			player.getBank().depositFromInventory(slot, 1);
+			player.getBank().depositFromInventory(slot, id, 1);
 			break;
 			
 		case 5382:
-			player.getBank().withdraw(slot, 1, true);
+			player.getBank().withdraw(slot, id, 1, true);
 			break;
 
 		case 3900:
@@ -190,10 +200,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-            player.getBank().depositFromInventory(slot, 5);
+            player.getBank().depositFromInventory(slot, id, 5);
             break;
         case 5382:
-            player.getBank().withdraw(slot, 5, true);
+        	player.getBank().withdraw(slot, id, 5, true);
             break;
 			
 		case Trade.PLAYER_INVENTORY_INTERFACE:
@@ -282,12 +292,12 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 				return;
 			} else {
-				player.getBank().depositFromInventory(slot, 10);
+				player.getBank().depositFromInventory(slot, id, 10);
 			}
 			break;
 
 		case 5382:
-			player.getBank().withdraw(slot, 10, true);
+			player.getBank().withdraw(slot, id, 10, true);
 			break;
 
 		case Trade.PLAYER_INVENTORY_INTERFACE:
@@ -368,7 +378,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-            player.getBank().depositFromInventory(slot, player.getInventory().amount(player.getInventory().getId(slot)));
+            player.getBank().depositFromInventory(slot, id, player.getInventory().amount(player.getInventory().getId(slot)));
             break;
 
         case 5382:
@@ -378,8 +388,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
                 Item itemWithdrew = new Item(item.getId(), 1);
                 amount = ItemDefinition.DEFINITIONS[itemWithdrew.getId()].isStackable() ? player.getBank().amount(item.getId()) : 28;
             }
-
-            player.getBank().withdraw(slot, amount, true);
+            player.getBank().withdraw(slot, id, amount, true);
             break;
 			
 		case Trade.PLAYER_INVENTORY_INTERFACE:
@@ -413,6 +422,45 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 			break;
 
+		}
+	}
+	
+	/**
+	 * Handles the withdraw x action.
+	 * 
+	 * @param player
+	 *            The player.
+	 * @param packet
+	 *            The packet.
+	 */
+	private void withdrawXAction(Player player, int packet) {
+		int slot = player.getInStream().readUnsignedWordBigEndian();
+		int interfaceId = player.getInStream().readUnsignedWordA();
+		int id = player.getInStream().readUnsignedWordBigEndian();
+		
+		switch(interfaceId) {
+		case Bank.PLAYER_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Inventory.SIZE) {
+				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
+			}
+			break;
+		case Bank.BANK_INVENTORY_INTERFACE:
+			System.out.println("yeep");
+			if(slot >= 0 && slot < Bank.SIZE) {
+				System.out.println("yeep2");
+				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
+			}
+			break;
+		case Trade.PLAYER_INVENTORY_INTERFACE:
+			if (slot >= 0 && slot < Trade.SIZE) {
+				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
+			}
+			break;
+		case Trade.TRADE_INVENTORY_INTERFACE:
+			if (slot >= 0 && slot < Trade.SIZE) {
+				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
+			}
+			break;
 		}
 	}
 

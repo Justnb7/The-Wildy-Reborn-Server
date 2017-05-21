@@ -77,6 +77,7 @@ public class PacketHandler {
 		packetId[117] = wap;
 		packetId[43] = wap;
 		packetId[129] = wap;
+		packetId[135] = wap;
 		
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();

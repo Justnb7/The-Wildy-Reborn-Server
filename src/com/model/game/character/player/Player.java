@@ -3253,4 +3253,5 @@ public class Player extends Entity {
 	public void setSlayerStreakRecord(int slayerStreakRecord) {
 		this.slayerStreakRecord = slayerStreakRecord;
 	}
+
 }

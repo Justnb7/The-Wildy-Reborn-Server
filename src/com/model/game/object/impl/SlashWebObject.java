@@ -29,7 +29,7 @@ public class SlashWebObject {
 			}
 		}
 		final GameObject openedWeb = new GameObject(734, position.getX(), position.getY(), position.getZ(), 0, 10);
-
+		final GameObject closedWeb = new GameObject(733, position.getX(), position.getY(), position.getZ(), 0, 10);
 		player.playAnimation(Animation.create(451));
 		
 		Server.getTaskScheduler().schedule(new ScheduledTask(3) {
@@ -41,7 +41,7 @@ public class SlashWebObject {
 					this.stop();
 				} else {
 					player.getActionSender().sendMessage("You manage to slash through the web.");
-					Server.getGlobalObjects().add(openedWeb);
+					Server.getGlobalObjects().replaceObject(closedWeb, openedWeb, 10);
 					this.stop();
 				}
 			}

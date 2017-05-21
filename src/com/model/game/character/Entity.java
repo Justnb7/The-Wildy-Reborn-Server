@@ -11,6 +11,7 @@ import com.google.common.base.Preconditions;
 import com.model.Server;
 import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
+import com.model.action.ActionQueue;
 import com.model.game.World;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.CombatState;
@@ -38,6 +39,19 @@ import com.model.utility.Utility;
  * @author Jak
  */
 public abstract class Entity {
+	
+	/**
+	 * A queue of actions.
+	 */
+	private final ActionQueue actionQueue = new ActionQueue(this);
+	
+	/**
+	 * Gets the action queue.
+	 * @return The action queue.
+	 */
+	public ActionQueue getActionQueue() {
+		return actionQueue;
+	}
 	
 	/**
      * The flag determining if this character is dead.

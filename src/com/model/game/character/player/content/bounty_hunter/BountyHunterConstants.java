@@ -36,42 +36,42 @@ public class BountyHunterConstants {
 	/**
 	 * The id for the bounty hunter interface
 	 */
-	public static final int BOUNTY_INTERFACE_ID = 23300;
+	public static final int BOUNTY_INTERFACE_ID = 29300;
 	
 	/**
 	 * The id of the string for the wealth
 	 */
-	public static final int WEALTH_STRING_ID = 23305;
+	public static final int WEALTH_STRING_ID = 29305;
 	
 	/**
 	 * The id of the string for the bounty hunter target name
 	 */
-	public static final int TARGET_NAME_STRING_ID = 23307;
+	public static final int TARGET_NAME_STRING_ID = 29307;
 	
 	/**
 	 * The id of the string for the level and combat
 	 */
-	public static final int LEVEL_COMBAT_STRING_ID = 23308;
+	public static final int LEVEL_COMBAT_STRING_ID = 29308;
 	
 	/**
 	 * The id for the rogue current string
 	 */
-	public static final int ROGUE_CURRENT_STRING_ID = 23310;
+	public static final int ROGUE_CURRENT_STRING_ID = 29310;
 	
 	/**
 	 * The id for the rogue record string
 	 */
-	public static final int ROGUE_RECORD_STRING_ID = 23311;
+	public static final int ROGUE_RECORD_STRING_ID = 29311;
 	
 	/**
 	 * The id for the hunter current string
 	 */
-	public static final int HUNTER_CURRENT_STRING_ID = 23312;
+	public static final int HUNTER_CURRENT_STRING_ID = 29312;
 	
 	/**
 	 * The id for the hunter record string
 	 */
-	public static final int HUNTER_RECORD_STRING_ID = 23313;
+	public static final int HUNTER_RECORD_STRING_ID = 29313;
 
 	/**
 	 * The amount to be considered very high wealth

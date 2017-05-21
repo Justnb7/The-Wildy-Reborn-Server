@@ -1,6 +1,7 @@
 package com.model.game.character.player.content.clicking.object;
 
 import com.model.Server;
+import com.model.action.Action;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -15,9 +16,11 @@ import com.model.game.character.player.skill.agility.Agility;
 import com.model.game.character.player.skill.agility.Agility.Obstacle;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.thieving.Stalls;
-import com.model.game.character.player.skill.woodcutting.Tree;
 import com.model.game.character.player.skill.woodcutting.Woodcutting;
+import com.model.game.character.player.skill.woodcutting.Woodcutting.Tree;
 import com.model.game.location.Location;
+import com.model.game.object.GameObject;
+import com.model.game.object.impl.SlashWebObject;
 import com.model.task.ScheduledTask;
 import com.model.utility.cache.ObjectDefinition;
 
@@ -51,9 +54,12 @@ public class ObjectInteraction {
 
 		player.getMining().mine(id, position);
 
-		Tree tree = Tree.forObject(id);
+		Action action;
+		Tree tree = Tree.forId(id);
+		GameObject obj = new GameObject(id, position.getX(), position.getY(), position.getZ());
+		
 		if (tree != null) {
-			Woodcutting.getInstance().chop(player, id, player.getLocation().getX(), player.getLocation().getY());
+			action = new Woodcutting(player, obj);
 			return;
 		}
 
@@ -316,10 +322,7 @@ public class ObjectInteraction {
 		 * Webs
 		 */
 		case 733:
-			// SlashWebObject.slashWeb(player, new Position(x, y), false);
-			// We need to find out how to replace the object, currently just
-			// adds object on top of one.
-			// TODO find out how to send object position
+			SlashWebObject.slashWeb(player, new Location(position.getX() , position.getY()), false);
 			break;
 
 		/**

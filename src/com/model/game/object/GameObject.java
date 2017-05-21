@@ -54,10 +54,11 @@ public class GameObject {
 	 * @param type The type.
 	 * @param rotation The rotation.
 	 */
-	public GameObject(Location position, int face, int type) {
+	public GameObject(int id, Location position, int type, int direction) {
+		this.id = id;
 		this.position = position;
 		this.type = type;
-		this.face = face;
+		this.face = direction;
 	}
 	
 	public GameObject(int id, int x, int y, int height) {
@@ -88,6 +89,15 @@ public class GameObject {
 	public GameObject(int id, int x, int y, int height, int face, int type, int ticksRemaining, int restoreId) {
 		this(id, x, y, height, face, type, ticksRemaining);
 		this.restoreId = restoreId;
+	}
+
+	public GameObject(Location location, int id, int type, int direction) {
+		this.id = id;
+		this.x = location.getX();
+		this.y = location.getY();
+		this.height = location.getZ();
+		this.type = type;
+		this.face = direction;
 	}
 
 	public void removeTick() {

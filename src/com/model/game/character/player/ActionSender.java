@@ -306,6 +306,7 @@ public class ActionSender {
 		if (player.getOutStream() != null && player != null) {
 			player.getOutStream().writeFrame(219);
 		}
+		player.getActionQueue().clearRemovableActions();
 		return this;
 	}
 	

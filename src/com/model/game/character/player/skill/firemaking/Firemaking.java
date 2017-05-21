@@ -10,7 +10,7 @@ import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
-import com.model.game.object.GlobalObject;
+import com.model.game.object.GameObject;
 import com.model.task.ScheduledTask;
 import com.model.utility.cache.map.Region;
 
@@ -57,7 +57,7 @@ public class Firemaking {
 				
 				player.getInventory().remove(new Item(log.getLog()));
 				
-				GlobalObject fire = new GlobalObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 100);
+				GameObject fire = new GameObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 100);
 				Server.getTaskScheduler().schedule(new ScheduledTask(lightDelay(player, log.getLog())) {
 					@Override
 					public void execute() {

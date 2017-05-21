@@ -10,7 +10,7 @@ import com.model.game.character.player.content.achievements.AchievementType;
 import com.model.game.character.player.content.achievements.Achievements;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
-import com.model.game.object.GlobalObject;
+import com.model.game.object.GameObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.utility.Utility;
@@ -63,11 +63,11 @@ public class WoodcuttingEvent extends CycleEvent {
 				face = worldObject.get().getFace();
 			}
 			if(tree.equals(Tree.RED_WOOD) && player.getX() == 1574) {
-				Server.getGlobalObjects().add(new GlobalObject(tree.getStumpId(), x, y, player.heightLevel, 3, 10, tree.getRespawnTime(), objectId));
+				Server.getGlobalObjects().add(new GameObject(tree.getStumpId(), x, y, player.heightLevel, 3, 10, tree.getRespawnTime(), objectId));
 			} else if(tree.equals(Tree.RED_WOOD) && player.getX() == 1567) {
-				Server.getGlobalObjects().add(new GlobalObject(tree.getStumpId(), x, y, player.heightLevel, 5, 10, tree.getRespawnTime(), objectId));
+				Server.getGlobalObjects().add(new GameObject(tree.getStumpId(), x, y, player.heightLevel, 5, 10, tree.getRespawnTime(), objectId));
 			} else if(!tree.equals(Tree.RED_WOOD)) {
-				Server.getGlobalObjects().add(new GlobalObject(tree.getStumpId(), x, y, player.heightLevel, face, 10, tree.getRespawnTime(), objectId));
+				Server.getGlobalObjects().add(new GameObject(tree.getStumpId(), x, y, player.heightLevel, face, 10, tree.getRespawnTime(), objectId));
 			}
 			player.getInventory().add(new Item(tree.getWood(), 1));
 			if (wearingLumberjackOutfit()) {

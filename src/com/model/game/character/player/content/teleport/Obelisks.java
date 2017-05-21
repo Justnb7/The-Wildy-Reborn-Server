@@ -14,7 +14,7 @@ import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
-import com.model.game.object.GlobalObject;
+import com.model.game.object.GameObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -84,10 +84,10 @@ public class Obelisks {
 		state.put(objectId, true);
 		int x = location.getBoundaries().getMinimumX();
 		int y = location.getBoundaries().getMinimumY();
-		Server.getGlobalObjects().add(new GlobalObject(14825, x, y, 0, 0, 10, 14, objectId));
-		Server.getGlobalObjects().add(new GlobalObject(14825, x + 4, y, 0, 0, 10, 14, objectId));
-		Server.getGlobalObjects().add(new GlobalObject(14825, x, y + 4, 0, 0, 10, 14, objectId));
-		Server.getGlobalObjects().add(new GlobalObject(14825, x + 4, y + 4, 0, 0, 10, 14, objectId));
+		Server.getGlobalObjects().add(new GameObject(14825, x, y, 0, 0, 10, 14, objectId));
+		Server.getGlobalObjects().add(new GameObject(14825, x + 4, y, 0, 0, 10, 14, objectId));
+		Server.getGlobalObjects().add(new GameObject(14825, x, y + 4, 0, 0, 10, 14, objectId));
+		Server.getGlobalObjects().add(new GameObject(14825, x + 4, y + 4, 0, 0, 10, 14, objectId));
 		CycleEventHandler.getSingleton().addEvent(location, new Event(location), 14);
 	}
 	

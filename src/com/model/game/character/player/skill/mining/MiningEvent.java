@@ -10,7 +10,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.SimpleDialogues;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
-import com.model.game.object.GlobalObject;
+import com.model.game.object.GameObject;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.utility.Utility;
@@ -111,7 +111,7 @@ public class MiningEvent extends CycleEvent {
 		}
 		//if (Utility.random(rock.getDepletionProbability()) == 0) {
 			if (objectId > 0) {
-				Server.getGlobalObjects().add(new GlobalObject(Rock.EMPTY_ROCK, position.getX(), position.getY(), position.getZ(), 0, 10, rock.getRespawnRate(), objectId));
+				Server.getGlobalObjects().add(new GameObject(Rock.EMPTY_ROCK, position.getX(), position.getY(), position.getZ(), 0, 10, rock.getRespawnRate(), objectId));
 			}
 		//}
 		player.face(player, new Location(position.getX(), position.getY()));

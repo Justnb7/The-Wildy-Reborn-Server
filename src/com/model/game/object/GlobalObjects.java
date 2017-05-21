@@ -21,18 +21,18 @@ public class GlobalObjects {
 	/**
 	 * A collection of all existing objects
 	 */
-	Queue<GlobalObject> objects = new LinkedList<>();
+	Queue<GameObject> objects = new LinkedList<>();
 	
 	/**
 	 * A collection of all objects to be removed from the game
 	 */
-	Queue<GlobalObject> remove = new LinkedList<>();
+	Queue<GameObject> remove = new LinkedList<>();
 	
 	/**
 	 * Adds a new global object to the game world
 	 * @param object	the object being added
 	 */
-	public void add(GlobalObject object) {
+	public void add(GameObject object) {
 		updateObject(object, object.getObjectId());
 		objects.add(object);
 	}
@@ -46,7 +46,7 @@ public class GlobalObjects {
 	 * @param height	the height of the object 
 	 */
 	public void remove(int id, int x, int y, int height) {
-		Optional<GlobalObject> existing = objects.stream().filter(o -> o.getObjectId() == id && o.getX() == x 
+		Optional<GameObject> existing = objects.stream().filter(o -> o.getObjectId() == id && o.getX() == x 
 				&& o.getY() == y && o.getHeight() == height).findFirst();
 		if (!existing.isPresent()) {
 			return;
@@ -67,12 +67,17 @@ public class GlobalObjects {
 	 * Removes a global object from the world based on object reference
 	 * @param object	the global object
 	 */
-	public void remove(GlobalObject object) {
+	public void remove(GameObject object) {
 		if (!objects.contains(object)) {
 			return;
 		}
 		updateObject(object, -1);
 		remove.add(object);
+	}
+	
+	public void replaceObject(GameObject gameObject, GameObject replacementObject, int objectRespawnTimer) {
+		remove(gameObject);
+		add(replacementObject);
 	}
 	
 	/**
@@ -109,8 +114,8 @@ public class GlobalObjects {
 		return exists(id, x, y, 0);
 	}
 	
-	public GlobalObject get(int id, int x, int y, int height) {
-		Optional<GlobalObject> obj = objects.stream().filter(object -> object.getObjectId() == id && object.getX() == x
+	public GameObject get(int id, int x, int y, int height) {
+		Optional<GameObject> obj = objects.stream().filter(object -> object.getObjectId() == id && object.getX() == x
 				&& object.getY() == y && object.getHeight() == height).findFirst();
 		return obj.orElse(null);
 		
@@ -126,8 +131,8 @@ public class GlobalObjects {
 		if (objects.size() == 0) {
 			return;
 		}
-		Queue<GlobalObject> updated = new LinkedList<>();
-		GlobalObject object = null;
+		Queue<GameObject> updated = new LinkedList<>();
+		GameObject object = null;
 		objects.removeAll(remove);
 		remove.clear();
 		while ((object = objects.poll()) != null) {
@@ -150,7 +155,7 @@ public class GlobalObjects {
 	 * @param object	the new global object
 	 * @param objectId	the new object id
 	 */
-	public void updateObject(final GlobalObject object, final int objectId) {
+	public void updateObject(final GameObject object, final int objectId) {
 		List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player ->
 			player.distanceToPoint(object.getX(), object.getY()) <= 60 && player.heightLevel == object.getHeight()).collect(Collectors.toList());
 		players.forEach(player -> player.getActionSender().sendObject(objectId, object.getX(), object.getY(), object.getHeight(), object.getFace(), object.getType()));

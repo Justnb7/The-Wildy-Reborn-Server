@@ -117,7 +117,7 @@ public class NpcVsPlayerCombat {
 				npc.oldIndex = player.getIndex();
 				player.updateLastCombatAction();
 				player.setInCombat(true);
-				player.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
 			}
 		}
 	}

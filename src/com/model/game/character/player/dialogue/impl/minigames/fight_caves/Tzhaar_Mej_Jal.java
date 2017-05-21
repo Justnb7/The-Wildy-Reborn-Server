@@ -266,7 +266,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 									case 1:
 										player.getInventory().remove(new Item(6570));
 										player.getInventory().addOrCreateGroundItem(new Item(6529, 8000));
-										player.getActionSender().sendRemoveInterfacePacket();
+										player.getActionSender().removeAllInterfaces();
 										break;
 									case 2:
 										send(Type.PLAYER, Expression.DEFAULT, "No, I'd like to keep my cape");
@@ -283,7 +283,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 										case 1:
 											if (player.getInventory().alreadyHasItem(13225)) {
 												player.getActionSender().sendMessage("You already have a pet jad.");
-												player.getActionSender().sendRemoveInterfacePacket();
+												player.getActionSender().removeAllInterfaces();
 												return;
 											}
 											player.getInventory().remove(new Item(6570));

@@ -220,7 +220,7 @@ public class GameModeSelection {
 			break;
 
 		}
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 		//Open make-over interface
 		player.getActionSender().sendInterface(3559);
 	}

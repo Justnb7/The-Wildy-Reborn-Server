@@ -311,7 +311,7 @@ public class Combat {
 		 */
         if (target.isPlayer()) {
             ((Player) target).putInCombat(player.getIndex());
-            target.getActionSender().sendRemoveInterfacePacket();
+            target.getActionSender().removeAllInterfaces();
         }
         player.updateLastCombatAction();
         player.setInCombat(true);

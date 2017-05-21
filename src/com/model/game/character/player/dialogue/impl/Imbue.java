@@ -21,10 +21,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 20));
 					player.getInventory().remove(new Item(6733));
 					player.getInventory().add(new Item(11771, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 2:
@@ -32,10 +32,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 25));
 					player.getInventory().remove(new Item(6737));
 					player.getInventory().add(new Item(11773, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 3:
@@ -43,10 +43,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 20));
 					player.getInventory().remove(new Item(6731));
 					player.getInventory().add(new Item(11770, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 4:
@@ -54,10 +54,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 20));
 					player.getInventory().remove(new Item(6735));
 					player.getInventory().add(new Item(11772, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 5:
@@ -72,10 +72,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 30));
 					player.getInventory().remove(new Item(12601));
 					player.getInventory().add(new Item(13202, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 2:
@@ -83,10 +83,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 30));
 					player.getInventory().remove(new Item(12603));
 					player.getInventory().add(new Item(12691, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 3:
@@ -94,10 +94,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 30));
 					player.getInventory().remove(new Item(12605));
 					player.getInventory().add(new Item(12692, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 4:
@@ -112,10 +112,10 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 15));
 					player.getInventory().remove(new Item(4212));
 					player.getInventory().add(new Item(11748, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 2:
@@ -123,14 +123,14 @@ public class Imbue extends Dialogue {
 					player.getInventory().remove(new Item(13307, 15));
 					player.getInventory().remove(new Item(4224));
 					player.getInventory().add(new Item(11759, 1));
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				} else {
 					player.getActionSender().sendMessage("You do not have the required items to imbue this ring.");
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 3:
-				player.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
 				break;
 			}
 		}

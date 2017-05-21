@@ -55,7 +55,7 @@ public class Cooking extends SkillTask {
 		if (!meetsRequirements(player, data, object)) {
 			return;
 		}
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 		player.getMovementHandler().stopMovement();
 		player.setSkillTask(new Cooking(player, id, data));
 	}

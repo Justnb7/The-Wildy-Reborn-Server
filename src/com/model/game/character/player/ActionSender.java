@@ -308,7 +308,7 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendRemoveInterfacePacket() {
+	public ActionSender removeAllInterfaces() {
 		player.openInterface = -1;
 		player.setBanking(false);
 		player.setTrading(false);

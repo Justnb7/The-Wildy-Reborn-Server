@@ -256,7 +256,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 116181:
 		case 195081:
 		case 166023:
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			break;
 			
 		case 142131:
@@ -398,7 +398,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 105230:
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			break;
 
 		case 21010:
@@ -419,11 +419,11 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		case 39178:
 			player.playAnimation(Animation.create(65535));
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			break;
 
 		case 59004:
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			break;
 
 		case 70212:
@@ -776,7 +776,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			if (player.getInventory().playerHasItem(player.getDestroyItem())) {
 				player.getInventory().remove(new Item(player.getDestroyItem()));
 				player.setDestroyItem(-1);
-				player.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
 			}
 		}
 	}

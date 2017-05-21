@@ -37,7 +37,7 @@ public class MiningTeleports extends Dialogue {
 		System.out.println("Phase: " + phase + " index : " + index);
 		if (phase == 0) {
 			if(index == 4) {
-				player.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
 			} else {
 				TeleportExecutor.teleport(player, new Location(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
 			}

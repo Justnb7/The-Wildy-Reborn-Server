@@ -17,11 +17,11 @@ public class BarrowsTunnel extends Dialogue {
 		if (getPhase() == 0) {
 			switch(index) {
 			case 1:
-				player.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
 				player.movePlayer(new Location(3551, 9691, 0));
 				break;
 			case 2:
-				player.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
 				break;
 			}
 		}

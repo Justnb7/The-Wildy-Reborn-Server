@@ -31,7 +31,7 @@ public class WalkingPacketHandler implements PacketType {
 		}
 		
 		if (player.getInterfaceState().getCurrentInterface() > 0) {
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 		}
 		
 		Entity combattarg = player.getCombatState().getTarget();
@@ -54,7 +54,7 @@ public class WalkingPacketHandler implements PacketType {
 		player.getController().onWalk(player);
 		
 		//When walking we have to close all open interfaces.
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 		
 		//Stop our distanced action task because we reset the walking queue by walking
 		player.stopDistancedTask();

@@ -261,7 +261,7 @@ public abstract class Dialogue {
 	 * Stops the current dialogue where it is
 	 */
 	protected final void stop() {
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 	}
 
 	/**

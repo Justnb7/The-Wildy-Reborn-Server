@@ -457,7 +457,7 @@ public class SlayerInterface {
 				try {
 					if (blockedTasks.contains(player.getSlayerTask())) {
 						player.getActionSender().sendMessage("This task is already blocked.");
-						player.getActionSender().sendRemoveInterfacePacket();
+						player.getActionSender().removeAllInterfaces();
 						player.setAttribute("slayer_action", 0);
 						return false;
 					}
@@ -489,7 +489,7 @@ public class SlayerInterface {
 			player.getActionSender().sendInterface(getPreviousInterface());
 			return true;
 		case CLOSE:
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			return true;
 		default:
 			break;

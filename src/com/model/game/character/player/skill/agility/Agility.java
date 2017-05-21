@@ -264,7 +264,7 @@ public class Agility {
 	
 	public static void tackleObstacle(Player player, Obstacle obstacle, int object) {
 		if ((!obstacle.isShortCut() && player.getSkills().getLevelForExperience(Skills.AGILITY) < obstacle.getLevelRequired()) || (player.getSkills().getLevelForExperience(Skills.AGILITY) < obstacle.getLevelRequired() && obstacle.isShortCut())) {
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			player.getActionSender().sendMessage("You need an Agility level of " + obstacle.getLevelRequired() + " to tackle this obstacle.");
 			player.playAnimation(Animation.create(-1));
 			return;

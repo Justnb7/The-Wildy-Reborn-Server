@@ -46,7 +46,7 @@ public class SetAppearancePacketHandler implements PacketType {
 		
 		player.getAppearance().setLook(look);
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 			
 	}
 

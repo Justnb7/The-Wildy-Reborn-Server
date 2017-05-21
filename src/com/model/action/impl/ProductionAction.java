@@ -138,7 +138,7 @@ public abstract class ProductionAction extends Action {
 	@Override
 	public void execute() {
 		if(getEntity().asPlayer().getSkills().getLevelForExperience(getSkill()) < getRequiredLevel()) {
-			getEntity().getActionSender().sendRemoveInterfacePacket();
+			getEntity().getActionSender().removeAllInterfaces();
 			getEntity().getActionSender().sendMessage(getLevelTooLowMessage()); //Think this is how 317 did it?
 			getEntity().playAnimation(Animation.create(-1));
 			this.stop();

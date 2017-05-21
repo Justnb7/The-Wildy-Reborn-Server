@@ -46,12 +46,12 @@ public class SlayerTaskManagement {
 			player.setSlayerTaskAmount(0);
 			player.setSlayerStreak(0);
 			player.setSlayerPoints(player.getSlayerPoints() - 10);
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			player.getActionSender().sendMessage("Your slayer task and streak has been reset , talk to any slayer master for a new one.");
 			return true;
 		} else {
 			player.getActionSender().sendMessage("You do not have enough Slayer Points to reset your slayer task.");
-			player.getActionSender().sendRemoveInterfacePacket();
+			player.getActionSender().removeAllInterfaces();
 			return false;
 		}
 	}

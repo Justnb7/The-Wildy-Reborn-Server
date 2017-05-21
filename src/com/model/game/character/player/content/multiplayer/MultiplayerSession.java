@@ -394,7 +394,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			}
 			if (this.type.equals(MultiplayerSessionType.DUEL)) {
 				if (type.equals(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS)) {
-					player.getActionSender().sendRemoveInterfacePacket();
+					player.getActionSender().removeAllInterfaces();
 				}
 			}
 			//PlayerSerialization.saveGame(player);

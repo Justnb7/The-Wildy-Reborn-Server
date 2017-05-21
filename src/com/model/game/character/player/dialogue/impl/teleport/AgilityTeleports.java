@@ -37,7 +37,7 @@ public class AgilityTeleports extends Dialogue {
 		System.out.println("Phase: " + phase + " index : " + index);
 		if (phase == 0) {
 			if(index == 4) {
-				player.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
 			} else if(index == 3) {
 				player.getActionSender().sendMessage("We currently do not have support yet for this agility course.");
 			} else {

@@ -27,7 +27,7 @@ public class FightCaveInstance {
 	 * We're now entering the caves, we can start the waves
 	 */
 	private void enterFightCaves(Player player) {
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 		player.getActionSender().sendMessage("@red@Wave: 1");
 		player.waveId = 0;
 		player.getFightCave().startWave();

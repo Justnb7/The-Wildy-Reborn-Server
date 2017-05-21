@@ -150,7 +150,7 @@ public class Trade {
 		player.getRequestManager().setAcquaintance(null);
 		player.getRequestManager().setRequestState(RequestState.NORMAL);
 		player.getTrade().clear();
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 	}
 
 	/**
@@ -471,7 +471,7 @@ public class Trade {
 		player.getRequestManager().setAcquaintance(null);
 		player.getRequestManager().setRequestState(RequestState.NORMAL);
 		player.getTrade().clear();
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 	}
 
 	/**

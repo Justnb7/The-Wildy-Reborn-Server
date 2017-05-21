@@ -160,8 +160,8 @@ public class DuelSession extends MultiplayerSession {
 				opponent.movePlayer(new Location(teleportX, teleportY - 1, 0));
 				player.getActionSender().createPlayerHint(10, opponent.getIndex());
 				opponent.getActionSender().createPlayerHint(10, player.getIndex());
-				player.getActionSender().sendRemoveInterfacePacket();
-				opponent.getActionSender().sendRemoveInterfacePacket();
+				player.getActionSender().removeAllInterfaces();
+				opponent.getActionSender().removeAllInterfaces();
 				removeDisabledEquipment(player);
 				removeDisabledEquipment(opponent);
 				CycleEventHandler.getSingleton().addEvent(this, new AttackingOperation(), 2);
@@ -354,7 +354,7 @@ public class DuelSession extends MultiplayerSession {
 		PlayerSave.save(player);
 		
 		//Close all open windows
-		player.getActionSender().sendRemoveInterfacePacket();
+		player.getActionSender().removeAllInterfaces();
 		
 		//reset player variables
 		player.playAnimation(Animation.create(65535));

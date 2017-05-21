@@ -1,6 +1,7 @@
 package com.model.game.item.container;
 
 import com.google.common.base.Preconditions;
+import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 
@@ -435,6 +436,33 @@ public class Container implements Iterable<Item> {
     public boolean containsAny(Item... items) {
         return Arrays.stream(items).filter(Objects::nonNull).anyMatch(this::contains);
     }
+    
+    /**
+	 * Checks if there is room in the inventory for an item.
+	 * 
+	 * @param item
+	 *            The item.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean hasRoomFor(Item item) {
+		if ((item.getDefinition().isStackable() || policy.equals(ItemContainerPolicy.STACK_ALWAYS)) && !policy.equals(ItemContainerPolicy.STACK_NEVER)) {
+			for (int i = 0; i < items.length; i++) {
+				if (items[i] != null && items[i].getId() == item.getId()) {
+					int totalCount = item.getAmount() + items[i].getAmount();
+					if (totalCount >= Constants.MAX_ITEMS || totalCount < 1) {
+						return false;
+					}
+					return true;
+				}
+			}
+			int slot = freeSlot();
+			return slot != -1;
+		} else {
+			int slots = remaining();
+			return slots >= item.getAmount();
+		}
+
+	}
 
     /**
      * Transfers the item in {@code slot} to {@code newSlot}. If an item already

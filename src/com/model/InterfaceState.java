@@ -78,6 +78,7 @@ public class InterfaceState {
 		currentInterface = -1;
 		enterAmountInterfaceId = -1;
 		player.getActionQueue().clearRemovableActions();
+		player.removeInterfaceAttributes();
 	}
 
 	/**

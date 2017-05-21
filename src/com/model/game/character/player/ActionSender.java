@@ -309,15 +309,8 @@ public class ActionSender {
 	}
 	
 	public ActionSender removeAllInterfaces() {
-		player.openInterface = -1;
-		player.setBanking(false);
-		player.setTrading(false);
-		player.setShopping(false);
-		player.dialogue().interrupt();
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().writeFrame(219);
-		}
-		player.getActionQueue().clearRemovableActions();
+		player.getInterfaceState().interfaceClosed();
+		player.getOutStream().writeFrame(219);
 		return this;
 	}
 	

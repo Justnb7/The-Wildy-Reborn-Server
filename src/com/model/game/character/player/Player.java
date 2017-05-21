@@ -3267,5 +3267,12 @@ public class Player extends Entity {
 	public InterfaceState getInterfaceState() {
 		return interfaceState;
 	}
+	
+	public void removeInterfaceAttributes() {
+		setShopping(false);
+		setTrading(false);
+		setBanking(false);
+		dialogue().interrupt();
+	}
 
 }

@@ -414,7 +414,7 @@ public class ClanManager extends ClanData {
 			return;
 		}
 		clan.updateFriendList(player);
-		if (player.openInterface == 48000) {
+		if (player.getInterfaceState().isInterfaceOpen(48000)) {
 			ClanManager.clanSetup(player);
 		}
 		clan.updateTab();

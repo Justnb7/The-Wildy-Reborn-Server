@@ -39,13 +39,6 @@ public class CloseInterfacePacketHandler implements PacketType {
 			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 			return;
 		}
-		
-		//Reset the following variables when closing an interface
-		player.openInterface = -1;
-		player.setShopping(false);
-		player.setTrading(false);
-		player.setBanking(false);
-		
 	}
 
 }

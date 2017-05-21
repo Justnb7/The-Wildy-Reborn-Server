@@ -53,7 +53,7 @@ public class SlayerConstants {
 	public static int STAFF = 12000;
 	public static int CAVE_KRAKEN = 3272;
 	public static int SUQA = 9081;
-	public static int MITHRIL_BAR = 2359;
+	public static int MITHRIL_BAR = 2360;
 	public static int SLAYER_HELMET = 11864;
 	public static int BLACK_SLAYER_HELMET = 19639;
 	public static int RED_SLAYER_HELMET = 19647;

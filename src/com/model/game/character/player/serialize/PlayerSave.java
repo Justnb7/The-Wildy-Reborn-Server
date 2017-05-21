@@ -361,7 +361,6 @@ public class PlayerSave {
 			skillXP = player.skills.getAllXP();
 			dynamicLevels = player.skills.getAllDynamicLevels();
 			
-			
 		}
 
 		public void parseDetails() throws Exception {

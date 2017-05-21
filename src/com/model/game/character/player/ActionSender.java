@@ -722,7 +722,7 @@ public class ActionSender {
 		if (player != null) {
         	player.stopSkillTask();
             if (player.getOutStream() != null) {
-                player.getOutStream().writeFrame(87);
+                player.getOutStream().writeFrame(97);
                 player.getOutStream().writeShort(id);
                 player.openInterface = id;
             }

@@ -494,6 +494,10 @@ public class CommandPacketHandler implements PacketType {
     	
     	switch(cmd[0]) {
     	
+    	case "opensi":
+    		player.getSlayerInterface().open(player);
+    		break;
+    	
 		case "unlock":
 			int type = Integer.parseInt(cmd[1]);
 			if (type == 0) {

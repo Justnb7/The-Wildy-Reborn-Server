@@ -238,7 +238,7 @@ public class SlayerInterface {
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			@Override
 			public void execute() {
-				generateCheckMarks(player);
+				//generateCheckMarks(player);
 				player.getActionSender().sendString("Reward Points: " + player.getSlayerPoints(), 23014);
 				UnlockInterface unlock = new UnlockInterface();
 				unlock.write(player);

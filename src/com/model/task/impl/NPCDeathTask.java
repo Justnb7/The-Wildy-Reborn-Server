@@ -200,10 +200,10 @@ public class NPCDeathTask extends ScheduledTask {
 				npc.sendForcedMessage("Got'em");
 			}
 		}
-		if (npc.killedBy >= 0) {
+        if (npc.killedBy >= 0) {
 			Player player = World.getWorld().getPlayers().get(npc.killedBy);
 			if (player != null) {
-				if (npc.getId() == player.getSlayerTask()) {
+				if (npc.getId() == player.getSlayerTask() || NPC.getName(npc.getId()).toLowerCase().equalsIgnoreCase(NPC.getName(player.getSlayerTask()).toLowerCase())) {
 					SlayerTaskManagement.decreaseTask(player, npc);
 				}
 				Combat.resetCombat(player);

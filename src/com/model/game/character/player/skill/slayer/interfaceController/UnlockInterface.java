@@ -16,11 +16,11 @@ public class UnlockInterface {
 	
 	public enum UnlockButtons {
 		
-		TELEPORTING(new int[]{91110}, 13666, 
+		/*TELEPORTING(new int[]{91110}, 13666, 
 				"Task Teleport",
 				"Teleport to your tasks by right"
 				+ "\\non your slayer gem <col=ff0000>(150 points)</col>"
-				+ "\\n"),
+				+ "\\n"),*/
 		
 		/*SLUG_SALTER(SlayerConstants.ROCKSLUG, 
 				"Slug slater",
@@ -32,10 +32,10 @@ public class UnlockInterface {
 				"Autmatically freeze desert lizards when"
 				+ "\\nthey're on critical health, if you have ice"
 				+ "\\nwater. @red@90 points)"),*/
-		LIME_WHIP(new int[]{91111}, 20405, 
+		/*LIME_WHIP(new int[]{91111}, 20405, 
 				"Taco Limey Time",
 				"Have a chance to receive a drop of a "
-				+ "\\nime whip when killing Abbysal Demons."
+				+ "\\nlime whip when killing Abbysal Demons."
 				+ "\\n \\n@red@400 points)"),
 		
 		BROADER_FLETCHING(new int[]{91112}, SlayerConstants.BROAD_ARROWS, 
@@ -109,7 +109,7 @@ public class UnlockInterface {
 				"Duly Noted",
 				"Mithril dragons drop mithril bars in"
 				+ "\\nbanknote form while killed on assignment."
-				+ "\\n@red@ (200 points) ");
+				+ "\\n@red@ (200 points) ")*/;
 		
 		
 		

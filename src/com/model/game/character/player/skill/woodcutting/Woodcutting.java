@@ -44,7 +44,7 @@ public class Woodcutting extends HarvestingAction {
 	public Woodcutting(Entity entity, GameObject object) {
 		super(entity);
 		this.tree_cut = object;
-		this.tree = Tree.forId(object.getObjectId());
+		this.tree = Tree.forId(object.getId());
 	}
 	
 	/**

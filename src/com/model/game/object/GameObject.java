@@ -104,7 +104,7 @@ public class GameObject {
 		this.ticksRemaining--;
 	}
 	
-	public int getObjectId() {
+	public int getId() {
 		return id;
 	}
 	

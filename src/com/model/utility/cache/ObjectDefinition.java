@@ -11,9 +11,9 @@ public final class ObjectDefinition {
 	 */
 	private static Logger logger = Logger.getLogger(ObjectDefinition.class.getSimpleName());
 
-	private static ByteStreamExt stream;
+	private static ByteStreamExt buffer;
 	public static int[] streamIndices;
-	public static ObjectDefinition class46;
+	public static ObjectDefinition definition;
 
 	private static int objects = 0;
 
@@ -21,187 +21,31 @@ public final class ObjectDefinition {
 		return objects;
 	}
 
-	public static ObjectDefinition getObjectDef(int i) {
-		if (i > streamIndices.length) {
-			i = streamIndices.length - 1;
+	public static ObjectDefinition get(int id) {
+		if (id > streamIndices.length) {
+			id = streamIndices.length - 1;
 		}
 
-		for (int j = 0; j < 20; j++) {
-			if (cache[j].type == i) {
-				return cache[j];
+		for (int index = 0; index < 20; index++) {
+			if (cache[index].type == id) {
+				return cache[index];
 			}
 		}
 
 		cacheIndex = (cacheIndex + 1) % 20;
-		class46 = cache[cacheIndex];
+		definition = cache[cacheIndex];
 
-		if (i > streamIndices.length - 1 || i < 0) {
+		if (id > streamIndices.length - 1 || id < 0) {
 			return null;
 		}
 
-		stream.currentOffset = streamIndices[i];
+		buffer.currentOffset = streamIndices[id];
 
-		class46.type = i;
-		class46.setDefaults();
-		class46.readValues(stream);
+		definition.type = id;
+		definition.setDefaults();
+		definition.readValues(buffer);
 
-		if (i == 14210 || i == 14211) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = false;
-			class46.objectSizeX = 2;
-		}
-
-		if (i == 14438 || i == 14437) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 486) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 14695) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-			class46.objectSizeX = 1;
-		}
-
-		if (i == 734) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-
-		if (i == 509 || i == 510 || i == 511) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 9292) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-			class46.objectSizeX = 1;
-		}
-
-		if (i == 9382) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 9381) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 9372) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 9360) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 24265) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (i == 9374) {
-			class46.aBoolean779 = true;
-			class46.aBoolean757 = true;
-		}
-
-		if (class46.name != null && class46.name.equalsIgnoreCase("flowerbed")) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-
-		if (class46.name != null && class46.name.equalsIgnoreCase("jungle plant")) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-
-		if (class46.name != null && class46.name.equalsIgnoreCase("creeping plant")) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-
-		if (class46.name != null && class46.name.equalsIgnoreCase("flowers")) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-
-		if (class46.name != null && class46.name.equalsIgnoreCase("sunflowers")) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-
-		if (class46.name != null && class46.name.equalsIgnoreCase("flower")) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-
-		if (class46.name != null && class46.name.equalsIgnoreCase("daisies") || i == 38692) {
-			class46.aBoolean779 = false;
-			class46.aBoolean757 = false;
-		}
-		
-		switch (i) {
-		// hardcode objects that don't have any actions.
-		case 26621:
-		case 26620:
-		case 26619:
-		case 26618:
-			
-		case 26561:
-		case 26562:
-			
-		case 7836:
-		case 7837:
-		case 7838:
-		case 7839:
-		case 7848:
-		case 7847:
-		case 7849:
-		case 7850:
-		case 8150:
-		case 8151:
-		case 8152:
-		case 8153:
-		case 8550:
-		case 8551:
-		case 8552:
-		case 8553:
-		case 8554:
-		case 8555:
-		case 8556:
-		case 8557:
-		case 20973:			
-		case 26606:
-		case 26611:
-		case 26613:
-		case 26626:
-		case 26608:
-		case 26607:
-		case 26603:
-		case 26580:
-		case 26604:
-		case 26609:
-		case 26600:
-		case 26601:
-		case 26610:
-		case 26616:
-		case 26612:
-		case 26605:
-		case 26602:
-			class46.hasActions = true;
-			break;
-
-		}
-
-		return class46;
+		return definition;
 	}
 
 	private void setDefaults() {
@@ -234,30 +78,32 @@ public final class ObjectDefinition {
 	}
 
 	public static void loadConfig() {
-		stream = new ByteStreamExt(getBuffer("loc.dat"));
-		ByteStreamExt stream = new ByteStreamExt(getBuffer("loc.idx"));
-		objects = stream.readUnsignedWord();
+		buffer = new ByteStreamExt(getBuffer("loc.dat"));
+		ByteStreamExt buffer = new ByteStreamExt(getBuffer("loc.idx"));
+		objects = buffer.readUnsignedWord();
 		streamIndices = new int[objects];
-		int i = 2;
-		for (int j = 0; j < objects; j++) {
-			streamIndices[j] = i;
-			i += stream.readUnsignedWord();
+		
+		int id = 2;
+		for (int index = 0; index < objects; index++) {
+			streamIndices[index] = id;
+			id += buffer.readUnsignedWord();
 		}
+		
 		cache = new ObjectDefinition[20];
-		for (int k = 0; k < 20; k++) {
-			cache[k] = new ObjectDefinition();
+		for (int index = 0; index < 20; index++) {
+			cache[index] = new ObjectDefinition();
 		}
 		logger.info(Utility.format(objects) + " Objects have been loaded successfully.");
 	}
 
 	public static byte[] getBuffer(String s) {
 		try {
-			java.io.File f = new java.io.File("./data/map/objectdata/" + s);
-			if (!f.exists()) {
+			java.io.File file = new java.io.File("./data/map/objectdata/" + s);
+			if (!file.exists()) {
 				return null;
 			}
-			byte[] buffer = new byte[(int) f.length()];
-			java.io.DataInputStream dis = new java.io.DataInputStream(new java.io.FileInputStream(f));
+			byte[] buffer = new byte[(int) file.length()];
+			java.io.DataInputStream dis = new java.io.DataInputStream(new java.io.FileInputStream(file));
 			dis.readFully(buffer);
 			dis.close();
 			return buffer;
@@ -266,120 +112,120 @@ public final class ObjectDefinition {
 		return null;
 	}
 
-	private void readValues(ByteStreamExt stream) {
+	private void readValues(ByteStreamExt buffer) {
 
 		int flag = -1;
 		do {
-			int type = stream.readUnsignedByte();
+			int type = buffer.readUnsignedByte();
 			if (type == 0)
 				break;
 			if (type == 1) {
-				int len = stream.readUnsignedByte();
+				int len = buffer.readUnsignedByte();
 				if (len > 0) {
 					if (anIntArray773 == null || lowMem) {
 						anIntArray776 = new int[len];
 						anIntArray773 = new int[len];
 						for (int k1 = 0; k1 < len; k1++) {
-							anIntArray773[k1] = stream.readUnsignedWord();
-							anIntArray776[k1] = stream.readUnsignedByte();
+							anIntArray773[k1] = buffer.readUnsignedWord();
+							anIntArray776[k1] = buffer.readUnsignedByte();
 						}
 					} else {
-						stream.currentOffset += len * 3;
+						buffer.currentOffset += len * 3;
 					}
 				}
 			} else if (type == 2)
-				name = stream.readString();
+				name = buffer.readString();
 			else if (type == 3)
-				description = stream.readBytes();
+				description = buffer.readBytes();
 			else if (type == 5) {
-				int len = stream.readUnsignedByte();
+				int len = buffer.readUnsignedByte();
 				if (len > 0) {
 					if (anIntArray773 == null || lowMem) {
 						anIntArray776 = null;
 						anIntArray773 = new int[len];
 						for (int l1 = 0; l1 < len; l1++)
-							anIntArray773[l1] = stream.readUnsignedWord();
+							anIntArray773[l1] = buffer.readUnsignedWord();
 					} else {
-						stream.currentOffset += len * 2;
+						buffer.currentOffset += len * 2;
 					}
 				}
 			} else if (type == 14)
-				objectSizeX = stream.readUnsignedByte();
+				objectSizeX = buffer.readUnsignedByte();
 			else if (type == 15)
-				objectSizeY = stream.readUnsignedByte();
+				objectSizeY = buffer.readUnsignedByte();
 			else if (type == 17)
 				aBoolean767 = false;
 			else if (type == 18)
 				aBoolean757 = false;
 			else if (type == 19)
-				hasActions = (stream.readUnsignedByte() == 1);
+				hasActions = (buffer.readUnsignedByte() == 1);
 			else if (type == 21)
 				aBoolean762 = true;
 			else if (type == 22) {
 			} else if (type == 23)
 				aBoolean764 = true;
 			else if (type == 24) {
-				anInt781 = stream.readUnsignedWord();
+				anInt781 = buffer.readUnsignedWord();
 				if (anInt781 == 65535)
 					anInt781 = -1;
 			} else if (type == 28)
-				anInt775 = stream.readUnsignedByte();
+				anInt775 = buffer.readUnsignedByte();
 			else if (type == 29)
-				stream.readSignedByte();
+				buffer.readSignedByte();
 			else if (type == 39)
-				stream.readSignedByte();
+				buffer.readSignedByte();
 			else if (type >= 30 && type < 39) {
 				if (actions == null)
 					actions = new String[5];
-				actions[type - 30] = stream.readString();
+				actions[type - 30] = buffer.readString();
 				if (actions[type - 30].equalsIgnoreCase("hidden"))
 					actions[type - 30] = null;
 			} else if (type == 40) {
-				int i1 = stream.readUnsignedByte();
+				int i1 = buffer.readUnsignedByte();
 				modifiedModelColors = new int[i1];
 				originalModelColors = new int[i1];
 				for (int i2 = 0; i2 < i1; i2++) {
-					modifiedModelColors[i2] = stream.readUnsignedWord();
-					originalModelColors[i2] = stream.readUnsignedWord();
+					modifiedModelColors[i2] = buffer.readUnsignedWord();
+					originalModelColors[i2] = buffer.readUnsignedWord();
 				}
 
 			} else if (type == 60)
-				anInt746 = stream.readUnsignedWord();
+				anInt746 = buffer.readUnsignedWord();
 			else if (type == 62) {
 			} else if (type == 64) {
 			} else if (type == 65)
-				stream.readUnsignedWord();
+				buffer.readUnsignedWord();
 			else if (type == 66)
-				stream.readUnsignedWord();
+				buffer.readUnsignedWord();
 			else if (type == 67)
-				stream.readUnsignedWord();
+				buffer.readUnsignedWord();
 			else if (type == 68)
-				anInt758 = stream.readUnsignedWord();
+				anInt758 = buffer.readUnsignedWord();
 			else if (type == 69)
-				anInt768 = stream.readUnsignedByte();
+				anInt768 = buffer.readUnsignedByte();
 			else if (type == 70)
-				stream.readSignedWord();
+				buffer.readSignedWord();
 			else if (type == 71)
-				stream.readSignedWord();
+				buffer.readSignedWord();
 			else if (type == 72)
-				stream.readSignedWord();
+				buffer.readSignedWord();
 			else if (type == 73)
 				aBoolean736 = true;
 			else if (type == 74)
 				aBoolean766 = true;
 			else if (type == 75)
-				anInt760 = stream.readUnsignedByte();
+				anInt760 = buffer.readUnsignedByte();
 			else if (type == 77) {
-				anInt774 = stream.readUnsignedWord();
+				anInt774 = buffer.readUnsignedWord();
 				if (anInt774 == 65535)
 					anInt774 = -1;
-				anInt749 = stream.readUnsignedWord();
+				anInt749 = buffer.readUnsignedWord();
 				if (anInt749 == 65535)
 					anInt749 = -1;
-				int j1 = stream.readUnsignedByte();
+				int j1 = buffer.readUnsignedByte();
 				childrenIDs = new int[j1 + 1];
 				for (int j2 = 0; j2 <= j1; j2++) {
-					childrenIDs[j2] = stream.readUnsignedWord();
+					childrenIDs[j2] = buffer.readUnsignedWord();
 					if (childrenIDs[j2] == 65535)
 						childrenIDs[j2] = -1;
 				}
@@ -417,10 +263,6 @@ public final class ObjectDefinition {
 	public int yLength() {
 		return objectSizeY;
 	}
-
-	/*
-	 * public boolean clipped() { return unwalkable; }
-	 */
 
 	public boolean aBoolean736;
 	public String name;

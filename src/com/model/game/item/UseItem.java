@@ -24,7 +24,7 @@ public class UseItem {
 	 * @param item
 	 */
 	public static void ItemonObject(Player player, int object, int objectX, int objectY, Item item) {
-		ObjectDefinition def = ObjectDefinition.getObjectDef(object);
+		ObjectDefinition def = ObjectDefinition.get(object);
 		if (!player.getInventory().playerHasItem(item.getId()))
 			return;
 		if (def.getName().toLowerCase().contains("altar") && def.actions[0].toLowerCase().contains("pray")) {

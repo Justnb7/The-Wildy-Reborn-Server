@@ -71,7 +71,7 @@ public class Cooking extends SkillTask {
 	 * @return
 	 */
 	private static boolean meetsRequirements(Player player, Cookables cookable, int object) {
-		ObjectDefinition objectDef = ObjectDefinition.getObjectDef(object);
+		ObjectDefinition objectDef = ObjectDefinition.get(object);
 		if (cookable == null) {
 			return false;
 		}

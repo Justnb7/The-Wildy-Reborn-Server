@@ -61,7 +61,7 @@ public class MapLoading {
 	}
 
 	public static void addObject(boolean beforeLoad, int objectId, int x, int y, int height, int type, int direction) {
-		ObjectDefinition def = ObjectDefinition.getObjectDef(objectId);
+		ObjectDefinition def = ObjectDefinition.get(objectId);
 
 		if (def == null) {
 			return;
@@ -153,7 +153,7 @@ public class MapLoading {
 	}
 
 	public static void removeObject(int objectId, int x, int y, int height, int type, int direction) {
-		ObjectDefinition def = ObjectDefinition.getObjectDef(objectId);
+		ObjectDefinition def = ObjectDefinition.get(objectId);
 
 		if (def == null) {
 			System.out.println("null object def: " + objectId);

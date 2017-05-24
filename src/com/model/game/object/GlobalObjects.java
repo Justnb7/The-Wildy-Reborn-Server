@@ -33,7 +33,7 @@ public class GlobalObjects {
 	 * @param object	the object being added
 	 */
 	public void add(GameObject object) {
-		updateObject(object, object.getObjectId());
+		updateObject(object, object.getId());
 		objects.add(object);
 	}
 	
@@ -46,7 +46,7 @@ public class GlobalObjects {
 	 * @param height	the height of the object 
 	 */
 	public void remove(int id, int x, int y, int height) {
-		Optional<GameObject> existing = objects.stream().filter(o -> o.getObjectId() == id && o.getX() == x 
+		Optional<GameObject> existing = objects.stream().filter(o -> o.getId() == id && o.getX() == x 
 				&& o.getY() == y && o.getHeight() == height).findFirst();
 		if (!existing.isPresent()) {
 			return;
@@ -60,7 +60,7 @@ public class GlobalObjects {
 	 * @param height	the height the object must be on to be removed
 	 */
 	public void remove(int id, int height) {
-		objects.stream().filter(o -> o.getObjectId() == id && o.getHeight() == height).forEach(this::remove);
+		objects.stream().filter(o -> o.getId() == id && o.getHeight() == height).forEach(this::remove);
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class GlobalObjects {
 	 * @return			true if the object exists, otherwise false.
 	 */
 	public boolean exists(int id, int x, int y, int height) {
-		return objects.stream().anyMatch(object -> object.getObjectId() == id && object.getX() == x && object.getY() == y && object.getHeight() == height);
+		return objects.stream().anyMatch(object -> object.getId() == id && object.getX() == x && object.getY() == y && object.getHeight() == height);
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class GlobalObjects {
 	}
 	
 	public GameObject get(int id, int x, int y, int height) {
-		Optional<GameObject> obj = objects.stream().filter(object -> object.getObjectId() == id && object.getX() == x
+		Optional<GameObject> obj = objects.stream().filter(object -> object.getId() == id && object.getX() == x
 				&& object.getY() == y && object.getHeight() == height).findFirst();
 		return obj.orElse(null);
 		
@@ -168,7 +168,7 @@ public class GlobalObjects {
 	public void updateRegionObjects(Player player) {
 		objects.stream().filter(Objects::nonNull).filter(object -> player.distanceToPoint(
 			object.getX(), object.getY()) <= 60 && object.getHeight() == player.heightLevel).forEach(object -> player.getActionSender().sendObject(
-				object.getObjectId(), object.getX(), object.getY(), object.getHeight(), object.getFace(), object.getType()));
+				object.getId(), object.getX(), object.getY(), object.getHeight(), object.getFace(), object.getType()));
 	}
 
 }

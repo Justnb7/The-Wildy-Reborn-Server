@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
+import com.model.game.object.GameObject;
 import com.model.utility.cache.Direction;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.WorldObject;
@@ -668,7 +669,7 @@ public class Region {
 	}
 
 	public static void addObject(boolean beforeLoad, int objectId, int x, int y, int height, int type, int direction) {
-		ObjectDefinition def = ObjectDefinition.getObjectDef(objectId);
+		ObjectDefinition def = ObjectDefinition.get(objectId);
 
 		if (def == null) {
 			return;
@@ -698,6 +699,17 @@ public class Region {
 			}
 		}
 	}
+	
+	/*public GameObject getGameObject(Location location, int id) {
+		for(Region r : regions) {
+			for(GameObject obj : r.getObjects()) {
+				if(obj.getPosition().equals(location) && obj.getId() == id) {
+					return obj;
+				}
+			}
+		}
+		return null;
+	}*/
 
 	public static int getClipping(int x, int y, int height) {
 		if (height > 3) {
@@ -812,14 +824,13 @@ public class Region {
 	 */
 	public static Region getRegion(int x, int y) {
 		if (regions == null) {
-			System.err.println("You haven't loading region clipping."); // thats the issue
+			System.err.println("You haven't loading region clipping.");
 			return null;
 		}
 		int regionX = x >> 3;
 		int regionY = y >> 3;
 		int regionId = (regionX / 8 << 8) + regionY / 8;
-		for (Region region : regions) {//ther we go lol it even crashes when its 1
-			// regions is null nothing to do with size w.e u were changing in npc
+		for (Region region : regions) {
 			if (region.id() == regionId) {
 				return region;
 			}

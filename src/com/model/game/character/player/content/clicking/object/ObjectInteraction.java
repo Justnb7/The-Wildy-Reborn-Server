@@ -8,6 +8,7 @@ import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.character.player.skill.woodcutting.Woodcutting;
 import com.model.game.character.player.skill.woodcutting.Woodcutting.Tree;
 import com.model.game.location.Location;
+import com.model.game.object.GameObject;
 import com.model.utility.cache.ObjectDefinition;
 
 /**
@@ -24,22 +25,23 @@ public class ObjectInteraction {
 	 * 
 	 * @param player
 	 *            The player using this option
-	 * @param position
+	 * @param location
 	 *            The position of the object
 	 * @param objectId
 	 *            The object
 	 */
-	public static void handleFirstClickAction(Player player, Location position, int objectId) {
+	public static void handleFirstClickAction(Player player, Location location, int objectId) {
+		ObjectDefinition def = ObjectDefinition.get(objectId);
+		
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[ObjectInteraction] - position: %s object: %d ", position, objectId));
+			System.out.println(String.format("[ObjectInteraction] - position: %s object: %d ", location, objectId));
 		}
 		
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
 		
 		if (tree != null) {
-			//TODO obj action idk how to do it....
-			action = new Woodcutting(player, null);
+			action = new Woodcutting(player, new GameObject(objectId, location.getX(), location.getY(), location.getZ()));
 		}
 		
 		switch(objectId) {
@@ -54,7 +56,7 @@ public class ObjectInteraction {
 			player.getActionSender().sendMessage("Coming soon...");
 			break;
 		case 23271:
-				if (position.getX() == 2996) {
+				if (location.getX() == 2996) {
 					return;
 				}
 				player.getAttributes().put("busy", true);
@@ -97,7 +99,7 @@ public class ObjectInteraction {
 			System.out.println(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
 		}
 		
-		ObjectDefinition objectDef = ObjectDefinition.getObjectDef(id);
+		ObjectDefinition objectDef = ObjectDefinition.get(id);
 		switch (objectDef.name.toLowerCase()) {
 
 		case "bank":

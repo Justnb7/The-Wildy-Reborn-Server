@@ -1,9 +1,10 @@
 package com.model.net.packet.in;
 
+import com.model.Server;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.content.clicking.object.ObjectInteraction;
 import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
+import com.model.task.impl.WalkToObjectTask;
 
 /**
  * Object option packet handler.
@@ -62,11 +63,8 @@ public class ObjectOptionPacketHandler implements PacketType {
 			return;
 		}
 		
-		//Check if we've reached destination
-		if (player.getLocation().isWithinInteractionDistance(position)) {
-			player.face(player, position);
-			ObjectInteraction.handleFirstClickAction(player, position, id);
-		}
+		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, position, id, 1));
+
 	}
 	
 	/**
@@ -87,11 +85,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 			return;
 		}
 
-		// Check if we've reached destination
-		if (player.getLocation().isWithinInteractionDistance(position)) {
-			player.face(player, position);
-			ObjectInteraction.handleSecondClickAction(player, position, id);
-		}
+		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, position, id, 2));
 	}
 	
 	/**
@@ -112,11 +106,6 @@ public class ObjectOptionPacketHandler implements PacketType {
 			return;
 		}
 		
-		//Check if we've reached destination
-		if (player.getLocation().isWithinInteractionDistance(position)) {
-			player.face(player, position);
-			ObjectInteraction.handleThirdClickAction(player, position, id);
-		}
-		
+		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, position, id, 3));
 	}
 }

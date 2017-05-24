@@ -9,7 +9,6 @@ import java.util.Optional;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
-import com.model.game.object.GameObject;
 import com.model.utility.cache.Direction;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.WorldObject;

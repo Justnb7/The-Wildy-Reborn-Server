@@ -29,21 +29,21 @@ import com.model.game.item.container.impl.RunePouch;
  * Handles saving a player's container and details into a json file.
  * 
  * @author Patrick van Elderen
- * @date 3/09/2016
+ * @date 23-5-2017
  *
  */
-public class PlayerSave {
+public class PlayerSerialization {
+	
+	
+	public static final Gson SERIALIZE = new GsonBuilder().setPrettyPrinting().create();
 	
 	/**
-	 * GSON
+	 * The save types
+	 * - player_information is used for "name, password, IP, MAC etc.."
+	 * - "Containers are based on Inventory, bank equipment etc..."
 	 */
-	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	
-	/**
-	 * The Types of saves
-	 */
-	public enum SaveTypes {
-		DETAILS,
+	public enum Type {
+		PLAYER_INFORMATION,
 		CONTAINER;
 	}
 
@@ -81,11 +81,11 @@ public class PlayerSave {
 		return false;
 	}
 	
-	public static synchronized final boolean save(Player player, SaveTypes type) {
+	public static synchronized final boolean save(Player player, Type type) {
 		try {
-			if (type == SaveTypes.DETAILS) {
+			if (type == Type.PLAYER_INFORMATION) {
 				new PlayerSaveDetail(player).parseDetails();
-			} else if (type == SaveTypes.CONTAINER) {
+			} else if (type == Type.CONTAINER) {
 				new PlayerContainer(player).parseDetails(player);
 			}
 			return true;
@@ -112,7 +112,7 @@ public class PlayerSave {
 
 				reader = new BufferedReader(new FileReader(file));
 
-				final PlayerSaveDetail details = PlayerSave.GSON.fromJson(reader, PlayerSaveDetail.class);
+				final PlayerSaveDetail details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
 				player.setUsername(details.username);
 				player.setPassword(details.password);
 				Rights right = Rights.get(details.rights);
@@ -371,7 +371,7 @@ public class PlayerSave {
 			BufferedWriter writer = null;
 			try {
 				writer = new BufferedWriter(new FileWriter("./Data/characters/details/" + username + ".json", false));
-				writer.write(PlayerSave.GSON.toJson(this));
+				writer.write(PlayerSerialization.SERIALIZE.toJson(this));
 				writer.flush();
 			} finally {
 				if (writer != null) {
@@ -400,7 +400,7 @@ public class PlayerSave {
 			
 			final BufferedReader reader = new BufferedReader(new FileReader(file));
 			try {
-				final PlayerContainer details = PlayerSave.GSON.fromJson(reader, PlayerContainer.class);
+				final PlayerContainer details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerContainer.class);
 				
 				if (details.equipment != null) {
 					for (int i = 0; i < Equipment.SIZE; i++) {
@@ -454,7 +454,7 @@ public class PlayerSave {
 			}
 			final BufferedWriter writer = new BufferedWriter(new FileWriter("./Data/characters/containers/" + player.getName() + ".json", false));
 			try {
-				writer.write(PlayerSave.GSON.toJson(this));
+				writer.write(PlayerSerialization.SERIALIZE.toJson(this));
 				writer.flush();
 			} finally {
 				writer.close();

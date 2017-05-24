@@ -60,7 +60,7 @@ import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.character.player.minigames.pest_control.PestControlRewards;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
-import com.model.game.character.player.serialize.PlayerSave;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.skill.SkillCyclesTask;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
@@ -1404,7 +1404,7 @@ public class Player extends Entity {
 		
 		try {
 			System.out.println("Loading player file for: "+this.getName());
-			PlayerSave.load(this);
+			PlayerSerialization.load(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

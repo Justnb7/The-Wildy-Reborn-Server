@@ -14,7 +14,7 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
-import com.model.game.character.player.serialize.PlayerSave;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.location.Location;
@@ -110,14 +110,14 @@ public class CommandPacketHandler implements PacketType {
     				player.getActionSender().sendMessage("You're name can only be 12 characters long.");
     				return false;
     			}
-    			if (PlayerSave.playerExists(newName)) {
+    			if (PlayerSerialization.playerExists(newName)) {
     				player.getActionSender().sendMessage("That username was already taken.");
     				return false;
     			}
     			player.setUsername(newName);
     			player.logout();
     			//PlayerSerialization.saveGame(player);
-    			PlayerSave.save(player);
+    			PlayerSerialization.save(player);
     			File old = new File("data/characters/"+oldname+".txt");
     			if (old.exists()) {
     				old.delete();
@@ -575,7 +575,7 @@ public class CommandPacketHandler implements PacketType {
 			for (Player players : World.getWorld().getPlayers()) {
 				if (players != null && players.isActive()) {
 					//PlayerSerialization.saveGame(player);
-					PlayerSave.save(player);
+					PlayerSerialization.save(player);
 				}
 			}
              player.getActionSender().sendMessage(World.getWorld().getActivePlayers() + " players have been saved!");

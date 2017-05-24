@@ -12,7 +12,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.character.player.serialize.PlayerSave;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
@@ -351,7 +351,7 @@ public class DuelSession extends MultiplayerSession {
 		
 		//Save our player
 		//PlayerSerialization.saveGame(player);
-		PlayerSave.save(player);
+		PlayerSerialization.save(player);
 		
 		//Close all open windows
 		player.getActionSender().removeAllInterfaces();

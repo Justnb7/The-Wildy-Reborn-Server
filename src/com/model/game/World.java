@@ -23,7 +23,7 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
-import com.model.game.character.player.serialize.PlayerSave;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.container.impl.Trade;
 import com.model.net.packet.out.SendFriendPacket;
 import com.model.service.Service;
@@ -316,7 +316,7 @@ public class World implements Service {
 		 * Once we're done disconnecting our player, we'll go ahead and save him
 		 */
 		//PlayerSerialization.saveGame(player);
-		PlayerSave.save(player);
+		PlayerSerialization.save(player);
 
 		/*
 		 * Remove from clan
@@ -365,7 +365,7 @@ public class World implements Service {
 						player.flushOutStream();
 						unregister(player);
 						//PlayerSerialization.saveGame(player);
-						PlayerSave.save(player);
+						PlayerSerialization.save(player);
 						System.exit(1);
 					}
 				}

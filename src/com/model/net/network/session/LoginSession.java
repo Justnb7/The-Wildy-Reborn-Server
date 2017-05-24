@@ -13,8 +13,8 @@ import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
-import com.model.game.character.player.serialize.PlayerSave;
-import com.model.game.character.player.serialize.PlayerSave.PlayerSaveDetail;
+import com.model.game.character.player.serialize.PlayerSerialization;
+import com.model.game.character.player.serialize.PlayerSerialization.PlayerSaveDetail;
 import com.model.game.sync.GameLogicService;
 import com.model.net.ConnectionHandler;
 import com.model.net.network.NetworkConstants;
@@ -136,7 +136,7 @@ public class LoginSession extends Session {
 			if (file.exists()) {
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(file));
-					final PlayerSaveDetail details = PlayerSave.GSON.fromJson(reader, PlayerSaveDetail.class);
+					final PlayerSaveDetail details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
 					name = details.user();
 					pass = details.password();
 					
@@ -151,7 +151,7 @@ public class LoginSession extends Session {
 			}
 			if (credential.getRequestType().equals("register")) {
 				System.out.println("register");
-				if (PlayerSave.playerExists(name)) {
+				if (PlayerSerialization.playerExists(name)) {
 					System.out.println("player exists");
 					if (name.equals(NameUtils.formatName(credential.getName())) || !pass.equals(credential.getPassword())) {
 						sendReturnCode(ctx.channel(), 22);

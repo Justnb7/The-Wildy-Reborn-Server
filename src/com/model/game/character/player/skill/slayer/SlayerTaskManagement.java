@@ -12,18 +12,16 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
 import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
+import com.model.game.character.player.skill.slayer.tasks.Chaeldar;
+import com.model.game.character.player.skill.slayer.tasks.Duradel;
+import com.model.game.character.player.skill.slayer.tasks.Mazchna;
 import com.model.game.character.player.skill.slayer.tasks.Nieve;
 import com.model.game.character.player.skill.slayer.tasks.Task;
 import com.model.game.character.player.skill.slayer.tasks.Turael;
 import com.model.game.character.player.skill.slayer.tasks.Vannaka;
 import com.model.game.location.Location;
-import com.model.game.character.player.skill.slayer.tasks.Chaeldar;
-import com.model.game.character.player.skill.slayer.tasks.Duradel;
-import com.model.game.character.player.skill.slayer.tasks.Mazchna;
 import com.model.utility.RandomGenerator;
 import com.model.utility.Utility;
-
-import jdk.nashorn.internal.ir.Assignment;
 
 /**
  * The class represents functionality for the slayer task.
@@ -147,7 +145,6 @@ public class SlayerTaskManagement {
 	 * @param player
 	 * @return task
 	 */
-	
 	public static Task easyTask(Player player) {
 		Task task = null;
 		int taskAmount = 13 + Utility.random(5, 10);
@@ -156,27 +153,25 @@ public class SlayerTaskManagement {
 		int total = Mazchna.getTotal();
 		ArrayList<Mazchna> array = new ArrayList<Mazchna>();
 		for (Mazchna t : Mazchna.values()) {
-			if(t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER)); {
+			if (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER)); {
 				if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
 					total = total - t.getWeight();
-					}	else {
-						
+				} else {
 					array.add(t);
-					}
+				}
+			}
 		}
-	}
 		RandomGenerator r = new RandomGenerator();
 		int random = r.exclusive(1, 100);
-			
-		for (int i =0; i < array.size(); i++) {
-			array.get(i).setPercentage((int) Math.round(((double)array.get(i).getWeight()/(double)total) * 100));
+		for (int i = 0; i < array.size(); i++) {
+			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total) * 100));
 			totalPercentage += array.get(i).getPercentage();
 		}
-		for (int i =0; i < array.size(); i++) {
+		for (int i = 0; i < array.size(); i++) {
 			currentCount += array.get(i).getPercentage();
-			if(currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
+			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
 				if (array.get(i).getId() == player.getLastSlayerTask()) {
-					task = Mazchna.values()[(int)(Math.random() * Mazchna.values().length)];
+					task = Mazchna.values()[(int) (Math.random() * Mazchna.values().length)];
 				}
 				player.setSlayerTask(array.get(i).getId());
 				player.setSlayerTaskAmount(taskAmount);
@@ -184,7 +179,6 @@ public class SlayerTaskManagement {
 				break;
 			}
 		}
-	
 		return task;
 	}
 	

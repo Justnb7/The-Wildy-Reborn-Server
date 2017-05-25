@@ -264,6 +264,18 @@ public class ActionSender {
 		return this;
 	}
 	
+	public ActionSender sendUpdateItem(int interfaceId, Item item, int slot) {
+		player.outStream.putFrameVarShort(34);
+        int offset = player.getOutStream().offset;
+        player.outStream.writeShort(interfaceId);
+        player.outStream.writeByte(slot);
+        player.outStream.writeShort(item.getId() + 1);
+        player.outStream.writeByte(255);
+        player.outStream.putInt(item.getAmount());
+        player.outStream.putFrameSizeShort(offset);
+		return this;
+	}
+	
 	public ActionSender sendUpdateItem(int frame, int item, int slot, int amount) {
 		player.outStream.putFrameVarShort(34);
         int offset = player.getOutStream().offset;

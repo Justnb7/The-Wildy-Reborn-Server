@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+import com.model.utility.Utility;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -966,6 +967,42 @@ public class Container implements Iterable<Item> {
 		}
 
 		return value;
+	}
+	
+	/**
+	 * Gets the total worth of the container using the item's high alch values.
+	 * 
+	 * @return The total container worth.
+	 */
+	public long containerHighAlchValue() {
+		long value = 0;
+		final Item[] trimmed = toNonNullArray();
+
+		if (trimmed == null) {
+			return 0;
+		}
+
+		for (final Item item : trimmed) {
+			if (value >= Long.MAX_VALUE - item.getHighAlch() * item.getAmount()) {
+				return Long.MAX_VALUE;
+			}
+
+			value += item.getHighAlch() * item.getAmount();
+		}
+
+		return value;
+	}
+	
+	/**
+	 * Gets the amount of slots taken in the container.
+	 * 
+	 * @return The amount of taken slots.
+	 * @see #getSize()
+	 * @see #getFreeSlots()
+	 * 
+	 */
+	public int getTakenSlots() {
+		return Utility.sumNonNullElements(items);
 	}
 	
 	public boolean playerHasItem(Item item) {

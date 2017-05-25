@@ -2,11 +2,13 @@ package com.model.game.character.player.content.clicking.items;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
+import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.PotionCombinating;
 import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.skill.crafting.GemCutting;
 import com.model.game.character.player.skill.crafting.Gems;
 import com.model.game.character.player.skill.firemaking.Firemaking;
+import com.model.game.character.player.skill.fletching.Fletching.ArrowTip;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -46,6 +48,30 @@ public class ItemOnItem {
 				player.getActionSender().sendMessage("You cannot combine two potions of different types.");
 			}
 			return;
+		}
+		
+		if(usedItem.getId() == 53 || withItem.getId() == 53) {
+			Item arrowTips = null;
+			if(usedItem.getId() == 53) {
+				arrowTips = withItem;
+			} else {
+				arrowTips = usedItem;
+			}
+			ArrowTip tips = ArrowTip.forId(arrowTips.getId());
+			if(tips != null) {
+				if(player.getSkills().getLevelForExperience(Skills.FLETCHING) < tips.getLevelRequired()) {
+					player.getActionSender().sendMessage("You need a Fletching level of " + tips.getLevelRequired() + " to make these arrows.");
+					return;
+				}
+				int fixedAmount = 15;
+				if(player.getInventory().add(new Item(tips.getReward(), fixedAmount))) {
+					player.getInventory().remove(new Item(tips.getId(), fixedAmount));
+					player.getInventory().remove(new Item(53, fixedAmount));
+					player.getSkills().addExperience(Skills.FLETCHING, tips.getExperience() * fixedAmount);
+					player.getActionSender().sendMessage("You attach the arrow tips to the headless arrows.");
+				}
+				return;
+			}
 		}
 		
 		if (usedItem.getId() == 1755 || withItem.getId() == 1755) {

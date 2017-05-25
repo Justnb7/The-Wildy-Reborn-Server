@@ -34,12 +34,6 @@ public abstract class ProductionAction extends Action {
 		super(entity, 0);
 	}
 	
-	public abstract boolean isSuccessfull();
-
-	public abstract String getFailProductionMessage();
-
-	public abstract Item getFailItem();
-	
 	/**
 	 * Gets the amount of cycles before the item is produced.
 	 * @return The amount of cycles before the item is produced.
@@ -151,7 +145,7 @@ public abstract class ProductionAction extends Action {
 			return;
 		}
 		for(Item item : getConsumedItems()) {
-			if(item != null && getEntity().asPlayer().getInventory().getCount(item.getId()) < item.getAmount()) {
+			if(getEntity().asPlayer().getInventory().getCount(item.getId()) < item.getAmount()) {
 				getEntity().playAnimation(Animation.create(-1));
 				this.stop();
 				return;
@@ -161,66 +155,56 @@ public abstract class ProductionAction extends Action {
 			this.stop();
 			return;
 		}
-
-		final Animation anim = getAnimation();
-		final Graphic graphic = getGraphic();
 		if(!started) {
 			started = true;
-			if(anim != null) {
-				getEntity().playAnimation(anim);
+			if(getAnimation() != null) {
+				getEntity().playAnimation(getAnimation());
 			}
-			if(graphic != null) {
-				getEntity().playGraphics(graphic);
+			if(getGraphic() != null) {
+				getEntity().playGraphics(getGraphic());
 			}
 			productionCount = getProductionCount();
 			cycleCount = getCycleCount();
 			return;
 		}
-
-        if(anim != null && cycleCount == 0 || (anim != null && cycleCount == getCycleCount() && getProductionCount() != productionCount)) {
-            getEntity().playAnimation(getAnimation());
-        }
-		if(graphic != null && cycleCount == 0 || (graphic != null && cycleCount == getCycleCount() && getProductionCount() != productionCount)) {
-			getEntity().playGraphics(graphic);
+		
+		if(getAnimation() != null) {
+			getEntity().playAnimation(getAnimation());
 		}
-
+		if(getGraphic() != null) {
+			getEntity().playGraphics(getGraphic());
+		}
+		
 		if(cycleCount > 1) {
 			cycleCount--;
 			return;
 		}
-
+		
 		cycleCount = getCycleCount();
-
+		
 		productionCount--;
-
-		if (isSuccessfull()) {
-			getEntity().getActionSender().sendMessage(getSuccessfulProductionMessage());
-			if (getRewards() != null) {
-				for (Item item : getRewards()) {
-					getEntity().asPlayer().getInventory().add(item);
-				}
-			}
-			getEntity().asPlayer().getSkills().addExperience(getSkill(), getExperience());
-		} else {
-			getEntity().getActionSender().sendMessage(getFailProductionMessage());
-			getEntity().asPlayer().getInventory().add(getFailItem());
+		
+		getEntity().getActionSender().sendMessage(getSuccessfulProductionMessage());
+		for(Item item : getConsumedItems()) {
+			getEntity().asPlayer().getInventory().remove(item);
 		}
+		for(Item item : getRewards()) {
+			getEntity().asPlayer().getInventory().add(item);
+		}
+		getEntity().asPlayer().getSkills().addExperience(getSkill(), getExperience());
+		
 		if(productionCount < 1) {
 			getEntity().playAnimation(Animation.create(-1));
-			onSuccess();
 			this.stop();
+			return;
 		}
 		for(Item item : getConsumedItems()) {
-			if(item != null && getEntity().asPlayer().getInventory().getCount(item.getId()) < item.getAmount()) {
+			if(getEntity().asPlayer().getInventory().getCount(item.getId()) < item.getAmount()) {
 				getEntity().playAnimation(Animation.create(-1));
 				this.stop();
 				return;
 			}
 		}
-	}
-
-	public void onSuccess() {
-
 	}
 
 }

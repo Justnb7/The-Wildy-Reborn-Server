@@ -485,7 +485,7 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-
+	
 	public ActionSender sendItemsOnInterface(int widget, Item[] container, int size) {
 		if (player.getOutStream() != null && player != null) {
 			player.getOutStream().putFrameVarShort(53);

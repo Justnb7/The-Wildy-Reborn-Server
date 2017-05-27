@@ -35,7 +35,7 @@ public final class NPCMovementTask extends ScheduledTask {
 			if (npc == null) {
 				continue;
 			}
-			if (!npc.isDead && npc.walkingHome) {
+			if (!npc.isDead() && npc.walkingHome) {
 				npc.resetFace();
 				System.out.println(npc.getDefinition().getName());
 				npc.targetId = 0;

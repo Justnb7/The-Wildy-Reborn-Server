@@ -53,7 +53,7 @@ public class NpcVsPlayerCombat {
 		}
 
 		// Call code to attack our target if we're alive
-		if (!npc.isDead && !npc.walkingHome && npc.targetId > 0) {
+		if (!npc.isDead() && !npc.walkingHome && npc.targetId > 0) {
 			Player player = World.getWorld().getPlayers().get(npc.targetId);
 
 			if (npc.followTarget != player)
@@ -83,7 +83,7 @@ public class NpcVsPlayerCombat {
 	 */
 	public static void attackPlayer(Player player, NPC npc) {
 		if (npc != null) {
-			if (npc.isDead) {
+			if (npc.isDead()) {
 				return;
 			}
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
@@ -137,7 +137,7 @@ public class NpcVsPlayerCombat {
 	 * @return If the npc can attack the player
 	 */
 	private static boolean validateAttack(Player player, NPC npc) {
-		if (npc.isDead || player.isDead()) {
+		if (npc.isDead() || player.isDead()) {
 			return false;
 		}
 		
@@ -211,7 +211,7 @@ public class NpcVsPlayerCombat {
 
 			Player player = World.getWorld().getPlayers().get(npc.oldIndex);
 
-			if (npc.isDead || player == null || player.isDead()) {
+			if (npc.isDead() || player == null || player.isDead()) {
 				return;
 			}
 			// Autoretal

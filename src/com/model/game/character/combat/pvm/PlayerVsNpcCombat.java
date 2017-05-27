@@ -127,7 +127,7 @@ public class PlayerVsNpcCombat {
 	}
 
 	public static boolean canAttackNpc(Player player, NPC npc) {
-		if (npc.isDead || npc.getMaxHitpoints() <= 0 || player.isDead()) {
+		if (npc.isDead() || npc.getMaxHitpoints() <= 0 || player.isDead()) {
 			player.getCombatState().reset();
 			return false;
 		}

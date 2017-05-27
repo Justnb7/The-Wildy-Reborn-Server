@@ -149,8 +149,8 @@ public class PestControl {
 					player.getActionSender().sendString("@red@Error", 21111 + i);
 					continue;
 				}
-				String color = npc.isDead ? "@red@" : npc.getHitpoints() > 0 && npc.getHitpoints() < 150 ? "@or1@" : "@gre@";
-				int hp = npc.isDead ? 0 : npc.getHitpoints();
+				String color = npc.isDead() ? "@red@" : npc.getHitpoints() > 0 && npc.getHitpoints() < 150 ? "@or1@" : "@gre@";
+				int hp = npc.isDead() ? 0 : npc.getHitpoints();
 				player.getActionSender().sendString(color + hp, 21111 + i);
 				
 				//Remove the config when damage was done to the portal
@@ -294,7 +294,7 @@ public class PestControl {
 		int total = 0;
 		for (int i = 0; i < NPC_DATA.length; i++) {
 			NPC npc = getNpc(NPC_DATA[i][0], NPC_DATA[i][1], NPC_DATA[i][2]);
-			if (npc == null || npc.isDead) {
+			if (npc == null || npc.isDead()) {
 				continue;
 			}
 			total += npc.getHitpoints();
@@ -530,7 +530,7 @@ public class PestControl {
 		for (int i = 0; i < NPC_DATA.length; i++) {
 			NPC npc = getNpc(NPC_DATA[i][0]);
 			if (npc != null) {
-				npc.isDead = true;
+				npc.setDead(true);
 				npc = null;
 			}
 		}

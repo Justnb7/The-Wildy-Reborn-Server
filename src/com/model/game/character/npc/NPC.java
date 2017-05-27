@@ -182,7 +182,7 @@ public class NPC extends Entity {
 	 */
 	public int targetId;
 	
-	public boolean noDeathEmote, isDead, walkingHome, underAttack, randomWalk;
+	public boolean noDeathEmote, walkingHome, underAttack, randomWalk;
 
 	public boolean aggressive;
 	
@@ -224,7 +224,7 @@ public class NPC extends Entity {
 			setLocation(spawn);
 		npcId = id;
 		
-		isDead = false;
+		setDead(false);
 		randomWalk = true;
 		
 		NPCDefinitions definition = NPCDefinitions.get(id);
@@ -506,7 +506,7 @@ public class NPC extends Entity {
 			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);
 			// none yet again duplicate INTs by PI
 			
-			if ((this.getHitpoints() > 0 && !isDead) || isPet) {
+			if ((this.getHitpoints() > 0 && !isDead()) || isPet) {
 				
 				super.frozen_process();
 
@@ -770,9 +770,6 @@ public class NPC extends Entity {
 	}
 
 	public void retaliate(Entity attacker) {
-
-		// if (NPCCombatData.switchesAttackers(victim)) // TODO whats this 1 for
-
 		// Set npc's target to the person that attacked us
 		this.targetId = attacker.getIndex();
 		faceEntity(attacker);

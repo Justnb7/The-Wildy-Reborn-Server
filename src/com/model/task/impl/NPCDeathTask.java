@@ -47,7 +47,7 @@ public class NPCDeathTask extends ScheduledTask {
     public NPCDeathTask(NPC npc) {
         super(1, true);
         attach(npc);
-        npc.isDead = true;
+        npc.setDead(true);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class NPCDeathTask extends ScheduledTask {
             		for (NPC n : killer.getKraken().npcs) {
             			if (n.getId() == 5535) {
             				// kill off tents
-            				n.isDead = true;
+            				n.setDead(true);
             				Server.getTaskScheduler().schedule(new NPCDeathTask(n));
             			}
             		}
@@ -156,7 +156,7 @@ public class NPCDeathTask extends ScheduledTask {
         
         npc.getDamageMap().resetDealtDamage();
 
-        if (npc.getId() == 492 && npc.isDead) {
+        if (npc.getId() == 492 && npc.isDead()) {
         	npc.requestTransform(493);
         	npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
         }
@@ -178,17 +178,17 @@ public class NPCDeathTask extends ScheduledTask {
         } else {
             npc.killedBy = -1;
         }
-        if (npc.getId() == 6618 && npc.isDead) {
+        if (npc.getId() == 6618 && npc.isDead()) {
         	npc.sendForcedMessage("Ow!");
         }
-        if (npc.getId() == 6615 && npc.isDead) {
+        if (npc.getId() == 6615 && npc.isDead()) {
         	npc.spawnedScorpiaMinions = false;
         }
         if (npc.getId() == 6611 && npc.transformId != 6612) {
 			npc.requestTransform(6612);
 			npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
 			npc.setHitpoints(255);
-			npc.isDead = false;
+			npc.setDead(false);
 			npc.spawnedVetionMinions = false;
 			npc.sendForcedMessage("Do it again!!");
 			stop();
@@ -258,7 +258,7 @@ public class NPCDeathTask extends ScheduledTask {
     public static void respawn(NPC npc) {
         npc.killedBy = -1;
         npc.setVisible(true);
-        npc.isDead = false;
+        npc.setDead(false);
         npc.setOnTile(npc.absX, npc.absY, npc.heightLevel);
     }
     

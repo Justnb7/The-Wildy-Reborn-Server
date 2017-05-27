@@ -131,7 +131,7 @@ public enum GroupRespawn {
 			//System.out.println("boss found for "+npc+" : "+boss);
 			// If the boss isn't dead we just respawn 60s later as usual.
 			// Otherwise, my nigga bandos graddor jr will respawn me.
-			if (boss.isDead) {
+			if (boss.isDead()) {
 				return true;
 			}
 		}
@@ -144,7 +144,7 @@ public enum GroupRespawn {
 		if (minions != null) {
 			minions.stream().forEach(min -> {
 				//System.out.println("minion "+min+" beglongs to "+npc);
-				if (min.isDead) {
+				if (min.isDead()) {
 					NPCDeathTask.respawn(min);
 				}
 			});

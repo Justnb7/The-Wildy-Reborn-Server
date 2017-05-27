@@ -11,9 +11,8 @@ import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
 
 /**
- * A pet system that uses the Npc class rather than loops
+ * The class which represents functionality for the pet system.
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
- *
  */
 public class Pet extends NPC {
 

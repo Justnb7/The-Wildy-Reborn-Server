@@ -503,7 +503,7 @@ public class NPC extends Entity {
 	@Override
 	public void process() {
 		try {
-			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);//whats the pointsin this
+			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);
 			// none yet again duplicate INTs by PI
 			
 			if ((this.getHitpoints() > 0 && !isDead) || isPet) {

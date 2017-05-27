@@ -242,6 +242,12 @@ public class Container implements Iterable<Item> {
         }
         return true;
     }
+    
+	public void remove(Item[] items) {
+		for (Item i : items) {
+			remove(i);
+		}
+	}
 
     /**
      * Attempts to remove {@code item} from {@code slot} in this container.

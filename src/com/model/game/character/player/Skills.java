@@ -8,6 +8,7 @@ import com.model.game.Constants;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.skill.prayer.Prayer;
 import com.model.net.packet.out.SendChatBoxInterfacePacket;
+import com.model.utility.Utility;
 
 /**
  * Represents a player's skill and experience levels.
@@ -546,6 +547,19 @@ public class Skills {
 		}
 		levels[skill] = levels[skill] + amount;
 		player.getActionSender().sendSkillLevel(skill);
+	}
+	
+	public static final boolean isSuccess(Player p, int skillId, int levelRequired) {
+		double level = p.getSkills().getLevels()[skillId];
+		double req = levelRequired;
+		double successChance = Math.ceil((level * 50.0D - req * 15.0D) / req / 3.0D * 4.0D);
+		int roll = Utility.random(99);
+
+		if (successChance >= roll) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public int[] getLevels() {

@@ -1075,4 +1075,19 @@ public class Utility {
 		return ((int) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
 	}
 
+	/**
+	 * A or an
+	 * 
+	 * @param nextWord
+	 * @return
+	 */
+	public static String getAOrAn(String nextWord) {
+		String s = "a";
+		char c = nextWord.toUpperCase().charAt(0);
+		if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
+			s = "an";
+		}
+		return s;
+	}
+
 }

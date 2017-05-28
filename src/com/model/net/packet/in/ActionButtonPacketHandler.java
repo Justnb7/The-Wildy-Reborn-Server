@@ -23,6 +23,7 @@ import com.model.game.character.player.content.questtab.QuestTabPages;
 import com.model.game.character.player.content.teleport.TeleportHandler;
 import com.model.game.character.player.content.teleport.TeleportHandler.TeleportationTypes;
 import com.model.game.character.player.content.teleport.Teleports;
+import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.Trade;
@@ -109,7 +110,9 @@ public class ActionButtonPacketHandler implements PacketType {
 		if (ClanManager.handleButtons(player, button)) {
 			return;
 		}
-
+		if (Fletching.SINGLETON.clickButton(player, button)) {
+			return;
+		}
 		player.getPestControlRewards().click(button);
 		/*Obelisks.chooseTeleport(player, button);*/
 		PrayerHandler.togglePrayer(player, button);

@@ -1030,5 +1030,48 @@ public class Container implements Iterable<Item> {
 			return false;
 		return amount(id) == amount;
 	}
+	
+	public boolean isStackable(int id) {
+		return (policy == ItemContainerPolicy.STACK_ALWAYS) || ((Item.getDefinition(id) != null) && (Item.getDefinition(id).isStackable()) && (policy == ItemContainerPolicy.NORMAL));
+	}
+	
+	public boolean hasAllItems(Item... toCheck) {
+		Item[] checkClone = new Item[toCheck.length];
+		
+		for (int i = 0; i < checkClone.length; i++) {
+			checkClone[i] = new Item(toCheck[i]);
+		}
+		
+		for (Item check : checkClone) {
+			if (check == null) {
+				continue;
+			}
+			
+			boolean stackable = isStackable(check.getId());
+	
+			for (Item item : items) {
+				if (item != null && item.getId() == check.getId() && check.getAmount() > 0) {
+					if (stackable) {
+						if (item.getAmount() >= check.getAmount()) {
+							check.remove(item.getAmount());
+						}
+					} else if (item.getAmount() > 0) {
+						check.remove(1);
+					}
+				}
+			}
+		}
+		
+		for (Item item : checkClone) {
+			if (item.getAmount() > 0) {
+				checkClone = null;
+				return false;
+			}
+		}
+		
+		checkClone = null;
+
+		return true;
+	}
     
 }

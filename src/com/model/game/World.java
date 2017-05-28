@@ -461,6 +461,20 @@ public class World implements Service {
 											// randomized iteration order.
 		return randomized;
 	}
+	
+	/**
+	 * The servers cycles?
+	 */
+	private static long cycles = 0L;
+	
+	/**
+	 * Gets the cycles
+	 * 
+	 * @return
+	 */
+	public static long getCycles() {
+		return cycles;
+	}
 
 	/**
 	 * Gets the list of players registered in the game world

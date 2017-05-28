@@ -10,6 +10,7 @@ import com.model.game.character.player.skill.crafting.Gems;
 import com.model.game.character.player.skill.firemaking.Firemaking;
 import com.model.game.character.player.skill.fletching.ArrowTip;
 import com.model.game.character.player.skill.fletching.DartTip;
+import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -40,6 +41,10 @@ public class ItemOnItem {
 				//player.getInventory().remove(new Item(withItem.getId(), amount));
 				player.getActionSender().sendMessage("Whee... "+ItemDefinition.forId(withItem.getId()).getName()+" All gone!");
 			}
+		}
+		
+		if (Fletching.SINGLETON.itemOnItem(player, usedItem, withItem)) {
+			return;
 		}
 		
 		if (PotionCombinating.get().isPotion(usedItem) && PotionCombinating.get().isPotion(withItem)) {

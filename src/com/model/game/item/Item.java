@@ -73,13 +73,18 @@ public class Item {
 
 	public int amount;
 
-	public Item(int id) {
-		this(id, 1);
+	public Item(int id, int amount) {
+		this.id = id;
+		this.amount = amount;
+	}
+	
+	public Item(Item item) {
+		id = ((short) item.getId());
+		amount = item.getAmount();
 	}
 
-	public Item(int id, int count) {
-		this.id = id;
-		this.amount = count;
+	public Item(int id) {
+		this(id, 1);
 	}
 
 	@Override
@@ -126,6 +131,10 @@ public class Item {
         this.id = id;
     }
 
+    public void remove(int amount) {
+		this.amount -= amount;
+	}
+    
 	public void setAmount(int i) {
 		this.amount = i;
 	}
@@ -202,6 +211,10 @@ public class Item {
 	}
 
 	public ItemDefinition getDefinition() {
+		return ItemDefinition.forId(id);
+	}
+	
+	public static ItemDefinition getDefinition(int id) {
 		return ItemDefinition.forId(id);
 	}
 

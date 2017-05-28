@@ -12,6 +12,12 @@ import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
+import com.model.game.character.player.skill.fletching.fletchable.impl.Arrow;
+import com.model.game.character.player.skill.fletching.fletchable.impl.Bolt;
+import com.model.game.character.player.skill.fletching.fletchable.impl.Carvable;
+import com.model.game.character.player.skill.fletching.fletchable.impl.Crossbow;
+import com.model.game.character.player.skill.fletching.fletchable.impl.Featherable;
+import com.model.game.character.player.skill.fletching.fletchable.impl.Stringable;
 import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
@@ -49,6 +55,12 @@ public class GameDataLoader implements Runnable {
 			MapLoading.load();
 			CollisionMap.load("Data/data/collisiondata.dat");
 			// Everything else..
+			Arrow.declare();
+			Bolt.declare();
+			Carvable.declare();
+			Crossbow.declare();
+			Featherable.declare();
+			Stringable.declare();
 			Server.npcHandler.declare();
 			Arrays.fill(NPCDefinitions.getDefinitions(), null);
 	        new NPCDefinitionLoader().load();

@@ -8,9 +8,8 @@ import com.model.game.character.player.content.rewards.CrystalChest;
 import com.model.game.character.player.skill.crafting.GemCutting;
 import com.model.game.character.player.skill.crafting.Gems;
 import com.model.game.character.player.skill.firemaking.Firemaking;
-import com.model.game.character.player.skill.fletching.ArrowTip;
-import com.model.game.character.player.skill.fletching.DartTip;
 import com.model.game.character.player.skill.fletching.Fletching;
+import com.model.game.character.player.skill.fletching.fletchable.impl.Darts;
 import com.model.game.item.Item;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -63,7 +62,7 @@ public class ItemOnItem {
 			} else {
 				dartTips = usedItem;
 			}
-			DartTip tips = DartTip.get(dartTips.getId());
+			Darts tips = Darts.get(dartTips.getId());
 			
 			if(tips != null) {
 				if(player.getSkills().getLevelForExperience(Skills.FLETCHING) < tips.getLevelRequired()) {
@@ -76,30 +75,6 @@ public class ItemOnItem {
 					player.getInventory().remove(new Item(314, fixedAmount));
 					player.getSkills().addExperience(Skills.FLETCHING, tips.getExperience() * fixedAmount);
 					player.getActionSender().sendMessage("You attach the darts tip with the feathers.");
-				}
-				return;
-			}
-		}
-		
-		if(usedItem.getId() == 53 || withItem.getId() == 53) {
-			Item arrowTips = null;
-			if(usedItem.getId() == 53) {
-				arrowTips = withItem;
-			} else {
-				arrowTips = usedItem;
-			}
-			ArrowTip tips = ArrowTip.forId(arrowTips.getId());
-			if(tips != null) {
-				if(player.getSkills().getLevelForExperience(Skills.FLETCHING) < tips.getLevelRequired()) {
-					player.getActionSender().sendMessage("You need a Fletching level of " + tips.getLevelRequired() + " to make these arrows.");
-					return;
-				}
-				int fixedAmount = player.getInventory().playerHasItem(tips.getId(), 15) ? 15 : player.getInventory().getCount(tips.getId());
-				if(player.getInventory().add(new Item(tips.getReward(), fixedAmount))) {
-					player.getInventory().remove(new Item(tips.getId(), fixedAmount));
-					player.getInventory().remove(new Item(53, fixedAmount));
-					player.getSkills().addExperience(Skills.FLETCHING, tips.getExperience() * fixedAmount);
-					player.getActionSender().sendMessage("You attach the arrow tips to the headless arrows.");
 				}
 				return;
 			}

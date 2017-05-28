@@ -1,9 +1,9 @@
-package com.model.game.character.player.skill.fletching;
+package com.model.game.character.player.skill.fletching.fletchable.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public enum DartTip {
+public enum Darts {
 	
 	BRONZE(819, 806, 1, 1.8),
 	IRON(820, 807, 22, 3.8),
@@ -36,7 +36,7 @@ public enum DartTip {
 	/**
 	 * A map of item ids to dart tips.
 	 */
-	private final static Map<Integer, DartTip> tips = new HashMap<Integer, DartTip>();
+	private final static Map<Integer, Darts> tips = new HashMap<Integer, Darts>();
 	
 	/**
 	 * Gets an dart tip by an item id.
@@ -46,7 +46,7 @@ public enum DartTip {
 	 * @return The DartTip, or <code>null</code> if the object is not a dart
 	 *         tip.
 	 */
-	public static DartTip get(int item) {
+	public static Darts get(int item) {
 		return tips.get(item);
 	}
 	
@@ -54,7 +54,7 @@ public enum DartTip {
 	 * Populates the log map.
 	 */
 	static {
-		for (DartTip tip : DartTip.values()) {
+		for (Darts tip : Darts.values()) {
 			tips.put(tip.dartTip, tip);
 		}
 	}
@@ -71,7 +71,7 @@ public enum DartTip {
 	 * @param exp
 	 *            The experience we gain
 	 */
-	private DartTip(int dartTip, int reward, int requirement, double exp) {
+	private Darts(int dartTip, int reward, int requirement, double exp) {
 		this.dartTip = dartTip;
 		this.dart = reward;
 		this.requirement = requirement;

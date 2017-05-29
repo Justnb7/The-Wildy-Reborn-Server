@@ -88,6 +88,7 @@ public class WalkToObjectTask extends ScheduledTask {
 				}
 				@Override
 				public boolean reached() {
+					stop();
 					return player.distanceToPoint(loc.getX(), loc.getY()) < 2;
 				}
 			});

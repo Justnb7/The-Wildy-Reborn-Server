@@ -412,13 +412,13 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.setWithdrawAsNote(false);
 			break;
 			
-		case 31194:
+		/*case 31194:
 			player.setInsertItem(true);
 			break;
 			
 		case 31195:
 			player.setInsertItem(false);
-			break;
+			break;*/
 
 		case 39178:
 			player.playAnimation(Animation.create(65535));

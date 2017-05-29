@@ -607,7 +607,7 @@ public class Container implements Iterable<Item> {
      */
     public void set(int slot, Item item) {
         items[slot] = item;
-        System.out.println("["+slot+"]="+item);
+        //System.out.println("["+slot+"]="+item);
     }
 
     /**

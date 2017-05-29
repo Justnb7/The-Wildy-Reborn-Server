@@ -328,7 +328,6 @@ public class SlayerInterface {
 	public boolean controlPanel(Player player, int buttonId) {
 		ButtonData button = ButtonData.buttonMap.get(buttonId);
 		if (button == null) {
-			player.debug("button null in control panel");
 			return false;
 		}
 		player.getActionSender().sendString("Reward Points: " + player.getSlayerPoints(), 23014);

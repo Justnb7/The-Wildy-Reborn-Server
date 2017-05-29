@@ -25,16 +25,13 @@ public enum Fletching {
 	private final HashMap<Integer, Fletchable> FLETCHABLES = new HashMap<>();
 
 	public boolean itemOnItem(Player player, Item use, Item with) {
-		player.debug("yaya toure");
 		if (Log.getLogById(use.getId()) != null && Log.getLogById(with.getId()) != null) {
-			player.debug("neenee toure");
 			return false;
 		}
 
 		final Fletchable fletchable = getFletchable(use.getId(), with.getId());
 
 		if (fletchable == null) {
-			player.debug("neenee2 toure");
 			return false;
 		}
 
@@ -290,13 +287,14 @@ public enum Fletching {
 			return true;
 		}
 
-		Server.getTaskScheduler().schedule(new ScheduledTask(player, 1, true, Walkable.WALKABLE, Stackable.NON_STACKABLE) {
+		Server.getTaskScheduler().schedule(new ScheduledTask(player, 1, false, Walkable.WALKABLE, Stackable.NON_STACKABLE) {
 			private int iterations = 0;
 
 			@Override
 			public void execute() {
-
+				player.debug("enter task");
 				player.playAnimation(Animation.create(fletchable.getAnimation()));
+				player.debug("anim was sent: "+fletchable.getAnimation());
 				player.getSkills().addExperience(Skills.FLETCHING, item.getExperience());
 				player.getInventory().remove(fletchable.getIngediants());
 				player.getInventory().add(item.getProduct());
@@ -319,7 +317,7 @@ public enum Fletching {
 
 			@Override
 			public void onStop() {
-				player.playAnimation(Animation.create(65535));
+				//player.playAnimation(Animation.create(65535));
 			}
 		});
 

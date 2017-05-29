@@ -101,12 +101,12 @@ public class WithdrawActionsPacketHandler implements PacketType {
             break;
 			
 		case 5064:
-			player.getBank().depositFromInventory(slot, id, 1);
-			break;
-			
-		case 5382:
-			player.getBank().withdraw(slot, id, 1, true);
-			break;
+            player.getBank().depositFromInventory(slot, 1);
+            break;
+            
+        case 5382:
+            player.getBank().withdraw(slot, 1, true);
+            break;
 
 		case 3900:
 			Shop.SHOPS.get(player.getOpenShop()).sendPurchasePrice(player, new Item(item.getId()));
@@ -200,10 +200,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-            player.getBank().depositFromInventory(slot, id, 5);
+            player.getBank().depositFromInventory(slot, 5);
             break;
+            
         case 5382:
-        	player.getBank().withdraw(slot, id, 5, true);
+            player.getBank().withdraw(slot, 5, true);
             break;
 			
 		case Trade.PLAYER_INVENTORY_INTERFACE:
@@ -292,13 +293,13 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
 				return;
 			} else {
-				player.getBank().depositFromInventory(slot, id, 10);
+				player.getBank().depositFromInventory(slot, 10);
 			}
 			break;
 
 		case 5382:
-			player.getBank().withdraw(slot, id, 10, true);
-			break;
+            player.getBank().withdraw(slot, 10, true);
+            break;
 
 		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
@@ -378,17 +379,19 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-            player.getBank().depositFromInventory(slot, id, player.getInventory().amount(player.getInventory().getId(slot)));
+            player.getBank().depositFromInventory(slot, player.getInventory().amount(player.getInventory().getId(slot)));
             break;
 
         case 5382:
+            amount = 0;
             if (player.isWithdrawAsNote()) {
-                amount = player.getBank().amount(item.getId());
+                amount = player.getBank().amount(id);
             } else {
-                Item itemWithdrew = new Item(item.getId(), 1);
-                amount = ItemDefinition.DEFINITIONS[itemWithdrew.getId()].isStackable() ? player.getBank().amount(item.getId()) : 28;
+                Item itemWithdrew = new Item(id, 1);
+                amount = ItemDefinition.DEFINITIONS[itemWithdrew.getId()].isStackable() ? player.getBank().amount(id) : 28;
             }
-            player.getBank().withdraw(slot, id, amount, true);
+
+            player.getBank().withdraw(slot, amount, true);
             break;
 			
 		case Trade.PLAYER_INVENTORY_INTERFACE:

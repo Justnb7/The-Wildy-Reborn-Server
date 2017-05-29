@@ -110,10 +110,10 @@ public class InterfaceState {
 		try {
 			switch(enterAmountInterfaceId) {
 			case Bank.PLAYER_INVENTORY_INTERFACE:
-				player.getBank().depositFromInventory(enterAmountSlot, enterAmountId, amount);
+				player.getBank().depositFromInventory(enterAmountId, amount);
 				break;
 			case Bank.BANK_INVENTORY_INTERFACE:
-				player.getBank().withdraw(enterAmountSlot, enterAmountId, amount, true);
+				player.getBank().withdraw(enterAmountId, amount, true);
 				break;
 			case Trade.PLAYER_INVENTORY_INTERFACE:
 				Trade.offerItem(player, enterAmountId, enterAmountSlot, amount);

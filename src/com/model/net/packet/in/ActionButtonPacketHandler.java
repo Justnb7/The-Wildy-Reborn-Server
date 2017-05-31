@@ -381,21 +381,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			}
 			break;
 
-		case 4169: // god spell charge
-			player.usingMagic = true;
-			if (player.getCombatState().checkMagicReqs(48)) {
-				if (System.currentTimeMillis() - player.godSpellDelay < 300000L) {
-					player.getActionSender().sendMessage("You still feel the charge in your body!");
-				} else {
-					player.godSpellDelay = System.currentTimeMillis();
-					player.getActionSender().sendMessage("You feel charged with a magical power!");
-					player.playGraphics(Graphic.create(player.MAGIC_SPELLS[48][3], 0, 0));
-					player.playAnimation(Animation.create(player.MAGIC_SPELLS[48][2]));
-					player.usingMagic = false;
-				}
-			}
-			break;
-
 		case 9154:
 			player.logout();
 			break;
@@ -774,10 +759,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		}
 	}
 
-	private final void handleDestroyItem(Player player) {
+	private void handleDestroyItem(Player player) {
 		if (player.getDestroyItem() != -1) {
-			if (player.getInventory().playerHasItem(player.getDestroyItem())) {
-				player.getInventory().remove(new Item(player.getDestroyItem()));
+			Item item = player.getInventory().get(player.getDestroyItem());
+			if (item != null) {
+				player.getInventory().remove(item);
 				player.setDestroyItem(-1);
 				player.getActionSender().removeAllInterfaces();
 			}

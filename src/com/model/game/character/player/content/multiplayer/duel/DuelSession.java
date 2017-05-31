@@ -60,8 +60,8 @@ public class DuelSession extends MultiplayerSession {
 			items.get(winner.get()).addAll(items.get(getOther(winner.get())));
 			if (items.get(winner.get()).size() > 0) {
 				for (GameItem item : items.get(winner.get())) {
-					long totalSum = (long) winner.get().getInventory().amount(item.id) + item.amount;
-					if (winner.get().getInventory().remaining() == 0 || winner.get().getInventory().playerHasItem(item.id) && totalSum > Integer.MAX_VALUE) {
+					long totalSum = (long) winner.get().getInventory().getAmount(item.id) + item.amount;
+					if (winner.get().getInventory().getFreeSlots() == 0 || winner.get().getInventory().contains(item.id) && totalSum > Integer.MAX_VALUE) {
 						//TODO sent item to bank or drop on floor
 						//winner.get().getBank().sendItemToAnyTabOrDrop(new BankItem(item.id, item.amount), Constants.DUELING_RESPAWN_X + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)), Constants.DUELING_RESPAWN_Y + (Utility.exclusiveRandom(Constants.RANDOM_DUELING_RESPAWN)));
 					} else {
@@ -113,12 +113,12 @@ public class DuelSession extends MultiplayerSession {
 				player.getActionSender().sendString("A rule was changed in recently, you cannot accept yet.", 6684);
 				return;
 			}
-			if (recipient.getInventory().remaining() < getItems(player).size()) {
+			if (recipient.getInventory().getFreeSlots() < getItems(player).size()) {
 				player.getActionSender().sendString("You have offered more items than " + recipient.getName() + " has free space.", 6684);
 				recipient.getActionSender().sendString("You do not have enough inventory space to continue.", 6684);
 				return;
 			}
-			if (recipient.getInventory().remaining() < getDisabledEquipmentCount(recipient)) {
+			if (recipient.getInventory().getFreeSlots() < getDisabledEquipmentCount(recipient)) {
 				player.getActionSender().sendString("Player doesn't have enough space to unequip the disabled items.", 6684);
 				recipient.getActionSender().sendString("Not enough space to remove the disabled equipped items.", 6684);
 				return;
@@ -213,7 +213,7 @@ public class DuelSession extends MultiplayerSession {
 		if (stage.getStage() == MultiplayerSessionStage.OFFER_ITEMS) {
 			for (Player player : players) {
 				Player recipient = getOther(player);
-				player.getActionSender().sendUpdateItems(3322, player.getInventory().container());
+				player.getActionSender().sendUpdateItems(3322, player.getInventory().toArray());
 				refreshItemContainer(player, player, 6669);
 				refreshItemContainer(player, player, 6670);
 				player.getActionSender().sendString("Dueling with: " + recipient.getName() + " (level-" + recipient.combatLevel + ")", 6671);
@@ -224,7 +224,7 @@ public class DuelSession extends MultiplayerSession {
 		} else if (stage.getStage() == MultiplayerSessionStage.CONFIRM_DECISION) {
 			for (Player player : players) {
 				Player recipient = getOther(player);
-				player.getActionSender().sendUpdateItems(3214, player.getInventory().container());
+				player.getActionSender().sendUpdateItems(3214, player.getInventory().toArray());
 				StringBuilder itemList = new StringBuilder();
 				List<GameItem> items = getItems(player);
 				for (GameItem item : items) {
@@ -264,7 +264,7 @@ public class DuelSession extends MultiplayerSession {
 	public void updateOfferComponents() {
 		for (Player player : items.keySet()) {
 			Player recipient = getOther(player);
-			player.getActionSender().sendUpdateItems(3322, player.getInventory().container());
+			player.getActionSender().sendUpdateItems(3322, player.getInventory().toArray());
 			refreshItemContainer(player, player, 6669);
 			refreshItemContainer(player, getOther(player), 6670);
 			player.getActionSender().sendString("", 6684);

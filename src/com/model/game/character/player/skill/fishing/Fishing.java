@@ -83,11 +83,11 @@ public class Fishing extends SkillTask {
 			player.getActionSender().sendMessage("You need a fishing level of " + data.getLevelRequired() + " to fish here.");
 			return false;
 		}
-		if (data.isBaitRequired() && !player.getInventory().playerHasItem(313)) {
+		if (data.isBaitRequired() && !player.getInventory().contains(313)) {
 			player.getActionSender().sendMessage("You need some fishing bait to fish here.");
 			return false;
 		}
-		if (!player.getInventory().playerHasItem(data.getToolId(), 1)) {
+		if (!player.getInventory().contains(data.getToolId(), 1)) {
 			player.getActionSender().sendMessage("You need a " + ItemDefinition.forId(data.getToolId()).getName() + " to fish here.");
 			return false;
 		}
@@ -113,7 +113,7 @@ public class Fishing extends SkillTask {
 			getPlayer().getActionSender().sendMessage("You manage to catch some " + fish.getDefinition().getName().toLowerCase() + ".");
 		}
 		heronPet(getPlayer(), data);
-		if (data.isBaitRequired() && getPlayer().getInventory().playerHasItem(313) && Utility.getRandom(2) == 0) {
+		if (data.isBaitRequired() && getPlayer().getInventory().contains(313) && Utility.getRandom(2) == 0) {
 			getPlayer().getInventory().remove(new Item(313, 1));
 		}
 		getPlayer().getSkills().addExperience(Skills.FISHING, data.getExperience());

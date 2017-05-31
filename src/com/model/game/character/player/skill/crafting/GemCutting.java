@@ -83,12 +83,12 @@ public class GemCutting extends SkillTask {
 			stop();
 			return;
 		}
-		if (!getPlayer().getInventory().playerHasItem(CHISEL)) {
+		if (!getPlayer().getInventory().contains(CHISEL)) {
 			getPlayer().getActionSender().sendMessage("You do not have a chisel.");
 			stop();
 			return;
 		}
-		if (!getPlayer().getInventory().playerHasItem(gem.getUncutVersion(), 1)) {
+		if (!getPlayer().getInventory().contains(gem.getUncutVersion(), 1)) {
 			getPlayer().getActionSender().sendMessage("You have run out of uncuts.");
 			stop();
 			return;

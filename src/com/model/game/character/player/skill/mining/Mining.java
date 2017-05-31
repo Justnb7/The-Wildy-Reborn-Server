@@ -52,7 +52,7 @@ public class Mining {
 			player.getActionSender().sendMessage("You need a pickaxe to mine this vein.");
 			return;
 		}
-		if (player.getInventory().remaining() == 0) {
+		if (player.getInventory().getFreeSlots() == 0) {
 			SimpleDialogues.sendStatement(player, "You have no more free slots.");
 			return;
 		}

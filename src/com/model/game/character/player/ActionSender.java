@@ -264,6 +264,24 @@ public class ActionSender {
 		return this;
 	}
 	
+	public ActionSender SendItemOnInterfaceSlot(int interfaceId, Item item, int slot) {
+		player.outStream.putFrameVarShort(34);
+		int offset = player.getOutStream().offset;
+		player.outStream.writeShort(interfaceId);
+		player.outStream.writeByte(slot);
+		if (item != null) {
+			player.outStream.writeShort(item.getId() + 1);
+			player.outStream.writeByte(255);
+			player.outStream.putInt(item.getAmount());
+		} else {
+			player.outStream.writeShort(0);
+			player.outStream.writeByte(255);
+			player.outStream.writeByte(0);
+		}
+		player.outStream.putFrameSizeShort(offset);
+		return this;
+	}
+	
 	public ActionSender sendUpdateItem(int interfaceId, Item item, int slot) {
 		player.outStream.putFrameVarShort(34);
         int offset = player.getOutStream().offset;
@@ -461,7 +479,7 @@ public class ActionSender {
 	 *             The items.
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendUpdateItems(int interfaceId, Item[] items) {
+	public ActionSender sendUpdateItems(int interfaceId, Item... items) {
 		player.getOutStream().putFrameVarShort(53);
 		int offset = player.getOutStream().offset;
 		player.getOutStream().writeShort(interfaceId);

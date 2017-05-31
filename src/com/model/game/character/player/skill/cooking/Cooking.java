@@ -79,7 +79,7 @@ public class Cooking extends SkillTask {
 			player.getActionSender().sendMessage("You need a cooking level of " + cookable.getLvl() + " to cook this food.");
 			return false;
 		}
-		if (!player.getInventory().playerHasItem(cookable.getRawItem(), 1)) {
+		if (!player.getInventory().contains(cookable.getRawItem(), 1)) {
 			player.getActionSender().sendMessage("You have ran out of food to cook");
 			return false;
 		}
@@ -121,7 +121,7 @@ public class Cooking extends SkillTask {
 			stop();
 			return;
 		}
-		if (!getPlayer().getInventory().playerHasItem(cookables.getRawItem(), 1)) {
+		if (!getPlayer().getInventory().contains(cookables.getRawItem(), 1)) {
 			getPlayer().getActionSender().sendMessage("You have run out of food to cook.");
 			stop();
 			return;

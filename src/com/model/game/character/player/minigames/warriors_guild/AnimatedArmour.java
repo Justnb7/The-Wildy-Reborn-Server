@@ -96,7 +96,7 @@ public class AnimatedArmour {
 			return;
 		}
 		final Armour armour = getArmourForItemId(itemId);
-		if(!player.getInventory().playerHasItem(armour.getPlatebodyId(), 1) || !player.getInventory().playerHasItem(armour.getPlatelegsId(), 1) || !player.getInventory().playerHasItem(armour.getHelmId(), 1)) {
+		if(!player.getInventory().contains(armour.getPlatebodyId(), 1) || !player.getInventory().contains(armour.getPlatelegsId(), 1) || !player.getInventory().contains(armour.getHelmId(), 1)) {
 			player.getActionSender().sendMessage("You need the helm, platebody, and platelegs to spawn the animated armour.");
 			return;
 		}

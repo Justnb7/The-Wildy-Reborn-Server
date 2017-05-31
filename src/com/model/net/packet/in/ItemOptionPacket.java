@@ -115,7 +115,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if (!player.getInventory().playerHasItem(with.getId(), 1) || !player.getInventory().playerHasItem(used.getId(), 1)) {
+		if (!player.getInventory().contains(with.getId(), 1) || !player.getInventory().contains(used.getId(), 1)) {
 			return;
 		}
 		
@@ -145,7 +145,7 @@ public class ItemOptionPacket implements PacketType {
 			System.out.println("ItemUsed: " + itemUsed + " groundItem: " + groundItem + " itemUsedSlot: " + itemUsedSlot + " gItemX: " + gItemX + " gItemY: " + gItemY + " a1: " + a1);
 		}
 		
-		if (!player.getInventory().playerHasItem(itemUsed) || GroundItemHandler.get(groundItem, position) == null) {
+		if (!player.getInventory().contains(itemUsed) || GroundItemHandler.get(groundItem, position) == null) {
 			return;
 		}
 		
@@ -211,7 +211,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//We don't even have the item
-		if (!player.getInventory().playerHasItem(item.getId())) {
+		if (!player.getInventory().contains(item.getId())) {
 			return;
 		}
 		
@@ -251,7 +251,8 @@ public class ItemOptionPacket implements PacketType {
 		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.getInventory().get(slot).getAmount()), player.getX(), player.getY(), player.getZ(), player));
 		
 		//After we've dropped our item, the server deletes it from our inventory.
-		player.getInventory().remove(item, slot);
+		player.getInventory().remove(item);
+		player.getInventory().refresh();
 		
 		//When dropping items combat resets.
 		Combat.resetCombat(player);

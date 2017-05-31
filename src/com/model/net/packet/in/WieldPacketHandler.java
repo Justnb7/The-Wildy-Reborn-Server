@@ -8,7 +8,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.item.container.impl.Inventory;
+import com.model.game.item.container.InterfaceConstants;
 import com.model.net.packet.SubPacketType;
 
 import java.util.Objects;
@@ -44,7 +44,7 @@ public class WieldPacketHandler implements SubPacketType {
 		
 		switch (interfaceId) {
 
-		case Inventory.INTERFACE:
+		case InterfaceConstants.INVENTORY_INTERFACE:
 			if (!player.getController().canEquip(player, id, slot)) {
 				return;
 			}

@@ -77,7 +77,7 @@ public class Prayer {
 		if (bone.getId() == item.getId()) {
 			player.playAnimation(Animation.create(827));
 			player.getActionSender().sendMessage("You dig a hole in the ground.");
-			player.getInventory().remove(item, slot);
+			player.getInventory().removeSlot(slot, 1, true);
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 				public void execute() {
 					player.getSkills().addExperience(Skills.PRAYER, bone.getXp() * Constants.PRAYER_EXP_MODIFIER);
@@ -113,7 +113,7 @@ public class Prayer {
 					/**
 					 * We ran out of bones stop the task
 					 */
-					if (!player.getInventory().playerHasItem(bone.getId())) {
+					if (!player.getInventory().contains(bone.getId())) {
 						player.getActionSender().sendMessage("You ran out of bones!");
 						this.stop();
 						return;
@@ -200,7 +200,7 @@ public class Prayer {
 	 * @return If the player has a bone crusher
 	 */
 	public boolean isHoldingBoneCrusher(Player player) {
-		if (player.getInventory().playerHasItem(BONE_CRUSHER_ID)) {
+		if (player.getInventory().contains(BONE_CRUSHER_ID)) {
 			return true;
 		}
 		return false;

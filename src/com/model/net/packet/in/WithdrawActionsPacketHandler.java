@@ -12,8 +12,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.InventoryContainer;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.Trade;
 import com.model.game.shop.Shop;
 import com.model.net.packet.PacketType;
@@ -379,7 +379,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-            player.getBank().depositFromInventory(slot, player.getInventory().amount(player.getInventory().getId(slot)));
+            player.getBank().depositFromInventory(slot, player.getInventory().getAmount(player.getInventory().get(slot)));
             break;
 
         case 5382:
@@ -397,10 +397,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case Trade.PLAYER_INVENTORY_INTERFACE:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
-				session.addItem(player, new GameItem(item.getId(), player.getInventory().amount(item.getId())));
+				session.addItem(player, new GameItem(item.getId(), player.getInventory().getAmount(item.getId())));
 			} else {
 				if (slot >= 0 && slot < Trade.SIZE) {
-					Trade.offerItem(player, id, slot, player.getInventory().amount(id));
+					Trade.offerItem(player, id, slot, player.getInventory().getAmount(id));
 				}
 			}
 			break;
@@ -443,7 +443,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		
 		switch(interfaceId) {
 		case Bank.PLAYER_INVENTORY_INTERFACE:
-			if(slot >= 0 && slot < Inventory.SIZE) {
+			if(slot >= 0 && slot < InventoryContainer.SIZE) {
 				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
 			}
 			break;

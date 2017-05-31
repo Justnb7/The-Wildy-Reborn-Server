@@ -152,7 +152,7 @@ public abstract class HarvestingAction extends Action {
 
 	@Override
 	public void execute() {
-		if(!getEntity().asPlayer().getInventory().hasRoomFor(getReward())) {
+		if(!getEntity().asPlayer().getInventory().hasSpaceFor(getReward())) {
 			getEntity().getActionSender().sendMessage(getInventoryFullMessage()); //Think this is how 317 did it?
 			getEntity().playAnimation(Animation.create(-1));
 			this.stop();
@@ -213,7 +213,7 @@ public abstract class HarvestingAction extends Action {
 			this.stop(); //stops the action as the object is completely harvested.
 			return;
 		}
-		if(!getEntity().asPlayer().getInventory().hasRoomFor(getReward())) {
+		if(!getEntity().asPlayer().getInventory().hasSpaceFor(getReward())) {
 			getEntity().getActionSender().sendMessage(getInventoryFullMessage()); //Think this is how 317 did it?
 			getEntity().playAnimation(Animation.create(-1));
 			this.stop();

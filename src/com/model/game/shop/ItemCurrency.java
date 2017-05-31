@@ -38,12 +38,12 @@ public final class ItemCurrency implements GeneralCurrency {
 
     @Override
     public int currencyAmount(Player player) {
-        return player.getInventory().amount(id);
+        return player.getInventory().getAmount(id);
     }
 
     @Override
     public boolean canRecieveCurrency(Player player) {
-        return player.getInventory().playerHasItem(id);
+        return player.getInventory().contains(id);
     }
 
     /**

@@ -161,11 +161,11 @@ public class Combat {
 		 * Verify we can use the spell
 		 */
         if (player.getCombatType() == CombatStyle.MAGIC) {
-            if (!player.getCombatState().checkMagicReqs(player.getSpellId())) {
+            /*if (!player.getCombatState().checkMagicReqs(player.getSpellId())) {
                 player.getMovementHandler().stopMovement();
                 Combat.resetCombat(player);
                 return;
-            }
+            }*/
             if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2415 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2416 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2417)) {
                 player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
                 return;

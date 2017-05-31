@@ -120,7 +120,7 @@ public class Mysterybox {
 	
 	
 	public static void open(Player player) {
-		if(player.getInventory().playerHasItem(MYSTERY_BOX)) {
+		if(player.getInventory().contains(MYSTERY_BOX)) {
 			Item itemReceived;
 			switch (Utility.getRandom(50)) {
 			case 0:

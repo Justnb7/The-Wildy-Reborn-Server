@@ -93,7 +93,7 @@ public class LunarSpells {
 			if (hasInfiniteRunes(i.getId(), i.getAmount(), weaponId, shieldId, false)) {
 				//Checks for rune pouch or staff.
 			}
-			else if (!player.getInventory().playerHasItem(i.getId(), i.getAmount())) {
+			else if (!player.getInventory().contains(i.getId(), i.getAmount())) {
 				player.getActionSender().sendMessage("You do not have enough " + ItemDefinition.forId(i.getId()).getName().replace("rune", "Rune") + "s to cast this spell.");
 				return false;
 			}

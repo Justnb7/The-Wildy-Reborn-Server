@@ -70,11 +70,11 @@ public class RewardCasket {
 		}
 		
 		
-		if (player.getInventory().playerHasItem(PET_CASKET)) {
+		if (player.getInventory().contains(PET_CASKET)) {
 			player.getInventory().remove(PET_CASKET);
 			Item itemReceived = rollPet();
 			// Loops forever until we don't have the rolled pet.
-			while (player.getInventory().alreadyHasItem(itemReceived.id)) {
+			while (player.getInventory().contains(itemReceived.id)) {
 				itemReceived = rollPet();
 			}
 			player.getInventory().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
@@ -109,7 +109,7 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void armourCasket(Player player) {
-		if (player.getInventory().playerHasItem(ARMOUR_CASKET)) {
+		if (player.getInventory().contains(ARMOUR_CASKET)) {
 			player.getInventory().remove(ARMOUR_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
@@ -145,7 +145,7 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void weaponCasket(Player player) {
-		if (player.getInventory().playerHasItem(WEAPON_CASKET)) {
+		if (player.getInventory().contains(WEAPON_CASKET)) {
 			player.getInventory().remove(WEAPON_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
@@ -181,7 +181,7 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void cosmeticCasket(Player player) {
-		if (player.getInventory().playerHasItem(COSMETIC_CASKET)) {
+		if (player.getInventory().contains(COSMETIC_CASKET)) {
 			player.getInventory().remove(COSMETIC_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
@@ -218,7 +218,7 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void venomCasket(Player player) {
-		if (player.getInventory().playerHasItem(VENOM_CASKET)) {
+		if (player.getInventory().contains(VENOM_CASKET)) {
 			player.getInventory().remove(VENOM_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
@@ -255,7 +255,7 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void zenyteCasket(Player player) {
-		if (player.getInventory().playerHasItem(ZENYTE_CASKET)) {
+		if (player.getInventory().contains(ZENYTE_CASKET)) {
 			player.getInventory().remove(ZENYTE_CASKET);
 			Item itemReceived;
 			switch (Utility.random(30)) {
@@ -292,7 +292,7 @@ public class RewardCasket {
 	 * The player opening the casket.
 	 */
 	public static void advancedItemsCasket(Player player) {
-		if (player.getInventory().playerHasItem(ADVANCED_ITEMS_CASKET)) {
+		if (player.getInventory().contains(ADVANCED_ITEMS_CASKET)) {
 			player.getInventory().remove(ADVANCED_ITEMS_CASKET);
 			Item itemReceived;
 			int roll = Utility.random(30);

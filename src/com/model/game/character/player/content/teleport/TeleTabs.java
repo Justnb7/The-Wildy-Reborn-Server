@@ -53,7 +53,7 @@ public class TeleTabs {
 
 		if (TeleportExecutor.canTeleport(player)) {
 			player.playAnimation(Animation.create(4069));
-			player.getInventory().remove(new Item(data.getItemId()), slot);
+			player.getInventory().remove(new Item(data.getItemId()));
 			Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 				@Override
 				public void execute() {

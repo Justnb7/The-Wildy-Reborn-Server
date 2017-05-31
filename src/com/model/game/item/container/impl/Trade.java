@@ -120,7 +120,7 @@ public class Trade {
 		player.getRequestManager().setRequestState(RequestState.PARTICIPATING);
 		player.setTradeStatus(TradeStatus.TRADE_SCREEN);
 		player.getActionSender().sendString(NameUtils.formatName(other.getName()), 3451);
-		player.getActionSender().sendString("Trading With: " + NameUtils.formatName(other.getName()) + " who has @gre@" + other.getInventory().remaining() + " free slots.", 3417);
+		player.getActionSender().sendString("Trading With: " + NameUtils.formatName(other.getName()) + " who has @gre@" + other.getInventory().getFreeSlots() + " free slots.", 3417);
 		player.getActionSender().sendString("", 3431);
 		player.getActionSender().sendString("Are you sure you want to make this trade?", 3535);
 		resetItems(player, other);
@@ -193,8 +193,8 @@ public class Trade {
 		if (item.getDefinition().isStackable() && amount > player.getInventory().get(slot).getAmount()) {
 			amount = player.getInventory().get(slot).getAmount();
 		} else {
-			if (amount > player.getInventory().amount(id)) {
-				amount = player.getInventory().amount(id);
+			if (amount > player.getInventory().getAmount(id)) {
+				amount = player.getInventory().getAmount(id);
 			}
 		}
 
@@ -205,7 +205,7 @@ public class Trade {
 		if (!item.getDefinition().isStackable() && amount != 1) {
 			player.getInventory().remove(item);
 		} else {
-			player.getInventory().remove(item, slot);
+			//player.getInventory().removeSlot(slot, item, true);
 		}
 
 		resetItems(player, other);
@@ -213,7 +213,7 @@ public class Trade {
 		other.getActionSender().sendString("", 3431);
 		player.setTradeStatus(TradeStatus.TRADE_SCREEN);
 		other.setTradeStatus(TradeStatus.TRADE_SCREEN);
-		other.getActionSender().sendString("Trading With: " + NameUtils.formatName(player.getName()) + " who has @gre@" + player.getInventory().remaining() + " free slots.", 3417);
+		other.getActionSender().sendString("Trading With: " + NameUtils.formatName(player.getName()) + " who has @gre@" + player.getInventory().getFreeSlots() + " free slots.", 3417);
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class Trade {
 		}
 		player.getActionSender().sendItemsOnInterface(3415, player.getTrade());
 		other.getActionSender().sendItemsOnInterface(3416, player.getTrade());
-		player.getActionSender().sendItemsOnInterface(3322, player.getInventory());
+		//player.getActionSender().sendItemsOnInterface(3322, player.getInventory());
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class Trade {
 		other.getActionSender().sendString("", 3431);
 		player.setTradeStatus(TradeStatus.TRADE_SCREEN);
 		other.setTradeStatus(TradeStatus.TRADE_SCREEN);
-		other.getActionSender().sendString("Trading With: " + NameUtils.formatName(player.getName()) + " who has @gre@" + player.getInventory().remaining() + " free slots.", 3417);
+		other.getActionSender().sendString("Trading With: " + NameUtils.formatName(player.getName()) + " who has @gre@" + player.getInventory().getFreeSlots() + " free slots.", 3417);
 	}
 
 	/**
@@ -306,7 +306,7 @@ public class Trade {
 			return;
 		}
 
-		int freeSlots = other.getInventory().remaining();
+		int freeSlots = other.getInventory().getFreeSlots();
 
 		if (freeSlots < player.getTrade().size()) {
 			player.getActionSender().sendString("Other player doesn't have enough space.", 3431);
@@ -337,7 +337,7 @@ public class Trade {
 			return;
 		}
 		player.setTradeStatus(TradeStatus.CONFIRM_SCREEN);
-		player.getActionSender().sendItemsOnInterface(3214, player.getInventory());
+		//player.getActionSender().sendItemsOnInterface(3214, player.getInventory());
 		String transferWealth = "Absolutely nothing!";
 		String transferAmount = "";
 		int count = 0;

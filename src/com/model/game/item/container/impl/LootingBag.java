@@ -29,11 +29,6 @@ public final class LootingBag extends Container {
 		this.player = player;
 	}
 
-	@Override
-	public boolean contains(Item item) {
-		return player.getInventory().playerHasItem(LOOTING_BAG) && super.contains(item);
-	}
-
 	/**
 	 * Checks if the underlying player has a looting bag in his inventory and
 	 * that the bag consists of atleast 1 or more items.
@@ -41,7 +36,7 @@ public final class LootingBag extends Container {
 	 * @return {@code true} if the player does, {@code false} otherwise.
 	 */
 	public boolean hasLootingBag() {
-		return player.getInventory().playerHasItem(LOOTING_BAG) && this.size() > 0;
+		return player.getInventory().contains(LOOTING_BAG) && this.size() > 0;
 	}
 
 	/**
@@ -134,7 +129,7 @@ public final class LootingBag extends Container {
 	 * Sends the inventory items on the looting bag interface.
 	 */
 	private void sendAddItems() {
-		if (!player.getInventory().playerHasItem(LOOTING_BAG)) {
+		if (!player.getInventory().contains(LOOTING_BAG)) {
 			return;
 		}
 		final int START_ITEM_INTERFACE = 27342;
@@ -142,10 +137,10 @@ public final class LootingBag extends Container {
 			int id = 0;
 			int amt = 0;
 
-			if (inventory_item < player.getInventory().size()) {
-				id = player.getInventory().getId(inventory_item);
+			/*if (inventory_item < player.getInventory().getSize()) {
+				id = player.getInventory().get(inventory_item);
 				amt = player.getInventory().get(inventory_item).getAmount();
-			}
+			}*/
 			player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + inventory_item, id - 1, 0, amt);
 		}
 	}

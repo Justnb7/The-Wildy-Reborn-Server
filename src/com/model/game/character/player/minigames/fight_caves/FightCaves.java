@@ -158,7 +158,7 @@ public class FightCaves {
 		} else {
 			player.movePlayer(OUTSIDE);
 			int tokkul = getCurrentWave() * 8032 / Wave.WAVES.length;
-			if (player.getInventory().remaining() > 1) {
+			if (player.getInventory().getFreeSlots() > 1) {
 				player.getInventory().add(new Item(TOKKUL.getId(), tokkul));
 			} else {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(6529, tokkul), player.getX(), player.getY(), player.getHeight(), player));

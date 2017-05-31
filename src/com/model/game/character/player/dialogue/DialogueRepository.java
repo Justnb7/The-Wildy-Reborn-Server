@@ -8,7 +8,6 @@ import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.dialogue.impl.SigmundTheMerchant;
 import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue;
 import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue2;
-import com.model.game.character.player.dialogue.impl.chat.EmblemTraderDialogue;
 import com.model.game.character.player.dialogue.impl.chat.Mandrith;
 import com.model.game.character.player.dialogue.impl.chat.RunescapeGuide;
 import com.model.game.character.player.dialogue.impl.minigames.BarrowsTunnel;
@@ -135,7 +134,7 @@ public class DialogueRepository {
 		/**
 		 * Bounty hunter
 		 */
-		dialogues.put("emblem_trader_dialogue", EmblemTraderDialogue.class);
+
 	}
 
 	/**

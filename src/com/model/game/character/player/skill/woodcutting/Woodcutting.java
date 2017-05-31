@@ -386,7 +386,7 @@ public class Woodcutting extends HarvestingAction {
 			}
 			Player player = (Player) getEntity();
 			if (player.isPetSpawned()) {
-				if (player.getInventory().remaining() < 1) {
+				if (player.getInventory().getFreeSlots() < 1) {
 					player.getInventory().add(new Item(13322));
 				} else {
 					player.getBank().add(new Item(13322));

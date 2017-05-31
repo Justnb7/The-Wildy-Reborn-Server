@@ -8,7 +8,7 @@ import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
-import com.model.game.item.container.impl.Inventory;
+import com.model.game.item.container.container.impl.InventoryContainer;
 import com.model.task.ScheduledTask;
 
 
@@ -34,7 +34,7 @@ public class ActionQueue {
 	 * The maximum number of actions allowed to be queued at once, deliberately
 	 * set to the size of the player's inventory.
 	 */
-	public static final int MAXIMUM_SIZE = Inventory.SIZE;
+	public static final int MAXIMUM_SIZE = InventoryContainer.SIZE;
 	
 	/**
 	 * A queue of <code>Action</code> objects.

@@ -127,7 +127,7 @@ public final class Equipment extends Container {
                     set(designatedSlot, new Item(item.getId(), item.getAmount() + equipItem.getAmount()));
                     System.out.println("Set equipment");
                 } else {
-                    player.getInventory().set(inventorySlot, equipItem);
+                    player.getInventory().setSlot(inventorySlot, equipItem);
                     player.getInventory().refresh();
                     set(designatedSlot, item);
                    // System.out.println("Don't know what this does");
@@ -136,7 +136,7 @@ public final class Equipment extends Container {
                 set(designatedSlot, item);
                 //System.out.println("Same here");
             }
-            player.getInventory().remove(item, inventorySlot);
+            player.getInventory().remove(inventorySlot, item.getId(), true);
         } else {
             int designatedSlot = item.getDefinition().getEquipmentSlot();
             if (designatedSlot == Equipment.WEAPON_SLOT && item.getDefinition().isTwoHanded() && used(Equipment.SHIELD_SLOT)) {
@@ -156,14 +156,14 @@ public final class Equipment extends Container {
             if (used(designatedSlot)) {
                 Item equipItem = get(designatedSlot);
                 if (!equipItem.getDefinition().isStackable()) {
-                    player.getInventory().set(inventorySlot, equipItem);
+                    player.getInventory().setSlot(inventorySlot, equipItem);
                 } else {
-                    player.getInventory().set(inventorySlot, null);
-                    player.getInventory().add(equipItem, inventorySlot);
+                    player.getInventory().setSlot(inventorySlot, null);
+                    player.getInventory().add(equipItem, true);
                 }
                 player.getInventory().refresh();
             } else {
-                player.getInventory().remove(item, inventorySlot);
+                player.getInventory().removeSlot(inventorySlot, item.getId(), true);
             }
             set(designatedSlot, new Item(item.getId(), item.getAmount()));
         }
@@ -196,7 +196,7 @@ public final class Equipment extends Container {
         if (free(equipmentSlot))
             return false;
         Item item = get(equipmentSlot);
-        if (!player.getInventory().spaceFor(item)) {
+        if (!player.getInventory().hasSpaceFor(item)) {
             player.getActionSender().sendMessage("You do not have enough space in " + "your inventory!");
             return false;
         }

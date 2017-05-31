@@ -49,7 +49,7 @@ public class Herblore {
 	public void clean(int itemId) {
 		Optional<Herb> herb = HERBS.stream().filter(h -> h.getGrimy() == itemId).findFirst();
 		herb.ifPresent(h -> {
-			if (!player.getInventory().playerHasItem(h.getGrimy())) {
+			if (!player.getInventory().contains(h.getGrimy())) {
 				player.getActionSender().sendMessage("You need the grimy herb to do this.");
 				return;
 			}
@@ -73,7 +73,7 @@ public class Herblore {
 				player.getActionSender().sendMessage("You need a herblore level of " + p.getLevel() + " to make " + definition.getName() + ".");
 				return;
 			}
-			if (!player.getInventory().playerHasItem(227)) {
+			if (!player.getInventory().contains(227)) {
 				player.getActionSender().sendMessage("You need a regular vial of water to do this.");
 				return;
 			}
@@ -95,7 +95,7 @@ public class Herblore {
 	private boolean containsSecondaries(Potion potion) {
 		int required = potion.getIngredients().length;
 		for (Item ingredient : potion.getIngredients()) {
-			if (player.getInventory().playerHasItem(ingredient.getId(), ingredient.getAmount())) {
+			if (player.getInventory().contains(ingredient.getId(), ingredient.getAmount())) {
 				required--;
 			}
 		}

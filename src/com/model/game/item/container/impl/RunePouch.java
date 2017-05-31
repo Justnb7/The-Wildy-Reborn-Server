@@ -47,11 +47,6 @@ public final class RunePouch extends Container {
 		this.player = player;
 	}
 
-	@Override
-	public boolean contains(Item item) {
-		return player.getInventory().playerHasItem(RUNE_POUCH) && super.contains(item);
-	}
-
 	/**
 	 * Checks if the underlying player has a rune pouch in his inventory and
 	 * that the pouch consists of atleast 1 or more runes.
@@ -59,7 +54,7 @@ public final class RunePouch extends Container {
 	 * @return {@code true} if the player does, {@code false} otherwise.
 	 */
 	public boolean hasPouch() {
-		return player.getInventory().playerHasItem(RUNE_POUCH) && this.size() > 0;
+		return player.getInventory().contains(RUNE_POUCH) && this.size() > 0;
 	}
 	
 	/**
@@ -97,7 +92,7 @@ public final class RunePouch extends Container {
 	public void addItem(int id, int amount, int slot) {
 		
 		int containerSize = player.getRunePouch().size();
-		Item rune = player.getInventory().getSlot(slot);
+		Item rune = player.getInventory().get(slot);
 		boolean containsRune = player.getRunePouch().contains(id);
 		if (rune == null) {
 			return;
@@ -116,7 +111,7 @@ public final class RunePouch extends Container {
 		}
 
 		try {
-			int transferAmount = player.getInventory().getCount(id);
+			int transferAmount = player.getInventory().getAmount(id);
 			if (transferAmount >= amount) {
 				transferAmount = amount;
 			} else if (transferAmount == 0) {
@@ -153,9 +148,9 @@ public final class RunePouch extends Container {
 				return;
 			}
 			
-			if (player.getInventory().add(new Item(rune.getId(), transferAmount))) {
+			/*if (player.getInventory().add(rune.getId(), transferAmount)) {
 				player.getRunePouch().remove(new Item(rune.getId(), transferAmount));
-			}
+			}*/
 		} finally {
 			updatePouch();
 		}
@@ -216,11 +211,11 @@ public final class RunePouch extends Container {
 	 * Updates the inventory widget of the rune pouch interface.
 	 */
 	private void sendInventoryItems() {
-		if (!player.getInventory().playerHasItem(RUNE_POUCH)) {
+		if (!player.getInventory().contains(RUNE_POUCH)) {
 			return;
 		}
 		//Sent the items on the interface
-		player.getActionSender().sendUpdateItems(START_INVENTORY_INTERFACE, player.getInventory().container());
+		player.getActionSender().sendUpdateItems(START_INVENTORY_INTERFACE, player.getInventory().toArray());
 	}
 	
 	/**

@@ -80,12 +80,12 @@ public class MiningEvent extends CycleEvent {
 			container.stop();
 			return;
 		}
-		if (!player.getInventory().playerHasItem(pickaxe.getId()) && !player.getEquipment().contains(pickaxe.getId())) {
+		if (!player.getInventory().contains(pickaxe.getId()) && !player.getEquipment().contains(pickaxe.getId())) {
 			player.getActionSender().sendMessage("That is strange! The pickaxe could not be found.");
 			container.stop();
 			return;
 		}
-		if (player.getInventory().remaining() == 0) {
+		if (player.getInventory().getFreeSlots() == 0) {
 			SimpleDialogues.sendStatement(player, "You have no more free slots.");
 			container.stop();
 			return;

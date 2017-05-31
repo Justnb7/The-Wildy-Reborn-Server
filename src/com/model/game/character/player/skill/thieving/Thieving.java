@@ -69,7 +69,7 @@ public class Thieving {
 		}
 		
 		//Check if we have enough inventory space
-		if (player.getInventory().remaining() == 0) {
+		if (player.getInventory().getFreeSlots() == 0) {
 			player.getActionSender().sendMessage("You need at least one free slot to steal from this stall.");
 			return;
 		}
@@ -110,7 +110,7 @@ public class Thieving {
 		}
 		
 		//Check if we have enough inventory space
-		if (player.getInventory().remaining() == 0) {
+		if (player.getInventory().getFreeSlots() == 0) {
 			player.getActionSender().sendMessage("You need at least one free slot to steal from this npc.");
 			return;
 		}

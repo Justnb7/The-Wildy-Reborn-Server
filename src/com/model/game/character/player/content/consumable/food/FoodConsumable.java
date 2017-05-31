@@ -180,8 +180,7 @@ public class FoodConsumable {
 			}
 			player.playAnimation(Animation.create(829));
 			player.write(new SendSoundPacket(317, 1, 2));
-			player.getInventory().remove(new Item(id), slot);
-			
+			player.getInventory().removeSlot(slot, 1, true);
 			
 			if (f.hasEffect()) {
 				//TODO implement effects

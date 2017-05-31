@@ -24,7 +24,7 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		int z = player.getLocation().getZ();
 		final Location loc = Location.create(x, y, z);
         
-        final Item item = player.getInventory().getSlot(slot);
+        final Item item = player.getInventory().get(slot);
         if(item == null) {
         	player.debug("for what ever reason the item is null");
         	return;

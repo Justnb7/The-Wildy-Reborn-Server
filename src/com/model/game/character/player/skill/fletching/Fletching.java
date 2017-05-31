@@ -118,7 +118,7 @@ public enum Fletching {
 
 		/** Option 1 - Make all */
 		case 6211:
-			start(player, fletchable, 0, player.getInventory().getCount(fletchable.getWith().getId()));
+			start(player, fletchable, 0, player.getInventory().getAmount(fletchable.getWith().getId()));
 			return true;
 
 			/** Option 1 - Make 1 */

@@ -71,9 +71,9 @@ import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.ItemContainerPolicy;
+import com.model.game.item.container.container.impl.InventoryContainer;
 import com.model.game.item.container.impl.Bank;
 import com.model.game.item.container.impl.Equipment;
-import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.LootingBag;
 import com.model.game.item.container.impl.RunePouch;
 import com.model.game.item.container.impl.Trade;
@@ -174,18 +174,18 @@ public class Player extends Entity {
 	}
 	
 	/**
+     * The container that holds the inventory items.
+     */
+	private final InventoryContainer inventory = new InventoryContainer(this);
+	
+	/**
      * Gets the container that holds the inventory items.
      *
      * @return the container for the inventory.
      */
-    public Inventory getInventory() {
-        return inventory;
-    }
-    
-    /**
-     * The container that holds the inventory items.
-     */
-    private final Inventory inventory = new Inventory(this);
+	public InventoryContainer getInventory() {
+		return inventory;
+	}
     
     /**
      * The container that holds the bank items.

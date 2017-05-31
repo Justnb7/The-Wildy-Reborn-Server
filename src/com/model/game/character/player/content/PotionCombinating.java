@@ -46,10 +46,10 @@ public class PotionCombinating {
 	 * @param potion2	the second potion
 	 */
 	public void mix(Player player, Item item1, Item item2) {
-		if (!player.getInventory().playerHasItem(item1.getId(), item1.getAmount())) {
+		if (!player.getInventory().contains(item1.getId(), item1.getAmount())) {
 			return;
 		}
-		if (!player.getInventory().playerHasItem(item2.getId(), item2.getAmount())) {
+		if (!player.getInventory().contains(item2.getId(), item2.getAmount())) {
 			return;
 		}
 		Potion potion1 = Potion.get(item1.getId()); 

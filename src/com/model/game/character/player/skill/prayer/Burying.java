@@ -175,7 +175,7 @@ public class Burying {
 						if(!player.isActive()) {
 							this.stop();
 						}
-						if (!player.getInventory().playerHasItem(bone.getId())) {
+						if (!player.getInventory().contains(bone.getId())) {
 							player.getActionSender().sendMessage("You ran out of bones!");
 							this.stop();
 							return;

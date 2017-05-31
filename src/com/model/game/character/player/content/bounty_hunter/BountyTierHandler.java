@@ -17,26 +17,26 @@ public class BountyTierHandler {
 	 * @param player
 	 *            The {@link Player} to upgrade a tier for
 	 */
-	public static void upgrade(Player player) {
+	/*public static void upgrade(Player player) {
 		emb_loop: for (int x = BountyHunterEmblem.EMBLEMS.size() - 1; x >= 0; x--) {
 			BountyHunterEmblem emblem = BountyHunterEmblem.valueOf(x);
-			for (int i = 0; i < player.getInventory().size(); i++) {
-				int id = player.getInventory().getId(i) - 1;
+			for (int i = 0; i < player.getInventoryOld().size(); i++) {
+				int id = player.getInventoryOld().getId(i) - 1;
 				if (emblem.getItemId() == id) {
 
-					/*
+					
 					 * Can't upgrade a tier 10 as its already as high as it goes
-					 */
+					 
 					if (emblem.getIndex() == BountyHunterEmblem.MYSTERIOUS_EMBLEM_10.getIndex()) {
 						continue;
 					}
 
-					player.getInventory().set(i, new Item(BountyHunterEmblem.getNext(emblem).getItemId()));
+					player.getInventoryOld().set(i, new Item(BountyHunterEmblem.getNext(emblem).getItemId()));
 					break emb_loop;
 				}
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Handles downgrading a bounty hunter tier for the killer

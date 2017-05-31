@@ -4,7 +4,6 @@ package com.model.game.character.combat;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.combat.magic.MagicData;
-import com.model.game.character.combat.magic.MagicRequirements;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.Equipment;
@@ -95,10 +94,6 @@ public class CombatState {
 
 	public boolean usingBolts(int i) {
 		return (i >= 9140 && i <= 9145) || i >= 9334 && i <= 9344 || (i >= 9236 && i <= 9245) || i == 11875;
-	}
-
-	public boolean checkMagicReqs(int spell) {
-		return MagicRequirements.checkMagicReqs(mob.asPlayer(), spell);
 	}
 
 	public int getFreezeTime() {

@@ -1,8 +1,8 @@
 package com.model.net.packet.in;
 
 import com.model.game.character.player.Player;
+import com.model.game.item.container.InterfaceConstants;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.Inventory;
 import com.model.net.packet.PacketType;
 
 /**
@@ -28,12 +28,11 @@ public class SwitchItemPacketHandler implements PacketType {
             return;
 		
 		switch(interfaceId) {
-		case Bank.PLAYER_INVENTORY_INTERFACE:
-		case Inventory.INTERFACE:
-			if (fromSlot >= 0 && fromSlot < Inventory.SIZE && toSlot >= 0 && toSlot < Inventory.SIZE && toSlot != fromSlot) {
-				player.getInventory().swap(fromSlot, toSlot);
-			}
-			break;
+			
+		case InterfaceConstants.INVENTORY_INTERFACE:
+		case InterfaceConstants.INVENTORY_STORE:
+		    player.getInventory().swap(fromSlot, toSlot);
+		    break;
 			
 		case Bank.BANK_INVENTORY_INTERFACE:
 			if(fromSlot >= 0 && fromSlot < Bank.SIZE && toSlot >= 0 && toSlot < Bank.SIZE && toSlot != fromSlot) {

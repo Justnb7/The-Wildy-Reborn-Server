@@ -145,7 +145,7 @@ public abstract class ProductionAction extends Action {
 			return;
 		}
 		for(Item item : getConsumedItems()) {
-			if(getEntity().asPlayer().getInventory().getCount(item.getId()) < item.getAmount()) {
+			if(getEntity().asPlayer().getInventory().getAmount(item.getId()) < item.getAmount()) {
 				getEntity().playAnimation(Animation.create(-1));
 				this.stop();
 				return;
@@ -199,7 +199,7 @@ public abstract class ProductionAction extends Action {
 			return;
 		}
 		for(Item item : getConsumedItems()) {
-			if(getEntity().asPlayer().getInventory().getCount(item.getId()) < item.getAmount()) {
+			if(getEntity().asPlayer().getInventory().getAmount(item.getId()) < item.getAmount()) {
 				getEntity().playAnimation(Animation.create(-1));
 				this.stop();
 				return;

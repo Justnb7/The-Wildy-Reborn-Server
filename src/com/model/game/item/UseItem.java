@@ -25,7 +25,7 @@ public class UseItem {
 	 */
 	public static void ItemonObject(Player player, int object, int objectX, int objectY, Item item) {
 		ObjectDefinition def = ObjectDefinition.get(object);
-		if (!player.getInventory().playerHasItem(item.getId()))
+		if (!player.getInventory().contains(item.getId()))
 			return;
 		if (def.getName().toLowerCase().contains("altar") && def.actions[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().bonesOnAltar(item);

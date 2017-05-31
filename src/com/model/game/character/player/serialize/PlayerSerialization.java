@@ -22,7 +22,6 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunterConstan
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Bank;
 import com.model.game.item.container.impl.Equipment;
-import com.model.game.item.container.impl.Inventory;
 import com.model.game.item.container.impl.RunePouch;
 
 /**
@@ -409,8 +408,8 @@ public class PlayerSerialization {
 				}
 				
 				if (details.inventory != null) {
-					for (int i = 0; i < Inventory.SIZE; i++) {
-						player.getInventory().set(i, details.inventory[i]);
+					for (int i = 0; i < details.inventory.length; i++) {
+						player.getInventory().setSlot(i, details.inventory[i], false);
 					}
 				}
 				
@@ -441,7 +440,7 @@ public class PlayerSerialization {
 		private final Item[] runePouch;
 
 		public PlayerContainer(Player player) {
-			inventory = player.getInventory().toArray();
+			inventory = player.getInventory().toTrimmedArray();
 			equipment = player.getEquipment().toArray();
 			bank = player.getBank().toArray();
 			runePouch = player.runePouchContainer.toArray();

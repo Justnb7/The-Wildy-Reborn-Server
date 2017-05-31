@@ -328,7 +328,7 @@ public class BountyHunter extends ScheduledTask {
 				killer.setAttribute(BountyHunterConstants.HUNTER_RECORD, current + 1);
 			}
 			killer.setAttribute(BountyHunterConstants.HUNTER_CURRENT, current + 1);
-			BountyTierHandler.upgrade(killer);
+			//BountyTierHandler.upgrade(killer);
 			killer.setAttribute("receive_emblem", handleItemGiving(player, killer));
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
 			Achievements.increase(killer, AchievementType.BOUNTY_HUNTER, 1);
@@ -380,7 +380,7 @@ public class BountyHunter extends ScheduledTask {
 	 * Calculates the total networth for the emblems in a players inventory.
 	 * @return	the total networth of all emblems in a players inventory
 	 */
-	public int getNetworthForEmblems(Player player) {
+	/*public int getNetworthForEmblems(Player player) {
 		int worth = 0;
 		for (int i = 0; i < player.getInventory().size(); i++) {
 			int itemId = player.getInventory().getId(i) - 1;
@@ -391,6 +391,6 @@ public class BountyHunter extends ScheduledTask {
 			}
 		}
 		return worth;
-	}
+	}*/
 
 }

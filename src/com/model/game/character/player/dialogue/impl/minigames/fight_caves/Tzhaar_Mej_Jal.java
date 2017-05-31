@@ -17,7 +17,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 	
 	@Override
 	protected void start(Object... parameters) {
-		if (player.getInventory().playerHasItem(6570) && player.secondOption) {
+		if (player.getInventory().contains(6570) && player.secondOption) {
 			send(Type.PLAYER, Expression.DEFAULT, "I have a fire cape here.");
 			setPhase(36);
 		} else {
@@ -281,7 +281,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 									if (getPhase() == 38) {
 										switch (index) {
 										case 1:
-											if (player.getInventory().alreadyHasItem(13225)) {
+											if (player.getInventory().contains(13225)) {
 												player.getActionSender().sendMessage("You already have a pet jad.");
 												player.getActionSender().removeAllInterfaces();
 												return;

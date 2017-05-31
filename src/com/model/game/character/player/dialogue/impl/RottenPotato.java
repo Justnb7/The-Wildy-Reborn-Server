@@ -47,7 +47,7 @@ public class RottenPotato extends Dialogue {
 	    		stop();
 				break;
 			case 2:
-				player.getInventory().clear();
+				player.getInventory().clear(true);
 	    		player.getInventory().refresh();
 				player.getInventory().add(new Item(5733));
 				stop();

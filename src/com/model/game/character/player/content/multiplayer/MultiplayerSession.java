@@ -103,7 +103,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			return;
 		}*/
 		
-		if (!player.getInventory().playerHasItem(id)) {
+		if (!player.getInventory().contains(id)) {
 			return;
 		}
 		if (!Server.getMultiplayerSessionListener().inAnySession(player)) {
@@ -117,14 +117,14 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (!itemAddable(player, item)) {
 			return;
 		}
-		int inventoryAmount = player.getInventory().amount(id);
+		int inventoryAmount = player.getInventory().getAmount(id);
 		if (amount > inventoryAmount) {
 			amount = inventoryAmount;
 		}
 		if (amount < 0 || id < 0) {
 			return;
 		}
-		if (!player.getInventory().playerHasItem(id, amount)) {
+		if (!player.getInventory().contains(id, amount)) {
 			return;
 		}
 		if (!presetListContains(player, id, amount)) {
@@ -181,7 +181,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 	 *            The game item the player is removing
 	 */
 	public void removeItem(Player player, int slot, GameItem item) {
-		int id = item.id;
+		/*int id = item.id;
 		int amount = item.amount;
 		if (Objects.isNull(player) || Objects.isNull(item)) {
 			return;
@@ -194,7 +194,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			return;
 		}
 		List<GameItem> items = this.items.get(player);
-		int freeSlots = player.getInventory().remaining();
+		int freeSlots = player.getInventory().getFreeSlots();
 		if (!items.stream().anyMatch(i -> i.id == id)) {
 			player.getActionSender().sendMessage("Tried to remove item that does not exist in list.");
 			return;
@@ -216,9 +216,9 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 		if (item.stackable) {
 			for (int i = 0; i < items.size(); i++) {
 				if (items.get(i).id == id) {
-					long total = ((long) amount + (long) player.getInventory().amount(id));
+					long total = ((long) amount + (long) player.getInventory().getAmount(id));
 					if (total > Integer.MAX_VALUE) {
-						amount = Integer.MAX_VALUE - player.getInventory().amount(id);
+						amount = Integer.MAX_VALUE - player.getInventory().getAmount(id);
 					}
 					if (amount > items.get(i).amount) {
 						amount = items.get(i).amount;
@@ -280,7 +280,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			}
 		}
 		stage.setAttachment(null);
-		updateOfferComponents();
+		updateOfferComponents();*/
 	}
 
 	public void accept(Player player, int stageId) {
@@ -407,24 +407,24 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 	 * Populates the map of preset items from each of the players inventory.
 	 */
 	public void populatePresetItems() {
-		for (Player player : players) {
+		/*for (Player player : players) {
 			List<GameItem> realItems = new ArrayList<>();
-			for (int i = 0; i < player.getInventory().size(); i++) {
+			for (int i = 0; i < player.getInventory().getSize(); i++) {
 				int itemId = player.getInventory().getId(i) - 1;
 				int amount = player.getInventory().get(i).getAmount();
 				if (itemId > 0 && amount > 0) {
 					realItems.add(new GameItem(itemId, amount));
 				}
 			}
-			/*for (int i = 0; i < player.getEquipment().size(); i++) {
+			for (int i = 0; i < player.getEquipment().size(); i++) {
 				int itemId = player.playerEquipment[i];
 				int amount = player.playerEquipmentN[i];
 				if (itemId > 0 && amount > 0) {
 					realItems.add(new GameItem(itemId, amount));
 				}
-			}*/
+			}
 			presetItems.put(player, realItems);
-		}
+		}*/
 	}
 
 	/**
@@ -472,7 +472,7 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			}
 			amount = op.get().amount;
 		}
-		return player.getInventory().amount(i.id)
+		return player.getInventory().getAmount(i.id)
 				+ this.getItemAmount(player, i.id) > amount;
 	}
 
@@ -583,12 +583,12 @@ public abstract class MultiplayerSession implements MultiplayerSessionItemDistri
 			if (!playerItem.stackable) {
 				continue;
 			}
-			if (!recipient.getInventory().playerHasItem(playerItem.id)) {
+			if (!recipient.getInventory().contains(playerItem.id)) {
 				continue;
 			}
-			long amount = ((long) playerItem.amount + (long) recipient.getInventory().amount(playerItem.id));
+			long amount = ((long) playerItem.amount + (long) recipient.getInventory().getAmount(playerItem.id));
 			if (amount > Integer.MAX_VALUE) {
-				return new GameItem(playerItem.id, recipient.getInventory().amount(playerItem.id));
+				return new GameItem(playerItem.id, recipient.getInventory().getAmount(playerItem.id));
 			}
 		}
 		return null;

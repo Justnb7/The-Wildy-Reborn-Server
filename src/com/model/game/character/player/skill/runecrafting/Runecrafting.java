@@ -97,11 +97,11 @@ public class Runecrafting extends SkillTask {
 				player.getActionSender().sendMessage("You do not have the required level to craft these runes.");
 				return false;
 			}
-			if(!player.getInventory().playerHasItem(7936) && !player.getInventory().playerHasItem(1436)) {
+			if(!player.getInventory().contains(7936) && !player.getInventory().contains(1436)) {
 				player.getActionSender().sendMessage("Did you forget something?");
 				return false;
 			}
-			if(Talisman.getTalismanByAltar(talisman.getAlterId()).pureEssOnly() && !player.getInventory().playerHasItem(7936)) {
+			if(Talisman.getTalismanByAltar(talisman.getAlterId()).pureEssOnly() && !player.getInventory().contains(7936)) {
 				player.getActionSender().sendMessage("You do not have the right essence.");
 				return false;
 			}
@@ -121,7 +121,7 @@ public class Runecrafting extends SkillTask {
 		
 		Talisman talisman = Talisman.getTalismanByAltar(getObject());
 		int amount = getAmount(getPlayer(), talisman);
-		int essCount = getPlayer().getInventory().amount(getEssType(getPlayer(), talisman));
+		int essCount = getPlayer().getInventory().getAmount(getEssType(getPlayer(), talisman));
 		
 		//Grant experience
 		getPlayer().getActionSender().sendMessage("You bind the temple's power into "+ItemDefinition.forId(talisman.getRuneReward()).getName()+"s");
@@ -165,7 +165,7 @@ public class Runecrafting extends SkillTask {
 	 */
 	private int getAmount(Player player, Talisman talisman) {
 		int rcLevel = player.getSkills().getLevel(Skills.RUNECRAFTING);
-		int essCount = player.getInventory().amount(getEssType(player, talisman));
+		int essCount = player.getInventory().getAmount(getEssType(player, talisman));
 		if (talisman.equals(Talisman.AIR_TALISMAN)) {
 			if (rcLevel < 11) {
 				return essCount;
@@ -274,9 +274,9 @@ public class Runecrafting extends SkillTask {
 	 *        The talisman/tiara
 	 */
 	private int getEssType(Player player, Talisman talisman) {
-		if (player.getInventory().playerHasItem(7936)) {
+		if (player.getInventory().contains(7936)) {
 			return 7936;
-		} else if (player.getInventory().playerHasItem(1436) && !talisman.pureEssOnly()) {
+		} else if (player.getInventory().contains(1436) && !talisman.pureEssOnly()) {
 			return 1436;
 		}
 		return -1;

@@ -150,7 +150,7 @@ public class Teleports {
 			if (data.getButton() == buttonId) {
 				if (player.getSkills().getExperience(Skills.MAGIC) < data.getMagicLevelRequirement()) {
 					player.getActionSender().sendMessage("You need atleast level " + data.getMagicLevelRequirement() + " magic to teleport to " + data.getTeleportName() + ".");
-				} else if (Arrays.asList(data.getRequiredRunes()).stream().filter(i -> player.getInventory().playerHasItem(i)).toArray().length == data.getRequiredRunes().length) {
+				} else if (Arrays.asList(data.getRequiredRunes()).stream().filter(i -> player.getInventory().contains(i)).toArray().length == data.getRequiredRunes().length) {
 					TeleportExecutor.teleport(player, new Location(data.getX(), data.getY(), data.getHeight()));
 					player.getSkills().addExperience(Skills.MAGIC, data.getExperience());
 					Arrays.asList(data.getRequiredRunes()).stream().forEach(i -> player.getInventory().remove(i));

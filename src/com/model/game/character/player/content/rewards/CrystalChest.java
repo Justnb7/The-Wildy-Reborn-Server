@@ -26,7 +26,7 @@ public class CrystalChest {
 	 * @param player
 	 */
 	public static boolean createKey(final Player player) {
-		if (player.getInventory().containsAll(KEY_HALVES)) {
+		if (player.getInventory().contains(KEY_HALVES)) {
 			player.getInventory().remove(KEY_HALVES[0]);
 			player.getInventory().remove(KEY_HALVES[1]);
 			player.getInventory().addOrCreateGroundItem(new Item(989));
@@ -53,7 +53,7 @@ public class CrystalChest {
 	 * @param y
 	 */
 	public static void searchChest(final Player player, Location position) {
-		if (!player.getInventory().playerHasItem(989)) {
+		if (!player.getInventory().contains(989)) {
 			return;
 		}
 		player.getActionSender().sendMessage("You unlock the chest with your key.");

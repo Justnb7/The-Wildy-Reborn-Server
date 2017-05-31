@@ -38,7 +38,7 @@ public class DeathDropHandler {
 
 		Item[] keep = new Item[3 + (player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0)];
 
-		Item[] drop = new Item[(28 - player.getInventory().remaining()) + (14 - player.getEquipment().remaining())];
+		Item[] drop = new Item[(28 - player.getInventory().getFreeSlots()) + (14 - player.getEquipment().remaining())];
 
 		eqp_loop: for (Item equip : player.getEquipment().toArray()) {
 			if (equip != null) {
@@ -89,7 +89,7 @@ public class DeathDropHandler {
 		}
 
 		player.getEquipment().clear();
-		player.getInventory().clear();
+		player.getInventory().clear(true);
 
 		for (Item item : drop) {
 			if (item != null) {

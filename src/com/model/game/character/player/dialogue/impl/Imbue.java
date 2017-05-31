@@ -17,7 +17,7 @@ public class Imbue extends Dialogue {
 		if (getPhase() == 0) {
 			switch(index) {
 			case 1:
-				if (player.getInventory().playerHasItem(13307, 20) && player.getInventory().playerHasItem(6733)) {
+				if (player.getInventory().contains(13307, 20) && player.getInventory().contains(6733)) {
 					player.getInventory().remove(new Item(13307, 20));
 					player.getInventory().remove(new Item(6733));
 					player.getInventory().add(new Item(11771, 1));
@@ -28,7 +28,7 @@ public class Imbue extends Dialogue {
 				}
 				break;
 			case 2:
-				if (player.getInventory().playerHasItem(13307, 25) && player.getInventory().playerHasItem(6737)) {
+				if (player.getInventory().contains(13307, 25) && player.getInventory().contains(6737)) {
 					player.getInventory().remove(new Item(13307, 25));
 					player.getInventory().remove(new Item(6737));
 					player.getInventory().add(new Item(11773, 1));
@@ -39,7 +39,7 @@ public class Imbue extends Dialogue {
 				}
 				break;
 			case 3:
-				if (player.getInventory().playerHasItem(13307, 20) && player.getInventory().playerHasItem(6731)) {
+				if (player.getInventory().contains(13307, 20) && player.getInventory().contains(6731)) {
 					player.getInventory().remove(new Item(13307, 20));
 					player.getInventory().remove(new Item(6731));
 					player.getInventory().add(new Item(11770, 1));
@@ -50,7 +50,7 @@ public class Imbue extends Dialogue {
 				}
 				break;
 			case 4:
-				if (player.getInventory().playerHasItem(13307, 20) && player.getInventory().playerHasItem(6735)) {
+				if (player.getInventory().contains(13307, 20) && player.getInventory().contains(6735)) {
 					player.getInventory().remove(new Item(13307, 20));
 					player.getInventory().remove(new Item(6735));
 					player.getInventory().add(new Item(11772, 1));
@@ -68,7 +68,7 @@ public class Imbue extends Dialogue {
 		} else if (getPhase() == 1) {
 			switch (index) {
 			case 1:
-				if (player.getInventory().playerHasItem(13307, 30) && player.getInventory().playerHasItem(12601)) {
+				if (player.getInventory().contains(13307, 30) && player.getInventory().contains(12601)) {
 					player.getInventory().remove(new Item(13307, 30));
 					player.getInventory().remove(new Item(12601));
 					player.getInventory().add(new Item(13202, 1));
@@ -79,7 +79,7 @@ public class Imbue extends Dialogue {
 				}
 				break;
 			case 2:
-				if (player.getInventory().playerHasItem(13307, 30) && player.getInventory().playerHasItem(12603)) {
+				if (player.getInventory().contains(13307, 30) && player.getInventory().contains(12603)) {
 					player.getInventory().remove(new Item(13307, 30));
 					player.getInventory().remove(new Item(12603));
 					player.getInventory().add(new Item(12691, 1));
@@ -90,7 +90,7 @@ public class Imbue extends Dialogue {
 				}
 				break;
 			case 3:
-				if (player.getInventory().playerHasItem(13307, 30) && player.getInventory().playerHasItem(12605)) {
+				if (player.getInventory().contains(13307, 30) && player.getInventory().contains(12605)) {
 					player.getInventory().remove(new Item(13307, 30));
 					player.getInventory().remove(new Item(12605));
 					player.getInventory().add(new Item(12692, 1));
@@ -108,7 +108,7 @@ public class Imbue extends Dialogue {
 		} else if (getPhase() == 2) {
 			switch (index) {
 			case 1:
-				if (player.getInventory().playerHasItem(13307, 15) && player.getInventory().playerHasItem(4212)) {
+				if (player.getInventory().contains(13307, 15) && player.getInventory().contains(4212)) {
 					player.getInventory().remove(new Item(13307, 15));
 					player.getInventory().remove(new Item(4212));
 					player.getInventory().add(new Item(11748, 1));
@@ -119,7 +119,7 @@ public class Imbue extends Dialogue {
 				}
 				break;
 			case 2:
-				if (player.getInventory().playerHasItem(13307, 15) && player.getInventory().playerHasItem(4224)) {
+				if (player.getInventory().contains(13307, 15) && player.getInventory().contains(4224)) {
 					player.getInventory().remove(new Item(13307, 15));
 					player.getInventory().remove(new Item(4224));
 					player.getInventory().add(new Item(11759, 1));

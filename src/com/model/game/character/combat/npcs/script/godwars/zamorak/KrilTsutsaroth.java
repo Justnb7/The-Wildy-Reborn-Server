@@ -166,7 +166,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 		int random = Utility.random(250);
 		if (random == 1) {
 			if (player.isPetSpawned()) {
-				if (player.getInventory().remaining() < 1) {
+				if (player.getInventory().getFreeSlots() < 1) {
 					player.getInventory().add(new Item(12652));
 				} else {
 					player.getBank().add(new Item(12652));

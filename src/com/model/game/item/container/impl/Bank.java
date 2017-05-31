@@ -52,7 +52,7 @@ public final class Bank extends Container {
         player.getActionSender().sendConfig(115, 0);
 		player.getActionSender().sendInterfaceWithInventoryOverlay(5292, 5063);
         refresh();
-		player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
+		player.getActionSender().sendUpdateItems(5064, player.getInventory().toArray());
 	}
 
 	/**
@@ -78,16 +78,16 @@ public final class Bank extends Container {
         if(invItem == null)
             return false;
         Item item = new Item(invItem.getId(), amount);
-        int count = player.getInventory().amount(item.getId());
+        int count = player.getInventory().getAmount(item.getId());
 
         if (item.getAmount() > count) {
             item.setAmount(count);
         }
 
         if (deposit(item.copy())) {
-            player.getInventory().remove(item, inventorySlot);
+            player.getInventory().remove(item.getId(), item.getAmount());
             refresh();
-            player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
+            player.getActionSender().sendUpdateItems(5064, player.getInventory().toArray());
             return true;
         }
         return false;
@@ -149,17 +149,17 @@ public final class Bank extends Container {
             item.setAmount(withdrawAmount);
         }
 
-        if (item.getAmount() > player.getInventory().remaining() && !item.getDefinition().isStackable() && !player.isWithdrawAsNote()) {
-            item.setAmount(player.getInventory().remaining());
+        if (item.getAmount() > player.getInventory().getFreeSlots() && !item.getDefinition().isStackable() && !player.isWithdrawAsNote()) {
+            item.setAmount(player.getInventory().getFreeSlots());
         }
 
         if (!item.getDefinition().isStackable() && !item.getDefinition().isNoted() && !player.isWithdrawAsNote()) {
-            if (player.getInventory().remaining() < item.getAmount()) {
+            if (player.getInventory().getFreeSlots() < item.getAmount()) {
                 player.getActionSender().sendMessage("You do not have enough space" + " in your inventory!");
                 return false;
             }
         } else {
-            if (player.getInventory().remaining() < 1 && !player.getInventory().contains(
+            if (player.getInventory().getFreeSlots() < 1 && !player.getInventory().contains(
                 !player.isWithdrawAsNote() ? item.getId() : item.getId() + 1)) {
                 player.getActionSender().sendMessage("You do not have enough space" + " in your inventory!");
                 return false;
@@ -173,7 +173,7 @@ public final class Bank extends Container {
         if (addItem)
             player.getInventory().add(item);
         refresh();
-        player.getActionSender().sendUpdateItems(5064, player.getInventory().container());
+        player.getActionSender().sendUpdateItems(5064, player.getInventory().toArray());
         return true;
     }
     

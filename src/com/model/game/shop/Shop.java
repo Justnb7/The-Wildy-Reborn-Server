@@ -134,7 +134,7 @@ public final class Shop {
 			player.getActionSender().sendInterfaceConfig(1, 28050);
 		}
 		player.setShopping(true);
-		player.getActionSender().sendUpdateItems(3823, player.getInventory().container());
+		player.getActionSender().sendUpdateItems(3823, player.getInventory().toArray());
 		player.getActionSender().sendItemsOnInterface(3900, container.container(), container.size());
 		player.setOpenShop(name);
 		player.getActionSender().sendInterfaceWithInventoryOverlay(3824, 3822);
@@ -152,7 +152,7 @@ public final class Shop {
 	 *            if the stock should be checked.
 	 */
 	public void updateShop(Player player, boolean checkStock) {
-		player.getActionSender().sendUpdateItems(3823, player.getInventory().container());
+		player.getActionSender().sendUpdateItems(3823, player.getInventory().toArray());
 		int size = container.size();
 		players.stream().filter(Objects::nonNull).forEach(p -> p.getActionSender().sendItemsOnInterface(3900, container.container(), size));
 
@@ -289,7 +289,7 @@ public final class Shop {
 			player.getActionSender().sendMessage("You are not permitted to use this shop because of a restriction on your account.");
 			return false;
 		}
-		if (player.getInventory().alreadyHasItem(12791) && shopItem.getId() == 12791) {
+		if (player.getInventory().contains(12791) && shopItem.getId() == 12791) {
 			player.getActionSender().sendMessage("You cannot own more then one rune pouch at the time.");
 			return false;
 		}
@@ -304,8 +304,8 @@ public final class Shop {
 		}
 		if (item.getAmount() > shopItem.getAmount())
 			item.setAmount(shopItem.getAmount());
-		if (!player.getInventory().spaceFor(item)) {
-			item.setAmount(player.getInventory().remaining());
+		if (!player.getInventory().hasSpaceFor(item)) {
+			item.setAmount(player.getInventory().getFreeSlots());
 			if (item.getAmount() == 0) {
 				player.getActionSender().sendMessage("You do not have enough space" + " in your inventory to buy this item!");
 				return false;
@@ -317,9 +317,9 @@ public final class Shop {
 			player.getActionSender().sendMessage("You do not have enough " + currency + " to buy this item.");
 			return false;
 		}
-		if (player.getInventory().remaining() >= item.getAmount() && !item.getDefinition().isStackable()
-				|| player.getInventory().remaining() >= 1 && item.getDefinition().isStackable()
-				|| player.getInventory().playerHasItem(item.getId()) && item.getDefinition().isStackable()) {
+		if (player.getInventory().getFreeSlots() >= item.getAmount() && !item.getDefinition().isStackable()
+				|| player.getInventory().getFreeSlots() >= 1 && item.getDefinition().isStackable()
+				|| player.getInventory().contains(item.getId()) && item.getDefinition().isStackable()) {
 
 			if (itemCache.containsKey(item.getId()) && !player.getOpenShop().equals("Gear Point Store") && !player.getOpenShop().equals("Donator Ticket Shop") && !player.getOpenShop().equals("Bounty Hunter Store")) {
 				container.searchItem(item.getId()).ifPresent(i -> i.decrementAmountBy(item.getAmount()));
@@ -365,7 +365,7 @@ public final class Shop {
 			player.getActionSender().sendMessage("You are not permitted to use this shop because of a restriction on your account.");
 			return false;
 		}
-		if (!player.getInventory().playerHasItem(item.getId()))
+		if (!player.getInventory().contains(item.getId()))
 			return false;
 		if (Arrays.stream(Constants.SPAWNABLES).anyMatch($it -> $it.equalsIgnoreCase(itemName))) {
 			player.getActionSender().sendMessage("<col=ff0000>" + Utility.formatPlayerName(itemName) + " <col=0>may not be sold!");
@@ -380,7 +380,7 @@ public final class Shop {
 			player.getActionSender().sendMessage("There is no room in this store for the item you are trying to sell!");
 			return false;
 		}
-		if (player.getInventory().remaining() == 0 && !currency.getCurrency().canRecieveCurrency(player)) {
+		if (player.getInventory().getFreeSlots() == 0 && !currency.getCurrency().canRecieveCurrency(player)) {
 			player.getActionSender().sendMessage("You do not have enough space in your inventory to sell this item!");
 			return false;
 		}
@@ -388,7 +388,7 @@ public final class Shop {
 			return false;
 		}
 
-		int amount = player.getInventory().amount(item.getId());
+		int amount = player.getInventory().getAmount(item.getId());
 		if (item.getAmount() > amount && !item.getDefinition().isStackable()) {
 			item.setAmount(amount);
 		} else if (item.getAmount() > player.getInventory().get(fromSlot).getAmount() && item.getDefinition().isStackable()) {

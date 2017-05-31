@@ -18,7 +18,7 @@ public class ItemOnNpc implements PacketType {
 		if (npc == null) {
 			return;
 		}
-		if (!player.getInventory().playerHasItem(itemId)) {
+		if (!player.getInventory().contains(itemId)) {
 			return;
 		}
 		@SuppressWarnings("unused")

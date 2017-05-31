@@ -42,7 +42,7 @@ public class Firemaking {
 					return;
 				}
 				
-				if (!player.getInventory().playerHasItem(590, 1)) {
+				if (!player.getInventory().contains(590, 1)) {
 					return;
 				}
 				

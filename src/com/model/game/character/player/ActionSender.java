@@ -3,7 +3,6 @@ package com.model.game.character.player;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.item.Item;
-import com.model.game.item.container.Container;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
@@ -311,18 +310,6 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendUpdateItem(int interfaceId, Item item, int slot) {
-		player.outStream.putFrameVarShort(34);
-        int offset = player.getOutStream().offset;
-        player.outStream.writeShort(interfaceId);
-        player.outStream.writeByte(slot);
-        player.outStream.writeShort(item.getId() + 1);
-        player.outStream.writeByte(255);
-        player.outStream.putInt(item.getAmount());
-        player.outStream.putFrameSizeShort(offset);
-		return this;
-	}
-	
 	public ActionSender sendUpdateItem(int frame, int item, int slot, int amount) {
 		player.outStream.putFrameVarShort(34);
         int offset = player.getOutStream().offset;
@@ -530,56 +517,6 @@ public class ActionSender {
 		}
 		player.getOutStream().putFrameSizeShort(offset);
 		player.flushOutStream();
-		return this;
-	}
-	
-	public ActionSender sendItemsOnInterface(int widget, Item[] container, int size) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().putFrameVarShort(53);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(widget);
-			player.getOutStream().writeShort(size);
-			for (Item item : container) {
-				if (item == null)
-					continue;
-				if (item.getAmount() > 254) {
-					player.getOutStream().writeByte(255);
-					player.getOutStream().writeDWord_v2(item.getAmount());
-				} else {
-					player.getOutStream().writeByte(item.getAmount());
-				}
-				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
-			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
-		}
-		return this;
-	}
-	
-	public ActionSender sendItemsOnInterface(int interfaceId, Container container) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().putFrameVarShort(53);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(interfaceId);
-			player.getOutStream().writeShort(container.toArray().length);
-			for (Item item : container.toArray()) {
-				if (item != null) {
-					int amount = item.getAmount();
-					if (amount > 254) {
-						player.getOutStream().writeByte(255);
-						player.getOutStream().writeDWord_v2(item.getAmount());
-					} else {
-						player.getOutStream().writeByte(item.getAmount());
-					}
-					player.getOutStream().writeWordBigEndianA(item.getId() + 1);
-				} else {
-					player.getOutStream().writeByte(0);
-					player.getOutStream().writeWordBigEndianA(0);
-				}
-			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
-		}
 		return this;
 	}
 	

@@ -79,8 +79,6 @@ import com.model.game.item.container.container.impl.trade.TradeSession.TradeStag
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
-import com.model.game.shop.Currency;
-import com.model.game.shop.Shop;
 import com.model.net.network.Packet;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.net.network.rsa.ISAACRandomGen;
@@ -898,26 +896,6 @@ public class Player extends Entity {
 	public void setDebugMode(boolean on) {
 		this.debugMode = on;
 	}
-
-	/**
-	 * The shop that you currently have open.
-	 */
-	private String openShop = "";
-	
-	/**
-	 * The players death store
-	 */
-	public Shop deathShop = new Shop("Death Store", new Item[0], false, false, Currency.COINS);
-	
-	/**
-	 * Does the player have the death store enabled
-	 */
-	public boolean deathShopEnabled = true;
-	
-	/**
-	 * Using the death shop chat
-	 */
-	public boolean deathShopChat;
 	
 	/**
 	 * Reload ground items.
@@ -1693,33 +1671,6 @@ public class Player extends Entity {
 	 * The players active status
 	 */
 	private boolean isActive;
-
-	/**
-	 * Gets the shop that you currently have open.
-	 *
-	 * @return the shop you have open.
-	 */
-	public String getOpenShop() {
-		return openShop;
-	}
-
-	/**
-	 * Sets the value for {@link Player#openShop}.
-	 *
-	 * @param openShop
-	 *            the new value to set.
-	 */
-	public void setOpenShop(String openShop) {
-		if (openShop == null && this.openShop != null) {
-			Shop s = Shop.SHOPS.get(this.openShop);
-			if (s == null) {
-				this.openShop = openShop;
-				return;
-			}
-			s.getPlayers().remove(this);
-		}
-		this.openShop = openShop;
-	}
 
 	/**
 	 * Checks if the player can unregister from the server, this will prevent

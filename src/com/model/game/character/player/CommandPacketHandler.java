@@ -30,7 +30,6 @@ import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.NPCDefinitions;
 import com.model.utility.json.loader.ItemDefinitionLoader;
 import com.model.utility.json.loader.NPCDefinitionLoader;
-import com.model.utility.json.loader.ShopLoader;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 
@@ -627,8 +626,7 @@ public class CommandPacketHandler implements PacketType {
 
 					break;
 				case 4:
-					new ShopLoader().load();
-					player.getActionSender().sendMessage("Succesfully reloaded shops");
+					
 					break;
 				case 5:
 					break;

@@ -2,7 +2,6 @@ package com.model.game.character.player.dialogue.impl;
 
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.shop.Shop;
 
 /**
  * 
@@ -22,19 +21,19 @@ public class SigmundTheMerchant extends Dialogue {
 		if (getPhase() == 0) {
 			switch (index) {
 			case 1:
-				Shop.SHOPS.get("Food && Potions Shop").openShop(player);
+				//Shop.SHOPS.get("Food && Potions Shop").openShop(player);
 				break;
 			case 2:
-				Shop.SHOPS.get("Armour Shop").openShop(player);
+				//Shop.SHOPS.get("Armour Shop").openShop(player);
 				break;
 			case 3:
-				Shop.SHOPS.get("Magic Shop").openShop(player);
+				//Shop.SHOPS.get("Magic Shop").openShop(player);
 				break;
 			case 4:
-				Shop.SHOPS.get("Range Shop").openShop(player);
+				//Shop.SHOPS.get("Range Shop").openShop(player);
 				break;
 			case 5:
-				Shop.SHOPS.get("Weapons and Accessories").openShop(player);
+				//Shop.SHOPS.get("Weapons and Accessories").openShop(player);
 				break;
 			}
 		}

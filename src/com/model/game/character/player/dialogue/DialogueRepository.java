@@ -6,8 +6,6 @@ import java.util.Map;
 import com.model.game.character.player.dialogue.impl.Imbue;
 import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.dialogue.impl.SigmundTheMerchant;
-import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue;
-import com.model.game.character.player.dialogue.impl.chat.DeathShopDialogue2;
 import com.model.game.character.player.dialogue.impl.chat.Mandrith;
 import com.model.game.character.player.dialogue.impl.chat.RunescapeGuide;
 import com.model.game.character.player.dialogue.impl.minigames.BarrowsTunnel;
@@ -124,12 +122,6 @@ public class DialogueRepository {
 		 */
 		dialogues.put("ENCHANTED_GEM_TELEPORT", EnchantedGemTeleport.class);
 		dialogues.put("ENCHANTED_GEM", EnchantedGem.class);
-		
-		/**
-		 * Death store
-		 */
-		dialogues.put("DEATH_SHOP_DIALOGUE", DeathShopDialogue.class);
-		dialogues.put("DEATH_SHOP_DIALOGUE2", DeathShopDialogue2.class);
 		
 		/**
 		 * Bounty hunter

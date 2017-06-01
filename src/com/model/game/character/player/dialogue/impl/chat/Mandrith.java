@@ -2,7 +2,6 @@ package com.model.game.character.player.dialogue.impl.chat;
 
 import com.model.game.character.player.dialogue.Dialogue;
 import com.model.game.character.player.dialogue.Type;
-import com.model.game.shop.Shop;
 
 /**
  * 
@@ -22,7 +21,7 @@ public class Mandrith extends Dialogue {
 		if (getPhase() == 0) {
 			switch(index) {
 			case 1:
-				Shop.SHOPS.get("Blood money rewards").openShop(player);
+				//Shop.SHOPS.get("Blood money rewards").openShop(player);
 				break;
 			case 2:
 				player.dialogue().start("IMBUE", player);

@@ -281,12 +281,6 @@ public class World implements Service {
 		 * Send our controller check
 		 */
 		player.getController().onDisconnect(player);
-
-		/*
-		 * Stop all player related tasks
-		 */
-		
-		player.setOpenShop(null);
 		
 		/*
 		 * Remove from kraken instance

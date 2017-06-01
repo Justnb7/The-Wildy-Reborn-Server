@@ -159,10 +159,7 @@ public final class GroundItemHandler {
 					if (item.deathShop()) {
 						Player owner = item.getOwner();
 						if (owner != null) {
-							if (owner.deathShopEnabled) {
-								owner.deathShop.getContainer().add(item.getItem());
-								owner.getActionSender().sendMessage("The " + item.getItem().getDefinition().getName() + "x" + item.getItem().getAmount() + " is now in your death store!");
-							}
+							
 						}
 					}
 				}

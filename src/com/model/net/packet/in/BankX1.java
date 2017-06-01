@@ -1,8 +1,6 @@
 package com.model.net.packet.in;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.Item;
-import com.model.game.shop.Shop;
 import com.model.net.packet.PacketType;
 
 public class BankX1 implements PacketType {
@@ -20,17 +18,6 @@ public class BankX1 implements PacketType {
             player.xRemoveId = player.getInStream().readSignedWordBigEndian();
         }
         
-        if (player.xInterfaceId == 3823) {
-            if (player.getOpenShop().equals("Death Store")) {
-                player.getActionSender().sendMessage("You cannot sell items to this store!");
-                return;
-            }
-            Shop.SHOPS.get(player.getOpenShop()).sell(player, new Item(player.xRemoveId, 100), player.xRemoveSlot);
-            player.xRemoveSlot = 0;
-            player.xInterfaceId = 0;
-            player.xRemoveId = 0;
-            return;
-        }
         if (packetType == PART1) {
             player.getOutStream().writeFrame(27);
         }

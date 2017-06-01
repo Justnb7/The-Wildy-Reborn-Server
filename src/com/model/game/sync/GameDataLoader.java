@@ -25,7 +25,6 @@ import com.model.utility.json.definitions.NPCDefinitions;
 import com.model.utility.json.loader.EquipmentRequirementLoader;
 import com.model.utility.json.loader.ItemDefinitionLoader;
 import com.model.utility.json.loader.NPCDefinitionLoader;
-import com.model.utility.json.loader.ShopLoader;
 import com.model.utility.json.loader.WeaponDefinitionLoader;
 
 /**
@@ -64,7 +63,6 @@ public class GameDataLoader implements Runnable {
 			Server.npcHandler.declare();
 			Arrays.fill(NPCDefinitions.getDefinitions(), null);
 	        new NPCDefinitionLoader().load();
-			new ShopLoader().load();
 			new ItemDefinitionLoader().load();
 			new EquipmentRequirementLoader().load();
 			new WeaponDefinitionLoader().load();

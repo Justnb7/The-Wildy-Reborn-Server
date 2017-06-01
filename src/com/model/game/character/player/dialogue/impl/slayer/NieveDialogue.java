@@ -7,7 +7,6 @@ import com.model.game.character.player.dialogue.Type;
 import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.SlayerMasters;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
-import com.model.game.shop.Shop;
 
 /**
  * The dialogue enacted by Nieve the Slayer Master.
@@ -92,7 +91,7 @@ public class NieveDialogue extends Dialogue {
 													stop();
 												} else {
 													if (getPhase() == 15) {
-														Shop.SHOPS.get("Slayer Rewards").openShop(player);
+														//Shop.SHOPS.get("Slayer Rewards").openShop(player);
 													} else {
 														if (getPhase() == 16) {
 															send(Type.NPC, NPC_ID, Expression.DEFAULT, "Social-Slayer is like normal slayer", "except you can complete the task with a friend.", "The points are divided between both players", "and the experience too.");

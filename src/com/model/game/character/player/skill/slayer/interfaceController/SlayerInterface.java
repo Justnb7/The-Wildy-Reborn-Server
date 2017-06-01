@@ -10,7 +10,6 @@ import com.model.game.character.player.skill.slayer.Slayer;
 import com.model.game.character.player.skill.slayer.interfaceController.ExtendInterface.ExtendButtons;
 import com.model.game.character.player.skill.slayer.interfaceController.UnlockInterface.UnlockButtons;
 import com.model.game.item.Item;
-import com.model.game.shop.Shop;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -353,7 +352,6 @@ public class SlayerInterface {
 			player.getActionSender().sendMessage("Previous interface = " + getPreviousInterface());
 			return true;
 		case SHOP:
-			Shop.SHOPS.get("Slayer Equipment").openSlayerShop(player);
 			return true;
 		case CANCEL:
 			if (!Slayer.hasTask(player))

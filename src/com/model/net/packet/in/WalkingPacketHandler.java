@@ -89,7 +89,6 @@ public class WalkingPacketHandler implements PacketType {
 		if (packetType == 248 || packetType == 164) {
 			player.faceEntity(null);
 			player.getCombatState().reset();
-			player.setOpenShop(null);
 			Combat.resetCombat(player);
 			player.setFollowing(null);
 		}

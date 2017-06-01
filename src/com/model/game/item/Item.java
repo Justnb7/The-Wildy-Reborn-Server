@@ -86,6 +86,10 @@ public class Item {
 	public Item(int id) {
 		this(id, 1);
 	}
+	
+	public void add(int amount) {
+		this.amount += amount;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

@@ -3182,5 +3182,15 @@ public class Player extends Entity {
 	public PriceChecker getPriceChecker() {
 		return priceChecker;
 	}
+	
+	private int shopId;
+
+	public int getShopId() {
+		return shopId;
+	}
+	
+	public void setShopId(final int shopId) {
+		this.shopId = shopId;
+	}
 
 }

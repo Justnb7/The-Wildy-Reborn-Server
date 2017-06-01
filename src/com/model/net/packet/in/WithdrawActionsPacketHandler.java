@@ -4,6 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
+import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.net.packet.PacketType;
 
 public class WithdrawActionsPacketHandler implements PacketType {
@@ -70,12 +71,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int removeSlot = player.getInStream().readUnsignedWordA();
 		final int removeId = player.getInStream().readUnsignedWordA();
 
-		if (player.inDebugMode()
-				&& player.getRights().equals(Rights.ADMINISTRATOR)) {
-			player.getActionSender().sendMessage(
-					"[ItemContainerAction] - FirstAction - InterfaceId: "
-							+ interfaceId + " (" + removeId + ", " + removeSlot
-							+ ")");
+		if (player.inDebugMode() && player.getRights().equals(Rights.ADMINISTRATOR)) {
+			player.getActionSender().sendMessage("[ItemContainerAction] - FirstAction - InterfaceId: " + interfaceId + " (" + removeId + ", " + removeSlot + ")");
 		}
 
 		switch (interfaceId) {
@@ -131,6 +128,14 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case InterfaceConstants.PRICE_CHECKER:
 			player.getPriceChecker().withdraw(removeId, removeSlot, 1);
+			break;
+			
+		case InterfaceConstants.SHOP_INTERFACE:
+			ShopManager.getShopValue(player, removeSlot);
+			break;
+			
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.getSellValue(player, removeId);
 			break;
 
 		}

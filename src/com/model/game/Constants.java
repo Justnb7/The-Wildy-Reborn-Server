@@ -234,6 +234,11 @@ public class Constants {
 	 * The directory for the engine scripts.
 	 */
 	public static final String SCRIPTS_DIRECTORY = "./data/scripts/";
+	
+	/**
+	 * Location of the data
+	 */
+	public static final String DATA_DIR = "./data/";
 
 	public static final int TOTAL_MOBS = 7520;
 

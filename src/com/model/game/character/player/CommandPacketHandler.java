@@ -17,6 +17,7 @@ import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
@@ -626,7 +627,8 @@ public class CommandPacketHandler implements PacketType {
 
 					break;
 				case 4:
-					
+					ShopManager.update();
+					player.getActionSender().sendMessage("Successfully reloaded shops.");
 					break;
 				case 5:
 					break;

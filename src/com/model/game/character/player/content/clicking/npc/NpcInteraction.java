@@ -6,6 +6,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.skill.fishing.Fishing;
 import com.model.game.character.player.skill.fishing.FishingSpot;
 import com.model.game.character.player.skill.thieving.Pickpocket;
+import com.model.game.item.container.impl.shop.ShopManager;
 
 public class NpcInteraction {
 
@@ -29,6 +30,11 @@ public class NpcInteraction {
 		}
 
 		switch (npc.getId()) {
+		
+		/* Skiller Shop */
+		case 1325:
+			ShopManager.open(player, 10);
+			break;
 
 		/**
 		 * Kamfreena

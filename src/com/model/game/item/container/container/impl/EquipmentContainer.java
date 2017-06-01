@@ -1,10 +1,14 @@
-package com.model.game.item.container.impl;
+package com.model.game.item.container.container.impl;
+
+import java.util.Arrays;
 
 import com.model.UpdateFlags.UpdateFlag;
+import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.Container;
-import com.model.game.item.container.ItemContainerPolicy;
+import com.model.game.item.container.InterfaceConstants;
+import com.model.game.item.container.container.Container;
+import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.Requirement;
 import com.model.utility.json.definitions.WeaponAnimation;
 
@@ -13,7 +17,7 @@ import com.model.utility.json.definitions.WeaponAnimation;
  *
  * @author lare96 <http://github.com/lare96>
  */
-public final class Equipment extends Container {
+public final class EquipmentContainer extends Container {
 	
 	/**
 	 * The size of the equipment container.
@@ -81,23 +85,36 @@ public final class Equipment extends Container {
     private final Player player;
 
     /**
-     * Creates a new {@link Equipment}.
+     * Creates a new {@link EquipmentContainer}.
      *
      * @param player
      *            the player who's equipment is being managed.
      */
-    public Equipment(Player player) {
-        super(ItemContainerPolicy.NORMAL, 14);
+    public EquipmentContainer(Player player) {
+        super(SIZE, ContainerType.DEFAULT);
         this.player = player;
     }
+    
+    @Override
+	public void clear(boolean refresh) {
+		super.clear(refresh);
+		Arrays.fill(player.getBonuses(), 0);
+	}
+    
+    @Override
+	public void refresh() {
+		player.getActionSender().sendUpdateItems(InterfaceConstants.EQUIPMENT, stack);
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+	}
 
-    /**
-     * Refreshes the contents of this equipment container to the interface.
-     */
-    public void refresh() {
-        refresh(player, 1688);
-        player.sendBonus();
-    }
+	@Override
+	public void refresh(int... slots) {
+		for (final int slot : slots) {
+			player.getActionSender().sendItemOnInterfaceSlot(InterfaceConstants.EQUIPMENT, stack[slot], slot);
+		}
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		player.sendBonus();
+	}
 
     /**
      * Equips the item in {@code inventorySlot} to the equipment container.
@@ -124,30 +141,30 @@ public final class Equipment extends Container {
             if (used(designatedSlot)) {
             	//System.out.println("Enter part 3");
                 if (item.getId() == equipItem.getId()) {
-                    set(designatedSlot, new Item(item.getId(), item.getAmount() + equipItem.getAmount()));
-                    System.out.println("Set equipment");
+                	setSlot(designatedSlot, new Item(item.getId(), item.getAmount() + equipItem.getAmount()));
+                    //System.out.println("Set equipment");
                 } else {
                     player.getInventory().setSlot(inventorySlot, equipItem);
                     player.getInventory().refresh();
-                    set(designatedSlot, item);
+                    setSlot(designatedSlot, item);
                    // System.out.println("Don't know what this does");
                 }
             } else {
-                set(designatedSlot, item);
+                setSlot(designatedSlot, item);
                 //System.out.println("Same here");
             }
             player.getInventory().remove(inventorySlot, item.getId(), true);
         } else {
             int designatedSlot = item.getDefinition().getEquipmentSlot();
-            if (designatedSlot == Equipment.WEAPON_SLOT && item.getDefinition().isTwoHanded() && used(Equipment.SHIELD_SLOT)) {
-                if (!unequipItem(Equipment.SHIELD_SLOT, true)) {
+            if (designatedSlot == EquipmentContainer.WEAPON_SLOT && item.getDefinition().isTwoHanded() && used(EquipmentContainer.SHIELD_SLOT)) {
+                if (!unequipItem(EquipmentContainer.SHIELD_SLOT, true)) {
                     //System.out.println("Uneqip?");
                     return false;
                 }
             }
-            if (designatedSlot == Equipment.SHIELD_SLOT && used(Equipment.WEAPON_SLOT)) {
-                if (get(Equipment.WEAPON_SLOT).getDefinition().isTwoHanded()) {
-                    if (!unequipItem(Equipment.WEAPON_SLOT, true)) {
+            if (designatedSlot == EquipmentContainer.SHIELD_SLOT && used(EquipmentContainer.WEAPON_SLOT)) {
+                if (get(EquipmentContainer.WEAPON_SLOT).getDefinition().isTwoHanded()) {
+                    if (!unequipItem(EquipmentContainer.WEAPON_SLOT, true)) {
                         //System.out.println("2h?");
                         return false;
                     }
@@ -165,9 +182,9 @@ public final class Equipment extends Container {
             } else {
                 player.getInventory().removeSlot(inventorySlot, item.getId(), true);
             }
-            set(designatedSlot, new Item(item.getId(), item.getAmount()));
+            setSlot(designatedSlot, new Item(item.getId(), item.getAmount()));
         }
-        if (item.getDefinition().getEquipmentSlot() == Equipment.WEAPON_SLOT) {
+        if (item.getDefinition().getEquipmentSlot() == EquipmentContainer.WEAPON_SLOT) {
             WeaponAnimation.execute(player, item);
             player.getWeaponInterface().restoreWeaponAttributes();
             player.spellId = -1;
@@ -200,11 +217,12 @@ public final class Equipment extends Container {
             player.getActionSender().sendMessage("You do not have enough space in " + "your inventory!");
             return false;
         }
-        super.remove(item, equipmentSlot);
+        super.remove(item);
+        //super.remove(item, equipmentSlot);
         if (addItem)
             player.getInventory().add(new Item(item.getId(), item.getAmount()));
-        if (equipmentSlot == Equipment.WEAPON_SLOT) {
-            player.getWeaponInterface().sendWeapon(-1, "Unarmed");
+        if (equipmentSlot == EquipmentContainer.WEAPON_SLOT) {
+            player.getWeaponInterface().sendWeapon(null, "Unarmed");
             player.spellId = -1;
             player.autocastId = -1;
             player.autoCast = false;
@@ -234,45 +252,22 @@ public final class Equipment extends Container {
             return false;
         return unequipItem(slot, addItem);
     }
-
-    /**
-     * This method is not supported by this container implementation.
-     *
-     * @throws UnsupportedOperationException
-     *             if this method is invoked by default, this method will always
-     *             throw an exception.
-     */
-    @Override
-    public boolean add(Item item, int slot) {
-        throw new UnsupportedOperationException("This method is not supported" + " by this container implementation!");
-    }
-
-    /**
-     * This method is not supported by this container implementation.
-     *
-     * @throws UnsupportedOperationException
-     *             if this method is invoked by default, this method will always
-     *             throw an exception.
-     */
-    @Override
-    public boolean remove(Item item, int slot) {
-        throw new UnsupportedOperationException("This method is not supported by this container implementation!");
-    }
 	
 	public boolean usingCrystalBow(Player player) {
-		return player.getEquipment().getId(Equipment.WEAPON_SLOT) == 4222;
+		return player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 4222;
 	}
 	
 	public boolean wearingBlowpipe(Player player) {
-		return player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12926;
+		return player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12926;
 	}
 	
 	public boolean wearingBallista(Player player) {
-		return player.getEquipment().getId(Equipment.WEAPON_SLOT) == 19481;
+		return player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 19481;
 	}
 	
 	public boolean isCrossbow(Player player) {
-		switch(player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		switch(weapon.getId()) {
 		case 11785:
 		case 9185:
 		case 18357:
@@ -283,7 +278,8 @@ public final class Equipment extends Container {
 	}
 	
 	public boolean isThrowingWeapon(Player player) {
-		switch (player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		switch(weapon.getId()) {
 		// Javalins
 		case 825:
 		case 826:
@@ -323,7 +319,8 @@ public final class Equipment extends Container {
 	}
 
 	public boolean isBow(Player player) {
-		switch (player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		switch(weapon.getId()) {
 		case 839:
 		case 841:
 		case 843:
@@ -349,7 +346,8 @@ public final class Equipment extends Container {
 	}
 	
 	public boolean isArrow(Player player) {
-		switch (player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		switch(weapon.getId()) {
 		case 882:
 		case 884:
 		case 886:
@@ -365,7 +363,8 @@ public final class Equipment extends Container {
 	}
 	
 	public boolean isBolt(Player player) {
-		switch (player.getEquipment().getId(Equipment.ARROWS_SLOT)) {
+		Item weapon = player.getEquipment().get(EquipmentContainer.ARROWS_SLOT);
+		switch(weapon.getId()) {
 		case 9140: 
 		case 9141:
 		case 4142: 
@@ -390,20 +389,89 @@ public final class Equipment extends Container {
 		return false;
 	}
 
-	public final int[] VENEMOUS_WEPS = {12926, 12904, 12899, 12904};
-	public final int[] VENEMOUS_HELMS = {13197, 13199, 12931};
+	public final Item[] VENEMOUS_WEPS = {new Item(12926), new Item(12904), new Item(12899), new Item(12904)};
+	public final Item[] VENEMOUS_HELMS = {new Item(13197), new Item(13199), new Item(12931)};
 	
 	public boolean canInfect(Player player){
-		for(int i : VENEMOUS_WEPS){
-			if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == i){
+		for(Item i : VENEMOUS_WEPS){
+			if(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT) == i){
 				return true;
 			}
 		}
-		for(int i : VENEMOUS_HELMS){
-			if(player.getEquipment().getId(Equipment.HEAD_SLOT) == i){
+		for(Item i : VENEMOUS_HELMS){
+			if(player.getEquipment().get(EquipmentContainer.HEAD_SLOT) == i){
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private static final boolean[] HAS_BODY = new boolean[Constants.ITEM_LIMIT];
+
+	private static final boolean[] HAS_HEAD = new boolean[Constants.ITEM_LIMIT];
+
+	private static final boolean[] HAS_JAW = new boolean[Constants.ITEM_LIMIT];
+
+	public static void declare() {
+		for (int index = 0; index < Constants.ITEM_LIMIT; index++) {
+			HAS_BODY[index] = true;
+			HAS_HEAD[index] = true;
+			HAS_JAW[index] = true;
+		}
+
+		final String[] remove_head = {
+				"helm", "coif", "sallet", "hood", "hat"
+		};
+
+		final String[] remove_body = {
+				"blouse", "chestplate", "top", "shirt", "brassard",
+				"torso", "hauberk", "platebody", "robe", "splitbark body", "jacket"
+		};
+
+		final String[] has_jaw = {
+				"mask", "med helm", "coif", "hood", "neitiznot", "armadyl helmet",
+				"berserker helm", "archer helm", "farseer helm", "warrior helm",
+				"void", "bandana", "bearhead", "dharok's helm", "hat"
+		};
+
+		for (final ItemDefinition def : ItemDefinition.DEFINITIONS) {
+			if (def != null) {
+				final String itemName = def.getName().trim().toLowerCase();
+				for (final String name : remove_head) {
+					if (itemName.contains(name) && !itemName.equals("robin hood hat")) {
+						HAS_HEAD[def.getId()] = false;
+						HAS_JAW[def.getId()] = false;
+					}
+				}
+
+				for (final String name : remove_body) {
+					if (itemName.contains(name) && !itemName.equals("angler top") && !itemName.contains("Farmer's shirt")) {
+						HAS_BODY[def.getId()] = false;
+					}
+				}
+
+				for (final String name : has_jaw) {
+					if (itemName.contains(name)) {
+						HAS_JAW[def.getId()] = true;
+					}
+				}
+				if (itemName.contains("full ")) {
+					HAS_JAW[def.getId()] = false;
+					HAS_HEAD[def.getId()] = true;
+				}
+			}
+		}
+	}
+	
+	public static boolean hasBody(int id) {
+		return HAS_BODY[id];
+	}
+	
+	public static boolean hasHead(int id) {
+		return HAS_HEAD[id];
+	}
+
+	public static boolean hasJaw(int id) {
+		return HAS_JAW[id];
 	}
 }

@@ -6,7 +6,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.game.location.Location;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -83,14 +83,14 @@ public class LunarSpells {
 	}
 	
 	private final boolean checkRunes(Player player, boolean delete, Item... runes) {
-		int weaponId = player.getEquipment().getId(Equipment.WEAPON_SLOT);
-		int shieldId = player.getEquipment().getId(Equipment.SHIELD_SLOT);
+		Item weaponId = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		Item shieldId = player.getEquipment().get(EquipmentContainer.SHIELD_SLOT);
 		int runesCount = 0;
 		boolean has = false;
 		for (Item i : runes) {
 			if (i == null)
 				continue; // safety
-			if (hasInfiniteRunes(i.getId(), i.getAmount(), weaponId, shieldId, false)) {
+			if (hasInfiniteRunes(i.getId(), i.getAmount(), weaponId.getId(), shieldId.getId(), false)) {
 				//Checks for rune pouch or staff.
 			}
 			else if (!player.getInventory().contains(i.getId(), i.getAmount())) {
@@ -107,7 +107,7 @@ public class LunarSpells {
 			runesCount = 0;
 			for (Item i : runes) {
 				if (i == null) continue; // safety
-				if (hasInfiniteRunes(i.getId(), i.getAmount(), weaponId, shieldId, false))
+				if (hasInfiniteRunes(i.getId(), i.getAmount(), weaponId.getId(), shieldId.getId(), false))
 					continue;
 				player.getInventory().remove(new Item(i.getId(), i.getAmount()));
 			}

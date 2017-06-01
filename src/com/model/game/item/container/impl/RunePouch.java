@@ -147,7 +147,7 @@ public final class RunePouch extends Container {
 			} else if (transferAmount == 0) {
 				return;
 			}
-			
+			player.getRunePouch().remove(new Item(rune.getId(), transferAmount));
 			/*if (player.getInventory().add(rune.getId(), transferAmount)) {
 				player.getRunePouch().remove(new Item(rune.getId(), transferAmount));
 			}*/

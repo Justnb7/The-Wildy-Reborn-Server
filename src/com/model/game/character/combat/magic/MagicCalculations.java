@@ -4,7 +4,7 @@ import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.utility.Utility;
 
 public class MagicCalculations {
@@ -32,7 +32,7 @@ public class MagicCalculations {
             damageMultiplier += .03 * (player.getSkills().getLevel(Skills.MAGIC) - player.getSkills().getLevelForExperience(Skills.MAGIC));
         }
 
-        switch (player.getEquipment().getId(Equipment.WEAPON_SLOT)) {
+        switch (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()) {
         case 4675: // Ancient Staff
         case 4710: // Ahrim's Staff
         case 4862: // Ahrim's Staff
@@ -44,8 +44,8 @@ public class MagicCalculations {
             break;
         }
 
-        if (player.getEquipment().getId(Equipment.AMULET_SLOT) > 0) {
-            switch (player.getEquipment().getId(Equipment.AMULET_SLOT)) {
+        if (player.getEquipment().get(EquipmentContainer.AMULET_SLOT).getId() > 0) {
+            switch (player.getEquipment().get(EquipmentContainer.AMULET_SLOT).getId()) {
             case 12002: // Occult
                 damageMultiplier += 0.10;
                 break;

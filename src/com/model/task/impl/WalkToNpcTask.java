@@ -66,6 +66,7 @@ public class WalkToNpcTask extends ScheduledTask {
 				NpcInteraction.fourthOption(player, npc);
 				break;
 			}
+			this.stop();
 		} else {
 			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 				@Override
@@ -89,6 +90,7 @@ public class WalkToNpcTask extends ScheduledTask {
 							NpcInteraction.fourthOption(player, npc);
 							break;
 						}
+						this.stop();
 					}
 				}
 			});

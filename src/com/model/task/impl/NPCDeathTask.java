@@ -18,7 +18,8 @@ import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.net.packet.out.SendKillFeedPacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Location3D;
@@ -345,8 +346,8 @@ public class NPCDeathTask extends ScheduledTask {
 		}
 	
 		
-		int weapon = player.getEquipment().getId(Equipment.WEAPON_SLOT);
-		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon, npc.isPoisoned()));
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon.getId(), npc.isPoisoned()));
 		
 		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
 		if(AnimatedArmour.isAnimatedArmourNpc(npc.getId()))

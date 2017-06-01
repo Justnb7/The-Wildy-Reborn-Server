@@ -69,15 +69,14 @@ import com.model.game.character.player.skill.slayer.interfaceController.SlayerIn
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
-import com.model.game.item.container.Container;
-import com.model.game.item.container.ItemContainerPolicy;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.game.item.container.container.impl.InventoryContainer;
+import com.model.game.item.container.container.impl.trade.TradeContainer;
+import com.model.game.item.container.container.impl.trade.TradeSession;
+import com.model.game.item.container.container.impl.trade.TradeSession.TradeStage;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.LootingBag;
 import com.model.game.item.container.impl.RunePouch;
-import com.model.game.item.container.impl.Trade;
-import com.model.game.item.container.impl.Trade.TradeStatus;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
@@ -201,31 +200,63 @@ public class Player extends Entity {
         return bank;
     }
     
-    /**
-	 * The trade container
-	 */
-	private final Container trade = new Container(ItemContainerPolicy.NORMAL, Trade.SIZE);
+    private int otherPlayerTradeIndex = -1;
+    
+    public int getOtherPlayerTradeIndex() {
+		return otherPlayerTradeIndex;
+	}
+
+	public void setOtherPlayerTradeIndex(int otherPlayerTradeIndex) {
+		this.otherPlayerTradeIndex = otherPlayerTradeIndex;
+	}
 	
+	private final TradeContainer tradeContainer = new TradeContainer(this);
+
+	public TradeContainer getTradeContainer() {
+		return tradeContainer;
+	}
+
+	public boolean isTrading() {
+		return getTradeSession().isTrading();
+	}
+	
+	private TradeSession tradeSession = new TradeSession(this);
+	
+	public TradeSession getTradeSession() {
+		return tradeSession;
+	}
+	
+	private boolean tradeRequest;
+
 	/**
-	 * Returns the list of traded items
-	 * 
-	 * @return
+	 * @param tradeRequest
+	 *            The flag that denotes a player sent a trade request.
 	 */
-	public Container getTrade() {
-		return trade;
+	public void setTradeRequest(boolean tradeRequest) {
+		this.tradeRequest = tradeRequest;
+	}
+
+	/**
+	 * Determines if this player sent a trade request.
+	 *
+	 * @return {@code true} If this player sent a trade request. {@code false}
+	 *         otherwise.
+	 */
+	public boolean isTradeRequest() {
+		return tradeRequest;
 	}
     
     /**
      * The container that holds the equipment items.
      */
-    private final Equipment equipment = new Equipment(this);
+    private final EquipmentContainer equipment = new EquipmentContainer(this);
     
     /**
      * Gets the container that holds the equipment items.
      *
      * @return the container for the equipment.
      */
-    public Equipment getEquipment() {
+    public EquipmentContainer getEquipment() {
         return equipment;
     }
 	
@@ -917,52 +948,6 @@ public class Player extends Entity {
 	public boolean deathShopChat;
 	
 	/**
-	 * The player we are trading
-	 */
-	private Player tradedPlayer;
-	
-	/**
-	 * Sets the traded player
-	 * 
-	 * @param player
-	 */
-	public void setTradedPlayer(Player player) {
-		this.tradedPlayer = player;
-	}
-
-	/**
-	 * Gets the traded player
-	 * 
-	 * @return
-	 */
-	public Player getTradedPlayer() {
-		return tradedPlayer;
-	}
-
-	/**
-	 * The players current trade status
-	 */
-	private TradeStatus tradeStatus;
-
-	/**
-	 * Gets the players current trade status
-	 * 
-	 * @return
-	 */
-	public TradeStatus getTradeStatus() {
-		return tradeStatus;
-	}
-
-	/**
-	 * Sets the trade status of the player
-	 * 
-	 * @param status
-	 */
-	public void setTradeStatus(TradeStatus status) {
-		this.tradeStatus = status;
-	}
-	
-	/**
 	 * Reload ground items.
 	 * @param player
 	 */
@@ -1001,6 +986,11 @@ public class Player extends Entity {
 	
 	public Skills getSkills() {
 		return skills;
+	}
+	
+	@Override
+	public boolean canTrade() {
+		return getTradeSession().getTradeStage() == TradeStage.REQUEST;
 	}
 	
 	@Override
@@ -2592,16 +2582,6 @@ public class Player extends Entity {
 		return shopping;
 	}
 	
-    private boolean trading;
-	
-	public void setTrading(boolean trading) {
-		this.trading = trading;
-	}
-
-	public boolean isTrading() {
-		return this.trading;
-	}
-	
     private boolean banking;
 	
 	public void setBanking(boolean banking) {
@@ -3053,7 +3033,7 @@ public class Player extends Entity {
      */
     public void sendBonus() {
         Arrays.fill(bonuses, 0);
-        for (Item item : equipment) {
+        for (Item item : equipment.toArray()) {
             if (!Item.valid(item))
                 continue;
             for (int i = 0; i < bonuses.length; i++) {
@@ -3270,7 +3250,6 @@ public class Player extends Entity {
 	
 	public void removeInterfaceAttributes() {
 		setShopping(false);
-		setTrading(false);
 		setBanking(false);
 		dialogue().interrupt();
 	}

@@ -1,7 +1,8 @@
 package com.model.game.character.player.content.music.sounds;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -28,10 +29,10 @@ public class PlayerSounds {
 
 	public static void sendBlockOrHitSound(Player player, boolean hit) {
 		
-		int shield = player.getEquipment().getId(Equipment.SHIELD_SLOT);
-		if (shield > 0 && sounds[shield] != null) {
-			int sound = Utility.inclusiveRandom(sounds[shield].length - 1);
-			player.sendGlobalSound(player, sounds[shield][sound].id, 0, 0);
+		Item shield = player.getEquipment().get(EquipmentContainer.SHIELD_SLOT);
+		if (shield != null && sounds[shield.getId()] != null) {
+			int sound = Utility.inclusiveRandom(sounds[shield.getId()].length - 1);
+			player.sendGlobalSound(player, sounds[shield.getId()][sound].id, 0, 0);
 		}
 
 		if (hit) {

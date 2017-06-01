@@ -750,6 +750,22 @@ public abstract class Container {
 
 		return true;
 	}
+	
+	/**
+     * Retrieves the slot of the first item found with {@code id}.
+     *
+     * @param id
+     *         the identifier to search this container for.
+     * @return the slot of the item with the identifier.
+     */
+    public int searchSlot(int id) {
+        for (int i = 0; i < stack.length; i++) {
+            if (stack[i] == null || stack[i].getId() != id)
+                continue;
+            return i;
+        }
+        return -1;
+    }
 
 	/**
 	 * Gets the index of the specified item in the container.
@@ -767,7 +783,6 @@ public abstract class Container {
 				return index;
 			}
 		}
-
 		return -1;
 	}
 
@@ -1165,6 +1180,28 @@ public abstract class Container {
 			refresh(slot);
 		}
 	}
+	
+	 /**
+     * Determines if {@code slot} does not have an item on it.
+     *
+     * @param slot
+     *         the to determine if free or not.
+     * @return {@code true} if the slot is free, {@code false} otherwise.
+     */
+    public boolean free(int slot) {
+        return stack[slot] == null;
+    }
+	
+	 /**
+     * Determines if {@code slot} does have an item on it.
+     *
+     * @param slot
+     *         the to determine if used or not.
+     * @return {@code true} if the slot is used, {@code false} otherwise.
+     */
+    public boolean used(int slot) {
+        return !free(slot);
+    }
 	
 	public boolean isStackable(int id) {
 		return (type == ContainerType.ALWAYS_STACK) || ((Item.getDefinition(id) != null) && (Item.getDefinition(id).isStackable()) && (type == ContainerType.DEFAULT));

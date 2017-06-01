@@ -1,7 +1,8 @@
 package com.model.game.character.combat.weapon;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 
 /**
  * The class which represents functionality for the attack style.
@@ -170,7 +171,7 @@ public class AttackStyle {
 	 * Adjusts the player's attack style.
 	 */
 	public static void adjustAttackStyle(Player player) {
-		if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == -1) {
+		if (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == -1) {
 			switch(player.getAttackStyleConfig()) {
 			case 0:
 				 player.getActionSender().sendConfig(43, 0);
@@ -182,7 +183,7 @@ public class AttackStyle {
 				player.getActionSender().sendConfig(43, 2);
 				break;
 			}
-		} else if(player.getEquipment().getId(Equipment.WEAPON_SLOT) > 0) {
+		} else if(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() > 0) {
 			switch(player.getAttackStyle()) {
 			case 0:
 				 player.getActionSender().sendConfig(43, 0);
@@ -208,7 +209,9 @@ public class AttackStyle {
 	 * @param player
 	 */
 	public static void adjustAttackStyleOnLogin(Player player) {
-		if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == -1) {
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		
+		if (weapon == null) {
 			player.setAttackStyle(0);
 			player.getActionSender().sendConfig(43, 0);
 		} else {

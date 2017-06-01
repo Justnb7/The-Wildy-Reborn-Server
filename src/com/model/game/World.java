@@ -24,7 +24,6 @@ import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.game.item.container.impl.Trade;
 import com.model.net.packet.out.SendFriendPacket;
 import com.model.service.Service;
 import com.model.task.ScheduledTask;
@@ -267,8 +266,8 @@ public class World implements Service {
 		/*
 		 * Remove from trade
 		 */
-		if (Trade.inTrade(player)) {
-			Trade.declineTrade(player);
+		if (player.getTradeSession().isTrading()) {
+			player.getTradeSession().declineTrade(true);
 		}
 		
 		/*

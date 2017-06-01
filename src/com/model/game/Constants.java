@@ -137,6 +137,11 @@ public class Constants {
 	public static final int WORLD_CYCLE_TIME = 600;
 	
 	/**
+	 * The maximum amount of items the client can sent.
+	 */
+	public static final int ITEM_LIMIT = 25000;
+	
+	/**
 	 * The maximum amount of items in a stack.
 	 */
 	public static final int MAX_ITEMS = Integer.MAX_VALUE;

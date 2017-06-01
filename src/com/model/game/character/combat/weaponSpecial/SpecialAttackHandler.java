@@ -3,7 +3,8 @@ package com.model.game.character.combat.weaponSpecial;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.weaponSpecial.impl.*;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,13 +99,13 @@ public class SpecialAttackHandler {
 					return false;
 				}
 				
-				int weapon = player.getEquipment().getId(Equipment.WEAPON_SLOT);
+				Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
 
-				if (weapon == 4153) {
+				if (weapon.getId() == 4153) {
 					if(player.lastAttacker == null) { // nobody hit us
 						return false;
 					}
-					SpecialAttack special = SpecialAttackHandler.forId(weapon);
+					SpecialAttack special = SpecialAttackHandler.forId(weapon.getId());
 
 					if (special == null) {
 						System.out.println("Invalid special attack: " + weapon);

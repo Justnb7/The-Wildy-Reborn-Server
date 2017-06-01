@@ -2,7 +2,6 @@ package com.model.net.packet.in;
 
 import com.model.Server;
 import com.model.game.character.Animation;
-import com.model.game.character.Graphic;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.weapon.AttackStyle.FightType;
@@ -25,8 +24,7 @@ import com.model.game.character.player.content.teleport.TeleportHandler.Teleport
 import com.model.game.character.player.content.teleport.Teleports;
 import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.Equipment;
-import com.model.game.item.container.impl.Trade;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.net.packet.PacketType;
 import com.model.net.packet.buttons.ActionButtonEventListener;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
@@ -83,13 +81,15 @@ public class ActionButtonPacketHandler implements PacketType {
 			Server.getDropManager().select(player, button);
 			return;
 		}
-		
-		if (Trade.handleTradeButtons(player, button)) {
-			return;
-		}
 
 		if (player != null) {
 			EmoteData.useBookEmote(player, button);
+		}
+		
+		/* Trading */
+		if (player.getTradeSession().isTrading()) {
+			player.getTradeSession().onButtonClick(button);
+			return;
 		}
 		
 		// First verify this button is something even remotely related to teleports
@@ -502,7 +502,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 7212:
 		case 24017:
 			player.resetAutoCast();
-			player.getWeaponInterface().sendWeapon(player.getEquipment().getId(Equipment.WEAPON_SLOT), ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName());
+			player.getWeaponInterface().sendWeapon(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT), ItemDefinition.forId(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName());
 			break;
 			
 		case 1093:

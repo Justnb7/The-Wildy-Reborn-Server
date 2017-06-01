@@ -2,7 +2,6 @@ package com.model;
 
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.Trade;
 
 /**
  * Contains information about the state of interfaces open in the client.
@@ -114,12 +113,6 @@ public class InterfaceState {
 				break;
 			case Bank.BANK_INVENTORY_INTERFACE:
 				player.getBank().withdraw(enterAmountId, amount, true);
-				break;
-			case Trade.PLAYER_INVENTORY_INTERFACE:
-				Trade.offerItem(player, enterAmountId, enterAmountSlot, amount);
-				break;
-			case Trade.TRADE_INVENTORY_INTERFACE:
-				Trade.takeItem(player, enterAmountId, enterAmountSlot, amount);
 				break;
 			}
 		} finally {

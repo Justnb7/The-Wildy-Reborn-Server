@@ -119,13 +119,42 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender disableMap(int state, int mapStatus) {
+	/**
+	 * Represents the state a minimap can be in.
+	 *
+	 * @author Seven
+	 */
+	public enum MinimapState {
+		/**
+		 * The default state where the map is visible and clicking is enabled.
+		 */
+		NORMAL(0),
+
+		/**
+		 * The state where the map is visible, but clicking is disabled.
+		 */
+		UNCLICKABLE(1),
+
+		/**
+		 * The state where the map is pitch black, and clicking is disabled.
+		 */
+		HIDDEN(2);
+
+		private final int code;
+
+		private MinimapState(int code) {
+			this.code = code;
+		}
+
+		public int getCode() {
+			return code;
+		}
+	}
+	
+	public ActionSender sendMinimapState(MinimapState state) {
 		if (player.getOutStream() != null) {
-			if (mapStatus != state) {
-				mapStatus = state;
-				player.getOutStream().writeFrame(99);
-				player.getOutStream().writeByte(state);
-			}
+			player.getOutStream().writeFrame(99);
+			player.getOutStream().writeByte(state.getCode());
 		}
 		return this;
 	}
@@ -264,7 +293,7 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender SendItemOnInterfaceSlot(int interfaceId, Item item, int slot) {
+	public ActionSender sendItemOnInterfaceSlot(int interfaceId, Item item, int slot) {
 		player.outStream.putFrameVarShort(34);
 		int offset = player.getOutStream().offset;
 		player.outStream.writeShort(interfaceId);

@@ -12,7 +12,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.utility.json.definitions.ItemDefinition;
 
 import java.util.Objects;
@@ -70,7 +70,7 @@ public class PlayerVsPlayerCombat {
 					return false;
 				}
 				if (session.getRules().contains(Rule.WHIP_AND_DDS)) {
-					String weaponName = ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName().toLowerCase();
+					String weaponName = ItemDefinition.forId(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName().toLowerCase();
 					if (!weaponName.contains("whip") && !weaponName.contains("dragon dagger") || weaponName.contains("tentacle")) {
 						player.getActionSender().sendMessage("<col=CC0000>You can only use a whip and dragon dagger in this duel.");
 						Combat.resetCombat(player);

@@ -3,7 +3,8 @@ package com.model.game.character.combat.weaponSpecial;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 
 /**
  * The class which represents functionality for the special attack.
@@ -20,7 +21,7 @@ public class Special {
 	 */
 	public static void handleSpecialAttack(Player attacker, Entity target) {
 		
-		attacker.getWeaponInterface().sendSpecialBar(attacker.getEquipment().getId(Equipment.WEAPON_SLOT));
+		attacker.getWeaponInterface().sendSpecialBar(attacker.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
 		attacker.getWeaponInterface().refreshSpecialAttack();
 		
 		if (target == null) {
@@ -42,10 +43,10 @@ public class Special {
 			attacker.setInCombat(true);
 		}
 		
-		int weapon = attacker.getEquipment().getId(Equipment.WEAPON_SLOT);
+		Item weapon = attacker.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
 
-		if (weapon > 0) {
-			SpecialAttack special = SpecialAttackHandler.forId(weapon);
+		if (weapon != null) {
+			SpecialAttack special = SpecialAttackHandler.forId(weapon.getId());
 
 			if (special == null) {
 				System.out.println("Invalid special attack: " + weapon);
@@ -72,7 +73,7 @@ public class Special {
 	 *            The player resetting the special attack
 	 */
 	public static void resetSpecial(Player player) {
-		int weapon = player.getEquipment().getId(Equipment.WEAPON_SLOT);
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
 		
 		player.setUsingSpecial(false);
 		player.getWeaponInterface().refreshSpecialAttack();

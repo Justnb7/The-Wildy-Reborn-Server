@@ -1,5 +1,7 @@
 package com.model.game.character;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;

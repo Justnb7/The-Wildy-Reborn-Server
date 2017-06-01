@@ -6,7 +6,7 @@ import java.util.Map;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 
 /**
  * The container class that represents all the weapon definitions.
@@ -148,7 +148,7 @@ public class WeaponDefinition {
 	 * @return the attack speed
 	 */
 	public static int sendAttackSpeed(Player player) {
-		Item weapon = new Item(player.getEquipment().getId(Equipment.WEAPON_SLOT));
+		Item weapon = new Item(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
 		
 		if (player.usingMagic) {
 			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
@@ -175,10 +175,10 @@ public class WeaponDefinition {
 	 */
 	public static int sendBlockAnimation(Player player) {
 		//weapon instance
-		Item weapon = new Item(player.getEquipment().getId(Equipment.WEAPON_SLOT));
+		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
 		
 		//shield instance
-		Item shield = new Item(player.getEquipment().getId(Equipment.SHIELD_SLOT));
+		Item shield = player.getEquipment().get(EquipmentContainer.SHIELD_SLOT);
 
 		//grab by name
 		String shieldName = shield.getName().toLowerCase();

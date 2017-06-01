@@ -21,7 +21,6 @@ import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.Equipment;
 import com.model.game.item.container.impl.RunePouch;
 
 /**
@@ -402,8 +401,8 @@ public class PlayerSerialization {
 				final PlayerContainer details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerContainer.class);
 				
 				if (details.equipment != null) {
-					for (int i = 0; i < Equipment.SIZE; i++) {
-						player.getEquipment().set(i, details.equipment[i]);
+					for (int i = 0; i < details.equipment.length; i++) {
+						player.getEquipment().setSlot(i, details.equipment[i], false);
 					}
 				}
 				
@@ -441,7 +440,7 @@ public class PlayerSerialization {
 
 		public PlayerContainer(Player player) {
 			inventory = player.getInventory().toTrimmedArray();
-			equipment = player.getEquipment().toArray();
+			equipment = player.getEquipment().toTrimmedArray();
 			bank = player.getBank().toArray();
 			runePouch = player.runePouchContainer.toArray();
 		}

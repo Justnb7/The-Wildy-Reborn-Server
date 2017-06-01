@@ -1,16 +1,18 @@
 package com.model.utility.json.definitions;
 
+import com.model.game.Constants;
+
 /**
  * The container that represents an item definition.
  *
  * @author lare96 <http://github.com/lare96>
  */
 public final class ItemDefinition {
-
+	
     /**
      * The array that contains all of the item definitions.
      */
-    public static final ItemDefinition[] DEFINITIONS = new ItemDefinition[25000];
+    public static final ItemDefinition[] DEFINITIONS = new ItemDefinition[Constants.ITEM_LIMIT];
 
     /**
      * The identifier for the item.

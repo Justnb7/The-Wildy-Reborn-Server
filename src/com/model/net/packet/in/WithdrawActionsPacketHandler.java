@@ -12,9 +12,9 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
+import com.model.game.item.container.InterfaceConstants;
 import com.model.game.item.container.container.impl.InventoryContainer;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.Trade;
 import com.model.game.shop.Shop;
 import com.model.net.packet.PacketType;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -40,7 +40,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 	 * Withdraw all opcode.
 	 */
 	private static final int WITHDRAW_ALL = 129;
-	
+
 	/**
 	 * Withdraw X opcode.
 	 */
@@ -81,15 +81,16 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		// Debug mode
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[withdrawOneAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
+			System.out.println(String.format("[withdrawOneAction] - Item: %s Interface: %d Slot: %d%n", item.toString(),
+					interfaceIndex, slot));
 		}
 
 		switch (interfaceIndex) {
-		
+
 		case 29880:
 			player.getRunePouch().addItem(item.getId(), 1, slot);
 			break;
-			
+
 		case 29910:
 		case 29909:
 		case 29908:
@@ -97,16 +98,16 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 1688:
-            player.getEquipment().unequipItem(slot, true);
-            break;
-			
+			player.getEquipment().unequipItem(slot, true);
+			break;
+
 		case 5064:
-            player.getBank().depositFromInventory(slot, 1);
-            break;
-            
-        case 5382:
-            player.getBank().withdraw(slot, 1, true);
-            break;
+			player.getBank().depositFromInventory(slot, 1);
+			break;
+
+		case 5382:
+			player.getBank().withdraw(slot, 1, true);
+			break;
 
 		case 3900:
 			Shop.SHOPS.get(player.getOpenShop()).sendPurchasePrice(player, new Item(item.getId()));
@@ -119,21 +120,32 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 			Shop.SHOPS.get(player.getOpenShop()).sendSellingPrice(player, new Item(item.getId()));
 			break;
-			
-		case Trade.PLAYER_INVENTORY_INTERFACE:
+
+		case InterfaceConstants.REMOVE_INVENTORY_ITEM:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), 1));
 			} else {
-				if (slot >= 0 && slot < Trade.SIZE) {
-					Trade.offerItem(player, id, slot, 1);
+				if (player.isTrading()) {
+					int limit = player.getInventory().getAmount(id);
+					player.getTradeContainer().offerItem(item, limit);
 				}
 			}
 			break;
-		case Trade.TRADE_INVENTORY_INTERFACE:
-			if (slot >= 0 && slot < Trade.SIZE) {
-				Trade.takeItem(player, id, slot, 1);
+			
+		case InterfaceConstants.REMOVE_TRADE_ITEM: {
+			item = player.getTradeContainer().get(slot);
+
+			if (item == null || item.getId() != id) {
+				return;
 			}
+
+			if (player.isTrading()) {
+				int limit = player.getTradeContainer().getAmount(id);
+
+				player.getTradeContainer().removeOffer(item, limit);
+			}
+		}
 			break;
 
 		case 6669:
@@ -159,18 +171,19 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		if (player.isDead() || player.isTeleporting()) {
 			return;
 		}
-		
+
 		// Debug mode
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[withdrawFiveAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
+			System.out.println(String.format("[withdrawFiveAction] - Item: %s Interface: %d Slot: %d%n",
+					item.toString(), interfaceIndex, slot));
 		}
 
 		switch (interfaceIndex) {
-		
+
 		case 29880:
 			player.getRunePouch().addItem(item.getId(), 5, slot);
 			break;
-			
+
 		case 29910:
 		case 29909:
 		case 29908:
@@ -200,27 +213,40 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-            player.getBank().depositFromInventory(slot, 5);
-            break;
-            
-        case 5382:
-            player.getBank().withdraw(slot, 5, true);
-            break;
-			
-		case Trade.PLAYER_INVENTORY_INTERFACE:
+			player.getBank().depositFromInventory(slot, 5);
+			break;
+
+		case 5382:
+			player.getBank().withdraw(slot, 5, true);
+			break;
+
+		case InterfaceConstants.REMOVE_INVENTORY_ITEM:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), 5));
 			} else {
-				if (slot >= 0 && slot < Trade.SIZE) {
-					Trade.offerItem(player, id, slot, 5);
+				if (player.isTrading()) {
+					int limit = player.getInventory().getAmount(id);
+
+					item = new Item(id, 5);
+
+					player.getTradeContainer().offerItem(item, limit);
 				}
 			}
 			break;
-		case Trade.TRADE_INVENTORY_INTERFACE:
-			if (slot >= 0 && slot < Trade.SIZE) {
-				Trade.takeItem(player, id, slot, 5);
+		case InterfaceConstants.REMOVE_TRADE_ITEM: {
+			item = player.getTradeContainer().get(slot);
+
+			if (item == null || item.getId() != id) {
+				return;
 			}
+
+			if (player.isTrading()) {
+				int limit = player.getTradeContainer().getAmount(id);
+
+				player.getTradeContainer().removeOffer(new Item(id, 5), limit);
+			}
+		}
 			break;
 
 		case 6669:
@@ -247,18 +273,19 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		if (player.isDead() || player.isTeleporting()) {
 			return;
 		}
-		
+
 		// Debug mode
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[withdrawTenAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
+			System.out.println(String.format("[withdrawTenAction] - Item: %s Interface: %d Slot: %d%n", item.toString(),
+					interfaceIndex, slot));
 		}
 
 		switch (interfaceIndex) {
-		
+
 		case 29880:
 			player.getRunePouch().addItem(item.getId(), 10, slot);
 			break;
-			
+
 		case 29910:
 		case 29909:
 		case 29908:
@@ -286,8 +313,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
-			if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
+			DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player,
+					MultiplayerSessionType.DUEL);
+			if (Objects.nonNull(duelSession)
+					&& duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
 				player.getActionSender().sendMessage("You have declined the duel.");
 				duelSession.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");
 				duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
@@ -298,25 +327,38 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5382:
-            player.getBank().withdraw(slot, 10, true);
-            break;
+			player.getBank().withdraw(slot, 10, true);
+			break;
 
-		case Trade.PLAYER_INVENTORY_INTERFACE:
+		case InterfaceConstants.REMOVE_INVENTORY_ITEM:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), 10));
 			} else {
-				if (slot >= 0 && slot < Trade.SIZE) {
-					Trade.offerItem(player, id, slot, 10);
+				if (player.isTrading()) {
+					int limit = player.getInventory().getAmount(id);
+
+					item = new Item(id, 10);
+
+					player.getTradeContainer().offerItem(item, limit);
 				}
 			}
 			break;
-		case Trade.TRADE_INVENTORY_INTERFACE:
-			if (slot >= 0 && slot < Trade.SIZE) {
-				Trade.takeItem(player, id, slot, 10);
+		case InterfaceConstants.REMOVE_TRADE_ITEM: {
+			item = player.getTradeContainer().get(slot);
+
+			if (item == null || item.getId() != id) {
+				return;
 			}
+
+			if (player.isTrading()) {
+				int limit = player.getTradeContainer().getAmount(id);
+
+				player.getTradeContainer().removeOffer(new Item(id, 10), limit);
+			}
+		}
 			break;
-		
+
 		case 6669:
 			session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.isNull(session)) {
@@ -338,19 +380,19 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		int id = player.getInStream().readUnsignedWordA();
 
 		int amount = 0;
-		
+
 		Item item = new Item(id);
 
 		// Safety checks
 		if (player.isDead() || player.isTeleporting()) {
 			return;
 		}
-		
+
 		// Debug mode
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[withdrawAllAction] - Item: %s Interface: %d Slot: %d%n", item.toString(), interfaceIndex, slot));
+			System.out.println(String.format("[withdrawAllAction] - Item: %s Interface: %d Slot: %d%n", item.toString(),
+					interfaceIndex, slot));
 		}
-		
 
 		switch (interfaceIndex) {
 
@@ -358,14 +400,14 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			amount = player.getInventory().get(slot).getAmount();
 			player.getRunePouch().addItem(item.getId(), amount, slot);
 			break;
-			
+
 		case 29910:
 		case 29909:
 		case 29908:
 			amount = player.getRunePouch().get(slot).getAmount();
 			player.getRunePouch().removeItem(item.getId(), amount, slot);
 			break;
-		
+
 		case 3900:
 			Shop.SHOPS.get(player.getOpenShop()).purchase(player, new Item(item.getId(), 10));
 			break;
@@ -379,36 +421,50 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case 5064:
-            player.getBank().depositFromInventory(slot, player.getInventory().getAmount(player.getInventory().get(slot)));
-            break;
+			player.getBank().depositFromInventory(slot,
+					player.getInventory().getAmount(player.getInventory().get(slot)));
+			break;
 
-        case 5382:
-            amount = 0;
-            if (player.isWithdrawAsNote()) {
-                amount = player.getBank().amount(id);
-            } else {
-                Item itemWithdrew = new Item(id, 1);
-                amount = ItemDefinition.DEFINITIONS[itemWithdrew.getId()].isStackable() ? player.getBank().amount(id) : 28;
-            }
+		case 5382:
+			amount = 0;
+			if (player.isWithdrawAsNote()) {
+				amount = player.getBank().amount(id);
+			} else {
+				Item itemWithdrew = new Item(id, 1);
+				amount = ItemDefinition.DEFINITIONS[itemWithdrew.getId()].isStackable() ? player.getBank().amount(id)
+						: 28;
+			}
 
-            player.getBank().withdraw(slot, amount, true);
-            break;
-			
-		case Trade.PLAYER_INVENTORY_INTERFACE:
+			player.getBank().withdraw(slot, amount, true);
+			break;
+
+		case InterfaceConstants.REMOVE_INVENTORY_ITEM:
 			MultiplayerSession session = Server.getMultiplayerSessionListener().getMultiplayerSession(player);
 			if (Objects.nonNull(session)) {
 				session.addItem(player, new GameItem(item.getId(), player.getInventory().getAmount(item.getId())));
 			} else {
-				if (slot >= 0 && slot < Trade.SIZE) {
-					Trade.offerItem(player, id, slot, player.getInventory().getAmount(id));
+				if (player.isTrading()) {
+					int limit = player.getInventory().getAmount(id);
+
+					item = new Item(id, limit);
+
+					player.getTradeContainer().offerItem(item, limit);
 				}
 			}
 			break;
-			
-		case Trade.TRADE_INVENTORY_INTERFACE:
-			if (slot >= 0 && slot < Trade.SIZE) {
-				Trade.takeItem(player, id, slot, player.getTrade().amount(id));
+
+		case -32515: {
+			item = player.getTradeContainer().get(slot);
+
+			if (item == null || item.getId() != id) {
+				return;
 			}
+
+			if (player.isTrading()) {
+				int limit = player.getTradeContainer().getAmount(id);
+				player.getTradeContainer().removeOffer(new Item(id, limit), limit);
+			}
+		}
 			break;
 
 		case 6669:
@@ -427,7 +483,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		}
 	}
-	
+
 	/**
 	 * Handles the withdraw x action.
 	 * 
@@ -440,27 +496,15 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		int slot = player.getInStream().readUnsignedWordBigEndian();
 		int interfaceId = player.getInStream().readUnsignedWordA();
 		int id = player.getInStream().readUnsignedWordBigEndian();
-		
-		switch(interfaceId) {
+
+		switch (interfaceId) {
 		case Bank.PLAYER_INVENTORY_INTERFACE:
-			if(slot >= 0 && slot < InventoryContainer.SIZE) {
+			if (slot >= 0 && slot < InventoryContainer.SIZE) {
 				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
 			}
 			break;
 		case Bank.BANK_INVENTORY_INTERFACE:
-			System.out.println("yeep");
-			if(slot >= 0 && slot < Bank.SIZE) {
-				System.out.println("yeep2");
-				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
-			}
-			break;
-		case Trade.PLAYER_INVENTORY_INTERFACE:
-			if (slot >= 0 && slot < Trade.SIZE) {
-				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
-			}
-			break;
-		case Trade.TRADE_INVENTORY_INTERFACE:
-			if (slot >= 0 && slot < Trade.SIZE) {
+			if (slot >= 0 && slot < Bank.SIZE) {
 				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
 			}
 			break;

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
 import com.model.utility.json.definitions.ItemDefinition;
 
@@ -120,9 +121,9 @@ public class WeaponInterface {
 	 * @param genericName
 	 *            The filtered name.
 	 */
-	public void sendWeapon(int id, String name) {
+	public void sendWeapon(Item id, String name) {
 		for (final weaponInterface equipment : weaponInterface.values()) {
-			if (name == null || name == "Unarmed" || id < 0) {
+			if (name == null || name == "Unarmed" || id == null) {
 				player.setAttackStyle(0);
 				player.write(new SendSidebarInterfacePacket(0, 5855));
 				player.getActionSender().sendString("Unarmed", 5857);
@@ -132,7 +133,7 @@ public class WeaponInterface {
 			}
 			if (name.contains(equipment.getWeaponType()) || name.endsWith(equipment.getWeaponType()) || name.startsWith(equipment.getWeaponType())) {
 				player.write(new SendSidebarInterfacePacket(0, equipment.getInterface()));
-				player.getActionSender().sendItemOnInterface(equipment.getItemLocation(), 200, id);
+				player.getActionSender().sendItemOnInterface(equipment.getItemLocation(), 200, id.getId());
 				player.getActionSender().sendString(name, equipment.getNameOnInterfaceId());
 			}
 		}
@@ -192,8 +193,12 @@ public class WeaponInterface {
 	 * 
 	 * @param id
 	 */
-	public void sendSpecialBar(int id) {
-		WeaponSpecials spec = WeaponSpecials.forId(id);
+	public void sendSpecialBar(Item id) {
+		if(id == null) {
+			System.out.println("The player isn't wearing any items.");
+			return;
+		}
+		WeaponSpecials spec = WeaponSpecials.forId(id.getId());
 		if (spec == null) {
 			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.DAGGER_INTERFACE.getConfigId());
 			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.KORASI_SWORD_INTERFACE.getConfigId());
@@ -224,7 +229,7 @@ public class WeaponInterface {
 	 * @param barId
 	 *            The Bar's id
 	 */
-	public void specialAmount(int weapon, int specAmount, int barId) {
+	public void specialAmount(Item weapon, int specAmount, int barId) {
 		player.specBarId = barId;
 		player.getActionSender().moveComponent(specAmount >= 100 ? 500 : 0, 0, (--barId));
 		player.getActionSender().moveComponent(specAmount >= 90 ? 500 : 0, 0, (--barId));
@@ -237,7 +242,7 @@ public class WeaponInterface {
 		player.getActionSender().moveComponent(specAmount >= 20 ? 500 : 0, 0, (--barId));
 		player.getActionSender().moveComponent(specAmount >= 10 ? 500 : 0, 0, (--barId));
 		refreshSpecialAttack();
-		sendWeapon(weapon, ItemDefinition.forId(weapon).getName());
+		sendWeapon(weapon, ItemDefinition.forId(weapon.getId()).getName());
 	}
 
 	public void refreshSpecialAttack() {
@@ -250,8 +255,7 @@ public class WeaponInterface {
 	
 	public void restoreWeaponAttributes() {
 		refreshSpecialAttack();
-		sendSpecialBar(player.getEquipment().getId(Equipment.WEAPON_SLOT));
-		sendWeapon(player.getEquipment().getId(Equipment.WEAPON_SLOT), ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName());
-		
+		sendSpecialBar(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
+		sendWeapon(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT), "");
 	}
 }

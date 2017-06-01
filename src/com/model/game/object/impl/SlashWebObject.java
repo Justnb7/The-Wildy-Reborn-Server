@@ -3,7 +3,8 @@ package com.model.game.object.impl;
 import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.task.ScheduledTask;
@@ -18,11 +19,11 @@ public class SlashWebObject {
 	public static void slashWeb(final Player player, Location position, boolean usingKnife) {
 		if (!usingKnife) {
 			
-			int weapon = player.getEquipment().getId(Equipment.WEAPON_SLOT);
-			if (weapon == -1) {
+			Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+			if (weapon == null) {
 				return;
 			}
-			String name = ItemDefinition.forId(weapon).getName().toLowerCase();
+			String name = ItemDefinition.forId(weapon.getId()).getName().toLowerCase();
 			if (!name.contains("dagger")) {
 				player.getActionSender().sendMessage("You need a sharp weapon to slash through this.");
 				return;

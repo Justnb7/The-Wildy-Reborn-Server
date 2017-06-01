@@ -300,5 +300,15 @@ public class Item {
 		return def != null && (def.isStackable() || def.isNoted());
 	}
 
+	/**
+	 * Determines if the item is tradable.
+	 * 
+	 * @return The items tradability.
+	 */
+	public boolean isTradeable() {
+		final ItemDefinition def = ItemDefinition.DEFINITIONS[getId()];
+		return def != null && def.isTradeable();
+	}
+
 	
 }

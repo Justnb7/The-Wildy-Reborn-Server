@@ -27,7 +27,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.Equipment;
+import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;
@@ -143,11 +143,11 @@ public class Combat {
          * Verify if we have the proper arrows/bolts
 		 */
         if (player.getCombatType() == CombatStyle.RANGE) {
-            int wep = player.getEquipment().getId(Equipment.WEAPON_SLOT);
-            int ammo = player.getEquipment().getId(Equipment.ARROWS_SLOT);
-            boolean crystal = wep >= 4212 && wep <= 4223;
-            boolean blowp = wep == 12926;
-            if (!crystal && !blowp && ammo < 1) {
+        	Item wep = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+            Item ammo = player.getEquipment().get(EquipmentContainer.ARROWS_SLOT);
+            boolean crystal = wep.getId() >= 4212 && wep.getId() <= 4223;
+            boolean blowp = wep.getId() == 12926;
+            if (!crystal && !blowp && ammo.getId() < 1) {
                 player.getActionSender().sendMessage("There is no ammo left in your quiver.");
                 player.getMovementHandler().stopMovement();
                 player.getCombatState().reset();
@@ -166,7 +166,7 @@ public class Combat {
                 Combat.resetCombat(player);
                 return;
             }*/
-            if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2415 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2416 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 2417)) {
+            if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 2417)) {
                 player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
                 return;
             }
@@ -217,7 +217,7 @@ public class Combat {
         }
 
         // ##### BEGIN ATTACK - WE'RE IN VALID DISTANCE AT THIS POINT #######
-        int wep = player.getEquipment().getId(Equipment.WEAPON_SLOT);
+        int wep = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId();
 		/*
 		 * Set our attack timer so we dont instantly hit again
 		 */
@@ -354,15 +354,15 @@ public class Combat {
 
             player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
             player.getCombatState().fireProjectileAtTarget();
-            Item arrows = player.getEquipment().get(Equipment.ARROWS_SLOT);
+            Item arrows = player.getEquipment().get(EquipmentContainer.ARROWS_SLOT);
             boolean hand_thrown = false;
             if (hand_thrown) {
 
-            	player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT);
+            	//player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT).getId();
                 
             } else {
 
-                if (player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11235 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12765 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12766 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12767 || player.getEquipment().getId(Equipment.WEAPON_SLOT) == 12768) {
+                if (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 11235 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12765 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12766 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12767 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12768) {
                 	//TODO add arrow removement
                 }
 
@@ -507,7 +507,7 @@ public class Combat {
 
     private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
         if (dam1 == 0) return dam1;
-        switch (attacker.getEquipment().getId(Equipment.ARROWS_SLOT)) {
+        switch (attacker.getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId()) {
             case 9236: // Lucky Lightning
                 defender.playGraphics(Graphic.create(749, 0, 0));
                 break;
@@ -558,7 +558,7 @@ public class Combat {
                     dam1 *= 1.15;
                 }
                 boolean fire = true;
-                int shield = defender.isPlayer() ? ((Player) defender).getEquipment().getId(Equipment.SHIELD_SLOT) : -1;
+                int shield = defender.isPlayer() ? ((Player) defender).getEquipment().get(EquipmentContainer.SHIELD_SLOT).getId() : -1;
                 if (shield == 11283 || shield == 1540) {
                     fire = false;
                 }
@@ -614,7 +614,7 @@ public class Combat {
             player.usingMagic = true;
             player.setCombatType(CombatStyle.MAGIC);
         }
-        int wep = player.getEquipment().getId(Equipment.WEAPON_SLOT);
+        int wep = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId();
         if (wep == 11907) {
             player.spellId = 52;
             player.castingMagic = true;
@@ -716,7 +716,7 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
-		String weapon = ItemDefinition.forId(player.getEquipment().getId(Equipment.WEAPON_SLOT)).getName().toLowerCase();
+		String weapon = ItemDefinition.forId(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName().toLowerCase();
 		
 		if (weapon.contains("halberd")) {
 			return true;
@@ -744,7 +744,7 @@ public class Combat {
 			distance = 2;
 		} else if (player.usingBow) {
 			distance = 7;
-		} else if(player.getEquipment().getId(Equipment.WEAPON_SLOT) == 11785) {
+		} else if(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 11785) {
 			distance = 9;
 		} else if (player.getEquipment().wearingBallista(player)) {
 			distance = 11;
@@ -792,7 +792,7 @@ public class Combat {
 	 * @return
 	 */
 	public boolean wearingAccumulator(Player player) {
-		return (player.getEquipment().getId(Equipment.CAPE_SLOT) == 10499);
+		return (player.getEquipment().get(EquipmentContainer.CAPE_SLOT).getId() == 10499);
 	}
 	
 	/**
@@ -801,6 +801,6 @@ public class Combat {
 	 * @return
 	 */
 	public boolean wearingAttractor(Player player) {
-		return (player.getEquipment().getId(Equipment.CAPE_SLOT) == 10498);
+		return (player.getEquipment().get(EquipmentContainer.CAPE_SLOT).getId() == 10498);
 	}
 }

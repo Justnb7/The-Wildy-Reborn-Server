@@ -3,6 +3,7 @@ package com.model.utility;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -93,6 +94,13 @@ public class Utility {
         double x = (double) i / (double) i1;
         return (int) Math.round(x * i2);
     }
+    
+    /**
+	 * Formats a number into a string with commas.
+	 */
+	public static String formatValue(int value) {
+		return new DecimalFormat("#, ###").format(value);
+	}
 
     public static String format(long num) {
         return NumberFormat.getInstance().format(num);
@@ -1088,6 +1096,38 @@ public class Utility {
 			s = "an";
 		}
 		return s;
+	}
+	
+	/**
+	 * Gets the names of an array of items.
+	 * 
+	 * @param items
+	 *            The items to get the name of.
+	 * 
+	 * @return A single string of the names.
+	 */
+	public static String getItemNames(Item[] items) {
+		String tradeItems = "<col=ff9040>Absolutely nothing!";
+		String tradeAmount = "";
+
+		int count = 0;
+
+		for (Item item : items) {
+			if (item == null) {
+				continue;
+			}
+
+			tradeAmount = String.format("<col=06FF7F>%s (%s)", getValueWithoutRepresentation(item.getAmount()), formatValue(item.getAmount()));
+
+			tradeItems = count == 0 ? "<col=ff9040>" + item.getName() : String.format("<col=ff9040>%s\\n\\n<col=ff9040>%s", tradeItems, item.getName());
+
+			if (item.isStackable()) {
+				tradeItems = tradeItems + " <col=06FF7F>x " + tradeAmount;
+			}
+			count++;
+		}
+
+		return tradeItems;
 	}
 
 }

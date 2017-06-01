@@ -40,7 +40,7 @@ public class InventoryContainer extends Container {
 	@Override
 	public void refresh(int... slots) {
 		for (final int slot : slots) {
-			player.getActionSender().SendItemOnInterfaceSlot(InterfaceConstants.INVENTORY_INTERFACE, stack[slot], slot);
+			player.getActionSender().sendItemOnInterfaceSlot(InterfaceConstants.INVENTORY_INTERFACE, stack[slot], slot);
 		}
 	}
 

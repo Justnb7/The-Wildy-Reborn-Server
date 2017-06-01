@@ -10,7 +10,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.item.container.impl.Trade;
 import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
 
@@ -67,9 +66,9 @@ public class WalkingPacketHandler implements PacketType {
 			player.getSkillCyclesTask().stop();
 		}
 		
-		//When walking during a trade we decline
-		if (Trade.inTrade(player)) {
-			Trade.declineTrade(player);
+		//When walking during a trade we don't decline trades
+		if (player.isTrading()) {
+			player.getTradeSession().declineTrade(false);
 		}
 		
 		//When walking we close our duel invitation

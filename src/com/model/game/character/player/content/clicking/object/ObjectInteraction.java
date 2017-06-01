@@ -49,7 +49,7 @@ public class ObjectInteraction {
 			action = new RestorePrayerPointsAction(player, objectId);
 			break;
 		case 26707: //Clan wars bank chest
-			player.getBank().open();
+			//player.getBank().open();
 			break;
 		case 26642: //clan wars portal
 		case 26644:
@@ -106,7 +106,7 @@ public class ObjectInteraction {
 		case "Bank":
 		case "bank booth":
 		case "booth":
-			player.getBank().open();
+			//player.getBank().open();
 			break;
 			
 		}

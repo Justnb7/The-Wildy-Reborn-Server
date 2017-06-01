@@ -13,10 +13,6 @@ public class EnterAmountPacketHandler implements PacketType {
 	public void handle(Player player, int packetType, int packetSize) {
 		int amount = player.getInStream().readDWord();
 		
-		if(player.getInterfaceState().isEnterAmountInterfaceOpen()) {
-			player.getInterfaceState().closeEnterAmountInterface(amount);
-		}
-		
 		if (amount <= 0) {
 			amount = 0;
 		}

@@ -389,7 +389,7 @@ public class Woodcutting extends HarvestingAction {
 				if (player.getInventory().getFreeSlots() < 1) {
 					player.getInventory().add(new Item(13322));
 				} else {
-					player.getBank().add(new Item(13322));
+					//player.getBank().add(new Item(13322));
 				}
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Beaver.", false);
 			} else {

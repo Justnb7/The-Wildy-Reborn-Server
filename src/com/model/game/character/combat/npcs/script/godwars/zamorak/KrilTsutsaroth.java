@@ -169,7 +169,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 				if (player.getInventory().getFreeSlots() < 1) {
 					player.getInventory().add(new Item(12652));
 				} else {
-					player.getBank().add(new Item(12652));
+					//player.getBank().add(new Item(12652));
 				}
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received the K'ril pet.", false);
 			} else {

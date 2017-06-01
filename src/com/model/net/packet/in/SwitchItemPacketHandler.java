@@ -2,7 +2,6 @@ package com.model.net.packet.in;
 
 import com.model.game.character.player.Player;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.game.item.container.impl.Bank;
 import com.model.net.packet.PacketType;
 
 /**
@@ -34,15 +33,6 @@ public class SwitchItemPacketHandler implements PacketType {
 		    player.getInventory().swap(fromSlot, toSlot);
 		    break;
 			
-		case Bank.BANK_INVENTORY_INTERFACE:
-			if(fromSlot >= 0 && fromSlot < Bank.SIZE && toSlot >= 0 && toSlot < Bank.SIZE && toSlot != fromSlot) {
-				if(player.isInsertItem()) {
-					player.getBank().swap(fromSlot, toSlot);
-				} else {
-					player.getBank().transfer(fromSlot, toSlot);
-				}
-			}
-			break;
 		}
 		
 		//Stop active skilling tasks

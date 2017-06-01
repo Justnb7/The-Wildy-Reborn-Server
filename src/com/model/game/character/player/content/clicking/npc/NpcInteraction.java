@@ -273,7 +273,7 @@ public class NpcInteraction {
 			break;
 
 		case 394:
-			player.getBank().open();
+			//player.getBank().open();
 			break;
 		}
 	}

@@ -76,7 +76,6 @@ import com.model.game.item.container.container.impl.RunePouchContainer;
 import com.model.game.item.container.container.impl.trade.TradeContainer;
 import com.model.game.item.container.container.impl.trade.TradeSession;
 import com.model.game.item.container.container.impl.trade.TradeSession.TradeStage;
-import com.model.game.item.container.impl.Bank;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
@@ -185,20 +184,6 @@ public class Player extends Entity {
 	public InventoryContainer getInventory() {
 		return inventory;
 	}
-    
-    /**
-     * The container that holds the bank items.
-     */
-    public final Bank bank = new Bank(this);
-    
-    /**
-     * Gets the container that holds the bank items.
-     *
-     * @return the container for the bank.
-     */
-    public Bank getBank() {
-        return bank;
-    }
     
     private int otherPlayerTradeIndex = -1;
     

@@ -8,7 +8,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.item.container.impl.Trade;
 import com.model.net.packet.PacketType;
 
 /**
@@ -27,8 +26,8 @@ public class CloseInterfacePacketHandler implements PacketType {
 		}
 		
 		//Decline trade when closing an interface
-		if (Trade.inTrade(player)) {
-			Trade.declineTrade(player);
+		if (player.isTrading()) {
+			player.getTradeSession().declineTrade(true);
 		}
 		
 		//Decline duel when closing an interface

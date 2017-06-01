@@ -27,7 +27,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.item.Item;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;

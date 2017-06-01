@@ -2,7 +2,7 @@ package com.model.game.character.player.content.music.sounds;
 
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.ItemDefinition;

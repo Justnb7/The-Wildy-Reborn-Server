@@ -2,7 +2,7 @@ package com.model.task.impl;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.task.ScheduledTask;
 
 public class RestoreSpecialStats extends ScheduledTask {

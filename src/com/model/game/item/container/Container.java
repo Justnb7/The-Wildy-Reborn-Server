@@ -1,4 +1,4 @@
-package com.model.game.item.container.container;
+package com.model.game.item.container;
 
 import java.util.ArrayList;
 import java.util.Arrays;

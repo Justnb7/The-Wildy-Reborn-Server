@@ -1,4 +1,4 @@
-package com.model.game.item.container.container.impl;
+package com.model.game.item.container.impl;
 
 import java.util.Arrays;
 
@@ -6,8 +6,8 @@ import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.game.item.container.container.Container;
 import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.Requirement;
 import com.model.utility.json.definitions.WeaponAnimation;

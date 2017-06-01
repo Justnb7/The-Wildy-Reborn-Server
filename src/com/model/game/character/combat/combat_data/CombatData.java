@@ -1,7 +1,7 @@
 package com.model.game.character.combat.combat_data;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 
 public class CombatData {
 

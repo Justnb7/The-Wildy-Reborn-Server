@@ -1,9 +1,9 @@
-package com.model.game.item.container.container.impl;
+package com.model.game.item.container.impl;
 
 import com.google.common.collect.ImmutableSet;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.container.Container;
+import com.model.game.item.container.Container;
 
 /**
  * The class which represents functionality for the rune pouch container.

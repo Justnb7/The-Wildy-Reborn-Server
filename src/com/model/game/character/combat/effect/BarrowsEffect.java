@@ -3,7 +3,7 @@ package com.model.game.character.combat.effect;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.utility.Utility;
 
 /**

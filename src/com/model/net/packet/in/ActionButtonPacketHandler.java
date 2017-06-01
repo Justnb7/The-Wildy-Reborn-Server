@@ -24,7 +24,7 @@ import com.model.game.character.player.content.teleport.TeleportHandler.Teleport
 import com.model.game.character.player.content.teleport.Teleports;
 import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.net.packet.PacketType;
 import com.model.net.packet.buttons.ActionButtonEventListener;
 import com.model.net.packet.out.SendSidebarInterfacePacket;

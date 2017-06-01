@@ -27,7 +27,7 @@ import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.item.Item;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;

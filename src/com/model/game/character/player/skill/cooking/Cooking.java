@@ -5,7 +5,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.item.Item;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;

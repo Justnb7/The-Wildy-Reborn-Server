@@ -11,7 +11,7 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.item.container.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.utility.json.definitions.ItemDefinition;

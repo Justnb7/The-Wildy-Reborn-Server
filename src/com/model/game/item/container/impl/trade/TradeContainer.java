@@ -1,13 +1,13 @@
-package com.model.game.item.container.container.impl.trade;
+package com.model.game.item.container.impl.trade;
 
 import java.util.Optional;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.game.item.container.container.Container;
-import com.model.game.item.container.container.impl.trade.TradeSession.TradeStage;
+import com.model.game.item.container.impl.trade.TradeSession.TradeStage;
 import com.model.task.impl.TradeNotificationTask;
 import com.model.utility.Utility;
 

@@ -1,11 +1,11 @@
-package com.model.game.item.container.container.impl;
+package com.model.game.item.container.impl;
 
 import java.text.NumberFormat;
 
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.game.item.container.container.Container;
 import com.model.utility.Utility;
 
 public class PriceChecker extends Container {

@@ -1,4 +1,4 @@
-package com.model.game.item.container.container.impl.trade;
+package com.model.game.item.container.impl.trade;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;

@@ -319,9 +319,6 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if(player.getLootingBagContainer().open(player, item.getId())) {
-			return;
-		}
 
 		Bone bone = Bone.forId(item.getId());
 		if (bone != null) {
@@ -410,10 +407,6 @@ public class ItemOptionPacket implements PacketType {
 
 		// Last clicked item
 		player.lastClickedItem = item.getId();
-		
-		if(player.getLootingBagContainer().deposit(player, item.getId())) {
-			return;
-		}
 		
 		switch (item.getId()) {
 		case 5733: // rotten potato jagex item

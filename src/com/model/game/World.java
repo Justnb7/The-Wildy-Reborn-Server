@@ -271,6 +271,13 @@ public class World implements Service {
 		}
 		
 		/*
+		 * Close price checker
+		 */
+		if (player.getInterfaceState().isInterfaceOpen(48500)) {
+			player.getPriceChecker().close();
+		}
+		
+		/*
 		 * Send our controller check
 		 */
 		player.getController().onDisconnect(player);

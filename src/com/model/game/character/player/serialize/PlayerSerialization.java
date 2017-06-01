@@ -20,8 +20,8 @@ import com.model.game.character.player.account.AccountType;
 import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.item.Item;
+import com.model.game.item.container.container.impl.RunePouchContainer;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.RunePouch;
 
 /**
  * Handles saving a player's container and details into a json file.
@@ -419,8 +419,8 @@ public class PlayerSerialization {
 				}
 				
 				if (details.runePouch != null) {
-					for(int i = 0; i < RunePouch.SIZE; i++) {
-						player.runePouchContainer.set(i, details.runePouch[i]);
+					for(int i = 0; i < RunePouchContainer.SIZE; i++) {
+						player.runePouchContainer.setSlot(i, details.runePouch[i]);
 					}
 				}
 				

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
-import com.model.game.World;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.skill.prayer.Prayer;
 import com.model.net.packet.out.SendChatBoxInterfacePacket;

@@ -12,47 +12,42 @@ import com.model.utility.Utility;
  * @date January 22, 2015, 5:23:49 PM
  */
 public enum Rights {
-	PLAYER(0, 0),
-	MODERATOR(1, 1),
-	ADMINISTRATOR(2, 2, MODERATOR),
-	DONATOR(3, 3),
-	SUPER_DONATOR(4, 4),
-	ELITE_DONATOR(5, 5),
-	EXTREME_DONATOR(6, 6),
-	GOLD_DONATOR(7, 7),
-	SUPPORT_TEAM_RED(8, 8),
-	SUPPORT_TEAM_BLUE(9, 9),
-	PARTYHAT(10, 10),
-	COINS(11, 11),
-	PK_SKULL_ICON(12, 12),
-	SKULL_ICON(13, 13),
-	FIRE_CAPE(14, 14),
-	CASKET(15, 15),
-	GRAPHICS_ARTIST(16, 16),
-	VETERAN_BLUE(17, 17),
-	VETERAN_ORANGE(18, 18),
-	VETERAN_SILVER(19, 19),
-	VETERAN_GOLD(20, 20),
-	YOUTUBER(21, 21),
-	IRON_MAN(22, 22),
-	ULTIMATE_IRON_MAN(23, 23),
-	HARDCORE_IRON_MAN(24, 24),
-	NEWS_ICON(25, 25),
-	CASH_STACK(26, 26),
-	SKULL_ICON_3(27, 27),
-	SLAYER_ICON(28, 28),
-	VOTE_ICON(29, 29),
-	ACHIEVEMENTS_ICON(30, 30);
+	PLAYER(0),
+	MODERATOR(1),
+	ADMINISTRATOR(2, MODERATOR),
+	DONATOR(3),
+	SUPER_DONATOR(4),
+	ELITE_DONATOR(5),
+	EXTREME_DONATOR(6),
+	GOLD_DONATOR(7),
+	SUPPORT_TEAM_RED(8),
+	SUPPORT_TEAM_BLUE(9),
+	PARTYHAT(10),
+	COINS(11),
+	PK_SKULL_ICON(12),
+	SKULL_ICON(13),
+	FIRE_CAPE(14),
+	CASKET(15),
+	GRAPHICS_ARTIST(16),
+	VETERAN_BLUE(17),
+	VETERAN_ORANGE(18),
+	VETERAN_SILVER(19),
+	VETERAN_GOLD(20),
+	YOUTUBER(21),
+	IRON_MAN(22),
+	ULTIMATE_IRON_MAN(23),
+	HARDCORE_IRON_MAN(24),
+	NEWS_ICON(25),
+	CASH_STACK(26),
+	SKULL_ICON_3(27),
+	SLAYER_ICON(28),
+	VOTE_ICON(29),
+	ACHIEVEMENTS_ICON(30);
 	
 	/**
 	 * The level of rights that define this
 	 */
 	private final int right;
-	
-	/**
-	 * The players chat icon
-	 */
-	private final int crown;
 	
 	/**
 	 * The right or rights inherited by this right
@@ -64,9 +59,8 @@ public enum Rights {
 	 * @param right			the right required
 	 * @param inherited		the right or rights inherited with this level of right
 	 */
-	private Rights(int right, int crown, Rights... inherited) {
+	private Rights(int right,Rights... inherited) {
 		this.right = right;
-		this.crown = crown;
 		this.inherited = inherited;
 	}
 	
@@ -76,14 +70,6 @@ public enum Rights {
 	 */
 	public int getValue() {
 		return right;
-	}
-	
-	/**
-	 * The players chat crown
-	 * @return the crown
-	 */
-	public int getCrown() {
-		return crown;
 	}
 	
 	/**
@@ -287,10 +273,10 @@ public enum Rights {
 	}
 
 	public static String getStringForRights(Player player) {
-		if (player.getRights().getCrown() == 0) {
+		if (player.getRights().getValue() == 0) {
 			return "";
 		}
-		return "<img=" + (player.getRights().getCrown() - 1) + ">";
+		return "<img=" + (player.getRights()) + ">";
 	}
 
 }

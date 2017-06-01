@@ -289,6 +289,15 @@ public abstract class Container {
 
 		return add(item, refresh);
 	}
+	
+	/**
+     * Retrieves the maximum amount of items that can be in this container.
+     *
+     * @return the maximum amount of items.
+     */
+    public int capacity() {
+        return capacity;
+    }
 
 	/**
 	 * Clears the container.
@@ -588,6 +597,20 @@ public abstract class Container {
 
 		return stack[slot];
 	}
+	
+	/**
+     * Retrieves the identifier for the item located on {@code slot}.
+     *
+     * @param slot
+     *         the slot to get the item identifier on.
+     * @return the item identifier on the slot, or {@code -1} if no item exists on
+     * the slot.
+     */
+    public int getId(int slot) {
+        if (stack[slot] == null)
+            return -1;
+        return stack[slot].getId();
+    }
 
 	/**
 	 * Gets an item from the container.

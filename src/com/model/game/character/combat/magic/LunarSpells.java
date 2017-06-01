@@ -132,7 +132,7 @@ public class LunarSpells {
 		if(player.getRunePouch().contains(new Item(runeId, amount))) {
 			if(deleteFromRunePouch) {
 				player.getRunePouch().remove(new Item(runeId, amount));
-				player.getRunePouch().refresh(player, 41710);
+				player.getRunePouch().refresh();
 			}
 			return true;
 		}

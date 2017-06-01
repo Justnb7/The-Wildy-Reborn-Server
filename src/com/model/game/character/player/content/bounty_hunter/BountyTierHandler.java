@@ -1,7 +1,6 @@
 package com.model.game.character.player.content.bounty_hunter;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.Item;
 
 /**
  * Handles the bounty hunter tiers

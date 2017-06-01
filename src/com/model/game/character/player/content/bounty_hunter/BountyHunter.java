@@ -1,7 +1,5 @@
 package com.model.game.character.player.content.bounty_hunter;
 
-import java.util.Optional;
-
 import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.player.Player;

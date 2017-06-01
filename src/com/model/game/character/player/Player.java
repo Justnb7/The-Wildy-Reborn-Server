@@ -71,12 +71,12 @@ import com.model.game.character.walking.MovementHandler;
 import com.model.game.item.Item;
 import com.model.game.item.container.container.impl.EquipmentContainer;
 import com.model.game.item.container.container.impl.InventoryContainer;
+import com.model.game.item.container.container.impl.PriceChecker;
+import com.model.game.item.container.container.impl.RunePouchContainer;
 import com.model.game.item.container.container.impl.trade.TradeContainer;
 import com.model.game.item.container.container.impl.trade.TradeSession;
 import com.model.game.item.container.container.impl.trade.TradeSession.TradeStage;
 import com.model.game.item.container.impl.Bank;
-import com.model.game.item.container.impl.LootingBag;
-import com.model.game.item.container.impl.RunePouch;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
@@ -762,30 +762,17 @@ public class Player extends Entity {
 	 */
 	public boolean autoCast = false;
 	public boolean onAuto = false;
-
-	/**
-	 * Constructs a new {@link LootingBag}.
-	 */
-	private final LootingBag lootingbagContainer = new LootingBag(this);
 	
 	/**
-	 * @see {@link #lootingbagContainer}.
-	 * <b>no point in documentating a getter</b>
+	 * Constructs a new {@link RunePouchContainer}.
 	 */
-	public LootingBag getLootingBagContainer() {
-		return lootingbagContainer;
-	}
-	
-	/**
-	 * Constructs a new {@link RunePouch}.
-	 */
-	public final RunePouch runePouchContainer = new RunePouch(this);
+	public final RunePouchContainer runePouchContainer = new RunePouchContainer(this);
 	
 	/**
 	 * @see {@link #runePouchContainer}.
 	 * <b>no point in documentating a getter</b>
 	 */
-	public RunePouch getRunePouch() {
+	public RunePouchContainer getRunePouch() {
 		return runePouchContainer;
 	}
 	
@@ -3252,6 +3239,12 @@ public class Player extends Entity {
 		setShopping(false);
 		setBanking(false);
 		dialogue().interrupt();
+	}
+	
+	private final PriceChecker priceChecker = new PriceChecker(this);
+	
+	public PriceChecker getPriceChecker() {
+		return priceChecker;
 	}
 
 }

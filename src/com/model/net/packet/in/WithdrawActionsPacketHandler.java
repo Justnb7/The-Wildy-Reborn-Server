@@ -78,7 +78,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		switch (interfaceId) {
 
 		case InterfaceConstants.EQUIPMENT:
-			player.getEquipment().unequipItem(removeSlot, true);
+			player.getEquipment().unequip(removeSlot);
 			break;
 
 		case InterfaceConstants.INVENTORY_STORE: {

@@ -9,7 +9,7 @@ import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.utility.Utility;
 
 public class ArmadylCrossbow implements SpecialAttack {
@@ -54,7 +54,7 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity target) {
-		if (player.getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId() < 1) {
+		if (player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() < 1) {
 			player.getActionSender().sendMessage("You need atleast 1 bolt to perform this special.");
 			player.setUsingSpecial(false);
 			return false;

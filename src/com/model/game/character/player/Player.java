@@ -2569,7 +2569,7 @@ public class Player extends Entity {
 	/**
 	 * The players equipment bonuses
 	 */
-	private int[] bonuses = new int[16];
+	private int[] bonuses = new int[Combat.BONUS_NAMES.length];
 	
 	public List<Integer> searchList = new ArrayList<>();
 	
@@ -2949,61 +2949,6 @@ public class Player extends Entity {
         onAuto = false;
         autoCast = false;
         getActionSender().sendConfig(108, 0);
-    }
-    
-    /** Gets the item player.getBonuses() from item_definitions.json */
-	public void setBonus() {
-		Arrays.fill(getBonuses(), 0);
-		
-		for (int index = 0; index < getBonuses().length; index++) {
-			final Item item = getEquipment().get(index);
-			
-			if (item != null) {
-				EquipmentDefinition def = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
-
-				for (int slot = 0; slot < getBonuses().length; slot++) {
-					getBonuses()[slot] += def.getBonuses()[slot];
-				}
-			}
-		}
-		
-		//Bonuses sent to the original interface frames
-        for (int i = 0; i < 10; i++) {
-            getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (bonuses[i] >= 0 ? "+" : "") + bonuses[i], (1675 + i));
-        }
-        //Bonuses sent to the custom made frames
-        for (int bonus = 10; bonus < 16; bonus++) {
-			if (bonus == 12 || bonus == 14 || bonus == 15) {
-				getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (bonuses[bonus] >= 0 ? "+" : "") + bonuses[bonus] + "%", (15115 + bonus - 10));
-			} else {
-				getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (bonuses[bonus] >= 0 ? "+" : "") + bonuses[bonus], (15115 + bonus - 10));
-			}
-			
-			//Debug
-			//getActionSender().sendMessage(Combat.BONUS_NAMES[bonus]+" VS "+ (bonuses[bonus] >= 0 ? "+" : "")+ " VS "+ (15115 + bonus - 10));
-		}
-        
-        calculateWeight();
-	}
-    
-	/**
-	 * Calculates and writes the players weight to the equipment equipment
-	 * sidebar interface.
-	 */
-    private double calculateWeight() {
-    	double weight = 0;
-    	int weightToInt = (int) weight;
-    	getActionSender().sendString(weightToInt+" kg", 15122);
-    	return weight;
-    	/*
-    	for(int equipmentIndex = 0; equipmentIndex < 12; equipmentIndex++) {
-    		this.getEquipment().getId(equipmentIndex);
-    		
-    		if (this.getEquipment().getId(equipmentIndex) > 1) {
-    			
-    		}
-    	}*/
-    	
     }
 
 	/**

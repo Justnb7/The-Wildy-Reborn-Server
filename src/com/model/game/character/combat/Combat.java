@@ -29,7 +29,8 @@ import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -57,7 +58,7 @@ public class Combat {
      * The names of all the bonuses in their exact identified slots.
      */
     public static final String[] BONUS_NAMES = {"Stab", "Slash", "Crush", "Magic", "Range", "Stab", "Slash", "Crush", "Magic", "Range",
-            "Melee Strength", "Ranged strength", "Magic damage", "Prayer", "Undead", "Slayer"};
+            "Melee Strength", "Ranged strength",/* "Magic damage", "Prayer", "Undead", "Slayer"*/};
 
     /**
 	 * Resets the combat for the entity
@@ -143,8 +144,8 @@ public class Combat {
          * Verify if we have the proper arrows/bolts
 		 */
         if (player.getCombatType() == CombatStyle.RANGE) {
-        	Item wep = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
-            Item ammo = player.getEquipment().get(EquipmentContainer.ARROWS_SLOT);
+        	Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+            Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
             boolean crystal = wep.getId() >= 4212 && wep.getId() <= 4223;
             boolean blowp = wep.getId() == 12926;
             if (!crystal && !blowp && ammo.getId() < 1) {
@@ -166,7 +167,7 @@ public class Combat {
                 Combat.resetCombat(player);
                 return;
             }*/
-            if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 2417)) {
+            if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2417)) {
                 player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
                 return;
             }
@@ -217,7 +218,7 @@ public class Combat {
         }
 
         // ##### BEGIN ATTACK - WE'RE IN VALID DISTANCE AT THIS POINT #######
-        int wep = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId();
+        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		/*
 		 * Set our attack timer so we dont instantly hit again
 		 */
@@ -234,20 +235,20 @@ public class Combat {
                     skull(player, SkullType.SKULL, 300);
                 }
             }
-            if (ptarg.infection != 2 && player.getEquipment().canInfect(player)) {
+            /*if (ptarg.infection != 2 && player.getEquipment().canInfect(player)) {
                 int inflictVenom = Utility.getRandom(5);
                 //System.out.println("Venom roll: "+inflictVenom);
                 if (inflictVenom == 0 && ptarg.isSusceptibleToVenom()) {
                     new Venom(ptarg);
                 }
-            }
+            }*/
         } else if (target.isNPC()) {
             NPC npc = (NPC) target;
-            if (!npc.infected && player.getEquipment().canInfect(player) && !Venom.venomImmune(npc)) {
+            /*if (!npc.infected && player.getEquipment().canInfect(player) && !Venom.venomImmune(npc)) {
                 if (Utility.getRandom(10) == 5) {
                     new Venom(npc);
                 }
-            }
+            }*/
         }
 
         if (wep > -1 && !player.usingMagic) {
@@ -354,7 +355,7 @@ public class Combat {
 
             player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
             player.getCombatState().fireProjectileAtTarget();
-            Item arrows = player.getEquipment().get(EquipmentContainer.ARROWS_SLOT);
+            Item arrows = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
             boolean hand_thrown = false;
             if (hand_thrown) {
 
@@ -362,7 +363,7 @@ public class Combat {
                 
             } else {
 
-                if (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 11235 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12765 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12766 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12767 || player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 12768) {
+                if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12765 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12766 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12767 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12768) {
                 	//TODO add arrow removement
                 }
 
@@ -381,7 +382,7 @@ public class Combat {
             int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
 
             // Bolt special increases damage.
-            boolean boltSpec = player.getEquipment().isCrossbow(player) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;
+            boolean boltSpec = EquipmentConstants.isCrossbow(player) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;
             if (boltSpec && dam1 > 0)
                 dam1 = Combat.boltSpecialVsEntity(player, target, dam1);
 
@@ -507,7 +508,7 @@ public class Combat {
 
     private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
         if (dam1 == 0) return dam1;
-        switch (attacker.getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId()) {
+        switch (attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId()) {
             case 9236: // Lucky Lightning
                 defender.playGraphics(Graphic.create(749, 0, 0));
                 break;
@@ -558,7 +559,7 @@ public class Combat {
                     dam1 *= 1.15;
                 }
                 boolean fire = true;
-                int shield = defender.isPlayer() ? ((Player) defender).getEquipment().get(EquipmentContainer.SHIELD_SLOT).getId() : -1;
+                int shield = defender.isPlayer() ? ((Player) defender).getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() : -1;
                 if (shield == 11283 || shield == 1540) {
                     fire = false;
                 }
@@ -614,7 +615,7 @@ public class Combat {
             player.usingMagic = true;
             player.setCombatType(CombatStyle.MAGIC);
         }
-        int wep = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId();
+        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         if (wep == 11907) {
             player.spellId = 52;
             player.castingMagic = true;
@@ -639,13 +640,13 @@ public class Combat {
 		 * Check if we are using ranged
 		 */
         if (player.getCombatType() != CombatStyle.MAGIC) {
-            player.usingBow = player.getEquipment().isBow(player);
-            boolean handthrown = player.getEquipment().isThrowingWeapon(player);
-            player.usingCross = player.getEquipment().isCrossbow(player);
-            boolean bolt = player.getEquipment().isBolt(player);
+            player.usingBow = EquipmentConstants.isBow(player);
+            boolean handthrown = EquipmentConstants.isThrowingWeapon(player);
+            player.usingCross = EquipmentConstants.isCrossbow(player);
+            boolean bolt = EquipmentConstants.isBolt(player);
             boolean javalin = player.getCombatState().properJavalins();
 
-            if (handthrown || player.usingCross || player.usingBow || player.getEquipment().wearingBallista(player) || player.getEquipment().wearingBlowpipe(player)) {
+            if (handthrown || player.usingCross || player.usingBow || EquipmentConstants.wearingBallista(player) || EquipmentConstants.wearingBlowpipe(player)) {
                 player.setCombatType(CombatStyle.RANGE);
                 followDist = handthrown ? 4 : 7;
             }
@@ -716,7 +717,7 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
-		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName().toLowerCase();
+		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()).getName().toLowerCase();
 		
 		if (weapon.contains("halberd")) {
 			return true;
@@ -738,17 +739,17 @@ public class Combat {
 	 */
 	public static int calculateAttackDistance(Player player, Player victim, boolean follow) {
 		int distance = 1;
-		if (player.getCombatType() == CombatStyle.RANGE && player.getEquipment().isThrowingWeapon(player)) {
+		if (player.getCombatType() == CombatStyle.RANGE && EquipmentConstants.isThrowingWeapon(player)) {
 			distance = 4;
 		} else if (usingHalberd(player) && player.getCombatType() == CombatStyle.MELEE) {
 			distance = 2;
 		} else if (player.usingBow) {
 			distance = 7;
-		} else if(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 11785) {
+		} else if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11785) {
 			distance = 9;
-		} else if (player.getEquipment().wearingBallista(player)) {
+		} else if (EquipmentConstants.wearingBallista(player)) {
 			distance = 11;
-		} else if (player.getEquipment().wearingBlowpipe(player)) {
+		} else if (EquipmentConstants.wearingBlowpipe(player)) {
 			distance = 5;
 		} else if (player.usingMagic) {
 			distance = 10;
@@ -792,7 +793,7 @@ public class Combat {
 	 * @return
 	 */
 	public boolean wearingAccumulator(Player player) {
-		return (player.getEquipment().get(EquipmentContainer.CAPE_SLOT).getId() == 10499);
+		return (player.getEquipment().get(EquipmentConstants.CAPE_SLOT).getId() == 10499);
 	}
 	
 	/**
@@ -801,6 +802,6 @@ public class Combat {
 	 * @return
 	 */
 	public boolean wearingAttractor(Player player) {
-		return (player.getEquipment().get(EquipmentContainer.CAPE_SLOT).getId() == 10498);
+		return (player.getEquipment().get(EquipmentConstants.CAPE_SLOT).getId() == 10498);
 	}
 }

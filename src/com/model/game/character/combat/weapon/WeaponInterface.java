@@ -4,10 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.Player;
-import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
-import com.model.net.packet.out.SendSidebarInterfacePacket;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 /**
  * The class which represents functionality for the weapons interface.
@@ -108,34 +106,6 @@ public class WeaponInterface {
 
 		public int getItemLocation() {
 			return itemLocationId;
-		}
-	}
-
-	/**
-	 * Sends weapon information.
-	 * 
-	 * @param id
-	 *            The id.
-	 * @param name
-	 *            The name.
-	 * @param genericName
-	 *            The filtered name.
-	 */
-	public void sendWeapon(Item id, String name) {
-		for (final weaponInterface equipment : weaponInterface.values()) {
-			if (name == null || name == "Unarmed" || id == null) {
-				player.setAttackStyle(0);
-				player.write(new SendSidebarInterfacePacket(0, 5855));
-				player.getActionSender().sendString("Unarmed", 5857);
-				player.setAttackStyle(0);
-				player.getActionSender().sendConfig(43, 0);
-				return;
-			}
-			if (name.contains(equipment.getWeaponType()) || name.endsWith(equipment.getWeaponType()) || name.startsWith(equipment.getWeaponType())) {
-				player.write(new SendSidebarInterfacePacket(0, equipment.getInterface()));
-				player.getActionSender().sendItemOnInterface(equipment.getItemLocation(), 200, id.getId());
-				player.getActionSender().sendString(name, equipment.getNameOnInterfaceId());
-			}
 		}
 	}
 
@@ -242,7 +212,6 @@ public class WeaponInterface {
 		player.getActionSender().moveComponent(specAmount >= 20 ? 500 : 0, 0, (--barId));
 		player.getActionSender().moveComponent(specAmount >= 10 ? 500 : 0, 0, (--barId));
 		refreshSpecialAttack();
-		sendWeapon(weapon, ItemDefinition.get(weapon.getId()).getName());
 	}
 
 	public void refreshSpecialAttack() {
@@ -255,7 +224,6 @@ public class WeaponInterface {
 	
 	public void restoreWeaponAttributes() {
 		refreshSpecialAttack();
-		sendSpecialBar(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
-		sendWeapon(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT), "");
+		sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 	}
 }

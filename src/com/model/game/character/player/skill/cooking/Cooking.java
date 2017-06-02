@@ -6,7 +6,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;
@@ -104,7 +104,7 @@ public class Cooking extends SkillTask {
 	 */
 	private boolean burned(Cookables cook, Player player) {
 		int level = player.getSkills().getLevel(Skills.COOKING);
-		if (player.getEquipment().get(EquipmentContainer.HANDS_SLOT).getId() == 775) {
+		if (player.getEquipment().get(EquipmentConstants.GLOVES_SLOT).getId() == 775) {
 			if (level >= (cook.getBurningLvl() - (cook.getProduct() == 391 ? 0 : 6)))
 				return false;
 		}

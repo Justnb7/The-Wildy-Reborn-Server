@@ -8,7 +8,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.utility.Utility;
 
 /**
@@ -148,7 +148,7 @@ public class CombatFormulae {
                 break;
             }
 
-            if (p.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() > 0 && att_type != 2) {
+            if (p.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() > 0 && att_type != 2) {
                 att_weapon_bonus += (((att_type == 0 ? att_base_attack : att_base_range) - (att_type = 0)) * 0.3);
             }
 
@@ -331,7 +331,7 @@ public class CombatFormulae {
 		double base = (13 + effectiveStrengthDamage + (strengthBonus / 8) + ((effectiveStrengthDamage * strengthBonus) * 0.016865)) / 10;
 
 		if (player.isUsingSpecial()) {
-			switch (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()) {
+			switch (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()) {
 			case 11802:
 				specialMultiplier = 1.42375;
 				break;
@@ -417,8 +417,8 @@ public class CombatFormulae {
 		double baseDamage = 1.3 + (effectiveRangeDamage / 10) + (rangedStrength / 80) + ((effectiveRangeDamage * rangedStrength) / 640);
 		
 		if(special) {
-			if(player.getEquipment().get(EquipmentContainer.ARROWS_SLOT) != null) {
-				switch(player.getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId()) {
+			if(player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null) {
+				switch(player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId()) {
 				case 11212:
 					specialMultiplier = 1.5;
 					break;
@@ -440,7 +440,7 @@ public class CombatFormulae {
 				case 888:
 				case 890:
 				case 892:
-					if(player.getEquipment().get(EquipmentContainer.ARROWS_SLOT) != null && player.getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId() == 11235) {
+					if(player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null && player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11235) {
 						specialMultiplier = 1.3;
 					}
 					break;
@@ -521,15 +521,15 @@ public class CombatFormulae {
 			return false;
 		}
 
-		boolean helmet = player.getEquipment().get(EquipmentContainer.HEAD_SLOT).getId() == (type == 0 ? 11665 : type == 1 ? 11663 : 11664);
+		boolean helmet = player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId() == (type == 0 ? 11665 : type == 1 ? 11663 : 11664);
 
-		boolean hasGloves = player.getEquipment().get(EquipmentContainer.HANDS_SLOT).getId() == 8842;
+		boolean hasGloves = player.getEquipment().get(EquipmentConstants.GLOVES_SLOT).getId() == 8842;
 
-		boolean hasDeflector = player.getEquipment().get(EquipmentContainer.SHIELD_SLOT).getId() == 19712;
+		boolean hasDeflector = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() == 19712;
 
-		boolean hasLegs = player.getEquipment().get(EquipmentContainer.LEGS_SLOT).getId() == 8840 || player.getEquipment().get(EquipmentContainer.LEGS_SLOT).getId() == 13073;
+		boolean hasLegs = player.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId() == 8840 || player.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId() == 13073;
 
-		boolean hasPlate = player.getEquipment().get(EquipmentContainer.CHEST_SLOT).getId() == 8839 || player.getEquipment().get(EquipmentContainer.CHEST_SLOT).getId() == 13072;
+		boolean hasPlate = player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId() == 8839 || player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId() == 13072;
 
 		if (helmet) {
 			complete++;
@@ -584,7 +584,7 @@ public class CombatFormulae {
 	 */
 	public static int getCombatCooldownDelay(Entity entity) {
 		Player p = (Player) entity;
-		Item weapon = p.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		Item weapon = p.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 		int extra = 0;
 		if(entity.getCombatType() == CombatStyle.RANGE) {
 			if(p.attackStyle != 1) {

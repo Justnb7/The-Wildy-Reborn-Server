@@ -1,7 +1,7 @@
 package com.model.game.character.combat.combat_data;
 
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 public class CombatData {
 
@@ -35,7 +35,7 @@ public class CombatData {
 				return 4;
 			}
 
-			switch (player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()) {
+			switch (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()) {
 			
 			case 6522:
 				return 3;

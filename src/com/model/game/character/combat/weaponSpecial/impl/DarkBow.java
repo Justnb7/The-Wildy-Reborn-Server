@@ -11,7 +11,7 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
@@ -82,7 +82,7 @@ public class DarkBow implements SpecialAttack {
 			}
 		});
 
-		boolean dragArrow = player.getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId() == 11212;
+		boolean dragArrow = player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212;
 		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
 			@Override
 			public void execute() {
@@ -100,7 +100,7 @@ public class DarkBow implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity target) {
-		if (player.getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId() < 2) {
+		if (player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() < 2) {
 			player.getActionSender().sendMessage("You need at least two arrows to use this special attack.");
 			return false;
 		}

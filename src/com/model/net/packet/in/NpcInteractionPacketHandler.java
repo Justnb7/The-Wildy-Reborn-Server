@@ -4,6 +4,7 @@ import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.net.packet.PacketType;
 import com.model.task.impl.WalkToNpcTask;
 
@@ -101,9 +102,9 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		player.faceEntity(npc);
 		player.usingMagic = false;
-		boolean usingBow = player.getEquipment().isBow(player);
-		boolean throwingWeapon = player.getEquipment().isThrowingWeapon(player);
-		boolean usingCross = player.getEquipment().isCrossbow(player);
+		boolean usingBow = EquipmentConstants.isBow(player);
+		boolean throwingWeapon = EquipmentConstants.isThrowingWeapon(player);
+		boolean usingCross = EquipmentConstants.isCrossbow(player);
 
 		if ((usingBow || usingCross || player.autoCast)
 				&& player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {

@@ -8,6 +8,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionFin
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
 import com.model.net.packet.SubPacketType;
 
@@ -26,6 +27,8 @@ public class WieldPacketHandler implements SubPacketType {
 		final int id = player.getInStream().readUnsignedWord();
 		final int slot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();
+		
+		final Item item = new Item(id);
 
 		if (player.inDebugMode()) {
 			player.debug("WieldPacketHandler - item: " + id+" slot: "+slot+" interface: "+interfaceId);
@@ -48,7 +51,7 @@ public class WieldPacketHandler implements SubPacketType {
 			if (!player.getController().canEquip(player, id, slot)) {
 				return;
 			}
-			player.getEquipment().equipItem(slot);
+			player.getEquipment().wear(item, slot);
 			break;
 		}
 		if (player.getEquipment().get(3) == null) {

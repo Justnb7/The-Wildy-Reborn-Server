@@ -7,7 +7,7 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 /**
  * The definition for all weapons.
@@ -291,14 +291,10 @@ public class WeaponDefinition {
     public static void execute(Player player, Item item) {
     	final WeaponDefinition def = WeaponDefinition.get(item.getId());
     	if(def == null || item == null) {
-    		player.debug("return");
     		return;
     	}
-    	player.debug("stand animation: "+def.getStandAnimation());
         player.setStandAnimation(def.getStandAnimation());
-        player.debug("walk animation: "+def.getWalkAnimation());
         player.setWalkAnimation(def.getWalkAnimation());
-        player.debug("run Animation: "+def.getRunAnimation());
         player.setRunAnimation(def.getRunAnimation());
     }
 	
@@ -310,7 +306,7 @@ public class WeaponDefinition {
 	 * @return the attack speed
 	 */
 	public static int sendAttackSpeed(Player player) {
-		Item weapon = new Item(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
+		Item weapon = new Item(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 		
 		if (player.usingMagic) {
 			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
@@ -337,10 +333,10 @@ public class WeaponDefinition {
 	 */
 	public static int sendBlockAnimation(Player player) {
 		//weapon instance
-		Item weapon = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 		
 		//shield instance
-		Item shield = player.getEquipment().get(EquipmentContainer.SHIELD_SLOT);
+		Item shield = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
 
 		//grab by name
 		String shieldName = shield.getName().toLowerCase();

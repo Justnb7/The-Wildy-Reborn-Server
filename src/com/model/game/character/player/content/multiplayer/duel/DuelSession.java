@@ -16,7 +16,7 @@ import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.net.packet.out.SendSoundPacket;
@@ -312,7 +312,7 @@ public class DuelSession extends MultiplayerSession {
 	}
 
 	public void moveAndClearAttributes(Player player) {
-		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
+		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 		player.getActionSender().createPlayerHint(10, -1);
 		player.movePlayer(new Location(Constants.DUELING_RESPAWN_X, Constants.DUELING_RESPAWN_Y, 0));
 		restorePlayerAttributes(player);

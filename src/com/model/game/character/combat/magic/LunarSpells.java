@@ -7,7 +7,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.utility.Utility;
 
@@ -83,8 +83,8 @@ public class LunarSpells {
 	}
 	
 	private final boolean checkRunes(Player player, boolean delete, Item... runes) {
-		Item weaponId = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
-		Item shieldId = player.getEquipment().get(EquipmentContainer.SHIELD_SLOT);
+		Item weaponId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		Item shieldId = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
 		int runesCount = 0;
 		boolean has = false;
 		for (Item i : runes) {

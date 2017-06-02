@@ -17,7 +17,7 @@ import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
@@ -686,7 +686,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "spec":
     		player.setSpecialAmount(100);
-    		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
+    		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
     		player.getWeaponInterface().refreshSpecialAttack();
     		return true;
     		

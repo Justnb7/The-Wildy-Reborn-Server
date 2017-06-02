@@ -27,7 +27,7 @@ import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
@@ -614,7 +614,7 @@ public abstract class Entity {
 			}
 			
 			// TODO special reduction effects can go here, like Ely
-			if (player_me.getEquipment().get(EquipmentContainer.SHIELD_SLOT).getId() == 12817) {
+			if (player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() == 12817) {
 				if (Utility.getRandom(100) > 30 && damage > 0) {
 					damage *= .75;
 				}
@@ -684,7 +684,7 @@ public abstract class Entity {
 				Player pAttacker = (Player)attacker;
 				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
 				pAttacker.getCombatState().applySmite(me, damage);
-				PoisonCombatTask.getPoisonType(new Item(pAttacker.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId())).ifPresent(attacker::poison);
+				PoisonCombatTask.getPoisonType(new Item(pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId())).ifPresent(attacker::poison);
 			}
 		}
 

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 /**
  * Holds the requirements for arrows
@@ -59,8 +59,8 @@ public enum ArrowRequirements {
 	 * @return
 	 */
 	public static boolean canUseArrowWithBow(Player player) {
-		Item bow = player.getEquipment().get(EquipmentContainer.WEAPON_SLOT);
-		Item arrow = player.getEquipment().get(EquipmentContainer.ARROWS_SLOT);
+		Item bow = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		Item arrow = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
 
 		if (arrow == null) {
 			player.getActionSender().sendMessage("You have no arrows in your quiver.");

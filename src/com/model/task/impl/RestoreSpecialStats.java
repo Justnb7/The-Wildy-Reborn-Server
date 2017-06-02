@@ -2,7 +2,7 @@ package com.model.task.impl;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.task.ScheduledTask;
 
 public class RestoreSpecialStats extends ScheduledTask {
@@ -29,7 +29,7 @@ public class RestoreSpecialStats extends ScheduledTask {
 								player.setSpecialAmount(100);
 								//System.out.println("Special attack already full.");
 							}
-							player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT));
+							player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 							player.getWeaponInterface().refreshSpecialAttack();
 							//System.out.println("Special bar updated.");
 					}

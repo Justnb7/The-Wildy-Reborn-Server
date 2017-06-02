@@ -34,8 +34,9 @@ public final class GroundItemHandler {
 	 *            the ground item
 	 */
 	public static boolean register(GroundItem groundItem) {
+		Item item = new Item(groundItem.getItem());
 		if (find(groundItem.getPosition(), groundItem.getItem().getId()) != null) {
-			if (groundItem.getItem().getDefinition().isStackable()) {
+			if (item.isStackable()) {
 				find(groundItem.getPosition(), groundItem.getItem().getId()).setItem(new Item(groundItem.getItem().getId(), find(groundItem.getPosition(), groundItem.getItem().getId()).getItem().getAmount() + groundItem.getItem().getAmount()));
 				return false;
 			}
@@ -120,13 +121,14 @@ public final class GroundItemHandler {
 				if (groundItem.getType() == GroundItemType.PRIVATE) {
 					continue;
 				}
+				
+				Item item = new Item(groundItem.getItem().getId());
 
 				/**
 				 * If the item is a non-tradable item continue
 				 * 
 				 */
-
-				if (!player.getInventory().isTradeable(groundItem.getItem().getId())) {
+				if (!item.isTradeable()) {
 					continue;
 				}
 
@@ -185,7 +187,7 @@ public final class GroundItemHandler {
 						&& groundItem.getPosition().getX() == other.getPosition().getX()
 						&& groundItem.getPosition().getY() == other.getPosition().getY()
 						&& groundItem.getPosition().getZ() == other.getPosition().getZ() && !other.isRemoved()) {
-					if (item.getDefinition().isStackable()) {
+					if (item.isStackable()) {
 						int existingCount = other.getItem().getAmount();
 						long newCount = (long) existingCount + item.getAmount();
 						if (newCount > Integer.MAX_VALUE) {
@@ -217,8 +219,9 @@ public final class GroundItemHandler {
 				}
 			}
 			
-			if (player.getInventory().isTradeable(groundItem.getItem().getId())
-					|| groundItem.getOwnerHash() == player.usernameHash) {
+			Item item = new Item(groundItem.getItem().getId());
+			
+			if (item.isTradeable() || groundItem.getOwnerHash() == player.usernameHash) {
 				
 				if (groundItem.getState() == State.GLOBAL || groundItem.getOwnerHash() == player.usernameHash) {
 					//System.out.println(player.getPosition() + " : " + groundItem.getPosition());
@@ -325,7 +328,7 @@ public final class GroundItemHandler {
 						&& player.getLocation().getY() == groundItem.getPosition().getY()) {
 
 					if (player.getInventory().getFreeSlots() == 0
-							&& !(player.getInventory().contains(item.getId()) && item.getDefinition().isStackable())) {
+							&& !(player.getInventory().contains(item.getId()) && item.isStackable())) {
 						player.getActionSender().sendMessage("You do not have enough inventory space to pick that up.");
 						stop();
 						return;

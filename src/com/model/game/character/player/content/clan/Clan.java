@@ -250,9 +250,9 @@ public class Clan extends ClanData {
 		String message = "";
 
 		if (item.getAmount() == 1) {
-			message = " received: " + item.getDefinition().getName() + " (" + mob_name + ")";
+			message = " received: " + item.getName() + " (" + mob_name + ")";
 		} else {
-			message = " received: " + NameUtils.formatInt(item.getAmount()) + " x " + item.getDefinition().getName()
+			message = " received: " + NameUtils.formatInt(item.getAmount()) + " x " + item.getName()
 					+ " (" + mob_name + ")";
 		}
 

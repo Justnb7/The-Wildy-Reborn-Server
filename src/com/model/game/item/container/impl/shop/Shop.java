@@ -3,8 +3,8 @@ package com.model.game.item.container.impl.shop;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.container.Container;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class Shop extends Container {
 	
@@ -37,10 +37,10 @@ public class Shop extends Container {
 		for (int i = 0; i < stock.length; i++) {
 			ShopItem item = (ShopItem) stock[i].copy();
 			if (item.getValue() <= 0) {
-				final ItemDefinition def = ItemDefinition.forId(item.getId());
+				final ItemDefinition def = ItemDefinition.get(item.getId());
 
 				if (def != null) {
-					item.setValue(def.getGeneralPrice());
+					item.setValue(def.getValue());
 				}
 			}
 			stack[i] = item;

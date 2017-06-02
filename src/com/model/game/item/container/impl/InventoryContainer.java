@@ -6,7 +6,6 @@ import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class InventoryContainer extends Container {
 
@@ -47,7 +46,7 @@ public class InventoryContainer extends Container {
 	public void addOrCreateGroundItem(Item item) {
 		if (getFreeSlots() > 0) {
 			add(new Item(item.getId(), item.getAmount()));
-		} else if ((item.getAmount() > 1) && (!ItemDefinition.forId(item.getId()).isStackable())) {
+		} else if ((item.getAmount() > 1) && (!item.isStackable())) {
 			for (int i = 0; i < item.getAmount(); i++)
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
 			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
@@ -55,12 +54,5 @@ public class InventoryContainer extends Container {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
 			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
 		}
-	}
-
-	public boolean isTradeable(int itemId) {
-		boolean tradable = ItemDefinition.forId(itemId).isTradeable();
-		if (tradable)
-			return true;
-		return false;
 	}
 }

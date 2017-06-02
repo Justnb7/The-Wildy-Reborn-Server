@@ -1,8 +1,9 @@
 package com.model.game.item;
 
 import java.util.Comparator;
+import java.util.Objects;
 
-import com.model.utility.json.definitions.ItemDefinition;
+import com.model.game.definitions.ItemDefinition;
 
 public class Item {
 	
@@ -146,6 +147,11 @@ public class Item {
 	public int getAmount() {
 		return amount;
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, amount);
+	}
 
 	@Override
 	public Item clone() {
@@ -214,26 +220,52 @@ public class Item {
 		}
 	}
 
-	public ItemDefinition getDefinition() {
-		return ItemDefinition.forId(id);
-	}
-	
-	public static ItemDefinition getDefinition(int id) {
-		return ItemDefinition.forId(id);
-	}
-
-	public Item copy() {
-		return new Item(getId(), getAmount());
-	}
-	
-	public int getValue() {
-		final ItemDefinition def = ItemDefinition.forId(getId());
+	/**
+	 * Gets the high alchemy value.
+	 * 
+	 * @return The high alchemy value.
+	 */
+	public int getHighAlch() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
 
 		if (def == null) {
 			return 0;
 		}
 
-		return def.getGeneralPrice();
+		return def.getHighAlch();
+	}
+
+	/**
+	 * Gets the low alchemy value.
+	 * 
+	 * @return The low alchemy value.
+	 */
+	public int getLowAlch() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+
+		if (def == null) {
+			return 0;
+		}
+
+		return def.getLowAlch();
+	}
+
+	/**
+	 * Gets an item name from the ItemDefinitions.json
+	 */
+	public String getName() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def == null ? "Unarmed" : def.getName();
+	}
+
+	public int getValue() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+
+		if (def == null) {
+			return 0;
+		}
+
+		return def.getValue();
 	}
 
 	/**
@@ -242,7 +274,7 @@ public class Item {
 	 * @return The weight.
 	 */
 	public double getWeight() {
-		final ItemDefinition def = ItemDefinition.forId(getId());
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
 
 		if (def == null) {
 			return 0.0;
@@ -250,48 +282,45 @@ public class Item {
 
 		return def.getWeight();
 	}
-	
+
 	/**
-	 * Gets the high alchemy value.
+	 * Determines if the item is destroyable.
 	 * 
-	 * @return The high alchemy value.
+	 * @return The items destroyability.
 	 */
-	public int getHighAlch() {
-		final ItemDefinition def = ItemDefinition.forId(getId());
-
-		if (def == null) {
-			return 0;
-		}
-
-		return def.getHighAlchValue();
+	public boolean isDestroyable() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def != null && def.isDestroyable();
 	}
-	
+
 	/**
-	 * Gets the low alchemy value.
+	 * Determines if the item is equipable.
 	 * 
-	 * @return The low alchemy value.
+	 * @return The items equipability.
 	 */
-	public int getLowAlch() {
-		final ItemDefinition def = ItemDefinition.forId(getId());
-
-		if (def == null) {
-			return 0;
-		}
-
-		return def.getLowAlchValue();
+	public boolean isEquipable() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def != null && def.isEquipable();
 	}
 
 	/**
-	 * Gets an item name from the ItemDefinitions.json
+	 * Determines if the item is a members object.
+	 * 
+	 * @return The items memberability.
 	 */
-	public String getName() {
-		final ItemDefinition def = ItemDefinition.forId(getId());
-		return def == null ? "Unarmed" : def.getName();
+	public boolean isMembers() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def != null && def.isMembers();
 	}
-	
-	public static String getName(int name) {
-		final ItemDefinition def = ItemDefinition.forId(name);
-		return def == null ? "Unarmed" : def.getName();
+
+	/**
+	 * Determines if the item is a quest item.
+	 * 
+	 * @return The items questability.
+	 */
+	public boolean isQuestItem() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def != null && def.isQuestItem();
 	}
 
 	/**
@@ -300,8 +329,18 @@ public class Item {
 	 * @return The items stackability.
 	 */
 	public boolean isStackable() {
-		final ItemDefinition def = ItemDefinition.forId(getId());
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
 		return def != null && (def.isStackable() || def.isNoted());
+	}
+	
+	/**
+	 * Determines if the item is noted.
+	 * 
+	 * @return The items noteability.
+	 */
+	public boolean isNoted() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def != null && def.isNoted();
 	}
 
 	/**
@@ -310,8 +349,22 @@ public class Item {
 	 * @return The items tradability.
 	 */
 	public boolean isTradeable() {
-		final ItemDefinition def = ItemDefinition.DEFINITIONS[getId()];
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
 		return def != null && def.isTradeable();
+	}
+
+	public Item noted() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def.getNotedId() != -1 ? new Item(def.getNotedId(), amount) : this;
+	}
+
+	public Item unnoted() {
+		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
+		return def.getParentId() != -1 ? new Item(def.getParentId(), amount) : this;
+	}
+	
+	public Item copy() {
+		return new Item(id, amount);
 	}
 
 	

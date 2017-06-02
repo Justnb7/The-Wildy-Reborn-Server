@@ -6,8 +6,8 @@ import java.util.Map;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.character.Graphic;
+import com.model.game.character.player.skill.SkillData;
 import com.model.game.character.player.skill.prayer.Prayer;
-import com.model.net.packet.out.SendChatBoxInterfacePacket;
 import com.model.utility.Utility;
 
 /**
@@ -33,76 +33,6 @@ public class Skills {
 	 */
 	public static final String[] SKILL_NAME = { "Attack", "Defence", "Strength", "Hitpoints", "Range", "Prayer", "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming", "Runecrafting",
 	          "Hunter", "Construction" };
-	
-	public enum SkillData {
-		ATTACK(0, 6248, 6249, 6247, "Attack"),
-		DEFENCE(1, 6254, 6255, 6253, "Defence"),
-		STRENGTH(2, 6207, 6208, 6206, "Strength"),
-		HITPOINTS(3, 6217, 6218, 6216, "Hitpoints"),
-		RANGED(4, 5453, 6114, 4443, "Ranged"),
-		PRAYER(5, 6243, 6244, 6242, "Prayer"),
-		MAGIC(6, 6212, 6213, 6211, "Magic"),
-		COOKING(7, 6227, 6228, 6226, "Cooking"),
-		WOODCUTTING(8, 4273, 4274, 4272, "Woodcutting"),
-		FLETCHING(9, 6232, 6233, 6231, "Fletching"),
-		FISHING(10, 6259, 6260, 6258, "Fishing"),
-		FIREMAKING(11, 4283, 4284, 4282, "Firemaking"), 
-		CRAFTING(12, 6264, 6265, 6263, "Crafting"),
-		SMITHING(13, 6222, 6223, 6221, "Smithing"), 
-		MINING(14, 4417, 4438, 4416, "Mining"),
-		HERBLORE(15, 6238, 6239, 6237, "Herblore"),
-		AGILITY(16, 4278, 4279, 4277, "Agility"),
-		THIEVING(17, 4263, 4264, 4261, "Thieving"),
-		SLAYER(18, 12123, 12124, 12122, "Slayer"),
-		FARMING(19, 4889, 4890, 4887, "Farming"),
-		RUNECRAFTING(20, 4268, 4269, 4267, "Runecrafting"),
-		HUNTER(21, 4268, 4269, 4267, "Hunter"), 
-		CONSTRUCTION(22, 4268, 4269, 4267, "Construction");
-
-		private static Map<Integer, SkillData> levelUp = new HashMap<Integer, SkillData>();
-
-		static {
-			for (SkillData data : values()) {
-				levelUp.put(data.getSkillId(), data);
-			}
-		}
-
-		public static SkillData forId(int skillId) {
-			return levelUp.get(skillId);
-		}
-
-		private int skillId, frame1, frame2, frame3;
-
-		private String skillName;
-
-		SkillData(int skillId, int frame1, int frame2, int frame3, String name) {
-			this.skillId = skillId;
-			this.frame1 = frame1;
-			this.frame2 = frame2;
-			this.frame3 = frame3;
-			this.skillName = name;
-		}
-
-		public int getFrame1() {
-			return frame1;
-		}
-
-		public int getFrame2() {
-			return frame2;
-		}
-
-		public int getFrame3() {
-			return frame3;
-		}
-
-		public int getSkillId() {
-			return skillId;
-		}
-
-		public String getSkillName() {
-			return skillName;
-		}
-	}
 
 	/**
 	 * Constants for the skill numbers.
@@ -183,21 +113,22 @@ public class Skills {
     }
 	
 	public void handleLevelUp(int skillId) {
-		SkillData skill = SkillData.forId(skillId);
-		if (skill == null)
+		final SkillData skillData = SkillData.values()[skillId];
+		if (skillData == null)
 			return;
-		String skillName = skill.getSkillName().toLowerCase();
-		if (skill.getFrame1() > 0 && skill.getFrame2() > 0 && skill.getFrame3() > 0) {
-			player.getActionSender().sendString("@dbl@Congratulations, you just advanced a " + skillName + " level.", skill.getFrame1());
-			player.getActionSender().sendString("Your " + skillName + " is now " + getLevelForExperience(skillId) + ".", skill.getFrame2());
-			player.write(new SendChatBoxInterfacePacket(skill.getFrame3()));
-		} else {
-			player.getActionSender().sendMessage("Congralations, your " + skillName + " is now level " + getLevelForExperience(skillId) + ".");
-		}
-		if(getLevel(skill.getSkillId()) == 99) {
+
+		final String line1 = "Congratulations! You've just advanced " + Utility.getAOrAn(skillData.toString()) + " " + skillData + " level!";
+		final String line2 = "You have reached level " + getLevelForExperience(skillId) + "!";
+
+		player.getActionSender().sendMessage("You've reached " + Utility.getAOrAn(skillData.toString()) + " " + skillData + " level of " + getLevelForExperience(skillId) + ".");
+
+		player.getActionSender().sendString(line1, skillData.getFirstLine());
+		player.getActionSender().sendString(line2, skillData.getSecondLine());
+		player.getActionSender().sendChatInterface(skillData.getChatbox());
+		if(getLevel(skillData.getId()) == 99) {
 			player.getActionSender().sendMessage("<col=8b0000>Well done! You've achieved the highest possible level in this skill!</col>");
 		}
-		if (skill.getSkillId() < 7 || skill.getSkillId() == 21) {
+		if (skillData.getId() < 7 || skillData.getId() == 21) {
 			player.combatLevel = getCombatLevel();
 			getCombatLevel();
 			player.getActionSender().sendString("Combat Level: " + player.getSkills().getCombatLevel(), 3983);

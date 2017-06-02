@@ -13,6 +13,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.player.serialize.PlayerSerialization;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.GameItem;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
@@ -23,7 +24,6 @@ import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 import java.util.List;
 import java.util.Objects;
@@ -131,7 +131,7 @@ public class DuelSession extends MultiplayerSession {
 			for (Player p : players) {
 				GameItem overlap = getOverlappedItem(p);
 				if (overlap != null) {
-					p.getActionSender().sendString("Too many of one item! The other player has " + Utility.getValueRepresentation(overlap.amount) + " " + ItemDefinition.forId(overlap.id) + " in their inventory.", 6684);
+					p.getActionSender().sendString("Too many of one item! The other player has " + Utility.getValueRepresentation(overlap.amount) + " " + ItemDefinition.get(overlap.id) + " in their inventory.", 6684);
 					getOther(p).getActionSender().sendString("The other player has offered too many of one item, they must remove some.", 6684);
 					return;
 				}
@@ -180,10 +180,7 @@ public class DuelSession extends MultiplayerSession {
 
 	@Override
 	public boolean itemAddable(Player player, GameItem item) {
-		if (!player.getInventory().isTradeable(item.id)) {
-			player.getActionSender().sendMessage("You cannot stake this item, it is deemed as untradable.");
-			return false;
-		}
+
 		if (item.id == 12926 || item.id == 12931 || item.id == 12904) {
 			player.getActionSender().sendMessage("You cannot stake this item, it is deemed as untradable.");
 			return false;
@@ -229,7 +226,7 @@ public class DuelSession extends MultiplayerSession {
 				List<GameItem> items = getItems(player);
 				for (GameItem item : items) {
 					if (item.id > 0 && item.amount > 0) {
-						itemList.append(ItemDefinition.forId(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
+						itemList.append(ItemDefinition.get(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
 					}
 				}
 				player.getActionSender().sendString(itemList.toString(), 6516);
@@ -237,7 +234,7 @@ public class DuelSession extends MultiplayerSession {
 				items = getItems(recipient);
 				for (GameItem item : items) {
 					if (item.id > 0 && item.amount > 0) {
-						itemList.append(ItemDefinition.forId(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
+						itemList.append(ItemDefinition.get(item.id) + " x " + Utility.getValueRepresentation(item.amount) + "\\n");
 					}
 				}
 				player.getActionSender().sendString(itemList.toString(), 6517);

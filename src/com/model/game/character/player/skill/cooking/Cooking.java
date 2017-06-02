@@ -4,13 +4,13 @@ import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.skill.SkillTask;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;
 import com.model.utility.cache.ObjectDefinition;
-import com.model.utility.json.definitions.ItemDefinition;
 
 
 /**
@@ -126,17 +126,17 @@ public class Cooking extends SkillTask {
 			stop();
 			return;
 		}
-		getPlayer().getActionSender().sendMessage("You attempt to cook the " + ItemDefinition.forId(cookables.getProduct()).getName().toLowerCase() + ".");
+		getPlayer().getActionSender().sendMessage("You attempt to cook the " + ItemDefinition.get(cookables.getProduct()).getName().toLowerCase() + ".");
 		getPlayer().playAnimation(Animation.create(896));
 		
 		if ((getPlayer().getSkills().getLevel(Skills.COOKING) >= cookables.getBurningLvl()) ? false : burned(cookables, getPlayer())) {
 			getPlayer().getInventory().remove(new Item(cookables.getRawItem(), 1));
 			getPlayer().getInventory().add(new Item(cookables.getBurntId(), 1));
-			getPlayer().getActionSender().sendMessage("Oops.. you have accidentally burnt a " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + "");
+			getPlayer().getActionSender().sendMessage("Oops.. you have accidentally burnt a " + ItemDefinition.get(cookables.getRawItem()).getName().toLowerCase() + "");
 		} else {
 			getPlayer().getInventory().remove(new Item(cookables.getRawItem(), 1));
 			getPlayer().getInventory().add(new Item(cookables.getProduct(), 1));
-			getPlayer().getActionSender().sendMessage("You successfully cook the " + ItemDefinition.forId(cookables.getRawItem()).getName().toLowerCase() + ".");
+			getPlayer().getActionSender().sendMessage("You successfully cook the " + ItemDefinition.get(cookables.getRawItem()).getName().toLowerCase() + ".");
 			getPlayer().getSkills().addExperience(Skills.COOKING, cookables.getXp());
 		}
 	}

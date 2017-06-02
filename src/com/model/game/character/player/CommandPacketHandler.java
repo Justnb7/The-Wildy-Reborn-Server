@@ -15,6 +15,7 @@ import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.serialize.PlayerSerialization;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.game.item.container.impl.shop.ShopManager;
@@ -27,12 +28,11 @@ import com.model.net.packet.out.SendSoundPacket;
 import com.model.net.packet.out.SendWalkableInterfacePacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.NPCDefinitions;
-import com.model.utility.json.loader.ItemDefinitionLoader;
 import com.model.utility.json.loader.NPCDefinitionLoader;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
+import com.model.utility.parser.impl.ItemDefinitionParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -604,7 +604,7 @@ public class CommandPacketHandler implements PacketType {
 				switch (reload) {
 				case 0:
 					Arrays.fill(ItemDefinition.DEFINITIONS, null);
-					new ItemDefinitionLoader().load();
+					new ItemDefinitionParser().run();
 					player.getActionSender().sendMessage("Succesfully reloaded itemdefinitions");
 					break;
 				case 1:

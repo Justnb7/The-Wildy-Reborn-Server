@@ -1,11 +1,11 @@
 package com.model.game.character.player.content.music.sounds;
 
 import com.model.game.character.player.Player;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class PlayerSounds {
 	
@@ -49,9 +49,9 @@ public class PlayerSounds {
 		sounds[1] = new Sound[] { new Sound(417, 18), new Sound(418, 18),
 				new Sound(417, 18), new Sound(417, 18), new Sound(0) };
 
-		for (int i = 0; i < 25000; i++) {
-			if (ItemDefinition.forId(i) != null) {
-				String check = ItemDefinition.forId(i).getName().toLowerCase();
+		for (int i = 0; i < ItemDefinition.ITEM_LIMIT; i++) {
+			if (ItemDefinition.get(i) != null) {
+				String check = ItemDefinition.get(i).getName().toLowerCase();
 				if (check.contains("abyssal whip")) {
 					sounds[i] = new Sound[] { new Sound(1080, 10),
 							new Sound(1080, 10), new Sound(1080, 10),

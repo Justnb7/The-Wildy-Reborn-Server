@@ -1,6 +1,6 @@
 package com.model.game.item;
 
-import com.model.utility.json.definitions.ItemDefinition;
+import com.model.game.definitions.ItemDefinition;
 
 public class GameItem {
 	
@@ -18,7 +18,7 @@ public class GameItem {
 	 * @param amount the amount of the item
 	 */
 	public GameItem(int id) {
-		if (ItemDefinition.forId(id).isStackable()) {
+		if (ItemDefinition.get(id).isStackable()) {
 			stackable = true;
 		}
 		this.id = id;

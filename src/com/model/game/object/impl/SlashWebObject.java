@@ -9,7 +9,6 @@ import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class SlashWebObject {
 	
@@ -23,7 +22,7 @@ public class SlashWebObject {
 			if (weapon == null) {
 				return;
 			}
-			String name = ItemDefinition.forId(weapon.getId()).getName().toLowerCase();
+			String name = weapon.getName().toLowerCase();
 			if (!name.contains("dagger")) {
 				player.getActionSender().sendMessage("You need a sharp weapon to slash through this.");
 				return;

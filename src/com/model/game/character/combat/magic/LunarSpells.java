@@ -5,11 +5,11 @@ import com.model.game.character.Graphic;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.game.location.Location;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class LunarSpells {
 	
@@ -94,7 +94,7 @@ public class LunarSpells {
 				//Checks for rune pouch or staff.
 			}
 			else if (!player.getInventory().contains(i.getId(), i.getAmount())) {
-				player.getActionSender().sendMessage("You do not have enough " + ItemDefinition.forId(i.getId()).getName().replace("rune", "Rune") + "s to cast this spell.");
+				player.getActionSender().sendMessage("You do not have enough " + ItemDefinition.get(i.getId()).getName().replace("rune", "Rune") + "s to cast this spell.");
 				return false;
 			}
 			// at this point you have the required amount. if you've met all requirements (length of RUNES paramater)

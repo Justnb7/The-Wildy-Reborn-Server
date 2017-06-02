@@ -26,12 +26,12 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
+import com.model.game.definitions.ItemDefinition;
+import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
-import com.model.utility.json.definitions.WeaponDefinition;
 
 public class Combat {
 	
@@ -283,7 +283,7 @@ public class Combat {
         		}
         	} else {
         		if (def != null) {
-        			player.playAnimation(Animation.create(def.getAttackAnimations()[player.getAttackStyle()]));
+        			player.playAnimation(Animation.create(def.getAnimations()[player.getAttackStyle()]));
         		}
         	}
 
@@ -324,7 +324,7 @@ public class Combat {
 		/*
 		 * Set the delay before the damage is applied
 		 */
-        int hitDelay = CombatData.getHitDelay(player, ItemDefinition.forId(wep).getName().toLowerCase());
+        int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wep).getName().toLowerCase());
 
 
 		/*
@@ -716,7 +716,7 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
-		String weapon = ItemDefinition.forId(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName().toLowerCase();
+		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName().toLowerCase();
 		
 		if (weapon.contains("halberd")) {
 			return true;

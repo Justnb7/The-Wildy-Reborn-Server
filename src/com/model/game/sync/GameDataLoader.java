@@ -22,11 +22,11 @@ import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
 import com.model.utility.json.definitions.NPCDefinitions;
-import com.model.utility.json.loader.EquipmentRequirementLoader;
-import com.model.utility.json.loader.ItemDefinitionLoader;
 import com.model.utility.json.loader.NPCDefinitionLoader;
 import com.model.utility.json.loader.ShopParser;
-import com.model.utility.json.loader.WeaponDefinitionLoader;
+import com.model.utility.parser.impl.EquipmentDefinitionParser;
+import com.model.utility.parser.impl.ItemDefinitionParser;
+import com.model.utility.parser.impl.WeaponDefinitionParser;
 
 /**
  * A class for loading all of the gamedata on server startup
@@ -64,9 +64,9 @@ public class GameDataLoader implements Runnable {
 			Server.npcHandler.declare();
 			Arrays.fill(NPCDefinitions.getDefinitions(), null);
 	        new NPCDefinitionLoader().load();
-			new ItemDefinitionLoader().load();
-			new EquipmentRequirementLoader().load();
-			new WeaponDefinitionLoader().load();
+			new ItemDefinitionParser().run();
+			new WeaponDefinitionParser().run();
+			new EquipmentDefinitionParser().run();
 			new ShopParser().load();
 			MobAttackSounds.declare();
 			PlayerSounds.declare();

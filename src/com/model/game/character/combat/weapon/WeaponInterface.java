@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.model.game.character.player.Player;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The class which represents functionality for the weapons interface.
@@ -242,7 +242,7 @@ public class WeaponInterface {
 		player.getActionSender().moveComponent(specAmount >= 20 ? 500 : 0, 0, (--barId));
 		player.getActionSender().moveComponent(specAmount >= 10 ? 500 : 0, 0, (--barId));
 		refreshSpecialAttack();
-		sendWeapon(weapon, ItemDefinition.forId(weapon.getId()).getName());
+		sendWeapon(weapon, ItemDefinition.get(weapon.getId()).getName());
 	}
 
 	public void refreshSpecialAttack() {

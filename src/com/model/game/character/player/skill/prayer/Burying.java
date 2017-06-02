@@ -7,13 +7,13 @@ import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * 
@@ -136,7 +136,7 @@ public class Burying {
 				player.write(new SendSoundPacket(380, 1, 24));
 				player.playAnimation(Animation.create(BURY_ANIMATION));
 				player.getActionSender().sendMessage("You dig a hole in the ground...");
-				ItemDefinition itemDef = ItemDefinition.forId(itemId);
+				ItemDefinition itemDef = ItemDefinition.get(itemId);
 				Server.getTaskScheduler().schedule(new ScheduledTask(2) {
 					@Override
 					public void execute() {

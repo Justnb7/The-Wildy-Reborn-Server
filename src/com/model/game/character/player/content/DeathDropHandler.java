@@ -42,12 +42,12 @@ public class DeathDropHandler {
 
 		eqp_loop: for (Item equip : player.getEquipment().toArray()) {
 			if (equip != null) {
-				int itemValue = equip.getDefinition().getGeneralPrice();
+				int itemValue = equip.getValue();
 
 				int keepValue = 0;
 				for (int i = 0; i < keep.length; i++) {
 					if (keep[i] != null) {
-						keepValue = keep[i].getDefinition().getGeneralPrice();
+						keepValue = keep[i].getValue();
 					}
 					if (itemValue > keepValue) {
 						keep[i] = equip;
@@ -66,11 +66,11 @@ public class DeathDropHandler {
 		}
 		inv_loop: for (Item equip : player.getInventory().toArray()) {
 			if (equip != null) {
-				int itemValue = equip.getDefinition().getGeneralPrice();
+				int itemValue = equip.getValue();
 				int keepValue = 0;
 				for (int i = 0; i < keep.length; i++) {
 					if (keep[i] != null) {
-						keepValue = keep[i].getDefinition().getGeneralPrice();
+						keepValue = keep[i].getValue();
 					}
 					if (itemValue > keepValue) {
 						keep[i] = equip;

@@ -12,9 +12,9 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.minigames.fight_caves.Wave;
+import com.model.game.definitions.WeaponDefinition;
 import com.model.game.location.Location;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.WeaponDefinition;
 
 /**
  * Handles all Npc Vs Player combat methods

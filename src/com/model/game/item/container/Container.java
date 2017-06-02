@@ -374,7 +374,7 @@ public abstract class Container {
 				continue;
 			}
 			
-			boolean stackable = isStackable(check.getId());
+			boolean stackable = isStackable(check);
 	
 			for (Item item : stack) {
 				if (item != null && item.getId() == check.getId() && check.getAmount() > 0) {
@@ -1226,8 +1226,8 @@ public abstract class Container {
         return !free(slot);
     }
 	
-	public boolean isStackable(int id) {
-		return (type == ContainerType.ALWAYS_STACK) || ((Item.getDefinition(id) != null) && (Item.getDefinition(id).isStackable()) && (type == ContainerType.DEFAULT));
+	public boolean isStackable(Item id) {
+		return (type == ContainerType.ALWAYS_STACK) || ((id != null) && (id.isStackable()) && (type == ContainerType.DEFAULT));
 	}
 
 	/**

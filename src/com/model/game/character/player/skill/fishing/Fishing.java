@@ -8,11 +8,11 @@ import com.model.game.character.npc.pet.Pets;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.skill.SkillTask;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The fishing skill
@@ -88,7 +88,7 @@ public class Fishing extends SkillTask {
 			return false;
 		}
 		if (!player.getInventory().contains(data.getToolId(), 1)) {
-			player.getActionSender().sendMessage("You need a " + ItemDefinition.forId(data.getToolId()).getName() + " to fish here.");
+			player.getActionSender().sendMessage("You need a " + ItemDefinition.get(data.getToolId()).getName() + " to fish here.");
 			return false;
 		}
 		return true;
@@ -107,10 +107,10 @@ public class Fishing extends SkillTask {
 		Item secondFish = new Item(data.getSecondFishId(), 1);
 		if (data.isSecondFishAvailable() && Utility.getRandom(3) == 0) {
 			getPlayer().getInventory().add(secondFish);
-			getPlayer().getActionSender().sendMessage("You manage to catch some " + secondFish.getDefinition().getName().toLowerCase() + ".");
+			getPlayer().getActionSender().sendMessage("You manage to catch some " + secondFish.getName().toLowerCase() + ".");
 		} else {
 			getPlayer().getInventory().add(fish);
-			getPlayer().getActionSender().sendMessage("You manage to catch some " + fish.getDefinition().getName().toLowerCase() + ".");
+			getPlayer().getActionSender().sendMessage("You manage to catch some " + fish.getName().toLowerCase() + ".");
 		}
 		heronPet(getPlayer(), data);
 		if (data.isBaitRequired() && getPlayer().getInventory().contains(313) && Utility.getRandom(2) == 0) {

@@ -24,13 +24,11 @@ import com.model.game.character.player.content.teleport.TeleportHandler.Teleport
 import com.model.game.character.player.content.teleport.Teleports;
 import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.net.packet.PacketType;
 import com.model.net.packet.buttons.ActionButtonEventListener;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
 import com.model.net.packet.out.SendSongPacket;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 import java.util.Objects;
 
@@ -506,7 +504,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 7212:
 		case 24017:
 			player.resetAutoCast();
-			player.getWeaponInterface().sendWeapon(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT), ItemDefinition.forId(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName());
 			break;
 			
 		case 1093:

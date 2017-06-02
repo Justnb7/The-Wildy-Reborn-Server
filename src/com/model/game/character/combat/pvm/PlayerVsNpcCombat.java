@@ -11,10 +11,10 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.walking.PathFinder;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * Handles Player Vs Npc combat
@@ -26,7 +26,7 @@ import com.model.utility.json.definitions.ItemDefinition;
 public class PlayerVsNpcCombat {
 	
 	public static boolean isWearingSpear(Player player) {
-		String weapon = ItemDefinition.forId(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName().toLowerCase();
+		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId()).getName().toLowerCase();
 		if (weapon.contains("spear") || weapon.contains("hasta"))
 			return true;
 		return false;

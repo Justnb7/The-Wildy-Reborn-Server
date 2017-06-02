@@ -9,8 +9,8 @@ import java.util.Set;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The herblore skill.
@@ -57,7 +57,7 @@ public class Herblore {
 				player.getActionSender().sendMessage("You need a herblore level of " + h.getLevel() + " to clean this grimy herb.");
 				return;
 			}
-			ItemDefinition definition = ItemDefinition.forId(h.getClean());
+			ItemDefinition definition = ItemDefinition.get(h.getClean());
 			player.getSkills().addExperience(Skills.HERBLORE, h.getExperience() * Constants.SKILL_MODIFIER);
 			player.getInventory().remove(new Item(h.getGrimy(), 1));
 			player.getInventory().add(new Item(h.getClean(), 1));
@@ -68,7 +68,7 @@ public class Herblore {
 	public void mix(int primary) {
 		Optional<Potion> potion = POTIONS.stream().filter(p -> p.getPrimary().getId() == primary && containsSecondaries(p)).findFirst();
 		potion.ifPresent(p -> {
-			ItemDefinition definition = ItemDefinition.forId(p.getResult().getId());
+			ItemDefinition definition = ItemDefinition.get(p.getResult().getId());
 			if (player.getSkills().getLevel(Skills.HERBLORE) < p.getLevel()) {
 				player.getActionSender().sendMessage("You need a herblore level of " + p.getLevel() + " to make " + definition.getName() + ".");
 				return;

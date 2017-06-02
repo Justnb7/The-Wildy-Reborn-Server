@@ -8,8 +8,8 @@ import com.model.game.character.player.skill.crafting.GemCutting;
 import com.model.game.character.player.skill.crafting.Gems;
 import com.model.game.character.player.skill.firemaking.Firemaking;
 import com.model.game.character.player.skill.fletching.Fletching;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class ItemOnItem {
 	
@@ -36,7 +36,7 @@ public class ItemOnItem {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {
 				//int amount = player.getItems().checkAmount(withItem.getId());
 				//player.getInventory().remove(new Item(withItem.getId(), amount));
-				player.getActionSender().sendMessage("Whee... "+ItemDefinition.forId(withItem.getId()).getName()+" All gone!");
+				player.getActionSender().sendMessage("Whee... "+ItemDefinition.get(withItem.getId()).getName()+" All gone!");
 			}
 		}
 		

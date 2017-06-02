@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class PestControlRewards {
 	
@@ -244,7 +244,7 @@ public class PestControlRewards {
 			}
 			player.setPestControlPoints(player.getPestControlPoints() - cost);
 			player.getInventory().add(new Item(item.getId(), item.getAmount()));
-			ItemDefinition itemDef = ItemDefinition.forId(item.getId());
+			ItemDefinition itemDef = ItemDefinition.get(item.getId());
 			String name = itemDef == null ? "a item" : itemDef.getName();
 			player.getActionSender().sendMessage("You have received a " + name + " in exchange for " + cost + " pc points.");
 		}

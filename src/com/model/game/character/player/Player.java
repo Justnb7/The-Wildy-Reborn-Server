@@ -68,6 +68,7 @@ import com.model.game.character.player.skill.mining.Mining;
 import com.model.game.character.player.skill.slayer.interfaceController.SlayerInterface;
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
+import com.model.game.definitions.EquipmentDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.game.item.container.impl.InventoryContainer;
@@ -2949,21 +2950,24 @@ public class Player extends Entity {
         autoCast = false;
         getActionSender().sendConfig(108, 0);
     }
-	
-	/**
-     * Calculates and writes the attack and defence bonuses to the equipment
-     * sidebar interface.
-     */
-    public void sendBonus() {
-        Arrays.fill(bonuses, 0);
-        for (Item item : equipment.toArray()) {
-            if (!Item.valid(item))
-                continue;
-            for (int i = 0; i < bonuses.length; i++) {
-                bonuses[i] += item.getDefinition().getBonus()[i];
-            }
-        }
-        //Bonuses sent to the original interface frames
+    
+    /** Gets the item player.getBonuses() from item_definitions.json */
+	public void setBonus() {
+		Arrays.fill(getBonuses(), 0);
+		
+		for (int index = 0; index < getBonuses().length; index++) {
+			final Item item = getEquipment().get(index);
+			
+			if (item != null) {
+				EquipmentDefinition def = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
+
+				for (int slot = 0; slot < getBonuses().length; slot++) {
+					getBonuses()[slot] += def.getBonuses()[slot];
+				}
+			}
+		}
+		
+		//Bonuses sent to the original interface frames
         for (int i = 0; i < 10; i++) {
             getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (bonuses[i] >= 0 ? "+" : "") + bonuses[i], (1675 + i));
         }
@@ -2980,7 +2984,7 @@ public class Player extends Entity {
 		}
         
         calculateWeight();
-    }
+	}
     
 	/**
 	 * Calculates and writes the players weight to the equipment equipment

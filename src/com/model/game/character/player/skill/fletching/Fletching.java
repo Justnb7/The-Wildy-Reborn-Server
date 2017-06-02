@@ -35,12 +35,12 @@ public enum Fletching {
 			return false;
 		}
 
-		String prefix = fletchable.getWith().getDefinition().getName().split(" ")[0];
+		String prefix = fletchable.getWith().getName().split(" ")[0];
 
 		switch (fletchable.getFletchableItems().length) {
 		case 1:
 			player.getAttributes().put(FLETCHABLE_KEY, fletchable);
-			player.getActionSender().sendString("\\n \\n \\n \\n \\n" + fletchable.getFletchableItems()[0].getProduct().getDefinition().getName(), 2799);
+			player.getActionSender().sendString("\\n \\n \\n \\n \\n" + fletchable.getFletchableItems()[0].getProduct().getName(), 2799);
 			player.getActionSender().sendItemOnInterface(1746, 170, fletchable.getFletchableItems()[0].getProduct().getId());
 			player.getActionSender().sendChatInterface(4429);
 			return true;
@@ -246,8 +246,8 @@ public enum Fletching {
 		}
 
 		if (!(player.getInventory().hasAllItems(fletchable.getIngediants()))) {
-			String firstName = fletchable.getUse().getDefinition().getName().toLowerCase();
-			String secondName = fletchable.getWith().getDefinition().getName().toLowerCase();
+			String firstName = fletchable.getUse().getName().toLowerCase();
+			String secondName = fletchable.getWith().getName().toLowerCase();
 
 			if (fletchable.getUse().getAmount() > 1 && !firstName.endsWith("s")) {
 				firstName = firstName.concat("s");
@@ -268,7 +268,7 @@ public enum Fletching {
 			final String firstAmount;
 
 			if (fletchable.getUse().getAmount() == 1) {
-				firstAmount = Utility.getAOrAn(fletchable.getUse().getDefinition().getName());
+				firstAmount = Utility.getAOrAn(fletchable.getUse().getName());
 			} else {
 				firstAmount = String.valueOf(fletchable.getUse().getAmount());
 			}
@@ -276,7 +276,7 @@ public enum Fletching {
 			final String secondAmount;
 
 			if (fletchable.getWith().getAmount() == 1) {
-				secondAmount = Utility.getAOrAn(fletchable.getWith().getDefinition().getName());
+				secondAmount = Utility.getAOrAn(fletchable.getWith().getName());
 			} else {
 				secondAmount = String.valueOf(fletchable.getWith().getAmount());
 			}

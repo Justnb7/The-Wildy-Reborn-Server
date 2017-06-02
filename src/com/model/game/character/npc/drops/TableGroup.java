@@ -7,9 +7,9 @@ import org.apache.commons.lang3.Range;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 
 @SuppressWarnings("serial")
 public class TableGroup extends ArrayList<Table> {
@@ -61,19 +61,19 @@ public class TableGroup extends ArrayList<Table> {
 						items.add(item);
 						if (chance <= 1.5) {
 							if (policy.equals(TablePolicy.VERY_RARE) || policy.equals(TablePolicy.RARE)) {
-								if (Item.getName(item.getId()).toLowerCase().contains("cowhide")
-										|| Item.getName(item.getId()).toLowerCase().contains("feather")
-										|| Item.getName(item.getId()).toLowerCase().contains("arrow")
-										|| Item.getName(item.getId()).toLowerCase().contains("sq shield")
-										|| Item.getName(item.getId()).toLowerCase().contains("rune warhammer")
-										|| Item.getName(item.getId()).toLowerCase().contains("rune battleaxe")
-										|| Item.getName(item.getId()).toLowerCase().contains("casket")
-										|| Item.getName(item.getId()).toLowerCase().contains("silver ore")
-										|| Item.getName(item.getId()).toLowerCase().contains("rune spear")
+								if (item.getName().toLowerCase().contains("cowhide")
+										|| item.getName().toLowerCase().contains("feather")
+										|| item.getName().toLowerCase().contains("arrow")
+										|| item.getName().toLowerCase().contains("sq shield")
+										|| item.getName().toLowerCase().contains("rune warhammer")
+										|| item.getName().toLowerCase().contains("rune battleaxe")
+										|| item.getName().toLowerCase().contains("casket")
+										|| item.getName().toLowerCase().contains("silver ore")
+										|| item.getName().toLowerCase().contains("rune spear")
 										|| item.getId() >= 554 && item.getId() <= 566) {
 									
 								} else {
-									World.getWorld().sendWorldMessage("<col=FF0000>[Lootations] @cr19@ </col><col=255><img=" + rights + ">" + Utility.capitalize(player.getName()) + "</col> received <col=255>" + item.getAmount() + "</col>x <col=255>" + ItemDefinition.forId(item.getId()).getName() + "</col>.", false);
+									World.getWorld().sendWorldMessage("<col=FF0000>[Lootations] @cr19@ </col><col=255><img=" + rights + ">" + Utility.capitalize(player.getName()) + "</col> received <col=255>" + item.getAmount() + "</col>x <col=255>" + ItemDefinition.get(item.getId()).getName() + "</col>.", false);
 								}
 							}
 						}

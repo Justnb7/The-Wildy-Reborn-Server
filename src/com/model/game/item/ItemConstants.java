@@ -3,8 +3,6 @@ package com.model.game.item;
 import com.model.game.character.player.EmotesManager;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.account.Account;
-import com.model.utility.json.definitions.ItemDefinition;
-import com.model.utility.json.definitions.Requirement;
 
 public class ItemConstants {
 	
@@ -54,15 +52,15 @@ public class ItemConstants {
 		return false;
 	}
 
-	public static boolean itemDegradesWhileWearing(int id) {
-		String name = ItemDefinition.forId(id).getName().toLowerCase();
+	public static boolean itemDegradesWhileWearing(Item id) {
+		String name = id.getName().toLowerCase();
 		if (name.contains("c. dragon") || name.contains("corrupt dragon") || name.contains("vesta's") || name.contains("statius'") || name.contains("morrigan's") || name.contains("zuriel's"))
 			return true;
 		return false;
 	}
 
-	public static boolean itemDegradesWhileCombating(int id) {
-		String name = ItemDefinition.forId(id).getName().toLowerCase();
+	public static boolean itemDegradesWhileCombating(Item id) {
+		String name = id.getName().toLowerCase();
 		// nex armors
 		if (name.contains("torva") || name.contains("pernix") || name.contains("virtux") || name.contains("zaryte"))
 			return true;
@@ -73,7 +71,7 @@ public class ItemConstants {
 		if(player.getRights().isAdministrator() && player.inDebugMode())
 			return true;
 		
-		if (!Requirement.canEquip(player, item))
+		if (!EquipmentRequirement.canEquip(player, item.getId()))
             return false;
 		
 		/**

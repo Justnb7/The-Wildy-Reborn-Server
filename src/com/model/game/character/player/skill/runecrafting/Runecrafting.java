@@ -6,11 +6,11 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.skill.SkillTask;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
-import com.model.utility.json.definitions.ItemDefinition;
 
 /**
  * The runecrafting skill
@@ -124,7 +124,7 @@ public class Runecrafting extends SkillTask {
 		int essCount = getPlayer().getInventory().getAmount(getEssType(getPlayer(), talisman));
 		
 		//Grant experience
-		getPlayer().getActionSender().sendMessage("You bind the temple's power into "+ItemDefinition.forId(talisman.getRuneReward()).getName()+"s");
+		getPlayer().getActionSender().sendMessage("You bind the temple's power into "+ItemDefinition.get(talisman.getRuneReward()).getName()+"s");
 		getPlayer().getSkills().addExperience(Skills.RUNECRAFTING, talisman.getExperience()*essCount);
 		
 		//Delete essence and reward runes

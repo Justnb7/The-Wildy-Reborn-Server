@@ -20,6 +20,7 @@ import com.model.game.character.player.dialogue.impl.RottenPotato;
 import com.model.game.character.player.skill.prayer.Prayer.Bone;
 import com.model.game.character.player.skill.runecrafting.Runecrafting;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement.Teleports;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
@@ -29,7 +30,6 @@ import com.model.net.packet.out.SendChatBoxInterfacePacket;
 import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DistancedActionTask;
-import com.model.utility.json.definitions.ItemDefinition;
 
 public class ItemOptionPacket implements PacketType {
 	
@@ -230,7 +230,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//Check if player is in combat, in combat we cannot drop items worth more then 10,000 gold
-		if (Combat.incombat(player) && (ItemDefinition.forId(itemId).getGeneralPrice()) > 10_000) {
+		if (Combat.incombat(player) && (ItemDefinition.get(itemId).getValue()) > 10_000) {
 			player.getActionSender().sendMessage("You can't drop items worth over 10,000 gold in combat.");
 			return;
 		}
@@ -241,7 +241,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 
 		//Special case for destroying items.
-		if(!ItemDefinition.forId(item.getId()).isTradeable()) {
+		if(!ItemDefinition.get(item.getId()).isTradeable()) {
 			destroyItem(player, item);
 			player.setDestroyItem(item.getId());
 			return;
@@ -272,7 +272,7 @@ public class ItemOptionPacket implements PacketType {
 		player.getActionSender().sendString("", 14177);
 		player.getActionSender().sendString("This item is valuable, you will not", 14182);
 		player.getActionSender().sendString("get it back once lost.", 14183);
-		player.getActionSender().sendString(ItemDefinition.forId(item.getId()).getName(), 14184);
+		player.getActionSender().sendString(item.getName(), 14184);
 		player.write(new SendChatBoxInterfacePacket(14170));
 	}
 

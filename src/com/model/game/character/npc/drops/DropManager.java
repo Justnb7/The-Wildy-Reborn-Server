@@ -22,12 +22,12 @@ import org.json.simple.parser.ParseException;
 
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.ItemDefinition;
 import com.model.utility.json.definitions.NPCDefinitions;
 
 public class DropManager {
@@ -211,7 +211,7 @@ public class DropManager {
 									continue;
 								}
 								
-								if(ItemDefinition.forId(drop.getItemId()).getName().toLowerCase().contains(name.toLowerCase())) {
+								if(ItemDefinition.get(drop.getItemId()).getName().toLowerCase().contains(name.toLowerCase())) {
 									npcs.add(index);
 									player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(NPCDefinitions.get(index).getId()).getName().toLowerCase().replaceAll("_", " ")), 42531 + count);
 									count++;

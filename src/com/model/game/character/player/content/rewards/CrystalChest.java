@@ -82,6 +82,6 @@ public class CrystalChest {
 		}
 
 		player.getInventory().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
-		player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getDefinition().getName()) + " " + itemReceived.getDefinition().getName() + " in the chest.");
+		player.getActionSender().sendMessage("You find " + Utility.determineIndefiniteArticle(itemReceived.getName()) + " " + itemReceived.getName() + " in the chest.");
 	}
 }

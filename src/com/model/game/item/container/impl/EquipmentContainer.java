@@ -5,11 +5,14 @@ import java.util.Arrays;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.character.player.Player;
+import com.model.game.definitions.EquipmentDefinition;
+import com.model.game.definitions.EquipmentDefinition.EquipmentType;
+import com.model.game.definitions.ItemDefinition;
+import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
+import com.model.game.item.ItemConstants;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.utility.json.definitions.ItemDefinition;
-import com.model.utility.json.definitions.Requirement;
 import com.model.utility.json.definitions.WeaponAnimation;
 
 /**
@@ -113,7 +116,7 @@ public final class EquipmentContainer extends Container {
 			player.getActionSender().sendItemOnInterfaceSlot(InterfaceConstants.EQUIPMENT, stack[slot], slot);
 		}
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		player.sendBonus();
+		player.setBonus();
 	}
 
     /**
@@ -124,19 +127,22 @@ public final class EquipmentContainer extends Container {
      * @return {@code true} if the item was equipped, {@code false} otherwise.
      */
     public boolean equipItem(int inventorySlot) {
-    	//System.out.println("Enter");
         Item item = player.getInventory().get(inventorySlot);
+    	final EquipmentDefinition def = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
         if (!Item.valid(item)) {
         	//System.out.println("Oops");
             return false;
         }
-        if (!Requirement.canEquip(player, item)) {
-        	//System.out.println("Can we even equip");
+        if (def == null || def.getType() == EquipmentType.NOT_WIELDABLE) {
+			return false;
+		}
+        if (!ItemConstants.canWear(item, player)) {
             return false;
         }
-        if (item.getDefinition().isStackable()) {
+        if (item.isStackable()) {
         	//System.out.println("Enter next part");
-            int designatedSlot = item.getDefinition().getEquipmentSlot();
+        	
+            int designatedSlot = def.getType().getSlot();
             Item equipItem = get(designatedSlot);
             if (used(designatedSlot)) {
             	//System.out.println("Enter part 3");
@@ -155,15 +161,15 @@ public final class EquipmentContainer extends Container {
             }
             player.getInventory().remove(inventorySlot, item.getId(), true);
         } else {
-            int designatedSlot = item.getDefinition().getEquipmentSlot();
-            if (designatedSlot == EquipmentContainer.WEAPON_SLOT && item.getDefinition().isTwoHanded() && used(EquipmentContainer.SHIELD_SLOT)) {
+            int designatedSlot = def.getType().getSlot();
+            if (designatedSlot == EquipmentContainer.WEAPON_SLOT && WeaponDefinition.get(item.getId()).isTwoHanded() && used(EquipmentContainer.SHIELD_SLOT)) {
                 if (!unequipItem(EquipmentContainer.SHIELD_SLOT, true)) {
                     //System.out.println("Uneqip?");
                     return false;
                 }
             }
             if (designatedSlot == EquipmentContainer.SHIELD_SLOT && used(EquipmentContainer.WEAPON_SLOT)) {
-                if (get(EquipmentContainer.WEAPON_SLOT).getDefinition().isTwoHanded()) {
+                if (WeaponDefinition.get(item.getId()).isTwoHanded()) {
                     if (!unequipItem(EquipmentContainer.WEAPON_SLOT, true)) {
                         //System.out.println("2h?");
                         return false;
@@ -172,7 +178,7 @@ public final class EquipmentContainer extends Container {
             }
             if (used(designatedSlot)) {
                 Item equipItem = get(designatedSlot);
-                if (!equipItem.getDefinition().isStackable()) {
+                if (!equipItem.isStackable()) {
                     player.getInventory().setSlot(inventorySlot, equipItem);
                 } else {
                     player.getInventory().setSlot(inventorySlot, null);
@@ -184,7 +190,7 @@ public final class EquipmentContainer extends Container {
             }
             setSlot(designatedSlot, new Item(item.getId(), item.getAmount()));
         }
-        if (item.getDefinition().getEquipmentSlot() == EquipmentContainer.WEAPON_SLOT) {
+        if (def.getType().getSlot() == EquipmentContainer.WEAPON_SLOT) {
             WeaponAnimation.execute(player, item);
             player.getWeaponInterface().restoreWeaponAttributes();
             player.spellId = -1;

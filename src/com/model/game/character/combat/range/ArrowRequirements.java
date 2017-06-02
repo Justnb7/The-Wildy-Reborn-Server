@@ -75,7 +75,7 @@ public enum ArrowRequirements {
 				if (arrowReq.getLevelRequired() <= bowReq.getLevelRequired()) {
 					return true;
 				} else {
-					player.getActionSender().sendMessage("You cannot use " + arrow.getDefinition().getName().toLowerCase() + "s with a " + bow.getDefinition().getName().toLowerCase() + ".");
+					player.getActionSender().sendMessage("You cannot use " + arrow.getName().toLowerCase() + "s with a " + bow.getName().toLowerCase() + ".");
 					Combat.resetCombat(player);
 					return false;
 				}

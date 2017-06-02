@@ -455,7 +455,7 @@ public class Woodcutting extends HarvestingAction {
 
 	@Override
 	public String getSuccessfulHarvestMessage() {
-		return "You get some " + getReward().getDefinition().getName().toLowerCase() + ".";
+		return "You get some " + getReward().getName().toLowerCase() + ".";
 	}
 
 	@Override
@@ -475,7 +475,7 @@ public class Woodcutting extends HarvestingAction {
 	
 	@Override
 	public String getInventoryFullMessage() {
-		return "Your inventory is too full to hold any more " + getReward().getDefinition().getName().toLowerCase() + ".";
+		return "Your inventory is too full to hold any more " + getReward().getName().toLowerCase() + ".";
 	}
 
 }

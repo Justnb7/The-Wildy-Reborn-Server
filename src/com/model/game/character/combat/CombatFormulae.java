@@ -6,10 +6,10 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
+import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.EquipmentContainer;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.WeaponDefinition;
 
 /**
  * Handles the combat's accuracy and max hit formulas.

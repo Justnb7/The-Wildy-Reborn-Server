@@ -29,7 +29,7 @@ import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 

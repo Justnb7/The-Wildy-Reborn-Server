@@ -6,7 +6,7 @@ import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 
 public class CombatState {
 	

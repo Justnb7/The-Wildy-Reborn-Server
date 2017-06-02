@@ -4,7 +4,7 @@ import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 import com.model.utility.Utility;
 
 public class MagicCalculations {

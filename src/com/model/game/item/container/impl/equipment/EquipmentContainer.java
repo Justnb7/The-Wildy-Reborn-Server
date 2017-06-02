@@ -1,4 +1,4 @@
-package com.model.game.item.container.impl;
+package com.model.game.item.container.impl.equipment;
 
 import java.util.Arrays;
 
@@ -13,7 +13,6 @@ import com.model.game.item.Item;
 import com.model.game.item.ItemConstants;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.utility.json.definitions.WeaponAnimation;
 
 /**
  * The container that manages the equipment for a player.
@@ -127,14 +126,14 @@ public final class EquipmentContainer extends Container {
      * @return {@code true} if the item was equipped, {@code false} otherwise.
      */
     public boolean equipItem(int inventorySlot) {
-        Item item = player.getInventory().get(inventorySlot);
+    	Item item = player.getInventory().get(inventorySlot);
     	final EquipmentDefinition def = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
         if (!Item.valid(item)) {
         	//System.out.println("Oops");
             return false;
         }
         if (def == null || def.getType() == EquipmentType.NOT_WIELDABLE) {
-			return false;
+        	return false;
 		}
         if (!ItemConstants.canWear(item, player)) {
             return false;
@@ -190,8 +189,10 @@ public final class EquipmentContainer extends Container {
             }
             setSlot(designatedSlot, new Item(item.getId(), item.getAmount()));
         }
+        player.debug("1212122");
         if (def.getType().getSlot() == EquipmentContainer.WEAPON_SLOT) {
-            WeaponAnimation.execute(player, item);
+        	player.debug("asasas");
+            WeaponDefinition.execute(player, item);
             player.getWeaponInterface().restoreWeaponAttributes();
             player.spellId = -1;
             player.autocastId = -1;

@@ -13,7 +13,7 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.definitions.ItemDefinition;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 
 import java.util.Objects;
 

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.model.game.character.player.Player;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 import com.model.net.packet.out.SendSidebarInterfacePacket;
 
 /**

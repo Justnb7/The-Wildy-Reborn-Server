@@ -12,7 +12,7 @@ import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.definitions.ItemDefinition;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 import com.model.game.location.Location;
 import com.model.task.ScheduledTask;
 

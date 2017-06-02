@@ -7,7 +7,7 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 
 /**
  * The definition for all weapons.
@@ -244,13 +244,6 @@ public class WeaponDefinition {
 		return name;
 	}
 
-	// /**
-	// * @return the poisonous
-	// */
-	// public boolean isPoisonous() {
-	// return poisonous;
-	// }
-
 	/**
 	 * @return the rangedWeapon
 	 */
@@ -285,6 +278,29 @@ public class WeaponDefinition {
 	public boolean isTwoHanded() {
 		return twoHanded;
 	}
+	
+	/**
+     * The method executed when weapon {@code item} is equipped that assigns a
+     * weapon animation to {@code player}.
+     *
+     * @param player
+     *            the player equipping the item.
+     * @param item
+     *            the item the player is equipping.
+     */
+    public static void execute(Player player, Item item) {
+    	final WeaponDefinition def = WeaponDefinition.get(item.getId());
+    	if(def == null || item == null) {
+    		player.debug("return");
+    		return;
+    	}
+    	player.debug("stand animation: "+def.getStandAnimation());
+        player.setStandAnimation(def.getStandAnimation());
+        player.debug("walk animation: "+def.getWalkAnimation());
+        player.setWalkAnimation(def.getWalkAnimation());
+        player.debug("run Animation: "+def.getRunAnimation());
+        player.setRunAnimation(def.getRunAnimation());
+    }
 	
 	/**
 	 * Sends the attack speed for each weapon/ magic spell during combat.

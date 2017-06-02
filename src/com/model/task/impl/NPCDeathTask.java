@@ -19,7 +19,7 @@ import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 import com.model.game.item.Item;
-import com.model.game.item.container.impl.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentContainer;
 import com.model.net.packet.out.SendKillFeedPacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Location3D;

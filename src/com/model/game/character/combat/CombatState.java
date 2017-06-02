@@ -6,7 +6,7 @@ import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.equipment.EquipmentContainer;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 public class CombatState {
 	
@@ -53,7 +53,7 @@ public class CombatState {
 	}
 
 	public boolean usingDbow() {
-		return mob.asPlayer().getEquipment().get(EquipmentContainer.WEAPON_SLOT).getId() == 11235;
+		return mob.asPlayer().getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235;
 	}
 
 	/**
@@ -81,11 +81,11 @@ public class CombatState {
 	}
 	
 	public boolean properJavalins() {
-		return usingJavalins(mob.asPlayer().getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId());
+		return usingJavalins(mob.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
 	}
 
 	public boolean properBolts() {
-		return usingBolts(mob.asPlayer().getEquipment().get(EquipmentContainer.ARROWS_SLOT).getId());
+		return usingBolts(mob.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
 	}
 	
 	public boolean usingJavalins(int javalin) {

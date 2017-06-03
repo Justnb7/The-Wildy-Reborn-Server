@@ -82,7 +82,6 @@ import com.model.net.network.Packet;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.net.network.rsa.ISAACRandomGen;
 import com.model.net.network.session.GameSession;
-import com.model.net.packet.PacketEncoder;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DeathEvent;
 import com.model.task.impl.DistancedActionTask;
@@ -912,18 +911,6 @@ public class Player extends Entity {
 				this.stop();
 			}
 		});
-	}
-
-	/**
-	 * Writes an encoded packet to the client
-	 *
-	 * @param encoder
-	 *            the {@link PacketEncoder} to write to the client
-	 */
-	public void write(PacketEncoder encoder) {
-		if (getOutStream() != null) {
-			encoder.encode(this);
-		}
 	}
 
 	private long xlogDelay;

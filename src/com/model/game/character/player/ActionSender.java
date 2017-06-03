@@ -296,7 +296,6 @@ public class ActionSender {
 		int offset = player.getOutStream().offset;
 		player.outStream.writeShort(interfaceId);
 		player.outStream.writeByte(slot);
-		
 		if (item != null) {
 			player.outStream.writeShort(item.getId() + 1);
 			player.outStream.writeByte(255);
@@ -495,33 +494,34 @@ public class ActionSender {
 	 *             The items.
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendUpdateItems(int widget, Item... items) {
-		
-		if (player.getOutStream() != null && player != null) {
-            player.getOutStream().putFrameVarShort(53);
-            int offset = player.getOutStream().offset;
-            player.getOutStream().writeShort(widget);
-            player.getOutStream().writeShort(items.length);
-            for (Item item : items) {
-                if (item.getAmount() > 254) {
-                    player.getOutStream().writeByte(255);
-                    player.getOutStream().writeDWord_v2(item.getAmount());
-                } else {
-                    player.getOutStream().writeByte(item.getAmount());
-                }
-                player.getOutStream().writeWordBigEndianA(item.getId() + 1);
-            }
-            
-            if (widget == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
-    			for (final int amount : player.getBank().getTabAmounts()) {
-    				player.getOutStream().writeByte(amount >> 8);
-    				player.getOutStream().writeShort(amount & 0xFF);
-    			}
-    		}
-            
-            player.getOutStream().putFrameSizeShort(offset);
-            player.flushOutStream();
-        }
+	public ActionSender sendUpdateItems(int id, Item... items) {
+		player.getOutStream().putFrameVarShort(53);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().writeShort(id);
+		player.getOutStream().writeShort(items.length);
+		for (final Item item : items) {
+			if (item != null) {
+				if (item.getAmount() > 254) {
+					player.getOutStream().writeByte(255);
+					player.getOutStream().writeWordBigEndianA(item.getAmount());
+				} else {
+					player.getOutStream().writeByte(item.getAmount());
+				}
+				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+			} else {
+				player.getOutStream().writeByte((byte) 0);
+				player.getOutStream().writeWordBigEndianA(0);
+			}
+		}
+
+		if (id == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
+			for (final int amount : player.getBank().getTabAmounts()) {
+				player.getOutStream().writeByte(amount >> 8);
+				player.getOutStream().writeWordBigEndianA(amount & 0xFF);
+			}
+		}
+		player.getOutStream().putFrameSizeShort(offset);
+		player.flushOutStream();
 		return this;
 	}
 	

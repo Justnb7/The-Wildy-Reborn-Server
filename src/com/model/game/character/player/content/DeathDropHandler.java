@@ -8,8 +8,6 @@ import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.item.ground.GroundItemType;
-import com.model.net.packet.out.SendSidebarInterfacePacket;
-import com.model.net.packet.out.SendWalkableInterfacePacket;
 
 /**
  * Handles dropping items on death
@@ -107,8 +105,8 @@ public class DeathDropHandler {
 		}
 		player.setUsingSpecial(false);
 		AttackStyle.adjustAttackStyleOnLogin(player);
-		player.write(new SendSidebarInterfacePacket(0, 5855));
+		player.getActionSender().sendSidebarInterface(0, 5855);
 		player.getActionSender().sendString("Unarmed", 5857);
-		player.write(new SendWalkableInterfacePacket(-1));
+		player.getActionSender().sendWalkableInterface(-1);
 	}
 }

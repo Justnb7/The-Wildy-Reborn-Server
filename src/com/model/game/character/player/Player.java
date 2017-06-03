@@ -2,7 +2,6 @@ package com.model.game.character.player;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -68,8 +67,7 @@ import com.model.game.character.player.skill.mining.Mining;
 import com.model.game.character.player.skill.slayer.interfaceController.SlayerInterface;
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
-import com.model.game.definitions.EquipmentDefinition;
-import com.model.game.item.Item;
+import com.model.game.item.container.impl.BankContainer;
 import com.model.game.item.container.impl.InventoryContainer;
 import com.model.game.item.container.impl.PriceChecker;
 import com.model.game.item.container.impl.RunePouchContainer;
@@ -85,8 +83,6 @@ import com.model.net.network.rsa.GameBuffer;
 import com.model.net.network.rsa.ISAACRandomGen;
 import com.model.net.network.session.GameSession;
 import com.model.net.packet.PacketEncoder;
-import com.model.net.packet.out.SendSidebarInterfacePacket;
-import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DeathEvent;
 import com.model.task.impl.DistancedActionTask;
@@ -168,6 +164,12 @@ public class Player extends Entity {
 		if (account == null)
 			account = new Account(this);
 		return account;
+	}
+	
+	private final BankContainer bank = new BankContainer(this);
+	
+	public BankContainer getBank() {
+		return bank;
 	}
 	
 	/**
@@ -1175,7 +1177,7 @@ public class Player extends Entity {
 				autoCast = true;
 				autocastId = autocastIds[j + 1];
 				c.getActionSender().sendConfig(108, 1);
-				c.write(new SendSidebarInterfacePacket(0, 328));
+				c.getActionSender().sendSidebarInterface(0, 328);
 				break;
 			}
 		}
@@ -2410,7 +2412,7 @@ public class Player extends Entity {
         for (Player target : World.getWorld().getPlayers()) {
             if (target != null) {
                 if (player.goodDistance(target.getX(), target.getY(), player.getX(), player.getY(), 8)) {
-                    target.write(new SendSoundPacket(soundId, type, delay));
+                    target.getActionSender().sendSound(soundId, type, delay);
                 }
             }
         }

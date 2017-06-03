@@ -19,7 +19,6 @@ import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
-import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;
@@ -69,7 +68,7 @@ public class DuelSession extends MultiplayerSession {
 					}
 				}
 			}
-			winner.get().write(new SendSoundPacket(77, 1, 2));
+			winner.get().getActionSender().sendSound(77, 1, 2);
 			showRewardComponent(winner.get());
 		} else {
 			winner.get().getActionSender().sendMessage("You cannot be the winner and the loser of a duel.");

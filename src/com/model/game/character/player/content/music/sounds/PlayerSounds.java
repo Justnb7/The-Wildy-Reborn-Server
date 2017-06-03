@@ -4,7 +4,6 @@ import com.model.game.character.player.Player;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
-import com.model.net.packet.out.SendSoundPacket;
 import com.model.utility.Utility;
 
 public class PlayerSounds {
@@ -20,7 +19,7 @@ public class PlayerSounds {
 		}
 		if (sounds[id] != null) {
 			if (spec) {
-				player.write(new SendSoundPacket(sounds[id][4].getId(), sounds[id][4].getType(), sounds[id][4].getDelay()));
+				player.getActionSender().sendSound(sounds[id][4].getId(), sounds[id][4].getType(), sounds[id][4].getDelay());
 			} else {
 				player.sendGlobalSound(player, sounds[id][player.getAttackStyle()].getId(), sounds[id][player.getAttackStyle()].getType(), sounds[id][player.getAttackStyle()].getDelay());
 			}

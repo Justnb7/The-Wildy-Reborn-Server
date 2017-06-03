@@ -40,8 +40,9 @@ public class BankContainer extends Container {
 		Arrays.fill(tabAmounts, 0);
 	}
 
+	//eerste tab -4
 	public boolean clickButton(int button) {
-		if (button >= -5505 && button <= -5468) {
+		if (button >= 234129 && button <= 234165) {
 			final int tab = (-5505 - button) / -4;
 			if (button % 2 == 0) {
 				bankTab = tab;
@@ -55,21 +56,21 @@ public class BankContainer extends Container {
 		switch (button) {
 
 		/* Preloading Gear */
-		case -5464:
+		case 234168:
 			return true;
 
 		/* Deposit Inventory */
-		case -5528:
+		case 234104:
 			depositeInventory(true);
 			return true;
 
 		/* Deposit Equipment */
-		case -5525:
+		case 234107:
 			depositeEquipment(true);
 			return true;
 
 		/* Bank Pin */
-		case -5516:
+		case 234116:
 			return true;
 
 		/* Bank Pin Reset */
@@ -78,19 +79,19 @@ public class BankContainer extends Container {
 			return true;
 
 		/* Bank Insert/Swap */
-		case -5530:
+		case 234102:
 			inserting = !inserting;
 			player.getActionSender().sendConfig(304, inserting ? 1 : 0);
 			return true;
 
 		/* Bank Noting */
-		case -5529:
+		case 234103:
 			noting = !noting;
 			player.getActionSender().sendConfig(115, noting ? 1 : 0);
 			return true;
 
 		/* Money Vault */
-		case -5522:
+		case 234110:
 			return true;
 
 		}
@@ -308,7 +309,7 @@ public class BankContainer extends Container {
 		if (player.getInterfaceState().getCurrentInterface() == InterfaceConstants.DEPOSIT_BOX) {
 			player.getActionSender().sendUpdateItems(InterfaceConstants.DEPOSIT_BOX, player.getInventory().toArray());
 		} else {
-			player.getActionSender().sendString("The Bank of Battle-OS", 60_005);
+			player.getActionSender().sendString("The Bank of Venenatis", 60_005);
 		}
 		player.getActionSender().sendUpdateItems(InterfaceConstants.INVENTORY_STORE, player.getInventory().toArray());
 		player.getInventory().refresh();

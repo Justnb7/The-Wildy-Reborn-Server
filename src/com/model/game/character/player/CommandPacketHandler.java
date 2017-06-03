@@ -22,10 +22,6 @@ import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
-import com.model.net.packet.out.SendChatBoxInterfacePacket;
-import com.model.net.packet.out.SendSongPacket;
-import com.model.net.packet.out.SendSoundPacket;
-import com.model.net.packet.out.SendWalkableInterfacePacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.json.definitions.NPCDefinitions;
@@ -89,6 +85,10 @@ public class CommandPacketHandler implements PacketType {
     	
     	String message;
     	switch (cmd[0]) {
+    	
+    	case "bank":
+    		player.getBank().open();
+    		return true;
     	
     	case "pestr":
     		player.getPestControlRewards().showInterface();
@@ -533,12 +533,12 @@ public class CommandPacketHandler implements PacketType {
     	
     	case "song":
     		int song = Integer.parseInt(cmd[1]);
-    		player.write(new SendSongPacket(song));
+    		player.getActionSender().sendSong(song);
     		return true;
     		
     	case "sound":
     		int sound = Integer.parseInt(cmd[1]);
-    		player.write(new SendSoundPacket(sound, 0, 0));
+    		player.getActionSender().sendSound(sound, 0, 0);
     		return true;
     	
     	case "ski":
@@ -646,12 +646,12 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "wi":
     		interfaceId = Integer.parseInt(cmd[1]);
-    		player.write(new SendWalkableInterfacePacket(interfaceId));
+    		player.getActionSender().sendWalkableInterface(interfaceId);
     		return true;
     		
     	case "cbi":
 			interfaceId = Integer.parseInt(cmd[1]);
-			player.write(new SendChatBoxInterfacePacket(interfaceId));
+			player.getActionSender().sendChatBoxInterface(interfaceId);
     		return true;
     		
     	case "debugmode":

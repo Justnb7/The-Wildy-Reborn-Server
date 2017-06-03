@@ -26,8 +26,6 @@ import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
-import com.model.net.packet.out.SendChatBoxInterfacePacket;
-import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DistancedActionTask;
 
@@ -261,7 +259,7 @@ public class ItemOptionPacket implements PacketType {
 		BountyHunter.determineWealth(player);
 		
 		//Once completed all checks we can go ahead and send the sound
-		player.write(new SendSoundPacket(376, 1, 0));
+		player.getActionSender().sendSound(376, 1, 0);
 	}
 
 	private final void destroyItem(Player player, Item item) {
@@ -273,7 +271,7 @@ public class ItemOptionPacket implements PacketType {
 		player.getActionSender().sendString("This item is valuable, you will not", 14182);
 		player.getActionSender().sendString("get it back once lost.", 14183);
 		player.getActionSender().sendString(item.getName(), 14184);
-		player.write(new SendChatBoxInterfacePacket(14170));
+		player.getActionSender().sendChatBoxInterface(14170);
 	}
 
 	/**
@@ -504,7 +502,7 @@ public class ItemOptionPacket implements PacketType {
 	 */
 	private void pickup(Player player, int id, Location position/*int x, int y, int z*/) {
 		if (GroundItemHandler.get(id, position) != null) {
-			player.write(new SendSoundPacket(356, 0, 0));
+			player.getActionSender().sendSound(356, 0, 0);
 			GroundItemHandler.pickup(player, id, position);
 			BountyHunter.determineWealth(player);
 		}

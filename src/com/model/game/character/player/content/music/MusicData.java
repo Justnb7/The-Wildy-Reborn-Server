@@ -1,7 +1,6 @@
 package com.model.game.character.player.content.music;
 
 import com.model.game.character.player.Player;
-import com.model.net.packet.out.SendSongPacket;
 import com.model.utility.Utility;
 
 /**
@@ -43,13 +42,13 @@ public class MusicData {
 		if (song == null) {
 			int random = Utility.random(1, songs.length - 1);
 			if (!player.getAttribute("AUTO_MUSIC_DISABLED", Boolean.FALSE)) {
-				player.write(new SendSongPacket(random));
+				player.getActionSender().sendSong(random);
 			}
 			player.getActionSender().sendString(songs[random].name, 4439);
 			return;
 		}
 		if (!player.getAttribute("AUTO_MUSIC_DISABLED", Boolean.FALSE)) {
-			player.write(new SendSongPacket(song.music));
+			player.getActionSender().sendSong(song.music);
 		}
 	}
 

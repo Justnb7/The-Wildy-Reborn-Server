@@ -12,7 +12,6 @@ import com.model.game.item.EquipmentRequirement;
 import com.model.game.item.Item;
 import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.net.packet.out.SendSidebarInterfacePacket;
 
 /**
  * Holds the player's equipment items.
@@ -210,7 +209,7 @@ public class EquipmentContainer extends Container {
 		}
 
 		player.getActionSender().sendString("<col=ff7000>" + name, EquipmentConstants.getTextIdForInterface(sidebarId));
-		player.write(new SendSidebarInterfacePacket(0, sidebarId));
+		player.getActionSender().sendSidebarInterface(0, sidebarId);
 	}
 
 	public boolean wear(int clickSlot, boolean check, boolean refresh, Item... items) {

@@ -4,7 +4,6 @@ import com.model.game.Constants;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.location.Location;
-import com.model.net.packet.out.SendWalkableInterfacePacket;
 
 public class DefaultController extends Controller {
 
@@ -58,7 +57,7 @@ public class DefaultController extends Controller {
 
 	@Override
 	public void onControllerInit(Player player) {
-		player.write(new SendWalkableInterfacePacket(-1));
+		player.getActionSender().sendWalkableInterface(-1);
 		player.getActionSender().sendInteractionOption("null", 3, true);
 	}
 
@@ -132,7 +131,7 @@ public class DefaultController extends Controller {
 
 	@Override
 	public void onWalk(Player player) {
-		player.write(new SendWalkableInterfacePacket(-1));
+		player.getActionSender().sendWalkableInterface(-1);
 		player.getActionSender().sendInteractionOption("null", 3, true);
 	}
 

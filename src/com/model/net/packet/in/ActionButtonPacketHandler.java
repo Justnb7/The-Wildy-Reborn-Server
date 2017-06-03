@@ -26,8 +26,6 @@ import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
 import com.model.net.packet.PacketType;
 import com.model.net.packet.buttons.ActionButtonEventListener;
-import com.model.net.packet.out.SendSidebarInterfacePacket;
-import com.model.net.packet.out.SendSongPacket;
 import com.model.utility.Utility;
 
 import java.util.Objects;
@@ -86,6 +84,11 @@ public class ActionButtonPacketHandler implements PacketType {
 
 		if (player != null) {
 			EmoteData.useBookEmote(player, button);
+		}
+		
+		/* Banking */
+		if (player.getBank().clickButton(button)) {
+			return;
 		}
 		
 		/* Trading */
@@ -210,17 +213,17 @@ public class ActionButtonPacketHandler implements PacketType {
 			switch (player.getSpellBook()) {
 			case MODERN:
 				player.setSpellBook(SpellBook.ANCIENT);
-				player.write(new SendSidebarInterfacePacket(6, 12855));
+				player.getActionSender().sendSidebarInterface(6, 12855);
 				player.getActionSender().sendMessage("An ancient wisdom fills your mind.");
 				break;
 			case ANCIENT:
 				player.setSpellBook(SpellBook.LUNAR);
-				player.write(new SendSidebarInterfacePacket(6, 29999));
+				player.getActionSender().sendSidebarInterface(6, 29999);
 				player.getActionSender().sendMessage("The power of the moon overpowers you.");
 				break;
 			case LUNAR:
 				player.setSpellBook(SpellBook.MODERN);
-				player.write(new SendSidebarInterfacePacket(6, 1151));
+				player.getActionSender().sendSidebarInterface(6, 1151);
 				player.getActionSender().sendMessage("You feel a drain on your memory.");
 				break;
 			}
@@ -235,11 +238,11 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 19137:
-			player.write(new SendSidebarInterfacePacket(5, 17200));
+			player.getActionSender().sendSidebarInterface(5, 17200);
 			break;
 
 		case 104078:
-			player.write(new SendSidebarInterfacePacket(3, 3213));
+			player.getActionSender().sendSidebarInterface(3, 3213);
 			break;
 			
 
@@ -265,7 +268,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 			
 		case 142131:
-			player.write(new SendSidebarInterfacePacket(3, 3213));
+			player.getActionSender().sendSidebarInterface(3, 3213);
 			break;
 			
 		case 55095:
@@ -423,11 +426,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		/** Settings */
 		case 140188:
 			player.getActionSender().sendMessage(":updateSettings:");
-			player.write(new SendSidebarInterfacePacket(11, 28400));
+			player.getActionSender().sendSidebarInterface(11, 28400);
 			break;
 		case 110245:
 			player.getActionSender().sendMessage(":saveSettings:");
-			player.write(new SendSidebarInterfacePacket(11, 36000));
+			player.getActionSender().sendSidebarInterface(11, 36000);
 			player.getActionSender().sendMessage("@red@Your settings have been saved!");
 			break;
 		case 110248:
@@ -490,7 +493,7 @@ public class ActionButtonPacketHandler implements PacketType {
 				MusicData.playMusic(player);
 			} else if(!player.isEnableMusic()) {
 				player.getActionSender().sendMessage("You've disabled your music player.");
-				player.write(new SendSongPacket(-1));
+				player.getActionSender().sendSong(-1);
 			}
 			break;
 
@@ -514,9 +517,9 @@ public class ActionButtonPacketHandler implements PacketType {
 				player.resetAutoCast();
 			} else {
 				if (player.getSpellBook() == SpellBook.ANCIENT) {
-					player.write(new SendSidebarInterfacePacket(0, 1689));
+					player.getActionSender().sendSidebarInterface(0, 1689);
 				} else if (player.getSpellBook() == SpellBook.MODERN) {
-					player.write(new SendSidebarInterfacePacket(0, 12050));
+					player.getActionSender().sendSidebarInterface(0, 12050);
 				}
 			}
 			break;

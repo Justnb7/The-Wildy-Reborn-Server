@@ -9,7 +9,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
-import com.model.net.packet.out.SendSoundPacket;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
@@ -133,7 +132,7 @@ public class Burying {
 				return false;
 			if (bone.getId() == itemId) {
 				player.addBoneDelay(3000);
-				player.write(new SendSoundPacket(380, 1, 24));
+				player.getActionSender().sendSound(380, 1, 24);
 				player.playAnimation(Animation.create(BURY_ANIMATION));
 				player.getActionSender().sendMessage("You dig a hole in the ground...");
 				ItemDefinition itemDef = ItemDefinition.get(itemId);
@@ -144,7 +143,7 @@ public class Burying {
 						player.getInventory().remove(new Item(itemId, 1));
 						int xp = bone.getExperience();
 						player.getSkills().addExperience(Skills.PRAYER, xp);
-						//player.write(new SendGameMessage("prayer exp received: "+bone.getExperience());
+						//player.getActionSender().sendMessage("prayer exp received: "+bone.getExperience());
 						this.stop();
 					}
 				});

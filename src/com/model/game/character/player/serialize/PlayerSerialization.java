@@ -399,15 +399,27 @@ public class PlayerSerialization {
 			try {
 				final PlayerContainer details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerContainer.class);
 				
+				if (details.inventory != null) {
+					for (int i = 0; i < details.inventory.length; i++) {
+						player.getInventory().setSlot(i, details.inventory[i], false);
+					}
+				}
+				
 				if (details.equipment != null) {
 					for (int i = 0; i < details.equipment.length; i++) {
 						player.getEquipment().setSlot(i, details.equipment[i], false);
 					}
 				}
 				
-				if (details.inventory != null) {
-					for (int i = 0; i < details.inventory.length; i++) {
-						player.getInventory().setSlot(i, details.inventory[i], false);
+				if (details.tabAmounts != null) {
+					for (int i = 0; i < details.tabAmounts.length; i++) {
+						player.getBank().getTabAmounts()[i] = details.tabAmounts[i];
+					}
+				}
+				
+				if (details.bank != null) {
+					for (int i = 0; i < details.bank.length; i++) {
+						player.getBank().setSlot(i, details.bank[i], false);
 					}
 				}
 				
@@ -426,14 +438,18 @@ public class PlayerSerialization {
 			return true;
 		}
 
-		private final Item[] equipment;
 		private final Item[] inventory;
+		private final Item[] equipment;
+		private final int[] tabAmounts;
+		private final Item[] bank;
 		private final Item[] runePouch;
 
 		public PlayerContainer(Player player) {
 			inventory = player.getInventory().toTrimmedArray();
 			equipment = player.getEquipment().toTrimmedArray();
-			runePouch = player.runePouchContainer.toArray();
+			tabAmounts = player.getBank().getTabAmounts();
+			bank = player.getBank().toNonNullArray();
+			runePouch = player.runePouchContainer.toTrimmedArray();
 		}
 
 		public void parseDetails(Player player) throws IOException {

@@ -1,7 +1,6 @@
 package com.model.game.character.player.content.music.sounds;
 
 import com.model.game.character.player.Player;
-import com.model.net.packet.out.SendSoundPacket;
 import com.model.utility.json.definitions.NPCDefinitions;
 
 public class MobAttackSounds {
@@ -19,14 +18,14 @@ public class MobAttackSounds {
 				return;
 			}
 
-			player.write(new SendSoundPacket(sounds[id][0], 10, 20));
+			player.getActionSender().sendSound(sounds[id][0], 10, 20);
 		} else if (type == 1) {
 			if (sounds[id] == null || sounds[id].length < 1) {
 				return;
 			}
 
 			if (sounds[id] != null && sounds[id][1] > 0) {
-				player.write(new SendSoundPacket(sounds[id][1], 10, 20));
+				player.getActionSender().sendSound(sounds[id][1], 10, 20);
 			}
 		} else if (type == 2 && sounds[id] != null && sounds[id][2] > 0) {
 			if (sounds[id] == null || sounds[id].length < 2) {
@@ -34,9 +33,9 @@ public class MobAttackSounds {
 			}
 
 			if (!hit) {
-				player.write(new SendSoundPacket(218, 10, 20));
+				player.getActionSender().sendSound(218, 10, 20);
 			} else {
-				player.write(new SendSoundPacket(sounds[id][2], 10, 20));
+				player.getActionSender().sendSound(sounds[id][2], 10, 20);
 			}
 		}
 	}
@@ -51,7 +50,7 @@ public class MobAttackSounds {
 		}
 
 		if (sounds[id] != null && sounds[id][3] > 0) {
-			p.write(new SendSoundPacket(sounds[id][3], 10, 10));
+			p.getActionSender().sendSound(sounds[id][3], 10, 10);
 		}
 	}
 
@@ -65,7 +64,7 @@ public class MobAttackSounds {
 		}
 
 		if (sounds[id] != null && sounds[id][4] > 0) {
-			p.write(new SendSoundPacket(sounds[id][4], 10, 10));
+			p.getActionSender().sendSound(sounds[id][4], 10, 10);
 		}
 	}
 

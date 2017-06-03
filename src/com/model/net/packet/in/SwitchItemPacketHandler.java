@@ -14,8 +14,7 @@ public class SwitchItemPacketHandler implements PacketType {
 	@Override
 	public void handle(Player player, int id, int size) {
 		int interfaceId = player.getInStream().readUnsignedWordBigEndianA();
-		@SuppressWarnings("unused")
-		boolean insertMode = player.getInStream().readSignedByteC() == 1;
+		final int inserting = player.getInStream().readSignedByteC();
 		int fromSlot = player.getInStream().readUnsignedWordBigEndianA();
 		int toSlot = player.getInStream().readUnsignedWordBigEndian();
 		
@@ -32,6 +31,24 @@ public class SwitchItemPacketHandler implements PacketType {
 		case InterfaceConstants.INVENTORY_STORE:
 		    player.getInventory().swap(fromSlot, toSlot);
 		    break;
+		    
+		case InterfaceConstants.WITHDRAW_BANK:
+			if (inserting == 2) {
+				player.getBank().itemToTab(fromSlot, toSlot, true);
+			} else if (inserting == 1) {
+				player.getBank().insert(fromSlot, toSlot);
+				final int fromTab = player.getBank().getData(fromSlot, 0);
+				final int toTab = player.getBank().getData(toSlot, 0);
+
+				if (fromTab != toTab) {
+					player.getBank().changeTabAmount(fromTab, -1, true);
+					player.getBank().changeTabAmount(toTab, 1, true);
+					player.getBank().refresh();
+				}
+			} else {
+				player.getBank().swap(fromSlot, toSlot);
+			}
+			break;
 			
 		}
 		

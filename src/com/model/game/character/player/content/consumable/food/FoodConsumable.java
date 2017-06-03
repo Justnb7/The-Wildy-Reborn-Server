@@ -5,7 +5,6 @@ import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
-import com.model.net.packet.out.SendSoundPacket;
 import com.model.utility.Utility;
 
 import java.util.HashMap;
@@ -179,7 +178,7 @@ public class FoodConsumable {
 				player.getCombatState().increaseAttackDelay(1);
 			}
 			player.playAnimation(Animation.create(829));
-			player.write(new SendSoundPacket(317, 1, 2));
+			player.getActionSender().sendSound(317, 1, 2);
 			player.getInventory().removeSlot(slot, 1, true);
 			
 			if (f.hasEffect()) {

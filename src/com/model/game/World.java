@@ -24,7 +24,6 @@ import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.net.packet.out.SendFriendPacket;
 import com.model.service.Service;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DidYouKnowEvent;
@@ -297,7 +296,7 @@ public class World implements Service {
 				if (target == null || !target.isActive())
 					continue;
 				if (target.getFAI().hasFriend(player.usernameHash) && !player.getFAI().hasIgnored(target.usernameHash))
-					target.write(new SendFriendPacket(player.usernameHash, 0));
+					target.getActionSender().sendFriend(player.usernameHash, 0);
 			}
 		}
 

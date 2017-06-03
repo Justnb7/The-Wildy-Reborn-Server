@@ -3,11 +3,10 @@ package com.model.game.character.player;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.item.Item;
+import com.model.game.item.container.InterfaceConstants;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
-import com.model.net.packet.out.SendSidebarInterfacePacket;
-import com.model.net.packet.out.SendWalkableInterfacePacket;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 
@@ -50,7 +49,7 @@ public class ActionSender {
 		sendInterfaceConfig(1, 12227);
 		sendInterfaceConfig(0, 12161);
 		sendString("% Done", 12224);
-		player.write(new SendWalkableInterfacePacket(8680));
+		player.getActionSender().sendWalkableInterface(8680);
 		return this;
 	}
 
@@ -182,21 +181,21 @@ public class ActionSender {
 	public ActionSender sendSidebarInterfaces() {
 		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 36000, 147, -1, -1 };//15
 		for (int i = 0; i < 15; i++) {
-			player.write(new SendSidebarInterfacePacket(i, interfaces[i]));
+			player.getActionSender().sendSidebarInterface(i, interfaces[i]);
 		}
 		if (player.getSpellBook() == SpellBook.ANCIENT) {
-			player.write(new SendSidebarInterfacePacket(6, 12855));
+			player.getActionSender().sendSidebarInterface(6, 12855);
 		} else if (player.getSpellBook() == SpellBook.MODERN) {
-			player.write(new SendSidebarInterfacePacket(6, 1151));
+			player.getActionSender().sendSidebarInterface(6, 1151);
 		} else if (player.getSpellBook() == SpellBook.LUNAR) {
-			player.write(new SendSidebarInterfacePacket(6, 29999));
+			player.getActionSender().sendSidebarInterface(6, 29999);
 		}
 		return this;
 	}
 	
 	public ActionSender hideAllSideBars() {
 		for (int i = 0; i < 14; i++)
-			player.write(new SendSidebarInterfacePacket(i, -1));
+			player.getActionSender().sendSidebarInterface(i, -1);
 		return this;
 	}
 	
@@ -489,30 +488,36 @@ public class ActionSender {
 	/**
 	 * Sends a packet to update a group of items.
 	 * 
-	 * @param interfaceId
+	 * @param id
 	 *             The interface id.
 	 * @param items
 	 *             The items.
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendUpdateItems(int interfaceId, Item... items) {
+	public ActionSender sendUpdateItems(int id, Item... items) {
 		player.getOutStream().putFrameVarShort(53);
 		int offset = player.getOutStream().offset;
-		player.getOutStream().writeShort(interfaceId);
+		player.getOutStream().writeShort(id);
 		player.getOutStream().writeShort(items.length);
-		for (Item item : items) {
-			if (item != null && item.getId() > -1) {
-				int count = item.getAmount();
-				if (count > 254) {
-					player.getOutStream().writeByte((byte) 255);
-					player.getOutStream().writeDWord_v2(count);
+		for (final Item item : items) {
+			if (item != null) {
+				if (item.getAmount() > 254) {
+					player.getOutStream().writeByte(255);
+					player.getOutStream().writeWordBigEndianA(item.getAmount());
 				} else {
-					player.getOutStream().writeByte((byte) count);
+					player.getOutStream().writeByte(item.getAmount());
 				}
 				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
 			} else {
 				player.getOutStream().writeByte((byte) 0);
 				player.getOutStream().writeWordBigEndianA(0);
+			}
+		}
+
+		if (id == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
+			for (final int amount : player.getBank().getTabAmounts()) {
+				player.getOutStream().writeByte(amount >> 8);
+				player.getOutStream().writeWordBigEndianA(amount & 0xFF);
 			}
 		}
 		player.getOutStream().putFrameSizeShort(offset);
@@ -728,6 +733,109 @@ public class ActionSender {
                 player.getInterfaceState().interfaceOpened(id);
             }
         }
+		return this;
+	}
+	
+	public ActionSender sendSong(int songId) {
+		player.getOutStream().writeFrame(74);
+		player.getOutStream().writeWordBigEndian(songId);
+		return this;
+	}
+	
+	public ActionSender sendSound(int id, int type, int delay) {
+		player.getOutStream().writeFrame(174);
+		player.getOutStream().writeShort(id);
+		player.getOutStream().writeByte(type);
+		player.getOutStream().writeShort(delay);
+		return this;
+	}
+	
+	public ActionSender sendTemporarySong(int songId, int songDelay) {
+		player.getOutStream().writeFrame(121);
+		player.getOutStream().writeWordBigEndian(songId);
+		player.getOutStream().writeWordBigEndian(songDelay);
+		return this;
+	}
+	
+	public ActionSender sendWalkableInterface(int id) {
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(208);
+			player.getOutStream().writeWordBigEndian_dup(id);
+		}
+		return this;
+	}
+	
+	public ActionSender sendSidebarInterface(int menu, int id) {
+		if (player != null) {
+			player.stopSkillTask();
+			if (player.getOutStream() != null) {
+				player.outStream.writeFrame(71);
+				player.outStream.writeShort(id);
+				player.outStream.putByteA(menu);
+			}
+			player.flushOutStream();
+		}
+		return this;
+	}
+	
+	public ActionSender sendPlayerHeadToInterface(int id) {
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(185);
+			player.getOutStream().writeWordBigEndianA(id);
+		}
+		return this;
+	}
+	
+	public ActionSender sendNpcHeadToInterface(int id, int child) {
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(75);
+			player.getOutStream().writeWordBigEndianA(id);
+			player.getOutStream().writeWordBigEndianA(child);
+		}
+		return this;
+	}
+	
+	public ActionSender sendKillFeed(String killer, String victim, int weapon, boolean poison) {
+		if (killer == null || killer.length() == 0 || victim == null || victim.length() == 0) {
+			player.debug("[Warning] Please notify an staff member with error code SKF - packet 173.");
+			return null;
+		}
+		GameBuffer stream = player.getOutStream();
+		stream.putFrameVarShort(173);
+		int offset = player.getOutStream().offset;
+		stream.putRS2String(killer);
+		stream.putRS2String(victim);
+		stream.writeShort(weapon);
+		stream.writeByte(poison ? 1 : 0);
+		player.getOutStream().putFrameSizeShort(offset);
+		player.flushOutStream();
+		return this;
+	}
+	
+	public ActionSender sendInterfaceAnimation(int id, int child) {
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(200);
+			player.getOutStream().writeShort(id);
+			player.getOutStream().writeShort(child);
+		}
+		return this;
+	}
+	
+	public ActionSender sendFriend(long username, int world) {
+		if (player.getOutStream() != null) {
+            player.getOutStream().writeFrame(50);
+            player.getOutStream().putLong(username);
+            player.getOutStream().writeByte(world);
+        }
+		return this;
+	}
+	
+	public ActionSender sendChatBoxInterface(int id) {
+		player.stopSkillTask();
+		if (player.getOutStream() != null) {
+			player.getOutStream().writeFrame(164);
+			player.getOutStream().writeWordBigEndian_dup(id);
+		}
 		return this;
 	}
 	

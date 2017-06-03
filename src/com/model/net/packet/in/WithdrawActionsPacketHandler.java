@@ -92,6 +92,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				player.getPriceChecker().deposit(removeId, removeSlot, 1);
 				return;
 			}
+			player.getBank().deposit(removeId, removeSlot, 1);
 		}
 			break;
 
@@ -128,6 +129,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case InterfaceConstants.PRICE_CHECKER:
 			player.getPriceChecker().withdraw(removeId, removeSlot, 1);
+			break;
+			
+		case InterfaceConstants.WITHDRAW_BANK:
+			player.getBank().withdraw(removeId, removeSlot, 1);
 			break;
 			
 		case InterfaceConstants.SHOP_INTERFACE:

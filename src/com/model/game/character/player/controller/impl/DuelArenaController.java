@@ -5,7 +5,6 @@ import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.location.Location;
-import com.model.net.packet.out.SendWalkableInterfacePacket;
 
 public class DuelArenaController extends Controller {
 
@@ -82,7 +81,7 @@ public class DuelArenaController extends Controller {
 	@Override
 	public void onControllerInit(Player player) {
 		if ((player.getArea().inDuelArena() || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
-			player.write(new SendWalkableInterfacePacket(201));
+			player.getActionSender().sendWalkableInterface(201);
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 				player.getActionSender().sendInteractionOption("Attack", 3, true);
 			} else if (player.getArea().inDuelArena()) {
@@ -143,7 +142,7 @@ public class DuelArenaController extends Controller {
 	@Override
 	public void onWalk(Player player) {
 		if ((player.getArea().inDuelArena() || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
-			player.write(new SendWalkableInterfacePacket(201));
+			player.getActionSender().sendWalkableInterface(201);
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 				player.getActionSender().sendInteractionOption("Attack", 3, true);
 			} else if (player.getArea().inDuelArena()) {

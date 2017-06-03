@@ -6,7 +6,6 @@ import java.util.List;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.clan.ClanManager;
-import com.model.net.packet.out.SendFriendPacket;
 import com.model.utility.Utility;
 
 /**
@@ -123,10 +122,10 @@ public class FriendAndIgnoreList {
 		
 		if (target != null && target.isActive()) {
 			if (target.privateChat == ONLINE || (target.privateChat == FRIENDS_ONLY && target.getFAI().hasFriend(player.usernameHash))) {
-				player.write(new SendFriendPacket(username, WORLD));
+				player.getActionSender().sendFriend(username, WORLD);
 			}
 			if (target.getFAI().hasFriend(player.usernameHash)) {
-				target.write(new SendFriendPacket(player.usernameHash, player.privateChat == OFFLINE ? 0 : WORLD));
+				target.getActionSender().sendFriend(player.usernameHash, player.privateChat == OFFLINE ? 0 : WORLD);
 			}
 		}
 	}
@@ -152,7 +151,7 @@ public class FriendAndIgnoreList {
 				 * If we aren't, let them know we're offline
 				 */
 				if (target.getFAI().hasFriend(player.usernameHash)) {
-					target.write(new SendFriendPacket(player.usernameHash, player.privateChat == ONLINE ? WORLD : 0));
+					target.getActionSender().sendFriend(player.usernameHash, player.privateChat == ONLINE ? WORLD : 0);
 				}
 			}
 		}
@@ -212,7 +211,7 @@ public class FriendAndIgnoreList {
 		 * If hes online, tell him we're offline
 		 */
 		if (target != null && target.getFAI().hasFriend(player.usernameHash)) {
-			target.write(new SendFriendPacket(player.usernameHash, 0));
+			target.getActionSender().sendFriend(player.usernameHash, 0);
 		}
 		
 	}
@@ -228,7 +227,7 @@ public class FriendAndIgnoreList {
 			Player target = World.getWorld().getPlayerByNameHash(username);
 			if (target != null) {
 				if (player.privateChat == 0 && target.getFAI().hasFriend(player.usernameHash)) {
-					target.write(new SendFriendPacket(player.usernameHash, WORLD));
+					target.getActionSender().sendFriend(player.usernameHash, WORLD);
 				}
 			}
 		}
@@ -251,7 +250,7 @@ public class FriendAndIgnoreList {
 				 * Validate our target has us added, and we dont have him/her on our ignore list so we dont let them know we're online
 				 */
 				if (target.getFAI().hasFriend(player.usernameHash) && !player.getFAI().hasIgnored(target.usernameHash)) {
-					target.write(new SendFriendPacket(player.usernameHash, WORLD));
+					target.getActionSender().sendFriend(player.usernameHash, WORLD);
 				}
 			}
 		}
@@ -283,7 +282,7 @@ public class FriendAndIgnoreList {
 			 * Don't send them online if they are null, they have us ignored, they dont have us added and have friends only, or they have their private chat off
 			 */
 			boolean offline = (target == null || target.getFAI().hasIgnored(player.usernameHash) || target.privateChat == OFFLINE || (target.privateChat == FRIENDS_ONLY && !target.getFAI().hasFriend(player.usernameHash)));
-			player.write(new SendFriendPacket(hash, offline ? 1 : WORLD));
+			player.getActionSender().sendFriend(hash, offline ? 1 : WORLD);
 		}
 	}
 

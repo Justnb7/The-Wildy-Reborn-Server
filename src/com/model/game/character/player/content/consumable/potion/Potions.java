@@ -12,7 +12,6 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.item.Item;
-import com.model.net.packet.out.SendSoundPacket;
 
 /**
  * Handles drinking potions
@@ -65,7 +64,7 @@ public class Potions extends Consumable {
 			getPlayer().getCombatState().increaseAttackDelay(1);
 		}
 		getPlayer().playAnimation(Animation.create(829));
-		getPlayer().write(new SendSoundPacket(334, 1, 2));
+		getPlayer().getActionSender().sendSound(334, 1, 2);
 		getPlayer().getInventory().setSlot(slot, new Item(data.getReplacement(), getPlayer().getInventory().get(slot).getAmount()));
 		data.getPotionEffect().handle(getPlayer());
 		String message = data.getReplacement() != 229 ? "You drink a dose of the " + item.getName() + "." : "You drink the last dose of your " + item.getName() + ".";

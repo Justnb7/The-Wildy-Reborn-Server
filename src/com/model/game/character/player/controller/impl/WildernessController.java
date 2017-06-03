@@ -5,7 +5,6 @@ import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.character.player.controller.Controller;
 import com.model.game.location.Location;
-import com.model.net.packet.out.SendWalkableInterfacePacket;
 
 
 
@@ -89,7 +88,7 @@ public class WildernessController extends Controller {
 		player.getActionSender().sendString("@yel@Level: " + player.wildLevel, 199);
 		player.setAttribute("left_wild_delay", 0);
 		BountyHunter.writeBountyStrings(player);
-		player.write(new SendWalkableInterfacePacket(BountyHunterConstants.BOUNTY_INTERFACE_ID));
+		player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
 	}
 
 	@Override
@@ -145,7 +144,7 @@ public class WildernessController extends Controller {
 			player.wildLevel = wildLevel;
 			player.getActionSender().sendString("@yel@Level: " + player.wildLevel, 199);
 		}
-		player.write(new SendWalkableInterfacePacket(BountyHunterConstants.BOUNTY_INTERFACE_ID));
+		player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
 	}
 
 	@Override

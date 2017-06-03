@@ -20,7 +20,6 @@ import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
-import com.model.net.packet.out.SendKillFeedPacket;
 import com.model.task.ScheduledTask;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
@@ -347,7 +346,7 @@ public class NPCDeathTask extends ScheduledTask {
 	
 		
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		player.write(new SendKillFeedPacket(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon.getId(), npc.isPoisoned()));
+		player.getActionSender().sendKillFeed(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon.getId(), npc.isPoisoned());
 		
 		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
 		if(AnimatedArmour.isAnimatedArmourNpc(npc.getId()))

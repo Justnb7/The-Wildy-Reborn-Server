@@ -8,14 +8,12 @@ import com.model.game.character.player.content.PrivateMessaging;
 import com.model.net.packet.in.ActionButtonPacketHandler;
 import com.model.net.packet.in.AttackPlayer;
 import com.model.net.packet.in.BankModifiableX;
-import com.model.net.packet.in.BankX1;
 import com.model.net.packet.in.ChallengePlayer;
 import com.model.net.packet.in.ChatPacketHandler;
 import com.model.net.packet.in.ClickOnGameScreen;
 import com.model.net.packet.in.CloseInterfacePacketHandler;
 import com.model.net.packet.in.DefaultPacketHandler;
 import com.model.net.packet.in.DialoguePacketHandler;
-import com.model.net.packet.in.EnterAmountPacketHandler;
 import com.model.net.packet.in.FollowPlayer;
 import com.model.net.packet.in.IdleLogoutPacketHandler;
 import com.model.net.packet.in.InputDialogueStringPacketHandler;
@@ -78,6 +76,8 @@ public class PacketHandler {
 		packetId[43] = wap;
 		packetId[129] = wap;
 		packetId[135] = wap;
+		packetId[135] = wap;
+		packetId[208] = wap;
 		
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();
@@ -134,8 +134,6 @@ public class PacketHandler {
 		packetId[95] = pm;
 		packetId[133] = pm;
 		packetId[74] = pm;
-		packetId[135] = new BankX1();
-		packetId[208] = new EnterAmountPacketHandler();
 		WalkingPacketHandler w = new WalkingPacketHandler();
 		packetId[98] = w;
 		packetId[164] = w;

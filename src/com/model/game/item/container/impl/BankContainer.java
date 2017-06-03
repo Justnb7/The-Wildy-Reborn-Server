@@ -40,7 +40,6 @@ public class BankContainer extends Container {
 		Arrays.fill(tabAmounts, 0);
 	}
 
-	//eerste tab -4
 	public boolean clickButton(int button) {
 		if (button >= 234129 && button <= 234165) {
 			final int tab = (-5505 - button) / -4;
@@ -306,7 +305,7 @@ public class BankContainer extends Container {
 	@Override
 	public void refresh() {
 		player.getActionSender().sendUpdateItems(InterfaceConstants.WITHDRAW_BANK, stack);
-		if (player.getInterfaceState().getCurrentInterface() == InterfaceConstants.DEPOSIT_BOX) {
+		if (player.getInterfaceState().isInterfaceOpen(InterfaceConstants.DEPOSIT_BOX)) {
 			player.getActionSender().sendUpdateItems(InterfaceConstants.DEPOSIT_BOX, player.getInventory().toArray());
 		} else {
 			player.getActionSender().sendString("The Bank of Venenatis", 60_005);

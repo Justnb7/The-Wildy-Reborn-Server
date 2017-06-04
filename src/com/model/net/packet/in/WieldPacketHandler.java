@@ -1,18 +1,13 @@
 package com.model.net.packet.in;
 
-import com.model.Server;
-import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Rights;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
-import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
-import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
-import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.definitions.EquipmentDefinition;
+import com.model.game.definitions.EquipmentDefinition.EquipmentType;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
 import com.model.net.packet.SubPacketType;
-
-import java.util.Objects;
 
 /**
  * Handles the 'wield' option on items.
@@ -27,37 +22,44 @@ public class WieldPacketHandler implements SubPacketType {
 		final int id = player.getInStream().readUnsignedWord();
 		final int slot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();
-		
-		final Item item = new Item(id);
 
 		if (player.inDebugMode()) {
 			player.debug("WieldPacketHandler - item: " + id+" slot: "+slot+" interface: "+interfaceId);
 		}
-		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.isTeleporting()) {
-			return;
-		}
 		
-		DuelSession duelSession = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
-		if (Objects.nonNull(duelSession) && duelSession.getStage().getStage() > MultiplayerSessionStage.REQUEST && duelSession.getStage().getStage() < MultiplayerSessionStage.FURTHER_INTERACTION) {
-			player.getActionSender().sendMessage("Your actions have declined the duel.");
-			duelSession.getOther(player).getActionSender().sendMessage("The challenger has declined the duel.");
-			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
+		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.isTeleporting()) {
 			return;
 		}
 		
 		switch (interfaceId) {
 
 		case InterfaceConstants.INVENTORY_INTERFACE:
+			final Item item = player.getInventory().get(slot);
+
+			if (item == null || item.getId() != id) {
+				return;
+			}
+
+			final EquipmentDefinition equip = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
+
+			if (equip == null) {
+				return;
+			}
+			
+			if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
+				player.debug(String.format("[WearItem] [id= %d] [slot= %d] [interface %d]", id, slot, interfaceId));
+			}
+
 			if (!player.getController().canEquip(player, id, slot)) {
 				return;
 			}
+			
+			if (equip.getType() == EquipmentType.NOT_WIELDABLE) {
+				player.getActionSender().sendMessage("This item cannot be worn.");
+				return;
+			}
+
 			player.getEquipment().wear(item, slot);
-			break;
-		}
-		if (player.getEquipment().get(3) == null) {
-			player.autocastId = -1;
-			player.autoCast = false;
-			Combat.resetCombat(player);
 		}
 	}
 

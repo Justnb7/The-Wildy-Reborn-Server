@@ -4,7 +4,6 @@ package com.model.game.character.combat;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.magic.CombatSpells;
 import com.model.game.character.player.Player;
-import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 public class CombatState {
 	
@@ -48,10 +47,6 @@ public class CombatState {
 
 	public void applySmite(Player defender, int damage) {
 		PrayerHandler.handleSmite(mob.asPlayer(), defender, damage);
-	}
-
-	public boolean usingDbow() {
-		return mob.asPlayer().getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235;
 	}
 
 	/**

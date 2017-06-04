@@ -34,7 +34,7 @@ public class ObjectInteraction {
 		ObjectDefinition def = ObjectDefinition.get(objectId);
 		
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[ObjectInteraction] - position: %s object: %d ", location, objectId));
+			player.getActionSender().sendMessage(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
 		}
 		
 		Action action = null;
@@ -44,12 +44,32 @@ public class ObjectInteraction {
 			action = new Woodcutting(player, new GameObject(objectId, location.getX(), location.getY(), location.getZ()));
 		}
 		
+		switch (def.name.toLowerCase()) {
+
+		case "bank":
+		case "Bank":
+		case "bank booth":
+		case "booth":
+		case "bank chest":
+			player.getBank().open();
+			break;
+			
+		}
+		
 		switch(objectId) {
 		case 7812: //Altar at Clan Wars
+		case 409:
 			action = new RestorePrayerPointsAction(player, objectId);
 			break;
-		case 26707: //Clan wars bank chest
-			//player.getBank().open();
+			
+		/* Deposit Box */
+		case 6948:
+		case 9398:
+		case 11747:
+		case 25937:
+			player.getActionSender().sendString("The Bank of Venenatis - Deposit Box", 7421);
+			player.getActionSender().sendInterfaceWithInventoryOverlay(4465, 197);
+			player.getActionSender().sendItemOnInterface(7423, player.getInventory().toArray());
 			break;
 		case 26642: //clan wars portal
 		case 26644:
@@ -96,7 +116,7 @@ public class ObjectInteraction {
 	 */
 	public static void handleSecondClickAction(Player player, Location position, int id) {
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
+			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
 		}
 		
 		ObjectDefinition objectDef = ObjectDefinition.get(id);
@@ -106,7 +126,8 @@ public class ObjectInteraction {
 		case "Bank":
 		case "bank booth":
 		case "booth":
-			//player.getBank().open();
+		case "bank chest":
+			player.getBank().open();
 			break;
 			
 		}
@@ -144,7 +165,7 @@ public class ObjectInteraction {
 	 */
 	public static void handleThirdClickAction(Player player, Location position, int id) {
 		if (player.inDebugMode()) {
-			System.out.println(String.format("[ObjectInteraction option 3] - position: %s object: %d ", position, id));
+			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 3] - position: %s object: %d ", position, id));
 		}
 	}
 

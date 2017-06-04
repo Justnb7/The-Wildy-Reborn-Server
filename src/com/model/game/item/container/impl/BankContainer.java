@@ -41,8 +41,8 @@ public class BankContainer extends Container {
 	}
 
 	public boolean clickButton(int button) {
-		if (button >= 234129 && button <= 234165) {
-			final int tab = (-234129 - button) / -4;
+		if (button >= 234131 && button <= 234163) {
+			final int tab = (234131 - button) / -4;
 			if (button % 2 == 0) {
 				bankTab = tab;
 				player.getActionSender().sendString("", 60019);
@@ -299,13 +299,13 @@ public class BankContainer extends Container {
 
 	@Override
 	public void refresh() {
-		player.getActionSender().sendUpdateItems(InterfaceConstants.WITHDRAW_BANK, stack);
+		player.getActionSender().sendItemOnInterface(InterfaceConstants.WITHDRAW_BANK, stack);
 		if (player.getInterfaceState().isInterfaceOpen(InterfaceConstants.DEPOSIT_BOX)) {
-			player.getActionSender().sendUpdateItems(InterfaceConstants.DEPOSIT_BOX, player.getInventory().toArray());
+			player.getActionSender().sendItemOnInterface(InterfaceConstants.DEPOSIT_BOX, player.getInventory().toArray());
 		} else {
 			player.getActionSender().sendString("The Bank of Venenatis", 60_005);
 		}
-		player.getActionSender().sendUpdateItems(InterfaceConstants.INVENTORY_STORE, player.getInventory().toArray());
+		player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_STORE, player.getInventory().toArray());
 		player.getInventory().refresh();
 	}
 

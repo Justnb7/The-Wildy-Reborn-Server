@@ -23,7 +23,7 @@ public class DidYouKnowEvent extends ScheduledTask {
 	/**
 	 * A {@link Collection} of messages that are to be displayed
 	 */
-	private final List<String> MESSAGES = Utility.jsonArrayToList(Paths.get("Data", "json", "did_you_know.json"), String[].class);
+	private final List<String> MESSAGES = Utility.jsonArrayToList(Paths.get("data", "def/misc/", "did_you_know.json"), String[].class);
 
 	/**
 	 * The index or position in the list that we're currently at

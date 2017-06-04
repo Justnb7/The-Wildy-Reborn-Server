@@ -1,21 +1,12 @@
 package com.model.game.character.combat.pvp;
 
-import com.model.Server;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
-import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
-import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
-import com.model.game.character.player.content.multiplayer.duel.DuelSession;
-import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.definitions.ItemDefinition;
-import com.model.game.item.container.impl.equipment.EquipmentConstants;
-
-import java.util.Objects;
 
 /**
  * Handles Player Vs Player Combat

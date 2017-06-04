@@ -1,8 +1,5 @@
 package com.model.game.character.player;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.character.Graphic;

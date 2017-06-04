@@ -2,7 +2,6 @@ package com.model.net.packet.in;
 
 import com.model.game.World;
 import com.model.game.character.Entity;
-import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 import com.model.net.packet.PacketType;

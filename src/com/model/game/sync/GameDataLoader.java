@@ -18,14 +18,13 @@ import com.model.game.character.player.skill.fletching.fletchable.impl.Carvable;
 import com.model.game.character.player.skill.fletching.fletchable.impl.Crossbow;
 import com.model.game.character.player.skill.fletching.fletchable.impl.Featherable;
 import com.model.game.character.player.skill.fletching.fletchable.impl.Stringable;
+import com.model.game.definitions.NPCDefinitions;
 import com.model.net.ConnectionHandler;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
-import com.model.utility.json.definitions.NPCDefinitions;
-import com.model.utility.json.loader.NPCDefinitionLoader;
-import com.model.utility.json.loader.ShopParser;
 import com.model.utility.parser.impl.EquipmentDefinitionParser;
 import com.model.utility.parser.impl.ItemDefinitionParser;
+import com.model.utility.parser.impl.NPCDefinitionParser;
 import com.model.utility.parser.impl.WeaponDefinitionParser;
 
 /**
@@ -63,11 +62,10 @@ public class GameDataLoader implements Runnable {
 			Stringable.declare();
 			Server.npcHandler.declare();
 			Arrays.fill(NPCDefinitions.getDefinitions(), null);
-	        new NPCDefinitionLoader().load();
+	        new NPCDefinitionParser().run();
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();
-			new ShopParser().load();
 			MobAttackSounds.declare();
 			PlayerSounds.declare();
 			ClanManager.init();

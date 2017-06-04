@@ -16,6 +16,7 @@ import com.model.game.character.player.content.teleport.TeleportExecutor;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.definitions.ItemDefinition;
+import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.container.impl.shop.ShopManager;
@@ -24,11 +25,10 @@ import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.NPCDefinitions;
-import com.model.utility.json.loader.NPCDefinitionLoader;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 import com.model.utility.parser.impl.ItemDefinitionParser;
+import com.model.utility.parser.impl.NPCDefinitionParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -612,7 +612,7 @@ public class CommandPacketHandler implements PacketType {
 						NPCDefinitions.getDefinitions()[i] = null;
 					}
 					player.getActionSender().sendMessage("Succesfully reloaded npcdefinitions");
-					new NPCDefinitionLoader().load();
+					new NPCDefinitionParser().run();
 					break;
 				case 2:
 					for (NPC npc : World.getWorld().getNPCs()) {

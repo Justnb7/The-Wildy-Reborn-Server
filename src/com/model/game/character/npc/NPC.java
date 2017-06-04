@@ -13,12 +13,12 @@ import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
+import com.model.game.definitions.NPCDefinitions;
 import com.model.game.location.Location;
 import com.model.task.impl.NPCDeathTask;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
-import com.model.utility.json.definitions.NPCDefinitions;
 
 import java.util.*;
 

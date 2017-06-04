@@ -7,8 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.model.game.character.player.Player;
+import com.model.game.definitions.NPCDefinitions;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.NPCDefinitions;
 
 /**
  * 

@@ -1,7 +1,7 @@
 package com.model.game.character.player.content.music.sounds;
 
 import com.model.game.character.player.Player;
-import com.model.utility.json.definitions.NPCDefinitions;
+import com.model.game.definitions.NPCDefinitions;
 
 public class MobAttackSounds {
 	

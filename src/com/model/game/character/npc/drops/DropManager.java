@@ -23,12 +23,12 @@ import org.json.simple.parser.ParseException;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.definitions.ItemDefinition;
+import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
-import com.model.utility.json.definitions.NPCDefinitions;
 
 public class DropManager {
 

@@ -1,4 +1,4 @@
-package com.model.utility.json.definitions;
+package com.model.game.definitions;
 
 import com.model.game.Constants;
 

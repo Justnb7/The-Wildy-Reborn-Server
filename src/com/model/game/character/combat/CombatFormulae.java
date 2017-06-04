@@ -521,15 +521,15 @@ public class CombatFormulae {
 			return false;
 		}
 
-		boolean helmet = player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId() == (type == 0 ? 11665 : type == 1 ? 11663 : 11664);
+		boolean helmet = player.getEquipment().contains(type == 0 ? 11665 : type == 1 ? 11663 : 11664);
 
-		boolean hasGloves = player.getEquipment().get(EquipmentConstants.GLOVES_SLOT).getId() == 8842;
+		boolean hasGloves = player.getEquipment().contains(8842);
 
-		boolean hasDeflector = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() == 19712;
+		boolean hasDeflector = player.getEquipment().contains(19712);
 
-		boolean hasLegs = player.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId() == 8840 || player.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId() == 13073;
+		boolean hasLegs = player.getEquipment().contains(8840) || player.getEquipment().contains(13073);
 
-		boolean hasPlate = player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId() == 8839 || player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId() == 13072;
+		boolean hasPlate = player.getEquipment().contains(8839) || player.getEquipment().contains(13072);
 
 		if (helmet) {
 			complete++;

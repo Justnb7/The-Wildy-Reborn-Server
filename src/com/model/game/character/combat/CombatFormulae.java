@@ -138,7 +138,7 @@ public class CombatFormulae {
                      att_prayer_bonus += 0.15;
                  }
 
-                att_spell_bonus += ((att_base_magic - p.MAGIC_SPELLS[p.oldSpellId][1]) * 0.3);
+                //att_spell_bonus += ((att_base_magic - p.MAGIC_SPELLS[p.oldSpellId][1]) * 0.3);
 
                 att_equipment_bonus = p.getBonuses()[3];
                 att_void_bonus = wearingFullVoid(p, att_type) ? 1.3 : 1;

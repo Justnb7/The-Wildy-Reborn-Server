@@ -23,37 +23,7 @@ public class Ballista implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		player.setCombatType(CombatStyle.RANGE);
-		player.playAnimation(Animation.create(7222));
 		
-		// On rapid, the attack delay is 1 tick faster.
-		if (player.getAttackStyle() == 2)
-			player.getCombatState().setAttackDelay(-1);
-
-		player.getCombatState().fireProjectileAtTarget();
-		
-		int damage = Utility.random(player.getCombatState().calculateRangeMaxHit());
-		boolean success = CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
-		if (!success) {
-			damage = 0;
-		}
-
-		if (target instanceof Player && (((Player) target).isActivePrayer(Prayers.PROTECT_FROM_MISSILE))) {
-			damage = (int) (damage * 0.6);
-		}
-		
-		Entity targ = (Entity) target;
-		
-		final int finalDmg = damage;
-		
-		// Hit
-		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
-			@Override
-			public void execute() {
-				targ.damage(new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));
-				this.stop();
-			}
-		});
 		
 	}
 

@@ -54,7 +54,7 @@ public class DropManager {
 	public void read() {
 		JSONParser parser = new JSONParser();
 		try {
-			FileReader fileReader = new FileReader("./Data/json/npc/npc_droptable.json");
+			FileReader fileReader = new FileReader("./data/def/mob/npc_droptable.json");
 			JSONArray data = (JSONArray) parser.parse(fileReader);
 			Iterator<?> drops = data.iterator();
 

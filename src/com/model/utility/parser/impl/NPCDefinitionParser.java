@@ -17,7 +17,7 @@ public final class NPCDefinitionParser extends GsonParser {
      * Creates a new {@link NPCDefinitionParser}.
      */
     public NPCDefinitionParser() {
-        super("mob/npc_definitions.json");
+        super("def/mob/npc_definitions");
     }
 
     @Override

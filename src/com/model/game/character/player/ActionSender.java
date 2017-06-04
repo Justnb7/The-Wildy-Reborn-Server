@@ -517,7 +517,7 @@ public class ActionSender {
 		if (id == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
 			for (final int amount : player.getBank().getTabAmounts()) {
 				player.getOutStream().writeByte(amount >> 8);
-				player.getOutStream().writeWordBigEndianA(amount & 0xFF);
+				player.getOutStream().writeShort(amount & 0xFF);
 			}
 		}
 		player.getOutStream().putFrameSizeShort(offset);

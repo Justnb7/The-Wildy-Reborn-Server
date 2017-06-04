@@ -42,7 +42,7 @@ public class BankContainer extends Container {
 
 	public boolean clickButton(int button) {
 		if (button >= 234129 && button <= 234165) {
-			final int tab = (-5505 - button) / -4;
+			final int tab = (-234129 - button) / -4;
 			if (button % 2 == 0) {
 				bankTab = tab;
 				player.getActionSender().sendString("", 60019);
@@ -70,11 +70,6 @@ public class BankContainer extends Container {
 
 		/* Bank Pin */
 		case 234116:
-			return true;
-
-		/* Bank Pin Reset */
-		case -6525:
-			
 			return true;
 
 		/* Bank Insert/Swap */
@@ -296,7 +291,7 @@ public class BankContainer extends Container {
 	}
 
 	public void open() {
-		player.getActionSender().sendString("360", 60018);
+		player.getActionSender().sendString("800", 60018);
 		shift(true);
 		player.getActionSender().sendInterfaceWithInventoryOverlay(60000, 5063);
 		player.getAttributes().put("banking", Boolean.TRUE);

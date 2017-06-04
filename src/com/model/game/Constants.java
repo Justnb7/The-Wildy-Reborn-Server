@@ -129,7 +129,7 @@ public class Constants {
 	/**
 	 * The port in which this server is bound upon
 	 */
-	public static final int SERVER_PORT = 43594;
+	public static final int SERVER_PORT = 5555;
 	
 	/**
 	 * the speed of world in ms

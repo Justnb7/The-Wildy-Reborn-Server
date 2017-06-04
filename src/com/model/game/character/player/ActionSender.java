@@ -494,7 +494,7 @@ public class ActionSender {
 	 *             The items.
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendUpdateItems(int id, Item... items) {
+	public ActionSender sendItemOnInterface(int id, Item... items) {
 		player.getOutStream().putFrameVarShort(53);
 		int offset = player.getOutStream().offset;
 		player.getOutStream().writeShort(id);

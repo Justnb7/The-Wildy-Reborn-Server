@@ -212,7 +212,7 @@ public final class RunePouchContainer extends Container {
 			return;
 		}
 		//Sent the items on the interface
-		player.getActionSender().sendUpdateItems(START_INVENTORY_INTERFACE, player.getInventory().toArray());
+		player.getActionSender().sendItemOnInterface(START_INVENTORY_INTERFACE, player.getInventory().toArray());
 	}
 
 	@Override

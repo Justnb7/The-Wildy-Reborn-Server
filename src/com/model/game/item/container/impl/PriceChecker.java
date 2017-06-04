@@ -43,7 +43,7 @@ public class PriceChecker extends Container {
 			player.getActionSender().sendString("", id);
 		}
 		player.getActionSender().sendConfig(237, getPriceType() == PriceType.VALUE ? 1 : 0);
-		player.getActionSender().sendUpdateItems(48581, new Item[] { null });
+		player.getActionSender().sendItemOnInterface(48581, new Item[] { null });
 		player.getActionSender().sendString("", 48582);
 		player.getActionSender().sendString("", 48583);
 		refresh();
@@ -62,7 +62,7 @@ public class PriceChecker extends Container {
 	public void searchItem(Item item) {
 		setItemSearching(item);
 		Item[] itemSearch = { getItemSearching() };
-		player.getActionSender().sendUpdateItems(48581, itemSearch);
+		player.getActionSender().sendItemOnInterface(48581, itemSearch);
 		player.getActionSender().sendString("<col=ffb000>" + getItemSearching().getName() + ":", 48582);
 		player.getActionSender().sendString(Utility.formatDigits((player.getPriceChecker().getPriceType() == PriceType.VALUE ? getItemSearching().getValue() : getItemSearching().getHighAlch())) + "", 48583);
 		player.getActionSender().sendMessage("Now displaying <col=ff0000>" + (player.getPriceChecker().getPriceType() == PriceType.VALUE ? "item value" : "item high alch") + "</col> price information for " + getItemSearching().getName() + ".");
@@ -313,8 +313,8 @@ public class PriceChecker extends Container {
 	@Override
 	public void refresh() {
 		player.getInventory().refresh();
-		player.getActionSender().sendUpdateItems(InterfaceConstants.INVENTORY_STORE, player.getInventory().toArray());
-		player.getActionSender().sendUpdateItems(48542, toArray());
+		player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_STORE, player.getInventory().toArray());
+		player.getActionSender().sendItemOnInterface(48542, toArray());
 		player.getActionSender().sendString("" + (getPriceType() == PriceType.VALUE ? NumberFormat.getInstance().format(containerValue()) : NumberFormat.getInstance().format(containerHighAlchValue())), 48513);
 	}
 

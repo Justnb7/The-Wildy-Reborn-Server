@@ -159,7 +159,7 @@ public final class TradeSession {
 
 		case OFFER:
 			int remaining = other.get().getInventory().getFreeSlots();
-			player.getActionSender().sendUpdateItems(3322, player.getInventory().toArray());
+			player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
 			player.getActionSender().sendString(String.format("Trading with: %s %s ", Rights.getStringForRights(other.get()), Utility.formatPlayerName(other.get().getName()), remaining), 33002);
 			player.getActionSender().sendString(Utility.formatPlayerName(other.get().getName()), 33003);
 			player.getActionSender().sendString("inventory spaces", 33005);
@@ -167,12 +167,12 @@ public final class TradeSession {
 			player.getActionSender().sendString("", 33029);
 			player.getActionSender().sendString("", 33030);
 			player.getActionSender().sendInterfaceWithInventoryOverlay(InterfaceConstants.FIRST_TRADE_SCREEN, 3321);
-			player.getActionSender().sendUpdateItems(InterfaceConstants.PLAYER_TRADE_CONTAINER, new Item[] {});
-			player.getActionSender().sendUpdateItems(InterfaceConstants.OTHER_TRADE_CONTAINER, new Item[] {});
+			player.getActionSender().sendItemOnInterface(InterfaceConstants.PLAYER_TRADE_CONTAINER, new Item[] {});
+			player.getActionSender().sendItemOnInterface(InterfaceConstants.OTHER_TRADE_CONTAINER, new Item[] {});
 			break;
 
 		case FIRST_ACCEPT:
-			player.getActionSender().sendUpdateItems(InterfaceConstants.INVENTORY_INTERFACE, player.getInventory().toArray());
+			player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_INTERFACE, player.getInventory().toArray());
 			player.getActionSender().sendString("<col=65535>Are you sure you want to make this trade?", 33202);
 			player.getActionSender().sendString("<col=65535>Trading With:", 33207);
 			player.getActionSender().sendString(String.format("%s <col=65535>%s", Rights.getStringForRights(other.get()), Utility.formatPlayerName(other.get().getName())), 33208);

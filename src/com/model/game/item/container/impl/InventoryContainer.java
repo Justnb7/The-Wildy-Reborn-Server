@@ -33,7 +33,7 @@ public class InventoryContainer extends Container {
 
 	@Override
 	public void refresh() {
-		player.getActionSender().sendUpdateItems(InterfaceConstants.INVENTORY_INTERFACE, toArray());
+		player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_INTERFACE, toArray());
 	}
 
 	@Override

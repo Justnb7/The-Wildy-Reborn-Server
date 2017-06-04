@@ -209,7 +209,7 @@ public class DuelSession extends MultiplayerSession {
 		if (stage.getStage() == MultiplayerSessionStage.OFFER_ITEMS) {
 			for (Player player : players) {
 				Player recipient = getOther(player);
-				player.getActionSender().sendUpdateItems(3322, player.getInventory().toArray());
+				player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
 				refreshItemContainer(player, player, 6669);
 				refreshItemContainer(player, player, 6670);
 				player.getActionSender().sendString("Dueling with: " + recipient.getName() + " (level-" + recipient.combatLevel + ")", 6671);
@@ -220,7 +220,7 @@ public class DuelSession extends MultiplayerSession {
 		} else if (stage.getStage() == MultiplayerSessionStage.CONFIRM_DECISION) {
 			for (Player player : players) {
 				Player recipient = getOther(player);
-				player.getActionSender().sendUpdateItems(3214, player.getInventory().toArray());
+				player.getActionSender().sendItemOnInterface(3214, player.getInventory().toArray());
 				StringBuilder itemList = new StringBuilder();
 				List<GameItem> items = getItems(player);
 				for (GameItem item : items) {
@@ -260,7 +260,7 @@ public class DuelSession extends MultiplayerSession {
 	public void updateOfferComponents() {
 		for (Player player : items.keySet()) {
 			Player recipient = getOther(player);
-			player.getActionSender().sendUpdateItems(3322, player.getInventory().toArray());
+			player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
 			refreshItemContainer(player, player, 6669);
 			refreshItemContainer(player, getOther(player), 6670);
 			player.getActionSender().sendString("", 6684);

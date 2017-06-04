@@ -81,7 +81,7 @@ public class ShopManager {
 
 			shop.shift(false);
 
-			player.getActionSender().sendUpdateItems(40051, shop.toArray());
+			player.getActionSender().sendItemOnInterface(40051, shop.toArray());
 
 			for (int i = 0; i < shop.toArray().length; i++) {
 				player.getActionSender().sendString(shop.toArray()[i] == null ? "0" : shop.toArray()[i].getValue() + "," + shop.getCurrency().getCurrencyId(), 40052 + i);
@@ -108,7 +108,7 @@ public class ShopManager {
 				continue;
 			}
 
-			player.getActionSender().sendUpdateItems(40051, shop.toArray());
+			player.getActionSender().sendItemOnInterface(40051, shop.toArray());
 
 			for (int i = 0; i < shop.toArray().length; i++) {
 				player.getActionSender().sendString(shop.toArray()[i] == null ? "0" : shop.toArray()[i].getValue() + "," + shop.getCurrency().getCurrencyId(), 40052 + i);
@@ -160,7 +160,7 @@ public class ShopManager {
 //			System.out.println(formatted_name + "(\"" + name + "\", " + item + ", " + cost + "),");
 //		}
 
-		player.getActionSender().sendUpdateItems(40051, shop.toArray());
+		player.getActionSender().sendItemOnInterface(40051, shop.toArray());
 
 		for (int i = 0; i < shop.toArray().length; i++) {
 			player.getActionSender().sendString(shop.toArray()[i] == null ? "0" : shop.toArray()[i].getValue() + "," + shop.getCurrency().getCurrencyId(), 40052 + i);
@@ -170,7 +170,7 @@ public class ShopManager {
 
 		player.getActionSender().sendInterfaceWithInventoryOverlay(ShopConstants.INTERFACE_ID, 3822);
 		player.getInventory().refresh();
-		player.getActionSender().sendUpdateItems(3823, player.getInventory().toArray());
+		player.getActionSender().sendItemOnInterface(3823, player.getInventory().toArray());
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class ShopManager {
 			shop.shift(false);
 			update(player.getShopId());
 			player.getActionSender().sendMessage("<col=057A13>You bought " + item.getAmount() + " " + item.getName() + " for " + Utility.formatDigits(price) + " " + currency.getUtility().getCurrencyName() + ".");
-			player.getActionSender().sendUpdateItems(3823, player.getInventory().toArray());
+			player.getActionSender().sendItemOnInterface(3823, player.getInventory().toArray());
 		}
 	}
 
@@ -339,7 +339,7 @@ public class ShopManager {
 			currency.getUtility().addCurrency(player, price);
 			shop.shift(false);
 			update(player.getShopId());
-			player.getActionSender().sendUpdateItems(3823, player.getInventory().toArray());
+			player.getActionSender().sendItemOnInterface(3823, player.getInventory().toArray());
 		}
 	}
 

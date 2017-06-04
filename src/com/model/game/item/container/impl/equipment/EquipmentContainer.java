@@ -102,7 +102,7 @@ public class EquipmentContainer extends Container {
 
 	@Override
 	public void refresh() {
-		player.getActionSender().sendUpdateItems(InterfaceConstants.EQUIPMENT, stack);
+		player.getActionSender().sendItemOnInterface(InterfaceConstants.EQUIPMENT, stack);
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 

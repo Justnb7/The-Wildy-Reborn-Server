@@ -159,16 +159,16 @@ public class TradeContainer extends Container {
 		other.get().getTradeSession().setTradeStage(TradeStage.OFFER);
 
 		// updating inventory for this player
-		player.getActionSender().sendUpdateItems(3322, player.getInventory().toArray());
+		player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
 
 		// updating this player offered items
-		player.getActionSender().sendUpdateItems(InterfaceConstants.PLAYER_TRADE_CONTAINER, stack);
+		player.getActionSender().sendItemOnInterface(InterfaceConstants.PLAYER_TRADE_CONTAINER, stack);
 
 		// update other player offered items
-		player.getActionSender().sendUpdateItems(InterfaceConstants.OTHER_TRADE_CONTAINER, other.get().getTradeContainer().toArray());
+		player.getActionSender().sendItemOnInterface(InterfaceConstants.OTHER_TRADE_CONTAINER, other.get().getTradeContainer().toArray());
 
 		// update other player with our items
-		other.get().getActionSender().sendUpdateItems(InterfaceConstants.OTHER_TRADE_CONTAINER, toArray());
+		other.get().getActionSender().sendItemOnInterface(InterfaceConstants.OTHER_TRADE_CONTAINER, toArray());
 
 		// update text on interface
 		int remaining = other.get().getInventory().getFreeSlots();

@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
+import com.model.game.object.GameObject;
 import com.model.utility.cache.Direction;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.WorldObject;
@@ -16,26 +17,31 @@ import com.model.utility.cache.WorldObject;
 public class Region {
 	
 	private int id;
-	private LinkedList<Location> npcs = null;
 	private final int[][][] clips;
 	private final int[][][] shootable;
-	private RSObject[][][] objects;
-	public static Region[] regionIdTable;
+	private final GameObject[][][] objects;
 	private static Region[] regions;
 	
-	/**
-	 * A map containing each region as the key, and a Collection of
-	 * real world objects as the value. 
-	 */
-	private static HashMap<Integer, ArrayList<WorldObject>> worldObjects = new HashMap<>();
-	
+	private LinkedList<Location> npcs = null;
 
 	public Region(int id) {
 		this.id = id;
 		clips = new int[4][][];
 		shootable = new int[4][][];
-		objects = new RSObject[4][][];
-		objects = new RSObject[4][][];
+		objects = new GameObject[4][][];
+	}
+	
+	public static void sort() {
+		Region[] sorted = new Region[70000];
+		for (int i = 0; i < regions.length; i++) {
+			if (regions[i] == null) {
+				continue;
+			}
+
+			sorted[regions[i].id()] = regions[i];
+		}
+
+		regions = sorted;
 	}
 	
 	/**
@@ -76,6 +82,13 @@ public class Region {
 				&& object.y == y && object.height == height).findFirst();
 		return exists;
 	}
+	
+	/**
+	 * A map containing each region as the key, and a Collection of
+	 * real world objects as the value. 
+	 */
+	private static HashMap<Integer, ArrayList<WorldObject>> worldObjects = new HashMap<>();
+	
 
 	/**
 	 * Adds a {@link WorldObject} to the {@link #worldObjects} map based on the
@@ -796,7 +809,7 @@ public class Region {
 		return id;
 	}
 
-	public RSObject[][][] getObjects() {
+	public GameObject[][][] getObjects() {
 		return objects;
 	}
 	
@@ -837,11 +850,11 @@ public class Region {
 		return null;
 	}
 
-	public void removeObject(RSObject object) {
+	public void removeObject(GameObject object) {
 		int regionAbsX = (id >> 8) << 6;
 		int regionAbsY = (id & 0xff) << 6;
 
-		int z = object.getZ();
+		int z = object.getHeight();
 
 		if (z > 3) {
 			z = z % 4;

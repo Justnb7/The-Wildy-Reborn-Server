@@ -1,4 +1,4 @@
-package com.model;
+package com.model.server;
 
 /**
  * Represents the servers current state

@@ -240,6 +240,11 @@ public class Constants {
 	 */
 	public static final String DATA_DIR = "./data/";
 
-	public static final int TOTAL_MOBS = 7520;
+	public static final int TOTAL_MOBS = 7730;
+
+	/**
+	 * The rate in milliseconds in which the game thread processes logic.
+	 */
+	public static final int CYLCE_RATE = 600;
 
 }

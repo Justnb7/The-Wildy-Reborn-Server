@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
+import com.model.game.location.Location;
+import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import com.model.utility.cache.ByteStream;
 import com.model.utility.cache.ObjectDefinition;
@@ -16,7 +18,7 @@ public class MapLoading {
 	/**
 	 * The logger for the class
 	 */
-	private static Logger logger = Logger.getLogger(MapLoading.class.getSimpleName());
+	private static final Logger LOGGER = Logger.getLogger(MapLoading.class.getSimpleName());
 	
 	public static void load() {
 		try {
@@ -26,19 +28,17 @@ public class MapLoading {
 			dis.readFully(buffer);
 			dis.close();
 			ByteStream in = new ByteStream(buffer);
-			int size = in.length() / 6;
-			in.readUnsignedWord();
+			int size = in.readUnsignedWord();
+			LOGGER.info(Utility.format(size) + " Maps about to load...");
 			Region.setRegions(new Region[size]);
 			int[] regionIds = new int[size];
 			int[] mapGroundFileIds = new int[size];
 			int[] mapObjectsFileIds = new int[size];
+			int successfull = 0;
 			for (int i = 0; i < size; i++) {
-				regionIds[i] = in.getUShort();
+				Region.getRegions()[i] = new Region(regionIds[i] = in.getUShort());
 				mapGroundFileIds[i] = in.getUShort();
 				mapObjectsFileIds[i] = in.getUShort();
-			}
-			for (int i = 0; i < size; i++) {
-				Region.getRegions()[i] = new Region(regionIds[i]);
 			}
 			for (int i = 0; i < size; i++) {
 				byte[] file1 = getBuffer(new File("./data/map/mapdata/" + mapObjectsFileIds[i] + ".gz"));
@@ -48,13 +48,14 @@ public class MapLoading {
 				}
 				try {
 					loadMaps(regionIds[i], new ByteStream(file1), new ByteStream(file2));
+					successfull++;
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("Error loading map region: " + regionIds[i] + ", ids: " + mapObjectsFileIds[i] + " and " + mapGroundFileIds[i]);
 				}
 			}
 
-			logger.info(Utility.format(size) + " Maps have been loaded successfully.");
+			LOGGER.info(Utility.format(successfull) + " Maps have been loaded successfully.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -185,7 +186,7 @@ public class MapLoading {
 		}
 
 		if (def.hasActions()) {
-			Region.getRegion(x, y).removeObject(new RSObject(x, y, height, objectId, type, direction));
+			Region.getRegion(x, y).removeObject(new GameObject(objectId, new Location(x, y, height), type, direction));
 		}
 	}
 

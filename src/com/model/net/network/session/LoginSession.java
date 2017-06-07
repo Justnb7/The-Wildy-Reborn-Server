@@ -15,13 +15,13 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.character.player.serialize.PlayerSerialization.PlayerSaveDetail;
-import com.model.game.sync.GameLogicService;
 import com.model.net.ConnectionHandler;
 import com.model.net.network.NetworkConstants;
 import com.model.net.network.codec.RS2Decoder;
 import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.login.LoginCredential;
 import com.model.net.network.login.LoginResponse;
+import com.model.server.GameSequencer;
 import com.model.utility.NameUtils;
 
 import io.netty.channel.Channel;
@@ -185,7 +185,7 @@ public class LoginSession extends Session {
 		/*
 		 * This bit should be done after the players loaded
 		 */
-		if (GameLogicService.getLoginQueue().contains(player) || World.getWorld().getPlayerByRealName(name).isPresent()) {
+		if (GameSequencer.getLoginQueue().contains(player) || World.getWorld().getPlayerByRealName(name).isPresent()) {
 			sendReturnCode(ctx.channel(), 5);
 			return;
 		}
@@ -211,7 +211,7 @@ public class LoginSession extends Session {
 			}
 			player.setSession(new GameSession(player, getChannel()));
 			ctx.attr(NetworkConstants.KEY).set(player.getSession());
-			GameLogicService.queueLogin(player);
+			GameSequencer.queueLogin(player);
 		}
 	}
 

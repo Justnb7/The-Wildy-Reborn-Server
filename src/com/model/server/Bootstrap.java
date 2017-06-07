@@ -36,6 +36,7 @@ import com.model.utility.parser.impl.*;
  * The bootstrap that will prepare the game and network.
  * 
  * @author Seven
+ * @author Patrick van Elderen
  */
 public class Bootstrap {
 	
@@ -96,7 +97,7 @@ public class Bootstrap {
 		bootstrap.channel(NioServerSocketChannel.class);
 		bootstrap.group(new NioEventLoopGroup());
 		bootstrap.bind(Constants.SERVER_PORT).syncUninterruptibly();
-		Server.state = ServerState.LOADED;
+		Server.SERVER_STARTED = true;
 		LOGGER.info("Network has been bound");
 		return this;
 	}

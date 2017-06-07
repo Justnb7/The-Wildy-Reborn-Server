@@ -20,7 +20,6 @@ import com.model.game.character.player.PlayerUpdating;
 import com.model.game.character.player.content.FriendAndIgnoreList;
 import com.model.game.character.player.content.bounty_hunter.BountyHunter;
 import com.model.game.character.player.content.clan.ClanManager;
-import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.server.Server;

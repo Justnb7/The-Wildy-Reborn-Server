@@ -28,7 +28,6 @@ import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.server.GameSequencer;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
 
@@ -37,7 +36,7 @@ public class DropManager {
 	/**
 	 * The logger that will print important information.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(GameSequencer.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(DropManager.class.getName());
 
 	private static final DecimalFormat PERCENTILE_FORMAT = new DecimalFormat("#.###");
 

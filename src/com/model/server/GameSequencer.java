@@ -1,29 +1,48 @@
 package com.model.server;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.google.common.base.Preconditions;
+import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.task.events.CycleEventHandler;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
+
 /**
- * The implementation that sequentially executes game-related processes.
- * 
- * @author Seven
+ * A service dedicated to handling all game logic. This service executes packets
+ * every {@code 300}ms instead of every {@code 600}ms to improve the speed of
+ * packet processing.
+ *
+ * @author Mobster
+ * @author lare96 <http://www.rune-server.org/members/lare96/>
  */
 public final class GameSequencer implements Runnable {
 	
+	public GameSequencer() {
+	}
+	
 	/**
-	 * The logger that will print important information.
+	 * A logger for the {@link GameSequencer} class
 	 */
 	private static final Logger LOGGER = Logger.getLogger(GameSequencer.class.getName());
+	
+	private static final GameSequencer engine = new GameSequencer();
+	
+	public GameSequencer getEngine() {
+		return engine;
+	}
+
+	private static final AtomicBoolean LOCK = new AtomicBoolean();
+	private static final ScheduledExecutorService GAME_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
 	private static final Queue<Player> loginQueue = new ConcurrentLinkedQueue<>();
 
@@ -37,9 +56,26 @@ public final class GameSequencer implements Runnable {
 	}
 
 	private static final int LOGIN_THRESHOLD = 25;
-	
+
+	public void initialize() {
+		if (LOCK.compareAndSet(false, true)) {
+			GameSequencer gameEngine = new GameSequencer();
+			GAME_SERVICE.scheduleAtFixedRate(gameEngine, 600, Constants.CYLCE_RATE, TimeUnit.MILLISECONDS);
+			LOGGER.info("Game Engine initialized");
+		}
+	}
+
+	private void subcycle() {
+		for (Player player : World.getWorld().getUnorderedPlayers()) {
+			if (player != null) {
+				player.getSession().processSubQueuedPackets();
+				player.getSession().processQueuedPackets();
+			}
+		}
+	}
+
 	private boolean cycle;
-	
+
 	@Override
 	public void run() {
 		try {
@@ -50,21 +86,11 @@ public final class GameSequencer implements Runnable {
 				subcycle();
 				cycle = true;
 			}
-		} catch (final Throwable t) {
-			LOGGER.log(Level.SEVERE, "An error has occured during the main game sequence!", t);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	
-	private void subcycle() {
-		for (Player player : World.getWorld().getUnorderedPlayers()) {
-			if (player != null) {
-				player.debug("send");
-				player.getSession().processSubQueuedPackets();
-				player.getSession().processQueuedPackets();
-			}
-		}
-	}
-	
+
 	private void cycle() {
 		for (int count = 0; count < LOGIN_THRESHOLD; count++) {
 			Player p = loginQueue.poll();
@@ -72,9 +98,9 @@ public final class GameSequencer implements Runnable {
 				break;
 			World.getWorld().register(p);
 		}
-		World.getWorld().pulse();
 		Server.getGlobalObjects().pulse();
 		Server.getTaskScheduler().pulse();
+		World.getWorld().pulse();
 		GroundItemHandler.pulse();
 		CycleEventHandler.getSingleton().process();
 	}

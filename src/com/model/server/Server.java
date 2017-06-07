@@ -22,6 +22,7 @@ import com.model.utility.SystemLogger;
  * @author Blake
  * @author Ryan Lmtruck30
  * @author Seven
+ * @author Patrick van Elderen
  */
 
 public class Server {
@@ -30,8 +31,6 @@ public class Server {
 	 * The single logger for this class.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
-
-	//public static final Motivote MOTIVOTE = new Motivote("luzoxpk", "c01d05751b28441cfbbd1ff1f87add95");
 	
 	/**
 	 * To check if the server needs to be updated.
@@ -42,11 +41,11 @@ public class Server {
 	 * The flag that denotes the server is in debug mode.
 	 */
 	public static boolean SERVER_DEBUG = false;
-
+	
 	/**
-	 * The state of the server
+	 * The flag that denotes the server has started.
 	 */
-	public static ServerState state = ServerState.STARTED;
+	public static boolean SERVER_STARTED = false;
 	
 	/**
 	 * The elapsed time the server has been running for.
@@ -100,7 +99,6 @@ public class Server {
 	 */
 	public static void main(String[] args) throws Exception {
 		stopwatch = new Stopwatch();
-		state = ServerState.LOADING;
 		try {
 			Server server = new Server();
 			System.setErr(new SystemLogger(System.err, new File("./data/logs/err")));

@@ -22,6 +22,7 @@ import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.login.LoginCredential;
 import com.model.net.network.login.LoginResponse;
 import com.model.server.GameSequencer;
+import com.model.server.Server;
 import com.model.utility.NameUtils;
 
 import io.netty.channel.Channel;
@@ -90,10 +91,16 @@ public class LoginSession extends Session {
 			sendReturnCode(ctx.channel(), 7);
 			return;
 		}
-		if (World.updateRunning) {
-			System.out.println("Update running");
+		
+		// prevents users from logging in before the network has been fully
+		// bound
+		if (!Server.SERVER_STARTED) {
 			sendReturnCode(ctx.channel(), 14);
-			return;
+		}
+
+		// prevents users from logging in if the world is being updated
+		if (World.updateRunning) {
+			sendReturnCode(ctx.channel(), 14);
 		}
 		if (credential.getClientHash() == 0 || credential.getClientHash() == 99735086 || credential.getClientHash() == 69) {
 			System.out.println("Invalid client hash.");

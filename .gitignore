@@ -9,3 +9,5 @@ Newtonsoft.Json.xml
 hs_err_pid4264.log
 hs_err_pid8980.log
 Pat Server.iml
+*.zip
+src.old/

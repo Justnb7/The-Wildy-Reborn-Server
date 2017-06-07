@@ -21,7 +21,7 @@ import com.model.net.network.codec.RS2Decoder;
 import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.login.LoginCredential;
 import com.model.net.network.login.LoginResponse;
-import com.model.server.GameSequencer;
+import com.model.server.GameEngine;
 import com.model.server.Server;
 import com.model.utility.NameUtils;
 
@@ -192,7 +192,7 @@ public class LoginSession extends Session {
 		/*
 		 * This bit should be done after the players loaded
 		 */
-		if (GameSequencer.getLoginQueue().contains(player) || World.getWorld().getPlayerByRealName(name).isPresent()) {
+		if (GameEngine.getLoginQueue().contains(player) || World.getWorld().getPlayerByRealName(name).isPresent()) {
 			sendReturnCode(ctx.channel(), 5);
 			return;
 		}
@@ -218,7 +218,7 @@ public class LoginSession extends Session {
 			}
 			player.setSession(new GameSession(player, getChannel()));
 			ctx.attr(NetworkConstants.KEY).set(player.getSession());
-			GameSequencer.queueLogin(player);
+			GameEngine.queueLogin(player);
 		}
 	}
 

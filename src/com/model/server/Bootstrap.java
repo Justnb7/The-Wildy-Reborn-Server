@@ -18,10 +18,12 @@ import org.omicron.jagex.runescape.CollisionMap;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.model.game.Constants;
 import com.model.game.ScriptManager;
+import com.model.game.World;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.content.trivia.TriviaBot;
+import com.model.game.character.player.skill.fletching.fletchable.impl.*;
 import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.net.ConnectionHandler;
@@ -30,6 +32,7 @@ import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.handshake.HandshakeDecoder;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
+import com.model.utility.cache.map.Region;
 import com.model.utility.parser.impl.*;
 
 /**
@@ -66,7 +69,9 @@ public class Bootstrap {
 		LOGGER.info("Executing startup services...");
 		// Loads and caches data we will use throughout execution.
 		executeServiceLoad();
-		engine.start();
+		//From this point we can start the engine
+		engine.initialize();
+		//Now we can load our content
 		serviceLoader.shutdown();
 		LOGGER.info("Game Engine has been built");
 		if (!serviceLoader.awaitTermination(15, TimeUnit.MINUTES)) {
@@ -111,11 +116,13 @@ public class Bootstrap {
 		serviceLoader.execute(() -> {
 			ObjectDefinition.loadConfig();
 			MapLoading.load();
+			Region.sort();
 			try {
 				CollisionMap.load("Data/data/collisiondata.dat");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			LOGGER.info("Loading all of the game data...");
 			MobAttackSounds.declare();
 			PlayerSounds.declare();
 			ClanManager.init();
@@ -132,8 +139,15 @@ public class Bootstrap {
 
 		LOGGER.info("Loading content...");
 		serviceLoader.execute(() -> {
+			Arrow.declare();
+			Bolt.declare();
+			Carvable.declare();
+			Crossbow.declare();
+			Featherable.declare();
+			Stringable.declare();
 			TriviaBot.declare();
 			EquipmentConstants.declare();
+			World.getWorld().init();
 			ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
 		});
 	}

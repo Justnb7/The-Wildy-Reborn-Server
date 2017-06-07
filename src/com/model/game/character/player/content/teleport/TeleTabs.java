@@ -1,11 +1,11 @@
 package com.model.game.character.player.content.teleport;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 public class TeleTabs {

@@ -1,6 +1,5 @@
 package com.model.net.packet.in;
 
-import com.model.Server;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Boundary;
@@ -12,6 +11,7 @@ import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
+import com.model.server.Server;
 
 import java.util.Objects;
 

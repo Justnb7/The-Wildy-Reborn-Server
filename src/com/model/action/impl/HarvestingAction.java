@@ -1,11 +1,11 @@
 package com.model.action.impl;
 
-import com.model.Server;
 import com.model.action.Action;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.item.Item;
 import com.model.game.object.GameObject;
+import com.model.server.Server;
 
 /**
  * <p>A harvesting action is a resource-gathering action, which includes, but

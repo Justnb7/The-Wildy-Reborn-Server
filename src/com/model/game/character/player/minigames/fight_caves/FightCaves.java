@@ -2,7 +2,6 @@ package com.model.game.character.player.minigames.fight_caves;
 
 import java.util.Random;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.NPC;
@@ -13,6 +12,7 @@ import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;

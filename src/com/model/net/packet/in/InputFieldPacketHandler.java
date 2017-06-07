@@ -1,8 +1,8 @@
 package com.model.net.packet.in;
 
-import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.net.packet.PacketType;
+import com.model.server.Server;
 
 public class InputFieldPacketHandler implements PacketType {
 

@@ -1,6 +1,5 @@
 package com.model.game.character.player.content.multiplayer.duel;
 
-import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
@@ -19,6 +18,7 @@ import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;

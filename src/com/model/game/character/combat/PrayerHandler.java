@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.Graphic;
 import com.model.game.character.player.Boundary;
@@ -13,6 +12,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
+import com.model.server.Server;
 import com.model.utility.Utility;
 
 public class PrayerHandler {

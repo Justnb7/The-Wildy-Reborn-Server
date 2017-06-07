@@ -3,13 +3,13 @@ package com.model.game.character.player.skill.prayer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 

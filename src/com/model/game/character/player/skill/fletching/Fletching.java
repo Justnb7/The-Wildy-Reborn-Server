@@ -2,7 +2,6 @@ package com.model.game.character.player.skill.fletching;
 
 import java.util.HashMap;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
@@ -11,6 +10,7 @@ import com.model.game.character.player.skill.fletching.fletchable.Fletchable;
 import com.model.game.character.player.skill.fletching.fletchable.FletchableItem;
 import com.model.game.character.player.skill.fletching.fletchable.impl.Log;
 import com.model.game.item.Item;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;

@@ -1,6 +1,5 @@
 package com.model.net.packet.in;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.PrayerHandler;
 import com.model.game.character.combat.magic.SpellBook;
@@ -26,6 +25,7 @@ import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.item.Item;
 import com.model.net.packet.PacketType;
 import com.model.net.packet.buttons.ActionButtonEventListener;
+import com.model.server.Server;
 import com.model.utility.Utility;
 
 import java.util.Objects;

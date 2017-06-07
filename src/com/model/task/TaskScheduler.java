@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 
-import com.model.service.Service;
-
 /**
  * A class which schedules the execution of {@link ScheduledTask}'s.
  *

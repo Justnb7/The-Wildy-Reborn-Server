@@ -1,6 +1,5 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
@@ -8,6 +7,7 @@ import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 

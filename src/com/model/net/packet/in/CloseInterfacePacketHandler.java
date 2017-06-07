@@ -2,13 +2,13 @@ package com.model.net.packet.in;
 
 import java.util.Objects;
 
-import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionFinalizeType;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionStage;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.net.packet.PacketType;
+import com.model.server.Server;
 
 /**
  * A packet handler that is called when an interface is closed.

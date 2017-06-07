@@ -23,11 +23,11 @@ import org.apache.commons.lang3.Range;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
-import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
+import com.model.server.Server;
 
 public class Utility {
 	

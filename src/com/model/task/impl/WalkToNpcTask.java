@@ -1,10 +1,10 @@
 package com.model.task.impl;
 
-import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.clicking.npc.NpcInteraction;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 /**

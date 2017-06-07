@@ -1,6 +1,5 @@
 package com.model.task.impl;
 
-import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -20,6 +19,7 @@ import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;

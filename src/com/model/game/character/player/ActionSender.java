@@ -31,6 +31,28 @@ public class ActionSender {
         this.player = player;
     }
     
+	/**
+	 * This packet is used for sending timers such as veng timers, antifire,
+	 * barrage and teleblock.
+	 * 
+	 * @param type
+	 *            The action type
+	 * @param seconds
+	 *            The display timer
+	 * @return 
+	 * 1 - Anti-fire 
+	 * 2 - venge 
+	 * 3 - barrage
+	 * 4 - teleblock
+	 */
+    public ActionSender sendWidget(int type, int seconds) {
+    	player.getOutStream().writeFrame(178);
+    	player.getOutStream().writeByte(type);
+    	player.getOutStream().writeShort(seconds * 50);
+    	player.flushOutStream();
+    	return this;
+    }
+    
     public ActionSender sendMapRegionPacket() {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(73);
@@ -179,7 +201,7 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendSidebarInterfaces() {
-		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 36000, 147, -1, -1 };//15
+		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 904, 147, -1, -1 };//15
 		for (int i = 0; i < 15; i++) {
 			player.getActionSender().sendSidebarInterface(i, interfaces[i]);
 		}

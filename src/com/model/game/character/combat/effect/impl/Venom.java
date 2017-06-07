@@ -1,11 +1,11 @@
 package com.model.game.character.combat.effect.impl;
 
-import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 /**

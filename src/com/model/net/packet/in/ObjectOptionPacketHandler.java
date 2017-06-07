@@ -1,9 +1,9 @@
 package com.model.net.packet.in;
 
-import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
+import com.model.server.Server;
 import com.model.task.impl.WalkToObjectTask;
 
 /**

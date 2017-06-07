@@ -2,7 +2,6 @@ package com.model.game.character.player.content.teleport;
 
 import java.util.Objects;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
@@ -14,6 +13,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.teleport.Teleport.TeleportType;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 

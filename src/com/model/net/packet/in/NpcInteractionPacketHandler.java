@@ -1,11 +1,11 @@
 package com.model.net.packet.in;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.net.packet.PacketType;
+import com.model.server.Server;
 import com.model.task.impl.WalkToNpcTask;
 
 /**

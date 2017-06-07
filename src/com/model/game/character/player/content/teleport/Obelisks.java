@@ -9,12 +9,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
+import com.model.server.Server;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.task.events.CycleEventHandler;

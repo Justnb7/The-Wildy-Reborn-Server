@@ -2,7 +2,6 @@ package com.model.game.character.player.skill.firemaking;
 
 import java.util.Random;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
@@ -11,6 +10,7 @@ import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.cache.map.Region;
 

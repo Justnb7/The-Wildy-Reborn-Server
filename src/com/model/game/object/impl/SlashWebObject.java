@@ -1,12 +1,12 @@
 package com.model.game.object.impl;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 

@@ -3,7 +3,6 @@ package com.model.game.character.player.skill.agility;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.ScriptManager;
 import com.model.game.World;
@@ -12,6 +11,7 @@ import com.model.game.character.Hit;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 public class Agility {

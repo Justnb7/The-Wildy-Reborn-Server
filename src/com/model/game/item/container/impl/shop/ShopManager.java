@@ -1,9 +1,9 @@
 package com.model.game.item.container.impl.shop;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 

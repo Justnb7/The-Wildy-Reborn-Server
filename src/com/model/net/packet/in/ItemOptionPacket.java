@@ -1,6 +1,5 @@
 package com.model.net.packet.in;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.npc.pet.Pet;
@@ -26,6 +25,7 @@ import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DistancedActionTask;
 
@@ -239,7 +239,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 
 		//Special case for destroying items.
-		if(!ItemDefinition.get(item.getId()).isTradeable()) {
+		if(item.isDestroyable()) {
 			destroyItem(player, item);
 			player.setDestroyItem(item.getId());
 			return;

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,10 +28,16 @@ import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
+import com.model.server.GameSequencer;
 import com.model.utility.Location3D;
 import com.model.utility.Utility;
 
 public class DropManager {
+	
+	/**
+	 * The logger that will print important information.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(GameSequencer.class.getName());
 
 	private static final DecimalFormat PERCENTILE_FORMAT = new DecimalFormat("#.###");
 
@@ -108,7 +115,7 @@ public class DropManager {
 			}
 
 			ordered.sort(COMPARE_NAMES);
-			Utility.println("Loaded " + ordered.size() + " drop tables.");
+			LOGGER.info("Loaded " + ordered.size() + " drop tables.");
 			AMOUNT_OF_TABLES = ordered.size();
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();

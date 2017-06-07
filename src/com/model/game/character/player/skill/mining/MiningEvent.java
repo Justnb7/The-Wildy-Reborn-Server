@@ -1,6 +1,5 @@
 package com.model.game.character.player.skill.mining;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.npc.pet.Pet;
@@ -11,6 +10,7 @@ import com.model.game.character.player.dialogue.SimpleDialogues;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
+import com.model.server.Server;
 import com.model.task.events.CycleEvent;
 import com.model.task.events.CycleEventContainer;
 import com.model.utility.Utility;

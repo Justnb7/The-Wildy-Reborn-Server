@@ -2,11 +2,11 @@ package com.model.game.character.player.content.questtab;
 
 import java.util.concurrent.TimeUnit;
 
-import com.model.Server;
 import com.model.game.Constants;
 import com.model.game.World;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.server.Server;
 
 
 /**

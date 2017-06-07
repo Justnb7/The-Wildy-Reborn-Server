@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.google.common.collect.Sets;
-import com.model.Server;
 import com.model.game.character.Entity;
 import com.model.game.character.Entity.EntityType;
 import com.model.game.character.MobileCharacterList;
@@ -24,8 +23,9 @@ import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.service.Service;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
+import com.model.task.Service;
 import com.model.task.impl.DidYouKnowEvent;
 import com.model.task.impl.InstanceFloorReset;
 import com.model.task.impl.NPCMovementTask;
@@ -116,7 +116,6 @@ public class World implements Service {
 		schedule(new SavePlayers());
 		schedule(new BountyHunter());
 		schedule(new InstanceFloorReset());
-		TriviaBot.declare();
 	}
 	
 	/**
@@ -363,7 +362,6 @@ public class World implements Service {
 						player.getOutStream().writeFrame(109);
 						player.flushOutStream();
 						unregister(player);
-						//PlayerSerialization.saveGame(player);
 						PlayerSerialization.save(player);
 						System.exit(1);
 					}

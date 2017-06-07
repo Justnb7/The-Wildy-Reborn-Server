@@ -9,6 +9,7 @@ import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.DeathDropHandler;
 import com.model.task.EntityEvent;
 
+
 /**
  * The death event handles player and npc deaths. Drops loot, does animation,
  * teleportation, etc.
@@ -50,6 +51,8 @@ public class DeathEvent extends EntityEvent {
 				DeathDropHandler.handleDeathDrop(p);
 			} else if (timer == 1) {
 				if (p != null) {
+					p.getActionSender().sendWidget(2, 0);
+					p.getActionSender().sendWidget(3, 0);
 					p.getActionQueue().clearRemovableActions();
 					p.movePlayer(Entity.DEFAULT_LOCATION);
 					p.getSkills().setLevel(Skills.HITPOINTS, p.getSkills().getLevelForExperience(Skills.HITPOINTS));

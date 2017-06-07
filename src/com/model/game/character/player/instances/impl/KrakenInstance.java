@@ -1,6 +1,5 @@
 package com.model.game.character.player.instances.impl;
 
-import com.model.Server;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.player.Boundary;
@@ -8,6 +7,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.SingleInstancedArea;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 

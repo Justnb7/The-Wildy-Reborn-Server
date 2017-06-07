@@ -1,6 +1,5 @@
 package com.model.game.character.combat.pvm;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatStyle;
@@ -14,6 +13,7 @@ import com.model.game.character.walking.PathFinder;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 /**

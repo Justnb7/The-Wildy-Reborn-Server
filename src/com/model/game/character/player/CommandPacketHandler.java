@@ -1,6 +1,5 @@
 package com.model.game.character.player;
 
-import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
@@ -23,6 +22,7 @@ import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.logging.PlayerLogging;

@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import com.model.Server;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.account.Account;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem.State;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;

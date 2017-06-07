@@ -9,7 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.model.Appearance;
 import com.model.InterfaceState;
-import com.model.Server;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
@@ -82,6 +81,7 @@ import com.model.net.network.Packet;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.net.network.rsa.ISAACRandomGen;
 import com.model.net.network.session.GameSession;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DeathEvent;
 import com.model.task.impl.DistancedActionTask;
@@ -1252,6 +1252,10 @@ public class Player extends Entity {
 		getActionSender().sendConfig(200, getAcceptAid() ? 1 : 0);
 		getActionSender().sendConfig(172, isAutoRetaliating() ? 1 : 0);
 		getActionSender().sendConfig(152, isRunning() ? 1 : 0);
+		getActionSender().sendWidget(1, 0);
+		getActionSender().sendWidget(2, 0);
+		getActionSender().sendWidget(3, 0);
+		getActionSender().sendWidget(4, 0);
 	}
 
 	private void submitAfterLogin() {
@@ -1264,7 +1268,7 @@ public class Player extends Entity {
 					stop();
 					return;
 				}
-				KillTracker.loadDefault(player);
+				//KillTracker.loadDefault(player);
 				player.getActionSender().sendMessage("Welcome back to " + Constants.SERVER_NAME + ".");
 				
 				if (!receivedStarter() && inTutorial()) {

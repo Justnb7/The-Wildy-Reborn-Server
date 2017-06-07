@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 
 import com.google.common.base.Preconditions;
-import com.model.Server;
 import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.action.ActionQueue;
@@ -29,6 +28,7 @@ import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
+import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
 import com.model.utility.MutableNumber;

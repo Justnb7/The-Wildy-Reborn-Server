@@ -2,7 +2,6 @@ package com.model.game.character.player.content.consumable.potion;
 
 import java.util.Objects;
 
-import com.model.Server;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Boundary;
@@ -12,6 +11,7 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionTyp
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
 import com.model.game.item.Item;
+import com.model.server.Server;
 
 /**
  * Handles drinking potions

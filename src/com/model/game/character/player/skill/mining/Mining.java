@@ -1,10 +1,10 @@
 package com.model.game.character.player.skill.mining;
 
-import com.model.Server;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.dialogue.SimpleDialogues;
 import com.model.game.location.Location;
+import com.model.server.Server;
 
 /**
  * The {@link Mining} class will manage all operations that the mining skill entails. 

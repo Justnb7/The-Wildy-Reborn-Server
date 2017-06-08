@@ -817,23 +817,6 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendKillFeed(String killer, String victim, int weapon, boolean poison) {
-		if (killer == null || killer.length() == 0 || victim == null || victim.length() == 0) {
-			player.debug("[Warning] Please notify an staff member with error code SKF - packet 173.");
-			return null;
-		}
-		GameBuffer stream = player.getOutStream();
-		stream.putFrameVarShort(173);
-		int offset = player.getOutStream().offset;
-		stream.putRS2String(killer);
-		stream.putRS2String(victim);
-		stream.writeShort(weapon);
-		stream.writeByte(poison ? 1 : 0);
-		player.getOutStream().putFrameSizeShort(offset);
-		player.flushOutStream();
-		return this;
-	}
-	
 	public ActionSender sendInterfaceAnimation(int id, int child) {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(200);

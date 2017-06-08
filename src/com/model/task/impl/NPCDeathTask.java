@@ -17,12 +17,9 @@ import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
-import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Location3D;
-import com.model.utility.Utility;
 
 /**
  * Handles respawning an {@link NPC} which has just died
@@ -343,10 +340,6 @@ public class NPCDeathTask extends ScheduledTask {
 				break;
 			}
 		}
-	
-		
-		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		player.getActionSender().sendKillFeed(Utility.formatPlayerName(player.getName()), npc.getDefinition().getName(), weapon.getId(), npc.isPoisoned());
 		
 		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
 		if(AnimatedArmour.isAnimatedArmourNpc(npc.getId()))

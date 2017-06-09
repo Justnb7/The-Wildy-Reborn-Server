@@ -32,7 +32,6 @@ import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.handshake.HandshakeDecoder;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.MapLoading;
-import com.model.utility.cache.map.Region;
 import com.model.utility.parser.impl.*;
 
 /**
@@ -54,11 +53,6 @@ public class Bootstrap {
 	private final ExecutorService serviceLoader = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("ServiceLoaderThread").build());
 	
 	/**
-	 * The engine that manages the games logic.
-	 */
-	private final GameEngine engine = new GameEngine();
-	
-	/**
 	 * Builds the game by executing any startup services, and starting the game
 	 * loop.
 	 * 
@@ -70,7 +64,7 @@ public class Bootstrap {
 		// Loads and caches data we will use throughout execution.
 		executeServiceLoad();
 		//From this point we can start the engine
-		engine.initialize();
+		//GameEngine.initialize();
 		//Now we can load our content
 		serviceLoader.shutdown();
 		LOGGER.info("Game Engine has been built");
@@ -116,7 +110,7 @@ public class Bootstrap {
 		serviceLoader.execute(() -> {
 			ObjectDefinition.loadConfig();
 			MapLoading.load();
-			Region.sort();
+			//Region.sort();
 			try {
 				CollisionMap.load("Data/data/collisiondata.dat");
 			} catch (Exception e) {

@@ -15,14 +15,12 @@ import com.model.utility.SystemLogger;
 
 
 /**
- * The core class of the server.
+ * Server.java
  * 
  * @author Sanity
  * @author Graham
  * @author Blake
  * @author Ryan Lmtruck30
- * @author Seven
- * @author Patrick van Elderen
  */
 
 public class Server {
@@ -81,7 +79,7 @@ public class Server {
 	 * Jason's dueling system
 	 */
 	private static MultiplayerSessionListener multiplayerSessionListener = new MultiplayerSessionListener();
-	
+
 	/**
 	 * Creates the Venenatis server.
 	 */
@@ -90,26 +88,28 @@ public class Server {
 	}
 	
 	/**
-	 * The main entry point to the server.
+	 * Starts up the server
 	 * 
 	 * @param args
-	 *            The command line arguments.
-	 * 
+	 *            The arguements presented when starting the server
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		stopwatch = new Stopwatch();
 		try {
 			Server server = new Server();
+
 			System.setErr(new SystemLogger(System.err, new File("./data/logs/err")));
 			server.getBootstrap().build().bind();
+			GameEngine.initialize();
+			
 		} catch (Throwable t) {
 			LOGGER.log(Level.SEVERE, "A problem has been encountered while starting the server.", t);
 			System.exit(0);
 		}
 		LOGGER.info("Server Initialized. [Took " + stopwatch.elapsed(TimeUnit.SECONDS) + " seconds]");
 	}
-	
+
 	/**
 	 * Gets the elapsed time the server has been running for.
 	 * 

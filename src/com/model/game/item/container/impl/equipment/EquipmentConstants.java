@@ -268,6 +268,7 @@ public final class EquipmentConstants {
 	
 	public static boolean isCrossbow(Player player) {
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) return false;
 		switch(weapon.getId()) {
 		case 11785:
 		case 9185:
@@ -280,6 +281,7 @@ public final class EquipmentConstants {
 	
 	public static boolean isThrowingWeapon(Player player) {
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) return false;
 		switch(weapon.getId()) {
 		// Javalins
 		case 825:
@@ -321,6 +323,7 @@ public final class EquipmentConstants {
 
 	public static boolean isBow(Player player) {
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) return false;
 		switch(weapon.getId()) {
 		case 839:
 		case 841:
@@ -348,6 +351,7 @@ public final class EquipmentConstants {
 	
 	public static boolean isArrow(Player player) {
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) return false;
 		switch(weapon.getId()) {
 		case 882:
 		case 884:
@@ -365,6 +369,7 @@ public final class EquipmentConstants {
 	
 	public static boolean isBolt(Player player) {
 		Item weapon = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+		if (weapon == null) return false;
 		switch(weapon.getId()) {
 		case 9140: 
 		case 9141:

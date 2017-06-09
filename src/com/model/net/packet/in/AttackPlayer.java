@@ -51,14 +51,23 @@ public class AttackPlayer implements PacketType {
 				player.getCombatState().reset();
 				break;
 			}
+
+			for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {
+				if (spellId == player.MAGIC_SPELLS[i][0]) {
+					player.setSpellId(i);
+					player.usingMagic = true;
+					player.setCombatType(CombatStyle.MAGIC);
+					break;
+				}
+			}
 			
-			/*if (!player.teleblock.elapsed(player.teleblockLength) && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
+			if (!player.teleblock.elapsed(player.teleblockLength) && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
 				player.getActionSender().sendMessage("That player is already affected by this spell.");
 				player.usingMagic = false;
 				player.getMovementHandler().stopMovement();
 				Combat.resetCombat(player);
-			}*/
-			if (player.getCombatType() == CombatStyle.MAGIC) {
+			}
+			if (player.usingMagic) {
 				player.getCombatState().setTarget(targ);
 			} else {
 				System.err.println("Unsupported combat situation, is the spell you're using supported?");

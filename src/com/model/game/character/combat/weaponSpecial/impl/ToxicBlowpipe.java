@@ -48,7 +48,10 @@ public class ToxicBlowpipe implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity target) {
-		return true;
+		if (EquipmentConstants.wearingBlowpipe(player))
+			return true;
+		else
+			return false;
 	}
 
 	@Override

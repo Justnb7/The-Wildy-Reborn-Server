@@ -42,7 +42,34 @@ public class PlayerVsPlayerCombat {
 		if (!CombatRequirements.canAttackVictim(player)) {
 			return false;
 		}
-		
+		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
+			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
+			if (!Objects.isNull(session)) {
+				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatStyle.RANGE)) {
+					player.getActionSender().sendMessage("<col=CC0000>Range has been disabled in this duel!");
+					Combat.resetCombat(player);
+					return false;
+				}
+				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatStyle.RANGE && !player.usingMagic)) {
+					player.getActionSender().sendMessage("<col=CC0000>Melee has been disabled in this duel!");
+					Combat.resetCombat(player);
+					return false;
+				}
+				if (session.getRules().contains(Rule.NO_MAGE) && player.usingMagic) {
+					player.getActionSender().sendMessage("<col=CC0000>Magic has been disabled in this duel!");
+					Combat.resetCombat(player);
+					return false;
+				}
+				if (session.getRules().contains(Rule.WHIP_AND_DDS)) {
+					String weaponName = ItemDefinition.get(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()).getName().toLowerCase();
+					if (!weaponName.contains("whip") && !weaponName.contains("dragon dagger") || weaponName.contains("tentacle")) {
+						player.getActionSender().sendMessage("<col=CC0000>You can only use a whip and dragon dagger in this duel.");
+						Combat.resetCombat(player);
+						return false;
+					}
+				}
+			}
+		}
 		if (target.isDead()) {
 			player.getCombatState().reset();
 			Combat.resetCombat(player);

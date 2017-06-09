@@ -308,8 +308,11 @@ public class WeaponDefinition {
 	public static int sendAttackSpeed(Player player) {
 		Item weapon = new Item(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 		
-		if (player.getCombatType() == CombatStyle.MAGIC) {
-			return 5;
+		if (player.usingMagic) {
+			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
+			default:
+				return 5;
+			}
 		}
 
 		if (weapon.getId() <= 0) {

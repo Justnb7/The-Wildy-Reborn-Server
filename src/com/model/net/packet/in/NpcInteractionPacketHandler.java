@@ -1,7 +1,6 @@
 package com.model.net.packet.in;
 
 import com.model.game.World;
-import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.net.packet.PacketType;
@@ -101,6 +100,18 @@ public class NpcInteractionPacketHandler implements PacketType {
 		}
 
 		player.faceEntity(npc);
+		player.usingMagic = false;
+		boolean usingBow = EquipmentConstants.isBow(player);
+		boolean throwingWeapon = EquipmentConstants.isThrowingWeapon(player);
+		boolean usingCross = EquipmentConstants.isCrossbow(player);
+
+		if ((usingBow || usingCross || player.autoCast)
+				&& player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {
+			player.getMovementHandler().stopMovement();
+		}
+		if (throwingWeapon && player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 4)) {
+			player.getMovementHandler().stopMovement();
+		}
 
 		player.getCombatState().setTarget(npc);
 	}
@@ -108,6 +119,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 	private void handleMagicOnNpcPacket(Player player, int packet) {
 		int pid = player.getInStream().readSignedWordBigEndianA();
 		int castingSpellId = player.getInStream().readSignedWordA();
+		player.usingMagic = false;
 		NPC npc = World.getWorld().getNPCs().get(pid);
 		if (npc == null) {
 			return;
@@ -119,8 +131,18 @@ public class NpcInteractionPacketHandler implements PacketType {
 			player.getActionSender().sendMessage("You can't attack this npc.");
 			return;
 		}
+		for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {
+			if (castingSpellId == player.MAGIC_SPELLS[i][0]) {
+				player.setSpellId(i);
+				player.usingMagic = true;
+				break;
+			}
+		}
 
-		if (player.getCombatType() == CombatStyle.MAGIC) {
+		if (player.autoCast) {
+			player.autoCast = false;
+		}
+		if (player.usingMagic) {
 			if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 6)) {
 				player.getMovementHandler().stopMovement();
 			}

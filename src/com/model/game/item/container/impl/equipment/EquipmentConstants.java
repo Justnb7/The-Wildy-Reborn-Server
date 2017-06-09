@@ -255,15 +255,15 @@ public final class EquipmentConstants {
 	}
 	
 	public static boolean usingCrystalBow(Player player) {
-		return player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 4222;
+		return player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) != null && player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 4222;
 	}
 	
 	public static boolean wearingBlowpipe(Player player) {
-		return player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12926;
+		return player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) != null && player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12926;
 	}
 	
 	public static boolean wearingBallista(Player player) {
-		return player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 19481;
+		return player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) != null && player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 19481;
 	}
 	
 	public static boolean isCrossbow(Player player) {

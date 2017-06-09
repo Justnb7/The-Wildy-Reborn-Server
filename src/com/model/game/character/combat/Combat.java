@@ -113,7 +113,7 @@ public class Combat {
     }
 
     private static void meleeAttack(Player player, Entity target) {
-        if (!touches(player, target))
+        if (!touches(player, target, 1))
             return;
         if (!attackable(player, target))
             return;
@@ -144,7 +144,7 @@ public class Combat {
     }
 
     private static void magicAttack(Player player, Entity target) {
-        if (!touches(player, target))
+        if (!touches(player, target, 10))
             return;
         if (!attackable(player, target))
             return;
@@ -282,7 +282,7 @@ public class Combat {
     }
 
     private static void rangeAttack(Player player, Entity target) {
-        if (!touches(player, target))
+        if (!touches(player, target, calculateAttackDistance(player, target)))
             return;
         if (!attackable(player, target))
             return;
@@ -357,6 +357,7 @@ public class Combat {
         if (!player.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(player, target, 1, 1.0)) {
             dam1 = 0;
         }
+        player.removeAttribute("ignore defence");
 
         // Apply dmg.
         Hit hitInfo = target.take_hit(player, dam1, CombatStyle.RANGE, false, false).giveXP(player);
@@ -428,7 +429,7 @@ public class Combat {
      * Stuff done when an attack executes, regardless of combat style. SOUNDS, SKULLING, VENOM
      */
     private static void onAttackDone(Player player, Entity target) {
-        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) ==null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 
 		// Set our attack timer so we dont instantly hit again
         player.getCombatState().setAttackDelay(WeaponDefinition.sendAttackSpeed(player));
@@ -495,7 +496,8 @@ public class Combat {
 
     private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
         if (dam1 == 0) return dam1;
-        switch (attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId()) {
+        int ammo = attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT)==null ? -1 : attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
+        switch (ammo) {
             case 9236: // Lucky Lightning
                 defender.playGraphics(Graphic.create(749, 0, 0));
                 break;
@@ -525,7 +527,7 @@ public class Combat {
                 break;
             case 9243: // Armour Piercing
                 defender.playGraphics(Graphic.create(758, 0, 100));
-                attacker.setAttribute("ignore defence", true);
+                attacker.setAttribute("ignore defence", true); // always hits
                 if (CombatFormulae.wearingFullVoid(attacker, 2)) {
                     dam1 = Utility.random(45, 57);
                 } else {
@@ -582,7 +584,6 @@ public class Combat {
                 }
                 break;
         }
-
         return dam1;
     }
 
@@ -612,12 +613,7 @@ public class Combat {
 
 		// Check if we are using ranged
         if (player.getCombatType() != CombatStyle.MAGIC) {
-            boolean bow = EquipmentConstants.isBow(player);
-            boolean handthrown = EquipmentConstants.isThrowingWeapon(player);
-            boolean cbow = EquipmentConstants.isCrossbow(player);
-            boolean bolt = EquipmentConstants.isBolt(player);
-            boolean javalin = player.getCombatState().properJavalins();
-            if (handthrown || bow || cbow || EquipmentConstants.wearingBallista(player) || EquipmentConstants.wearingBlowpipe(player)) {
+            if (EquipmentConstants.usingRange(player)) {
                 player.setCombatType(CombatStyle.RANGE);
             }
         }
@@ -628,9 +624,11 @@ public class Combat {
     }
 
     public static void hitEvent(Entity attacker, Entity target, int delay, Hit hit, CombatStyle combatType) {
+        final int blockAnim = target.isPlayer() ? WeaponDefinition.sendBlockAnimation(target.asPlayer()) : target.asNpc().getDefendAnimation();
+        Animation a = Animation.create(blockAnim);
 
         // Schedule a task
-        Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
+        attacker.run(new ScheduledTask(delay) {
             public void execute() {
             	if (attacker.isPlayer() && hit != null)
             		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
@@ -639,17 +637,9 @@ public class Combat {
                 target.damage(hit);
 
                 if (attacker.isPlayer()) {
-                	Player player = (Player) attacker;
-
 	                // Range attack invoke block emote when hit appears.
-	                if (hit.cbType == CombatStyle.RANGE) {
-                        player.setAttribute("ignore defence", false);
-
-	                    if (target.isNPC() && ((NPC) target).getCombatState().getAttackDelay() < 5)
-	                        target.playAnimation(Animation.create(target.asNpc().getDefendAnimation()));
-	                    else if (target.isPlayer() && ((Player)target).getCombatState().getAttackDelay() < 5)
-	                        target.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(target.asPlayer())));
-
+	                if (hit.cbType == CombatStyle.RANGE && target.getCombatState().getAttackDelay() < 5) {
+                        target.playAnimation(a);
 	                }
                 }
                 this.stop();
@@ -672,12 +662,12 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
+	    if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null)
+	        return false;
 		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()).getName().toLowerCase();
-		
 		if (weapon.contains("halberd")) {
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -692,18 +682,15 @@ public class Combat {
 	 */
 	public static int calculateAttackDistance(Player player, Entity victim) {
 		int distance = 1;
-		if (player.getCombatType() == CombatStyle.RANGE && EquipmentConstants.isThrowingWeapon(player)) {
-			distance = 4;
+		if (player.getCombatType() == CombatStyle.RANGE) {
+		    if (EquipmentConstants.isThrowingWeapon(player))
+			    distance = 4;
+		    else if (EquipmentConstants.wearingBlowpipe(player))
+		        distance = 4;
+		    else
+		        distance = 7;
 		} else if (usingHalberd(player) && player.getCombatType() == CombatStyle.MELEE) {
 			distance = 2;
-		} else if (player.getCombatType() == CombatStyle.RANGE) { // TODO normal bows
-			distance = 7;
-		} else if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11785) {
-			distance = 9;
-		} else if (EquipmentConstants.wearingBallista(player)) {
-			distance = 11;
-		} else if (EquipmentConstants.wearingBlowpipe(player)) {
-			distance = 5;
 		} else if (player.getCombatType() == CombatStyle.MAGIC) {
 			distance = 10;
 		} else if (player.getCombatType() == CombatStyle.MELEE) {
@@ -722,8 +709,9 @@ public class Combat {
     /**
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
-	public static boolean touches(Player player, Entity target) {
-	    if (player.getCombatType() == CombatStyle.MELEE) {
+	public static boolean touches(Player player, Entity target, int dist) {
+	    boolean melee = player.getCombatType() == CombatStyle.MELEE;
+	    if (melee) {
             if (target.isPlayer()) { // TODO will this logic break anything?
                 Player ptarg = (Player) target;
                 if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
@@ -749,21 +737,21 @@ public class Combat {
         }
         // TODO this logic is bound to be fucked
         if (target.isNPC()) {
-            player.getPlayerFollowing().followNpc(target, 7); // TODO or pathfinder find route
+            player.getPlayerFollowing().followNpc(target, dist); // TODO or pathfinder find route
 
             // Clip check first. Get line of sight.
             if (!PlayerVsNpcCombat.canTouch(player, (NPC)target, true)) {
                 return false;
             }
             // Super basic - override if target is kraken since that fucks up pathing
-            if (target.isNPC() && !PlayerVsNpcCombat.inDistance(player, (NPC) target)) { // TODO this is probably fucked
+            if (target.isNPC() && !PlayerVsNpcCombat.inDistance(player, (NPC) target, dist)) { // TODO this is probably fucked
                 return false;
             }
         } else {
             // Run to the target
             //PathFinder.getPathFinder().findRoute(player, target.absX, target.absY, true, 1, 1);
             // alternatively: TODO
-            player.getPlayerFollowing().followPlayer(true, target, 7);
+            player.getPlayerFollowing().followPlayer(true, target, dist);
 
             // With an updated path, recheck
             if (!Combat.withinDistance(player, target) || !ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()))

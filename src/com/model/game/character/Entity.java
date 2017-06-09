@@ -1,19 +1,12 @@
 package com.model.game.character;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import com.google.common.base.Preconditions;
 import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.action.ActionQueue;
 import com.model.game.World;
-import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.CombatState;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.BarrowsEffect;
@@ -33,6 +26,8 @@ import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Utility;
+
+import java.util.*;
 
 /**
  * @author Patrick van Elderen
@@ -68,7 +63,6 @@ public abstract class Entity {
     }
 
     /**
-     * Sets the value for {@link CharacterNode#dead}.
      *
      * @param dead
      *            the new value to set.
@@ -152,7 +146,6 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param set teleport true or false
 	 */
 	public void setTeleporting(boolean teleport) {
 		this.teleport = teleport;
@@ -291,7 +284,6 @@ public abstract class Entity {
     }
 
     /**
-     * Sets the value for {@link CharacterNode#poisonType}.
      * 
      * @param poisonType
      *            the new value to set.
@@ -955,7 +947,6 @@ public abstract class Entity {
 	
 	/**
 	 * Plays graphics.
-	 * @param graphic The graphics.
 	 */
 	public void playProjectile(Projectile projectile) {
 		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {

@@ -5,12 +5,10 @@ import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules;
-import com.model.game.character.walking.PathFinder;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.server.Server;
@@ -51,6 +49,9 @@ public class PlayerVsPlayerCombat {
 		if (!CombatRequirements.canAttackVictim(player)) {
 			return false;
 		}
+		if (!player.getController().canAttackPlayer(player, (Player) target) && Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL) == null) {
+			return false;
+		}
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (!Objects.isNull(session)) {
@@ -88,30 +89,6 @@ public class PlayerVsPlayerCombat {
 			Combat.resetCombat(player);
 			return false;
 		}
-		boolean sameSpot = player.absX == target.getX() && player.absY == target.getY();
-		if (!player.goodDistance(target.getX(), target.getY(), player.getX(), player.getY(), 25) && !sameSpot) {
-			Combat.resetCombat(player);
-			return false;
-		}
-		if (player.frozen() && !Combat.isWithinAttackDistanceForStopFollow(player, target)) {
-			return false;
-		}
-		// TODO split into 2 methods, canAttack and canTouch??
-
-		// Always last
-		if (player.getCombatType() != CombatStyle.MELEE) {
-			if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation())) {
-				return true;
-			}
-		} else {
-			if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), target.getLocation())) {
-				return true;
-			}
-		}
-
-		PathFinder.getPathFinder().findRoute(player, target.absX, target.absY, true, 1, 1);
-		//return false;
-		
 		return true;
 	}
 

@@ -272,7 +272,7 @@ public class PlayerVsNpcCombat {
 	}
 
 	public static boolean inDistance(Player player, NPC npc) {
-		boolean hasDistance = npc.getId() == 5535 ? true : false; // force 5535 tents to always be hittable
+		boolean hasDistance = npc.getId() == 5535; // force 5535 tents to always be hittable
 		for (Location pos : npc.getTiles()) {
 			double distance = pos.distance(player.getLocation());
 			if(Combat.usingHalberd(player) && distance <= 2) {
@@ -291,13 +291,6 @@ public class PlayerVsNpcCombat {
 				}
 			}
 		}
-
-		if (hasDistance) {
-			player.getMovementHandler().stopMovement();
-		} else {
-			//player.write(new SendGameMessage("No fucking distance?");
-			return false;
-		}
-		return true;
+		return hasDistance;
 	}
 }

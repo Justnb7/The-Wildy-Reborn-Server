@@ -1516,45 +1516,32 @@ public class Player extends Entity {
 
 	@Override
 	public void process() {
-		try {
-			if (this.getTimePlayed() < Integer.MAX_VALUE) {
-				this.setTimePlayed(this.getTimePlayed() + 1);
-			}
-			
-			PrayerHandler.handlePrayerDraining(this);
+		if (this.getTimePlayed() < Integer.MAX_VALUE) {
+			this.setTimePlayed(this.getTimePlayed() + 1);
+		}
 
-			update_attack_style(); // also updates follow distance. Must be done before following & combat
-			process_following();
-			combatProcessing();
+		PrayerHandler.handlePrayerDraining(this);
 
-			controller.tick(this);
-			
-			NPCAggression.process(this);
-			
-			if (hasAttribute("antiFire")) {
-				if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 360000) {
-					if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 15000 && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 14000) {
-						getActionSender().sendMessage("Your anti fire potion is about to wear off!");
-					}
-				} else if ((long)getAttribute("antiFire", 0L) > 0L && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 360000) {
-					getActionSender().sendMessage("Your resistance to dragon breath has worn off!");
-					removeAttribute("antiFire");
+		// Follow player - not combat
+		process_following();
+
+		combatProcessing();
+
+		controller.tick(this);
+
+		NPCAggression.process(this);
+
+		if (hasAttribute("antiFire")) {
+			if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 360000) {
+				if (System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 15000 && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) < 14000) {
+					getActionSender().sendMessage("Your anti fire potion is about to wear off!");
 				}
+			} else if ((long)getAttribute("antiFire", 0L) > 0L && System.currentTimeMillis() - (long)getAttribute("antiFire", 0L) > 360000) {
+				getActionSender().sendMessage("Your resistance to dragon breath has worn off!");
+				removeAttribute("antiFire");
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-	}
 
-	private void update_attack_style() {
-
-		// Every game tick, update our combat style for worn items. This means we'll keep pathing towards any non-null target properly.
-		if (getCombatState().getTarget() != null) {
-			Combat.setCombatStyle(this);
-			faceEntity(getCombatState().getTarget());
-			setFollowing(getCombatState().getTarget());
-		}
 	}
 
 	public GameBuffer getInStream() {
@@ -1601,11 +1588,10 @@ public class Player extends Entity {
 			if (getCombatState().getAttackDelay() > 0) {
 				getCombatState().decreaseAttackDelay(1);
 			}
-			
-			if (getCombatState().getAttackDelay() == 0) {
-				// Now attack a target if we have one
-				Combat.playerVsEntity(this);
-			}
+
+			// Handles following every game tick, only attacks when delay=0
+			Combat.playerVsEntity(this);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

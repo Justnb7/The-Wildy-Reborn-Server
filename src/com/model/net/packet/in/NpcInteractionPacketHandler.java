@@ -3,6 +3,7 @@ package com.model.net.packet.in;
 import com.model.game.World;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.net.packet.PacketType;
 import com.model.server.Server;
 import com.model.task.impl.WalkToNpcTask;

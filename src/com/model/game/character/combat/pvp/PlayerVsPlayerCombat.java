@@ -3,10 +3,19 @@ package com.model.game.character.combat.pvp;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
+import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
+import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
+import com.model.game.character.player.content.multiplayer.duel.DuelSession;
+import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules;
 import com.model.game.character.walking.PathFinder;
+import com.model.game.definitions.ItemDefinition;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.server.Server;
+
+import java.util.Objects;
 
 /**
  * Handles Player Vs Player Combat
@@ -45,22 +54,22 @@ public class PlayerVsPlayerCombat {
 		if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 			DuelSession session = (DuelSession) Server.getMultiplayerSessionListener().getMultiplayerSession(player, MultiplayerSessionType.DUEL);
 			if (!Objects.isNull(session)) {
-				if (session.getRules().contains(Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatStyle.RANGE)) {
+				if (session.getRules().contains(DuelSessionRules.Rule.NO_RANGE) && (player.usingBow || player.getCombatType() == CombatStyle.RANGE)) {
 					player.getActionSender().sendMessage("<col=CC0000>Range has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
-				if (session.getRules().contains(Rule.NO_MELEE) && (player.getCombatType() != CombatStyle.RANGE && !player.usingMagic)) {
+				if (session.getRules().contains(DuelSessionRules.Rule.NO_MELEE) && (player.getCombatType() != CombatStyle.RANGE && !player.usingMagic)) {
 					player.getActionSender().sendMessage("<col=CC0000>Melee has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
-				if (session.getRules().contains(Rule.NO_MAGE) && player.usingMagic) {
+				if (session.getRules().contains(DuelSessionRules.Rule.NO_MAGE) && player.usingMagic) {
 					player.getActionSender().sendMessage("<col=CC0000>Magic has been disabled in this duel!");
 					Combat.resetCombat(player);
 					return false;
 				}
-				if (session.getRules().contains(Rule.WHIP_AND_DDS)) {
+				if (session.getRules().contains(DuelSessionRules.Rule.WHIP_AND_DDS)) {
 					String weaponName = ItemDefinition.get(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()).getName().toLowerCase();
 					if (!weaponName.contains("whip") && !weaponName.contains("dragon dagger") || weaponName.contains("tentacle")) {
 						player.getActionSender().sendMessage("<col=CC0000>You can only use a whip and dragon dagger in this duel.");

@@ -1,9 +1,15 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
-import com.model.game.character.Entity;
+import com.model.game.character.*;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.server.Server;
+import com.model.task.ScheduledTask;
+import com.model.utility.Utility;
 
 public class DarkBow implements SpecialAttack {
 
@@ -36,7 +42,7 @@ public class DarkBow implements SpecialAttack {
 			second = 0;
 		}
 
-		if (target instanceof Player && (((Player) target).isActivePrayer(Prayers.PROTECT_FROM_MISSILE))) {
+		if (target instanceof Player && (((Player) target).isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MISSILE))) {
 			first = (int) (first * 0.6);
 			second = (int) (second * 0.6);
 			

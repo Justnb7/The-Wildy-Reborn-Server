@@ -1,9 +1,18 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
+import com.model.game.character.Animation;
 import com.model.game.character.Entity;
+import com.model.game.character.Hit;
+import com.model.game.character.HitType;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.PrayerHandler;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.server.Server;
+import com.model.task.ScheduledTask;
+import com.model.utility.Utility;
 
 public class Ballista implements SpecialAttack {
 
@@ -29,7 +38,7 @@ public class Ballista implements SpecialAttack {
 			damage = 0;
 		}
 
-		if (target instanceof Player && (((Player) target).isActivePrayer(Prayers.PROTECT_FROM_MISSILE))) {
+		if (target instanceof Player && (((Player) target).isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MISSILE))) {
 			damage = (int) (damage * 0.6);
 		}
 		

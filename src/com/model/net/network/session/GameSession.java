@@ -46,21 +46,6 @@ public class GameSession extends Session {
 		}
 	}
 	
-	public void processSubQueuedPackets() {
-		for(int count = 0; count < 10; count++) {
-			Packet p = queuedSubPackets.poll();
-			if(p == null) break;
-			player.getInStream().offset = 0;
-			player.getInStream().buffer = p.getBuffer().array();
-			if(p.getOpcode() == 122) {
-				continue;
-			}
-			if (p.getOpcode() > 0) { //processing packet 41 only (wearItems)
-				PacketHandler.processSubPacket(player, p.getOpcode(), p.getBuffer().readableBytes());
-			}
-		}
-	}
-	
 	public Player getPlayer() {
 		return player;
 	}

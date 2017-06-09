@@ -37,7 +37,6 @@ import com.model.net.packet.in.WithdrawAllButOneAction;
 public class PacketHandler {
 
 	private static PacketType packetId[] = new PacketType[256];
-	private static SubPacketType subPacketId[] = new SubPacketType[256];
 
 	static {
 
@@ -81,7 +80,7 @@ public class PacketHandler {
 		
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();
-		subPacketId[41] = new WieldPacketHandler();
+		packetId[41] = new WieldPacketHandler();
 		packetId[241] = new ClickOnGameScreen();
 		
 		packetId[3] = u;
@@ -164,26 +163,6 @@ public class PacketHandler {
 			}
 		} else {
 			System.out.println("Unhandled packet type: " + packetType + " - size: " + packetSize);
-			World.getWorld().queueLogout(c);
-		}
-	}
-
-	public static void processSubPacket(Player c, int packetType, int packetSize) {
-		if (packetType == -1 || packetType == 181) {
-			return;
-		}
-		SubPacketType p = subPacketId[packetType];
-
-		if (p != null) {
-			try {
-				if (p != null) {
-					p.processSubPacket(c, packetType, packetSize);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("Unhandled subpacket type: " + packetType + " - size: " + packetSize);
 			World.getWorld().queueLogout(c);
 		}
 	}

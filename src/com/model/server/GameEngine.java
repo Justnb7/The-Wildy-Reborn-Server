@@ -30,10 +30,11 @@ public final class GameEngine implements Runnable {
 	/**
 	 * A logger for the {@link GameEngine} class
 	 */
-	private static final Logger LOGGER = Logger.getLogger(GameEngine.class.getName());
+	private static final Logger logger = Logger.getLogger(GameEngine.class.getName());
 
 	private static final AtomicBoolean LOCK = new AtomicBoolean();
 	private static final ScheduledExecutorService GAME_SERVICE = Executors.newSingleThreadScheduledExecutor();
+	private static final GameEngine engine = new GameEngine();
 
 	private static final Queue<Player> loginQueue = new ConcurrentLinkedQueue<>();
 
@@ -48,18 +49,22 @@ public final class GameEngine implements Runnable {
 
 	private static final int LOGIN_THRESHOLD = 25;
 
-	public void initialize() {
+	public static GameEngine getEngine() {
+		return engine;
+	}
+
+	public static void initialize() {
 		if (LOCK.compareAndSet(false, true)) {
 			GameEngine gameEngine = new GameEngine();
-			GAME_SERVICE.scheduleAtFixedRate(gameEngine, 600, Constants.CYLCE_RATE, TimeUnit.MILLISECONDS);
-			LOGGER.info("Game Engine initialized");
+			GAME_SERVICE.scheduleAtFixedRate(gameEngine, 600, 300, TimeUnit.MILLISECONDS);
+			//GAME_SERVICE.scheduleAtFixedRate(gameEngine, 600, Constants.CYLCE_RATE, TimeUnit.MILLISECONDS);
+			logger.info("Game Engine initialized");
 		}
 	}
 
-	private void subcycle() {
+	private static void subcycle() {
 		for (Player player : World.getWorld().getUnorderedPlayers()) {
 			if (player != null) {
-				player.getSession().processSubQueuedPackets();
 				player.getSession().processQueuedPackets();
 			}
 		}
@@ -82,7 +87,7 @@ public final class GameEngine implements Runnable {
 		}
 	}
 
-	private void cycle() {
+	private static void cycle() {
 		for (int count = 0; count < LOGIN_THRESHOLD; count++) {
 			Player p = loginQueue.poll();
 			if (p == null)
@@ -94,5 +99,8 @@ public final class GameEngine implements Runnable {
 		World.getWorld().pulse();
 		GroundItemHandler.pulse();
 		CycleEventHandler.getSingleton().process();
+	}
+
+	private GameEngine() {
 	}
 }

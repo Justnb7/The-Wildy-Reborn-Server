@@ -7,7 +7,7 @@ import com.model.game.definitions.EquipmentDefinition;
 import com.model.game.definitions.EquipmentDefinition.EquipmentType;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.net.packet.SubPacketType;
+import com.model.net.packet.PacketType;
 
 /**
  * Handles the 'wield' option on items.
@@ -15,10 +15,10 @@ import com.model.net.packet.SubPacketType;
  * @author Patrick van Elderen
  * 
  */
-public class WieldPacketHandler implements SubPacketType {
+public class WieldPacketHandler implements PacketType {
 
 	@Override
-	public void processSubPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		final int id = player.getInStream().readUnsignedWord();
 		final int slot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();

@@ -82,6 +82,10 @@ public abstract class Entity {
         this.followTarget = following;
     }
 
+    public void run(ScheduledTask o) {
+    	Server.getTaskScheduler().schedule(o);
+    }
+
     public enum EntityType {
 		PLAYER, NPC,
 	}

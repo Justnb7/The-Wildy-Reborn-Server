@@ -5,7 +5,6 @@ import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
-import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 
 
@@ -14,21 +13,25 @@ public class RangeData {
 	public static void fireProjectileAtTarget(Player player) {
 		Entity target = player.getCombatState().getTarget();
 
-		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
+		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(),
+				player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
 
 		if (player.getCombatState().usingDbow())
-			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), 100, 50, getProjectileShowDelay(player), 53, 31, target.getProjectileLockonIndex(), 16, 64));
+			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(),
+					100, 50, getProjectileShowDelay(player), 53, 31, target.getProjectileLockonIndex(), 16, 64));
 		
 	}
 
 	public static void msbSpecProjectile(Player player) {
 		Entity target = player.getCombatState().getTarget();
 		
-		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(), player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 10, 64));
+		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(),
+				player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 10, 64));
 	}
 
 	public static int getRangeStartGFX(Player player) {
-		int ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
+		int ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) == null ? -1 :  player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
+		int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		switch (ammo) {
 		case 4212:
 				return -1;
@@ -67,13 +70,13 @@ public class RangeData {
 				str = data[l][1];
 			}
 		}
-		if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12765 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12766 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12767 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12768) {
+		if(wepId == 11235 || wepId == 12765 || wepId == 12766 || wepId == 12767 || wepId == 12768) {
 			int[][] moreD = {
 				{882, 1104}, {884, 1105}, {886, 1106}, {888, 1107},
 				{890, 1108}, {892, 1109}, {11212, 1111},
 			};
 			for(int l = 0; l < moreD.length; l++) {
-				if(player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == moreD[l][0]) {
+				if(ammo == moreD[l][0]) {
 					str = moreD[l][1];
 				}
 			}
@@ -82,15 +85,15 @@ public class RangeData {
 	}
 
 	public static int getRangeProjectileGFX(Player player) {
-		int ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
-		int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+		int ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
+		int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		boolean spec = player.isUsingSpecial();
-		if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12926) {
+		if (wep == 12926) {
 			return 1123;
 		}
 		
 		if (spec && wep == 11235) {
-			return player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1099 : 1101;
+			return ammo == 11212 ? 1099 : 1101;
 		}
 		
 		if (wep == 12424)
@@ -103,7 +106,7 @@ public class RangeData {
 				return 249;
 			}
 		}
-		boolean castingMagic = (player.getCombatType() == CombatStyle.MAGIC || player.usingMagic || player.getSpellId() > 0);
+		boolean castingMagic = (player.getCombatType() == CombatStyle.MAGIC || player.spellId > 0);
 		if(castingMagic) {
 			return -1;
 		}
@@ -150,13 +153,13 @@ public class RangeData {
 		return str;
 	}
 
-	public static int[] getRangeEndGFX(Player player) {
+	public static int[] getRangeEndGFX(Player player, int wepId) {
 		int[] info = new int[] {-1, -1};
 		int[][] data = {
 			{10033, 157, 100}, {10034, 157, 100},
 		};
 		for(int l = 0; l < data.length; l++) {
-			if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == data[l][0]) {
+			if(wepId == data[l][0]) {
 				info[0] = data[l][1];
 				info[1] = data[l][2];
 			}
@@ -165,9 +168,10 @@ public class RangeData {
 	}
 
 	public static int getProjectileSpeed(Player player) {
-		if (player.isUsingSpecial() && player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235)
+		int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+		if (wepId == 11235)
 			return 100;
-		switch(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()) {
+		switch(wepId) {
 			case 10033:
 			case 10034:
 				return 60;
@@ -176,13 +180,14 @@ public class RangeData {
 	}
 
 	public static int getProjectileShowDelay(Player player) {
+		int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		int[] data = {
 			806, 806, 808, 809, 810, 811,
 			10033, 10034, 11230,
 		};
 		int str = 53;
 		for(int i = 0; i < data.length; i++) {
-			if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == data[i]) {
+			if(wepId == data[i]) {
 				str = 32;
 			}
 		}

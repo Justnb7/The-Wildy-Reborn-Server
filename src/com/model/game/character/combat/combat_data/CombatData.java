@@ -1,13 +1,14 @@
 package com.model.game.character.combat.combat_data;
 
 import com.model.game.character.player.Player;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 public class CombatData {
 
 	public static int getHitDelay(Player player, String weaponName) {
-		if (player.usingMagic) {
-			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
+		if (player.getCombatType() == CombatStyle.MAGIC) {
+			switch (player.MAGIC_SPELLS[player.spellId][0]) {
 			
 			case 12891:
 				return 4;
@@ -19,6 +20,7 @@ public class CombatData {
 				return 4;
 			}
 		} else {
+			if (weaponName == null || weaponName.length() == 0) return 1;
 			if (weaponName.contains("dart")) {
 				return 3;
 			}
@@ -35,7 +37,9 @@ public class CombatData {
 				return 4;
 			}
 
-			switch (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()) {
+			Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+			if (wep == null) return 1;
+			switch (wep.getId()) {
 			
 			case 6522:
 				return 3;

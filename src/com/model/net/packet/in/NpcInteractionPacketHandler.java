@@ -1,6 +1,7 @@
 package com.model.net.packet.in;
 
 import com.model.game.World;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
@@ -101,7 +102,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		}
 
 		player.faceEntity(npc);
-		player.usingMagic = false;
+		player.setCombatType(null);
 		boolean usingBow = EquipmentConstants.isBow(player);
 		boolean throwingWeapon = EquipmentConstants.isThrowingWeapon(player);
 		boolean usingCross = EquipmentConstants.isCrossbow(player);
@@ -120,7 +121,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 	private void handleMagicOnNpcPacket(Player player, int packet) {
 		int pid = player.getInStream().readSignedWordBigEndianA();
 		int castingSpellId = player.getInStream().readSignedWordA();
-		player.usingMagic = false;
+		player.setCombatType(null);
 		NPC npc = World.getWorld().getNPCs().get(pid);
 		if (npc == null) {
 			return;
@@ -134,8 +135,8 @@ public class NpcInteractionPacketHandler implements PacketType {
 		}
 		for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {
 			if (castingSpellId == player.MAGIC_SPELLS[i][0]) {
-				player.setSpellId(i);
-				player.usingMagic = true;
+				player.spellId = i;
+				player.setCombatType(CombatStyle.MAGIC);
 				break;
 			}
 		}
@@ -143,7 +144,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		if (player.autoCast) {
 			player.autoCast = false;
 		}
-		if (player.usingMagic) {
+		if (player.getCombatType() == CombatStyle.MAGIC) {
 			if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 6)) {
 				player.getMovementHandler().stopMovement();
 			}

@@ -33,7 +33,6 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.account.Account;
 import com.model.game.character.player.account.ironman.GameModeSelection;
 import com.model.game.character.player.content.FriendAndIgnoreList;
-import com.model.game.character.player.content.KillTracker;
 import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
@@ -712,26 +711,7 @@ public class Player extends Entity {
 	public void setSpecialAmount(int amount) {
 		this.specialAmount = amount;
 	}
-	
-	/**
-	 * Sets the players spell id
-	 * 
-	 * @param id
-	 *            The id of the spell
-	 */
-	public void setSpellId(int id) {
-		this.spellId = id;
-	}
 
-	/**
-	 * Returns the players spell id
-	 * 
-	 * @return
-	 */
-	public int getSpellId() {
-		return spellId;
-	}
-	
 	/**
 	 * The players spell Id
 	 */
@@ -764,7 +744,7 @@ public class Player extends Entity {
 	/**
 	 * The player's spell book.
 	 */
-	public SpellBook spell = SpellBook.MODERN;
+	public SpellBook book = SpellBook.MODERN;
 	
 	/**
 	 * Get the players current spellbook
@@ -772,17 +752,15 @@ public class Player extends Entity {
 	 * @return the spellbook
 	 */
 	public SpellBook getSpellBook() {
-		return spell;
+		return book;
 	}
 	
 	/**
 	 * Set the players spellbook
-	 * 
-	 * @param the
-	 *            spellbook
+	 *
 	 */
 	public void setSpellBook(SpellBook spell) {
-		this.spell = spell;
+		this.book = spell;
 	}
 	
 	/**
@@ -1561,9 +1539,9 @@ public class Player extends Entity {
 	public void process_following() {
 		if (followTarget != null) {
 			if (followTarget.isNPC())
-				getPlayerFollowing().followNpc(followTarget);
+				getPlayerFollowing().followNpc(followTarget, 1);
 			else
-				getPlayerFollowing().followPlayer(!asPlayer().getCombatState().noTarget(), followTarget);
+				getPlayerFollowing().followPlayer(!asPlayer().getCombatState().noTarget(), followTarget, 1);
 		}
 	}
 
@@ -2566,14 +2544,11 @@ public class Player extends Entity {
 
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId,
-			followDistance,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, oldSpellId, walkTutorial = 15, bountyPoints;
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, walkTutorial = 15, bountyPoints;
 	
 	/**
 	 * Booleans
 	 */
-	public boolean usingBow, usingMagic, castingMagic, magicFailed;
-	public boolean usingCross;
 	public boolean dropListSorted;
 	public boolean dropRateInKills;
 	public boolean isMuted, isClanMuted, hasMultiSign, properLogout;

@@ -1,13 +1,13 @@
 package com.model.game.definitions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The definition for all weapons.
@@ -308,8 +308,8 @@ public class WeaponDefinition {
 	public static int sendAttackSpeed(Player player) {
 		Item weapon = new Item(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 		
-		if (player.usingMagic) {
-			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
+		if (player.getCombatType() == CombatStyle.MAGIC) {
+			switch (player.MAGIC_SPELLS[player.spellId][0]) {
 			default:
 				return 5;
 			}

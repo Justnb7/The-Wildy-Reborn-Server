@@ -96,10 +96,6 @@ public class CombatState {
 		return (i >= 9140 && i <= 9145) || i >= 9334 && i <= 9344 || (i >= 9236 && i <= 9245) || i == 11875;
 	}
 
-	public int getFreezeTime() {
-		return MagicData.getFreezeTime(mob.asPlayer());
-	}
-
 	public int getStartHeight() {
 		return MagicData.getStartHeight(mob.asPlayer());
 	}
@@ -118,10 +114,6 @@ public class CombatState {
 
 	public boolean godSpells() {
 		return MagicData.godSpells(mob.asPlayer());
-	}
-
-	public int getEndGfxHeight() {
-		return MagicData.getEndGfxHeight(mob.asPlayer());
 	}
 
 	public int getStartGfxHeight() {
@@ -144,7 +136,6 @@ public class CombatState {
 		// Nullify target
 		target = null;
 		// Reset all styles
-		mob.asPlayer().usingMagic = mob.asPlayer().usingBow = false;
 		mob.asPlayer().setCombatType(null);
 		mob.asPlayer().setFollowing(null);
 	}

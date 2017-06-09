@@ -56,7 +56,7 @@ public class MagicShortbow implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity victim) {
-		if (player.usingBow) {
+		if (player.getCombatType() == CombatStyle.RANGE) {
 			return true;
 		}
 		if (player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() < 2) {

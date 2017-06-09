@@ -12,6 +12,7 @@ import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.SkullType;
 import com.model.game.character.combat.magic.MagicCalculations;
+import com.model.game.character.combat.magic.MagicData;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
@@ -24,7 +25,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.character.walking.PathFinder;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
@@ -69,8 +69,8 @@ public class Combat {
 		
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
-			player.setSpellId(-1);
-			player.usingMagic = false;
+            player.spellId = -1;
+			player.setCombatType(null);
 			player.faceEntity(null);
 	        player.getCombatState().reset();
 	        player.setFollowing(null);
@@ -113,29 +113,10 @@ public class Combat {
     }
 
     private static void meleeAttack(Player player, Entity target) {
-        if (target.isPlayer()) { // TODO will this logic break anything?
-            Player ptarg = (Player) target;
-            if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
-                if (player.getX() != ptarg.getX() && ptarg.getY() != player.getY()
-                        && player.getCombatType() == CombatStyle.MELEE) {
-                    PlayerFollowing.stopDiagonal(player, ptarg.getX(), ptarg.getY());
-                }
-            }
-        } else if (target.isNPC()) {
-            NPC npc = (NPC) target;
-            if (npc.getSize() == 1) {
-                if (player.getX() != npc.getX() && npc.getY() != player.getY()
-                        && player.getCombatType() == CombatStyle.MELEE) {
-                    PlayerFollowing.stopDiagonal(player, npc.getX(), npc.getY());
-                }
-            }
-        }
-
         if (!touches(player, target))
             return;
         if (!attackable(player, target))
             return;
-
 
         if (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2)) {
             player.getMovementHandler().stopMovement();
@@ -182,31 +163,28 @@ public class Combat {
             // don't attack as our timer hasnt reached 0 yet
             return;
         }
+        int spell = player.spellId;
         // Magic attack anim
-        player.playAnimation(Animation.create(player.MAGIC_SPELLS[player.getSpellId()][2]));
+        player.playAnimation(Animation.create(player.MAGIC_SPELLS[spell][2]));
 
-        if (!player.autoCast) { // Not autocast = a one-time attack. Doesn't continue following.
-            player.getMovementHandler().stopMovement();
-            player.setFollowing(null);
+        if (!player.autoCast) {
+            // One time attack
+            player.getCombatState().setTarget(null);
         }
         int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
-        player.oldSpellId = player.getSpellId();
-        player.castingMagic = true;
+        player.setCombatType(CombatStyle.MAGIC);
 
-        if (player.MAGIC_SPELLS[player.getSpellId()][3] > 0) {
+        if (player.MAGIC_SPELLS[spell][3] > 0) {
             if (player.getCombatState().getStartGfxHeight() == 100) {
-                player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
+                player.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][3], 0, 0));
             } else {
-                player.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.getSpellId()][3], 0, 0));
+                player.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][3], 0, 0));
             }
         }
 
-        if (player.MAGIC_SPELLS[player.getSpellId()][4] > 0) {
-            player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.MAGIC_SPELLS[player.getSpellId()][4], player.getCombatState().getStartDelay(), 50, 78, player.getCombatState().getStartHeight(), player.getCombatState().getEndHeight(), target.getProjectileLockonIndex(), 16, 64));
-        }
-        if (player.autocastId > 0) {
-            player.followDistance = 5;
+        if (player.MAGIC_SPELLS[spell][4] > 0) {
+            player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.MAGIC_SPELLS[spell][4], player.getCombatState().getStartDelay(), 50, 78, player.getCombatState().getStartHeight(), player.getCombatState().getEndHeight(), target.getProjectileLockonIndex(), 16, 64));
         }
 
         if (wepId == 11907 || wepId == 12899) {
@@ -215,14 +193,14 @@ public class Combat {
 
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
-            if (player.MAGIC_SPELLS[player.oldSpellId][0] == 12891 && ptarg.getMovementHandler().isMoving()) {
+            if (player.MAGIC_SPELLS[spell][0] == 12891 && ptarg.getMovementHandler().isMoving()) {
                 player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), 368, player.getCombatState().getStartDelay(), 50, 85, 25, 25, target.getProjectileLockonIndex(), 16, 64));
             }
         }
 
         boolean splash = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
 
-        int spellFreezeTime = player.getCombatState().getFreezeTime();
+        int spellFreezeTime = MagicData.getFreezeTime(player, spell);
         if (spellFreezeTime > 0 && !target.frozen() && !splash) {
 
             target.freeze(spellFreezeTime);
@@ -240,8 +218,8 @@ public class Combat {
         int dam1 = MagicCalculations.magicMaxHitModifier(player);
 
         // Graphic that appears when hit appears.
-        final int endGfx = player.MAGIC_SPELLS[player.oldSpellId][5];
-        final int endH = player.getCombatState().getEndGfxHeight();
+        final int endGfx = player.MAGIC_SPELLS[spell][5];
+        final int endH = MagicData.getEndGfxHeight(player);
         Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
             @Override
             public void execute() {
@@ -256,7 +234,7 @@ public class Combat {
         if (splash) {
             dam1 = 0;
         } else {
-            switch (player.MAGIC_SPELLS[player.oldSpellId][0]) {
+            switch (player.MAGIC_SPELLS[spell][0]) {
                 case 12445: // teleblock
                     if (target.isPlayer()) {
                         Player defender = (Player) target;
@@ -286,7 +264,20 @@ public class Combat {
         }
 
         Combat.hitEvent(player, target, hitDelay, new Hit(dam1), CombatStyle.MAGIC);
-        player.setSpellId(0);
+        player.run(new ScheduledTask() {
+           @Override
+           public void execute() {
+
+               if (endH == 100 && !splash) { // end GFX
+                   target.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][5], 0, 100));
+               } else if (!splash) {
+                   target.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][5], 0, endH));
+               } else if (splash) {
+                   target.playGraphics(Graphic.create(85, 0, 100));
+               }
+           }
+       });
+        player.spellId = -1;
         onAttackDone(player, target);
     }
 
@@ -299,8 +290,8 @@ public class Combat {
         Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
         Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
         boolean crystal = wep.getId() >= 4212 && wep.getId() <= 4223;
-        boolean blowp = wep.getId() == 12926;
-        if (!crystal && !blowp && ammo.getId() < 1) {
+        boolean bp = wep.getId() == 12926;
+        if (!crystal && !bp && ammo.getId() < 1) {
             player.getActionSender().sendMessage("There is no ammo left in your quiver.");
             player.getMovementHandler().stopMovement();
             player.getCombatState().reset();
@@ -325,7 +316,8 @@ public class Combat {
 
         int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
-        if (player.getAttackStyle() == 2)
+
+        if (player.getAttackStyle() == 2) // ??
             player.getCombatState().setAttackDelay(-1);
 
         player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
@@ -370,7 +362,7 @@ public class Combat {
         Hit hitInfo = target.take_hit(player, dam1, CombatStyle.RANGE, false, false).giveXP(player);
         Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.RANGE);
 
-        int[] endGfx = RangeData.getRangeEndGFX(player);
+        int[] endGfx = RangeData.getRangeEndGFX(player, wepId);
         // Graphic that appears when hit appears.
         Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
             @Override
@@ -400,35 +392,33 @@ public class Combat {
     }
 
     private static void doAttackAnim(Player player, Entity target) {
-        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
-
-        if (!player.usingMagic && wep != 22494 && wep != 2415 && wep != 2416 && wep != 2417) {
-            final WeaponDefinition def = WeaponDefinition.get(wep);
-            if(wep <= 0) {
-                switch(player.getAttackStyle()) {
-                    case 0:
-                        player.playAnimation(Animation.create(422));
-                        break;
-                    case 1:
-                        player.playAnimation(Animation.create(423));
-                        break;
-                    case 2:
-                        player.playAnimation(Animation.create(422));
-                        break;
-                }
-            } else {
-                if (def != null) {
-                    player.playAnimation(Animation.create(def.getAnimations()[player.getAttackStyle()]));
-                }
+        Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+        int wepId = wep == null ? -1 : wep.getId();
+        final WeaponDefinition def = WeaponDefinition.get(wepId);
+        if (wepId <= 0) { // defaults no weapon hands
+            switch(player.getAttackStyle()) {
+                case 0:
+                    player.playAnimation(Animation.create(422));
+                    break;
+                case 1:
+                    player.playAnimation(Animation.create(423));
+                    break;
+                case 2:
+                    player.playAnimation(Animation.create(422));
+                    break;
             }
+        } else {
+            if (def != null) {
+                player.playAnimation(Animation.create(def.getAnimations()[player.getAttackStyle()]));
+            }
+        }
 
-            // Npc block anim
-            if (target.isNPC()) {
-                NPC npc = (NPC) target;
-                if (npc.getMaxHitpoints() > 0 && npc.getCombatState().getAttackDelay() > 3) {
-                    if (npc.getId() != 2042 && npc.getId() != 2043 && npc.getId() != 2044 && npc.getId() != 3127 || npc.getId() != 1739 || npc.getId() != 1740 || npc.getId() != 1741 || npc.getId() != 1742) {
-                        npc.playAnimation(Animation.create(npc.getDefendAnimation()));
-                    }
+        // Npc block anim
+        if (target.isNPC()) {
+            NPC npc = (NPC) target;
+            if (npc.getMaxHitpoints() > 0 && npc.getCombatState().getAttackDelay() > 3) {
+                if (npc.getId() != 2042 && npc.getId() != 2043 && npc.getId() != 2044 && npc.getId() != 3127 || npc.getId() != 1739 || npc.getId() != 1740 || npc.getId() != 1741 || npc.getId() != 1742) {
+                    npc.playAnimation(Animation.create(npc.getDefendAnimation()));
                 }
             }
         }
@@ -468,7 +458,7 @@ public class Combat {
             }*/
         }
 
-        if (wep > -1 && !player.usingMagic) {
+        if (wep > -1 && player.getCombatType() != CombatStyle.MAGIC) {
             PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep);
         }
 
@@ -598,65 +588,43 @@ public class Combat {
 
 
     public static void setCombatStyle(Player player) {
-        boolean spellQueued = player.usingMagic && player.getCombatType() == CombatStyle.MAGIC && player.spellId > 0;
-
-        player.usingMagic = player.usingBow = false;
         player.setCombatType(null); // reset
 
-        int followDist = 1;
-		/*
-		 * Check if we are using magic
-		 */
+		// Check if we are using magic
+        boolean spellQueued = player.getCombatType() == CombatStyle.MAGIC && player.spellId > 0;
         if (player.autoCast && (player.getSpellBook() == SpellBook.MODERN || player.getSpellBook() == SpellBook.ANCIENT)) {
             player.spellId = player.autocastId;
-            player.usingMagic = true;
             player.setCombatType(CombatStyle.MAGIC);
         }
         int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         if (wep == 11907) {
             player.spellId = 52;
-            player.castingMagic = true;
+            player.setCombatType(CombatStyle.MAGIC);
         }
-
         if (wep == 12899) {
             player.spellId = 53;
-            player.castingMagic = true;
+            player.setCombatType(CombatStyle.MAGIC);
         }
-
         // Spell id set when packet: magic on player
-        if (player.getSpellId() > 0) {
-            player.usingMagic = true;
+        if (player.spellId > 0) {
             player.setCombatType(CombatStyle.MAGIC);
-        }
-        if (player.usingMagic) {
-            player.setCombatType(CombatStyle.MAGIC);
-            followDist = 8;
         }
 
-		/*
-		 * Check if we are using ranged
-		 */
+		// Check if we are using ranged
         if (player.getCombatType() != CombatStyle.MAGIC) {
-            player.usingBow = EquipmentConstants.isBow(player);
+            boolean bow = EquipmentConstants.isBow(player);
             boolean handthrown = EquipmentConstants.isThrowingWeapon(player);
-            player.usingCross = EquipmentConstants.isCrossbow(player);
+            boolean cbow = EquipmentConstants.isCrossbow(player);
             boolean bolt = EquipmentConstants.isBolt(player);
             boolean javalin = player.getCombatState().properJavalins();
-
-            if (handthrown || player.usingCross || player.usingBow || EquipmentConstants.wearingBallista(player) || EquipmentConstants.wearingBlowpipe(player)) {
+            if (handthrown || bow || cbow || EquipmentConstants.wearingBallista(player) || EquipmentConstants.wearingBlowpipe(player)) {
                 player.setCombatType(CombatStyle.RANGE);
-                followDist = handthrown ? 4 : 7;
             }
         }
         // hasn't been set to magic/range.. must be melee.
         if (player.getCombatType() == null) {
             player.setCombatType(CombatStyle.MELEE);
-            if (usingHalberd(player))
-                followDist = 2;
         }
-        player.followDistance = followDist;
-        //player.message("style: "+player.getCombatType()+"  dist:"+followDist+"  atkDelay:"+player.attackDelay);
-
     }
 
     public static void hitEvent(Entity attacker, Entity target, int delay, Hit hit, CombatStyle combatType) {
@@ -682,16 +650,6 @@ public class Combat {
 	                    else if (target.isPlayer() && ((Player)target).getCombatState().getAttackDelay() < 5)
 	                        target.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(target.asPlayer())));
 
-	                }
-	                if (hit.cbType == CombatStyle.MAGIC) {
-	                    if (player.getCombatState().getEndGfxHeight() == 100 && !player.magicFailed) { // end GFX
-	                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, 100));
-	                    } else if (!player.magicFailed) {
-	                        target.playGraphics(Graphic.create(player.MAGIC_SPELLS[player.oldSpellId][5], 0, player.getCombatState().getEndGfxHeight()));
-	                    } else if (player.magicFailed) {
-	                        target.playGraphics(Graphic.create(85, 0, 100));
-	                    }
-	
 	                }
                 }
                 this.stop();
@@ -738,7 +696,7 @@ public class Combat {
 			distance = 4;
 		} else if (usingHalberd(player) && player.getCombatType() == CombatStyle.MELEE) {
 			distance = 2;
-		} else if (player.usingBow) {
+		} else if (player.getCombatType() == CombatStyle.RANGE) { // TODO normal bows
 			distance = 7;
 		} else if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11785) {
 			distance = 9;
@@ -746,7 +704,7 @@ public class Combat {
 			distance = 11;
 		} else if (EquipmentConstants.wearingBlowpipe(player)) {
 			distance = 5;
-		} else if (player.usingMagic) {
+		} else if (player.getCombatType() == CombatStyle.MAGIC) {
 			distance = 10;
 		} else if (player.getCombatType() == CombatStyle.MELEE) {
 			if (player.getX() != victim.getX() && player.getY() != victim.getY() && player.distanceToPoint(victim.getX(), victim.getY()) < 2) {
@@ -765,6 +723,25 @@ public class Combat {
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
 	public static boolean touches(Player player, Entity target) {
+	    if (player.getCombatType() == CombatStyle.MELEE) {
+            if (target.isPlayer()) { // TODO will this logic break anything?
+                Player ptarg = (Player) target;
+                if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
+                    if (player.getX() != ptarg.getX() && ptarg.getY() != player.getY()
+                            && player.getCombatType() == CombatStyle.MELEE) {
+                        PlayerFollowing.stopDiagonal(player, ptarg.getX(), ptarg.getY());
+                    }
+                }
+            } else if (target.isNPC()) {
+                NPC npc = (NPC) target;
+                if (npc.getSize() == 1) {
+                    if (player.getX() != npc.getX() && npc.getY() != player.getY()
+                            && player.getCombatType() == CombatStyle.MELEE) {
+                        PlayerFollowing.stopDiagonal(player, npc.getX(), npc.getY());
+                    }
+                }
+            }
+        }
         if (player.frozen()) {
             // Frozen, we can't update path to a valid one
             if (!Combat.withinDistance(player, target) || !ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()))
@@ -772,6 +749,7 @@ public class Combat {
         }
         // TODO this logic is bound to be fucked
         if (target.isNPC()) {
+            player.getPlayerFollowing().followNpc(target, 7); // TODO or pathfinder find route
 
             // Clip check first. Get line of sight.
             if (!PlayerVsNpcCombat.canTouch(player, (NPC)target, true)) {
@@ -783,7 +761,9 @@ public class Combat {
             }
         } else {
             // Run to the target
-            PathFinder.getPathFinder().findRoute(player, target.absX, target.absY, true, 1, 1);
+            //PathFinder.getPathFinder().findRoute(player, target.absX, target.absY, true, 1, 1);
+            // alternatively: TODO
+            player.getPlayerFollowing().followPlayer(true, target, 7);
 
             // With an updated path, recheck
             if (!Combat.withinDistance(player, target) || !ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()))

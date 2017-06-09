@@ -18,7 +18,6 @@ import com.model.game.definitions.ItemDefinition;
 import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
-import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
@@ -622,15 +621,6 @@ public class CommandPacketHandler implements PacketType {
 					}
 					NPCHandler.loadAutoSpawn("./data/text_files/npc_spawns.txt");
 					player.getActionSender().sendMessage("Succesfully reloaded the spawns");
-					break;
-				case 3:
-
-					break;
-				case 4:
-					ShopManager.update();
-					player.getActionSender().sendMessage("Successfully reloaded shops.");
-					break;
-				case 5:
 					break;
 				}
 			} catch (Exception e) {

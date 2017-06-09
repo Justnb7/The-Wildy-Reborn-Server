@@ -4,7 +4,6 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.net.packet.PacketType;
 
 
@@ -144,14 +143,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case InterfaceConstants.WITHDRAW_BANK:
 			player.getBank().withdraw(removeId, removeSlot, 1);
 			break;
-			
-		case InterfaceConstants.SHOP_INTERFACE:
-			ShopManager.getShopValue(player, removeSlot);
-			break;
-			
-		case InterfaceConstants.SHOP_INVENTORY:
-			ShopManager.getSellValue(player, removeId);
-			break;
 
 		}
 	}
@@ -188,10 +179,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 		}
-			break;
-
-		case InterfaceConstants.SHOP_INTERFACE:
-			ShopManager.buy(player, removeId, 1, removeSlot);
 			break;
 
 		case InterfaceConstants.INVENTORY_STORE:
@@ -241,10 +228,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 			break;
-
-		case InterfaceConstants.SHOP_INVENTORY:
-			ShopManager.sell(player, removeId, 1, removeSlot);
-			break;
 		}
 	}
 
@@ -268,10 +251,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		}
 
 		switch (interfaceId) {
-
-		case InterfaceConstants.SHOP_INTERFACE:
-			ShopManager.buy(player, removeId, 10, removeSlot);
-			break;
 
 		case InterfaceConstants.INVENTORY_STORE:
 			if (player.getInterfaceState().isInterfaceOpen(48500)) {
@@ -325,9 +304,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.getBank().deposit(removeId, removeSlot, 10);
 			break;
 
-		case InterfaceConstants.SHOP_INVENTORY:
-			ShopManager.sell(player, removeId, 5, removeSlot);
-			break;
 		}
 	}
 
@@ -348,10 +324,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		}
 
 		switch (interfaceId) {
-
-		case InterfaceConstants.SHOP_INTERFACE:
-			ShopManager.buy(player, removeId, 100, removeSlot);
-			break;
 
 		case InterfaceConstants.INVENTORY_STORE:
 			if (player.getInterfaceState().isInterfaceOpen(48500)) {
@@ -404,10 +376,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.getBank().deposit(removeId, removeSlot, Integer.MAX_VALUE);
 			break;
 
-		case InterfaceConstants.SHOP_INVENTORY:
-			ShopManager.sell(player, removeId, 10, removeSlot);
-			break;
-
 		}
 	}
 
@@ -428,11 +396,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		if (player.inDebugMode() && player.getRights().equals(Rights.ADMINISTRATOR)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FifthOption - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
-		}
-
-		if (player.xInterfaceId == InterfaceConstants.SHOP_INTERFACE) {
-			ShopManager.buy(player, player.xRemoveId, 500, player.xRemoveSlot);
-			return;
 		}
 
 		player.getOutStream().writeFrame(27);

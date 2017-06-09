@@ -128,7 +128,6 @@ public class Bootstrap {
 			Arrays.fill(NPCDefinitions.getDefinitions(), null);
 	        new NPCDefinitionParser().run();
 	        Server.getDropManager().read();
-			new ShopParser().run();
 		});
 
 		LOGGER.info("Loading content...");

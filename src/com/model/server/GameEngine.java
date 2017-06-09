@@ -56,7 +56,7 @@ public final class GameEngine implements Runnable {
 	public static void initialize() {
 		if (LOCK.compareAndSet(false, true)) {
 			GameEngine gameEngine = new GameEngine();
-			GAME_SERVICE.scheduleAtFixedRate(gameEngine, 600, 300, TimeUnit.MILLISECONDS);
+			GAME_SERVICE.scheduleAtFixedRate(gameEngine, 0, 300, TimeUnit.MILLISECONDS);
 			//GAME_SERVICE.scheduleAtFixedRate(gameEngine, 600, Constants.CYLCE_RATE, TimeUnit.MILLISECONDS);
 			logger.info("Game Engine initialized");
 		}

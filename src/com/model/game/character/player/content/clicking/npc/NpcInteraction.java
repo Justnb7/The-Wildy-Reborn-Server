@@ -33,7 +33,7 @@ public class NpcInteraction {
 		
 		/* Skiller Shop */
 		case 1325:
-			ShopManager.open(player, 10);
+			ShopManager.open(player, 1);
 			break;
 
 		/**

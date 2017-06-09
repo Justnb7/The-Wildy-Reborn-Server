@@ -7,7 +7,6 @@ import com.model.game.definitions.EquipmentDefinition;
 import com.model.game.definitions.EquipmentDefinition.EquipmentType;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.net.packet.PacketType;
 import com.model.net.packet.SubPacketType;
 
 /**

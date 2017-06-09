@@ -37,6 +37,7 @@ import com.model.net.packet.in.WithdrawAllButOneAction;
 public class PacketHandler {
 
 	private static PacketType packetId[] = new PacketType[256];
+	private static SubPacketType subPacketId[] = new SubPacketType[256];
 
 	static {
 
@@ -78,10 +79,11 @@ public class PacketHandler {
 		packetId[135] = wap;
 		packetId[208] = wap;
 		
+		subPacketId[41] = new WieldPacketHandler();
+		packetId[241] = new ClickOnGameScreen();
+		
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();
-		packetId[41] = new WieldPacketHandler();
-		packetId[241] = new ClickOnGameScreen();
 		
 		packetId[3] = u;
 		packetId[202] = u;
@@ -146,8 +148,10 @@ public class PacketHandler {
 		// packetId[127] = cr;
 	}
 
-	public static void processPacket(Player c, int packetType, int packetSize) {
-		//System.out.println("Unhandled packet type: " + packetType + " - size: " + packetSize);
+	public static void processPacket(Player player, int packetType, int packetSize) {
+		if(packetType == 41) {
+			player.debug("called: "+packetType);
+		}
 		if (packetType == -1 || packetType == 181) {
 			return;
 		}
@@ -156,14 +160,34 @@ public class PacketHandler {
 		if (p != null) {
 			try {
 				if (p != null) {
-					p.handle(c, packetType, packetSize);
+					p.handle(player, packetType, packetSize);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
 			System.out.println("Unhandled packet type: " + packetType + " - size: " + packetSize);
-			World.getWorld().queueLogout(c);
+			World.getWorld().queueLogout(player);
+		}
+	}
+
+	public static void processSubPacket(Player player, int packetType, int packetSize) {
+		if (packetType == -1 || packetType == 181) {
+			return;
+		}
+		SubPacketType p = subPacketId[packetType];
+
+		if (p != null) {
+			try {
+				if (p != null) {
+					p.processSubPacket(player, packetType, packetSize);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("Unhandled subpacket type: " + packetType + " - size: " + packetSize);
+			World.getWorld().queueLogout(player);
 		}
 	}
 }

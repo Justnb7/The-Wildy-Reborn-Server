@@ -7,7 +7,7 @@ import com.model.game.definitions.EquipmentDefinition;
 import com.model.game.definitions.EquipmentDefinition.EquipmentType;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
-import com.model.net.packet.PacketType;
+import com.model.net.packet.SubPacketType;
 
 /**
  * Handles the 'wield' option on items.
@@ -15,16 +15,16 @@ import com.model.net.packet.PacketType;
  * @author Patrick van Elderen
  * 
  */
-public class WieldPacketHandler implements PacketType {
+public class WieldPacketHandler implements SubPacketType {
 
 	@Override
-	public void handle(Player player, int packetType, int packetSize) {
+	public void processSubPacket(Player player, int packetType, int packetSize) {
 		final int id = player.getInStream().readUnsignedWord();
 		final int slot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();
-
-		if (player.inDebugMode()) {
-			player.debug("WieldPacketHandler - item: " + id+" slot: "+slot+" interface: "+interfaceId);
+		
+		if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
+			player.debug(String.format("[WieldPacketHandler] [id= %d] [slot= %d] [interface %d]", id, slot, interfaceId));
 		}
 		
 		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.isTeleporting()) {
@@ -44,10 +44,6 @@ public class WieldPacketHandler implements PacketType {
 
 			if (equip == null) {
 				return;
-			}
-			
-			if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
-				player.debug(String.format("[WearItem] [id= %d] [slot= %d] [interface %d]", id, slot, interfaceId));
 			}
 
 			if (!player.getController().canEquip(player, id, slot)) {

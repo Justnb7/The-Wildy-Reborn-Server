@@ -101,7 +101,7 @@ public class Server {
 
 			System.setErr(new SystemLogger(System.err, new File("./data/logs/err")));
 			server.getBootstrap().build().bind();
-			GameEngine.initialize();
+			GameEngine.start();
 			
 		} catch (Throwable t) {
 			LOGGER.log(Level.SEVERE, "A problem has been encountered while starting the server.", t);

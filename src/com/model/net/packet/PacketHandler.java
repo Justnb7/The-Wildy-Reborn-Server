@@ -7,7 +7,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.content.PrivateMessaging;
 import com.model.net.packet.in.ActionButtonPacketHandler;
 import com.model.net.packet.in.AttackPlayer;
-import com.model.net.packet.in.BankModifiableX;
+import com.model.net.packet.in.WithdrawModifiableX;
 import com.model.net.packet.in.ChallengePlayer;
 import com.model.net.packet.in.ChatPacketHandler;
 import com.model.net.packet.in.ClickOnGameScreen;
@@ -125,7 +125,7 @@ public class PacketHandler {
 		packetId[39] = new TradePacketHandler();
 		packetId[139] = new FollowPlayer();
 		packetId[140] = new WithdrawAllButOneAction();
-		packetId[141] = new BankModifiableX();
+		packetId[141] = new WithdrawModifiableX();
 		packetId[101] = new SetAppearancePacketHandler();
 		final PrivateMessaging pm = new PrivateMessaging();
 		packetId[188] = pm;

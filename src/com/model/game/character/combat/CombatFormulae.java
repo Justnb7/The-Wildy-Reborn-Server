@@ -387,7 +387,10 @@ public class CombatFormulae {
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
 		double otherBonusMultiplier = 1;	
-		int rangedStrength = player.getBonuses()[12];
+		int rangedStrength = player.getBonuses().length < 13 ? 0 : player.getBonuses()[12];
+		if (player.getBonuses().length < 13) {
+			System.err.println("NO RANGE STR BONUSES DEFINED");
+		}
 		
 		int rangeLevel = player.getSkills().getLevel(Skills.RANGE);
 		int combatStyleBonus = 0;

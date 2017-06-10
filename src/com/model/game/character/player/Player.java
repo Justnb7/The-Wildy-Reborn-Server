@@ -1377,10 +1377,10 @@ public class Player extends Entity {
 		getActionSender().sendConfig(200, getAcceptAid() ? 1 : 0);
 		getActionSender().sendConfig(172, isAutoRetaliating() ? 1 : 0);
 		getActionSender().sendConfig(152, isRunning() ? 1 : 0);
-		getActionSender().sendWidget(1, 0);
+		/*getActionSender().sendWidget(1, 0);
 		getActionSender().sendWidget(2, 0);
 		getActionSender().sendWidget(3, 0);
-		getActionSender().sendWidget(4, 0);
+		getActionSender().sendWidget(4, 0);*/
 	}
 
 	private void submitAfterLogin() {

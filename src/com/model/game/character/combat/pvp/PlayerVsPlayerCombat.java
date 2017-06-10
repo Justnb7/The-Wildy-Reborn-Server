@@ -1,7 +1,6 @@
 package com.model.game.character.combat.pvp;
 
 import com.model.game.character.combat.Combat;
-import com.model.game.character.combat.combat_data.CombatRequirements;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
@@ -86,15 +85,16 @@ public class PlayerVsPlayerCombat {
 
 		boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
 				player.getName().equalsIgnoreCase("patrick");
-		if (player.getArea().inWild()) {
-			int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
+		if (player.getArea().inWild()) { // TODO fix this logic
+			/*int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
 			if (!bypassCosImTheBest &&
 					(combatDif1 > player.wildLevel || combatDif1 > ((Player) target).wildLevel)) {
 				player.getActionSender().sendMessage("Your level difference is too great! Move deeper into the wilderness.");
+				player.debug("threshold: "+combatDif1);
 				player.getMovementHandler().stopMovement();
 				Combat.resetCombat(player);
 				return false;
-			}
+			}*/
 		} else {
 			int myCB = player.combatLevel;
 			int pCB = ((Player) target).combatLevel;

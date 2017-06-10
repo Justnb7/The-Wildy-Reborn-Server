@@ -1,14 +1,5 @@
 package com.model.game;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import com.google.common.collect.Sets;
 import com.model.game.character.Entity;
 import com.model.game.character.Entity.EntityType;
@@ -25,12 +16,11 @@ import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.Service;
-import com.model.task.impl.DidYouKnowEvent;
-import com.model.task.impl.InstanceFloorReset;
-import com.model.task.impl.NPCMovementTask;
-import com.model.task.impl.RestoreSpecialStats;
-import com.model.task.impl.RestoreStats;
-import com.model.task.impl.SavePlayers;
+import com.model.task.impl.*;
+
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Represents a 'World' where we can update entities
@@ -423,11 +413,16 @@ public class World implements Service {
 	private void handlePreUpdating(Player player) {
 		try {
 			player.getSession().processQueuedPackets();
+		} catch (Exception e) {
+			e.printStackTrace();
+			queueLogout(player);
+			// logout cos bad packets will fuck up entire networking
+		}
+		try {
 			player.process();
 			player.getMovementHandler().process();
 		} catch (Exception e) {
 			e.printStackTrace();
-			queueLogout(player);
 		}
 	}
 

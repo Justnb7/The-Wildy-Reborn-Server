@@ -1,7 +1,6 @@
 package com.model.game.character.combat;
 
 import com.model.UpdateFlags.UpdateFlag;
-import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
@@ -84,10 +83,11 @@ public class Combat {
 
         // Establish what style we'd be using this cycle
         Combat.setCombatStyle(player);
+        player.debug("style: "+player.getCombatType());
 
         Entity target = player.getCombatState().getTarget();
 
-        if (target.isPlayer()) {
+        /*if (target.isPlayer()) {
             Player ptarg = (Player) target;
             player.getActionSender().sendString(ptarg.getName() + "-" + player.getSkills().getLevelForExperience(Skills.HITPOINTS) + "-" + ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName(), 35000);
         } else {
@@ -97,7 +97,7 @@ public class Combat {
                 //System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
                 player.getActionSender().sendString(NPC.getName(npc.getId()).replaceAll("_", " ") + "-" + npc.getMaxHitpoints() + "-" + npc.getHitpoints() + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
             }
-        }
+        }*/
 
         // Wait until unfrozen to move out
         if (sameSpotCannotMove(player, target))
@@ -321,11 +321,12 @@ public class Combat {
         int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
 
-        if (player.getAttackStyle() == 2) // ??
-            player.getCombatState().setAttackDelay(-1);
+        if (player.getAttackStyle() == 2)
+            player.getCombatState().setAttackDelay(player.getCombatState().getAttackDelay() - 1);
 
         player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
         player.getCombatState().fireProjectileAtTarget();
+
         Item arrows = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
         boolean hand_thrown = false;
         if (hand_thrown) {
@@ -334,7 +335,7 @@ public class Combat {
 
         } else {
 
-            if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12765 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12766 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12767 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 12768) {
+            if (wepId == 11235 || wepId == 12765 || wepId == 12766 || wepId == 12767 || wepId == 12768) {
                 //TODO add arrow removement
             }
 

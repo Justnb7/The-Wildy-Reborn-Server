@@ -12,12 +12,17 @@ public class RangeData {
 
 	public static void fireProjectileAtTarget(Player player) {
 		Entity target = player.getCombatState().getTarget();
+		int gfx = player.getCombatState().getRangeProjectileGFX();
+		if (target == null || gfx == -1) {
+			System.err.println("bad projectile");
+			return;
+		}
 
-		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(),
+		player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), gfx,
 				player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 16, 64));
 
 		if (player.getCombatState().usingDbow())
-			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), player.getCombatState().getRangeProjectileGFX(),
+			player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), gfx,
 					100, 50, getProjectileShowDelay(player), 53, 31, target.getProjectileLockonIndex(), 16, 64));
 		
 	}

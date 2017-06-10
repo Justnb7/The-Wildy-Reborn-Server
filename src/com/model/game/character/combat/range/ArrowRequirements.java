@@ -1,12 +1,12 @@
 package com.model.game.character.combat.range;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Holds the requirements for arrows
@@ -81,6 +81,7 @@ public enum ArrowRequirements {
 				}
 			}
 		}
+		player.debug("bad ammo");
 		return false;
 	}
 }

@@ -608,9 +608,9 @@ public abstract class Entity {
 					damage *= prayProtection;
 				}
 			}
-			
+			int shield = player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT) == null ? -1 : player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId();
 			// TODO special reduction effects can go here, like Ely
-			if (player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() == 12817) {
+			if (shield == 12817) {
 				if (Utility.getRandom(100) > 30 && damage > 0) {
 					damage *= .75;
 				}

@@ -333,15 +333,15 @@ public class WeaponDefinition {
 	 */
 	public static int sendBlockAnimation(Player player) {
 		//weapon instance
-		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		int weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		
 		//shield instance
 		Item shield = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
 
 		//grab by name
-		String shieldName = shield.getName().toLowerCase();
 
-		if (shieldName != null) {
+		if (shield != null) {
+			String shieldName = shield.getName().toLowerCase();
 			if (shieldName.contains("shield") || shieldName.contains("kite") || shieldName.contains("ward")) {
 				return 1156;
 			}
@@ -353,9 +353,9 @@ public class WeaponDefinition {
 				return 1156;
 			}
 		}
-		if (weapon.getId() == -1) // empty hands
+		if (weapon == -1) // empty hands
 			return 424;
 		else
-			return WeaponDefinition.get(weapon.getId()).getBlockAnimation(); // wep anim
+			return WeaponDefinition.get(weapon).getBlockAnimation(); // wep anim
 	}
 }

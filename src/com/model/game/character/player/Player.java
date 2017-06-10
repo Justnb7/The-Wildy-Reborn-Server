@@ -1546,33 +1546,28 @@ public class Player extends Entity {
 	}
 
 	public void combatProcessing() {
-		try {
-			if (lastCombatAction.elapsed(6000)) {
-				setInCombat(false);
-			}
-
-			if (getSkullTimer() > 0) {
-				decrementSkullTimer();
-				if (getSkullTimer() == 1) {
-					attackedPlayers.clear();
-					setSkullType(SkullType.NONE);
-					setSkullTimer(0);
-					getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-				}
-			}
-
-			super.frozen_process();
-
-			if (getCombatState().getAttackDelay() > 0) {
-				getCombatState().decreaseAttackDelay(1);
-			}
-
-			// Handles following every game tick, only attacks when delay=0
-			Combat.playerVsEntity(this);
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (lastCombatAction.elapsed(6000)) {
+			setInCombat(false);
 		}
+
+		if (getSkullTimer() > 0) {
+			decrementSkullTimer();
+			if (getSkullTimer() == 1) {
+				attackedPlayers.clear();
+				setSkullType(SkullType.NONE);
+				setSkullTimer(0);
+				getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			}
+		}
+
+		super.frozen_process();
+
+		if (getCombatState().getAttackDelay() > 0) {
+			getCombatState().decreaseAttackDelay(1);
+		}
+
+		// Handles following every game tick, only attacks when delay=0
+		Combat.playerVsEntity(this);
 	}
 
 	public void updateWalkEntities() {

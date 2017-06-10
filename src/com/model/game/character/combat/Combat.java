@@ -126,6 +126,10 @@ public class Combat {
             onAttackDone(player, target);
             return;
         }
+        if (player.getCombatState().getAttackDelay() > 0) {
+            // don't attack as our timer hasnt reached 0 yet
+            return;
+        }
         onAttackDone(player, target);
         doAttackAnim(player, target);
 

@@ -3,9 +3,12 @@ package com.model.game.character.player.content.clicking.npc;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Rights;
 import com.model.game.character.player.skill.fishing.Fishing;
 import com.model.game.character.player.skill.fishing.FishingSpot;
 import com.model.game.character.player.skill.thieving.Pickpocket;
+import com.model.game.item.container.impl.shop.ShopManager;
+
 
 public class NpcInteraction {
 
@@ -19,6 +22,10 @@ public class NpcInteraction {
 	 */
 	public static void firstOption(Player player, NPC npc) {
 
+		if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
+			player.getActionSender().sendMessage(String.format("[NpcInteraction #1] - NpcId: %d", npc.getId()));
+		}
+		
 		if (Pet.talktoPet(player, npc)) {
 			return;
 		}
@@ -29,6 +36,11 @@ public class NpcInteraction {
 		}
 
 		switch (npc.getId()) {
+		
+		/* Skilling store */
+		case 1325:
+			ShopManager.open(player, 10);
+			break;
 
 		/**
 		 * Kamfreena

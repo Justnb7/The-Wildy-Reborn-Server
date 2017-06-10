@@ -3,6 +3,7 @@ package com.model.game.character.player;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.item.Item;
+import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
@@ -506,7 +507,7 @@ public class ActionSender {
         }
 		return this;
 	}
-
+	
 	/**
 	 * Sends a packet to update a group of items.
 	 * 
@@ -517,33 +518,35 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendItemOnInterface(int id, Item... items) {
-		player.getOutStream().putFrameVarShort(53);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().writeShort(id);
-		player.getOutStream().writeShort(items.length);
-		for (final Item item : items) {
-			if (item != null) {
-				if (item.getAmount() > 254) {
-					player.getOutStream().writeByte(255);
-					player.getOutStream().writeWordBigEndianA(item.getAmount());
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().putFrameVarShort(53);
+			int offset = player.getOutStream().offset;
+			player.getOutStream().writeShort(id);
+			player.getOutStream().writeShort(items.length);
+			for (Item item : items) {
+				if (item != null) {
+					int amount = item.getAmount();
+					if (amount > 254) {
+						player.getOutStream().writeByte(255);
+						player.getOutStream().writeDWord_v2(item.getAmount());
+					} else {
+						player.getOutStream().writeByte(item.getAmount());
+					}
+					player.getOutStream().writeWordBigEndianA(item.getId() + 1);
 				} else {
-					player.getOutStream().writeByte(item.getAmount());
+					player.getOutStream().writeByte(0);
+					player.getOutStream().writeWordBigEndianA(0);
 				}
-				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
-			} else {
-				player.getOutStream().writeByte((byte) 0);
-				player.getOutStream().writeWordBigEndianA(0);
 			}
-		}
-
-		if (id == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
-			for (final int amount : player.getBank().getTabAmounts()) {
-				player.getOutStream().writeByte(amount >> 8);
-				player.getOutStream().writeShort(amount & 0xFF);
+			if (id == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
+				for (final int amount : player.getBank().getTabAmounts()) {
+					player.getOutStream().writeByte(amount >> 8);
+					player.getOutStream().writeShort(amount & 0xFF);
+				}
 			}
+			player.getOutStream().putFrameSizeShort(offset);
+			player.flushOutStream();
 		}
-		player.getOutStream().putFrameSizeShort(offset);
-		player.flushOutStream();
 		return this;
 	}
 	

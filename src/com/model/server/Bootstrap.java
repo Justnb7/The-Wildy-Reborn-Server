@@ -121,6 +121,7 @@ public class Bootstrap {
 			PlayerSounds.declare();
 			ClanManager.init();
 			ConnectionHandler.initialize();
+			new ShopParser().run();
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();

@@ -25,9 +25,9 @@ public class CloseInterfacePacketHandler implements PacketType {
 			System.out.println("[CloseInterface] - Closed Window");
 		}
 		
-		if ((Boolean) player.getAttributes().get("banking")) {
+		/*if ((Boolean) player.getAttributes().get("banking")) {
 			player.getAttributes().put("banking", false);
-		}
+		}*/
 		
 		//Decline trade when closing an interface
 		if (player.isTrading()) {

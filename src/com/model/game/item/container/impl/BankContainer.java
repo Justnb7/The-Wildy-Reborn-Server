@@ -41,8 +41,8 @@ public class BankContainer extends Container {
 	}
 
 	public boolean clickButton(int button) {
-		if (button >= 234131 && button <= 234163) {
-			final int tab = (234131 - button) / -4;
+		if (button >= 234127 && button <= 234163) {
+			final int tab = (234127 - button) / -4;
 			if (button % 2 == 0) {
 				bankTab = tab;
 				player.getActionSender().sendString("", 60019);

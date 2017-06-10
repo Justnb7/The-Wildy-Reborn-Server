@@ -8,7 +8,7 @@ import com.model.net.packet.PacketType;
 /**
  * Custom bank packet desgined by, @author <a href="https://www.rune-server.ee/members/jason/">Jason</a> i believe.
  */
-public class BankModifiableX implements PacketType {
+public class WithdrawModifiableX implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {

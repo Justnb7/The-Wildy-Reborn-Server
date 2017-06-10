@@ -22,7 +22,7 @@ public class CombatRequirements {
 		return 0;
 	}
 
-	public static int getRequiredDistance(Player player) {
+	public static int extraMovingTilesDistance(Player player) {
 		if (player.followTarget != null && player.frozen() && !player.getMovementHandler().isMoving())
 			return 2;
 		else if(player.followTarget != null && player.frozen() && player.getMovementHandler().isMoving()) {

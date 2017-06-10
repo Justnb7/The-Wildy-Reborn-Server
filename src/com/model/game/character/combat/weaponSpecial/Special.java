@@ -1,7 +1,6 @@
 package com.model.game.character.combat.weaponSpecial;
 
 import com.model.game.character.Entity;
-import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
@@ -20,29 +19,14 @@ public class Special {
 	 *            The player performing the special attack
 	 */
 	public static void handleSpecialAttack(Player attacker, Entity target) {
-		
-		attacker.getWeaponInterface().sendSpecialBar(attacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
-		attacker.getWeaponInterface().refreshSpecialAttack();
-		
 		if (target == null) {
 			return;
 		}
-
-		if (!attacker.getController().canUseSpecialAttack(attacker)) {
-			return;
-		}
+		
+		attacker.getWeaponInterface().sendSpecialBar(attacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
+		attacker.getWeaponInterface().refreshSpecialAttack();
 		attacker.setUsingSpecial(true);
-		attacker.setCombatType(CombatStyle.MELEE);
-		attacker.logoutDelay.reset();
-		
-		if (attacker.getCombatState().getTarget().isPlayer()) { // playerIndex is the indexId of the player we're attacking
-			Player targPlayer = (Player) target; // type cast
-			targPlayer.putInCombat(attacker.getIndex());
-			targPlayer.logoutDelay.reset();
-			attacker.updateLastCombatAction();
-			attacker.setInCombat(true);
-		}
-		
+
 		Item weapon = attacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 
 		if (weapon != null) {
@@ -53,11 +37,25 @@ public class Special {
 				resetSpecial(attacker);
 				return;
 			}
+			if (!attacker.getController().canUseSpecialAttack(attacker)) {
+				attacker.debug("controller says no");
+				return;
+			}
 
 			if (attacker.getSpecialAmount() >= special.amountRequired()) {
 				if (special.meetsRequirements(attacker, target)) {
 					attacker.setSpecialAmount(attacker.getSpecialAmount() - special.amountRequired());
 					special.handleAttack(attacker, target);
+
+					attacker.debug("speced");
+					attacker.logoutDelay.reset();
+					if (attacker.getCombatState().getTarget().isPlayer()) { // playerIndex is the indexId of the player we're attacking
+						Player targPlayer = (Player) target; // type cast
+						targPlayer.putInCombat(attacker.getIndex());
+						targPlayer.logoutDelay.reset();
+						attacker.updateLastCombatAction();
+						attacker.setInCombat(true);
+					}
 				}
 			} else {
 				attacker.getActionSender().sendMessage("You do not have the required special amount.");

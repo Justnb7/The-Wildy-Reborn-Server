@@ -31,8 +31,8 @@ public class MagicCalculations {
         if (player.getSkills().getLevel(Skills.MAGIC) > player.getSkills().getLevelForExperience(Skills.MAGIC)) {
             damageMultiplier += .03 * (player.getSkills().getLevel(Skills.MAGIC) - player.getSkills().getLevelForExperience(Skills.MAGIC));
         }
-
-        switch (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()) {
+        int wepid = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT)==null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        switch (wepid) {
         case 4675: // Ancient Staff
         case 4710: // Ahrim's Staff
         case 4862: // Ahrim's Staff
@@ -43,14 +43,12 @@ public class MagicCalculations {
             damageMultiplier += 0.10;
             break;
         }
-
-        if (player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT).getId() > 0) {
-            switch (player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT).getId()) {
+        int neck = player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT)==null? -1:player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT).getId();
+            switch (neck) {
             case 12002: // Occult
                 damageMultiplier += 0.10;
                 break;
             }
-        }
 
         damage *= damageMultiplier;
         return (int) damage;

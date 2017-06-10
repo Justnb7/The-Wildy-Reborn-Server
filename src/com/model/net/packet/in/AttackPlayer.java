@@ -27,10 +27,10 @@ public class AttackPlayer implements PacketType {
 		case ATTACK_PLAYER:
 			int targetIndex = player.getInStream().readSignedWordBigEndian();
 			Entity targ = World.getWorld().getPlayers().get(targetIndex);
+			player.getCombatState().reset();
 			if (targ == null) {
 				break;
 			}
-			
 			if (targetIndex < 0 || player.getIndex() < 0 || player.isDead()) {
 				System.out.println("index below 0 or player dead");
 				player.getCombatState().reset();

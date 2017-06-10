@@ -3,7 +3,6 @@ package com.model.game.character.combat.weaponSpecial.impl;
 import com.model.game.character.*;
 import com.model.game.character.combat.CombatFormulae;
 import com.model.game.character.combat.PrayerHandler;
-import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
@@ -20,14 +19,9 @@ public class DarkBow implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		player.setCombatType(CombatStyle.RANGE);
 		player.playAnimation(Animation.create(426));
 		
 		player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
-		
-		// On rapid, the attack delay is 1 tick faster.
-		if (player.getAttackStyle() == 2)
-			player.getCombatState().setAttackDelay(-1);
 		
 		// Send the projectile TODO adjust the height and duration for the 2nd arrow
 		player.getCombatState().fireProjectileAtTarget();

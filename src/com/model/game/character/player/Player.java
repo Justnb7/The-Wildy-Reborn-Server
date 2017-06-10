@@ -1274,7 +1274,12 @@ public class Player extends Entity {
 		inStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		inStream.offset = 0;
 	}
-	
+
+	@Override
+	public boolean moving() {
+		return movementHandler.isMoving();
+	}
+
 	@Override
 	public Hit decrementHP(Hit hit) {
 		int damage = hit.getDamage(); 

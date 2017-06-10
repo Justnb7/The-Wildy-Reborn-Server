@@ -86,7 +86,9 @@ public abstract class Entity {
     	Server.getTaskScheduler().schedule(o);
     }
 
-    public enum EntityType {
+	public abstract boolean moving();
+
+	public enum EntityType {
 		PLAYER, NPC,
 	}
 

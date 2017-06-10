@@ -122,6 +122,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		int pid = player.getInStream().readSignedWordBigEndianA();
 		int castingSpellId = player.getInStream().readSignedWordA();
 		player.setCombatType(null);
+		player.spellId = -1;
 		NPC npc = World.getWorld().getNPCs().get(pid);
 		if (npc == null) {
 			return;

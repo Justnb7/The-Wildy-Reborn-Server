@@ -118,16 +118,16 @@ public class Combat {
         if (!attackable(player, target))
             return;
 
-        if (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2)) {
+        if (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2) && !target.moving()) {
             player.getMovementHandler().stopMovement();
+        }
+        if (player.getCombatState().getAttackDelay() > 0) {
+            // don't attack as our timer hasnt reached 0 yet
+            return;
         }
         if (player.isUsingSpecial()) {
             Special.handleSpecialAttack(player, target);
             onAttackDone(player, target);
-            return;
-        }
-        if (player.getCombatState().getAttackDelay() > 0) {
-            // don't attack as our timer hasnt reached 0 yet
             return;
         }
         onAttackDone(player, target);
@@ -161,7 +161,8 @@ public class Combat {
             player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
             return;
         }
-        player.getMovementHandler().stopMovement();
+        if (!target.moving())
+            player.getMovementHandler().stopMovement();
 
         if (player.getCombatState().getAttackDelay() > 0) {
             // don't attack as our timer hasnt reached 0 yet
@@ -268,19 +269,6 @@ public class Combat {
         }
 
         Combat.hitEvent(player, target, hitDelay, new Hit(dam1), CombatStyle.MAGIC);
-        player.run(new ScheduledTask() {
-           @Override
-           public void execute() {
-
-               if (endH == 100 && !splash) { // end GFX
-                   target.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][5], 0, 100));
-               } else if (!splash) {
-                   target.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][5], 0, endH));
-               } else if (splash) {
-                   target.playGraphics(Graphic.create(85, 0, 100));
-               }
-           }
-       });
         player.spellId = -1;
         onAttackDone(player, target);
     }
@@ -320,9 +308,6 @@ public class Combat {
 
         int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
-
-        if (player.getAttackStyle() == 2)
-            player.getCombatState().setAttackDelay(player.getCombatState().getAttackDelay() - 1);
 
         player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
         player.getCombatState().fireProjectileAtTarget();
@@ -438,6 +423,12 @@ public class Combat {
 
 		// Set our attack timer so we dont instantly hit again
         player.getCombatState().setAttackDelay(WeaponDefinition.sendAttackSpeed(player));
+
+        // Rapid reduce delay by 1 faster
+        if (player.getCombatType() == CombatStyle.RANGE) {
+            if (player.getAttackStyle() == 2)
+                player.getCombatState().setAttackDelay(player.getCombatState().getAttackDelay() - 1);
+        }
 
         // Add a skull if needed
         if (target.isPlayer()) {
@@ -596,13 +587,11 @@ public class Combat {
     public static void setCombatStyle(Player player) {
         player.setCombatType(null); // reset
 
-		// Check if we are using magic
-        boolean spellQueued = player.getCombatType() == CombatStyle.MAGIC && player.spellId > 0;
         if (player.autoCast && (player.getSpellBook() == SpellBook.MODERN || player.getSpellBook() == SpellBook.ANCIENT)) {
             player.spellId = player.autocastId;
             player.setCombatType(CombatStyle.MAGIC);
         }
-        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null?-1:player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         if (wep == 11907) {
             player.spellId = 52;
             player.setCombatType(CombatStyle.MAGIC);
@@ -639,7 +628,8 @@ public class Combat {
             		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
             	
             	// Apply the damage inside Hit
-                target.damage(hit);
+                if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC)) // dont show 0 for splash
+                    target.damage(hit);
 
                 if (attacker.isPlayer()) {
 	                // Range attack invoke block emote when hit appears.
@@ -670,10 +660,7 @@ public class Combat {
 	    if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null)
 	        return false;
 		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()).getName().toLowerCase();
-		if (weapon.contains("halberd")) {
-			return true;
-		}
-		return false;
+		return weapon.contains("halberd");
 	}
 	
 	/**
@@ -702,7 +689,7 @@ public class Combat {
 			if (player.getX() != victim.getX() && player.getY() != victim.getY() && player.distanceToPoint(victim.getX(), victim.getY()) < 2) {
 				distance = 2;
 			} else {
-				distance = CombatRequirements.getRequiredDistance(player);
+				distance = CombatRequirements.extraMovingTilesDistance(player);
 			}
 		}
 		if (player.getMovementHandler().isMoving()) {
@@ -716,22 +703,16 @@ public class Combat {
      */
 	public static boolean touches(Player player, Entity target, int dist) {
 	    boolean melee = player.getCombatType() == CombatStyle.MELEE;
-	    if (melee) {
+	    if (melee && player.getX() != target.getX() && target.getY() != player.getY()) {
             if (target.isPlayer()) { // TODO will this logic break anything?
                 Player ptarg = (Player) target;
                 if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
-                    if (player.getX() != ptarg.getX() && ptarg.getY() != player.getY()
-                            && player.getCombatType() == CombatStyle.MELEE) {
-                        PlayerFollowing.stopDiagonal(player, ptarg.getX(), ptarg.getY());
-                    }
+                    PlayerFollowing.stopDiagonal(player, ptarg.getX(), ptarg.getY());
                 }
             } else if (target.isNPC()) {
                 NPC npc = (NPC) target;
                 if (npc.getSize() == 1) {
-                    if (player.getX() != npc.getX() && npc.getY() != player.getY()
-                            && player.getCombatType() == CombatStyle.MELEE) {
-                        PlayerFollowing.stopDiagonal(player, npc.getX(), npc.getY());
-                    }
+                    PlayerFollowing.stopDiagonal(player, npc.getX(), npc.getY());
                 }
             }
         }
@@ -754,8 +735,9 @@ public class Combat {
             }
         } else {
             // Run to the target
-            //PathFinder.getPathFinder().findRoute(player, target.absX, target.absY, true, 1, 1);
-            // alternatively: TODO
+           // PathFinder.getPathFinder().findRoute(player, target.absX, target.absY, true, 1, 1);
+
+            // TODO this doesnt find a path accounting for projectiles
             player.getPlayerFollowing().followPlayer(true, target, dist);
 
             // With an updated path, recheck

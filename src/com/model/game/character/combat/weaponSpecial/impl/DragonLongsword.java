@@ -41,10 +41,6 @@ public class DragonLongsword implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity victim) {
-		if (victim == null) {
-			Combat.resetCombat(player);
-			return false;
-		}
 		return true;
 	}
 	

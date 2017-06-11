@@ -150,7 +150,7 @@ public class CombatFormulae {
 
             Item weapon = p.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
             
-            if (weapon.getId() > 0 && att_type != 2) {
+            if (weapon != null && att_type != 2) {
                 att_weapon_bonus += (((att_type == 0 ? att_base_attack : att_base_range) - (att_type = 0)) * 0.3);
             }
 

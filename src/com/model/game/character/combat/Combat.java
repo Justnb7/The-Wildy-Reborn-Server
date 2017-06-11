@@ -455,7 +455,7 @@ public class Combat {
             }*/
         }
 
-        if (wep.getId() > -1 && player.getCombatType() != CombatStyle.MAGIC) {
+        if (wep != null && player.getCombatType() != CombatStyle.MAGIC) {
             PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep.getId());
         }
 
@@ -657,6 +657,8 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
+		if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null)
+			return false;
 		String weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getName().toLowerCase();
 		return weapon.contains("halberd");
 	}

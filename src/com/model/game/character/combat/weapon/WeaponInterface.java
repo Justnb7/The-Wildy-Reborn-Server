@@ -164,7 +164,9 @@ public class WeaponInterface {
 	 * @param id
 	 */
 	public void sendSpecialBar(Item id) {
-		if (id == null) return;
+		if(id == null) {
+			return;
+		}
 		WeaponSpecials spec = WeaponSpecials.forId(id.getId());
 		if (spec == null) {
 			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.DAGGER_INTERFACE.getConfigId());
@@ -220,6 +222,7 @@ public class WeaponInterface {
 	}
 	
 	public void restoreWeaponAttributes() {
+		player.getEquipment().updateWeapon();
 		refreshSpecialAttack();
 		sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 	}

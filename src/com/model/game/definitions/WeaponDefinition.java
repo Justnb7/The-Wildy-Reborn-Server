@@ -306,7 +306,10 @@ public class WeaponDefinition {
 	 * @return the attack speed
 	 */
 	public static int sendAttackSpeed(Player player) {
-		Item weapon = new Item(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		
+		if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null)
+			return 4;
 		
 		if (player.getCombatType() == CombatStyle.MAGIC) {
 			switch (player.MAGIC_SPELLS[player.spellId][0]) {
@@ -315,9 +318,7 @@ public class WeaponDefinition {
 			}
 		}
 
-		if (weapon.getId() <= 0) {
-			return 4;
-		} else if (weapon.getId() == 12926) {
+		if (weapon.getId() == 12926) {
 			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombatState().getTarget().isPlayer() ? 3 : 2 : player.getCombatState().getTarget().isPlayer() ? 4 : 3;
 		} else {
 			return WeaponDefinition.get(weapon.getId()).getAttackSpeed();

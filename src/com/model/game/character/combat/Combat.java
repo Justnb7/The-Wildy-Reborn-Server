@@ -700,7 +700,19 @@ public class Combat {
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
 	public static boolean touches(Player player, Entity target, int dist) {
-	    if (player.getCombatType() == CombatStyle.MELEE && player.getX() != target.getX() && target.getY() != player.getY()) {
+        if (target.isNPC()) {
+            player.getPlayerFollowing().followNpc(target, dist);
+            //PlayerVsNpcCombat.canTouch(player, (NPC)target, true);
+        } else {
+            player.getPlayerFollowing().followPlayer(true, target, dist);
+        }
+        stopDiagonalMelee(player, target);
+        boolean goodDist = target.isNPC() ? PlayerVsNpcCombat.inDistance(player, (NPC) target, calculateAttackDistance(player, target)) : Combat.withinDistance(player, target);
+		return goodDist && ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation());
+	}
+
+    private static void stopDiagonalMelee(Player player, Entity target) {
+        if (player.getCombatType() == CombatStyle.MELEE && player.getX() != target.getX() && target.getY() != player.getY()) {
             if (target.isPlayer()) { // TODO will this logic break anything?
                 Player ptarg = (Player) target;
                 if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
@@ -713,38 +725,9 @@ public class Combat {
                 }
             }
         }
-        if (player.frozen()) {
-            // Frozen, we can't update path to a valid one
-            if (!Combat.withinDistance(player, target) || !ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()))
-                return false;
-        }
-        // TODO this logic is bound to be fucked
-        if (target.isNPC()) {
-            player.getPlayerFollowing().followNpc(target, dist); // TODO or pathfinder find route
+    }
 
-            // Clip check first. Get line of sight.
-            /*if (!PlayerVsNpcCombat.canTouch(player, (NPC)target, true)) {
-                return false;
-            }*/
-            // Super basic - override if target is kraken since that fucks up pathing
-            if (target.isNPC() && !PlayerVsNpcCombat.inDistance(player, (NPC) target, dist)) { // TODO this is probably fucked
-                return false;
-            }
-        } else {
-            // Run to the target
-           // PathFinder.getPathFinder().findRoute(player, target.absX, target.absY, true, 1, 1);
-
-            // TODO this doesnt find a path accounting for projectiles
-            player.getPlayerFollowing().followPlayer(true, target, dist);
-
-            // With an updated path, recheck
-            if (!Combat.withinDistance(player, target) /*|| !ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation())*/)
-                return false;
-        }
-		return true;
-	}
-
-	private static boolean withinDistance(Player player, Entity target) {
+    private static boolean withinDistance(Player player, Entity target) {
         return player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(),
                 calculateAttackDistance(player, target));
     }

@@ -12,7 +12,7 @@ public class NPCPathFinder {
 	
 	public static boolean execute_path(Entity mob, Entity partner, boolean combat) {
 		try {
-			mob.setFollowingMob(partner); // TODO
+			//mob.setFollowingMob(partner); // TODO
 			Tile pos = mob.getPosition();
 			int dx = pos.getX() - partner.getPosition().getX(); 
 			int dy = pos.getY() - partner.getPosition().getY();

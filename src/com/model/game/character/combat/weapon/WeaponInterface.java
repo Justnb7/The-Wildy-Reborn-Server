@@ -1,11 +1,11 @@
 package com.model.game.character.combat.weapon;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The class which represents functionality for the weapons interface.
@@ -164,6 +164,7 @@ public class WeaponInterface {
 	 * @param id
 	 */
 	public void sendSpecialBar(Item id) {
+		if (id == null) return;
 		WeaponSpecials spec = WeaponSpecials.forId(id.getId());
 		if (spec == null) {
 			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.DAGGER_INTERFACE.getConfigId());

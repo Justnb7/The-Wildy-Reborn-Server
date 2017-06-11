@@ -2,6 +2,7 @@ package com.model.game.object;
 
 import com.model.game.location.Location;
 import com.model.utility.cache.ObjectDefinition;
+import com.model.utility.oscache.definitions.CachedObjectDefinition;
 
 /**
  * A global object is a visual model that is viewed by all players within a region.
@@ -185,4 +186,8 @@ public class GameObject {
 	public ObjectDefinition getDefinition() {
 		return ObjectDefinition.get(id);
 	}
+
+    public CachedObjectDefinition cacheDef() {
+		return CachedObjectDefinition.forId(id);
+    }
 }

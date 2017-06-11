@@ -103,8 +103,8 @@ public class ProjectilePathFinder {
     		GameObject currentObject = RegionManager.get().getWallObject(currentTile);
     		GameObject nextObject = RegionManager.get().getWallObject(nextTile);
     		if (projectileCheck) {
-    			if (currentObject != null && !currentObject.getDefinition().isRangeable()) {
-        			if (nextObject != null && !nextObject.getDefinition().isRangeable()) {
+    			if (currentObject != null && !currentObject.cacheDef().rangableObject()) {
+        			if (nextObject != null && !nextObject.cacheDef().rangableObject()) {
     					if (!currentTile.canMove(localDirection, 1, false) || !nextTile.canMove(localDirectionInverse, 1, false))
     						break;
         			} else {

@@ -612,7 +612,7 @@ public abstract class Entity {
 			}
 			
 			// TODO special reduction effects can go here, like Ely
-			if (player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() == 12817) {
+			if (player_me.getEquipment().contains(12817)) {
 				if (Utility.getRandom(100) > 30 && damage > 0) {
 					damage *= .75;
 				}
@@ -1039,13 +1039,13 @@ public abstract class Entity {
 				@Override
 				public void execute() {
 					setForcedMovement(true);
-					System.out.println("force movement: "+isForcedMovement());
+					//System.out.println("force movement: "+isForcedMovement());
 					movePlayer(getLocation().transform(forceWalk[2], forceWalk[3], 0));
 					if(removeAttribute) {
 						getAttributes().remove("busy");
 					}
 					setForcedMovement(false);
-					System.out.println("force movement: "+isForcedMovement());
+					//System.out.println("force movement: "+isForcedMovement());
 					this.stop();
 				}
 			});

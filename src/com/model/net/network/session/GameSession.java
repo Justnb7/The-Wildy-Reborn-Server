@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.model.game.character.player.Player;
-import com.model.net.network.Packet;
+import com.model.net.packet.Packet;
 import com.model.net.packet.PacketHandler;
 
 import io.netty.channel.Channel;

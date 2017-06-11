@@ -6,8 +6,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-import com.model.net.network.Packet;
 import com.model.net.network.rsa.ISAACRandomGen;
+import com.model.net.packet.Packet;
 
 public class RS2Decoder extends ByteToMessageDecoder {
 

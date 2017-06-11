@@ -1,4 +1,4 @@
-package com.model.net.network;
+package com.model.net.packet;
 
 import io.netty.buffer.ByteBuf;
 

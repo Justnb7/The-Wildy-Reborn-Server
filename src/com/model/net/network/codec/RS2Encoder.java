@@ -5,7 +5,7 @@ import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.util.List;
 
-import com.model.net.network.Packet;
+import com.model.net.packet.Packet;
 
 public final class RS2Encoder extends MessageToMessageEncoder<Packet> {
 

@@ -3,6 +3,9 @@ package com.model.game.character.pathfinder.impl;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.pathfinder.Directions;
+import com.model.game.character.pathfinder.region.ProjectileClipping;
+import com.model.game.character.pathfinder.region.RegionManager;
+import com.model.game.object.GameObject;
 import com.model.utility.cache.map.Tile;
 
 public class ProjectilePathFinder {
@@ -97,8 +100,8 @@ public class ProjectilePathFinder {
 			Tile nextTile = currentTile.transform(Directions.DIRECTION_DELTA_X[globalDirection.intValue()], Directions.DIRECTION_DELTA_Y[globalDirection.intValue()], 0);
     		localDirection = Directions.directionFor(currentTile, nextTile);	
     		localDirectionInverse = Directions.directionFor(nextTile, currentTile);
-    		GameObject currentObject = World.getWorld().getRegionManager().getWallObject(currentTile);
-    		GameObject nextObject = World.getWorld().getRegionManager().getWallObject(nextTile);
+    		GameObject currentObject = RegionManager.get().getWallObject(currentTile);
+    		GameObject nextObject = RegionManager.get().getWallObject(nextTile);
     		if (projectileCheck) {
     			if (currentObject != null && !currentObject.getDefinition().isRangeable()) {
         			if (nextObject != null && !nextObject.getDefinition().isRangeable()) {
@@ -116,8 +119,8 @@ public class ProjectilePathFinder {
         			currentTile = nextTile;
         			continue;
         		} else {
-        			boolean solid = (World.getWorld().getRegionManager().getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
-        			boolean solid2 = (World.getWorld().getRegionManager().getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
+        			boolean solid = (RegionManager.get().getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
+        			boolean solid2 = (RegionManager.get().getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
         			if (!solid && !solid2) {
         				currentTile = nextTile;
         				continue;
@@ -133,8 +136,8 @@ public class ProjectilePathFinder {
         			currentTile = nextTile;
         			continue;
         		} else {
-        			boolean solid = (World.getWorld().getRegionManager().getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
-        			boolean solid2 = (World.getWorld().getRegionManager().getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
+        			boolean solid = (RegionManager.get().getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
+        			boolean solid2 = (RegionManager.get().getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
         			if (!solid && !solid2) {
         				currentTile = nextTile;
         				continue;

@@ -1,12 +1,18 @@
 package com.model.game.character.pathfinder.impl;
 
+import com.model.game.character.Entity;
+import com.model.game.character.combat.combat_data.CombatStyle;
+import com.model.game.character.npc.NPC;
 import com.model.game.character.pathfinder.Directions;
+import com.model.game.character.pathfinder.region.Coverage;
+import com.model.game.character.player.Player;
+import com.model.game.location.Location;
 import com.model.utility.cache.map.Tile;
 public class NPCPathFinder {
 	
-	public static boolean execute_path(Mob mob, Mob partner, boolean combat) {
+	public static boolean execute_path(Entity mob, Entity partner, boolean combat) {
 		try {
-			mob.setFollowingMob(partner);
+			mob.setFollowingMob(partner); // TODO
 			Tile pos = mob.getPosition();
 			int dx = pos.getX() - partner.getPosition().getX(); 
 			int dy = pos.getY() - partner.getPosition().getY();
@@ -19,9 +25,9 @@ public class NPCPathFinder {
 			if (mob.isPlayer()) {
 				Player player = (Player) mob;
 				if (partner.isPlayer()) {
-					counter = (player.getWalkingQueue().isMoving() || partner.getWalkingQueue().isMoving()) ? 2 : 1;
+					counter = (player.moving() || partner.moving()) ? 2 : 1;
 				} else {
-					counter = player.getWalkingQueue().isMoving() ? 2 : 1;
+					counter = player.moving() ? 2 : 1;
 				}
 			} else {
 				counter = 1;
@@ -47,8 +53,17 @@ public class NPCPathFinder {
 					dy = y - partner.getPosition().getY();
 					successful = true;
 					mob.updateCoverage(next.tile);
-					mob.getWalkingQueue().addStep(next.tile.getX(), next.tile.getY());
-					mob.getWalkingQueue().finish();
+					if (mob.isPlayer()) {
+						((Player)mob).getMovementHandler().addToPath(Location.create(next.tile.getX(), next.tile.getY()));
+						((Player)mob).getMovementHandler().finish();
+					} else {
+						((NPC)mob).moveX = next.tile.getX();
+						((NPC)mob).moveY = next.tile.getY();
+						((NPC)mob).getNextNPCMovement(((NPC)mob));
+					}
+					// hyperion
+					//mob.getWalkingQueue().addStep(next.tile.getX(), next.tile.getY());
+					//mob.getWalkingQueue().finish();
 				} else {
 					// TODO handle being stucked!
 					break;
@@ -61,11 +76,11 @@ public class NPCPathFinder {
 		}
 	}
 	
-	protected static NextNode getNextNode(Tile loc, int dx, int dy, int distance, boolean combat, Mob mob, Mob partner) {
+	protected static NextNode getNextNode(Tile loc, int dx, int dy, int distance, boolean combat, Entity mob, Entity partner) {
         Directions.NormalDirection direction = null;
         boolean npcCheck = (mob.isNPC());
         if (combat) {
-        	if (mob.getCoverage().correctCombatPosition(mob, partner, partner.getCoverage(), 1, CombatActionType.MELEE)) {
+        	if (mob.getCoverage().correctCombatPosition(mob, partner, partner.getCoverage(), 1, CombatStyle.MELEE)) {
         		return null;
         	}
         } else {
@@ -534,7 +549,7 @@ public class NPCPathFinder {
 	private static class NextNode {
         Tile tile = null;
         boolean canMove = false;
-        public NextNode(Position pos, NormalDirection dir, boolean canMove) {
+        public NextNode(Tile pos, Directions.NormalDirection dir, boolean canMove) {
             this.canMove = canMove;
             if (canMove) {
                 tile = pos.transform(Directions.DIRECTION_DELTA_X[dir.intValue()], Directions.DIRECTION_DELTA_Y[dir.intValue()], 0);

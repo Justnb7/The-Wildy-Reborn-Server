@@ -2,6 +2,8 @@ package com.model.game.character.pathfinder;
 
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.pathfinder.region.Region;
+import com.model.game.character.pathfinder.region.RegionManager;
 import com.model.utility.cache.map.Tile;
 
 import java.util.HashMap;
@@ -83,13 +85,13 @@ public class TileControl {
     public boolean locationOccupied(int x, int y, int z, int world) {
         Tile location = Tile.create(x, y, z);
         Tile[] npcLocations = null;
-    	 for (Region r : World.getWorld().getRegionManager().getSurroundingRegions(location)) {
+    	 for (Region r : RegionManager.get().getSurroundingRegions(location)) {
     		 for (NPC npc : r.getNpcs()) {
     			 if (npc == null)
     				 continue;
     			 npcLocations = getOccupiedLocations(npc);
                  if (npcLocations != null) {
-                	 for (Position locs : npcLocations) {
+                	 for (Tile locs : npcLocations) {
                 		 if (locs.equals(location)) {
                              return true;
                          }
@@ -99,9 +101,9 @@ public class TileControl {
     	 }
     	return false;
     }
-    
+
     /**
-     * 
+     *
      * @param locations
      * @param mob
      * @return
@@ -110,7 +112,7 @@ public class TileControl {
         if ((locations == null) || (mob == null))
             return true;
         Tile[] npcLocations = null;
-        for (Region r : World.getWorld().getRegionManager().getSurroundingRegions(mob.getPosition())) {
+        for (Region r : RegionManager.get().getSurroundingRegions(mob.getPosition())) {
             for (NPC npc : r.getNpcs()) {
                 if ((mob.isNPC()) && ((npc == null) || (npc == mob))) {
                     continue;

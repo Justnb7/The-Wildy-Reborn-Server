@@ -24,6 +24,7 @@ import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Utility;
+import com.model.utility.cache.map.Tile;
 
 import java.util.*;
 
@@ -102,6 +103,10 @@ public abstract class Entity {
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 	public Location lastTile;
+
+	public Tile getPosition() {
+		return new Tile(absX, absY, heightLevel);
+	}
 	
 	/**
 	 * Map region changing flag.

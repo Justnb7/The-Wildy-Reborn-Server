@@ -702,8 +702,7 @@ public class Combat {
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
 	public static boolean touches(Player player, Entity target, int dist) {
-	    boolean melee = player.getCombatType() == CombatStyle.MELEE;
-	    if (melee && player.getX() != target.getX() && target.getY() != player.getY()) {
+	    if (player.getCombatType() == CombatStyle.MELEE && player.getX() != target.getX() && target.getY() != player.getY()) {
             if (target.isPlayer()) { // TODO will this logic break anything?
                 Player ptarg = (Player) target;
                 if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
@@ -726,9 +725,9 @@ public class Combat {
             player.getPlayerFollowing().followNpc(target, dist); // TODO or pathfinder find route
 
             // Clip check first. Get line of sight.
-            if (!PlayerVsNpcCombat.canTouch(player, (NPC)target, true)) {
+            /*if (!PlayerVsNpcCombat.canTouch(player, (NPC)target, true)) {
                 return false;
-            }
+            }*/
             // Super basic - override if target is kraken since that fucks up pathing
             if (target.isNPC() && !PlayerVsNpcCombat.inDistance(player, (NPC) target, dist)) { // TODO this is probably fucked
                 return false;
@@ -741,10 +740,9 @@ public class Combat {
             player.getPlayerFollowing().followPlayer(true, target, dist);
 
             // With an updated path, recheck
-            if (!Combat.withinDistance(player, target) || !ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()))
+            if (!Combat.withinDistance(player, target) /*|| !ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation())*/)
                 return false;
         }
-
 		return true;
 	}
 

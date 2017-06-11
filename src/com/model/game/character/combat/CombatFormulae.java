@@ -138,7 +138,7 @@ public class CombatFormulae {
                      att_prayer_bonus += 0.15;
                  }
 
-                //att_spell_bonus += ((att_base_magic - p.MAGIC_SPELLS[p.oldSpellId][1]) * 0.3);
+                att_spell_bonus += ((att_base_magic - p.MAGIC_SPELLS[p.spellId][1]) * 0.3);
 
                 att_equipment_bonus = p.getBonuses()[3];
                 att_void_bonus = wearingFullVoid(p, att_type) ? 1.3 : 1;
@@ -369,7 +369,6 @@ public class CombatFormulae {
 	 * Retrieves the players attackstyle.
 	 * 
 	 * @param player
-	 * @return {@link attackStyle EX: CONTROLLED}
 	 */
 	public static final int weaponBonus(Player player) {
 		switch (player.getAttackStyle()) {
@@ -390,7 +389,10 @@ public class CombatFormulae {
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
 		double otherBonusMultiplier = 1;	
-		int rangedStrength = player.getBonuses()[12];
+		int rangedStrength = player.getBonuses().length < 13 ? 0 : player.getBonuses()[12];
+		if (player.getBonuses().length < 13) {
+			System.err.println("NO RANGE STR BONUSES DEFINED");
+		}
 		
 		int rangeLevel = player.getSkills().getLevel(Skills.RANGE);
 		int combatStyleBonus = 0;
@@ -580,8 +582,7 @@ public class CombatFormulae {
 	
 	/**
 	 * Get the attackers' weapon speed.
-	 * 
-	 * @param player The player for whose weapon we are getting the speed value.
+	 *
 	 * @return A <code>long</code>-type value of the weapon speed.
 	 */
 	public static int getCombatCooldownDelay(Entity entity) {

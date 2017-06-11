@@ -272,33 +272,15 @@ public class PlayerVsNpcCombat {
 		}
 	}
 
-	public static boolean inDistance(Player player, NPC npc) {
-		boolean hasDistance = npc.getId() == 5535 ? true : false; // force 5535 tents to always be hittable
+	public static boolean inDistance(Player player, NPC npc, int dist) {
+		boolean hasDistance = npc.getId() == 5535; // force 5535 tents to always be hittable
 		for (Location pos : npc.getTiles()) {
 			double distance = pos.distance(player.getLocation());
-			if(Combat.usingHalberd(player) && distance <= 2) {
+			if (distance <= dist) {
 				hasDistance = true;
 				break;
 			}
-			if (player.getCombatType() == CombatStyle.MELEE) {
-				if (distance <= 1) {
-					hasDistance = true;
-					break;
-				}
-			} else {
-				if (distance <= (player.getCombatType() == CombatStyle.RANGE ? 10 : 15)) {
-					hasDistance = true;
-					break;
-				}
-			}
 		}
-
-		if (hasDistance) {
-			player.getMovementHandler().stopMovement();
-		} else {
-			//player.write(new SendGameMessage("No fucking distance?");
-			return false;
-		}
-		return true;
+		return hasDistance;
 	}
 }

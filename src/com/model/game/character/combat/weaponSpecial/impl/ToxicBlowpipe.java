@@ -5,7 +5,6 @@ import com.model.game.character.Entity;
 import com.model.game.character.Hit;
 import com.model.game.character.HitType;
 import com.model.game.character.combat.CombatFormulae;
-import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
@@ -20,7 +19,6 @@ public class ToxicBlowpipe implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		player.setCombatType(CombatStyle.RANGE);
 		int damage = Utility.random(player.getCombatState().calculateRangeMaxHit());
 		player.playAnimation(Animation.create(5061));
 

@@ -3,7 +3,10 @@ package com.model.game.character.combat;
 
 import com.model.game.character.Entity;
 import com.model.game.character.combat.magic.CombatSpells;
+import com.model.game.character.combat.magic.MagicData;
+import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.player.Player;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 public class CombatState {
 	
@@ -55,6 +58,70 @@ public class CombatState {
 	 */
 	public void vengeance(Entity attacker, int damage, int delay) {
 		CombatSpells.vengeance(mob.asPlayer(), attacker, damage, delay);
+	}
+
+	public int getRangeStartGFX() {
+		return RangeData.getRangeStartGFX(mob.asPlayer());
+	}
+
+	public int getRangeProjectileGFX() {
+		return RangeData.getRangeProjectileGFX(mob.asPlayer());
+	}
+
+	public int getProjectileShowDelay() {
+		return RangeData.getProjectileShowDelay(mob.asPlayer());
+	}
+
+	public int getProjectileSpeed() {
+		return RangeData.getProjectileSpeed(mob.asPlayer());
+	}
+	
+	public boolean properJavalins() {
+		return usingJavalins(mob.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
+	}
+
+	public boolean usingDbow() {
+		return mob.asPlayer().getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235;
+	}
+
+	public boolean properBolts() {
+		return usingBolts(mob.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
+	}
+	
+	public boolean usingJavalins(int javalin) {
+		return (javalin >= 825 && javalin <= 830) || javalin == 19484;
+	}
+
+	public boolean usingBolts(int i) {
+		return (i >= 9140 && i <= 9145) || i >= 9334 && i <= 9344 || (i >= 9236 && i <= 9245) || i == 11875;
+	}
+
+	public int getStartHeight() {
+		return MagicData.getStartHeight(mob.asPlayer());
+	}
+
+	public int getEndHeight() {
+		return MagicData.getEndHeight(mob.asPlayer());
+	}
+
+	public int getStartDelay() {
+		return MagicData.getStartDelay(mob.asPlayer());
+	}
+
+	public int getStaffNeeded() {
+		return MagicData.getStaffNeeded(mob.asPlayer());
+	}
+
+	public boolean godSpells() {
+		return MagicData.godSpells(mob.asPlayer());
+	}
+
+	public int getStartGfxHeight() {
+		return MagicData.getStartGfxHeight(mob.asPlayer());
+	}
+
+	public void fireProjectileAtTarget() {
+		RangeData.fireProjectileAtTarget(mob.asPlayer());
 	}
 	
 	public int calculateMeleeMaxHit() {

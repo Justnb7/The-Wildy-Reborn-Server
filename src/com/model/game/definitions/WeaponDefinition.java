@@ -1,13 +1,13 @@
 package com.model.game.definitions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The definition for all weapons.
@@ -309,7 +309,10 @@ public class WeaponDefinition {
 		Item weapon = new Item(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 		
 		if (player.getCombatType() == CombatStyle.MAGIC) {
-			return 5;
+			switch (player.MAGIC_SPELLS[player.spellId][0]) {
+			default:
+				return 5;
+			}
 		}
 
 		if (weapon.getId() <= 0) {
@@ -330,15 +333,15 @@ public class WeaponDefinition {
 	 */
 	public static int sendBlockAnimation(Player player) {
 		//weapon instance
-		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		int weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		
 		//shield instance
 		Item shield = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
 
 		//grab by name
-		String shieldName = shield.getName().toLowerCase();
 
-		if (shieldName != null) {
+		if (shield != null) {
+			String shieldName = shield.getName().toLowerCase();
 			if (shieldName.contains("shield") || shieldName.contains("kite") || shieldName.contains("ward")) {
 				return 1156;
 			}
@@ -350,9 +353,9 @@ public class WeaponDefinition {
 				return 1156;
 			}
 		}
-		if (weapon == null) // empty hands
+		if (weapon == -1) // empty hands
 			return 424;
 		else
-			return WeaponDefinition.get(weapon.getId()).getBlockAnimation(); // wep anim
+			return WeaponDefinition.get(weapon).getBlockAnimation(); // wep anim
 	}
 }

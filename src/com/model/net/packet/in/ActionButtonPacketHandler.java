@@ -757,6 +757,9 @@ public class ActionButtonPacketHandler implements PacketType {
 				break;
 				
 		}
+		if (player.isAutoButton(button)) {
+			player.assignAutocast(button);
+		}
 	}
 
 	private void handleDestroyItem(Player player) {

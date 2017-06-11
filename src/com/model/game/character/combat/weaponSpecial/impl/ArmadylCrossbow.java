@@ -1,10 +1,15 @@
 package com.model.game.character.combat.weaponSpecial.impl;
 
+import com.model.game.character.Animation;
 import com.model.game.character.Entity;
+import com.model.game.character.Hit;
+import com.model.game.character.combat.Combat;
+import com.model.game.character.combat.CombatFormulae;
+import com.model.game.character.combat.Projectile;
+import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
-import com.model.game.item.Item;
-import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.utility.Utility;
 
 public class ArmadylCrossbow implements SpecialAttack {
 
@@ -15,7 +20,27 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		
+		player.playAnimation(Animation.create(4230));
+		//player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
+
+		//TODO implement gfx 301
+		int d = player.getLocation().distanceToEntity(player, target);
+		player.playProjectile(Projectile.create(player.getLocation(), target, 301, 60, 50, 65 + (d * 5), 43, 35, 10, 36));
+		player.getCombatState().fireProjectileAtTarget();
+
+		// Step 1: calculate a hit
+		int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
+
+		// Step 2: check if it missed
+		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?
+			dam1 = 0;
+		}
+
+		// Step 3: check target's protection prayers
+		Hit hit = target.take_hit(player, dam1, CombatStyle.RANGE, false, false);
+
+		// Step 4: submit an Event where the hit appears.
+		Combat.hitEvent(player, target, 2, hit, CombatStyle.RANGE);
 	}
 
 	@Override
@@ -25,12 +50,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 
 	@Override
 	public boolean meetsRequirements(Player player, Entity target) {
-		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT); 
-		if (ammo.getId() < 1) {
-			player.getActionSender().sendMessage("You need atleast 1 bolt to perform this special.");
-			player.setUsingSpecial(false);
-			return false;
-		}
 		return true;
 	}
 

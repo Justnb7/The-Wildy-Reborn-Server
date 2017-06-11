@@ -1,19 +1,12 @@
 package com.model.game.character;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import com.google.common.base.Preconditions;
 import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.action.ActionQueue;
 import com.model.game.World;
-import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.CombatState;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.Projectile;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.BarrowsEffect;
@@ -31,6 +24,9 @@ import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Utility;
+import com.model.utility.cache.map.Tile;
+
+import java.util.*;
 
 /**
  * @author Patrick van Elderen
@@ -66,7 +62,6 @@ public abstract class Entity {
     }
 
     /**
-     * Sets the value for {@link CharacterNode#dead}.
      *
      * @param dead
      *            the new value to set.
@@ -86,7 +81,13 @@ public abstract class Entity {
         this.followTarget = following;
     }
 
-    public enum EntityType {
+    public void run(ScheduledTask o) {
+    	Server.getTaskScheduler().schedule(o);
+    }
+
+	public abstract boolean moving();
+
+	public enum EntityType {
 		PLAYER, NPC,
 	}
 
@@ -102,6 +103,10 @@ public abstract class Entity {
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 	public Location lastTile;
+
+	public Tile getPosition() {
+		return new Tile(absX, absY, heightLevel);
+	}
 	
 	/**
 	 * Map region changing flag.
@@ -150,7 +155,6 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param set teleport true or false
 	 */
 	public void setTeleporting(boolean teleport) {
 		this.teleport = teleport;
@@ -289,7 +293,6 @@ public abstract class Entity {
     }
 
     /**
-     * Sets the value for {@link CharacterNode#poisonType}.
      * 
      * @param poisonType
      *            the new value to set.
@@ -610,9 +613,9 @@ public abstract class Entity {
 					damage *= prayProtection;
 				}
 			}
-			
+			int shield = player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT) == null ? -1 : player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId();
 			// TODO special reduction effects can go here, like Ely
-			if (player_me.getEquipment().contains(12817)) {
+			if (shield == 12817) {
 				if (Utility.getRandom(100) > 30 && damage > 0) {
 					damage *= .75;
 				}
@@ -951,7 +954,6 @@ public abstract class Entity {
 	
 	/**
 	 * Plays graphics.
-	 * @param graphic The graphics.
 	 */
 	public void playProjectile(Projectile projectile) {
 		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {

@@ -33,9 +33,7 @@ public class PlayerFollowing {
 	 * @param following
 	 *        The entity we're following
 	 */
-    public void followPlayer(boolean forCombat, Entity following) {
-    	//The combat distance
-        int cbDist = player.followDistance;
+    public void followPlayer(boolean forCombat, Entity following, int stopIfDistance) {
         
         //Whenever out target is null or death stop the following task
         if (following == null || following.isDead()) {
@@ -100,7 +98,7 @@ public class PlayerFollowing {
             }
         } else {
 
-            boolean goodCombatDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), cbDist);
+            boolean goodCombatDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), stopIfDistance);
             /*
              * Check for other range weapons which require a distance of 4
              */
@@ -143,7 +141,7 @@ public class PlayerFollowing {
      * @param targ
      *        The npc we're following
      */
-    public void followNpc(Entity targ) {
+    public void followNpc(Entity targ, int stopIfDistance) {
 
     	//If the npc is either null or death we stop the following task
         if (targ == null || targ.isDead()) {
@@ -166,7 +164,7 @@ public class PlayerFollowing {
         int otherX = targ.getX();
         int otherY = targ.getY();
 
-        boolean goodCombatDist = player.goodDistance(otherX, otherY, player.getX(), player.getY(), player.followDistance);
+        boolean goodCombatDist = player.goodDistance(otherX, otherY, player.getX(), player.getY(), stopIfDistance);
 
         //If we're not stop the following task
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
@@ -192,7 +190,7 @@ public class PlayerFollowing {
         if (!inside) {
             for (Location npcloc : npc.getTiles()) {
                 double distance = npcloc.distance(player.getLocation());
-                if (distance <= player.followDistance) {
+                if (distance <= stopIfDistance) {
                     player.getMovementHandler().stopMovement();
                     return;
                 }

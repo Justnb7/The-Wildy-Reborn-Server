@@ -272,10 +272,6 @@ public class NPC extends Entity {
 
 	/**
 	 * Teleport an npc and set it's make location as the location
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
 	 */
 	public void teleport(Location position) {
 		setOnTile(position.getX(), position.getY(), position.getZ());
@@ -286,6 +282,11 @@ public class NPC extends Entity {
 		heightLevel = position.getZ();
 		setLocation(new Location(position.getX(), position.getY(), position.getZ()));
 		getAttributes().put("teleporting", true);
+	}
+
+	@Override
+	public boolean moving() {
+		return moveX != 0 || moveY != 0;
 	}
 
 	@Override

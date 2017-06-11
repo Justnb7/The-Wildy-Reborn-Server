@@ -51,8 +51,8 @@ public class DeathEvent extends EntityEvent {
 				DeathDropHandler.handleDeathDrop(p);
 			} else if (timer == 1) {
 				if (p != null) {
-					p.getActionSender().sendWidget(2, 0);
-					p.getActionSender().sendWidget(3, 0);
+					/*p.getActionSender().sendWidget(2, 0);
+					p.getActionSender().sendWidget(3, 0);*/
 					p.getActionQueue().clearRemovableActions();
 					p.movePlayer(Entity.DEFAULT_LOCATION);
 					p.getSkills().setLevel(Skills.HITPOINTS, p.getSkills().getLevelForExperience(Skills.HITPOINTS));

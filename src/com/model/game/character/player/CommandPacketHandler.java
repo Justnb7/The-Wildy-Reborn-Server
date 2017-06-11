@@ -7,6 +7,7 @@ import com.model.game.character.Animation;
 import com.model.game.character.Graphic;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.effect.SkullType;
+import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.pet.Pet;
@@ -93,6 +94,14 @@ public class CommandPacketHandler implements PacketType {
     	case "drop":
     		Server.getDropManager().open(player);
     		return true;
+			case "barrage":
+				player.setSpellBook(SpellBook.ANCIENT);
+				player.getActionSender().sendSidebarInterface(6, 12855);
+				player.getActionSender().sendMessage("An ancient wisdom fills your mind.");
+				player.getInventory().add(new Item(555, 100000));
+				player.getInventory().add(new Item(565, 100000));
+				player.getInventory().add(new Item(560, 100000));
+				return true;
     	
     	case "exp":
     		player.getSkills().addExperience(Skills.HUNTER, 1000);

@@ -497,7 +497,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 89061:
-			System.out.println("tick: " +player.isAutoRetaliating());
+			//System.out.println("tick: " +player.isAutoRetaliating());
 			player.setAutoRetaliating(!player.isAutoRetaliating());
 			player.getCombatState().reset();
 			break;

@@ -109,7 +109,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case InterfaceConstants.REMOVE_INVENTORY_ITEM: {
 			final Item item = player.getInventory().get(removeSlot);
 
-			System.out.println(item);
+			//System.out.println(item);
 
 			if (item == null || item.getId() != removeId) {
 				return;

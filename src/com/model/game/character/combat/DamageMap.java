@@ -23,7 +23,7 @@ public class DamageMap {
 		}
 		if (!isAdded) {
 			dealtDamage.add(new Damage(player, damage));
-			System.out.println("adding damage to map: "+damage);
+			//System.out.println("adding damage to map: "+damage);
 		}
 	}
 

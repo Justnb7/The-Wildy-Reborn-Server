@@ -164,10 +164,6 @@ public class WeaponInterface {
 	 * @param id
 	 */
 	public void sendSpecialBar(Item id) {
-		if(id == null) {
-			System.out.println("The player isn't wearing any items.");
-			return;
-		}
 		WeaponSpecials spec = WeaponSpecials.forId(id.getId());
 		if (spec == null) {
 			player.getActionSender().sendInterfaceConfig(1, WeaponSpecials.DAGGER_INTERFACE.getConfigId());

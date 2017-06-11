@@ -1207,8 +1207,6 @@ public class Player extends Entity {
 		//Update right click menu
 		getActionSender().sendInteractionOption("Follow", 4, true);
 		getActionSender().sendInteractionOption("Trade With", 5, true);
-		//Update location
-		correctPlayerCoordinatesOnLogin();
 		//Refresh the player settings
 		refreshSettings();
 		//Set last known height
@@ -1289,31 +1287,6 @@ public class Player extends Entity {
 	
 	private boolean isMuted() {
 		return this.isMuted;
-	}
-
-	private void correctPlayerCoordinatesOnLogin() {
-		Server.getTaskScheduler().schedule(new ScheduledTask(3) {
-
-			@Override
-			public void execute() {
-				Player player = (Player) getAttachment();
-				if (player == null || !player.isActive()) {
-					stop();
-					return;
-				}
-				final Boundary fc = Boundary.FIGHT_CAVE;
-				int x = teleportToX;
-				int y = teleportToY;
-				if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
-					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
-					player.getFightCave().startWave();
-				}
-				ControllerManager.setControllerOnWalk(player);
-				controller.onControllerInit(player);
-				stop();
-			}
-
-		}.attach(this));
 	}
 
 	public void logout() {

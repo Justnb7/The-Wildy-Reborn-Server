@@ -4,20 +4,45 @@ import io.netty.buffer.ByteBuf;
 
 public final class Packet {
 
+	/**
+	 * The opcode for this packet.
+	 */
 	private final int opcode;
-	private final ByteBuf buffer;
+	
+	/**
+	 * The buffer that contains the data for this packet.
+	 */
+	private final ByteBuf payload;
 
-	public Packet(int opcode, ByteBuf buffer) {
+	/**
+	 * Creates a {@link Packet}.
+	 * 
+	 * @param opcode
+	 *            The opcode.
+	 * @param payload
+	 *            The payload.
+	 */
+	public Packet(final int opcode, final ByteBuf payload) {
 		this.opcode = opcode;
-		this.buffer = buffer;
+		this.payload = payload;
 	}
 
+	/**
+	 * Gets the opcode.
+	 * 
+	 * @return The opcode.
+	 */
 	public int getOpcode() {
 		return opcode;
 	}
 
-	public ByteBuf getBuffer() {
-		return buffer;
+	/**
+	 * Gets the payload.
+	 * 
+	 * @return The payload.
+	 */
+	public ByteBuf getPayload() {
+		return payload;
 	}
 	
 	/**

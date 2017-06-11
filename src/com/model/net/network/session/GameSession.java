@@ -39,9 +39,9 @@ public class GameSession extends Session {
 			Packet p = queuedPackets.poll();
 			if(p == null) break;
 			player.getInStream().offset = 0;
-			player.getInStream().buffer = p.getBuffer().array();
+			player.getInStream().buffer = p.getPayload().array();
 			if (p.getOpcode() > 0) {
-				PacketHandler.processPacket(player, p.getOpcode(), p.getBuffer().readableBytes());
+				PacketHandler.processPacket(player, p.getOpcode(), p.getPayload().readableBytes());
 			}
 		}
 	}
@@ -51,12 +51,12 @@ public class GameSession extends Session {
 			Packet p = queuedSubPackets.poll();
 			if(p == null) break;
 			player.getInStream().offset = 0;
-			player.getInStream().buffer = p.getBuffer().array();
+			player.getInStream().buffer = p.getPayload().array();
 			if(p.getOpcode() == 122) {
 				continue;
 			}
 			if (p.getOpcode() > 0) { //processing packet 41 only (wearItems)
-				PacketHandler.processSubPacket(player, p.getOpcode(), p.getBuffer().readableBytes());
+				PacketHandler.processSubPacket(player, p.getOpcode(), p.getPayload().readableBytes());
 			}
 		}
 	}

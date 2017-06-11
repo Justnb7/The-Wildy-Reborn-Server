@@ -12,7 +12,7 @@ public final class RS2Encoder extends MessageToMessageEncoder<Packet> {
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Packet packet, List<Object> out) throws Exception {
 		try {
-			out.add(packet.getBuffer());
+			out.add(packet.getPayload());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

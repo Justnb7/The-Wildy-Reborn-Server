@@ -19,6 +19,7 @@ import com.model.game.definitions.ItemDefinition;
 import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
@@ -88,10 +89,6 @@ public class CommandPacketHandler implements PacketType {
     	
     	case "bank":
     		player.getBank().open();
-    		return true;
-    	
-    	case "pestr":
-    		player.getPestControlRewards().showInterface();
     		return true;
     		
     	case "drop":
@@ -631,6 +628,10 @@ public class CommandPacketHandler implements PacketType {
 					NPCHandler.loadAutoSpawn("./data/text_files/npc_spawns.txt");
 					player.getActionSender().sendMessage("Succesfully reloaded the spawns");
 					break;
+				case 3:
+					ShopManager.update();
+					player.getActionSender().sendMessage("Successfully reloaded shops.");
+					break;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -814,7 +815,14 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
 		case "npc":
-			try {
+			int npcId = Integer.parseInt(cmd[1]);
+			Location spawnLocation = new Location(player.getX(), player.getY() -1, player.getZ());
+			NPC spawn = new NPC(npcId, spawnLocation, 0);
+			
+			World.getWorld().register(spawn);
+			
+			System.out.printf("npc: %s health: %d%n", spawn.getName(), spawn.getHitpoints());
+			/*try {
 				int npcId = Integer.parseInt(cmd[1]);
 				if (npcId > 0) {
 					NPC npc = NPCHandler.spawnNpc(player, npcId, new Location(player.getX() + 1, player.getY(), player.getZ()), 0, false, false, false);
@@ -828,7 +836,7 @@ public class CommandPacketHandler implements PacketType {
 				}
 			} catch (Exception ignored) {
 				ignored.printStackTrace();
-			}
+			}*/
 			return true;
     		
     	case "anim":

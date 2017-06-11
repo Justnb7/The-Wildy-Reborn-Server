@@ -4,6 +4,8 @@ import com.model.action.Action;
 import com.model.action.impl.actions.RestorePrayerPointsAction;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.skill.agility.Agility;
+import com.model.game.character.player.skill.mining.Mining;
+import com.model.game.character.player.skill.mining.Mining.Rock;
 import com.model.game.character.player.skill.thieving.Stalls;
 import com.model.game.character.player.skill.woodcutting.Woodcutting;
 import com.model.game.character.player.skill.woodcutting.Woodcutting.Tree;
@@ -39,9 +41,12 @@ public class ObjectInteraction {
 		
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
-		
+		Rock rock = Rock.forId(objectId);
+		GameObject obj = new GameObject(objectId, location.getX(), location.getY(), location.getZ());
 		if (tree != null) {
-			action = new Woodcutting(player, new GameObject(objectId, location.getX(), location.getY(), location.getZ()));
+			action = new Woodcutting(player, obj);
+		} else if (rock != null) {
+			action = new Mining(player, obj);
 		}
 		
 		switch (def.name.toLowerCase()) {

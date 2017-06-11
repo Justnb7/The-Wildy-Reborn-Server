@@ -121,13 +121,12 @@ public class Bootstrap {
 			PlayerSounds.declare();
 			ClanManager.init();
 			ConnectionHandler.initialize();
-			new ShopParser().run();
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();
+			new NPCDefinitionParser().run();
+			new ShopParser().run();
 			Server.npcHandler.declare();
-			Arrays.fill(NPCDefinitions.getDefinitions(), null);
-	        new NPCDefinitionParser().run();
 	        Server.getDropManager().read();
 		});
 

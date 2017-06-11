@@ -50,7 +50,7 @@ public class PlayerVsNpcCombat {
 				}
 			});
 		}
-		if (npc.getId() == 496 && npc.transformId != 494) { // small whirlpools of Cave_krakens
+		if (npc.getId() == 496 && npc.transformId != 494) { // big whirlpools of Kraken
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(7135));
 			npc.requestTransform(494);

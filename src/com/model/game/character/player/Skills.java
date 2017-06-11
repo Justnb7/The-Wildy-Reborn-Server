@@ -130,7 +130,6 @@ public class Skills {
 			getCombatLevel();
 			player.getActionSender().sendString("Combat Level: " + player.getSkills().getCombatLevel(), 3983);
 		}
-		player.getSkillCyclesTask().stop();
 	}
 	
 	/**

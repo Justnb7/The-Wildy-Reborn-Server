@@ -13,11 +13,9 @@ import com.model.game.character.combat.effect.BarrowsEffect;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.ActionSender;
-import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.character.player.minigames.pest_control.PestControl;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
@@ -692,9 +690,6 @@ public abstract class Entity {
 			NPC victim_npc = (NPC) this;
 			victim_npc.retaliate(attacker);
 			victim_npc.getDamageMap().appendDamage(attacker_player.getName(), damage);
-			if (Boundary.isIn(attacker_player, PestControl.GAME_BOUNDARY)) {
-				attacker_player.pestControlDamage += damage;
-			}
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		} else if (isPlayer() && attacker.isPlayer()) {
 			//pvp
@@ -1071,7 +1066,6 @@ public abstract class Entity {
 		player.teleportToY = teleportTarget.getY();
 		player.teleHeight = teleportTarget.getZ();
 		player.getMovementHandler().reset();
-		player.getSkillCyclesTask().stop();
         System.out.println("to "+Arrays.toString(new int[] {teleportTarget.getX(), teleportTarget.getY(), teleportTarget.getZ()}));
 	}
 	

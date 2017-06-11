@@ -6,8 +6,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-import com.model.net.network.Packet;
 import com.model.net.network.rsa.ISAACRandomGen;
+import com.model.net.packet.Packet;
 
 public class RS2Decoder extends ByteToMessageDecoder {
 
@@ -47,11 +47,10 @@ public class RS2Decoder extends ByteToMessageDecoder {
 			}
 
 			try {
-				out.add(new Packet(opcode, buf.readBytes(size)));
 				/*
 				 * Produce and write the packet object.
 				 */
-				//out.write(new Packet(opcode, Type.FIXED, payload));
+				out.add(new Packet(opcode, buf.readBytes(size)));
 			} finally {
 				opcode = size = -1;
 			}

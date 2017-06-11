@@ -1,6 +1,7 @@
 package com.model.game.character.player.content.multiplayer.duel;
 
 import com.model.game.Constants;
+import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.combat.Combat;
 import com.model.game.character.combat.PrayerHandler;
@@ -19,9 +20,7 @@ import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.server.Server;
-import com.model.task.events.CycleEvent;
-import com.model.task.events.CycleEventContainer;
-import com.model.task.events.CycleEventHandler;
+import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 import java.util.List;
@@ -163,7 +162,7 @@ public class DuelSession extends MultiplayerSession {
 				opponent.getActionSender().removeAllInterfaces();
 				removeDisabledEquipment(player);
 				removeDisabledEquipment(opponent);
-				CycleEventHandler.getSingleton().addEvent(this, new AttackingOperation(), 2);
+                World.getWorld().schedule(new AttackingOperation(2));
 				return;
 			}
 			stage.setAttachment(player);
@@ -284,28 +283,32 @@ public class DuelSession extends MultiplayerSession {
 		return arenaBoundary;
 	}
 
-	class AttackingOperation extends CycleEvent {
+	class AttackingOperation extends ScheduledTask {
+		
+		public AttackingOperation(int cycles) {
+			this.setTickDelay(cycles);
+		}
 
 		int time = 3;
 
 		@Override
-		public void execute(CycleEventContainer container) {
+		public void execute() {
 			for (Player player : players) {
 				if (Objects.isNull(player)) {
 					finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS);
-					container.stop();
+					stop();
 					return;
 				}
 			}
 			if (time <= 0) {
 				players.stream().filter(Objects::nonNull).forEach(p -> p.sendForcedMessage("FIGHT!"));
 				attackingOperationable = true;
-				container.stop();
+				stop();
 			} else if (time > 0) {
 				players.stream().filter(Objects::nonNull).forEach(p -> p.sendForcedMessage(Integer.toString(time)));
 				time--;
 			} else {
-				container.stop();
+				stop();
 			}
 		}
 	}

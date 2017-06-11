@@ -54,14 +54,10 @@ import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.FightCaveInstance;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.fight_caves.FightCaves;
-import com.model.game.character.player.minigames.pest_control.PestControl;
-import com.model.game.character.player.minigames.pest_control.PestControlRewards;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.game.character.player.skill.SkillCyclesTask;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
-import com.model.game.character.player.skill.mining.Mining;
 import com.model.game.character.player.skill.slayer.interfaceController.SlayerInterface;
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
@@ -76,10 +72,10 @@ import com.model.game.item.container.impl.trade.TradeSession.TradeStage;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Area;
 import com.model.game.location.Location;
-import com.model.net.network.Packet;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.net.network.rsa.ISAACRandomGen;
 import com.model.net.network.session.GameSession;
+import com.model.net.packet.Packet;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.DeathEvent;
@@ -130,18 +126,6 @@ public class Player extends Entity {
     public MutableNumber getPoisonImmunity() {
         return poisonImmunity;
     }
-	
-    private SkillCyclesTask skillCyclesTask = new SkillCyclesTask(this);
-	
-	public SkillCyclesTask getSkillCyclesTask() {
-		return skillCyclesTask;
-	}
-	
-    private Mining mining = new Mining(this);
-	
-	public Mining getMining() {
-		return mining;
-	}
 	
 	private Thieving thieving = new Thieving(this);
 	
@@ -1354,8 +1338,6 @@ public class Player extends Entity {
 		//Update right click menu
 		getActionSender().sendInteractionOption("Follow", 4, true);
 		getActionSender().sendInteractionOption("Trade With", 5, true);
-		//Update location
-		correctPlayerCoordinatesOnLogin();
 		//Refresh the player settings
 		refreshSettings();
 		//Set last known height
@@ -1436,34 +1418,6 @@ public class Player extends Entity {
 	
 	private boolean isMuted() {
 		return this.isMuted;
-	}
-
-	private void correctPlayerCoordinatesOnLogin() {
-		Server.getTaskScheduler().schedule(new ScheduledTask(3) {
-
-			@Override
-			public void execute() {
-				Player player = (Player) getAttachment();
-				if (player == null || !player.isActive()) {
-					stop();
-					return;
-				}
-				final Boundary pc = PestControl.GAME_BOUNDARY;
-				final Boundary fc = Boundary.FIGHT_CAVE;
-				int x = teleportToX;
-				int y = teleportToY;
-				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
-					player.movePlayer(new Location(2657, 2639, 0));
-				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
-					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
-					player.getFightCave().startWave();
-				}
-				ControllerManager.setControllerOnWalk(player);
-				controller.onControllerInit(player);
-				stop();
-			}
-
-		}.attach(this));
 	}
 
 	public void logout() {
@@ -2659,7 +2613,6 @@ public class Player extends Entity {
 	}
 	
 	//Minigame variables
-	public int pestControlDamage;
 	public boolean isAnimatedArmourSpawned;
 	public int waveId;
 	public boolean secondOption;
@@ -2682,16 +2635,6 @@ public class Player extends Entity {
 		if(!completedFightCaves) {
 			completedFightCaves = true;
 		}
-	}
-	
-	/**
-	 * The single instance of the {@link PestControlRewards} class for this player
-	 * @return	the reward class
-	 */
-	private PestControlRewards pestControlRewards = new PestControlRewards(this);
-	
-	public PestControlRewards getPestControlRewards() {
-		return pestControlRewards;
 	}
 	
 	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);

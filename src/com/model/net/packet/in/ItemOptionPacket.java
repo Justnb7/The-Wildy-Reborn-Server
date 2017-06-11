@@ -99,7 +99,6 @@ public class ItemOptionPacket implements PacketType {
 			handleItemOnGround(player, id);
 			break;
 		}
-		player.getSkillCyclesTask().stop();
 	}
 	
 	private void handleItemOptionItem(Player player, int id) {

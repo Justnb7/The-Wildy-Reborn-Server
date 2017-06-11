@@ -62,10 +62,6 @@ public class WalkingPacketHandler implements PacketType {
 		player.removeAttribute("fishing");
 		player.stopSkillTask();
 		
-		if (player.getSkillCyclesTask().isSkilling()) {
-			player.getSkillCyclesTask().stop();
-		}
-		
 		//When walking during a trade we don't decline trades
 		if (player.isTrading()) {
 			player.getTradeSession().declineTrade(false);

@@ -5,8 +5,8 @@ import java.security.SecureRandom;
 import java.util.List;
 
 import com.model.net.network.NetworkConstants;
-import com.model.net.network.Packet;
 import com.model.net.network.rsa.ISAACRandomGen;
+import com.model.net.packet.Packet;
 import com.model.utility.Utility;
 
 import io.netty.buffer.ByteBuf;

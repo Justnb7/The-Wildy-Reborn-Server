@@ -23,6 +23,41 @@ import com.model.utility.cache.map.Region;
 import java.util.*;
 
 public class NPC extends Entity {
+	
+	public NPC(int _npcType) {
+		this(_npcType, null, -1);
+	}
+	
+	public NPC(int id, Location spawn, int dir) {
+		super(EntityType.NPC);
+		direction = dir;
+		if (spawn != null)
+			setLocation(spawn);
+		npcId = id;
+		setAbsX(spawn.getX());
+		setAbsY(spawn.getY());
+		setAbsZ(spawn.getZ());
+		setDead(false);
+		randomWalk = true;
+		
+		NPCDefinitions definition = NPCDefinitions.get(id);
+		if (definition != null) {
+			size = definition.getSize();
+			if (size < 1) {
+				size = 1;
+			}
+			npcName = definition.getName();
+			combatLevel = definition == null ? 1 : definition.getCombatLevel();
+			hitpoints = maxHitpoints = definition.getHitpoints();
+			//System.out.printf("npc: %s hitpoints: %d%n ",definition.getName(), definition.getHitpoints());
+			maxHit = definition.getMaxHit();
+			attack_bonus = definition.getAttackBonus();
+			magic_defence = definition.getMagicDefence();
+			melee_defence = definition.getMeleeDefence();
+			range_defence = definition.getRangedDefence();
+			setCombatCooldownDelay(definition.getAttackSpeed());
+		}
+	}
 
 	/**
 	 * The damage map for the npc
@@ -212,38 +247,6 @@ public class NPC extends Entity {
 	 * Get the npcs defence level for range
 	 */
 	public int range_defence;
-	
-	public NPC(int _npcType) {
-		this(_npcType, null, -1);
-	}
-	
-	public NPC(int id, Location spawn, int dir) {
-		super(EntityType.NPC);
-		direction = dir;
-		if (spawn != null)
-			setLocation(spawn);
-		npcId = id;
-		
-		setDead(false);
-		randomWalk = true;
-		
-		NPCDefinitions definition = NPCDefinitions.get(id);
-		if (definition != null) {
-			size = definition.getSize();
-			if (size < 1) {
-				size = 1;
-			}
-			npcName = definition.getName();
-			combatLevel = definition == null ? 1 : definition.getCombatLevel();
-			hitpoints = maxHitpoints = definition.getHitpoints();
-			maxHit = definition.getMaxHit();
-			attack_bonus = definition.getAttackBonus();
-			magic_defence = definition.getMagicDefence();
-			melee_defence = definition.getMeleeDefence();
-			range_defence = definition.getRangedDefence();
-			setCombatCooldownDelay(definition.getAttackSpeed());
-		}
-	}
 
 	/**
 	 * Set an npc onto a tile, removes it from the current tile before placing

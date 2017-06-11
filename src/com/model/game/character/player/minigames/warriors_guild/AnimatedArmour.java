@@ -6,9 +6,8 @@ import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
-import com.model.task.events.CycleEvent;
-import com.model.task.events.CycleEventContainer;
-import com.model.task.events.CycleEventHandler;
+import com.model.server.Server;
+import com.model.task.ScheduledTask;
 
 /**
  * 
@@ -105,20 +104,20 @@ public class AnimatedArmour {
 		player.getInventory().remove(new Item(armour.getPlatelegsId(), 1));
 		player.getInventory().remove(new Item(armour.getHelmId(), 1));
 		player.getPlayerFollowing().walkTo(0, +5);
-		CycleEventHandler.getSingleton().addEvent(player, new CycleEvent() {
+		Server.getTaskScheduler().schedule(new ScheduledTask(6) {
 			
 			@Override
-			public void execute(CycleEventContainer event) {
+			public void execute() {
 				NPCHandler.spawnNpc(player, armour.getNpcId(), new Location(SPAWN_X, SPAWN_Y, 0), 1, true, true, false);
 				player.getActionSender().sendMessage("An animated armour has spawned...");
-				event.stop();
+				stop();
 			}
 			
 			@Override
 			public void stop() {
 				
 			}
-		}, 6);
+		});
 	}
 
 	public static void dropTokens(Player player, int npcType, int x, int y) {

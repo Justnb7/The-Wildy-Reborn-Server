@@ -5,7 +5,6 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.task.events.CycleEventHandler;
 import com.model.utility.Stopwatch;
 
 import java.util.Collection;
@@ -119,7 +118,6 @@ public final class GameEngine implements Runnable {
         Server.getTaskScheduler().pulse();
         World.getWorld().pulse();
         GroundItemHandler.pulse();
-		CycleEventHandler.getSingleton().process();
         // long end = (System.currentTimeMillis() - start);
 
     }

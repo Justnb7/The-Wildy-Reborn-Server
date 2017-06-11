@@ -83,11 +83,13 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 	private void handleAttackNpcPacket(Player player, int packet) {
 		int pid = player.getInStream().readUnsignedWordA();
+		player.debug("enter");
 		NPC npc = World.getWorld().getNPCs().get(pid);
 		if (npc == null) {
 			return;
 		}
-		if (npc.getMaxHitpoints() == 0 && npc.getId() != 493) {
+		if (npc.getHitpoints() == 0) {
+			player.debug("stop");
 			player.getCombatState().reset();
 			return;
 		}

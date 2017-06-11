@@ -12,6 +12,8 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.effect.BarrowsEffect;
 import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.pathfinder.Directions;
+import com.model.game.character.pathfinder.region.Coverage;
 import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
@@ -87,7 +89,9 @@ public abstract class Entity {
 
 	public abstract boolean moving();
 
-	public enum EntityType {
+    public abstract int size();
+
+    public enum EntityType {
 		PLAYER, NPC,
 	}
 
@@ -1097,5 +1101,24 @@ public abstract class Entity {
 	public boolean canTrade() {
     	return true;
     }
-	
+
+	private Coverage coverage = null;
+	public Coverage getCoverage() {
+		return coverage;
+	}
+
+	public void setCoverage() {
+		coverage = new Coverage(getPosition(), size());
+	}
+
+	public void updateCoverage(Directions.NormalDirection direction) {
+		coverage.update(direction, size());
+	}
+
+	public void updateCoverage(Tile loc) {
+		if (coverage == null) {
+			setCoverage();
+		}
+		coverage.update(loc, size());
+	}
 }

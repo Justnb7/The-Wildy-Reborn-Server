@@ -290,6 +290,11 @@ public class NPC extends Entity {
 	}
 
 	@Override
+	public int size() {
+		return getSize();
+	}
+
+	@Override
 	public Hit decrementHP(Hit hit) {
 		
 		int damage = hit.getDamage();

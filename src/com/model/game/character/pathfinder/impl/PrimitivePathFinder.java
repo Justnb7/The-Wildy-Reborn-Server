@@ -2,6 +2,7 @@ package com.model.game.character.pathfinder.impl;
 
 import com.model.game.character.Entity;
 import com.model.game.character.pathfinder.*;
+import com.model.game.character.pathfinder.region.RegionManager;
 import com.model.utility.cache.map.Tile;
 
 import java.awt.*;
@@ -38,7 +39,7 @@ public class PrimitivePathFinder implements PathFinder {
 		int zX = (base.getRegionX() - 6) << 3;
 		int zY = (base.getRegionY() - 6) << 3;
 		
-    	Tile RSTile = Position.create(zX, zY, base.getZ());
+    	Tile RSTile = Tile.create(zX, zY, base.getZ());
         int diffX = endX - startX;
         int diffY = endY - startY;
         int max = Math.max(Math.abs(diffX), Math.abs(diffY));
@@ -48,35 +49,35 @@ public class PrimitivePathFinder implements PathFinder {
             for (int i = 0; i < xLength; i++) {
                 for (int i2 = 0; i2 < yLength; i2++) {
                     if (diffX < 0 && diffY < 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i - 1, currentY + i2 - 1, height) & 0x128010e) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i - 1, currentY + i2, height) & 0x1280108) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i, currentY + i2 - 1, height) & 0x1280102) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i - 1, currentY + i2 - 1, height) & 0x128010e) != 0 || (RegionManager.get().getClippingMask(currentX + i - 1, currentY + i2, height) & 0x1280108) != 0 || (RegionManager.get().getClippingMask(currentX + i, currentY + i2 - 1, height) & 0x1280102) != 0) {
                             return false;
                         }
                     } else if (diffX > 0 && diffY > 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i + 1, currentY + i2 + 1, height) & 0x12801e0) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i + 1, currentY + i2, height) & 0x1280180) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x1280120) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i + 1, currentY + i2 + 1, height) & 0x12801e0) != 0 || (RegionManager.get().getClippingMask(currentX + i + 1, currentY + i2, height) & 0x1280180) != 0 || (RegionManager.get().getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x1280120) != 0) {
                             return false;
                         }
                     } else if (diffX < 0 && diffY > 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i - 1, currentY + i2 + 1, height) & 0x1280138) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i - 1, currentY + i2, height) & 0x1280108) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x1280120) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i - 1, currentY + i2 + 1, height) & 0x1280138) != 0 || (RegionManager.get().getClippingMask(currentX + i - 1, currentY + i2, height) & 0x1280108) != 0 || (RegionManager.get().getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x1280120) != 0) {
                             return false;
                         }
                     } else if (diffX > 0 && diffY < 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i + 1, currentY + i2 - 1, height) & 0x1280183) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i + 1, currentY + i2, height) & 0x1280180) != 0 || (World.getWorld().getRegionManager().getClippingMask(currentX + i, currentY + i2 - 1, height) & 0x1280102) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i + 1, currentY + i2 - 1, height) & 0x1280183) != 0 || (RegionManager.get().getClippingMask(currentX + i + 1, currentY + i2, height) & 0x1280180) != 0 || (RegionManager.get().getClippingMask(currentX + i, currentY + i2 - 1, height) & 0x1280102) != 0) {
                             return false;
                         }
                     } else if (diffX > 0 && diffY == 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i + 1, currentY + i2, height) & 0x1280180) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i + 1, currentY + i2, height) & 0x1280180) != 0) {
                             return false;
                         }
                     } else if (diffX < 0 && diffY == 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i - 1, currentY + i2, height) & 0x1280108) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i - 1, currentY + i2, height) & 0x1280108) != 0) {
                             return false;
                         }
                     } else if (diffX == 0 && diffY > 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x1280120) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x1280120) != 0) {
                             return false;
                         }
                     } else if (diffX == 0 && diffY < 0) {
-                        if ((World.getWorld().getRegionManager().getClippingMask(currentX + i, currentY + i2 - 1, height) & 0x1280102) != 0) {
+                        if ((RegionManager.get().getClippingMask(currentX + i, currentY + i2 - 1, height) & 0x1280102) != 0) {
                             return false;
                         }
                     }
@@ -120,7 +121,7 @@ public class PrimitivePathFinder implements PathFinder {
 			for (int k = y; k < y + size; k++) {
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(x - 1, k, npc_height, 1))
 					return false;
-				if ((World.getWorld().getRegionManager().getClippingMask(x - 1, k, z) & 0x1280108) != 0)
+				if ((RegionManager.get().getClippingMask(x - 1, k, z) & 0x1280108) != 0)
 					return false;
 			}
 			break;
@@ -128,7 +129,7 @@ public class PrimitivePathFinder implements PathFinder {
 			for (int k = y; k < y + size; k++) {
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(x + size, k, npc_height, 1))
 					return false;
-				if ((World.getWorld().getRegionManager().getClippingMask(x + size, k, z) & 0x1280180) != 0)
+				if ((RegionManager.get().getClippingMask(x + size, k, z) & 0x1280180) != 0)
 					return false;
 			}
 			break;
@@ -136,7 +137,7 @@ public class PrimitivePathFinder implements PathFinder {
 			for (int i = x; i < x + size; i++) {
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(i, y - 1, npc_height, 1))
 					return false;
-				if ((World.getWorld().getRegionManager().getClippingMask(i, y - 1, z) & 0x1280102) != 0)
+				if ((RegionManager.get().getClippingMask(i, y - 1, z) & 0x1280102) != 0)
 					return false;
 			}
 			break;
@@ -144,24 +145,24 @@ public class PrimitivePathFinder implements PathFinder {
 			for (int i = x; i < x + size; i++) {
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(i, y + size, npc_height, 1))
 					return false;
-				if ((World.getWorld().getRegionManager().getClippingMask(i, y + size, z) & 0x1280120) != 0)
+				if ((RegionManager.get().getClippingMask(i, y + size, z) & 0x1280120) != 0)
 					return false;
 			}
 			break;
 		case SOUTH_WEST:
 			for (int i = x; i < x + size; i++) {
-				int s = World.getWorld().getRegionManager().getClippingMask(i, y - 1, z);
-				int w = World.getWorld().getRegionManager().getClippingMask(i - 1, y, z);
-				int sw = World.getWorld().getRegionManager().getClippingMask(i - 1, y - 1, z);
+				int s = RegionManager.get().getClippingMask(i, y - 1, z);
+				int w = RegionManager.get().getClippingMask(i - 1, y, z);
+				int sw = RegionManager.get().getClippingMask(i - 1, y - 1, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(i - 1, y - 1, npc_height, 1))
 					return false;
 				if ((sw & 0x128010e) != 0 || (s & 0x1280102) != 0 || (w & 0x1280108) != 0)
 					return false;
 			}
 			for (int k = y; k < y + size; k++) {
-				int s = World.getWorld().getRegionManager().getClippingMask(x, k - 1, z);
-				int w = World.getWorld().getRegionManager().getClippingMask(x - 1, k, z);
-				int sw = World.getWorld().getRegionManager().getClippingMask(x - 1, k - 1, z);
+				int s = RegionManager.get().getClippingMask(x, k - 1, z);
+				int w = RegionManager.get().getClippingMask(x - 1, k, z);
+				int sw = RegionManager.get().getClippingMask(x - 1, k - 1, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(x - 1, k - 1, npc_height, 1))
 					return false;
 				if ((sw & 0x128010e) != 0 || (s & 0x1280102) != 0 || (w & 0x1280108) != 0)
@@ -170,18 +171,18 @@ public class PrimitivePathFinder implements PathFinder {
 			break;
 		case SOUTH_EAST:
 			for (int i = x; i < x + size; i++) {
-				int s = World.getWorld().getRegionManager().getClippingMask(i, y - 1, z);
-				int e = World.getWorld().getRegionManager().getClippingMask(i + 1, y, z);
-				int se = World.getWorld().getRegionManager().getClippingMask(i + 1, y - 1, z);
+				int s = RegionManager.get().getClippingMask(i, y - 1, z);
+				int e = RegionManager.get().getClippingMask(i + 1, y, z);
+				int se = RegionManager.get().getClippingMask(i + 1, y - 1, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(i + 1, y - 1, npc_height, 1))
 					return false;
 				if ((se & 0x1280183) != 0 || (s & 0x1280102) != 0 || (e & 0x1280180) != 0)
 					return false;
 			}
 			for (int k = y; k < y + size; k++) {
-				int s = World.getWorld().getRegionManager().getClippingMask(x + size - 1, k - 1, z);
-				int e = World.getWorld().getRegionManager().getClippingMask(x + size, k, z);
-				int se = World.getWorld().getRegionManager().getClippingMask(x + size, k - 1, z);
+				int s = RegionManager.get().getClippingMask(x + size - 1, k - 1, z);
+				int e = RegionManager.get().getClippingMask(x + size, k, z);
+				int se = RegionManager.get().getClippingMask(x + size, k - 1, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(x + 1, k - 1, npc_height, 1))
 					return false;
 				if ((se & 0x1280183) != 0 || (s & 0x1280102) != 0 || (e & 0x1280180) != 0)
@@ -190,18 +191,18 @@ public class PrimitivePathFinder implements PathFinder {
 			break;
 		case NORTH_WEST:
 			for (int i = x; i < x + size; i++) {
-				int n = World.getWorld().getRegionManager().getClippingMask(i, y + size, z);
-				int w = World.getWorld().getRegionManager().getClippingMask(i - 1, y + size - 1, z);
-				int nw = World.getWorld().getRegionManager().getClippingMask(i - 1, y + size, z);
+				int n = RegionManager.get().getClippingMask(i, y + size, z);
+				int w = RegionManager.get().getClippingMask(i - 1, y + size - 1, z);
+				int nw = RegionManager.get().getClippingMask(i - 1, y + size, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(i - 1, y + size, npc_height, 1))
 					return false;
 				if ((nw & 0x1280138) != 0 || (n & 0x1280102) != 0 || (w & 0x1280108) != 0)
 					return false;
 			}
 			for (int k = y; k < y + size; k++) {
-				int n = World.getWorld().getRegionManager().getClippingMask(x, y, z);
-				int w = World.getWorld().getRegionManager().getClippingMask(x - 1, y, z);
-				int nw = World.getWorld().getRegionManager().getClippingMask(x - 1, y + 1, z);
+				int n = RegionManager.get().getClippingMask(x, y, z);
+				int w = RegionManager.get().getClippingMask(x - 1, y, z);
+				int nw = RegionManager.get().getClippingMask(x - 1, y + 1, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(x - 1, y + 1, npc_height, 1))
 					return false;
 				if ((nw & 0x1280138) != 0 || (n & 0x1280102) != 0 || (w & 0x1280108) != 0)
@@ -210,18 +211,18 @@ public class PrimitivePathFinder implements PathFinder {
 			break;
 		case NORTH_EAST:
 			for (int i = x; i < x + size; i++) {
-				int n = World.getWorld().getRegionManager().getClippingMask(i, y + size, z);
-				int e = World.getWorld().getRegionManager().getClippingMask(i + 1, y + size - 1, z);
-				int ne = World.getWorld().getRegionManager().getClippingMask(i + 1, y + size, z);
+				int n = RegionManager.get().getClippingMask(i, y + size, z);
+				int e = RegionManager.get().getClippingMask(i + 1, y + size - 1, z);
+				int ne = RegionManager.get().getClippingMask(i + 1, y + size, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(i + 1, y + size, npc_height, 1))
 					return false;
 				if ((ne & 0x12801e0) != 0 || (n & 0x1280120) != 0 || (e & 0x1280180) != 0)
 					return false;
 			}
 			for (int k = y; k < y + size; k++) {
-				int n = World.getWorld().getRegionManager().getClippingMask(x + size - 1, k + 1, z);
-				int e = World.getWorld().getRegionManager().getClippingMask(x + size, k, z);
-				int ne = World.getWorld().getRegionManager().getClippingMask(x + size, k + 1, z);
+				int n = RegionManager.get().getClippingMask(x + size - 1, k + 1, z);
+				int e = RegionManager.get().getClippingMask(x + size, k, z);
+				int ne = RegionManager.get().getClippingMask(x + size, k + 1, z);
 				if (checkingNPCs && TileControl.getSingleton().locationOccupied(x + size, k + 1, npc_height, 1))
 					return false;
 				if ((ne & 0x12801e0) != 0 || (n & 0x1280120) != 0 || (e & 0x1280180) != 0)

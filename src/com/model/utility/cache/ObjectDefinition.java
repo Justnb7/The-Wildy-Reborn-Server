@@ -1,8 +1,8 @@
 package com.model.utility.cache;
 
-import java.util.logging.Logger;
-
 import com.model.utility.Utility;
+
+import java.util.logging.Logger;
 
 public final class ObjectDefinition {
 	

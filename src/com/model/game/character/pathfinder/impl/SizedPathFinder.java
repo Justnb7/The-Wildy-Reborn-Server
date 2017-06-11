@@ -2,6 +2,7 @@ package com.model.game.character.pathfinder.impl;
 
 import com.model.game.character.Entity;
 import com.model.game.character.pathfinder.BasicPoint;
+import com.model.game.character.pathfinder.Directions;
 import com.model.game.character.pathfinder.PathFinder;
 import com.model.game.character.pathfinder.PathState;
 import com.model.utility.cache.map.Tile;
@@ -63,7 +64,7 @@ public class SizedPathFinder implements PathFinder {
 		int zX = (base.getRegionX() - 6) << 3;
 		int zY = (base.getRegionY() - 6) << 3;
 		
-		Position location = Position.create(zX, zY, base.getZ());
+		Tile location = Tile.create(zX, zY, base.getZ());
 		boolean foundPath = false;
 		int size = mob.size();
 		int flags = 0;
@@ -95,42 +96,42 @@ public class SizedPathFinder implements PathFinder {
 			int absX = location.getX() + curX, absY = location.getY() + curY;
 			int thisCost = cost[curX][curY] + 1;
 			if (curX > size - 1) {
-				if (via[curX - 1][curY] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, NormalDirection.WEST, size, flags)) {
+				if (via[curX - 1][curY] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, Directions.NormalDirection.WEST, size, flags)) {
 					check(mob, curX - 1, curY, WEST_FLAG, thisCost);
 				}
 			}
 			if (curX < 104 - size) {
-				if (via[curX + 1][curY] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, NormalDirection.EAST, size, flags)) {
+				if (via[curX + 1][curY] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, Directions.NormalDirection.EAST, size, flags)) {
 					check(mob, curX + 1, curY, EAST_FLAG, thisCost);
 				}
 			}
 			if (curY > size - 1) {
-				if (via[curX][curY - 1] == 0 && PrimitivePathFinder.canMove( mob, absX, absY, NormalDirection.SOUTH, size, flags)) {
+				if (via[curX][curY - 1] == 0 && PrimitivePathFinder.canMove( mob, absX, absY, Directions.NormalDirection.SOUTH, size, flags)) {
 					check(mob, curX, curY - 1, SOUTH_FLAG, thisCost);
 				}
 			}
 			if (curY < 104 - size) {
-				if (via[curX][curY + 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, NormalDirection.NORTH, size, flags)) {
+				if (via[curX][curY + 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, Directions.NormalDirection.NORTH, size, flags)) {
 					check(mob, curX, curY + 1, NORTH_FLAG, thisCost);
 				}
 			}
 			if (curX > size - 1 && curY > size - 1) {
-				if (via[curX - 1][curY - 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, NormalDirection.SOUTH_WEST, size, flags)) {
+				if (via[curX - 1][curY - 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, Directions.NormalDirection.SOUTH_WEST, size, flags)) {
 					check(mob, curX - 1, curY - 1, SOUTH_WEST_FLAG, thisCost);
 				}
 			}
 			if (curX < 104 - size && curY > size - 1) {
-				if (via[curX + 1][curY - 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, NormalDirection.SOUTH_EAST, size, flags)) {
+				if (via[curX + 1][curY - 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, Directions.NormalDirection.SOUTH_EAST, size, flags)) {
 					check(mob, curX + 1, curY - 1, SOUTH_EAST_FLAG, thisCost);
 				}
 			}
 			if (curX > size - 1 && curY < 104 - size) {
-				if (via[curX - 1][curY + 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, NormalDirection.NORTH_WEST, size, flags)) {
+				if (via[curX - 1][curY + 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, Directions.NormalDirection.NORTH_WEST, size, flags)) {
 					check(mob, curX - 1, curY + 1, NORTH_WEST_FLAG, thisCost);
 				}
 			}
 			if (curX < 104 - size && curY < 104 - size) {
-				if (via[curX + 1][curY + 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, NormalDirection.NORTH_EAST, size, flags)) {
+				if (via[curX + 1][curY + 1] == 0 && PrimitivePathFinder.canMove(mob, absX, absY, Directions.NormalDirection.NORTH_EAST, size, flags)) {
 					check(mob, curX + 1, curY + 1, NORTH_EAST_FLAG, thisCost);
 				}
 			}

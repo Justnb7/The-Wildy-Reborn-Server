@@ -682,7 +682,8 @@ public abstract class Entity {
 				Player pAttacker = (Player)attacker;
 				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
 				pAttacker.getCombatState().applySmite(me, damage);
-				PoisonCombatTask.getPoisonType(new Item(pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId())).ifPresent(attacker::poison);
+				Item weapon = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT); 
+				PoisonCombatTask.getPoisonType(weapon.getId()).ifPresent(attacker::poison);
 			}
 		}
 

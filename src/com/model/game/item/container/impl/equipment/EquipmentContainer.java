@@ -208,7 +208,7 @@ public class EquipmentContainer extends Container {
 			sidebarId = def.getType().getInterfaceId();
 		}
 
-		player.getActionSender().sendString("<col=ff7000>" + name, EquipmentConstants.getTextIdForInterface(sidebarId));
+		player.getActionSender().sendString(name, EquipmentConstants.getTextIdForInterface(sidebarId));
 		player.getActionSender().sendSidebarInterface(0, sidebarId);
 	}
 

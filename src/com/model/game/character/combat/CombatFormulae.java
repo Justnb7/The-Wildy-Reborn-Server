@@ -148,7 +148,9 @@ public class CombatFormulae {
                 break;
             }
 
-            if (p.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() > 0 && att_type != 2) {
+            Item weapon = p.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+            
+            if (weapon.getId() > 0 && att_type != 2) {
                 att_weapon_bonus += (((att_type == 0 ? att_base_attack : att_base_range) - (att_type = 0)) * 0.3);
             }
 
@@ -329,9 +331,9 @@ public class CombatFormulae {
 		
 		int effectiveStrengthDamage = (int) ((strengthLevel * prayerMultiplier * otherBonusMultiplier) + combatStyleBonus);
 		double base = (13 + effectiveStrengthDamage + (strengthBonus / 8) + ((effectiveStrengthDamage * strengthBonus) * 0.016865)) / 10;
-
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 		if (player.isUsingSpecial()) {
-			switch (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()) {
+			switch (weapon.getId()) {
 			case 11802:
 				specialMultiplier = 1.42375;
 				break;
@@ -415,10 +417,10 @@ public class CombatFormulae {
 		
 		int effectiveRangeDamage = (int) ((rangeLevel * prayerMultiplier * otherBonusMultiplier) + combatStyleBonus);
 		double baseDamage = 1.3 + (effectiveRangeDamage / 10) + (rangedStrength / 80) + ((effectiveRangeDamage * rangedStrength) / 640);
-		
+		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
 		if(special) {
 			if(player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null) {
-				switch(player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId()) {
+				switch(ammo.getId()) {
 				case 11212:
 					specialMultiplier = 1.5;
 					break;

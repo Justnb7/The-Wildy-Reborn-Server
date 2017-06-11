@@ -162,7 +162,8 @@ public class Combat {
                 Combat.resetCombat(player);
                 return;
             }*/
-            if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2417)) {
+        	
+            if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().contains(2415) || player.getEquipment().contains(2416) || player.getEquipment().contains(2417))) {
                 player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
                 return;
             }
@@ -349,7 +350,8 @@ public class Combat {
 
     private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
         if (dam1 == 0) return dam1;
-        switch (attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId()) {
+        Item ammo = attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+        switch (ammo.getId()) {
             case 9236: // Lucky Lightning
                 defender.playGraphics(Graphic.create(749, 0, 0));
                 break;
@@ -585,7 +587,8 @@ public class Combat {
 	 * @return
 	 */
 	public boolean wearingAccumulator(Player player) {
-		return (player.getEquipment().get(EquipmentConstants.CAPE_SLOT).getId() == 10499);
+		Item cape = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
+		return (cape.getId() == 10499);
 	}
 	
 	/**
@@ -594,6 +597,7 @@ public class Combat {
 	 * @return
 	 */
 	public boolean wearingAttractor(Player player) {
-		return (player.getEquipment().get(EquipmentConstants.CAPE_SLOT).getId() == 10498);
+		Item cape = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
+		return (cape.getId() == 10498);
 	}
 }

@@ -171,7 +171,8 @@ public class AttackStyle {
 	 * Adjusts the player's attack style.
 	 */
 	public static void adjustAttackStyle(Player player) {
-		if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == -1) {
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) {
 			switch(player.getAttackStyleConfig()) {
 			case 0:
 				 player.getActionSender().sendConfig(43, 0);
@@ -183,7 +184,7 @@ public class AttackStyle {
 				player.getActionSender().sendConfig(43, 2);
 				break;
 			}
-		} else if(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() > 0) {
+		} else if(weapon.getId() > 0) {
 			switch(player.getAttackStyle()) {
 			case 0:
 				 player.getActionSender().sendConfig(43, 0);

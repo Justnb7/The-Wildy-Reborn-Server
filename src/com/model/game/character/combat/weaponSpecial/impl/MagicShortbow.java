@@ -4,6 +4,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.weaponSpecial.SpecialAttack;
 import com.model.game.character.player.Player;
+import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 
 public class MagicShortbow implements SpecialAttack {
@@ -28,7 +29,8 @@ public class MagicShortbow implements SpecialAttack {
 		if (player.getCombatType() == CombatStyle.RANGE) {
 			return true;
 		}
-		if (player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() < 2) {
+		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT); 
+		if (ammo.getId() < 2) {
 			player.getActionSender().sendMessage("You need atleast 2 arrows to perform this special.");
 			player.setUsingSpecial(false);
 			return false;

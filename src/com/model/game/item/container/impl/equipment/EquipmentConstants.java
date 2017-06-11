@@ -59,31 +59,6 @@ public final class EquipmentConstants {
 		/* 13 */ "Prayer"
 	};
 
-	public static int getShieldBlockAnimation(int id) {
-		switch (id) {
-		case 6889:
-		case 3842:
-		case 3844:
-		case 3840:
-			return 424;
-		case 2997:
-		case 8844:
-		case 8845:
-		case 8846:
-		case 8847:
-		case 8848:
-		case 8849:
-		case 8850:
-		case 20072:
-		case 18340:
-		case 18653:
-		case 17273:
-			return 4177;
-		}
-
-		return 1156;
-	}
-
 	public static final int getTextIdForInterface(int interfaceId) {
 		switch (interfaceId) {
 		case 4705:
@@ -251,6 +226,15 @@ public final class EquipmentConstants {
 		final boolean helm = player.getEquipment().containsAny(4753, 4976, 4977, 4978, 4979);
 		final boolean chest = player.getEquipment().containsAny(4757, 4988, 4989, 4990, 4991);
 		final boolean legs = player.getEquipment().containsAny(4759, 4994, 4995, 4996, 4997);
+		return weapon && helm && chest && legs;
+	}
+	
+	/** Checks to see if player is wearing full Torags */
+	public static boolean isWearingTorags(Player player) {
+		final boolean weapon = player.getEquipment().containsAny(4747, 4958, 4959, 4960, 4961);
+		final boolean helm = player.getEquipment().containsAny(4745, 4952, 4953, 4954, 4955);
+		final boolean chest = player.getEquipment().containsAny(4749, 4964, 4965, 4966, 4967);
+		final boolean legs = player.getEquipment().containsAny(4751, 4970, 4971, 4972, 4973);
 		return weapon && helm && chest && legs;
 	}
 

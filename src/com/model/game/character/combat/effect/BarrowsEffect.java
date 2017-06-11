@@ -18,7 +18,7 @@ public class BarrowsEffect {
 	 * Applies the veracs flail effect to the victim.
 	 */
 	private static void applyVeracsFlailEffect(Player attacker, int damage) {
-		boolean isWearingGear = attacker.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId() == 4728 && attacker.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId() == 4730 && attacker.getEquipment().get(EquipmentConstants.HELM_SLOT).getId() == 4724;
+		boolean isWearingGear = EquipmentConstants.isWearingVeracs(attacker);
 		boolean randomEffect = Utility.getRandom(2) == 0;
 		
 		if (isWearingGear && randomEffect) {
@@ -30,7 +30,7 @@ public class BarrowsEffect {
 	 * Applies the guthan warspear effect to the victim.
 	 */
 	private static void applyWarspearEffect(Player attacker, Player victim, int damage) {
-		boolean isWearingGear = attacker.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId() == 4728 && attacker.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId() == 4730 && attacker.getEquipment().get(EquipmentConstants.HELM_SLOT).getId() == 4724;
+		boolean isWearingGear = EquipmentConstants.isWearingGuthans(attacker);
 		boolean randomEffect = Utility.getRandom(2) == 0;
 
 		if (isWearingGear) {
@@ -47,7 +47,7 @@ public class BarrowsEffect {
 	 * Applies the torag's hammer effect on hit.
 	 */
 	private static void applyHammerEffect(Player attacker, Player victim, int damage) {
-		boolean isWearingGear = attacker.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId() == 4749 && attacker.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId() == 4751 && attacker.getEquipment().get(EquipmentConstants.HELM_SLOT).getId() == 4745;
+		boolean isWearingGear = EquipmentConstants.isWearingTorags(attacker);
 		boolean randomEffect = Utility.getRandom(10) == 5;
 
 		if (isWearingGear && randomEffect) {

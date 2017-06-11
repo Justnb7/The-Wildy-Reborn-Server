@@ -26,7 +26,8 @@ import com.model.task.ScheduledTask;
 public class PlayerVsNpcCombat {
 	
 	public static boolean isWearingSpear(Player player) {
-		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()).getName().toLowerCase();
+		
+		String weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getName().toLowerCase();
 		if (weapon.contains("spear") || weapon.contains("hasta"))
 			return true;
 		return false;

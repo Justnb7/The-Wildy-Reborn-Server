@@ -350,7 +350,7 @@ public class WeaponDefinition {
 				return 1156;
 			}
 		}
-		if (weapon.getId() == -1) // empty hands
+		if (weapon == null) // empty hands
 			return 424;
 		else
 			return WeaponDefinition.get(weapon.getId()).getBlockAnimation(); // wep anim

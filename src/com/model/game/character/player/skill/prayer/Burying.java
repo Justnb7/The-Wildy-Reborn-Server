@@ -8,6 +8,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
+import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.Stackable;

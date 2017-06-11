@@ -4,6 +4,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
+import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.net.packet.PacketType;
 
 
@@ -144,6 +145,14 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.getBank().withdraw(removeId, removeSlot, 1);
 			break;
 
+		case InterfaceConstants.SHOP_INTERFACE:
+			ShopManager.getShopValue(player, removeSlot);
+			break;
+
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.getSellValue(player, removeId);
+			break;
+
 		}
 	}
 	
@@ -228,7 +237,18 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 			break;
+			
+		case InterfaceConstants.SHOP_INTERFACE:
+			ShopManager.buy(player, removeId, 10, removeSlot);
+			break;
+			
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.sell(player, removeId, 5, removeSlot);
+			break;
+			
+			
 		}
+		
 	}
 
 	/**
@@ -302,6 +322,14 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case InterfaceConstants.DEPOSIT_BOX:
 			player.getBank().deposit(removeId, removeSlot, 10);
+			break;
+			
+		case InterfaceConstants.SHOP_INTERFACE:
+			ShopManager.buy(player, removeId, 100, removeSlot);
+			break;
+			
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.sell(player, removeId, 10, removeSlot);
 			break;
 
 		}

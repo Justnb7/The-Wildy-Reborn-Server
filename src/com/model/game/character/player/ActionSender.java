@@ -3,7 +3,6 @@ package com.model.game.character.player;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.item.Item;
-import com.model.game.item.container.Container;
 import com.model.game.item.container.InterfaceConstants;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;

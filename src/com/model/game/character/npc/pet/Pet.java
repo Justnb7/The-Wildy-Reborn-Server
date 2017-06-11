@@ -6,9 +6,8 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
 import com.model.game.location.Location;
-import com.model.task.events.CycleEvent;
-import com.model.task.events.CycleEventContainer;
-import com.model.task.events.CycleEventHandler;
+import com.model.server.Server;
+import com.model.task.ScheduledTask;
 
 /**
  * The class which represents functionality for the pet system.
@@ -47,13 +46,14 @@ public class Pet extends NPC {
 				player.setPet(petIds.getNpc());
 				World.getWorld().register(pet);
 				player.getInventory().remove(item);
-				CycleEventHandler.getSingleton().addEvent(player, new CycleEvent() {
+				
+				Server.getTaskScheduler().schedule(new ScheduledTask(4) {
 
 					@Override
-					public void execute(CycleEventContainer container) {
+					public void execute() {
 						// Pet despawned or owner offline
 						if (player.getIndex() < 1 || pet.getIndex() < 1) {
-							container.stop();
+							stop();
 							return;
 						}
 						int delta = player.getLocation().distance(pet.getLocation());
@@ -65,7 +65,7 @@ public class Pet extends NPC {
 						}
 					}
 
-				}, 4);
+				});
 				return false;
 			}
 		}

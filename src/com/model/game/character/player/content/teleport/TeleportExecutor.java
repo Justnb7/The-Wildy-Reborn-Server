@@ -46,7 +46,6 @@ public class TeleportExecutor {
 			duelSession.finish(MultiplayerSessionFinalizeType.WITHDRAW_ITEMS); 
 		}
 		player.getFightCave().exitCave(2);
-		player.getSkillCyclesTask().stop();
 		TeleportType type = player.getSpellBook() == SpellBook.MODERN ? TeleportType.NORMAL : player.getSpellBook() == SpellBook.ANCIENT ? TeleportType.ANCIENT : player.usingObelisk ?  TeleportType.OBELISK : TeleportType.NORMAL;
 		teleport(player, new Teleport(location, type), true);
 	}

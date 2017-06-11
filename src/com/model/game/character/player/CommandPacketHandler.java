@@ -89,10 +89,6 @@ public class CommandPacketHandler implements PacketType {
     	case "bank":
     		player.getBank().open();
     		return true;
-    	
-    	case "pestr":
-    		player.getPestControlRewards().showInterface();
-    		return true;
     		
     	case "drop":
     		Server.getDropManager().open(player);

@@ -10,9 +10,8 @@ import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
-import com.model.task.events.CycleEvent;
-import com.model.task.events.CycleEventContainer;
-import com.model.task.events.CycleEventHandler;
+import com.model.server.Server;
+import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 /**
@@ -48,25 +47,25 @@ public class WarriorsGuild {
 	}
 	
 	public void cycle() {
-		CycleEventHandler.getSingleton().stopEvents(this);
+		
 		setActive(true);
-		CycleEventHandler.getSingleton().addEvent(this, new CycleEvent() {
+		Server.getTaskScheduler().schedule(new ScheduledTask(100) {
 
 			@Override
-			public void execute(CycleEventContainer event) {
+			public void execute() {
 				if(player == null || player.properLogout) {
-					event.stop();
+					stop();
 					return;
 				}
 				if(!player.getInventory().contains(8851, 10)) {
 					removeFromRoom();
 					setActive(false);
-					event.stop();
+					stop();
 					return;
 				}
 				if(!Boundary.isIn(player, CYCLOPS_BOUNDARY) || Boundary.isIn(player, WAITING_ROOM_BOUNDARY)) {
 					setActive(false);
-					event.stop();
+					stop();
 					return;
 				}
 				player.getInventory().remove(new Item(8851, 20));
@@ -78,12 +77,11 @@ public class WarriorsGuild {
 				
 			}
 			
-		}, 100);
+		});
 	}
 	
 	public void handleDoor() {
 		if(player.absX == 2847 && player.absY == 3540 || player.absX == 2847 && player.absY == 3541) {
-			CycleEventHandler.getSingleton().stopEvents(this);
 			player.movePlayer(new Location(player.absX - 1, player.absY, 2));
 		} else if(player.absX == 2846 && player.absY == 3540 || player.absX == 2846 && player.absY == 3541 || Boundary.isIn(player, WAITING_ROOM_BOUNDARY)) {
 			if(player.getInventory().contains(8851, 200)) {

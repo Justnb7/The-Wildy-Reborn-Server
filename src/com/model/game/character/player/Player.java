@@ -33,7 +33,6 @@ import com.model.game.character.npc.pet.Pet;
 import com.model.game.character.player.account.Account;
 import com.model.game.character.player.account.ironman.GameModeSelection;
 import com.model.game.character.player.content.FriendAndIgnoreList;
-import com.model.game.character.player.content.KillTracker;
 import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.achievements.AchievementHandler;
 import com.model.game.character.player.content.clan.ClanMember;
@@ -55,14 +54,10 @@ import com.model.game.character.player.instances.InstancedAreaManager;
 import com.model.game.character.player.instances.impl.FightCaveInstance;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.fight_caves.FightCaves;
-import com.model.game.character.player.minigames.pest_control.PestControl;
-import com.model.game.character.player.minigames.pest_control.PestControlRewards;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.player.serialize.PlayerSerialization;
-import com.model.game.character.player.skill.SkillCyclesTask;
 import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
-import com.model.game.character.player.skill.mining.Mining;
 import com.model.game.character.player.skill.slayer.interfaceController.SlayerInterface;
 import com.model.game.character.player.skill.thieving.Thieving;
 import com.model.game.character.walking.MovementHandler;
@@ -131,18 +126,6 @@ public class Player extends Entity {
     public MutableNumber getPoisonImmunity() {
         return poisonImmunity;
     }
-	
-    private SkillCyclesTask skillCyclesTask = new SkillCyclesTask(this);
-	
-	public SkillCyclesTask getSkillCyclesTask() {
-		return skillCyclesTask;
-	}
-	
-    private Mining mining = new Mining(this);
-	
-	public Mining getMining() {
-		return mining;
-	}
 	
 	private Thieving thieving = new Thieving(this);
 	
@@ -1318,13 +1301,10 @@ public class Player extends Entity {
 					stop();
 					return;
 				}
-				final Boundary pc = PestControl.GAME_BOUNDARY;
 				final Boundary fc = Boundary.FIGHT_CAVE;
 				int x = teleportToX;
 				int y = teleportToY;
-				if (x > pc.getMinimumX() && x < pc.getMaximumX() && y > pc.getMinimumY() && y < pc.getMaximumY()) {
-					player.movePlayer(new Location(2657, 2639, 0));
-				} else if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
+				if (x > fc.getMinimumX() && x < fc.getMaximumX() && y > fc.getMinimumY() && y < fc.getMaximumY()) {
 					player.getActionSender().sendMessage("Wave " + (player.waveId + 1) + " will start in approximately 5-10 seconds. ");
 					player.getFightCave().startWave();
 				}
@@ -2549,7 +2529,6 @@ public class Player extends Entity {
 	}
 	
 	//Minigame variables
-	public int pestControlDamage;
 	public boolean isAnimatedArmourSpawned;
 	public int waveId;
 	public boolean secondOption;
@@ -2572,16 +2551,6 @@ public class Player extends Entity {
 		if(!completedFightCaves) {
 			completedFightCaves = true;
 		}
-	}
-	
-	/**
-	 * The single instance of the {@link PestControlRewards} class for this player
-	 * @return	the reward class
-	 */
-	private PestControlRewards pestControlRewards = new PestControlRewards(this);
-	
-	public PestControlRewards getPestControlRewards() {
-		return pestControlRewards;
 	}
 	
 	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);

@@ -15,9 +15,7 @@ import com.model.game.character.player.Player;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.server.Server;
-import com.model.task.events.CycleEvent;
-import com.model.task.events.CycleEventContainer;
-import com.model.task.events.CycleEventHandler;
+import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 
 
@@ -72,7 +70,7 @@ public class Obelisks {
 			return;
 		}
 		boolean active = state.get(objectId);
-		if (CycleEventHandler.getSingleton().isAlive(location) || active) {
+		if (active) {
 			player.getActionSender().sendMessage("The obelisk is already active, please wait.");
 			return;
 		}
@@ -88,7 +86,7 @@ public class Obelisks {
 		Server.getGlobalObjects().add(new GameObject(14825, x + 4, y, 0, 0, 10, 14, objectId));
 		Server.getGlobalObjects().add(new GameObject(14825, x, y + 4, 0, 0, 10, 14, objectId));
 		Server.getGlobalObjects().add(new GameObject(14825, x + 4, y + 4, 0, 0, 10, 14, objectId));
-		CycleEventHandler.getSingleton().addEvent(location, new Event(location), 14);
+		World.getWorld().schedule(new Event(location, 14));
 	}
 	
 	public enum Obelisk {
@@ -147,18 +145,19 @@ public class Obelisks {
 		
 	}
 	
-	static final class Event extends CycleEvent {
+	static final class Event extends ScheduledTask {
 		
 		private Obelisk location;
 		
-		public Event(Obelisk location) {
+		public Event(Obelisk location, int cycles) {
 			this.location = location;
+			this.setTickDelay(cycles);
 		}
 
 		@Override
-		public void execute(CycleEventContainer container) {
+		public void execute() {
 					state.put(location.objectId, false);
-					container.stop();
+					stop();
 					Boundary boundary = new Boundary(location.boundary.getMinimumX() + 1, location.boundary.getMinimumY() + 1, location.boundary.getMinimumX() + 3, location.boundary.getMinimumY() + 3);
 					List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player -> Boundary.isIn(player, boundary)).collect(Collectors.toList());
 					if (players.size() > 0) {

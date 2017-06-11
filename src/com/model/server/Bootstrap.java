@@ -127,7 +127,6 @@ public class Bootstrap {
 			new NPCDefinitionParser().run();
 			new ShopParser().run();
 			Server.npcHandler.declare();
-			Arrays.fill(NPCDefinitions.getDefinitions(), null);
 	        Server.getDropManager().read();
 		});
 

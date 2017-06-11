@@ -90,7 +90,7 @@ public final class NPCHandler {
 	}
 	
 	public static NPC spawnNpc(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
-		NPC npc = new NPC(id);
+		NPC npc = new NPC(id, spawn, walkingType);
 		
 		npc.setAbsX(spawn.getX());
 		npc.setAbsY(spawn.getY());
@@ -99,7 +99,6 @@ public final class NPCHandler {
 		npc.heightLevel = spawn.getZ();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
-		System.out.printf("Spawned npc id %d for player index %d on position %s%n", id, player.getIndex(), npc.getLocation());
 		npc.setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		npc.faceEntity(player);
 		if (attacksEnemy) {

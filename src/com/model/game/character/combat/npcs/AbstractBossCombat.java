@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.model.game.character.Entity;
+import com.model.game.character.combat.npcs.script.Cave_Kraken;
 import com.model.game.character.combat.npcs.script.Kraken;
 import com.model.game.character.combat.npcs.script.SkeletalWyvern;
 import com.model.game.character.combat.npcs.script.barrows.AhrimTheBlighted;
@@ -42,6 +43,7 @@ public abstract class AbstractBossCombat {
 		
 		bosses.put(465, new SkeletalWyvern());
 		
+		bosses.put(492, new Cave_Kraken());
 		bosses.put(494, new Kraken());
 		
 		bosses.put(2267, new DagannothRex());

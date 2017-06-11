@@ -806,7 +806,14 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
 		case "npc":
-			try {
+			int npcId = Integer.parseInt(cmd[1]);
+			Location spawnLocation = new Location(player.getX(), player.getY() -1, player.getZ());
+			NPC spawn = new NPC(npcId, spawnLocation, 0);
+			
+			World.getWorld().register(spawn);
+			
+			System.out.printf("npc: %s health: %d%n", spawn.getName(), spawn.getHitpoints());
+			/*try {
 				int npcId = Integer.parseInt(cmd[1]);
 				if (npcId > 0) {
 					NPC npc = NPCHandler.spawnNpc(player, npcId, new Location(player.getX() + 1, player.getY(), player.getZ()), 0, false, false, false);
@@ -820,7 +827,7 @@ public class CommandPacketHandler implements PacketType {
 				}
 			} catch (Exception ignored) {
 				ignored.printStackTrace();
-			}
+			}*/
 			return true;
     		
     	case "anim":

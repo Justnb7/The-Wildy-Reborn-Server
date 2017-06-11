@@ -419,7 +419,7 @@ public class Combat {
      * Stuff done when an attack executes, regardless of combat style. SOUNDS, SKULLING, VENOM
      */
     private static void onAttackDone(Player player, Entity target) {
-        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) ==null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 
 		// Set our attack timer so we dont instantly hit again
         player.getCombatState().setAttackDelay(WeaponDefinition.sendAttackSpeed(player));
@@ -455,8 +455,8 @@ public class Combat {
             }*/
         }
 
-        if (wep > -1 && player.getCombatType() != CombatStyle.MAGIC) {
-            PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep);
+        if (wep.getId() > -1 && player.getCombatType() != CombatStyle.MAGIC) {
+            PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep.getId());
         }
 
         if (target.isNPC()) {
@@ -492,8 +492,8 @@ public class Combat {
 
     private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
         if (dam1 == 0) return dam1;
-        int ammo = attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT)==null ? -1 : attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
-        switch (ammo) {
+        Item ammo = attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+        switch (ammo.getId()) {
             case 9236: // Lucky Lightning
                 defender.playGraphics(Graphic.create(749, 0, 0));
                 break;
@@ -657,9 +657,7 @@ public class Combat {
 	 * @return We are checking for an equiped halberd.
 	 */
 	public static boolean usingHalberd(Player player) {
-	    if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null)
-	        return false;
-		String weapon = ItemDefinition.get(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId()).getName().toLowerCase();
+		String weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getName().toLowerCase();
 		return weapon.contains("halberd");
 	}
 	

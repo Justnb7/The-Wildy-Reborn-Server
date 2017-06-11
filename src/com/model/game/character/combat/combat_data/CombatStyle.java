@@ -28,7 +28,17 @@ public enum CombatStyle {
     DRAGON_FIRE, 
     
     /**
-     * The special combat type, includes things like callisto's setback.
+     * Callisto's special attack
      */
-    SPECIAL;
+    SET_BACK,
+    
+    /**
+     * The Chaos elementals teleporting attack
+     */
+    TELEOTHER,
+    
+    /**
+     * The Chaos elementals disarm attack
+     */
+	DISARM;
 }

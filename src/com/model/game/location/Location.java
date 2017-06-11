@@ -66,6 +66,19 @@ public class Location {
 	 *            The x coordinate.
 	 * @param y
 	 *            The y coordinate.
+	 * @return The location.
+	 */
+	public static Location create(int x, int y) {
+		return new Location(x, y, 0);
+	}
+	
+	/**
+	 * Creates a location.
+	 * 
+	 * @param x
+	 *            The x coordinate.
+	 * @param y
+	 *            The y coordinate.
 	 * @param z
 	 *            The z coordinate.
 	 * @return The location.

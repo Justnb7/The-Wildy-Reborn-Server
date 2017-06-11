@@ -18,6 +18,7 @@ import com.model.game.character.combat.npcs.script.fight_cave.TzTokJad;
 import com.model.game.character.combat.npcs.script.godwars.bandos.GeneralGraardor;
 import com.model.game.character.combat.npcs.script.godwars.zamorak.KrilTsutsaroth;
 import com.model.game.character.combat.npcs.script.godwars.zamorak.ZaklnGritch;
+import com.model.game.character.combat.npcs.script.wilderness.Chaos_Elemental;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 
@@ -52,6 +53,8 @@ public abstract class AbstractBossCombat {
 		
 		bosses.put(3129, new KrilTsutsaroth());
 		bosses.put(3131, new ZaklnGritch());
+		
+		bosses.put(2054, new Chaos_Elemental());
 
 	}
 	

@@ -211,7 +211,7 @@ public class PlayerFollowing {
                 }
             } else {
                 followLoc = Tile.create(following.absX, following.absY, following.heightLevel).
-                        closestTileOf(Tile.create(player.absX, player.absY, player.heightLevel), following.size(), following.size()).toLocation();
+                        closestTileOf(Tile.create(player.absX, player.absY, player.heightLevel), following.size(), following.size());
             }
             if (followLoc != null) {
                 playerWalk(followLoc.getX(), followLoc.getY());

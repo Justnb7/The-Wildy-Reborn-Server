@@ -127,7 +127,7 @@ public abstract class Entity {
 	public Location lastTile;
 
 	public Tile getPosition() {
-		return new Tile(absX, absY, heightLevel);
+		return Tile.create(absX, absY, heightLevel);
 	}
 	
 	/**

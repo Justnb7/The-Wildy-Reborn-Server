@@ -4,6 +4,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.pathfinder.Directions;
 import com.model.game.character.pathfinder.impl.PrimitivePathFinder;
 import com.model.game.character.pathfinder.region.RegionManager;
+import com.model.game.location.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -425,5 +426,9 @@ public class Tile {
 		int pointX = other.getX();
 		int pointY = other.getY();
 		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
+	}
+
+	public Location toLocation() {
+		return Location.create(getX(), getY(), getTileHeight());
 	}
 }

@@ -45,8 +45,6 @@ public class MovementHandler {
 	private int walkingDirection;
 	private int runningDirection;
 
-	public boolean followPath = false;
-
 	/**
 	 * Creates a new MovementHandler.
 	 *
@@ -203,7 +201,6 @@ public class MovementHandler {
 	 * Resets the walking queue.
 	 */
 	public void reset() {
-		followPath = false;
 		setRunPath(false);
 		waypoints.clear();
 

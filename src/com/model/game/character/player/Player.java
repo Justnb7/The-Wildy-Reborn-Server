@@ -1502,10 +1502,7 @@ public class Player extends Entity {
 	
 	public void process_following() {
 		if (followTarget != null) {
-			if (followTarget.isNPC())
-				getPlayerFollowing().followNpc(followTarget, 1);
-			else
-				getPlayerFollowing().followPlayer(!asPlayer().getCombatState().noTarget(), followTarget, 1);
+			getPlayerFollowing().follow(!asPlayer().getCombatState().noTarget(), followTarget, 1);
 		}
 	}
 

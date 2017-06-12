@@ -1,11 +1,5 @@
 package com.model.utility.cache.map;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Optional;
-
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
@@ -13,6 +7,8 @@ import com.model.game.object.GameObject;
 import com.model.utility.cache.Direction;
 import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.WorldObject;
+
+import java.util.*;
 
 public class Region {
 	
@@ -32,7 +28,7 @@ public class Region {
 	}
 	
 	public static void sort() {
-		Region[] sorted = new Region[70000];
+		Region[] sorted = new Region[16384];
 		for (int i = 0; i < regions.length; i++) {
 			if (regions[i] == null) {
 				continue;
@@ -434,7 +430,7 @@ public class Region {
 		return true;
 	}
 
-	private static void addClipping(boolean before, int x, int y, int height, int shift) {
+	public static void addClipping(boolean before, int x, int y, int height, int shift) {
 		int regionX = x >> 3;
 		int regionY = y >> 3;
 		int regionId = ((regionX / 8) << 8) + (regionY / 8);
@@ -724,17 +720,15 @@ public class Region {
 	}*/
 
 	public static int getClipping(int x, int y, int height) {
-		if (height > 3) {
-			height = 0;
-		}
 		int regionX = x >> 3;
 		int regionY = y >> 3;
 		int regionId = ((regionX / 8) << 8) + (regionY / 8);
 		for (Region r : regions) {
 			if (r.id() == regionId) {
-				return r.getClip(x, y, height);
+				return r.getClip(x, y, Math.min(height, 3));
 			}
 		}
+		System.err.println("Clip missing @ "+x+","+y+","+height);
 		return 0;
 	}
 

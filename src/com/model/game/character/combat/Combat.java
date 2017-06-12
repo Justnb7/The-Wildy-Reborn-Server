@@ -164,6 +164,7 @@ public class Combat {
             return;
         }
         int spell = player.spellId;
+        // TODO check all magic pre requisits here.. rune requirements and rune deleting!
         // Magic attack anim
         player.playAnimation(Animation.create(player.MAGIC_SPELLS[spell][2]));
 
@@ -311,28 +312,7 @@ public class Combat {
         player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
         player.getCombatState().fireProjectileAtTarget();
 
-        Item arrows = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-        boolean hand_thrown = false;
-        if (hand_thrown) {
-
-            //player.getEquipment().remove(arrows, Equipment.ARROWS_SLOT).getId();
-
-        } else {
-
-            if (wepId == 11235 || wepId == 12765 || wepId == 12766 || wepId == 12767 || wepId == 12768) {
-                //TODO add arrow removement
-            }
-
-            //Arrows check
-            boolean dropArrows = true;
-            if (wepId == 12926 || wepId == 4222) {
-                dropArrows = false;
-            }
-
-            if (dropArrows) {
-                //TODO add arrow removement
-            }
-        }
+        RangeData.loseAmmo(player, target, wepId, ammoId);
 
         // Random dmg
         int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());

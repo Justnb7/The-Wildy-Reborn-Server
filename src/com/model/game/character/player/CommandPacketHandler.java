@@ -20,12 +20,15 @@ import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.container.impl.shop.ShopManager;
+import com.model.game.item.ground.GroundItem;
+import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+import com.model.utility.cache.map.Region;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 import com.model.utility.parser.impl.ItemDefinitionParser;
@@ -101,6 +104,12 @@ public class CommandPacketHandler implements PacketType {
 				player.getInventory().add(new Item(555, 100000));
 				player.getInventory().add(new Item(565, 100000));
 				player.getInventory().add(new Item(560, 100000));
+				return true;
+			case "showclipmap":
+				for (int x = player.getX() - 16; x < player.getX()+16; x++)
+					for (int y = player.getY() - 16; y < player.getY()+16; x++)
+						if (Region.getClipping(x, y, player.getHeight()) != 0)
+							GroundItemHandler.createGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
 				return true;
     	
     	case "exp":

@@ -198,4 +198,24 @@ public class RangeData {
 		}
 		return str;
 	}
+
+	/**
+	 * TODO Add support for deleting (1) bolts or (2) darts [either ammo or hand slot] depending on range type
+	 * plus chance for that ammo dropping to the floor
+	 */
+	public static void loseAmmo(Player player, Entity target, int wepId, int ammoId) {
+		if (wepId == 11235 || wepId == 12765 || wepId == 12766 || wepId == 12767 || wepId == 12768) {
+			//TODO add arrow removement
+		}
+
+		//Arrows check
+		boolean dropArrows = true;
+		if (wepId == 12926 || wepId == 4222) {
+			dropArrows = false;
+		}
+
+		if (dropArrows) {
+			//TODO add arrow removement
+		}
+	}
 }

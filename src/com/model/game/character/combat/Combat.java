@@ -156,7 +156,7 @@ public class Combat {
             player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
             return;
         }
-        if (!target.moving())
+        if (player.touchDistance(target, 7))
             player.getMovementHandler().reset();
 
         if (player.getCombatState().getAttackDelay() > 0) {
@@ -275,11 +275,13 @@ public class Combat {
         if (!attackable(player, target))
             return;
 
-        Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-        Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-        boolean crystal = wep.getId() >= 4212 && wep.getId() <= 4223;
-        boolean bp = wep.getId() == 12926;
-        if (!crystal && !bp && ammo.getId() < 1) {
+        if (player.touchDistance(target, calculateAttackDistance(player, target)))
+            player.getMovementHandler().reset();
+        int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        int ammoId = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
+        boolean crystal = wepId >= 4212 && wepId <= 4223;
+        boolean bp = wepId == 12926;
+        if (!crystal && !bp && ammoId == -1) {
             player.getActionSender().sendMessage("There is no ammo left in your quiver.");
             player.getMovementHandler().reset();
             player.getCombatState().reset();
@@ -304,7 +306,6 @@ public class Combat {
         doAttackAnim(player, target);
         onAttackDone(player, target);
 
-        int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
 
         player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));

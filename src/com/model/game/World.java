@@ -17,23 +17,39 @@ import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.Service;
 import com.model.task.impl.*;
+import com.model.utility.NameUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 /**
- * Represents a 'World' where we can update entities
- *
- * @author Tim
- * @author Mobster
+ * Holds data global to the game world.
+ * 
+ * @author Graham Edgecombe
+ * 
  */
 public class World implements Service {
+	
+	/**
+	 * Logging class.
+	 */
+	private static final Logger logger = Logger.getLogger(World.class.getName());
 
 	/**
-	 * Our world singleton
+	 * World instance.
 	 */
-	private static World WORLD = new World();
+	private static final World world = new World();
+	
+	/**
+	 * Gets the world instance.
+	 * 
+	 * @return The world instance.
+	 */
+	public static World getWorld() {
+		return world;
+	}
 
 	/**
 	 * The ExecutorService used for Entity synchronization
@@ -41,14 +57,14 @@ public class World implements Service {
 	private static final ExecutorService SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 	/**
-	 * A list of all registered npcs in the world
+	 * A list of active NPCs.
 	 */
-	private final MobileCharacterList<NPC> NPCS = new MobileCharacterList<>(2000);
+	private final MobileCharacterList<NPC> npcs = new MobileCharacterList<>(Constants.MAX_NPCS);
 
 	/**
-	 * A list of all players registered to the world
+	 * A list of connected players.
 	 */
-	public final MobileCharacterList<Player> PLAYERS = new MobileCharacterList<>(1200);
+	public final MobileCharacterList<Player> players = new MobileCharacterList<>(Constants.MAX_PLAYERS);
 	
 
 	/**
@@ -134,7 +150,7 @@ public class World implements Service {
 	}
 
 	public Optional<Player> getPlayerByRealName(String realName) {
-		return PLAYERS.search(player -> player.getName().equalsIgnoreCase(realName));
+		return players.search(player -> player.getName().equalsIgnoreCase(realName));
 	}
 
 	/**
@@ -162,7 +178,7 @@ public class World implements Service {
 	 */
 
 	public Optional<Player> getOptionalByNameHash(long playerName) {
-		for (Player player : PLAYERS) {
+		for (Player player : players) {
 			if (player != null && player.usernameHash == playerName) {
 				return Optional.of(player);
 			}
@@ -182,7 +198,14 @@ public class World implements Service {
 			if (getPlayers().spaceLeft() == 0)
 				return false;
 			getPlayers().add(player);
-			player.initialize();
+			//set flags, 0 is flagged as bot i believe
+			player.outStream.writeFrame(249);
+			player.outStream.putByteA(0);
+			//Sent the index to the client
+			player.outStream.writeWordBigEndianA(player.getIndex());
+			player.flushOutStream();
+			player.getActionSender().sendLogin();
+			logger.info("Registered player : " + player + " [online=" + players.size() + "]");
 			return true;
 		} else if (entity.getEntityType() == EntityType.NPC) {
 			NPC npc = (NPC) entity;
@@ -238,7 +261,7 @@ public class World implements Service {
 			npc.setAbsX(-1);
 			npc.setAbsY(-1);
 			npc.setVisible(false);
-			NPCS.remove(npc.getIndex());
+			npcs.remove(npc.getIndex());
 			npc.removeFromTile();
 		}
 	}
@@ -364,13 +387,13 @@ public class World implements Service {
 				}
 			}
 
-			for (NPC npc : NPCS) {
+			for (NPC npc : npcs) {
 				if (npc != null && npc.isVisible()) {
 					npc.process();
 				}
 			}
 
-			for (Player player : PLAYERS) {
+			for (Player player : players) {
 				if (player == null || !player.isActive()) {
 					continue;
 				}
@@ -378,12 +401,12 @@ public class World implements Service {
 				NpcUpdating.updateNPC(player, player.outStream);
 			}
 
-			for (Player player : PLAYERS) {
+			for (Player player : players) {
 				if (player != null && player.isActive()) {
 					handlePostUpdating(player);
 				}
 			}
-			for (NPC npc : NPCS) {
+			for (NPC npc : npcs) {
 				if (npc != null) {
 					npc.clearUpdateFlags();
 				}
@@ -446,8 +469,8 @@ public class World implements Service {
 	 * @return the unordered players.
 	 */
 	public Set<Player> getUnorderedPlayers() {
-		Set<Player> randomized = new HashSet<>(PLAYERS.size());
-		PLAYERS.forEach(randomized::add); // Don't need to shuffle because we're
+		Set<Player> randomized = new HashSet<>(players.size());
+		players.forEach(randomized::add); // Don't need to shuffle because we're
 											// using a HashSet which already has
 											// randomized iteration order.
 		return randomized;
@@ -473,7 +496,7 @@ public class World implements Service {
 	 * @return A list of players registered to the game world
 	 */
 	public MobileCharacterList<Player> getPlayers() {
-		return PLAYERS;
+		return players;
 	}
 
 	/**
@@ -482,24 +505,32 @@ public class World implements Service {
 	 * @return A list of registered npcs to the game world
 	 */
 	public MobileCharacterList<NPC> getNPCs() {
-		return NPCS;
-	}
-
-	/**
-	 * Gets our world singleton
-	 *
-	 * @return
-	 */
-	public static World getWorld() {
-		return WORLD;
+		return npcs;
 	}
 
 	public Optional<Player> getOptionalPlayer(String name) {
 		return getWorld().getPlayers().stream().filter(Objects::nonNull).filter(client -> client.getName().equalsIgnoreCase(name)).findFirst();
 	}
 	
+	/**
+	 * Checks if a player is online.
+	 * 
+	 * @param name
+	 *            The player's name.
+	 * @return <code>true</code> if they are online, <code>false</code> if not.
+	 */
+	public boolean isPlayerOnline(String name) {
+		name = NameUtils.formatName(name);
+		for (Player player : players) {
+			if (player.getName().equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String getOnlineStatus(String playerName) {
-        for (Player p : getWorld().PLAYERS) {
+        for (Player p : getWorld().players) {
                 if (p == null || p.properLogout || !p.getName().equalsIgnoreCase(playerName))
                         continue;
                 return "@gre@Online";
@@ -507,7 +538,7 @@ public class World implements Service {
         return "@red@Offline";
 	}
 
-	public static void sendMessage(String message, List<Player> players) {
+	public void sendMessage(String message, List<Player> players) {
 		for (Player player : players) {
 			if (Objects.isNull(player)) {
 				continue;

@@ -1,12 +1,25 @@
 package com.model.game.character.player;
 
 import com.model.UpdateFlags.UpdateFlag;
+import com.model.game.Constants;
+import com.model.game.World;
+import com.model.game.character.combat.PrayerHandler;
+import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.magic.SpellBook;
+import com.model.game.character.combat.weapon.AttackStyle;
+import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.player.content.KillTracker;
+import com.model.game.character.player.content.clan.ClanManager;
+import com.model.game.character.player.content.questtab.QuestTabPageHandler;
+import com.model.game.character.player.content.questtab.QuestTabPages;
+import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
+import com.model.server.Server;
+import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
 
@@ -71,7 +84,7 @@ public class ActionSender {
 		sendInterfaceConfig(1, 12227);
 		sendInterfaceConfig(0, 12161);
 		sendString("% Done", 12224);
-		player.getActionSender().sendWalkableInterface(8680);
+		sendWalkableInterface(8680);
 		return this;
 	}
 
@@ -89,7 +102,7 @@ public class ActionSender {
      */
 	public ActionSender sendSkills() {
 		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
-			player.getActionSender().sendSkillLevel(i);
+			sendSkillLevel(i);
 		}
 		return this;
 	}
@@ -203,21 +216,14 @@ public class ActionSender {
 	public ActionSender sendSidebarInterfaces() {
 		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 904, 147, -1, -1 };//15
 		for (int i = 0; i < 15; i++) {
-			player.getActionSender().sendSidebarInterface(i, interfaces[i]);
-		}
-		if (player.getSpellBook() == SpellBook.ANCIENT) {
-			player.getActionSender().sendSidebarInterface(6, 12855);
-		} else if (player.getSpellBook() == SpellBook.MODERN) {
-			player.getActionSender().sendSidebarInterface(6, 1151);
-		} else if (player.getSpellBook() == SpellBook.LUNAR) {
-			player.getActionSender().sendSidebarInterface(6, 29999);
+			sendSidebarInterface(i, interfaces[i]);
 		}
 		return this;
 	}
 	
 	public ActionSender hideAllSideBars() {
 		for (int i = 0; i < 14; i++)
-			player.getActionSender().sendSidebarInterface(i, -1);
+			sendSidebarInterface(i, -1);
 		return this;
 	}
 	
@@ -659,7 +665,7 @@ public class ActionSender {
         player.getOutStream().writeByte(radius);
 
         player.flushOutStream();
-        //player.getActionSender().sendMessage("dif "+offsetX+"|"+offsetY+" from "+start+" to "+finish+" dist "+start.distance(finish));
+        //player.sendMessage("dif "+offsetX+"|"+offsetY+" from "+start+" to "+finish+" dist "+start.distance(finish));
         return this;
     }
 	
@@ -844,6 +850,141 @@ public class ActionSender {
 			player.getOutStream().writeWordBigEndian_dup(id);
 		}
 		return this;
+	}
+	
+	/**
+	 * Sends all the login packets.
+	 * 
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendLogin() {
+		//Activate our players session
+		player.setActive(true);
+		
+		//Update the players details
+		try {
+			PlayerSerialization.load(player);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//Finalize our ignore and friends list
+		player.getFAI().handleLogin();
+		
+		//Update the map packet
+		sendMapRegionPacket();
+		
+		//We can go ahead and update out sidebars
+		sendSidebarInterfaces();
+		
+		//Update the magic book
+		if (player.getSpellBook() == SpellBook.ANCIENT) {
+			sendSidebarInterface(6, 12855);
+		} else if (player.getSpellBook() == SpellBook.MODERN) {
+			sendSidebarInterface(6, 1151);
+		} else if (player.getSpellBook() == SpellBook.LUNAR) {
+			sendSidebarInterface(6, 29999);
+		}
+		
+		//Reset prayers
+		PrayerHandler.resetAllPrayers(player);
+		
+		//unlock/lock special case prayers
+		sendConfig(709, PrayerHandler.canActivate(player, Prayers.PRESERVE, false) ? 1 : 0);
+		sendConfig(711, PrayerHandler.canActivate(player, Prayers.RIGOUR, false) ? 1 : 0);
+		sendConfig(713, PrayerHandler.canActivate(player, Prayers.AUGURY, false) ? 1 : 0);
+		
+		//Update inventory
+		player.getInventory().refresh();
+		
+		//Update equipment
+		player.getEquipment().refresh();
+		
+		//Update the weapon attributes
+		player.getWeaponInterface().restoreWeaponAttributes();
+		
+		//Send the interaction options
+		sendInteractionOption("Follow", 4, true);
+		sendInteractionOption("Trade With", 5, true);
+		
+		//We can go ahead and finalize the game configs
+		updateConfigs();
+		
+		//Update the skills
+		sendSkills();
+		
+		//Update our attack style
+		AttackStyle.adjustAttackStyleOnLogin(player);
+		
+		sendMessage("Welcome to " + Constants.SERVER_NAME + ".");
+		
+		//activate login delay
+		player.setAttribute("login_delay", System.currentTimeMillis());
+		return this;
+	}
+	
+	public void updateConfigs() {
+		player.setScreenBrightness((byte) 4);
+		sendString("100%", 149);
+		sendConfig(166, player.getScreenBrightness());
+		sendConfig(207, player.isEnableMusic() ? 1 : 0);
+		sendConfig(206, player.isEnableSound() ? 1 : 0);
+		sendConfig(287, player.getSplitPrivateChat() ? 1 : 0);
+		sendConfig(205, player.getSplitPrivateChat() ? 1 : 0);
+		sendConfig(200, player.getAcceptAid() ? 1 : 0);
+		sendConfig(172, player.isAutoRetaliating() ? 1 : 0);
+		sendConfig(152, player.isRunning() ? 1 : 0);
+	}
+	
+	public void updateAfterLogin() {
+		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
+
+			@Override
+			public void execute() {
+				Player player = (Player) getAttachment();
+				if (player == null || !player.isActive()) {
+					stop();
+					return;
+				}
+				
+				//We are new so we start the tutorial
+				if (!player.receivedStarter() && player.inTutorial()) {
+					player.dialogue().start("STARTER");
+				}
+				
+				//If the player is muted we tell them after they're logged in
+				if (player.isMuted()) {
+					sendMessage("You are currently muted. Other players will not see your chat messages.");
+				}
+				
+				//We can update our kills tracker after login
+				KillTracker.loadDefault(player);
+				//Update the quest tab info
+				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
+				
+				//If we had a pet spawned, we spawn it after the login protocol
+				if (player.isPetSpawned()) {
+		            Pet pet = new Pet(player, player.getPet());
+		            player.setPet(player.getPet());
+		            World.getWorld().register(pet);
+		        }
+				
+				//If we're a Administrator we choose to play in debug mode
+				if (player.getRights().isAdministrator()) {
+					player.setDebugMode(true);
+				}
+				
+				//If the player is not in a clan chat we'll add them in the server clan chat
+				if (player.getTempKey() == null || player.getTempKey().equals("") || player.getTempKey().isEmpty()) {
+					player.getActionSender().sendMessage("<col=ff0033>We noticed you aren't in a clanchat, so we added you to the community clanchat!");
+					player.setTempKey("patrick");
+				}
+				if (player.getTempKey() != null) {
+					ClanManager.joinClan(player, player.getTempKey());
+				}
+				this.stop();
+			}
+		}.attach(this));
 	}
 	
 }

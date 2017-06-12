@@ -1226,16 +1226,6 @@ public class Player extends Entity {
 		setInCombat(true);
 	}
 
-	private int lastRegionHeight;
-
-	public int setLastRegionHeight(int height) {
-		return this.lastRegionHeight = height;
-	}
-
-	public int getLastRegionHeight() {
-		return this.lastRegionHeight;
-	}
-
 	public String getIdentity() {
 		return identity;
 	}
@@ -1248,6 +1238,9 @@ public class Player extends Entity {
 		super(EntityType.PLAYER);
 		this.username = username;
 		usernameHash = Utility.playerNameToInt64(username);
+		this.teleportToX = 3087;
+		this.teleportToY = 3499;
+		this.teleHeight = 0;
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
 		mapRegionX = mapRegionY = -1;
@@ -1302,126 +1295,7 @@ public class Player extends Entity {
 		outStream.offset = 0;
 	}
 	
-	public void initialize() {
-		
-		try {
-			System.out.println("Loading player file for: "+this.getName());
-			PlayerSerialization.load(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		//set flags, 0 is flagged as bot i believe
-		outStream.writeFrame(249);
-		outStream.putByteA(0);
-		//Sent the index to the client
-		outStream.writeWordBigEndianA(getIndex());
-		flushOutStream();
-
-		//Update our combat before login
-		combatLevel = getSkills().getCombatLevel();
-		//Update our total level before login
-		totalLevel = getSkills().getTotalLevel();
-		//Update our skills before login
-		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
-			this.getActionSender().sendSkillLevel(i);
-		}
-		//Reset prayers before login
-		PrayerHandler.resetAllPrayers(this);
-		getActionSender().sendConfig(709, PrayerHandler.canActivate(this, Prayers.PRESERVE, false) ? 1 : 0);
-		getActionSender().sendConfig(711, PrayerHandler.canActivate(this, Prayers.RIGOUR, false) ? 1 : 0);
-		getActionSender().sendConfig(713, PrayerHandler.canActivate(this, Prayers.AUGURY, false) ? 1 : 0);
-		//Set our sidebars before login
-		getActionSender().sendSidebarInterfaces();
-		//Update inventory before login
-		inventory.refresh();
-		//Update equipment before login
-		equipment.refresh();
-		getWeaponInterface().restoreWeaponAttributes();
-		//Update friends and ignores
-		getFAI().handleLogin();
-		//Update right click menu
-		getActionSender().sendInteractionOption("Follow", 4, true);
-		getActionSender().sendInteractionOption("Trade With", 5, true);
-		//Refresh the player settings
-		refreshSettings();
-		//Set last known height
-		this.setLastRegionHeight(this.getZ());
-		//Set session active
-		setActive(true);
-		Utility.println("[REGISTERED]: " + this + "");
-		//activate login delay
-		setAttribute("login_delay", System.currentTimeMillis());
-		
-		//We can goahead and finish of the players login
-		submitAfterLogin();
-	}
-
-	public void refreshSettings() {
-		AttackStyle.adjustAttackStyleOnLogin(this);
-		this.setScreenBrightness((byte) 4);
-		getActionSender().sendString("100%", 149);
-		getActionSender().sendConfig(166, getScreenBrightness());
-		getActionSender().sendConfig(207, isEnableMusic() ? 1 : 0);
-		getActionSender().sendConfig(206, isEnableSound() ? 1 : 0);
-		getActionSender().sendConfig(287, getSplitPrivateChat() ? 1 : 0);
-		getActionSender().sendConfig(205, getSplitPrivateChat() ? 1 : 0);
-		getActionSender().sendConfig(200, getAcceptAid() ? 1 : 0);
-		getActionSender().sendConfig(172, isAutoRetaliating() ? 1 : 0);
-		getActionSender().sendConfig(152, isRunning() ? 1 : 0);
-		/*getActionSender().sendWidget(1, 0);
-		getActionSender().sendWidget(2, 0);
-		getActionSender().sendWidget(3, 0);
-		getActionSender().sendWidget(4, 0);*/
-	}
-
-	private void submitAfterLogin() {
-		Server.getTaskScheduler().schedule(new ScheduledTask(3) {
-
-			@Override
-			public void execute() {
-				Player player = (Player) getAttachment();
-				if (player == null || !player.isActive()) {
-					stop();
-					return;
-				}
-				//KillTracker.loadDefault(player);
-				player.getActionSender().sendMessage("Welcome back to " + Constants.SERVER_NAME + ".");
-				
-				if (!receivedStarter() && inTutorial()) {
-					player.dialogue().start("STARTER");
-					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(getName()) + "</col> Has joined Venenatis for the first time.");
-				}
-				
-				if (isMuted()) {
-					player.getActionSender().sendMessage("You are currently muted. Other players will not see your chat messages.");
-				}
-				
-				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
-
-				if (player.isPetSpawned()) {
-		            Pet pet = new Pet(player, player.getPet());
-		            player.setPet(player.getPet());
-		            World.getWorld().register(pet);
-		        }
-
-				if (player.getName().equalsIgnoreCase("Patrick")) {
-					player.setDebugMode(true);
-				}
-				if (tempKey == null || tempKey.equals("") || tempKey.isEmpty()) {
-					player.getActionSender().sendMessage("<col=ff0033>We noticed you aren't in a clanchat, so we added you to the community clanchat!");
-					tempKey = "patrick";
-				}
-				if (tempKey != null) {
-					com.model.game.character.player.content.clan.ClanManager.joinClan(player, player.tempKey);
-				}
-				this.stop();
-			}
-		}.attach(this));
-
-	}
-	
-	private boolean isMuted() {
+	public boolean isMuted() {
 		return this.isMuted;
 	}
 

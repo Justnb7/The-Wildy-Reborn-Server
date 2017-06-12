@@ -173,7 +173,7 @@ public class Boundary {
 	
 	public static int entitiesInArea(Boundary boundary) {
 		int i = 0;
-		for(Player player : World.getWorld().PLAYERS)
+		for(Player player : World.getWorld().players)
 			if(player != null)
 				if(isIn(player, boundary))
 					i++;

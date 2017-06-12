@@ -205,11 +205,16 @@ public class Constants {
 	 * Add random 5 tiles to the current coordinate
 	 */
 	public static final int RANDOM_DUELING_RESPAWN = 5; 
+
+	/**
+	 * The npc max cap.
+	 */
+	public static final int MAX_NPCS = 32000;
 	
 	/**
 	 * Maximum players allowed in a single world.
 	 */
-	public static final int MAX_PLAYERS = 2048;
+	public static final int MAX_PLAYERS = 2000;
 	
 	/**
 	 * Valid chacters that can be used in the friends chat

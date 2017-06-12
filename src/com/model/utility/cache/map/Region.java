@@ -728,7 +728,7 @@ public class Region {
 				return r.getClip(x, y, Math.min(height, 3));
 			}
 		}
-		System.err.println("Clip missing @ "+x+","+y+","+height);
+		//System.err.println("Clip missing @ "+x+","+y+","+height);
 		return 0;
 	}
 

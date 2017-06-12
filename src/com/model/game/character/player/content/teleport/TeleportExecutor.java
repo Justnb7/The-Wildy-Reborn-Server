@@ -131,7 +131,7 @@ public class TeleportExecutor {
 			}
 		}
 		Combat.resetCombat(player);
-		player.getMovementHandler().stopMovement();
+		player.getMovementHandler().reset();
 		player.getActionSender().removeAllInterfaces();
 		player.getCombatState().reset();
 		player.resetFace();

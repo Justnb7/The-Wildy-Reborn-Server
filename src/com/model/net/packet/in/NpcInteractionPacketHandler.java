@@ -111,10 +111,10 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		if ((usingBow || usingCross || player.autoCast)
 				&& player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {
-			player.getMovementHandler().stopMovement();
+			player.getMovementHandler().reset();
 		}
 		if (throwingWeapon && player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 4)) {
-			player.getMovementHandler().stopMovement();
+			player.getMovementHandler().reset();
 		}
 
 		player.getCombatState().setTarget(npc);
@@ -149,7 +149,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		}
 		if (player.getCombatType() == CombatStyle.MAGIC) {
 			if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 6)) {
-				player.getMovementHandler().stopMovement();
+				player.getMovementHandler().reset();
 			}
 			player.getCombatState().setTarget(npc);
 		}

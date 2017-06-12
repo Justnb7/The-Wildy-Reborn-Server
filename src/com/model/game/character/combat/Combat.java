@@ -82,9 +82,9 @@ public class Combat {
 
         // Establish what style we'd be using this cycle
         Combat.setCombatStyle(player);
-        player.debug("style: "+player.getCombatType());
-
         Entity target = player.getCombatState().getTarget();
+        player.debug("style: "+player.getCombatType()+" vs "+target);
+
 
         /*if (target.isPlayer()) {
             Player ptarg = (Player) target;
@@ -108,13 +108,13 @@ public class Combat {
     }
 
     private static void meleeAttack(Player player, Entity target) {
-        if (!touches(player, target, 1))
+        if (!touches(player, target))
             return;
         if (!attackable(player, target))
             return;
 
         if (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2) && !target.moving()) {
-            player.getMovementHandler().stopMovement();
+            player.getMovementHandler().reset();
         }
         if (player.getCombatState().getAttackDelay() > 0) {
             // don't attack as our timer hasnt reached 0 yet
@@ -143,12 +143,12 @@ public class Combat {
     }
 
     private static void magicAttack(Player player, Entity target) {
-        if (!touches(player, target, 10))
+        if (!touches(player, target))
             return;
         if (!attackable(player, target))
             return;
         /*if (!player.getCombatState().checkMagicReqs(player.getSpellId())) {
-            player.getMovementHandler().stopMovement();
+            player.getMovementHandler().reset();
             Combat.resetCombat(player);
             return;
         }*/
@@ -157,7 +157,7 @@ public class Combat {
             return;
         }
         if (!target.moving())
-            player.getMovementHandler().stopMovement();
+            player.getMovementHandler().reset();
 
         if (player.getCombatState().getAttackDelay() > 0) {
             // don't attack as our timer hasnt reached 0 yet
@@ -205,7 +205,7 @@ public class Combat {
 
             target.freeze(spellFreezeTime);
             if (target.isPlayer()) {
-                ((Player) target).getMovementHandler().resetWalkingQueue();
+                ((Player) target).getMovementHandler().reset();
                 ((Player) target).getActionSender().sendMessage("You have been frozen.");
                 ((Player) target).frozenBy = player.getIndex();
             }
@@ -264,12 +264,13 @@ public class Combat {
         }
 
         Combat.hitEvent(player, target, hitDelay, new Hit(dam1), CombatStyle.MAGIC);
-        player.spellId = -1;
         onAttackDone(player, target);
+        // MUST BE THE LAST PIECE OF CODE IN THIS METHOD. Spellid is used in other methods as a reference.
+        player.spellId = -1;
     }
 
     private static void rangeAttack(Player player, Entity target) {
-        if (!touches(player, target, calculateAttackDistance(player, target)))
+        if (!touches(player, target))
             return;
         if (!attackable(player, target))
             return;
@@ -280,7 +281,7 @@ public class Combat {
         boolean bp = wep.getId() == 12926;
         if (!crystal && !bp && ammo.getId() < 1) {
             player.getActionSender().sendMessage("There is no ammo left in your quiver.");
-            player.getMovementHandler().stopMovement();
+            player.getMovementHandler().reset();
             player.getCombatState().reset();
             return;
         }
@@ -292,6 +293,8 @@ public class Combat {
             // don't attack as our timer hasnt reached 0 yet
             return;
         }
+        if (!target.moving())
+            player.getMovementHandler().reset();
         if (player.isUsingSpecial()) {
             Special.handleSpecialAttack(player, target);
             onAttackDone(player, target);
@@ -683,8 +686,8 @@ public class Combat {
     /**
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
-	public static boolean touches(Player player, Entity target, int dist) {
-        player.getPlayerFollowing().follow(true, target, dist);
+	public static boolean touches(Player player, Entity target) {
+        player.getPlayerFollowing().follow(true, target);
 		return ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()) && player.touchDistance(target, calculateAttackDistance(player, target));
 	}
 	

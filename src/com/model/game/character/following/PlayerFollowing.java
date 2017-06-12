@@ -101,7 +101,7 @@ public class PlayerFollowing {
 	 * @param following
 	 *        The entity we're following
 	 */
-    public void follow(boolean forCombat, Entity following, int stopIfDistance) {
+    public void follow(boolean forCombat, Entity following) {
         
         //Whenever out target is null or death stop the following task
         if (following == null || following.isDead() || player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
@@ -119,6 +119,7 @@ public class PlayerFollowing {
         //When out of distance stop the task
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
             player.setFollowing(null);
+            player.debug("out of range");
             return;
         }
 
@@ -133,15 +134,6 @@ public class PlayerFollowing {
                 if (player.absX == tile.getX() && player.absY == tile.getY()) {
                     inside = true;
                     break;
-                }
-            }
-            if (!inside) {
-                for (Location npcloc : occupied) {
-                    double distance = npcloc.distance(player.getLocation());
-                    if (distance <= stopIfDistance) {
-                        player.getMovementHandler().stopMovement();
-                        return;
-                    }
                 }
             }
         }
@@ -159,6 +151,7 @@ public class PlayerFollowing {
                     walkTo(0, 1);
                 }
             }
+            player.debug("inside target, manovouring..");
             return;
         }
 
@@ -178,15 +171,6 @@ public class PlayerFollowing {
                 playerWalk(player.getX() + x, player.getY() + y);
             }
         } else {
-
-            boolean goodCombatDistance = player.goodDistance(otherX, otherY, player.getX(), player.getY(), stopIfDistance);
-            /*
-             * Check for other range weapons which require a distance of 4
-             */
-            if (goodCombatDistance) {
-                player.getMovementHandler().stopMovement();
-                return;
-            }
             /*
              * Check our regular combat styles for distance
              */
@@ -195,7 +179,8 @@ public class PlayerFollowing {
                     stopDiagonal(player, otherX, otherY);
                     return;
                 } else {
-                    player.getMovementHandler().stopMovement();
+                    // successfully next to them
+                    player.getMovementHandler().reset();
                     return;
                 }
             }

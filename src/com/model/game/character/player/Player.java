@@ -1245,7 +1245,7 @@ public class Player extends Entity {
 		dialogue = new DialogueManager(this);
 		mapRegionX = mapRegionY = -1;
 		currentX = currentY = 0;
-		getMovementHandler().resetWalkingQueue();
+		getMovementHandler().reset();
 		outStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		outStream.offset = 0;
 		inStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
@@ -1376,7 +1376,9 @@ public class Player extends Entity {
 	
 	public void process_following() {
 		if (followTarget != null) {
-			getPlayerFollowing().follow(!asPlayer().getCombatState().noTarget(), followTarget, 1);
+			// Following complete, reset
+			if (!goodDistance(followTarget.getX(), followTarget.getY(), getX(), getY(), 1))
+				getPlayerFollowing().follow(!asPlayer().getCombatState().noTarget(), followTarget);
 		}
 	}
 

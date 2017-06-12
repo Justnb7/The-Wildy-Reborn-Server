@@ -18,7 +18,6 @@ import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
-import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.server.Server;
@@ -707,8 +706,8 @@ public abstract class Entity {
 				Player pAttacker = (Player)attacker;
 				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
 				pAttacker.getCombatState().applySmite(me, damage);
-				Item weapon = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT); 
-				PoisonCombatTask.getPoisonType(weapon.getId()).ifPresent(attacker::poison);
+				int wepId = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+				PoisonCombatTask.getPoisonType(wepId).ifPresent(attacker::poison);
 			}
 		}
 

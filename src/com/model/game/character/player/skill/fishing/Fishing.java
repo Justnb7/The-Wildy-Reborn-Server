@@ -57,7 +57,7 @@ public class Fishing extends SkillTask {
 		}
 
 		player.playAnimation(Animation.create(data.getAnimationId()));
-		player.getMovementHandler().stopMovement();
+		player.getMovementHandler().reset();
 		player.setAttribute("fishing", true);
 		player.getActionSender().sendMessage("You begin fishing...");
 		player.setSkillTask(new Fishing(player, data, data.getTimer()));

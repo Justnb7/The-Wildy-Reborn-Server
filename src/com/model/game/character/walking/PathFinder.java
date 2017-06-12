@@ -1,10 +1,10 @@
 package com.model.game.character.walking;
 
-import java.util.ArrayList;
-
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
 import com.model.utility.cache.map.Region;
+
+import java.util.ArrayList;
 
 public class PathFinder {
 
@@ -26,6 +26,7 @@ public class PathFinder {
 		final int localY = player.getY() - 8 * ((player.getY() >> 3) - 6);
 
 		if (destX == localX && destY == localY && !moveNear) {
+			player.debug("Pathfinder: Target non-close match");
 			return;
 		}
 
@@ -158,10 +159,12 @@ public class PathFinder {
 				}
 
 				if (i_223_ == 1000) {
+					player.debug("Pathfinder: Limit reached");
 					return;
 				}
 
 			} else {
+				player.debug("Pathfinder: No path possible");
 				return;
 			}
 		}
@@ -204,6 +207,7 @@ public class PathFinder {
 		}
 
 		player.getMovementHandler().finish();
+		player.debug("path found! moving");
 	}
 	
 	public boolean findroute2(Location c, int destX, int destY, boolean moveNear, int xLength, int yLength) {

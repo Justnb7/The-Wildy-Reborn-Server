@@ -189,14 +189,6 @@ public class MovementHandler {
 		 return getWalkingDirection() != -1 || getRunningDirection() != -1;
 	}
 
-	public void resetWalkingQueue() {
-		reset();
-	}
-
-	public void stopMovement() {
-		reset();
-	}
-
 	/**
 	 * Resets the walking queue.
 	 */

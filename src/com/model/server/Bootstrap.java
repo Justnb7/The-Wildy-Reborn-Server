@@ -7,7 +7,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ResourceLeakDetector;
 
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +23,6 @@ import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.player.content.trivia.TriviaBot;
 import com.model.game.character.player.skill.fletching.fletchable.impl.*;
-import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.net.ConnectionHandler;
 import com.model.net.network.NettyChannelHandler;
@@ -110,24 +108,23 @@ public class Bootstrap {
 		serviceLoader.execute(() -> {
 			ObjectDefinition.loadConfig();
 			MapLoading.load();
-			//Region.sort();
 			try {
 				CollisionMap.load("Data/data/collisiondata.dat");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			LOGGER.info("Loading all of the game data...");
-			MobAttackSounds.declare();
-			PlayerSounds.declare();
-			ClanManager.init();
-			ConnectionHandler.initialize();
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();
 			new NPCDefinitionParser().run();
-			new ShopParser().run();
 			Server.npcHandler.declare();
 	        Server.getDropManager().read();
+			new ShopParser().run();
+			MobAttackSounds.declare();
+			PlayerSounds.declare();
+			ClanManager.init();
+			ConnectionHandler.initialize();
 		});
 
 		LOGGER.info("Loading content...");

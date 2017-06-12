@@ -28,7 +28,7 @@ public class Region {
 	}
 	
 	public static void sort() {
-		Region[] sorted = new Region[70000];
+		Region[] sorted = new Region[16384];
 		for (int i = 0; i < regions.length; i++) {
 			if (regions[i] == null) {
 				continue;
@@ -430,7 +430,7 @@ public class Region {
 		return true;
 	}
 
-	private static void addClipping(boolean before, int x, int y, int height, int shift) {
+	public static void addClipping(boolean before, int x, int y, int height, int shift) {
 		int regionX = x >> 3;
 		int regionY = y >> 3;
 		int regionId = ((regionX / 8) << 8) + (regionY / 8);

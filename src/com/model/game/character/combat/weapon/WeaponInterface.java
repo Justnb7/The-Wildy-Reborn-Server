@@ -222,7 +222,6 @@ public class WeaponInterface {
 	}
 	
 	public void restoreWeaponAttributes() {
-		player.getEquipment().updateWeapon();
 		refreshSpecialAttack();
 		sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 	}

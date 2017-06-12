@@ -34,9 +34,9 @@ public class NPC extends Entity {
 		if (spawn != null)
 			setLocation(spawn);
 		npcId = id;
-		setAbsX(spawn.getX());
+		/*setAbsX(spawn.getX());
 		setAbsY(spawn.getY());
-		setAbsZ(spawn.getZ());
+		setAbsZ(spawn.getZ());*/
 		setDead(false);
 		randomWalk = true;
 		

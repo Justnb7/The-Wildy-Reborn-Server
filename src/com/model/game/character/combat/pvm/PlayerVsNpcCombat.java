@@ -10,7 +10,6 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
 import com.model.game.character.walking.PathFinder;
-import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.server.Server;
@@ -207,80 +206,4 @@ public class PlayerVsNpcCombat {
 		return true;
 	}
 
-	public static void moveOutFromUnderLargeNpc(Player player, NPC npc) {
-
-		boolean inside = false;
-		boolean projectiles = player.getCombatType() != CombatStyle.MELEE;
-		for (Location tile : npc.getTiles()) {
-			if (player.absX == tile.getX() && player.absY == tile.getY()) {
-				inside = true;
-				break;
-			}
-		}
-
-		if (inside) {
-			double lowDist = 99;
-			int lowX = 0;
-			int lowY = 0;
-			int z = npc.heightLevel;
-			int x2 = npc.getX();
-			int y2 = npc.getY();
-			int x3 = x2;
-			int y3 = y2 - 1;
-			boolean ignoreClip = npc.getId() == 494 || npc.getId() == 5535 || npc.getId() == 5534 || npc.getId() == 492 || npc.getId() == 493 || npc.getId() == 496;
-
-			for (int k = 0; k < 4; k++) {
-				for (int i = 0; i < npc.getSize() - (k == 0 ? 1 : 0); i++) {
-					if (k == 0) {
-						x3++;
-					} else if (k == 1) {
-						if (i == 0) {
-							x3++;
-						}
-						y3++;
-					} else if (k == 2) {
-						if (i == 0) {
-							y3++;
-						}
-						x3--;
-					} else if (k == 3) {
-						if (i == 0) {
-							x3--;
-						}
-						y3--;
-					}
-
-					Location location = new Location(x3, y3, z);
-					double d = location.distance(player.getLocation());
-					if (d < lowDist) {
-						if (ignoreClip || !projectiles || projectiles
-								&& ProjectilePathFinder.isProjectilePathClear(location, npc.getLocation())) {
-							if (ignoreClip || projectiles || !projectiles
-									&& ProjectilePathFinder.isInteractionPathClear(location, npc.getLocation())) {
-								lowDist = d;
-								lowX = x3;
-								lowY = y3;
-							}
-						}
-					}
-				}
-			}
-
-			if (lowX > 0 && lowY > 0) {
-				player.getPlayerFollowing().playerWalk(lowX, lowY);
-			}
-		}
-	}
-
-	public static boolean inDistance(Player player, NPC npc, int dist) {
-		boolean hasDistance = npc.getId() == 5535; // force 5535 tents to always be hittable
-		for (Location pos : npc.getTiles()) {
-			double distance = pos.distance(player.getLocation());
-			if (distance <= dist) {
-				hasDistance = true;
-				break;
-			}
-		}
-		return hasDistance;
-	}
 }

@@ -331,62 +331,6 @@ public class NPC extends Entity {
         return def;
 	}
 
-	public Location[] getTiles(Location location) {
-		Location[] tiles = new Location[getSize() == 1 ? 1 : (int) Math.pow(getSize(), 2)];
-		int index = 0;
-
-		for (int i = 1; i < getSize() + 1; i++) {
-			for (int k = 0; k < SIZE_DELTA_COORDINATES[i].length; k++) {
-				int x3 = location.getX() + SIZE_DELTA_COORDINATES[i][k][0];
-				int y3 = location.getY() + SIZE_DELTA_COORDINATES[i][k][1];
-				tiles[index] = new Location(x3, y3, location.getZ());
-				index++;
-			}
-		}
-		return tiles;
-	}
-
-	public Location[] getTiles() {
-		return getTiles(getLocation());
-	}
-
-	/**
-	 * Gets the border around the edges of the npc.
-	 * 
-	 * @return the border around the edges of the npc, depending on the npc's
-	 *         size.
-	 */
-	public Location[] getBorder() {
-		int x = getLocation().getX();
-		int y = getLocation().getY();
-		int size = getSize();
-		if (size <= 1) {
-			return new Location[] { getLocation() };
-		}
-
-		Location[] border = new Location[(size) + (size - 1) + (size - 1) + (size - 2)];
-		int j = 0;
-
-		border[0] = new Location(x, y, 0);
-
-		for (int i = 0; i < 4; i++) {
-			for (int k = 0; k < (i < 3 ? (i == 0 || i == 2 ? size : size) - 1 : (i == 0 || i == 2 ? size : size) - 2); k++) {
-				if (i == 0)
-					x++;
-				else if (i == 1)
-					y++;
-				else if (i == 2)
-					x--;
-				else if (i == 3) {
-					y--;
-				}
-				border[(++j)] = new Location(x, y, 0);
-			}
-		}
-
-		return border;
-	}
-
 	/**
 	 * Can this actor move from it's current location to the destination
 	 * 
@@ -459,7 +403,7 @@ public class NPC extends Entity {
 		this.entityFaceIndex = -1;
 		faceTileY = -1;
 		Object tele = getAttribute("teleporting", null);
-		boolean teleporting = tele != null ? (boolean) tele : false;
+		boolean teleporting = tele != null && (boolean) tele;
 		if (teleporting) {
 			setOnTile(absX, absY, heightLevel);
 			setAttribute("teleporting", false);
@@ -591,20 +535,6 @@ public class NPC extends Entity {
 		return EntityType.NPC;
 	}
 
-	/**
-	 * Contains the delta Locations for the x and y coordinate of actor model
-	 * sizes.
-	 */
-	private static final int[][][] SIZE_DELTA_COORDINATES = {
-			{ { 0, 0 } }, // 0
-			{ { 0, 0 } }, // 1
-			{ { 0, 1 }, { 1, 0 }, { 1, 1 } }, // 2
-			{ { 2, 0 }, { 2, 1 }, { 2, 2 }, { 1, 2 }, { 0, 2 } }, // 3
-			{ { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, { 2, 3 }, { 1, 3 }, { 0, 3 } }, // 4
-			{ { 4, 0 }, { 4, 1 }, { 4, 2 }, { 4, 3 }, { 4, 4 }, { 3, 4 }, { 2, 4 }, { 1, 4 }, { 0, 4 } }, // 5
-			{ { 5, 0 }, { 5, 1 }, { 5, 2 }, { 5, 3 }, { 5, 4 }, { 5, 5 }, { 4, 5 }, { 3, 5 }, { 2, 5 }, { 1, 5 },
-					{ 0, 5 } }, // 6
-	};
 
 	/**
 	 * Difference in X coordinates for directions array.

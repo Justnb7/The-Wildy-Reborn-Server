@@ -91,7 +91,25 @@ public abstract class Entity {
 
     public abstract int size();
 
-    public enum EntityType {
+	public boolean touchDistance(Entity target, int dist) {
+		if (size() == 1 && target.size() == 1) {
+			return goodDistance(absX, absY, target.absX, target.absY, dist);
+		} else {
+			Location[] me = getBorder();
+			Location[] other = target.getBorder();
+			int distance = 16;
+			for (Location a : me) {
+				for (Location b : other) {
+					int gap = a.distance(b);
+					if (gap < dist)
+						distance = gap;
+				}
+			}
+			return distance < dist;
+		}
+	}
+
+	public enum EntityType {
 		PLAYER, NPC,
 	}
 
@@ -1120,5 +1138,75 @@ public abstract class Entity {
 			setCoverage();
 		}
 		coverage.update(loc, size());
+	}
+
+	public Location[] getTiles(Location location) {
+		Location[] tiles = new Location[size() == 1 ? 1 : (int) Math.pow(size(), 2)];
+		int index = 0;
+
+		for (int i = 1; i < size() + 1; i++) {
+			for (int k = 0; k < SIZE_DELTA_COORDINATES[i].length; k++) {
+				int x3 = location.getX() + SIZE_DELTA_COORDINATES[i][k][0];
+				int y3 = location.getY() + SIZE_DELTA_COORDINATES[i][k][1];
+				tiles[index] = new Location(x3, y3, location.getZ());
+				index++;
+			}
+		}
+		return tiles;
+	}
+
+	public Location[] getTiles() {
+		return getTiles(getLocation());
+	}
+
+	/**
+	 * Contains the delta Locations for the x and y coordinate of actor model
+	 * sizes.
+	 */
+	protected static final int[][][] SIZE_DELTA_COORDINATES = {
+			{ { 0, 0 } }, // 0
+			{ { 0, 0 } }, // 1
+			{ { 0, 1 }, { 1, 0 }, { 1, 1 } }, // 2
+			{ { 2, 0 }, { 2, 1 }, { 2, 2 }, { 1, 2 }, { 0, 2 } }, // 3
+			{ { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 3 }, { 2, 3 }, { 1, 3 }, { 0, 3 } }, // 4
+			{ { 4, 0 }, { 4, 1 }, { 4, 2 }, { 4, 3 }, { 4, 4 }, { 3, 4 }, { 2, 4 }, { 1, 4 }, { 0, 4 } }, // 5
+			{ { 5, 0 }, { 5, 1 }, { 5, 2 }, { 5, 3 }, { 5, 4 }, { 5, 5 }, { 4, 5 }, { 3, 5 }, { 2, 5 }, { 1, 5 },
+					{ 0, 5 } }, // 6
+	};
+	/**
+	 * Gets the border around the edges of the npc.
+	 *
+	 * @return the border around the edges of the npc, depending on the npc's
+	 *         size.
+	 */
+	public Location[] getBorder() {
+		int x = getLocation().getX();
+		int y = getLocation().getY();
+		int size = size();
+		if (size <= 1) {
+			return new Location[] { getLocation() };
+		}
+
+		Location[] border = new Location[(size) + (size - 1) + (size - 1) + (size - 2)];
+		int j = 0;
+
+		border[0] = new Location(x, y, 0);
+
+		for (int i = 0; i < 4; i++) {
+			for (int k = 0; k < (i < 3 ? (i == 0 || i == 2 ? size : size) - 1 : (i == 0 || i == 2 ? size : size) - 2); k++) {
+				if (i == 0)
+					x++;
+				else if (i == 1)
+					y++;
+				else if (i == 2)
+					x--;
+				else if (i == 3) {
+					y--;
+				}
+				border[(++j)] = new Location(x, y, 0);
+			}
+		}
+
+		return border;
 	}
 }

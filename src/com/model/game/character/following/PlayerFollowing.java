@@ -4,11 +4,14 @@ import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.location.Location;
-import com.model.utility.Utility;
 import com.model.utility.cache.map.Region;
+import com.model.utility.cache.map.Tile;
+
+import java.util.stream.Stream;
 
 public class PlayerFollowing {
 	
@@ -25,30 +28,87 @@ public class PlayerFollowing {
 	public PlayerFollowing(Player player) {
 		this.player = player;
 	}
-	
-	/**
+
+    public static void moveOutFromUnderLargeNpc(Player player, Entity other) {
+
+        boolean inside = false;
+        boolean projectiles = player.getCombatType() != CombatStyle.MELEE;
+        for (Location tile : other.getTiles()) {
+            if (player.absX == tile.getX() && player.absY == tile.getY()) {
+                inside = true;
+                break;
+            }
+        }
+
+        if (inside) {
+            double lowDist = 99;
+            int lowX = 0;
+            int lowY = 0;
+            int z = other.heightLevel;
+            int x2 = other.getX();
+            int y2 = other.getY();
+            int x3 = x2;
+            int y3 = y2 - 1;
+            boolean ignoreClip = other.isNPC() && Stream.of(494, 5535, 5534, 492, 493, 496).anyMatch(i -> i == ((NPC)other).getId());
+
+            for (int k = 0; k < 4; k++) {
+                for (int i = 0; i < other.size() - (k == 0 ? 1 : 0); i++) {
+                    if (k == 0) {
+                        x3++;
+                    } else if (k == 1) {
+                        if (i == 0) {
+                            x3++;
+                        }
+                        y3++;
+                    } else if (k == 2) {
+                        if (i == 0) {
+                            y3++;
+                        }
+                        x3--;
+                    } else if (k == 3) {
+                        if (i == 0) {
+                            x3--;
+                        }
+                        y3--;
+                    }
+
+                    Location location = new Location(x3, y3, z);
+                    double d = location.distance(player.getLocation());
+                    if (d < lowDist) {
+                        if (ignoreClip || !projectiles || projectiles
+                                && ProjectilePathFinder.isProjectilePathClear(location, other.getLocation())) {
+                            if (ignoreClip || projectiles || !projectiles
+                                    && ProjectilePathFinder.isInteractionPathClear(location, other.getLocation())) {
+                                lowDist = d;
+                                lowX = x3;
+                                lowY = y3;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (lowX > 0 && lowY > 0) {
+                player.getPlayerFollowing().playerWalk(lowX, lowY);
+            }
+        }
+    }
+
+    /**
 	 * The player following another player.
 	 * @param forCombat
 	 *        Checks if the player is in combat
 	 * @param following
 	 *        The entity we're following
 	 */
-    public void followPlayer(boolean forCombat, Entity following, int stopIfDistance) {
+    public void follow(boolean forCombat, Entity following, int stopIfDistance) {
         
         //Whenever out target is null or death stop the following task
-        if (following == null || following.isDead()) {
+        if (following == null || following.isDead() || player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
             player.setFollowing(null);
             return;
         }
-        
-        //We cannot follow someone when being frozen
         if (player.frozen()) {
-            return;
-        }
-
-        //Whenever we're null or death stop the following task
-        if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-            player.setFollowing(null);
             return;
         }
 
@@ -62,17 +122,42 @@ public class PlayerFollowing {
             return;
         }
 
-        //When both on the same tile move the playerto another direction
-        boolean sameSpot = (player.absX == otherX && player.absY == otherY);
-        if (sameSpot) {
-            if (Region.getClipping(player.getX() - 1, player.getY(), player.heightLevel, -1, 0)) {
-                walkTo(-1, 0);
-            } else if (Region.getClipping(player.getX() + 1, player.getY(), player.heightLevel, 1, 0)) {
-                walkTo(1, 0);
-            } else if (Region.getClipping(player.getX(), player.getY() - 1, player.heightLevel, 0, -1)) {
-                walkTo(0, -1);
-            } else if (Region.getClipping(player.getX(), player.getY() + 1, player.heightLevel, 0, 1)) {
-                walkTo(0, 1);
+        boolean inside = false;
+        if (following.size() == 1) {
+            if (player.absX == otherX && player.absY == otherY) {
+                inside = true;
+            }
+        } else {
+            Location[] occupied = following.getTiles();
+            for (Location tile : occupied) {
+                if (player.absX == tile.getX() && player.absY == tile.getY()) {
+                    inside = true;
+                    break;
+                }
+            }
+            if (!inside) {
+                for (Location npcloc : occupied) {
+                    double distance = npcloc.distance(player.getLocation());
+                    if (distance <= stopIfDistance) {
+                        player.getMovementHandler().stopMovement();
+                        return;
+                    }
+                }
+            }
+        }
+        if (inside) {
+            if (following.size() > 1) {
+                moveOutFromUnderLargeNpc(player, following);
+            } else {
+                if (Region.getClipping(player.getX() - 1, player.getY(), player.heightLevel, -1, 0)) {
+                    walkTo(-1, 0);
+                } else if (Region.getClipping(player.getX() + 1, player.getY(), player.heightLevel, 1, 0)) {
+                    walkTo(1, 0);
+                } else if (Region.getClipping(player.getX(), player.getY() - 1, player.heightLevel, 0, -1)) {
+                    walkTo(0, -1);
+                } else if (Region.getClipping(player.getX(), player.getY() + 1, player.heightLevel, 0, 1)) {
+                    walkTo(0, 1);
+                }
             }
             return;
         }
@@ -80,9 +165,6 @@ public class PlayerFollowing {
         //Start facing the player you want to follow
         player.faceEntity(following);
 
-        /**
-         * Out of combat following, possibly a bug or 2?
-         */
         if (!forCombat) {
             int fx = following.lastTile.getX();
             int fy = following.lastTile.getY();
@@ -94,7 +176,6 @@ public class PlayerFollowing {
                 int x = fx - player.getX();
                 int y = fy - player.getY();
                 playerWalk(player.getX() + x, player.getY() + y);
-                return;
             }
         } else {
 
@@ -118,116 +199,22 @@ public class PlayerFollowing {
                     return;
                 }
             }
-
-            Location[] locs = { new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
-                    new Location(otherX, otherY - 1, player.getZ()), };
-
             Location followLoc = null;
 
-            for (Location i : locs) {
-                if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
-                    followLoc = i;
+            if (following.size() == 1) {
+                Location[] locs = {new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
+                        new Location(otherX, otherY - 1, player.getZ()),};
+                for (Location i : locs) {
+                    if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
+                        followLoc = i;
+                    }
                 }
+            } else {
+                followLoc = Tile.create(following.absX, following.absY, following.heightLevel).
+                        closestTileOf(Tile.create(player.absX, player.absY, player.heightLevel), following.size(), following.size()).toLocation();
             }
             if (followLoc != null) {
                 playerWalk(followLoc.getX(), followLoc.getY());
-                player.getMovementHandler().followPath = true;
-            }
-        }
-    }
-    
-    /**
-     * The player following an npc
-     * @param targ
-     *        The npc we're following
-     */
-    public void followNpc(Entity targ, int stopIfDistance) {
-
-    	//If the npc is either null or death we stop the following task
-        if (targ == null || targ.isDead()) {
-            player.setFollowing(null);
-            return;
-        }
-        
-        //Whenever the player is frozen he cannot follow
-        if (player.frozen()) {
-            return;
-        }
-        
-        //If the player is death we cannot follow an npc
-        if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-            player.setFollowing(null);
-            return;
-        }
-
-        //Calculate the x and y offsets
-        int otherX = targ.getX();
-        int otherY = targ.getY();
-
-        boolean goodCombatDist = player.goodDistance(otherX, otherY, player.getX(), player.getY(), stopIfDistance);
-
-        //If we're not stop the following task
-        if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
-            player.setFollowing(null);
-            return;
-        }
-
-        
-		if (goodCombatDist) {
-			return;
-		}
-
-        NPC npc = (NPC) targ;
-
-        boolean inside = false;
-        for (Location tile : npc.getTiles()) {
-            if (player.absX == tile.getX() && player.absY == tile.getY()) {
-                inside = true;
-                break;
-            }
-        }
-
-        if (!inside) {
-            for (Location npcloc : npc.getTiles()) {
-                double distance = npcloc.distance(player.getLocation());
-                if (distance <= stopIfDistance) {
-                    player.getMovementHandler().stopMovement();
-                    return;
-                }
-            }
-        }
-
-        if (inside) {
-            int r = Utility.getRandom(3);
-            switch (r) {
-            case 0:
-                walkTo(0, -1);
-                break;
-            case 1:
-                walkTo(0, 1);
-                break;
-            case 2:
-                walkTo(1, 0);
-                break;
-            case 3:
-                walkTo(-1, 0);
-                break;
-            }
-        } else {
-        	Location[] locs = { new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
-                    new Location(otherX, otherY - 1, player.getZ()), };
-
-            Location followLoc = null;
-
-            for (Location i : locs) {
-                if (followLoc == null || player.getLocation().getDistance(i) < player.getLocation().getDistance(followLoc)) {
-                    followLoc = i;
-                }
-            }
-
-            if (followLoc != null) {
-                playerWalk(followLoc.getX(), followLoc.getY());
-                player.getMovementHandler().followPath = true;
             }
         }
     }

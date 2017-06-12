@@ -18,7 +18,6 @@ import com.model.game.character.combat.pvp.PlayerVsPlayerCombat;
 import com.model.game.character.combat.range.ArrowRequirements;
 import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
-import com.model.game.character.following.PlayerFollowing;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
@@ -98,10 +97,6 @@ public class Combat {
                 player.getActionSender().sendString(NPC.getName(npc.getId()).replaceAll("_", " ") + "-" + npc.getMaxHitpoints() + "-" + npc.getHitpoints() + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
             }
         }*/
-
-        // Wait until unfrozen to move out
-        if (sameSpotCannotMove(player, target))
-            return;
 
         if (player.getCombatType() == CombatStyle.RANGE) {
             rangeAttack(player, target);
@@ -477,19 +472,6 @@ public class Combat {
 		}*/
     }
 
-    private static boolean sameSpotCannotMove(Player player, Entity target) {
-        // Move out
-        if (target.isNPC() && !player.frozen()) {
-            PlayerVsNpcCombat.moveOutFromUnderLargeNpc(player, (NPC) target);
-        }
-        boolean sameSpot = player.getX() == target.getX() && player.getY() == target.getY();
-        if (sameSpot && player.frozen()) {
-            Combat.resetCombat(player);
-            return true;
-        }
-        return false;
-    }
-
     private static int boltSpecialVsEntity(Player attacker, Entity defender, int dam1) {
         if (dam1 == 0) return dam1;
         Item ammo = attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT);
@@ -702,37 +684,9 @@ public class Combat {
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
 	public static boolean touches(Player player, Entity target, int dist) {
-        if (target.isNPC()) {
-            player.getPlayerFollowing().followNpc(target, dist);
-            //PlayerVsNpcCombat.canTouch(player, (NPC)target, true);
-        } else {
-            player.getPlayerFollowing().followPlayer(true, target, dist);
-        }
-        stopDiagonalMelee(player, target);
-        boolean goodDist = target.isNPC() ? PlayerVsNpcCombat.inDistance(player, (NPC) target, calculateAttackDistance(player, target)) : Combat.withinDistance(player, target);
-		return goodDist && ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation());
+        player.getPlayerFollowing().follow(true, target, dist);
+		return ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()) && player.touchDistance(target, calculateAttackDistance(player, target));
 	}
-
-    private static void stopDiagonalMelee(Player player, Entity target) {
-        if (player.getCombatType() == CombatStyle.MELEE && player.getX() != target.getX() && target.getY() != player.getY()) {
-            if (target.isPlayer()) { // TODO will this logic break anything?
-                Player ptarg = (Player) target;
-                if (!player.getMovementHandler().isMoving() && !ptarg.getMovementHandler().isMoving()) {
-                    PlayerFollowing.stopDiagonal(player, ptarg.getX(), ptarg.getY());
-                }
-            } else if (target.isNPC()) {
-                NPC npc = (NPC) target;
-                if (npc.getSize() == 1) {
-                    PlayerFollowing.stopDiagonal(player, npc.getX(), npc.getY());
-                }
-            }
-        }
-    }
-
-    private static boolean withinDistance(Player player, Entity target) {
-        return player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(),
-                calculateAttackDistance(player, target));
-    }
 	
 	/**
 	 * Is the attacker wearing an ava's device?

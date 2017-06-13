@@ -58,11 +58,13 @@ public class GameObject {
 	}
 	
 	public GameObject(int id, int x, int y, int height) {
-		this(id, x, y, height, 0);
+		this.id = id;
+		this.position = Location.create(x, y, height);
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face) {
-		this(id, Location.create(x, y, height), 10, face);
+		this(id, x, y, height);
+		this.face = face;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face, int type) {

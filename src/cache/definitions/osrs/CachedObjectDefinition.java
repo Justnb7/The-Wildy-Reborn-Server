@@ -38,18 +38,20 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
     public int lightness;
     
 	public static final CachedObjectDefinition forId(int objId) {
-		if (objId < 0 || objId >= objectDefinitions.length)
+		if (objId < 0 || objId >= objectDefinitions.length) {
+			System.err.println("fuk:"+objId);
 			return null;
+		}
 		CachedObjectDefinition def = objectDefinitions[objId];
 		if (def == null)
 			objectDefinitions[objId] = def = new CachedObjectDefinition(objId, OpenRsUnpacker.readData(2, 6, objId));
 
-		/*if ((def.name != null && (def.name.equalsIgnoreCase("bank booth") || def.name.equalsIgnoreCase("counter")))) {
-			def.clippingFlag = false;
-		}*/
-		/*if (def.rangableObject()) {
-			def.clippingFlag = false;
-		}*/
+		if ((def.name != null && (def.name.equalsIgnoreCase("bank booth") || def.name.equalsIgnoreCase("counter")))) {
+			def.projectileClipped = false;
+		}
+		if (def.rangableObject()) {
+			def.projectileClipped = false;
+		}
 		if (def.unclipped()) {
 			def.projectileClipped = false;
 			def.osrs_clipType = 0;

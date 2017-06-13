@@ -1,5 +1,6 @@
 package com.model.game.character.player;
 
+import clipmap.ProjectileClipping;
 import clipmap.Region;
 import clipmap.Tile;
 import com.model.UpdateFlags.UpdateFlag;
@@ -107,16 +108,17 @@ public class CommandPacketHandler implements PacketType {
 				player.getInventory().add(new Item(560, 100000));
 				return true;
 			case "showclipmap":
-				for (int x = player.getX() - 4; x < player.getX()+4; x++)
-					for (int y = player.getY() - 4; y < player.getY()+4; y++)
-						if (Region.getClippingMask(x, y, player.getHeight()) < 1)
+				int size = 14;
+				for (int x = player.getX() - size; x < player.getX()+size; x++)
+					for (int y = player.getY() -size; y < player.getY()+size; y++)
+						if (Region.getClippingMask(x, y, player.getHeight()) > 0 || ProjectileClipping.getClippingMask(x, y, player.getHeight()) > 0)
 							player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
 				return true;
 			case "clip":
 				player.getActionSender().sendMessage("Clip at "+player.getPosition()+" = "+Region.getClippingMask(player.getX(), player.getY(), player.getHeight()));
 				RegionStoreManager.get().getRegionByLocation(Tile.create(player.getLocation()))
 						.getGameObjects().stream()
-						.filter(o -> o != null && o.getType() == 10 && o.getDefinition() != null && o.getDefinition().hasName())
+						.filter(o -> o != null && o.getType() == 10 && o.getDefinition() != null && o.getDefinition().hasName() && o.getDefinition().clips())
 						.forEach(o -> System.out.println(o));
 				return true;
     	

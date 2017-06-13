@@ -30,8 +30,6 @@ import com.model.game.location.Location;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import hyperion.PathFinder;
-import hyperion.impl.VariablePathFinder;
 
 public class Combat {
 	
@@ -85,6 +83,7 @@ public class Combat {
         // Establish what style we'd be using this cycle
         Combat.setCombatStyle(player);
         Entity target = player.getCombatState().getTarget();
+        player.faceEntity(target);
         player.debug("style: "+player.getCombatType()+" vs "+target);
 
 
@@ -671,7 +670,7 @@ public class Combat {
      */
 	public static boolean touches(Player player, Entity target) {
 
-        //player.getPlayerFollowing().follow(true, target); // PI =)
+        player.getPlayerFollowing().follow(true, target); // PI =)
 
         // HYPERION TIME XX
 
@@ -679,7 +678,8 @@ public class Combat {
         if (target.isNPC()) {
             walkToData = 0x80000000;//can move through entities
         }
-        PathFinder.doPath(new VariablePathFinder(-1, walkToData, 0, target.size(), target.size()), player, target.getX(), target.getY());
+        // TODO why isnt this working it sends you south west
+        //PathFinder.doPath(new VariablePathFinder(-1, walkToData, 0, target.size(), target.size()), player, target.getX(), target.getY());
 
         // Above - path was executed, now check for line of sight, and distance
 

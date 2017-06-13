@@ -18,7 +18,7 @@ public class AnyRevObjectDefinition {
     public boolean ignoreClipOnAlternativeRoute;
 
     public boolean clips() {
-        return r317_cliptype || osrs_clipType != 0;
+        return r317_cliptype || osrs_clipType != 0 || projectileClipped;
     }
 
     public boolean roofclips() {
@@ -40,7 +40,11 @@ public class AnyRevObjectDefinition {
     public int id;
 
     public static AnyRevObjectDefinition get(int object) {
-        return OpenRsUnpacker.cache != null ? CachedObjectDefinition.forId(object) : ObjectDefinition317.get(object);
+        AnyRevObjectDefinition r = OpenRsUnpacker.cache != null ? CachedObjectDefinition.forId(object) : ObjectDefinition317.get(object);
+        if (r == null) {
+            System.err.println("BAD! "+object);
+        }
+        return r;
     }
 
     public String getName() {

@@ -49,6 +49,7 @@ public interface PathFinder {
 					p.getMovementHandler().addToPath(new Location(step.getX(), step.getY(), p.heightLevel));
 				}
 				p.getMovementHandler().finish();
+				p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
 			} else {
 				System.err.println("HELP WHO");
 			}

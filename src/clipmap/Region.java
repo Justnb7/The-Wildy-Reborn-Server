@@ -91,6 +91,7 @@ public class Region {
 
         AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
         if (def == null) {
+           // System.err.println("halp");
             return;
         }
 

@@ -1,6 +1,7 @@
 package com.model.server;
 
 import cache.OpenRsUnpacker;
+import cache.definitions.r317.ObjectDefinition317;
 import clipmap.MapLoading;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.model.game.Constants;
@@ -109,7 +110,7 @@ public class Bootstrap {
 
 			cache = OpenRsUnpacker.unpack(); // If ur loading OSRS cache .. containing game objects
 
-			//ObjectDefinition.loadConfig(); // obj def for 317 .. if ur using collisiondata.dat
+			ObjectDefinition317.loadConfig(); // obj def for 317 .. if ur using collisiondata.dat
 
 			MapLoading.load(); // load ur dumped osrs cache clipping tiles .gz files
 

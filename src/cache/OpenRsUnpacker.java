@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class OpenRsUnpacker {
 
-    private static BasicByteUnpacker idx2 = null;
+    private final static BasicByteUnpacker[] idx = new BasicByteUnpacker[17];
     public static Cache cache = null;
 
     public static Cache unpack() {
@@ -27,12 +27,12 @@ public class OpenRsUnpacker {
 
         try {
             // Unpack object definitions from cache
-            idx2 = new BasicByteUnpacker(cache, 2);
+            idx[2] = new BasicByteUnpacker(cache, 2);
 
             // Initiate arrays
-            CachedObjectDefinition.objectDefinitions = new CachedObjectDefinition[idx2.getArchive()[6].size()];
-            CachedItemDefinition.definitions = new CachedItemDefinition[idx2.getArchive()[10].size()];
-            CachedNpcDefinition.npcDefinitions = new CachedNpcDefinition[idx2.getArchive()[9].size()];
+            CachedObjectDefinition.objectDefinitions = new CachedObjectDefinition[idx[2].getArchive()[6].size()];
+            CachedItemDefinition.definitions = new CachedItemDefinition[idx[2].getArchive()[10].size()];
+            CachedNpcDefinition.npcDefinitions = new CachedNpcDefinition[idx[2].getArchive()[9].size()];
 
             System.out.printf("[OpenRS] Cached loaded using the Open-RS cache library! Objects:%s | items:%s | npcs:%s%n", CachedObjectDefinition.objectDefinitions.length,
                     CachedItemDefinition.definitions.length, CachedNpcDefinition.npcDefinitions.length);
@@ -45,11 +45,10 @@ public class OpenRsUnpacker {
     public static byte[] readData(int idx, int archive, int file) {
         byte[] data = null;
         try {
-            switch(idx) {
-                case 2:
-                    data = idx2.getDefinition(archive, file).array();
-                    break;
-                default:throw new NullPointerException("Index "+idx+" not opened!");
+            if (idx < OpenRsUnpacker.idx.length) {
+                if (OpenRsUnpacker.idx[idx] == null)
+                    OpenRsUnpacker.idx[idx] = new BasicByteUnpacker(cache, idx);
+                data = OpenRsUnpacker.idx[idx].getDefinition(archive, file).array();
             }
         } catch (IOException e) {
             e.printStackTrace();

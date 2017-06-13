@@ -1,5 +1,6 @@
 package com.model.game.character.combat.npcs.script.godwars.bandos;
 
+import java.util.Collection;
 import java.util.Random;
 
 import com.model.game.character.Animation;
@@ -12,7 +13,10 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.combat.npcs.AbstractBossCombat;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.character.player.Skills;
 import com.model.utility.Utility;
+
+import hyperion.region.RegionStoreManager;
 
 public class GeneralGraardor extends AbstractBossCombat {
 
@@ -74,30 +78,34 @@ public class GeneralGraardor extends AbstractBossCombat {
 		case RANGE:
 			attacker.playAnimation(Animation.create(7021));
 			victim.playGraphics(Graphic.create(1203, 0, 0));
+			final Collection<Player> localPlayers = RegionStoreManager.get().getLocalPlayers(attacker);
+			for(final Player near : localPlayers) {
+				if(near != null && near != attacker && near.getSkills().getLevel(Skills.HITPOINTS) > 0) {
+					if (attacker.getCentreLocation().isWithinDistance(attacker, near, 10)) {
+						// Set the projectile speed based on distance
+						int speedEquation;
+						if(attacker.getLocation().isWithinDistance(attacker, near, 1)) {
+							speedEquation = 70;
+						} else if(attacker.getLocation().isWithinDistance(attacker, near, 5)) {
+							speedEquation = 90;
+						} else if(attacker.getLocation().isWithinDistance(attacker, near, 8)) {
+							speedEquation = 110;
+						} else {
+							speedEquation = 130;
+						}
+						// Send the projectile
+						attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), near.getCentreLocation(), 1202, 45, 50, speedEquation, 43, 35, near.getProjectileLockonIndex(), 10, 48));
+					}
+					// Calculate max hit first
+					randomHit = Utility.random(maxHit);
 
-			// Set the projectile speed based on distance
-			int speedEquation;
-			if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
-				speedEquation = 70;
-			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
-				speedEquation = 90;
-			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
-				speedEquation = 110;
-			} else {
-				speedEquation = 130;
+					// Create the hit instance
+					hitInfo = near.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false);
+
+					// Send the hit task
+					Combat.hitEvent(attacker, near, 2, hitInfo, CombatStyle.RANGE);
+				}
 			}
-
-			// Send the projectile
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1202, 45, 50, speedEquation, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
-
-			// Calculate max hit first
-			randomHit = Utility.random(maxHit);
-
-			// Create the hit instance
-			hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false);
-
-			// Send the hit task
-			Combat.hitEvent(attacker, victim, 2, hitInfo, CombatStyle.RANGE);
 			break;
 
 		default:

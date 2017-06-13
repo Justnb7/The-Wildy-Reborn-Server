@@ -556,7 +556,6 @@ public class ActionSender {
 	}
 	
 	public ActionSender sendObject(int id, int x, int y, int h, int face, int objectType) {
-        Region.addWorldObject(id, x, y, player.heightLevel);
         if (player.getOutStream() != null) {
         	sendCoordinates(Location.create(x, y, h));
         	// removing object

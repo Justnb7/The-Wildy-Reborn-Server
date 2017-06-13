@@ -1,17 +1,17 @@
-package com.model.utility.cache.map;
+package clipmap;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
-import com.model.game.location.Location;
-import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import com.model.utility.cache.ByteStream;
-import com.model.utility.cache.ObjectDefinition;
+import com.model.utility.cache.map.Region;
 
 public class MapLoading {
 	
@@ -30,13 +30,11 @@ public class MapLoading {
 			ByteStream in = new ByteStream(buffer);
 			int size = in.readUnsignedWord();
 			LOGGER.info(Utility.format(size) + " Maps about to load...");
-			Region.setRegions(new Region[size]);
 			int[] regionIds = new int[size];
 			int[] mapGroundFileIds = new int[size];
 			int[] mapObjectsFileIds = new int[size];
 			int successfull = 0;
 			for (int i = 0; i < size; i++) {
-				Region.getRegions()[i] = new Region(regionIds[i] = in.getUShort());
 				mapGroundFileIds[i] = in.getUShort();
 				mapObjectsFileIds[i] = in.getUShort();
 			}

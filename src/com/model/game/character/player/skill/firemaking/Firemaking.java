@@ -1,7 +1,5 @@
 package com.model.game.character.player.skill.firemaking;
 
-import java.util.Random;
-
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
@@ -13,6 +11,8 @@ import com.model.game.object.GameObject;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.cache.map.Region;
+
+import java.util.Random;
 
 /**
  * The firemaking skill

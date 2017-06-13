@@ -1,5 +1,6 @@
 package com.model.game.character.npc;
 
+import clipmap.ClipmapBuilder;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Entity;
@@ -252,7 +253,7 @@ public class NPC extends Entity {
 	public void setOnTile(int x, int y, int z) {
 		removeFromTile();
 		for (Location tile : getTiles(new Location(x, y, z)))
-			Region.putNpcOnTile(tile.getX(), tile.getY(), tile.getZ());
+			Region.getRegion(x, y).getStore().putNpcOnTile(tile.getX(), tile.getY(), tile.getZ());
 		lastLocation = new Location(x, y, z);
 	}
 
@@ -262,7 +263,7 @@ public class NPC extends Entity {
 	public void removeFromTile() {
 		if (lastLocation != null) {
 			for (Location tile : getTiles(lastLocation))
-				Region.removeNpcFromTile(tile.getX(), tile.getY(), tile.getZ());
+				Region.getRegion(getX(), getY()).getStore().removeNpcFromTile(tile.getX(), tile.getY(), tile.getZ());
 			lastLocation = null;
 		}
 	}
@@ -365,7 +366,7 @@ public class NPC extends Entity {
 					return false;
 				}
 
-				if (Region.isNpcOnTile(b.getX(), b.getY(), b.getZ())) {
+				if (Region.getRegion(b.getX(), b.getY()).getStore().isNpcOnTile(b.getX(), b.getY(), b.getZ())) {
 					return false;
 				}
 

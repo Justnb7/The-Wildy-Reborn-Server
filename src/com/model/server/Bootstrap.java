@@ -29,7 +29,7 @@ import com.model.net.network.NettyChannelHandler;
 import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.handshake.HandshakeDecoder;
 import com.model.utility.cache.ObjectDefinition;
-import com.model.utility.cache.map.MapLoading;
+import clipmap.MapLoading;
 import com.model.utility.parser.impl.*;
 
 /**

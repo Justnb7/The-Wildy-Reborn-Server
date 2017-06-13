@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import com.model.game.World;
+import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import cache.io.r317.ByteStream;
@@ -27,13 +28,15 @@ public class MapLoading {
 			dis.readFully(buffer);
 			dis.close();
 			ByteStream in = new ByteStream(buffer);
-			int size = in.readUnsignedWord();
+			int size = in.length() / 6;
+			in.readUnsignedWord();
 			LOGGER.info(Utility.format(size) + " Maps about to load...");
 			int[] regionIds = new int[size];
 			int[] mapGroundFileIds = new int[size];
 			int[] mapObjectsFileIds = new int[size];
 			int successfull = 0;
 			for (int i = 0; i < size; i++) {
+				regionIds[i] = in.getUShort();
 				mapGroundFileIds[i] = in.getUShort();
 				mapObjectsFileIds[i] = in.getUShort();
 			}
@@ -59,7 +62,7 @@ public class MapLoading {
 	}
 
 	private static void loadMaps(int regionId, ByteStream str1, ByteStream str2) {
-		System.out.println("Clipload loading region "+regionId);
+		//System.out.println("Clipload loading region "+regionId);
 		int rX = (regionId >> 8) * 64;
 		int rY = (regionId & 0xff) * 64;
 		int[][][] someArray = new int[4][64][64];
@@ -124,6 +127,7 @@ public class MapLoading {
 				}
 			}
 		}
+		System.out.println("Region "+regionId+" has "+World.getWorld().regions.getRegionByLocation(Tile.create(rX+1, rY+1, 0)).getGameObjects().size()+" map objects.");
 	}
 
 	public static byte[] getBuffer(File f) throws Exception {

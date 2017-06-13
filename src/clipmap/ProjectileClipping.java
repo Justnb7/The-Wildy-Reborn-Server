@@ -2,7 +2,6 @@ package clipmap;
 
 import cache.definitions.AnyRevObjectDefinition;
 import com.model.game.object.GameObject;
-import cache.definitions.r317.ObjectDefinition317;
 
 /**
  * A copy of the RegionClipping class, with some adjustments to account for projectiles shooting over certain objects, coord etc.
@@ -190,7 +189,7 @@ public class ProjectileClipping {
 
 	public static void addClipping(GameObject obj) {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
-		if (def.name.equalsIgnoreCase("tree stump") || def.name.equalsIgnoreCase("anvil") || obj.getId() == 83) {
+		if (def == null || (def.name != null && (def.name.equalsIgnoreCase("tree stump") || def.name.equalsIgnoreCase("anvil"))) || obj.getId() == 83) {
 			return;
 		}
 		if (obj.getId() == 23271) {//wild ditch

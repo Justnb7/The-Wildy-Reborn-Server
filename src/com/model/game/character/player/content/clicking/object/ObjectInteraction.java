@@ -1,5 +1,6 @@
 package com.model.game.character.player.content.clicking.object;
 
+import cache.definitions.AnyRevObjectDefinition;
 import com.model.action.Action;
 import com.model.action.impl.actions.RestorePrayerPointsAction;
 import com.model.game.character.player.Player;
@@ -11,7 +12,6 @@ import com.model.game.character.player.skill.woodcutting.Woodcutting;
 import com.model.game.character.player.skill.woodcutting.Woodcutting.Tree;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
-import cache.definitions.r317.ObjectDefinition317;
 
 /**
  * This class handles the object actions. So we don't have to add all object
@@ -33,7 +33,7 @@ public class ObjectInteraction {
 	 *            The object
 	 */
 	public static void handleFirstClickAction(Player player, Location location, int objectId) {
-		ObjectDefinition317 def = ObjectDefinition317.get(objectId);
+		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(objectId);
 		
 		if (player.inDebugMode()) {
 			player.getActionSender().sendMessage(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
@@ -123,8 +123,8 @@ public class ObjectInteraction {
 		if (player.inDebugMode()) {
 			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
 		}
-		
-		ObjectDefinition317 objectDef = ObjectDefinition317.get(id);
+
+		AnyRevObjectDefinition objectDef = AnyRevObjectDefinition.get(id);
 		switch (objectDef.name.toLowerCase()) {
 
 		case "bank":

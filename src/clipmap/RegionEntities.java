@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 /**
  * Created by Jak on 12/06/2017.
+ *
+ * A duplicate of the Coverage system in hyperion. Npc stacking where-as they cannot walk through each other in certain circumstances.
  */
 public class RegionEntities {
 

@@ -1,6 +1,5 @@
 package hyperion.region;
 
-import clipmap.Region;
 import clipmap.Tile;
 import com.model.game.World;
 import com.model.game.character.Entity;
@@ -22,9 +21,9 @@ import java.util.*;
  * @author Graham Edgecombe
  * @author Mack
  */
-public class RegionManager {
+public class RegionStoreManager {
 
-	public static RegionManager get() {
+	public static RegionStoreManager get() {
 		return World.getWorld().regions; // TODO rather than putting in world, allocate here to keep code self-referencing.. easier to port
 	}
 
@@ -211,88 +210,6 @@ public class RegionManager {
 			activeRegions.put(key, region);
 			return region;
 		}
-	}
-
-
-	/**
-	 * 
-	 * @param entity
-	 * @param endX
-	 * @param endY
-	 * @param height
-	 * @return
-	 */
-	public boolean canMove(Entity entity, int endX, int endY, int height) {
-		return canMove(entity.getPosition().getX(), entity.getPosition().getY(), endX, endY, height, entity.size(),
-				entity.getHeight());
-	}
-
-	/**
-	 * Checks if the mob is able to move to the next tile.
-	 * @param startX
-	 * @param startY
-	 * @param endX
-	 * @param endY
-	 * @param height
-	 * @param xLength
-	 * @param yLength
-	 * @return
-	 */
-	public boolean canMove(int startX, int startY, int endX, int endY, int height, int xLength, int yLength) {
-		int diffX = endX - startX;
-		int diffY = endY - startY;
-		int max = Math.max(Math.abs(diffX), Math.abs(diffY));
-		for (int ii = 0; ii < max; ii++) {
-			int currentX = endX - diffX;
-			int currentY = endY - diffY;
-			for (int i = 0; i < xLength; i++) {
-				for (int i2 = 0; i2 < yLength; i2++) {
-					if (diffX < 0 && diffY < 0) { // South west (north east
-													// flag)
-						if ((Region.getClippingMask((currentX + i) - 1, (currentY + i2) - 1, height) & 0x12c010e) != 0
-								|| (Region.getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0
-								|| (Region.getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0)
-							return false;
-					} else if (diffX > 0 && diffY > 0) { // North east
-						if ((Region.getClippingMask(currentX + i + 1, currentY + i2 + 1, height) & 0x12c01e0) != 0
-								|| (Region.getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0
-								|| (Region.getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
-							return false;
-					} else if (diffX < 0 && diffY > 0) { // North west
-						if ((Region.getClippingMask((currentX + i) - 1, currentY + i2 + 1, height) & 0x12c0138) != 0
-								|| (Region.getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0
-								|| (Region.getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
-							return false;
-					} else if (diffX > 0 && diffY < 0) { // South east
-						if ((Region.getClippingMask(currentX + i + 1, (currentY + i2) - 1, height) & 0x12c0183) != 0
-								|| (Region.getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0
-								|| (Region.getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0)
-							return false;
-					} else if (diffX > 0 && diffY == 0) { // East
-						if ((Region.getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0)
-							return false;
-					} else if (diffX < 0 && diffY == 0) { // West
-						if ((Region.getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0)
-							return false;
-					} else if (diffX == 0 && diffY > 0) { // North
-						if ((Region.getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
-							return false;
-					} else if (diffX == 0 && diffY < 0
-							&& (Region.getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0) // South
-						return false;
-				}
-			}
-
-			if (diffX < 0)
-				diffX++;
-			else if (diffX > 0)
-				diffX--;
-			if (diffY < 0)
-				diffY++;
-			else if (diffY > 0)
-				diffY--;
-		}
-		return true;
 	}
 
 }

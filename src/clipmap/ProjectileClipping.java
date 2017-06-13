@@ -1,5 +1,6 @@
 package clipmap;
 
+import cache.definitions.AnyRevObjectDefinition;
 import com.model.game.object.GameObject;
 import cache.definitions.r317.ObjectDefinition317;
 
@@ -188,7 +189,7 @@ public class ProjectileClipping {
 	}
 
 	public static void addClipping(GameObject obj) {
-		ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
+		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
 		if (def.name.equalsIgnoreCase("tree stump") || def.name.equalsIgnoreCase("anvil") || obj.getId() == 83) {
 			return;
 		}
@@ -232,7 +233,7 @@ public class ProjectileClipping {
 	}
 
 	public static void removeClipping(GameObject obj) {
-		ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
+		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
 		int xLength;
 		int yLength;
 		int x = obj.getPosition().getX();

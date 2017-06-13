@@ -7,7 +7,7 @@ import com.model.game.object.GameObject;
 import clipmap.Region;
 import clipmap.Tile;
 import hyperion.Directions;
-import hyperion.region.RegionManager;
+import hyperion.region.RegionStoreManager;
 
 public class ProjectilePathFinder {
 	
@@ -101,8 +101,8 @@ public class ProjectilePathFinder {
 			Tile nextTile = currentTile.transform(Directions.DIRECTION_DELTA_X[globalDirection.intValue()], Directions.DIRECTION_DELTA_Y[globalDirection.intValue()], 0);
     		localDirection = Directions.directionFor(currentTile, nextTile);	
     		localDirectionInverse = Directions.directionFor(nextTile, currentTile);
-    		GameObject currentObject = RegionManager.get().getWallObject(currentTile);
-    		GameObject nextObject = RegionManager.get().getWallObject(nextTile);
+    		GameObject currentObject = RegionStoreManager.get().getWallObject(currentTile);
+    		GameObject nextObject = RegionStoreManager.get().getWallObject(nextTile);
     		if (projectileCheck) {
     			if (currentObject != null && !currentObject.cacheDef().rangableObject()) {
         			if (nextObject != null && !nextObject.cacheDef().rangableObject()) {

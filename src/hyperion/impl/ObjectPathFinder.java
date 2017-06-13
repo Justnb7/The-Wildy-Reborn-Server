@@ -1,10 +1,10 @@
 package hyperion.impl;
 
-import hyperion.PathFinder;
-import hyperion.PathState;
+import cache.definitions.AnyRevObjectDefinition;
 import com.model.game.character.player.Player;
 import com.model.game.object.GameObject;
-import cache.definitions.r317.ObjectDefinition317;
+import hyperion.PathFinder;
+import hyperion.PathState;
 
 public class ObjectPathFinder {
 
@@ -17,7 +17,7 @@ public class ObjectPathFinder {
 		if ((object.getType() == 10 || object.getType() == 11 || object.getType() == 22)) {
 			type = -1;
 			int rotation = object.getFace();
-			ObjectDefinition317 def = object.getDefinition();
+			AnyRevObjectDefinition def = object.getDefinition();
 			if (rotation == 1 || rotation == 3) {
 				sizeX = object.cacheDef().sizeX;
 				sizeY = object.cacheDef().sizeY;

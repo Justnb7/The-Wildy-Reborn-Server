@@ -166,14 +166,14 @@ public class RegionStore {
 	public RegionStore[] getSurroundingRegions() {
 		RegionStore[] surrounding = new RegionStore[9];
 		surrounding[0] = this;
-		surrounding[1] = RegionManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY() - 1);
-		surrounding[2] = RegionManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY() + 1);
-		surrounding[3] = RegionManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY());
-		surrounding[4] = RegionManager.get().getRegion(this.getCoordinates().getX(), this.getCoordinates().getY() - 1);
-		surrounding[5] = RegionManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY());
-		surrounding[6] = RegionManager.get().getRegion(this.getCoordinates().getX(), this.getCoordinates().getY() + 1);
-		surrounding[7] = RegionManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY() + 1);
-		surrounding[8] = RegionManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY() - 1);
+		surrounding[1] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY() - 1);
+		surrounding[2] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY() + 1);
+		surrounding[3] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY());
+		surrounding[4] = RegionStoreManager.get().getRegion(this.getCoordinates().getX(), this.getCoordinates().getY() - 1);
+		surrounding[5] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY());
+		surrounding[6] = RegionStoreManager.get().getRegion(this.getCoordinates().getX(), this.getCoordinates().getY() + 1);
+		surrounding[7] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY() + 1);
+		surrounding[8] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY() - 1);
 
 		
 		return surrounding;

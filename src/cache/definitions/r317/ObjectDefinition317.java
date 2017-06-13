@@ -29,7 +29,7 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 		}
 
 		for (int index = 0; index < 20; index++) {
-			if (cache[index].type == id) {
+			if (cache[index].id == id) {
 				return cache[index];
 			}
 		}
@@ -43,7 +43,7 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 
 		buffer.currentOffset = streamIndices[id];
 
-		definition.type = id;
+		definition.id = id;
 		definition.setDefaults();
 		definition.readValues(buffer);
 
@@ -247,32 +247,14 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 	}
 
 	private ObjectDefinition317() {
-		type = -1;
-	}
-
-	public boolean hasActions() {
-		return hasActions || actions != null;
-	}
-
-	public boolean hasName() {
-		return name != null && name.length() > 1;
-	}
-
-	public int xLength() {
-		return sizeX;
-	}
-
-	public int yLength() {
-		return sizeY;
+		id = -1;
 	}
 
 	public boolean aBoolean736;
-	public String name;
 	public int anInt746;
 	int[] originalModelColors;
 	public int anInt749;
 	public static boolean lowMem;
-	public int type;
 	public int anInt758;
 	public int childrenIDs[];
 	private int anInt760;
@@ -286,32 +268,8 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 	public int anInt775;
 	int[] anIntArray776;
 	public byte description[];
-	public boolean hasActions;
 	public int anInt781;
 	private static ObjectDefinition317[] cache;
 	int[] modifiedModelColors;
-	public String actions[];
 
-	public String getName() {
-		return name;
-	}
-
-	public boolean rangableObject() {
-		int[] rangableObjects = {3007, 980, 4262, 14437, 14438, 4437, 4439, 3487, 3457};
-		for (int i : rangableObjects) {
-			if (i == type) {
-				return true;
-			}
-		}
-		if (name != null) {
-			final String name1 = name.toLowerCase();
-			String[] rangables = {"altar", "pew", "log", "stump", "stool", "sign", "cart", "chest", "rock", "bush", "hedge", "chair", "table", "crate", "barrel", "box", "skeleton", "corpse", "vent", "stone", "rockslide"};
-			for (String i : rangables) {
-				if (name1.contains(i)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 }

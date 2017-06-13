@@ -1,10 +1,5 @@
 package com.model.game.item.ground;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-
 import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.account.Account;
@@ -17,6 +12,11 @@ import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A handler for a collection of {@link GroundItem}s
@@ -241,7 +241,7 @@ public final class GroundItemHandler {
 			groundItem.setState(State.GLOBAL);
 		}
 
-		PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
+		//PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
 		if (player != null && player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
 			groundItem.setGroundItemType(GroundItemType.PRIVATE);
 		}

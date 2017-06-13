@@ -1,5 +1,6 @@
 package com.model.game.item;
 
+import cache.definitions.AnyRevObjectDefinition;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.skill.cooking.Cookables;
 import com.model.game.character.player.skill.cooking.Cooking;
@@ -24,7 +25,7 @@ public class UseItem {
 	 * @param item
 	 */
 	public static void ItemonObject(Player player, int object, int objectX, int objectY, Item item) {
-		ObjectDefinition317 def = ObjectDefinition317.get(object);
+		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(object);
 		if (!player.getInventory().contains(item.getId()))
 			return;
 		if (def.getName().toLowerCase().contains("altar") && def.actions[0].toLowerCase().contains("pray")) {

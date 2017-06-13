@@ -1,5 +1,6 @@
 package com.model.game.character.player.skill.cooking;
 
+import cache.definitions.AnyRevObjectDefinition;
 import com.model.game.character.Animation;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Skills;
@@ -71,7 +72,7 @@ public class Cooking extends SkillTask {
 	 * @return
 	 */
 	private static boolean meetsRequirements(Player player, Cookables cookable, int object) {
-		ObjectDefinition317 objectDef = ObjectDefinition317.get(object);
+		AnyRevObjectDefinition objectDef = AnyRevObjectDefinition.get(object);
 		if (cookable == null) {
 			return false;
 		}

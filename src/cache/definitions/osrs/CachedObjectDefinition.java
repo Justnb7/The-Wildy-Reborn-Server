@@ -14,16 +14,12 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
     public int shading;
     public int anInt1644 = 0;
     public int[] childrenIDs;
-    public String name;
     public int groundDecorationSprite;
     public boolean aBoolean1648;
-    public int id;
-    public int hasActions;
     public boolean aBoolean1654;
     public int scaleX;
     public int[] originalModelColors;
     public int anInt1658;
-    public String[] actions;
     public boolean aBoolean1660;
     public int animationId;
     public int[] modifiedModelColors;
@@ -40,37 +36,6 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
     public boolean aBoolean1677;
     public int[] models;
     public int lightness;
-    
-    public int actionCount() {
-    	/*int count = 0;
-    	for(int i = 0; i < actions.length; i++) {
-    		if(actions[i] == null)
-    			continue;
-    		if(!actions[i].equalsIgnoreCase("null") || !actions[i].equalsIgnoreCase("hidden"))
-    			count++;
-    	}*/
-    	return hasActions;
-    }
-    
-    public boolean hasActions() {
-    	for(int i = 0; i < actions.length; i++) {
-    		if(actions[i] == null)
-    			continue;
-    		if(!actions[i].equalsIgnoreCase("null") || !actions[i].equalsIgnoreCase("hidden"))
-    			return true;
-    	}
-    	return false;
-    }
-    
-    public String[] getActions() {
-    	String[] allActions = new String[actions.length];
-    	for(int i = 0; i < actions.length; i++) {
-    		if(actions[i] == null)
-    			continue;
-    		allActions[i] = actions[i];
-    	}
-    	return allActions;
-    }
     
 	public static final CachedObjectDefinition forId(int objId) {
 		if (objId < 0 || objId >= objectDefinitions.length)
@@ -117,7 +82,7 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 		aBoolean1660 = false;
 		aBoolean1665 = false;
 		aBoolean1666 = true;
-		hasActions = -1;
+		hasActions = false;
 		anInt1642 = 0;
 		scaleY = 128;
 		shading = 0;
@@ -159,7 +124,7 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 				if ((opcode ^ 0xffffffff) == -19) {
 					projectileClipped = false;
 				} else if (opcode == 19)
-					hasActions = buffer.readUnsignedByte();
+					hasActions = buffer.readUnsignedByte() == 1;
 				else if (opcode == 21)
 					aBoolean1654 = true;
 				else if (opcode == 22)
@@ -325,7 +290,7 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 				if ((opcode ^ 0xffffffff) == -19) {
 					projectileClipped = false;
 				} else if (opcode == 19)
-					hasActions = buffer.readUnsignedByte();
+					hasActions = buffer.readUnsignedByte() == 1;
 				else if (opcode == 21)
 					aBoolean1654 = true;
 				else if (opcode == 22)

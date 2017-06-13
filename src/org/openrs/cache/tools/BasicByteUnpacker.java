@@ -45,9 +45,9 @@ public class BasicByteUnpacker {
         for (int i = 0; i < archiveCount; i++) {
             try {
                 archive[i] = Archive.decode(cache.read(type, i).getData(), table.getEntry(i).size());
-                System.out.println("idx "+type+" archive "+i+" has "+table.getEntry(i).size()+" entries.");
+                //System.out.println("idx "+type+" archive "+i+" has "+table.getEntry(i).size()+" entries.");
             } catch (Exception e) {
-                System.out.println("[ERROR] Failed to read index: "+type+" Archive: "+i);
+                System.out.println("[OpenRS][ERROR] Failed to read index: "+type+" Archive: "+i);
             }
         }
     }
@@ -61,7 +61,7 @@ public class BasicByteUnpacker {
      */
     public ByteBuffer getDefinition(int archiveId, int entryId) throws IOException {
         if (archiveId >= this.archive.length)
-            throw new IndexOutOfBoundsException("Error loading Archive \"" + archiveId + "\"");
+            throw new IndexOutOfBoundsException("[OpenRS] Error loading Archive \"" + archiveId + "\"");
         if (entryId >= archive[archiveId].size())
             return null;
         return archive[archiveId].getEntry(entryId);

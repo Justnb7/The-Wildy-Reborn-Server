@@ -8,7 +8,7 @@ package hyperion.region;
 public class RegionCoordinates {
 
 	/**
-	 * X coordinate.
+	 * X coordinate. NOT ABSOLUTE COORDS (such as 3222, 3222) rather its (49,51)
 	 */
 	private int x;
 	

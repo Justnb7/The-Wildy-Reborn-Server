@@ -1,5 +1,6 @@
 package clipmap;
 
+import cache.definitions.AnyRevObjectDefinition;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import cache.definitions.r317.ObjectDefinition317;
@@ -87,7 +88,7 @@ public class Region {
 	public static void addObject(GameObject obj) {
         ProjectileClipping.addClipping(obj);
 
-        ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
+        AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
         if (def == null) {
             return;
         }
@@ -118,7 +119,7 @@ public class Region {
 
     public static void removeClipping(GameObject obj) {
         ProjectileClipping.removeClipping(obj);
-        ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
+        AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
         int xLength;
         int yLength;
         int x = obj.getPosition().getX();

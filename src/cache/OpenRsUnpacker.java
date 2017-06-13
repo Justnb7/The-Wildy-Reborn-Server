@@ -16,9 +16,9 @@ import java.io.IOException;
 public class OpenRsUnpacker {
 
     private static BasicByteUnpacker idx2 = null;
+    public static Cache cache = null;
 
     public static Cache unpack() {
-        Cache cache = null;
         try {
             cache = new Cache(FileStore.open("./data/osrscache/"));
         } catch (FileNotFoundException e) {
@@ -34,7 +34,7 @@ public class OpenRsUnpacker {
             CachedItemDefinition.definitions = new CachedItemDefinition[idx2.getArchive()[10].size()];
             CachedNpcDefinition.npcDefinitions = new CachedNpcDefinition[idx2.getArchive()[9].size()];
 
-            System.out.printf("Cached loaded using the Open-RS cache library! Objects:%s | items:%s | npcs:%s%n", CachedObjectDefinition.objectDefinitions.length,
+            System.out.printf("[OpenRS] Cached loaded using the Open-RS cache library! Objects:%s | items:%s | npcs:%s%n", CachedObjectDefinition.objectDefinitions.length,
                     CachedItemDefinition.definitions.length, CachedNpcDefinition.npcDefinitions.length);
         } catch (IOException e) {
             e.printStackTrace();

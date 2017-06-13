@@ -3,7 +3,7 @@ package hyperion;
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
 import hyperion.region.RegionStore;
-import hyperion.region.RegionManager;
+import hyperion.region.RegionStoreManager;
 import clipmap.Tile;
 
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class TileControl {
     public boolean locationOccupied(int x, int y, int z, int world) {
         Tile location = Tile.create(x, y, z);
         Tile[] npcLocations = null;
-    	 for (RegionStore r : RegionManager.get().getSurroundingRegions(location)) {
+    	 for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(location)) {
     		 for (NPC npc : r.getNpcs()) {
     			 if (npc == null)
     				 continue;
@@ -112,7 +112,7 @@ public class TileControl {
         if ((locations == null) || (mob == null))
             return true;
         Tile[] npcLocations = null;
-        for (RegionStore r : RegionManager.get().getSurroundingRegions(mob.getPosition())) {
+        for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(mob.getPosition())) {
             for (NPC npc : r.getNpcs()) {
                 if ((mob.isNPC()) && ((npc == null) || (npc == mob))) {
                     continue;

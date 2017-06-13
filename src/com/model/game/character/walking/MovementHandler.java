@@ -96,6 +96,7 @@ public class MovementHandler {
 				player.absY = (short) player.teleportToY;
 				player.heightLevel = player.teleHeight != -1 ? player.teleHeight : player.heightLevel;
 				player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
+				player.updateCoverage(player.getPosition());
 				player.lastTile = new Location(player.absX, player.absY+1, player.heightLevel);
 				reset();
 				player.teleportToX = player.teleportToY = player.teleHeight = -1;
@@ -173,6 +174,7 @@ public class MovementHandler {
 		player.absX += DIR[dir][0];
 		player.absY += DIR[dir][1];
 		player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
+		player.updateCoverage(player.getPosition());
 		player.updateWalkEntities();
 	}
 

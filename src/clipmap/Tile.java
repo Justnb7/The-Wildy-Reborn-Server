@@ -11,6 +11,14 @@ import com.model.game.location.Location;
 public class Tile extends Location {
 
 	public static Tile create(int x, int y, int z) {
-		return (Tile)Location.create(x, y, z);
+		return new Tile(x, y, z);
+	}
+
+	public Tile(int x, int y, int z) {
+		super(x, y, z);
+	}
+
+	public static Tile create(Location location) {
+		return create(location.getX(), location.getY(), location.getZ());
 	}
 }

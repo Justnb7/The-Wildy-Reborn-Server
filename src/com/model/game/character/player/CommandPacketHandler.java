@@ -1,5 +1,6 @@
 package com.model.game.character.player;
 
+import clipmap.Region;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
@@ -21,14 +22,12 @@ import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.item.ground.GroundItem;
-import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import clipmap.Region;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 import com.model.utility.parser.impl.ItemDefinitionParser;
@@ -106,10 +105,10 @@ public class CommandPacketHandler implements PacketType {
 				player.getInventory().add(new Item(560, 100000));
 				return true;
 			case "showclipmap":
-				for (int x = player.getX() - 16; x < player.getX()+16; x++)
-					for (int y = player.getY() - 16; y < player.getY()+16; x++)
+				for (int x = player.getX() - 4; x < player.getX()+4; x++)
+					for (int y = player.getY() - 4; y < player.getY()+4; y++)
 						if (Region.getClippingMask(x, y, player.getHeight()) != 0)
-							GroundItemHandler.createGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
+							player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
 				return true;
     	
     	case "exp":

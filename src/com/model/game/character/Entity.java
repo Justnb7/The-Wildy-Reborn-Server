@@ -1120,15 +1120,16 @@ public abstract class Entity {
     }
 
 	private Coverage coverage = null;
+
 	public Coverage getCoverage() {
 		return coverage;
 	}
 
-	public void setCoverage() {
+	private void setCoverage() {
 		coverage = new Coverage(getPosition(), size());
 	}
 
-	public void updateCoverage(Directions.NormalDirection direction) {
+	private void updateCoverage(Directions.NormalDirection direction) {
 		coverage.update(direction, size());
 	}
 

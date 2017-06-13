@@ -722,11 +722,11 @@ public class Location {
 	}
 
 	public Tile transform(int diffX, int diffY, int diffZ) {
-		return (Tile)create(getX() + diffX, getY() + diffY, getZ() + diffZ);
+		return Tile.create(getX() + diffX, getY() + diffY, getZ() + diffZ);
 	}
 
 	public Tile transform(int diffX, int diffY) {
-		return (Tile)create(getZ(), getX() + diffX, getY() + diffY);
+		return Tile.create(getZ(), getX() + diffX, getY() + diffY);
 	}
 
 	@Override
@@ -753,7 +753,7 @@ public class Location {
 				|| getX() == other.getX() && getY() == other.getY());
 	}
 	public Directions.NormalDirection direction(Tile next) {
-		return Directions.directionFor((Tile)this, next);
+		return Directions.directionFor(Tile.create(this), next);
 	}
 
 	public static boolean standingOn(Entity mob, Entity other) {
@@ -783,14 +783,14 @@ public class Location {
 
 	public boolean isWithinDistance(int width, int height, Tile otherLocation, int otherWidth, int otherHeight, int distance) {
 		Tile myClosestTile = this.closestTileOf(otherLocation, width, height);
-		Tile theirClosestTile = otherLocation.closestTileOf((Tile)this, otherWidth, otherHeight);
+		Tile theirClosestTile = otherLocation.closestTileOf(Tile.create(this), otherWidth, otherHeight);
 
 		return myClosestTile.distanceToPoint(theirClosestTile) <= distance;
 	}
 
 	public Tile closestTileOf(Tile from, int width, int height) {
 		if(width < 2 && height < 2) {
-			return (Tile)this;
+			return Tile.create(this);
 		}
 		Location location = null;
 		for(int x = 0; x < width; x++) {
@@ -801,7 +801,7 @@ public class Location {
 				}
 			}
 		}
-		return (Tile)location;
+		return Tile.create(location);
 	}
 
 	public boolean isWithinDistance(Tile location, int distance) {

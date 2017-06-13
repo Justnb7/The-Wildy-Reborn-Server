@@ -446,6 +446,7 @@ public class World implements Service {
 		try {
 			player.process();
 			player.getMovementHandler().process();
+			player.updateCoverage(player.getPosition());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -18,7 +18,7 @@ import com.model.server.Server;
 import com.model.task.impl.NPCDeathTask;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
-import com.model.utility.cache.map.Region;
+import clipmap.Region;
 
 import java.util.*;
 

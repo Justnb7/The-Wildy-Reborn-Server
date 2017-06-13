@@ -2,7 +2,7 @@ package hyperion;
 
 import com.model.game.character.Entity;
 import hyperion.impl.PrimitivePathFinder;
-import com.model.utility.cache.map.Tile;
+import clipmap.Tile;
 
 import java.awt.*;
 

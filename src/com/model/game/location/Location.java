@@ -1,11 +1,11 @@
 package com.model.game.location;
 
 import com.model.game.character.Entity;
+import com.model.utility.Utility;
+import clipmap.Region;
+import clipmap.Tile;
 import hyperion.Directions;
 import hyperion.impl.PrimitivePathFinder;
-import hyperion.region.RegionManager;
-import com.model.utility.Utility;
-import com.model.utility.cache.map.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -544,7 +544,7 @@ public class Location {
 				for (int k = getY(); k < getY() + size; k++) {
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(getX() - 1, k, npcHeight, 1))
 					return false;*/
-					if ((RegionManager.get().getClippingMask(getX() - 1, k, getZ()) & 0x1280108) != 0)
+					if ((Region.getClippingMask(getX() - 1, k, getZ()) & 0x1280108) != 0)
 						return false;
 				}
 				break;
@@ -552,7 +552,7 @@ public class Location {
 				for (int k = getY(); k < getY() + size; k++) {
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(getX() + size, k, npcHeight, 1))
 					return false;*/
-					if ((RegionManager.get().getClippingMask(getX() + size, k, getZ()) & 0x1280180) != 0)
+					if ((Region.getClippingMask(getX() + size, k, getZ()) & 0x1280180) != 0)
 						return false;
 				}
 				break;
@@ -560,7 +560,7 @@ public class Location {
 				for (int i = getX(); i < getX() + size; i++) {
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(i, y - 1, npcHeight, 1))
 					return false;*/
-					if ((RegionManager.get().getClippingMask(i, getY() - 1, getZ()) & 0x1280102) != 0)
+					if ((Region.getClippingMask(i, getY() - 1, getZ()) & 0x1280102) != 0)
 						return false;
 				}
 				break;
@@ -568,24 +568,24 @@ public class Location {
 				for (int i = getX(); i < getX() + size; i++) {
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(i, getY() + size, npcHeight, 1))
 					return false;*/
-					if ((RegionManager.get().getClippingMask(i, getY() + size, getZ()) & 0x1280120) != 0)
+					if ((Region.getClippingMask(i, getY() + size, getZ()) & 0x1280120) != 0)
 						return false;
 				}
 				break;
 			case SOUTH_WEST:
 				for (int i = getX(); i < getX() + size; i++) {
-					int s = RegionManager.get().getClippingMask(i, getY() - 1, getZ());
-					int w = RegionManager.get().getClippingMask(i - 1, getY(), getZ());
-					int sw = RegionManager.get().getClippingMask(i - 1, getY() - 1, getZ());
+					int s = Region.getClippingMask(i, getY() - 1, getZ());
+					int w = Region.getClippingMask(i - 1, getY(), getZ());
+					int sw = Region.getClippingMask(i - 1, getY() - 1, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(i - 1, getY() - 1, npcHeight, 1))
 					return false;*/
 					if ((sw & 0x128010e) != 0 || (s & 0x1280102) != 0 || (w & 0x1280108) != 0)
 						return false;
 				}
 				for (int k = getY(); k < getY() + size; k++) {
-					int s = RegionManager.get().getClippingMask(getX(), k - 1, getZ());
-					int w = RegionManager.get().getClippingMask(getX() - 1, k, getZ());
-					int sw = RegionManager.get().getClippingMask(getX() - 1, k - 1, getZ());
+					int s = Region.getClippingMask(getX(), k - 1, getZ());
+					int w = Region.getClippingMask(getX() - 1, k, getZ());
+					int sw = Region.getClippingMask(getX() - 1, k - 1, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(getX() - 1, k - 1, npcHeight, 1))
 					return false;*/
 					if ((sw & 0x128010e) != 0 || (s & 0x1280102) != 0 || (w & 0x1280108) != 0)
@@ -594,18 +594,18 @@ public class Location {
 				break;
 			case SOUTH_EAST:
 				for (int i = getX(); i < getX() + size; i++) {
-					int s = RegionManager.get().getClippingMask(i, getY() - 1, getZ());
-					int e = RegionManager.get().getClippingMask(i + 1, getY(), getZ());
-					int se = RegionManager.get().getClippingMask(i + 1, getY() - 1, getZ());
+					int s = Region.getClippingMask(i, getY() - 1, getZ());
+					int e = Region.getClippingMask(i + 1, getY(), getZ());
+					int se = Region.getClippingMask(i + 1, getY() - 1, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(i + 1, getY() - 1, npcHeight, 1))
 					return false;*/
 					if ((se & 0x1280183) != 0 || (s & 0x1280102) != 0 || (e & 0x1280180) != 0)
 						return false;
 				}
 				for (int k = getY(); k < getY() + size; k++) {
-					int s = RegionManager.get().getClippingMask(getX() + size - 1, k - 1, getZ());
-					int e = RegionManager.get().getClippingMask(getX() + size, k, getZ());
-					int se = RegionManager.get().getClippingMask(getX() + size, k - 1, getZ());
+					int s = Region.getClippingMask(getX() + size - 1, k - 1, getZ());
+					int e = Region.getClippingMask(getX() + size, k, getZ());
+					int se = Region.getClippingMask(getX() + size, k - 1, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(getX() + 1, k - 1, npcHeight, 1))
 					return false;*/
 					if ((se & 0x1280183) != 0 || (s & 0x1280102) != 0 || (e & 0x1280180) != 0)
@@ -614,18 +614,18 @@ public class Location {
 				break;
 			case NORTH_WEST:
 				for (int i = getX(); i < getX() + size; i++) {
-					int n = RegionManager.get().getClippingMask(i, getY() + size, getZ());
-					int w = RegionManager.get().getClippingMask(i - 1, getY() + size - 1, getZ());
-					int nw = RegionManager.get().getClippingMask(i - 1, getY() + size, getZ());
+					int n = Region.getClippingMask(i, getY() + size, getZ());
+					int w = Region.getClippingMask(i - 1, getY() + size - 1, getZ());
+					int nw = Region.getClippingMask(i - 1, getY() + size, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(i - 1, getY() + size, npcHeight, 1))
 					return false;*/
 					if ((nw & 0x1280138) != 0 || (n & 0x1280102) != 0 || (w & 0x1280108) != 0)
 						return false;
 				}
 				for (int k = getY(); k < getY() + size; k++) {
-					int n = RegionManager.get().getClippingMask(getX(), getY(), getZ());
-					int w = RegionManager.get().getClippingMask(getX() - 1, getY(), getZ());
-					int nw = RegionManager.get().getClippingMask(getX() - 1, getY() + 1, getZ());
+					int n = Region.getClippingMask(getX(), getY(), getZ());
+					int w = Region.getClippingMask(getX() - 1, getY(), getZ());
+					int nw = Region.getClippingMask(getX() - 1, getY() + 1, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(getX() - 1, getY() + 1, npcHeight, 1))
 					return false;*/
 					if ((nw & 0x1280138) != 0 || (n & 0x1280102) != 0 || (w & 0x1280108) != 0)
@@ -634,18 +634,18 @@ public class Location {
 				break;
 			case NORTH_EAST:
 				for (int i = getX(); i < getX() + size; i++) {
-					int n = RegionManager.get().getClippingMask(i, getY() + size, getZ());
-					int e = RegionManager.get().getClippingMask(i + 1, getY() + size - 1, getZ());
-					int ne = RegionManager.get().getClippingMask(i + 1, getY() + size, getZ());
+					int n = Region.getClippingMask(i, getY() + size, getZ());
+					int e = Region.getClippingMask(i + 1, getY() + size - 1, getZ());
+					int ne = Region.getClippingMask(i + 1, getY() + size, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(i + 1, getY() + size, npcHeight, 1))
 					return false;*/
 					if ((ne & 0x12801e0) != 0 || (n & 0x1280120) != 0 || (e & 0x1280180) != 0)
 						return false;
 				}
 				for (int k = getY(); k < getY() + size; k++) {
-					int n = RegionManager.get().getClippingMask(getX() + size - 1, k + 1, getZ());
-					int e = RegionManager.get().getClippingMask(getX() + size, k, getZ());
-					int ne = RegionManager.get().getClippingMask(getX() + size, k + 1, getZ());
+					int n = Region.getClippingMask(getX() + size - 1, k + 1, getZ());
+					int e = Region.getClippingMask(getX() + size, k, getZ());
+					int ne = Region.getClippingMask(getX() + size, k + 1, getZ());
 				/*if (checkingNPCs && TileControl.getSingleton().locationOccupied(getX() + size, k + 1, npcHeight, 1))
 					return false;*/
 					if ((ne & 0x12801e0) != 0 || (n & 0x1280120) != 0 || (e & 0x1280180) != 0)

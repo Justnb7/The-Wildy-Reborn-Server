@@ -1,7 +1,7 @@
 package hyperion;
 
 import com.model.game.character.Entity;
-import com.model.utility.cache.map.Tile;
+import clipmap.Tile;
 
 public interface PathFinder {
 	

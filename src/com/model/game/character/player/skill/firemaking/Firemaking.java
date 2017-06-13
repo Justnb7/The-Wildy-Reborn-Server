@@ -10,7 +10,7 @@ import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
-import com.model.utility.cache.map.Region;
+import clipmap.Region;
 
 import java.util.Random;
 

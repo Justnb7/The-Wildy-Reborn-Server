@@ -1,6 +1,6 @@
-package com.model.utility.oscache;
+package oscache;
 
-import com.model.utility.oscache.io.XTEADecipher;
+import oscache.io.XTEADecipher;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;

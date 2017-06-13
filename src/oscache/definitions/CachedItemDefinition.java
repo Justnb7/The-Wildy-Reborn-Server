@@ -1,9 +1,9 @@
-package com.model.utility.oscache.definitions;
+package oscache.definitions;
 
 import com.model.game.character.player.Skills;
-import com.model.utility.oscache.CacheArchive;
-import com.model.utility.oscache.CacheManager;
-import com.model.utility.oscache.io.InputStream;
+import oscache.CacheArchive;
+import oscache.CacheManager;
+import oscache.io.InputStream;
 
 import java.util.HashMap;
 

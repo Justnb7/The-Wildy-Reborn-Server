@@ -5,7 +5,7 @@ import hyperion.BasicPoint;
 import hyperion.Directions;
 import hyperion.PathFinder;
 import hyperion.PathState;
-import com.model.utility.cache.map.Tile;
+import clipmap.Tile;
 
 /**
  * 

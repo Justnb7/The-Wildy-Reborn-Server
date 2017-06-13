@@ -1,4 +1,4 @@
-package com.model.utility.oscache;
+package oscache;
 
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 

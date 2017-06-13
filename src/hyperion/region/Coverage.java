@@ -4,7 +4,7 @@ import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import hyperion.Directions;
 import hyperion.impl.ProjectilePathFinder;
-import com.model.utility.cache.map.Tile;
+import clipmap.Tile;
 
 import java.awt.*;
 

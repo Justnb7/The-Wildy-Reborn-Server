@@ -8,8 +8,8 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.location.Location;
-import com.model.utility.cache.map.Region;
-import com.model.utility.cache.map.Tile;
+import clipmap.Region;
+import clipmap.Tile;
 
 import java.util.stream.Stream;
 

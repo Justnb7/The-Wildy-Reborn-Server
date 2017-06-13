@@ -2,7 +2,7 @@ package com.model.game.character.walking;
 
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
-import com.model.utility.cache.map.Region;
+import clipmap.Region;
 
 import java.util.ArrayList;
 

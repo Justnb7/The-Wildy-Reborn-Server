@@ -1,17 +1,21 @@
 package hyperion.region;
 
+import clipmap.Tile;
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
-import hyperion.Directions;
-import hyperion.impl.PrimitivePathFinder;
 import com.model.game.character.player.Player;
 import com.model.game.object.GameObject;
-import com.model.utility.cache.map.Tile;
+import hyperion.Directions;
+import hyperion.impl.PrimitivePathFinder;
 
 import java.util.*;
 
 /**
  * Manages the world regions.
+ *
+ * THIS IS FROM MACKS 88
+ *
+ * Manages entities in a region..
  *
  * @author Graham Edgecombe
  * @author Mack
@@ -36,7 +40,7 @@ public class RegionManager {
 	/**
 	 * The active (loaded) region map.
 	 */
-	private Map<RegionCoordinates, Region> activeRegions = new HashMap<RegionCoordinates, Region>();
+	private Map<RegionCoordinates, RegionStore> activeRegions = new HashMap<RegionCoordinates, RegionStore>();
 
 	/**
 	 * Loaded clipped maps
@@ -84,8 +88,8 @@ public class RegionManager {
 	 */
 	public Collection<Player> getLocalPlayers(Entity mob) {
 		List<Player> localPlayers = new LinkedList<Player>();
-		Region[] regions = getSurroundingRegions(mob.getPosition());
-		for (Region region : regions) {
+		RegionStore[] regions = getSurroundingRegions(mob.getPosition());
+		for (RegionStore region : regions) {
 			for (Player player : region.getPlayers()) {
 				if (player.getPosition().isWithinDistance(mob.getPosition())) {
 					localPlayers.add(player);
@@ -104,8 +108,8 @@ public class RegionManager {
 	 */
 	public Collection<NPC> getLocalNpcs(Entity mob) {
 		List<NPC> npcs = new LinkedList<NPC>();
-		Region[] regions = getSurroundingRegions(mob.getPosition());
-		for (Region region : regions) {
+		RegionStore[] regions = getSurroundingRegions(mob.getPosition());
+		for (RegionStore region : regions) {
 			for (NPC npc : region.getNpcs()) {
 				if (npc.getPosition().isWithinDistance(mob.getPosition())) {
 					npcs.add(npc);
@@ -125,17 +129,17 @@ public class RegionManager {
 	 * @return The <code>GameObject</code> or <code>null</code> if no game
 	 *         object was found to be existent.
 	 */
-	/*public GameObject getGameObject(Tile location, int id) { // TODO
-		Region[] regions = getSurroundingRegions(location);
-		for (Region region : regions) {
+	public GameObject getGameObject(Tile location, int id) { // TODO
+		RegionStore[] regions = getSurroundingRegions(location);
+		for (RegionStore region : regions) {
 			for (GameObject object : region.getGameObjects()) {
-				if (object.getPosition().equals(location) && object.getDefinition().getId() == id) {
+				if (object.getPosition().equals(location) && object.getId() == id) {
 					return object;
 				}
 			}
 		}
 		return null;
-	}*/
+	}
 
 	/**
 	 * Gets all object types that are not 'rangeable' in the sense that mobs
@@ -145,8 +149,8 @@ public class RegionManager {
 	 * @return
 	 */
 	public GameObject getWallObject(Tile location) { // TODO
-		Region[] regions = getSurroundingRegions(location);
-		for (Region region : regions) {
+		RegionStore[] regions = getSurroundingRegions(location);
+		for (RegionStore region : regions) {
 			for (GameObject object : region.getGameObjects()) {
 				if (object != null && object.getType() >= 0 && object.getType() <= 3) {
 					return object;
@@ -163,11 +167,11 @@ public class RegionManager {
 	 *            The location.
 	 * @return The regions surrounding the location.
 	 */
-	public Region[] getSurroundingRegions(Tile location) {
+	public RegionStore[] getSurroundingRegions(Tile location) {
 		int regionX = location.getX() / REGION_SIZE;
 		int regionY = location.getY() / REGION_SIZE;
 
-		Region[] surrounding = new Region[9];
+		RegionStore[] surrounding = new RegionStore[9];
 		surrounding[0] = getRegion(regionX, regionY);
 		surrounding[1] = getRegion(regionX - 1, regionY - 1);
 		surrounding[2] = getRegion(regionX + 1, regionY + 1);
@@ -188,7 +192,7 @@ public class RegionManager {
 	 *            The location.
 	 * @return The region.
 	 */
-	public Region getRegionByLocation(Tile location) {
+	public RegionStore getRegionByLocation(Tile location) {
 		return getRegion(location.getX() / REGION_SIZE, location.getY() / REGION_SIZE);
 	}
 
@@ -201,12 +205,12 @@ public class RegionManager {
 	 *            The y coordinate.
 	 * @return The region.
 	 */
-	public Region getRegion(int x, int y) {
+	public RegionStore getRegion(int x, int y) {
 		RegionCoordinates key = new RegionCoordinates(x, y);
 		if (activeRegions.containsKey(key)) {
 			return activeRegions.get(key);
 		} else {
-			Region region = new Region(key);
+			RegionStore region = new RegionStore(key);
 			activeRegions.put(key, region);
 			return region;
 		}

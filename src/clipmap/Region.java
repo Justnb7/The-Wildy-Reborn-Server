@@ -1,12 +1,13 @@
-package com.model.utility.cache.map;
+package clipmap;
 
-import clipmap.ProjectileClipping;
-import clipmap.RegionEntities;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.utility.cache.Direction;
 import com.model.utility.cache.ObjectDefinition;
 
+/**
+ * Contains CLIPPING ONLY
+ */
 public class Region {
 
     public static final int REGION_SIZE = 128;
@@ -30,8 +31,6 @@ public class Region {
 
 	public int id;
 	public final int[][][] clips = new int[4][][];
-	// game objects in the region by default in the cache. NOT custom spawns
-	public final GameObject[][][] objects = new GameObject[4][64][64];
 	// other stuff related to this region but not specific to clipping. this class is strictly clipmap related only
 	private final RegionEntities store = new RegionEntities();
 	

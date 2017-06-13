@@ -1,4 +1,4 @@
-package com.model.utility.oscache;
+package oscache;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -7,7 +7,7 @@ import hyperion.Directions;
 import hyperion.region.Coverage;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
-import com.model.utility.cache.map.Tile;
+import clipmap.Tile;
 
 public class NPCPathFinder {
 	

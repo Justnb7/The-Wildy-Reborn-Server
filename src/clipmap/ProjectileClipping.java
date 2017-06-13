@@ -2,7 +2,6 @@ package clipmap;
 
 import com.model.game.object.GameObject;
 import com.model.utility.cache.ObjectDefinition;
-import com.model.utility.cache.map.Tile;
 
 /**
  * A copy of the RegionClipping class, with some adjustments to account for projectiles shooting over certain objects, coord etc.

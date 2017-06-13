@@ -1,4 +1,4 @@
-package com.model.utility.oscache.io;
+package oscache.io;
 
 public final class InputStream extends Stream {
 

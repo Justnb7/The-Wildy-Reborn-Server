@@ -28,7 +28,7 @@ import com.model.net.packet.PacketType;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.cache.map.Region;
+import clipmap.Region;
 import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 import com.model.utility.parser.impl.ItemDefinitionParser;

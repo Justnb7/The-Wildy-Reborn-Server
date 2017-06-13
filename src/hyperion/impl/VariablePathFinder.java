@@ -1,11 +1,11 @@
 package hyperion.impl;
 
 import com.model.game.character.Entity;
+import clipmap.Region;
+import clipmap.Tile;
 import hyperion.BasicPoint;
 import hyperion.PathFinder;
 import hyperion.PathState;
-import hyperion.region.RegionManager;
-import com.model.utility.cache.map.Tile;
 
 public class VariablePathFinder implements PathFinder {
 	
@@ -125,54 +125,54 @@ public class VariablePathFinder implements PathFinder {
 			}
 			if (curY > 0
 					&& via[curX][curY - 1] == 0
-					&& (RegionManager.get().getClippingMask(absX, absY - 1, z) & 0x1280102) == 0) {
+					&& (Region.getClippingMask(absX, absY - 1, z) & 0x1280102) == 0) {
 				check(mob, curX, curY - 1, SOUTH_FLAG, thisCost);
 			}
 			if (curX > 0
 					&& via[curX - 1][curY] == 0
-					&& (RegionManager.get().getClippingMask(absX - 1, absY, z) & 0x1280108) == 0) {
+					&& (Region.getClippingMask(absX - 1, absY, z) & 0x1280108) == 0) {
 				check(mob, curX - 1, curY, WEST_FLAG, thisCost);
 			}
 			if (curY < 103
 					&& via[curX][curY + 1] == 0
-					&& (RegionManager.get().getClippingMask(absX, absY + 1, z) & 0x1280120) == 0) {
+					&& (Region.getClippingMask(absX, absY + 1, z) & 0x1280120) == 0) {
 				check(mob, curX, curY + 1, NORTH_FLAG, thisCost);
 			}
 			if (curX < 103
 					&& via[curX + 1][curY] == 0
-					&& (RegionManager.get().getClippingMask(absX + 1, absY, z) & 0x1280180) == 0) {
+					&& (Region.getClippingMask(absX + 1, absY, z) & 0x1280180) == 0) {
 				check(mob, curX + 1, curY, EAST_FLAG, thisCost);
 			}
 			if (curX > 0
 					&& curY > 0
 					&& via[curX - 1][curY - 1] == 0
-					&& (RegionManager.get().getClippingMask(absX - 1, absY - 1, z) & 0x128010e) == 0
-					&& (RegionManager.get().getClippingMask(absX - 1, absY, z) & 0x1280108) == 0
-					&& (RegionManager.get().getClippingMask(absX, absY - 1, z) & 0x1280102) == 0) {
+					&& (Region.getClippingMask(absX - 1, absY - 1, z) & 0x128010e) == 0
+					&& (Region.getClippingMask(absX - 1, absY, z) & 0x1280108) == 0
+					&& (Region.getClippingMask(absX, absY - 1, z) & 0x1280102) == 0) {
 				check(mob, curX - 1, curY - 1, SOUTH_WEST_FLAG, thisCost);
 			}
 			if (curX > 0
 					&& curY < 103
 					&& via[curX - 1][curY + 1] == 0
-					&& (RegionManager.get().getClippingMask(absX - 1, absY + 1, z) & 0x1280138) == 0
-					&& (RegionManager.get().getClippingMask(absX - 1, absY, z) & 0x1280108) == 0
-					&& (RegionManager.get().getClippingMask(absX, absY + 1, z) & 0x1280120) == 0) {
+					&& (Region.getClippingMask(absX - 1, absY + 1, z) & 0x1280138) == 0
+					&& (Region.getClippingMask(absX - 1, absY, z) & 0x1280108) == 0
+					&& (Region.getClippingMask(absX, absY + 1, z) & 0x1280120) == 0) {
 				check(mob, curX - 1, curY + 1, NORTH_WEST_FLAG, thisCost);
 			}
 			if (curX < 103
 					&& curY > 0
 					&& via[curX + 1][curY - 1] == 0
-					&& (RegionManager.get().getClippingMask(absX + 1, absY - 1, z) & 0x1280183) == 0
-					&& (RegionManager.get().getClippingMask(absX + 1, absY, z) & 0x1280180) == 0
-					&& (RegionManager.get().getClippingMask(absX, absY - 1, z) & 0x1280102) == 0) {
+					&& (Region.getClippingMask(absX + 1, absY - 1, z) & 0x1280183) == 0
+					&& (Region.getClippingMask(absX + 1, absY, z) & 0x1280180) == 0
+					&& (Region.getClippingMask(absX, absY - 1, z) & 0x1280102) == 0) {
 				check(mob, curX + 1, curY - 1, SOUTH_EAST_FLAG, thisCost);
 			}
 			if (curX < 103
 					&& curY < 103
 					&& via[curX + 1][curY + 1] == 0
-					&& (RegionManager.get().getClippingMask(absX + 1, absY + 1, z) & 0x12801e0) == 0
-					&& (RegionManager.get().getClippingMask(absX + 1, absY, z) & 0x1280180) == 0
-					&& (RegionManager.get().getClippingMask(absX, absY + 1, z) & 0x1280120) == 0) {
+					&& (Region.getClippingMask(absX + 1, absY + 1, z) & 0x12801e0) == 0
+					&& (Region.getClippingMask(absX + 1, absY, z) & 0x1280180) == 0
+					&& (Region.getClippingMask(absX, absY + 1, z) & 0x1280120) == 0) {
 				check(mob, curX + 1, curY + 1, NORTH_EAST_FLAG, thisCost);
 			}
 		}
@@ -259,7 +259,7 @@ public class VariablePathFinder implements PathFinder {
 		if (curX == dstX && curY == dstY)
 			return true;
 		//z = 0;
-		int clipping = RegionManager.get().getClippingMask(absX, absY, z);
+		int clipping = Region.getClippingMask(absX, absY, z);
 		if (type == 0)
 			if (direction == 0) {
 				if (curX == dstX - 1 && curY == dstY)
@@ -362,7 +362,7 @@ public class VariablePathFinder implements PathFinder {
 		if (curX == dstX && curY == dstY)
 			return true;
 		z = 0;
-		int clipping = RegionManager.get().getClippingMask(absX, absY, z);
+		int clipping = Region.getClippingMask(absX, absY, z);
 		if (type == 6 || type == 7) {
 			if (type == 7)
 				direction = direction + 2 & 3;
@@ -412,7 +412,7 @@ public class VariablePathFinder implements PathFinder {
 		int maxX = (dstX + sizeX) - 1;
 		int maxY = (dstY + sizeY) - 1;
 		z = 0;
-		int clipping = RegionManager.get().getClippingMask(absX, absY, z);
+		int clipping = Region.getClippingMask(absX, absY, z);
 		if (target != null) {
 			if (curX >= dstX && maxX >= curX && dstY <= curY && maxY >= curY) {
 				if (!Tile.standingOn(mob, target)) {

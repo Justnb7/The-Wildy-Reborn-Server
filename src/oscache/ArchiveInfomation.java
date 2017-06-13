@@ -1,4 +1,4 @@
-package com.model.utility.oscache;
+package oscache;
 
 /**
  * 

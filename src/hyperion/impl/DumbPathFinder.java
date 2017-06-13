@@ -4,7 +4,7 @@ import com.model.game.character.Entity;
 import hyperion.PathFinder;
 import hyperion.region.RegionManager;
 import com.model.utility.Utility;
-import com.model.utility.cache.map.Tile;
+import clipmap.Tile;
 
 public class DumbPathFinder {
 	

@@ -3,10 +3,11 @@ package hyperion.impl;
 import clipmap.ProjectileClipping;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
+import com.model.game.object.GameObject;
+import clipmap.Region;
+import clipmap.Tile;
 import hyperion.Directions;
 import hyperion.region.RegionManager;
-import com.model.game.object.GameObject;
-import com.model.utility.cache.map.Tile;
 
 public class ProjectilePathFinder {
 	
@@ -119,8 +120,8 @@ public class ProjectilePathFinder {
         			currentTile = nextTile;
         			continue;
         		} else {
-        			boolean solid = (RegionManager.get().getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
-        			boolean solid2 = (RegionManager.get().getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
+        			boolean solid = (Region.getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
+        			boolean solid2 = (Region.getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
         			if (!solid && !solid2) {
         				currentTile = nextTile;
         				continue;
@@ -136,8 +137,8 @@ public class ProjectilePathFinder {
         			currentTile = nextTile;
         			continue;
         		} else {
-        			boolean solid = (RegionManager.get().getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
-        			boolean solid2 = (RegionManager.get().getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
+        			boolean solid = (Region.getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
+        			boolean solid2 = (Region.getClippingMask(currentTile.getX(), currentTile.getY(), currentTile.getZ()) & 0x20000) != 0;
         			if (!solid && !solid2) {
         				currentTile = nextTile;
         				continue;

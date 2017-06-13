@@ -1,19 +1,6 @@
 package com.model.server;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.ResourceLeakDetector;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-
-import org.omicron.jagex.runescape.CollisionMap;
-
+import clipmap.MapLoading;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.model.game.Constants;
 import com.model.game.ScriptManager;
@@ -29,8 +16,18 @@ import com.model.net.network.NettyChannelHandler;
 import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.handshake.HandshakeDecoder;
 import com.model.utility.cache.ObjectDefinition;
-import clipmap.MapLoading;
 import com.model.utility.parser.impl.*;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ResourceLeakDetector;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * The bootstrap that will prepare the game and network.
@@ -108,11 +105,12 @@ public class Bootstrap {
 		serviceLoader.execute(() -> {
 			ObjectDefinition.loadConfig();
 			MapLoading.load();
-			try {
+			// A hardcoded dump of the entire world clipping flags released sometime around 2006 i think.. not used.
+			/*try {
 				CollisionMap.load("Data/data/collisiondata.dat");
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
+			}*/
 			LOGGER.info("Loading all of the game data...");
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();

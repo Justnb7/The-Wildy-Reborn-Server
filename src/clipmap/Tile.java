@@ -1,4 +1,4 @@
-package com.model.utility.cache.map;
+package clipmap;
 
 import com.model.game.location.Location;
 

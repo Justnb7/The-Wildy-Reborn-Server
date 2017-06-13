@@ -18,6 +18,7 @@ import com.model.task.ScheduledTask;
 import com.model.task.Service;
 import com.model.task.impl.*;
 import com.model.utility.NameUtils;
+import hyperion.region.RegionManager;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -65,7 +66,8 @@ public class World implements Service {
 	 * A list of connected players.
 	 */
 	public final MobileCharacterList<Player> players = new MobileCharacterList<>(Constants.MAX_PLAYERS);
-	
+
+	public final RegionManager regions = new RegionManager();
 
 	/**
 	 * A queue of players waiting to be logged in

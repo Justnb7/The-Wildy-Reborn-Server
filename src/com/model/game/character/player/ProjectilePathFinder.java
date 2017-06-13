@@ -2,7 +2,7 @@ package com.model.game.character.player;
 
 import com.model.game.Constants;
 import com.model.game.location.Location;
-import com.model.utility.cache.map.Region;
+import clipmap.Region;
 
 /**
  * A pathfinder implementation used for checking projectile paths.

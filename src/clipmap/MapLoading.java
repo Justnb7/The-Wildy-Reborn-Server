@@ -7,10 +7,10 @@ import java.io.FileInputStream;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
+import com.model.game.World;
 import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import com.model.utility.cache.ByteStream;
-import com.model.utility.cache.map.Region;
 
 public class MapLoading {
 	
@@ -117,7 +117,9 @@ public class MapLoading {
 					height--;
 				}
 				if (height >= 0 && height <= 3) {
-					Region.addObject(new GameObject(objectId, absX + localX, absY + localY, height, direction, type));
+					GameObject obj = new GameObject(objectId, absX + localX, absY + localY, height, direction, type);
+					Region.addObject(obj);
+					World.getWorld().regions.getRegionByLocation((Tile)obj.getPosition()).addObject(obj);
 				}
 			}
 		}

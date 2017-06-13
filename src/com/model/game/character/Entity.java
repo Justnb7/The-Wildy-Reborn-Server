@@ -25,7 +25,7 @@ import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Utility;
-import com.model.utility.cache.map.Tile;
+import clipmap.Tile;
 
 import java.util.*;
 

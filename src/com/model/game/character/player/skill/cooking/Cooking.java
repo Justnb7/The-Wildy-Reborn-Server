@@ -10,7 +10,7 @@ import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;
-import com.model.utility.cache.ObjectDefinition;
+import cache.definitions.r317.ObjectDefinition317;
 
 
 /**
@@ -71,7 +71,7 @@ public class Cooking extends SkillTask {
 	 * @return
 	 */
 	private static boolean meetsRequirements(Player player, Cookables cookable, int object) {
-		ObjectDefinition objectDef = ObjectDefinition.get(object);
+		ObjectDefinition317 objectDef = ObjectDefinition317.get(object);
 		if (cookable == null) {
 			return false;
 		}

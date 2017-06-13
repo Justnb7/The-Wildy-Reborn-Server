@@ -20,16 +20,18 @@ import com.model.game.character.combat.range.RangeData;
 import com.model.game.character.combat.weaponSpecial.Special;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
-import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.definitions.WeaponDefinition;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
+import com.model.game.location.Location;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+import hyperion.PathFinder;
+import hyperion.impl.VariablePathFinder;
 
 public class Combat {
 	
@@ -668,8 +670,30 @@ public class Combat {
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
 	public static boolean touches(Player player, Entity target) {
-        player.getPlayerFollowing().follow(true, target);
-		return ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()) && player.touchDistance(target, calculateAttackDistance(player, target));
+
+        //player.getPlayerFollowing().follow(true, target); // PI =)
+
+        // HYPERION TIME XX
+
+        int walkToData = 0;
+        if (target.isNPC()) {
+            walkToData = 0x80000000;//can move through entities
+        }
+        PathFinder.doPath(new VariablePathFinder(-1, walkToData, 0, target.size(), target.size()), player, target.getX(), target.getY());
+
+        // Above - path was executed, now check for line of sight, and distance
+
+        if (!hyperion.impl.ProjectilePathFinder.hasLineOfSight(player, target)) {
+            if (!Location.standingOn(player, target)) {
+                return false;
+            } else if (Location.standingOn(player, target)) {
+                if (player.frozen()) {
+                    return false;
+                }
+            }
+        }
+        // projectile path clear is PI's line of sight.. apparently? idk was already there
+		return /*ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()) && */player.touchDistance(target, calculateAttackDistance(player, target));
 	}
 	
 	/**

@@ -1,6 +1,8 @@
 package hyperion.region;
 
+import clipmap.Region;
 import clipmap.Tile;
+import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
@@ -23,7 +25,7 @@ import java.util.*;
 public class RegionManager {
 
 	public static RegionManager get() {
-		return null; // TODO rather than putting in world, allocate here to keep code self-referencing.. easier to port
+		return World.getWorld().regions; // TODO rather than putting in world, allocate here to keep code self-referencing.. easier to port
 	}
 
 	/**
@@ -41,11 +43,6 @@ public class RegionManager {
 	 * The active (loaded) region map.
 	 */
 	private Map<RegionCoordinates, RegionStore> activeRegions = new HashMap<RegionCoordinates, RegionStore>();
-
-	/**
-	 * Loaded clipped maps
-	 */
-	private Map<RegionCoordinates, ClippingMap> clippingMaps = new HashMap<RegionCoordinates, ClippingMap>();
 
 	public static boolean blockedNorth(Tile loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.NORTH, entity.size(), false);
@@ -216,83 +213,6 @@ public class RegionManager {
 		}
 	}
 
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public ClippingMap getClippingMapByWorldLoc(int x, int y) {
-		return getClippingMapByWorldLoc(x, y, false);
-	}
-
-	/**
-	 * 
-	 * @param location
-	 * @param create
-	 * @return
-	 */
-	public ClippingMap getClippingMapByWorldLoc(Tile location, boolean create) {
-		return getClippingMap((int) Math.floor(location.getX() / ClippingMap.MAP_SIZE),
-				(int) Math.floor(location.getY() / ClippingMap.MAP_SIZE), create);
-	}
-
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param create
-	 * @return
-	 */
-	public ClippingMap getClippingMapByWorldLoc(int x, int y, boolean create) {
-		return getClippingMap(x / ClippingMap.MAP_SIZE, y / ClippingMap.MAP_SIZE, create);
-	}
-
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public ClippingMap getClippingMap(int x, int y) {
-		return getClippingMapByWorldLoc(x, y);
-	}
-
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param create
-	 * @return
-	 */
-	public ClippingMap getClippingMap(int x, int y, boolean create) {
-		RegionCoordinates key = new RegionCoordinates(x, y);
-		if (clippingMaps.containsKey(key)) {
-			return clippingMaps.get(key);
-		} else {
-			if (create) {
-				ClippingMap map = new ClippingMap(key);
-				clippingMaps.put(key, map);
-				return map;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Gets the clipping mask for the respective location.
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-	public int getClippingMask(int x, int y, int z) {
-		int localX = x - ((x / ClippingMap.MAP_SIZE) * ClippingMap.MAP_SIZE);
-		int localY = y - ((y / ClippingMap.MAP_SIZE) * ClippingMap.MAP_SIZE);
-		ClippingMap map = getClippingMapByWorldLoc(x, y);
-
-		return map != null ? map.getFlag(localX, localY, z) : 0;
-	}
 
 	/**
 	 * 
@@ -329,36 +249,36 @@ public class RegionManager {
 				for (int i2 = 0; i2 < yLength; i2++) {
 					if (diffX < 0 && diffY < 0) { // South west (north east
 													// flag)
-						if ((getClippingMask((currentX + i) - 1, (currentY + i2) - 1, height) & 0x12c010e) != 0
-								|| (getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0
-								|| (getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0)
+						if ((Region.getClippingMask((currentX + i) - 1, (currentY + i2) - 1, height) & 0x12c010e) != 0
+								|| (Region.getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0
+								|| (Region.getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0)
 							return false;
 					} else if (diffX > 0 && diffY > 0) { // North east
-						if ((getClippingMask(currentX + i + 1, currentY + i2 + 1, height) & 0x12c01e0) != 0
-								|| (getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0
-								|| (getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
+						if ((Region.getClippingMask(currentX + i + 1, currentY + i2 + 1, height) & 0x12c01e0) != 0
+								|| (Region.getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0
+								|| (Region.getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
 							return false;
 					} else if (diffX < 0 && diffY > 0) { // North west
-						if ((getClippingMask((currentX + i) - 1, currentY + i2 + 1, height) & 0x12c0138) != 0
-								|| (getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0
-								|| (getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
+						if ((Region.getClippingMask((currentX + i) - 1, currentY + i2 + 1, height) & 0x12c0138) != 0
+								|| (Region.getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0
+								|| (Region.getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
 							return false;
 					} else if (diffX > 0 && diffY < 0) { // South east
-						if ((getClippingMask(currentX + i + 1, (currentY + i2) - 1, height) & 0x12c0183) != 0
-								|| (getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0
-								|| (getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0)
+						if ((Region.getClippingMask(currentX + i + 1, (currentY + i2) - 1, height) & 0x12c0183) != 0
+								|| (Region.getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0
+								|| (Region.getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0)
 							return false;
 					} else if (diffX > 0 && diffY == 0) { // East
-						if ((getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0)
+						if ((Region.getClippingMask(currentX + i + 1, currentY + i2, height) & 0x12c0180) != 0)
 							return false;
 					} else if (diffX < 0 && diffY == 0) { // West
-						if ((getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0)
+						if ((Region.getClippingMask((currentX + i) - 1, currentY + i2, height) & 0x12c0108) != 0)
 							return false;
 					} else if (diffX == 0 && diffY > 0) { // North
-						if ((getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
+						if ((Region.getClippingMask(currentX + i, currentY + i2 + 1, height) & 0x12c0120) != 0)
 							return false;
 					} else if (diffX == 0 && diffY < 0
-							&& (getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0) // South
+							&& (Region.getClippingMask(currentX + i, (currentY + i2) - 1, height) & 0x12c0102) != 0) // South
 						return false;
 				}
 			}

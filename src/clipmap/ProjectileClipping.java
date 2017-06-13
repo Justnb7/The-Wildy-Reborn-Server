@@ -1,7 +1,7 @@
 package clipmap;
 
 import com.model.game.object.GameObject;
-import com.model.utility.cache.ObjectDefinition;
+import cache.definitions.r317.ObjectDefinition317;
 
 /**
  * A copy of the RegionClipping class, with some adjustments to account for projectiles shooting over certain objects, coord etc.
@@ -188,7 +188,7 @@ public class ProjectileClipping {
 	}
 
 	public static void addClipping(GameObject obj) {
-		ObjectDefinition def = ObjectDefinition.get(obj.getId());
+		ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
 		if (def.name.equalsIgnoreCase("tree stump") || def.name.equalsIgnoreCase("anvil") || obj.getId() == 83) {
 			return;
 		}
@@ -204,11 +204,11 @@ public class ProjectileClipping {
 		int xLength;
 		int yLength;
 		if (obj.getFace() != 1 && obj.getFace()  != 3) {
-			xLength = def.objectSizeX;
-			yLength = def.objectSizeY;
+			xLength = def.xLength();
+			yLength = def.yLength();
 		} else {
-			xLength = def.objectSizeY;
-			yLength = def.objectSizeX;
+			xLength = def.yLength();
+			yLength = def.xLength();
 		}
 		int type = obj.getType();
 		if (type == 22) {
@@ -217,45 +217,45 @@ public class ProjectileClipping {
 					return;
 				}
 			}
-			if (def.aBoolean779) {
+			if (def.roofclips()) {
 				addClipping(x, y, height, 0x200000);
 			}
 		} else if (type >= 9 && type <= 11) {
-			if (def.aBoolean779) {
-				addClippingForSolidObject(x, y, height, xLength, yLength, def.aBoolean757, def.aBoolean757);
+			if (def.clips()) {
+				addClippingForSolidObject(x, y, height, xLength, yLength, def.projectileClipped(), def.unclipped());
 			}
 		} else if (type >= 0 && type <= 3) {
-			if (def.aBoolean779) {
-				addClippingForVariableObject(x, y, height, type, obj.getFace(), def.aBoolean757, def.aBoolean757);
+			if (def.clips()) {
+				addClippingForVariableObject(x, y, height, type, obj.getFace(), def.projectileClipped(), def.unclipped());
 			}
 		}
 	}
 
 	public static void removeClipping(GameObject obj) {
-		ObjectDefinition def = ObjectDefinition.get(obj.getId());
+		ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
 		int xLength;
 		int yLength;
 		int x = obj.getPosition().getX();
 		int y = obj.getPosition().getY();
 		int height = obj.getPosition().getZ();
 		if (obj.getFace() != 1 && obj.getFace() != 3) {
-			xLength = def.objectSizeX;
-			yLength = def.objectSizeY;
+			xLength = def.xLength();
+			yLength = def.yLength();
 		} else {
-			xLength = def.objectSizeY;
-			yLength = def.objectSizeX;
+			xLength = def.yLength();
+			yLength = def.xLength();
 		}
 		if (obj.getType() == 22) {
-			if (def.aBoolean779) {
+			if (def.roofclips()) {
 				removeClipping(x, y, height, 0x200000);
 			}
 		} else if (obj.getType() >= 9 && obj.getType() <= 11) {
-			if (def.aBoolean779) {
-				removeClippingForSolidObject(x, y, height, xLength, yLength, def.aBoolean757, def.aBoolean757);
+			if (def.clips()) {
+				removeClippingForSolidObject(x, y, height, xLength, yLength, def.projectileClipped(), def.unclipped());
 			}
 		} else if (obj.getType() >= 0 && obj.getType() <= 3) {
-			if (def.aBoolean779) {
-				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.aBoolean757, def.aBoolean757);
+			if (def.clips()) {
+				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.projectileClipped(), def.unclipped());
 			}
 		}
 	}

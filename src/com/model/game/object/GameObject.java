@@ -1,8 +1,8 @@
 package com.model.game.object;
 
 import com.model.game.location.Location;
-import com.model.utility.cache.ObjectDefinition;
-import oscache.definitions.CachedObjectDefinition;
+import cache.definitions.r317.ObjectDefinition317;
+import cache.definitions.osrs.CachedObjectDefinition;
 
 /**
  * A global object is a visual model that is viewed by all players within a region.
@@ -183,8 +183,8 @@ public class GameObject {
 		this.currentHealth -= amount;
 	}
 
-	public ObjectDefinition getDefinition() {
-		return ObjectDefinition.get(id);
+	public ObjectDefinition317 getDefinition() {
+		return ObjectDefinition317.get(id);
 	}
 
     public CachedObjectDefinition cacheDef() {

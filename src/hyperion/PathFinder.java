@@ -1,7 +1,9 @@
 package hyperion;
 
-import com.model.game.character.Entity;
 import clipmap.Tile;
+import com.model.game.character.Entity;
+import com.model.game.character.player.Player;
+import com.model.game.location.Location;
 
 public interface PathFinder {
 	
@@ -17,8 +19,40 @@ public interface PathFinder {
 
 	 public PathState findPath(Entity mob, Entity target, Tile base, int srcX, int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep, boolean moveNear);
 
-	static PathState doPath(PathFinder pf, Entity entity, int x, int y) {
-		// TODO
-		return null;
+
+
+	static PathState doPath(PathFinder pathFinder, Entity mob, Entity target, int x, int y) {
+		return doPath(pathFinder, mob, target, x, y, false, true);
+	}
+	static PathState doPath(PathFinder pathFinder, Entity mob, int x, int y) {
+		return doPath(pathFinder, mob, null, x, y, false, true);
+	}
+
+	static PathState doPath(final PathFinder pathFinder, final Entity mob, final Entity target, final int x, final int y, final boolean ignoreLastStep, boolean addToWalking) {
+		if (mob.isDead()) {
+			PathState state = new PathState();
+			state.routeFailed();
+			return state;
+		}
+		Tile destination = Tile.create(x, y, mob.getPosition().getZ());
+		Tile base = mob.getPosition();
+		int srcX = base.getLocalX();
+		int srcY = base.getLocalY();
+		int destX = destination.getLocalX(base);
+		int destY = destination.getLocalY(base);
+		PathState state = pathFinder.findPath(mob, target, mob.getPosition(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getMovementHandler().isRunPath(), ignoreLastStep, true);
+		if (state != null && addToWalking) {
+			if (mob.isPlayer()) {
+				Player p = (Player)mob;
+				p.getMovementHandler().reset();
+				for (BasicPoint step : state.getPoints()) {
+					p.getMovementHandler().addToPath(new Location(step.getX(), step.getY(), p.heightLevel));
+				}
+				p.getMovementHandler().finish();
+			} else {
+				System.err.println("HELP WHO");
+			}
+		}
+		return state;
 	}
 }

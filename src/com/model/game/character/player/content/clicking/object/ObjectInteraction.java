@@ -11,7 +11,7 @@ import com.model.game.character.player.skill.woodcutting.Woodcutting;
 import com.model.game.character.player.skill.woodcutting.Woodcutting.Tree;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
-import com.model.utility.cache.ObjectDefinition;
+import cache.definitions.r317.ObjectDefinition317;
 
 /**
  * This class handles the object actions. So we don't have to add all object
@@ -33,7 +33,7 @@ public class ObjectInteraction {
 	 *            The object
 	 */
 	public static void handleFirstClickAction(Player player, Location location, int objectId) {
-		ObjectDefinition def = ObjectDefinition.get(objectId);
+		ObjectDefinition317 def = ObjectDefinition317.get(objectId);
 		
 		if (player.inDebugMode()) {
 			player.getActionSender().sendMessage(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
@@ -124,7 +124,7 @@ public class ObjectInteraction {
 			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
 		}
 		
-		ObjectDefinition objectDef = ObjectDefinition.get(id);
+		ObjectDefinition317 objectDef = ObjectDefinition317.get(id);
 		switch (objectDef.name.toLowerCase()) {
 
 		case "bank":

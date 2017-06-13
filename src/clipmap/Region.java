@@ -2,8 +2,7 @@ package clipmap;
 
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
-import com.model.utility.cache.Direction;
-import com.model.utility.cache.ObjectDefinition;
+import cache.definitions.r317.ObjectDefinition317;
 
 /**
  * Contains CLIPPING ONLY
@@ -88,7 +87,7 @@ public class Region {
 	public static void addObject(GameObject obj) {
         ProjectileClipping.addClipping(obj);
 
-        ObjectDefinition def = ObjectDefinition.get(obj.getId());
+        ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
         if (def == null) {
             return;
         }
@@ -103,46 +102,46 @@ public class Region {
             yLength = def.xLength();
         }
         if (obj.getType() == 22) {
-            if (def.hasActions() && def.aBoolean779) {
+            if (def.hasActions() && def.roofclips()) {
                 addClipping(obj.getX(), obj.getY(), obj.getHeight(), 0x200000);
             }
         } else if (obj.getType() >= 9) {
-            if (def.aBoolean779) {
-                addClippingForSolidObject(obj.getX(), obj.getY(), obj.getHeight(), xLength, yLength, def.aBoolean757);
+            if (def.clips()) {
+                addClippingForSolidObject(obj.getX(), obj.getY(), obj.getHeight(), xLength, yLength, def.projectileClipped());
             }
         } else if (obj.getType() >= 0 && obj.getType() <= 3) {
-            if (def.aBoolean779) {
-                addClippingForVariableObject(obj.getX(), obj.getY(), obj.getHeight(), obj.getType(), obj.getFace(), def.aBoolean757);
+            if (def.clips()) {
+                addClippingForVariableObject(obj.getX(), obj.getY(), obj.getHeight(), obj.getType(), obj.getFace(), def.projectileClipped());
             }
         }
     }
 
     public static void removeClipping(GameObject obj) {
         ProjectileClipping.removeClipping(obj);
-        ObjectDefinition def = ObjectDefinition.get(obj.getId());
+        ObjectDefinition317 def = ObjectDefinition317.get(obj.getId());
         int xLength;
         int yLength;
         int x = obj.getPosition().getX();
         int y = obj.getPosition().getY();
         int height = obj.getPosition().getZ();
         if (obj.getFace() != 1 && obj.getFace() != 3) {
-            xLength = def.objectSizeX;
-            yLength = def.objectSizeY;
+            xLength = def.xLength();
+            yLength = def.yLength();
         } else {
-            xLength = def.objectSizeY;
-            yLength = def.objectSizeX;
+            xLength = def.yLength();
+            yLength = def.xLength();
         }
         if (obj.getType() == 22) {
-            if (def.aBoolean779 && def.hasActions()) {
+            if (def.roofclips() && def.hasActions()) {
                 removeClipping(x, y, height, 0x200000);
             }
         } else if (obj.getType() >= 9 && obj.getType() <= 11) {
-            if (def.aBoolean779) {
-                removeClippingForSolidObject(x, y, height, xLength, yLength, def.aBoolean757);
+            if (def.clips()) {
+                removeClippingForSolidObject(x, y, height, xLength, yLength, def.projectileClipped());
             }
         } else if (obj.getType() >= 0 && obj.getType() <= 3) {
-            if (def.aBoolean779) {
-                removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.aBoolean757);
+            if (def.clips()) {
+                removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.projectileClipped());
             }
         }
     }

@@ -1,11 +1,15 @@
 package hyperion.region;
 
+import clipmap.Region;
+import clipmap.Tile;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.object.GameObject;
-import clipmap.Tile;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -95,16 +99,16 @@ public class RegionStore {
 		if (srcX >= minimumX && srcX <= maximumX && srcY >= minimumY && srcY <= maximumY) {
 			return true;
 		}
-		if (srcX == minimumX - 1 && srcY >= minimumY && srcY <= maximumY && (RegionManager.get().getClippingMask(srcX, srcY, z) & RegionStore.EAST_BLOCKED) == 0 && (mask & RegionStore.EAST_BLOCKED) == 0) {
+		if (srcX == minimumX - 1 && srcY >= minimumY && srcY <= maximumY && (Region.getClippingMask(srcX, srcY, z) & RegionStore.EAST_BLOCKED) == 0 && (mask & RegionStore.EAST_BLOCKED) == 0) {
 			return true;
 		}
-		if (srcX == maximumX + 1 && srcY >= minimumY && srcY <= maximumY && (RegionManager.get().getClippingMask(srcX, srcY, z) & RegionStore.WEST_BLOCKED) == 0 && (mask & RegionStore.NORTH_BLOCKED) == 0) {
+		if (srcX == maximumX + 1 && srcY >= minimumY && srcY <= maximumY && (Region.getClippingMask(srcX, srcY, z) & RegionStore.WEST_BLOCKED) == 0 && (mask & RegionStore.NORTH_BLOCKED) == 0) {
 			return true;
 		}
-		if (srcY == minimumY - 1 && srcX >= minimumX && srcX <= maximumX && (RegionManager.get().getClippingMask(srcX, srcY, z) & RegionStore.NORTH_BLOCKED) == 0 && (mask & RegionStore.NORTH_EAST_BLOCKED) == 0) {
+		if (srcY == minimumY - 1 && srcX >= minimumX && srcX <= maximumX && (Region.getClippingMask(srcX, srcY, z) & RegionStore.NORTH_BLOCKED) == 0 && (mask & RegionStore.NORTH_EAST_BLOCKED) == 0) {
 			return true;
 		}
-		if (srcY == maximumY + 1 && srcX >= minimumX && srcX <= maximumX && (RegionManager.get().getClippingMask(srcX, srcY, z) & RegionStore.SOUTH_BLOCKED) == 0 && (mask & RegionStore.NORTH_WEST_BLOCKED) == 0) {
+		if (srcY == maximumY + 1 && srcX >= minimumX && srcX <= maximumX && (Region.getClippingMask(srcX, srcY, z) & RegionStore.SOUTH_BLOCKED) == 0 && (mask & RegionStore.NORTH_WEST_BLOCKED) == 0) {
 			return true;
 		}
 		return false;

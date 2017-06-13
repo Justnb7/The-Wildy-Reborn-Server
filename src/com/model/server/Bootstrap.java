@@ -1,6 +1,6 @@
 package com.model.server;
 
-import clipmap.MapLoading;
+import cache.OpenRsUnpacker;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.model.game.Constants;
 import com.model.game.ScriptManager;
@@ -15,7 +15,6 @@ import com.model.net.ConnectionHandler;
 import com.model.net.network.NettyChannelHandler;
 import com.model.net.network.codec.RS2Encoder;
 import com.model.net.network.handshake.HandshakeDecoder;
-import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.parser.impl.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -23,6 +22,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ResourceLeakDetector;
+import org.openrs.cache.Cache;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -96,6 +96,8 @@ public class Bootstrap {
 		return this;
 	}
 
+	public static Cache cache;
+
 	/**
 	 * Executes external files to be used in game.
 	 */
@@ -103,8 +105,10 @@ public class Bootstrap {
 
 		LOGGER.info("Loading startup files..");
 		serviceLoader.execute(() -> {
-			ObjectDefinition.loadConfig();
-			MapLoading.load();
+			cache = OpenRsUnpacker.unpack();
+
+			//ObjectDefinition.loadConfig();
+			//MapLoading.load();
 			// A hardcoded dump of the entire world clipping flags released sometime around 2006 i think.. not used.
 			/*try {
 				CollisionMap.load("Data/data/collisiondata.dat");

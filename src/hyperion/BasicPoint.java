@@ -1,4 +1,4 @@
-package com.model.game.character.pathfinder;
+package hyperion;
 
 public class BasicPoint {
 	

@@ -1,4 +1,4 @@
-package com.model.game.character.pathfinder.region;
+package hyperion.region;
 
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;

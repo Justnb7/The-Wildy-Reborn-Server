@@ -298,4 +298,23 @@ public final class ObjectDefinition {
 	public String getName() {
 		return name;
 	}
+
+	public boolean rangableObject() {
+		int[] rangableObjects = {3007, 980, 4262, 14437, 14438, 4437, 4439, 3487, 3457};
+		for (int i : rangableObjects) {
+			if (i == type) {
+				return true;
+			}
+		}
+		if (name != null) {
+			final String name1 = name.toLowerCase();
+			String[] rangables = {"altar", "pew", "log", "stump", "stool", "sign", "cart", "chest", "rock", "bush", "hedge", "chair", "table", "crate", "barrel", "box", "skeleton", "corpse", "vent", "stone", "rockslide"};
+			for (String i : rangables) {
+				if (name1.contains(i)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

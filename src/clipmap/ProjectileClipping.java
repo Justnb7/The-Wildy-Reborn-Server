@@ -1,32 +1,36 @@
-package com.model.game.character.pathfinder.region;
+package clipmap;
 
+import com.model.game.object.GameObject;
+import com.model.utility.cache.ObjectDefinition;
 import com.model.utility.cache.map.Tile;
 
+/**
+ * A copy of the RegionClipping class, with some adjustments to account for projectiles shooting over certain objects, coord etc.
+ *
+ * NOTICABLY ADDCLIPPING ISNT CALLED BY REGION DEFINITION DECODER .. only objects add this clipping!
+ *
+ */
 public class ProjectileClipping {
-	
-	public static final int REGION_SIZE = 128;
 
-	public static final int MAX_MAP_X = 16383, MAX_MAP_Y = 16383;
+	private static final int REGION_SIZE = 128;
+
+	private static final int MAX_MAP_X = 16383, MAX_MAP_Y = 16383;
 
 	private static ProjectileClipping[][] regions = new ProjectileClipping[(MAX_MAP_X + 1) / REGION_SIZE][(MAX_MAP_Y + 1) / REGION_SIZE];
 	
-	private static int[] rangables = {
-		23265, 23266, 23263, 23273, 23262, 23272, 23261, 23264, 23267, 23268, 9374,
-		17473,
+	private static int[] rangables = { // ids are pre-eoc ids not osrs
+		/*23265, 23266, 23263, 23273, 23262, 23272, 23261, 23264, 23267, 23268, 9374,
+		17473,*/
 	};
-	
-	public static int hash(int x, int y) {
+
+	private static int hash(int x, int y) {
 		return x >> 7 << 8 | y >> 7;
 	}
 
-	public static void addClipping(int x, int y, int z, int shift) {
+	private static void addClipping(int x, int y, int z, int shift) {
 		ProjectileClipping region = forCoords(x, y);
 		int localX = x - ((x >> 7) << 7);
 		int localY = y - ((y >> 7) << 7);
-		if (z > 3) {
-			z = 0;
-		}
-		//add clipping support for different height areas
 		if (region.clippingMasks[z] == null) {
 			region.clippingMasks[z] = new int[region.size][region.size];
 		}
@@ -34,14 +38,10 @@ public class ProjectileClipping {
 		region.clippingMasks[z][localX][localY] |= shift;
 	}
 
-	public static void setClippingMask(int x, int y, int z, int shift) {
+	private static void setClippingMask(int x, int y, int z, int shift) {
 		ProjectileClipping region = forCoords(x, y);
 		int localX = x - ((x >> 7) << 7);
 		int localY = y - ((y >> 7) << 7);
-		if (z > 3) {
-			z = 0;
-		}
-		//add clipping check for different height area
 		if (region.clippingMasks[z] == null) {
 			region.clippingMasks[z] = new int[region.size][region.size];
 		}
@@ -49,21 +49,17 @@ public class ProjectileClipping {
 		region.clippingMasks[z][localX][localY] = shift;
 	}
 
-	public static void removeClipping(int x, int y, int z, int shift) {
+	private static void removeClipping(int x, int y, int z, int shift) {
 		ProjectileClipping region = forCoords(x, y);
 		int localX = x - ((x >> 7) << 7);
 		int localY = y - ((y >> 7) << 7);
-		if (z > 3) {
-			z = 0;
-		}
-		//add clipping check for different height area
 		if (region.clippingMasks[z] == null) {
 			region.clippingMasks[z] = new int[region.size][region.size];
 		}
 		region.clippingMasks[z][localX][localY] &= ~shift;
 	}
 
-	public static ProjectileClipping forCoords(int x, int y) {
+	private static ProjectileClipping forCoords(int x, int y) {
 		int regionX = x >> 7, regionY = y >> 7;
 		ProjectileClipping r = regions[regionX][regionY];
 		if (r == null) {
@@ -72,31 +68,12 @@ public class ProjectileClipping {
 		return r;
 	}
 
-	public static ProjectileClipping forLocation(Tile other) {
-		return forCoords(other.getX(), other.getY());
-	}
-	
-	public static int getClippingMask(Tile loc) {
-		ProjectileClipping region = forCoords(loc.getX(), loc.getY());
-		int z = loc.getZ();
-		if (z > 3) {
-			z = 0;
-		}
-		//add clipping check for different height area
-		if (region.clippingMasks[z] == null || !region.clipped) {
-			return -1;
-		}
-		int localX = loc.getX() - ((loc.getX() >> 7) << 7);
-		int localY = loc.getY() - ((loc.getY() >> 7) << 7);
-		return region.clippingMasks[z][localX][localY];
+	private static int getClippingMask(Tile loc) {
+		return getClippingMask(loc.getX(), loc.getY(), loc.getZ());
 	}
 
 	public static int getClippingMask(int absx, int absy, int z) {
 		ProjectileClipping region = forCoords(absx, absy);
-		if (z > 3) {
-			z = 0;
-		}
-		//add clipping check for different height area
 		if (region.clippingMasks[z] == null || !region.clipped) {
 			return -1;
 		}
@@ -104,7 +81,7 @@ public class ProjectileClipping {
 		int localY = absy - ((absy >> 7) << 7);
 		return region.clippingMasks[z][localX][localY];
 	}
-	
+
 	public static boolean getClippingMask(int x, int y, int z, int moveTypeX, int moveTypeY, boolean debug) {
 		try {
 			if (z > 3) {
@@ -138,8 +115,38 @@ public class ProjectileClipping {
 			return true;
 		}
 	}
+	
+	public static boolean canMove(int x, int y, int z, int moveTypeX, int moveTypeY, boolean debug) {
+		//height check done in methods below in here so ye
+		/*if (debug) {
+			System.out.println("moveTypeX: " + moveTypeX+"   moveTypeY: " + moveTypeY+"     T25");
+		}*/
+		if (moveTypeX != 0 && moveTypeY != 0) {
+			if (moveTypeX == 1 && moveTypeY == 1) {
+				return canMove(x, y, z, 0, 1, debug) && canMove(x, y, z, 1, 0, debug) && canMove(x - 1, y - 1, z, 0, -1, debug) && canMove(x - 1, y - 1, z, -1, 0, debug);
+			} else if (moveTypeX == -1 && moveTypeY == -1) {
+				return canMove(x, y, z, 0, -1, debug) && canMove(x, y, z, -1, 0, debug) && canMove(x + 1, y + 1, z, 0, 1, debug) && canMove(x + 1, y + 1, z, 1, 0, debug);
+			} else if (moveTypeX == 1 && moveTypeY == -1) {
+				return canMove(x, y, z, 0, -1, debug) && canMove(x, y, z, 1, 0, debug) && canMove(x - 1, y + 1, z, 0, 1, debug) && canMove(x - 1, y + 1, z, -1, 0, debug);
+			} else if (moveTypeX == -1 && moveTypeY == 1) {
+				return canMove(x, y, z, 0, 1, debug) && canMove(x, y, z, -1, 0, debug) && canMove(x + 1, y - 1, z, 0, -1, debug) && canMove(x + 1, y - 1, z, 1, 0, debug);
+			} else {
+				return false;
+			}
+		} else if (moveTypeX == -1 && moveTypeY == 0) {
+			return (getClippingMask(x, y, z) & 0x42240000) == 0;
+		} else if (moveTypeX == 1 && moveTypeY == 0) {
+			return (getClippingMask(x, y, z) & 0x60240000) == 0;
+		} else if (moveTypeX == 0 && moveTypeY == -1) {
+			return (getClippingMask(x, y, z) & 0x40a40000) == 0;
+		} else if (moveTypeX == 0 && moveTypeY == 1) {
+			return (getClippingMask(x, y, z) & 0x48240000) == 0;
+		} else {
+			return false;
+		}
+	}
 
-	public static ProjectileClipping getRegion(int x, int y, int z) {
+	private static ProjectileClipping getRegion(int x, int y, int z) {
 		return forCoords(x, y);
 	}
 	
@@ -150,7 +157,7 @@ public class ProjectileClipping {
 
 	private boolean clipped;
 
-	public ProjectileClipping(int x, int y, int size) {
+	private ProjectileClipping(int x, int y, int size) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -181,16 +188,15 @@ public class ProjectileClipping {
 		return clipped;
 	}
 
-	// TODO
-	/*public static void addClipping(GameObject obj) {
-		ObjectDefinition def = obj.getDefinition();
-		if (def.getName().equalsIgnoreCase("tree stump") || def.getName().equalsIgnoreCase("anvil") || obj.getId() == 83) {
+	public static void addClipping(GameObject obj) {
+		ObjectDefinition def = ObjectDefinition.get(obj.getId());
+		if (def.name.equalsIgnoreCase("tree stump") || def.name.equalsIgnoreCase("anvil") || obj.getId() == 83) {
 			return;
 		}
-		if (def.getId() == 23271) {
+		if (obj.getId() == 23271) {//wild ditch
 			return;
 		}
-		if (def.isRangeable()) {
+		if (def.rangableObject()) {
 			return;
 		}
 		int x = obj.getPosition().getX();
@@ -198,62 +204,62 @@ public class ProjectileClipping {
 		int height = obj.getPosition().getZ();
 		int xLength;
 		int yLength;
-		if (obj.getDirection() != 1 && obj.getDirection()  != 3) {
-			xLength = def.getSizeX();
-			yLength = def.getSizeY();
+		if (obj.getFace() != 1 && obj.getFace()  != 3) {
+			xLength = def.objectSizeX;
+			yLength = def.objectSizeY;
 		} else {
-			xLength = def.getSizeY();
-			yLength = def.getSizeX();
+			xLength = def.objectSizeY;
+			yLength = def.objectSizeX;
 		}
 		int type = obj.getType();
 		if (type == 22) {
 			for (int i = 0 ; i < rangables.length; i++) {
-				if (def.getId() == rangables[i]) {
+				if (obj.getId() == rangables[i]) {
 					return;
 				}
 			}
-			if (def.getClippingFlag() == 1) {
+			if (def.aBoolean779) {
 				addClipping(x, y, height, 0x200000);
 			}
 		} else if (type >= 9 && type <= 11) {
-			if (def.getClippingFlag() != 0) {
-				addClippingForSolidObject(x, y, height, xLength, yLength, def.isSolid(), def.isSolid());
+			if (def.aBoolean779) {
+				addClippingForSolidObject(x, y, height, xLength, yLength, def.aBoolean757, def.aBoolean757);
 			}
 		} else if (type >= 0 && type <= 3) {
-			if (def.getClippingFlag() != 0) {
-				addClippingForVariableObject(x, y, height, type, obj.getDirection(), def.isSolid(), def.isSolid());
+			if (def.aBoolean779) {
+				addClippingForVariableObject(x, y, height, type, obj.getFace(), def.aBoolean757, def.aBoolean757);
 			}
 		}
 	}
 
 	public static void removeClipping(GameObject obj) {
-		ObjectDefinition def = obj.getDefinition();
+		ObjectDefinition def = ObjectDefinition.get(obj.getId());
 		int xLength;
 		int yLength;
 		int x = obj.getPosition().getX();
 		int y = obj.getPosition().getY();
 		int height = obj.getPosition().getZ();
-		if (obj.getDirection() != 1 && obj.getDirection() != 3) {
-			xLength = def.getSizeX();
-			yLength = def.getSizeY();
+		if (obj.getFace() != 1 && obj.getFace() != 3) {
+			xLength = def.objectSizeX;
+			yLength = def.objectSizeY;
 		} else {
-			xLength = def.getSizeY();
-			yLength = def.getSizeX();
+			xLength = def.objectSizeY;
+			yLength = def.objectSizeX;
 		}
 		if (obj.getType() == 22) {
-			if (def.getClippingFlag() == 1) {
+			if (def.aBoolean779) {
 				removeClipping(x, y, height, 0x200000);
 			}
 		} else if (obj.getType() >= 9 && obj.getType() <= 11) {
-			if (def.getClippingFlag() != 0) {
-				removeClippingForSolidObject(x, y, height, xLength, yLength, def.isSolid(), def.isSolid());
+			if (def.aBoolean779) {
+				removeClippingForSolidObject(x, y, height, xLength, yLength, def.aBoolean757, def.aBoolean757);
 			}
 		} else if (obj.getType() >= 0 && obj.getType() <= 3) {
-			if (def.getClippingFlag() != 0) {
-				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getDirection(), def.isSolid(), def.isSolid());
+			if (def.aBoolean779) {
+				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.aBoolean757, def.aBoolean757);
 			}
 		}
-	}*/
+	}
 	
 	private static void addClippingForSolidObject(int x, int y, int height, int xLength, int yLength, boolean flag, boolean projectileBlocked) {
 		int clipping = 256;
@@ -645,10 +651,6 @@ public class ProjectileClipping {
 				}
 			}
         }
-	}
-
-	public int getClippingFlag(int localX, int localY, int height) {
-		return clippingMasks[localX][localY][height];
 	}
 
 }

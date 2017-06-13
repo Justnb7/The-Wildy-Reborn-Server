@@ -1,10 +1,10 @@
-package com.model.game.character.pathfinder.impl;
+package hyperion.impl;
 
+import clipmap.ProjectileClipping;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
-import com.model.game.character.pathfinder.Directions;
-import com.model.game.character.pathfinder.region.ProjectileClipping;
-import com.model.game.character.pathfinder.region.RegionManager;
+import hyperion.Directions;
+import hyperion.region.RegionManager;
 import com.model.game.object.GameObject;
 import com.model.utility.cache.map.Tile;
 

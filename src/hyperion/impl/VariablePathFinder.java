@@ -1,10 +1,10 @@
-package com.model.game.character.pathfinder.impl;
+package hyperion.impl;
 
 import com.model.game.character.Entity;
-import com.model.game.character.pathfinder.BasicPoint;
-import com.model.game.character.pathfinder.PathFinder;
-import com.model.game.character.pathfinder.PathState;
-import com.model.game.character.pathfinder.region.RegionManager;
+import hyperion.BasicPoint;
+import hyperion.PathFinder;
+import hyperion.PathState;
+import hyperion.region.RegionManager;
 import com.model.utility.cache.map.Tile;
 
 public class VariablePathFinder implements PathFinder {

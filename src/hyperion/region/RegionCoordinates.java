@@ -1,4 +1,4 @@
-package com.model.game.character.pathfinder.region;
+package hyperion.region;
 
 /**
  * Holds the x and y coordinate for a region.

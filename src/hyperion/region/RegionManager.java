@@ -1,9 +1,9 @@
-package com.model.game.character.pathfinder.region;
+package hyperion.region;
 
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
-import com.model.game.character.pathfinder.Directions;
-import com.model.game.character.pathfinder.impl.PrimitivePathFinder;
+import hyperion.Directions;
+import hyperion.impl.PrimitivePathFinder;
 import com.model.game.character.player.Player;
 import com.model.game.object.GameObject;
 import com.model.utility.cache.map.Tile;
@@ -371,12 +371,4 @@ public class RegionManager {
 		return true;
 	}
 
-	/**
-	 * 
-	 * @param location
-	 * @return
-	 */
-	public ClippingMap getClippingMapByWorldLoc(Tile location) {
-		return getClippingMapByWorldLoc(location, false);
-	}
 }

@@ -1,7 +1,7 @@
-package com.model.game.character.pathfinder.impl;
+package hyperion.impl;
 
-import com.model.game.character.pathfinder.PathFinder;
-import com.model.game.character.pathfinder.PathState;
+import hyperion.PathFinder;
+import hyperion.PathState;
 import com.model.game.character.player.Player;
 import com.model.game.object.GameObject;
 import com.model.utility.cache.ObjectDefinition;

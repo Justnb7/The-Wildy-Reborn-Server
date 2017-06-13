@@ -108,7 +108,7 @@ public class CommandPacketHandler implements PacketType {
 			case "showclipmap":
 				for (int x = player.getX() - 16; x < player.getX()+16; x++)
 					for (int y = player.getY() - 16; y < player.getY()+16; x++)
-						if (Region.getClipping(x, y, player.getHeight()) != 0)
+						if (Region.getClippingMask(x, y, player.getHeight()) != 0)
 							GroundItemHandler.createGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
 				return true;
     	

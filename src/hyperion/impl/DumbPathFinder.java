@@ -1,8 +1,8 @@
-package com.model.game.character.pathfinder.impl;
+package hyperion.impl;
 
 import com.model.game.character.Entity;
-import com.model.game.character.pathfinder.PathFinder;
-import com.model.game.character.pathfinder.region.RegionManager;
+import hyperion.PathFinder;
+import hyperion.region.RegionManager;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Tile;
 

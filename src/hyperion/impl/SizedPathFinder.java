@@ -1,10 +1,10 @@
-package com.model.game.character.pathfinder.impl;
+package hyperion.impl;
 
 import com.model.game.character.Entity;
-import com.model.game.character.pathfinder.BasicPoint;
-import com.model.game.character.pathfinder.Directions;
-import com.model.game.character.pathfinder.PathFinder;
-import com.model.game.character.pathfinder.PathState;
+import hyperion.BasicPoint;
+import hyperion.Directions;
+import hyperion.PathFinder;
+import hyperion.PathState;
 import com.model.utility.cache.map.Tile;
 
 /**

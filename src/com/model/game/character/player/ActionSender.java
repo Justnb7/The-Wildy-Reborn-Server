@@ -21,7 +21,6 @@ import com.model.net.network.rsa.GameBuffer;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
-import com.model.utility.cache.map.Region;
 
 /**
  * A utility class for sending packets.

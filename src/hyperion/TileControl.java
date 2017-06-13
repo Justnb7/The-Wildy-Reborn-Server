@@ -1,9 +1,9 @@
-package com.model.game.character.pathfinder;
+package hyperion;
 
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
-import com.model.game.character.pathfinder.region.Region;
-import com.model.game.character.pathfinder.region.RegionManager;
+import hyperion.region.Region;
+import hyperion.region.RegionManager;
 import com.model.utility.cache.map.Tile;
 
 import java.util.HashMap;

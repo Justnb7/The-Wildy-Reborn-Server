@@ -472,7 +472,7 @@ public final class ProjectilePathFinder {
 		 * @return {@code True} if so.
 		 */
 		public boolean canMove(Location l) {
-			int flag = Region.getClipping(l.getZ(), l.getX(), l.getY());
+			int flag = Region.getClippingMask(l.getZ(), l.getX(), l.getY());
 			for (int f : traversal) {
 				if ((flag & f) != 0) {
 					return false;

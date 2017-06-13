@@ -1,4 +1,4 @@
-package com.model.game.character.pathfinder;
+package hyperion;
 
 import com.model.game.character.Entity;
 import com.model.utility.cache.map.Tile;

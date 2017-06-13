@@ -1,9 +1,9 @@
-package com.model.game.character.pathfinder.impl;
+package hyperion.impl;
 
 import com.model.game.character.Entity;
-import com.model.game.character.pathfinder.*;
-import com.model.game.character.pathfinder.region.RegionManager;
 import com.model.utility.cache.map.Tile;
+import hyperion.*;
+import hyperion.region.RegionManager;
 
 import java.awt.*;
 
@@ -235,8 +235,8 @@ public class PrimitivePathFinder implements PathFinder {
 
 	@Override
 	public PathState findPath(Entity mob, Entity target, Tile base, int srcX,
-							  int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep,
-							  boolean moveNear) {
+                              int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep,
+                              boolean moveNear) {
 		return findPath(mob, base, srcX, srcY, dstX, dstY, radius, running, ignoreLastStep, moveNear, false);
 	}
 	

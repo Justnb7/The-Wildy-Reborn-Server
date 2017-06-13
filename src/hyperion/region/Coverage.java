@@ -1,9 +1,9 @@
-package com.model.game.character.pathfinder.region;
+package hyperion.region;
 
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
-import com.model.game.character.pathfinder.Directions;
-import com.model.game.character.pathfinder.impl.ProjectilePathFinder;
+import hyperion.Directions;
+import hyperion.impl.ProjectilePathFinder;
 import com.model.utility.cache.map.Tile;
 
 import java.awt.*;

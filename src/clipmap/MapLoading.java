@@ -4,11 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
+import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import com.model.utility.cache.ByteStream;
 import com.model.utility.cache.map.Region;
@@ -91,7 +90,7 @@ public class MapLoading {
 							height--;
 						}
 						if (height >= 0 && height <= 3) {
-							Region.addClipping(true, absX + i2, absY + i3, height, 0x200000);
+							Region.addClipping( absX + i2, absY + i3, height, 0x200000);
 						}
 					}
 				}
@@ -118,7 +117,7 @@ public class MapLoading {
 					height--;
 				}
 				if (height >= 0 && height <= 3) {
-					Region.addObject(true, objectId, absX + localX, absY + localY, height, type, direction);
+					Region.addObject(new GameObject(objectId, absX + localX, absY + localY, height, direction, type));
 				}
 			}
 		}

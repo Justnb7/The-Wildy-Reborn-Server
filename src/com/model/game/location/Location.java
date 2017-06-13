@@ -1,9 +1,9 @@
 package com.model.game.location;
 
 import com.model.game.character.Entity;
-import com.model.game.character.pathfinder.Directions;
-import com.model.game.character.pathfinder.impl.PrimitivePathFinder;
-import com.model.game.character.pathfinder.region.RegionManager;
+import hyperion.Directions;
+import hyperion.impl.PrimitivePathFinder;
+import hyperion.region.RegionManager;
 import com.model.utility.Utility;
 import com.model.utility.cache.map.Tile;
 

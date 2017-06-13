@@ -1,13 +1,14 @@
-package com.model.game.character.pathfinder.impl;
+package hyperion.impl;
 
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
-import com.model.game.character.pathfinder.Directions;
-import com.model.game.character.pathfinder.region.Coverage;
+import hyperion.Directions;
+import hyperion.region.Coverage;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
 import com.model.utility.cache.map.Tile;
+
 public class NPCPathFinder {
 	
 	public static boolean execute_path(Entity mob, Entity partner, boolean combat) {

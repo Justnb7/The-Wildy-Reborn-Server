@@ -1,7 +1,7 @@
-package com.model.game.character.pathfinder;
+package hyperion;
 
 import com.model.game.character.Entity;
-import com.model.game.character.pathfinder.impl.PrimitivePathFinder;
+import hyperion.impl.PrimitivePathFinder;
 import com.model.utility.cache.map.Tile;
 
 import java.awt.*;

@@ -1,6 +1,5 @@
 package com.model.game.character.npc;
 
-import clipmap.ClipmapBuilder;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.World;
 import com.model.game.character.Entity;

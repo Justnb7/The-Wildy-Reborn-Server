@@ -77,7 +77,7 @@ public class Region {
     public static int getClippingMask(int absx, int absy, int z) {
         Region map = forCoords(absx, absy);
         if (map.clips[z] == null) {
-            //System.err.println("region not loaded "+absx+","+absy+","+z);
+            System.err.println("region not loaded "+absx+","+absy+","+z);
             return -1;
         }
         int localX = absx - ((absx >> 7) << 7);
@@ -121,6 +121,7 @@ public class Region {
     public static void removeClipping(GameObject obj) {
         ProjectileClipping.removeClipping(obj);
         AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
+        if (def == null) return;
         int xLength;
         int yLength;
         int x = obj.getPosition().getX();

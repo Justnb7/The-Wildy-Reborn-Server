@@ -50,16 +50,16 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 		/*if (def.rangableObject()) {
 			def.clippingFlag = false;
 		}*/
-		/*if (def.clippingFlag) {
-			def.walkable = false;
-			def.clipType = 0;
+		if (def.unclipped()) {
+			def.projectileClipped = false;
+			def.osrs_clipType = 0;
 		}
 		if (def.id == 14432 || def.id == 2292) {
-			def.clipType = 1;
+			def.osrs_clipType = 1;
 		}
 		if (def.id == 14435 || def.id == 2311) {
-			def.clipType = 1;
-		}*/
+			def.osrs_clipType = 1;
+		}
 		return def;
 	}
 
@@ -208,6 +208,8 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 																	int paris = buffer.readUnsignedByte();
 																	for(int i = 0; i < paris; i++)
 																		buffer.readUnsignedShort();
+																} else {
+																	System.err.println("UNKNOWN OPCOCDE! "+(opcode ^ 0xffffffff));
 																}
 															} else
 																anInt1671 = (buffer.readByte());
@@ -433,16 +435,17 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 	}
 
 	private final void readOpcodes(InputStream stream) {
-		boolean newRevision = stream.readUnsignedByte() == 1;
+		// wtf is this first byte? must be custom structure packed!
+		//boolean newRevision = stream.readUnsignedByte() == 1;
 		while (true) {
 			int opcode = stream.readUnsignedByte();
 			if (opcode == 0)
 				break;
-			if(newRevision) {
-				readOpcodesNew(stream, opcode);
-			} else {
+			//if(newRevision) {
+			//	readOpcodesNew(stream, opcode);
+			//} else {
 				readOpcodesOld(stream, opcode);
-			}
+			//}
 		}
 	}
 	

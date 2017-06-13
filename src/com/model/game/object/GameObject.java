@@ -27,7 +27,7 @@ public class GameObject {
 	
 	private int restoreId;
 	
-	private int type;
+	private int type = 10;
 	
 	/**
 	 * The maximum amount of health this object has (for trees).
@@ -168,4 +168,9 @@ public class GameObject {
     public CachedObjectDefinition cacheDef() {
 		return CachedObjectDefinition.forId(id);
     }
+
+    @Override
+	public String toString() {
+		return "["+getDefinition().name+","+id+"]";
+	}
 }

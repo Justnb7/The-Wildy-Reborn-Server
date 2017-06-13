@@ -1,6 +1,7 @@
 package com.model.game.character.player;
 
 import clipmap.Region;
+import clipmap.Tile;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
@@ -32,6 +33,7 @@ import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 import com.model.utility.parser.impl.ItemDefinitionParser;
 import com.model.utility.parser.impl.NPCDefinitionParser;
+import hyperion.region.RegionStoreManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,11 +109,15 @@ public class CommandPacketHandler implements PacketType {
 			case "showclipmap":
 				for (int x = player.getX() - 4; x < player.getX()+4; x++)
 					for (int y = player.getY() - 4; y < player.getY()+4; y++)
-						if (Region.getClippingMask(x, y, player.getHeight()) != 0)
+						if (Region.getClippingMask(x, y, player.getHeight()) < 1)
 							player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
 				return true;
 			case "clip":
 				player.getActionSender().sendMessage("Clip at "+player.getPosition()+" = "+Region.getClippingMask(player.getX(), player.getY(), player.getHeight()));
+				RegionStoreManager.get().getRegionByLocation(Tile.create(player.getLocation()))
+						.getGameObjects().stream()
+						.filter(o -> o != null && o.getType() == 10 && o.getDefinition() != null && o.getDefinition().hasName())
+						.forEach(o -> System.out.println(o));
 				return true;
     	
     	case "exp":

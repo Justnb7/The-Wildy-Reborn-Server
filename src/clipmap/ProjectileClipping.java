@@ -233,6 +233,8 @@ public class ProjectileClipping {
 
 	public static void removeClipping(GameObject obj) {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
+		if (def == null)
+			return;
 		int xLength;
 		int yLength;
 		int x = obj.getPosition().getX();

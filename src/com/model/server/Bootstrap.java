@@ -1,6 +1,7 @@
 package com.model.server;
 
 import cache.OpenRsUnpacker;
+import clipmap.MapLoading;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.model.game.Constants;
 import com.model.game.ScriptManager;
@@ -105,10 +106,13 @@ public class Bootstrap {
 
 		LOGGER.info("Loading startup files..");
 		serviceLoader.execute(() -> {
-			cache = OpenRsUnpacker.unpack();
 
-			//ObjectDefinition.loadConfig();
-			//MapLoading.load();
+			cache = OpenRsUnpacker.unpack(); // If ur loading OSRS cache .. containing game objects
+
+			//ObjectDefinition.loadConfig(); // obj def for 317 .. if ur using collisiondata.dat
+
+			MapLoading.load(); // load ur dumped osrs cache clipping tiles .gz files
+
 			// A hardcoded dump of the entire world clipping flags released sometime around 2006 i think.. not used.
 			/*try {
 				CollisionMap.load("Data/data/collisiondata.dat");

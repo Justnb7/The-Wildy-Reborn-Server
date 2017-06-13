@@ -110,6 +110,9 @@ public class CommandPacketHandler implements PacketType {
 						if (Region.getClippingMask(x, y, player.getHeight()) != 0)
 							player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
 				return true;
+			case "clip":
+				player.getActionSender().sendMessage("Clip at "+player.getPosition()+" = "+Region.getClippingMask(player.getX(), player.getY(), player.getHeight()));
+				return true;
     	
     	case "exp":
     		player.getSkills().addExperience(Skills.HUNTER, 1000);

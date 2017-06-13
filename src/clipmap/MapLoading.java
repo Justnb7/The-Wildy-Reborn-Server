@@ -59,8 +59,9 @@ public class MapLoading {
 	}
 
 	private static void loadMaps(int regionId, ByteStream str1, ByteStream str2) {
-		int absX = (regionId >> 8) * 64;
-		int absY = (regionId & 0xff) * 64;
+		System.out.println("Clipload loading region "+regionId);
+		int rX = (regionId >> 8) * 64;
+		int rY = (regionId & 0xff) * 64;
 		int[][][] someArray = new int[4][64][64];
 		for (int i = 0; i < 4; i++) {
 			for (int i2 = 0; i2 < 64; i2++) {
@@ -90,7 +91,7 @@ public class MapLoading {
 							height--;
 						}
 						if (height >= 0 && height <= 3) {
-							Region.addClipping( absX + i2, absY + i3, height, 0x200000);
+							Region.addClipping( rX + i2, rY + i3, height, 0x200000);
 						}
 					}
 				}
@@ -117,7 +118,7 @@ public class MapLoading {
 					height--;
 				}
 				if (height >= 0 && height <= 3) {
-					GameObject obj = new GameObject(objectId, absX + localX, absY + localY, height, direction, type);
+					GameObject obj = new GameObject(objectId, rX + localX, rY + localY, height, direction, type);
 					Region.addObject(obj);
 					World.getWorld().regions.getRegionByLocation(Tile.create(obj.getX(), obj.getY(), obj.getHeight())).addObject(obj);
 				}

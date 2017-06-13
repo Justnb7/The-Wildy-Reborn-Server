@@ -21,12 +21,6 @@ public class GameObject {
 	
 	private int id;
 	
-	private int x;
-	
-	private int y;
-	
-	private int height;
-	
 	private int face;
 	
 	private int ticksRemaining;
@@ -64,18 +58,11 @@ public class GameObject {
 	}
 	
 	public GameObject(int id, int x, int y, int height) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
-		this.height = height;
+		this(id, x, y, height, 0);
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
-		this.height = height;
-		this.face = face;
+		this(id, Location.create(x, y, height), 10, face);
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face, int type) {
@@ -93,15 +80,6 @@ public class GameObject {
 		this.restoreId = restoreId;
 	}
 
-	public GameObject(Location location, int id, int type, int direction) {
-		this.id = id;
-		this.x = location.getX();
-		this.y = location.getY();
-		this.height = location.getZ();
-		this.type = type;
-		this.face = direction;
-	}
-
 	public void removeTick() {
 		this.ticksRemaining--;
 	}
@@ -111,15 +89,15 @@ public class GameObject {
 	}
 	
 	public int getX() {
-		return x;
+		return position.getX();
 	}
 	
 	public int getY() {
-		return y;
+		return position.getY();
 	}
 	
 	public int getHeight() {
-		return height;
+		return position.getZ();
 	}
 	
 	public int getFace() {

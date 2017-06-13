@@ -1,11 +1,5 @@
 package com.model.game.character.player.skill.woodcutting;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import com.model.action.impl.HarvestingAction;
 import com.model.game.World;
 import com.model.game.character.Animation;
@@ -18,6 +12,8 @@ import com.model.game.character.player.Skills;
 import com.model.game.item.Item;
 import com.model.game.object.GameObject;
 import com.model.utility.Utility;
+
+import java.util.*;
 
 
 public class Woodcutting extends HarvestingAction {
@@ -430,7 +426,7 @@ public class Woodcutting extends HarvestingAction {
 
 	@Override
 	public GameObject getReplacementObject() {
-		return new GameObject(getGameObject().getPosition(), 1342, 10, 0);
+		return new GameObject(1342, getGameObject().getPosition(), 10, 0);
 	}
 
 	@Override

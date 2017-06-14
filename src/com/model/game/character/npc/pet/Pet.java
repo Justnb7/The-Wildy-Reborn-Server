@@ -89,11 +89,9 @@ public class Pet extends NPC {
 		if(player.getInventory().hasSpaceFor(new Item(data.getItem()))) {
 			if (player.getPet() > -1) {
 				player.playAnimation(Animation.create(827));
-				player.getInventory().add(new Item(data.getItem()));
-			}
-			if(pet != null) {
-				World.getWorld().unregister(pet);
 				player.setPet(-1);
+				player.getInventory().add(new Item(data.getItem()));
+				World.getWorld().unregister(pet);
 			}
 			return true;
 		} else {

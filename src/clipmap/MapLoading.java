@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import com.model.game.World;
-import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import cache.io.r317.ByteStream;

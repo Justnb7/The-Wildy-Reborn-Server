@@ -34,6 +34,10 @@ public interface PathFinder {
 			state.routeFailed();
 			return state;
 		}
+		//if (++mob.dummyIdx >= World.dummies.length) // debug. dummies is int[] {random item ids.. potions] for visual debugging.
+		//public static int[] dummies = new int[] {995, 6685, 3024, 2440, 2436, 2444, 2432};
+		//	mob.dummyIdx = 0;//reset
+		//int item = World.dummies[mob.dummyIdx];
 		Tile destination = Tile.create(x, y, mob.getPosition().getZ());
 		Tile base = mob.getPosition();
 		int srcX = base.getLocalX();
@@ -46,10 +50,12 @@ public interface PathFinder {
 				Player p = (Player)mob;
 				p.getMovementHandler().reset();
 				for (BasicPoint step : state.getPoints()) {
+					//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
+					//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
 					p.getMovementHandler().addToPath(new Location(step.getX(), step.getY(), p.heightLevel));
 				}
 				p.getMovementHandler().finish();
-				p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
+				//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
 			} else {
 				System.err.println("HELP WHO");
 			}

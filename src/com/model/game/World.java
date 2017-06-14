@@ -99,6 +99,8 @@ public class World implements Service {
 	 */
 	private boolean kickAllPlayers = false;
 
+	public static int gametick;
+
 	/**
 	 * Queues a player to be logged out
 	 *
@@ -428,6 +430,7 @@ public class World implements Service {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		gametick++;
 	}
 
 	/**

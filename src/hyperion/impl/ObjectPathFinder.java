@@ -19,13 +19,13 @@ public class ObjectPathFinder {
 			int rotation = object.getFace();
 			AnyRevObjectDefinition def = object.getDefinition();
 			if (rotation == 1 || rotation == 3) {
-				sizeX = object.cacheDef().sizeX;
-				sizeY = object.cacheDef().sizeY;
+				sizeX = object.getDefinition().sizeX;
+				sizeY = object.getDefinition().sizeY;
 			} else {
-				sizeX = object.cacheDef().sizeX;
-				sizeY = object.cacheDef().sizeY;
+				sizeX = object.getDefinition().sizeX;
+				sizeY = object.getDefinition().sizeY;
 			}
-			walkToData = object.cacheDef().walkToFlag;
+			walkToData = object.getDefinition().walkToFlag;
 			if (object.getFace() != 0)
 				walkToData = (walkToData << rotation & 0xf)
 						+ (walkToData >> 4 - rotation);

@@ -1,7 +1,6 @@
 package com.model.game.object;
 
 import cache.definitions.AnyRevObjectDefinition;
-import cache.definitions.osrs.CachedObjectDefinition;
 import com.model.game.location.Location;
 
 /**
@@ -166,10 +165,6 @@ public class GameObject {
 	public AnyRevObjectDefinition getDefinition() {
 		return AnyRevObjectDefinition.get(id);
 	}
-
-    public CachedObjectDefinition cacheDef() {
-		return CachedObjectDefinition.forId(id);
-    }
 
     @Override
 	public String toString() {

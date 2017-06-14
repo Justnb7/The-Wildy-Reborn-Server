@@ -12,7 +12,7 @@ import cache.definitions.r317.ObjectDefinition317;
 public class AnyRevObjectDefinition {
     public boolean projectileClipped;
     public int sizeX = 1;
-    public int sizeY;
+    public int sizeY = 1;
     public int osrs_clipType = 2;
     public boolean r317_cliptype;
     public boolean ignoreClipOnAlternativeRoute;
@@ -38,6 +38,7 @@ public class AnyRevObjectDefinition {
     public String[] actions;
     public boolean hasActions;
     public int id;
+    public int walkToFlag;
 
     public static AnyRevObjectDefinition get(int object) {
         AnyRevObjectDefinition r = OpenRsUnpacker.cache != null ? CachedObjectDefinition.forId(object) : ObjectDefinition317.get(object);

@@ -215,13 +215,14 @@ public class Location {
 		return z;
 	}
 
+	static boolean osrsclipping = true;
 	/**
 	 * Gets the X coordinate of the region containing this Position.
 	 * 
 	 * @return the region X coordinate.
 	 */
 	public int getRegionX() {
-		return (x >> 3) - 6;
+		return osrsclipping ? (x>>3) : ((x >> 3) - 6);
 	}
 
 	/**
@@ -230,7 +231,7 @@ public class Location {
 	 * @return the region Y coordinate.
 	 */
 	public int getRegionY() {
-		return (y >> 3) - 6;
+		return osrsclipping ? (y>>3) : ((y >> 3) - 6);
 	}
 
 	/**
@@ -241,7 +242,7 @@ public class Location {
 	 * @return the local X coordinate.
 	 */
 	public int getLocalX(Location base) {
-		return x - 8 * base.getRegionX();
+		return osrsclipping ? (x - 8 * (base.getRegionX()-6)) : (x - 8 * base.getRegionX());
 	}
 
 	/**
@@ -252,7 +253,7 @@ public class Location {
 	 * @return the local Y coordinate.
 	 */
 	public int getLocalY(Location base) {
-		return y - 8 * base.getRegionY();
+		return osrsclipping ? (y - 8 * (base.getRegionY()-6)) : (y - 8 * base.getRegionY());
 	}
 
 	/**

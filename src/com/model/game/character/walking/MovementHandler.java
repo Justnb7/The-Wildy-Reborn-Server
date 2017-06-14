@@ -1,6 +1,5 @@
 package com.model.game.character.walking;
 
-import com.model.game.character.combat.Combat;
 import com.model.game.character.player.Player;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
@@ -176,15 +175,6 @@ public class MovementHandler {
 		player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
 		player.updateCoverage(player.getPosition());
 		player.updateWalkEntities();
-	}
-
-	public void setLocation(final int x, final int y, final int plane) {
-		Combat.resetCombat(player);
-		reset();
-		player.teleportToX = x;
-		player.teleportToY = y;
-		player.heightLevel = (short) plane;
-		player.setLocation(new Location(x, y, plane));
 	}
 
 	public boolean isMoving() {

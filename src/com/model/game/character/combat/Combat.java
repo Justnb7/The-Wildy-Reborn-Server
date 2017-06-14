@@ -30,6 +30,8 @@ import com.model.game.location.Location;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+import hyperion.PathFinder;
+import hyperion.impl.VariablePathFinder;
 
 public class Combat {
 	
@@ -670,16 +672,14 @@ public class Combat {
      */
 	public static boolean touches(Player player, Entity target) {
 
-        player.getPlayerFollowing().follow(true, target); // PI =)
+        //player.getPlayerFollowing().follow(true, target); // PI =)
 
         // HYPERION TIME XX
-
         int walkToData = 0;
         if (target.isNPC()) {
             walkToData = 0x80000000;//can move through entities
         }
-        // TODO why isnt this working it sends you south west
-        //PathFinder.doPath(new VariablePathFinder(-1, walkToData, 0, target.size(), target.size()), player, target.getX(), target.getY());
+        PathFinder.doPath(new VariablePathFinder(-1, walkToData, 0, target.size(), target.size()), player, target.getX(), target.getY());
 
         // Above - path was executed, now check for line of sight, and distance
 
@@ -692,8 +692,11 @@ public class Combat {
                 }
             }
         }
+        // Now pathfinder has updated out path.. check LOS and distance.
+        
         // projectile path clear is PI's line of sight.. apparently? idk was already there
-		return /*ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()) && */player.touchDistance(target, calculateAttackDistance(player, target));
+		return /*ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()) && */
+                player.touchDistance(target, calculateAttackDistance(player, target));
 	}
 	
 	/**

@@ -127,7 +127,7 @@ public class MapLoading {
 				}
 			}
 		}
-		System.out.println("Region "+regionId+" has "+World.getWorld().regions.getRegionByLocation(Tile.create(rX+1, rY+1, 0)).getGameObjects().size()+" map objects.");
+		//System.out.println("Region "+regionId+" has "+World.getWorld().regions.getRegionByLocation(Tile.create(rX+1, rY+1, 0)).getGameObjects().size()+" map objects.");
 	}
 
 	public static byte[] getBuffer(File f) throws Exception {

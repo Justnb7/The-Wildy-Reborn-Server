@@ -64,7 +64,7 @@ public class VariablePathFinder implements PathFinder {
         }
         if (z > 3)
             z = z % 4;
-        Tile location = Tile.create((base.getRegionX() - 6) << 3,
+        Tile regionCorner = Tile.create((base.getRegionX() - 6) << 3,
                 (base.getRegionY() - 6) << 3, base.getZ());
         boolean foundPath = false;
         for (int xx = 0; xx < 104; xx++) {
@@ -91,7 +91,8 @@ public class VariablePathFinder implements PathFinder {
                 foundPath = true;
                 break;
             }
-            int absX = location.getX() + curX, absY = location.getY() + curY;
+            int absX = regionCorner.getX() + curX, absY = regionCorner.getY() + curY;
+          //  System.out.println("from "+absX+","+absY+" to targ..");
             int thisCost = cost[curX][curY] + 1;
             if (type != -1) {
                 if (type == 0 || type == 1 || type == 2 || type == 3
@@ -244,13 +245,13 @@ public class VariablePathFinder implements PathFinder {
             }
         }
         int size = readPosition--;
-        int absX = location.getX() + queueX[readPosition];
-        int absY = location.getY() + queueY[readPosition];
+        int absX = regionCorner.getX() + queueX[readPosition];
+        int absY = regionCorner.getY() + queueY[readPosition];
         state.getPoints().add(BasicPoint.create(absX, absY, z));
         for (int i = 1; i < size; i++) {
             readPosition--;
-            absX = location.getX() + queueX[readPosition];
-            absY = location.getY() + queueY[readPosition];
+            absX = regionCorner.getX() + queueX[readPosition];
+            absY = regionCorner.getY() + queueY[readPosition];
             state.getPoints().add(BasicPoint.create(absX, absY, z));
         }
         return state;

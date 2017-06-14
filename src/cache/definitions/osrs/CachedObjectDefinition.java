@@ -2,6 +2,7 @@ package cache.definitions.osrs;
 
 import cache.OpenRsUnpacker;
 import cache.definitions.AnyRevObjectDefinition;
+import cache.definitions.r317.ObjectDefinition317;
 import cache.io.osrs.InputStream;
 
 public final class CachedObjectDefinition extends AnyRevObjectDefinition {
@@ -26,7 +27,6 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
     public int mapSceneSprite;
     public boolean aBoolean1665;
     public boolean aBoolean1666;
-    public int walkToFlag;
     public int anInt1670;
     public int anInt1671;
     public int scaleY;
@@ -37,10 +37,11 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
     public int[] models;
     public int lightness;
     
-	public static final CachedObjectDefinition forId(int objId) {
+	public static final AnyRevObjectDefinition forId(int objId) {
 		if (objId < 0 || objId >= objectDefinitions.length) {
-			System.err.println("fuk:"+objId);
-			return null;
+			//System.err.println("bad osrs objdef id : "+objId);
+			// fall back to 317 defs
+			return ObjectDefinition317.get(objId);
 		}
 		CachedObjectDefinition def = objectDefinitions[objId];
 		if (def == null)

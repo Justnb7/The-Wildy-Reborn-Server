@@ -23,7 +23,7 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 		return objects;
 	}
 
-	public static ObjectDefinition317 get(int id) {
+	public static AnyRevObjectDefinition get(int id) {
 		if (id > streamIndices.length) {
 			id = streamIndices.length - 1;
 		}
@@ -70,7 +70,7 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 		anInt746 = -1;
 		anInt758 = -1;
 		r317_cliptype = true;
-		anInt768 = 0;
+		walkToFlag = 0;
 		aBoolean736 = false;
 		ignoreClipOnAlternativeRoute = false;
 		anInt760 = -1;
@@ -204,7 +204,7 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 			else if (type == 68)
 				anInt758 = buffer.readUnsignedWord();
 			else if (type == 69)
-				anInt768 = buffer.readUnsignedByte();
+				walkToFlag = buffer.readUnsignedByte();
 			else if (type == 70)
 				buffer.readSignedWord();
 			else if (type == 71)
@@ -261,7 +261,6 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 	public boolean aBoolean762;
 	public boolean aBoolean764;
 	public boolean aBoolean767;
-	public int anInt768;
 	private static int cacheIndex;
 	int[] anIntArray773;
 	public int anInt774;

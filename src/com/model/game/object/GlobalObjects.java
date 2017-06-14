@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
+import com.model.game.location.Location;
 
 
 /**
@@ -88,8 +89,8 @@ public class GlobalObjects {
 	 * @param height	the height location of the object
 	 * @return			true if the object exists, otherwise false.
 	 */
-	public boolean exists(int id, int x, int y, int height) {
-		return objects.stream().anyMatch(object -> object.getId() == id && object.getX() == x && object.getY() == y && object.getHeight() == height);
+	public boolean exists(int id, Location location) {
+		return objects.stream().anyMatch(object -> object.getId() == id && object.getX() == location.getX() && object.getY() == location.getY() && object.getHeight() == location.getZ());
 	}
 	
 	/**
@@ -101,17 +102,6 @@ public class GlobalObjects {
 	 */
 	public boolean anyExists(int x, int y, int height) {
 		return objects.stream().anyMatch(object ->object.getX() == x && object.getY() == y && object.getHeight() == height);
-	}
-	
-	/**
-	 * Determines if an object exists in the game world
-	 * @param id		the identification value of the object
-	 * @param x			the x location of the object
-	 * @param y			the y location of the object
-	 * @return			true if the object exists, otherwise false.
-	 */
-	public boolean exists(int id, int x, int y) {
-		return exists(id, x, y, 0);
 	}
 	
 	public GameObject get(int id, int x, int y, int height) {

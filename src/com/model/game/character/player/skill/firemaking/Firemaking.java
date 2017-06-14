@@ -22,9 +22,18 @@ import java.util.Random;
 public class Firemaking {
 	
 	/**
-	 * Attempt to light a fire.
+	 * Attempts to light a fire
+	 * 
+	 * @param player
+	 *            The player lighting the fire
+	 * @param itemUsed
+	 *            The item being used either a log or tinderbox
+	 * @param usedWith
+	 *            The item be used on, which is also either a log or tinderbox
+	 * @param location
+	 *            The location of the fire
 	 */
-	public static void startFire(final Player player, int itemUsed, int usedWith, final int x, final int y, final int z) {
+	public static void startFire(final Player player, int itemUsed, int usedWith, Location location) {
 		for (final LogData log : LogData.values()) {
 			if (itemUsed == 590 && usedWith == log.getLog() || itemUsed == log.getLog() && usedWith == 590) {
 				
@@ -32,7 +41,7 @@ public class Firemaking {
 					return;
 				}
 				
-				if (Server.getGlobalObjects().exists(log.getFire(), x, y, z)) {
+				if (Server.getGlobalObjects().exists(log.getFire(), location)) {
 					player.getActionSender().sendMessage("You can't light a fire on a fire!");
 					return;
 				}
@@ -68,7 +77,7 @@ public class Firemaking {
 							GroundItemHandler.removeGroundItem(item);
 						}
 						player.getActionSender().sendMessage("The fire catches and the logs begin to burn.");
-						walk(player, x, y, z);
+						walk(player, location);
 						player.getSkills().addExperience(Skills.FIREMAKING, log.getExperience());
 						Location face = new Location(fire.getX(), fire.getY());
 						player.face(player, face);
@@ -89,22 +98,27 @@ public class Firemaking {
 			}
 		}
 	}
-	
+
 	/**
 	 * Finding the right direction to walk to.
+	 * 
+	 * @param player
+	 *            The player lighting the fire
+	 * @param location
+	 *            The location the player walks to
 	 */
-	private static void walk(Player player, int x, int y, int z) {
+	private static void walk(Player player, Location location) {
 		int[] walkDir = { 0, 0 };
-		if (Region.getClipping(x - 1, y - 1, player.getLocation().getZ(), -1, 0)) {
+		if (Region.getClipping(location.getX() - 1, location.getY() - 1, player.getLocation().getZ(), -1, 0)) {
 			walkDir[0] = -1;
 			walkDir[1] = 0;
-		} else if (Region.getClipping(x - +1, y, player.getLocation().getZ(), 1, 0)) {
+		} else if (Region.getClipping(location.getX() - +1, location.getY(), player.getLocation().getZ(), 1, 0)) {
 			walkDir[0] = 1;
 			walkDir[1] = 0;
-		} else if (Region.getClipping(x, y - 1, player.getLocation().getZ(), 0, -1)) {
+		} else if (Region.getClipping(location.getX(), location.getY() - 1, player.getLocation().getZ(), 0, -1)) {
 			walkDir[0] = 0;
 			walkDir[1] = -1;
-		} else if (Region.getClipping(x, y + 1, player.getLocation().getZ(), 0, 1)) {
+		} else if (Region.getClipping(location.getX(), location.getY() + 1, player.getLocation().getZ(), 0, 1)) {
 			walkDir[0] = 0;
 			walkDir[1] = 1;
 		}
@@ -113,7 +127,9 @@ public class Firemaking {
 
 	/**
 	 * Light delay for a specific log.
-	 * @param log The log.
+	 * 
+	 * @param log
+	 *            The log.
 	 * @return The light delay.
 	 */
 	private static int lightDelay(Player player, int log) {
@@ -125,11 +141,13 @@ public class Firemaking {
 	}
 	
 	/**
-	 * Returns a random integer with min as the inclusive
-	 * lower bound and max as the exclusive upper bound.
+	 * Returns a random integer with min as the inclusive lower bound and max as
+	 * the exclusive upper bound.
 	 *
-	 * @param min The inclusive lower bound.
-	 * @param max The exclusive upper bound.
+	 * @param min
+	 *            The inclusive lower bound.
+	 * @param max
+	 *            The exclusive upper bound.
 	 * @return Random integer min <= n < max.
 	 */
 	private static int random(int min, int max) {

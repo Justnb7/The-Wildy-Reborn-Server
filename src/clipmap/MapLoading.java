@@ -7,8 +7,8 @@ import java.io.FileInputStream;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
+import cache.definitions.osrs.CachedObjectDefinition;
 import com.model.game.World;
-import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import cache.io.r317.ByteStream;
@@ -122,8 +122,11 @@ public class MapLoading {
 				}
 				if (height >= 0 && height <= 3) {
 					GameObject obj = new GameObject(objectId, rX + localX, rY + localY, height, direction, type);
-					Region.addObject(obj);
+					Region.addClipping(obj);
 					World.getWorld().regions.getRegionByLocation(Tile.create(obj.getX(), obj.getY(), obj.getHeight())).addObject(obj);
+					if (obj.getId() >= CachedObjectDefinition.objectDefinitions.length) {
+						System.out.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getHeight()+" type "+obj.getType()+","+obj.getFace());
+					}
 				}
 			}
 		}

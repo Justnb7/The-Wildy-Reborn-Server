@@ -86,7 +86,7 @@ public class Region {
     }
 
 
-	public static void addObject(GameObject obj) {
+	public static void addClipping(GameObject obj) {
         ProjectileClipping.addClipping(obj);
 
         AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());

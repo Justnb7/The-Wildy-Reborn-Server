@@ -105,7 +105,7 @@ public class Region {
             yLength = def.xLength();
         }
         if (obj.getType() == 22) {
-            if (def.hasActions() && def.roofclips()) {
+            if (def.roofclips() && def.hasActions()) {
                 addClipping(obj.getX(), obj.getY(), obj.getHeight(), 0x200000);
             }
         } else if (obj.getType() >= 9) {

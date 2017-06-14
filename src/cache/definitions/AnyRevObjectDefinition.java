@@ -43,22 +43,5 @@ public abstract class AnyRevObjectDefinition {
 
     public abstract int getId();
 
-    public boolean rangableObject() {
-        int[] rangableObjects = {3007, 980, 4262, 14437, 14438, 4437, 4439, 3487, 3457};
-        for (int i : rangableObjects) {
-            if (i == getId()) {
-                return true;
-            }
-        }
-        if (getName() != null) {
-            final String name1 = getName().toLowerCase();
-            String[] rangables = {"altar", "pew", "log", "stump", "stool", "sign", "cart", "chest", "rock", "bush", "hedge", "chair", "table", "crate", "barrel", "box", "skeleton", "corpse", "vent", "stone", "rockslide"};
-            for (String i : rangables) {
-                if (name1.contains(i)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    public abstract boolean rangableObject();
 }

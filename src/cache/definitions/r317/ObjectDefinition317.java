@@ -347,4 +347,24 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 		return r317_cliptype;
 	}
 
+	@Override
+	public boolean rangableObject() {
+		int[] rangableObjects = {3457, 21369, 21600, 21376, 21366, 21365, 21381, 21364, 23268, 1264, 1246, 23265, 23273, 1257, 12928, 12929, 12930, 12925, 12932, 12931, 26975, 26977, 26978, 26979, 23271, 11754, 3007, 980, 997, 4262, 14437, 14438, 4437, 4439, 3487, 23053};
+		for (int i = 0; i < rangableObjects.length; i++) {
+			if (rangableObjects[i] == getId()) {
+				return true;
+			}
+		}
+		if (getName() != null && !getName().equalsIgnoreCase("")) {
+			final String name1 = getName().toLowerCase();
+			String[] rangables = {"grass", "daises", "fungus", "mushroom", "sarcophagus", "counter", "plant", "altar", "pew", "log", "stump", "stool", "sign", "cart", "chest", "rock", "bush", "hedge", "chair", "table", "crate", "barrel", "box", "skeleton", "corpse", "vent", "stone", "rockslide"};
+			for (int i = 0; i < rangables.length; i++) {
+				if (name1.contains(rangables[i]) || name1.equalsIgnoreCase(rangables[i]) || name1.endsWith(rangables[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }

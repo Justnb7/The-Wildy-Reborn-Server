@@ -276,32 +276,32 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
 	@Override
 	public boolean ignoreAlt() {
-		return ignoreClipOnAlternativeRoute;
+		return projectileClipped(); // TODO identify this in the client.. its literally a copy of isSolid aka isProjectileClipped in my hyperion
 	}
 
 	@Override
 	public boolean clips() {
-		return osrs_clipType != 0 || projectileClipped;
+		return anInt1556 != 0;
 	}
 
 	@Override
 	public boolean roofclips() {
-		return osrs_clipType == 1;
+		return anInt1556 == 1;
 	}
 
 	@Override
 	public boolean projectileClipped() {
-		return projectileClipped;
+		return true; // TODO identify this in the client for knowledge but based on my working hyperion its always true LOL set =true in setDefaults()
 	}
 
 	@Override
 	public String getName() {
-		return name;
+		return aString1549;
 	}
 
 	@Override
 	public boolean hasName() {
-		return name != null && name.length() > 1;
+		return aString1549 != null && aString1549.length() > 1;
 	}
 
 	@Override
@@ -316,10 +316,10 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
 	@Override
 	public boolean hasActions() {
-		for(int i = 0; i < actions.length; i++) {
-			if(actions[i] == null)
+		for(int i = 0; i < aStringArray1566.length; i++) {
+			if(aStringArray1566[i] == null)
 				continue;
-			if(!actions[i].equalsIgnoreCase("null") || !actions[i].equalsIgnoreCase("hidden"))
+			if(!aStringArray1566[i].equalsIgnoreCase("null") || !aStringArray1566[i].equalsIgnoreCase("hidden"))
 				return true;
 		}
 		return false;
@@ -327,11 +327,11 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
 	@Override
 	public String[] getActions() {
-		String[] allActions = new String[actions.length];
-		for(int i = 0; i < actions.length; i++) {
-			if(actions[i] == null)
+		String[] allActions = new String[aStringArray1566.length];
+		for(int i = 0; i < aStringArray1566.length; i++) {
+			if(aStringArray1566[i] == null)
 				continue;
-			allActions[i] = actions[i];
+			allActions[i] = aStringArray1566[i];
 		}
 		return allActions;
 	}
@@ -341,15 +341,16 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 		return 0; // TODO
 	}
 
+	@Override
 	public boolean rangableObject() {
         int[] rangableObjects = {3457, 21369, 21600, 21376, 21366, 21365, 21381, 21364, 23268, 1264, 1246, 23265, 23273, 1257, 12928, 12929, 12930, 12925, 12932, 12931, 26975, 26977, 26978, 26979, 23271, 11754, 3007, 980, 997, 4262, 14437, 14438, 4437, 4439, 3487, 23053};
         for (int i = 0; i < rangableObjects.length; i++) {
-        	if (rangableObjects[i] == id) {
+        	if (rangableObjects[i] == getId()) {
         		return true;
         	}
         }
-        if (name != null && !name.equalsIgnoreCase("")) {
-            final String name1 = name.toLowerCase();
+        if (getName() != null && !getName().equalsIgnoreCase("")) {
+            final String name1 = getName().toLowerCase();
             String[] rangables = {"grass", "daises", "fungus", "mushroom", "sarcophagus", "counter", "plant", "altar", "pew", "log", "stump", "stool", "sign", "cart", "chest", "rock", "bush", "hedge", "chair", "table", "crate", "barrel", "box", "skeleton", "corpse", "vent", "stone", "rockslide"};
             for (int i = 0; i < rangables.length; i++) {
             	if (name1.contains(rangables[i]) || name1.equalsIgnoreCase(rangables[i]) || name1.endsWith(rangables[i])) {

@@ -50,6 +50,52 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 		return definition;
 	}
 
+	@Override
+	public boolean projectileClipped() {
+		return projectileClipped;
+	}
+
+	@Override
+	public boolean hasActions() {
+		return hasActions || actions != null;
+	}
+
+	@Override
+	public boolean hasName() {
+		return name != null && name.length() > 1;
+	}
+
+	@Override
+	public int xLength() {
+		return sizeX;
+	}
+
+	@Override
+	public int yLength() {
+		return sizeY;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String[] getActions() {
+		String[] allActions = new String[actions.length];
+		for(int i = 0; i < actions.length; i++) {
+			if(actions[i] == null)
+				continue;
+			allActions[i] = actions[i];
+		}
+		return allActions;
+	}
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
 	private void setDefaults() {
 		anIntArray773 = null;
 		anIntArray776 = null;
@@ -270,5 +316,35 @@ public final class ObjectDefinition317 extends AnyRevObjectDefinition {
 	public int anInt781;
 	private static ObjectDefinition317[] cache;
 	int[] modifiedModelColors;
+	public boolean projectileClipped;
+	public boolean r317_cliptype;
+	public int sizeX = 1;
+	public int sizeY = 1;
+	public boolean ignoreClipOnAlternativeRoute;
+	public String name;
+	public String[] actions;
+	public boolean hasActions;
+	public int id;
+	public int walkToFlag;
+
+	@Override
+	public int getWalkToFlag() {
+		return walkToFlag;
+	}
+
+	@Override
+	public boolean ignoreAlt() {
+		return ignoreClipOnAlternativeRoute;
+	}
+
+	@Override
+	public boolean clips() {
+		return r317_cliptype || projectileClipped;
+	}
+
+	@Override
+	public boolean roofclips() {
+		return r317_cliptype;
+	}
 
 }

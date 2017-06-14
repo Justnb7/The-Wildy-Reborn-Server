@@ -168,6 +168,6 @@ public class GameObject {
 
     @Override
 	public String toString() {
-		return "["+getDefinition().name+","+id+"]";
+		return "["+getDefinition().getName()+","+id+"]";
 	}
 }

@@ -49,7 +49,7 @@ public class ObjectInteraction {
 			action = new Mining(player, obj);
 		}
 		
-		switch (def.name.toLowerCase()) {
+		switch (def.getName().toLowerCase()) {
 
 		case "bank":
 		case "Bank":
@@ -125,7 +125,7 @@ public class ObjectInteraction {
 		}
 
 		AnyRevObjectDefinition objectDef = AnyRevObjectDefinition.get(id);
-		switch (objectDef.name.toLowerCase()) {
+		switch (objectDef.getName().toLowerCase()) {
 
 		case "bank":
 		case "Bank":

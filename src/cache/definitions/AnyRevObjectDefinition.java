@@ -9,36 +9,17 @@ import cache.definitions.r317.ObjectDefinition317;
  *
  * Holds fields common between 317 and OSRS so theres not a fuckfest differentiating between object definitions when loading clipping.
  */
-public class AnyRevObjectDefinition {
-    public boolean projectileClipped;
-    public int sizeX = 1;
-    public int sizeY = 1;
-    public int osrs_clipType = 2;
-    public boolean r317_cliptype;
-    public boolean ignoreClipOnAlternativeRoute;
+public abstract class AnyRevObjectDefinition {
 
-    public boolean clips() {
-        return r317_cliptype || osrs_clipType != 0 || projectileClipped;
-    }
+    public abstract int getWalkToFlag();
 
-    public boolean roofclips() {
-        return r317_cliptype || osrs_clipType == 1;
-    }
+    public abstract boolean ignoreAlt();
 
-    public boolean projectileClipped() {
-        return projectileClipped;
-    }
+    public abstract boolean clips();
 
-    public boolean unclipped() {
-        return ignoreClipOnAlternativeRoute;
-    }
+    public abstract boolean roofclips();
 
-    // BELOW ISNT NEEDED FOR CLIPPING JUST FOR SHARED REFERENCE
-    public String name;
-    public String[] actions;
-    public boolean hasActions;
-    public int id;
-    public int walkToFlag;
+    public abstract boolean projectileClipped();
 
     public static AnyRevObjectDefinition get(int object) {
         AnyRevObjectDefinition r = OpenRsUnpacker.cache != null ? CachedObjectDefinition.forId(object) : ObjectDefinition317.get(object);
@@ -48,65 +29,29 @@ public class AnyRevObjectDefinition {
         return r;
     }
 
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
 
-    public boolean hasName() {
-        return name != null && name.length() > 1;
-    }
+    public abstract boolean hasName();
 
-    public int xLength() {
-        return sizeX;
-    }
+    public abstract int xLength();
 
-    public int yLength() {
-        return sizeY;
-    }
+    public abstract int yLength();
 
-    public int actionCount() {
-    	int count = 0;
-    	for(int i = 0; i < actions.length; i++) {
-    		if(actions[i] == null)
-    			continue;
-    		if(!actions[i].equalsIgnoreCase("null") || !actions[i].equalsIgnoreCase("hidden"))
-    			count++;
-    	}
-        return count;
-    }
+    public abstract  boolean hasActions();
 
-    public boolean hasActions() {
-        if (this instanceof ObjectDefinition317)
-            return hasActions || actions != null;
+    public abstract String[] getActions();
 
-        for(int i = 0; i < actions.length; i++) {
-            if(actions[i] == null)
-                continue;
-            if(!actions[i].equalsIgnoreCase("null") || !actions[i].equalsIgnoreCase("hidden"))
-                return true;
-        }
-        return false;
-    }
-
-    public String[] getActions() {
-        String[] allActions = new String[actions.length];
-        for(int i = 0; i < actions.length; i++) {
-            if(actions[i] == null)
-                continue;
-            allActions[i] = actions[i];
-        }
-        return allActions;
-    }
+    public abstract int getId();
 
     public boolean rangableObject() {
         int[] rangableObjects = {3007, 980, 4262, 14437, 14438, 4437, 4439, 3487, 3457};
         for (int i : rangableObjects) {
-            if (i == id) {
+            if (i == getId()) {
                 return true;
             }
         }
-        if (name != null) {
-            final String name1 = name.toLowerCase();
+        if (getName() != null) {
+            final String name1 = getName().toLowerCase();
             String[] rangables = {"altar", "pew", "log", "stump", "stool", "sign", "cart", "chest", "rock", "bush", "hedge", "chair", "table", "crate", "barrel", "box", "skeleton", "corpse", "vent", "stone", "rockslide"};
             for (String i : rangables) {
                 if (name1.contains(i)) {

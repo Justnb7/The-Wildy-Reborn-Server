@@ -28,12 +28,12 @@ public class UseItem {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(object);
 		if (!player.getInventory().contains(item.getId()))
 			return;
-		if (def.getName().toLowerCase().contains("altar") && def.actions[0].toLowerCase().contains("pray")) {
+		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().bonesOnAltar(item);
 			return;
 		}
 		
-		switch (def.name.toLowerCase()) {
+		switch (def.getName().toLowerCase()) {
 			
 		case "range":
 		case "cooking range":

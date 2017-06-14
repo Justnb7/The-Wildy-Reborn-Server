@@ -85,7 +85,7 @@ public class Cooking extends SkillTask {
 			return false;
 		}
 		if (cookable.isStoveOrRangeOnly()) {
-			if (objectDef.name.contains("stove") || objectDef.name.contains("range") || objectDef.name.contains("Cooking range")) {
+			if (objectDef.getName().contains("stove") || objectDef.getName().contains("range") || objectDef.getName().contains("Cooking range")) {
 				return true;
 			} else {
 				player.getActionSender().sendMessage("You may only cook this on a stove or cooking range.");

@@ -189,7 +189,7 @@ public class ProjectileClipping {
 
 	public static void addClipping(GameObject obj) {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
-		if (def == null || (def.name != null && (def.name.equalsIgnoreCase("tree stump") || def.name.equalsIgnoreCase("anvil"))) || obj.getId() == 83) {
+		if (def == null || (def.getName() != null && (def.getName().equalsIgnoreCase("tree stump") || def.getName().equalsIgnoreCase("anvil"))) || obj.getId() == 83) {
 			return;
 		}
 		if (obj.getId() == 23271) {//wild ditch
@@ -222,11 +222,11 @@ public class ProjectileClipping {
 			}
 		} else if (type >= 9 && type <= 11) {
 			if (def.clips()) {
-				addClippingForSolidObject(x, y, height, xLength, yLength, def.projectileClipped(), def.unclipped());
+				addClippingForSolidObject(x, y, height, xLength, yLength, def.projectileClipped(), def.ignoreAlt());
 			}
 		} else if (type >= 0 && type <= 3) {
 			if (def.clips()) {
-				addClippingForVariableObject(x, y, height, type, obj.getFace(), def.projectileClipped(), def.unclipped());
+				addClippingForVariableObject(x, y, height, type, obj.getFace(), def.projectileClipped(), def.ignoreAlt());
 			}
 		}
 	}
@@ -253,11 +253,11 @@ public class ProjectileClipping {
 			}
 		} else if (obj.getType() >= 9 && obj.getType() <= 11) {
 			if (def.clips()) {
-				removeClippingForSolidObject(x, y, height, xLength, yLength, def.projectileClipped(), def.unclipped());
+				removeClippingForSolidObject(x, y, height, xLength, yLength, def.projectileClipped(), def.ignoreAlt());
 			}
 		} else if (obj.getType() >= 0 && obj.getType() <= 3) {
 			if (def.clips()) {
-				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.projectileClipped(), def.unclipped());
+				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.projectileClipped(), def.ignoreAlt());
 			}
 		}
 	}

@@ -125,6 +125,9 @@ public class MapLoading {
 					Region.addClipping(obj);
 					World.getWorld().regions.getRegionByLocation(Tile.create(obj.getX(), obj.getY(), obj.getHeight())).addObject(obj);
 					if (obj.getId() >= CachedObjectDefinition.objectDefinitions.length) {
+						
+						boolean test = false;
+						if(test == true)
 						System.out.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getHeight()+" type "+obj.getType()+","+obj.getFace());
 					}
 				}

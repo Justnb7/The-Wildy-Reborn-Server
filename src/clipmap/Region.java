@@ -77,6 +77,8 @@ public class Region {
     public static int getClippingMask(int absx, int absy, int z) {
         Region map = forCoords(absx, absy);
         if (map.clips[z] == null) {
+        	boolean test = false;
+        	if(test == true)
             System.err.println("region not loaded "+absx+","+absy+","+z);
             return -1;
         }

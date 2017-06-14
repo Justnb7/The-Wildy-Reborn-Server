@@ -165,7 +165,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 	public void dropLoot(Player player, NPC npc) {
 		int random = Utility.random(250);
 		if (random == 1) {
-			if (player.isPetSpawned()) {
+			if (player.getPet() > -1) {
 				if (player.getInventory().getFreeSlots() < 1) {
 					player.getInventory().add(new Item(12652));
 				} else {
@@ -175,7 +175,6 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 			} else {
 				Pets pets = Pets.KRIL_TSUTSAROTH;
 				Pet pet = new Pet(player, pets.getNpc());
-				player.setPetSpawned(true);
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received the K'ril pet.", false);

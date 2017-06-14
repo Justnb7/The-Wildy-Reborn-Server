@@ -913,6 +913,7 @@ public class ActionSender {
 		AttackStyle.adjustAttackStyleOnLogin(player);
 		
 		sendMessage("Welcome to " + Constants.SERVER_NAME + ".");
+		updateAfterLogin();
 		
 		//activate login delay
 		player.setAttribute("login_delay", System.currentTimeMillis());
@@ -937,7 +938,6 @@ public class ActionSender {
 
 			@Override
 			public void execute() {
-				Player player = (Player) getAttachment();
 				if (player == null || !player.isActive()) {
 					stop();
 					return;
@@ -959,7 +959,7 @@ public class ActionSender {
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 				
 				//If we had a pet spawned, we spawn it after the login protocol
-				if (player.isPetSpawned()) {
+				if (player.getPet() > -1) {
 		            Pet pet = new Pet(player, player.getPet());
 		            player.setPet(player.getPet());
 		            World.getWorld().register(pet);

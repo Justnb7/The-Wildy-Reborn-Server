@@ -84,7 +84,7 @@ public final class MobileCharacterList<E extends Entity> implements Iterable<E> 
 	public boolean remove(E e) {
 		Objects.requireNonNull(e);
 
-		if (e.isRegistered()) {
+		if (e.isRegistered() && e != null) {
 			e.setRegistered(false);
 			characters[e.getIndex()] = null;
 			size--;

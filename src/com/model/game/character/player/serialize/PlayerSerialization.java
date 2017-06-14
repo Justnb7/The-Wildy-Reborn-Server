@@ -120,7 +120,6 @@ public class PlayerSerialization {
 				player.teleHeight = details.z;
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);
-				player.setPetSpawned(details.petSpawned);
 				player.setPet(details.pet);
 				player.setTutorial(details.inTutorial);
 				player.setReceivedStarter(details.starterReceived);
@@ -210,7 +209,6 @@ public class PlayerSerialization {
 		private final int x, y, z;
 		private final String identity;
 		private final String mac;
-		private final boolean petSpawned;
 		private final int pet;
 		private final boolean inTutorial;
 		private final boolean starterReceived;
@@ -290,7 +288,6 @@ public class PlayerSerialization {
 			z = player.getZ();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
-			petSpawned = player.isPetSpawned();
 			pet = player.getPet();
 			inTutorial = player.inTutorial();
 			starterReceived = player.receivedStarter();

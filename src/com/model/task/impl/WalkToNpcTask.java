@@ -48,10 +48,22 @@ public class WalkToNpcTask extends ScheduledTask {
 		this.clickType = clickType;
 	}
 
+	
+	//Brief ecplanation i added this task a little whule ago but its still being sent even when the task is already compelted
+	
+	//so meaning its still looping ive got so many stoip(); calls in here idk if i even did it right lol!
+	
 	@Override
 	public void execute() {
+		if (!player.isActive()) {
+			stop();
+			return;
+		}
+		// TODO check if each cycle we're still wanting to interact with the target npc
+		// walking or interacting with another entity invalidate this action.
 
 		if (player.getLocation().isWithinInteractionDistance(new Location(npc.getX(), npc.getY()))) {
+			// in distance. interact and stop cycle.
 			switch (clickType) {
 			case 1:
 				NpcInteraction.firstOption(player, npc);
@@ -66,38 +78,13 @@ public class WalkToNpcTask extends ScheduledTask {
 				NpcInteraction.fourthOption(player, npc);
 				break;
 			}
-			this.stop();
+			stop();//1 lol
+			// reached target. face coords.
+			player.setFollowing(null);
+			player.face(player, npc.getLocation());
+			npc.face(npc, player.getLocation());
 		} else {
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
-				@Override
-				public void execute() {
-					if (!player.isActive()) {
-						stop();
-						return;
-					}
-					if (npc != null) {
-						switch (clickType) {
-						case 1:
-							NpcInteraction.firstOption(player, npc);
-							break;
-						case 2:
-							NpcInteraction.secondOption(player, npc);
-							break;
-						case 3:
-							NpcInteraction.thirdOption(player, npc);
-							break;
-						case 4:
-							NpcInteraction.fourthOption(player, npc);
-							break;
-						}
-						this.stop();
-					}
-				}
-			});
+			// do nothing this cycle. try again next time this Task is executed.
 		}
-		player.setFollowing(null);
-		player.face(player, npc.getLocation());
-		npc.face(npc, player.getLocation());
-		this.stop();
 	}
 }

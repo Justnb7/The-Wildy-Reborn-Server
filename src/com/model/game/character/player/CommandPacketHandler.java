@@ -543,7 +543,6 @@ public class CommandPacketHandler implements PacketType {
 			int id = Integer.parseInt(cmd[1]);
 			Pet pet = new Pet(player, id);
 			player.setPet(id);
-			player.setPetSpawned(true);
 			World.getWorld().register(pet);
 			return true;
 			

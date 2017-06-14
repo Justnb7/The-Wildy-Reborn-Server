@@ -385,12 +385,11 @@ public class Mining extends HarvestingAction {
 			if (!getEntity().isPlayer()) {
 			}
 			Player player = (Player) getEntity();
-			if (player.isPetSpawned()) {
+			if (player.getPet() > -1) {
 				return rock.getExperience() * (getEntity().isPlayer() ? getProspectorKitExperienceModifier((Player) getEntity()) : 1f) * 2;
 			} else {
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
-				player.setPetSpawned(true);
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Rock Golem.", false);
 				return rock.getExperience() * (getEntity().isPlayer() ? getProspectorKitExperienceModifier((Player) getEntity()) : 1f) * 2;

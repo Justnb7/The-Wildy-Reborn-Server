@@ -117,8 +117,13 @@ public class NpcInteraction {
 	 *            The npc
 	 */
 	public static void secondOption(Player player, NPC npc) {
-
+		
+		if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
+			player.getActionSender().sendMessage(String.format("[NpcInteraction #2] - NpcId: %d", npc.getId()));
+		}
+		
 		if (Pet.pickup(player, npc)) {
+			player.debug("attempting to pick up pet....");
 			return;
 		}
 

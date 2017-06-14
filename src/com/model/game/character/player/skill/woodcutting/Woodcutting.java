@@ -381,7 +381,7 @@ public class Woodcutting extends HarvestingAction {
 			if (!getEntity().isPlayer()) {
 			}
 			Player player = (Player) getEntity();
-			if (player.isPetSpawned()) {
+			if (player.getPet() > -1) {
 				if (player.getInventory().getFreeSlots() < 1) {
 					player.getInventory().add(new Item(13322));
 				} else {
@@ -390,7 +390,6 @@ public class Woodcutting extends HarvestingAction {
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Beaver.", false);
 			} else {
 				Pet pet = new Pet(player, pets.getNpc());
-				player.setPetSpawned(true);
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Beaver.", false);

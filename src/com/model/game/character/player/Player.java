@@ -2468,16 +2468,6 @@ public class Player extends Entity {
 	public int getPet() {
 		return pet;
 	}
-	
-	private boolean petSpawned;
-	
-	public boolean isPetSpawned() {
-		return petSpawned;
-	}
-
-	public void setPetSpawned(boolean petSpawned) {
-		this.petSpawned = petSpawned;
-	}
 
 	@Override
 	public int clientIndex() {

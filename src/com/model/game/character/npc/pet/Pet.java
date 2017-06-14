@@ -5,7 +5,6 @@ import com.model.game.character.Animation;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.item.Item;
-import com.model.game.location.Location;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
@@ -37,12 +36,11 @@ public class Pet extends NPC {
 	public static boolean drop(Player player, Item item) {
 		Pets petIds = Pets.from(item.getId());
 		if (petIds != null) {
-			if (player.isPetSpawned()) {
-				player.getActionSender().sendMessage("You may only have one pet out at a time.");
+			if (player.getPet() > -1) {
+				player.getActionSender().sendMessage("You already have a pet roaming.");
 				return false;
 			} else {
 				Pet pet = new Pet(player, petIds.getNpc());
-				player.setPetSpawned(true);
 				player.setPet(petIds.getNpc());
 				World.getWorld().register(pet);
 				player.getInventory().remove(item);
@@ -58,10 +56,10 @@ public class Pet extends NPC {
 						}
 						int delta = player.getLocation().distance(pet.getLocation());
 						if (delta >= 13 || delta <= -13) {
-							// TODO teleport npc to player
-							player.debug("tele");
-							Location move = new Location(player.getX(), player.getY() -1, player.getZ());
-							pet.teleport(move);
+							player.debug("teleport pet to player");
+							pet.setAbsX(player.getX());
+							pet.setAbsY(player.getY() -1);
+							pet.setAbsZ(player.getZ());
 						}
 					}
 
@@ -74,25 +72,34 @@ public class Pet extends NPC {
 
 	/**
 	 * Picks up the pet npc
+	 * 
 	 * @param player
-	 *         The player picking up the pet
-	 * @param pet 
-	 *         The pet being picked up
-	 * @return despawn the pet, and respawn the pet item in the players inventory.
+	 *            The player picking up the pet
+	 * @param pet
+	 *            The pet being picked up
+	 * @return despawn the pet, and respawn the pet item in the players
+	 *         inventory.
 	 */
 	public static boolean pickup(Player player, NPC pet) {
-		Pets pets = Pets.fromNpc(pet.getId());
-		if (pets != null && player.getInventory().getFreeSlots() < 28) {
-			if (player.isPetSpawned()) {
-				player.playAnimation(Animation.create(827));
-				player.getInventory().add(new Item(pets.getItem()));
-				World.getWorld().unregister(pet);
-				player.setPetSpawned(false);
-				player.setPet(-1);
-				return true;
-			}
+		Pets data = Pets.fromNpc(pet.getId());
+		if(data == null) {
+			return false;
 		}
-		return false;
+		
+		if(player.getInventory().hasSpaceFor(new Item(data.getItem()))) {
+			if (player.getPet() > -1) {
+				player.playAnimation(Animation.create(827));
+				player.getInventory().add(new Item(data.getItem()));
+			}
+			if(pet != null) {
+				World.getWorld().unregister(pet);
+				player.setPet(-1);
+			}
+			return true;
+		} else {
+			player.getActionSender().sendMessage("You have no space in your inventory.");
+			return false;
+		}
 	}
 	
 	/**
@@ -105,7 +112,7 @@ public class Pet extends NPC {
 	 */
 	public static boolean talktoPet(Player player, NPC pet) {
 		Pets pets = Pets.fromNpc(pet.getId());
-		if (pets != null && player.isPetSpawned()) {
+		if (pets != null && player.getPet() > -1) {
 			switch(pets) {
 			case ABYSSAL_ORPHAN:
 				break;
@@ -260,7 +267,7 @@ public class Pet extends NPC {
 	public static boolean transformPet(Player player, NPC pet) {
 		Pets pets = Pets.fromNpc(pet.getId());
 		int morphId = -1;
-		if (pets != null && player.isPetSpawned()) {
+		if (pets != null && player.getPet() > -1) {
 			switch(pets) {
 			case SNAKELING:
 				morphId = 2131;

@@ -10,6 +10,7 @@ import com.model.game.character.player.skill.firemaking.Firemaking;
 import com.model.game.character.player.skill.fletching.Fletching;
 import com.model.game.definitions.ItemDefinition;
 import com.model.game.item.Item;
+import com.model.game.location.Location;
 
 public class ItemOnItem {
 	
@@ -30,7 +31,7 @@ public class ItemOnItem {
 			System.out.println(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", usedItem.getId(), withItem.getId()));
 		}
 		
-		Firemaking.startFire(player, usedItem.getId(), withItem.getId(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+		Firemaking.startFire(player, usedItem.getId(), withItem.getId(), new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
 		
 		if (player.rights == Rights.ADMINISTRATOR) {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {

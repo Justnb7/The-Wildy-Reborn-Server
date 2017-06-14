@@ -36,7 +36,6 @@ public class NPC extends Entity {
 		npcId = id;
 		setDead(false);
 		randomWalk = true;
-		
 		NPCDefinitions definition = NPCDefinitions.get(id);
 		if (definition != null) {
 			size = definition.getSize();

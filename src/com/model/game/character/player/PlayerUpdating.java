@@ -414,7 +414,7 @@ public class PlayerUpdating {
 		/*
 		 * Check if the player is teleporting.
 		 */
-		if (player.isTeleporting() || player.isMapRegionChanging()) {
+		if (player.isTeleporting()/* || player.isMapRegionChanging()*/) {
 			/*
 			 * They are, so an update is required.
 			 */

@@ -99,6 +99,7 @@ public class CommandPacketHandler implements PacketType {
     	case "drop":
     		Server.getDropManager().open(player);
     		return true;
+    		
 			case "barrage":
 				player.setSpellBook(SpellBook.ANCIENT);
 				player.getActionSender().sendSidebarInterface(6, 12855);
@@ -107,6 +108,7 @@ public class CommandPacketHandler implements PacketType {
 				player.getInventory().add(new Item(565, 100000));
 				player.getInventory().add(new Item(560, 100000));
 				return true;
+				
 			case "showclipmap":
 				int size = 14;
 				for (int x = player.getX() - size; x < player.getX()+size; x++)
@@ -114,6 +116,7 @@ public class CommandPacketHandler implements PacketType {
 						if (Region.getClippingMask(x, y, player.getHeight()) > 0 || ProjectileClipping.getClippingMask(x, y, player.getHeight()) > 0)
 							player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
 				return true;
+				
 			case "clip":
 				player.getActionSender().sendMessage("Clip at "+player.getPosition()+" = "+Region.getClippingMask(player.getX(), player.getY(), player.getHeight()));
 				RegionStoreManager.get().getRegionByLocation(Tile.create(player.getLocation()))

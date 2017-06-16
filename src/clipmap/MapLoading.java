@@ -1,21 +1,28 @@
 package clipmap;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
-import cache.OpenRsUnpacker;
-import cache.definitions.osrs.CachedObjectDefinition;
-import cache.fs.CacheManager;
 import com.model.game.World;
 import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.utility.Utility;
+
+import cache.OpenRsUnpacker;
+import cache.definitions.osrs.CachedObjectDefinition;
+import cache.fs.CacheManager;
 import cache.io.r317.ByteStream;
 
 public class MapLoading {

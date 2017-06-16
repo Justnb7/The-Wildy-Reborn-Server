@@ -2459,7 +2459,7 @@ public class Player extends Entity {
 		this.lastFire = lastFire;
 	}
 	
-	private int pet;
+	private int pet = -1;
 
 	public void setPet(int pet) {
 		this.pet = pet;

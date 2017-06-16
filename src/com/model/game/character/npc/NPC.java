@@ -673,7 +673,7 @@ public class NPC extends Entity {
 	}
 	
 	@Override
-	public int getHeight() {
+	public int yLength() {
 		return getDefinition().getSize();
 	}
 
@@ -684,9 +684,9 @@ public class NPC extends Entity {
 	
 	@Override
 	public Location getCentreLocation() {
-		if (this.getWidth() == 1 && this.getHeight() == 1) 
+		if (this.getWidth() == 1 && this.yLength() == 1)
 			return this.getLocation();
-		return Location.create(getLocation().getX() + getWidth() / 2, getLocation().getY() + getHeight() / 2, getLocation().getZ());
+		return Location.create(getLocation().getX() + getWidth() / 2, getLocation().getY() + yLength() / 2, getLocation().getZ());
 	}
 	
 	@Override

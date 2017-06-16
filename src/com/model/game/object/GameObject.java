@@ -26,7 +26,7 @@ public class GameObject {
 	
 	private int restoreId;
 	
-	private int type = 10;
+	private int type;
 	
 	/**
 	 * The maximum amount of health this object has (for trees).
@@ -62,13 +62,16 @@ public class GameObject {
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face) {
-		this(id, x, y, height);
+		this.id = id;
+		this.position = Location.create(x, y, height);
 		this.face = face;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face, int type) {
-		this(id, x, y, height, face);
+		this.id = id;
+		this.position = Location.create(x, y, height);
 		this.type = type;
+		this.face = face;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face, int type, int ticksRemaining) {

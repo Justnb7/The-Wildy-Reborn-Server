@@ -1,10 +1,8 @@
 package com.model.game.character.player.minigames.fight_caves;
 
-import java.util.Random;
-
 import com.model.game.World;
-import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.npc.NPC;
+import com.model.game.character.npc.NPCHandler;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.instances.InstancedAreaManager;
@@ -17,6 +15,8 @@ import com.model.task.ScheduledTask;
 import com.model.task.Stackable;
 import com.model.task.Walkable;
 import com.model.utility.Utility;
+
+import java.util.Random;
 
 /**
  * The fight caves miningame
@@ -161,7 +161,7 @@ public class FightCaves {
 			if (player.getInventory().getFreeSlots() > 1) {
 				player.getInventory().add(new Item(TOKKUL.getId(), tokkul));
 			} else {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(6529, tokkul), player.getX(), player.getY(), player.getHeight(), player));
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(6529, tokkul), player.getX(), player.getY(), player.getZ(), player));
 			}
 			player.dialogue().start("DIED_DURING_FIGHT_CAVE");
 			player.getActionSender().sendMessage("You have been defeated!");

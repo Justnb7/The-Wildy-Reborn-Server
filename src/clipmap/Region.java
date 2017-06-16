@@ -14,10 +14,14 @@ public class Region {
 
     public static final int MAX_MAP_X = 16383, MAX_MAP_Y = 16383;
 
-    private static Region[][] mapcache = new Region[(MAX_MAP_X + 1) / REGION_SIZE][(MAX_MAP_Y + 1) / REGION_SIZE];
+    private static final Region[][] mapcache = new Region[(MAX_MAP_X + 1) / REGION_SIZE][(MAX_MAP_Y + 1) / REGION_SIZE];
 
     public static Region forCoords(int x, int y) {
         int regionX = x >> 7, regionY = y >> 7;
+        if (regionX < 0 || regionY < 0) {
+            System.err.println("UNRESOLVABLE REGION! "+x+","+y+" -> "+regionX+","+regionY);
+            return new Region(0, 0, REGION_SIZE); // dummy not linked to anything just to stop exceptions
+        }
         Region r = mapcache[regionX][regionY];
         if (r == null) {
             r = mapcache[regionX][regionY] = new Region(regionX, regionY, REGION_SIZE);
@@ -77,9 +81,6 @@ public class Region {
     public static int getClippingMask(int absx, int absy, int z) {
         Region map = forCoords(absx, absy);
         if (map.clips[z] == null) {
-        	boolean test = false;
-        	if(test == true)
-            System.err.println("region not loaded "+absx+","+absy+","+z);
             return -1;
         }
         int localX = absx - ((absx >> 7) << 7);
@@ -87,13 +88,15 @@ public class Region {
         return map.clips[z][localX][localY];
     }
 
-
 	public static void addClipping(GameObject obj) {
+        // Projectile clipping is a duplicate of this system, however clipping is added slightly differently for map objects.. depending on how "tall" they
+        // are.. example you can shoot an arrow over a fence.
         ProjectileClipping.addClipping(obj);
 
-        AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
+
+        AnyRevObjectDefinition def = obj.getDefinition();
         if (def == null) {
-           // System.err.println("halp");
+            System.err.println("bad obj def "+obj.getId());
             return;
         }
 

@@ -1,8 +1,6 @@
 package cache.definitions;
 
 import cache.OpenRsUnpacker;
-import cache.definitions.osrs.CachedObjectDefinition;
-import cache.definitions.r317.ObjectDefinition317;
 
 /**
  * Created by Jak on 13/06/2017.
@@ -22,7 +20,7 @@ public abstract class AnyRevObjectDefinition {
     public abstract boolean projectileClipped();
 
     public static AnyRevObjectDefinition get(int object) {
-        AnyRevObjectDefinition r = OpenRsUnpacker.cache != null ? CachedObjectDefinition.forId(object) : ObjectDefinition317.get(object);
+        AnyRevObjectDefinition r = OpenRsUnpacker.objectdef(object);
         if (r == null) {
             System.err.println("BAD! "+object);
         }

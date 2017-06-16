@@ -25,6 +25,7 @@ import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.item.container.impl.shop.ShopManager;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.location.Location;
+import com.model.game.object.GameObject;
 import com.model.net.ConnectionHandler;
 import com.model.net.packet.PacketType;
 import com.model.server.Server;
@@ -34,11 +35,12 @@ import com.model.utility.logging.PlayerLogging;
 import com.model.utility.logging.PlayerLogging.LogType;
 import com.model.utility.parser.impl.ItemDefinitionParser;
 import com.model.utility.parser.impl.NPCDefinitionParser;
-import hyperion.region.RegionStoreManager;
+import hyperion.region.RegionStore;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -113,16 +115,31 @@ public class CommandPacketHandler implements PacketType {
 				int size = 14;
 				for (int x = player.getX() - size; x < player.getX()+size; x++)
 					for (int y = player.getY() -size; y < player.getY()+size; y++)
-						if (Region.getClippingMask(x, y, player.getHeight()) > 0 || ProjectileClipping.getClippingMask(x, y, player.getHeight()) > 0)
-							player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), x, y, player.getHeight(), player));
+						if (Region.getClippingMask(x, y, player.getZ()) > 0 || ProjectileClipping.getClippingMask(x, y, player.getZ()) > 0)
+							player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), x, y, player.getZ(), player));
 				return true;
 				
 			case "clip":
-				player.getActionSender().sendMessage("Clip at "+player.getPosition()+" = "+Region.getClippingMask(player.getX(), player.getY(), player.getHeight()));
-				RegionStoreManager.get().getRegionByLocation(Tile.create(player.getLocation()))
-						.getGameObjects().stream()
-						.filter(o -> o != null && o.getType() == 10 && o.getDefinition() != null && o.getDefinition().hasName() && o.getDefinition().clips())
-						.forEach(o -> System.out.println(o));
+				player.getActionSender().sendMessage("lol: "+Region.getClippingMask(3076, 3516, 0));
+				Region r = Region.forCoords(player.getX(), player.getY());
+				player.getActionSender().sendMessage("[4,60] = "+r.clips[player.getZ()][4][60]+" on "+r+" id "+player.getLocation().getRegionId());
+				int[] objcount = new int[1];
+				RegionStore rs = World.getWorld().regions.getRegionByLocation(Tile.create(player.getLocation()));
+				Collection<GameObject> os = rs.getGameObjects();
+				os.stream()
+				.filter(o -> o != null && o.getType() >= 9 && o.getPosition().equals(player.getPosition()) && o.getDefinition() != null && o.getDefinition().hasName() && o.getDefinition().clips())
+				.forEach(o -> {
+					objcount[0]++;System.out.println(o);
+				});
+				System.out.println(rs.getGameObjects().toArray(new GameObject[0])[422]);
+
+				System.out.println("Clip at "+player.getPosition()+" = "+Region.getClippingMask(player.getX(), player.getY(), player.getZ())+" and objects:"+objcount[0]+" v "+os.size());
+				player.getActionSender().sendMessage("Clip at "+player.getPosition()+" = "+Region.getClippingMask(player.getX(), player.getY(), player.getZ())+" and objects:"+
+						objcount[0]+" v "+os.size());
+
+				return true;
+			case "sclip":
+				Region.setClippingMask(player.getX(), player.getY(), player.getZ(), 131328);
 				return true;
     	
     	case "exp":

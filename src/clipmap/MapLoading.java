@@ -1,19 +1,105 @@
 package clipmap;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
+import cache.OpenRsUnpacker;
 import cache.definitions.osrs.CachedObjectDefinition;
+import cache.fs.CacheManager;
 import com.model.game.World;
+import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import com.model.utility.Utility;
 import cache.io.r317.ByteStream;
 
 public class MapLoading {
+
+
+	private static String getFileNameWithoutExtension(String fileName) {
+		File tmpFile = new File(fileName);
+		tmpFile.getName();
+		int whereDot = tmpFile.getName().lastIndexOf('.');
+		if (0 < whereDot && whereDot <= tmpFile.getName().length() - 2) {
+			return tmpFile.getName().substring(0, whereDot);
+		}
+		return "";
+	}
+
+	public static Map<Integer, int[]> textKeys() throws Exception {
+		File path = new File("./data/osrs124xtea/");
+		if (!path.exists())
+			throw new Exception("No xtea folder found for release ");
+		File[] xteas = path.listFiles();
+		Map<Integer, int[]> keys = new HashMap<>();
+		for (File xteaFile : xteas) {
+			int region = Integer.parseInt(getFileNameWithoutExtension(xteaFile.getName()));
+			BufferedReader reader = new BufferedReader(new FileReader(xteaFile));
+			int[] xtea = new int[4];
+			String line;
+			int i = 0;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals(""))
+					continue;
+				xtea[i] = Integer.parseInt(line);
+				i++;
+			}
+			reader.close();
+			keys.put(region, xtea);
+		}
+		return keys;
+	}
+
+	public static Map<Integer, int[]> jakxteas() {
+		Map<Integer, int[]> keys = new HashMap<>();
+		File from = new File("./binary-xtea-dump.bin");
+
+		ByteBuffer buffer = null;
+		try {
+			buffer = ByteBuffer.wrap(Files.readAllBytes(from.toPath()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		while (buffer.remaining() > 0) {
+			int map = buffer.getShort() & 0xFFFF;
+			int[] k = new int[4];
+			for (int i = 0; i < 4; i++)
+				k[i] = buffer.getInt();
+			keys.put(map, k);
+		}
+		return keys;
+	}
+
+	public static void main(String[] bla) {
+		// dump map_index
+
+		CacheManager hyperionCache = new CacheManager("./data/osrs124/");
+
+		try {
+			RandomAccessFile raf = new RandomAccessFile("./map_index_osrs124", "rw");
+			for (int regionId = 0; regionId < 16384; regionId++) {
+				int regionX = (regionId >> 8) * 64;
+				int regionY = (regionId & 0xff) * 64;
+				int aX = ((regionX >> 3) / 8), bY = ((regionY >> 3) / 8);
+				int mapFile = hyperionCache.getReferenceTables()[5].getArchiveByName("m"+aX+"_"+bY);
+				int landscapeFile = hyperionCache.getReferenceTables()[5].getArchiveByName("l"+aX+"_"+bY);
+				if (mapFile == -1 || landscapeFile == -1) {
+					continue;
+				}
+				raf.writeShort(regionId);
+				raf.writeShort(mapFile);
+				raf.writeShort(landscapeFile);
+			}
+			raf.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * The logger for the class
@@ -22,14 +108,14 @@ public class MapLoading {
 
 	public static void load() {
 		try {
-			File f = new File("./data/map/map_index");
+			File f = new File("./map_index_osrs124"); // ./data/map/map_index
 			byte[] buffer = new byte[(int) f.length()];
 			DataInputStream dis = new DataInputStream(new FileInputStream(f));
 			dis.readFully(buffer);
 			dis.close();
 			ByteStream in = new ByteStream(buffer);
 			int size = in.length() / 6;
-			in.readUnsignedWord();
+			//in.readUnsignedWord(); // map_index found in usual RSPS.. this one is custom. uses file.length to determine loopcount instead of a header short(aka word)
 			LOGGER.info(Utility.format(size) + " Maps about to load...");
 			int[] regionIds = new int[size];
 			int[] mapGroundFileIds = new int[size];
@@ -40,9 +126,10 @@ public class MapLoading {
 				mapGroundFileIds[i] = in.getUShort();
 				mapObjectsFileIds[i] = in.getUShort();
 			}
+			Map<Integer, int[]> xteaMap = textKeys();
 			for (int i = 0; i < size; i++) {
-				byte[] file1 = getBuffer(new File("./data/map/mapdata/" + mapObjectsFileIds[i] + ".gz"));
-				byte[] file2 = getBuffer(new File("./data/map/mapdata/" + mapGroundFileIds[i] + ".gz"));
+				byte[] file1 = OpenRsUnpacker.hyperionCache.getArchive(5, mapObjectsFileIds[i], xteaMap.getOrDefault(regionIds[i], new int[4])).getData(); // getBuffer(new File("./data/map/mapdata/" + mapObjectsFileIds[i] + ".gz"));
+				byte[] file2 = OpenRsUnpacker.hyperionCache.getArchive(5, mapGroundFileIds[i]).getData(); // getBuffer(new File("./data/map/mapdata/" + mapGroundFileIds[i] + ".gz"));
 				if (file1 == null || file2 == null) {
 					continue;
 				}
@@ -54,7 +141,6 @@ public class MapLoading {
 					System.out.println("Error loading map region: " + regionIds[i] + ", ids: " + mapObjectsFileIds[i] + " and " + mapGroundFileIds[i]);
 				}
 			}
-
 			LOGGER.info(Utility.format(successfull) + " Maps have been loaded successfully.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,6 +188,7 @@ public class MapLoading {
 		}
 		int objectId = -1;
 		int incr;
+
 		while ((incr = str1.getUSmart()) != 0) {
 			objectId += incr;
 			int location = 0;
@@ -122,13 +209,12 @@ public class MapLoading {
 				}
 				if (height >= 0 && height <= 3) {
 					GameObject obj = new GameObject(objectId, rX + localX, rY + localY, height, direction, type);
+
 					Region.addClipping(obj);
-					World.getWorld().regions.getRegionByLocation(Tile.create(obj.getX(), obj.getY(), obj.getHeight())).addObject(obj);
+					World.getWorld().regions.getRegionByLocation(Location.create(obj.getX(), obj.getY(), obj.getHeight())).addObject(obj);
+
 					if (obj.getId() >= CachedObjectDefinition.objectDefinitions.length) {
-						
-						boolean test = false;
-						if(test == true)
-						System.out.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getHeight()+" type "+obj.getType()+","+obj.getFace());
+						System.err.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getHeight()+" type "+obj.getType()+","+obj.getFace());
 					}
 				}
 			}

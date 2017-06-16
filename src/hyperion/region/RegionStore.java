@@ -158,26 +158,6 @@ public class RegionStore {
 	public String toString() {
 		return "["+coordinate.getX()+":"+coordinate.getY()+"]";
 	}
-	
-	/**
-	 * Gets the regions surrounding a location.
-	 * @return The regions surrounding the location.
-	 */
-	public RegionStore[] getSurroundingRegions() {
-		RegionStore[] surrounding = new RegionStore[9];
-		surrounding[0] = this;
-		surrounding[1] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY() - 1);
-		surrounding[2] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY() + 1);
-		surrounding[3] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY());
-		surrounding[4] = RegionStoreManager.get().getRegion(this.getCoordinates().getX(), this.getCoordinates().getY() - 1);
-		surrounding[5] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY());
-		surrounding[6] = RegionStoreManager.get().getRegion(this.getCoordinates().getX(), this.getCoordinates().getY() + 1);
-		surrounding[7] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() - 1, this.getCoordinates().getY() + 1);
-		surrounding[8] = RegionStoreManager.get().getRegion(this.getCoordinates().getX() + 1, this.getCoordinates().getY() - 1);
-
-		
-		return surrounding;
-	}
 
 	private List<GameObject> objects = new LinkedList<GameObject>();
 
@@ -189,18 +169,4 @@ public class RegionStore {
 		objects.add(obj);
 	}
 
-	public void removeObject(GameObject obj) {
-		objects.remove(obj);
-	}
-
-	public GameObject getGameObject(Tile location, int id) {
-		for(RegionStore r : getSurroundingRegions()) {
-			for(GameObject obj : r.getGameObjects()) {
-				if(obj.getPosition().equals(location) && obj.getId() == id) {
-					return obj;
-				}
-			}
-		}
-		return null;
-	}
 }

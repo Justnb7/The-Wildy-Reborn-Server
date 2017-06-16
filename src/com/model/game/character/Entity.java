@@ -999,7 +999,7 @@ public abstract class Entity {
 	 * Gets the width of the entity.
 	 * @return The width of the entity.
 	 */
-	public abstract int getHeight();
+	public abstract int yLength();
 	
 	/**
 	 * Gets the centre location of the entity.

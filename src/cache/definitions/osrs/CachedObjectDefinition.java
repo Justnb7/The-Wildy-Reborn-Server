@@ -7,6 +7,8 @@ import cache.io.osrs.InputStream;
 
 public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
+	int walkToFlag; // CUSTOM the decoder didn't actually set it!
+
 	public static CachedObjectDefinition[] objectDefinitions;
 
 	public int anInt1582;
@@ -55,7 +57,7 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
     
 	public static final AnyRevObjectDefinition forId(int objId) {
 		if (objId < 0 || objId >= objectDefinitions.length) {
-			//System.err.println("bad osrs objdef id : "+objId);
+			System.err.println("bad osrs objdef id : "+objId);
 			// fall back to 317 defs
 			return ObjectDefinition317.get(objId);
 		}
@@ -196,7 +198,7 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 		} else if(var2 == 68) {
 			this.anInt1547 = var1.readUnsignedShort();
 		} else if(var2 == 69) {
-			var1.readUnsignedByte();
+			walkToFlag = var1.readUnsignedByte();
 		} else if(var2 == 70) {
 			this.anInt1540 = var1.readShort();
 		} else if(var2 == 71) {
@@ -271,7 +273,7 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
 	@Override
 	public int getWalkToFlag() {
-		return 0;
+		return walkToFlag;
 	}
 
 	@Override
@@ -306,12 +308,12 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
 	@Override
 	public int xLength() {
-		return 0;
+		return anInt1554;
 	}
 
 	@Override
 	public int yLength() {
-		return 0;
+		return anInt1555;
 	}
 
 	@Override
@@ -338,7 +340,7 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
 	@Override
 	public int getId() {
-		return 0; // TODO
+		return anInt1582;
 	}
 
 	@Override

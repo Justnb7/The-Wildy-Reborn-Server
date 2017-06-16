@@ -911,7 +911,7 @@ public class Player extends Entity {
 	}
 	
 	@Override
-	public int getHeight() {
+	public int yLength() {
 		return 1;
 	}
 

@@ -146,7 +146,7 @@ public class Location {
 
 	@Override
 	public boolean equals(java.lang.Object other) {
-		if (other instanceof Location) {
+		if (other instanceof Location || other instanceof Tile) {
 			Location p = (Location) other;
 			return x == p.x && y == p.y && z == p.z;
 		}
@@ -323,8 +323,8 @@ public class Location {
 	 * <code>false</code> if not.
 	 */
 	public int distanceToEntity(Entity attacker, Entity victim) {
-		if (attacker.getWidth() == 1 && attacker.getHeight() == 1 && victim.getWidth() == 1
-				&& victim.getHeight() == 1) {
+		if (attacker.getWidth() == 1 && attacker.yLength() == 1 && victim.getWidth() == 1
+				&& victim.yLength() == 1) {
 			return distanceToPoint(victim.getLocation());
 		}
 		int lowestDistance = 100;
@@ -348,8 +348,8 @@ public class Location {
 	 * <code>false</code> if not.
 	 */
 	public boolean isWithinDistance(Entity attacker, Entity victim, int distance) {
-		if (attacker.getWidth() == 1 && attacker.getHeight() == 1 &&
-				victim.getWidth() == 1 && victim.getHeight() == 1 && distance == 1) {
+		if (attacker.getWidth() == 1 && attacker.yLength() == 1 &&
+				victim.getWidth() == 1 && victim.yLength() == 1 && distance == 1) {
 			return distance(victim.getLocation()) <= distance;
 		}
 		List<Location> myTiles = entityTiles(attacker);
@@ -402,13 +402,13 @@ public class Location {
 						entity.getLocation().getY(), entity.getLocation().getZ()));
 			}
 		}
-		if (entity.getHeight() > 1) {
-			for (int i = 1; i < entity.getHeight(); i++) {
+		if (entity.yLength() > 1) {
+			for (int i = 1; i < entity.yLength(); i++) {
 				myTiles.add(Location.create(entity.getLocation().getX(),
 						entity.getLocation().getY() + i, entity.getLocation().getZ()));
 			}
 		}
-		int myHighestVal = (entity.getWidth() > entity.getHeight() ? entity.getWidth() : entity.getHeight());
+		int myHighestVal = (entity.getWidth() > entity.yLength() ? entity.getWidth() : entity.yLength());
 		if (myHighestVal > 1) {
 			for (int i = 1; i < myHighestVal; i++) {
 				myTiles.add(Location.create(entity.getLocation().getX() + i,

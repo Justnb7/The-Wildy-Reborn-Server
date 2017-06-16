@@ -1,7 +1,6 @@
 package com.model.server;
 
 import cache.OpenRsUnpacker;
-import cache.definitions.r317.ObjectDefinition317;
 import clipmap.MapLoading;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.model.game.Constants;
@@ -24,7 +23,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ResourceLeakDetector;
-import org.openrs.cache.Cache;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -98,8 +96,6 @@ public class Bootstrap {
 		return this;
 	}
 
-	public static Cache cache;
-
 	/**
 	 * Executes external files to be used in game.
 	 */
@@ -108,9 +104,9 @@ public class Bootstrap {
 		LOGGER.info("Loading startup files..");
 		serviceLoader.execute(() -> {
 
-			cache = OpenRsUnpacker.unpack(); // If ur loading OSRS cache .. containing game objects
+			OpenRsUnpacker.unpack(); // If ur loading OSRS cache .. containing game objects
 
-			ObjectDefinition317.loadConfig(); // obj def for 317 .. if ur using collisiondata.dat
+			//ObjectDefinition317.loadConfig(); // obj def for 317 .. if ur using collisiondata.dat
 
 			MapLoading.load(); // load ur dumped osrs cache clipping tiles .gz files
 
@@ -120,6 +116,7 @@ public class Bootstrap {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}*/
+
 			LOGGER.info("Loading all of the game data...");
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();

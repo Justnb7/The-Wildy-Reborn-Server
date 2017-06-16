@@ -1,13 +1,13 @@
 package cache;
 
-import cache.definitions.osrs.CachedItemDefinition;
-import cache.definitions.osrs.CachedNpcDefinition;
+import cache.definitions.AnyRevObjectDefinition;
 import cache.definitions.osrs.CachedObjectDefinition;
+import cache.definitions.r317.ObjectDefinition317;
+import cache.fs.CacheArchive;
+import cache.fs.CacheManager;
 import org.openrs.cache.Cache;
-import org.openrs.cache.FileStore;
 import org.openrs.cache.tools.BasicByteUnpacker;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -16,10 +16,22 @@ import java.io.IOException;
 public class OpenRsUnpacker {
 
     private final static BasicByteUnpacker[] idx = new BasicByteUnpacker[17];
-    public static Cache cache = null;
 
-    public static Cache unpack() {
-        try {
+    private static Cache cache = null;
+    public static CacheManager hyperionCache = null;
+    private static boolean openRS = false;
+
+    public static void unpack() {
+        if (!openRS) {
+            hyperionCache = new CacheManager("./data/osrs124/");
+            int count = hyperionCache.getReferenceTables()[2].getArchiveInfomation()[6].getArchiveEntryInfomation().length;
+            CachedObjectDefinition.objectDefinitions = new CachedObjectDefinition[count];
+            System.out.println("Objects in cache: "+count);
+            return;
+        }
+
+        // open RS not in use
+        /*try {
             cache = new Cache(FileStore.open("./data/osrscache/"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -38,21 +50,34 @@ public class OpenRsUnpacker {
                     CachedItemDefinition.definitions.length, CachedNpcDefinition.npcDefinitions.length);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        return cache;
+        }*/
     }
+
+    static CacheArchive[][] lol = new CacheArchive[16][2000];
 
     public static byte[] readData(int idx, int archive, int file) {
         byte[] data = null;
         try {
-            if (idx < OpenRsUnpacker.idx.length) {
-                if (OpenRsUnpacker.idx[idx] == null)
-                    OpenRsUnpacker.idx[idx] = new BasicByteUnpacker(cache, idx);
-                data = OpenRsUnpacker.idx[idx].getDefinition(archive, file).array();
+            if (!openRS) {
+                if (lol[idx][archive] == null) {
+                    lol[idx][archive] = hyperionCache.getArchive(idx, archive);
+                }
+                data = lol[idx][archive].getChildData(file);
+            }
+            else if (cache != null) { // using openRS
+                if (idx < OpenRsUnpacker.idx.length) {
+                    if (OpenRsUnpacker.idx[idx] == null)
+                        OpenRsUnpacker.idx[idx] = new BasicByteUnpacker(cache, idx);
+                    data = OpenRsUnpacker.idx[idx].getDefinition(archive, file).array();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return data;
+    }
+
+    public static AnyRevObjectDefinition objectdef(int object) {
+        return cache != null || hyperionCache != null ? CachedObjectDefinition.forId(object) : ObjectDefinition317.get(object);
     }
 }

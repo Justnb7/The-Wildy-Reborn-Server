@@ -123,7 +123,7 @@ public class AnimatedArmour {
 	public static void dropTokens(Player player, int npcType, int x, int y) {
 		Armour npc = getArmourForNpcId(npcType);
 		if(npc != null) {
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(8851, npc.getAmountOfTokens()), x, y, player.getHeight(), player));
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(8851, npc.getAmountOfTokens()), x, y, player.getZ(), player));
 			player.isAnimatedArmourSpawned = false;
 		}
 	}

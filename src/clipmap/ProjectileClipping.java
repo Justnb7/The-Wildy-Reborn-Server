@@ -3,12 +3,6 @@ package clipmap;
 import cache.definitions.AnyRevObjectDefinition;
 import com.model.game.object.GameObject;
 
-/**
- * A copy of the RegionClipping class, with some adjustments to account for projectiles shooting over certain objects, coord etc.
- *
- * NOTICABLY ADDCLIPPING ISNT CALLED BY REGION DEFINITION DECODER .. only objects add this clipping!
- *
- */
 public class ProjectileClipping {
 
 	private static final int REGION_SIZE = 128;
@@ -144,10 +138,6 @@ public class ProjectileClipping {
 			return false;
 		}
 	}
-
-	private static ProjectileClipping getRegion(int x, int y, int z) {
-		return forCoords(x, y);
-	}
 	
 	private int[][][] clippingMasks = new int[4][][];
 	private int size;
@@ -188,7 +178,7 @@ public class ProjectileClipping {
 	}
 
 	public static void addClipping(GameObject obj) {
-		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
+		AnyRevObjectDefinition def = obj.getDefinition();
 		if (def == null || (def.getName() != null && (def.getName().equalsIgnoreCase("tree stump") || def.getName().equalsIgnoreCase("anvil"))) || obj.getId() == 83) {
 			return;
 		}

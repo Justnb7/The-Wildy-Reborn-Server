@@ -5,6 +5,7 @@ import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 import hyperion.Directions;
 import hyperion.impl.PrimitivePathFinder;
@@ -188,7 +189,7 @@ public class RegionStoreManager {
 	 *            The location.
 	 * @return The region.
 	 */
-	public RegionStore getRegionByLocation(Tile location) {
+	public RegionStore getRegionByLocation(Location location) {
 		return getRegion(location.getX() / REGION_SIZE, location.getY() / REGION_SIZE);
 	}
 

@@ -73,14 +73,14 @@ public final class NPCAggression {
         if(npc.isPet) {
             return false;
         }
-        if (p.heightLevel != npc.heightLevel || !p.isVisible()) {
+        if (p.getZ() != npc.getZ() || !p.isVisible()) {
             return false;
         }
         if (p.aggressionTolerance.elapsed(5, TimeUnit.MINUTES) && !npc.inMulti() && npc.getDefinition().getCombatLevel() < COMBAT_LEVEL_TOLERANCE) {
         	return false;
         }
         // Bad distance
-        if (!npc.distance(p.absX, p.absY, npc.absX, npc.absY, AGGRESSION.getOrDefault(npc.getId(), TARGET_DISTANCE))) {
+        if (!npc.distance(p.getX(), p.getY(), npc.getX(), npc.getY(), AGGRESSION.getOrDefault(npc.getId(), TARGET_DISTANCE))) {
             return false;
         }
         // At a most basic level, if you get to here, the npc is alive, in distance etc

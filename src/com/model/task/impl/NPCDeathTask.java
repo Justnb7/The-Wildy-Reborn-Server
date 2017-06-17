@@ -17,9 +17,9 @@ import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.minigames.fight_caves.FightCaves;
 import com.model.game.character.player.minigames.warriors_guild.AnimatedArmour;
 import com.model.game.character.player.skill.slayer.SlayerTaskManagement;
+import com.model.game.location.Location;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
-import com.model.utility.Location3D;
 
 /**
  * Handles respawning an {@link NPC} which has just died
@@ -103,8 +103,6 @@ public class NPCDeathTask extends ScheduledTask {
      * 
      * @param npc
      *            The {@link NPC} that has died
-     * @param killer
-     *            The {@link Player} that has killed the npc
      */
     private void handleUnspawnableNpc(NPC npc) {
 
@@ -126,8 +124,6 @@ public class NPCDeathTask extends ScheduledTask {
      * 
      * @param player
      *            The {@link Player} who has killed this npc
-     * @param mob
-     *            The {@link NPC} who died
      */
     private void removeMobFromWorld(Player player, NPC npc) {
         if (player != null && !player.isDead()) {}
@@ -143,8 +139,7 @@ public class NPCDeathTask extends ScheduledTask {
         npc.removeFromTile();
         onDeath(npc);
         npc.setVisible(false);
-        npc.setAbsX(npc.makeX);
-        npc.setAbsY(npc.makeY);
+        npc.setLocation(Location.create(npc.makeX, npc.makeY)); // No height level change assumed
         npc.setHitpoints(npc.getMaxHitpoints());
 		
         if (!npc.noDeathEmote) {
@@ -249,20 +244,16 @@ public class NPCDeathTask extends ScheduledTask {
 
     /**
      * The mob is respawned and set to visible to be updated again
-     * 
-     * @param mob2
+     *
      */
     public static void respawn(NPC npc) {
         npc.killedBy = -1;
         npc.setVisible(true);
         npc.setDead(false);
-        npc.setOnTile(npc.absX, npc.absY, npc.heightLevel);
+        npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
     }
     
     private final static void onDeath(NPC npc) {
-    	int dropX = npc.absX;
-		int dropY = npc.absY;
-		int dropHeight = npc.heightLevel;
     	
 		if (npc.killedBy == -1) {
 			return;
@@ -341,14 +332,13 @@ public class NPCDeathTask extends ScheduledTask {
 			}
 		}
 		
-		player.getWarriorsGuild().dropDefender(npc.absX, npc.absY);
+		player.getWarriorsGuild().dropDefender(npc.getX(), npc.getY());
 		if(AnimatedArmour.isAnimatedArmourNpc(npc.getId()))
-			AnimatedArmour.dropTokens(player, npc.getId(), npc.absX, npc.absY);
+			AnimatedArmour.dropTokens(player, npc.getId(), npc.getX(), npc.getY());
 		
 		// get the drop table
-		Location3D location = new Location3D(dropX, dropY, dropHeight);
 		int amountOfDrops = 1;
-		Server.getDropManager().create(player, npc, location, amountOfDrops);
+		Server.getDropManager().create(player, npc, npc.getLocation(), amountOfDrops);
 	}
 
 }

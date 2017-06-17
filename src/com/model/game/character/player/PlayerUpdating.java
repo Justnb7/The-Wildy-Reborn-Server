@@ -1,8 +1,5 @@
 package com.model.game.character.player;
 
-import java.util.Iterator;
-import java.util.Optional;
-
 import com.model.Appearance;
 import com.model.UpdateFlags;
 import com.model.UpdateFlags.UpdateFlag;
@@ -11,6 +8,9 @@ import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.utility.Utility;
+
+import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * Handles all of the player updating needs
@@ -251,8 +251,6 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} to write data too
 	 * @param forceAppearance
 	 *            Forces the player to update appearance
-	 * @param samePlayer
-	 *            Don't update if its the same player
 	 */
 	private static void updatePlayer(Player player, GameBuffer buffer, boolean forceAppearance, Player target, boolean noChat) {
 		
@@ -426,17 +424,18 @@ public class PlayerUpdating {
 			/*
 			 * This is the new player height.
 			 */
-			buffer.writeBits(2, player.heightLevel);
+			buffer.writeBits(2, player.getZ());
 			/*
 			 * This flag indicates if an update block is appended.
 			 */
 			buffer.writeBits(true);
 			buffer.writeBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 			/*
-			 * These are the positions.
+			 * Direction moved this cycle in x/y axis
 			 */
-			buffer.writeBits(7, player.currentY);
-			buffer.writeBits(7, player.currentX);
+			buffer.writeBits(7, player.teleLocalY);
+			buffer.writeBits(7, player.teleLocalX);
+			System.out.println("GPI "+player.teleLocalX+","+player.teleLocalY);
 		} else {
 			/*
 			 * Otherwise, check if the player moved.

@@ -147,7 +147,7 @@ public class GlobalObjects {
 	 */
 	public void updateObject(final GameObject object, final int objectId) {
 		List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player ->
-			player.distanceToPoint(object.getX(), object.getY()) <= 60 && player.heightLevel == object.getHeight()).collect(Collectors.toList());
+			player.distanceToPoint(object.getX(), object.getY()) <= 60 && player.getZ() == object.getHeight()).collect(Collectors.toList());
 		players.forEach(player -> player.getActionSender().sendObject(objectId, object.getX(), object.getY(), object.getHeight(), object.getFace(), object.getType()));
  	}
 	
@@ -157,7 +157,7 @@ public class GlobalObjects {
 	 */
 	public void updateRegionObjects(Player player) {
 		objects.stream().filter(Objects::nonNull).filter(object -> player.distanceToPoint(
-			object.getX(), object.getY()) <= 60 && object.getHeight() == player.heightLevel).forEach(object -> player.getActionSender().sendObject(
+			object.getX(), object.getY()) <= 60 && object.getHeight() == player.getZ()).forEach(object -> player.getActionSender().sendObject(
 				object.getId(), object.getX(), object.getY(), object.getHeight(), object.getFace(), object.getType()));
 	}
 

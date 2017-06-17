@@ -120,7 +120,7 @@ public class PlayerVsNpcCombat {
 		}
 
 		if (findpath) {
-			PathFinder.getPathFinder().findRoute(player, npc.absX, npc.absY, true, 1, 1);
+			PathFinder.getPathFinder().findRoute(player, npc.getX(), npc.getY(), true, 1, 1);
 		}
 		//player.write(new SendGameMessage("debug");
 		return false;

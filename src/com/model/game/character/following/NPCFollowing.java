@@ -39,7 +39,7 @@ public class NPCFollowing {
 			}
 		}
 
-		if (target.isDead() || !target.isVisible() || npc.heightLevel != target.heightLevel) {
+		if (target.isDead() || !target.isVisible() || npc.getZ() != target.getZ()) {
 			npc.setFollowing(null);
 			npc.resetFace();
 			npc.walkingHome = true;
@@ -50,7 +50,7 @@ public class NPCFollowing {
 		int targX = target.getX();
 		int targY = target.getY();
 
-		//npc.forceChat("delta "+(npc.absX-targX)+" by "+(npc.absY-targY));
+		//npc.forceChat("delta "+(npc.getX()-targX)+" by "+(npc.getY()-targY));
 
 		// At this point, the target is valid, don't start walking off randomly.
 		
@@ -116,13 +116,13 @@ public class NPCFollowing {
 	 * @param destinationY
 	 */
 	public static void walkToNextTile(NPC mob, int destinationX, int destinationY) {
-		if (mob.absX == destinationX && mob.absY == destinationY)
+		if (mob.getX() == destinationX && mob.getY() == destinationY)
 			return;
 
 		int direction = -1;
 
-		final int x = mob.absX;
-		final int y = mob.absY;
+		final int x = mob.getX();
+		final int y = mob.getY();
 		final int xDifference = destinationX - x;
 		final int yDifference = destinationY - y;
 
@@ -177,10 +177,9 @@ public class NPCFollowing {
 			return;
 		}
 
-		mob.absX = x + Constants.DIRECTION_DELTA_X[direction];
-		mob.absY = y + Constants.DIRECTION_DELTA_Y[direction];
+		mob.setLocation(mob.getLocation().transform(Constants.DIRECTION_DELTA_X[direction], Constants.DIRECTION_DELTA_Y[direction]));
 		mob.direction = direction;
-		mob.setOnTile(mob.absX, mob.absY, mob.heightLevel);
+		mob.setOnTile(mob.getX(), mob.getY(), mob.getZ());
 	}
 
 }

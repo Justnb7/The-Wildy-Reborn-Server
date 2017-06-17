@@ -1,8 +1,5 @@
 package com.model.game.character.player.minigames.warriors_guild;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.Player;
 import com.model.game.definitions.ItemDefinition;
@@ -13,6 +10,9 @@ import com.model.game.location.Location;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.utility.Utility;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * 
@@ -81,9 +81,9 @@ public class WarriorsGuild {
 	}
 	
 	public void handleDoor() {
-		if(player.absX == 2847 && player.absY == 3540 || player.absX == 2847 && player.absY == 3541) {
-			player.movePlayer(new Location(player.absX - 1, player.absY, 2));
-		} else if(player.absX == 2846 && player.absY == 3540 || player.absX == 2846 && player.absY == 3541 || Boundary.isIn(player, WAITING_ROOM_BOUNDARY)) {
+		if(player.getX() == 2847 && player.getY() == 3540 || player.getX() == 2847 && player.getY() == 3541) {
+			player.movePlayer(new Location(player.getX() - 1, player.getY(), 2));
+		} else if(player.getX() == 2846 && player.getY() == 3540 || player.getX() == 2846 && player.getY() == 3541 || Boundary.isIn(player, WAITING_ROOM_BOUNDARY)) {
 			if(player.getInventory().contains(8851, 200)) {
 				int current = currentDefender();
 				if (current == -1) {

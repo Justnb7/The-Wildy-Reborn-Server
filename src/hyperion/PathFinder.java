@@ -51,7 +51,7 @@ public interface PathFinder {
 				for (BasicPoint step : state.getPoints()) {
 					//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
 					//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
-					p.getMovementHandler().addToPath(new Location(step.getX(), step.getY(), p.heightLevel));
+					p.getMovementHandler().addToPath(new Location(step.getX(), step.getY(), p.getZ()));
 				}
 				p.getMovementHandler().finish();
 				//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));

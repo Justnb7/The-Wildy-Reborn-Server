@@ -919,11 +919,6 @@ public class Player extends Entity {
 	public int getWidth() {
 		return 1;
 	}
-
-	@Override
-	public Location getLocation() {
-		return new Location(absX, absY, heightLevel);
-	}
 	
 	@Override
 	public Location getCentreLocation() {
@@ -1133,7 +1128,7 @@ public class Player extends Entity {
 	}
 
 	public boolean withinDistance(Player otherPlr) {
-		if (heightLevel != otherPlr.heightLevel) {
+		if (getZ() != otherPlr.getZ()) {
 			return false;
 		}
 		int deltaX = otherPlr.getX() - getX(), deltaY = otherPlr.getY() - getY();
@@ -1141,7 +1136,7 @@ public class Player extends Entity {
 	}
 
 	public boolean withinDistance(NPC npc) {
-		if (heightLevel != npc.heightLevel) {
+		if (getZ() != npc.getZ()) {
 			return false;
 		}
 		if (!npc.isVisible()) {
@@ -1176,10 +1171,6 @@ public class Player extends Entity {
 
 	public int getMapRegionY() {
 		return mapRegionY;
-	}
-
-	public int getZ() {
-		return heightLevel;
 	}
 
 	public void setChatTextEffects(int chatTextEffects) {
@@ -1244,7 +1235,6 @@ public class Player extends Entity {
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
 		mapRegionX = mapRegionY = -1;
-		currentX = currentY = 0;
 		getMovementHandler().reset();
 		outStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		outStream.offset = 0;
@@ -1421,11 +1411,11 @@ public class Player extends Entity {
 	}
 
 	public int getChunckX() {
-		return (absX >> 6);
+		return (getX() >> 6);
 	}
 
 	public int getChunckY() {
-		return (absY >> 6);
+		return (getY() >> 6);
 	}
 
 	public int getRegionId() {
@@ -1701,14 +1691,6 @@ public class Player extends Entity {
 	
 	public void setFirstBossSlayerTask(boolean firstTime) {
 		this.firstBossSlayerTask = firstTime;
-	}
-
-	public int localX() {
-		return absX;
-	}
-
-	public int localY() {
-		return absY;
 	}
 	
 	/**
@@ -2370,8 +2352,7 @@ public class Player extends Entity {
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
 	public int mapRegionX, mapRegionY;
-	public int currentX, currentY;
-	public int teleportToX = -1, teleportToY = -1, teleHeight;
+	public int teleportToX = -1, teleportToY = -1, teleHeight, teleLocalX, teleLocalY;
 	public int lastClickedItem;
 
 	public int totalLevel,

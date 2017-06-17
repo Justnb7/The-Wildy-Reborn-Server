@@ -69,13 +69,13 @@ public class MovementHandler {
 				if (player.mapRegionX != -1 && player.mapRegionY != -1) {
 					int relX = player.teleportToX - (player.mapRegionX << 3), relY = player.teleportToY - (player.mapRegionY << 3);
 
-					if (relX >= 2 << 3 && relX < 11 << 3 && relY >= 2 << 3 && relY < 11 << 3) {
+					if (relX >= 2 << 3 && relX < 11 << 3 && relY >= 2 << 3 && relY < 11 << 3) { // didnt actually tele that far out of current region
 						player.setMapRegionChanging(false);
 					}
 				}
 				
 				boolean zChange = false;
-				if (player.teleHeight != -1 && (player.teleHeight != player.heightLevel)) {
+				if (player.teleHeight != -1 && (player.teleHeight != player.getZ())) {
 					zChange = true;
 					player.setMapRegionChanging(true);
 				}
@@ -85,20 +85,18 @@ public class MovementHandler {
 					player.mapRegionY = (player.teleportToY >> 3) - 6;
 					player.setLastKnownRegion(player.getLocation());
 				}
-				
+				player.teleLocalX = (player.teleportToX - (player.mapRegionX << 3));
+				player.teleLocalY = (player.teleportToY - (player.mapRegionY << 3));
+				System.out.println("teleport new telepos "+player.teleLocalX+","+player.teleLocalY+" from "+player.mapRegionX+","+player.mapRegionY);
+
 				/*
 				 * Set our current Location since we've just teleported
 				 */
-				player.currentX = (player.teleportToX - (player.mapRegionX << 3));
-				player.currentY = (player.teleportToY - (player.mapRegionY << 3));
-				player.absX = (short) player.teleportToX;
-				player.absY = (short) player.teleportToY;
-				player.heightLevel = player.teleHeight != -1 ? player.teleHeight : player.heightLevel;
-				player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
+				player.setLocation(Location.create(player.teleportToX, player.teleportToY, zChange ? player.teleHeight : player.getZ()));
 				player.updateCoverage(player.getPosition());
-				player.lastTile = new Location(player.absX, player.absY+1, player.heightLevel);
+				player.lastTile = new Location(player.getX(), player.getY()+1, player.getZ());
 				reset();
-				player.teleportToX = player.teleportToY = player.teleHeight = -1;
+				player.teleportToX = player.teleportToY = player.teleHeight = -1; // reset
 				player.setTeleporting(true);
 				player.updateWalkEntities();
 				/*
@@ -139,11 +137,11 @@ public class MovementHandler {
 			}
 
 			// Check for region changes.
-			int deltaX = player.absX - player.getMapRegionX() * 8;
-			int deltaY = player.absY - player.getMapRegionY() * 8;
+			int deltaX = player.getX() - player.getMapRegionX() * 8;
+			int deltaY = player.getY() - player.getMapRegionY() * 8;
 			if (deltaX < 16 || deltaX >= 88 || deltaY < 16 || deltaY > 88) {
-				player.mapRegionX = (player.absX >> 3) - 6;
-				player.mapRegionY = (player.absY >> 3) - 6;
+				player.mapRegionX = (player.getX() >> 3) - 6;
+				player.mapRegionY = (player.getY() >> 3) - 6;
 				player.setMapRegionChanging(true);
 			}
 		} catch (Exception e) {
@@ -159,6 +157,7 @@ public class MovementHandler {
 	}
 
 	public void move(int dir) {
+		// for updating
 		if (getWalkingDirection() == -1) {
 			setWalkingDirection(dir);
 		} else if (getRunningDirection() == -1) {
@@ -166,13 +165,13 @@ public class MovementHandler {
 		} else {
 			throw new IllegalArgumentException("Tried to set a THIRD walking direction!");
 		}
+		player.lastTile = new Location(player.getX(), player.getY(), player.getZ());
 
-		player.lastTile = new Location(player.absX, player.absY, player.heightLevel);
-		player.currentX += DIR[dir][0];
-		player.currentY += DIR[dir][1];
-		player.absX += DIR[dir][0];
-		player.absY += DIR[dir][1];
-		player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
+		player.teleLocalX += DIR[dir][0];
+		player.teleLocalY += DIR[dir][1];
+		System.out.println("moved dir "+dir+" new telepos "+player.teleLocalX+","+player.teleLocalY);
+		// update position
+		player.setLocation(player.getLocation().transform(DIR[dir][0], DIR[dir][1]));
 		player.updateCoverage(player.getPosition());
 		player.updateWalkEntities();
 	}
@@ -189,7 +188,7 @@ public class MovementHandler {
 		waypoints.clear();
 
 		// Set the base point as this Location.
-		waypoints.add(new Point(player.absX, player.absY, -1));
+		waypoints.add(new Point(player.getX(), player.getY(), -1));
 	}
 
 	/**

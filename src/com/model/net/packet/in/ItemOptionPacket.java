@@ -519,7 +519,7 @@ public class ItemOptionPacket implements PacketType {
 	 * @return If the player is standing on this spot
 	 */
 	private boolean onSpot(Player player, Location position) {
-		return player.absX == position.getX() && player.absY == position.getY() && player.heightLevel == position.getZ();
+		return player.getX() == position.getX() && player.getY() == position.getY() && player.getZ() == position.getZ();
 	}
 
 }

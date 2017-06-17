@@ -214,7 +214,7 @@ public class Location {
 		return z;
 	}
 
-	static boolean osrsclipping = true;
+	public static boolean osrsclipping = true;
 	/**
 	 * Gets the X coordinate of the region containing this Position.
 	 * 

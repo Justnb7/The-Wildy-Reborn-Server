@@ -217,7 +217,7 @@ public class World implements Service {
 				return false;
 			getNPCs().add(npc);
 			npc.setVisible(true);
-			npc.setOnTile(npc.absX, npc.absY, npc.heightLevel);
+			npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
 			return true; // GO
 		}
 
@@ -262,8 +262,6 @@ public class World implements Service {
 			getPlayers().remove(index);
 		} else if (entity.getEntityType() == EntityType.NPC) {
 			NPC npc = (NPC) entity;
-			npc.setAbsX(-1);
-			npc.setAbsY(-1);
 			npc.setVisible(false);
 			npcs.remove(npc.getIndex());
 			npc.removeFromTile();

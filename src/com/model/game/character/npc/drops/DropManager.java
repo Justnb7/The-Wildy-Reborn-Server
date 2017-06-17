@@ -1,26 +1,5 @@
 package com.model.game.character.npc.drops;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.definitions.ItemDefinition;
@@ -28,8 +7,21 @@ import com.model.game.definitions.NPCDefinitions;
 import com.model.game.item.Item;
 import com.model.game.item.ground.GroundItem;
 import com.model.game.item.ground.GroundItemHandler;
-import com.model.utility.Location3D;
+import com.model.game.location.Location;
 import com.model.utility.Utility;
+import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class DropManager {
 	
@@ -130,7 +122,7 @@ public class DropManager {
 	 * @param npc
 	 *            the npc dropping the items
 	 */
-	public void create(Player player, NPC npc, Location3D location, int repeats) {
+	public void create(Player player, NPC npc, Location location, int repeats) {
 		Optional<TableGroup> group = groups.values().stream().filter(g -> g.getNpcIds().contains(npc.getId())).findFirst();
 		
 		group.ifPresent(g -> {

@@ -57,9 +57,9 @@ public final class NPCMovementTask extends ScheduledTask {
 					NPCFollowing.walkToNextTile(npc, npc.makeX, npc.makeY);
 				}
 			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.walking_type == 1)) {
-				if (npc.walking_type == 1337 && ((npc.absX != npc.walkX) || (npc.absY != npc.walkY))) {
-					npc.moveX = GetMove(npc.absX, npc.walkX);
-					npc.moveY = GetMove(npc.absY, npc.walkY);
+				if (npc.walking_type == 1337 && ((npc.getX() != npc.walkX) || (npc.getY() != npc.walkY))) {
+					npc.moveX = GetMove(npc.getX(), npc.walkX);
+					npc.moveY = GetMove(npc.getY(), npc.walkY);
 					npc.getNextNPCMovement(npc);
 				}
 				int random = Utility.getRandom(3);
@@ -132,7 +132,7 @@ public final class NPCMovementTask extends ScheduledTask {
 						}
 
 					}
-					NPCFollowing.walkToNextTile(npc, npc.absX + npc.moveX, npc.absY + npc.moveY);
+					NPCFollowing.walkToNextTile(npc, npc.getX() + npc.moveX, npc.getY() + npc.moveY);
 				}
 			}
 		}

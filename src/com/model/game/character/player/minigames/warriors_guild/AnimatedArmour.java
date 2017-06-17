@@ -86,7 +86,7 @@ public class AnimatedArmour {
 	}
 	
 	public static void itemOnAnimator(final Player player, int itemId) {
-		if(player.absX != 2851 || player.absY != 3537) {
+		if(player.getX() != 2851 || player.getY() != 3537) {
 			player.getActionSender().sendMessage("You need to move closer.");
 			return;
 		}

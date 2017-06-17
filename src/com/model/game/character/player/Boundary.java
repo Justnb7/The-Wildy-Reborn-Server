@@ -1,12 +1,12 @@
 package com.model.game.character.player;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
 
 /**
@@ -84,8 +84,6 @@ public class Boundary {
 	
 	/**
 	 * @param value
-	 * @param min
-	 * @param max
 	 * @returns the specified value if the value is between min and max, 
 	 * otherwise min
 	 */
@@ -104,11 +102,11 @@ public class Boundary {
 	public static boolean isIn(Entity player, Boundary[] boundaries) {
 		for(Boundary b : boundaries) {
 			if (b.height > 0) {
-				if (player.heightLevel != b.height) {
+				if (player.getZ() != b.height) {
 					return false;
 				}
 			}
-			if (player.absX >= b.minX && player.absX <= b.highX && player.absY >= b.minY && player.absY <= b.highY) {
+			if (player.getX() >= b.minX && player.getX() <= b.highX && player.getY() >= b.minY && player.getY() <= b.highY) {
 				return true;
 			}
 		}
@@ -123,12 +121,12 @@ public class Boundary {
 	 */
 	public static boolean isIn(Player player, Boundary boundaries) {
 		if (boundaries.height > 0) {
-			if (player.heightLevel != boundaries.height) {
+			if (player.getZ() != boundaries.height) {
 				return false;
 			}
 		}
-		return player.absX >= boundaries.minX && player.absX <= boundaries.highX 
-				&& player.absY >= boundaries.minY && player.absY <= boundaries.highY;
+		return player.getX() >= boundaries.minX && player.getX() <= boundaries.highX 
+				&& player.getY() >= boundaries.minY && player.getY() <= boundaries.highY;
 	}
 	
 	/**
@@ -139,23 +137,23 @@ public class Boundary {
 	 */
 	public static boolean isIn(NPC npc, Boundary boundaries) {
 		if (boundaries.height > 0) {
-			if (npc.heightLevel != boundaries.height) {
+			if (npc.getZ() != boundaries.height) {
 				return false;
 			}
 		}
-		return npc.absX >= boundaries.minX && npc.absX <= boundaries.highX 
-				&& npc.absY >= boundaries.minY && npc.absY <= boundaries.highY;
+		return npc.getX() >= boundaries.minX && npc.getX() <= boundaries.highX 
+				&& npc.getY() >= boundaries.minY && npc.getY() <= boundaries.highY;
 	}
 	
 	public static boolean isIn(NPC npc, Boundary[] boundaries) {
 		for (Boundary boundary : boundaries) {
 			if (boundary.height > 0) {
-				if (npc.heightLevel != boundary.height) {
+				if (npc.getZ() != boundary.height) {
 					return false;
 				}
 			}
-			if (npc.absX >= boundary.minX && npc.absX <= boundary.highX 
-					&& npc.absY >= boundary.minY && npc.absY <= boundary.highY) {
+			if (npc.getX() >= boundary.minX && npc.getX() <= boundary.highX 
+					&& npc.getY() >= boundary.minY && npc.getY() <= boundary.highY) {
 				return true;
 			}
 		}

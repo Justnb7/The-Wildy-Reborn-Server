@@ -1,13 +1,14 @@
 package com.model.game.character.npc;
 
+import com.model.game.World;
+import com.model.game.character.player.Player;
+import com.model.game.location.Location;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import com.model.game.World;
-import com.model.game.character.player.Player;
-import com.model.game.location.Location;
 
 public final class NPCHandler {
 
@@ -76,11 +77,9 @@ public final class NPCHandler {
 
 		NPC newNPC = new NPC(npcType);
 
-		newNPC.setAbsX(x);
-		newNPC.setAbsY(y);
+		newNPC.setLocation(Location.create(x, y, heightLevel));
 		newNPC.makeX = x;
 		newNPC.makeY = y;
-		newNPC.heightLevel = heightLevel;
         newNPC.walking_type = WalkingType;
 		newNPC.setOnTile(x, y, heightLevel);
 		if (World.getWorld().register(newNPC)) {
@@ -92,11 +91,9 @@ public final class NPCHandler {
 	public static NPC spawnNpc(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
-		npc.setAbsX(spawn.getX());
-		npc.setAbsY(spawn.getY());
+		npc.setLocation(spawn);
 		npc.makeX = spawn.getX();
 		npc.makeY = spawn.getY();
-		npc.heightLevel = spawn.getZ();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
 		npc.setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());

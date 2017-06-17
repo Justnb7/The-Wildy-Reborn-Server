@@ -166,7 +166,7 @@ public class NPC extends Entity {
 	/**
 	 * npc Locations
 	 */
-	public int makeX, makeY, moveX, moveY;
+	public int makeX, makeY;
 	
 	public int combatLevel, spawnedBy, killedBy, oldIndex, underAttackBy, walking_type;
 	
@@ -273,10 +273,7 @@ public class NPC extends Entity {
 		setOnTile(position.getX(), position.getY(), position.getZ());
 		makeX = position.getX();
 		makeY = position.getY();
-		setAbsX(position.getX());
-		setAbsY(position.getY());
-		heightLevel = position.getZ();
-		setLocation(new Location(position.getX(), position.getY(), position.getZ()));
+		setLocation(position);
 		getAttributes().put("teleporting", true);
 	}
 
@@ -314,10 +311,6 @@ public class NPC extends Entity {
 			Server.getTaskScheduler().schedule(new NPCDeathTask(this));
 		}
 		return new Hit(damage, hit.getType());
-	}
-
-	public Location getLocation() {
-		return new Location(absX, absY, heightLevel);
 	}
 
 	public NPCDefinitions getDefinition() {
@@ -401,7 +394,7 @@ public class NPC extends Entity {
 		Object tele = getAttribute("teleporting", null);
 		boolean teleporting = tele != null && (boolean) tele;
 		if (teleporting) {
-			setOnTile(absX, absY, heightLevel);
+			setOnTile(getX(), getY(), getZ());
 			setAttribute("teleporting", false);
 		}
 		this.getUpdateFlags().primary = null;
@@ -420,7 +413,7 @@ public class NPC extends Entity {
 		final List<Player> surrounding = new ArrayList<>();
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player != null) {
-				if (player.isDead() || (player.heightLevel != mob.heightLevel)) {
+				if (player.isDead() || (player.getZ() != mob.getZ())) {
 					continue;
 				}
 
@@ -432,31 +425,31 @@ public class NPC extends Entity {
 		}
 		return surrounding;
 	}
-	
+
 	public int dogs = 0;
-	
+
 	public void spawnVetDogs(Player player) {
 		if (npcId == 6611) {
-			NPCHandler.spawnNpc(player, 6613, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6613, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6613, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6613, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		} else if (npcId == 6612) {
-			NPCHandler.spawnNpc(player, 6614, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6614, new Location(absX - 1, absY, heightLevel), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6614, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
+			NPCHandler.spawnNpc(player, 6614, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
 			dogs += 2;
 			spawnedVetionMinions = true;
 		}
 	}
-	
+
 	@Override
 	public void process() {
 		try {
 			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);
 			// none yet again duplicate INTs by PI
-			
+
 			if ((this.getHitpoints() > 0 && !isDead()) || isPet) {
-				
+
 				super.frozen_process();
 
 				// Only ever call following from here.
@@ -472,7 +465,7 @@ public class NPC extends Entity {
 				} else if (this.followTarget != null) {
 					NPCFollowing.attemptFollowEntity(this, followTarget);
 				}
-				
+
 				if (npcId == 6611 || npcId == 6612) {
 					if (this.getHitpoints() < (this.getMaxHitpoints() / 2) && !spawnedVetionMinions) {
 						spawnVetDogs(spawnedByPlr);
@@ -480,8 +473,8 @@ public class NPC extends Entity {
 				}
 				else if (npcId == 6615) {
 					if (this.getHitpoints() <= 100 && !spawnedScorpiaMinions) {
-						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX()- 1, absY, heightLevel), 1, true, false, true);
-						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX() + 1, absY, heightLevel), 1, true, false, true);
+						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, true, false, true);
+						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, true, false, true);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);
@@ -495,13 +488,13 @@ public class NPC extends Entity {
 					}
 				}
 			}
-			
+
 			/*
 			 * Handle our combat timers
 			 */
 			NpcVsPlayerCombat.handleCombatTimer(this);
 
-			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).heightLevel != heightLevel || World.getWorld().getPlayers().get(spawnedBy).isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
+			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() || World.getWorld().getPlayers().get(spawnedBy).isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
 				World.getWorld().unregister(this);
 			}
 			updateCoverage(getPosition());
@@ -545,7 +538,7 @@ public class NPC extends Entity {
 	public int distanceToPoint(int pointX, int pointY) {
 		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
 	}
-	
+
 	public int walkX, walkY;
 
 	public void getNextNPCMovement(NPC npc) {
@@ -554,30 +547,31 @@ public class NPC extends Entity {
 		}
 		direction = getNextWalkingDirection();
 	}
-	
+
 	public int getNextWalkingDirection() {
 		int dir;
-		dir = Utility.direction(absX, absY, (absX + moveX), (absY + moveY));
+		dir = Utility.direction(getX(), getY(), (getX() + moveX), (getY() + moveY));
 		if (dir == -1)
 			return -1;
 		dir >>= 1;
-		absX += moveX;
-		absY += moveY;
+		setLocation(getLocation().transform(moveX, moveY));
 		return dir;
 	}
+	// The DIRECTION moved in x/y axis this cycle. used in updating.
+	public int moveX, moveY;
 
 	public int distanceTo(Player player) {
-		return distanceTo(player.absX, player.absY);
+		return distanceTo(player.getX(), player.getY());
 	}
 
 	public int distanceTo(NPC npc) {
-		return distanceTo(npc.absX, npc.absY);
+		return distanceTo(npc.getX(), npc.getY());
 	}
 
 	public int distanceTo(int otherX, int otherY) {
-		int minDistance = (int) Math.hypot(otherX - absX, otherY - absY);
-		for (int x = absX; x < absX + getSize() - 1; x++) {
-			for (int y = absY; y < absY + getSize() - 1; y++) {
+		int minDistance = (int) Math.hypot(otherX - getX(), otherY - getY());
+		for (int x = getX(); x < getX() + getSize() - 1; x++) {
+			for (int y = getY(); y < getY() + getSize() - 1; y++) {
 				int distance = (int) Math.hypot(otherX - x, otherY - y);
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -586,21 +580,19 @@ public class NPC extends Entity {
 		}
 		return minDistance;
 	}
-	
+
 	public void remove() {
 		setVisible(false);
-		setAbsX(0);
-		setAbsY(0);
 	}
-	
+
 	public boolean distance(int objectX, int objectY, int playerX, int playerY, int distance) {
 		return Math.sqrt(Math.pow(objectX - playerX, 2) + Math.pow(objectY - playerY, 2)) <= distance;
 	}
-	
+
 	public boolean isArmadylNpc() {
 		return npcId >= 3162 && npcId <= 3165;
 	}
-	
+
 	@Override
 	public ActionSender getActionSender() {
 		return null;
@@ -612,7 +604,7 @@ public class NPC extends Entity {
 		}
 		return NPCDefinitions.get(npcId).getName();
 	}
-	
+
 	public String getName() {
 		return npcName;
 	}
@@ -621,44 +613,44 @@ public class NPC extends Entity {
 		if (getX() >= 2840 && getY() >= 5270 && getX() >= 2920 && getY() <= 5360) {
 			return true;
 		}
-		
+
 		if (Boundary.isIn(this, Boundary.GODWARS_BOSSROOMS) || Boundary.isIn(this, Boundary.SCORPIA_PIT)) {
 			return true;
 		}
-		
-		return (absX >= 3136 && absX <= 3327 && absY >= 3519 && absY <= 3607)
-				|| (absX >= 3190 && absX <= 3327 && absY >= 3648 && absY <= 3839)
-				|| (absX >= 2625 && absX <= 2685 && absY >= 2550 && absY <= 2620)
-				|| // Pest
-				(absX >= 3200 && absX <= 3390 && absY >= 3840 && absY <= 3967)
-				|| (absX >= 2864 && absX <= 2877 && absY >= 5348 && absY <= 5374)
-				|| // bandos
-				(absX >= 2884 && absX <= 2991 && absY >= 5255 && absY <= 5278)
-				|| // sara
-				(absX >= 2821 && absX <= 2844 && absY >= 5292 && absY <= 5311)
-				|| // armadyl
-				(absX >= 2968 && absX <= 2988 && absY >= 9512 && absY <= 9523)
-				|| // barrelchest
-				(absX >= 2992 && absX <= 3007 && absY >= 3912 && absY <= 3967) || 
-				(absX >= 2680 && absX <= 2750 && absY >= 3685 && absY <= 3765)
-				|| (absX >= 2946 && absX <= 2959 && absY >= 3816 && absY <= 3831)
-				|| (absX >= 3008 && absX <= 3199 && absY >= 3856 && absY <= 3903)
-				|| (absX >= 3008 && absX <= 3071 && absY >= 3600 && absY <= 3711)
-				|| (absX >= 3072 && absX <= 3327 && absY >= 3608 && absY <= 3647)
-				|| (absX >= 2624 && absX <= 2690 && absY >= 2550 && absY <= 2619)
-				|| (absX >= 2371 && absX <= 2422 && absY >= 5062 && absY <= 5117)
-				|| (absX >= 2892 && absX <= 2932 && absY >= 4435 && absY <= 4464)
-				|| (absX >= 2256 && absX <= 2287 && absY >= 4680 && absY <= 4711)
-				|| (absX >= 3157 && absX <= 3191 && absY >= 2965 && absY <= 2995)
-				|| (absX >= 2512 && absX <= 2540 && absY >= 4633 && absY <= 4659)
-				|| (absX >= 3461 && absX <= 3494 && absY >= 9476 && absY <= 9506)
-				|| (absX >= 3357 && absX <= 3383 && absY >= 3721 && absY <= 3749)
-				|| (absX >= 2785 && absX <= 2809 && absY >= 2775 && absY <= 2795)
-				|| (absX >= 3093 && absX <= 3118 && absY >= 3922 && absY <= 3947)
-                || (absX >= 2932 && absX <= 2992 && absY >= 9745 && absY <= 9825)
-				|| (absX >= 2980 && absX <= 2995 && absY >= 4375 && absY <= 4390)
 
-				|| (absX >= 2660 && absX <= 2730 && absY >= 3707 && absY <= 3737);
+		return (getX() >= 3136 && getX() <= 3327 && getY() >= 3519 && getY() <= 3607)
+				|| (getX() >= 3190 && getX() <= 3327 && getY() >= 3648 && getY() <= 3839)
+				|| (getX() >= 2625 && getX() <= 2685 && getY() >= 2550 && getY() <= 2620)
+				|| // Pest
+				(getX() >= 3200 && getX() <= 3390 && getY() >= 3840 && getY() <= 3967)
+				|| (getX() >= 2864 && getX() <= 2877 && getY() >= 5348 && getY() <= 5374)
+				|| // bandos
+				(getX() >= 2884 && getX() <= 2991 && getY() >= 5255 && getY() <= 5278)
+				|| // sara
+				(getX() >= 2821 && getX() <= 2844 && getY() >= 5292 && getY() <= 5311)
+				|| // armadyl
+				(getX() >= 2968 && getX() <= 2988 && getY() >= 9512 && getY() <= 9523)
+				|| // barrelchest
+				(getX() >= 2992 && getX() <= 3007 && getY() >= 3912 && getY() <= 3967) ||
+				(getX() >= 2680 && getX() <= 2750 && getY() >= 3685 && getY() <= 3765)
+				|| (getX() >= 2946 && getX() <= 2959 && getY() >= 3816 && getY() <= 3831)
+				|| (getX() >= 3008 && getX() <= 3199 && getY() >= 3856 && getY() <= 3903)
+				|| (getX() >= 3008 && getX() <= 3071 && getY() >= 3600 && getY() <= 3711)
+				|| (getX() >= 3072 && getX() <= 3327 && getY() >= 3608 && getY() <= 3647)
+				|| (getX() >= 2624 && getX() <= 2690 && getY() >= 2550 && getY() <= 2619)
+				|| (getX() >= 2371 && getX() <= 2422 && getY() >= 5062 && getY() <= 5117)
+				|| (getX() >= 2892 && getX() <= 2932 && getY() >= 4435 && getY() <= 4464)
+				|| (getX() >= 2256 && getX() <= 2287 && getY() >= 4680 && getY() <= 4711)
+				|| (getX() >= 3157 && getX() <= 3191 && getY() >= 2965 && getY() <= 2995)
+				|| (getX() >= 2512 && getX() <= 2540 && getY() >= 4633 && getY() <= 4659)
+				|| (getX() >= 3461 && getX() <= 3494 && getY() >= 9476 && getY() <= 9506)
+				|| (getX() >= 3357 && getX() <= 3383 && getY() >= 3721 && getY() <= 3749)
+				|| (getX() >= 2785 && getX() <= 2809 && getY() >= 2775 && getY() <= 2795)
+				|| (getX() >= 3093 && getX() <= 3118 && getY() >= 3922 && getY() <= 3947)
+                || (getX() >= 2932 && getX() <= 2992 && getY() >= 9745 && getY() <= 9825)
+				|| (getX() >= 2980 && getX() <= 2995 && getY() >= 4375 && getY() <= 4390)
+
+				|| (getX() >= 2660 && getX() <= 2730 && getY() >= 3707 && getY() <= 3737);
 
 	}
 

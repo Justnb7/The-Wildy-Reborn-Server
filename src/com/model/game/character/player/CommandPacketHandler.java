@@ -495,7 +495,7 @@ public class CommandPacketHandler implements PacketType {
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
 				target.getActionSender().sendMessage("You have been teleported to " + player.getName());
-                target.movePlayer(new Location(player.getX(), player.getY(), player.heightLevel));
+                target.movePlayer(new Location(player.getX(), player.getY(), player.getZ()));
     		 return true;
     		 
     		 
@@ -731,7 +731,7 @@ public class CommandPacketHandler implements PacketType {
             if (cmd.length > 3) {
                 player.movePlayer(new Location(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3])));
             } else if (cmd.length == 3) {
-            	player.movePlayer(new Location(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.heightLevel));
+            	player.movePlayer(new Location(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.getZ()));
             }
     		return true;
     		
@@ -800,7 +800,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "object":
     		int object = Integer.parseInt(cmd[1]);
-			player.getActionSender().sendObject(object, player.absX, player.absY, player.heightLevel, 0, 10);
+			player.getActionSender().sendObject(object, player.getX(), player.getY(), player.getZ(), 0, 10);
 			return true;
     		
     	case "pnpc":
@@ -857,9 +857,7 @@ public class CommandPacketHandler implements PacketType {
 				Location spawnLocation = new Location(player.getX(), player.getY() -1, player.getZ());
 				if (npcId > 0) {
 					NPC spawn = new NPC(npcId, spawnLocation, 0);
-					spawn.absX = player.getX();
-					spawn.absY = player.getY() - 1;
-					spawn.setAbsZ(player.getZ());
+					spawn.setLocation(player.getLocation().transform(-1, 0));
 					World.getWorld().register(spawn);
 					if (cmd.length > 2) {
 						int hp = Integer.parseInt(cmd[2]);

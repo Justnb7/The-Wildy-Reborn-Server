@@ -162,7 +162,7 @@ public class NpcVsPlayerCombat {
 		/*
 		 * This doesn't work.
 		 */
-		if (npc.heightLevel != player.heightLevel) {
+		if (npc.getZ() != player.getZ()) {
 			npc.targetId = 0;
 			return false;
 		}

@@ -156,7 +156,7 @@ public class PlayerVsPlayerCombat {
 			Combat.resetCombat(player);
 			return false;
 		}
-		if (target.heightLevel != player.heightLevel) {
+		if (target.getZ() != player.getZ()) {
 			Combat.resetCombat(player);
 			return false;
 		}

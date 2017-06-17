@@ -33,7 +33,7 @@ public class PlayerFollowing {
         boolean inside = false;
         boolean projectiles = player.getCombatType() != CombatStyle.MELEE;
         for (Location tile : other.getTiles()) {
-            if (player.absX == tile.getX() && player.absY == tile.getY()) {
+            if (player.getX() == tile.getX() && player.getY() == tile.getY()) {
                 inside = true;
                 break;
             }
@@ -43,7 +43,7 @@ public class PlayerFollowing {
             double lowDist = 99;
             int lowX = 0;
             int lowY = 0;
-            int z = other.heightLevel;
+            int z = other.getZ();
             int x2 = other.getX();
             int y2 = other.getY();
             int x3 = x2;
@@ -124,13 +124,13 @@ public class PlayerFollowing {
 
         boolean inside = false;
         if (following.size() == 1) {
-            if (player.absX == otherX && player.absY == otherY) {
+            if (player.getX() == otherX && player.getY() == otherY) {
                 inside = true;
             }
         } else {
             Location[] occupied = following.getTiles();
             for (Location tile : occupied) {
-                if (player.absX == tile.getX() && player.absY == tile.getY()) {
+                if (player.getX() == tile.getX() && player.getY() == tile.getY()) {
                     inside = true;
                     break;
                 }
@@ -140,13 +140,13 @@ public class PlayerFollowing {
             if (following.size() > 1) {
                 moveOutFromUnderLargeNpc(player, following);
             } else {
-                if (Region.getClipping(player.getX() - 1, player.getY(), player.heightLevel, -1, 0)) {
+                if (Region.getClipping(player.getX() - 1, player.getY(), player.getZ(), -1, 0)) {
                     walkTo(-1, 0);
-                } else if (Region.getClipping(player.getX() + 1, player.getY(), player.heightLevel, 1, 0)) {
+                } else if (Region.getClipping(player.getX() + 1, player.getY(), player.getZ(), 1, 0)) {
                     walkTo(1, 0);
-                } else if (Region.getClipping(player.getX(), player.getY() - 1, player.heightLevel, 0, -1)) {
+                } else if (Region.getClipping(player.getX(), player.getY() - 1, player.getZ(), 0, -1)) {
                     walkTo(0, -1);
-                } else if (Region.getClipping(player.getX(), player.getY() + 1, player.heightLevel, 0, 1)) {
+                } else if (Region.getClipping(player.getX(), player.getY() + 1, player.getZ(), 0, 1)) {
                     walkTo(0, 1);
                 }
             }
@@ -194,8 +194,8 @@ public class PlayerFollowing {
                     }
                 }
             } else {
-                followLoc = Location.create(following.absX, following.absY, following.heightLevel).
-                        closestTileOf(Location.create(player.absX, player.absY, player.heightLevel), following.size(), following.size());
+                followLoc = Location.create(following.getX(), following.getY(), following.getZ()).
+                        closestTileOf(Location.create(player.getX(), player.getY(), player.getZ()), following.size(), following.size());
             }
             if (followLoc != null) {
                 playerWalk(followLoc.getX(), followLoc.getY());

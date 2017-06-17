@@ -91,7 +91,7 @@ public abstract class Entity {
 
 	public boolean touchDistance(Entity target, int dist) {
 		if (size() == 1 && target.size() == 1) {
-			return goodDistance(absX, absY, target.absX, target.absY, dist);
+			return goodDistance(getX(), getY(), target.getX(), target.getY(), dist);
 		} else {
 			Location[] me = getBorder();
 			Location[] other = target.getBorder();
@@ -111,11 +111,8 @@ public abstract class Entity {
 		PLAYER, NPC,
 	}
 
-	public int absX;
-	public int absY;
 	public int lastX;
 	public int lastY;
-	public int heightLevel;
 	public transient Object distanceEvent;
 	private boolean registered;
 	public int infection;
@@ -129,11 +126,15 @@ public abstract class Entity {
 	}
 
 	public int getX() {
-		return absX;
+		return location.getX();
 	}
 
 	public int getY() {
-		return absY;
+		return location.getY();
+	}
+
+	public int getZ() {
+		return location.getZ();
 	}
 
 	public int getLastX() {
@@ -144,19 +145,6 @@ public abstract class Entity {
 		return lastY;
 	}
 
-	public void setAbsX(int absX) {
-		this.lastX = this.absX;
-		this.absX = absX;
-	}
-
-	public void setAbsY(int absY) {
-		this.lastY = this.absY;
-		this.absY = absY;
-	}
-
-	public void setAbsZ(int absZ) {
-		this.heightLevel = absZ;
-	}
 	/**
 	 * The current location.
 	 */
@@ -946,8 +934,8 @@ public abstract class Entity {
 		
 		if (frozenBy == null)
 			return;
-		int opX = frozenBy.absX;
-		int opY = frozenBy.absY;
+		int opX = frozenBy.getX();
+		int opY = frozenBy.getY();
 		
 		boolean out_of_dist = !goodDistance(getX(), getY(), opX, opY, 20);
 		

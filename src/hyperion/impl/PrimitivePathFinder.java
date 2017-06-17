@@ -1,8 +1,8 @@
 package hyperion.impl;
 
-import com.model.game.character.Entity;
 import clipmap.Region;
-import clipmap.Tile;
+import com.model.game.character.Entity;
+import com.model.game.location.Location;
 import hyperion.*;
 
 import java.awt.*;
@@ -11,7 +11,7 @@ public class PrimitivePathFinder implements PathFinder {
 	
 	public static PrimitivePathFinder INSTANCE = new PrimitivePathFinder();
 	
-	public static Point getNextStep(Entity mob, Tile source, int toX, int toY, int height, int xLength, int yLength) {
+	public static Point getNextStep(Entity mob, Location source, int toX, int toY, int height, int xLength, int yLength) {
     	int baseX = source.getLocalX(), baseY = source.getLocalY();
         int moveX = 0;
         int moveY = 0;
@@ -35,11 +35,11 @@ public class PrimitivePathFinder implements PathFinder {
         return null;
     }
     
-    public static boolean canMove(Entity mob, Tile base, int startX, int startY, int endX, int endY, int height, int xLength, int yLength) {
+    public static boolean canMove(Entity mob, Location base, int startX, int startY, int endX, int endY, int height, int xLength, int yLength) {
 		int zX = (base.getRegionX() - 6) << 3;
 		int zY = (base.getRegionY() - 6) << 3;
 		
-    	Tile RSTile = Tile.create(zX, zY, base.getZ());
+    	Location RSTile = Location.create(zX, zY, base.getZ());
         int diffX = endX - startX;
         int diffY = endY - startY;
         int max = Math.max(Math.abs(diffX), Math.abs(diffY));
@@ -97,15 +97,15 @@ public class PrimitivePathFinder implements PathFinder {
         return true;
     }
 	
-	public static boolean canMove(Entity mob, Tile source, Directions.NormalDirection dir) {
+	public static boolean canMove(Entity mob, Location source, Directions.NormalDirection dir) {
 		return canMove(mob, source, dir, 1, false);
 	}
 
-	public static boolean canMove(Entity mob, Tile source, Directions.NormalDirection dir, boolean npcCheck) {
+	public static boolean canMove(Entity mob, Location source, Directions.NormalDirection dir, boolean npcCheck) {
 		return canMove(mob, source, dir, 1, npcCheck);
 	}
 
-	public static boolean canMove(Entity mob, Tile source, Directions.NormalDirection dir, int size, boolean npcCheck) {
+	public static boolean canMove(Entity mob, Location source, Directions.NormalDirection dir, int size, boolean npcCheck) {
 		return canMove(mob, source.getX(), source.getY(), dir, size, npcCheck ? 0x1 : 0);
 	}
 	
@@ -234,7 +234,7 @@ public class PrimitivePathFinder implements PathFinder {
 	}
 
 	@Override
-	public PathState findPath(Entity mob, Entity target, Tile base, int srcX,
+	public PathState findPath(Entity mob, Entity target, Location base, int srcX,
                               int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep,
                               boolean moveNear) {
 		return findPath(mob, base, srcX, srcY, dstX, dstY, radius, running, ignoreLastStep, moveNear, false);
@@ -255,7 +255,7 @@ public class PrimitivePathFinder implements PathFinder {
 	 * @param nullOnFail
 	 * @return
 	 */
-	public PathState findPath(Entity mob, Tile base, int srcX, int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep, boolean moveNear, boolean nullOnFail) {
+	public PathState findPath(Entity mob, Location base, int srcX, int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep, boolean moveNear, boolean nullOnFail) {
 		if (srcX < 0 || srcY < 0 || srcX >= 104 || srcY >= 104 || dstX < 0 || dstY < 0 || srcX >= 104 || srcY >= 104) {
 			return null;
 		}
@@ -266,9 +266,9 @@ public class PrimitivePathFinder implements PathFinder {
 		int zX = (base.getRegionX() - 6) << 3;
 		int zY = (base.getRegionY() - 6) << 3;
 
-		Tile location = Tile.create(zX, zY, base.getZ());
-		Tile current = Tile.create(location.getX() + srcX, location.getY() + srcY, location.getZ());
-		Tile end = Tile.create(location.getX() + dstX, location.getY() + dstY, location.getZ());
+		Location location = Location.create(zX, zY, base.getZ());
+		Location current = Location.create(location.getX() + srcX, location.getY() + srcY, location.getZ());
+		Location end = Location.create(location.getX() + dstX, location.getY() + dstY, location.getZ());
 		PathState state = new PathState();
 		while (current != end) {
 			Directions.NormalDirection nextDirection = current.direction(end);

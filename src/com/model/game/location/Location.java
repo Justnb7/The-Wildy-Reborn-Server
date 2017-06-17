@@ -1,9 +1,8 @@
 package com.model.game.location;
 
+import clipmap.Region;
 import com.model.game.character.Entity;
 import com.model.utility.Utility;
-import clipmap.Region;
-import clipmap.Tile;
 import hyperion.Directions;
 import hyperion.impl.PrimitivePathFinder;
 
@@ -146,7 +145,7 @@ public class Location {
 
 	@Override
 	public boolean equals(java.lang.Object other) {
-		if (other instanceof Location || other instanceof Tile) {
+		if (other instanceof Location) {
 			Location p = (Location) other;
 			return x == p.x && y == p.y && z == p.z;
 		}
@@ -485,34 +484,6 @@ public class Location {
 		return (int) dis;
 	}
 	
-	/**
-	 * Checks if this location is within range of another.
-	 * @param other The other location.
-	 * @return <code>true</code> if the location is in range,
-	 * <code>false</code> if not.
-	 */
-	public boolean isWithinDistance(Location other) {
-		if(z != other.z) {
-			return false;
-		}
-		int deltaX = other.x - x, deltaY = other.y - y;
-		return deltaX <= 14 && deltaX >= -15 && deltaY <= 14 && deltaY >= -15;
-	}
-	
-	/**
-	 * Gets the distance to a location.
-	 *
-	 * @param other The location.
-	 * @return The distance from the other location.
-	 */
-	public int distanceToPoint(Location other) {
-		int absX = x;
-		int absY = y;
-		int pointX = other.getX();
-		int pointY = other.getY();
-		return (int) Math.sqrt(Math.pow(absX - pointX, 2) + Math.pow(absY - pointY, 2));
-	}
-	
 	public static double getDistance(Location p, Location p2) {
 		return Math.sqrt((p2.getX() - p.getX()) * (p2.getX() - p.getX()) + (p2.getY() - p.getY()) * (p2.getY() - p.getY()));
 	}
@@ -657,8 +628,8 @@ public class Location {
 		return true;
 	}
 	public static boolean isDiagonal(Entity source, Entity target) {
-		Tile l = source.getPosition();
-		Tile l2 = target.getPosition();
+		Location l = source.getPosition();
+		Location l2 = target.getPosition();
 		if (l.getSouthEast().equals(l2)) {
 			return true;
 		}
@@ -674,60 +645,60 @@ public class Location {
 		return false;
 	}
 
-	public Tile getNorth() {
+	public Location getNorth() {
 		return transform(0, 1, 0);
 	}
 
-	public Tile getSouth() {
+	public Location getSouth() {
 		return transform(0, -1, 0);
 	}
 
-	public Tile getEast() {
+	public Location getEast() {
 		return transform(-1, 0, 0);
 	}
 
-	public Tile getNorthEast() {
+	public Location getNorthEast() {
 		return transform(1, 1, 0);
 	}
 
-	public Tile getSouthEast() {
+	public Location getSouthEast() {
 		return transform(1, -1, 0);
 	}
 
-	public Tile getWest() {
+	public Location getWest() {
 		return transform(1, 0, 0);
 	}
 
-	public Tile getNorthWest() {
+	public Location getNorthWest() {
 		return transform(-1, 1, 0);
 	}
 
-	public Tile getSouthWest() {
+	public Location getSouthWest() {
 		return transform(-1, -1, 0);
 	}
 
-	public boolean right(Tile t) {
+	public boolean right(Location t) {
 		return getX() > t.getX();
 	}
 
-	public boolean left(Tile t) {
+	public boolean left(Location t) {
 		return getX() < t.getX();
 	}
 
-	public boolean above(Tile t) {
+	public boolean above(Location t) {
 		return getY() > t.getY();
 	}
 
-	public boolean under(Tile t) {
+	public boolean under(Location t) {
 		return getY() < t.getY();
 	}
 
-	public Tile transform(int diffX, int diffY, int diffZ) {
-		return Tile.create(getX() + diffX, getY() + diffY, getZ() + diffZ);
+	public Location transform(int diffX, int diffY, int diffZ) {
+		return create(getX() + diffX, getY() + diffY, getZ() + diffZ);
 	}
 
-	public Tile transform(int diffX, int diffY) {
-		return Tile.create(getZ(), getX() + diffX, getY() + diffY);
+	public Location transform(int diffX, int diffY) {
+		return create(getZ(), getX() + diffX, getY() + diffY);
 	}
 
 	@Override
@@ -739,11 +710,11 @@ public class Location {
 		return this.getX() == x && this.getY() == y;
 	}
 
-	public boolean matches(Tile other) {
+	public boolean matches(Location other) {
 		return this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ();
 	}
 
-	public boolean isNextTo(Tile other) {
+	public boolean isNextTo(Location other) {
 		if(getZ() != other.getZ()) {
 			return false;
 		}
@@ -753,8 +724,8 @@ public class Location {
 				|| getX() != other.getX() && getY() == other.getY()
 				|| getX() == other.getX() && getY() == other.getY());
 	}
-	public Directions.NormalDirection direction(Tile next) {
-		return Directions.directionFor(Tile.create(this), next);
+	public Directions.NormalDirection direction(Location next) {
+		return Directions.directionFor(this, next);
 	}
 
 	public static boolean standingOn(Entity mob, Entity other) {
@@ -774,7 +745,7 @@ public class Location {
 		return false;
 	}
 
-	public boolean isWithinDistance(Tile other) {
+	public boolean isWithinDistance(Location other) {
 		if(getZ() != other.getZ()) {
 			return false;
 		}
@@ -782,47 +753,30 @@ public class Location {
 		return deltaX <= 14 && deltaX >= -15 && deltaY <= 14 && deltaY >= -15;
 	}
 
-	public boolean isWithinDistance(int width, int height, Tile otherLocation, int otherWidth, int otherHeight, int distance) {
-		Tile myClosestTile = this.closestTileOf(otherLocation, width, height);
-		Tile theirClosestTile = otherLocation.closestTileOf(Tile.create(this), otherWidth, otherHeight);
+	public boolean isWithinDistance(int width, int height, Location otherLocation, int otherWidth, int otherHeight, int distance) {
+		Location myClosestTile = this.closestTileOf(otherLocation, width, height);
+		Location theirClosestTile = otherLocation.closestTileOf(this, otherWidth, otherHeight);
 
 		return myClosestTile.distanceToPoint(theirClosestTile) <= distance;
 	}
 
-	public Tile closestTileOf(Tile from, int width, int height) {
+	public Location closestTileOf(Location from, int width, int height) {
 		if(width < 2 && height < 2) {
-			return Tile.create(this);
+			return this;
 		}
 		Location location = null;
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
-				Location loc = Tile.create(getX() + x, this.getY() + y, this.getZ());
+				Location loc = create(getX() + x, this.getY() + y, this.getZ());
 				if(location == null || loc.distanceToPoint(from) < location.distanceToPoint(from)) {
 					location = loc;
 				}
 			}
 		}
-		return Tile.create(location);
+		return location;
 	}
 
-	public boolean isWithinDistance(Tile location, int distance) {
-		int objectX = location.getX();
-		int objectY = location.getY();
-		for (int i = 0; i <= distance; i++) {
-			for (int j = 0; j <= distance; j++) {
-				if ((objectX + i) == getX() && ((objectY + j) == getY() || (objectY - j) == getY() || objectY == getY())) {
-					return true;
-				} else if ((objectX - i) == getX() && ((objectY + j) == getY() || (objectY - j) == getY() || objectY == getY())) {
-					return true;
-				} else if (objectX == getX() && ((objectY + j) == getY() || (objectY - j) == getY() || objectY == getY())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public int distanceToPoint(Tile other) {
+	public int distanceToPoint(Location other) {
 		int pointX = other.getX();
 		int pointY = other.getY();
 		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));

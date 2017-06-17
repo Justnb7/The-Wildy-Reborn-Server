@@ -2,9 +2,9 @@ package hyperion.region;
 
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
+import com.model.game.location.Location;
 import hyperion.Directions;
 import hyperion.impl.ProjectilePathFinder;
-import clipmap.Tile;
 
 import java.awt.*;
 
@@ -15,7 +15,7 @@ public class Coverage {
 	private int z;
 	private int size;
 
-	public Coverage(Tile loc, int size) {
+	public Coverage(Location loc, int size) {
 		this.lowerBound = new Point(loc.getX(), loc.getY());
 		this.upperBound = new Point(lowerBound.x + size - 1, lowerBound.y
 				+ size - 1);
@@ -43,8 +43,8 @@ public class Coverage {
 		return upperBound.y;
 	}
 
-	public Tile center() {
-		return Tile.create(lowerBound.x + (int) Math.floor(size / 2),
+	public Location center() {
+		return Location.create(lowerBound.x + (int) Math.floor(size / 2),
 				lowerBound.y + (int) Math.floor(size / 2), z);
 	}
 
@@ -56,7 +56,7 @@ public class Coverage {
 		upperBound.setLocation(upperBound.x + dx, upperBound.y + dy);
 	}
 
-	public void update(Tile loc, int size) {
+	public void update(Location loc, int size) {
 		this.lowerBound = new Point(loc.getX(), loc.getY());
 		this.upperBound = new Point(lowerBound.x + size - 1, lowerBound.y
 				+ size - 1);
@@ -67,7 +67,7 @@ public class Coverage {
 		return !right(c) && !left(c) && !above(c) && !under(c);
 	}
 
-	public boolean within(Tile t) {
+	public boolean within(Location t) {
 		return t.getX() >= lowerBound.x && t.getX() <= upperBound.x
 				&& t.getY() >= lowerBound.y && t.getY() <= upperBound.y;
 	}

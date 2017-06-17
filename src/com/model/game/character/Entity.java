@@ -25,7 +25,6 @@ import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;
 import com.model.utility.MutableNumber;
 import com.model.utility.Utility;
-import clipmap.Tile;
 
 import java.util.*;
 
@@ -125,9 +124,48 @@ public abstract class Entity {
 	public int faceTileX = -1, faceTileY = -1;
 	public Location lastTile;
 
-	public Tile getPosition() {
-		return Tile.create(absX, absY, heightLevel);
+	public Location getPosition() {
+		return location;
 	}
+
+	public int getX() {
+		return absX;
+	}
+
+	public int getY() {
+		return absY;
+	}
+
+	public int getLastX() {
+		return lastX;
+	}
+
+	public int getLastY() {
+		return lastY;
+	}
+
+	public void setAbsX(int absX) {
+		this.lastX = this.absX;
+		this.absX = absX;
+	}
+
+	public void setAbsY(int absY) {
+		this.lastY = this.absY;
+		this.absY = absY;
+	}
+
+	public void setAbsZ(int absZ) {
+		this.heightLevel = absZ;
+	}
+	/**
+	 * The current location.
+	 */
+	private Location location;
+
+	/**
+	 * The last known map region.
+	 */
+	private Location lastKnownRegion = this.getLocation();
 	
 	/**
 	 * Map region changing flag.
@@ -497,36 +535,6 @@ public abstract class Entity {
 		return attributes;
 	}
 
-	public int getX() {
-		return absX;
-	}
-
-	public int getY() {
-		return absY;
-	}
-
-	public int getLastX() {
-		return lastX;
-	}
-
-	public int getLastY() {
-		return lastY;
-	}
-
-	public void setAbsX(int absX) {
-		this.lastX = this.absX;
-		this.absX = absX;
-	}
-
-	public void setAbsY(int absY) {
-		this.lastY = this.absY;
-		this.absY = absY;
-	}
-	
-	public void setAbsZ(int absZ) {
-		this.heightLevel = absZ;
-	}
-
 	public boolean isRegistered() {
 		return registered;
 	}
@@ -746,16 +754,6 @@ public abstract class Entity {
      * The index of the entity
      */
     private int index;
-    
-    /**
-	 * The current location.
-	 */
-	private Location location;
-
-	/**
-	 * The last known map region.
-	 */
-	private Location lastKnownRegion = this.getLocation();
 
     private final EntityType type;
 
@@ -1133,7 +1131,7 @@ public abstract class Entity {
 		coverage.update(direction, size());
 	}
 
-	public void updateCoverage(Tile loc) {
+	public void updateCoverage(Location loc) {
 		if (coverage == null) {
 			setCoverage();
 		}

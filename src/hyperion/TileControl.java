@@ -2,9 +2,9 @@ package hyperion;
 
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
+import com.model.game.location.Location;
 import hyperion.region.RegionStore;
 import hyperion.region.RegionStoreManager;
-import clipmap.Tile;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ public class TileControl {
 	private static TileControl singleton = null;
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	private HashMap<Entity, Tile[]> occupiedLocations = new HashMap();
+	private HashMap<Entity, Location[]> occupiedLocations = new HashMap();
 
     public static TileControl getSingleton() {
         if (singleton == null) {
@@ -22,23 +22,23 @@ public class TileControl {
         return singleton;
     }
 
-    public static Tile[] getHoveringTiles(Entity mob) {
+    public static Location[] getHoveringTiles(Entity mob) {
         return getHoveringTiles(mob, mob.getPosition());
     }
 
-    public static Tile[] getHoveringTiles(Entity mob, Tile location) {
+    public static Location[] getHoveringTiles(Entity mob, Location location) {
         int buf = 0;
         int offset = 0;
         if (mob.isNPC()) {
         	buf = ((NPC) mob).getSize();
         }
-        Tile[] locations = new Tile[buf * buf];
+        Location[] locations = new Location[buf * buf];
         if (locations.length == 1)
             locations[offset] = location;
         else {
             for (int x = 0; x < buf; x++) {
                 for (int y = 0; y < buf; y++) {
-                    locations[(offset++)] = Tile.create(location.getX() + x, location.getY() + y, location.getZ());
+                    locations[(offset++)] = Location.create(location.getX() + x, location.getY() + y, location.getZ());
                 }
             }
         }
@@ -46,12 +46,12 @@ public class TileControl {
     }
 
     public static int calculateDistance(Entity mobA, Entity mobB) {
-        Tile[] pointsA = getHoveringTiles(mobA);
-        Tile[] pointsB = getHoveringTiles(mobB);
+        Location[] pointsA = getHoveringTiles(mobA);
+        Location[] pointsB = getHoveringTiles(mobB);
         int lowestCount = 16;
         int distance = 16;
-        for (Tile pointA : pointsA) {
-            for (Tile pointB : pointsB) {
+        for (Location pointA : pointsA) {
+            for (Location pointB : pointsB) {
                 if (pointA.equals(pointB)) {
                     return 0;
                 }
@@ -65,17 +65,17 @@ public class TileControl {
         return lowestCount;
     }
 
-    public static int calculateDistance(Tile pointA, Tile pointB) {
+    public static int calculateDistance(Location pointA, Location pointB) {
         int offsetX = Math.abs(pointA.getX() - pointB.getX());
         int offsetY = Math.abs(pointA.getY() - pointB.getY());
         return offsetX > offsetY ? offsetX : offsetY;
     }
 
-    public Tile[] getOccupiedLocations(Entity mob) {
+    public Location[] getOccupiedLocations(Entity mob) {
         return this.occupiedLocations.get(mob);
     }
 
-    public void setOccupiedLocation(Entity mob, Tile[] locations) {
+    public void setOccupiedLocation(Entity mob, Location[] locations) {
         if ((mob == null) || (locations == null))
             return;
         this.occupiedLocations.remove(mob);
@@ -83,15 +83,15 @@ public class TileControl {
     }
 
     public boolean locationOccupied(int x, int y, int z, int world) {
-        Tile location = Tile.create(x, y, z);
-        Tile[] npcLocations = null;
+        Location location = Location.create(x, y, z);
+        Location[] npcLocations = null;
     	 for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(location)) {
     		 for (NPC npc : r.getNpcs()) {
     			 if (npc == null)
     				 continue;
     			 npcLocations = getOccupiedLocations(npc);
                  if (npcLocations != null) {
-                	 for (Tile locs : npcLocations) {
+                	 for (Location locs : npcLocations) {
                 		 if (locs.equals(location)) {
                              return true;
                          }
@@ -108,10 +108,10 @@ public class TileControl {
      * @param mob
      * @return
      */
-    public boolean locationOccupied(Tile[] locations, Entity mob) {
+    public boolean locationOccupied(Location[] locations, Entity mob) {
         if ((locations == null) || (mob == null))
             return true;
-        Tile[] npcLocations = null;
+        Location[] npcLocations = null;
         for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(mob.getPosition())) {
             for (NPC npc : r.getNpcs()) {
                 if ((mob.isNPC()) && ((npc == null) || (npc == mob))) {
@@ -119,8 +119,8 @@ public class TileControl {
                 }
                 npcLocations = getOccupiedLocations(npc);
                 if (npcLocations != null) {
-                    for (Tile loc : locations) {
-                        for (Tile loc2 : npcLocations) {
+                    for (Location loc : locations) {
+                        for (Location loc2 : npcLocations) {
                             if (loc.equals(loc2)) {
                                 return true;
                             }

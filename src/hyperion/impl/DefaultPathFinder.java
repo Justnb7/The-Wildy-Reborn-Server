@@ -1,8 +1,8 @@
 package hyperion.impl;
 
-import com.model.game.character.Entity;
 import clipmap.Region;
-import clipmap.Tile;
+import com.model.game.character.Entity;
+import com.model.game.location.Location;
 import hyperion.BasicPoint;
 import hyperion.PathFinder;
 import hyperion.PathState;
@@ -27,9 +27,9 @@ public class DefaultPathFinder implements PathFinder {
 	}
 
 	@Override
-	public PathState findPath(Entity mob, Entity target, Tile base, int srcX,
-                              int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep,
-                              boolean moveNear) {
+	public PathState findPath(Entity mob, Entity target, Location base, int srcX,
+							  int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep,
+							  boolean moveNear) {
 		PathState state = new PathState();
 		if (srcX < 0 || srcY < 0 || srcX >= 104 || srcY >= 104 || dstX < 0 || dstY < 0 || dstX >= 104 || dstY >= 104) {
 			state.routeFailed();
@@ -44,7 +44,7 @@ public class DefaultPathFinder implements PathFinder {
 		int zY = (base.getRegionY() - 6) << 3;
 		
 
-		Tile location = Tile.create(zX, zY, base.getZ());
+		Location location = Location.create(zX, zY, base.getZ());
 		boolean foundPath = false;
 		for (int xx = 0; xx < 104; xx++) {
 			for (int yy = 0; yy < 104; yy++) {

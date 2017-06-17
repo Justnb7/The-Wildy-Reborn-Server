@@ -1,17 +1,17 @@
 package hyperion.impl;
 
 import clipmap.ProjectileClipping;
+import clipmap.Region;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
+import com.model.game.location.Location;
 import com.model.game.object.GameObject;
-import clipmap.Region;
-import clipmap.Tile;
 import hyperion.Directions;
 import hyperion.region.RegionStoreManager;
 
 public class ProjectilePathFinder {
 	
-	public static boolean projectileBlocked(Tile pos, Tile pos2) {
+	public static boolean projectileBlocked(Location pos, Location pos2) {
 		if (pos == null || pos2 == null) {
 			return true;
 		}
@@ -87,9 +87,9 @@ public class ProjectilePathFinder {
 	
 	public static boolean hasLineOfSight(Entity entity, Entity target) {
 		int z = entity.getCoverage().center().getZ();
-		Tile start_loc = Tile.create(entity.getCoverage().center().getX(), entity.getCoverage().center().getY(), z);
-		Tile end_loc = Tile.create(target.getCoverage().center().getX(), target.getCoverage().center().getY(), z);
-		Tile currentTile = start_loc;
+		Location start_loc = Location.create(entity.getCoverage().center().getX(), entity.getCoverage().center().getY(), z);
+		Location end_loc = Location.create(target.getCoverage().center().getX(), target.getCoverage().center().getY(), z);
+		Location currentTile = start_loc;
     	Directions.NormalDirection localDirection = null;
     	Directions.NormalDirection localDirectionInverse = null;
     	boolean projectileCheck = entity.getCombatType() == CombatStyle.MELEE;
@@ -98,7 +98,7 @@ public class ProjectilePathFinder {
     		if (globalDirection == null) {
     			return true;
     		}
-			Tile nextTile = currentTile.transform(Directions.DIRECTION_DELTA_X[globalDirection.intValue()], Directions.DIRECTION_DELTA_Y[globalDirection.intValue()], 0);
+			Location nextTile = currentTile.transform(Directions.DIRECTION_DELTA_X[globalDirection.intValue()], Directions.DIRECTION_DELTA_Y[globalDirection.intValue()], 0);
     		localDirection = Directions.directionFor(currentTile, nextTile);	
     		localDirectionInverse = Directions.directionFor(nextTile, currentTile);
     		GameObject currentObject = RegionStoreManager.get().getWallObject(currentTile);

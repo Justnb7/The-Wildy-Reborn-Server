@@ -1,6 +1,7 @@
 package clipmap;
 
 import cache.definitions.AnyRevObjectDefinition;
+import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 
 public class ProjectileClipping {
@@ -61,7 +62,7 @@ public class ProjectileClipping {
 		return r;
 	}
 
-	private static int getClippingMask(Tile loc) {
+	private static int getClippingMask(Location loc) {
 		return getClippingMask(loc.getX(), loc.getY(), loc.getZ());
 	}
 

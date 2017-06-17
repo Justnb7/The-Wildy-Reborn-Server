@@ -2,7 +2,6 @@ package com.model.game.character.player;
 
 import clipmap.ProjectileClipping;
 import clipmap.Region;
-import clipmap.Tile;
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
 import com.model.game.World;
@@ -124,7 +123,7 @@ public class CommandPacketHandler implements PacketType {
 				Region r = Region.forCoords(player.getX(), player.getY());
 				player.getActionSender().sendMessage("[4,60] = "+r.clips[player.getZ()][4][60]+" on "+r+" id "+player.getLocation().getRegionId());
 				int[] objcount = new int[1];
-				RegionStore rs = World.getWorld().regions.getRegionByLocation(Tile.create(player.getLocation()));
+				RegionStore rs = World.getWorld().regions.getRegionByLocation(player.getLocation());
 				Collection<GameObject> os = rs.getGameObjects();
 				os.stream()
 				.filter(o -> o != null && o.getType() >= 9 && o.getPosition().equals(player.getPosition()) && o.getDefinition() != null && o.getDefinition().hasName() && o.getDefinition().clips())

@@ -1,16 +1,16 @@
 package hyperion.impl;
 
 import com.model.game.character.Entity;
+import com.model.game.location.Location;
+import com.model.utility.Utility;
 import hyperion.PathFinder;
 import hyperion.region.RegionStoreManager;
-import com.model.utility.Utility;
-import clipmap.Tile;
 
 public class DumbPathFinder {
 	
 	
 	public static void generateMovement(Entity entity) {
-		Tile loc = entity.getPosition();
+		Location loc = entity.getPosition();
 		int dir = -1;
 		if (!RegionStoreManager.get().blockedNorth(loc, entity)) {
 			dir = 0;

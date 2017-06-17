@@ -1,9 +1,9 @@
 package hyperion.region;
 
 import clipmap.Region;
-import clipmap.Tile;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
+import com.model.game.location.Location;
 import com.model.game.object.GameObject;
 
 import java.util.Collection;
@@ -92,7 +92,7 @@ public class RegionStore {
 		}
 	}
 	
-	public static boolean reached(Tile position, int minimumX, int minimumY, int maximumX, int maximumY, int mask) {
+	public static boolean reached(Location position, int minimumX, int minimumY, int maximumX, int maximumY, int mask) {
 		int z = position.getZ() % 4;
 		int srcX = position.getX();
 		int srcY = position.getY();

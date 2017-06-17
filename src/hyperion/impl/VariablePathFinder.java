@@ -1,8 +1,8 @@
 package hyperion.impl;
 
 import clipmap.Region;
-import clipmap.Tile;
 import com.model.game.character.Entity;
+import com.model.game.location.Location;
 import hyperion.BasicPoint;
 import hyperion.PathFinder;
 import hyperion.PathState;
@@ -42,7 +42,7 @@ public class VariablePathFinder implements PathFinder {
     }
 
     @Override
-    public PathState findPath(Entity mob, Entity target, Tile base,
+    public PathState findPath(Entity mob, Entity target, Location base,
                               int srcX, int srcY, int dstX, int dstY, int radius, boolean running,
                               boolean ignoreLastStep, boolean moveNear) {
         z = mob.getPosition().getZ();
@@ -52,7 +52,7 @@ public class VariablePathFinder implements PathFinder {
             return state;
         }
         if (target != null) {
-            if (!Tile.standingOn(mob, target)) {
+            if (!Location.standingOn(mob, target)) {
                 if (srcX == dstX && srcY == dstY) {
                     return state;
                 }
@@ -64,7 +64,7 @@ public class VariablePathFinder implements PathFinder {
         }
         if (z > 3)
             z = z % 4;
-        Tile regionCorner = Tile.create((base.getRegionX() - 6) << 3,
+        Location regionCorner = Location.create((base.getRegionX() - 6) << 3,
                 (base.getRegionY() - 6) << 3, base.getZ());
         boolean foundPath = false;
         for (int xx = 0; xx < 104; xx++) {
@@ -420,7 +420,7 @@ public class VariablePathFinder implements PathFinder {
         int clipping = Region.getClippingMask(absX, absY, z);
         if (target != null) {
             if (curX >= dstX && maxX >= curX && dstY <= curY && maxY >= curY) {
-                if (!Tile.standingOn(mob, target)) {
+                if (!Location.standingOn(mob, target)) {
                     return true;
                 }
             }

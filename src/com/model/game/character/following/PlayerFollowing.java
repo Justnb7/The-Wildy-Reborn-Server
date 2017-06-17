@@ -1,5 +1,6 @@
 package com.model.game.character.following;
 
+import clipmap.Region;
 import com.model.game.character.Entity;
 import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
@@ -8,8 +9,6 @@ import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
 import com.model.game.character.walking.PathFinder;
 import com.model.game.location.Location;
-import clipmap.Region;
-import clipmap.Tile;
 
 import java.util.stream.Stream;
 
@@ -195,8 +194,8 @@ public class PlayerFollowing {
                     }
                 }
             } else {
-                followLoc = Tile.create(following.absX, following.absY, following.heightLevel).
-                        closestTileOf(Tile.create(player.absX, player.absY, player.heightLevel), following.size(), following.size());
+                followLoc = Location.create(following.absX, following.absY, following.heightLevel).
+                        closestTileOf(Location.create(player.absX, player.absY, player.heightLevel), following.size(), following.size());
             }
             if (followLoc != null) {
                 playerWalk(followLoc.getX(), followLoc.getY());

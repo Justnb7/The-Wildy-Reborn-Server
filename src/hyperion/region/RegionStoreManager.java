@@ -1,6 +1,5 @@
 package hyperion.region;
 
-import clipmap.Tile;
 import com.model.game.World;
 import com.model.game.character.Entity;
 import com.model.game.character.npc.NPC;
@@ -44,35 +43,35 @@ public class RegionStoreManager {
 	 */
 	private Map<RegionCoordinates, RegionStore> activeRegions = new HashMap<RegionCoordinates, RegionStore>();
 
-	public static boolean blockedNorth(Tile loc, Entity entity) {
+	public static boolean blockedNorth(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.NORTH, entity.size(), false);
 	}
 
-	public static boolean blockedEast(Tile loc, Entity entity) {
+	public static boolean blockedEast(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.EAST, entity.size(), false);
 	}
 
-	public static boolean blockedSouth(Tile loc, Entity entity) {
+	public static boolean blockedSouth(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.SOUTH, entity.size(), false);
 	}
 
-	public static boolean blockedWest(Tile loc, Entity entity) {
+	public static boolean blockedWest(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.WEST, entity.size(), false);
 	}
 
-	public static boolean blockedNorthEast(Tile loc, Entity entity) {
+	public static boolean blockedNorthEast(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.NORTH_EAST, entity.size(), false);
 	}
 
-	public static boolean blockedNorthWest(Tile loc, Entity entity) {
+	public static boolean blockedNorthWest(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.NORTH_WEST, entity.size(), false);
 	}
 
-	public static boolean blockedSouthEast(Tile loc, Entity entity) {
+	public static boolean blockedSouthEast(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.SOUTH_EAST, entity.size(), false);
 	}
 
-	public static boolean blockedSouthWest(Tile loc, Entity entity) {
+	public static boolean blockedSouthWest(Location loc, Entity entity) {
 		return !PrimitivePathFinder.canMove(entity, loc, Directions.NormalDirection.SOUTH_WEST, entity.size(), false);
 	}
 
@@ -126,7 +125,7 @@ public class RegionStoreManager {
 	 * @return The <code>GameObject</code> or <code>null</code> if no game
 	 *         object was found to be existent.
 	 */
-	public GameObject getGameObject(Tile location, int id) { // TODO
+	public GameObject getGameObject(Location location, int id) { // TODO
 		RegionStore[] regions = getSurroundingRegions(location);
 		for (RegionStore region : regions) {
 			for (GameObject object : region.getGameObjects()) {
@@ -145,7 +144,7 @@ public class RegionStoreManager {
 	 * @param location
 	 * @return
 	 */
-	public GameObject getWallObject(Tile location) { // TODO
+	public GameObject getWallObject(Location location) { // TODO
 		RegionStore[] regions = getSurroundingRegions(location);
 		for (RegionStore region : regions) {
 			for (GameObject object : region.getGameObjects()) {
@@ -164,7 +163,7 @@ public class RegionStoreManager {
 	 *            The location.
 	 * @return The regions surrounding the location.
 	 */
-	public RegionStore[] getSurroundingRegions(Tile location) {
+	public RegionStore[] getSurroundingRegions(Location location) {
 		int regionX = location.getX() / REGION_SIZE;
 		int regionY = location.getY() / REGION_SIZE;
 

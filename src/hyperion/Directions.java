@@ -1,8 +1,8 @@
 package hyperion;
 
 import com.model.game.character.Entity;
+import com.model.game.location.Location;
 import hyperion.impl.PrimitivePathFinder;
-import clipmap.Tile;
 
 import java.awt.*;
 
@@ -109,7 +109,7 @@ public class Directions {
 	    public static final byte[] MOVEMENT_DIRECTION_DELTA_X = new byte[] {-1, 0, 1, -1, 1, -1, 0, 1};
 		public static final byte[] MOVEMENT_DIRECTION_DELTA_Y = new byte[] {1, 1, 1, 0, 0, -1, -1, -1};
 
-	    public static NormalDirection directionFor(Tile currentPos, Tile nextPos) {
+	    public static NormalDirection directionFor(Location currentPos, Location nextPos) {
 	        int dirX = (nextPos.getX() - currentPos.getX());
 	        int dirY = (nextPos.getY() - currentPos.getY());
 	        if (dirX < 0) {
@@ -340,7 +340,7 @@ public class Directions {
 	     * @param nextPos    The next point.
 	     * @return The direction in which the next point is.
 	     */
-	    public static NormalDirection directionForr(Tile currentPos, Tile nextPos) {
+	    public static NormalDirection directionForr(Location currentPos, Location nextPos) {
 	        return directionFor(new Point(currentPos.getX(), currentPos.getY()), new Point(nextPos.getX(), nextPos.getY()));
 	    }
 	    

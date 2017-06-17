@@ -1,6 +1,5 @@
 package hyperion;
 
-import clipmap.Tile;
 import com.model.game.character.Entity;
 import com.model.game.character.player.Player;
 import com.model.game.location.Location;
@@ -17,7 +16,7 @@ public interface PathFinder {
 	 public static final int SOLID_FLAG = 0x20000;
  	 public static final int UNKNOWN_FLAG = 0x40000000;
 
-	 public PathState findPath(Entity mob, Entity target, Tile base, int srcX, int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep, boolean moveNear);
+	 public PathState findPath(Entity mob, Entity target, Location base, int srcX, int srcY, int dstX, int dstY, int radius, boolean running, boolean ignoreLastStep, boolean moveNear);
 
 
 
@@ -38,8 +37,8 @@ public interface PathFinder {
 		//public static int[] dummies = new int[] {995, 6685, 3024, 2440, 2436, 2444, 2432};
 		//	mob.dummyIdx = 0;//reset
 		//int item = World.dummies[mob.dummyIdx];
-		Tile destination = Tile.create(x, y, mob.getPosition().getZ());
-		Tile base = mob.getPosition();
+		Location destination = Location.create(x, y, mob.getPosition().getZ());
+		Location base = mob.getPosition();
 		int srcX = base.getLocalX();
 		int srcY = base.getLocalY();
 		int destX = destination.getLocalX(base);

@@ -100,7 +100,7 @@ public class WalkingPacketHandler implements PacketType {
 		}
 		
 		//We're walking to our target
-		/*int steps = (packetSize - 5) / 2;
+		int steps = (packetSize - 5) / 2;
 		if (steps < 0)
 			return;
 		int[][] path = new int[steps][2];
@@ -113,16 +113,16 @@ public class WalkingPacketHandler implements PacketType {
 
 		player.getWalkingQueue().reset();
 		player.getWalkingQueue().setRunningQueue(player.getInStream().readSignedByteC() == 1);
-		player.getWalkingQueue().addToPath(new Location(firstStepX, firstStepY, 0));
+		player.getWalkingQueue().addStep(firstStepX, firstStepY);
 		for (int i = 0; i < steps; i++) {
 			path[i][0] += firstStepX;
 			path[i][1] += firstStepY;
-			player.getWalkingQueue().addToPath(new Location(path[i][0], path[i][1], 0));
+			player.getWalkingQueue().addStep(path[i][0], path[i][1]);
 		}
 		//We've reached our destination
-		player.getWalkingQueue().finish();*/
+		player.getWalkingQueue().finish();
 		
-		int size = packetSize;
+		/*int size = packetSize;
 		final int steps = (size - 5) / 2;
 		final int[][] path = new int[steps][2];
 		int offsetY = player.getInStream().readSignedWordBigEndian();
@@ -146,6 +146,6 @@ public class WalkingPacketHandler implements PacketType {
 			PathFinder.doPath(new SizedPathFinder(false), player, offsetX, offsetY);
 		} else {
 			PathFinder.doPath(new DefaultPathFinder(), player, offsetX, offsetY);
-		}
+		}*/
 	}
 }

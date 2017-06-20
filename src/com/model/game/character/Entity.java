@@ -18,6 +18,7 @@ import com.model.game.character.player.ActionSender;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
+import com.model.game.character.walking.Sprites;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.server.Server;
@@ -209,21 +210,74 @@ public abstract class Entity {
 	}
 	
 	/**
+	 * The teleportation target.
+	 */
+	private Location teleportTarget = null;
+	
+	/**
+	 * Checks if this entity has a target to teleport to.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean hasTeleportTarget() {
+		return teleportTarget != null;
+	}
+	
+	/**
+	 * Gets the teleport target.
+	 * @return The teleport target.
+	 */
+	public Location getTeleportTarget() {
+		return teleportTarget;
+	}
+	
+	/**
+	 * Sets the teleport target.
+	 * @param teleportTarget The target location.
+	 */
+	public void setTeleportTarget(Location teleportTarget) {
+		asPlayer().getWalkingQueue().reset();
+		this.teleportTarget = teleportTarget;
+	}
+	
+	/**
+	 * Resets the teleport target.
+	 */
+	public void resetTeleportTarget() {
+		this.teleportTarget = null;
+	}
+	
+	/**
+	 * The sprites i.e. walk directions.
+	 */
+	private final Sprites sprites = new Sprites();
+	
+	/**
+	 * Gets the sprites.
+	 * @return The sprites.
+	 */
+	public Sprites getSprites() {
+		return sprites;
+	}
+	
+	/**
 	 * The teleporting flag.
 	 */
-	private boolean teleport = false;
-
+	private boolean teleporting = false;
+	
 	/**
-	 * @return we're teleporting
+	 * Checks if this player is teleporting.
+	 * @return <code>true</code> if so, <code>false</code> if not.
 	 */
 	public boolean isTeleporting() {
-		return teleport;
+		return teleporting;
 	}
-
+	
 	/**
+	 * Sets the teleporting flag.
+	 * @param teleporting The teleporting flag.
 	 */
-	public void setTeleporting(boolean teleport) {
-		this.teleport = teleport;
+	public void setTeleporting(boolean teleporting) {
+		this.teleporting = teleporting;
 	}
 	
 	/**

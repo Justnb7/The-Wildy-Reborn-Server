@@ -440,7 +440,7 @@ public class PlayerUpdating {
 			/*
 			 * Otherwise, check if the player moved.
 			 */
-			if (player.getWalkingQueue().getWalkingDirection() == -1) {
+			if (player.getSprites().getPrimarySprite() == -1) {
 				/*
 				 * The player didn't move. Check if an update is required.
 				 */
@@ -464,7 +464,7 @@ public class PlayerUpdating {
 				/*
 				 * Check if the player was running.
 				 */
-				if (player.getWalkingQueue().getRunningDirection() == -1) {
+				if (player.getSprites().getSecondarySprite() == -1) {
 					/*
 					 * This indicates the player only walked.
 					 */
@@ -472,7 +472,7 @@ public class PlayerUpdating {
 					/*
 					 * This is the player's walking direction.
 					 */
-					buffer.writeBits(3, player.getWalkingQueue().getWalkingDirection());
+					buffer.writeBits(3, player.getSprites().getPrimarySprite());
 					/*
 					 * This flag indicates an update block is appended.
 					 */
@@ -489,11 +489,11 @@ public class PlayerUpdating {
 					/*
 					 * This is the walking direction.
 					 */
-					buffer.writeBits(3, player.getWalkingQueue().getWalkingDirection());
+					buffer.writeBits(3, player.getSprites().getPrimarySprite());
 					/*
 					 * And this is the running direction.
 					 */
-					buffer.writeBits(3, player.getWalkingQueue().getRunningDirection());
+					buffer.writeBits(3, player.getSprites().getSecondarySprite());
 					/*
 					 * This flag indicates an update block is appended.
 					 */
@@ -516,23 +516,23 @@ public class PlayerUpdating {
 	 *            The {@link GameBuffer} To write data on
 	 */
 	private static void updatePlayerMovement(Player player, GameBuffer str) {
-		if (player.getWalkingQueue().getWalkingDirection() == -1) {
+		if (player.getSprites().getPrimarySprite() == -1) {
 			if (player.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
 				str.writeBits(2, 0);
 			} else {
 				str.writeBits(1, 0);
 			}
-		} else if (player.getWalkingQueue().getRunningDirection() == -1) {
+		} else if (player.getSprites().getSecondarySprite() == -1) {
 			str.writeBits(1, 1);
 			str.writeBits(2, 1);
-			str.writeBits(3, player.getWalkingQueue().getWalkingDirection());
+			str.writeBits(3, player.getSprites().getPrimarySprite());
 			str.writeBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 		} else {
 			str.writeBits(1, 1);
 			str.writeBits(2, 2);
-			str.writeBits(3, player.getWalkingQueue().getWalkingDirection());
-			str.writeBits(3, player.getWalkingQueue().getRunningDirection());
+			str.writeBits(3, player.getSprites().getPrimarySprite());
+			str.writeBits(3, player.getSprites().getSecondarySprite());
 			str.writeBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 		}
 	}

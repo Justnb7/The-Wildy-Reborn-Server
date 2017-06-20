@@ -100,19 +100,25 @@ public class WalkingPacketHandler implements PacketType {
 		}
 		
 		//We're walking to our target
-		int steps = (packetSize - 5) / 2;
+		int size = packetSize;
+		final int steps = (size - 5) / 2;
 		if (steps < 0)
 			return;
-		int[][] path = new int[steps][2];
+		final int[][] path = new int[steps][2];
 		int firstStepX = player.getInStream().readSignedWordBigEndianA();
+		int firstStepY = player.getInStream().readSignedWordBigEndian();
+		final int type = player.getInStream().readSignedByteC();
+		if (type < 0 || type > 2) {
+			return;
+		}
+		
 		for (int i = 0; i < steps; i++) {
 			path[i][0] = player.getInStream().readSignedByte();
 			path[i][1] = player.getInStream().readSignedByte();
 		}
-		int firstStepY = player.getInStream().readSignedWordBigEndian();
 
 		player.getWalkingQueue().reset();
-		player.getWalkingQueue().setRunningQueue(player.getInStream().readSignedByteC() == 1);
+		player.getWalkingQueue().setRunningQueue(type == 1);
 		player.getWalkingQueue().addStep(firstStepX, firstStepY);
 		for (int i = 0; i < steps; i++) {
 			path[i][0] += firstStepX;

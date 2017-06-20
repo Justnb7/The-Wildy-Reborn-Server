@@ -139,12 +139,6 @@ public class WalkingQueue {
 	}
 	
 	/**
-	 * Walking directions
-	 */
-	private int walkingDirection;
-	private int runningDirection;
-	
-	/**
 	 * Represents a single point in the queue.
 	 * 
 	 * @author Graham Edgecombe
@@ -343,12 +337,16 @@ public class WalkingQueue {
 	/**
 	 * Process player movement
 	 */
-	public void process() {
+	public void processNextMovement() {
 		try {
 			player.setMapRegionChanging(false);
 			player.setTeleporting(false);
-			setWalkingDirection(-1);
-			setRunningDirection(-1);
+			player.getSprites().setSprites(-1, -1);
+			
+			/*
+			 * The points which we are walking to.
+			 */
+			Point walkPoint = null, runPoint = null;
 
 			if (player.teleportToX != -1 && player.teleportToY != -1) {
 				player.setMapRegionChanging(true);
@@ -384,25 +382,13 @@ public class WalkingQueue {
 				reset();
 				player.teleportToX = player.teleportToY = player.teleHeight = -1; // reset
 				
-				
-				/*player.currentX = (player.teleportToX - (player.mapRegionX << 3));
-				player.currentY = (player.teleportToY - (player.mapRegionY << 3));
-				player.absX = (short) player.teleportToX;
-				player.absY = (short) player.teleportToY;
-				player.heightLevel = player.teleHeight != -1 ? player.teleHeight : player.heightLevel;
-				player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
-				player.lastTile = new Location(player.absX, player.absY+1, player.heightLevel);*/
-				
-				
 				player.setTeleporting(true);
 				player.updateWalkEntities();
 				/*
 				 * Check if we've moved and the height level doesn't match, if so reload ground items and objects
 				 */
 				if (zChange) {
-						//ObjectManager.loadObjects(player);
-						//player.reloadItems(player);
-						GroundItemHandler.reloadGroundItems(player);
+					GroundItemHandler.reloadGroundItems(player);
 				}
 				
 				return;
@@ -412,16 +398,28 @@ public class WalkingQueue {
 				reset();
 				return;
 			}
-
-			Point walkPoint = waypoints.poll();
-			Point runPoint = null;
-
-			// Handle the movement.
+			
+			/*
+			 * If the player isn't teleporting, they are walking (or standing
+			 * still). We get the next direction of movement here.
+			 */
+			walkPoint = getNextPoint();
+			
+			/*
+			 * Technically we should check for running here.
+			 */
 			if((runToggled || runQueue) && player.getWalkingQueue().getEnergy() > 0) {
-				runPoint = waypoints.poll();
+				runPoint = getNextPoint();
 			}
 			
-			if (walkPoint != null && walkPoint.dir != -1) {
+			/*
+			 * Now set the sprites.
+			 */
+			int walkDir = walkPoint == null ? -1 : walkPoint.dir;
+			int runDir = runPoint == null ? -1 : runPoint.dir;
+			player.getSprites().setSprites(walkDir, runDir);
+			
+			/*if (walkPoint != null && walkPoint.dir != -1) {
 				if (canMove(walkPoint.dir) || player.isForcedMovement()) {
 					move(walkPoint.dir);
 				}
@@ -431,7 +429,7 @@ public class WalkingQueue {
 				if (canMove(runPoint.dir) || player.isForcedMovement()) {
 					move(runPoint.dir);
 				}
-			}
+			}*/
 
 			// Check for region changes.
 			int deltaX = player.getX() - player.getMapRegionX() * 8;
@@ -452,58 +450,47 @@ public class WalkingQueue {
 		}
 		return true;
 	}
+	
+	/**
+	 * Gets the next point of movement.
+	 * 
+	 * @return The next point.
+	 */
+	private Point getNextPoint() {
+		/*
+		 * Take the next point from the queue.
+		 */
+		Point p = waypoints.poll();
 
-	public void move(int dir) {
-		// for updating
-		if (getWalkingDirection() == -1) {
-			setWalkingDirection(dir);
-		} else if (getRunningDirection() == -1) {
-			setRunningDirection(dir);
+		/*
+		 * Checks if there are no more points.
+		 */
+		if (p == null || p.dir == -1) {
+			/*
+			 * Return <code>null</code> indicating no movement happened.
+			 */
+			return null;
 		} else {
-			throw new IllegalArgumentException("Tried to set a THIRD walking direction!");
+			/*
+			 * Set the player's new location.
+			 */
+			int diffX = WalkingConstants.DIRECTION_DELTA_X[p.dir];
+			int diffY = WalkingConstants.DIRECTION_DELTA_Y[p.dir];
+			player.setLocation(player.getPosition().transform(diffX, diffY, 0));
+			player.updateCoverage(player.getPosition().transform(diffX, diffY, 0));
+			player.updateWalkEntities();
+			/*
+			 * And return the direction.
+			 */
+			return p;
 		}
-		player.lastTile = new Location(player.getX(), player.getY(), player.getZ());
-		player.teleLocalX += WalkingConstants.DIR[dir][0];
-		player.teleLocalY += WalkingConstants.DIR[dir][1];
-		System.out.println("moved dir "+dir+" new telepos "+player.teleLocalX+","+player.teleLocalY);
-		// update position
-		player.setLocation(player.getLocation().transform(WalkingConstants.DIR[dir][0], WalkingConstants.DIR[dir][1]));
-		player.updateCoverage(player.getPosition());
-		player.updateWalkEntities();
 	}
 
 	public boolean isMoving() {
-		 return getWalkingDirection() != -1 || getRunningDirection() != -1;
-	}
-
-	/**
-	 * @return the walkingDirection
-	 */
-	public int getWalkingDirection() {
-		return walkingDirection;
-	}
-
-	/**
-	 * @param walkingDirection
-	 *            the walkingDirection to set
-	 */
-	public void setWalkingDirection(int walkingDirection) {
-		this.walkingDirection = walkingDirection;
-	}
-
-	/**
-	 * @return the runningDirection
-	 */
-	public int getRunningDirection() {
-		return runningDirection;
-	}
-
-	/**
-	 * @param runningDirection
-	 *            the runningDirection to set
-	 */
-	public void setRunningDirection(int runningDirection) {
-		this.runningDirection = runningDirection;
+		if (player.getSprites().getPrimarySprite() != -1 || player.getSprites().getSecondarySprite() != -1) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void walkTo(int x, int y) {

@@ -13,6 +13,10 @@ import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
 import com.model.server.Server;
 
+import hyperion.PathFinder;
+import hyperion.impl.DefaultPathFinder;
+import hyperion.impl.SizedPathFinder;
+
 import java.util.Objects;
 
 /**
@@ -96,7 +100,7 @@ public class WalkingPacketHandler implements PacketType {
 		}
 		
 		//We're walking to our target
-		int steps = (packetSize - 5) / 2;
+		/*int steps = (packetSize - 5) / 2;
 		if (steps < 0)
 			return;
 		int[][] path = new int[steps][2];
@@ -116,6 +120,32 @@ public class WalkingPacketHandler implements PacketType {
 			player.getWalkingQueue().addToPath(new Location(path[i][0], path[i][1], 0));
 		}
 		//We've reached our destination
-		player.getWalkingQueue().finish();
+		player.getWalkingQueue().finish();*/
+		
+		int size = packetSize;
+		final int steps = (size - 5) / 2;
+		final int[][] path = new int[steps][2];
+		int offsetY = player.getInStream().readSignedWordBigEndian();
+		int offsetX = player.getInStream().readSignedWordBigEndianA();
+		final int type = player.getInStream().readSignedByteC();
+		if (type < 0 || type > 2) {
+			return;
+		}
+		
+		for (int i = 0; i < steps; i++) {
+			path[i][0] = path[i][0] + offsetX;
+			path[i][1] = path[i][1] + offsetY;
+			
+			player.getWalkingQueue().addStep(offsetX, offsetY);
+		}
+		player.getWalkingQueue().setRunningQueue(type == 1);
+		if (offsetX < 0 || offsetY < 0) {
+			return;
+		}
+		if (player.isNPC()) {
+			PathFinder.doPath(new SizedPathFinder(false), player, offsetX, offsetY);
+		} else {
+			PathFinder.doPath(new DefaultPathFinder(), player, offsetX, offsetY);
+		}
 	}
 }

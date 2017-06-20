@@ -8,10 +8,15 @@ package com.model.game.character.walking;
 public class DirectionUtils {
 
 	/**
-	 * Finds a direction.
-	 * @param dx X difference.
-	 * @param dy Y difference.
-	 * @return The direction.
+	 * Get a direction by the coordinate modifiers (must be at least -1 and at
+	 * most 1)
+	 *
+	 * @param dx
+	 *            the x coordinate modifier
+	 * @param dy
+	 *            the y coordinate modifier
+	 * @return the walking direction (denoted as -1 for none or 0-8 for the
+	 *         player update paket direction index)
 	 */
 	public static int direction(int dx, int dy) {
 		if(dx < 0) {

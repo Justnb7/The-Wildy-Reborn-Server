@@ -204,6 +204,143 @@ public class WalkingQueue {
 	}
 
 	/**
+	 * Removes the first waypoint which is only used for calculating directions.
+	 * This means walking begins at the correct time.
+	 */
+	public void finish() {
+		waypoints.removeFirst();
+	}
+	
+	/**
+	 * Adds a single step to the walking queue, filling in the points to the
+	 * previous point in the queue if necessary.
+	 * 
+	 * @param x
+	 *            The local x coordinate.
+	 * @param y
+	 *            The local y coordinate.
+	 */
+	public void addStep(int x, int y) {
+		/*
+		 * The RuneScape client will not send all the points in the queue. It
+		 * just sends places where the direction changes.
+		 * 
+		 * For instance, walking from a route like this:
+		 * 
+		 * <code> ***** * * ***** </code>
+		 * 
+		 * Only the places marked with X will be sent:
+		 * 
+		 * <code> X***X * * X***X </code>
+		 * 
+		 * This code will 'fill in' these points and then add them to the queue.
+		 */
+
+		/*
+		 * We need to know the previous point to fill in the path.
+		 */
+		if (waypoints.size() == 0) {
+			/*
+			 * There is no last point, reset the queue to add the player's
+			 * current location.
+			 */
+			reset();
+		}
+
+		/*
+		 * We retrieve the previous point here.
+		 */
+		Point last = waypoints.peekLast();
+		
+		/*
+		 * We now work out the difference between the points.
+		 */
+		int diffX = x - last.getX();
+		int diffY = y - last.getY();
+
+
+		/*
+		 * And calculate the number of steps there is between the points.
+		 */
+		int max = Math.max(Math.abs(diffX), Math.abs(diffY));
+		for (int i = 0; i < max; i++) {
+			/*
+			 * Keep lowering the differences until they reach 0 - when our route
+			 * will be complete.
+			 */
+			if (diffX < 0) {
+				diffX++;
+			} else if (diffX > 0) {
+				diffX--;
+			}
+			if (diffY < 0) {
+				diffY++;
+			} else if (diffY > 0) {
+				diffY--;
+			}
+
+			/*
+			 * Add this next step to the queue.
+			 */
+			addStepInternal(x - diffX, y - diffY);
+			
+		}
+	}
+
+	/**
+	 * Adds a single step to the queue internally without counting gaps. This
+	 * method is unsafe if used incorrectly so it is private to protect the
+	 * queue.
+	 * 
+	 * @param x
+	 *            The x coordinate of the step.
+	 * @param y
+	 *            The y coordinate of the step.
+	 */
+	public void addStepInternal(int x, int y) {
+		/*
+		 * Check if we are going to violate capacity restrictions.
+		 */
+		if (waypoints.size() >= WalkingConstants.MAXIMUM_SIZE) {
+			/*
+			 * If we are we'll just skip the point. The player won't get a
+			 * complete route by large routes are not probable and are more
+			 * likely sent by bots to crash servers.
+			 */
+			return;
+		}
+
+		/*
+		 * We retrieve the previous point (this is to calculate the direction to
+		 * move in).
+		 */
+		Point last = waypoints.peekLast();
+
+		/*
+		 * Now we work out the difference between these steps.
+		 */
+		int diffX = x - last.x;
+		int diffY = y - last.y;
+		
+		/*
+		 * And calculate the direction between them.
+		 */
+		int dir = DirectionUtils.direction(diffX, diffY);
+		//Direction dir = Direction.direction(diffX, diffY);
+
+		/*
+		 * Check if we actually move anywhere.
+		 */
+		if (dir > -1) {
+			/*
+			 * We now have the information to add a point to the queue! We
+			 * create the actual point object and add it.
+			 */
+			waypoints.add(new Point(x, y, dir));
+		}
+	}
+	
+	/**
 	 * Process player movement
 	 */
 	public void process() {
@@ -340,108 +477,6 @@ public class WalkingQueue {
 	}
 
 	/**
-	 * Finishes the current path.
-	 */
-	public void finish() {
-		waypoints.removeFirst();
-	}
-
-	/**
-	 * Adds a Location to the path.
-	 *
-	 * @param Location
-	 *            the Location
-	 */
-	public void addToPath(Location Location) {
-		if (waypoints.size() == 0) {
-			reset();
-		}
-
-		Point last = waypoints.peekLast();
-		int deltaX = Location.getX() - last.getX();
-		int deltaY = Location.getY() - last.getY();
-		int max = Math.max(Math.abs(deltaX), Math.abs(deltaY));
-
-		for (int i = 0; i < max; i++) {
-			if (deltaX < 0) {
-				deltaX++;
-			} else if (deltaX > 0) {
-				deltaX--;
-			}
-			if (deltaY < 0) {
-				deltaY++;
-			} else if (deltaY > 0) {
-				deltaY--;
-			}
-
-			addStep(Location.getX() - deltaX, Location.getY() - deltaY);
-		}
-	}
-
-	/**
-	 * Adds a step.
-	 *
-	 * @param x
-	 *            the X coordinate
-	 * @param y
-	 *            the Y coordinate
-	 */
-	private void addStep(int x, int y) {
-		if (waypoints.size() >= 100) {
-			return;
-		}
-		if (waypoints.size() == 0) {
-			reset();
-		}
-		Point last = waypoints.peekLast();
-		int deltaX = x - last.getX();
-		int deltaY = y - last.getY();
-		int direction = direction(deltaX, deltaY);
-		if (direction > -1) {
-			waypoints.add(new Point(x, y, direction));
-		}
-	}
-
-	/**
-	 * Get a direction by the coordinate modifiers (must be at least -1 and at
-	 * most 1)
-	 *
-	 * @param dx
-	 *            the x coordinate modifier
-	 * @param dy
-	 *            the y coordinate modifier
-	 * @return the walking direction (denoted as -1 for none or 0-8 for the
-	 *         player update paket direction index)
-	 */
-	public static int direction(int dx, int dy) {
-		if (dx < 0) {
-			if (dy < 0) {
-				return 5;
-			} else if (dy > 0) {
-				return 0;
-			} else {
-				return 3;
-			}
-		} else if (dx > 0) {
-			if (dy < 0) {
-				return 7;
-			} else if (dy > 0) {
-				return 2;
-			} else {
-				return 4;
-			}
-		} else {
-			if (dy < 0) {
-				return 6;
-			} else if (dy > 0) {
-				return 1;
-			} else {
-				return -1;
-			}
-		}
-	}
-
-	/**
 	 * @return the walkingDirection
 	 */
 	public int getWalkingDirection() {
@@ -473,7 +508,7 @@ public class WalkingQueue {
 	
 	public void walkTo(int x, int y) {
         reset();
-        addToPath(new Location(player.getX() + x, player.getY() + y, player.getZ()));
+        addStep(player.getX() + x, player.getY() + y);
         finish();
     }
 	

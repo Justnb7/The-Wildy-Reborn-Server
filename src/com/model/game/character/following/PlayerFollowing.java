@@ -225,7 +225,7 @@ public class PlayerFollowing {
             yMove = targetY - player.getY();
         }
 
-        player.getWalkingQueue().addToPath(new Location(player.getX() + xMove, player.getY() + yMove, 0));
+        player.getWalkingQueue().addStep(player.getX() + xMove, player.getY() + yMove);
     }
 
 	/**
@@ -238,7 +238,7 @@ public class PlayerFollowing {
 	 */
     public void walkTo(int moveX, int moveY) {
         player.getWalkingQueue().reset();
-        player.getWalkingQueue().addToPath(new Location(player.getX() + moveX, player.getY() + moveY, player.getZ()));
+        player.getWalkingQueue().addStep(player.getX() + moveX, player.getY() + moveY);
         player.getWalkingQueue().finish();
     }
 

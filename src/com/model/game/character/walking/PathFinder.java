@@ -198,12 +198,12 @@ public class PathFinder {
 		int pathX = (regionX) + tileQueueX.get(tail);
 		int pathY = (regionY) + tileQueueY.get(tail);
 
-		player.getWalkingQueue().addToPath(new Location(pathX, pathY, player.getZ()));
+		player.getWalkingQueue().addStep(pathX, pathY);
 		for (int i = 1; i < size; i++) {
 			tail--;
 			pathX = (regionX) + tileQueueX.get(tail);
 			pathY = (regionY) + tileQueueY.get(tail);
-			player.getWalkingQueue().addToPath(new Location(pathX, pathY, player.getZ()));
+			player.getWalkingQueue().addStep(pathX, pathY);
 		}
 
 		player.getWalkingQueue().finish();

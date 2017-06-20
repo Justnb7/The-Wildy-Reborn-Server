@@ -340,7 +340,7 @@ public class Agility {
 				player.getWalkingQueue().setRunningToggled(false);
 				
 				player.getWalkingQueue().reset();
-				player.getWalkingQueue().addToPath(new Location(x, y));
+				player.getWalkingQueue().addStep(x, y);
 				player.getWalkingQueue().finish();
 				Server.getTaskScheduler().submit(new ScheduledTask(ticks) {
 					@Override

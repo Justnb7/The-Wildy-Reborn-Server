@@ -1,31 +1,37 @@
 package com.model.task.impl;
 
-import com.model.game.character.Entity;
+import com.model.game.character.player.Player;
 import com.model.task.ScheduledTask;
 
+/**
+ * A simple task to restore the players energy.
+ * @author Patrick van Elderen
+ * Credits to the creator, took this from a random Hyperion base.
+ *
+ */
 public class EnergyRestoreTick extends ScheduledTask {
 
 	/**
-	 * The mob whos energy we are restoring.
+	 * The player whose energy we are restoring.
 	 */
-	private Entity entity;
+	private Player player;
 	
-	public EnergyRestoreTick(Entity entity) {
-		super(4);
-		this.entity = entity;
+	public EnergyRestoreTick(Player player) {
+		super(1);
+		this.player = player;
 	}
 
 	@Override
 	public void execute() {
-		/*if(entity.getWalkingQueue().getEnergy() < 100) {
-			entity.getWalkingQueue().setEnergy(entity.getWalkingQueue().getEnergy() + 1);
-			if(entity.getActionSender() != null) {
-				entity.getActionSender().sendRunEnergy();
+		if(player.getWalkingQueue().getEnergy() < 100) {
+			player.getWalkingQueue().setEnergy(player.getWalkingQueue().getEnergy() + 1);
+			if(player.getActionSender() != null) {
+				player.getActionSender().sendRunEnergy();
 			}
 		} else {
-			entity.getEnergyRestoreTick().stop();
-			entity.setEnergyRestoreTick(null);
-		}*/
+			player.getEnergyRestoreTick().stop();
+			player.setEnergyRestoreTick(null);
+		}
 	}
 
 }

@@ -43,7 +43,7 @@ public interface PathFinder {
 		int srcY = base.getLocalY();
 		int destX = destination.getLocalX(base);
 		int destY = destination.getLocalY(base);
-		PathState state = pathFinder.findPath(mob, target, mob.getPosition(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getWalkingQueue().isRunPath(), ignoreLastStep, true);
+		PathState state = pathFinder.findPath(mob, target, mob.getPosition(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
 		if (state != null && addToWalking) {
 			if (mob.isPlayer()) {
 				Player p = (Player)mob;

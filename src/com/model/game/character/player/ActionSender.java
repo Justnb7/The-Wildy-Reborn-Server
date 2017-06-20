@@ -930,7 +930,7 @@ public class ActionSender {
 		sendConfig(205, player.getSplitPrivateChat() ? 1 : 0);
 		sendConfig(200, player.getAcceptAid() ? 1 : 0);
 		sendConfig(172, player.isAutoRetaliating() ? 1 : 0);
-		sendConfig(152, player.isRunning() ? 1 : 0);
+		sendConfig(152, player.getWalkingQueue().isRunningToggled() ? 1 : 0);
 	}
 	
 	public void updateAfterLogin() {
@@ -981,6 +981,12 @@ public class ActionSender {
 				this.stop();
 			}
 		}.attach(this));
+	}
+
+	public ActionSender sendRunEnergy() {
+		player.getOutStream().writeFrame(110);
+		player.getOutStream().writeByte((byte) player.getWalkingQueue().getEnergy());
+		return this;
 	}
 	
 }

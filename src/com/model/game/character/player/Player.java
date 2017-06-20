@@ -1919,16 +1919,6 @@ public class Player extends Entity {
 		return prayerHandler;
 	}
 
-	private boolean running = true;
-	
-	public boolean isRunning() {
-		return running;
-	}
-	
-	public void setRunning(boolean running) {
-		this.running = running;
-	}
-
 	private byte screenBrightness = 3;
 	
 	public byte getScreenBrightness() {

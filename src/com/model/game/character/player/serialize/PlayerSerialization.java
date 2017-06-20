@@ -166,7 +166,7 @@ public class PlayerSerialization {
 				player.setAttribute(BountyHunterConstants.HUNTER_CURRENT, details.hunterCurrent);
 				player.setAttribute(BountyHunterConstants.HUNTER_RECORD, details.hunterRecord);
 				player.setBountyPoints(details.bountyPoints);
-				player.setRunning(details.running);
+				player.getWalkingQueue().setRunningToggled(details.runToggle);
 				player.setAutoRetaliating(details.retaliating);
 				player.setAttackStyle(details.attackStyle);
 				player.setAttackStyleConfig(details.attackStyleConfig);
@@ -253,7 +253,7 @@ public class PlayerSerialization {
 		private final int hunterCurrent;
 		private final int hunterRecord;
 		private final int bountyPoints;
-		private final boolean running;
+		private final boolean runToggle;
 		private final boolean retaliating;
 		private final int attackStyle;
 		private final int attackStyleConfig;
@@ -337,7 +337,7 @@ public class PlayerSerialization {
 			hunterCurrent = player.getAttribute(BountyHunterConstants.HUNTER_CURRENT, 0);
 			hunterRecord = player.getAttribute(BountyHunterConstants.HUNTER_RECORD, 0);
 			bountyPoints = player.getBountyPoints();
-			running = player.isRunning();
+			runToggle = player.getWalkingQueue().isRunningToggled();
 			retaliating = player.isAutoRetaliating();
 			attackStyle = player.getAttackStyle();
 			attackStyleConfig = player.getAttackStyleConfig();

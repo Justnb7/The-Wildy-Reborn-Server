@@ -108,7 +108,7 @@ public class WalkingPacketHandler implements PacketType {
 		int firstStepY = player.getInStream().readSignedWordBigEndian();
 
 		player.getWalkingQueue().reset();
-		player.getWalkingQueue().setRunPath(player.getInStream().readSignedByteC() == 1);
+		player.getWalkingQueue().setRunningQueue(player.getInStream().readSignedByteC() == 1);
 		player.getWalkingQueue().addToPath(new Location(firstStepX, firstStepY, 0));
 		for (int i = 0; i < steps; i++) {
 			path[i][0] += firstStepX;

@@ -551,9 +551,17 @@ public class World implements Service {
 		}
 	}
 	
+	/**
+	 * Sends a global message.
+	 * 
+	 * @param message
+	 *            The message we're about to send globally.
+	 * @param forStaff
+	 *            Is the message for staff members only?
+	 */
 	public void sendWorldMessage(String message, boolean forStaff) {
 		for (Player p : World.getWorld().getPlayers()) {
-			if (p == null || !p.isRunning() || p.isYellOff() || (forStaff && p.getRights().getValue() == 0))
+			if (p == null || p.isYellOff() || (forStaff && p.getRights().getValue() == 0))
 				continue;
 			p.getActionSender().sendMessage(message);
 		}

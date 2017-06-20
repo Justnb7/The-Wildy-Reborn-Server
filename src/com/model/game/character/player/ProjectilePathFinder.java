@@ -1,7 +1,8 @@
 package com.model.game.character.player;
 
-import com.model.game.Constants;
+import com.model.game.character.walking.WalkingConstants;
 import com.model.game.location.Location;
+
 import clipmap.Region;
 
 /**
@@ -210,7 +211,7 @@ public final class ProjectilePathFinder {
 	 */
 	public static int getDirection(int deltaX, int deltaY) {
 		for (int i = 0; i < 8; i++) {
-			if (Constants.DIRECTION_DELTA_X[i] == deltaX && Constants.DIRECTION_DELTA_Y[i] == deltaY) {
+			if (WalkingConstants.DIRECTION_DELTA_X[i] == deltaX && WalkingConstants.DIRECTION_DELTA_Y[i] == deltaY) {
 				return i;
 			}
 		}

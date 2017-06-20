@@ -35,6 +35,25 @@ import java.util.*;
 public abstract class Entity {
 	
 	/**
+	 * The players energy restore tickable.
+	 */
+	private ScheduledTask energyRestoreTick;
+	
+	/**
+	 * @return the energyRestoreTick
+	 */
+	public ScheduledTask getEnergyRestoreTick() {
+		return energyRestoreTick;
+	}
+	
+	/**
+	 * @param energyRestoreTick the energyRestoreTick to set
+	 */
+	public void setEnergyRestoreTick(ScheduledTask energyRestoreTick) {
+		this.energyRestoreTick = energyRestoreTick;
+	}
+	
+	/**
 	 * A queue of actions.
 	 */
 	private final ActionQueue actionQueue = new ActionQueue(this);

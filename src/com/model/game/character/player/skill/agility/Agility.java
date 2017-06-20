@@ -337,7 +337,7 @@ public class Agility {
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
 				
-				player.setRunning(false);
+				player.getWalkingQueue().setRunningToggled(false);
 				
 				player.getWalkingQueue().reset();
 				player.getWalkingQueue().addToPath(new Location(x, y));
@@ -370,12 +370,12 @@ public class Agility {
 	}
 	
 	public static void setRunningToggled(final Player player, boolean toggled, int ticks) {
-		final boolean originalToggledState = player.isRunning();
-		player.setRunning(toggled);
+		final boolean originalToggledState = player.getWalkingQueue().isRunningToggled();
+		player.getWalkingQueue().setRunningToggled(toggled);
 		ScheduledTask task = new ScheduledTask(ticks) {
 			@Override
 			public void execute() {
-				player.setRunning(originalToggledState);
+				player.getWalkingQueue().setRunningToggled(originalToggledState);
 				this.stop();
 			}
 		};

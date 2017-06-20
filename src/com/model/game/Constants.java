@@ -177,16 +177,6 @@ public class Constants {
 	public static final int PK_POINTS_WEALTH = 250_000;
 	
 	/**
-	 * Difference in X coordinates for directions array.
-	 */
-	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
-
-	/**
-	 * Difference in Y coordinates for directions array.
-	 */
-	public static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
-	
-	/**
 	 * Determines the buffering size (10000)
 	 */
 	public static final int BUFFER_SIZE = 10000;

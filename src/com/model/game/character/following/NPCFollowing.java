@@ -6,6 +6,7 @@ import com.model.game.character.combat.combat_data.CombatStyle;
 import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Boundary;
 import com.model.game.character.player.ProjectilePathFinder;
+import com.model.game.character.walking.WalkingConstants;
 import com.model.game.location.Location;
 
 public class NPCFollowing {
@@ -177,7 +178,7 @@ public class NPCFollowing {
 			return;
 		}
 
-		mob.setLocation(mob.getLocation().transform(Constants.DIRECTION_DELTA_X[direction], Constants.DIRECTION_DELTA_Y[direction]));
+		mob.setLocation(mob.getLocation().transform(WalkingConstants.DIRECTION_DELTA_X[direction], WalkingConstants.DIRECTION_DELTA_Y[direction]));
 		mob.direction = direction;
 		mob.setOnTile(mob.getX(), mob.getY(), mob.getZ());
 	}

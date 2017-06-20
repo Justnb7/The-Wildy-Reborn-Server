@@ -1,61 +1,206 @@
 package com.model.game.character.walking;
 
+import com.model.game.World;
 import com.model.game.character.player.Player;
 import com.model.game.item.ground.GroundItemHandler;
 import com.model.game.location.Location;
+import com.model.task.impl.EnergyRestoreTick;
 
-import java.util.Deque;
 import java.util.LinkedList;
 
 /**
+ * <p>
+ * A <code>WalkingQueue</code> stores steps the client needs to walk and allows
+ * this queue of steps to be modified.
+ * </p>
  * 
+ * <p>
+ * The class will also process these steps when {@link #processNextMovement()}
+ * is called. This should be called once per server cycle.
+ * </p>
+ * 
+ * @author Graham Edgecombe
  * @author Patrick van Elderen
+ * @author Jak
  * 
- *
  */
 public class WalkingQueue {
+
 	
-	public static final boolean USE_WALKING_QUEUE = true;
-
-	/**
-	 * Walking directions
-	 */
-	public static final int[][] DIR = { { -1, 1 }, { 0, 1 }, { 1, 1 }, { -1, 0 }, { 1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
-	/**
-	 * Difference in X coordinates for directions array.
-	 */
-	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
-
-	/**
-	 * Difference in Y coordinates for directions array.
-	 */
-	public static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
 	/**
 	 * The player.
 	 */
 	private final Player player;
+	
 	/**
-	 * Waypoints.
+	 * Creates the <code>WalkingQueue</code> for the specified
+	 * <code>Player</code>.
+	 * 
+	 * @param player
+	 *            The player whose walking queue this is.
 	 */
-	private final Deque<Point> waypoints = new LinkedList<Point>();
+	public WalkingQueue(Player player) {
+		this.player = player;
+	}
+	
+	/**
+	 * The queue of waypoints.
+	 */
+	private LinkedList<Point> waypoints = new LinkedList<Point>();
+	
 	/**
 	 * Is the next path an automatic run path
 	 */
-	private boolean runPath = false;
+	private boolean runQueue = false;
+	
+	/**
+	 * Sets the run queue flag.
+	 * 
+	 * @param runQueue
+	 *            The run queue flag.
+	 */
+	public void setRunningQueue(boolean runQueue) {
+		this.runQueue = runQueue;
+	}
+	
+	/**
+	 * Gets the running queue flag.
+	 * 
+	 * @return The running queue flag.
+	 */
+	public boolean isRunningQueue() {
+		return runQueue;
+	}
+	
+	/**
+	 * Run toggle (button in client).
+	 */
+	private boolean runToggled = false;
+	
+	/**
+	 * Sets the run toggled flag.
+	 * 
+	 * @param runToggled
+	 *            The run toggled flag.
+	 */
+	public void setRunningToggled(boolean runToggled) {
+		this.runToggled = runToggled;
+	}
+	
+	/**
+	 * Gets the run toggled flag.
+	 * 
+	 * @return The run toggled flag.
+	 */
+	public boolean isRunningToggled() {
+		return runToggled;
+	}
+	
+	/**
+	 * Checks if any running flag is set.
+	 * 
+	 * @return <code>true</code. if so, <code>false</code> if not.
+	 */
+	public boolean isRunning() {
+		return runToggled || runQueue;
+	}
+	
+	/**
+	 * The entity's energy to run.
+	 */
+	private double energy = 100;
+	
+	/**
+	 * A method that increases our run energy.
+	 * @param energy
+	 *            The energy to set.
+	 */
+	public void setEnergy(double energy) {
+		this.energy = energy;
+		if(this.energy < 100) {
+			if(player.getEnergyRestoreTick() == null) {
+				EnergyRestoreTick energyRestoreTick = new EnergyRestoreTick(player);
+				player.setEnergyRestoreTick(energyRestoreTick);
+				World.getWorld().schedule(energyRestoreTick);				
+			}
+		} else {
+			if(player.getEnergyRestoreTick() != null) {
+				player.getEnergyRestoreTick().stop();
+				player.setEnergyRestoreTick(null);
+			}
+		}
+	}
+	
+	/**
+	 * @return The energy.
+	 */
+	public double getEnergy() {
+		return energy;
+	}
+	
 	/**
 	 * Walking directions
 	 */
 	private int walkingDirection;
 	private int runningDirection;
-
+	
 	/**
-	 * Creates a new MovementHandler.
-	 *
-	 * @param player
-	 *            the Player
+	 * Represents a single point in the queue.
+	 * 
+	 * @author Graham Edgecombe
+	 * 
 	 */
-	public WalkingQueue(Player player) {
-		this.player = player;
+	public static class Point {
+
+		/**
+		 * The x-coordinate.
+		 */
+		private final int x;
+
+		/**
+		 * The y-coordinate.
+		 */
+		private final int y;
+
+		/**
+		 * The direction to walk to this point.
+		 */
+		private final int dir;
+
+		/**
+		 * Creates a point.
+		 * 
+		 * @param x
+		 *            X coord.
+		 * @param y
+		 *            Y coord.
+		 * @param dir
+		 *            Direction to walk to this point.
+		 */
+		public Point(int x, int y, int dir) {
+			this.x = x;
+			this.y = y;
+			this.dir = dir;
+		}
+		
+		
+		public int getX() {
+			return x;
+		}
+		
+		public int getY() {
+			return y;
+		}
+	}
+	
+	/**
+	 * Resets the walking queue so it contains no more steps.
+	 */
+	public void reset() {
+		runQueue = false;
+		waypoints.clear();
+		// Set the base point as this Location.
+		waypoints.add(new Point(player.getX(), player.getY(), -1));
 	}
 
 	/**
@@ -135,19 +280,19 @@ public class WalkingQueue {
 			Point runPoint = null;
 
 			// Handle the movement.
-			if (player.isRunning() || isRunPath()) {
+			if((runToggled || runQueue) && player.getWalkingQueue().getEnergy() > 0) {
 				runPoint = waypoints.poll();
 			}
 			
-			if (walkPoint != null && walkPoint.getDirection() != -1) {
-				if (canMove(walkPoint.getDirection()) || player.isForcedMovement()) {
-					move(walkPoint.getDirection());
+			if (walkPoint != null && walkPoint.dir != -1) {
+				if (canMove(walkPoint.dir) || player.isForcedMovement()) {
+					move(walkPoint.dir);
 				}
 			}
 
-			if (runPoint != null && runPoint.getDirection() != -1) {
-				if (canMove(runPoint.getDirection()) || player.isForcedMovement()) {
-					move(runPoint.getDirection());
+			if (runPoint != null && runPoint.dir != -1) {
+				if (canMove(runPoint.dir) || player.isForcedMovement()) {
+					move(runPoint.dir);
 				}
 			}
 
@@ -181,28 +326,17 @@ public class WalkingQueue {
 			throw new IllegalArgumentException("Tried to set a THIRD walking direction!");
 		}
 		player.lastTile = new Location(player.getX(), player.getY(), player.getZ());
-		player.teleLocalX += DIR[dir][0];
-		player.teleLocalY += DIR[dir][1];
+		player.teleLocalX += WalkingConstants.DIR[dir][0];
+		player.teleLocalY += WalkingConstants.DIR[dir][1];
 		System.out.println("moved dir "+dir+" new telepos "+player.teleLocalX+","+player.teleLocalY);
 		// update position
-		player.setLocation(player.getLocation().transform(DIR[dir][0], DIR[dir][1]));
+		player.setLocation(player.getLocation().transform(WalkingConstants.DIR[dir][0], WalkingConstants.DIR[dir][1]));
 		player.updateCoverage(player.getPosition());
 		player.updateWalkEntities();
 	}
 
 	public boolean isMoving() {
 		 return getWalkingDirection() != -1 || getRunningDirection() != -1;
-	}
-
-	/**
-	 * Resets the walking queue.
-	 */
-	public void reset() {
-		setRunPath(false);
-		waypoints.clear();
-
-		// Set the base point as this Location.
-		waypoints.add(new Point(player.getX(), player.getY(), -1));
 	}
 
 	/**
@@ -308,25 +442,6 @@ public class WalkingQueue {
 	}
 
 	/**
-	 * Toggles running for the current path only.
-	 *
-	 * @param runPath
-	 *            the flag
-	 */
-	public void setRunPath(boolean runPath) {
-		this.runPath = runPath;
-	}
-
-	/**
-	 * Gets whether or not we're running for the current path.
-	 *
-	 * @return running
-	 */
-	public boolean isRunPath() {
-		return runPath;
-	}
-
-	/**
 	 * @return the walkingDirection
 	 */
 	public int getWalkingDirection() {
@@ -354,54 +469,6 @@ public class WalkingQueue {
 	 */
 	public void setRunningDirection(int runningDirection) {
 		this.runningDirection = runningDirection;
-	}
-
-	/**
-	 * An internal Location type class with support for direction.
-	 *
-	 * @author blakeman8192
-	 */
-	private class Point extends Location {
-
-		/**
-		 * the walking direction
-		 */
-		private int direction;
-
-		/**
-		 * Creates a new Point.
-		 *
-		 * @param x
-		 *            the X coordinate
-		 * @param y
-		 *            the Y coordinate
-		 * @param direction
-		 *            the direction to this point
-		 */
-		public Point(int x, int y, int direction) {
-			super(x, y, player.getZ());
-			setDirection(direction);
-		}
-
-		/**
-		 * Sets the direction.
-		 *
-		 * @param direction
-		 *            the direction
-		 */
-		public void setDirection(int direction) {
-			this.direction = direction;
-		}
-
-		/**
-		 * Gets the direction.
-		 *
-		 * @return the direction
-		 */
-		public int getDirection() {
-			return direction;
-		}
-
 	}
 	
 	public void walkTo(int x, int y) {

@@ -450,8 +450,8 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 4026:
-			player.setRunning(!player.isRunning());
-			//player.getActionSender().sendConfig(152, player.isRunning() ? 1 : 0));
+			player.getWalkingQueue().setRunningToggled(!player.getWalkingQueue().isRunningToggled());
+			player.getActionSender().sendConfig(152, player.getWalkingQueue().isRunning() ? 1 : 0);
 			break;
 
 		case 3138:

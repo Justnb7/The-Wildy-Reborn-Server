@@ -48,19 +48,19 @@ public class PlayerVsPlayerCombat {
 
 		if(!target.getArea().inWild()) {
 			player.getActionSender().sendMessage("That player is not in the wilderness.");
-			player.getMovementHandler().reset();
+			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);
 			return false;
 		}
 		if(!player.getArea().inWild()) {
 			player.getActionSender().sendMessage("You are not in the wilderness.");
-			player.getMovementHandler().reset();
+			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);
 			return false;
 		}
 		if (target.inTutorial()) {
 			player.getActionSender().sendMessage("You cannot attack this player.");
-			player.getMovementHandler().reset();
+			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);
 			return false;
 		}
@@ -100,7 +100,7 @@ public class PlayerVsPlayerCombat {
 			int pCB = ((Player) target).combatLevel;
 			if (!bypassCosImTheBest && ((myCB > pCB + 12) || (myCB < pCB - 12))) {
 				player.getActionSender().sendMessage("You can only fight players in your combat range!");
-				player.getMovementHandler().reset();
+				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
 			}
@@ -108,14 +108,14 @@ public class PlayerVsPlayerCombat {
 		if (!((Player) target).getArea().inMulti()) { // single combat zones
 			if (target.lastAttacker != player && Combat.hitRecently(target, 4000)) {
 				player.getActionSender().sendMessage("That player is already in combat.");
-				player.getMovementHandler().reset();
+				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
 			}
 
 			if (target != player.lastAttacker && Combat.hitRecently(player, 4000)) {
 				player.getActionSender().sendMessage("You are already in combat.");
-				player.getMovementHandler().reset();
+				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
 			}

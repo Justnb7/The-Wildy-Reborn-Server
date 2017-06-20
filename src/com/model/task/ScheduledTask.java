@@ -184,7 +184,7 @@ public abstract class ScheduledTask {
 			/*
 			 * If the player is moving and its a non walkable task, stop it.
 			 */
-			if (player.getMovementHandler().isMoving() && walkable == Walkable.NON_WALKABLE) {
+			if (player.getWalkingQueue().isMoving() && walkable == Walkable.NON_WALKABLE) {
 				if (running) {
 					stop();
 					return;

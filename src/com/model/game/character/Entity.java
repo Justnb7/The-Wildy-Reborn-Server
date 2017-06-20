@@ -1078,7 +1078,7 @@ public abstract class Entity {
 		player.teleportToX = teleportTarget.getX();
 		player.teleportToY = teleportTarget.getY();
 		player.teleHeight = teleportTarget.getZ();
-		player.getMovementHandler().reset();
+		player.getWalkingQueue().reset();
         System.out.println("to "+Arrays.toString(new int[] {teleportTarget.getX(), teleportTarget.getY(), teleportTarget.getZ()}));
 	}
 	

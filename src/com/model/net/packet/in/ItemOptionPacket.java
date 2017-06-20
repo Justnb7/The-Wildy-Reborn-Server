@@ -162,7 +162,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		if (Math.abs(player.getLocation().getX() - x) > 25 || Math.abs(player.getLocation().getY() - y) > 25) {
-			player.getMovementHandler().reset();
+			player.getWalkingQueue().reset();
 			return;
 		}
 		

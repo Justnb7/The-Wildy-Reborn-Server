@@ -339,9 +339,9 @@ public class Agility {
 				
 				player.setRunning(false);
 				
-				player.getMovementHandler().reset();
-				player.getMovementHandler().addToPath(new Location(x, y));
-				player.getMovementHandler().finish();
+				player.getWalkingQueue().reset();
+				player.getWalkingQueue().addToPath(new Location(x, y));
+				player.getWalkingQueue().finish();
 				Server.getTaskScheduler().submit(new ScheduledTask(ticks) {
 					@Override
 					public void execute() {
@@ -444,7 +444,7 @@ public class Agility {
 				}
 				this.stop();
 				//We're resting the walk here arent we? sec
-				player.getMovementHandler().reset();
+				player.getWalkingQueue().reset();
 				player.setForceWalk(forceMovement, removeAttribute);
 				player.getUpdateFlags().flag(UpdateFlag.FORCE_MOVEMENT);
 			}

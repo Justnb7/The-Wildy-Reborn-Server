@@ -122,7 +122,7 @@ public class Firemaking {
 			walkDir[0] = 0;
 			walkDir[1] = 1;
 		}
-		player.getMovementHandler().walkTo(walkDir[0], walkDir[1]);
+		player.getWalkingQueue().walkTo(walkDir[0], walkDir[1]);
 	}
 
 	/**

@@ -54,8 +54,8 @@ public class NPCPathFinder {
 					successful = true;
 					mob.updateCoverage(next.tile);
 					if (mob.isPlayer()) {
-						((Player)mob).getMovementHandler().addToPath(Location.create(next.tile.getX(), next.tile.getY()));
-						((Player)mob).getMovementHandler().finish();
+						((Player)mob).getWalkingQueue().addToPath(Location.create(next.tile.getX(), next.tile.getY()));
+						((Player)mob).getWalkingQueue().finish();
 					} else {
 						((NPC)mob).moveX = next.tile.getX();
 						((NPC)mob).moveY = next.tile.getY();

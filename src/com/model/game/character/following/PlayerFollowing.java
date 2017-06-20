@@ -161,7 +161,7 @@ public class PlayerFollowing {
             int fx = following.lastTile.getX();
             int fy = following.lastTile.getY();
 
-            int delay = (player.getMovementHandler().isMoving() || ((Player)following).getMovementHandler().isMoving()) ? 1
+            int delay = (player.getWalkingQueue().isMoving() || ((Player)following).getWalkingQueue().isMoving()) ? 1
                 : (player.walkTutorial + 1 >= Integer.MAX_VALUE ? player.walkTutorial = 0 : player.walkTutorial++);
             int remainder = delay % 2;
             if (remainder == 1) {
@@ -179,7 +179,7 @@ public class PlayerFollowing {
                     return;
                 } else {
                     // successfully next to them
-                    player.getMovementHandler().reset();
+                    player.getWalkingQueue().reset();
                     return;
                 }
             }
@@ -217,7 +217,7 @@ public class PlayerFollowing {
     	if (player.frozen()) {
             return;
         }
-        player.getMovementHandler().reset();
+        player.getWalkingQueue().reset();
         int xMove = targetX - player.getX();
         int yMove = 0;
 
@@ -225,7 +225,7 @@ public class PlayerFollowing {
             yMove = targetY - player.getY();
         }
 
-        player.getMovementHandler().addToPath(new Location(player.getX() + xMove, player.getY() + yMove, 0));
+        player.getWalkingQueue().addToPath(new Location(player.getX() + xMove, player.getY() + yMove, 0));
     }
 
 	/**
@@ -237,9 +237,9 @@ public class PlayerFollowing {
 	 *            The y position
 	 */
     public void walkTo(int moveX, int moveY) {
-        player.getMovementHandler().reset();
-        player.getMovementHandler().addToPath(new Location(player.getX() + moveX, player.getY() + moveY, player.getZ()));
-        player.getMovementHandler().finish();
+        player.getWalkingQueue().reset();
+        player.getWalkingQueue().addToPath(new Location(player.getX() + moveX, player.getY() + moveY, player.getZ()));
+        player.getWalkingQueue().finish();
     }
 
 	/**

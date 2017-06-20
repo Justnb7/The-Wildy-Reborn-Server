@@ -192,21 +192,21 @@ public class PathFinder {
 			}
 		}
 
-		player.getMovementHandler().reset();
+		player.getWalkingQueue().reset();
 
 		int size = tail--;
 		int pathX = (regionX) + tileQueueX.get(tail);
 		int pathY = (regionY) + tileQueueY.get(tail);
 
-		player.getMovementHandler().addToPath(new Location(pathX, pathY, player.getZ()));
+		player.getWalkingQueue().addToPath(new Location(pathX, pathY, player.getZ()));
 		for (int i = 1; i < size; i++) {
 			tail--;
 			pathX = (regionX) + tileQueueX.get(tail);
 			pathY = (regionY) + tileQueueY.get(tail);
-			player.getMovementHandler().addToPath(new Location(pathX, pathY, player.getZ()));
+			player.getWalkingQueue().addToPath(new Location(pathX, pathY, player.getZ()));
 		}
 
-		player.getMovementHandler().finish();
+		player.getWalkingQueue().finish();
 		player.debug("path found! moving");
 	}
 	

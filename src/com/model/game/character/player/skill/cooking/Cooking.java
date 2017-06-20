@@ -57,7 +57,7 @@ public class Cooking extends SkillTask {
 			return;
 		}
 		player.getActionSender().removeAllInterfaces();
-		player.getMovementHandler().reset();
+		player.getWalkingQueue().reset();
 		player.setSkillTask(new Cooking(player, id, data));
 	}
 

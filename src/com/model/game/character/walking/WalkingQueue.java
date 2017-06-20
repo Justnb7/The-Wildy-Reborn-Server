@@ -8,9 +8,13 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 /**
- * @author blakeman8192
+ * 
+ * @author Patrick van Elderen
+ * 
+ *
  */
-public class MovementHandler {
+public class WalkingQueue {
+	
 	public static final boolean USE_WALKING_QUEUE = true;
 
 	/**
@@ -50,7 +54,7 @@ public class MovementHandler {
 	 * @param player
 	 *            the Player
 	 */
-	public MovementHandler(Player player) {
+	public WalkingQueue(Player player) {
 		this.player = player;
 	}
 
@@ -97,6 +101,17 @@ public class MovementHandler {
 				player.lastTile = new Location(player.getX(), player.getY()+1, player.getZ());
 				reset();
 				player.teleportToX = player.teleportToY = player.teleHeight = -1; // reset
+				
+				
+				/*player.currentX = (player.teleportToX - (player.mapRegionX << 3));
+				player.currentY = (player.teleportToY - (player.mapRegionY << 3));
+				player.absX = (short) player.teleportToX;
+				player.absY = (short) player.teleportToY;
+				player.heightLevel = player.teleHeight != -1 ? player.teleHeight : player.heightLevel;
+				player.setLocation(new Location(player.absX, player.absY, player.heightLevel));
+				player.lastTile = new Location(player.absX, player.absY+1, player.heightLevel);*/
+				
+				
 				player.setTeleporting(true);
 				player.updateWalkEntities();
 				/*
@@ -166,7 +181,6 @@ public class MovementHandler {
 			throw new IllegalArgumentException("Tried to set a THIRD walking direction!");
 		}
 		player.lastTile = new Location(player.getX(), player.getY(), player.getZ());
-
 		player.teleLocalX += DIR[dir][0];
 		player.teleLocalY += DIR[dir][1];
 		System.out.println("moved dir "+dir+" new telepos "+player.teleLocalX+","+player.teleLocalY);

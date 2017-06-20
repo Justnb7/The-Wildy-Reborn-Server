@@ -23,9 +23,9 @@ public class CombatRequirements {
 	}
 
 	public static int extraMovingTilesDistance(Player player) {
-		if (player.followTarget != null && player.frozen() && !player.getMovementHandler().isMoving())
+		if (player.followTarget != null && player.frozen() && !player.getWalkingQueue().isMoving())
 			return 2;
-		else if(player.followTarget != null && player.frozen() && player.getMovementHandler().isMoving()) {
+		else if(player.followTarget != null && player.frozen() && player.getWalkingQueue().isMoving()) {
 			return 3;
 		} else {
 			return 1;

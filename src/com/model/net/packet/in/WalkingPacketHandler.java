@@ -107,15 +107,15 @@ public class WalkingPacketHandler implements PacketType {
 		}
 		int firstStepY = player.getInStream().readSignedWordBigEndian();
 
-		player.getMovementHandler().reset();
-		player.getMovementHandler().setRunPath(player.getInStream().readSignedByteC() == 1);
-		player.getMovementHandler().addToPath(new Location(firstStepX, firstStepY, 0));
+		player.getWalkingQueue().reset();
+		player.getWalkingQueue().setRunPath(player.getInStream().readSignedByteC() == 1);
+		player.getWalkingQueue().addToPath(new Location(firstStepX, firstStepY, 0));
 		for (int i = 0; i < steps; i++) {
 			path[i][0] += firstStepX;
 			path[i][1] += firstStepY;
-			player.getMovementHandler().addToPath(new Location(path[i][0], path[i][1], 0));
+			player.getWalkingQueue().addToPath(new Location(path[i][0], path[i][1], 0));
 		}
 		//We've reached our destination
-		player.getMovementHandler().finish();
+		player.getWalkingQueue().finish();
 	}
 }

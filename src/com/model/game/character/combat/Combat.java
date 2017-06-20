@@ -117,7 +117,7 @@ public class Combat {
             return;
 
         if (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2) && !target.moving()) {
-            player.getMovementHandler().reset();
+            player.getWalkingQueue().reset();
         }
         if (player.getCombatState().getAttackDelay() > 0) {
             // don't attack as our timer hasnt reached 0 yet
@@ -160,7 +160,7 @@ public class Combat {
             return;
         }
         if (player.touchDistance(target, 7))
-            player.getMovementHandler().reset();
+            player.getWalkingQueue().reset();
 
         if (player.getCombatState().getAttackDelay() > 0) {
             // don't attack as our timer hasnt reached 0 yet
@@ -197,7 +197,7 @@ public class Combat {
 
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
-            if (player.MAGIC_SPELLS[spell][0] == 12891 && ptarg.getMovementHandler().isMoving()) {
+            if (player.MAGIC_SPELLS[spell][0] == 12891 && ptarg.getWalkingQueue().isMoving()) {
                 player.playProjectile(Projectile.create(player.getCentreLocation(), target.getCentreLocation(), 368, player.getCombatState().getStartDelay(), 50, 85, 25, 25, target.getProjectileLockonIndex(), 16, 64));
             }
         }
@@ -209,7 +209,7 @@ public class Combat {
 
             target.freeze(spellFreezeTime);
             if (target.isPlayer()) {
-                ((Player) target).getMovementHandler().reset();
+                ((Player) target).getWalkingQueue().reset();
                 ((Player) target).getActionSender().sendMessage("You have been frozen.");
                 ((Player) target).frozenBy = player.getIndex();
             }
@@ -280,14 +280,14 @@ public class Combat {
             return;
 
         if (player.touchDistance(target, calculateAttackDistance(player, target)))
-            player.getMovementHandler().reset();
+            player.getWalkingQueue().reset();
         int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         int ammoId = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
         boolean crystal = wepId >= 4212 && wepId <= 4223;
         boolean bp = wepId == 12926;
         if (!crystal && !bp && ammoId == -1) {
             player.getActionSender().sendMessage("There is no ammo left in your quiver.");
-            player.getMovementHandler().reset();
+            player.getWalkingQueue().reset();
             player.getCombatState().reset();
             return;
         }
@@ -300,7 +300,7 @@ public class Combat {
             return;
         }
         if (!target.moving())
-            player.getMovementHandler().reset();
+            player.getWalkingQueue().reset();
         if (player.isUsingSpecial()) {
             Special.handleSpecialAttack(player, target);
             onAttackDone(player, target);
@@ -661,8 +661,8 @@ public class Combat {
 				distance = CombatRequirements.extraMovingTilesDistance(player);
 			}
 		}
-		if (player.getMovementHandler().isMoving()) {
-			distance += victim.isPlayer() && ((Player)victim).getMovementHandler().isMoving() ? 3 : 2;
+		if (player.getWalkingQueue().isMoving()) {
+			distance += victim.isPlayer() && ((Player)victim).getWalkingQueue().isMoving() ? 3 : 2;
 		}
 		return distance;
 	}

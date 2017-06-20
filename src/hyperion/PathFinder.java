@@ -43,17 +43,17 @@ public interface PathFinder {
 		int srcY = base.getLocalY();
 		int destX = destination.getLocalX(base);
 		int destY = destination.getLocalY(base);
-		PathState state = pathFinder.findPath(mob, target, mob.getPosition(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getMovementHandler().isRunPath(), ignoreLastStep, true);
+		PathState state = pathFinder.findPath(mob, target, mob.getPosition(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getWalkingQueue().isRunPath(), ignoreLastStep, true);
 		if (state != null && addToWalking) {
 			if (mob.isPlayer()) {
 				Player p = (Player)mob;
-				p.getMovementHandler().reset();
+				p.getWalkingQueue().reset();
 				for (BasicPoint step : state.getPoints()) {
 					//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
 					//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
-					p.getMovementHandler().addToPath(new Location(step.getX(), step.getY(), p.getZ()));
+					p.getWalkingQueue().addToPath(new Location(step.getX(), step.getY(), p.getZ()));
 				}
-				p.getMovementHandler().finish();
+				p.getWalkingQueue().finish();
 				//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
 			} else {
 				System.err.println("HELP WHO");

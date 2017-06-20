@@ -17,7 +17,7 @@ public class EnergyRestoreTick extends ScheduledTask {
 
 	@Override
 	public void execute() {
-		if(entity.getWalkingQueue().getEnergy() < 100) {
+		/*if(entity.getWalkingQueue().getEnergy() < 100) {
 			entity.getWalkingQueue().setEnergy(entity.getWalkingQueue().getEnergy() + 1);
 			if(entity.getActionSender() != null) {
 				entity.getActionSender().sendRunEnergy();
@@ -25,7 +25,7 @@ public class EnergyRestoreTick extends ScheduledTask {
 		} else {
 			entity.getEnergyRestoreTick().stop();
 			entity.setEnergyRestoreTick(null);
-		}
+		}*/
 	}
 
 }

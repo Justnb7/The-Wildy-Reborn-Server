@@ -60,7 +60,7 @@ import com.model.game.character.player.skill.SkillTask;
 import com.model.game.character.player.skill.herblore.Herblore;
 import com.model.game.character.player.skill.slayer.interfaceController.SlayerInterface;
 import com.model.game.character.player.skill.thieving.Thieving;
-import com.model.game.character.walking.MovementHandler;
+import com.model.game.character.walking.WalkingQueue;
 import com.model.game.item.container.impl.BankContainer;
 import com.model.game.item.container.impl.InventoryContainer;
 import com.model.game.item.container.impl.PriceChecker;
@@ -1160,9 +1160,11 @@ public class Player extends Entity {
 		this.getUpdateFlags().reset();
 		this.setForceWalk(new int[0], false);
 	}
+	
+	private WalkingQueue walkingQueue = new WalkingQueue(this);
 
-	public MovementHandler getMovementHandler() {
-		return movementHandler;
+	public WalkingQueue getWalkingQueue() {
+		return walkingQueue;
 	}
 
 	public int getMapRegionX() {
@@ -1229,13 +1231,13 @@ public class Player extends Entity {
 		super(EntityType.PLAYER);
 		this.username = username;
 		usernameHash = Utility.playerNameToInt64(username);
-		this.teleportToX = 3087;
-		this.teleportToY = 3499;
-		this.teleHeight = 0;
-		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
 		mapRegionX = mapRegionY = -1;
-		getMovementHandler().reset();
+		teleportToX = 3087;
+		teleportToY = 3499;
+		teleHeight = 0;
+		getWalkingQueue().reset();
 		outStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		outStream.offset = 0;
 		inStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
@@ -1244,7 +1246,7 @@ public class Player extends Entity {
 
 	@Override
 	public boolean moving() {
-		return movementHandler.isMoving();
+		return walkingQueue.isMoving();
 	}
 
 	@Override
@@ -1846,7 +1848,6 @@ public class Player extends Entity {
 	 * Instances
 	 */
 	private DialogueManager dialogue;
-	private MovementHandler movementHandler = new MovementHandler(this);
 	private FriendAndIgnoreList friendAndIgnores = new FriendAndIgnoreList(this);
 	private RequestManager requestManager = new RequestManager(this);
 	private ScheduledTask distancedTask;

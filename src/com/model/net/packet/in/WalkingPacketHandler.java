@@ -9,13 +9,8 @@ import com.model.game.character.player.content.multiplayer.MultiplayerSessionSta
 import com.model.game.character.player.content.multiplayer.MultiplayerSessionType;
 import com.model.game.character.player.content.multiplayer.duel.DuelSession;
 import com.model.game.character.player.content.multiplayer.duel.DuelSessionRules.Rule;
-import com.model.game.location.Location;
 import com.model.net.packet.PacketType;
 import com.model.server.Server;
-
-import hyperion.PathFinder;
-import hyperion.impl.DefaultPathFinder;
-import hyperion.impl.SizedPathFinder;
 
 import java.util.Objects;
 
@@ -99,59 +94,32 @@ public class WalkingPacketHandler implements PacketType {
 			packetSize -= 14;
 		}
 		
-		//We're walking to our target
-		int size = packetSize;
-		final int steps = (size - 5) / 2;
-		if (steps < 0)
-			return;
-		final int[][] path = new int[steps][2];
-		int firstStepX = player.getInStream().readSignedWordBigEndianA();
-		int firstStepY = player.getInStream().readSignedWordBigEndian();
-		final int type = player.getInStream().readSignedByteC();
-		if (type < 0 || type > 2) {
-			return;
-		}
-		
-		for (int i = 0; i < steps; i++) {
-			path[i][0] = player.getInStream().readSignedByte();
-			path[i][1] = player.getInStream().readSignedByte();
-		}
-
 		player.getWalkingQueue().reset();
-		player.getWalkingQueue().setRunningQueue(type == 1);
-		player.getWalkingQueue().addStep(firstStepX, firstStepY);
-		for (int i = 0; i < steps; i++) {
-			path[i][0] += firstStepX;
-			path[i][1] += firstStepY;
-			player.getWalkingQueue().addStep(path[i][0], path[i][1]);
-		}
-		//We've reached our destination
-		player.getWalkingQueue().finish();
 		
-		/*int size = packetSize;
+		//We're walking to our target
+		walk(player, packetSize);
+	}
+	
+	private void walk(Player player, int size) {
 		final int steps = (size - 5) / 2;
 		final int[][] path = new int[steps][2];
-		int offsetY = player.getInStream().readSignedWordBigEndian();
-		int offsetX = player.getInStream().readSignedWordBigEndianA();
-		final int type = player.getInStream().readSignedByteC();
-		if (type < 0 || type > 2) {
-			return;
+
+		final int firstX = player.getInStream().readSignedWordBigEndianA();
+		for (int i = 0; i < steps; i++) {
+		    path[i][0] = player.getInStream().readSignedByte();
+		    path[i][1] = player.getInStream().readSignedByte();
 		}
+		final int firstY = player.getInStream().readSignedWordBigEndian();
+		final boolean runSteps = player.getInStream().readSignedByteC() == 1;
+		
+		player.getWalkingQueue().setRunningQueue(runSteps);
+		player.getWalkingQueue().addStep(firstX, firstY );
 		
 		for (int i = 0; i < steps; i++) {
-			path[i][0] = path[i][0] + offsetX;
-			path[i][1] = path[i][1] + offsetY;
-			
-			player.getWalkingQueue().addStep(offsetX, offsetY);
+		    path[i][0] += firstX;
+		    path[i][1] += firstY;
+		    player.getWalkingQueue().addStep(path[i][0], path[i][1]);
 		}
-		player.getWalkingQueue().setRunningQueue(type == 1);
-		if (offsetX < 0 || offsetY < 0) {
-			return;
-		}
-		if (player.isNPC()) {
-			PathFinder.doPath(new SizedPathFinder(false), player, offsetX, offsetY);
-		} else {
-			PathFinder.doPath(new DefaultPathFinder(), player, offsetX, offsetY);
-		}*/
+		player.getWalkingQueue().finish();
 	}
 }

@@ -6,15 +6,15 @@ import clipmap.Region;
 
 import java.util.ArrayList;
 
-public class PathFinder {
+public class RouteFinder {
 
-	private static final PathFinder pathfinder = new PathFinder();
+	private static final RouteFinder PATHFINDER = new RouteFinder();
 
-	public static PathFinder getPathFinder() {
-		return pathfinder;
+	public static RouteFinder getPathFinder() {
+		return PATHFINDER;
 	}
 
-	public PathFinder() {
+	public RouteFinder() {
 	}
 
 	public void findRoute(Player player, int destX, int destY, boolean moveNear, int xLength, int yLength) {

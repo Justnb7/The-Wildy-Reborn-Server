@@ -7,7 +7,7 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.Skills;
-import com.model.game.character.walking.PathFinder;
+import com.model.game.character.walking.RouteFinder;
 import com.model.game.location.Location;
 
 import java.util.stream.Stream;
@@ -250,6 +250,6 @@ public class PlayerFollowing {
 	 *            The y position
 	 */
     public void playerWalk(int x, int y) {
-        PathFinder.getPathFinder().findRoute(player, x, y, true, 1, 1);
+        RouteFinder.getPathFinder().findRoute(player, x, y, true, 1, 1);
     }
 }

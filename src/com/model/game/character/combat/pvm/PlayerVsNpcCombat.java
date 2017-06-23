@@ -9,7 +9,7 @@ import com.model.game.character.player.Player;
 import com.model.game.character.player.ProjectilePathFinder;
 import com.model.game.character.player.instances.impl.KrakenInstance;
 import com.model.game.character.player.minigames.warriors_guild.WarriorsGuild;
-import com.model.game.character.walking.PathFinder;
+import com.model.game.character.walking.RouteFinder;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
 import com.model.server.Server;
@@ -120,7 +120,7 @@ public class PlayerVsNpcCombat {
 		}
 
 		if (findpath) {
-			PathFinder.getPathFinder().findRoute(player, npc.getX(), npc.getY(), true, 1, 1);
+			RouteFinder.getPathFinder().findRoute(player, npc.getX(), npc.getY(), true, 1, 1);
 		}
 		//player.write(new SendGameMessage("debug");
 		return false;

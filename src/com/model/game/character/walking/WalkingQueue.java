@@ -338,109 +338,77 @@ public class WalkingQueue {
 	 * Process player movement
 	 */
 	public void processNextMovement() {
-		try {
-			player.setMapRegionChanging(false);
-			player.setTeleporting(false);
-			player.getSprites().setSprites(-1, -1);
-			
+		/*
+		 * The points which we are walking to.
+		 */
+		Point walkPoint = null, runPoint = null;
+
+		if (player.teleportToX != -1 && player.teleportToY != -1) {
+			boolean zChange = false;
+			if (player.teleHeight != -1 && (player.teleHeight != player.getZ())) {
+				zChange = true;
+			}
 			/*
-			 * The points which we are walking to.
+			 * Set our current Location since we've just teleported
 			 */
-			Point walkPoint = null, runPoint = null;
+			player.setLocation(Location.create(player.teleportToX, player.teleportToY, zChange ? player.teleHeight : player.getZ()));
+			player.updateCoverage(player.getPosition());
+			player.lastTile = new Location(player.getX(), player.getY()+1, player.getZ());
+			reset();
+			player.teleportToX = player.teleportToY = player.teleHeight = -1; // reset
 
-			if (player.teleportToX != -1 && player.teleportToY != -1) {
-				player.setMapRegionChanging(true);
-				if (player.mapRegionX != -1 && player.mapRegionY != -1) {
-					int relX = player.teleportToX - (player.mapRegionX << 3), relY = player.teleportToY - (player.mapRegionY << 3);
-
-					if (relX >= 2 << 3 && relX < 11 << 3 && relY >= 2 << 3 && relY < 11 << 3) { // didnt actually tele that far out of current region
-						player.setMapRegionChanging(false);
-					}
-				}
-				
-				boolean zChange = false;
-				if (player.teleHeight != -1 && (player.teleHeight != player.getZ())) {
-					zChange = true;
-					player.setMapRegionChanging(true);
-				}
-				
-				if (player.isMapRegionChanging()) {
-					player.mapRegionX = (player.teleportToX >> 3) - 6;
-					player.mapRegionY = (player.teleportToY >> 3) - 6;
-					player.setLastKnownRegion(player.getLocation());
-				}
-				player.teleLocalX = (player.teleportToX - (player.mapRegionX << 3));
-				player.teleLocalY = (player.teleportToY - (player.mapRegionY << 3));
-				System.out.println("teleport new telepos "+player.teleLocalX+","+player.teleLocalY+" from "+player.mapRegionX+","+player.mapRegionY);
-
-				/*
-				 * Set our current Location since we've just teleported
-				 */
-				player.setLocation(Location.create(player.teleportToX, player.teleportToY, zChange ? player.teleHeight : player.getZ()));
-				player.updateCoverage(player.getPosition());
-				player.lastTile = new Location(player.getX(), player.getY()+1, player.getZ());
-				reset();
-				player.teleportToX = player.teleportToY = player.teleHeight = -1; // reset
-				
-				player.setTeleporting(true);
-				player.updateWalkEntities();
-				/*
-				 * Check if we've moved and the height level doesn't match, if so reload ground items and objects
-				 */
-				if (zChange) {
-					GroundItemHandler.reloadGroundItems(player);
-				}
-				
-				return;
+			player.setTeleporting(true);
+			player.updateWalkEntities();
+			/*
+			 * Check if we've moved and the height level doesn't match, if so reload ground items and objects
+			 */
+			if (zChange) {
+				GroundItemHandler.reloadGroundItems(player);
 			}
 
+		} else {
 			if (player.frozen()) {
 				reset();
-				return;
-			}
-			
-			/*
-			 * If the player isn't teleporting, they are walking (or standing
-			 * still). We get the next direction of movement here.
-			 */
-			walkPoint = getNextPoint();
-			
-			/*
-			 * Technically we should check for running here.
-			 */
-			if((runToggled || runQueue) && player.getWalkingQueue().getEnergy() > 0) {
-				runPoint = getNextPoint();
-			}
-			
-			/*
-			 * Now set the sprites.
-			 */
-			int walkDir = walkPoint == null ? -1 : walkPoint.dir;
-			int runDir = runPoint == null ? -1 : runPoint.dir;
-			player.getSprites().setSprites(walkDir, runDir);
-			
-			/*if (walkPoint != null && walkPoint.dir != -1) {
-				if (canMove(walkPoint.dir) || player.isForcedMovement()) {
-					move(walkPoint.dir);
-				}
-			}
+			} else {
 
-			if (runPoint != null && runPoint.dir != -1) {
-				if (canMove(runPoint.dir) || player.isForcedMovement()) {
-					move(runPoint.dir);
-				}
-			}*/
+		/*
+		 * If the player isn't teleporting, they are walking (or standing
+		 * still). We get the next direction of movement here.
+		 */
+				walkPoint = getNextPoint();
 
-			// Check for region changes.
-			int deltaX = player.getX() - player.getMapRegionX() * 8;
-			int deltaY = player.getY() - player.getMapRegionY() * 8;
-			if (deltaX < 16 || deltaX >= 88 || deltaY < 16 || deltaY > 88) {
-				player.mapRegionX = (player.getX() >> 3) - 6;
-				player.mapRegionY = (player.getY() >> 3) - 6;
-				player.setMapRegionChanging(true);
+		/*
+		 * Technically we should check for running here.
+		 */
+				if ((runToggled || runQueue) && player.getWalkingQueue().getEnergy() > 0) {
+					runPoint = getNextPoint();
+				}
+
+		/*
+		 * Now set the sprites.
+		 */
+				int walkDir = walkPoint == null ? -1 : walkPoint.dir;
+				int runDir = runPoint == null ? -1 : runPoint.dir;
+				player.getSprites().setSprites(walkDir, runDir);
+
+		/*if (walkPoint != null && walkPoint.dir != -1) {
+			if (canMove(walkPoint.dir) || player.isForcedMovement()) {
+				move(walkPoint.dir);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+
+		if (runPoint != null && runPoint.dir != -1) {
+			if (canMove(runPoint.dir) || player.isForcedMovement()) {
+				move(runPoint.dir);
+			}
+		}*/
+			}
+		}
+		// Check for region changes.
+		int deltaX = player.getX() - player.getLastKnownRegion().getRegionX() * 8;
+		int deltaY = player.getY() - player.getLastKnownRegion().getRegionY() * 8;
+		if (deltaX < 16 || deltaX >= 88 || deltaY < 16 || deltaY >= 88) {
+			player.setMapRegionChanging(true);
 		}
 	}
 

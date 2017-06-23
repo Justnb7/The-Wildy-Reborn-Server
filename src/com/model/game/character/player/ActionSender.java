@@ -66,10 +66,12 @@ public class ActionSender {
     }
     
 	public ActionSender sendMapRegionPacket() {
-		player.getOutStream().writeFrame(73);
-		player.getOutStream().writeWordA(player.mapRegionX + 6);
-		player.getOutStream().writeShort(player.mapRegionY + 6);
+    	System.out.println("sync region");
 		player.setLastKnownRegion(player.getLocation());
+		player.getOutStream().writeFrame(73);
+		player.getOutStream().writeWordA(player.getLocation().getRegionX() + 6);
+		player.getOutStream().writeShort(player.getLocation().getRegionY() + 6);
+		player.flushOutStream();
 		return this;
 	}
 
@@ -450,8 +452,6 @@ public class ActionSender {
      * The message that opens an interface and displays another interface over
      * the inventory area.
      *
-     * @param open
-     *            the interface to open.
      * @param overlay
      *            the interface to send on the inventory area.
      * @return an instance of this encoder.
@@ -572,8 +572,8 @@ public class ActionSender {
 	
 	public ActionSender sendCoordinates(Location location) {
 		player.getOutStream().writeFrame(85);
-		int y = location.getY() - player.getMapRegionY() * 8;
-		int x = location.getX() - player.getMapRegionX() * 8;
+		int y = location.getY() - player.getLocation().getRegionY() * 8;
+		int x = location.getX() - player.getLocation().getRegionX() * 8;
 		player.getOutStream().writeByteC(y);
 		player.getOutStream().writeByteC(x);
 		player.flushOutStream();
@@ -611,8 +611,8 @@ public class ActionSender {
 		}
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(85);
-			player.getOutStream().writeByteC(y - (player.getMapRegionY() * 8));
-			player.getOutStream().writeByteC(x - (player.getMapRegionX() * 8));
+			player.getOutStream().writeByteC(y - (player.getLocation().getRegionY() * 8));
+			player.getOutStream().writeByteC(x - (player.getLocation().getRegionX() * 8));
 			
 			//Still gfx packet
 			player.getOutStream().writeFrame(4);
@@ -669,7 +669,7 @@ public class ActionSender {
 		player.getOutStream().writeFrame(85);
 		
 		int difx = position.getX(), dify = position.getY();
-		int regionX = player.getMapRegionX(), regionY = player.getMapRegionY();
+		int regionX = player.getLocation().getRegionX(), regionY = player.getLocation().getRegionY();
 		player.getOutStream().writeByteC((dify - (regionY * 8)) + yOffset);
 		player.getOutStream().writeByteC((difx - (regionX * 8)) + xOffset);
 
@@ -691,7 +691,7 @@ public class ActionSender {
 	/**
 	 * Sends a configuration button's state.
 	 * 
-	 * @param configId
+	 * @param id
 	 *            The id of the configuration button.
 	 * @param state
 	 *            The state to set it to.

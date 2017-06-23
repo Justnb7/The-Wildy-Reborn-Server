@@ -412,7 +412,8 @@ public class PlayerUpdating {
 		/*
 		 * Check if the player is teleporting.
 		 */
-		if (player.isTeleporting()/* || player.isMapRegionChanging()*/) {
+		if (player.isTeleporting() || player.isMapRegionChanging()) {
+			System.out.println("movement type 3: "+player.isTeleporting()+"/"+player.isMapRegionChanging());
 			/*
 			 * They are, so an update is required.
 			 */
@@ -428,14 +429,15 @@ public class PlayerUpdating {
 			/*
 			 * This flag indicates if an update block is appended.
 			 */
-			buffer.writeBits(true);
+			buffer.writeBits(1, player.isTeleporting() ? 1 : 0);
 			buffer.writeBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 			/*
 			 * Direction moved this cycle in x/y axis
 			 */
-			buffer.writeBits(7, player.teleLocalY);
-			buffer.writeBits(7, player.teleLocalX);
-			System.out.println("GPI "+player.teleLocalX+","+player.teleLocalY);
+			buffer.writeBits(7, player.getLocation().getLocalY(player.getLastKnownRegion()));
+			buffer.writeBits(7, player.getLocation().getLocalX(player.getLastKnownRegion()));
+			System.out.println("GPI "+player.getLocation().getLocalX(player.getLastKnownRegion())+","
+			+player.getLocation().getLocalY(player.getLastKnownRegion()));
 		} else {
 			/*
 			 * Otherwise, check if the player moved.

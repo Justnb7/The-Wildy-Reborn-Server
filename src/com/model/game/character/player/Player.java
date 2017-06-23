@@ -1146,6 +1146,7 @@ public class Player extends Entity {
 	public void clearUpdateFlags() {
 		this.reset();
 		setTeleporting(false);
+		setMapRegionChanging(false);
 		faceTileX = -1;
 		faceTileY = -1;
 		entityFaceIndex = 65535;
@@ -1160,14 +1161,6 @@ public class Player extends Entity {
 
 	public WalkingQueue getWalkingQueue() {
 		return walkingQueue;
-	}
-
-	public int getMapRegionX() {
-		return mapRegionX;
-	}
-
-	public int getMapRegionY() {
-		return mapRegionY;
 	}
 
 	public void setChatTextEffects(int chatTextEffects) {
@@ -1224,11 +1217,11 @@ public class Player extends Entity {
 
 	public Player(String username) {
 		super(EntityType.PLAYER);
+		setMapRegionChanging(true);
 		this.username = username;
 		usernameHash = Utility.playerNameToInt64(username);
 		getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
-		mapRegionX = mapRegionY = -1;
 		teleportToX = 3087;
 		teleportToY = 3499;
 		teleHeight = 0;
@@ -2337,8 +2330,7 @@ public class Player extends Entity {
 	public int combatCountdown = 10;
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
-	public int mapRegionX, mapRegionY;
-	public int teleportToX = -1, teleportToY = -1, teleHeight, teleLocalX, teleLocalY;
+	public int teleportToX = -1, teleportToY = -1, teleHeight;
 	public int lastClickedItem;
 
 	public int totalLevel,

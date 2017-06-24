@@ -857,7 +857,7 @@ public class CommandPacketHandler implements PacketType {
 				Location spawnLocation = new Location(player.getX(), player.getY() -1, player.getZ());
 				if (npcId > 0) {
 					NPC spawn = new NPC(npcId, spawnLocation, 0);
-					spawn.setLocation(player.getLocation().transform(-1, 0));
+					spawn.setLocation(spawnLocation);
 					World.getWorld().register(spawn);
 					if (cmd.length > 2) {
 						int hp = Integer.parseInt(cmd[2]);

@@ -49,7 +49,7 @@ public final class NPCHandler {
 				token2_2 = token2_2.replaceAll("\t\t", "\t");
 				token3 = token2_2.split("\t");
 				if (token.equals("spawn")) {
-					newNPC(Integer.parseInt(token3[0]), Integer.parseInt(token3[1]), Integer.parseInt(token3[2]), Integer.parseInt(token3[3]), Integer.parseInt(token3[4]));
+					spawn(Integer.parseInt(token3[0]), Integer.parseInt(token3[1]), Integer.parseInt(token3[2]), Integer.parseInt(token3[3]), Integer.parseInt(token3[4]));
 				}
 			} else {
 				if (line.equals("[ENDOFSPAWNLIST]")) {
@@ -73,19 +73,20 @@ public final class NPCHandler {
 		return false;
 	}
 	
-	public static void newNPC(int npcType, int x, int y, int heightLevel, int WalkingType) {
+	public static void spawn(int npcType, int x, int y, int heightLevel, int WalkingType) {
 
-		NPC newNPC = new NPC(npcType);
+		NPC npc = new NPC(npcType);
 
-		newNPC.setLocation(Location.create(x, y, heightLevel));
-		newNPC.makeX = x;
-		newNPC.makeY = y;
-        newNPC.walking_type = WalkingType;
-		newNPC.setOnTile(x, y, heightLevel);
-		if (World.getWorld().register(newNPC)) {
+		npc.setLocation(Location.create(x, y, heightLevel));
+		npc.makeX = x;
+		npc.makeY = y;
+        npc.walking_type = WalkingType;
+		npc.setOnTile(x, y, heightLevel);
+		if (World.getWorld().register(npc)) {
 			// successfully added to game world
-			handleForGroup(newNPC);
+			handleForGroup(npc);
 		}
+		World.getWorld().register(npc);
 	}
 	
 	public static NPC spawnNpc(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {

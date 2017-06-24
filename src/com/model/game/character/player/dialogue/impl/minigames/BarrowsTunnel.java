@@ -18,7 +18,7 @@ public class BarrowsTunnel extends Dialogue {
 			switch(index) {
 			case 1:
 				player.getActionSender().removeAllInterfaces();
-				player.movePlayer(new Location(3551, 9691, 0));
+				player.setTeleportTarget(new Location(3551, 9691, 0));
 				break;
 			case 2:
 				player.getActionSender().removeAllInterfaces();

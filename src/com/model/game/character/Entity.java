@@ -1123,7 +1123,7 @@ public abstract class Entity {
 				public void execute() {
 					setForcedMovement(true);
 					//System.out.println("force movement: "+isForcedMovement());
-					movePlayer(getLocation().transform(forceWalk[2], forceWalk[3], 0));
+					setTeleportTarget(getLocation().transform(forceWalk[2], forceWalk[3], 0));
 					if(removeAttribute) {
 						getAttributes().remove("busy");
 					}
@@ -1133,23 +1133,6 @@ public abstract class Entity {
 				}
 			});
 		}
-	}
-	
-	/**
-	 * Sets the teleport target.
-	 * @param teleportTarget The target location.
-	 */
-	public void movePlayer(Location teleportTarget) {
-		Player player = (Player) this;
-		if (player.isBusy()) {
-            return;
-        }
-		if (!player.lastSpear.elapsed(4000)) {
-			player.getActionSender().sendMessage("You're trying to move too fast.");
-			return;
-		}
-		player.getWalkingQueue().reset();
-        System.out.println("to "+Arrays.toString(new int[] {teleportTarget.getX(), teleportTarget.getY(), teleportTarget.getZ()}));
 	}
 	
 	/**

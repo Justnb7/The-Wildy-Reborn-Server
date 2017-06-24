@@ -213,7 +213,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 			World.getWorld().schedule(new ScheduledTask(1) {
 				public void execute() {
 					this.stop();
-					victim.movePlayer(generateLocation());	
+					victim.setTeleportTarget(generateLocation());	
 				}
 			});
 			break;

@@ -307,7 +307,7 @@ public class Agility {
 		Server.getTaskScheduler().submit(new ScheduledTask(ticks) {
 			@Override
 			public void execute() {
-				player.movePlayer(newLocation);
+				player.setTeleportTarget(newLocation);
 				player.getAttributes().remove("busy");
 				this.stop();
 			}

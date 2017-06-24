@@ -154,8 +154,8 @@ public class TeleportExecutor {
 					/**
 					 * Finalize our location by setting our coordinates
 					 */
-					player.movePlayer(new Location(teleport.getLocation().getX(), teleport.getLocation().getY(), teleport.getLocation().getZ()));
 					player.setTeleportTarget(new Location(teleport.getLocation().getX(), teleport.getLocation().getY(), teleport.getLocation().getZ()));
+					
 					/**
 					 * Check if we need to play our end animation
 					 */

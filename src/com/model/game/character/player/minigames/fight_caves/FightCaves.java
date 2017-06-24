@@ -151,12 +151,12 @@ public class FightCaves {
 	 */
 	public void exitCave(int type) {
 		if (type == 1) {
-			player.movePlayer(OUTSIDE);
+			player.setTeleportTarget(OUTSIDE);
 			player.dialogue().start("LEAVE_FIGHT_CAVE");
 		} else if (type == 2) {
 			// Teleport
 		} else {
-			player.movePlayer(OUTSIDE);
+			player.setTeleportTarget(OUTSIDE);
 			int tokkul = getCurrentWave() * 8032 / Wave.WAVES.length;
 			if (player.getInventory().getFreeSlots() > 1) {
 				player.getInventory().add(new Item(TOKKUL.getId(), tokkul));
@@ -175,7 +175,7 @@ public class FightCaves {
 	 * Stop the minigame
 	 */
 	public void stop() {
-		player.movePlayer(OUTSIDE);
+		player.setTeleportTarget(OUTSIDE);
 		player.waveId = 0;
 		killAllSpawns();
 	}

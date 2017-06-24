@@ -28,7 +28,7 @@ public class NoDefenderInPossesion extends Dialogue {
 			switch (index) {
 			case 1:
 				if (player.getInventory().contains(8851, 200)) {
-					player.movePlayer(new Location(2847, 3540, 2));
+					player.setTeleportTarget(new Location(2847, 3540, 2));
 					player.getWarriorsGuild().cycle();
 					stop();
 				} else {

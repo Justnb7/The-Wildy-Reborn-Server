@@ -29,7 +29,7 @@ public class KrakenInstance {
 	 */
 	public void start(Player player) {
 		instance = (SingleInstancedArea) InstancedAreaManager.getSingleton().createSingleInstancedArea(player, Boundary.KRAKEN);
-		player.movePlayer(new Location(3696, 5798, instance.getHeight()));
+		player.setTeleportTarget(new Location(3696, 5798, instance.getHeight()));
 		startUp(player);
 	}
 	

@@ -54,7 +54,7 @@ public class DeathEvent extends EntityEvent {
 					/*p.getActionSender().sendWidget(2, 0);
 					p.getActionSender().sendWidget(3, 0);*/
 					p.getActionQueue().clearRemovableActions();
-					p.movePlayer(Entity.DEFAULT_LOCATION);
+					p.setTeleportTarget(Entity.DEFAULT_LOCATION);
 					p.getSkills().setLevel(Skills.HITPOINTS, p.getSkills().getLevelForExperience(Skills.HITPOINTS));
 					p.getActionSender().sendMessage("Oh dear, you are dead!");
 					p.setDead(false);

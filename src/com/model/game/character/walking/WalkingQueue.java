@@ -2,8 +2,6 @@ package com.model.game.character.walking;
 
 import com.model.game.World;
 import com.model.game.character.player.Player;
-import com.model.game.item.ground.GroundItemHandler;
-import com.model.game.location.Location;
 import com.model.task.impl.EnergyRestoreTick;
 
 import java.util.LinkedList;
@@ -26,12 +24,11 @@ import java.util.LinkedList;
  */
 public class WalkingQueue {
 
-	
 	/**
 	 * The player.
 	 */
 	private final Player player;
-	
+
 	/**
 	 * Creates the <code>WalkingQueue</code> for the specified
 	 * <code>Player</code>.
@@ -42,17 +39,17 @@ public class WalkingQueue {
 	public WalkingQueue(Player player) {
 		this.player = player;
 	}
-	
+
 	/**
 	 * The queue of waypoints.
 	 */
 	private LinkedList<Point> waypoints = new LinkedList<Point>();
-	
+
 	/**
 	 * Is the next path an automatic run path
 	 */
 	private boolean runQueue = false;
-	
+
 	/**
 	 * Sets the run queue flag.
 	 * 
@@ -62,7 +59,7 @@ public class WalkingQueue {
 	public void setRunningQueue(boolean runQueue) {
 		this.runQueue = runQueue;
 	}
-	
+
 	/**
 	 * Gets the running queue flag.
 	 * 
@@ -71,12 +68,12 @@ public class WalkingQueue {
 	public boolean isRunningQueue() {
 		return runQueue;
 	}
-	
+
 	/**
 	 * Run toggle (button in client).
 	 */
 	private boolean runToggled = false;
-	
+
 	/**
 	 * Sets the run toggled flag.
 	 * 
@@ -86,7 +83,7 @@ public class WalkingQueue {
 	public void setRunningToggled(boolean runToggled) {
 		this.runToggled = runToggled;
 	}
-	
+
 	/**
 	 * Gets the run toggled flag.
 	 * 
@@ -95,7 +92,7 @@ public class WalkingQueue {
 	public boolean isRunningToggled() {
 		return runToggled;
 	}
-	
+
 	/**
 	 * Checks if any running flag is set.
 	 * 
@@ -104,40 +101,41 @@ public class WalkingQueue {
 	public boolean isRunning() {
 		return runToggled || runQueue;
 	}
-	
+
 	/**
 	 * The entity's energy to run.
 	 */
 	private double energy = 100;
-	
+
 	/**
 	 * A method that increases our run energy.
+	 * 
 	 * @param energy
 	 *            The energy to set.
 	 */
 	public void setEnergy(double energy) {
 		this.energy = energy;
-		if(this.energy < 100) {
-			if(player.getEnergyRestoreTick() == null) {
+		if (this.energy < 100) {
+			if (player.getEnergyRestoreTick() == null) {
 				EnergyRestoreTick energyRestoreTick = new EnergyRestoreTick(player);
 				player.setEnergyRestoreTick(energyRestoreTick);
-				World.getWorld().schedule(energyRestoreTick);				
+				World.getWorld().schedule(energyRestoreTick);
 			}
 		} else {
-			if(player.getEnergyRestoreTick() != null) {
+			if (player.getEnergyRestoreTick() != null) {
 				player.getEnergyRestoreTick().stop();
 				player.setEnergyRestoreTick(null);
 			}
 		}
 	}
-	
+
 	/**
 	 * @return The energy.
 	 */
 	public double getEnergy() {
 		return energy;
 	}
-	
+
 	/**
 	 * Represents a single point in the queue.
 	 * 
@@ -176,17 +174,16 @@ public class WalkingQueue {
 			this.y = y;
 			this.dir = dir;
 		}
-		
-		
+
 		public int getX() {
 			return x;
 		}
-		
+
 		public int getY() {
 			return y;
 		}
 	}
-	
+
 	/**
 	 * Resets the walking queue so it contains no more steps.
 	 */
@@ -204,7 +201,7 @@ public class WalkingQueue {
 	public void finish() {
 		waypoints.removeFirst();
 	}
-	
+
 	/**
 	 * Adds a single step to the walking queue, filling in the points to the
 	 * previous point in the queue if necessary.
@@ -245,13 +242,12 @@ public class WalkingQueue {
 		 * We retrieve the previous point here.
 		 */
 		Point last = waypoints.peekLast();
-		
+
 		/*
 		 * We now work out the difference between the points.
 		 */
 		int diffX = x - last.getX();
 		int diffY = y - last.getY();
-
 
 		/*
 		 * And calculate the number of steps there is between the points.
@@ -277,7 +273,7 @@ public class WalkingQueue {
 			 * Add this next step to the queue.
 			 */
 			addStepInternal(x - diffX, y - diffY);
-			
+
 		}
 	}
 
@@ -315,12 +311,12 @@ public class WalkingQueue {
 		 */
 		int diffX = x - last.x;
 		int diffY = y - last.y;
-		
+
 		/*
 		 * And calculate the direction between them.
 		 */
 		int dir = DirectionUtils.direction(diffX, diffY);
-		//Direction dir = Direction.direction(diffX, diffY);
+		// Direction dir = Direction.direction(diffX, diffY);
 
 		/*
 		 * Check if we actually move anywhere.
@@ -333,76 +329,63 @@ public class WalkingQueue {
 			waypoints.add(new Point(x, y, dir));
 		}
 	}
-	
+
 	/**
 	 * Process player movement
 	 */
 	public void processNextMovement() {
 		/*
+		 * Store the teleporting flag.
+		 */
+		boolean teleporting = player.hasTeleportTarget();
+
+		/*
 		 * The points which we are walking to.
 		 */
 		Point walkPoint = null, runPoint = null;
 
-		if (player.teleportToX != -1 && player.teleportToY != -1) {
-			boolean zChange = false;
-			if (player.teleHeight != -1 && (player.teleHeight != player.getZ())) {
-				zChange = true;
-			}
+		/*
+		 * Checks if the player is teleporting i.e. not walking.
+		 */
+		if (teleporting) {
 			/*
-			 * Set our current Location since we've just teleported
+			 * Reset the walking queue as it will no longer apply after the
+			 * teleport.
 			 */
-			player.setLocation(Location.create(player.teleportToX, player.teleportToY, zChange ? player.teleHeight : player.getZ()));
-			player.updateCoverage(player.getPosition());
-			player.lastTile = new Location(player.getX(), player.getY()+1, player.getZ());
 			reset();
-			player.teleportToX = player.teleportToY = player.teleHeight = -1; // reset
 
-			player.setTeleporting(true);
-			player.updateWalkEntities();
 			/*
-			 * Check if we've moved and the height level doesn't match, if so reload ground items and objects
+			 * Set the 'teleporting' flag which indicates the player is
+			 * teleporting.
 			 */
-			if (zChange) {
-				GroundItemHandler.reloadGroundItems(player);
-			}
+			player.setTeleporting(true);
 
+			/*
+			 * Sets the player's new location to be their target.
+			 */
+			player.setLocation(player.getTeleportTarget());
+
+			/*
+			 * Resets the teleport target.
+			 */
+			player.resetTeleportTarget();
 		} else {
-			if (player.frozen()) {
-				reset();
-			} else {
+			/*
+			 * If the player isn't teleporting, they are walking (or standing
+			 * still). We get the next direction of movement here.
+			 */
+			walkPoint = getNextPoint();
 
-		/*
-		 * If the player isn't teleporting, they are walking (or standing
-		 * still). We get the next direction of movement here.
-		 */
-				walkPoint = getNextPoint();
-
-		/*
-		 * Technically we should check for running here.
-		 */
-				if ((runToggled || runQueue) && player.getWalkingQueue().getEnergy() > 0) {
-					runPoint = getNextPoint();
-				}
-
-		/*
-		 * Now set the sprites.
-		 */
-				int walkDir = walkPoint == null ? -1 : walkPoint.dir;
-				int runDir = runPoint == null ? -1 : runPoint.dir;
-				player.getSprites().setSprites(walkDir, runDir);
-
-		/*if (walkPoint != null && walkPoint.dir != -1) {
-			if (canMove(walkPoint.dir) || player.isForcedMovement()) {
-				move(walkPoint.dir);
+			if (runToggled || runQueue) {
+				runPoint = getNextPoint();
 			}
-		}
 
-		if (runPoint != null && runPoint.dir != -1) {
-			if (canMove(runPoint.dir) || player.isForcedMovement()) {
-				move(runPoint.dir);
-			}
-		}*/
-			}
+			/*
+			 * Now set the sprites.
+			 */
+			int walkDir = walkPoint == null ? -1 : walkPoint.dir;
+			int runDir = runPoint == null ? -1 : runPoint.dir;
+			player.getSprites().setSprites(walkDir, runDir);
 		}
 		// Check for region changes.
 		int deltaX = player.getX() - player.getLastKnownRegion().getRegionX() * 8;
@@ -418,7 +401,7 @@ public class WalkingQueue {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Gets the next point of movement.
 	 * 
@@ -460,11 +443,11 @@ public class WalkingQueue {
 		}
 		return false;
 	}
-	
+
 	public void walkTo(int x, int y) {
-        reset();
-        addStep(player.getX() + x, player.getY() + y);
-        finish();
-    }
-	
+		reset();
+		addStep(player.getX() + x, player.getY() + y);
+		finish();
+	}
+
 }

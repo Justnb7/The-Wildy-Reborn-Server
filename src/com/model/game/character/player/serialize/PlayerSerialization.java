@@ -21,6 +21,7 @@ import com.model.game.character.player.content.KillTracker.KillEntry;
 import com.model.game.character.player.content.bounty_hunter.BountyHunterConstants;
 import com.model.game.item.Item;
 import com.model.game.item.container.impl.RunePouchContainer;
+import com.model.game.location.Location;
 
 /**
  * Handles saving a player's container and details into a json file.
@@ -115,9 +116,8 @@ public class PlayerSerialization {
 				Rights right = Rights.get(details.rights);
 				player.setRights(right);
 				System.out.printf("Rights check: Name %s v Rights %d right %s%n", details.username, details.rights, right);
-				player.teleportToX = details.x;
-				player.teleportToY = details.y;
-				player.teleHeight = details.z;
+				player.setLocation(player.isNewPlayer() ? new Location(3159, 3485) : details.location);
+				player.setNewPlayer(details.newPlayer);
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);
 				player.setPet(details.pet);
@@ -206,7 +206,8 @@ public class PlayerSerialization {
 		private final String username;
 		private final String password;		
 		private final int rights;
-		private final int x, y, z;
+		private final Location location;
+		private final boolean newPlayer;
 		private final String identity;
 		private final String mac;
 		private final int pet;
@@ -283,9 +284,8 @@ public class PlayerSerialization {
 			username = player.getName();
 			password = player.getPassword();
 			rights = player.getRights().getValue();
-			x = player.getX();
-			y = player.getY();
-			z = player.getZ();
+			location = player.getPosition();
+			newPlayer = player.isNewPlayer();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
 			pet = player.getPet();

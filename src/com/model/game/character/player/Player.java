@@ -1222,9 +1222,6 @@ public class Player extends Entity {
 		usernameHash = Utility.playerNameToInt64(username);
 		getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		dialogue = new DialogueManager(this);
-		teleportToX = 3087;
-		teleportToY = 3499;
-		teleHeight = 0;
 		getWalkingQueue().reset();
 		outStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		outStream.offset = 0;
@@ -2330,7 +2327,6 @@ public class Player extends Entity {
 	public int combatCountdown = 10;
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
-	public int teleportToX = -1, teleportToY = -1, teleHeight;
 	public int lastClickedItem;
 
 	public int totalLevel,
@@ -2864,6 +2860,16 @@ public class Player extends Entity {
 	
 	public void setShopId(final int shopId) {
 		this.shopId = shopId;
+	}
+
+	private boolean newPlayer;
+	
+	public boolean isNewPlayer() {
+		return newPlayer;
+	}
+	
+	public void setNewPlayer(boolean newPlayer) {
+		this.newPlayer = newPlayer;
 	}
 
 }

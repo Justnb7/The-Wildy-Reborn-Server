@@ -1148,9 +1148,6 @@ public abstract class Entity {
 			player.getActionSender().sendMessage("You're trying to move too fast.");
 			return;
 		}
-		player.teleportToX = teleportTarget.getX();
-		player.teleportToY = teleportTarget.getY();
-		player.teleHeight = teleportTarget.getZ();
 		player.getWalkingQueue().reset();
         System.out.println("to "+Arrays.toString(new int[] {teleportTarget.getX(), teleportTarget.getY(), teleportTarget.getZ()}));
 	}

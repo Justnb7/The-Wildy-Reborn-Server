@@ -46,6 +46,29 @@ public class ActionSender {
     }
     
 	/**
+	 * Sends the entity feed overlay
+	 * 
+	 * @param entity_name
+	 *            The entity we're fighting
+	 * @param hp
+	 *            their health
+	 * @param max_hp
+	 *            their max health
+	 * @return send the health overlay
+	 */
+    public ActionSender sendEntityFeed(String entity_name, int hp, int max_hp) {
+    	player.getOutStream().writeFrame(175);
+    	if (entity_name == null) {
+			entity_name = "null";
+		}
+    	player.getOutStream().putRS2String(entity_name);
+    	player.getOutStream().writeShort(hp);
+		player.getOutStream().writeShort(max_hp);
+    	player.flushOutStream();
+    	return this;
+    }
+    
+	/**
 	 * This packet is used for sending timers such as veng timers, antifire,
 	 * barrage and teleblock.
 	 * 

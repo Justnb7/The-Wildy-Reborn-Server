@@ -1,6 +1,7 @@
 package com.model.game.character.combat;
 
 import com.model.UpdateFlags.UpdateFlag;
+import com.model.game.World;
 import com.model.game.character.Animation;
 import com.model.game.character.Entity;
 import com.model.game.character.Graphic;
@@ -74,7 +75,6 @@ public class Combat {
 			player.faceEntity(null);
 	        player.getCombatState().reset();
 	        player.setFollowing(null);
-			player.getActionSender().sendString("", 35000);
 		}
     }
 
@@ -89,17 +89,18 @@ public class Combat {
         player.debug("style: "+player.getCombatType()+" vs "+target);
 
 
-        /*if (target.isPlayer()) {
+        if (target.isPlayer()) {
             Player ptarg = (Player) target;
-            player.getActionSender().sendString(ptarg.getName() + "-" + player.getSkills().getLevelForExperience(Skills.HITPOINTS) + "-" + ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName(), 35000);
+            player.getActionSender().sendEntityFeed(Utility.formatPlayerName(ptarg.getName()), player.getSkills().getLevelForExperience(Skills.HITPOINTS), ptarg.getSkills().getLevel(Skills.HITPOINTS));
+            //player.getActionSender().sendString(ptarg.getName() + "-" + player.getSkills().getLevelForExperience(Skills.HITPOINTS) + "-" + ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName(), 35000);
         } else {
             NPC npc = (NPC) target;
             if (npc.getId() != 493 || npc.getId() != 496 || npc.getId() != 5534) {
-                Player attacker = World.getWorld().PLAYERS.get(npc.underAttackBy);
+                Player attacker = World.getWorld().getPlayers().get(npc.underAttackBy);
                 //System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
-                player.getActionSender().sendString(NPC.getName(npc.getId()).replaceAll("_", " ") + "-" + npc.getMaxHitpoints() + "-" + npc.getHitpoints() + ((attacker != null) ? "-" + attacker.getName() : ""), 35000);
+                attacker.getActionSender().sendEntityFeed(NPC.getName(npc.getId()).replaceAll("_", " "), npc.getHitpoints(), npc.getMaxHitpoints());
             }
-        }*/
+        }
 
         if (player.getCombatType() == CombatStyle.RANGE) {
             rangeAttack(player, target);

@@ -70,6 +70,7 @@ import com.model.game.location.Location;
 import com.model.net.network.rsa.GameBuffer;
 import com.model.net.network.rsa.ISAACRandomGen;
 import com.model.net.network.session.GameSession;
+import com.model.net.packet.ActionSender;
 import com.model.net.packet.Packet;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;

@@ -413,7 +413,6 @@ public class PlayerUpdating {
 		 * Check if the player is teleporting.
 		 */
 		if (player.isTeleporting() || player.isMapRegionChanging()) {
-			System.out.println("movement type 3: "+player.isTeleporting()+"/"+player.isMapRegionChanging());
 			/*
 			 * They are, so an update is required.
 			 */
@@ -436,8 +435,6 @@ public class PlayerUpdating {
 			 */
 			buffer.writeBits(7, player.getLocation().getLocalY(player.getLastKnownRegion()));
 			buffer.writeBits(7, player.getLocation().getLocalX(player.getLastKnownRegion()));
-			System.out.println("GPI "+player.getLocation().getLocalX(player.getLastKnownRegion())+","
-			+player.getLocation().getLocalY(player.getLastKnownRegion()));
 		} else {
 			/*
 			 * Otherwise, check if the player moved.

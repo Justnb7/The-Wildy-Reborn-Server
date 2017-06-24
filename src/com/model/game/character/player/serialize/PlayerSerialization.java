@@ -115,8 +115,7 @@ public class PlayerSerialization {
 				player.setPassword(details.password);
 				Rights right = Rights.get(details.rights);
 				player.setRights(right);
-				System.out.printf("Rights check: Name %s v Rights %d right %s%n", details.username, details.rights, right);
-				player.setLocation(player.isNewPlayer() ? new Location(3159, 3485) : details.location);
+				player.setLocation(player.isNewPlayer() ? new Location(3087, 3495, 0) : details.location);
 				player.setNewPlayer(details.newPlayer);
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);

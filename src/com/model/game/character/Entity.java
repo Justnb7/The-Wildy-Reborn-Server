@@ -14,13 +14,14 @@ import com.model.game.character.combat.pvm.PlayerVsNpcCombat;
 import com.model.game.character.npc.NPC;
 import hyperion.Directions;
 import hyperion.region.Coverage;
-import com.model.game.character.player.ActionSender;
+
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.music.sounds.MobAttackSounds;
 import com.model.game.character.player.content.music.sounds.PlayerSounds;
 import com.model.game.character.walking.Sprites;
 import com.model.game.item.container.impl.equipment.EquipmentConstants;
 import com.model.game.location.Location;
+import com.model.net.packet.ActionSender;
 import com.model.server.Server;
 import com.model.task.ScheduledTask;
 import com.model.task.impl.PoisonCombatTask;

@@ -74,20 +74,16 @@ public class LoginSession extends Session {
 		
 		if (ConnectionHandler.isNamedBanned(player.getName())) {
 			sendReturnCode(ctx.channel(), 4);
-			System.out.println("Name banned");
 			return;
 		}
 		if(ConnectionHandler.isMacBanned(player.getMacAddress())) {
 			sendReturnCode(ctx.channel(), 4);
-			System.out.println("Mac banned");
 		}
 		if (ConnectionHandler.isIpBanned((player.connectedFrom))) {
 			sendReturnCode(ctx.channel(), 4);
-			System.out.println("Ip banned");
 			return;
 		}
 		if (PlayerUpdating.getPlayerCount() >= World.getWorld().getPlayers().capacity()) {
-			System.out.println("Too many players online");
 			sendReturnCode(ctx.channel(), 7);
 			return;
 		}
@@ -103,23 +99,19 @@ public class LoginSession extends Session {
 			sendReturnCode(ctx.channel(), 14);
 		}
 		if (credential.getClientHash() == 0 || credential.getClientHash() == 99735086 || credential.getClientHash() == 69) {
-			System.out.println("Invalid client hash.");
 			sendReturnCode(ctx.channel(), 18);
 			return;
 		}
 		if (credential.getClientHash() != 39623221) {
-			System.out.println("UID invalid.");
 			sendReturnCode(ctx.channel(), 18);
 			return;
 		}
 		if (ConnectionHandler.isIdBanned(player.getIdentity())) {
-			System.out.println("Identity banned");
 			sendReturnCode(ctx.channel(), 4);
 			return;
 		}
 		if (credential.getVersion() != Constants.CLIENT_VERSION) {
 			sendReturnCode(ctx.channel(), 18);
-			System.out.println("Client version invalid.");
 			return;
 		}
 		int count = 0;
@@ -135,19 +127,13 @@ public class LoginSession extends Session {
 			return;
 		}
 		if (returnCode == 2) {
-			System.out.println("Enter logincode: "+returnCode);
 			File file = new File("data/characters/details/" + NameUtils.formatNameForProtocol(credential.getName()) + ".json");
-			if (!file.exists()) {
-				System.out.println("File not here: data/characters/details/ " + NameUtils.formatNameForProtocol(credential.getName()) + ".json");
-			}
 			if (file.exists()) {
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(file));
 					final PlayerSaveDetail details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
 					name = details.user();
 					pass = details.password();
-					
-					System.out.printf("pass check '%s' vs '%s' %n", pass, credential.getPassword());
 					if (!name.equals(NameUtils.formatName(credential.getName())) || !pass.equals(credential.getPassword())) {
 						sendReturnCode(ctx.channel(), 3);
 					}
@@ -157,21 +143,16 @@ public class LoginSession extends Session {
 				}
 			}
 			if (credential.getRequestType().equals("register")) {
-				System.out.println("register");
 				if (PlayerSerialization.playerExists(name)) {
-					System.out.println("player exists");
 					if (name.equals(NameUtils.formatName(credential.getName())) || !pass.equals(credential.getPassword())) {
 						sendReturnCode(ctx.channel(), 22);
-						System.out.println("create profile for existing player");
 						return;
 					} else {
 						sendReturnCode(ctx.channel(), 23);
-						System.out.println("unable to register the profile");
 						return;
 					}
 				} else {
 					sendReturnCode(ctx.channel(), 22);
-					System.out.println("Creating profile");
 					return;
 				}
 			}

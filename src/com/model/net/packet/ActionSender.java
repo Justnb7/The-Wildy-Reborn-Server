@@ -1,4 +1,4 @@
-package com.model.game.character.player;
+package com.model.net.packet;
 
 import com.model.UpdateFlags.UpdateFlag;
 import com.model.game.Constants;
@@ -8,6 +8,8 @@ import com.model.game.character.combat.PrayerHandler.Prayers;
 import com.model.game.character.combat.magic.SpellBook;
 import com.model.game.character.combat.weapon.AttackStyle;
 import com.model.game.character.npc.pet.Pet;
+import com.model.game.character.player.Player;
+import com.model.game.character.player.Skills;
 import com.model.game.character.player.content.KillTracker;
 import com.model.game.character.player.content.clan.ClanManager;
 import com.model.game.character.player.content.questtab.QuestTabPageHandler;
@@ -66,7 +68,6 @@ public class ActionSender {
     }
     
 	public ActionSender sendMapRegionPacket() {
-    	System.out.println("sync region");
 		player.setLastKnownRegion(player.getLocation());
 		player.getOutStream().writeFrame(73);
 		player.getOutStream().writeWordA(player.getLocation().getRegionX() + 6);
@@ -861,6 +862,7 @@ public class ActionSender {
 		try {
 			if (!PlayerSerialization.load(player)) {
 				player.setNewPlayer(true);
+				player.setTutorial(true);
 			} else if (PlayerSerialization.load(player)) {
 				player.setNewPlayer(false);
 			}

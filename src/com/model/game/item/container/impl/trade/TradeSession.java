@@ -3,12 +3,12 @@ package com.model.game.item.container.impl.trade;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import com.model.game.character.player.ActionSender.MinimapState;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.Rights;
 import com.model.game.character.player.serialize.PlayerSerialization;
 import com.model.game.item.Item;
 import com.model.game.item.container.InterfaceConstants;
+import com.model.net.packet.ActionSender.MinimapState;
 import com.model.utility.Stopwatch;
 import com.model.utility.Utility;
 

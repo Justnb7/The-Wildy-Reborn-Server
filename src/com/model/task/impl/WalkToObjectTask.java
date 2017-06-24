@@ -57,8 +57,13 @@ public class WalkToObjectTask extends ScheduledTask {
 
 	@Override
 	public void execute() {
+		if (!player.isActive()) {
+			stop();
+			return;
+		}
 		
 		if (player.getLocation().isWithinInteractionDistance(loc)) {
+			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:
 				 ObjectInteraction.handleFirstClickAction(player, loc, object);
@@ -70,31 +75,13 @@ public class WalkToObjectTask extends ScheduledTask {
 				 ObjectInteraction.handleThirdClickAction(player, loc, object);
 				break;
 			}
+			stop();
+			// reached target. face coords.
+			player.setFollowing(null);
+			player.face(player, loc);
 		} else {
-			player.setDistancedTask(new DistancedActionTask() {
-				@Override
-				public void onReach() {
-					switch (clickAction) {
-        			case 1:
-        				 ObjectInteraction.handleFirstClickAction(player, loc, object);
-        				break;
-        			case 2:
-        				 ObjectInteraction.handleSecondClickAction(player, loc, object);
-        				break;
-        			case 3:
-        				 ObjectInteraction.handleThirdClickAction(player, loc, object);
-        				break;
-        			}
-				}
-				@Override
-				public boolean reached() {
-					stop();
-					return player.distanceToPoint(loc.getX(), loc.getY()) < 2;
-				}
-			});
+			// do nothing this cycle. try again next time this Task is executed.
 		}
-		player.face(player, loc);
-		stop();
 	}
 
 }

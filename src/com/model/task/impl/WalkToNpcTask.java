@@ -4,7 +4,6 @@ import com.model.game.character.npc.NPC;
 import com.model.game.character.player.Player;
 import com.model.game.character.player.content.clicking.npc.NpcInteraction;
 import com.model.game.location.Location;
-import com.model.server.Server;
 import com.model.task.ScheduledTask;
 
 /**
@@ -47,11 +46,6 @@ public class WalkToNpcTask extends ScheduledTask {
 		this.player = player;
 		this.clickType = clickType;
 	}
-
-	
-	//Brief ecplanation i added this task a little whule ago but its still being sent even when the task is already compelted
-	
-	//so meaning its still looping ive got so many stoip(); calls in here idk if i even did it right lol!
 	
 	@Override
 	public void execute() {
@@ -59,8 +53,6 @@ public class WalkToNpcTask extends ScheduledTask {
 			stop();
 			return;
 		}
-		// TODO check if each cycle we're still wanting to interact with the target npc
-		// walking or interacting with another entity invalidate this action.
 
 		if (player.getLocation().isWithinInteractionDistance(new Location(npc.getX(), npc.getY()))) {
 			// in distance. interact and stop cycle.
@@ -78,7 +70,7 @@ public class WalkToNpcTask extends ScheduledTask {
 				NpcInteraction.fourthOption(player, npc);
 				break;
 			}
-			stop();//1 lol
+			stop();
 			// reached target. face coords.
 			player.setFollowing(null);
 			player.face(player, npc.getLocation());

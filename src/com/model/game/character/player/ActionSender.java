@@ -862,8 +862,6 @@ public class ActionSender {
 			if (!PlayerSerialization.load(player)) {
 				player.setNewPlayer(true);
 			} else if (PlayerSerialization.load(player)) {
-				player.setNewPlayer(true);
-			} else {
 				player.setNewPlayer(false);
 			}
 		} catch (Exception e) {

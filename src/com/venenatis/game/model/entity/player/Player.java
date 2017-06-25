@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.venenatis.game.constants.Constants;
@@ -14,7 +13,6 @@ import com.venenatis.game.consumables.potion.PotionData;
 import com.venenatis.game.consumables.potion.Potions;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.KillTracker.KillEntry;
-import com.venenatis.game.content.clan.ClanMember;
 import com.venenatis.game.content.minigames.fight_caves.FightCaves;
 import com.venenatis.game.content.minigames.warriors_guild.WarriorsGuild;
 import com.venenatis.game.content.skills.SkillTask;
@@ -52,15 +50,18 @@ import com.venenatis.game.model.entity.npc.NPCAggression;
 import com.venenatis.game.model.entity.npc.SlayerDeathTracker;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.widget.Selection;
+import com.venenatis.game.model.entity.player.clan.Clan;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
+import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
+import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.instance.impl.FightCaveInstance;
 import com.venenatis.game.model.entity.player.instance.impl.KrakenInstance;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.model.masks.WalkingQueue;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+import com.venenatis.game.model.masks.WalkingQueue;
 import com.venenatis.game.model.req.RequestManager;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.net.network.rsa.ISAACRandomGen;
@@ -1565,7 +1566,6 @@ public class Player extends Entity {
 
 	private int string_receiver;
 	private String tempKey;
-	private ClanMember member;
 
 	public int getStringReceiver() {
 		return string_receiver;
@@ -1587,20 +1587,12 @@ public class Player extends Entity {
 		this.isClanMuted = isMuted;
 	}
 
-	public ClanMember getClanMembership() {
-		return member;
-	}
-
 	public void setTempKey(String s) {
 		this.tempKey = s;
 	}
 
 	public void setStringReceiver(int i) {
 		this.string_receiver = i;
-	}
-
-	public void setClanMembership(ClanMember member) {
-		this.member = member;
 	}
 	
 	private int lastSlayerTask;
@@ -2845,6 +2837,66 @@ public class Player extends Entity {
 	
 	public void setNewPlayer(boolean newPlayer) {
 		this.newPlayer = newPlayer;
+	}
+	
+	private Clan clan;
+
+	public Clan getClan() {
+		return clan;
+	}
+
+	public void setClan(Clan clan) {
+		this.clan = clan;
+	}
+	
+	private String clanChat;
+	
+	public String getClanChat() {
+		return clanChat;
+	}
+
+	public void setClanChat(String clanChat) {
+		this.clanChat = clanChat;
+	}
+	
+	private String savedClan;
+
+	public String getSavedClan() {
+		return savedClan;
+	}
+
+	public void setSavedClan(String savedClan) {
+		this.savedClan = savedClan;
+	}
+	
+	private String clanPromote;
+
+	public String getClanPromote() {
+		return clanPromote;
+	}
+
+	public void setClanPromote(String clanPromote) {
+		this.clanPromote = clanPromote;
+	}
+	
+	private InputString inputString;
+
+	public void setInputAmount(InputAmount inputAmount) {
+		this.inputAmount = inputAmount;
+	}
+	
+	public InputAmount getInputAmount() {
+		return inputAmount;
+	}
+	
+	private InputAmount inputAmount;
+
+	public void setInputString(InputString inputString) {
+		this.inputString = inputString;
+	}
+	
+	public InputString getInputString() {
+		return inputString;
 	}
 
 }

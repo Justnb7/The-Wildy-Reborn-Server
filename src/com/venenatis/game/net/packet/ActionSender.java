@@ -2,7 +2,6 @@ package com.venenatis.game.net.packet;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.KillTracker;
-import com.venenatis.game.content.clan.ClanManager;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.location.Location;
@@ -15,6 +14,10 @@ import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.clan.ClanManager;
+import com.venenatis.game.model.entity.player.clan.ClanRank;
+import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
+import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
@@ -140,14 +143,27 @@ public class ActionSender {
         return this;
 	}
 	
-	public ActionSender sendClanMessage(String member, String message, String clan, int rights) {
+	public ActionSender sendClanDetails(String name, String message, String clan, ClanRank rank) {
 		if (player.getOutStream() != null) {
-            player.getOutStream().putFrameVarShort(217);
+			player.getOutStream().putFrameVarShort(217);
             int offset = player.getOutStream().offset;
-            player.getOutStream().putRS2String(member);
+            player.getOutStream().putRS2String(name);
             player.getOutStream().putRS2String(message);
             player.getOutStream().putRS2String(clan);
-            player.getOutStream().writeShort(rights);
+            player.getOutStream().writeShort(rank.getRankIndex());
+            player.getOutStream().putFrameSizeShort(offset);
+        }
+		return this;
+	}
+	
+	public ActionSender sendClanDetails(String message, String clan) {
+		if (player.getOutStream() != null) {
+			player.getOutStream().putFrameVarShort(217);
+            int offset = player.getOutStream().offset;
+            player.getOutStream().putRS2String("");
+            player.getOutStream().putRS2String(message);
+            player.getOutStream().putRS2String(clan);
+            player.getOutStream().writeShort(ClanRank.ANYONE.getRankIndex());
             player.getOutStream().putFrameSizeShort(offset);
         }
 		return this;
@@ -237,7 +253,7 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendSidebarInterfaces() {
-		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 18128, 5065, 5715, 2449, 904, 147, -1, -1 };//15
+		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 33800, 5065, 5715, 2449, 904, 147, -1, -1 };//15
 		for (int i = 0; i < 15; i++) {
 			sendSidebarInterface(i, interfaces[i]);
 		}
@@ -271,20 +287,20 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendEnterStringInterface() {
+	public ActionSender sendInput(InputString inputString) {
 		if (player.getOutStream() != null) {
             player.getOutStream().writeFrame(187);
+    		player.setInputString(inputString);
+            player.flushOutStream();
         }
 		return this;
 	}
 	
-	/**
-	 * Sends the enter amount interface.
-	 * @return The action sender instance, for chaining.
-	 */
-	public ActionSender sendEnterAmountInterface(int interfaceId, Item item) {
+	public ActionSender sendInput(InputAmount inputAmount) {
 		if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(27);
+    		player.getOutStream().writeFrame(27);
+            player.setInputAmount(inputAmount);
+            player.flushOutStream();
         }
 		return this;
 	}
@@ -1002,10 +1018,10 @@ public class ActionSender {
 				//If the player is not in a clan chat we'll add them in the server clan chat
 				if (player.getTempKey() == null || player.getTempKey().equals("") || player.getTempKey().isEmpty()) {
 					player.getActionSender().sendMessage("<col=ff0033>We noticed you aren't in a clanchat, so we added you to the community clanchat!");
-					player.setTempKey("patrick");
+					player.setTempKey("help");
 				}
 				if (player.getTempKey() != null) {
-					ClanManager.joinClan(player, player.getTempKey());
+					ClanManager.join(player, player.getTempKey());
 				}
 				this.stop();
 			}

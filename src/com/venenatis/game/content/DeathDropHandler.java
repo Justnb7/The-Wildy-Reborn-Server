@@ -24,14 +24,11 @@ public class DeathDropHandler {
 	 */
 	public static void handleDeathDrop(Player player) {
 
-		String asdf = player.getDamageMap().getKiller();
-		player.debug("killed by: "+asdf);
-		Player killer = World.getWorld().getPlayerByName(asdf);
+		String k = player.getDamageMap().getKiller();
+		Player killer = World.getWorld().lookupPlayerByName(k);
 
 		if (killer == null) {
-			player.debug("Killer not found, you can run back for your stuff.");
 			killer = player;
-			killer.debug("i am the killer: "+killer.getName());
 		}
 
 		Item[] keep = new Item[3 + (player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0)];

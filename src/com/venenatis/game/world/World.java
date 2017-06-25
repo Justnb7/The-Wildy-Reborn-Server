@@ -4,13 +4,13 @@ import com.google.common.collect.Sets;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.bounty.BountyHunter;
-import com.venenatis.game.content.clan.ClanManager;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.MobileCharacterList;
 import com.venenatis.game.model.entity.Entity.EntityType;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.updating.NpcUpdating;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
@@ -141,14 +141,8 @@ public class World implements Service {
 	public void schedule(ScheduledTask task) {
 		Server.getTaskScheduler().schedule(task);
 	}
-
-	/**
-	 * Gets the player by the name.
-	 *
-	 * @param playerName the player name.
-	 * @return the player
-	 */
-	public Player getPlayerByName(String playerName) {
+	
+	public Player lookupPlayerByName(String playerName) {
 		for (Player player : getPlayers()) {
 			if (player == null)
 				continue;
@@ -157,6 +151,16 @@ public class World implements Service {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Gets the player by the name.
+	 *
+	 * @param playerName the player name.
+	 * @return the player
+	 */
+	public Optional<Player> getPlayerByName(String name) {
+		return players.stream().filter(Objects::nonNull).filter($it -> $it.getName().equalsIgnoreCase(name)).findFirst();
 	}
 
 	public Optional<Player> getPlayerByRealName(String realName) {
@@ -339,7 +343,7 @@ public class World implements Service {
 		/*
 		 * Remove from clan
 		 */
-		ClanManager.leaveClan(player, true);
+		ClanManager.leave(player, true);
 
 	}
 

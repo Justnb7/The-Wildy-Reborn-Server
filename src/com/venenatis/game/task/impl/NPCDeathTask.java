@@ -161,7 +161,7 @@ public class NPCDeathTask extends ScheduledTask {
     private void initialDeath(NPC npc) {
         npc.resetFace();
 
-        final Player killer = World.getWorld().getPlayerByName(npc.getDamageMap().getKiller());
+        final Player killer = World.getWorld().lookupPlayerByName(npc.getDamageMap().getKiller());
 
         if (killer != null) {
             npc.killedBy = killer.getIndex();

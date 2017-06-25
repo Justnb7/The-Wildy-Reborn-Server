@@ -461,11 +461,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 
-		/*if (player.getInputAmount() != null) {
+		if (player.getInputAmount() != null) {
 			player.getInputAmount().input(amountX);
 			player.setInputAmount(null);
 			return;
-		}*/
+		}
 
 		switch (player.xInterfaceId) {
 

@@ -3,7 +3,6 @@ package com.venenatis.game.content;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.venenatis.game.content.clan.ClanManager;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -105,11 +104,6 @@ public class FriendAndIgnoreList {
 		 * Add the player to our list
 		 */
 		friendList.add(username);
-		
-		/*
-		 * Updates the clan's friends list.
-		 */
-		ClanManager.updateFriendsList(player);
 
 		/*
 		 * Find our target if hes online
@@ -138,11 +132,6 @@ public class FriendAndIgnoreList {
 	 */
 	public void removeFriend(long username) {
 		if (friendList.remove(username)) {
-			
-			/*
-			 * Updates the clan's friends list.
-			 */
-			ClanManager.updateFriendsList(player);
 			
 			Player target = World.getWorld().getPlayerByNameHash(username);
 			if (target != null) {

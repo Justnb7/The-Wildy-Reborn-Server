@@ -148,8 +148,7 @@ public class PlayerSerialization {
 				player.setFirstSlayerTask(details.completedFirstTask);
 				player.setFirstBossSlayerTask(details.completedFirstBossTask);
 				player.setCanTeleportToTask(details.teleportToTaskUnlocked);
-				player.setTempKey(details.lastClanEntered);
-				player.isClanMuted = details.clanPunishment;
+				player.setClanChat(details.clan);
 				player.setPreserveUnlocked(details.unlockedPreserve);
 				player.setRigourUnlocked(details.unlockedRigour);
 				player.setAuguryUnlocked(details.unlockedAugury);
@@ -234,8 +233,7 @@ public class PlayerSerialization {
 		private final boolean completedFirstTask;
 		private final boolean completedFirstBossTask;
 		private final boolean teleportToTaskUnlocked;
-		private final String lastClanEntered;
-		private final boolean clanPunishment;
+		private final String clan;
 		private final boolean unlockedPreserve;
 		private final boolean unlockedRigour;
 		private final boolean unlockedAugury;
@@ -313,8 +311,7 @@ public class PlayerSerialization {
 			completedFirstTask = player.getFirstSlayerTask();
 			completedFirstBossTask = player.getFirstBossSlayerTask();
 			teleportToTaskUnlocked = player.canTeleportToSlayerTask();
-			lastClanEntered = player.getClanMembership() == null ? "" : player.getClanMembership().getClanOwner();
-			clanPunishment = player.getClanPunishment();
+			clan = player.getClanChat();
 			unlockedPreserve = player.isPreserveUnlocked();
 			unlockedRigour = player.isRigourUnlocked();
 			unlockedAugury = player.isAuguryUnlocked();

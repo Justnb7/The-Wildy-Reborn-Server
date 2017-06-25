@@ -5,7 +5,6 @@ import com.venenatis.ScriptManager;
 import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.clan.ClanManager;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Arrow;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Bolt;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Carvable;
@@ -15,6 +14,7 @@ import com.venenatis.game.content.skills.fletching.fletchable.impl.Stringable;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.content.trivia.TriviaBot;
+import com.venenatis.game.model.entity.player.clan.ClanRepository;
 import com.venenatis.game.net.ConnectionHandler;
 import com.venenatis.game.net.network.NettyChannelHandler;
 import com.venenatis.game.net.network.codec.RS2Encoder;
@@ -137,12 +137,12 @@ public class Bootstrap {
 			new ShopParser().run();
 			MobAttackSounds.declare();
 			PlayerSounds.declare();
-			ClanManager.init();
 			ConnectionHandler.initialize();
 		});
 
 		LOGGER.info("Loading content...");
 		serviceLoader.execute(() -> {
+			ClanRepository.load();
 			Arrow.declare();
 			Bolt.declare();
 			Carvable.declare();

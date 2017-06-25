@@ -144,6 +144,28 @@ public class Utility {
 		}
 		return builder.toString();
 	}
+	
+	/**
+	 * Capitalize each letter after .
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String capitalizeSentence(final String string) {
+		int pos = 0;
+		boolean capitalize = true;
+		StringBuilder sb = new StringBuilder(string);
+		while (pos < sb.length()) {
+			if (sb.charAt(pos) == '.') {
+				capitalize = true;
+			} else if (capitalize && !Character.isWhitespace(sb.charAt(pos))) {
+				sb.setCharAt(pos, Character.toUpperCase(sb.charAt(pos)));
+				capitalize = false;
+			}
+			pos++;
+		}
+		return sb.toString();
+	}
 
     /**
      * Returns a pseudo-random {@code int} value between inclusive

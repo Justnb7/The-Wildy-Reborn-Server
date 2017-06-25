@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.clan.ClanManager;
 import com.venenatis.game.content.teleportation.TeleportExecutor;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.location.Location;
@@ -24,6 +23,7 @@ import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
+import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
 import com.venenatis.game.model.masks.Animation;
@@ -72,7 +72,19 @@ public class CommandPacketHandler implements PacketType {
     	}
 		
 		if (playerCommand.startsWith("/")) {
-			ClanManager.memberActions(player, "DIALOGUE", playerCommand);
+
+			if (player.getClan() == null) {
+				player.getActionSender().sendMessage("You can only do this while in a clan chat.");
+				return;
+			}
+
+			String message = "";
+
+			if (message.contains("<img") || message.contains("<col")) {
+				player.getActionSender().sendMessage("Those symbols have been disabled.");
+				return;
+			}
+			ClanManager.message(player, message);
 			return;
 		}
 		if (player.getRights().getValue() >= 0) {
@@ -481,7 +493,7 @@ public class CommandPacketHandler implements PacketType {
 			name = "";
 			for (int i = 1; i < cmd.length; i++)
 				name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-			Player target = World.getWorld().getPlayerByName(name);
+			Player target = World.getWorld().lookupPlayerByName(name);
 			if (target == null) {
 				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				return false;
@@ -494,7 +506,7 @@ public class CommandPacketHandler implements PacketType {
     		 name = "";
 				for (int i = 1; i < cmd.length; i++)
 					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				target = World.getWorld().getPlayerByName(name);
+				target = World.getWorld().lookupPlayerByName(name);
 				if(target == null)
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
@@ -507,7 +519,7 @@ public class CommandPacketHandler implements PacketType {
     		 name = "";
 				for (int i = 1; i < cmd.length; i++)
 					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				target = World.getWorld().getPlayerByName(name);
+				target = World.getWorld().lookupPlayerByName(name);
 				if(target == null)
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
@@ -519,7 +531,7 @@ public class CommandPacketHandler implements PacketType {
     		 name = "";
 				for (int i = 1; i < cmd.length; i++)
 					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				target = World.getWorld().getPlayerByName(name);
+				target = World.getWorld().lookupPlayerByName(name);
 				if(target == null)
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
@@ -631,7 +643,7 @@ public class CommandPacketHandler implements PacketType {
     		String searchFor = "";
 			for (int i = 1; i < cmd.length; i++)
 				searchFor += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-			Player player_to_reset = World.getWorld().getPlayerByName(searchFor);
+			Player player_to_reset = World.getWorld().lookupPlayerByName(searchFor);
 			if (player_to_reset == null) {
 				player.getActionSender().sendMessage("Couldn't find player " + searchFor + ".");
 			}
@@ -842,7 +854,7 @@ public class CommandPacketHandler implements PacketType {
 			String name = "";
 			for (int i = 1; i < cmd.length; i++)
 				name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-			Player target = World.getWorld().getPlayerByName(name);
+			Player target = World.getWorld().lookupPlayerByName(name);
 			if (target == null)
 				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 			if (target.getRights().isBetween(2, 3)) {

@@ -2,7 +2,6 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.content.ItemsKeptOnDeath;
 import com.venenatis.game.content.EmotesManager.EmoteData;
-import com.venenatis.game.content.clan.ClanManager;
 import com.venenatis.game.content.quest_tab.QuestTabPage;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
@@ -18,6 +17,7 @@ import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttackHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.clan.ClanButtons;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.net.packet.in.button.ActionButtonEventListener;
@@ -58,6 +58,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181
 				&& button != 14067 && button != 9154) {
+			return;
+		}
+		
+		/* Clan Chat */
+		if (ClanButtons.handle(player, button)) {
 			return;
 		}
 		
@@ -104,9 +109,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			return;
 		}
 		
-		if (ClanManager.handleButtons(player, button)) {
-			return;
-		}
 		if (Fletching.SINGLETON.clickButton(player, button)) {
 			return;
 		}

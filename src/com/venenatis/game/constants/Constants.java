@@ -109,6 +109,11 @@ public class Constants {
 	public static final String BAD_USERNAMES[] = { "m o d", "a d m i n", "mod", "admin", "moderator", "administrator", "owner", "m0d", "adm1n", "0wner", "retard", "Nigga", "nigger", "n1gger", "n1gg3r", "nigg3r", "n1gga", "cock", "faggot", "fag", "anus", "arse", "fuck", "bastard", "bitch", "cunt", "chode", "damn", "dick", "faggit", "gay", "homo", "jizz", "lesbian", "negro", "pussy", "penis", "queef", "twat", "titty", "whore", "b1tch" };
 
 	/**
+	 * Strings that are classified as bad
+	 */
+	public static final String[] BAD_STRINGS = { "fag", "f4g", "faggot", "nigger", "fuck", "bitch", "whore", "slut", "gay", "lesbian", "scape", ".net", ".com", ".org", "vagina", "dick", "cock", "penis", "hoe", "soulsplit", "ikov", "retard", "cunt", };
+	
+	/**
 	 * Players that can overwrite those username block.
 	 */
 	public static final String USERNAME_EXCEPTIONS[] = { 

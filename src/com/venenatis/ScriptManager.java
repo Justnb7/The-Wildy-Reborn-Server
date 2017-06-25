@@ -1,4 +1,4 @@
-package com.venenatis.game;
+package com.venenatis;
 
 import java.io.File;
 import java.io.FileInputStream;

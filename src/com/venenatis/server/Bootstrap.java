@@ -1,7 +1,7 @@
 package com.venenatis.server;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.venenatis.game.ScriptManager;
+import com.venenatis.ScriptManager;
 import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;

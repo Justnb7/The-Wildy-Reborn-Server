@@ -1,8 +1,8 @@
 package com.venenatis.game.content.clicking.objects;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
-import com.venenatis.game.content.clicking.Cookables;
-import com.venenatis.game.content.clicking.Cooking;
+import com.venenatis.game.content.skills.cooking.Cookables;
+import com.venenatis.game.content.skills.cooking.Cooking;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;

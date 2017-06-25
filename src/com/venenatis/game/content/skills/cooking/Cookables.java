@@ -1,4 +1,4 @@
-package com.venenatis.game.content.clicking;
+package com.venenatis.game.content.skills.cooking;
 
 import java.util.Collections;
 import java.util.EnumSet;

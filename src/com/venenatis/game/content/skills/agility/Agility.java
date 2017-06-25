@@ -3,7 +3,7 @@ package com.venenatis.game.content.skills.agility;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.venenatis.game.ScriptManager;
+import com.venenatis.ScriptManager;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Hit;

@@ -1,7 +1,6 @@
-package com.venenatis.game.content.clicking;
+package com.venenatis.game.content.skills.cooking;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
-import com.venenatis.game.cache.definitions.r317.ObjectDefinition317;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.model.Item;

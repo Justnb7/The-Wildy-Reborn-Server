@@ -19,8 +19,11 @@ public class ClanButtons {
 	 * @return
 	 */
 	public static boolean handle(Player player, int button) {
-		player.debug("button: "+button);
 		switch (button) {
+		
+		case 184163:
+			player.getActionSender().removeAllInterfaces();
+			return true;
 
 		/* Joining */
 		case 132014:
@@ -58,7 +61,7 @@ public class ClanButtons {
 			break;
 
 		/* System Message */
-		case -17713:
+		case 186207:
 			if (player.getClan() == null) {
 				return true;
 			}
@@ -73,56 +76,56 @@ public class ClanButtons {
 			player.getClan().setJoinable(ClanRank.ANYONE);
 			break;
 			
-		case -17529:
+		case 187135:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setJoinable(ClanRank.FRIEND);
 			break;
 			
-		case -17530:
+		case 187134:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setJoinable(ClanRank.RECRUIT);
 			break;
 			
-		case -17531:
+		case 187133:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setJoinable(ClanRank.CORPORAL);
 			break;
 			
-		case -17532:
+		case 187132:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setJoinable(ClanRank.SERGEANT);
 			break;
 			
-		case -17533:
+		case 187131:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setJoinable(ClanRank.LIEUTENANT);
 			break;
 			
-		case -17534:
+		case 187130:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setJoinable(ClanRank.CAPTAIN);
 			break;
 			
-		case -17535:
+		case 187129:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setJoinable(ClanRank.GENERAL);
 			break;
 			
-		case -17536:
+		case 187128:
 			if (player.getClan() == null) {
 				return true;
 			}
@@ -137,56 +140,56 @@ public class ClanButtons {
 			player.getClan().setTalkable(ClanRank.ANYONE);
 			break;
 			
-		case -17519:
+		case 187145:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setTalkable(ClanRank.FRIEND);
 			break;
 			
-		case -17520:
+		case 187144:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setTalkable(ClanRank.RECRUIT);
 			break;
 			
-		case -17521:
+		case 187143:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setTalkable(ClanRank.CORPORAL);
 			break;
 			
-		case -17522:
+		case 187142:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setTalkable(ClanRank.SERGEANT);
 			break;
 			
-		case -17523:
+		case 187141:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setTalkable(ClanRank.LIEUTENANT);
 			break;
 			
-		case -17524:
+		case 187140:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setTalkable(ClanRank.CAPTAIN);
 			break;
 			
-		case -17525:
+		case 187139:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setTalkable(ClanRank.GENERAL);
 			break;
 			
-		case -17526:
+		case 187138:
 			if (player.getClan() == null) {
 				return true;
 			}
@@ -201,42 +204,42 @@ public class ClanButtons {
 			player.getClan().setManagable(ClanRank.LEADER);
 			break;
 			
-		case -17510:
+		case 187154:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setManagable(ClanRank.RECRUIT);
 			break;
 			
-		case -17511:
+		case 187153:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setManagable(ClanRank.CORPORAL);
 			break;
 			
-		case -17512:
+		case 187152:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setManagable(ClanRank.SERGEANT);
 			break;
 			
-		case -17513:
+		case 187151:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setManagable(ClanRank.LIEUTENANT);
 			break;
 			
-		case -17514:
+		case 187150:
 			if (player.getClan() == null) {
 				return true;
 			}
 			player.getClan().setManagable(ClanRank.CAPTAIN);
 			break;
 			
-		case -17515:
+		case 187149:
 			if (player.getClan() == null) {
 				return true;
 			}
@@ -244,49 +247,49 @@ public class ClanButtons {
 			break;
 
 		/* Promote */
-		case -17696:
+		case 186224:
 			if (player.getClan() == null) {
 				return true;
 			}
 			ClanManager.promote(player, ClanRank.ANYONE);
 			break;
 			
-		case -17697:
+		case 186223:
 			if (player.getClan() == null) {
 				return true;
 			}
 			ClanManager.promote(player, ClanRank.RECRUIT);
 			break;
 			
-		case -17698:
+		case 186222:
 			if (player.getClan() == null) {
 				return true;
 			}
 			ClanManager.promote(player, ClanRank.CORPORAL);
 			break;
 			
-		case -17699:
+		case 186221:
 			if (player.getClan() == null) {
 				return true;
 			}
 			ClanManager.promote(player, ClanRank.SERGEANT);
 			break;
 			
-		case -17700:
+		case 186220:
 			if (player.getClan() == null) {
 				return true;
 			}
 			ClanManager.promote(player, ClanRank.LIEUTENANT);
 			break;
 			
-		case -17701:
+		case 186219:
 			if (player.getClan() == null) {
 				return true;
 			}
 			ClanManager.promote(player, ClanRank.CAPTAIN);
 			break;
 			
-		case -17702:
+		case 186218:
 			if (player.getClan() == null) {
 				return true;
 			}

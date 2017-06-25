@@ -1,0 +1,43 @@
+package com.venenatis.game.task.impl;
+
+import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.world.World;
+
+public class RestoreSpecialStats extends ScheduledTask {
+
+	public RestoreSpecialStats() {
+		super(8);
+	}
+
+	private int counter = 0;
+
+	@Override
+	public void execute() {
+		counter++;
+		//System.out.println(""+counter);
+		for (Player player : World.getWorld().getPlayers()) {
+			if (player != null) {
+					if (counter >= 4) {
+						//System.out.println("Here");
+						if (player.getSpecialAmount() < 100) {
+							//System.out.println("special amount below 100");
+							player.setSpecialAmount(player.getSpecialAmount() + 10);
+							//System.out.println("Special amount give + 10%");
+							if (player.getSpecialAmount() > 100) {
+								player.setSpecialAmount(100);
+								//System.out.println("Special attack already full.");
+							}
+							player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
+							player.getWeaponInterface().refreshSpecialAttack();
+							//System.out.println("Special bar updated.");
+					}
+				}
+			}
+		}
+				
+		if (counter >= 4)
+			counter = 0;
+	}
+}

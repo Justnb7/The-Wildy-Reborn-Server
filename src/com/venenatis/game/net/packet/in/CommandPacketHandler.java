@@ -553,6 +553,17 @@ public class CommandPacketHandler implements PacketType {
     	
     	switch(cmd[0]) {
     	
+    	case "massclan":
+			for (Player players : World.getWorld().getPlayers()) {
+				if (players != null && players != player) {
+					if (players.getClan() != null) {
+						ClanManager.leave(players, true);
+					}
+					ClanManager.join(players, "patrick");
+				}
+			}
+			return true;
+    	
     	case "opensi":
     		player.getSlayerInterface().open(player);
     		break;

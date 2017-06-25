@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 

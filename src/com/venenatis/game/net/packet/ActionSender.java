@@ -14,7 +14,6 @@ import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.clan.ClanRank;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
@@ -1016,13 +1015,13 @@ public class ActionSender {
 				}
 				
 				//If the player is not in a clan chat we'll add them in the server clan chat
-				if (player.getTempKey() == null || player.getTempKey().equals("") || player.getTempKey().isEmpty()) {
+				/*if (player.getTempKey() == null || player.getTempKey().equals("") || player.getTempKey().isEmpty()) {
 					player.getActionSender().sendMessage("<col=ff0033>We noticed you aren't in a clanchat, so we added you to the community clanchat!");
 					player.setTempKey("help");
 				}
 				if (player.getTempKey() != null) {
 					ClanManager.join(player, player.getTempKey());
-				}
+				}*/
 				this.stop();
 			}
 		}.attach(this));

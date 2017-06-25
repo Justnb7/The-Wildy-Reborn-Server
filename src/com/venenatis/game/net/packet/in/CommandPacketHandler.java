@@ -77,14 +77,14 @@ public class CommandPacketHandler implements PacketType {
 				player.getActionSender().sendMessage("You can only do this while in a clan chat.");
 				return;
 			}
-
-			String message = "";
+			
+			String message = cmd[0];
 
 			if (message.contains("<img") || message.contains("<col")) {
 				player.getActionSender().sendMessage("Those symbols have been disabled.");
 				return;
 			}
-			ClanManager.message(player, message);
+			ClanManager.message(player, message.substring(1));
 			return;
 		}
 		if (player.getRights().getValue() >= 0) {

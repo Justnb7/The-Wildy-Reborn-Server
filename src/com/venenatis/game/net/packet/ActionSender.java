@@ -442,7 +442,7 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendFrame87(int id, int state) {
+	public ActionSender sendToggle(int id, int state) {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(87);
 			player.getOutStream().writeWordBigEndian_dup(id);

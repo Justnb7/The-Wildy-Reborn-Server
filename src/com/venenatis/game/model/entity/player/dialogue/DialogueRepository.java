@@ -14,10 +14,6 @@ import com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_cave
 import com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_caves.ExitCave;
 import com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_caves.Tzhaar_Mej_Jal;
 import com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_caves.WonFightCave;
-import com.venenatis.game.model.entity.player.dialogue.impl.minigames.warriors_guild.DefenderInPosession;
-import com.venenatis.game.model.entity.player.dialogue.impl.minigames.warriors_guild.NoDefenderInPossesion;
-import com.venenatis.game.model.entity.player.dialogue.impl.minigames.warriors_guild.NoTokens;
-import com.venenatis.game.model.entity.player.dialogue.impl.minigames.warriors_guild.NotEnoughTokens;
 import com.venenatis.game.model.entity.player.dialogue.impl.pets.Olmlet;
 import com.venenatis.game.model.entity.player.dialogue.impl.slayer.ChaeldarDialogue;
 import com.venenatis.game.model.entity.player.dialogue.impl.slayer.DuradelDialogue;
@@ -54,14 +50,6 @@ public class DialogueRepository {
 		dialogues.put("DIED_DURING_FIGHT_CAVE", DiedInProcess.class);
 		dialogues.put("WON_FIGHT_CAVE", WonFightCave.class);
 		dialogues.put("FIGHT_CAVE", Tzhaar_Mej_Jal.class);
-		
-		/**
-		 * Warriors guild
-		 */
-		dialogues.put("OUT_OF_TOKENS", NotEnoughTokens.class);
-		dialogues.put("PLAYER_HAS_NO_TOKENS", NoTokens.class);
-		dialogues.put("HAS_DEFENDER", DefenderInPosession.class);
-		dialogues.put("NO_DEFENDER", NoDefenderInPossesion.class);
 		
 		/**
 		 * Rotten potato

@@ -1,5 +1,7 @@
 package com.venenatis.game.model.entity.player;
 
+import io.netty.buffer.Unpooled;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,8 +15,9 @@ import com.venenatis.game.consumables.potion.PotionData;
 import com.venenatis.game.consumables.potion.Potions;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.KillTracker.KillEntry;
-import com.venenatis.game.content.minigames.fight_caves.FightCaves;
-import com.venenatis.game.content.minigames.warriors_guild.WarriorsGuild;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
@@ -57,7 +60,6 @@ import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
-import com.venenatis.game.model.entity.player.instance.impl.FightCaveInstance;
 import com.venenatis.game.model.entity.player.instance.impl.KrakenInstance;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
@@ -77,8 +79,6 @@ import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.server.Server;
-
-import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
 	
@@ -160,6 +160,36 @@ public class Player extends Entity {
      */
 	public InventoryContainer getInventory() {
 		return inventory;
+	}
+	
+	private int otherPlayerDuelIndex = -1;
+	
+	public int getOtherPlayerDuelIndex() {
+		return otherPlayerDuelIndex;
+	}
+
+	public void setOtherPlayerDuelIndex(int otherPlayerDuelIndex) {
+		this.otherPlayerDuelIndex = otherPlayerDuelIndex;
+	}
+	
+	private DuelArena duelArena = new DuelArena(this);
+
+	public DuelArena getDuelArena() {
+		return duelArena;
+	}
+
+	public void setDuelArena(DuelArena duelArena) {
+		this.duelArena = duelArena;
+	}
+	
+	private final DuelContainer duelContainer = new DuelContainer(this);
+
+	public DuelContainer getDuelContainer() {
+		return duelContainer;
+	}
+	
+	public boolean isDueling() {
+		return getDuelArena().isDueling();
 	}
     
     private int otherPlayerTradeIndex = -1;
@@ -884,6 +914,11 @@ public class Player extends Entity {
 	}
 	
 	@Override
+	public boolean canDuel() {
+		return getDuelArena().getStage() == DuelStage.REQUEST;
+	}
+	
+	@Override
 	public int getCombatCooldownDelay() {
 		return CombatFormulae.getCombatCooldownDelay(this);
 	}
@@ -1280,6 +1315,11 @@ public class Player extends Entity {
 		this.infected = false;
 		this.poisonDamage = 0;
 		
+		if (isDueling() || getDuelArena().isInSession()) {
+			getActionSender().sendMessage("You cannot logout while in duel arena.");
+			return;
+		}
+		
 		//If we're no longer in combat we can goahead and logout
 		if (logoutDelay.elapsed(10000) && getLastCombatAction().elapsed(600)) {
 			outStream.writeFrame(109);
@@ -1372,10 +1412,10 @@ public class Player extends Entity {
 		ControllerManager.setControllerOnWalk(this);
 		ControllerManager.updateControllerOnWalk(this);
 		
-		if (hasMultiSign && !getArea().inMulti()) {
+		if (hasMultiSign && !Area.inMultiCombatZone(this)) {
 			hasMultiSign = false;
 			this.getActionSender().sendMultiway(-1);
-		} else if (!hasMultiSign && getArea().inMulti()) {
+		} else if (!hasMultiSign && Area.inMultiCombatZone(this)) {
 			hasMultiSign = true;
 			this.getActionSender().sendMultiway(1);
 		}
@@ -1965,13 +2005,7 @@ public class Player extends Entity {
 	 * Handle the instanced floor reset
 	 */
 	public void instanceFloorReset() {
-		if(fci != null) {
-			if (!Boundary.isIn(this, Boundary.FIGHT_CAVE)) {
-				System.out.println("Restting fight cave instance for: " + this.getName());
-				if(fci.getInstance() != null)
-					InstancedAreaManager.getSingleton().disposeOf(fci.getInstance());
-			}
-		} else if (kraken != null) {
+		if (kraken != null) {
 			if (!Boundary.isIn(this, Boundary.KRAKEN)) {
 				System.out.println("Resetting kraken instance for: " + this.getName());
 				if (kraken.getInstance() != null)
@@ -1986,14 +2020,6 @@ public class Player extends Entity {
 		if (kraken == null)
 			kraken = new KrakenInstance();
 		return kraken;
-	}
-	
-	private FightCaveInstance fci;
-	
-	public FightCaveInstance getFCI() {
-		if(fci == null)
-			fci = new FightCaveInstance();
-		return fci;
 	}
 	
 	/**
@@ -2248,12 +2274,6 @@ public class Player extends Entity {
 		return false;
 	}
 	
-	private Area area = new Area(this);
-
-	public Area getArea() {
-		return area;
-	}
-	
 	private int destroyItem = -1;
 
 	public int getDestroyItem() {
@@ -2406,32 +2426,6 @@ public class Player extends Entity {
 	public boolean isAnimatedArmourSpawned;
 	public int waveId;
 	public boolean secondOption;
-	
-	private FightCaves fightcave = null;
-	
-	public FightCaves getFightCave() {
-		if (fightcave == null)
-			fightcave = new FightCaves(this);
-		return fightcave;
-	}
-	
-    private boolean completedFightCaves;
-	
-	public boolean hasCompletedFightCaves() {
-		return completedFightCaves;
-	}
-
-	public void setCompletedFightCaves() {
-		if(!completedFightCaves) {
-			completedFightCaves = true;
-		}
-	}
-	
-	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);
-
-	public WarriorsGuild getWarriorsGuild() {
-		return warriorsGuild;
-	}
 	
 	/**
 	 * The progress bar.

@@ -77,16 +77,6 @@ public class ItemConstants {
             return false;
 		
 		/**
-         * Fire cape requirement
-         */
-		if (item.getId() == 6570) {
-			if(!player.hasCompletedFightCaves()) {
-				player.getActionSender().sendMessage("You need to complete at least once fight cave minigame to use this cape.");
-				return false;
-			}
-		}
-		
-		/**
 		 * Ironman armour
 		 */
 		if (item.getId() == 12810 || item.getId() == 12811 || item.getId() == 12812) {
@@ -123,15 +113,6 @@ public class ItemConstants {
 			return false;
 		}
         
-        /**
-         * Fire cape && tokhaar-kal
-         */
-		if (item.getId() == 6570 || item.getId() == 23659) {
-			if(!player.hasCompletedFightCaves()) {
-				player.getActionSender().sendMessage("You need to complete at least once fight cave minigame to use this cape.");
-				return false;
-			}
-		}
 		return true;
 	}
 	

@@ -1160,6 +1160,10 @@ public abstract class Entity {
 	public boolean canTrade() {
     	return true;
     }
+	
+	public boolean canDuel() {
+    	return true;
+    }
 
 	private Coverage coverage = null;
 
@@ -1251,4 +1255,5 @@ public abstract class Entity {
 
 		return border;
 	}
+
 }

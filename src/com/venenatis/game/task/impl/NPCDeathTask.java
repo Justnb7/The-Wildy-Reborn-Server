@@ -2,8 +2,6 @@ package com.venenatis.game.task.impl;
 
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.KillTracker.KillEntry;
-import com.venenatis.game.content.minigames.fight_caves.FightCaves;
-import com.venenatis.game.content.minigames.warriors_guild.AnimatedArmour;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.location.Location;
@@ -212,9 +210,7 @@ public class NPCDeathTask extends ScheduledTask {
 		
         if (npc.getId() != 6611) // vetion or somet
 			npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead emote
-        if (killer != null) {
-        	FightCaves.sendDeath(killer, npc);
-		}
+
         if (npc.transformId == 6612) {
 			npc.requestTransform(6611);
 			npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
@@ -277,10 +273,6 @@ public class NPCDeathTask extends ScheduledTask {
 			if (boss != null) {
 				boss.dropLoot(player, npc);
 			}
-		
-		player.getWarriorsGuild().dropDefender(npc.getX(), npc.getY());
-		if(AnimatedArmour.isAnimatedArmourNpc(npc.getId()))
-			AnimatedArmour.dropTokens(player, npc.getId(), npc.getX(), npc.getY());
 		
 		// get the drop table
 		int amountOfDrops = 1;

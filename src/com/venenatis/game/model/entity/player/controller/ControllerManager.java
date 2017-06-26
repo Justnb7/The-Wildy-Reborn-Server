@@ -1,5 +1,6 @@
 package com.venenatis.game.model.entity.player.controller;
 
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.controller.impl.DefaultController;
 import com.venenatis.game.model.entity.player.controller.impl.DuelArenaController;
@@ -43,9 +44,9 @@ public class ControllerManager {
 			}
 
 			Controller controller = DEFAULT_CONTROLLER;
-			if (player.getArea().inWild()) {
+			if (Area.inWilderness(player)) {
 				controller = WILDERNESS_CONTROLLER;
-			} else if(player.getArea().inDuelArena()) {
+			} else if(Area.inDuelArena(player)) {
 				controller = DUEL_ARENA_CONTROLLER;
 			}
 			if ((controller == null) || (player.getController() == null) || (!player.getController().equals(controller))) {

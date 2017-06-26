@@ -6,8 +6,11 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.Du
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
+import com.venenatis.game.model.container.impl.trade.TradeContainer;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.impl.DuelNotificationTask;
+import com.venenatis.game.util.logging.PlayerLogging;
+import com.venenatis.game.util.logging.PlayerLogging.LogType;
 import com.venenatis.game.world.World;
 
 /**
@@ -184,32 +187,32 @@ public class DuelContainer extends Container {
 	private boolean valid() {
 		if (!player.getDuelArena().getOther().isPresent()) {
 			System.out.println("1");
-			LoggerUtils.logCheatAttempt("duelAttempt.txt", "duel offer", "other player does not exist", player);
+			PlayerLogging.write(LogType.DUEL_OFFER, player, "other player does not exist");
 			return false;
 		}
 		
 		if (player.getInterfaceState().getCurrentInterface() != InterfaceConstants.FIRST_DUEL_SCREEN) {
 			System.out.println("2");
-			LoggerUtils.logCheatAttempt("duelAttempt.txt", "duel offer", "first duel screen does not exist", player);
+			PlayerLogging.write(LogType.DUEL_OFFER, player, "first duel screen does not exist");
 			return false;
 		}
 		
 		if (player.getDuelArena().getStage() != DuelStage.FIRST_SCREEN) {
 			System.out.println("3");
-			LoggerUtils.logCheatAttempt("duelAttempt.txt", "duel offer", "player duel stage is not first_accept", player);
+			PlayerLogging.write(LogType.DUEL_OFFER, player, "player duel stage is not first_accept");
 			return false;
 		}
 		
 		if (other.isPresent()) {
 			System.out.println("9");
 			if (other.get().getDuelArena().getStage() != DuelStage.FIRST_SCREEN) {
-				LoggerUtils.logCheatAttempt("duelAttempt.txt", "duel offer", "other player duel stage is not first_accept", player);
+				PlayerLogging.write(LogType.DUEL_OFFER, player, "other player duel stage is not first_accept");
 				return false;
 			}
 			
 			if (other.get().getInterfaceState().getCurrentInterface() != InterfaceConstants.FIRST_DUEL_SCREEN) {
 				System.out.println("7");
-				LoggerUtils.logCheatAttempt("duelAttempt.txt", "duel offer", "first duel screen does not exist", player);
+				PlayerLogging.write(LogType.DUEL_OFFER, player, "first duel screen does not exist");
 				return false;
 			}
 		}

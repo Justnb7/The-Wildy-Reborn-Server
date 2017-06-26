@@ -10,6 +10,7 @@ import com.venenatis.game.content.sounds_and_music.MusicData;
 import com.venenatis.game.content.teleportation.magic_book.Teleports;
 import com.venenatis.game.content.teleportation.special.TeleportHandler;
 import com.venenatis.game.content.teleportation.special.TeleportHandler.TeleportationTypes;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
@@ -180,7 +181,7 @@ public class ActionButtonPacketHandler implements PacketType {
 			break;
 
 		case 114230:
-			if(player.getArea().inWild()) {
+			if(Area.inWilderness(player)) {
 				return;
 			}
 			if (player.onAuto) {

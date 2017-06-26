@@ -1152,4 +1152,13 @@ public class Utility {
 		return tradeItems;
 	}
 
+	public static <T> int findNextNullIndex(T[] array) {
+		for (int index = 0; index < array.length; index++) {
+			if (array[index] == null) {
+				return index;
+			}
+		}
+		return -1;
+	}
+
 }

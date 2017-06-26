@@ -11,11 +11,6 @@ import java.io.File;
 public class FileUtils {
 
 	/**
-	 * The directory for the market
-	 */
-	private static final File MARKET_DIRECTORY = new File("./data/market/");
-
-	/**
 	 * The directory for sanction
 	 */
 	private static final File SANCTION_DIRECTORY = new File("./data/bans/");
@@ -26,9 +21,6 @@ public class FileUtils {
 	private static final File CHARACTER_DIRECTORY = new File("./data/characters/");
 
 	static {
-		if (!MARKET_DIRECTORY.exists()) {
-			MARKET_DIRECTORY.mkdir();
-		}
 		if (!SANCTION_DIRECTORY.exists()) {
 			SANCTION_DIRECTORY.mkdir();
 		}
@@ -47,15 +39,6 @@ public class FileUtils {
 	 */
 	public static File normalize(String path) {
 		return new File(new File("."), path);
-	}
-
-	/**
-	 * Gets the path for the market directory
-	 * 
-	 * @return The path for the market directory
-	 */
-	public static String getMarketDirectory() {
-		return MARKET_DIRECTORY.getPath();
 	}
 
 	/**

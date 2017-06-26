@@ -6,16 +6,24 @@ import java.util.TimerTask;
 import java.util.stream.IntStream;
 
 import com.google.common.collect.ImmutableList;
+import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameType;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.location.impl.SquareArea;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.combat.PrayerHandler;
+import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
+import com.venenatis.game.model.definitions.EquipmentDefinition;
+import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
+import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.object.GameObject;
 
 /**
  * Represents a minigame in which {@link Player}s fight in a arena and can choose to stake their items for their opponents.
@@ -331,11 +339,10 @@ public final class DuelArena extends Minigame {
 			int y2 = Utility.random(5);
 
 			if (rules.get(DuelRule.MOVEMENT)) {
-				Direction direction = Direction.getRandomDirection();
 				arena = (SquareArea) ARENAS.get(Utility.random(ARENAS.size(), false));
 
-				x2 = x + direction.getDirectionX();
-				y2 = y + direction.getDirectionY();
+				player.face(other.get(), new Location(x, y));
+				other.get().face(player, new Location(x, y));
 
 				if (arena.getName().contains("East Arena")) {
 					player.setTeleportTarget(new Location(3376 + x, 3232 + y));
@@ -383,8 +390,8 @@ public final class DuelArena extends Minigame {
 
 			new DuelArenaTask();
 
-			player.send(new SendEntityHintArrow(other.get()));
-			other.get().send(new SendEntityHintArrow(player));
+			player.getActionSender().createPlayerHint(10, other.get().getIndex());
+			other.get().getActionSender().createPlayerHint(10, player.getIndex());
 		}
 	}
 
@@ -392,8 +399,8 @@ public final class DuelArena extends Minigame {
 	 * Resets all the rules to their default values.
 	 */
 	private void resetRules() {
-		IntStream.range(631, 643).forEach(i -> player.send(new SendConfig(i, 0)));
-		player.send(new SendToggle(286, 0));
+		IntStream.range(631, 643).forEach(i -> player.getActionSender().sendConfig(i, 0));
+		player.getActionSender().sendToggle(286, 0);
 		rules.resetConfigValue();
 		rules.clear();
 	}
@@ -445,23 +452,23 @@ public final class DuelArena extends Minigame {
 	 */
 	private void acceptOffer() {
 		if (other.get().getInventory().getFreeSlots() < player.getDuelContainer().getTakenSlots() + other.get().getDuelContainer().getTakenSlots()) {
-			player.send(new SendMessage("The other player does not have enough space."));
+			player.getActionSender().sendMessage("The other player does not have enough space.");
 			return;
 		}
 
 		if (player.getInventory().getFreeSlots() < other.get().getDuelContainer().getTakenSlots() + player.getDuelContainer().getTakenSlots()) {
-			player.send(new SendMessage("You do not have enough space."));
+			player.getActionSender().sendMessage("You do not have enough space.");
 			return;
 		}
 
 		switch (stage) {
 			case FIRST_SCREEN:
-				other.get().send(new SendString("@whi@Other player has accepted.", 31009));
-				player.send(new SendString("@whi@Waiting for other player...", 31009));
+				other.get().getActionSender().sendString("@whi@Other player has accepted.", 31009);
+				player.getActionSender().sendString("@whi@Waiting for other player...", 31009);
 				setAccepted(true);
 				if (other.get().getDuelArena().isAccepted() && other.get().getDuelArena().getStage() == DuelStage.FIRST_SCREEN) {
-					other.get().send(new SendString("", 31009));
-					player.send(new SendString("", 31009));
+					other.get().getActionSender().sendString("", 31009);
+					player.getActionSender().sendString("", 31009);
 					setAccepted(false);
 					other.get().getDuelArena().setAccepted(false);
 					setStage(DuelStage.SECOND_SCREEN);
@@ -472,8 +479,8 @@ public final class DuelArena extends Minigame {
 				break;
 
 			case SECOND_SCREEN:
-				other.get().send(new SendString("Other player has accepted the duel.", 31526));
-				player.send(new SendString("Waiting for other player...", 31526));
+				other.get().getActionSender().sendString("Other player has accepted the duel.", 31526);
+				player.getActionSender().sendString("Waiting for other player...", 31526);
 
 				setAccepted(true);
 
@@ -482,8 +489,8 @@ public final class DuelArena extends Minigame {
 					other.get().getDuelArena().setAccepted(false);
 
 					if (validateLastAccept()) {
-						player.send(new SendClearScreen());
-						other.get().send(new SendClearScreen());
+						player.getActionSender().removeAllInterfaces();
+						other.get().getActionSender().removeAllInterfaces();
 
 						setStage(DuelStage.ARENA);
 						other.get().getDuelArena().setStage(DuelStage.ARENA);
@@ -507,22 +514,22 @@ public final class DuelArena extends Minigame {
 			if (item != null) {
 				String name = item.getName().toLowerCase();
 
-				CombatType type = WeaponDefinition.get(item.getId()).getCombatType();
+				CombatStyle type = WeaponDefinition.get(item.getId()).getCombatType();
 
 				if (rules.get(DuelRule.MELEE)) {
-					if (type == CombatType.MELEE) {
+					if (type == CombatStyle.MELEE) {
 						player.getEquipment().unequip(EquipmentConstants.WEAPON_SLOT);
 					}
 				}
 
 				if (rules.get(DuelRule.MAGIC)) {
-					if (type == CombatType.MAGIC) {
+					if (type == CombatStyle.MAGIC) {
 						player.getEquipment().unequip(EquipmentConstants.WEAPON_SLOT);
 					}
 				}
 
 				if (rules.get(DuelRule.RANGED)) {
-					if (type == CombatType.RANGE) {
+					if (type == CombatStyle.RANGE) {
 						player.getEquipment().unequip(EquipmentConstants.WEAPON_SLOT);
 					}
 				}
@@ -662,10 +669,10 @@ public final class DuelArena extends Minigame {
 
 	@Override
 	public void onStart() {
-		player.onReset();
+		onReset(player);
 		
-		player.send(new SendPlayerOption(PlayerOption.DUEL_REQUEST, true, true));
-		other.get().send(new SendPlayerOption(PlayerOption.DUEL_REQUEST, true, true));
+		player.getActionSender().sendInteractionOption("Challenge", 3, true);
+		other.get().getActionSender().sendInteractionOption("Challenge", 3, true);
 	}
 
 	@Override
@@ -675,37 +682,33 @@ public final class DuelArena extends Minigame {
 
 		winner.getDuelArena().setStage(DuelStage.REWARD);
 
-		winner.getPA().move(RESPAWN_LOCATIONS.get(Utility.random(RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
-		loser.getPA().move(RESPAWN_LOCATIONS.get(Utility.random(RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
+		winner.setTeleportTarget(RESPAWN_LOCATIONS.get(Utility.random(RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
+		loser.setTeleportTarget(RESPAWN_LOCATIONS.get(Utility.random(RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
 
-		winner.send(new SendEntityHintArrow(loser, true));
-		loser.send(new SendEntityHintArrow(winner, true));
+		winner.getActionSender().createPlayerHint(10, loser.getIndex());
+		loser.getActionSender().createPlayerHint(10, winner.getIndex());
 
-		winner.send(new SendPlayerOption(PlayerOption.DUEL_REQUEST, false));
-		loser.send(new SendPlayerOption(PlayerOption.DUEL_REQUEST, false));
+		player.getActionSender().sendInteractionOption("Challenge", 3, true);
+		loser.getActionSender().sendInteractionOption("Challenge", 3, true);
 		
-		winner.send(new SendPlayerOption(PlayerOption.ATTACK, true, true));
-		loser.send(new SendPlayerOption(PlayerOption.ATTACK, true, true));
+		player.getActionSender().sendInteractionOption("Attack", 3, true);
+		loser.getActionSender().sendInteractionOption("Attack", 3, true);
 
-		winner.getPrayer().disable();
-		loser.getPrayer().disable();
+		PrayerHandler.resetAllPrayers(winner);
+		PrayerHandler.resetAllPrayers(loser);
 
-		winner.onReset();
-		loser.onReset();
+		onReset(winner);
+		onReset(loser);
 
 		winner.getDuelArena().setReward(mergeContainers(winner, loser));
 
-		winner.send(new SendItemOnInterface(31708, winner.getDuelArena().getReward()));
-		loser.send(new SendItemOnInterface(31708, new Item[]{}));
+		winner.getActionSender().sendItemOnInterface(31708, winner.getDuelArena().getReward());
+		loser.getActionSender().sendItemOnInterface(31708, new Item[]{});
 
-		winner.send(new SendString("You are victorious!", 31705));
-		loser.send(new SendString("You lost!", 31705));
+		winner.getActionSender().sendString("You are victorious!", 31705);
+		loser.getActionSender().sendString("You lost!", 31705);
 
-		if (winner.getHostAddress() != loser.getHostAddress()) {
-			AchievementHandler.activate(winner, AchievementList.DUELIST, 1);
-		}
-
-		if (winner.isDisconnected()) {
+		if (winner.isActive()) {
 			winner.getDuelArena().claimReward(true);
 		} else {
 			winner.getDuelArena().execute(DuelStage.REWARD);
@@ -747,22 +750,22 @@ public final class DuelArena extends Minigame {
 
 	public boolean canAttack() {
 		if (getRules().get(DuelRule.MELEE)) {
-			if (player.getCombat().getCombatType() == CombatType.MELEE) {
-				player.send(new SendMessage("Melee attacks are disabled in this duel."));
+			if (player.getCombatType() == CombatStyle.MELEE) {
+				player.getActionSender().sendMessage("Melee attacks are disabled in this duel.");
 				return false;
 			}
 		}
 
 		if (getRules().get(DuelRule.RANGED)) {
-			if (player.getCombat().getCombatType() == CombatType.RANGE) {
-				player.send(new SendMessage("Ranged attacks are disabled in this duel."));
+			if (player.getCombatType() == CombatStyle.RANGE) {
+				player.getActionSender().sendMessage("Ranged attacks are disabled in this duel.");
 				return false;
 			}
 		}
 
 		if (getRules().get(DuelRule.MAGIC)) {
-			if (player.getCombat().getCombatType() == CombatType.MAGIC) {
-				player.send(new SendMessage("Magic attacks are disabled in this duel."));
+			if (player.getCombatType() == CombatStyle.MAGIC) {
+				player.getActionSender().sendMessage("Magic attacks are disabled in this duel.");
 				return false;
 			}
 		}
@@ -773,17 +776,17 @@ public final class DuelArena extends Minigame {
 		switch (object.getId()) {
 			case 3203:
 				if (rules.get(DuelRule.FORFEIT)) {
-					player.send(new SendMessage("Forfeiting is disabled in this duel."));
+					player.getActionSender().sendMessage("Forfeiting is disabled in this duel.");
 					return;
 				}
 
 				if (getWaitTime() > 0) {
-					player.send(new SendMessage("You must wait until the duel starts to forfeit."));
+					player.getActionSender().sendMessage("You must wait until the duel starts to forfeit.");
 					return;
 				}
 
-				player.send(new SendMessage("You forfeit the duel."));
-				other.get().send(new SendMessage("Your opponent has forfeited the duel."));
+				player.getActionSender().sendMessage("You forfeit the duel.");
+				other.get().getActionSender().sendMessage("Your opponent has forfeited the duel.");
 				onEnd();
 				break;
 		}
@@ -813,8 +816,8 @@ public final class DuelArena extends Minigame {
 			}
 			
 		if (tellOther) {
-			player.send(new SendMessage("You declined the stake."));
-			other.ifPresent($it -> $it.send(new SendMessage("Your duel has been declined.")));
+			player.getActionSender().sendMessage("You declined the stake.");
+			other.ifPresent($it -> $it.getActionSender().sendMessage("Your duel has been declined."));
 		}
 
 		other.ifPresent($it -> $it.getDuelArena().reset());
@@ -839,8 +842,8 @@ public final class DuelArena extends Minigame {
 		this.other = Optional.empty();
 
 		player.setOtherPlayerDuelIndex(-1);
-		player.send(new SendClearScreen());
-		PlayerSave.save(player);
+		player.getActionSender().removeAllInterfaces();
+		PlayerSerialization.save(player);
 	}
 
 	/**
@@ -1049,11 +1052,11 @@ public final class DuelArena extends Minigame {
 				public void run() {
 					countdown();
 
-					if (player.getCurrentHealth() <= 0) {
+					if (player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 						setWon(false);
 						other.get().getDuelArena().setWon(true);
 					} else if (other.isPresent()) {
-						if (other.get().getCurrentHealth() <= 0) {
+						if (other.get().getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 							setWon(true);
 							other.get().getDuelArena().setWon(false);
 						}
@@ -1081,16 +1084,19 @@ public final class DuelArena extends Minigame {
 				other.ifPresent($it -> $it.getDuelArena().decrementWaitTime(1));
 
 				if (getWaitTime() <= 3 && getWaitTime() >= 1) {
-					player.setForcedChat("" + getWaitTime());
-					other.ifPresent($it -> $it.setForcedChat("" + getWaitTime()));
+					player.sendForcedMessage("" + getWaitTime());
+					other.ifPresent($it -> $it.sendForcedMessage("" + getWaitTime()));
 				} else if (getWaitTime() <= 0) {
-					player.setForcedChat("FIGHT!");
-					other.ifPresent($it -> $it.setForcedChat("FIGHT!"));
+					player.sendForcedMessage("FIGHT!");
+					other.ifPresent($it -> $it.sendForcedMessage("FIGHT!"));
 				}
 
 			}
 		}
-
+	}
+	
+	public void onReset(Player player) {
+		
 	}
 
 }

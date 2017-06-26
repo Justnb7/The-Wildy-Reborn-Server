@@ -1,7 +1,7 @@
 package com.venenatis.game.model.combat.pvm;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.minigames.warriors_guild.WarriorsGuild;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -151,16 +151,6 @@ public class PlayerVsNpcCombat {
 			player.getActionSender().sendMessage("You must vanquish Vet'ions dogs.");
 			return false;
 		}
-		
-		if (npc.getId() == 2463 || npc.getId() == 2464) {
-			if (Boundary.isIn(player, WarriorsGuild.CYCLOPS_BOUNDARY)) {
-				if (!player.getWarriorsGuild().isActive()) {
-					player.getActionSender().sendMessage("You cannot attack a cyclops without talking to kamfreena.");
-					Combat.resetCombat(player);
-					return false;
-				}
-			}
-		}
 
 		if (npc.getId() == 496 && npc.transformId != 494) {
 			KrakenInstance i = player.getKraken();
@@ -186,7 +176,7 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 
-		if (Combat.incombat(player) && player.lastAttacker != npc && !player.getArea().inMulti() && !Boundary.isIn(player, Boundary.KRAKEN)) {
+		if (Combat.incombat(player) && player.lastAttacker != npc && !Area.inMultiCombatZone(player) && !Boundary.isIn(player, Boundary.KRAKEN)) {
 			Combat.resetCombat(player);
 			player.getActionSender().sendMessage("I am already under attack.");
 			return false;

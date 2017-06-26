@@ -10,6 +10,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.teleportation.TeleportExecutor;
 import com.venenatis.game.content.trivia.TriviaBot;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -279,7 +280,7 @@ public class CommandPacketHandler implements PacketType {
     		
     	case "empty":
     	case "clearinventory":
-    		if(player.getArea().inWild())
+    		if(Area.inWilderness(player))
     			return false;
     		player.getInventory().clear(true);
     		player.getInventory().refresh();
@@ -296,7 +297,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "skull":
-    		if(!player.getArea().inDuelArena())
+    		if(!Area.inDuelArena(player))
     			Combat.skull(player, SkullType.SKULL, 300);
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			player.getActionSender().sendMessage("@blu@You are now skulled.");
@@ -316,7 +317,7 @@ public class CommandPacketHandler implements PacketType {
     	case "unskull":
     		if (player.getSkills().getLevel(Skills.HITPOINTS) < 1)
 				return false;
-			if (player.getArea().inWild())
+			if (Area.inWilderness(player))
 				return false;
 			Combat.skull(player, SkullType.NONE, -1);
 			player.attackedPlayers.clear();

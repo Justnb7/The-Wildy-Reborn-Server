@@ -1,5 +1,6 @@
 package com.venenatis.game.net.packet.in;
 
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
@@ -451,7 +452,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
 		}
 		
-		if (player.getArea().inWild()) {
+		if (Area.inWilderness(player)) {
 			return;
 		}
 		

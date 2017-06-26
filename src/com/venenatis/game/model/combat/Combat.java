@@ -2,6 +2,7 @@ package com.venenatis.game.model.combat;
 
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
@@ -417,7 +418,7 @@ public class Combat {
         // Add a skull if needed
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
-            if (player != null && player.attackedPlayers != null && ptarg.attackedPlayers != null && !ptarg.getArea().inDuelArena()) {
+            if (player != null && player.attackedPlayers != null && ptarg.attackedPlayers != null && !Area.inDuelArena(ptarg)) {
                 if (!player.attackedPlayers.contains(target.getIndex()) && !ptarg.attackedPlayers.contains(player.getIndex())) {
                     player.attackedPlayers.add(target.getIndex());
                     skull(player, SkullType.SKULL, 300);

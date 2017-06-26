@@ -42,13 +42,6 @@ public class NpcInteraction {
 			ShopManager.open(player, 10);
 			break;
 
-		/**
-		 * Kamfreena
-		 */
-		case 2461:
-			player.getWarriorsGuild().handleDoor();
-			break;
-
 		case 3257:
 			player.getThieving().pickpocket(Pickpocket.FARMER, npc);
 			break;

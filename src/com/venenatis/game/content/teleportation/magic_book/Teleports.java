@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.venenatis.game.content.teleportation.TeleportExecutor;
 import com.venenatis.game.content.teleportation.special.TeleportHandler;
 import com.venenatis.game.content.teleportation.special.TeleportHandler.TeleportationTypes;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -108,7 +109,7 @@ public class Teleports {
 			return false;
 		}
 
-		if (player.getArea().inWild() && player.wildLevel > 20) {
+		if (Area.inWilderness(player) && player.wildLevel > 20) {
 			player.getActionSender().sendMessage("You cannot teleport above level 20 wilderness.");
 			return false;
 		}

@@ -2,6 +2,7 @@ package com.venenatis.game.content.bounty;
 
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.combat.data.CombatRequirements;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.ScheduledTask;
@@ -33,7 +34,7 @@ public class BountyHunter extends ScheduledTask {
 		/*
 		 * Write the interface since we are in the wilderness
 		 */
-		if (player.getArea().inWild()) {
+		if (Area.inWilderness(player)) {
 			writeInterface(player);
 
 			/*
@@ -79,7 +80,7 @@ public class BountyHunter extends ScheduledTask {
 		String wealth = "---";
 		if (target != null) {
 			targetName = target.getName();
-			level = target.getArea().inWild() ? target.wildLevel : 0;
+			level = Area.inWilderness(target) ? target.wildLevel : 0;
 			minLevel = level - 2 <= 0 ? 1 : level - 2;
 			maxLevel = level + 2;
 			combat = target.combatLevel;
@@ -116,7 +117,7 @@ public class BountyHunter extends ScheduledTask {
 			return false;
 		}
 
-		if (!player.getArea().inWild()) {
+		if (!Area.inWilderness(player)) {
 
 			long delay = player.getAttribute("left_wild_delay", 0L);
 			long elapsed = System.currentTimeMillis() - delay;
@@ -131,7 +132,7 @@ public class BountyHunter extends ScheduledTask {
 			}
 		}
 
-		if (!target.getArea().inWild()) {
+		if (!Area.inWilderness(target)) {
 			long delay = target.getAttribute("left_wild_delay", 0L);
 			if (System.currentTimeMillis() - delay >= 120_000) {
 				player.getActionSender().sendMessage("@red@The target has left the wilderness, searching for new target.");
@@ -150,7 +151,7 @@ public class BountyHunter extends ScheduledTask {
 	 */
 	public static void findTarget(Player player) {
 		for (Player target : World.getWorld().getPlayers()) {
-			if (target == null || !target.getArea().inWild() || target.equals(player)) {
+			if (target == null || !Area.inWilderness(target) || target.equals(player)) {
 				continue;
 			}
 			

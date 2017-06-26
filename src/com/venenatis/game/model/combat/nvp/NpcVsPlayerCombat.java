@@ -1,6 +1,5 @@
 package com.venenatis.game.model.combat.nvp;
 
-import com.venenatis.game.content.minigames.fight_caves.Wave;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -224,11 +223,6 @@ public class NpcVsPlayerCombat {
 			if (player.getCombatState().getAttackDelay() <= 3 || player.getCombatState().getAttackDelay() == 0) {
 				//tried to make a instance didnt work ether
 				player.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
-			}
-			
-			if(npc.getId() == Wave.TZ_KIH) {
-				player.debug("decrease");
-				player.getSkills().decreasePrayerPoints(1);
 			}
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());

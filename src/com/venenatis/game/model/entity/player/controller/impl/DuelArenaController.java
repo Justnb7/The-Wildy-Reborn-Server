@@ -1,6 +1,7 @@
 package com.venenatis.game.model.entity.player.controller.impl;
 
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
@@ -80,11 +81,11 @@ public class DuelArenaController extends Controller {
 
 	@Override
 	public void onControllerInit(Player player) {
-		if ((player.getArea().inDuelArena() || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
+		if ((Area.inDuelArena(player) || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
 			player.getActionSender().sendWalkableInterface(201);
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 				player.getActionSender().sendInteractionOption("Attack", 3, true);
-			} else if (player.getArea().inDuelArena()) {
+			} else if (Area.inDuelArena(player)) {
 				player.getActionSender().sendInteractionOption("Challenge", 3, true);
 			} else {
 				player.getActionSender().sendInteractionOption("null", 3, true);
@@ -141,11 +142,11 @@ public class DuelArenaController extends Controller {
 
 	@Override
 	public void onWalk(Player player) {
-		if ((player.getArea().inDuelArena() || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
+		if ((Area.inDuelArena(player) || Boundary.isIn(player, Boundary.DUEL_ARENAS))) {
 			player.getActionSender().sendWalkableInterface(201);
 			if (Boundary.isIn(player, Boundary.DUEL_ARENAS)) {
 				player.getActionSender().sendInteractionOption("Attack", 3, true);
-			} else if (player.getArea().inDuelArena()) {
+			} else if (Area.inDuelArena(player)) {
 				player.getActionSender().sendInteractionOption("Challenge", 3, true);
 			} else {
 				player.getActionSender().sendInteractionOption("null", 3, true);

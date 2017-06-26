@@ -1,5 +1,6 @@
 package com.venenatis.game.model.combat.pvp;
 
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.player.Player;
@@ -33,16 +34,16 @@ public class PlayerVsPlayerCombat {
 		}
 		if (target.inTutorial())
 			return false;
-		if (!player.getArea().inWild() && !player.getArea().inDuelArena())
+		if (!Area.inMultiCombatZone(player) && !Area.inDuelArena(player))
 			return false;
 
-		if(!target.getArea().inWild()) {
+		if(!Area.inWilderness(target)) {
 			player.getActionSender().sendMessage("That player is not in the wilderness.");
 			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);
 			return false;
 		}
-		if(!player.getArea().inWild()) {
+		if(!Area.inWilderness(player)) {
 			player.getActionSender().sendMessage("You are not in the wilderness.");
 			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);
@@ -57,7 +58,7 @@ public class PlayerVsPlayerCombat {
 
 		boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
 				player.getName().equalsIgnoreCase("patrick");
-		if (player.getArea().inWild()) { // TODO fix this logic
+		if (Area.inWilderness(player)) { // TODO fix this logic
 			/*int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
 			if (!bypassCosImTheBest &&
 					(combatDif1 > player.wildLevel || combatDif1 > ((Player) target).wildLevel)) {
@@ -77,7 +78,7 @@ public class PlayerVsPlayerCombat {
 				return false;
 			}
 		}
-		if (!((Player) target).getArea().inMulti()) { // single combat zones
+		if (!Area.inMultiCombatZone(target)) { // single combat zones
 			if (target.lastAttacker != player && Combat.hitRecently(target, 4000)) {
 				player.getActionSender().sendMessage("That player is already in combat.");
 				player.getWalkingQueue().reset();

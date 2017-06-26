@@ -1,84 +1,153 @@
 package com.venenatis.game.location;
 
-import com.venenatis.game.model.entity.Boundary;
-import com.venenatis.game.model.entity.player.Player;
+import java.util.Arrays;
 
-public class Area {
+import com.venenatis.game.constants.GameConstants;
+import com.venenatis.game.model.entity.Entity;
+
+/**
+ * Resembles an area or region of coordinates.
+ * 
+ * @author SeVen
+ */
+public abstract class Area {
+
+	/**
+	 * Determines if a specified location is within an area.
+	 * 
+	 * @param location
+	 *            The location to check.
+	 * 
+	 * @return {@code true} If the specified location is within an area.
+	 *         {@code false} otherwise.
+	 */
+	public abstract boolean inArea(Location location);
 	
-	private final Player player;
+	public abstract Location getRandomLocation();
+    
+    public static boolean inGnomeCourse(Entity entity) {
+    	return inArea(entity, new Location(2469, 3414), new Location(2490, 3440)) && entity.getLocation().getZ() == 0;
+    }
+    
+    public static boolean inBarbarianCourse(Entity entity) {
+    	return inArea(entity, new Location(2530, 3543), new Location(2553, 3556)) && entity.getLocation().getZ() == 0;
+    }
+    
+    public static boolean inWildernessCourse(Entity entity) {
+    	return inArea(entity, new Location(2992, 3931), new Location(3007, 3961)) && entity.getLocation().getZ() == 0;
+    }
 	
-	public Area(Player player) {
-		this.player = player;
-	}
-	
-	public boolean inBarrows() {
-		return (player.getX() > 3539 && player.getX() < 3582 && player.getY() >= 9675 && player.getY() < 9722) || player.getX() > 3532 && player.getX() < 3546 && player.getY() > 9698 && player.getY() < 9709;
-	}
-	
-	public boolean inWild() {
-		if(Boundary.isIn(player, Boundary.DARK_FORTRESS)) {
-			return false;
-		}
-		if(((player.getX() > 2941 && player.getX() < 3392 && player.getY() > 3524 && player.getY() < 3968 || player.getX() > 2941 && player.getX() < 3392 && player.getY() > 9918 && player.getY() < 10366))){
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean inMulti() {
-		if (Boundary.isIn(player, Boundary.KRAKEN)) {
-			return true;
-		}
-		
-		if (Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS) || Boundary.isIn(player, Boundary.SCORPIA_PIT)) {
-			return true;
-		}
-		
-		if ((player.getX() >= 3136 && player.getX() <= 3327 && player.getY() >= 3519 && player.getY() <= 3607) || (player.getX() >= 3190 && player.getX() <= 3327 && player.getY() >= 3648 && player.getY() <= 3839)
-				|| (player.getX() >= 3200 && player.getX() <= 3390 && player.getY() >= 3840 && player.getY() <= 3967) || (player.getX() >= 2992 && player.getX() <= 3007 && player.getY() >= 3912 && player.getY() <= 3967)
-				|| (player.getX() >= 2946 && player.getX() <= 2959 && player.getY() >= 3816 && player.getY() <= 3831) || (player.getX() >= 3008 && player.getX() <= 3199 && player.getY() >= 3856 && player.getY() <= 3903)
-				|| (player.getX() >= 2824 && player.getX() <= 2944 && player.getY() >= 5258 && player.getY() <= 5369) || (player.getX() >= 3008 && player.getX() <= 3071 && player.getY() >= 3600 && player.getY() <= 3711)
-				|| (player.getX() >= 3072 && player.getX() <= 3327 && player.getY() >= 3608 && player.getY() <= 3647) || (player.getX() >= 2624 && player.getX() <= 2690 && player.getY() >= 2550 && player.getY() <= 2619)
-				|| (player.getX() >= 2371 && player.getX() <= 2422 && player.getY() >= 5062 && player.getY() <= 5117) || (player.getX() >= 2896 && player.getX() <= 2927 && player.getY() >= 3595 && player.getY() <= 3630)
-				|| (player.getX() >= 2892 && player.getX() <= 2932 && player.getY() >= 4435 && player.getY() <= 4464) || (player.getX() >= 2256 && player.getX() <= 2287 && player.getY() >= 4680 && player.getY() <= 4711)
-				|| (player.getX() >= 2962 && player.getX() <= 3006 && player.getY() >= 3621 && player.getY() <= 3659)
-				|| (player.getX() >= 3155 && player.getX() <= 3214 && player.getY() >= 3755 && player.getY() <= 3803)
-				|| (player.getX() >= 2932 && player.getX() <= 2992 && player.getY() >= 9745 && player.getY() <= 9825)
-				|| (player.getX() >= 2680 && player.getX() <= 2750 && player.getY() >= 3685 && player.getY() <= 3765)) {
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean inDuelArena() {
-		if ((player.getX() > 3322 && player.getY() < 3394 && player.getY() > 3195 && player.getY() < 3291)
-				|| (player.getX() > 3311 && player.getX() < 3323 && player.getY() > 3223 && player.getY() < 3248)) {
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean inArea(int x1, int y1, int x2, int y2) {
-		if (player.getX() > x1 && player.getX() < x2 && player.getY() > y1 && player.getY() < y2) {
-			return true;
-		}
-		return false;
+	public static boolean inArea(Entity entity, Location bottomLeft, Location topRight) {
+		return (entity.getLocation().getX() >= bottomLeft.getX()) && (entity.getLocation().getX() <= topRight.getX()) && (entity.getLocation().getY() >= bottomLeft.getY()) && (entity.getLocation().getY() <= topRight.getY());
 	}
 
-	public boolean inFightCaves() {
-		return player.getX() >= 2360 && player.getX() <= 2445 && player.getY() >= 5045 && player.getY() <= 5125;
+	/**
+	 * Determines if an entity is in all of these areas.
+	 * are
+	 * @param entity
+	 *            The entity to check.
+	 *
+	 * @param area
+	 *            The areas to check.
+	 * 
+	 * @return {@code true} If an entity is in all of these areas. {@code false}
+	 *         otherwise.
+	 */
+	public static boolean inAllArea(Entity entity, Area... area) {
+		return Arrays.stream(area).allMatch(a -> a.inArea(entity.getLocation()));
 	}
 
-	public boolean inPcGame() {
-		return player.getX() >= 2624 && player.getX() <= 2690 && player.getY() >= 2550 && player.getY() <= 2619;
+	/**
+	 * Determines if an entity is in any of the areas.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 *
+	 * @param area
+	 *            The areas to check.
+	 * 
+	 * @return {@code true} If an entity is in any of these areas. {@code false}
+	 *         otherwise.
+	 */
+	public static boolean inAnyArea(Entity entity, Area... area) {
+		return Arrays.stream(area).anyMatch(a -> a.inArea(entity.getLocation()));
+	}
+
+	/**
+	 * Determines if an entity is in the duel arena lobby.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 * 
+	 * @return {@code true} If this entity is in the duel arena. {@code false}
+	 *         otherwise.
+	 */
+	public static boolean inDuelArena(Entity entity) {
+		return GameConstants.DUEL_ARENA.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
+	}
+
+	/**
+	 * Determines if an entity is in the barrows minigame.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 * 
+	 * @return {@code true} If this entity is in the barrows minigame.
+	 *         {@code false} otherwise.
+	 */
+	public static boolean inBarrows(Entity entity) {
+		return GameConstants.BARROWS_MINIGAME.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
+	}
+
+	/**
+	 * Determines if an entity is in a multi-combat zone.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 * 
+	 * @return {@code true} If this entity is in a multi-combat zone.
+	 *         {@code false} otherwise.
+	 */
+	public static boolean inMultiCombatZone(Entity entity) {
+		return GameConstants.MULTI_COMBAT_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity));
+	}
+
+	/**
+	 * Determines if an entity is in the wilderness.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 * 
+	 * @return {@code true} If this entity is in the wilderness. {@code false}
+	 *         otherwise.
+	 */
+	public static boolean inWilderness(Entity entity) {
+		return GameConstants.WILDERNESS.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
 	}
 	
-	public boolean inPcBoat() {
-		return player.getX() >= 2660 && player.getX() <= 2663 && player.getY() >= 2638 && player.getY() <= 2643;
+	public static boolean inF2P(Entity entity) {
+		return GameConstants.F2P_ARENA.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
+	}
+
+	/**
+	 * Determines if an entity is in a safe-zone.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 * 
+	 * @return {@code true} If this entity is in a safe-zone {@code false}
+	 *         otherwise.
+	 */
+	public static boolean inSafezone(Entity entity) {
+		return GameConstants.SAFE_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity) ||  inBarrows(entity) || inDuelArena(entity));
 	}
 	
-	public boolean inCyclopsRoom() {
-		return inArea(2837, 2875, 3543, 3557);
+	public static boolean isAreaSafe(Location location) {
+		return GameConstants.SAFE_ZONES.stream().anyMatch($it -> $it.inArea(location));
 	}
-	
+
+	public static boolean inGodwars(Entity entity) {
+		return inArea(entity, new Location(2816, 5243, 2), new Location(2960, 5400, 2));
+	}
+
 }

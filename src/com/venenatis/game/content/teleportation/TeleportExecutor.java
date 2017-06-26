@@ -1,6 +1,7 @@
 package com.venenatis.game.content.teleportation;
 
 import com.venenatis.game.content.teleportation.Teleport.TeleportType;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.magic.SpellBook;
@@ -29,7 +30,6 @@ public class TeleportExecutor {
 	 *            The {@link Location} the player is teleporting too
 	 */
 	public static void teleport(Player player, Location location) {
-		player.getFightCave().exitCave(2);
 		TeleportType type = player.getSpellBook() == SpellBook.MODERN ? TeleportType.NORMAL : player.getSpellBook() == SpellBook.ANCIENT ? TeleportType.ANCIENT : player.usingObelisk ?  TeleportType.OBELISK : TeleportType.NORMAL;
 		teleport(player, new Teleport(location, type), true);
 	}
@@ -187,7 +187,7 @@ public class TeleportExecutor {
 			player.getActionSender().sendMessage("You are teleblocked and can't teleport.");
 			return false;
 		}
-		if (player.getArea().inWild() && player.wildLevel > 20 && !player.usingObelisk && !isUsingLever()) {
+		if (Area.inWilderness(player) && player.wildLevel > 20 && !player.usingObelisk && !isUsingLever()) {
 			player.getActionSender().sendMessage("You can't teleport above level " + 20 + " in the wilderness.");
 			return false;
 		}

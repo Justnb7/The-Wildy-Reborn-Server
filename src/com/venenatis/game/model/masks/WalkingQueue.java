@@ -1,12 +1,13 @@
 package com.venenatis.game.model.masks;
 
-import java.util.LinkedList;
-
 import com.venenatis.game.constants.WalkingConstants;
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.impl.EnergyRestoreTick;
 import com.venenatis.game.util.DirectionUtils;
 import com.venenatis.game.world.World;
+
+import java.util.LinkedList;
 
 /**
  * <p>
@@ -376,6 +377,7 @@ public class WalkingQueue {
 			 * If the player isn't teleporting, they are walking (or standing
 			 * still). We get the next direction of movement here.
 			 */
+			Location before = player.getLocation();
 			walkPoint = getNextPoint();
 
 			if (runToggled || runQueue) {
@@ -388,6 +390,8 @@ public class WalkingQueue {
 			int walkDir = walkPoint == null ? -1 : walkPoint.dir;
 			int runDir = runPoint == null ? -1 : runPoint.dir;
 			player.getSprites().setSprites(walkDir, runDir);
+			if (walkPoint != null)
+				player.lastTile = before;
 		}
 		// Check for region changes.
 		int deltaX = player.getX() - player.getLastKnownRegion().getRegionX() * 8;

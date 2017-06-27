@@ -31,7 +31,6 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.ScheduledTask;
 import com.venenatis.game.util.Utility;
-import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
@@ -90,8 +89,8 @@ public class Combat {
         player.faceEntity(target);
         player.debug("style: "+player.getCombatType()+" vs "+target);
 
-
-        if (target.isPlayer()) {
+        // TODO fix this.. it makes the client stop receiving data lol u just stand there and DC
+        /*if (target.isPlayer()) {
             Player ptarg = (Player) target;
             player.getActionSender().sendEntityFeed(Utility.formatPlayerName(ptarg.getName()), player.getSkills().getLevelForExperience(Skills.HITPOINTS), ptarg.getSkills().getLevel(Skills.HITPOINTS));
             //player.getActionSender().sendString(ptarg.getName() + "-" + player.getSkills().getLevelForExperience(Skills.HITPOINTS) + "-" + ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName(), 35000);
@@ -102,7 +101,7 @@ public class Combat {
                 //System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
                 attacker.getActionSender().sendEntityFeed(NPC.getName(npc.getId()).replaceAll("_", " "), npc.getHitpoints(), npc.getMaxHitpoints());
             }
-        }
+        }*/
 
         if (player.getCombatType() == CombatStyle.RANGE) {
             rangeAttack(player, target);
@@ -688,6 +687,7 @@ public class Combat {
 
         if (!com.venenatis.game.world.pathfinder.impl.ProjectilePathFinder.hasLineOfSight(player, target)) {
             if (!Location.standingOn(player, target)) {
+                player.debug("no line of sight");
                 return false;
             } else if (Location.standingOn(player, target)) {
                 if (player.frozen()) {

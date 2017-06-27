@@ -64,8 +64,8 @@ public class VariablePathFinder implements PathFinder {
         }
         if (z > 3)
             z = z % 4;
-        Location regionCorner = Location.create((base.getRegionX() - 6) << 3,
-                (base.getRegionY() - 6) << 3, base.getZ());
+        Location regionCorner = Location.create((base.regionX_hyperion() - 6) << 3,
+                (base.regionY_hyperion() - 6) << 3, base.getZ());
         boolean foundPath = false;
         for (int xx = 0; xx < 104; xx++) {
             for (int yy = 0; yy < 104; yy++) {

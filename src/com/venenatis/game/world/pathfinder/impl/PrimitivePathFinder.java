@@ -1,22 +1,18 @@
 package com.venenatis.game.world.pathfinder.impl;
 
-import java.awt.*;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.world.pathfinder.BasicPoint;
-import com.venenatis.game.world.pathfinder.Directions;
-import com.venenatis.game.world.pathfinder.PathFinder;
-import com.venenatis.game.world.pathfinder.PathState;
-import com.venenatis.game.world.pathfinder.TileControl;
+import com.venenatis.game.world.pathfinder.*;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
+
+import java.awt.*;
 
 public class PrimitivePathFinder implements PathFinder {
 	
 	public static PrimitivePathFinder INSTANCE = new PrimitivePathFinder();
 	
 	public static Point getNextStep(Entity mob, Location source, int toX, int toY, int height, int xLength, int yLength) {
-    	int baseX = source.getLocalX(), baseY = source.getLocalY();
+    	int baseX = source.localX_hyperion(), baseY = source.localY_hyperion();
         int moveX = 0;
         int moveY = 0;
         if (baseX - toX > 0) {
@@ -40,8 +36,8 @@ public class PrimitivePathFinder implements PathFinder {
     }
     
     public static boolean canMove(Entity mob, Location base, int startX, int startY, int endX, int endY, int height, int xLength, int yLength) {
-		int zX = (base.getRegionX() - 6) << 3;
-		int zY = (base.getRegionY() - 6) << 3;
+		int zX = (base.regionX_hyperion() - 6) << 3;
+		int zY = (base.regionY_hyperion() - 6) << 3;
 		
     	Location RSTile = Location.create(zX, zY, base.getZ());
         int diffX = endX - startX;

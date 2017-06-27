@@ -61,8 +61,8 @@ public class SizedPathFinder implements PathFinder {
 			z = 0;
 		}
 		z = 0;
-		int zX = (base.getRegionX() - 6) << 3;
-		int zY = (base.getRegionY() - 6) << 3;
+		int zX = (base.regionX_hyperion() - 6) << 3;
+		int zY = (base.regionY_hyperion() - 6) << 3;
 		
 		Location location = Location.create(zX, zY, base.getZ());
 		boolean foundPath = false;

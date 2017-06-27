@@ -40,8 +40,8 @@ public class DefaultPathFinder implements PathFinder {
 		}
 		int z = mob.getPosition().getZ();
 	
-		int zX = (base.getRegionX() - 6) << 3;
-		int zY = (base.getRegionY() - 6) << 3;
+		int zX = (base.regionX_hyperion() - 6) << 3;
+		int zY = (base.regionY_hyperion() - 6) << 3;
 		
 
 		Location location = Location.create(zX, zY, base.getZ());

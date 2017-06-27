@@ -1,7 +1,5 @@
 package com.venenatis.game.model.entity.following;
 
-import java.util.stream.Stream;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -11,6 +9,8 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.RouteFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
+
+import java.util.stream.Stream;
 
 public class PlayerFollowing {
 	
@@ -158,8 +158,9 @@ public class PlayerFollowing {
         player.faceEntity(following);
 
         if (!forCombat) {
-            int fx = following.lastTile.getX();
-            int fy = following.lastTile.getY();
+            Location last = following.lastTile == null ? following.getLocation().transform(1, 0) : following.lastTile;
+            int fx = last.getX();
+            int fy = last.getY();
 
             int delay = (player.getWalkingQueue().isMoving() || ((Player)following).getWalkingQueue().isMoving()) ? 1
                 : (player.walkTutorial + 1 >= Integer.MAX_VALUE ? player.walkTutorial = 0 : player.walkTutorial++);

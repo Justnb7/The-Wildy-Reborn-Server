@@ -1,13 +1,13 @@
 package com.venenatis.game.location;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.pathfinder.Directions;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.game.world.pathfinder.impl.PrimitivePathFinder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A position point on the map.
@@ -269,6 +269,27 @@ public class Location {
 	 */
 	public int getLocalY() {
 		return getLocalY(this);
+	}
+
+
+	// because hyperion path finder for some reason requires these different methods!! diff to 317
+	public int localX_hyperion() {
+		return localX_formatted_hyperion(this);
+	}
+	public int localX_formatted_hyperion(Location base) {
+		return x - 8 * (base.regionX_hyperion()-6);
+	}
+	public int localY_hyperion() {
+		return localY_formatted_hyperion(this);
+	}
+	public int localY_formatted_hyperion(Location base) {
+		return y - 8 * (base.regionY_hyperion()-6);
+	}
+	public int regionX_hyperion() {
+		return (x >> 3);
+	}
+	public int regionY_hyperion() {
+		return (y >> 3);
 	}
 
 	/**

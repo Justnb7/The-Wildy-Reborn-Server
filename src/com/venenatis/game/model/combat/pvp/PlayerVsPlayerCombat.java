@@ -24,19 +24,17 @@ public class PlayerVsPlayerCombat {
 	 * @return If the attack is successful
 	 */
 	public static boolean validateAttack(Player player, Player target) {
-		if (target == null) {
+		if (target == null || player.isDead() || target.isDead() || !target.isActive() || target.getSkills().getLevel(Skills.HITPOINTS) <= 0 || target.getZ() != player.getZ()) {
 			Combat.resetCombat(player);
+			player.getWalkingQueue().reset();
 			return false;
 		}
-		if (player.isDead() || target.isDead() || !target.isActive() || target.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+		if (target.inTutorial()) {
 			Combat.resetCombat(player);
+			player.getWalkingQueue().reset();
+			player.debug("target in tut");
 			return false;
 		}
-		if (target.inTutorial())
-			return false;
-		if (!Area.inMultiCombatZone(player) && !Area.inDuelArena(player))
-			return false;
-
 		if(!Area.inWilderness(target)) {
 			player.getActionSender().sendMessage("That player is not in the wilderness.");
 			player.getWalkingQueue().reset();
@@ -58,7 +56,7 @@ public class PlayerVsPlayerCombat {
 
 		boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
 				player.getName().equalsIgnoreCase("patrick");
-		if (Area.inWilderness(player)) { // TODO fix this logic
+		if (Area.inWilderness(player)) {  // TODO fix this logic
 			/*int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
 			if (!bypassCosImTheBest &&
 					(combatDif1 > player.wildLevel || combatDif1 > ((Player) target).wildLevel)) {
@@ -93,17 +91,9 @@ public class PlayerVsPlayerCombat {
 				return false;
 			}
 		}
-		if (!player.getController().canAttackPlayer(player, (Player) target)) {
-			return false;
-		}
-		
-		if (target.isDead()) {
-			player.getCombatState().reset();
-			Combat.resetCombat(player);
-			return false;
-		}
-		if (target.getZ() != player.getZ()) {
-			Combat.resetCombat(player);
+		if (!player.getController().canAttackPlayer(player, target)) {
+			player.debug("controller denied attack");
+			player.getWalkingQueue().reset();
 			return false;
 		}
 		return true;

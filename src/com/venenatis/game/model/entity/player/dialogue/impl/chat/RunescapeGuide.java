@@ -10,7 +10,7 @@ public class RunescapeGuide extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.NPC, NPC_ID, Expression.DEFAULT, "Welcome to Venenatis, "+player.getName(), "First, you need to choose your game mode.");
+		send(Type.NPC, NPC_ID, Expression.DEFAULT, "Welcome to Venenatis, "+player.getUsername(), "First, you need to choose your game mode.");
 		setPhase(0);
 	}
 	

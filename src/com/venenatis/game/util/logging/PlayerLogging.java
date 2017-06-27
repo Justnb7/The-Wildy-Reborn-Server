@@ -52,7 +52,7 @@ public class PlayerLogging {
 	 */
 	public static void write(LogType type, Player player, String message) {
 		
-		Path path = Paths.get(LOG_DIRECTORY.getPath(), player.getName().charAt(0) + File.separator + player.getName() + File.separator + type.toString().toLowerCase() + ".txt");
+		Path path = Paths.get(LOG_DIRECTORY.getPath(), player.getUsername().charAt(0) + File.separator + player.getUsername() + File.separator + type.toString().toLowerCase() + ".txt");
 		
 		if (!Files.exists(path)) {
 			try {

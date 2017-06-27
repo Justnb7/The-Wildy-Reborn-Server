@@ -88,6 +88,14 @@ public class Combat {
         Entity target = player.getCombatState().getTarget();
         player.faceEntity(target);
         player.debug("style: "+player.getCombatType()+" vs "+target);
+        
+        if (target.isPlayer()) {
+			if (player.getDuelArena().isDueling()) {
+				if (!player.getDuelArena().canAttack()) {
+					return;
+				}
+			}
+		}
 
         // TODO fix this.. it makes the client stop receiving data lol u just stand there and DC
         /*if (target.isPlayer()) {

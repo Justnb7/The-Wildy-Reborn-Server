@@ -33,7 +33,7 @@ public class InputFieldPacketHandler implements PacketType {
 		case 47830:
 			if (World.getWorld().getPlayerByName(text).isPresent()) {
 				Player other = World.getWorld().getPlayerByName(text).get();
-				player.setClanPromote(other.getName());
+				player.setClanPromote(other.getUsername());
 			}
 			break;
 			

@@ -131,13 +131,13 @@ public class Fishing extends SkillTask {
 		if (random == 0) {
 			if (player.getPet() > -1) {
 				//TODO spawn item in inv or bank
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Heron.", false);
 			} else {
 				Pets pets = Pets.HERON;
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Heron.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Heron.", false);
 			}
 		}
 	}

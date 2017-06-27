@@ -387,12 +387,12 @@ public class Woodcutting extends HarvestingAction {
 				} else {
 					//player.getBank().add(new Item(13322));
 				}
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Beaver.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Beaver.", false);
 			} else {
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received 1x Beaver.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Beaver.", false);
 			}
 		}
 		return tree.getExperience();

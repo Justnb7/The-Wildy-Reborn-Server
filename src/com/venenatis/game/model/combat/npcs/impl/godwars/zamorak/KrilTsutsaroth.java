@@ -171,13 +171,13 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 				} else {
 					//player.getBank().add(new Item(12652));
 				}
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received the K'ril pet.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the K'ril pet.", false);
 			} else {
 				Pets pets = Pets.KRIL_TSUTSAROTH;
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getName() + " has just received the K'ril pet.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the K'ril pet.", false);
 			}
 		}
 	}

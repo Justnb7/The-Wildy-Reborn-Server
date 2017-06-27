@@ -44,8 +44,8 @@ public class DragonScimitar implements SpecialAttack {
 			if (hasProtection && damage > 0) {
 				targPlayer.setPrayerIcon(-1);
 				targPlayer.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-				player.getActionSender().sendMessage("You have cancelled the protection prayer of " + targPlayer.getName() + ".");
-				targPlayer.getActionSender().sendMessage("Your protection prayer has been cancelled by " + player.getName());
+				player.getActionSender().sendMessage("You have cancelled the protection prayer of " + targPlayer.getUsername() + ".");
+				targPlayer.getActionSender().sendMessage("Your protection prayer has been cancelled by " + player.getUsername());
 				targPlayer.cannotUsePrayer.reset();
 			}
 		}

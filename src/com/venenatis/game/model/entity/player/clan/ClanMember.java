@@ -34,7 +34,7 @@ public class ClanMember {
 	}
 	
 	public String getName() {
-		return player.getName().toLowerCase().trim();
+		return player.getUsername().toLowerCase().trim();
 	}
 	
 	public Player getPlayer() {
@@ -62,7 +62,7 @@ public class ClanMember {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(player.getName(), rank);
+		return Objects.hash(player.getUsername(), rank);
 	}
 	
 	@Override

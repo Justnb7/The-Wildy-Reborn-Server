@@ -172,7 +172,7 @@ public class TradeContainer extends Container {
 
 		// update text on interface
 		int remaining = other.get().getInventory().getFreeSlots();
-		player.getActionSender().sendString(Utility.formatPlayerName(other.get().getName()), 33003);
+		player.getActionSender().sendString(Utility.formatName(other.get().getUsername()), 33003);
 		player.getActionSender().sendString("has " + remaining + " free", 33004);
 		other.get().getActionSender().sendString("has " + player.getInventory().getFreeSlots() + " free", 33004);
 		player.getActionSender().sendString("inventory spaces.", 33005);

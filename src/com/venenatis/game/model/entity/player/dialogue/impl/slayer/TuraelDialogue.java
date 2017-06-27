@@ -123,7 +123,7 @@ public class TuraelDialogue extends Dialogue {
 																			setPhase(16);
 																		} else if (Slayer.suitableMaster(player) == SlayerMasters.TURAEL && !Slayer.hasTask(player)) {
 																			SlayerTaskManagement.beginnerTask(player);
-																			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getName() + ".");
+																			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getUsername() + ".");
 																			setPhase(16);
 																		} else if (Slayer.suitableMaster(player) == SlayerMasters.MAZCHNA && !Slayer.hasTask(player)) {
 																			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Someone of your strength should go and see Mazchna.", "Would you like to get an assignment from him?");

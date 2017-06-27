@@ -1,6 +1,8 @@
 package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.content.ItemsKeptOnDeath;
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.EmotesManager.EmoteData;
 import com.venenatis.game.content.quest_tab.QuestTabPage;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
@@ -94,6 +96,16 @@ public class ActionButtonPacketHandler implements PacketType {
 			player.getTradeSession().onButtonClick(button);
 			return;
 		}
+		
+		/* Dueling */
+		if (player.getDuelArena().isInSession() || player.getDuelArena().getStage() == DuelStage.REWARD) {
+			System.out.println("clicked");
+			player.getDuelArena().handleButton(button);
+			return;
+		}
+
+		/* Minigames */
+		MinigameHandler.execute(player, $it -> $it.onButtonClick(player, button));
 		
 		// First verify this button is something even remotely related to teleports
 		if(Teleports.isTeleportButton(player, button)) {

@@ -18,7 +18,7 @@ import com.venenatis.game.world.World;
 public class ClanManager {
 
 	public static Clan getClan(Player player) {
-		String name = player.getName().toLowerCase().trim();
+		String name = player.getUsername().toLowerCase().trim();
 		
 		Clan clan = ClanRepository.get(name);
 
@@ -73,11 +73,11 @@ public class ClanManager {
 		player.setClan(clan);
 		player.setClanChat(clan.getOwner());
 
-		player.getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatPlayerName(clan.getName()), 33802);
-		player.getActionSender().sendString("</col>Owner: <col=ffffff>" + Utility.formatPlayerName(clan.getOwner()), 33803);
+		player.getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()), 33802);
+		player.getActionSender().sendString("</col>Owner: <col=ffffff>" + Utility.formatName(clan.getOwner()), 33803);
 		player.getActionSender().sendString("</col>Slogan: <col=ffffff>" + Utility.capitalizeSentence(clan.getSlogan()), 33816);
 
-		player.getActionSender().sendMessage("Now talking in clan chat <col=FFFF64><shad=0>" + Utility.formatPlayerName(clan.getName()) + "</shad></col>.");
+		player.getActionSender().sendMessage("Now talking in clan chat <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()) + "</shad></col>.");
 		player.getActionSender().sendMessage("To talk, start each line of chat with the / symbol.");
 
 		update(clan);
@@ -106,7 +106,7 @@ public class ClanManager {
 			player.setSavedClan(player.getClan().getOwner());
 		}
 
-		clan.remove(clan.get(player.getName()));
+		clan.remove(clan.get(player.getUsername()));
 		player.setClan(null);
 		update(clan);
 	}
@@ -119,7 +119,7 @@ public class ClanManager {
 			return;
 		}
 
-		ClanMember member = clan.get(player.getName());
+		ClanMember member = clan.get(player.getUsername());
 		ClanRank rank = member.getRank();
 
 		if (!clan.canTalk(member)) {
@@ -128,13 +128,13 @@ public class ClanManager {
 		}
 
 		for (ClanMember other : clan.members()) {
-			other.getPlayer().getActionSender().sendClanDetails(Utility.formatPlayerName(player.getName()), Utility.capitalizeSentence(message), Utility.formatPlayerName(clan.getName()), rank);
+			other.getPlayer().getActionSender().sendClanDetails(Utility.formatName(player.getUsername()), Utility.capitalizeSentence(message), Utility.formatName(clan.getName()), rank);
 		}
 	}
 
 	public static void systemMessage(Clan clan, String message) {
 		for (ClanMember member : clan.members()) {
-			member.getPlayer().getActionSender().sendClanDetails(Utility.capitalizeSentence(message), Utility.formatPlayerName(clan.getName()));
+			member.getPlayer().getActionSender().sendClanDetails(Utility.capitalizeSentence(message), Utility.formatName(clan.getName()));
 		}
 	}
 
@@ -142,7 +142,7 @@ public class ClanManager {
 		for (ClanMember member : clan.members()) {
 			Player player = member.getPlayer();
 
-			player.getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatPlayerName(clan.getName()), 33802);
+			player.getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()), 33802);
 			player.getActionSender().sendString(clan.members().size() + "/" + clan.getMemberLimit(), 33815);
 			
 			int index = 0;
@@ -151,7 +151,7 @@ public class ClanManager {
 			}
 
 			for (ClanMember other : clan.members()) {
-				String name = Utility.formatPlayerName(other.getName());
+				String name = Utility.formatName(other.getName());
 
 				if (other.getRank() != ClanRank.ANYONE) {
 					String rank = "<clan=" + other.getRank().getRankIndex() + "> ";
@@ -178,13 +178,13 @@ public class ClanManager {
 
 		clan.setName(input);
 
-		systemMessage(clan, Utility.formatPlayerName(player.getName()) + " has changed the clan name.");
+		systemMessage(clan, Utility.formatName(player.getUsername()) + " has changed the clan name.");
 
 		for (ClanMember member : clan.members()) {
-			member.getPlayer().getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatPlayerName(clan.getName()), 33802);
+			member.getPlayer().getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()), 33802);
 		}
 		
-		player.getActionSender().sendString(Utility.formatPlayerName(clan.getName()), 47814);
+		player.getActionSender().sendString(Utility.formatName(clan.getName()), 47814);
 
 		ClanRepository.save();
 	}
@@ -211,7 +211,7 @@ public class ClanManager {
 
 		clan.setSlogan(Utility.capitalizeSentence(input));
 
-		systemMessage(clan, Utility.formatPlayerName(player.getName()) + " has changed the clan slogan.");
+		systemMessage(clan, Utility.formatName(player.getUsername()) + " has changed the clan slogan.");
 
 		for (ClanMember member : clan.members()) {
 			member.getPlayer().getActionSender().sendString("</col>Slogan: <col=ffffff>" + Utility.capitalizeSentence(clan.getSlogan()), 33816);
@@ -230,7 +230,7 @@ public class ClanManager {
 
 		clan.setMemberLimit(amount);
 
-		systemMessage(clan, Utility.formatPlayerName(player.getName()) + " has changed the clan member limit.");
+		systemMessage(clan, Utility.formatName(player.getUsername()) + " has changed the clan member limit.");
 
 		for (ClanMember member : clan.members()) {
 			member.getPlayer().getActionSender().sendString(clan.members().size() + "/" + clan.getMemberLimit(), 33815);
@@ -244,13 +244,13 @@ public class ClanManager {
 			return;
 		}
 		
-		String name = player.getName().toLowerCase().trim();
+		String name = player.getUsername().toLowerCase().trim();
 		
 		Clan clan = ClanRepository.get(name);
 		
-		ClanMember member = clan.get(player.getName());
+		ClanMember member = clan.get(player.getUsername());
 
-		if (!clan.getOwner().equalsIgnoreCase(player.getName())) {
+		if (!clan.getOwner().equalsIgnoreCase(player.getUsername())) {
 			if (!clan.canManage(member)) {
 				player.getActionSender().sendMessage("You do not have sufficient permisson to manage this channel!");
 				return;
@@ -264,12 +264,12 @@ public class ClanManager {
 		}
 		
 		for (ClanMember other : clan.members()) {
-			player.getActionSender().sendString(Utility.formatPlayerName(other.getName()), 44001 + index);
+			player.getActionSender().sendString(Utility.formatName(other.getName()), 44001 + index);
 			player.getActionSender().sendString("<clan=" + other.getRank().getRankIndex() + ">" + other.getRank().getName(), 44801 + index);
 			index++;
 		}
 
-		player.getActionSender().sendString(Utility.formatPlayerName(clan.getName()), 47814);
+		player.getActionSender().sendString(Utility.formatName(clan.getName()), 47814);
 
 		player.getActionSender().sendInterface(40172);
 
@@ -286,21 +286,21 @@ public class ClanManager {
 		if (World.getWorld().getPlayerByName(name).isPresent()) {
 			Player victim = World.getWorld().getPlayerByName(name).get();
 
-			ClanMember member = clan.get(player.getName());
+			ClanMember member = clan.get(player.getUsername());
 
 			if (!clan.canKick(member)) {
 				player.getActionSender().sendMessage("You do not have sufficient permisson to kick in this channel!");
 				return;
 			}
 
-			if (!clan.contains(victim.getName())) {
-				player.getActionSender().sendMessage(Utility.formatPlayerName(name) + " is not in this channel.");
+			if (!clan.contains(victim.getUsername())) {
+				player.getActionSender().sendMessage(Utility.formatName(name) + " is not in this channel.");
 				return;
 			}
 
 			leave(victim, false);
-			victim.getActionSender().sendMessage(Utility.formatPlayerName(player.getName()) + " has kicked you from the clan channel.");
-			player.getActionSender().sendMessage("You have successfully kicked " + Utility.formatPlayerName(name) + " from the clan channel.");
+			victim.getActionSender().sendMessage(Utility.formatName(player.getUsername()) + " has kicked you from the clan channel.");
+			player.getActionSender().sendMessage("You have successfully kicked " + Utility.formatName(name) + " from the clan channel.");
 		}
 
 	}
@@ -311,7 +311,7 @@ public class ClanManager {
 		Clan clan = player.getClan();
 
 		if (clan == null) {
-			clan = ClanRepository.get(player.getName());
+			clan = ClanRepository.get(player.getUsername());
 
 			if (clan == null) {
 				player.getActionSender().sendMessage("You are not in a clan channel.");
@@ -332,7 +332,7 @@ public class ClanManager {
 		}
 
 		if (!clan.contains(other.getName())) {
-			player.getActionSender().sendMessage(Utility.formatPlayerName(other.getName()) + " is not in your clan channel.");
+			player.getActionSender().sendMessage(Utility.formatName(other.getName()) + " is not in your clan channel.");
 			return;
 		}
 

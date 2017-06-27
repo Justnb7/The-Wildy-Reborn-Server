@@ -200,7 +200,7 @@ public final class DuelArena extends Minigame {
 			return;
 		}
 			player.getActionSender().sendMessage("Sending duel offer...");
-			other.getActionSender().sendMessage(player.getName() + ":duelreq:");
+			other.getActionSender().sendMessage(player.getUsername() + ":duelreq:");
 			setDuelRequest(true);
 			stage = DuelStage.REQUEST;
 	}
@@ -221,7 +221,7 @@ public final class DuelArena extends Minigame {
 				break;
 
 			case FIRST_SCREEN:
-				player.getActionSender().sendString("Dueling with: " + Rights.getStringForRights(player) + " " + Utility.formatPlayerName(other.get().getName()), 31005);
+				player.getActionSender().sendString("Dueling with: " + Rights.getStringForRights(player) + " " + Utility.formatName(other.get().getUsername()), 31005);
 				player.getActionSender().sendString("Opponent's combat level: <col=ff7000>" + other.get().combatLevel, 31006);
 				player.getActionSender().sendString("", 31009);
 				player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
@@ -250,7 +250,7 @@ public final class DuelArena extends Minigame {
 
 			case REWARD:
 				player.getActionSender().sendString("<col=E1981F>Total Value: " + other.get().getDuelContainer().containerValue(), 31709);
-				player.getActionSender().sendString(Utility.formatPlayerName(other.get().getName()), 31706);
+				player.getActionSender().sendString(Utility.formatName(other.get().getUsername()), 31706);
 				player.getActionSender().sendString("" + other.get().combatLevel, 31707);
 				player.getActionSender().sendInterface(31700);
 				break;
@@ -1028,7 +1028,7 @@ public final class DuelArena extends Minigame {
 
 	@Override
 	public String toString() {
-		return String.format("[DuelArena], [player= %s], [other= %s], [stage= %s], [other stage= %s]", player.getName(), !other.isPresent() ? "None" : other.get().getName(), getStage().name(), !other.isPresent() ? "None" : other.get().getDuelArena().getStage().name());
+		return String.format("[DuelArena], [player= %s], [other= %s], [stage= %s], [other stage= %s]", player.getUsername(), !other.isPresent() ? "None" : other.get().getUsername(), getStage().name(), !other.isPresent() ? "None" : other.get().getDuelArena().getStage().name());
 	}
 
 	/**

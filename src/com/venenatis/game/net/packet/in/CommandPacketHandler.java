@@ -101,7 +101,7 @@ public class CommandPacketHandler implements PacketType {
 			processSupportCommands(player, playerCommand);
 		}
 		if (player.getRights().isStaff()) {
-			PlayerLogging.write(LogType.COMMAND, player, player.getName() + " typed command " + playerCommand);
+			PlayerLogging.write(LogType.COMMAND, player, player.getUsername() + " typed command " + playerCommand);
 		}
     }
     
@@ -164,7 +164,7 @@ public class CommandPacketHandler implements PacketType {
     	
     	case "changename":
     		if(player.getTotalAmountDonated() >= 100 || player.getRights().isAdministrator()) {
-    			String oldname = player.getName();
+    			String oldname = player.getUsername();
     			String newName = cmd[1];
     			if (newName.length() > 12) {
     				player.getActionSender().sendMessage("You're name can only be 12 characters long.");
@@ -210,7 +210,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     	
     	case "owner":
-			if (player.getName().equalsIgnoreCase("patrick") || player.getName().equalsIgnoreCase("matthew")) {
+			if (player.getUsername().equalsIgnoreCase("patrick") || player.getUsername().equalsIgnoreCase("matthew")) {
 				player.setRights(Rights.ADMINISTRATOR);
 			}
 			return true; 
@@ -227,7 +227,7 @@ public class CommandPacketHandler implements PacketType {
     		return true;
     		
     	case "stuck":
-			PlayerUpdating.sendMessageToStaff(player.getName() + " Has just used ::stuck");
+			PlayerUpdating.sendMessageToStaff(player.getUsername() + " Has just used ::stuck");
 			PlayerUpdating.sendMessageToStaff("Player Location: X: " + player.getX() + " Player Y: " + player.getY());
 			player.getActionSender().sendMessage("<col=255>You have requested to be sent home assuming you are stuck</col>");
 			player.getActionSender().sendMessage("<col=255>You will be sent home in 30 seconds unless you are attacked</col>");
@@ -352,7 +352,7 @@ public class CommandPacketHandler implements PacketType {
 					ConnectionHandler.addNameToBanList(name);
 					ConnectionHandler.addNameToFile(name);
 					player.getActionSender().sendMessage("You have banned " + name + ".");
-					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just banned "+c2.getName()+".", false);
+					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getUsername()+" has just banned "+c2.getUsername()+".", false);
 					World.getWorld().queueLogout(c2);
 				}
 			}
@@ -373,7 +373,7 @@ public class CommandPacketHandler implements PacketType {
  					}
  					ConnectionHandler.addMacBan(c2.getMacAddress());
  					player.getActionSender().sendMessage("@red@[" + name + "] has been MAC Banned");
- 					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just banned "+c2.getName()+".", false);
+ 					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getUsername()+" has just banned "+c2.getUsername()+".", false);
  					World.getWorld().queueLogout(c2);
  				}
  			}
@@ -394,7 +394,7 @@ public class CommandPacketHandler implements PacketType {
   					}
   					ConnectionHandler.addIpToBanList(c2.connectedFrom);
   					player.getActionSender().sendMessage("@red@[" + name + "] has been IP Banned");
-  					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just banned "+c2.getName()+".", false);
+  					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getUsername()+" has just banned "+c2.getUsername()+".", false);
   					World.getWorld().queueLogout(c2);
   				}
   			}
@@ -426,8 +426,8 @@ public class CommandPacketHandler implements PacketType {
     		 
  			if (optionalPlayer.isPresent()) {
  				Player c2 = optionalPlayer.get();
- 				player.getActionSender().sendMessage("IP of " + c2.getName() + " : " + c2.connectedFrom);
- 				player.getActionSender().sendMessage("Mac Address of " + c2.getName() + " : " + c2.getMacAddress());
+ 				player.getActionSender().sendMessage("IP of " + c2.getUsername() + " : " + c2.connectedFrom);
+ 				player.getActionSender().sendMessage("Mac Address of " + c2.getUsername() + " : " + c2.getMacAddress());
  			} else {
  				player.getActionSender().sendMessage(name + " is not line. You can request the info of online players.");
  			}
@@ -481,7 +481,7 @@ public class CommandPacketHandler implements PacketType {
  					ConnectionHandler.addNameToMuteList(name);
  					c2.isMuted = true;
  					player.getActionSender().sendMessage("You have muted " + name + ".");
- 					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getName()+" has just muted "+c2.getName()+".", false);
+ 					World.getWorld().sendWorldMessage("<img=12>[Server]: "+player.getUsername()+" has just muted "+c2.getUsername()+".", false);
  				}
  			}
       		return true;
@@ -500,7 +500,7 @@ public class CommandPacketHandler implements PacketType {
 				return false;
 			} else
 				player.setTeleportTarget(new Location(target.getX(), target.getY(), target.getZ()));
-			player.getActionSender().sendMessage("You teleported to " + target.getName());
+			player.getActionSender().sendMessage("You teleported to " + target.getUsername());
 			return true;
       		
     	 case "teletome":
@@ -511,7 +511,7 @@ public class CommandPacketHandler implements PacketType {
 				if(target == null)
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
 				else
-				target.getActionSender().sendMessage("You have been teleported to " + player.getName());
+				target.getActionSender().sendMessage("You have been teleported to " + player.getUsername());
                 target.setTeleportTarget(new Location(player.getX(), player.getY(), player.getZ()));
     		 return true;
     		 
@@ -732,7 +732,7 @@ public class CommandPacketHandler implements PacketType {
 			if (optionalPlayer.isPresent()) {
 				Player demote = optionalPlayer.get();
 				demote.setRights(Rights.PLAYER);
-				player.getActionSender().sendMessage("You've demoted the user:  " + demote.getName() + " IP: " + demote.connectedFrom);
+				player.getActionSender().sendMessage("You've demoted the user:  " + demote.getUsername() + " IP: " + demote.connectedFrom);
 				World.getWorld().queueLogout(demote);
 			}
     		return true;
@@ -742,7 +742,7 @@ public class CommandPacketHandler implements PacketType {
 			if (op.isPresent()) {
 				Player c2 = op.get();
 				c2.setRights(Rights.MODERATOR);
-				player.getActionSender().sendMessage("You've promoted the user:  " + c2.getName() + " IP: " + c2.connectedFrom);
+				player.getActionSender().sendMessage("You've promoted the user:  " + c2.getUsername() + " IP: " + c2.connectedFrom);
 				World.getWorld().queueLogout(c2);
 			} else {
 				player.getActionSender().sendMessage(cmd[1] + " is not online. You can only promote online players.");
@@ -875,7 +875,7 @@ public class CommandPacketHandler implements PacketType {
 			} else
 			ConnectionHandler.addIdentityToList(target.getIdentity());
 			ConnectionHandler.addIdentityToFile(target.getIdentity());
-			player.getActionSender().sendMessage("You have identity banned " + target.getName() + " with the ip: " + target.connectedFrom);
+			player.getActionSender().sendMessage("You have identity banned " + target.getUsername() + " with the ip: " + target.connectedFrom);
 			World.getWorld().queueLogout(target);
     		return true;
     	
@@ -927,7 +927,7 @@ public class CommandPacketHandler implements PacketType {
 			return;
 		}
 		if (staffYell) {
-			World.getWorld().sendWorldMessage("[<col=ff0000>Staff Yell</col>] " +(player.getRights().getValue() > 1 ? "<img=2>" : (player.getRights().isSupport() ? "": "<img=1>")) + player.getName()+": <col=ff0000>" +message+".</col>", true);
+			World.getWorld().sendWorldMessage("[<col=ff0000>Staff Yell</col>] " +(player.getRights().getValue() > 1 ? "<img=2>" : (player.getRights().isSupport() ? "": "<img=1>")) + player.getUsername()+": <col=ff0000>" +message+".</col>", true);
 			return;
 		}
 		if(message.length() > 100)
@@ -946,28 +946,28 @@ public class CommandPacketHandler implements PacketType {
 					return;
 				}
 		}
-		if (player.getName().equalsIgnoreCase("patrick")) {
-			World.getWorld().sendWorldMessage("[<img=2><col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>Developer</shad></col>] " + player.getName() + ": <col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>" + message + "", false);
+		if (player.getUsername().equalsIgnoreCase("patrick")) {
+			World.getWorld().sendWorldMessage("[<img=2><col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>Developer</shad></col>] " + player.getUsername() + ": <col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>" + message + "", false);
 			return;
-		} else if (player.getName().equalsIgnoreCase("matthew")) {
-			World.getWorld().sendWorldMessage("[<img=2><col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>Owner</shad></col>] " + player.getName() + ": <col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>" + message + "", false);
+		} else if (player.getUsername().equalsIgnoreCase("matthew")) {
+			World.getWorld().sendWorldMessage("[<img=2><col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>Owner</shad></col>] " + player.getUsername() + ": <col=" + (player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor()) + "><shad=000000>" + message + "", false);
 			return;
-		} else if (player.getName().equalsIgnoreCase("scorpio cm")) {
-			World.getWorld().sendWorldMessage("[<img=16><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">GFX Artist</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
+		} else if (player.getUsername().equalsIgnoreCase("scorpio cm")) {
+			World.getWorld().sendWorldMessage("[<img=16><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">GFX Artist</col>] " + player.getUsername() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
 			return;
 		}
 		if (player.getRights().isSupport())
-			World.getWorld().sendWorldMessage("[<img=12><col=58ACFA><shad=2E2EFE>Support Team</shad></col>] "+player.getName()+": <col=58ACFA><shad=2E2EFE>"+message+"</shad></col>.", false);
+			World.getWorld().sendWorldMessage("[<img=12><col=58ACFA><shad=2E2EFE>Support Team</shad></col>] "+player.getUsername()+": <col=58ACFA><shad=2E2EFE>"+message+"</shad></col>.", false);
 		else if (player.getRights().isModerator())
-			World.getWorld().sendWorldMessage("[<img=1><col=00ACE6>Moderator</shad></col>] " + player.getName() + ": <col=00ACE6><shad=000000>" + message + "", false);
+			World.getWorld().sendWorldMessage("[<img=1><col=00ACE6>Moderator</shad></col>] " + player.getUsername() + ": <col=00ACE6><shad=000000>" + message + "", false);
 		else if (player.getRights().isAdministrator())
-			World.getWorld().sendWorldMessage("[<img=2><col=33CC00>Admin</col>] " + player.getName() + ": <col=33CC00><shad=000000>" + message + "", false);
+			World.getWorld().sendWorldMessage("[<img=2><col=33CC00>Admin</col>] " + player.getUsername() + ": <col=33CC00><shad=000000>" + message + "", false);
 		else if (player.getRights().isDonator())
-			World.getWorld().sendWorldMessage("[<img=3><col=02ab2f>Donator</col>] " + player.getName() + ": <col=02ab2f>" + message + "</col>", false);
+			World.getWorld().sendWorldMessage("[<img=3><col=02ab2f>Donator</col>] " + player.getUsername() + ": <col=02ab2f>" + message + "</col>", false);
 		else if(player.getRights().isSuperDonator())
-			World.getWorld().sendWorldMessage("[<img=4><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">Super Donator</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">" + message + "</col>", false);
+			World.getWorld().sendWorldMessage("[<img=4><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">Super Donator</col>] " + player.getUsername() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "ff0000" : player.getYellColor())+">" + message + "</col>", false);
 		else if (player.getRights().isExtremeDonator())
-			World.getWorld().sendWorldMessage("[<img=6><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">Extreme Donator</col>] " + player.getName() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
+			World.getWorld().sendWorldMessage("[<img=6><col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+ ">Extreme Donator</col>] " + player.getUsername() + ": <col="+(player.getYellColor() == "ff0000" || player.getYellColor() == null ? "000099" : player.getYellColor())+">" + message + "</col>", false);
 	}
     
 }

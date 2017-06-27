@@ -122,7 +122,7 @@ public final class TradeSession {
 			return;
 		}
 		player.getActionSender().sendMessage("Sending trade offer...");
-		other.getActionSender().sendMessage(Utility.formatPlayerName(player.getName()) + ":tradereq:");
+		other.getActionSender().sendMessage(Utility.formatName(player.getUsername()) + ":tradereq:");
 	}
 
 	/**
@@ -160,8 +160,8 @@ public final class TradeSession {
 		case OFFER:
 			int remaining = other.get().getInventory().getFreeSlots();
 			player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
-			player.getActionSender().sendString(String.format("Trading with: %s %s ", Rights.getStringForRights(other.get()), Utility.formatPlayerName(other.get().getName()), remaining), 33002);
-			player.getActionSender().sendString(Utility.formatPlayerName(other.get().getName()), 33003);
+			player.getActionSender().sendString(String.format("Trading with: %s %s ", Rights.getStringForRights(other.get()), Utility.formatName(other.get().getUsername()), remaining), 33002);
+			player.getActionSender().sendString(Utility.formatName(other.get().getUsername()), 33003);
 			player.getActionSender().sendString("inventory spaces", 33005);
 			player.getActionSender().sendString("<col=ffffff> Absolutely nothing!", 33018);
 			player.getActionSender().sendString("", 33029);
@@ -175,7 +175,7 @@ public final class TradeSession {
 			player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_INTERFACE, player.getInventory().toArray());
 			player.getActionSender().sendString("<col=65535>Are you sure you want to make this trade?", 33202);
 			player.getActionSender().sendString("<col=65535>Trading With:", 33207);
-			player.getActionSender().sendString(String.format("%s <col=65535>%s", Rights.getStringForRights(other.get()), Utility.formatPlayerName(other.get().getName())), 33208);
+			player.getActionSender().sendString(String.format("%s <col=65535>%s", Rights.getStringForRights(other.get()), Utility.formatName(other.get().getUsername())), 33208);
 			player.getActionSender().sendString(Utility.getItemNames(player.getTradeContainer().toArray()), 33221);
 			player.getActionSender().sendString(Utility.getItemNames(other.get().getTradeContainer().toArray()), 33251);
 			player.getActionSender().sendInterfaceWithInventoryOverlay(InterfaceConstants.SECOND_TRADE_SCREEN, 3213);
@@ -211,22 +211,20 @@ public final class TradeSession {
 
 			switch (button) {
 
-			case -32513:
+			case 128255:
 				player.getTradeContainer().offerItems(player.getInventory().toTrimmedArray());
 				break;
 
-			case -32510:
+			case 129002:
 				player.getTradeContainer().removeOfferedItems(player.getTradeContainer().toTrimmedArray());
 				break;
 
-			case -32524:
-			case -32530:
-			case -32324:
-			case -32332:
+			case 128244:
+			case 129188:
 				player.getTradeSession().declineTrade(true);
 				break;
 
-			case -32527:
+			case 128241:
 				if (player.getInventory().getFreeSlots() < other.get().getTradeContainer().getTakenSlots()) {
 					player.getActionSender().sendMessage("You need more inventory space to accept this.");
 					other.get().getActionSender().sendMessage("The other player needs more inventory space.");
@@ -242,7 +240,7 @@ public final class TradeSession {
 				}
 				break;
 
-			case -32327:
+			case 129185:
 				if (player.getInventory().getFreeSlots() < other.get().getTradeContainer().getTakenSlots()) {
 					player.getActionSender().sendMessage("You need more inventory space to accept this.");
 					other.get().getActionSender().sendMessage("The other player needs more inventory space.");
@@ -297,6 +295,7 @@ public final class TradeSession {
 		PlayerSerialization.save(player);
 		other.ifPresent($it -> PlayerSerialization.save($it));
 
+		player.getActionSender().removeAllInterfaces();
 		other.ifPresent($it -> $it.getActionSender().removeAllInterfaces());
 
 		player.getActionSender().sendMinimapState(MinimapState.NORMAL);
@@ -373,7 +372,7 @@ public final class TradeSession {
 
 	@Override
 	public String toString() {
-		return String.format("[TRADE] - Player: %s [STATE=%s] Other: %s [STATE=%s]", player.getName(), stage.name(), other.isPresent() ? other.get().getName() : "No one", other.isPresent() ? other.get().getTradeSession().getTradeStage().name() : "None");
+		return String.format("[TRADE] - Player: %s [STATE=%s] Other: %s [STATE=%s]", player.getUsername(), stage.name(), other.isPresent() ? other.get().getUsername() : "No one", other.isPresent() ? other.get().getTradeSession().getTradeStage().name() : "None");
 
 	}
 

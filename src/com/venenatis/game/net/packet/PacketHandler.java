@@ -3,35 +3,7 @@ package com.venenatis.game.net.packet;
 
 import com.venenatis.game.content.PrivateMessaging;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.in.ActionButtonPacketHandler;
-import com.venenatis.game.net.packet.in.AttackPlayer;
-import com.venenatis.game.net.packet.in.ChallengePlayer;
-import com.venenatis.game.net.packet.in.ChatPacketHandler;
-import com.venenatis.game.net.packet.in.ClickOnGameScreen;
-import com.venenatis.game.net.packet.in.CloseInterfacePacketHandler;
-import com.venenatis.game.net.packet.in.CommandPacketHandler;
-import com.venenatis.game.net.packet.in.DefaultPacketHandler;
-import com.venenatis.game.net.packet.in.DialoguePacketHandler;
-import com.venenatis.game.net.packet.in.FollowPlayer;
-import com.venenatis.game.net.packet.in.IdleLogoutPacketHandler;
-import com.venenatis.game.net.packet.in.InputDialogueStringPacketHandler;
-import com.venenatis.game.net.packet.in.InputFieldPacketHandler;
-import com.venenatis.game.net.packet.in.ItemOnNpc;
-import com.venenatis.game.net.packet.in.ItemOnObjectPacketHandler;
-import com.venenatis.game.net.packet.in.ItemOnPlayerPacketHandler;
-import com.venenatis.game.net.packet.in.ItemOptionPacket;
-import com.venenatis.game.net.packet.in.NpcInteractionPacketHandler;
-import com.venenatis.game.net.packet.in.ObjectOptionPacketHandler;
-import com.venenatis.game.net.packet.in.RegionChangePacketHandler;
-import com.venenatis.game.net.packet.in.SecondGroundOption;
-import com.venenatis.game.net.packet.in.SetAppearancePacketHandler;
-import com.venenatis.game.net.packet.in.SwitchItemPacketHandler;
-import com.venenatis.game.net.packet.in.TradePacketHandler;
-import com.venenatis.game.net.packet.in.WalkingPacketHandler;
-import com.venenatis.game.net.packet.in.WieldPacketHandler;
-import com.venenatis.game.net.packet.in.WithdrawActionsPacketHandler;
-import com.venenatis.game.net.packet.in.WithdrawAllButOneAction;
-import com.venenatis.game.net.packet.in.WithdrawModifiableX;
+import com.venenatis.game.net.packet.in.*;
 import com.venenatis.game.world.World;
 
 public class PacketHandler {
@@ -42,6 +14,14 @@ public class PacketHandler {
 	static {
 
 		//Redone by Patrick van Elderen
+		
+		//Player options
+		PlayerOptionPacketHandler pop = new PlayerOptionPacketHandler();
+		packetId[128] = pop;
+		packetId[39] = pop;
+		packetId[139] = pop;
+		packetId[73] = pop;
+		packetId[249] = pop;
 		
 		//Item options
 		ItemOptionPacket iop = new ItemOptionPacket();
@@ -118,12 +98,6 @@ public class PacketHandler {
 		packetId[130] = new CloseInterfacePacketHandler();
 		packetId[103] = new CommandPacketHandler();
 		packetId[214] = new SwitchItemPacketHandler();
-		AttackPlayer ap = new AttackPlayer();
-		packetId[73] = ap;
-		packetId[249] = ap;
-		packetId[128] = new ChallengePlayer();
-		packetId[39] = new TradePacketHandler();
-		packetId[139] = new FollowPlayer();
 		packetId[140] = new WithdrawAllButOneAction();
 		packetId[141] = new WithdrawModifiableX();
 		packetId[101] = new SetAppearancePacketHandler();

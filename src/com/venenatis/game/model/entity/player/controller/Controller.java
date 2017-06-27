@@ -64,7 +64,7 @@ public abstract class Controller {
 
 	public void throwException(Player player, String action) {
 		System.out.println("||||||||||||||||||||||||||");
-		System.out.println("UNABLE TO " + action + " FOR PLAYER " + player.getName() + "!");
+		System.out.println("UNABLE TO " + action + " FOR PLAYER " + player.getUsername() + "!");
 		System.out.println("CONTROLLER: " + player.getController().toString());
 		System.out.println("||||||||||||||||||||||||||");
 	}

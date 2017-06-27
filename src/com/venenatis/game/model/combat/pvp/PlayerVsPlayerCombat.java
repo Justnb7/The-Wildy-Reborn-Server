@@ -54,8 +54,8 @@ public class PlayerVsPlayerCombat {
 			return false;
 		}
 
-		boolean bypassCosImTheBest = player.getName().equalsIgnoreCase("test") ||
-				player.getName().equalsIgnoreCase("patrick");
+		boolean bypassCosImTheBest = player.getUsername().equalsIgnoreCase("test") ||
+				player.getUsername().equalsIgnoreCase("patrick");
 		if (Area.inWilderness(player)) {  // TODO fix this logic
 			/*int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
 			if (!bypassCosImTheBest &&

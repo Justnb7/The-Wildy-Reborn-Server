@@ -134,7 +134,7 @@ public class RS2LoginProtocol extends ByteToMessageDecoder {
 			ISAACRandomGen outCipher = new ISAACRandomGen(isaacSeed);
 			int uid = encryptedBuffer.readInt();
 			int clientVersion = encryptedBuffer.readInt();
-			String name = Utility.formatPlayerName(readRS2String(encryptedBuffer));
+			String name = Utility.formatName(readRS2String(encryptedBuffer));
 			String pass = readRS2String(encryptedBuffer);
 			String identity = readRS2String(encryptedBuffer);
 			String macAddress = readRS2String(encryptedBuffer);

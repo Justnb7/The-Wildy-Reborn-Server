@@ -30,6 +30,8 @@ import com.venenatis.game.world.pathfinder.Directions;
 import com.venenatis.game.world.pathfinder.region.Coverage;
 import com.venenatis.server.Server;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.util.*;
 
 /**
@@ -788,13 +790,13 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			victim_npc.retaliate(attacker);
-			victim_npc.getDamageMap().appendDamage(attacker_player.getName(), damage);
+			victim_npc.getDamageMap().appendDamage(attacker_player.getUsername(), damage);
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		} else if (isPlayer() && attacker.isPlayer()) {
 			//pvp
-			((Player)this).getDamageMap().appendDamage(((Player)attacker).getName(), damage);
+			((Player)this).getDamageMap().appendDamage(((Player)attacker).getUsername(), damage);
 			Player self = (Player) this;
-			self.debug("damage; "+damage+ " killer; "+((Player)attacker).getName());
+			self.debug("damage; "+damage+ " killer; "+((Player)attacker).getUsername());
 		}
 
 		// Update hit instance since we've changed the 'damage' value

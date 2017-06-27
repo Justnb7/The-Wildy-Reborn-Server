@@ -45,7 +45,7 @@ public class VannakaDialogue extends Dialogue {
 					setPhase(3);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.VANNAKA && !Slayer.hasTask(player)) {
 					SlayerTaskManagement.mediumTask(player);
-					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, your task is to kill " + player.getSlayerTaskAmount(), "@blu@ " + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getName() + ".");
+					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, your task is to kill " + player.getSlayerTaskAmount(), "@blu@ " + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
 					setPhase(3);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.CHAELDAR && !Slayer.hasTask(player)) {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Someone of your strength should go and see Chaeldar.", "Would you like to get an assignment from her?");
@@ -79,7 +79,7 @@ public class VannakaDialogue extends Dialogue {
 						} else {
 							if (getPhase() == 7) {
 								SlayerTaskManagement.mediumTask(player);
-								send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine.", "Your task is to kill " + player.getSlayerTaskAmount(), "@blu@ " + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getName() + ".");
+								send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine.", "Your task is to kill " + player.getSlayerTaskAmount(), "@blu@ " + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
 								setPhase(3);
 							} else {
 								if (getPhase() == 8) {

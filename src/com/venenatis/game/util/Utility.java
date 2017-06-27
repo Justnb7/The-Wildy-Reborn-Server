@@ -345,7 +345,7 @@ public class Utility {
         return null;
     }
 
-    public static String formatPlayerName(String str) {
+    public static String formatName(String str) {
         str = ucFirst(str);
         str.replace("_", " ");
         return str;

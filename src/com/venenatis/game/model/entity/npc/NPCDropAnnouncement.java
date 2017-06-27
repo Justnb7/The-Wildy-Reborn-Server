@@ -32,7 +32,7 @@ public class NPCDropAnnouncement {
 					continue;
 				}
 				if (regionalPlayer.distanceToPoint(this.npc.getX(), this.npc.getY()) < 40) {
-					regionalPlayer.getActionSender().sendMessage("<col=0B6121>" + Utility.capitalize(player.getName()) + " has received " + amount + " x " + ItemDefinition.get(itemId).getName() + "</col>.");
+					regionalPlayer.getActionSender().sendMessage("<col=0B6121>" + Utility.capitalize(player.getUsername()) + " has received " + amount + " x " + ItemDefinition.get(itemId).getName() + "</col>.");
 				}
 			}
 		}

@@ -1481,8 +1481,8 @@ public class Player extends Entity {
 		this.xlogDelay = delay;
 	}
 
-	public String getName() {
-		return Utility.formatPlayerName(username);
+	public String getUsername() {
+		return Utility.formatName(username);
 	}
 
 	public void setUsername(String username) {
@@ -1499,7 +1499,7 @@ public class Player extends Entity {
 
 	@Override
 	public String toString() {
-		return "Player [username=" + getName() + ", index: " + getIndex() + "]";
+		return "Player [username=" + getUsername() + ", index: " + getIndex() + "]";
 	}
 
 	public RequestManager getRequestManager() {
@@ -2007,7 +2007,7 @@ public class Player extends Entity {
 	public void instanceFloorReset() {
 		if (kraken != null) {
 			if (!Boundary.isIn(this, Boundary.KRAKEN)) {
-				System.out.println("Resetting kraken instance for: " + this.getName());
+				System.out.println("Resetting kraken instance for: " + this.getUsername());
 				if (kraken.getInstance() != null)
 					InstancedAreaManager.getSingleton().disposeOf(kraken.getInstance());
 			}

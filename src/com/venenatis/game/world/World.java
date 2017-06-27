@@ -146,7 +146,7 @@ public class World implements Service {
 		for (Player player : getPlayers()) {
 			if (player == null)
 				continue;
-			if (player.getName().equalsIgnoreCase(playerName)) {
+			if (player.getUsername().equalsIgnoreCase(playerName)) {
 				return player;
 			}
 		}
@@ -160,11 +160,11 @@ public class World implements Service {
 	 * @return the player
 	 */
 	public Optional<Player> getPlayerByName(String name) {
-		return players.stream().filter(Objects::nonNull).filter($it -> $it.getName().equalsIgnoreCase(name)).findFirst();
+		return players.stream().filter(Objects::nonNull).filter($it -> $it.getUsername().equalsIgnoreCase(name)).findFirst();
 	}
 
 	public Optional<Player> getPlayerByRealName(String realName) {
-		return players.search(player -> player.getName().equalsIgnoreCase(realName));
+		return players.search(player -> player.getUsername().equalsIgnoreCase(realName));
 	}
 
 	/**
@@ -523,7 +523,7 @@ public class World implements Service {
 	}
 
 	public Optional<Player> getOptionalPlayer(String name) {
-		return getWorld().getPlayers().stream().filter(Objects::nonNull).filter(client -> client.getName().equalsIgnoreCase(name)).findFirst();
+		return getWorld().getPlayers().stream().filter(Objects::nonNull).filter(client -> client.getUsername().equalsIgnoreCase(name)).findFirst();
 	}
 	
 	/**
@@ -536,7 +536,7 @@ public class World implements Service {
 	public boolean isPlayerOnline(String name) {
 		name = NameUtils.formatName(name);
 		for (Player player : players) {
-			if (player.getName().equalsIgnoreCase(name)) {
+			if (player.getUsername().equalsIgnoreCase(name)) {
 				return true;
 			}
 		}
@@ -545,7 +545,7 @@ public class World implements Service {
 	
 	public String getOnlineStatus(String playerName) {
         for (Player p : getWorld().players) {
-                if (p == null || p.properLogout || !p.getName().equalsIgnoreCase(playerName))
+                if (p == null || p.properLogout || !p.getUsername().equalsIgnoreCase(playerName))
                         continue;
                 return "@gre@Online";
         }
@@ -581,7 +581,7 @@ public class World implements Service {
 		for (int d = 0; d < World.getWorld().getPlayers().capacity(); d++) {
 			if (World.getWorld().getPlayers().get(d) != null) {
 				Player o = World.getWorld().getPlayers().get(d);
-				if (o.getName().equalsIgnoreCase(name)) {
+				if (o.getUsername().equalsIgnoreCase(name)) {
 					return o;
 				}
 			}

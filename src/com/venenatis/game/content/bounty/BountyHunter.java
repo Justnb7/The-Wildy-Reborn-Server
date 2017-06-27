@@ -79,7 +79,7 @@ public class BountyHunter extends ScheduledTask {
 		Player target = World.getWorld().getPlayers().get(index);
 		String wealth = "---";
 		if (target != null) {
-			targetName = target.getName();
+			targetName = target.getUsername();
 			level = Area.inWilderness(target) ? target.wildLevel : 0;
 			minLevel = level - 2 <= 0 ? 1 : level - 2;
 			maxLevel = level + 2;

@@ -73,7 +73,7 @@ public class TableGroup extends ArrayList<Table> {
 										|| item.getId() >= 554 && item.getId() <= 566) {
 									
 								} else {
-									World.getWorld().sendWorldMessage("<col=FF0000>[Lootations] @cr19@ </col><col=255><img=" + rights + ">" + Utility.capitalize(player.getName()) + "</col> received <col=255>" + item.getAmount() + "</col>x <col=255>" + ItemDefinition.get(item.getId()).getName() + "</col>.", false);
+									World.getWorld().sendWorldMessage("<col=FF0000>[Lootations] @cr19@ </col><col=255><img=" + rights + ">" + Utility.capitalize(player.getUsername()) + "</col> received <col=255>" + item.getAmount() + "</col>x <col=255>" + ItemDefinition.get(item.getId()).getName() + "</col>.", false);
 								}
 							}
 						}

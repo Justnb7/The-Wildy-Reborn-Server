@@ -550,9 +550,9 @@ public class SlayerTaskManagement {
 					}
 				}
 				if(player.getSlayerStreak() % 1000 == 0) {
-					PlayerUpdating.executeGlobalMessage("<shad=000000><col=FF5E00>News: " + Utility.formatPlayerName(player.getName()) + " has just completed " + player.getSlayerStreak() + "x Slayer tasks in a row!");
+					PlayerUpdating.executeGlobalMessage("<shad=000000><col=FF5E00>News: " + Utility.formatName(player.getUsername()) + " has just completed " + player.getSlayerStreak() + "x Slayer tasks in a row!");
 				} else 	if(player.getSlayerStreak() % 250 == 0) {
-					PlayerUpdating.executeGlobalMessage("<shad=000000><col=FF5E00>News: " + Utility.formatPlayerName(player.getName()) + " has just completed " + player.getSlayerStreak() + "x Slayer tasks in a row!");
+					PlayerUpdating.executeGlobalMessage("<shad=000000><col=FF5E00>News: " + Utility.formatName(player.getUsername()) + " has just completed " + player.getSlayerStreak() + "x Slayer tasks in a row!");
 				}
 				player.setSlayerTaskDifficulty(0);
 			}

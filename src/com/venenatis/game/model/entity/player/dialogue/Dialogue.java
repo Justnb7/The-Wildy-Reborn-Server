@@ -169,20 +169,20 @@ public abstract class Dialogue {
 			}
 		} else if (type == Type.PLAYER) {
 			if (parameters.length == 2) {
-				player.getActionSender().sendString(player.getName(), 970);
+				player.getActionSender().sendString(player.getUsername(), 970);
 				player.getActionSender().sendString((String) parameters[1], 971);
 				player.getActionSender().sendInterfaceAnimation(969, ((Expression) parameters[0]).getEmoteId());
 				player.getActionSender().sendPlayerHeadToInterface(969);
 				player.getActionSender().sendChatBoxInterface(968);
 			} else if (parameters.length == 3) {
-				player.getActionSender().sendString(player.getName(), 975);
+				player.getActionSender().sendString(player.getUsername(), 975);
 				player.getActionSender().sendString((String) parameters[1], 976);
 				player.getActionSender().sendString((String) parameters[2], 977);
 				player.getActionSender().sendInterfaceAnimation(974, ((Expression) parameters[0]).getEmoteId());
 				player.getActionSender().sendPlayerHeadToInterface(974);
 				player.getActionSender().sendChatBoxInterface(973);
 			} else if (parameters.length == 4) {
-				player.getActionSender().sendString(player.getName(), 981);
+				player.getActionSender().sendString(player.getUsername(), 981);
 				player.getActionSender().sendString((String) parameters[1], 982);
 				player.getActionSender().sendString((String) parameters[2], 983);
 				player.getActionSender().sendString((String) parameters[3], 984);
@@ -190,7 +190,7 @@ public abstract class Dialogue {
 				player.getActionSender().sendPlayerHeadToInterface(980);
 				player.getActionSender().sendChatBoxInterface(979);
 			} else if (parameters.length == 5) {
-				player.getActionSender().sendString(player.getName(), 988);
+				player.getActionSender().sendString(player.getUsername(), 988);
 				player.getActionSender().sendString((String) parameters[1], 989);
 				player.getActionSender().sendString((String) parameters[2], 990);
 				player.getActionSender().sendString((String) parameters[3], 991);

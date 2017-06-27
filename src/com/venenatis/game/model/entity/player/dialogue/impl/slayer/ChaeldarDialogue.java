@@ -40,7 +40,7 @@ public class ChaeldarDialogue extends Dialogue {
 				setPhase(3);
 			} else if (!Slayer.hasTask(player) && Slayer.suitableMaster(player) == SlayerMasters.CHAELDAR) {
 				SlayerTaskManagement.hardTask(player);
-				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getName() + ".");
+				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
 				setPhase(3);
 			} else if (Slayer.suitableMaster(player) == SlayerMasters.TURAEL || Slayer.suitableMaster(player) == SlayerMasters.MAZCHNA || Slayer.suitableMaster(player) == SlayerMasters.VANNAKA) {
 				send(Type.NPC, NPC_ID, Expression.DEFAULT, "You are not stroung enough to handle my assignments.", "Come back to me when you are a bit more experienced.");
@@ -68,7 +68,7 @@ public class ChaeldarDialogue extends Dialogue {
 			}
 		} else if (getPhase() == 7) {
 			SlayerTaskManagement.hardTask(player);
-			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getName() + ".");
+			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
 			setPhase(3);
 		} else if (getPhase() == 8) {
 			stop();

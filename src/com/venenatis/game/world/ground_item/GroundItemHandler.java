@@ -336,7 +336,7 @@ public final class GroundItemHandler {
 					removeGroundItem(groundItem);
 					player.getInventory().add(item);
 					player.getInventory().refresh();
-					PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Item Dropped: " + groundItem.getItem().getId() + " Items picked up by : " + player.getName() + " Amount:  " + groundItem.getItem().getAmount() );
+					PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Item Dropped: " + groundItem.getItem().getId() + " Items picked up by : " + player.getUsername() + " Amount:  " + groundItem.getItem().getAmount() );
 					stop();
 				}
 			}

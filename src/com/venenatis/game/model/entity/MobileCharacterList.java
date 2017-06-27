@@ -1,5 +1,7 @@
 package com.venenatis.game.model.entity;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -156,6 +158,21 @@ public final class MobileCharacterList<E extends Entity> implements Iterable<E> 
 				return Optional.of(e);
 		}
 		return Optional.empty();
+	}
+	
+	/**
+	 * Searches an entity based on its {@code index}. Then returns an optional
+	 * describing the result.
+	 * 
+	 * @param index
+	 *            The index of the entity in this list.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             If the index is out of bounds.
+	 */
+	public Optional<E> search(int index) {
+		checkState(index >= 1 && index < characters.length, "Index out of bounds.");
+		return Optional.ofNullable(characters[index]);
 	}
 
 	@Override

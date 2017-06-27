@@ -945,8 +945,8 @@ public class ActionSender {
 		player.getWeaponInterface().restoreWeaponAttributes();
 		
 		//Send the interaction options
-		sendInteractionOption("Follow", 4, true);
-		sendInteractionOption("Trade With", 5, true);
+		sendInteractionOption("Trade With", 4, true);
+		sendInteractionOption("Follow", 5, true);
 		
 		//We can go ahead and finalize the game configs
 		updateConfigs();

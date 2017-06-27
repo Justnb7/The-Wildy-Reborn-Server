@@ -49,6 +49,12 @@ public class ObjectInteraction {
 			action = new Mining(player, obj);
 		}
 		
+		/** Duel Arena */
+		if (player.getDuelArena().isDueling()) {
+			player.getDuelArena().onFirstClickObject(obj);
+			return;
+		}
+		
 		switch (def.getName().toLowerCase()) {
 
 		case "bank":

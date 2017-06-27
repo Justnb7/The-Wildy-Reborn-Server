@@ -72,7 +72,7 @@ public class LoginSession extends Session {
 		player.setOutStreamDecryption(credential.getEncryptor());
 		player.outStream.packetEncryption = credential.getEncryptor();
 		
-		if (ConnectionHandler.isNamedBanned(player.getName())) {
+		if (ConnectionHandler.isNamedBanned(player.getUsername())) {
 			sendReturnCode(ctx.channel(), 4);
 			return;
 		}

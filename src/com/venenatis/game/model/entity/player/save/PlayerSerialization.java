@@ -102,7 +102,7 @@ public class PlayerSerialization {
 		public static boolean loadDetails(Player player) throws Exception {
 			BufferedReader reader = null;
 			try {
-				final File file = new File("./Data/characters/details/" + player.getName() + ".json");
+				final File file = new File("./Data/characters/details/" + player.getUsername() + ".json");
 
 				if (!file.exists()) {
 					return false;
@@ -276,7 +276,7 @@ public class PlayerSerialization {
 		}
 
 		public PlayerSaveDetail(Player player) {
-			username = player.getName();
+			username = player.getUsername();
 			password = player.getPassword();
 			rights = player.getRights().getValue();
 			location = player.getPosition();
@@ -379,7 +379,7 @@ public class PlayerSerialization {
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			final File file = new File("./Data/characters/containers/" + player.getName() + ".json");
+			final File file = new File("./Data/characters/containers/" + player.getUsername() + ".json");
 			
 			if (!file.exists()) {
 				return false;
@@ -447,7 +447,7 @@ public class PlayerSerialization {
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			final BufferedWriter writer = new BufferedWriter(new FileWriter("./Data/characters/containers/" + player.getName() + ".json", false));
+			final BufferedWriter writer = new BufferedWriter(new FileWriter("./Data/characters/containers/" + player.getUsername() + ".json", false));
 			try {
 				writer.write(PlayerSerialization.SERIALIZE.toJson(this));
 				writer.flush();

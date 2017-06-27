@@ -29,7 +29,7 @@ public class PlayerUpdating {
 	 * @return
 	 */
 	public static Optional<Player> getPlayer(String name) {
-		return World.getWorld().getPlayers().search(p -> p.getName().equalsIgnoreCase(name));
+		return World.getWorld().getPlayers().search(p -> p.getUsername().equalsIgnoreCase(name));
 	}
 
 	/**
@@ -704,7 +704,7 @@ public class PlayerUpdating {
 		player.getPlayerProps().writeShort((short) player.getRunAnimation()); // run
 		
 		//Sent the username to the client
-		player.getPlayerProps().putLong(Utility.playerNameToInt64(player.getName()));
+		player.getPlayerProps().putLong(Utility.playerNameToInt64(player.getUsername()));
 		
 		//Custom title
 		StringBuilder sb = new StringBuilder(player.getCurrentTitle());
@@ -841,6 +841,6 @@ public class PlayerUpdating {
 	 * @return
 	 */
 	public static Player getPlayerByName(String playerName) {
-		return World.getWorld().getPlayers().search(p -> p.getName().equalsIgnoreCase(playerName)).orElse(null);
+		return World.getWorld().getPlayers().search(p -> p.getUsername().equalsIgnoreCase(playerName)).orElse(null);
 	}
 }

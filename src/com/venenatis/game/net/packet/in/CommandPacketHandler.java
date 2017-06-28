@@ -68,11 +68,7 @@ public class CommandPacketHandler implements PacketType {
     	if (cmd.length == 0)
 			return;
     	
-    	if (player.inTutorial()) {
-    		return;
-    	}
-		
-		if (playerCommand.startsWith("/")) {
+    	if (playerCommand.startsWith("/")) {
 
 			if (player.getClan() == null) {
 				player.getActionSender().sendMessage("You can only do this while in a clan chat.");
@@ -88,6 +84,16 @@ public class CommandPacketHandler implements PacketType {
 			ClanManager.message(player, message.substring(1));
 			return;
 		}
+    	
+    	if (player.inTutorial()) {
+    		return;
+    	}
+    	
+    	if (player.getDuelArena().isDueling()) {
+    		player.getActionSender().sendMessage("You cannot use commands while dueling.");
+			return;
+		}
+		
 		if (player.getRights().getValue() >= 0) {
 			processNormalCommand(player, cmd);
 		}

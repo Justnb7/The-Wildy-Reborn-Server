@@ -19,7 +19,7 @@ public class WalkingPacketHandler implements PacketType {
 			return;
 		}
 		
-		if (player.getInterfaceState().getCurrentInterface() > 0) {
+		if (player.getInterfaceState().getCurrentInterface() > 0 && !player.getDuelArena().isInSession() && !player.getTradeSession().isTrading()) {
 			player.getActionSender().removeAllInterfaces();
 		}
 		

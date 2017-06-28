@@ -3,6 +3,7 @@ package com.venenatis.game.model.combat;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Graphic;
@@ -171,6 +172,13 @@ public class PrayerHandler {
 	}
 
 	private static void activatePrayer(final Player player, final Prayers prayer) {
+		
+		if (player.getDuelArena().isDueling()) {
+			if (player.getDuelArena().getRules().get(DuelRule.PRAYER)) {
+				player.getActionSender().sendMessage("Prayer has been disabled in this duel.");
+				return;
+			}
+		}
 		
 		if (player.getSkills().getLevel(Skills.PRAYER) <= 0) {
 			player.getActionSender().sendMessage("You have run out of prayer points; recharge your prayer points at an altar.");

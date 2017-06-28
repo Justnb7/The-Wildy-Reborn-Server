@@ -3,6 +3,7 @@ package com.venenatis.game.consumables.food;
 import java.util.HashMap;
 import java.util.Optional;
 
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
@@ -165,6 +166,12 @@ public class FoodConsumable {
 		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 			return;
 		}
+		
+		if (player.getDuelArena().getRules().get(DuelRule.FOOD)) {
+			player.getActionSender().sendMessage("Consuming food has been disabled!");
+			return;
+		}
+		
 		if (!player.lastSpear.elapsed(4000)) {
 			player.getActionSender().sendMessage("You are stunned and can not eat!");
 			return;

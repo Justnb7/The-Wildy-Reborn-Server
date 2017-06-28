@@ -1,6 +1,8 @@
 package com.venenatis.game.model.combat;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.activity.minigames.Minigame;
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
@@ -44,6 +46,17 @@ public class Combat {
 	 * @param seconds
 	 */
 	public static void skull(Player player, SkullType type, int seconds) {
+		//Certain minigames allows skulling
+		if (!MinigameHandler.execute(player, true, Minigame::canSkull)) {
+			return;
+		}
+		
+		//We can't skull in the duel arena
+		if (player.getDuelArena().isDueling()) {
+			return;
+		}
+		
+		//Apply the skull and timer
 		player.setSkullType(type);
 		player.setSkullTimer(seconds);
 		if(type == SkullType.RED_SKULL) {

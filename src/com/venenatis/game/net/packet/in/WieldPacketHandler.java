@@ -1,5 +1,6 @@
 package com.venenatis.game.net.packet.in;
 
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
@@ -44,6 +45,17 @@ public class WieldPacketHandler implements SubPacketType {
 
 			if (equip == null) {
 				return;
+			}
+			
+			if (player.getDuelArena().isDueling()) {
+				if (!player.getDuelArena().canEquip(equip)) {
+					if (player.getDuelArena().getRules().get(DuelRule.WHIP_DDS)) {
+						player.getActionSender().sendMessage("Only whips and dragon daggers are only allowed in this duel.");
+					} else {
+						player.getActionSender().sendMessage(equip.getType().name().toLowerCase() + "s are disabled in this duel.");
+					}
+					return;
+				}
 			}
 
 			if (!player.getController().canEquip(id, slot)) {

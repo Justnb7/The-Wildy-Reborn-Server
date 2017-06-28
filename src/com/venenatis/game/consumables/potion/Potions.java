@@ -1,6 +1,7 @@
 package com.venenatis.game.consumables.potion;
 
 import com.venenatis.game.consumables.Consumable;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.player.Player;
@@ -40,6 +41,11 @@ public class Potions extends Consumable {
 	public void consume() {
 		super.setCurrentDelay("potion");
 		if (getPlayer().isDead()) {
+			return;
+		}
+		
+		if (getPlayer().getDuelArena().getRules().get(DuelRule.DRINKS)) {
+			getPlayer().getActionSender().sendMessage("Consuming potions has been disabled!");
 			return;
 		}
 

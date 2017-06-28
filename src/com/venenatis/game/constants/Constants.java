@@ -247,4 +247,9 @@ public class Constants {
 	 */
 	public static final int CYLCE_RATE = 600;
 
+	/**
+	 * Are admins allowed to keep their items upon death?
+	 */
+	public static final boolean ADMIN_CAN_KEEP_ITEMS = false;
+
 }

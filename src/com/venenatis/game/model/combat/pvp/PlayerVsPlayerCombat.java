@@ -35,18 +35,6 @@ public class PlayerVsPlayerCombat {
 			player.debug("target in tut");
 			return false;
 		}
-		if(!Area.inWilderness(target)) {
-			player.getActionSender().sendMessage("That player is not in the wilderness.");
-			player.getWalkingQueue().reset();
-			Combat.resetCombat(player);
-			return false;
-		}
-		if(!Area.inWilderness(player)) {
-			player.getActionSender().sendMessage("You are not in the wilderness.");
-			player.getWalkingQueue().reset();
-			Combat.resetCombat(player);
-			return false;
-		}
 		if (target.inTutorial()) {
 			player.getActionSender().sendMessage("You cannot attack this player.");
 			player.getWalkingQueue().reset();

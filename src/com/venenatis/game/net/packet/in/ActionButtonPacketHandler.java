@@ -99,7 +99,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		/* Dueling */
 		if (player.getDuelArena().isInSession() || player.getDuelArena().getStage() == DuelStage.REWARD) {
-			System.out.println("clicked");
 			player.getDuelArena().handleButton(button);
 			return;
 		}

@@ -77,7 +77,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 	 *            The packet for this action.
 	 */
 	private void firstAction(Player player, int packet) {
-
 		final int interfaceId = player.getInStream().readUnsignedWordA();
 		final int removeSlot = player.getInStream().readUnsignedWordA();
 		final int removeId = player.getInStream().readUnsignedWordA();
@@ -110,32 +109,18 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case InterfaceConstants.REMOVE_INVENTORY_ITEM: {
 			final Item item = player.getInventory().get(removeSlot);
 
-			//System.out.println(item);
+			System.out.println(item);
 
 			if (item == null || item.getId() != removeId) {
 				return;
 			}
 
 			if (player.isTrading()) {
-				int limit = player.getInventory().getAmount(1);
+				int limit = player.getInventory().getAmount(removeId);
 				player.getTradeContainer().offerItem(item, limit);
 			} else if (player.getDuelArena().canOffer()) {
-				int limit = player.getInventory().getAmount(1);
+				int limit = player.getInventory().getAmount(removeId);
 				player.getDuelContainer().offerItem(item, limit);
-			}
-		}
-			break;
-			
-		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
-			final Item item = player.getDuelContainer().get(removeSlot);
-
-			if (item == null || item.getId() != removeId) {
-				return;
-			}
-
-			if (player.getDuelArena().canOffer()) {
-				int limit = player.getDuelContainer().getAmount(1);
-				player.getDuelContainer().removeOffer(item, limit);
 			}
 		}
 			break;
@@ -148,8 +133,23 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 
 			if (player.isTrading()) {
-				int limit = player.getTradeContainer().getAmount(1);
+				int limit = player.getTradeContainer().getAmount(removeId);
+
 				player.getTradeContainer().removeOffer(item, limit);
+			}
+		}
+			break;
+
+		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
+			final Item item = player.getDuelContainer().get(removeSlot);
+
+			if (item == null || item.getId() != removeId) {
+				return;
+			}
+
+			if (player.getDuelArena().canOffer()) {
+				int limit = player.getDuelContainer().getAmount(removeId);
+				player.getDuelContainer().removeOffer(item, limit);
 			}
 		}
 			break;
@@ -157,9 +157,13 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case InterfaceConstants.PRICE_CHECKER:
 			player.getPriceChecker().withdraw(removeId, removeSlot, 1);
 			break;
-			
+
 		case InterfaceConstants.WITHDRAW_BANK:
 			player.getBank().withdraw(removeId, removeSlot, 1);
+			break;
+
+		case InterfaceConstants.DEPOSIT_BOX:
+			player.getBank().deposit(removeId, removeSlot, 1);
 			break;
 
 		case InterfaceConstants.SHOP_INTERFACE:
@@ -171,8 +175,9 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		}
+
 	}
-	
+
 	/**
 	 * Handles the event when a player clicks on the second option of an item
 	 * container interface.
@@ -206,9 +211,9 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 			break;
-			
-		case InterfaceConstants.DEPOSIT_BOX:
-			player.getBank().deposit(removeId, removeSlot, 5);
+
+		case InterfaceConstants.SHOP_INTERFACE:
+			ShopManager.buy(player, removeId, 1, removeSlot);
 			break;
 
 		case InterfaceConstants.INVENTORY_STORE:
@@ -249,20 +254,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 			break;
-			
-		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
-			Item item = player.getDuelContainer().get(removeSlot);
-
-			if (item == null || item.getId() != removeId) {
-				return;
-			}
-
-			if (player.getDuelArena().canOffer()) {
-				int limit = player.getDuelContainer().getAmount(removeId);
-				player.getDuelContainer().removeOffer(new Item(removeId, 5), limit);
-			}
-		}
-			break;
 
 		case InterfaceConstants.REMOVE_TRADE_ITEM: {
 			Item item = player.getTradeContainer().get(removeSlot);
@@ -278,18 +269,29 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 			break;
-			
-		case InterfaceConstants.SHOP_INTERFACE:
-			ShopManager.buy(player, removeId, 10, removeSlot);
-			break;
-			
-		case InterfaceConstants.SHOP_INVENTORY:
-			ShopManager.sell(player, removeId, 5, removeSlot);
-			break;
-			
-			
+
+		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
+			Item item = player.getDuelContainer().get(removeSlot);
+
+			if (item == null || item.getId() != removeId) {
+				return;
+			}
+
+			if (player.getDuelArena().canOffer()) {
+				int limit = player.getDuelContainer().getAmount(removeId);
+				player.getDuelContainer().removeOffer(new Item(removeId, 5), limit);
+			}
 		}
-		
+			break;
+
+		case InterfaceConstants.DEPOSIT_BOX:
+			player.getBank().deposit(removeId, removeSlot, 5);
+			break;
+
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.sell(player, removeId, 1, removeSlot);
+			break;
+		}
 	}
 
 	/**
@@ -312,6 +314,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		}
 
 		switch (interfaceId) {
+
+		case InterfaceConstants.SHOP_INTERFACE:
+			ShopManager.buy(player, removeId, 10, removeSlot);
+			break;
 
 		case InterfaceConstants.INVENTORY_STORE:
 			if (player.getInterfaceState().isInterfaceOpen(48500)) {
@@ -351,20 +357,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 			break;
-			
-		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
-			Item item = player.getDuelContainer().get(removeSlot);
-
-			if (item == null || item.getId() != removeId) {
-				return;
-			}
-
-			if (player.getDuelArena().canOffer()) {
-				int limit = player.getDuelContainer().getAmount(removeId);
-				player.getDuelContainer().removeOffer(new Item(removeId, 10), limit);
-			}
-		}
-			break;
 
 		case InterfaceConstants.REMOVE_TRADE_ITEM: {
 			Item item = player.getTradeContainer().get(removeSlot);
@@ -381,18 +373,27 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		}
 			break;
 
+		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
+			Item item = player.getDuelContainer().get(removeSlot);
+
+			if (item == null || item.getId() != removeId) {
+				return;
+			}
+
+			if (player.getDuelArena().canOffer()) {
+				int limit = player.getDuelContainer().getAmount(removeId);
+				player.getDuelContainer().removeOffer(new Item(removeId, 10), limit);
+			}
+		}
+			break;
+
 		case InterfaceConstants.DEPOSIT_BOX:
 			player.getBank().deposit(removeId, removeSlot, 10);
 			break;
-			
-		case InterfaceConstants.SHOP_INTERFACE:
-			ShopManager.buy(player, removeId, 100, removeSlot);
-			break;
-			
-		case InterfaceConstants.SHOP_INVENTORY:
-			ShopManager.sell(player, removeId, 10, removeSlot);
-			break;
 
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.sell(player, removeId, 5, removeSlot);
+			break;
 		}
 	}
 
@@ -413,6 +414,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		}
 
 		switch (interfaceId) {
+
+		case InterfaceConstants.SHOP_INTERFACE:
+			ShopManager.buy(player, removeId, 100, removeSlot);
+			break;
 
 		case InterfaceConstants.INVENTORY_STORE:
 			if (player.getInterfaceState().isInterfaceOpen(48500)) {
@@ -444,20 +449,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 			break;
-			
-		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
-			Item item = player.getDuelContainer().get(removeSlot);
-
-			if (item == null || item.getId() != removeId) {
-				return;
-			}
-
-			if (player.getDuelArena().canOffer()) {
-				int limit = player.getDuelContainer().getAmount(removeId);
-				player.getDuelContainer().removeOffer(new Item(removeId, 100), limit);
-			}
-		}
-			break;
 
 		case -32515: {
 			Item item = player.getTradeContainer().get(removeSlot);
@@ -473,6 +464,20 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		}
 			break;
 
+		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
+			Item item = player.getDuelContainer().get(removeSlot);
+
+			if (item == null || item.getId() != removeId) {
+				return;
+			}
+
+			if (player.getDuelArena().canOffer()) {
+				int limit = player.getDuelContainer().getAmount(removeId);
+				player.getDuelContainer().removeOffer(new Item(removeId, 100), limit);
+			}
+		}
+			break;
+
 		case InterfaceConstants.PRICE_CHECKER:
 			player.getPriceChecker().withdraw(removeId, removeSlot, Integer.MAX_VALUE);
 			break;
@@ -483,6 +488,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case InterfaceConstants.DEPOSIT_BOX:
 			player.getBank().deposit(removeId, removeSlot, Integer.MAX_VALUE);
+			break;
+
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.sell(player, removeId, 10, removeSlot);
 			break;
 
 		}
@@ -505,6 +514,11 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		if (player.inDebugMode() && player.getRights().equals(Rights.ADMINISTRATOR)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FifthOption - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
+		}
+
+		if (player.xInterfaceId == InterfaceConstants.SHOP_INTERFACE) {
+			ShopManager.buy(player, player.xRemoveId, 500, player.xRemoveSlot);
+			return;
 		}
 
 		player.getOutStream().writeFrame(27);
@@ -557,20 +571,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 			player.getBank().deposit(player.xRemoveId, player.xRemoveSlot, amountX);
 			break;
-			
-		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
-			Item item = player.getDuelContainer().get(player.xRemoveSlot);
-
-			if (item == null || item.getId() != player.xRemoveId) {
-				return;
-			}
-
-			if (player.getDuelArena().canOffer()) {
-				int limit = player.getDuelContainer().getAmount(player.xRemoveId);
-				player.getDuelContainer().removeOffer(new Item(player.xRemoveId, amountX), limit);
-			}
-		}
-			break;
 
 		case InterfaceConstants.REMOVE_INVENTORY_ITEM: {
 			Item item = player.getInventory().get(player.xRemoveSlot);
@@ -582,6 +582,9 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			if (player.isTrading()) {
 				int limit = player.getInventory().getAmount(player.xRemoveId);
 				player.getTradeContainer().offerItem(new Item(player.xRemoveId, amountX), limit);
+			} else if (player.getDuelArena().canOffer()) {
+				int limit = player.getInventory().getAmount(player.xRemoveId);
+				player.getDuelContainer().offerItem(new Item(player.xRemoveId, amountX), limit);
 			}
 		}
 			break;
@@ -596,6 +599,20 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			if (player.isTrading()) {
 				int limit = player.getTradeContainer().getAmount(player.xRemoveId);
 				player.getTradeContainer().removeOffer(new Item(player.xRemoveId, amountX), limit);
+			}
+		}
+			break;
+
+		case InterfaceConstants.PLAYER_STAKE_CONTAINER: {
+			Item item = player.getDuelContainer().get(player.xRemoveSlot);
+
+			if (item == null || item.getId() != player.xRemoveId) {
+				return;
+			}
+
+			if (player.getDuelArena().canOffer()) {
+				int limit = player.getDuelContainer().getAmount(player.xRemoveId);
+				player.getDuelContainer().removeOffer(new Item(player.xRemoveId, amountX), limit);
 			}
 		}
 			break;

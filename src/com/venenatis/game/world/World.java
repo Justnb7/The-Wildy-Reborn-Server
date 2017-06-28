@@ -291,6 +291,23 @@ public class World implements Service {
 		if (player.getTradeSession().isTrading()) {
 			player.getTradeSession().declineTrade(true);
 		}
+
+		/*
+		 * Remove from duel
+		 */
+		if (player.getDuelArena().isInSession()) {
+			player.getDuelArena().declineDuel(true);
+		}
+
+		/*
+		 * Reward our opponent when we kick our session
+		 */
+		if (player.getDuelArena().isDueling()) {
+			player.getDuelArena().getOther().get().getDuelArena().setWon(true);
+			player.getDuelArena().setWon(false);
+			player.getDuelArena().onEnd();
+			return;
+		}
 		
 		/*
 		 * Close price checker

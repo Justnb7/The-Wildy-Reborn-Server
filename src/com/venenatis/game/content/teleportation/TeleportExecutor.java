@@ -12,7 +12,6 @@ import com.venenatis.game.task.ScheduledTask;
 import com.venenatis.server.Server;
 
 
-
 /**
  * Executes a new teleport.
  * @date Aug 24, 2015 10:03:43 PM
@@ -182,6 +181,11 @@ public class TeleportExecutor {
 	 * @return If the player can teleport
 	 */
 	public static boolean canTeleport(Player player) {
+		
+		if (player.getDuelArena().isDueling()) {
+			player.getActionSender().sendMessage("You cannot teleport while you are dueling.");
+			return false;
+		}
 
 		if (!player.teleblock.elapsed(player.teleblockLength)) {
 			player.getActionSender().sendMessage("You are teleblocked and can't teleport.");

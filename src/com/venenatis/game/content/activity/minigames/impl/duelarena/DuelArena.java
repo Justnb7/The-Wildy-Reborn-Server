@@ -419,16 +419,13 @@ public final class DuelArena extends Minigame {
 
 		switch (button) {
 
-			case 31018:
-			case 31008:
-			case 31002:
-			case 31523:
-			case 31502:
+			case 121042:
+			case 123035:
 				declineDuel(true);
 				break;
 
-			case 31520:
-			case 31015:
+			case 121039:
+			case 123032:
 				acceptOffer();
 				break;
 

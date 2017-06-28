@@ -169,14 +169,18 @@ public class PlayerOptionPacketHandler implements PacketType {
 		if (!player.getController().canAttackPlayer(player, other)) {
 			return;
 		}
-
-		if (!Area.inWilderness(player)) {
-			player.getActionSender().sendMessage("You can not attack players while in a safe zone!");
+		
+		if (!Area.inWilderness(player) && !player.getDuelArena().isDueling()) {
+			player.getActionSender().sendMessage("You're not in the wilderness.");
+			player.getWalkingQueue().reset();
+			Combat.resetCombat(player);
 			return;
 		}
 		
-		if (!Area.inWilderness(other)) {
-			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is currently in a safe zone and can not be attacked.");
+		if (!Area.inWilderness(other) && !player.getDuelArena().isDueling()) {
+			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is not in the wilderness.");
+			player.getWalkingQueue().reset();
+			Combat.resetCombat(player);
 			return;
 		}
 

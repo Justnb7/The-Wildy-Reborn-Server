@@ -683,8 +683,8 @@ public final class DuelArena extends Minigame {
 		winner.setTeleportTarget(RESPAWN_LOCATIONS.get(Utility.random(RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
 		loser.setTeleportTarget(RESPAWN_LOCATIONS.get(Utility.random(RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
 
-		winner.getActionSender().createPlayerHint(10, loser.getIndex());
-		loser.getActionSender().createPlayerHint(10, winner.getIndex());
+		winner.getActionSender().createPlayerHint(10, -1);
+		loser.getActionSender().createPlayerHint(10, -1);
 
 		winner.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
 		loser.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);

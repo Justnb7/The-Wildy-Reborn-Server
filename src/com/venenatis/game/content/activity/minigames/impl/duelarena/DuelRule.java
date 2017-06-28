@@ -14,7 +14,7 @@ import com.venenatis.game.model.entity.player.Player;
  * @author Seven
  */
 public enum DuelRule {
-	RANGED(31034, 631, new RuleCondition()  {
+	RANGED(121058, 631, new RuleCondition()  {
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
 			if (rules.get(DuelRule.MELEE) && rules.get(DuelRule.MAGIC)) {
@@ -26,7 +26,7 @@ public enum DuelRule {
 
 	}),
 
-	MELEE(31035, 632, new RuleCondition() {
+	MELEE(121059, 632, new RuleCondition() {
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
 			if (rules.get(DuelRule.MAGIC) && rules.get(DuelRule.RANGED)) {
@@ -42,7 +42,7 @@ public enum DuelRule {
 		}
 	}),
 
-	MAGIC(31036, 633, new RuleCondition() {
+	MAGIC(121060, 633, new RuleCondition() {
 
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
@@ -53,9 +53,9 @@ public enum DuelRule {
 			return true;
 		}
 	}),
-	SPECIAL_ATTACKS(31037, 634, (player, rules) -> true),
-	FUN_WEAPONS(31038, 635, (player, rules) -> true),
-	FORFEIT(31039, 636, new RuleCondition() {
+	SPECIAL_ATTACKS(121061, 634, (player, rules) -> true),
+	FUN_WEAPONS(121062, 635, (player, rules) -> true),
+	FORFEIT(121063, 636, new RuleCondition() {
 
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
@@ -66,10 +66,10 @@ public enum DuelRule {
 			return true;
 		}
 	}),
-	PRAYER(31040, 637, (player, rules) -> true),
-	DRINKS(31041, 638, (player, rules) -> true),
-	FOOD(31042, 639, (player, rules) -> true),
-	MOVEMENT(31043, 640, new RuleCondition() {
+	PRAYER(121064, 637, (player, rules) -> true),
+	DRINKS(121065, 638, (player, rules) -> true),
+	FOOD(121066, 639, (player, rules) -> true),
+	MOVEMENT(121067, 640, new RuleCondition() {
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
 			if (rules.get(DuelRule.OBSTACLES)) {
@@ -83,7 +83,7 @@ public enum DuelRule {
 			return true;
 		}
 	}),
-	OBSTACLES(31044, 641,  new RuleCondition() {
+	OBSTACLES(121068, 641,  new RuleCondition() {
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
 			if (rules.get(DuelRule.MOVEMENT)) {
@@ -93,7 +93,7 @@ public enum DuelRule {
 			return true;
 		}
 	}),
-	WHIP_DDS(31056, 642, new RuleCondition() {
+	WHIP_DDS(121080, 642, new RuleCondition() {
 
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
@@ -104,11 +104,11 @@ public enum DuelRule {
 			return true;
 		}
 	}),
-	HEAD(13813, 16384, EquipmentConstants.HELM_SLOT, (player, rules) -> true),
-	CAPE(13814, 32768, EquipmentConstants.CAPE_SLOT, (player, rules) -> true),
-	NECKLACE(13815, 65536, EquipmentConstants.NECKLACE_SLOT, (player, rules) -> true),
-	AMMO(13816, 134217728, EquipmentConstants.AMMO_SLOT, (player, rules) -> true),
-	WEAPON(13817, 131072, EquipmentConstants.WEAPON_SLOT, new RuleCondition() {
+	HEAD(53245, 16384, EquipmentConstants.HELM_SLOT, (player, rules) -> true),
+	CAPE(53246, 32768, EquipmentConstants.CAPE_SLOT, (player, rules) -> true),
+	NECKLACE(53247, 65536, EquipmentConstants.NECKLACE_SLOT, (player, rules) -> true),
+	AMMO(53248, 134217728, EquipmentConstants.AMMO_SLOT, (player, rules) -> true),
+	WEAPON(53249, 131072, EquipmentConstants.WEAPON_SLOT, new RuleCondition() {
 		@Override
 		public boolean canSelect(Player player, DuelRules rules) {
 			if (rules.get(DuelRule.WHIP_DDS)) {
@@ -118,12 +118,12 @@ public enum DuelRule {
 			return true;
 		}
 	}),
-	BODY(13818, 262144, EquipmentConstants.TORSO_SLOT,(player, rules) -> true),
-	SHIELD(13819, 524288, EquipmentConstants.SHIELD_SLOT, (player, rules) -> true),
-	LEGS(13820, 2097152, EquipmentConstants.LEGS_SLOT, (player, rules) -> true),
-	GLOVES(13823, 8388608, EquipmentConstants.GLOVES_SLOT, (player, rules) -> true),
-	BOOTS(13822, 16777216, EquipmentConstants.BOOTS_SLOT, (player, rules) -> true),
-	RINGS(13821, 67108864, EquipmentConstants.RING_SLOT, (player, rules) -> true);
+	BODY(53250, 262144, EquipmentConstants.TORSO_SLOT,(player, rules) -> true),
+	SHIELD(53251, 524288, EquipmentConstants.SHIELD_SLOT, (player, rules) -> true),
+	LEGS(53252, 2097152, EquipmentConstants.LEGS_SLOT, (player, rules) -> true),
+	GLOVES(53255, 8388608, EquipmentConstants.GLOVES_SLOT, (player, rules) -> true),
+	BOOTS(53254, 16777216, EquipmentConstants.BOOTS_SLOT, (player, rules) -> true),
+	RINGS(53253, 67108864, EquipmentConstants.RING_SLOT, (player, rules) -> true);
 
 	/**
 	 * The button for this rule.

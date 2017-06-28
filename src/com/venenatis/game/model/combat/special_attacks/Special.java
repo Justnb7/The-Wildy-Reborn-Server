@@ -37,7 +37,7 @@ public class Special {
 				resetSpecial(attacker);
 				return;
 			}
-			if (!attacker.getController().canUseSpecialAttack(attacker)) {
+			if (!attacker.getController().canUseSpecial(attacker)) {
 				attacker.debug("controller says no");
 				return;
 			}

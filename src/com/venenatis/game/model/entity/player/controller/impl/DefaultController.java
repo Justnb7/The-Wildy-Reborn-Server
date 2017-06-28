@@ -1,24 +1,116 @@
 package com.venenatis.game.model.entity.player.controller.impl;
 
-import com.venenatis.game.constants.Constants;
-import com.venenatis.game.location.Location;
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
+import com.venenatis.game.content.bounty.BountyHunter;
+import com.venenatis.game.content.bounty.BountyHunterConstants;
+import com.venenatis.game.location.Area;
+import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.PlayerOption;
+import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
 
 public class DefaultController extends Controller {
 
 	@Override
-	public boolean canTalk(Player player) {
+	public boolean canAttackNPC() {
 		return true;
 	}
 
 	@Override
-	public boolean canMove(Player p) {
+	public boolean canAttackPlayer(Player player, Player opponent) {
 		return true;
 	}
 
 	@Override
-	public boolean canClick(Player player) {
+	public boolean canClickButton(int button) {
+		return true;
+	}
+
+	@Override
+	public boolean canClickEntity(Entity entity) {
+		return true;
+	}
+
+	@Override
+	public boolean canClickObject(int object) {
+		return true;
+	}
+
+	@Override
+	public boolean canDrink() {
+		return true;
+	}
+
+	@Override
+	public boolean canDrop(int item) {
+		return true;
+	}
+
+	@Override
+	public boolean canCommand() {
+		return true;
+	}
+
+	@Override
+	public boolean canEat() {
+		return true;
+	}
+
+	@Override
+	public boolean canEquip(int item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean canLogout() {
+		return true;
+	}
+
+	@Override
+	public boolean canMove() {
+		return true;
+	}
+
+	@Override
+	public boolean canPickup(int item) {
+		return true;
+	}
+
+	@Override
+	public boolean canPray(Prayers prayer) {
+		return true;
+	}
+
+	@Override
+	public boolean canSave() {
+		return true;
+	}
+
+	@Override
+	public boolean canTalk() {
+		return true;
+	}
+
+	@Override
+	public boolean canTeleport() {
+		return true;
+	}
+
+	@Override
+	public boolean canTrade() {
+		return true;
+	}
+
+	@Override
+	public boolean canUnequip(int item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean canUseSpecial(Player player) {
 		return true;
 	}
 
@@ -28,116 +120,118 @@ public class DefaultController extends Controller {
 	}
 
 	@Override
-	public boolean canAttackNPC(Player player) {
-		return true;
+	public void onDeath(Player player) {
 	}
 
 	@Override
-	public boolean canAttackPlayer(Player p, Player p2) {
-		return false;
+	public void onExit(Player player) {
+		player.logout();
 	}
 
 	@Override
-	public void onDisconnect(Player p) {
+	public void onLogout(Player player) {
+	}
+
+	@Override
+	public void onStartup(Player player) {
+		onStep(player);
+
+		if (player.getClanChat() != null || player.getClanChat() == "") {
+			ClanManager.join(player, player.getClanChat());
+		}
+
+	}
+
+	@Override
+	public void onTeleport(Player player) {
+
+	}
+
+	@Override
+	public void onStep(Player player) {
+		player.getActionSender().sendMultiIcon(Area.inMultiCombatZone(player) ? 1 : -1);
+
+		/* Minigame */
+		if (MinigameHandler.search(player).isPresent()) {
+			MinigameHandler.search(player).ifPresent(m -> m.onDisplay(player));
+
+			/* Wilderness */
+		} else if (Area.inWilderness(player)) {
+
+			int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
+
+			player.setWildLevel(((modY - 3521) / 8) + 1);
+
+	        player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
+
+	        player.setAttribute("left_wild_delay", 0);
+	        BountyHunter.writeBountyStrings(player);
+	        player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
+
+			player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true);
+
+			player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
+
+		     /* Safezone */
+        } else if (Area.inSafezone(player) && !player.isInMinigame()) {
+ 
+            player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
+            player.getActionSender().sendWalkableInterface(-1);
+
+			/* Duel Arena */
+		} else if (Area.inDuelArena(player) || player.getDuelArena().getStage() == DuelStage.ARENA) {
+			if (player.getDuelArena().getStage() != DuelStage.ARENA) {
+				player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
+				player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
+			} else {
+				player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true);
+				player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
+			}
+			player.getActionSender().sendWalkableInterface(player.getDuelArena().getStage() == DuelStage.ARENA ? -1 : 201);
+		}
+	}
+
+	@Override
+	public void process(Player player) {
+		if (!(player.getWalkingQueue().isMoving() && player.getWalkingQueue().isRunning()) && player.getRunEnergy() != 100) {
+
+			player.setRunRestore(player.getRunRestore() + 1);
+
+			if (player.getRunRestore() == 3) {
+				player.setRunRestore(0);
+
+				int energy = player.getRunEnergy() + 1;
+
+				if (energy > 100)
+					energy = 100;
+
+				player.setRunEnergy(energy);
+				player.getActionSender().sendRunEnergy();
+			}
+		} else if (player.getWalkingQueue().isMoving() && player.getWalkingQueue().isRunning()) {
+			if (player.getRunEnergy() <= 0) {
+				player.getWalkingQueue().setRunningToggled(false);
+				player.getActionSender().sendConfig(152, 0);
+			} else {
+				player.setRunEnergy(player.getRunEnergy() - 1);
+				player.getActionSender().sendRunEnergy();
+			}
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "DEFAULT";
-	}
-
-	@Override
-	public boolean canLogOut(Player player) {
-		return true;
-	}
-
-	@Override
-	public void tick(Player player) {
-	}
-
-	@Override
-	public void onControllerInit(Player player) {
-		player.getActionSender().sendWalkableInterface(-1);
-		player.getActionSender().sendInteractionOption("null", 3, true);
-	}
-
-	@Override
-	public void onDeath(Player p) {
-	}
-
-	@Override
-	public Location getRespawnLocation(Player player) {
-		return Constants.RESPAWN_PLAYER_LOCATION;
-	}
-
-	@Override
-	public boolean canTeleport(Player player) {
-		return true;
-	}
-
-	@Override
-	public boolean canTrade(Player player) {
-		return true;
-	}
-
-	@Override
-	public boolean canEquip(Player p, int id, int slot) {
-		return true;
-	}
-
-	@Override
-	public boolean canUsePrayer(Player p) {
-		return true;
-	}
-
-	@Override
-	public boolean canEat(Player p) {
-		return true;
-	}
-
-	@Override
-	public boolean canDrink(Player p) {
-		return true;
-	}
-
-	@Override
-	public boolean canUseSpecialAttack(Player p) {
-		return true;
-	}
-
-	@Override
-	public boolean transitionOnWalk(Player p) {
-		return true;
-	}
-
-	@Override
-	public void onTeleport(Player p) {
-	}
-
-	@Override
-	public boolean allowMultiSpells(Player player) {
-		return true;
-	}
-
-	@Override
-	public boolean allowPvPCombat(Player player) {
-		return false;
-	}
-
-	@Override
-	public boolean canSave() {
-		return true;
+		return "Default Controller";
 	}
 
 	@Override
 	public void onWalk(Player player) {
-		player.getActionSender().sendWalkableInterface(-1);
-		player.getActionSender().sendInteractionOption("null", 3, true);
+
 	}
 
 	@Override
-	public void onControllerLeave(Player player) {
-		// TODO Auto-generated method stub
-		
+	public boolean canInteract() {
+		return true;
 	}
+
 }

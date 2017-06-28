@@ -80,7 +80,7 @@ public class BountyHunter extends ScheduledTask {
 		String wealth = "---";
 		if (target != null) {
 			targetName = target.getUsername();
-			level = Area.inWilderness(target) ? target.wildLevel : 0;
+			level = Area.inWilderness(target) ? target.getWildLevel() : 0;
 			minLevel = level - 2 <= 0 ? 1 : level - 2;
 			maxLevel = level + 2;
 			combat = target.combatLevel;
@@ -89,7 +89,7 @@ public class BountyHunter extends ScheduledTask {
 
 		player.getActionSender().sendString(wealth, BountyHunterConstants.WEALTH_STRING_ID);
 		player.getActionSender().sendString(targetName, BountyHunterConstants.TARGET_NAME_STRING_ID);
-		int levelDifference = player.wildLevel - level;
+		int levelDifference = player.getWildLevel() - level;
 		int color = (0 << 10 | 255 << 5 | 0);
 		if (level != -1) {
 			if (levelDifference > 10 || levelDifference < -10) {

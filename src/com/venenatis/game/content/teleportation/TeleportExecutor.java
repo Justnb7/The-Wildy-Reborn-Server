@@ -187,7 +187,7 @@ public class TeleportExecutor {
 			player.getActionSender().sendMessage("You are teleblocked and can't teleport.");
 			return false;
 		}
-		if (Area.inWilderness(player) && player.wildLevel > 20 && !player.usingObelisk && !isUsingLever()) {
+		if (Area.inWilderness(player) && player.getWildLevel() > 20 && !player.usingObelisk && !isUsingLever()) {
 			player.getActionSender().sendMessage("You can't teleport above level " + 20 + " in the wilderness.");
 			return false;
 		}

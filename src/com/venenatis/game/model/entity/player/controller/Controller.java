@@ -1,72 +1,72 @@
 package com.venenatis.game.model.entity.player.controller;
 
-import com.venenatis.game.location.Location;
+import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 
-
-
 public abstract class Controller {
-	
-	public abstract void tick(Player player);
 
-	public abstract boolean canTalk(Player player);
+    public abstract boolean canAttackNPC();
 
-	public abstract boolean canMove(Player player);
+    public abstract boolean canAttackPlayer(Player player, Player opponent);
 
-	public abstract boolean canSave();
+    public abstract boolean canClickButton(int button);
+    
+    public abstract boolean canClickEntity(Entity entity);
+    
+    public abstract boolean canClickObject(int object);
+    
+    public abstract boolean canInteract();
 
-	public abstract boolean canClick(Player player);
+    public abstract boolean canDrink();
 
-	public abstract boolean isSafe();
+    public abstract boolean canDrop(int item);
 
-	public abstract boolean canAttackNPC(Player player);
+    public abstract boolean canEat();
 
-	public abstract boolean canAttackPlayer(Player attacker, Player victim);
+    public abstract boolean canEquip(int item, int slot);
 
-	public abstract boolean allowMultiSpells(Player player);
+    public abstract boolean canLogout();
 
-	public abstract boolean allowPvPCombat(Player player);
+    public abstract boolean canMove();
 
-	public abstract void onDeath(Player player);
+    public abstract boolean canPickup(int item);
 
-	public abstract Location getRespawnLocation(Player player);
+    public abstract boolean canPray(Prayers prayer);
 
-	public abstract boolean canLogOut(Player player);
+    public abstract boolean canSave();
 
-	public abstract void onDisconnect(Player player);
+    public abstract boolean canTalk();
 
-	public abstract void onControllerInit(Player player);
+    public abstract boolean canTeleport();
 
-	public abstract boolean canTeleport(Player player);
+    public abstract boolean canTrade();
 
-	public abstract void onTeleport(Player player);
+    public abstract boolean canUnequip(int item, int slot);
 
-	public abstract boolean canTrade(Player player);
+    public abstract boolean canUseSpecial(Player player);
 
-	public abstract boolean canEquip(Player player, int id, int slot);
+    public abstract boolean isSafe();
 
-	public abstract boolean canUsePrayer(Player player);
+    public abstract void onDeath(Player player);
+    
+    public abstract boolean canCommand();
+    
+    public abstract void onWalk(Player player);
 
-	public abstract boolean canEat(Player player);
+    public abstract void onExit(Player player);
 
-	public abstract boolean canDrink(Player player);
+    public abstract void onLogout(Player player);
 
-	public abstract boolean canUseSpecialAttack(Player player);
+    public abstract void onStartup(Player player);
 
-	public abstract boolean transitionOnWalk(Player player);
-	
-	public abstract void onWalk(Player player);
-	
-	public abstract void onControllerLeave(Player player);
+    public abstract void onTeleport(Player player);
 
-	@Override
-	public abstract String toString();
+    public abstract void process(Player player);
+    
+    public abstract void onStep(Player player);
 
-	public void throwException(Player player, String action) {
-		System.out.println("||||||||||||||||||||||||||");
-		System.out.println("UNABLE TO " + action + " FOR PLAYER " + player.getUsername() + "!");
-		System.out.println("CONTROLLER: " + player.getController().toString());
-		System.out.println("||||||||||||||||||||||||||");
-	}
+    @Override
+    public abstract String toString();
+
 }
-

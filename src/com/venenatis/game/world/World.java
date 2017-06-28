@@ -300,11 +300,6 @@ public class World implements Service {
 		}
 		
 		/*
-		 * Send our controller check
-		 */
-		player.getController().onDisconnect(player);
-		
-		/*
 		 * Remove from kraken instance
 		 */
 		

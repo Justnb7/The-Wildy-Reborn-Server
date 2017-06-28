@@ -28,7 +28,7 @@ public class ChatPacketHandler implements PacketType {
 			return;
 		}
 		
-		if (!player.getController().canTalk(player)) {
+		if (!player.getController().canTalk()) {
 			return;
 		}
 		

@@ -46,7 +46,7 @@ public class WieldPacketHandler implements SubPacketType {
 				return;
 			}
 
-			if (!player.getController().canEquip(player, id, slot)) {
+			if (!player.getController().canEquip(id, slot)) {
 				return;
 			}
 			

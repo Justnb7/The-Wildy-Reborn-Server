@@ -4,6 +4,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -14,6 +15,7 @@ import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.clan.ClanRank;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
@@ -306,24 +308,39 @@ public class ActionSender {
 	}
 	
 	/**
-	 * Sends the player an option.
+	 * Creates a new {@link PlayerOption}.
 	 * 
-	 * @param slot
-	 *            The slot to place the option in the menu.
+	 * @param option
+	 * 		The option to show.
+	 * 
 	 * @param top
-	 *            Flag which indicates the item should be placed at the top.
-	 * @return The action sender instance, for chaining.
-	 */
-	public ActionSender sendInteractionOption(String option, int slot, boolean top) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().putFrameVarByte(104);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeByte((byte) -slot);
-			player.getOutStream().putByteA(top ? (byte) 0 : (byte) 1);
-			player.getOutStream().putRS2String(option);
-			player.getOutStream().putFrameSizeByte(offset);
-			player.flushOutStream();
-		}
+	 * 		The flag to display this as the first option.
+	 */	
+	public ActionSender sendPlayerOption(PlayerOption option, boolean top) {
+		sendPlayerOption(option, top, false);
+		return this;
+	}
+	
+	/**
+	 * Creates a new {@link PlayerOption}.
+	 * 
+	 * @param option
+	 * 		The option to show.
+	 * 
+	 * @param top
+	 * 		The flag to display this as the first option.
+	 * 
+	 * @param disable
+	 * 		The flag to remove this option.
+	 */	
+	public ActionSender sendPlayerOption(PlayerOption option, boolean top, boolean disable) {
+		player.getOutStream().putFrameVarByte(104);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().writeByte(option.getSlot());
+		player.getOutStream().putByteA(top ? 1 : 0);
+		player.getOutStream().putRS2String(disable ? "null" : option.getName());
+		player.getOutStream().putFrameSizeByte(offset);
+		player.flushOutStream();
 		return this;
 	}
 	
@@ -396,7 +413,7 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendMultiway(int icon) {
+	public ActionSender sendMultiIcon(int icon) {
 		if (player != null) {
             player.outStream.writeFrame(61);
             player.outStream.writeByte(icon);
@@ -927,6 +944,8 @@ public class ActionSender {
 			sendSidebarInterface(6, 29999);
 		}
 		
+		player.getController().onStartup(player);
+		
 		//Reset prayers
 		PrayerHandler.resetAllPrayers(player);
 		
@@ -945,8 +964,7 @@ public class ActionSender {
 		player.getWeaponInterface().restoreWeaponAttributes();
 		
 		//Send the interaction options
-		sendInteractionOption("Trade With", 4, true);
-		sendInteractionOption("Follow", 5, true);
+		showContextMenus();
 		
 		//We can go ahead and finalize the game configs
 		updateConfigs();
@@ -963,6 +981,19 @@ public class ActionSender {
 		//activate login delay
 		player.setAttribute("login_delay", System.currentTimeMillis());
 		return this;
+	}
+	
+	public void showContextMenus() {
+		if (Area.inWilderness(player)) {
+			sendPlayerOption(PlayerOption.ATTACK, true);
+			sendPlayerOption(PlayerOption.FOLLOW, false);
+		} else if (Area.inDuelArena(player)) {
+			sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
+			sendPlayerOption(PlayerOption.FOLLOW, false);
+		} else {
+			sendPlayerOption(PlayerOption.FOLLOW, false);
+		}
+		sendPlayerOption(PlayerOption.TRADE_REQUEST, false);
 	}
 	
 	public void updateConfigs() {

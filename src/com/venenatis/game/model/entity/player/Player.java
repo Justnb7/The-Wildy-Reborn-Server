@@ -15,6 +15,7 @@ import com.venenatis.game.consumables.potion.PotionData;
 import com.venenatis.game.consumables.potion.Potions;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.KillTracker.KillEntry;
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
@@ -54,6 +55,7 @@ import com.venenatis.game.model.entity.npc.SlayerDeathTracker;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.widget.Selection;
 import com.venenatis.game.model.entity.player.clan.Clan;
+import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
@@ -892,6 +894,10 @@ public class Player extends Entity {
 			}
 		});
 	}
+	
+	public boolean isInMinigame() {
+		return Area.inDuelArena(this) || this.getDuelArena().isDueling() || Area.inBarrows(this) || DuelArena.inArena(this) || DuelArena.inObstacleArena(this) || MinigameHandler.search(this).isPresent();
+	}
 
 	private long xlogDelay;
 	
@@ -1305,9 +1311,11 @@ public class Player extends Entity {
 	}
 
 	public void logout() {
-		//Are we allowed to logout
-		if (!controller.canLogOut(this)) {
-			return;
+		MinigameHandler.execute(this, $it -> $it.onLogout(this));
+		
+		
+		if (getClan() != null) {
+			ClanManager.leave(this, true);
 		}
 		
 		//Reset poison and venom
@@ -1329,6 +1337,7 @@ public class Player extends Entity {
 		} else {
 			getActionSender().sendMessage("You must wait 10 seconds before logging out.");
 		}
+		controller.onLogout(this);
 	}
 
 	@Override
@@ -1344,7 +1353,9 @@ public class Player extends Entity {
 
 		combatProcessing();
 
-		controller.tick(this);
+		if (controller != null) {
+			controller.process(this);
+		}
 
 		NPCAggression.process(this);
 
@@ -1406,19 +1417,6 @@ public class Player extends Entity {
 
 		// Handles following every game tick, only attacks when delay=0
 		Combat.playerVsEntity(this);
-	}
-
-	public void updateWalkEntities() {
-		ControllerManager.setControllerOnWalk(this);
-		ControllerManager.updateControllerOnWalk(this);
-		
-		if (hasMultiSign && !Area.inMultiCombatZone(this)) {
-			hasMultiSign = false;
-			this.getActionSender().sendMultiway(-1);
-		} else if (!hasMultiSign && Area.inMultiCombatZone(this)) {
-			hasMultiSign = true;
-			this.getActionSender().sendMultiway(1);
-		}
 	}
 
 	public int getChunckX() {
@@ -1565,9 +1563,9 @@ public class Player extends Entity {
 	 * @param controller
 	 * @return
 	 */
-	public boolean setController(Controller controller) {
+	public boolean setController(final Controller controller) {
 		this.controller = controller;
-		controller.onControllerInit(this);
+		controller.onStartup(this);
 		return true;
 	}
 
@@ -1580,7 +1578,6 @@ public class Player extends Entity {
 		if (controller == null) {
 			setController(ControllerManager.DEFAULT_CONTROLLER);
 		}
-
 		return controller;
 	}
 
@@ -2315,6 +2312,16 @@ public class Player extends Entity {
 	
 	public List<Integer> searchList = new ArrayList<>();
 	
+	private int wildLevel;
+	
+	public int getWildLevel() {
+		return wildLevel;
+	}
+
+	public void setWildLevel(int wildLevel) {
+		this.wildLevel = wildLevel;
+	}
+	
     /**
      * Integers
      */
@@ -2326,7 +2333,7 @@ public class Player extends Entity {
 
 	public int totalLevel,
 			lastChatId = 1, privateChat, specBarId,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, wildLevel, teleTimer, walkTutorial = 15, bountyPoints;
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, teleTimer, walkTutorial = 15, bountyPoints;
 	
 	/**
 	 * Booleans
@@ -2891,6 +2898,26 @@ public class Player extends Entity {
 	
 	public InputString getInputString() {
 		return inputString;
+	}
+	
+	private int runEnergy;
+	
+	public int getRunEnergy() {
+		return runEnergy;
+	}
+
+	public void setRunEnergy(int runEnergy) {
+		this.runEnergy = runEnergy;
+	}
+	
+	private int runRestore;
+
+	public int getRunRestore() {
+		return runRestore;
+	}
+
+	public void setRunRestore(int runRestore) {
+		this.runRestore = runRestore;
 	}
 
 }

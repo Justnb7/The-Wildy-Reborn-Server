@@ -109,7 +109,7 @@ public class Teleports {
 			return false;
 		}
 
-		if (Area.inWilderness(player) && player.wildLevel > 20) {
+		if (Area.inWilderness(player) && player.getWildLevel() > 20) {
 			player.getActionSender().sendMessage("You cannot teleport above level 20 wilderness.");
 			return false;
 		}

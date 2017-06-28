@@ -188,7 +188,7 @@ public class PlayerVsNpcCombat {
 			return false;
 		}
 
-		if (!player.getController().canAttackNPC(player)) {
+		if (!player.getController().canAttackNPC()) {
 			//System.out.println("blocked");
 			return false;
 		}

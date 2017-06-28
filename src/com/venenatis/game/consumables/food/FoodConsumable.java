@@ -158,7 +158,7 @@ public class FoodConsumable {
 
 	public void eat(int id, int slot) {
 		
-		if (!player.getController().canEat(player)) {
+		if (!player.getController().canEat()) {
 			return;
 		}
 		

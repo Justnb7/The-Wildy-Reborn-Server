@@ -401,13 +401,6 @@ public class WalkingQueue {
 		}
 	}
 
-	public boolean canMove(int dir) {
-		if (!player.getController().canMove(player)) {
-			return false;
-		}
-		return true;
-	}
-
 	/**
 	 * Gets the next point of movement.
 	 * 
@@ -435,7 +428,9 @@ public class WalkingQueue {
 			int diffY = WalkingConstants.DIRECTION_DELTA_Y[p.dir];
 			player.setLocation(player.getPosition().transform(diffX, diffY, 0));
 			player.updateCoverage(player.getPosition().transform(diffX, diffY, 0));
-			player.updateWalkEntities();
+			if (player.getController() != null) {
+				player.getController().onStep(player);
+			}
 			/*
 			 * And return the direction.
 			 */

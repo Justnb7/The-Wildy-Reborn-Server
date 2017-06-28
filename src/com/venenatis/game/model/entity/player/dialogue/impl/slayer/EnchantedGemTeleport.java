@@ -18,7 +18,7 @@ public class EnchantedGemTeleport extends Dialogue {
 	@Override
 	protected void start(Object... paramaters) {
 		//TODO: Add other teleport restrictions.
-		if (player.wildLevel > 20) {
+		if (player.getWildLevel() > 20) {
 			player.getActionSender().sendMessage("You need to be lower than level 20 in the wilderness to do this action.");
 		} else {
 			send(Type.CHOICE, DEFAULT_OPTION_TITLE, "Mazchna", "Vannaka", "Chaeldar", "Nieve", "Duradel");

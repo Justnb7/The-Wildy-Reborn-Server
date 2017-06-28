@@ -20,6 +20,7 @@ import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.util.Utility;
@@ -671,8 +672,8 @@ public final class DuelArena extends Minigame {
 	public void onStart() {
 		onReset(player);
 		
-		player.getActionSender().sendInteractionOption("Challenge", 3, true);
-		other.get().getActionSender().sendInteractionOption("Challenge", 3, true);
+		player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, true, true);
+		other.get().getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, true, true);
 	}
 
 	@Override
@@ -688,11 +689,11 @@ public final class DuelArena extends Minigame {
 		winner.getActionSender().createPlayerHint(10, loser.getIndex());
 		loser.getActionSender().createPlayerHint(10, winner.getIndex());
 
-		player.getActionSender().sendInteractionOption("Challenge", 3, true);
-		loser.getActionSender().sendInteractionOption("Challenge", 3, true);
+		winner.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
+		loser.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
 		
-		player.getActionSender().sendInteractionOption("Attack", 3, true);
-		loser.getActionSender().sendInteractionOption("Attack", 3, true);
+		winner.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
+		loser.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
 
 		PrayerHandler.resetAllPrayers(winner);
 		PrayerHandler.resetAllPrayers(loser);

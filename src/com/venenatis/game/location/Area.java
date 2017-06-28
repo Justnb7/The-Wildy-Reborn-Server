@@ -129,23 +129,6 @@ public abstract class Area {
 		return GameConstants.F2P_ARENA.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
 	}
 
-	/**
-	 * Determines if an entity is in a safe-zone.
-	 * 
-	 * @param entity
-	 *            The entity to check.
-	 * 
-	 * @return {@code true} If this entity is in a safe-zone {@code false}
-	 *         otherwise.
-	 */
-	public static boolean inSafezone(Entity entity) {
-		return GameConstants.SAFE_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity) ||  inBarrows(entity) || inDuelArena(entity));
-	}
-	
-	public static boolean isAreaSafe(Location location) {
-		return GameConstants.SAFE_ZONES.stream().anyMatch($it -> $it.inArea(location));
-	}
-
 	public static boolean inGodwars(Entity entity) {
 		return inArea(entity, new Location(2816, 5243, 2), new Location(2960, 5400, 2));
 	}

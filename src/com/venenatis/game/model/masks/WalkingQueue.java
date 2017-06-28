@@ -3,6 +3,7 @@ package com.venenatis.game.model.masks;
 import com.venenatis.game.constants.WalkingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.task.impl.EnergyRestoreTick;
 import com.venenatis.game.util.DirectionUtils;
 import com.venenatis.game.world.World;
@@ -372,6 +373,14 @@ public class WalkingQueue {
 			 * Resets the teleport target.
 			 */
 			player.resetTeleportTarget();
+			
+			/*
+			 * Update the controller after teleporting
+			 */
+			Controller controller = player.getController();
+			if (controller != null) {
+				controller.onStep(player);
+			}
 		} else {
 			/*
 			 * If the player isn't teleporting, they are walking (or standing

@@ -168,26 +168,24 @@ public class DefaultController extends Controller {
 	        BountyHunter.writeBountyStrings(player);
 	        player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
 
-			player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true);
+			player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, false);
 
 			player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
-
-		     /* Safezone */
-        } else if (Area.inSafezone(player) && !player.isInMinigame()) {
- 
-            player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
-            player.getActionSender().sendWalkableInterface(-1);
 
 			/* Duel Arena */
 		} else if (Area.inDuelArena(player) || player.getDuelArena().getStage() == DuelStage.ARENA) {
 			if (player.getDuelArena().getStage() != DuelStage.ARENA) {
 				player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
-				player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
+				player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
 			} else {
-				player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true);
+				player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, false);
 				player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
 			}
 			player.getActionSender().sendWalkableInterface(player.getDuelArena().getStage() == DuelStage.ARENA ? -1 : 201);
+		} else {
+			player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, false, true);
+			player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
+            player.getActionSender().sendWalkableInterface(-1);
 		}
 	}
 

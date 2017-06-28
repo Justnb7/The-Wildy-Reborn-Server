@@ -315,32 +315,20 @@ public class ActionSender {
 	 * 
 	 * @param top
 	 * 		The flag to display this as the first option.
-	 */	
-	public ActionSender sendPlayerOption(PlayerOption option, boolean top) {
-		sendPlayerOption(option, top, false);
-		return this;
-	}
-	
-	/**
-	 * Creates a new {@link PlayerOption}.
-	 * 
-	 * @param option
-	 * 		The option to show.
-	 * 
-	 * @param top
-	 * 		The flag to display this as the first option.
 	 * 
 	 * @param disable
 	 * 		The flag to remove this option.
-	 */	
+	 */
 	public ActionSender sendPlayerOption(PlayerOption option, boolean top, boolean disable) {
-		player.getOutStream().putFrameVarByte(104);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().writeByte(option.getSlot());
-		player.getOutStream().putByteA(top ? 1 : 0);
-		player.getOutStream().putRS2String(disable ? "null" : option.getName());
-		player.getOutStream().putFrameSizeByte(offset);
-		player.flushOutStream();
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().putFrameVarByte(104);
+			int offset = player.getOutStream().offset;
+			player.getOutStream().writeByte((byte) -option.getSlot());
+			player.getOutStream().putByteA(top ? (byte) 0 : (byte) 1);
+			player.getOutStream().putRS2String(disable ? "null" : option.getName());
+			player.getOutStream().putFrameSizeByte(offset);
+			player.flushOutStream();
+		}
 		return this;
 	}
 	
@@ -985,15 +973,15 @@ public class ActionSender {
 	
 	public void showContextMenus() {
 		if (Area.inWilderness(player)) {
-			sendPlayerOption(PlayerOption.ATTACK, true);
-			sendPlayerOption(PlayerOption.FOLLOW, false);
+			sendPlayerOption(PlayerOption.ATTACK, true, false);
+			sendPlayerOption(PlayerOption.FOLLOW, false, false);
 		} else if (Area.inDuelArena(player)) {
-			sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
-			sendPlayerOption(PlayerOption.FOLLOW, false);
+			sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
+			sendPlayerOption(PlayerOption.FOLLOW, false, false);
 		} else {
-			sendPlayerOption(PlayerOption.FOLLOW, false);
+			sendPlayerOption(PlayerOption.FOLLOW, false, false);
 		}
-		sendPlayerOption(PlayerOption.TRADE_REQUEST, false);
+		sendPlayerOption(PlayerOption.TRADE_REQUEST, false, false);
 	}
 	
 	public void updateConfigs() {

@@ -23,30 +23,6 @@ public class GameConstants {
     
     public static final ImmutableList<Area> BARROWS_MINIGAME = ImmutableList.of(
     		new CircleArea("Outside circle", 3565, 3289, 0, 20));
-
-    /**
-     * The collection of areas that resemble safe zones.
-     */
-    public static final ImmutableList<Area> SAFE_ZONES = ImmutableList.of(
-	    new SquareArea("Varrock West Bank", 3180, 3433, 3190, 3447),
-	    new SquareArea("Varrock East Bank Downstairs", 3250, 3416, 3257, 3423),
-	    new SquareArea("Varrock East Bank Upstairs", 3250, 3416, 3257, 3423, 1),
-	    new CircleArea("Grand Exchange", 3164.5, 3489.5, 0, 17),
-	    new SquareArea("Barrows outside house", 3558, 3308, 3581, 3319),
-	    new SquareArea("Tzhaar City", 2433, 5123, 2492, 5182),
-	    new SquareArea("Near Fight Pits", 2398, 5176, 2426, 5182),
-	    new SquareArea("Near Fight Caves", 2424, 5171, 2432, 5175),
-	    new SquareArea("Yanille", 2537, 3075, 2618, 3120),
-	    new SquareArea("Edgeville Bank", 3091, 3488, 3098, 3499),
-	    new SquareArea("Camelot Bank Entrance", 2724, 3487, 2727, 3489),
-	    new SquareArea("Camelot Bank Lobby", 2721, 3490, 2730, 3493),
-	    new SquareArea("Camelot Bank Teller", 2719, 3494, 2730, 3496),
-	    new SquareArea("Catherby Bank", 2806, 3438, 2812, 3445),
-	    new SquareArea("Falador West Bank", 2943, 3368, 2947, 3373),
-	    new SquareArea("Falador West Bank 2", 2945, 3366, 2949, 3369),
-	    new SquareArea("Falador West Bank 3", 2946, 3359, 2948, 3365),
-	    new SquareArea("Falador East Bank", 3009, 3353, 3018, 3358),
-	    new SquareArea("Falador East Bank 2", 3019, 3353, 3021, 3356));
     
     public static final ImmutableList<Area> F2P_ARENA = ImmutableList.of(new SquareArea("F2P Minigame", 2076, 4459, 2095, 4473));
 

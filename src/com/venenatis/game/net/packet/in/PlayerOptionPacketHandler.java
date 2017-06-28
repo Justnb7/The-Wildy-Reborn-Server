@@ -170,12 +170,12 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 
-		if (Area.inSafezone(player)) {
+		if (!Area.inWilderness(player)) {
 			player.getActionSender().sendMessage("You can not attack players while in a safe zone!");
 			return;
 		}
 		
-		if (Area.inSafezone(other)) {
+		if (!Area.inWilderness(other)) {
 			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is currently in a safe zone and can not be attacked.");
 			return;
 		}
@@ -209,7 +209,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			}
 		}
 
-		if (Area.inSafezone(other)) {
+		if (!Area.inWilderness(other)) {
 			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is currently in a safe zone and can not be attacked.");
 			return;
 		}
@@ -218,7 +218,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 
-		if (Area.inSafezone(player)) {
+		if (!Area.inWilderness(player)) {
 			player.getActionSender().sendMessage("You can not attack players while in a safe zone!");
 			return;
 		}

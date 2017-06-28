@@ -689,8 +689,8 @@ public final class DuelArena extends Minigame {
 		winner.getActionSender().createPlayerHint(10, loser.getIndex());
 		loser.getActionSender().createPlayerHint(10, winner.getIndex());
 
-		winner.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
-		loser.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false);
+		winner.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
+		loser.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
 		
 		winner.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
 		loser.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);

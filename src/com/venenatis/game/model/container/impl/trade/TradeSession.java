@@ -10,6 +10,7 @@ import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.net.packet.ActionSender.MinimapState;
 import com.venenatis.game.util.Stopwatch;
+import com.venenatis.game.util.StringUtils;
 import com.venenatis.game.util.Utility;
 
 /**
@@ -84,16 +85,6 @@ public final class TradeSession {
 	 */
 	public void requestTrade(Player player, Player other) {			
 		player.setTradeRequest(true);
-
-		if (player.getRights().isIronMan(player)) {
-			player.getActionSender().sendMessage("Your game mode restricts you from trading other players.");
-			return;
-		}
-
-		if (player.getRights().isIronMan(other)) {
-			player.getActionSender().sendMessage("You can not trade an Ultimate-Ironman.");
-			return;
-		}
 
 		if (player.isTrading()) {
 			player.getActionSender().sendMessage("You are already trading someone.");
@@ -176,8 +167,8 @@ public final class TradeSession {
 			player.getActionSender().sendString("<col=65535>Are you sure you want to make this trade?", 33202);
 			player.getActionSender().sendString("<col=65535>Trading With:", 33207);
 			player.getActionSender().sendString(String.format("%s <col=65535>%s", Rights.getStringForRights(other.get()), Utility.formatName(other.get().getUsername())), 33208);
-			player.getActionSender().sendString(Utility.getItemNames(player.getTradeContainer().toArray()), 33221);
-			player.getActionSender().sendString(Utility.getItemNames(other.get().getTradeContainer().toArray()), 33251);
+			player.getActionSender().sendString(StringUtils.getItemNames(player.getTradeContainer().toArray()), 33221);
+			player.getActionSender().sendString(StringUtils.getItemNames(other.get().getTradeContainer().toArray()), 33251);
 			player.getActionSender().sendInterfaceWithInventoryOverlay(InterfaceConstants.SECOND_TRADE_SCREEN, 3213);
 			break;
 

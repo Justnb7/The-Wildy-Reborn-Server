@@ -1119,38 +1119,6 @@ public class Utility {
 		}
 		return s;
 	}
-	
-	/**
-	 * Gets the names of an array of items.
-	 * 
-	 * @param items
-	 *            The items to get the name of.
-	 * 
-	 * @return A single string of the names.
-	 */
-	public static String getItemNames(Item[] items) {
-		String tradeItems = "<col=ff9040>Absolutely nothing!";
-		String tradeAmount = "";
-
-		int count = 0;
-
-		for (Item item : items) {
-			if (item == null) {
-				continue;
-			}
-
-			tradeAmount = String.format("<col=06FF7F>%s (%s)", getValueWithoutRepresentation(item.getAmount()), formatValue(item.getAmount()));
-
-			tradeItems = count == 0 ? "<col=ff9040>" + item.getName() : String.format("<col=ff9040>%s\\n\\n<col=ff9040>%s", tradeItems, item.getName());
-
-			if (item.isStackable()) {
-				tradeItems = tradeItems + " <col=06FF7F>x " + tradeAmount;
-			}
-			count++;
-		}
-
-		return tradeItems;
-	}
 
 	public static <T> int findNextNullIndex(T[] array) {
 		for (int index = 0; index < array.length; index++) {

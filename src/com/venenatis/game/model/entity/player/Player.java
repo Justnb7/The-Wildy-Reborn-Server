@@ -23,7 +23,8 @@ import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
 import com.venenatis.game.content.skills.thieving.Thieving;
-import com.venenatis.game.content.teleportation.special.TeleportHandler.TeleportationTypes;
+import com.venenatis.game.content.teleportation.Teleport;
+import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.InterfaceState;
@@ -35,7 +36,6 @@ import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.data.WeaponInterface;
-import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
@@ -748,23 +748,33 @@ public class Player extends Entity {
 	/**
 	 * The player's spell book.
 	 */
-	public SpellBook book = SpellBook.MODERN;
+	private SpellBookTypes spellBook;
 	
 	/**
 	 * Get the players current spellbook
 	 * 
 	 * @return the spellbook
 	 */
-	public SpellBook getSpellBook() {
-		return book;
+	public SpellBookTypes getSpellBook() {
+		return spellBook;
 	}
 	
 	/**
 	 * Set the players spellbook
 	 *
 	 */
-	public void setSpellBook(SpellBook spell) {
-		this.book = spell;
+	public void setSpellBook(SpellBookTypes spellBook) {
+		this.spellBook = spellBook;
+	}
+	
+	private Teleport teleporting_action = new Teleport(this);
+	
+	public Teleport getTeleportAction() {
+		return teleporting_action;
+	}
+	
+	public void setTeleportingAction(Teleport teleport) {
+		this.teleporting_action = teleport;
 	}
 	
 	/**
@@ -1006,8 +1016,6 @@ public class Player extends Entity {
 	public void setROSuffering(int suffering) {
 		this.suffering = suffering;
 	}
-
-	public long teleblockLength;
 
 	public int[][] MAGIC_SPELLS = { { 1152, 1, 711, 90, 91, 92, 2, 5, 556, 1, 558, 1, 0, 0, 0, 0, 993 }, // wind
 																												// strike
@@ -2155,16 +2163,6 @@ public class Player extends Entity {
 	public void setTeleportButton(int teleportButton) {
 		this.teleportButton = teleportButton;
 	}
-
-	private TeleportationTypes teleportationType;
-	
-	public TeleportationTypes getTeleportationType() {
-		return teleportationType;
-	}
-
-	public void setTeleportationType(TeleportationTypes teleportationType) {
-		this.teleportationType = teleportationType;
-	}
 	
 	/**
 	 * The vengeance flag.
@@ -2363,7 +2361,6 @@ public class Player extends Entity {
 	public Stopwatch aggressionTolerance = new Stopwatch();
 	public Stopwatch ditchDelay = new Stopwatch();
 	public Stopwatch foodDelay = new Stopwatch();
-	public Stopwatch teleblock = new Stopwatch();
 	public Stopwatch lastSpear = new Stopwatch();
 	public Stopwatch lastProtItem = new Stopwatch();
 	public Stopwatch logoutDelay = new Stopwatch();

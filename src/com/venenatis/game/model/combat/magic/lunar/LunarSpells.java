@@ -1,8 +1,6 @@
 package com.venenatis.game.model.combat.magic.lunar;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.teleportation.TeleportExecutor;
-import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
@@ -26,18 +24,10 @@ public class LunarSpells {
 	public final void processLunarSpell(int buttonId) {
 		switch (buttonId) {
 		
-		case 117048:
-			castHomeTeleport();
-			break;
-		
 		case 118098:
 			castVengeance();
 			break;
 		}
-	}
-	
-	private void castHomeTeleport() {
-		TeleportExecutor.teleport(player, new Location(3096, 3503, 0));
 	}
 
 	public void castVengeance() {

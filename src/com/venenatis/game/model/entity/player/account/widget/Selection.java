@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
@@ -170,7 +170,7 @@ public class Selection {
 		}
 		
 		//Set default spellbook
-		player.setSpellBook(SpellBook.MODERN);
+		player.setSpellBook(SpellBookTypes.MODERN);
 		//Remove tutorial flag, and remove starter flag.
 		player.setTutorial(false);
 		player.setReceivedStarter(true);

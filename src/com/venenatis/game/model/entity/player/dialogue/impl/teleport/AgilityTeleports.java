@@ -1,6 +1,6 @@
 package com.venenatis.game.model.entity.player.dialogue.impl.teleport;
 
-import com.venenatis.game.content.teleportation.TeleportExecutor;
+import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Type;
@@ -41,7 +41,7 @@ public class AgilityTeleports extends Dialogue {
 			} else if(index == 3) {
 				player.getActionSender().sendMessage("We currently do not have support yet for this agility course.");
 			} else {
-				TeleportExecutor.teleport(player, new Location(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
+				player.getTeleportAction().teleport(new Location(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]));
 			}
 		}
 	}

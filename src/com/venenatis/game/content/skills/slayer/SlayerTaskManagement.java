@@ -13,7 +13,6 @@ import com.venenatis.game.content.skills.slayer.tasks.Nieve;
 import com.venenatis.game.content.skills.slayer.tasks.Task;
 import com.venenatis.game.content.skills.slayer.tasks.Turael;
 import com.venenatis.game.content.skills.slayer.tasks.Vannaka;
-import com.venenatis.game.content.teleportation.TeleportExecutor;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -694,7 +693,7 @@ public enum Teleports {
 			if(player != null) {
 				for(Teleports teleTo : Teleports.values()) {
 					if(player.getSlayerTask() == teleTo.getTask()) {
-						TeleportExecutor.teleport(player, teleTo.getLocation());
+						player.getTeleportAction().teleport(teleTo.getLocation());
 						player.getActionSender().sendMessage("You've teleported to the "+teleTo.getName()+", you have yet to kill "+player.getSlayerTaskAmount()+ " more.");
 					} else {
 						player.getActionSender().sendMessage("You have no slayer task to teleport to.");

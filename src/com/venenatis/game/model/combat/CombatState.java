@@ -1,26 +1,29 @@
 package com.venenatis.game.model.combat;
 
 
+import java.util.concurrent.TimeUnit;
+
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.combat.magic.MagicData;
 import com.venenatis.game.model.combat.magic.lunar.CombatSpells;
 import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.util.Stopwatch;
 
 public class CombatState {
 	
 	/**
 	 * The mob whose combat state this is.
 	 */
-	private Entity mob;
+	private Entity entity;
 	
 	/**
 	 * Creates the combat state class for the specified entity.
 	 * @param entity The entity.
 	 */
 	public CombatState(Entity entity) {
-		this.mob = entity;
+		this.entity = entity;
 	}
 	
 	/**
@@ -49,7 +52,7 @@ public class CombatState {
 	}
 
 	public void applySmite(Player defender, int damage) {
-		PrayerHandler.handleSmite(mob.asPlayer(), defender, damage);
+		PrayerHandler.handleSmite(entity.asPlayer(), defender, damage);
 	}
 
 	/**
@@ -57,35 +60,35 @@ public class CombatState {
 	 * @param attacker The person who is hitting someone. The target is the one with veng active.
 	 */
 	public void vengeance(Entity attacker, int damage, int delay) {
-		CombatSpells.vengeance(mob.asPlayer(), attacker, damage, delay);
+		CombatSpells.vengeance(entity.asPlayer(), attacker, damage, delay);
 	}
 
 	public int getRangeStartGFX() {
-		return RangeData.getRangeStartGFX(mob.asPlayer());
+		return RangeData.getRangeStartGFX(entity.asPlayer());
 	}
 
 	public int getRangeProjectileGFX() {
-		return RangeData.getRangeProjectileGFX(mob.asPlayer());
+		return RangeData.getRangeProjectileGFX(entity.asPlayer());
 	}
 
 	public int getProjectileShowDelay() {
-		return RangeData.getProjectileShowDelay(mob.asPlayer());
+		return RangeData.getProjectileShowDelay(entity.asPlayer());
 	}
 
 	public int getProjectileSpeed() {
-		return RangeData.getProjectileSpeed(mob.asPlayer());
+		return RangeData.getProjectileSpeed(entity.asPlayer());
 	}
 	
 	public boolean properJavalins() {
-		return usingJavalins(mob.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
+		return usingJavalins(entity.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
 	}
 
 	public boolean usingDbow() {
-		return mob.asPlayer().getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235;
+		return entity.asPlayer().getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235;
 	}
 
 	public boolean properBolts() {
-		return usingBolts(mob.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
+		return usingBolts(entity.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
 	}
 	
 	public boolean usingJavalins(int javalin) {
@@ -97,47 +100,47 @@ public class CombatState {
 	}
 
 	public int getStartHeight() {
-		return MagicData.getStartHeight(mob.asPlayer());
+		return MagicData.getStartHeight(entity.asPlayer());
 	}
 
 	public int getEndHeight() {
-		return MagicData.getEndHeight(mob.asPlayer());
+		return MagicData.getEndHeight(entity.asPlayer());
 	}
 
 	public int getStartDelay() {
-		return MagicData.getStartDelay(mob.asPlayer());
+		return MagicData.getStartDelay(entity.asPlayer());
 	}
 
 	public int getStaffNeeded() {
-		return MagicData.getStaffNeeded(mob.asPlayer());
+		return MagicData.getStaffNeeded(entity.asPlayer());
 	}
 
 	public boolean godSpells() {
-		return MagicData.godSpells(mob.asPlayer());
+		return MagicData.godSpells(entity.asPlayer());
 	}
 
 	public int getStartGfxHeight() {
-		return MagicData.getStartGfxHeight(mob.asPlayer());
+		return MagicData.getStartGfxHeight(entity.asPlayer());
 	}
 
 	public void fireProjectileAtTarget() {
-		RangeData.fireProjectileAtTarget(mob.asPlayer());
+		RangeData.fireProjectileAtTarget(entity.asPlayer());
 	}
 	
 	public int calculateMeleeMaxHit() {
-		return CombatFormulae.calculateMeleeMaxHit(mob.asPlayer(), mob.asPlayer().getCombatState().target);
+		return CombatFormulae.calculateMeleeMaxHit(entity.asPlayer(), entity.asPlayer().getCombatState().target);
 	}
 	
 	public int calculateRangeMaxHit() {
-		return CombatFormulae.calculateRangeMaxHit(mob.asPlayer(), mob.asPlayer().getCombatState().target, mob.asPlayer().isUsingSpecial());
+		return CombatFormulae.calculateRangeMaxHit(entity.asPlayer(), entity.asPlayer().getCombatState().target, entity.asPlayer().isUsingSpecial());
 	}
 
 	public void reset() {
 		// Nullify target
 		target = null;
 		// Reset all styles
-		mob.asPlayer().setCombatType(null);
-		mob.asPlayer().setFollowing(null);
+		entity.asPlayer().setCombatType(null);
+		entity.asPlayer().setFollowing(null);
 	}
 	
 	/**
@@ -175,5 +178,33 @@ public class CombatState {
 	 */
 	public void increaseAttackDelay(int amount) {
 		this.attackDelay += amount;
+	}
+	
+	private final Stopwatch teleblock = new Stopwatch();
+	
+	public Stopwatch getTeleblock() {
+		return teleblock;
+	}
+	
+	private int teleblockUnlock;
+
+	public int getTeleblockUnlock() {
+		return teleblockUnlock;
+	}
+
+	public void setTeleblockUnlock(int teleblockUnlock) {
+		this.teleblockUnlock = teleblockUnlock;
+	}
+	
+	public void teleblock(int seconds) {
+		Player player = (Player) entity;
+		setTeleblockUnlock(seconds);
+		getTeleblock().reset();
+		player.getActionSender().sendWidget(4, seconds);
+		player.getActionSender().sendMessage("You have been teleblocked!");
+	}
+	
+	public boolean isTeleblocked() {
+		return getTeleblock().elapsed(TimeUnit.SECONDS) < getTeleblockUnlock();
 	}
 }

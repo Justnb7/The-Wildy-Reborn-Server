@@ -6,9 +6,11 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.task.impl.EnergyRestoreTick;
 import com.venenatis.game.util.DirectionUtils;
+import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.world.World;
 
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -139,6 +141,35 @@ public class WalkingQueue {
 	public double getEnergy() {
 		return energy;
 	}
+	
+	private final Stopwatch lock = new Stopwatch();
+
+	private int unlock;
+	
+	public boolean isLocked() {
+		return lock.elapsed(TimeUnit.SECONDS) < unlock;
+	}
+	
+	public void lock(int seconds, boolean display) {
+		unlock = seconds;
+		lock.reset();
+
+		if (player.isPlayer() && display) {
+			player.getActionSender().sendWidget(3, seconds);
+		}
+
+		reset();
+	}
+	
+	private boolean lockMovement;
+	
+	public boolean isLockMovement() {
+		return lockMovement;
+	}
+
+	public void setLockMovement(boolean lockMovement) {
+		this.lockMovement = lockMovement;
+	}
 
 	/**
 	 * Represents a single point in the queue.
@@ -231,6 +262,16 @@ public class WalkingQueue {
 		 * This code will 'fill in' these points and then add them to the queue.
 		 */
 
+		if (isLocked()) {
+			reset();
+			return;
+		}
+
+		if (isLockMovement()) {
+			reset();
+			return;
+		}
+		
 		/*
 		 * We need to know the previous point to fill in the path.
 		 */

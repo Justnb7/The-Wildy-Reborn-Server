@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.venenatis.game.content.teleportation.TeleportExecutor;
+import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
@@ -165,7 +165,7 @@ public class Obelisks {
 						Obelisk randomObelisk = Obelisk.getRandom(location);
 						int x = randomObelisk.getBoundaries().getMinimumX() + 1;
 						int y = randomObelisk.getBoundaries().getMinimumY() + 1;
-						players.forEach(player -> TeleportExecutor.teleport(player, new Location(x + Utility.getRandom(2), y + Utility.getRandom(2), 0)));
+						players.forEach(player -> player.getTeleportAction().teleport(new Location(x + Utility.getRandom(2), y + Utility.getRandom(2), 0), TeleportTypes.OBELISK, false));
 						for (Player p : World.getWorld().getPlayers()) {
 							if (p != null) {
 								p.usingObelisk = false;

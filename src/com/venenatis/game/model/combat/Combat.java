@@ -4,6 +4,7 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
+import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -16,7 +17,6 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
 import com.venenatis.game.model.combat.magic.MagicData;
-import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
 import com.venenatis.game.model.combat.pvp.PlayerVsPlayerCombat;
 import com.venenatis.game.model.combat.range.ArrowRequirements;
@@ -178,7 +178,7 @@ public class Combat {
             Combat.resetCombat(player);
             return;
         }*/
-        if (player.getSpellBook() != SpellBook.MODERN && (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2417)) {
+        if (player.getSpellBook() != SpellBookTypes.MODERN && (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2417)) {
             player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
             return;
         }
@@ -265,14 +265,15 @@ public class Combat {
                 case 12445: // teleblock
                     if (target.isPlayer()) {
                         Player defender = (Player) target;
-                        if (defender.teleblock.elapsed(defender.teleblockLength)) {
-                            defender.teleblock.reset();
+                        if (!defender.getCombatState().isTeleblocked()) {
+                            defender.getCombatState().getTeleblock().reset();
                             defender.getActionSender().sendMessage("You have been teleblocked.");
                             defender.putInCombat(1);
-                            if (defender.isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MAGIC))
-                                defender.teleblockLength = 150000;
-                            else
-                                defender.teleblockLength = 300000;
+                            if (defender.isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MAGIC)) {
+                            	defender.getCombatState().teleblock(150);				
+                			} else {
+                				defender.getCombatState().teleblock(300);	
+                			}
                         }
                     }
                     break;
@@ -579,7 +580,7 @@ public class Combat {
     public static void setCombatStyle(Player player) {
         player.setCombatType(null); // reset
 
-        if (player.autoCast && (player.getSpellBook() == SpellBook.MODERN || player.getSpellBook() == SpellBook.ANCIENT)) {
+        if (player.autoCast && (player.getSpellBook() == SpellBookTypes.MODERN || player.getSpellBook() == SpellBookTypes.ANCIENTS)) {
             player.spellId = player.autocastId;
             player.setCombatType(CombatStyle.MAGIC);
         }

@@ -10,8 +10,6 @@ import com.venenatis.game.content.rewards.RewardCasket;
 import com.venenatis.game.content.skills.prayer.Prayer.Bone;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement.Teleports;
-import com.venenatis.game.content.teleportation.tabs.TeleTabs;
-import com.venenatis.game.content.teleportation.tabs.TeleTabs.TabData;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -305,11 +303,6 @@ public class ItemOptionPacket implements PacketType {
 		
 		if (player.getFood().isFood(item.getId())) {
 			player.getFood().eat(item.getId(), slot);
-		}
-
-		TabData tabData = TabData.forId(item.getId());
-		if (tabData != null) {
-			TeleTabs.useTeleTab(player, slot, tabData);
 		}
 		
 		if(player.getRunePouch().open(player, item.getId())) {

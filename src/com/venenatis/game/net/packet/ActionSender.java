@@ -4,6 +4,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -11,7 +12,6 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.AttackStyle;
-import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
@@ -925,11 +925,11 @@ public class ActionSender {
 		sendSidebarInterfaces();
 		
 		//Update the magic book
-		if (player.getSpellBook() == SpellBook.ANCIENT) {
+		if (player.getSpellBook() == SpellBookTypes.ANCIENTS) {
 			sendSidebarInterface(6, 12855);
-		} else if (player.getSpellBook() == SpellBook.MODERN) {
+		} else if (player.getSpellBook() == SpellBookTypes.MODERN) {
 			sendSidebarInterface(6, 1151);
-		} else if (player.getSpellBook() == SpellBook.LUNAR) {
+		} else if (player.getSpellBook() == SpellBookTypes.LUNARS) {
 			sendSidebarInterface(6, 29999);
 		}
 		

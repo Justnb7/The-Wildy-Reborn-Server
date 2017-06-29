@@ -96,6 +96,14 @@ public class Graphic {
 		this.delay = delay;
 		this.height = height;
 	}
+	
+	public Graphic(int id) {
+		this(id, 0, 0);
+	}
+	
+	public Graphic(int id, int height) {
+		this(id, 0, 100);
+	}
 
 	/**
 	 * Gets the id.

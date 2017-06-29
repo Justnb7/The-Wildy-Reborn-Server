@@ -235,7 +235,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			}
 		}
 		
-		if (!player.teleblock.elapsed(player.teleblockLength) && player.MAGIC_SPELLS[player.spellId][0] == 12445) {
+		if (!player.getCombatState().isTeleblocked() && player.MAGIC_SPELLS[player.spellId][0] == 12445) {
 			player.getActionSender().sendMessage("That player is already affected by this spell.");
 			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);

@@ -1,167 +1,258 @@
 package com.venenatis.game.content.teleportation;
 
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
+import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Stackable;
+import com.venenatis.game.task.Walkable;
+import com.venenatis.server.Server;
 
-/**
- * @author Chris
- * @date Aug 24, 2015 10:04:01 PM
- *
- */
 public class Teleport {
 	
 	/**
-	 * The {@Link Position} the teleport will end
+	 * The player.
 	 */
-	private final Location location;
+	private final Player player;
 
 	/**
-	 * The type of teleport this is
+	 * The Magic skill.
+	 * 
+	 * @param player
 	 */
-	private final TeleportType type;
+	public Teleport(Player player) {
+		this.player = player;
+	}
+	
+	/**
+	 * Current player spell book type.
+	 */
+	private SpellBookTypes spellBookType = SpellBookTypes.MODERN;
+	
+	/**
+	 * Gets the current spellbook
+	 * @return the spellbook we're currently using
+	 */
+	public SpellBookTypes getSpellBookType() {
+		return spellBookType;
+	}
+	
+	/**
+	 * Check to see if player is teleporting.
+	 */
+	private boolean isTeleporting = false;
+	
+	/**
+	 * Activate the players teleporting boolean
+	 * 
+	 * @param isTeleporting
+	 */
+	public void setTeleporting(boolean isTeleporting) {
+		this.isTeleporting = isTeleporting;
+	}
+	
+	/**
+	 * Checks if we're teleporting
+	 * @return {@code true} if we are, {@code false} otherwise.
+	 */
+	public boolean isTeleporting() {
+		return isTeleporting;
+	}
+	
+	/**
+	 * Enum of all available spell books.
+	 *
+	 */
+	public enum SpellBookTypes {
+		MODERN,
+		ANCIENTS,
+		LUNARS;
+	}
 
 	/**
-	 * Constructs a new teleport
+	 * Enum for all the teleporting types.
+	 *
+	 */
+	public enum TeleportTypes {
+		SPELL_BOOK,
+		MODERN,
+		LUNAR,
+		ANCIENT,
+		TABLET,
+		TELEOTHER,
+		OBELISK,
+		LEVER;
+	}
+	
+	/**
+	 * The buttons stored in an array
+	 */
+	public static final int[] teleport_button_ids = new int[] {
+			75010, 84237, 4171, 50056, 4140, 4143, 4146, 4150, 6004, 6005, 29031, 72038, 50235, 50245, 50253, 51005, 51013, 51023, 51031, 51039, 117112, 117154, 117162, 117123, 117131
+	};
+
+	/**
+	 * Are we clicking on an actual teleport button
+	 * 
+	 * @param player
+	 *            The player trying to teleport
+	 * @param button
+	 *            The button being pressed
+	 */
+	public static boolean isTeleportButton(Player player, int button) {
+		for (int btn : teleport_button_ids) {
+			if (button == btn) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if player is allowed to teleport.
+	 * 
+	 * @return
+	 */
+	public boolean canTeleport(boolean override) {
+		if (!player.getController().canTeleport()) {
+			return false;
+		}
+
+		if (isTeleporting()) {
+			return false;
+		}
+
+		if (!MinigameHandler.execute(player, true, $it -> $it.canTeleport(player))) {
+			return false;
+		}
+
+		if (player.getDuelArena().isDueling()) {
+			player.getActionSender().sendMessage("You cannot teleport while you are dueling.");
+			return false;
+		}
+
+		if (!override) {
+			if (player.getWildLevel() > 30 && !Rights.isSuperStaff(player)) {
+				player.getActionSender().sendMessage("You can not teleport past 30 wilderness!");
+				return false;
+			}
+		}
+
+		if (player.getCombatState().isTeleblocked()) {
+			player.getActionSender().sendMessage("You are currently teleblocked and can not teleport!");
+			return false;
+		}
+
+		return true;
+	}
+	
+	/**
+	 * Handles clicking buttons for Magic.
+	 * 
+	 * @param button
+	 * @return
+	 */
+	public boolean handleButtons(int button) {
+		switch (button) {
+
+		/* Home Telport */
+		case 19210:
+		case 21741:
+		case 30000:
+			player.getTeleportAction().teleport(new Location(3159, 3485), TeleportTypes.SPELL_BOOK, false);
+			break;
+			
+			//TODO add other teleport types such as pvp minigames etc
+		}
+		return false;
+	}
+	
+	/**
+	 * Handles teleporting a player to a location.
 	 * 
 	 * @param location
-	 *            The end {@link Location} of the teleport
-	 * @param type
-	 *            The {@link TeleportType} this is
+	 * @param teleportType
 	 */
-	public Teleport(Location location, TeleportType type) {
-		this.location = location;
-		this.type = type;
-	}
-
-	/**
-	 * Gets the {@link Location} the teleport will end
-	 * 
-	 * @return The {@link Location} this teleport will end
-	 */
-	public Location getLocation() {
-		return location;
-	}
-
-	/**
-	 * Gets the {@link TeleportType} this teleport is
-	 * 
-	 * @return The {@link TeleportType} this teleport is
-	 */
-	public TeleportType getType() {
-		return type;
-	}
-
-	public enum TeleportType {
-
-		/**
-		 * A normal spell teleport type
-		 */
-		NORMAL(4, 2, 714, 715, (65535 + 111), -1),
-
-		/**
-		 * The ancient spell teleport type
-		 */
-		ANCIENT(4, 0, 1979, -1, 392, -1),
-
-		/**
-		 * The lunar spell teleport type
-		 */
-		LUNAR(6, 0, -1, -1, -1, 65535),
-
-		/**
-		 * The teleport tablet teleport type
-		 */
-		TABLET(1, 0, 4731, 65535, 678, 65535),
+	public void teleport(final Location location, TeleportTypes teleportType, boolean override) {
+		if (!canTeleport(override)) {
+			return;
+		}
 		
-		/**
-		 * The lever teleport type.
-		 */
-		LEVER(4, 0, 714, 715, (65535 + 111), -1),
-		
-		/**
-		 * Represents the obelisk <code>Teleport</code> type.
-		 */
-		OBELISK(4, 2, 1816, 715, -1, -1);
-		
-		//(int startDelay, int endDelay, int startAnim, int endAnim, int startGfx, int endGfx
+		TeleportTypes type = teleportType;
 
-		/**
-		 * The delay before the teleport ends
-		 */
-		private final int startDelay, endDelay;
-
-		/**
-		 * The start and end animation of the teleport
-		 */
-		private final int startAnim, endAnim;
-
-		/**
-		 * The start and end graphic of the teleport
-		 */
-		private final int startGfx, endGfx;
-
-		private TeleportType(int startDelay, int endDelay, int startAnim, int endAnim, int startGfx, int endGfx) {
-			this.startDelay = startDelay;
-			this.endDelay = endDelay;
-			this.startAnim = startAnim;
-			this.endAnim = endAnim;
-			this.startGfx = startGfx;
-			this.endGfx = endGfx;
+		if (type == TeleportTypes.SPELL_BOOK) {
+			if (player.getSpellBook() == SpellBookTypes.MODERN) {
+				type = TeleportTypes.MODERN;
+			} else if (player.getSpellBook() == SpellBookTypes.ANCIENTS) {
+				type = TeleportTypes.ANCIENT;
+			} else if (player.getSpellBook() == SpellBookTypes.LUNARS) {
+				type = TeleportTypes.MODERN;
+			} else {
+				type = TeleportTypes.MODERN;
+			}
 		}
 
-		/**
-		 * The delay before the teleport ends
-		 * 
-		 * @return The delay before the teleport ends
-		 */
-		public int getStartDelay() {
-			return startDelay;
+		final Teleportation data = Teleportation.forTeleport(type);
+
+		if (data == null) {
+			return;
 		}
 
-		/**
-		 * The delay before the player can walk after the teleport
-		 * 
-		 * @return The delay before the player can walk after the teleport
-		 */
-		public int getEndDelay() {
-			return endDelay;
-		}
+		player.getWalkingQueue().lock(10, false);
+		player.getActionSender().removeAllInterfaces();
+		player.playAnimation(data.getStartAnimation());
+		player.playGraphics(data.getStartGraphic());
+		player.getActionSender().sendSound(data.getSound(), 0, 0);
 
-		/**
-		 * Gets the start animation for the teleport
-		 * 
-		 * @return The animation to display at the start of the teleport
-		 */
-		public int getStartAnimation() {
-			return startAnim;
-		}
+		setTeleporting(true);
 
-		/**
-		 * Gets the end animation for the teleport
-		 * 
-		 * @return The animation to display at the end of the teleport
-		 */
-		public int getEndAnimation() {
-			return endAnim;
-		}
+		Server.getTaskScheduler().submit(new ScheduledTask(player, data.getDelay(), false, Walkable.NON_WALKABLE, Stackable.STACKABLE) {
+			@Override
+			public void execute() {
+				player.setTeleportTarget(location);
+				player.playAnimation(data.getEndAnimation());
+				player.playGraphics(data.getEndGraphic());
+				stop();
+			}
 
-		/**
-		 * Gets the start graphic for the teleport
-		 * 
-		 * @return The graphic to display at the beginning of the teleport
-		 */
-		public int getStartGraphic() {
-			return startGfx;
-		}
-
-		/**
-		 * Gets the end graphic for the teleport
-		 * 
-		 * @return The graphic to display at the end of the teleport
-		 */
-		public int getEndGraphic() {
-			return endGfx;
-		}
-
+			@Override
+			public void onStop() {
+				setTeleporting(false);
+				player.getWalkingQueue().lock(0, false);
+			}
+		});
 	}
 
+	public void teleport(final Location location) {
+		final Teleportation data = Teleportation.forTeleport(TeleportTypes.MODERN);
+
+		if (data == null) {
+			return;
+		}
+
+		player.getWalkingQueue().lock(10, false);
+		player.getActionSender().removeAllInterfaces();
+		player.playAnimation(data.getStartAnimation());
+		player.playGraphics(data.getStartGraphic());
+		player.getActionSender().sendSound(data.getSound(), 0, 0);
+
+		setTeleporting(true);
+
+		Server.getTaskScheduler().submit(new ScheduledTask(player, data.getDelay(), false, Walkable.NON_WALKABLE, Stackable.STACKABLE) {
+			@Override
+			public void execute() {
+				player.setTeleportTarget(location);
+				player.playAnimation(data.getEndAnimation());
+				player.playGraphics(data.getEndGraphic());
+				stop();
+			}
+
+			@Override
+			public void onStop() {
+				setTeleporting(false);
+				player.getWalkingQueue().lock(0, false);
+			}
+		});
+	}
 }

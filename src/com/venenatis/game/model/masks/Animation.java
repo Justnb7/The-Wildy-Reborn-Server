@@ -80,6 +80,14 @@ public class Animation {
 	}
 	
 	/**
+	 * Creates an animation.
+	 * @param id The id.
+	 */
+	public Animation(int id) {
+		this.id = id;
+	}
+	
+	/**
 	 * Gets the id.
 	 * @return The id.
 	 */

@@ -9,14 +9,12 @@ import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.skills.fletching.Fletching;
 import com.venenatis.game.content.sounds_and_music.MusicData;
-import com.venenatis.game.content.teleportation.magic_book.Teleports;
-import com.venenatis.game.content.teleportation.special.TeleportHandler;
-import com.venenatis.game.content.teleportation.special.TeleportHandler.TeleportationTypes;
+import com.venenatis.game.content.teleportation.Teleport;
+import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
-import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttackHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.model.entity.player.Player;
@@ -107,9 +105,9 @@ public class ActionButtonPacketHandler implements PacketType {
 		MinigameHandler.execute(player, $it -> $it.onButtonClick(player, button));
 		
 		// First verify this button is something even remotely related to teleports
-		if(Teleports.isTeleportButton(player, button)) {
+		if(Teleport.isTeleportButton(player, button)) {
 			// Activate a teleport for that button
-			Teleports.startTeleport(player, button);
+			player.getTeleportAction().handleButtons(button);
 			return;
 		}
 		
@@ -141,47 +139,6 @@ public class ActionButtonPacketHandler implements PacketType {
 			}
 			break;
 		
-		case 222174:
-			TeleportHandler.open(player, TeleportationTypes.SKILLING);
-			break;
-		case 222178:
-			TeleportHandler.open(player, TeleportationTypes.PVP);
-			break;
-		case 222182:
-			TeleportHandler.open(player, TeleportationTypes.PVM);
-			break;
-		case 222186:
-			TeleportHandler.open(player, TeleportationTypes.MINIGAME);
-			break;
-		case 222195:
-			TeleportHandler.teleport(player);
-			break;
-			
-		case 222219:
-		case 222223:
-		case 222227:
-		case 222231:
-		case 222235:
-		case 222239:
-		case 222243:
-		case 222247:
-		case 222251:
-		case 222255:
-		case 223003:
-		case 223007:
-		case 223011:
-		case 223015:
-		case 223019: 
-		case 223023:
-		case 223027:
-		case 223031:
-		case 223035:
-		case 223039:
-		case 223043:
-		case 223047:
-			TeleportHandler.select(player, button);
-			break;
-		
 		/**
 		 * Exp counter 'reset exp'
 		 */
@@ -201,17 +158,17 @@ public class ActionButtonPacketHandler implements PacketType {
 			}
 			switch (player.getSpellBook()) {
 			case MODERN:
-				player.setSpellBook(SpellBook.ANCIENT);
+				player.setSpellBook(SpellBookTypes.ANCIENTS);
 				player.getActionSender().sendSidebarInterface(6, 12855);
 				player.getActionSender().sendMessage("An ancient wisdom fills your mind.");
 				break;
-			case ANCIENT:
-				player.setSpellBook(SpellBook.LUNAR);
+			case ANCIENTS:
+				player.setSpellBook(SpellBookTypes.LUNARS);
 				player.getActionSender().sendSidebarInterface(6, 29999);
 				player.getActionSender().sendMessage("The power of the moon overpowers you.");
 				break;
-			case LUNAR:
-				player.setSpellBook(SpellBook.MODERN);
+			case LUNARS:
+				player.setSpellBook(SpellBookTypes.MODERN);
 				player.getActionSender().sendSidebarInterface(6, 1151);
 				player.getActionSender().sendMessage("You feel a drain on your memory.");
 				break;
@@ -505,9 +462,9 @@ public class ActionButtonPacketHandler implements PacketType {
 			if (player.autocastId > 0) {
 				player.resetAutoCast();
 			} else {
-				if (player.getSpellBook() == SpellBook.ANCIENT) {
+				if (player.getSpellBook() == SpellBookTypes.ANCIENTS) {
 					player.getActionSender().sendSidebarInterface(0, 1689);
-				} else if (player.getSpellBook() == SpellBook.MODERN) {
+				} else if (player.getSpellBook() == SpellBookTypes.MODERN) {
 					player.getActionSender().sendSidebarInterface(0, 12050);
 				}
 			}

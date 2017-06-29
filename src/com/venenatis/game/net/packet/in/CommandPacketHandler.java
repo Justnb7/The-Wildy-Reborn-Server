@@ -13,7 +13,7 @@ import com.venenatis.game.net.packet.in.commands.impl.*;
  */
 public class CommandPacketHandler implements PacketType {
 	
-	private static final Command[] COMMANDS = new Command[] { new PlayerCommand(), new ModeratorCommand(), new AdministratorCommand(), new DeveloperCommand(), new OwnerCommand() };
+	private static final Command[] COMMANDS = new Command[] { new PlayerCommand(), new ModeratorCommand(), new AdministratorCommand(), new OwnerCommand() };
 
     @Override
     public void handle(Player player, int packetType, int packetSize) {

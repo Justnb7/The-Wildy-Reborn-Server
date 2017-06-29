@@ -1,14 +1,27 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.activity.minigames.Minigame;
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
+import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+import com.venenatis.game.net.packet.ActionSender.MinimapState;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
+import com.venenatis.game.util.Utility;
+import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
+import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
+import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.shop.ShopManager;
+import com.venenatis.server.Server;
 
 /**
  * A list of commands only accessible to the owner.
@@ -20,16 +33,7 @@ public class OwnerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
-
-		/* Special */
-		case "spec":
-		case "special":
-			int amount = parser.nextInt();
-			player.setSpecialAmount(parser.hasNext() ? amount : 100);
-    		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
-    		player.getWeaponInterface().refreshSpecialAttack();
-			return true;
-
+		
 		/* Mass clan */
 		case "massclan":
 			for (Player players : World.getWorld().getPlayers()) {
@@ -41,33 +45,7 @@ public class OwnerCommand implements Command {
 				}
 			}
 			return true;
-
-		/** Mass copy */
-		case "masscopy":
-			for (Player target : World.getWorld().getPlayers()) {
-				if (target != null && !target.equals(player)) {
-					target.getInventory().clear(false);
-					Item[] array = player.getInventory().toArray();
-
-					for (int i = 0; i < array.length; i++) {
-						target.getInventory().setSlot(i, array[i], false);
-					}
-
-					target.getInventory().refresh();
-					target.getEquipment().clear(false);
-					array = player.getEquipment().toArray();
-
-					for (int i = 0; i < array.length; i++) {
-						target.getEquipment().setSlot(i, array[i], false);
-					}
-
-					target.getEquipment().setBonus();
-					target.getEquipment().refresh();
-				}
-			}
-			player.getActionSender().sendMessage("<col=800000>You have made yourself known.");
-			return true;
-
+		
 		/* Give Moderator */
 		case "givemod":
 			if (parser.hasNext()) {
@@ -114,10 +92,9 @@ public class OwnerCommand implements Command {
 					player.getActionSender().sendMessage("It appears " + name + " is nulled.");
 					return true;
 				}
-
 			}
 			return false;
-
+		
 		/* Set Rights */
 		case "setrights":
 			if (parser.hasNext(2)) {
@@ -146,86 +123,390 @@ public class OwnerCommand implements Command {
 					return true;
 				}
 			}
-
 			return false;
 
-		/* Copy */
-		case "copy":
+		case "tstate":
+			player.getActionSender().sendMessage(player.getTradeSession().toString());
+			return true;
+
+		case "skullicon":
 			if (parser.hasNext()) {
-				String name = parser.nextString();
-
-				while (parser.hasNext()) {
-					name += " " + parser.nextString();
-				}
-
-				if (World.getWorld().getPlayerByName(name).isPresent()) {
-					Player target = World.getWorld().getPlayerByName(name).get();
-
-					player.getInventory().clear(false);
-					Item[] array = target.getInventory().toArray();
-
-					for (int i = 0; i < array.length; i++) {
-						player.getInventory().setSlot(i, array[i], false);
-					}
-
-					player.getInventory().refresh();
-					player.getEquipment().clear(false);
-					array = target.getEquipment().toArray();
-
-					for (int i = 0; i < array.length; i++) {
-						player.getEquipment().setSlot(i, array[i], false);
-					}
-
-					player.getEquipment().setBonus();
-					player.getEquipment().refresh();
-					return true;
-				} else {
-					player.getActionSender().sendMessage(String.format("The player '%s' was not found.", name));
-					return true;
-				}
+				int id = parser.nextInt();
+				//player.getSkulling().setSkullIcon(id);
+				return true;
 			}
 			return false;
 
-		/* Copy me */
-		case "copyme":
-		case "xcopy":
+		case "mapstate":
 			if (parser.hasNext()) {
-				String name = parser.nextString();
+				int state = parser.nextInt();
 
-				while (parser.hasNext()) {
-					name += " " + parser.nextString();
+				switch (state) {
+				case 0:
+					player.getActionSender().sendMinimapState(MinimapState.NORMAL);
+					break;
+
+				case 1:
+					player.getActionSender().sendMinimapState(MinimapState.UNCLICKABLE);
+					break;
+
+				case 2:
+					player.getActionSender().sendMinimapState(MinimapState.HIDDEN);
+					break;
 				}
 
-				if (World.getWorld().getPlayerByName(name).isPresent()) {
-					Player target = World.getWorld().getPlayerByName(name).get();
-
-					target.getInventory().clear(false);
-					Item[] array = player.getInventory().toArray();
-
-					for (int i = 0; i < array.length; i++) {
-						target.getInventory().setSlot(i, array[i], false);
-					}
-
-					target.getInventory().refresh();
-					target.getEquipment().clear(false);
-					array = player.getEquipment().toArray();
-
-					for (int i = 0; i < array.length; i++) {
-						target.getEquipment().setSlot(i, array[i], false);
-					}
-
-					target.getEquipment().setBonus();
-					target.getEquipment().refresh();
-					return true;
-				} else {
-					player.getActionSender().sendMessage(String.format("The player '%s' was not found.", name));
-					return true;
-				}
+				return true;
 			}
 			return false;
 
+		case "duel":
+			player.getActionSender().sendMessage(player.getDuelArena().toString());
+			return true;
+
+		case "69":
+			player.getActionSender().sendString("Welcome to", 15257);
+			player.getActionSender().sendString("Your ip: " + 1, 15258);
+			player.getActionSender().sendString("More stuff here", 15259);
+			player.getActionSender().sendString("Please register at our forum!", 15260);
+			player.getActionSender().sendString("Loads of information and MORE!", 15261);
+			player.getActionSender().sendString("Make easy money from thieving stalls", 15262);
+			player.getActionSender().sendString("CLICK HERE TO PLAY", 15263);
+			player.getActionSender().sendString("Don't forget to secure your bank, set a bank pin!", 15270);
+			player.getActionSender().sendInterface(15244);
+			player.getActionSender().sendInterfaceWithInventoryOverlay(15244, 15767);
+			return true;
+
+		case "h":
+			if (parser.hasNext()) {
+				int h = parser.nextInt();
+				player.setLocation(new Location(player.getLocation().getX(), player.getLocation().getY(), h));
+				player.setTeleporting(true);
+				return true;
+			}
+			return false;
+
+		case "figure":
+			Item itemsz[] = { 
+			new Item(13302), new Item(13303), new Item(13304), 
+			new Item(13305), new Item(13306), 
+			};
+			player.getActionSender().sendItemOnInterface(53612, itemsz);
+
+			Item itemsz1[] = { new Item(Utility.random(13000)),  new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(11802), new Item(10828), new Item(1050) };
+			player.getActionSender().sendItemOnInterface(53618, itemsz1);
+
+			return true;
+
+		case "debug":
+			if (parser.hasNext()) {
+				switch (parser.nextString()) {
+				case "server":
+					Server.SERVER_DEBUG = !Server.SERVER_DEBUG;
+					return true;
+				}
+			}
+			player.setDebugMode(player.inDebugMode() ? false : true);
+			player.getActionSender().sendMessage(String.format("[debug= %s]", player.inDebugMode() ? "enabled" : "disabled"));
+			return true;
+
+		case "hide":
+			player.setVisible(false);
+			for (Player other : player.getLocalPlayers()) {
+				if (other == null) {
+					continue;
+				}
+
+				if (other.getLocalPlayers().contains(player)) {
+					other.getLocalPlayers().remove(player);
+				}
+			}
+			return true;
+
+		case "show":
+			player.setVisible(true);
+			return true;
+
+		case "dumpbank": {
+			int[] amounts = player.getBank().getTabAmounts();
+			Item[] items = player.getBank().toTrimmedArray();
+
+			String data = " ";
+
+			for (int am : amounts) {
+				data += am + ", ";
+			}
+
+			System.out.println("\tprivate int[] tabAmounts = {" + data + "};");
+			System.out.println("");
+
+			data = "\n\t\t";
+			int c = 0;
+			for (Item it : items) {
+				data += "new Item(" + it.getId() + ", " + it.getAmount() + "), ";
+				if (++c % 5 == 0) {
+					data += "\n\t\t";
+				}
+			}
+
+			data += "\n\t";
+
+			System.out.println("\tprivate Item[] bankItems = {" + data + "};");
 		}
+			return true;
+
+		case "minigame":
+			String username = parser.toString().toLowerCase().replaceAll("minigame ", "");
+
+			if (World.getWorld().getPlayerByName(username).isPresent()) {
+				Player user = World.getWorld().getPlayerByName(username).get();
+
+				if (MinigameHandler.search(user).isPresent()) {
+					Minigame m = MinigameHandler.search(user).get();
+
+					player.getActionSender().sendMessage(m.toString());
+				} else {
+					player.getActionSender().sendMessage("This player is currently not in a minigame.");
+				}
+			}
+			return true;
+
+		case "conf":
+			if (parser.hasNext(2)) {
+				int id = parser.nextInt();
+				int state = parser.nextInt();
+				player.getActionSender().sendConfig(id, state);
+				return true;
+			}
+			return false;
+
+		case "song":
+			if (parser.hasNext()) {
+				int id = parser.nextInt();
+				player.getActionSender().sendSong(id);
+			}
+			return true;
+
+		case "winterface":
+			if (parser.hasNext()) {
+				int id = parser.nextInt();
+				player.getActionSender().sendWalkableInterface(id);
+			}
+			return true;
+
+		case "sendtoggle":
+			if (parser.hasNext((2))) {
+				int config = parser.nextInt();
+
+				int value = parser.nextInt();
+
+				player.getActionSender().sendToggle(config, value);
+			}
+			return true;
+
+		case "update":
+			if (parser.hasNext()) {
+				final int seconds = parser.nextInt();
+				World.updateSeconds = seconds;
+			}
+			World.updateAnnounced = false;
+			World.updateRunning = true;
+			World.updateStartTime = System.currentTimeMillis();
+			return true;
+
+		case "pnpc":
+			if (parser.hasNext()) {
+				final int npcId = parser.nextInt();
+
+				if (npcId >= 0) {
+					final NPCDefinitions def = NPCDefinitions.get(npcId);
+
+					if (def == null) {
+						player.getActionSender().sendMessage("This mob does not exist!");
+						return true;
+					}
+
+					player.setPnpc(npcId);
+					player.setPlayerTransformed(true);
+					player.getActionSender().sendMessage(String.format("You have turned into %s (ID: %s).", def.getName(), npcId));
+					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+				} else {
+					player.setPnpc(-1);
+					player.getActionSender().sendMessage("You have reset your appearance.");
+					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+				}
+			}
+			return true;
+
+		case "spec":
+			int amount = parser.nextInt();
+			player.setSpecialAmount(parser.hasNext() ? amount : 100);
+    		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
+    		player.getWeaponInterface().refreshSpecialAttack();
+			return true;
+
+		case "shop":
+			if (parser.hasNext()) {
+				final int id = parser.nextInt();
+				ShopManager.open(player, id);
+				player.getActionSender().sendMessage("Opened shop: " + id);
+			}
+			return true;
+
+		case "sound":
+			if (parser.hasNext()) {
+				player.getActionSender().sendSound(parser.nextInt(), 0, 0);
+				return true;
+			}
+			player.setEnableSound(player.isEnableSound() ? false : true);
+			player.getActionSender().sendMessage(String.format("You have %s sound effects.", player.isEnableSound() ? "enabled" : "disabled"));
+			return true;
+
+		case "int":
+		case "interface":
+			if (parser.hasNext()) {
+				final int id = parser.nextInt();
+				player.getActionSender().sendInterface(id);
+				player.getActionSender().sendMessage("Opening interface: " + id);
+			}
+			return true;
+
+		case "anim":
+		case "animation":
+			if (parser.hasNext()) {
+				final int animation = parser.nextInt();
+				player.playAnimation(Animation.create(animation));
+				player.getActionSender().sendMessage("Starting animation: " + animation);
+			}
+			return true;
+
+		case "gfx":
+			if (parser.hasNext()) {
+				final int graphic = parser.nextInt();
+				player.playGraphics(Graphic.create(graphic));
+				player.getActionSender().sendMessage("Starting gfx: " + graphic);
+			}
+			return true;
+
+		case "dumpinv":
+			for (final Item item : player.getInventory().toNonNullArray()) {
+				if (item.getAmount() > 1) {
+					System.out.printf("new Item(%s, %s), ", item.getId(), item.getAmount());
+				} else {
+					System.out.printf("new Item(%s), ", item.getId());
+				}
+			}
+			System.out.println();
+			return true;
+
+		case "dumpinv1":
+			int i = 0;
+			for (final Item item : player.getInventory().toNonNullArray()) {
+				if (i++ % 4 == 0) {
+					System.out.println();
+				}
+				System.out.printf("%s, ", item.getId());
+			}
+			System.out.println();
+			return true;
+
+		case "dumpinv2":
+			for (final Item item : player.getInventory().toNonNullArray()) {
+				System.out.println("	new WeightedChance < Item > (WeightedChance.COMMON, new Item(" + item.getId() + ", " + item.getAmount() + ")), //" + item.getName());
+			}
+			System.out.println();
+			return true;
+
+		case "dumpinv3":
+			int amt = 0;
+			for (final Item item : player.getInventory().toNonNullArray()) {
+				System.out.print("\"" + item.getName().toLowerCase() + "\", ");
+				amt++;
+				if (amt == 7) {
+					System.out.println();
+					amt = 0;
+				}
+			}
+			return true;
+
+		case "dumpinv4":
+			for (final Item item : player.getInventory().toNonNullArray()) {
+				System.out.println("         {");
+				System.out.println("            \"id\": " + item.getId() + ",");
+				System.out.println("            \"amount\":1000");
+				System.out.println("         },");
+			}
+			System.out.println();
+			return true;
+
+		case "dumpequip":
+			for (final Item item : player.getEquipment().toNonNullArray()) {
+				if (item.getAmount() > 1) {
+					System.out.printf("new Item(%s, %s), ", item.getId(), item.getAmount());
+				} else {
+					System.out.printf("new Item(%s), ", item.getId());
+				}
+			}
+			System.out.println();
+			return true;
+
+		case "move":
+			if (parser.hasNext(2)) {
+				final int x = parser.nextInt();
+				final int y = parser.nextInt();
+				int z = 0;
+
+				if (parser.hasNext()) {
+					z = parser.nextInt();
+				}
+
+				Location location = new Location(player.getX() + x, player.getY() + y, player.getLocation().getZ() + z);
+				player.setTeleportTarget(location);
+				player.getActionSender().sendMessage("You moved to: " + player.getLocation() + ".");
+				return true;
+			}
+			return false;
+
+		case "reload":
+			if (parser.hasNext()) {
+				final String input = parser.nextString();
+
+				switch (input) {
+
+				case "item":
+				case "items":
+					new ItemDefinitionParser().run();
+					player.getActionSender().sendMessage("Successfully reloaded item definitions.");
+					return true;
+
+				case "equipment":
+					new EquipmentDefinitionParser().run();
+					EquipmentConstants.declare();
+					player.getActionSender().sendMessage("Successfully reloaded equipment definitions.");
+					return true;
+
+				case "weapon":
+				case "weapons":
+					new WeaponDefinitionParser().run();
+					player.getActionSender().sendMessage("Successfully reloaded weapon definitions.");
+					return true;
+
+				case "shop":
+				case "shops":
+				case "store":
+					ShopManager.update();
+					player.getActionSender().sendMessage("Successfully reloaded shops.");
+					return true;
+
+				default:
+					player.getActionSender().sendMessage("'::reload " + input + "' does not exist.");
+					return true;
+				}
+			}
+			return false;
+		}
+
 		return false;
+
 	}
 
 	@Override

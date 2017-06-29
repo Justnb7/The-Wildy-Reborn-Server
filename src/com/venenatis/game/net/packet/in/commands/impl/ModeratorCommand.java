@@ -89,6 +89,6 @@ public class ModeratorCommand implements Command {
 
 	@Override
 	public boolean meetsRequirements(Player player) {
-		return Rights.isPrivileged(player);
+		return Rights.isStaffMember(player);
 	}
 }

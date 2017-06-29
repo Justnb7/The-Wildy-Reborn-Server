@@ -58,7 +58,7 @@ public class PrivateMessaging implements PacketType {
 			/*
 			 * Provide checks for non staff members
 			 */
-			if (!Rights.isPrivileged(player) && !offline) {
+			if (!Rights.isStaffMember(player) && !offline) {
 				if (target.getFAI().hasIgnored(player.usernameHash)) {
 					offline = true;
 				}
@@ -117,7 +117,7 @@ public class PrivateMessaging implements PacketType {
 						 * offline, check if our status is friends only and we
 						 * don't have them added. If so send us as offline
 						 */
-						if (!Rights.isPrivileged(p)) {
+						if (!Rights.isStaffMember(p)) {
 							if ((player.privateChat == FriendAndIgnoreList.OFFLINE || (player.privateChat == FriendAndIgnoreList.FRIENDS_ONLY && !player.getFAI().hasFriend(p.usernameHash)))) {
 								world = 0;
 							}

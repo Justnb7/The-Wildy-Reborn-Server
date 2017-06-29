@@ -15,60 +15,51 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 public enum Rights {
 	
 	/* Player */
-	PLAYER("Player", Order.PLAYER, -1, "6FE019"),
+	PLAYER("Player", Order.PLAYER, 0, "6FE019"),
 
 	/* Moderator */
-	MODERATOR("Moderator", Order.MODERATOR, 0, "4A7AA7"),
+	MODERATOR("Moderator", Order.MODERATOR, 1, "4A7AA7"),
 
 	/* Administrator */
-	ADMINISTRATOR("Administrator", Order.STAFF, 1, "D17417"),
+	ADMINISTRATOR("Administrator", Order.STAFF, 2, "D17417"),
 
 	/* Owner */
 	OWNER("Owner", Order.STAFF, 2, "ED2624"),
 
-	/* Developer */
-	DEVELOPER("Developer", Order.STAFF, 3, "994E94"),
+	/* Donator */
+	DONATOR("Donator", Order.DONATOR, 3, "9C5B31"),
 
-	/* Bronze Member */
-	BRONZE_MEMBER("Bronze Member", Order.MEMBER, 4, "9C5B31"),
+	/* Super donator */
+	SUPER_DONATOR("Super Donator", Order.DONATOR, 4, "31383B"),
 
-	/* Silver Member */
-	SILVER_MEMBER("Silver Member", Order.MEMBER, 5, "31383B"),
+	/* Elite donator */
+	ELITE_DONATOR("Elite Donator", Order.DONATOR, 5, "FFC55B"),
 
-	/* Gold Member */
-	GOLD_MEMBER("Gold Member", Order.MEMBER, 6, "FFC55B"),
+	/* Extreme donator */
+	EXTREME_DONATOR("Extreme Donator", Order.DONATOR, 6, "00BF3F"),
 
-	/* Premium Member */
-	PREMIUM_MEMBER("Premium Member", Order.MEMBER, 7, "00BF3F"),
-
-	/* Dope Member */
-	DOPE_MEMBER("Dope Member", Order.MEMBER, 8, "E32973"),
-
-	/* Veteran */
-	VETERAN("Veteran", Order.PLAYER, 9, "B1800A"),
-
+	/* Helper */
+	HELPER("Helper", Order.PLAYER, 7, "3AB3D9"),
+	
 	/* YouTube */
-	YOUTUBER("Youtuber", Order.PLAYER, 10, "91111A"),
-
-	/* Helper Member */
-	HELPER("Helper", Order.PLAYER, 11, "3AB3D9"),
+	YOUTUBER("Youtuber", Order.PLAYER, 9, "91111A"),
+	
+	/* Graphic */
+	GRAPHIC("Graphic", Order.PLAYER, 10, "CE795A"),
 
 	/* Iron Man */
-	IRON_MAN("Iron Man", Order.PLAYER, 12, "7A6F74"),
+	IRON_MAN("Iron Man", Order.PLAYER, 11, "7A6F74"),
 
 	/* Ultimate Iron Man */
-	ULTIMATE_IRON_MAN("Ultimate Iron Man", Order.PLAYER, 13, "7A6F74"),
+	ULTIMATE_IRON_MAN("Ultimate Iron Man", Order.PLAYER, 12, "7A6F74"),
 	
-	/* Ultimate Iron Man */
-	HARDCORE_IRON_MAN("Hardcore Iron Man", Order.PLAYER, 14, "7A6F74"),
-
-	/* Graphic */
-	GRAPHIC("Graphic", Order.PLAYER, 16, "CE795A");
+	/* Hardcore Iron Man */
+	HARDCORE_IRON_MAN("Hardcore Iron Man", Order.PLAYER, 13, "7A6F74");
 
 	public static enum Order {
 		PLAYER(0),
 
-		MEMBER(1),
+		DONATOR(1),
 
 		MODERATOR(2),
 
@@ -148,56 +139,39 @@ public enum Rights {
 		if (player.getRights().getCrown() == 0) {
 			return "";
 		}
-		return "<img=" + (player.getRights().getCrown() - 1) + ">";
+		return "<img=" + (player.getRights().getCrown()) + ">";
 	}
 
-	public static boolean isMember(Player player) {
+	public static boolean isDonator(Player player) {
 		return player.getRights() != PLAYER;
 	}
 	
-	public static boolean isPrivileged(Player player) {
+	public static boolean isStaffMember(Player player) {
 		if (player.getRights().getOrder() == Order.MODERATOR || player.getRights().getOrder() == Order.STAFF) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean isHighclass(Player player) {
-		if (player.getRights() == Rights.ADMINISTRATOR || player.getRights() == Rights.DEVELOPER || player.getRights() == Rights.OWNER) {
+	public static boolean isSuperStaff(Player player) {
+		if (player.getRights() == Rights.ADMINISTRATOR || player.getRights() == Rights.OWNER) {
 			return true;
 		}
 		return false;
 	}
 	
 	public static boolean isOwner(Player player) {
-		if (player.getRights() == Rights.DEVELOPER || player.getRights() == Rights.OWNER) {
+		if (player.getRights() == Rights.OWNER) {
 			return true;
 		}
 		return false;
 	}
 
 	public static boolean isIron(Player player) {
-		if (player.getRights() == IRON_MAN || player.getRights() == ULTIMATE_IRON_MAN) {
+		if (player.getRights() == IRON_MAN || player.getRights() == ULTIMATE_IRON_MAN || player.getRights() == HARDCORE_IRON_MAN) {
 			return true;
 		}
 		return false;
-	}
-
-	public static int getKillCoin(Player player) {
-		Rights rights = player.getRights();
-
-		if (rights == BRONZE_MEMBER)
-			return 15_000;
-		if (rights == SILVER_MEMBER)
-			return 20_000;
-		if (rights == GOLD_MEMBER)
-			return 25_000;
-		if (rights == PREMIUM_MEMBER)
-			return 30_000;
-		if (rights == DOPE_MEMBER)
-			return 40_000;
-
-		return 10_000;
 	}
 	
 	public static void upgrade(Player player) {
@@ -205,22 +179,20 @@ public enum Rights {
 			return;
 		}
 		
-		if (isPrivileged(player)) {
+		if (isStaffMember(player)) {
 			return;
 		}
 		
 		Rights rights = Rights.PLAYER;
 		
-		if (player.getTotalAmountDonated() >= 5)
-			rights = Rights.BRONZE_MEMBER;
-		if (player.getTotalAmountDonated() >= 35) 
-			rights = Rights.SILVER_MEMBER;
-		if (player.getTotalAmountDonated() >= 75)
-			rights = Rights.GOLD_MEMBER;
-		if (player.getTotalAmountDonated() >= 150)
-			rights = Rights.PREMIUM_MEMBER;
-		if (player.getTotalAmountDonated() >= 500)
-			rights = Rights.DOPE_MEMBER;
+		if (player.getTotalAmountDonated() >= 10)
+			rights = Rights.DONATOR;
+		if (player.getTotalAmountDonated() >= 30) 
+			rights = Rights.SUPER_DONATOR;
+		if (player.getTotalAmountDonated() >= 100)
+			rights = Rights.ELITE_DONATOR;
+		if (player.getTotalAmountDonated() >= 300)
+			rights = Rights.EXTREME_DONATOR;
 		
 		if (rights != Rights.PLAYER && player.getRights() != rights) {
 			player.setRights(rights);

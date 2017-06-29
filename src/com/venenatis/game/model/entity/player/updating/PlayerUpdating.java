@@ -61,7 +61,7 @@ public class PlayerUpdating {
 	public static int getStaffCount() {
 		int count = 0;
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player != null && Rights.isPrivileged(player)) {
+			if (player != null && Rights.isStaffMember(player)) {
 				count++;
 			}
 		}

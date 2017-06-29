@@ -152,7 +152,7 @@ public class DropManager {
 		} else if (player.getEquipment().contains(12785)) {
 			modifier -= .05;
 		}
-		if (Rights.isMember(player)) {
+		if (Rights.isDonator(player)) {
 			modifier -= 0.020;
 		}
 		return modifier;

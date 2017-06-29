@@ -628,7 +628,7 @@ public class World implements Service {
 		int amount = 0;
 		for (Player players : World.getWorld().getPlayers()) {
 			if (players != null) {
-				if (Rights.isPrivileged(players)) {
+				if (Rights.isStaffMember(players)) {
 					amount++;
 				}
 			}

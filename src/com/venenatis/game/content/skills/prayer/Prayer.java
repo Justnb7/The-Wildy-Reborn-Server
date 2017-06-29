@@ -39,7 +39,7 @@ public class Prayer {
 	 *         The location of the alter
 	 */
 	public void prayAltar(Location loc) {
-		if (Rights.isMember(player)) {
+		if (Rights.isDonator(player)) {
 			if (player.getLastAltarPrayer() < 120000) {
 				player.getActionSender().sendMessage("You can only use the altar to restore your special attack every 2 minutes");
 			} else {

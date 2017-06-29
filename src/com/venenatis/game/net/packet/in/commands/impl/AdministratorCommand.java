@@ -125,6 +125,6 @@ public class AdministratorCommand implements Command {
 
 	@Override
 	public boolean meetsRequirements(Player player) {
-		return Rights.isHighclass(player);
+		return Rights.isSuperStaff(player);
 	}
 }

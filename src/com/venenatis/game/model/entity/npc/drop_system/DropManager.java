@@ -12,6 +12,7 @@ import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
@@ -151,11 +152,7 @@ public class DropManager {
 		} else if (player.getEquipment().contains(12785)) {
 			modifier -= .05;
 		}
-		if (player.getRights().isExtremeDonator()) {
-			modifier -= 0.050;
-		} else if (player.getRights().isSuperDonator()) {
-			modifier -= 0.035;
-		} else if (player.getRights().isDonator()) {
+		if (Rights.isMember(player)) {
 			modifier -= 0.020;
 		}
 		return modifier;

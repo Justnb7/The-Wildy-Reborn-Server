@@ -1,6 +1,7 @@
 package com.venenatis.game.content;
 
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.util.logging.PlayerLogging;
@@ -57,7 +58,7 @@ public class PrivateMessaging implements PacketType {
 			/*
 			 * Provide checks for non staff members
 			 */
-			if (!player.rights.isStaff() && !offline) {
+			if (!Rights.isPrivileged(player) && !offline) {
 				if (target.getFAI().hasIgnored(player.usernameHash)) {
 					offline = true;
 				}
@@ -77,8 +78,8 @@ public class PrivateMessaging implements PacketType {
 			/*
 			 * verify we have the person added
 			 */
-			if (player.getFAI().hasFriend(target.usernameHash) || (player.rights.getValue() >= 1 && player.rights.getValue() <= 5)) {
-				target.getActionSender().sendPm(player.usernameHash, player.rights.getValue(), chatMessage, size);
+			if (player.getFAI().hasFriend(target.usernameHash) || (player.rights.getCrown() >= 1 && player.rights.getCrown() <= 5)) {
+				target.getActionSender().sendPm(player.usernameHash, player.rights.getCrown(), chatMessage, size);
 			}
 			break;
 
@@ -116,7 +117,7 @@ public class PrivateMessaging implements PacketType {
 						 * offline, check if our status is friends only and we
 						 * don't have them added. If so send us as offline
 						 */
-						if (!p.rights.isStaff()) {
+						if (!Rights.isPrivileged(p)) {
 							if ((player.privateChat == FriendAndIgnoreList.OFFLINE || (player.privateChat == FriendAndIgnoreList.FRIENDS_ONLY && !player.getFAI().hasFriend(p.usernameHash)))) {
 								world = 0;
 							}

@@ -2,7 +2,6 @@ package com.venenatis.game.content.quest_tab;
 
 import java.util.concurrent.TimeUnit;
 
-import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
@@ -26,7 +25,7 @@ public class HomeQuestTabPage extends QuestTabPage {
 		player.getActionSender().sendString("Online: @gre@" + World.getWorld().getActivePlayers() + "", 29155);
 		player.getActionSender().sendString("Information", 663);
 		
-		write(player, "<col=FFFFFF>Rank: <col=00CC00>"+Constants.rank(player, player.getRights().getValue()), 1);
+		write(player, "<col=FFFFFF>Rank: <col=00CC00>"+player.getRights().getName(), 1);
 		write(player, "<col=FFFFFF>Played: <col=00CC00>"+time, 2);
 		write(player, "<col=FFFFFF>Did you know: "+(player.didYouKnow ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 3);
 		write(player, "<col=FFFFFF>Trivia: <col=00CC00>"+(player.trivia ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 4);

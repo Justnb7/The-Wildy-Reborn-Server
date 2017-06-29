@@ -15,52 +15,55 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 public enum Rights {
 	
 	/* Player */
-	PLAYER("Player", Order.PLAYER, 0, "6FE019"),
+	PLAYER("Player", Order.PLAYER, -1, "6FE019"),
 
 	/* Moderator */
-	MODERATOR("Moderator", Order.MODERATOR, 1, "4A7AA7"),
+	MODERATOR("Moderator", Order.MODERATOR, 0, "4A7AA7"),
 
 	/* Administrator */
-	ADMINISTRATOR("Administrator", Order.STAFF, 2, "D17417"),
+	ADMINISTRATOR("Administrator", Order.STAFF, 1, "D17417"),
 
 	/* Owner */
-	OWNER("Owner", Order.STAFF, 3, "ED2624"),
+	OWNER("Owner", Order.STAFF, 2, "ED2624"),
 
 	/* Developer */
-	DEVELOPER("Developer", Order.STAFF, 4, "994E94"),
+	DEVELOPER("Developer", Order.STAFF, 3, "994E94"),
 
 	/* Bronze Member */
-	BRONZE_MEMBER("Bronze Member", Order.MEMBER, 5, "9C5B31"),
+	BRONZE_MEMBER("Bronze Member", Order.MEMBER, 4, "9C5B31"),
 
 	/* Silver Member */
-	SILVER_MEMBER("Silver Member", Order.MEMBER, 6, "31383B"),
+	SILVER_MEMBER("Silver Member", Order.MEMBER, 5, "31383B"),
 
 	/* Gold Member */
-	GOLD_MEMBER("Gold Member", Order.MEMBER, 7, "FFC55B"),
+	GOLD_MEMBER("Gold Member", Order.MEMBER, 6, "FFC55B"),
 
 	/* Premium Member */
-	PREMIUM_MEMBER("Premium Member", Order.MEMBER, 8, "00BF3F"),
+	PREMIUM_MEMBER("Premium Member", Order.MEMBER, 7, "00BF3F"),
 
 	/* Dope Member */
-	DOPE_MEMBER("Dope Member", Order.MEMBER, 9, "E32973"),
+	DOPE_MEMBER("Dope Member", Order.MEMBER, 8, "E32973"),
 
 	/* Veteran */
-	VETERAN("Veteran", Order.PLAYER, 10, "B1800A"),
+	VETERAN("Veteran", Order.PLAYER, 9, "B1800A"),
 
 	/* YouTube */
-	YOUTUBER("Youtuber", Order.PLAYER, 11, "91111A"),
+	YOUTUBER("Youtuber", Order.PLAYER, 10, "91111A"),
 
 	/* Helper Member */
-	HELPER("Helper", Order.PLAYER, 12, "3AB3D9"),
+	HELPER("Helper", Order.PLAYER, 11, "3AB3D9"),
 
 	/* Iron Man */
-	IRON_MAN("Iron Man", Order.PLAYER, 13, "7A6F74"),
+	IRON_MAN("Iron Man", Order.PLAYER, 12, "7A6F74"),
 
 	/* Ultimate Iron Man */
-	ULTIMATE_IRON_MAN("Ultimate Iron Man", Order.PLAYER, 14, "7A6F74"),
+	ULTIMATE_IRON_MAN("Ultimate Iron Man", Order.PLAYER, 13, "7A6F74"),
+	
+	/* Ultimate Iron Man */
+	HARDCORE_IRON_MAN("Hardcore Iron Man", Order.PLAYER, 14, "7A6F74"),
 
 	/* Graphic */
-	GRAPHIC("Graphic", Order.PLAYER, 17, "CE795A");
+	GRAPHIC("Graphic", Order.PLAYER, 16, "CE795A");
 
 	public static enum Order {
 		PLAYER(0),

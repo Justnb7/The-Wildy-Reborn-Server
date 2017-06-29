@@ -1,59 +1,8 @@
 package com.venenatis.game.constants;
 
 import com.venenatis.game.location.Location;
-import com.venenatis.game.model.entity.player.Player;
 
 public class Constants {
-	
-	private static String[] RIGHTS_TO_STRING = { "<col=666666>Player</col>", "<col=F7F2E0>Moderator</col>", "<col=F7FE2E><shad=222222>Administrator</shad></col>","<col=0B610B>Donator</col>", "<col=DF013A>Super Donator</col>", "", "<col=FF6600>Elite Donator<shad=669999>", "<col=CC9933><shad=222222>Extreme Donator</col>"};
-	
-	private static String EXTREME_DONATOR() {
-		return "<col=FFC200><shad=222222>Extreme Donator</col>";
-	}
-	
-	private static String ELITE_DONATOR() {
-		return "<col=FFC200><shad=222222>Elite Donator</col>";
-	}
-	
-	private static String SUPER_DONATOR() {
-		return "<col=FFC200>Sponsor Donator</col>";
-	}
-	
-	private static String DONATOR() {
-		return "<col=FFC200><shad=222222>Donator</col>";
-	}
-	
-	public static String rank(Player player, int rights) {
-		if (player.getRights().isExtremeDonator() && !player.getRights().isStaff()) {
-			return EXTREME_DONATOR();
-		}
-		if(player.getRights().isEliteDonator() &&  !player.getRights().isStaff()) {
-			return ELITE_DONATOR();
-		}
-		if(player.getRights().isSuperDonator() &&  !player.getRights().isStaff()) {
-			return SUPER_DONATOR();
-		}
-		if(player.getRights().isDonator() &&  !player.getRights().isStaff()) {
-			return DONATOR();
-		}
-		switch (rights) {
-		case 0:
-			return RIGHTS_TO_STRING[0];
-		case 1:
-			return RIGHTS_TO_STRING[1];
-		case 2:
-			return RIGHTS_TO_STRING[2];
-		case 3:
-			return RIGHTS_TO_STRING[3];
-		case 4:
-			return RIGHTS_TO_STRING[4];
-		case 5:
-			return RIGHTS_TO_STRING[5];
-		case 6:
-			return RIGHTS_TO_STRING[6];
-		}
-		return Integer.toString(player.getRights().getValue());
-	}
 	
 	/**
 	 * Spawnable items

@@ -23,6 +23,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.util.StringUtils;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.object.GameObject;
 
@@ -239,8 +240,8 @@ public final class DuelArena extends Minigame {
 				IntStream.range(DuelRule.RANGED.ordinal(), DuelRule.RINGS.ordinal()).filter($it -> rules.get(DuelRule.values()[$it])).forEach($it -> player.getActionSender().sendString(getRuleText(DuelRule.values()[$it]), 31509 + $it));
 				IntStream.range(31531, 31560).forEach(i -> player.getActionSender().sendString("", i));
 				IntStream.range(31561, 31589).forEach(i -> player.getActionSender().sendString("", i));
-				player.getActionSender().sendString(Utility.getItemNames(player.getDuelContainer().toArray()), 31531);
-				player.getActionSender().sendString(Utility.getItemNames(other.get().getDuelContainer().toArray()), 31561);
+				player.getActionSender().sendString(StringUtils.getItemNames(player.getDuelContainer().toArray()), 31531);
+				player.getActionSender().sendString(StringUtils.getItemNames(other.get().getDuelContainer().toArray()), 31561);
 				player.getActionSender().sendString("", 31526);
 				player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
 				player.getActionSender().sendInterface(InterfaceConstants.SECOND_DUEL_SCREEN);

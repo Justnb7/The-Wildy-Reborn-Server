@@ -7,6 +7,7 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Appearance;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.masks.UpdateFlags;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
@@ -60,7 +61,7 @@ public class PlayerUpdating {
 	public static int getStaffCount() {
 		int count = 0;
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player != null && player.rights.isStaff()) {
+			if (player != null && Rights.isPrivileged(player)) {
 				count++;
 			}
 		}
@@ -560,7 +561,7 @@ public class PlayerUpdating {
 	 */
 	private static void appendPlayerChatText(Player player, GameBuffer str) {
 		str.writeWordBigEndian(((player.getChatTextColor() & 0xFF) << 8) + (player.getChatTextEffects() & 0xFF));
-		str.writeByte(player.getRights().getValue());
+		str.writeByte(player.getRights().getCrown());
 		str.writeByteC(player.getChatTextSize());
 		str.writeBytes_reverse(player.getChatText(), player.getChatTextSize(), 0);
 	}
@@ -724,7 +725,7 @@ public class PlayerUpdating {
 		player.getPlayerProps().writeByte((byte) player.getSkills().getCombatLevel());
 		
 		//Update the player rights
-		player.getPlayerProps().writeByte(player.rights.getValue());
+		player.getPlayerProps().writeByte(player.rights.getCrown());
 		
 		//And lastly update the appearanceHash
 		str.writeByteC(player.getPlayerProps().offset);
@@ -811,17 +812,6 @@ public class PlayerUpdating {
 		packet.writeWordA(player.getForceWalk()[5]);
 		packet.writeByteS((byte) player.getForceWalk()[6]);
 		
-	}
-
-	public static void sendMessageToStaff(String message) {
-		for (Player player : World.getWorld().getPlayers()) {
-			if (player != null) {
-				if (player.getRights().getValue() > 0 && player.getRights().getValue() < 3) {
-					Player client = player;
-					client.getActionSender().sendMessage("<col=255>[STAFF MESSAGE] " + message + "</col>");
-				}
-			}
-		}
 	}
 
 	/**

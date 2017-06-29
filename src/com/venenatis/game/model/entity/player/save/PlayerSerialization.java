@@ -113,8 +113,7 @@ public class PlayerSerialization {
 				final PlayerSaveDetail details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
 				player.setUsername(details.username);
 				player.setPassword(details.password);
-				Rights right = Rights.get(details.rights);
-				player.setRights(right);
+				player.setRights(details.rights);
 				player.setLocation(player.isNewPlayer() ? new Location(3087, 3495, 0) : details.location);
 				player.setNewPlayer(details.newPlayer);
 				player.setIdentity(details.identity);
@@ -202,7 +201,7 @@ public class PlayerSerialization {
 
 		private final String username;
 		private final String password;		
-		private final int rights;
+		private final Rights rights;
 		private final Location location;
 		private final boolean newPlayer;
 		private final String identity;
@@ -278,7 +277,7 @@ public class PlayerSerialization {
 		public PlayerSaveDetail(Player player) {
 			username = player.getUsername();
 			password = player.getPassword();
-			rights = player.getRights().getValue();
+			rights = player.getRights();
 			location = player.getPosition();
 			newPlayer = player.isNewPlayer();
 			identity = player.getIdentity();

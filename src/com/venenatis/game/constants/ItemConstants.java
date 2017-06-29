@@ -3,6 +3,7 @@ package com.venenatis.game.constants;
 import com.venenatis.game.content.EmotesManager;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.equipment.EquipmentRequirement;
 
@@ -70,7 +71,7 @@ public class ItemConstants {
 	}
 
 	public static boolean canWear(Item item, Player player) {
-		if(player.getRights().isAdministrator() && player.inDebugMode())
+		if(Rights.isOwner(player) && player.inDebugMode())
 			return true;
 		
 		if (!EquipmentRequirement.canEquip(player, item.getId()))

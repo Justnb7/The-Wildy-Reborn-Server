@@ -10,6 +10,8 @@ import com.venenatis.game.model.entity.Entity.EntityType;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.updating.NpcUpdating;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
+import com.venenatis.game.model.entity.player.Rights.Order;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
@@ -583,7 +585,7 @@ public class World implements Service {
 	 */
 	public void sendWorldMessage(String message, boolean forStaff) {
 		for (Player p : World.getWorld().getPlayers()) {
-			if (p == null || p.isYellOff() || (forStaff && p.getRights().getValue() == 0))
+			if (p == null || p.isYellOff() || (forStaff && p.getRights().getOrder() == Order.PLAYER))
 				continue;
 			p.getActionSender().sendMessage(message);
 		}
@@ -626,7 +628,7 @@ public class World implements Service {
 		int amount = 0;
 		for (Player players : World.getWorld().getPlayers()) {
 			if (players != null) {
-				if (players.getRights().isStaff()) {
+				if (Rights.isPrivileged(players)) {
 					amount++;
 				}
 			}

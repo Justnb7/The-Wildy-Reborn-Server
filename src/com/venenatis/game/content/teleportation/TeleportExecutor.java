@@ -6,6 +6,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.task.ScheduledTask;
@@ -65,7 +66,7 @@ public class TeleportExecutor {
 		 * validate our teleport, this allows us to perform an unchecked
 		 * teleport for teleports such as the lever in the wilderness
 		 */
-		if (requirements && !canTeleport(player) && teleport.getType() != TeleportType.LEVER && !player.getRights().isAdministrator()) {
+		if (requirements && !canTeleport(player) && teleport.getType() != TeleportType.LEVER && !Rights.isOwner(player)) {
 			return;
 		}
 

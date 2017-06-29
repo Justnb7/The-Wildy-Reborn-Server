@@ -178,7 +178,7 @@ public class LoginSession extends Session {
 			return;
 		}
 
-		LoginResponse response = new LoginResponse(returnCode, player.getRights().getValue(), 0);
+		LoginResponse response = new LoginResponse(returnCode, player.getRights().getCrown(), 0);
 
 		ChannelFuture future = ctx.writeAndFlush(response);
 

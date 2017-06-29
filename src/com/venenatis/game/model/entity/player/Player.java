@@ -2054,22 +2054,7 @@ public class Player extends Entity {
 		if (consumable != null) {
 			consumable.consume();
 		}
-	}
-	
-	public void checkDonatorRank() {
-		if(this.getTotalAmountDonated() > 9) {
-			this.setRights(Rights.DONATOR);
-		} else if(this.getTotalAmountDonated() > 29) {
-			this.setRights(Rights.SUPER_DONATOR);
-		} else if(this.getTotalAmountDonated() > 99) {
-			this.setRights(Rights.ELITE_DONATOR);
-		} else if(this.getTotalAmountDonated() > 199) {
-			this.setRights(Rights.EXTREME_DONATOR);
-		}  else {
-			if(!this.getRights().isStaff())
-			this.setRights(Rights.PLAYER);
-		}
-	}						
+	}				
 
 	private long lastAltarPrayer = -3000;
 	

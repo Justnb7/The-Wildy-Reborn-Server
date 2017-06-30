@@ -239,7 +239,7 @@ public final class RandomGenerator {
 		return RandomGenerator.RANDOM.nextInt();
 	}
 
-	public int nextInt(int n) {
+	public static int nextInt(int n) {
 		return RandomGenerator.RANDOM.nextInt(n);
 	}
 

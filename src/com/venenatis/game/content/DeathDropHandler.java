@@ -24,8 +24,7 @@ public class DeathDropHandler {
 	 */
 	public static void handleDeathDrop(Player player) {
 
-		String k = player.getCombatState().getDamageMap().getKiller();
-		Player killer = World.getWorld().lookupPlayerByName(k);
+		Player killer = World.getWorld().lookupPlayerByName(player.getCombatState().getDamageMap().getKiller());
 
 		if (killer == null) {
 			killer = player;

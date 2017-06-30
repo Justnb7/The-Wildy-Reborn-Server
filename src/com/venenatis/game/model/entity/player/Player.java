@@ -31,7 +31,6 @@ import com.venenatis.game.model.InterfaceState;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
-import com.venenatis.game.model.combat.DamageMap;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.SkullType;
@@ -1290,7 +1289,14 @@ public class Player extends Entity {
 		 */
 		if (getSkills().getLevel(3) < 1 && !getCombatState().isDead()) {
 			getCombatState().setDead(true);
-			Server.getTaskScheduler().schedule(new DeathTask(this));
+			World.getWorld().schedule(new Task(3) {
+				@Override
+				public void execute() {
+					playAnimation(Animation.create(0x900));
+					this.stop();
+				}
+			});
+			World.getWorld().schedule(new DeathTask(this, 8));
 		}
 		return new Hit(damage, hit.getType());
 	}

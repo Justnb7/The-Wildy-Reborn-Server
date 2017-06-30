@@ -5,6 +5,7 @@ import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
@@ -33,6 +34,13 @@ public class OwnerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
+		
+		case "master":
+			for(int skill = 0; skill < Skills.SKILL_COUNT; skill++) {
+				player.getSkills().setExperience(skill, player.getSkills().getXPForLevel(99) + 1);
+				player.getSkills().setLevel(skill, 99);
+			}
+			return true;
 		
 		/* Mass clan */
 		case "massclan":

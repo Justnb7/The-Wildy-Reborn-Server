@@ -4,7 +4,6 @@ import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.Walkable;
 
 /**
  * Cutting gems, a part of the crafting skill
@@ -29,7 +28,7 @@ public class GemCutting extends SkillTask {
 	 *            The data for the gem to be cut
 	 */
 	public GemCutting(Player player, Gems gem) {
-		super(player, 4, Walkable.ON_MOVE, StackType.NEVER_STACK, false);
+		super(player, 4, BreakType.ON_MOVE, StackType.NEVER_STACK, false);
 		this.gem = gem;
 	}
 	

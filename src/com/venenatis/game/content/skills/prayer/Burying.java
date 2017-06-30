@@ -9,8 +9,8 @@ import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.task.Task.BreakType;
 import com.venenatis.game.task.Task.StackType;
-import com.venenatis.game.task.Walkable;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -168,7 +168,7 @@ public class Burying {
 				return false;
 			if (bone.getId() == itemId) {
 				player.playAnimation(Animation.create(ALTAR_ANIMATION));
-				Server.getTaskScheduler().schedule(new Task(player, 4, Walkable.ON_MOVE, StackType.NEVER_STACK) {
+				Server.getTaskScheduler().schedule(new Task(player, 4, BreakType.ON_MOVE, StackType.NEVER_STACK) {
 					@Override
 					public void execute() {
 						if(!player.isActive()) {

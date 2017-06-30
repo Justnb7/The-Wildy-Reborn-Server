@@ -2,7 +2,6 @@ package com.venenatis.game.content.skills;
 
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.Walkable;
 
 /**
  * A simple class to manage skill tasks so that you cannot overlap skills.
@@ -14,21 +13,21 @@ public abstract class SkillTask extends Task {
 	
 	private final Player player;
 	
-	public SkillTask(Player player, int delay, Walkable walkable, StackType stackable) {
+	public SkillTask(Player player, int delay, BreakType walkable, StackType stackable) {
 		this(player, delay, walkable, stackable, false);
 	}
 	
-	public SkillTask(Player player, int delay, Walkable walkable, StackType stackable, boolean immediate) {
+	public SkillTask(Player player, int delay, BreakType walkable, StackType stackable, boolean immediate) {
 		super(player, delay, immediate, walkable, stackable);
 		this.player = player;
 	}
 	
 	public SkillTask(Player player, int delay) {
-		this(player, delay, Walkable.NEVER, StackType.STACK);
+		this(player, delay, BreakType.NEVER, StackType.STACK);
 	}
 	
 	public SkillTask(Player player, int delay, boolean immediate) {
-		this(player, delay, Walkable.NEVER, StackType.STACK, immediate);
+		this(player, delay, BreakType.NEVER, StackType.STACK, immediate);
 	}
 	
 	public Player getPlayer() {

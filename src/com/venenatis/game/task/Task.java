@@ -59,12 +59,12 @@ public abstract class Task {
 	/**
 	 * The task will stack by default
 	 */
-	private StackType stackable = StackType.STACK;
+	private StackType stackType = StackType.STACK;
 
 	/**
 	 * The task is walkable by default
 	 */
-	private Walkable walkable = Walkable.NEVER;
+	private BreakType breakType = BreakType.NEVER;
 
 	/**
 	 * The current 'count down' value. When this reaches zero the task will be
@@ -117,13 +117,13 @@ public abstract class Task {
 		this(delay);
 	}
 
-	public Task(Player player, int delay, boolean immediate, Walkable walkable, StackType stackable) {
+	public Task(Player player, int delay, boolean immediate, BreakType walkable, StackType stackable) {
 		checkDelay(delay);
 		this.tickDelay = delay;
 		this.remainingTicks = delay;
 		this.immediate = immediate;
-		this.stackable = stackable;
-		this.walkable = walkable;
+		this.stackType = stackable;
+		this.breakType = walkable;
 		this.attach(player);
 		stopNonStackableTasks(player);
 	}
@@ -136,7 +136,7 @@ public abstract class Task {
 	 * @param walkable
 	 * @param stackable
 	 */
-	public Task(Player player, int delay, Walkable walkable, StackType stackable) {
+	public Task(Player player, int delay, BreakType walkable, StackType stackable) {
 		this(player, delay, false, walkable, stackable);
 	}
 
@@ -210,7 +210,7 @@ public abstract class Task {
 			/*
 			 * If the player is moving and its a non walkable task, stop it.
 			 */
-			if (player.getWalkingQueue().isMoving() && walkable == Walkable.ON_MOVE) {
+			if (player.getWalkingQueue().isMoving() && breakType == BreakType.ON_MOVE) {
 				if (running) {
 					stop();
 					return;
@@ -231,10 +231,10 @@ public abstract class Task {
 	 * @param player
 	 */
 	public void stopNonStackableTasks(Player player) {
-		if (stackable == StackType.NEVER_STACK) {
+		if (stackType == StackType.NEVER_STACK) {
 			for (Iterator<Task> it$ = player.getTasks().iterator(); it$.hasNext();) {
 				Task task = it$.next();
-				if (task.stackable == StackType.NEVER_STACK) {
+				if (task.stackType == StackType.NEVER_STACK) {
 					if (task.isRunning()) {
 						task.stop();
 					}

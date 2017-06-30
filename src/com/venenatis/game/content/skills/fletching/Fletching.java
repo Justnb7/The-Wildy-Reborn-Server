@@ -11,8 +11,8 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.task.Task.BreakType;
 import com.venenatis.game.task.Task.StackType;
-import com.venenatis.game.task.Walkable;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -287,7 +287,7 @@ public enum Fletching {
 			return true;
 		}
 
-		Server.getTaskScheduler().schedule(new Task(player, 1, false, Walkable.NEVER, StackType.NEVER_STACK) {
+		Server.getTaskScheduler().schedule(new Task(player, 1, false, BreakType.NEVER, StackType.NEVER_STACK) {
 			private int iterations = 0;
 
 			@Override

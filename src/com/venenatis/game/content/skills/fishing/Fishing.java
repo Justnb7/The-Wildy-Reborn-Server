@@ -9,7 +9,6 @@ import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.Walkable;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -34,7 +33,7 @@ public class Fishing extends SkillTask {
 	 *            The data for the fish to be fished
 	 */
 	public Fishing(Player player, FishingSpot data, int timer) {
-		super(player, timer, Walkable.ON_MOVE, StackType.NEVER_STACK, false);
+		super(player, timer, BreakType.ON_MOVE, StackType.NEVER_STACK, false);
 		this.data = data;
 	}
 

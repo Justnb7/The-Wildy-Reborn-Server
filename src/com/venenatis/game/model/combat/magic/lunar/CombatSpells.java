@@ -39,7 +39,7 @@ public class CombatSpells {
 					if (hit < 1) {
 						return;
 					}
-					if (attacker.isDead()) {
+					if (attacker.getCombatState().isDead()) {
 						hit = 0;
 					}
 					venger.sendForcedMessage("Taste vengeance!");
@@ -64,7 +64,7 @@ public class CombatSpells {
 					if (hit < 1) {
 						return;
 					}
-					if (attacker_npc.isDead()) {
+					if (attacker_npc.getCombatState().isDead()) {
 						hit = 0;
 					}
 					venger.sendForcedMessage("Taste vengeance!");

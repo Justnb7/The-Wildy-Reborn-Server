@@ -39,7 +39,7 @@ public class ActionButtonPacketHandler implements PacketType {
 	public void handle(final Player player, int id, int size) {
 		int button = Utility.hexToInt(player.getInStream().buffer, 0, size);
 		
-		if (player.isDead()) {
+		if (player.getCombatState().isDead()) {
 			return;
 		}
 		

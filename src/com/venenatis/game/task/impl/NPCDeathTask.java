@@ -40,7 +40,7 @@ public class NPCDeathTask extends Task {
     public NPCDeathTask(NPC npc) {
         super(1, true);
         attach(npc);
-        npc.setDead(true);
+        npc.getCombatState().setDead(true);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class NPCDeathTask extends Task {
             		for (NPC n : killer.getKraken().npcs) {
             			if (n.getId() == 5535) {
             				// kill off tents
-            				n.setDead(true);
+            				n.getCombatState().setDead(true);
             				Server.getTaskScheduler().schedule(new NPCDeathTask(n));
             			}
             		}
@@ -122,7 +122,7 @@ public class NPCDeathTask extends Task {
      *            The {@link Player} who has killed this npc
      */
     private void removeMobFromWorld(Player player, NPC npc) {
-        if (player != null && !player.isDead()) {}
+        if (player != null && !player.getCombatState().isDead()) {}
         World.getWorld().unregister(npc);
     }
 
@@ -142,9 +142,9 @@ public class NPCDeathTask extends Task {
             npc.playAnimation(Animation.create(808));
         }
         
-        npc.getDamageMap().resetDealtDamage();
+        npc.getCombatState().getDamageMap().resetDealtDamage();
 
-        if (npc.getId() == 492 && npc.isDead()) {
+        if (npc.getId() == 492 && npc.getCombatState().isDead()) {
         	npc.requestTransform(493);
         	npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
         }
@@ -159,24 +159,25 @@ public class NPCDeathTask extends Task {
     private void initialDeath(NPC npc) {
         npc.resetFace();
 
-        final Player killer = World.getWorld().lookupPlayerByName(npc.getDamageMap().getKiller());
+        
+        final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
 
         if (killer != null) {
             npc.killedBy = killer.getIndex();
         } else {
             npc.killedBy = -1;
         }
-        if (npc.getId() == 6618 && npc.isDead()) {
+        if (npc.getId() == 6618 && npc.getCombatState().isDead()) {
         	npc.sendForcedMessage("Ow!");
         }
-        if (npc.getId() == 6615 && npc.isDead()) {
+        if (npc.getId() == 6615 && npc.getCombatState().isDead()) {
         	npc.spawnedScorpiaMinions = false;
         }
         if (npc.getId() == 6611 && npc.transformId != 6612) {
 			npc.requestTransform(6612);
 			npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
 			npc.setHitpoints(255);
-			npc.setDead(false);
+			npc.getCombatState().setDead(false);
 			npc.spawnedVetionMinions = false;
 			npc.sendForcedMessage("Do it again!!");
 			stop();
@@ -221,7 +222,7 @@ public class NPCDeathTask extends Task {
         }
         
         if (killer != null) {
-            MobAttackSounds.sendDeathSound(killer, npc.getId());
+            MobAttackSounds.sendDeathSound((Player) killer, npc.getId());
         }
         
         reset(npc);
@@ -243,7 +244,7 @@ public class NPCDeathTask extends Task {
     public static void respawn(NPC npc) {
         npc.killedBy = -1;
         npc.setVisible(true);
-        npc.setDead(false);
+        npc.getCombatState().setDead(false);
         npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
     }
     

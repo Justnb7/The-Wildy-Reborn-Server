@@ -10,7 +10,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.EntityEvent;
+import com.venenatis.game.task.Task;
 
 
 /**
@@ -20,7 +20,7 @@ import com.venenatis.game.task.EntityEvent;
  * @author Graham
  * 
  */
-public class DeathEvent extends EntityEvent {
+public class DeathTask extends Task {
 
 	/**
 	 * The player who has died.
@@ -43,20 +43,16 @@ public class DeathEvent extends EntityEvent {
 	 * @param entity
 	 *            The player whose death has just happened.
 	 */
-	public DeathEvent(Player victim) {
+	public DeathTask(Player victim) {
 		super(victim, 1);
 		this.ticks = 6;
 		this.victim = victim;
-		victim.setDead(true);
+		victim.getCombatState().setDead(true);
 		Combat.resetCombat(victim);
 	}
 
 	@Override
 	public void execute() {
-		if (!shouldRun()) {
-			this.stop();
-			return;
-		}
 		if (ticks > 0) {
 			ticks--;
 			if (ticks == 5) {
@@ -64,28 +60,27 @@ public class DeathEvent extends EntityEvent {
 			} else if (ticks == 3) {
 				if (victim.isDueling()) {
 					victim.getDuelArena().onDeath();
-					return;
 				} else if (MinigameHandler.search(victim).isPresent()) {
 					MinigameHandler.search(victim).ifPresent($it -> $it.onDeath(victim));
 				} else {
 					if (!victim.canKeepItems()) {
 						dropPlayerItems(victim);
 					}
+					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
 				}
 			} else if (ticks == 1) {
 				if (victim != null) {
 					victim.getActionSender().sendWidget(2, 0);
 					victim.getActionSender().sendWidget(3, 0);
 					victim.getActionQueue().clearRemovableActions();
-					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
 					victim.getSkills().setLevel(Skills.HITPOINTS, victim.getSkills().getLevelForExperience(Skills.HITPOINTS));
 					victim.getActionSender().sendMessage("Oh dear, you are dead!");
-					victim.setDead(false);
+					victim.getCombatState().setDead(false);
 					victim.freeze(0);
 					PrayerHandler.resetAllPrayers(victim);
 					victim.setSpecialAmount(100);
 					victim.setUsingSpecial(false);
-					victim.getDamageMap().resetDealtDamage();
+					victim.getCombatState().getDamageMap().resetDealtDamage();
 				}
 			} else if (ticks == 0) {
 				victim.playAnimation(Animation.create(-1));

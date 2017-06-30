@@ -60,14 +60,14 @@ public class Venom {
 	 * @param npc
 	 */
 	private void npcVenom(NPC npc) {
-		if(npc != null && !npc.isDead()) {
+		if(npc != null && !npc.getCombatState().isDead()) {
 			npc.damage(new Hit(damage, HitType.VENOM));
 			damage = (damage + 2 > 20 ? 20 : damage + 2);
 			npc.infected = true;
 			Server.getTaskScheduler().schedule(new Task(20) {
 				@Override
 				public void execute() {
-					if(npc.isDead()) {
+					if(npc.getCombatState().isDead()) {
 						stop();
 					}
 					npc.damage(new Hit(damage, HitType.VENOM));

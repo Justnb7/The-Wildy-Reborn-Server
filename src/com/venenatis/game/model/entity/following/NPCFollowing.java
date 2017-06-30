@@ -40,7 +40,7 @@ public class NPCFollowing {
 			}
 		}
 
-		if (target.isDead() || !target.isVisible() || npc.getZ() != target.getZ()) {
+		if (target.getCombatState().isDead() || !target.isVisible() || npc.getZ() != target.getZ()) {
 			npc.setFollowing(null);
 			npc.resetFace();
 			npc.walkingHome = true;

@@ -24,7 +24,7 @@ public class PlayerVsPlayerCombat {
 	 * @return If the attack is successful
 	 */
 	public static boolean validateAttack(Player player, Player target) {
-		if (target == null || player.isDead() || target.isDead() || !target.isActive() || target.getSkills().getLevel(Skills.HITPOINTS) <= 0 || target.getZ() != player.getZ()) {
+		if (target == null || player.getCombatState().isDead() || target.getCombatState().isDead() || !target.isActive() || target.getSkills().getLevel(Skills.HITPOINTS) <= 0 || target.getZ() != player.getZ()) {
 			Combat.resetCombat(player);
 			player.getWalkingQueue().reset();
 			return false;

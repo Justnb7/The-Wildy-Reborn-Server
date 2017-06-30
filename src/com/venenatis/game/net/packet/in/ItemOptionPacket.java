@@ -168,7 +168,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+		if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 			return;
 		}
 		
@@ -220,7 +220,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//We're death
-		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+		if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 			return;
 		}
 		
@@ -284,7 +284,7 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(id);
 
 		//Safety checks
-		if (player.isDead() || interfaceIndex != 3214 || player.isTeleporting()) {
+		if (player.getCombatState().isDead() || interfaceIndex != 3214 || player.isTeleporting()) {
 			return;
 		}
 		
@@ -386,7 +386,7 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(itemId);
 		
 		// Safety checks
-		if (player.isDead() || player.isTeleporting()) {
+		if (player.getCombatState().isDead() || player.isTeleporting()) {
 			return;
 		}
 
@@ -430,7 +430,7 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(itemId);
 		
 		// Safety checks
-		if (player.isDead() || interfaceId != 3214 || player.isTeleporting()) {
+		if (player.getCombatState().isDead() || interfaceId != 3214 || player.isTeleporting()) {
 			return;
 		}
 

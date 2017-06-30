@@ -8,6 +8,7 @@ import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.CombatState;
+import com.venenatis.game.model.combat.DamageMap;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -71,29 +72,6 @@ public abstract class Entity {
 	public ActionQueue getActionQueue() {
 		return actionQueue;
 	}
-	
-	/**
-     * The flag determining if this character is dead.
-     */
-    private boolean dead;
-
-	/**
-     * Determines if this character is dead or not.
-     *
-     * @return {@code true} if this character is dead, {@code false} otherwise.
-     */
-    public final boolean isDead() {
-        return dead;
-    }
-
-    /**
-     *
-     * @param dead
-     *            the new value to set.
-     */
-    public final void setDead(boolean dead) {
-        this.dead = dead;
-    }
 	
 	/**
 	 * The random identifier
@@ -376,6 +354,11 @@ public abstract class Entity {
     private PoisonType poisonType;
 
 	public abstract Hit decrementHP(Hit hit);
+	
+	/**
+     * The method called when an entity dies.
+     */
+    public abstract void onDeath();
 
 	private boolean inCombat;
 	public long lastWasHitTime;
@@ -790,13 +773,11 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			victim_npc.retaliate(attacker);
-			victim_npc.getDamageMap().appendDamage(attacker_player.getUsername(), damage);
+			victim_npc.getCombatState().getDamageMap().appendDamage(attacker_player.getUsername(), damage);
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		} else if (isPlayer() && attacker.isPlayer()) {
 			//pvp
-			((Player)this).getDamageMap().appendDamage(((Player)attacker).getUsername(), damage);
-			Player self = (Player) this;
-			self.debug("damage; "+damage+ " killer; "+((Player)attacker).getUsername());
+			((Player)this).getCombatState().getDamageMap().appendDamage(((Player)attacker).getUsername(), damage);
 		}
 
 		// Update hit instance since we've changed the 'damage' value

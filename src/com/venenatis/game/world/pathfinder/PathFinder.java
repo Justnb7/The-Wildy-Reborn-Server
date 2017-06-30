@@ -28,7 +28,7 @@ public interface PathFinder {
 	}
 
 	static PathState doPath(final PathFinder pathFinder, final Entity mob, final Entity target, final int x, final int y, final boolean ignoreLastStep, boolean addToWalking) {
-		if (mob.isDead()) {
+		if (mob.getCombatState().isDead()) {
 			PathState state = new PathState();
 			state.routeFailed();
 			return state;

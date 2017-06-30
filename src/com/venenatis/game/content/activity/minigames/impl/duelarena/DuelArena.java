@@ -90,18 +90,22 @@ public final class DuelArena extends Minigame {
 	 * The player initiating the duel.
 	 */
 	private Player player;
+	
 	/**
 	 * The other person in this session.
 	 */
 	private Optional<Player> other;
+	
 	/**
 	 * The current stage of this duel.
 	 */
 	private DuelStage stage = DuelStage.REQUEST;
+	
 	/**
 	 * The flag that denotes this {@code player} sent a duel request.
 	 */
 	private boolean duelRequest;
+	
 	/**
 	 * The rules for this duel.
 	 */
@@ -112,18 +116,22 @@ public final class DuelArena extends Minigame {
 	 * other in the arena.
 	 */
 	private int waitCounter = 6;
+	
 	/**
 	 * The time in seconds it took to kill a player in the arena.
 	 */
 	private int arenaTime = 0;
+	
 	/**
 	 * The flag that denotes this {@code player} won the duel.
 	 */
 	private boolean won;
+	
 	/**
 	 * The flag that denotes a {@code player} during the first or second screen stages.
 	 */
 	private boolean accepted;
+	
 	/**
 	 * The items that were won during the stake.
 	 */
@@ -260,7 +268,22 @@ public final class DuelArena extends Minigame {
 			default:
 				throw new IllegalArgumentException("Invalid duel stage!");
 		}
+		
+		heal(other.get());
+		heal(player);
 
+	}
+	
+	private void heal(Player heal) {
+		
+		/*Heal the player before entering the duel*/
+		heal.getSkills().setLevel(Skills.HITPOINTS, heal.getSkills().getLevelForExperience(Skills.HITPOINTS));
+		
+		/*Recharge prayer points before entering the duel*/
+		heal.getSkills().setPrayerPoints(heal.getSkills().getLevelForExperience(Skills.PRAYER), true);
+		
+		/*Reset the players special attack back to 100%*/
+		heal.setSpecialAmount(100);
 	}
 
 	/**
@@ -678,6 +701,10 @@ public final class DuelArena extends Minigame {
 	public void onEnd() {
 		Player winner = isWon() ? player : other.get();
 		Player loser = !isWon() ? player : other.get();
+		
+		System.out.printf("winner %s loser %s%n", winner, loser);
+		winner.debug("i won");
+		loser.debug("i lost");
 
 		winner.getDuelArena().setStage(DuelStage.REWARD);
 

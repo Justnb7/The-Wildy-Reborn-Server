@@ -73,7 +73,7 @@ import com.venenatis.game.net.network.session.GameSession;
 import com.venenatis.game.net.packet.ActionSender;
 import com.venenatis.game.net.packet.Packet;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.impl.DeathEvent;
+import com.venenatis.game.task.impl.DeathTask;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.util.MutableNumber;
 import com.venenatis.game.util.Stopwatch;
@@ -83,20 +83,6 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.server.Server;
 
 public class Player extends Entity {
-	
-	/**
-	 * The players damage map
-	 */
-	private DamageMap damageMap = new DamageMap();
-	
-	/**
-	 * Gets the players damage map
-	 * 
-	 * @return
-	 */
-	public DamageMap getDamageMap() {
-		return damageMap;
-	}
 	
 	/**
 	 * The player's appearance information.
@@ -940,6 +926,11 @@ public class Player extends Entity {
 	}
 	
 	@Override
+	public void onDeath() {
+		MinigameHandler.execute(this, $it -> $it.onDeath(this));
+	}
+	
+	@Override
 	public boolean isNPC() {
 		return false;
 	}
@@ -1297,9 +1288,9 @@ public class Player extends Entity {
 		 * Check if our player has died, if so start the death task
 		 * 
 		 */
-		if (getSkills().getLevel(3) < 1 && !isDead()) {
-			setDead(true);
-			Server.getTaskScheduler().schedule(new DeathEvent(this));
+		if (getSkills().getLevel(3) < 1 && !getCombatState().isDead()) {
+			getCombatState().setDead(true);
+			Server.getTaskScheduler().schedule(new DeathTask(this));
 		}
 		return new Hit(damage, hit.getType());
 	}
@@ -1480,7 +1471,7 @@ public class Player extends Entity {
 			xlogDelay = 0;
 		}
 		boolean inCombat = (System.currentTimeMillis() - xlogDelay < 20000);
-		return !inCombat && !isDead();
+		return !inCombat && !getCombatState().isDead();
 	}
 
 	public void setXLogDelay(long delay) {

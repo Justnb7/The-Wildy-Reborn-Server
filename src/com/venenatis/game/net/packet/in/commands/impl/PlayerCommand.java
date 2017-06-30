@@ -2,6 +2,7 @@ package com.venenatis.game.net.packet.in.commands.impl;
 
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 
@@ -15,7 +16,7 @@ public class PlayerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 
-		if (player.isDueling() || player.getDuelArena().isInSession()) {
+		if (player.isDueling() || player.getDuelArena().isInSession() && !Rights.isSuperStaff(player)) {
 			player.getActionSender().sendMessage("You cannot use commands while dueling.");
 			return true;
 		}

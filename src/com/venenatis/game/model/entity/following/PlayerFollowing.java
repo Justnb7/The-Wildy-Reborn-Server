@@ -103,7 +103,7 @@ public class PlayerFollowing {
     public void follow(boolean forCombat, Entity following) {
         
         //Whenever out target is null or death stop the following task
-        if (following == null || following.isDead() || player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+        if (following == null || following.getCombatState().isDead() || player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
             player.setFollowing(null);
             return;
         }

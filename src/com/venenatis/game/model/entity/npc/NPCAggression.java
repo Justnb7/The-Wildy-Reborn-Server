@@ -64,7 +64,7 @@ public final class NPCAggression {
     private static boolean validate(NPC npc, Player p) {
     	// We're already attacking something or under attack.
     	// When we get it, retalition handles changing target, not this agro code.
-    	if (npc.targetId > 0 || npc.isDead() || npc.underAttack || Combat.incombat(p)) {
+    	if (npc.targetId > 0 || npc.getCombatState().isDead() || npc.underAttack || Combat.incombat(p)) {
     		return false;
     	}
     	if (!npc.getDefinition().isAggressive()) {

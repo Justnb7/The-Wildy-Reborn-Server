@@ -40,7 +40,7 @@ public class Potions extends Consumable {
 	@Override
 	public void consume() {
 		super.setCurrentDelay("potion");
-		if (getPlayer().isDead()) {
+		if (getPlayer().getCombatState().isDead()) {
 			return;
 		}
 		

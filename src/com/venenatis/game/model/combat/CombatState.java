@@ -207,4 +207,39 @@ public class CombatState {
 	public boolean isTeleblocked() {
 		return getTeleblock().elapsed(TimeUnit.SECONDS) < getTeleblockUnlock();
 	}
+	
+	/**
+	 * The players damage map
+	 */
+	private DamageMap damageMap = new DamageMap();
+	
+	/**
+	 * Gets the players damage map
+	 * 
+	 * @return
+	 */
+	public DamageMap getDamageMap() {
+		return damageMap;
+	}
+	
+	/**
+	 * The entity's state of life.
+	 */
+	private boolean isDead;
+
+	/**
+	 * Gets the mob's state of life.
+	 * @return The mob's state of life.
+	 */
+	public boolean isDead() {
+		return isDead;
+	}
+
+	/**
+	 * Sets the mob's state of life.
+	 * @param isDead The state of life to set.
+	 */
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
+	}
 }

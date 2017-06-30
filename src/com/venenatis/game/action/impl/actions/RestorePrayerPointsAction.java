@@ -18,7 +18,7 @@ public class RestorePrayerPointsAction extends PlayerAction {
 
 	@Override
 	public boolean validated() {
-		if (player.isDead()) {
+		if (player.getCombatState().isDead()) {
 			this.stop();
 			return false;
 		}

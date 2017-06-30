@@ -2,6 +2,7 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.net.packet.in.commands.Command;
@@ -51,7 +52,7 @@ public class CommandPacketHandler implements PacketType {
 			}
 		}
 
-		if (player.getDuelArena().isDueling()) {
+		if (player.getDuelArena().isDueling() && !Rights.isSuperStaff(player)) {
 			player.getActionSender().sendMessage("You cannot use commands while dueling.");
 			return;
 		}

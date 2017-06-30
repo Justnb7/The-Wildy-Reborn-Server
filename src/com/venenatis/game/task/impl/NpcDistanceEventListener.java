@@ -34,7 +34,7 @@ public abstract class NpcDistanceEventListener extends EventListener {
 
 	@Override
 	public boolean listenFor() {
-		if (npc.isDead() || World.getWorld().getNPCs().get(npc.getIndex()) == null) {
+		if (npc.getCombatState().isDead() || World.getWorld().getNPCs().get(npc.getIndex()) == null) {
 			stop();
 			return true;
 		}

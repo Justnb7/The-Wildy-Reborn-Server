@@ -34,7 +34,7 @@ public class NPC extends Entity {
 		if (spawn != null)
 			setLocation(spawn);
 		npcId = id;
-		setDead(false);
+		getCombatState().setDead(false);
 		randomWalk = true;
 		NPCDefinitions definition = NPCDefinitions.get(id);
 		if (definition != null) {
@@ -53,20 +53,6 @@ public class NPC extends Entity {
 			range_defence = definition.getRangedDefence();
 			setCombatCooldownDelay(definition.getAttackSpeed());
 		}
-	}
-
-	/**
-	 * The damage map for the npc
-	 */
-	private DamageMap damageMap = new DamageMap();
-	
-	/**
-	 * Gets the npcs damage map
-	 * 
-	 * @return
-	 */
-	public DamageMap getDamageMap() {
-		return damageMap;
 	}
 
 	/**
@@ -276,6 +262,11 @@ public class NPC extends Entity {
 		setLocation(position);
 		getAttributes().put("teleporting", true);
 	}
+	
+	@Override
+	public void onDeath() {
+		
+	}
 
 	@Override
 	public boolean moving() {
@@ -306,7 +297,7 @@ public class NPC extends Entity {
 		 * Start our death task since we are now dead
 		 */
 		if (hitpoints == 0) {
-			setDead(true);
+			getCombatState().setDead(true);
 			Combat.resetCombat(this);
 			Server.getTaskScheduler().schedule(new NPCDeathTask(this));
 		}
@@ -413,7 +404,7 @@ public class NPC extends Entity {
 		final List<Player> surrounding = new ArrayList<>();
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player != null) {
-				if (player.isDead() || (player.getZ() != mob.getZ())) {
+				if (player.getCombatState().isDead() || (player.getZ() != mob.getZ())) {
 					continue;
 				}
 
@@ -448,7 +439,7 @@ public class NPC extends Entity {
 			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);
 			// none yet again duplicate INTs by PI
 
-			if ((this.getHitpoints() > 0 && !isDead()) || isPet) {
+			if ((this.getHitpoints() > 0 && !getCombatState().isDead()) || isPet) {
 
 				super.frozen_process();
 
@@ -494,7 +485,7 @@ public class NPC extends Entity {
 			 */
 			NpcVsPlayerCombat.handleCombatTimer(this);
 
-			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() || World.getWorld().getPlayers().get(spawnedBy).isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
+			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() || World.getWorld().getPlayers().get(spawnedBy).getCombatState().isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
 				World.getWorld().unregister(this);
 			}
 			updateCoverage(getPosition());

@@ -52,7 +52,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 	public void handle(Player player, int packet, int size) {
 		checkState(player != null, "Player is null");
 		
-		if (player.isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+		if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 			return;
 		}
 		
@@ -263,7 +263,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 		Player other = World.getWorld().getPlayers().search(otherPlayerTradeIndex).get();
 
-		if (!other.isRegistered() || other.isTeleporting() || other.isDead()) {
+		if (!other.isRegistered() || other.isTeleporting() || other.getCombatState().isDead()) {
 			return;
 		}
 		

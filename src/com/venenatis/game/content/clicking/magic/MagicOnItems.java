@@ -30,7 +30,7 @@ public class MagicOnItems {
      */
 	public static void handleAction(Player player, int itemId, int slot, int childId, int spellId) {
 
-		if (player.isDead()) {
+		if (player.getCombatState().isDead()) {
 			return;
 		}
 

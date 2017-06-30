@@ -3,6 +3,7 @@ package com.venenatis.game.content.clicking.objects;
 import com.venenatis.game.action.Action;
 import com.venenatis.game.action.impl.actions.RestorePrayerPointsAction;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
@@ -12,6 +13,7 @@ import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
 /**
  * This class handles the object actions. So we don't have to add all object
@@ -42,7 +44,8 @@ public class ObjectInteraction {
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
 		Rock rock = Rock.forId(objectId);
-		GameObject obj = new GameObject(objectId, location.getX(), location.getY(), location.getZ());
+		final GameObject obj = RegionStoreManager.get().getGameObject(location, objectId);
+		//GameObject obj = new GameObject(objectId, location.getX(), location.getY(), location.getZ());
 		if (tree != null) {
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
@@ -54,6 +57,9 @@ public class ObjectInteraction {
 			player.getDuelArena().onFirstClickObject(obj);
 			return;
 		}
+		
+		/** Minigame */
+		MinigameHandler.execute(player, $it -> $it.onFirstClickObject(player, obj));
 		
 		switch (def.getName().toLowerCase()) {
 
@@ -125,12 +131,18 @@ public class ObjectInteraction {
 	 * @param id
 	 *            The object
 	 */
-	public static void handleSecondClickAction(Player player, Location position, int id) {
+	public static void handleSecondClickAction(Player player, Location location, int id) {
 		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 2] - position: %s object: %d ", position, id));
+			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 2] - position: %s object: %d ", location, id));
 		}
 
 		AnyRevObjectDefinition objectDef = AnyRevObjectDefinition.get(id);
+		
+		final GameObject obj = RegionStoreManager.get().getGameObject(location, id);
+		//GameObject obj = new GameObject(objectId, location.getX(), location.getY(), location.getZ());
+		
+		MinigameHandler.execute(player, $it -> $it.onSecondClickObject(player, obj));
+		
 		switch (objectDef.getName().toLowerCase()) {
 
 		case "bank":

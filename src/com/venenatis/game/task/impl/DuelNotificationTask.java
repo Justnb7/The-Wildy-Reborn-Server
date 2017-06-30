@@ -2,7 +2,6 @@ package com.venenatis.game.task.impl;
 
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.Stackable;
 import com.venenatis.game.task.Walkable;
 
 public class DuelNotificationTask extends Task {
@@ -11,7 +10,7 @@ public class DuelNotificationTask extends Task {
 	private int time = 20;
 
 	public DuelNotificationTask(Player player) {
-		super(player, 1, true, Walkable.NON_WALKABLE, Stackable.NON_STACKABLE);
+		super(player, 1, true, Walkable.ON_MOVE, StackType.NEVER_STACK);
 		this.player = player;
 	}
 

@@ -8,7 +8,6 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.Stackable;
 import com.venenatis.game.task.Walkable;
 import com.venenatis.game.util.Utility;
 
@@ -35,7 +34,7 @@ public class Cooking extends SkillTask {
 	 *         The cookable data
 	 */
 	public Cooking(Player player, int delay, Cookables data) {
-		super(player, 4, Walkable.NON_WALKABLE, Stackable.NON_STACKABLE, false);
+		super(player, 4, Walkable.ON_MOVE, StackType.NEVER_STACK, false);
 		this.cookables = data;
 	}
 

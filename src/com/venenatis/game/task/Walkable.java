@@ -11,11 +11,11 @@ public enum Walkable {
 	/**
 	 * The task will continue if the entity walks
 	 */
-	WALKABLE,
+	NEVER,
 
 	/**
 	 * The task will end if the entity walks
 	 */
-	NON_WALKABLE
+	ON_MOVE
 
 }

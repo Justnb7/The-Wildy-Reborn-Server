@@ -2,7 +2,6 @@ package com.venenatis.game.content.skills;
 
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.Stackable;
 import com.venenatis.game.task.Walkable;
 
 /**
@@ -15,21 +14,21 @@ public abstract class SkillTask extends Task {
 	
 	private final Player player;
 	
-	public SkillTask(Player player, int delay, Walkable walkable, Stackable stackable) {
+	public SkillTask(Player player, int delay, Walkable walkable, StackType stackable) {
 		this(player, delay, walkable, stackable, false);
 	}
 	
-	public SkillTask(Player player, int delay, Walkable walkable, Stackable stackable, boolean immediate) {
+	public SkillTask(Player player, int delay, Walkable walkable, StackType stackable, boolean immediate) {
 		super(player, delay, immediate, walkable, stackable);
 		this.player = player;
 	}
 	
 	public SkillTask(Player player, int delay) {
-		this(player, delay, Walkable.WALKABLE, Stackable.STACKABLE);
+		this(player, delay, Walkable.NEVER, StackType.STACK);
 	}
 	
 	public SkillTask(Player player, int delay, boolean immediate) {
-		this(player, delay, Walkable.WALKABLE, Stackable.STACKABLE, immediate);
+		this(player, delay, Walkable.NEVER, StackType.STACK, immediate);
 	}
 	
 	public Player getPlayer() {

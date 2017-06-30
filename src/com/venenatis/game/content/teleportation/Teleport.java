@@ -6,7 +6,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.Stackable;
+import com.venenatis.game.task.Task.StackType;
 import com.venenatis.game.task.Walkable;
 import com.venenatis.server.Server;
 
@@ -208,7 +208,7 @@ public class Teleport {
 
 		setTeleporting(true);
 
-		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, Walkable.NON_WALKABLE, Stackable.STACKABLE) {
+		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, Walkable.ON_MOVE, StackType.STACK) {
 			@Override
 			public void execute() {
 				player.setTeleportTarget(location);
@@ -240,7 +240,7 @@ public class Teleport {
 
 		setTeleporting(true);
 
-		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, Walkable.NON_WALKABLE, Stackable.STACKABLE) {
+		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, Walkable.ON_MOVE, StackType.STACK) {
 			@Override
 			public void execute() {
 				player.setTeleportTarget(location);

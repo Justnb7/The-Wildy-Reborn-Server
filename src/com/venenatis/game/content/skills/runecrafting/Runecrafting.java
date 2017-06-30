@@ -8,7 +8,6 @@ import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.Stackable;
 import com.venenatis.game.task.Walkable;
 
 /**
@@ -38,7 +37,7 @@ public class Runecrafting extends SkillTask {
 	 *        The altar
 	 */
 	public Runecrafting(Player player, int object) {
-		super(player, 2, Walkable.NON_WALKABLE, Stackable.NON_STACKABLE, false);
+		super(player, 2, Walkable.ON_MOVE, StackType.NEVER_STACK, false);
 		this.object = object;
 	}
 	

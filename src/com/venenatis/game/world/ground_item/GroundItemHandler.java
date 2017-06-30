@@ -10,7 +10,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.Stackable;
+import com.venenatis.game.task.Task.StackType;
 import com.venenatis.game.task.Walkable;
 import com.venenatis.game.util.logging.PlayerLogging;
 import com.venenatis.game.util.logging.PlayerLogging.LogType;
@@ -306,7 +306,7 @@ public final class GroundItemHandler {
 
 		GroundItem groundItem = optionalGroundItem.get();
 
-		Server.getTaskScheduler().schedule(new Task(player, 1, true, Walkable.WALKABLE, Stackable.STACKABLE) {
+		Server.getTaskScheduler().schedule(new Task(player, 1, true, Walkable.NEVER, StackType.STACK) {
 			@Override
 			public void execute() {
 				if (!player.isActive()) {

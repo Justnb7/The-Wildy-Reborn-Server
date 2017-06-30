@@ -12,6 +12,34 @@ import com.venenatis.game.model.entity.player.Player;
  * @author lare96 <http://github.com/lare96>
  */
 public abstract class Task {
+	
+	/**
+	 * The break type, applies to (@Task)
+	 */
+	public enum BreakType {
+		/**
+		 * Never stop this task
+		 */
+		NEVER,
+		/**
+		 * Stop this task on movement
+		 */
+		ON_MOVE
+	}
+
+	/**
+	 * The stacking type, applies to (@Player)
+	 */
+	public enum StackType {
+		/**
+		 * Always duplicates
+		 */
+		STACK,
+		/**
+		 * Never allow duplicates
+		 */
+		NEVER_STACK
+	}
 
 	/**
 	 * The default attachment for every task.
@@ -31,12 +59,12 @@ public abstract class Task {
 	/**
 	 * The task will stack by default
 	 */
-	private Stackable stackable = Stackable.STACKABLE;
+	private StackType stackable = StackType.STACK;
 
 	/**
 	 * The task is walkable by default
 	 */
-	private Walkable walkable = Walkable.WALKABLE;
+	private Walkable walkable = Walkable.NEVER;
 
 	/**
 	 * The current 'count down' value. When this reaches zero the task will be
@@ -89,7 +117,7 @@ public abstract class Task {
 		this(delay);
 	}
 
-	public Task(Player player, int delay, boolean immediate, Walkable walkable, Stackable stackable) {
+	public Task(Player player, int delay, boolean immediate, Walkable walkable, StackType stackable) {
 		checkDelay(delay);
 		this.tickDelay = delay;
 		this.remainingTicks = delay;
@@ -108,7 +136,7 @@ public abstract class Task {
 	 * @param walkable
 	 * @param stackable
 	 */
-	public Task(Player player, int delay, Walkable walkable, Stackable stackable) {
+	public Task(Player player, int delay, Walkable walkable, StackType stackable) {
 		this(player, delay, false, walkable, stackable);
 	}
 
@@ -182,7 +210,7 @@ public abstract class Task {
 			/*
 			 * If the player is moving and its a non walkable task, stop it.
 			 */
-			if (player.getWalkingQueue().isMoving() && walkable == Walkable.NON_WALKABLE) {
+			if (player.getWalkingQueue().isMoving() && walkable == Walkable.ON_MOVE) {
 				if (running) {
 					stop();
 					return;
@@ -203,10 +231,10 @@ public abstract class Task {
 	 * @param player
 	 */
 	public void stopNonStackableTasks(Player player) {
-		if (stackable == Stackable.NON_STACKABLE) {
+		if (stackable == StackType.NEVER_STACK) {
 			for (Iterator<Task> it$ = player.getTasks().iterator(); it$.hasNext();) {
 				Task task = it$.next();
-				if (task.stackable == Stackable.NON_STACKABLE) {
+				if (task.stackable == StackType.NEVER_STACK) {
 					if (task.isRunning()) {
 						task.stop();
 					}

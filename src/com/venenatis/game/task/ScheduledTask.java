@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.eclipse.jetty.util.thread.Scheduler.Task;
 
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 
 /**

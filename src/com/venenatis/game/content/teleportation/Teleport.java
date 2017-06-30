@@ -1,5 +1,6 @@
 package com.venenatis.game.content.teleportation;
 
+import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
@@ -157,10 +158,10 @@ public class Teleport {
 		switch (button) {
 
 		/* Home Telport */
-		case 19210:
+		case 75010:
 		case 21741:
 		case 30000:
-			player.getTeleportAction().teleport(new Location(3159, 3485), TeleportTypes.SPELL_BOOK, false);
+			player.getTeleportAction().teleport(Constants.RESPAWN_PLAYER_LOCATION, TeleportTypes.SPELL_BOOK, false);
 			break;
 			
 			//TODO add other teleport types such as pvp minigames etc

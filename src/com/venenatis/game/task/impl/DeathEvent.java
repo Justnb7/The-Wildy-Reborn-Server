@@ -6,8 +6,9 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.PrayerHandler;
-import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.controller.Controller;
+import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.EntityEvent;
 
@@ -21,9 +22,20 @@ import com.venenatis.game.task.EntityEvent;
  */
 public class DeathEvent extends EntityEvent {
 
+	/**
+	 * The player who has died.
+	 */
 	private Player victim;
 
-	private int timer;
+	/**
+	 * The remaining ticks
+	 */
+	private int ticks;
+	
+	/**
+	 * The controller for this event.
+	 */
+	private Controller controller;
 
 	/**
 	 * Creates the death event for the specified entity.
@@ -33,7 +45,7 @@ public class DeathEvent extends EntityEvent {
 	 */
 	public DeathEvent(Player victim) {
 		super(victim, 1);
-		this.timer = 6;
+		this.ticks = 6;
 		this.victim = victim;
 		victim.setDead(true);
 		Combat.resetCombat(victim);
@@ -45,26 +57,26 @@ public class DeathEvent extends EntityEvent {
 			this.stop();
 			return;
 		}
-		if (timer > 0) {
-			timer--;
-			if (timer == 5) {
+		if (ticks > 0) {
+			ticks--;
+			if (ticks == 5) {
 				victim.playAnimation(Animation.create(0x900));
-			} else if (timer == 3) {
+			} else if (ticks == 3) {
 				if (victim.isDueling()) {
 					victim.getDuelArena().onDeath();
 				} else if (MinigameHandler.search(victim).isPresent()) {
 					MinigameHandler.search(victim).ifPresent($it -> $it.onDeath(victim));
 				} else {
 					if (!canKeepItems()) {
-						DeathDropHandler.handleDeathDrop(victim);
+						dropPlayerItems(victim);
 					}
 				}
-			} else if (timer == 1) {
+			} else if (ticks == 1) {
 				if (victim != null) {
 					/*p.getActionSender().sendWidget(2, 0);
 					p.getActionSender().sendWidget(3, 0);*/
 					victim.getActionQueue().clearRemovableActions();
-					victim.setTeleportTarget(Entity.DEFAULT_LOCATION);
+					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
 					victim.getSkills().setLevel(Skills.HITPOINTS, victim.getSkills().getLevelForExperience(Skills.HITPOINTS));
 					victim.getActionSender().sendMessage("Oh dear, you are dead!");
 					victim.setDead(false);
@@ -74,11 +86,25 @@ public class DeathEvent extends EntityEvent {
 					victim.setUsingSpecial(false);
 					victim.getDamageMap().resetDealtDamage();
 				}
-			} else if (timer == 0) {
+			} else if (ticks == 0) {
 				victim.playAnimation(Animation.create(-1));
 			}
 		} else {
 			this.stop();
+		}
+	}
+	
+	/**
+	 * Are we allowed to drop the victims items?
+	 * 
+	 * @param victim
+	 *            The player losing his items
+	 */
+	public void dropPlayerItems(Player victim) {
+		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
+
+		if (!controller.isSafe()) {
+			DeathDropHandler.handleDeathDrop(victim);
 		}
 	}
 	

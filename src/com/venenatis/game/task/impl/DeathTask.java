@@ -53,7 +53,7 @@ public class DeathTask extends Task {
 		stop();
 		if (victim.getCombatState().isDead()) {
 			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
-			if (Area.inWilderness(killer)) {
+			if (killer != null && Area.inWilderness(killer) ) {//because i added else statements
 				switch (RandomGenerator.nextInt(10)) {
 				default:
 				case 0:
@@ -88,7 +88,7 @@ public class DeathTask extends Task {
 					break;
 				}
 				//TODO wilderness rewards
-			} else {
+			} else {//were not in wild here but stil thinks we are
 				/*Here we add support for none wilderness related activities*/
 				if (victim.isDueling()) {
 					victim.getDuelArena().onDeath();
@@ -99,13 +99,13 @@ public class DeathTask extends Task {
 						dropPlayerItems(victim);
 					}
 					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
-					reset();
+					reset(victim);
 				}
 			}
 		}
 	}
 	
-	private void reset() {
+	public static void reset(Player victim) {
 		victim.getActionSender().sendWidget(2, 0);
 		victim.getActionSender().sendWidget(3, 0);
 		victim.getActionQueue().clearRemovableActions();

@@ -10,7 +10,7 @@ public class IdleLogoutPacketHandler implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {
-		if (Combat.incombat(player) || player.rights == Rights.ADMINISTRATOR) {
+		if (Combat.incombat(player) || Rights.isSuperStaff(player)) {
 			return;
 		} else {
 			player.logout();

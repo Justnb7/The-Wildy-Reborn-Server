@@ -122,7 +122,8 @@ public abstract class Area {
 	 *         otherwise.
 	 */
 	public static boolean inWilderness(Entity entity) {
-		return GameConstants.WILDERNESS.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
+		return GameConstants.WILDERNESS != null 
+				&& GameConstants.WILDERNESS.stream().anyMatch($it -> $it != null && $it.inArea(entity.getLocation()));
 	}
 	
 	public static boolean inF2P(Entity entity) {

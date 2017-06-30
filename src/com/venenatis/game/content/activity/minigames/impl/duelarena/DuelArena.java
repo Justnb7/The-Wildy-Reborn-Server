@@ -14,7 +14,6 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.location.impl.SquareArea;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
@@ -23,6 +22,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.task.impl.DeathTask;
 import com.venenatis.game.util.StringUtils;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.object.GameObject;
@@ -702,10 +702,6 @@ public final class DuelArena extends Minigame {
 	public void onEnd() {
 		Player winner = isWon() ? player : other.get();
 		Player loser = !isWon() ? player : other.get();
-		
-		System.out.printf("winner %s loser %s%n", winner, loser);
-		winner.debug("i won");
-		loser.debug("i lost");
 
 		winner.getDuelArena().setStage(DuelStage.REWARD);
 
@@ -721,8 +717,8 @@ public final class DuelArena extends Minigame {
 		winner.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
 		loser.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
 
-		PrayerHandler.resetAllPrayers(winner);
-		PrayerHandler.resetAllPrayers(loser);
+		DeathTask.reset(loser);
+		DeathTask.reset(winner);
 
 		onReset(winner);
 		onReset(loser);
@@ -731,7 +727,7 @@ public final class DuelArena extends Minigame {
 
 		winner.getActionSender().sendItemOnInterface(31708, winner.getDuelArena().getReward());
 		loser.getActionSender().sendItemOnInterface(31708, new Item[]{});
-
+		
 		winner.getActionSender().sendString("You are victorious!", 31705);
 		loser.getActionSender().sendString("You lost!", 31705);
 

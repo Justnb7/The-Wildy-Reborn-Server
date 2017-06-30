@@ -159,14 +159,6 @@ public class OwnerCommand implements Command {
 			player.getActionSender().sendMessage(player.getTradeSession().toString());
 			return true;
 
-		case "skullicon":
-			if (parser.hasNext()) {
-				int id = parser.nextInt();
-				//player.getSkulling().setSkullIcon(id);
-				return true;
-			}
-			return false;
-
 		case "mapstate":
 			if (parser.hasNext()) {
 				int state = parser.nextInt();

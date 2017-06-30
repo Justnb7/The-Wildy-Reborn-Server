@@ -306,7 +306,7 @@ public final class GroundItemHandler {
 
 		GroundItem groundItem = optionalGroundItem.get();
 
-		Server.getTaskScheduler().schedule(new Task(player, 1, true, BreakType.NEVER, StackType.STACK) {
+		Server.getTaskScheduler().schedule(new Task(player, 1, true, StackType.STACK, BreakType.NEVER) {
 			@Override
 			public void execute() {
 				if (!player.isActive()) {

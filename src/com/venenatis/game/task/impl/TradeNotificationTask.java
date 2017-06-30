@@ -9,7 +9,7 @@ public class TradeNotificationTask extends Task {
 	private int time = 11;
 	
 	public TradeNotificationTask(Player player) {
-		super(player, 1, true, BreakType.ON_MOVE, StackType.NEVER_STACK);
+		super(player, 1, true, StackType.NEVER_STACK, BreakType.ON_MOVE);
 		this.player = player;
 	}
 

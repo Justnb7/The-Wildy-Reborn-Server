@@ -18,7 +18,7 @@ public abstract class SkillTask extends Task {
 	}
 	
 	public SkillTask(Player player, int delay, BreakType walkable, StackType stackable, boolean immediate) {
-		super(player, delay, immediate, walkable, stackable);
+		super(player, delay, immediate, stackable, walkable);
 		this.player = player;
 	}
 	

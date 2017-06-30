@@ -117,7 +117,7 @@ public abstract class Task {
 		this(delay);
 	}
 
-	public Task(Player player, int delay, boolean immediate, BreakType walkable, StackType stackable) {
+	public Task(Player player, int delay, boolean immediate, StackType stackable, BreakType walkable) {
 		checkDelay(delay);
 		this.tickDelay = delay;
 		this.remainingTicks = delay;
@@ -137,7 +137,7 @@ public abstract class Task {
 	 * @param stackable
 	 */
 	public Task(Player player, int delay, BreakType walkable, StackType stackable) {
-		this(player, delay, false, walkable, stackable);
+		this(player, delay, false, stackable, walkable);
 	}
 
 	/**

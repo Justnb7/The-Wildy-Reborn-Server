@@ -287,7 +287,7 @@ public enum Fletching {
 			return true;
 		}
 
-		Server.getTaskScheduler().schedule(new Task(player, 1, false, BreakType.NEVER, StackType.NEVER_STACK) {
+		Server.getTaskScheduler().schedule(new Task(player, 1, false, StackType.NEVER_STACK, BreakType.NEVER) {
 			private int iterations = 0;
 
 			@Override

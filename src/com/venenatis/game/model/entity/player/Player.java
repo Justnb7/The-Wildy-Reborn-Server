@@ -2902,4 +2902,20 @@ public class Player extends Entity {
 		this.runRestore = runRestore;
 	}
 
+	/**
+	 * Determines if this player can keep their items upon death.
+	 *
+	 * @return {@code true} If they can keep their items on death. {@code false}
+	 *         If they can not.
+	 */
+	public boolean canKeepItems() {
+		if (Constants.ADMIN_CAN_KEEP_ITEMS) {
+			return true;
+		} else if (MinigameHandler.execute(this, false, $it -> $it.canKeepItems())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

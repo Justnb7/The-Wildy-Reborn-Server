@@ -45,7 +45,6 @@ public final class TaskQueue implements Service {
 
 	public void submit(final Task task) {
 		schedule(task);
-		
 	}
 
 	/**

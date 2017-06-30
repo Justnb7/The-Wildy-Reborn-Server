@@ -31,11 +31,6 @@ public class LoginCredential {
 	 * The mac address of the session
 	 */
 	private final String macAddress;
-	
-	/**
-	 * The type of request
-	 */
-	private final String requestType;
 
 	/**
 	 * The packet encryptor of theplayers {@link Session}
@@ -74,12 +69,11 @@ public class LoginCredential {
 	 * @param version
 	 *            The version of the client the player is connecting from
 	 */
-	public LoginCredential(String username, String password, String identity, String macAddress, String requestType, ISAACRandomGen encryptor, ISAACRandomGen decryptor, long clientHash, int version) {
+	public LoginCredential(String username, String password, String identity, String macAddress, ISAACRandomGen encryptor, ISAACRandomGen decryptor, long clientHash, int version) {
 		this.username = username;
 		this.password = password;
 		this.identity = identity;
 		this.macAddress = macAddress;
-		this.requestType = requestType;
 		this.encryptor = encryptor;
 		this.decryptor = decryptor;
 		this.clientHash = clientHash;
@@ -110,10 +104,6 @@ public class LoginCredential {
 	
 	public String getMacAddress() {
 		return macAddress;
-	}
-	
-	public String getRequestType() {
-		return requestType;
 	}
 
 	/**

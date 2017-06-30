@@ -142,25 +142,6 @@ public class LoginSession extends Session {
 					sendReturnCode(ctx.channel(), 3);
 				}
 			}
-			if (credential.getRequestType().equals("register")) {
-				if (PlayerSerialization.playerExists(name)) {
-					if (name.equals(NameUtils.formatName(credential.getName())) || !pass.equals(credential.getPassword())) {
-						sendReturnCode(ctx.channel(), 22);
-						return;
-					} else {
-						sendReturnCode(ctx.channel(), 23);
-						return;
-					}
-				} else {
-					sendReturnCode(ctx.channel(), 22);
-					return;
-				}
-			}
-			/*if (load == 3) {
-				player.saveFile = false;
-				sendReturnCode(ctx.channel(), 3);
-				return;
-			}*/
 		}
 		
 		for (String disabled : Constants.BAD_USERNAMES) {

@@ -24,9 +24,9 @@ public class Slayer {
 	 * @return master
 	 */
 	public static SlayerMasters suitableMaster(Player player) {
-		if (player.combatLevel >= 3 && player.combatLevel <= 19) {
+		if (player.getCombatLevel() >= 3 && player.getCombatLevel() <= 19) {
 			return SlayerMasters.TURAEL;
-		} else if (player.combatLevel >= 85) {
+		} else if (player.getCombatLevel() >= 85) {
 			return SlayerMasters.NIEVE;
 		}
 		return SlayerMasters.TURAEL;

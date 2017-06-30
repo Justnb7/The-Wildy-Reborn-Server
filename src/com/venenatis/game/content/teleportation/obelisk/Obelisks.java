@@ -75,10 +75,6 @@ public class Obelisks {
 			player.getActionSender().sendMessage("The obelisk is already active, please wait.");
 			return;
 		}
-		if (player.teleTimer > 0) {
-			player.getActionSender().sendMessage("You cannot do this whilst teleporting.");
-			return;
-		}
 		player.usingObelisk = true;
 		state.put(objectId, true);
 		int x = location.getBoundaries().getMinimumX();

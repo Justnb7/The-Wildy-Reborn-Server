@@ -166,7 +166,6 @@ public class NpcVsPlayerCombat {
 			return false;
 		}
 
-		player.combatCountdown = 10;
 		if (player.inTutorial()) {
 			npc.targetId = 0;
 			return false;

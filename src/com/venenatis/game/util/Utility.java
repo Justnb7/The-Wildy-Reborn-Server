@@ -837,10 +837,10 @@ public class Utility {
 	}
 
 	public static int combatDifference(Player player, Player player2) {
-		if (player.combatLevel > player2.combatLevel)
-			return player.combatLevel - player2.combatLevel;
-		else if (player.combatLevel < player2.combatLevel)
-			return player2.combatLevel - player.combatLevel;
+		if (player.getCombatLevel() > player2.getCombatLevel())
+			return player.getCombatLevel() - player2.getCombatLevel();
+		else if (player.getCombatLevel() < player2.getCombatLevel())
+			return player2.getCombatLevel() - player.getCombatLevel();
 		return 0;
 	}
 

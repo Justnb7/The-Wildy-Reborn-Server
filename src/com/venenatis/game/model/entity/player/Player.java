@@ -1326,7 +1326,6 @@ public class Player extends Entity {
 		//Reset poison and venom
 		this.infection = 0;
 		this.infected = false;
-		this.poisonDamage = 0;
 		
 		if (isDueling() || getDuelArena().isInSession()) {
 			getActionSender().sendMessage("You cannot logout while in duel arena.");
@@ -1605,37 +1604,6 @@ public class Player extends Entity {
 	public List<Task> getTasks() {
 		return runningTasks;
 	}
-
-	private int string_receiver;
-	private String tempKey;
-
-	public int getStringReceiver() {
-		return string_receiver;
-	}
-
-	public String getTempKey() {
-		return tempKey;
-	}
-
-	/**
-	 * Get the players mute status
-	 */
-
-	public boolean getClanPunishment() {
-		return isClanMuted;
-	}
-
-	public void setClanPunishment(boolean isMuted) {
-		this.isClanMuted = isMuted;
-	}
-
-	public void setTempKey(String s) {
-		this.tempKey = s;
-	}
-
-	public void setStringReceiver(int i) {
-		this.string_receiver = i;
-	}
 	
 	private int lastSlayerTask;
 
@@ -1762,8 +1730,6 @@ public class Player extends Entity {
 	public void setRights(Rights rights) {
 		this.rights = rights;
 	}
-
-	public int packetSize = 0, packetType = -1;
 	
 	public long lastCast;
 	public boolean usingObelisk = false;
@@ -1780,10 +1746,6 @@ public class Player extends Entity {
 	public Stopwatch getLastCombatAction() {
 		return lastCombatAction;
 	}
-
-	/**
-	 * End of combat refferences
-	 */
 	
 	/**
 	 * The current title the player has
@@ -1886,8 +1848,6 @@ public class Player extends Entity {
 	}
 	
 	private boolean yellOff;
-
-	public int combatLevel = 3;
 	
 	public boolean isYellOff() {
 		return yellOff;
@@ -2305,22 +2265,19 @@ public class Player extends Entity {
     /**
      * Integers
      */
-	public int countdown;
-	public int combatCountdown = 10;
 	private int chatTextColor = 0;
 	private int chatTextEffects = 0;
 	public int lastClickedItem;
 
-	public int totalLevel,
-			lastChatId = 1, privateChat, specBarId,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, teleTimer, walkTutorial = 15, bountyPoints;
+	public int lastChatId = 1, privateChat, specBarId,
+			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, walkTutorial = 15, bountyPoints;
 	
 	/**
 	 * Booleans
 	 */
 	public boolean dropListSorted;
 	public boolean dropRateInKills;
-	public boolean isMuted, isClanMuted, hasMultiSign, properLogout;
+	public boolean isMuted, properLogout;
 	
 	/**
 	 * Strings
@@ -2328,7 +2285,6 @@ public class Player extends Entity {
 	public String connectedFrom = "";
 	private String username = null;
 	private String password = "";
-	public String lastClanChat = "";
 	private String identity;
 	public String loyaltyTitle = "";
 	
@@ -2347,8 +2303,6 @@ public class Player extends Entity {
 	 */
 	private byte chatText[] = new byte[4096];
 	private byte chatTextSize = 0;
-	public byte venomDamage;
-	public byte poisonDamage;
 	
 	/**
 	 * Timers
@@ -2407,11 +2361,6 @@ public class Player extends Entity {
 	public Selection getGameModeSelection() {
 		return select_game_mode;
 	}
-	
-	//Minigame variables
-	public boolean isAnimatedArmourSpawned;
-	public int waveId;
-	public boolean secondOption;
 	
 	/**
 	 * The progress bar.
@@ -2808,7 +2757,17 @@ public class Player extends Entity {
 	public void setShopId(final int shopId) {
 		this.shopId = shopId;
 	}
+	
+	private int combatLevel;
+	
+	public int getCombatLevel() {
+		return combatLevel;
+	}
 
+	public void setCombatLevel(int combatLevel) {
+		this.combatLevel = combatLevel;
+	}
+	
 	private boolean newPlayer;
 	
 	public boolean isNewPlayer() {

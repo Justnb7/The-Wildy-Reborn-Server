@@ -232,7 +232,7 @@ public final class DuelArena extends Minigame {
 
 			case FIRST_SCREEN:
 				player.getActionSender().sendString("Dueling with: " + Rights.getStringForRights(player) + " " + Utility.formatName(other.get().getUsername()), 31005);
-				player.getActionSender().sendString("Opponent's combat level: <col=ff7000>" + other.get().combatLevel, 31006);
+				player.getActionSender().sendString("Opponent's combat level: <col=ff7000>" + other.get().getCombatLevel(), 31006);
 				player.getActionSender().sendString("", 31009);
 				player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
 				player.getActionSender().sendItemOnInterface(InterfaceConstants.PLAYER_STAKE_CONTAINER, new Item[]{});
@@ -261,7 +261,7 @@ public final class DuelArena extends Minigame {
 			case REWARD:
 				player.getActionSender().sendString("<col=E1981F>Total Value: " + other.get().getDuelContainer().containerValue(), 31709);
 				player.getActionSender().sendString(Utility.formatName(other.get().getUsername()), 31706);
-				player.getActionSender().sendString("" + other.get().combatLevel, 31707);
+				player.getActionSender().sendString("" + other.get().getCombatLevel(), 31707);
 				player.getActionSender().sendInterface(31700);
 				break;
 

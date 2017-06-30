@@ -55,8 +55,8 @@ public class PlayerVsPlayerCombat {
 				return false;
 			}*/
 		} else {
-			int myCB = player.combatLevel;
-			int pCB = ((Player) target).combatLevel;
+			int myCB = player.getCombatLevel();
+			int pCB = ((Player) target).getCombatLevel();
 			if (!bypassCosImTheBest && ((myCB > pCB + 12) || (myCB < pCB - 12))) {
 				player.getActionSender().sendMessage("You can only fight players in your combat range!");
 				player.getWalkingQueue().reset();

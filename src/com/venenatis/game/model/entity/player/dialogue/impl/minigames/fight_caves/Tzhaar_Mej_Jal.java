@@ -18,7 +18,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 	
 	@Override
 	protected void start(Object... parameters) {
-		if (player.getInventory().contains(6570) && player.secondOption) {
+		if (player.getInventory().contains(6570) && (Boolean) player.getAttribute("second_option")) {
 			send(Type.PLAYER, Expression.DEFAULT, "I have a fire cape here.");
 			setPhase(36);
 		} else {

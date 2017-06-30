@@ -127,7 +127,7 @@ public class Skills {
 			player.getActionSender().sendMessage("<col=8b0000>Well done! You've achieved the highest possible level in this skill!</col>");
 		}
 		if (skillData.getId() < 7 || skillData.getId() == 21) {
-			player.combatLevel = getCombatLevel();
+			player.setCombatLevel(getCombatLevel());
 			getCombatLevel();
 			player.getActionSender().sendString("Combat Level: " + player.getSkills().getCombatLevel(), 3983);
 		}

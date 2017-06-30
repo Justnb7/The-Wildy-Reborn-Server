@@ -128,7 +128,7 @@ public class NpcInteraction {
 		switch (npc.getId()) {
 
 		case 2180:
-			player.secondOption = true;
+			player.getAttributes().put("second_option", Boolean.TRUE);
 			player.dialogue().start("FIGHT_CAVE");
 			break;
 

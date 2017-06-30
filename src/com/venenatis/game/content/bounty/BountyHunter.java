@@ -83,7 +83,7 @@ public class BountyHunter extends Task {
 			level = Area.inWilderness(target) ? target.getWildLevel() : 0;
 			minLevel = level - 2 <= 0 ? 1 : level - 2;
 			maxLevel = level + 2;
-			combat = target.combatLevel;
+			combat = target.getCombatLevel();
 			wealth = target.getAttribute("bounty_wealth", "---");
 		}
 
@@ -166,7 +166,7 @@ public class BountyHunter extends Task {
 			/*
 			 * The difference between yours and the targets combat level
 			 */
-			int difference = CombatRequirements.getCombatDifference(player.combatLevel, target.combatLevel);
+			int difference = CombatRequirements.getCombatDifference(player.getCombatLevel(), target.getCombatLevel());
 
 			/*
 			 * Check that they are within 3 combat levels of us

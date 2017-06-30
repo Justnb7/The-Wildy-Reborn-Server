@@ -14,7 +14,7 @@ public class WalkingPacketHandler implements PacketType {
 	public void handle(Player player, int packetType, int packetSize) {
 		
 		//We can't walk because of the following reasons
-		if (player.getCombatState().isDead() || !player.getController().canMove() || player.inTutorial() || player.teleTimer > 0
+		if (player.getCombatState().isDead() || !player.getController().canMove() || player.inTutorial()
 				|| player.isTeleporting() || player.isForcedMovement() || player.hasAttribute("busy")) {
 			return;
 		}

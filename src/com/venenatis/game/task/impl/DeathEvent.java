@@ -64,17 +64,18 @@ public class DeathEvent extends EntityEvent {
 			} else if (ticks == 3) {
 				if (victim.isDueling()) {
 					victim.getDuelArena().onDeath();
+					return;
 				} else if (MinigameHandler.search(victim).isPresent()) {
 					MinigameHandler.search(victim).ifPresent($it -> $it.onDeath(victim));
 				} else {
-					if (!canKeepItems()) {
+					if (!victim.canKeepItems()) {
 						dropPlayerItems(victim);
 					}
 				}
 			} else if (ticks == 1) {
 				if (victim != null) {
-					/*p.getActionSender().sendWidget(2, 0);
-					p.getActionSender().sendWidget(3, 0);*/
+					victim.getActionSender().sendWidget(2, 0);
+					victim.getActionSender().sendWidget(3, 0);
 					victim.getActionQueue().clearRemovableActions();
 					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
 					victim.getSkills().setLevel(Skills.HITPOINTS, victim.getSkills().getLevelForExperience(Skills.HITPOINTS));
@@ -105,22 +106,6 @@ public class DeathEvent extends EntityEvent {
 
 		if (!controller.isSafe()) {
 			DeathDropHandler.handleDeathDrop(victim);
-		}
-	}
-	
-	/**
-	 * Determines if this player can keep their items upon death.
-	 *
-	 * @return {@code true} If they can keep their items on death. {@code false}
-	 *         If they can not.
-	 */
-	public boolean canKeepItems() {
-		if (Constants.ADMIN_CAN_KEEP_ITEMS) {
-			return true;
-		} else if (MinigameHandler.execute(victim, false, $it -> $it.canKeepItems())) {
-			return true;
-		} else {
-			return false;
 		}
 	}
 }

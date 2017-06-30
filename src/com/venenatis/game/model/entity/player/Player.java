@@ -2909,9 +2909,7 @@ public class Player extends Entity {
 	 *         If they can not.
 	 */
 	public boolean canKeepItems() {
-		if (Constants.ADMIN_CAN_KEEP_ITEMS) {
-			return true;
-		} else if (MinigameHandler.execute(this, false, $it -> $it.canKeepItems())) {
+		if (MinigameHandler.execute(this, false, $it -> $it.canKeepItems())) {
 			return true;
 		} else {
 			return false;

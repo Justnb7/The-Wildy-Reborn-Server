@@ -1,5 +1,7 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
+import java.util.Arrays;
+
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -34,6 +36,20 @@ public class OwnerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
+		
+		case "item":
+			if (parser.hasNext()) {
+				final int id = parser.nextInt();
+				int amount = 1;
+
+				if (parser.hasNext()) {
+					amount = Integer.parseInt(parser.nextString().toLowerCase().replaceAll("k", "000").replaceAll("m", "000000").replaceAll("b", "000000000"));
+				}
+
+				player.getInventory().add(id, amount);
+				return true;
+			}
+			return true;
 		
 		case "master":
 			for(int skill = 0; skill < Skills.SKILL_COUNT; skill++) {

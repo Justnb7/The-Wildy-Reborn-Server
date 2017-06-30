@@ -21,6 +21,7 @@ import com.venenatis.game.world.World;
  * teleportation, etc.
  * 
  * @author Graham
+ * @author Patrick van Elderen
  * 
  */
 public class DeathTask extends Task {
@@ -87,19 +88,19 @@ public class DeathTask extends Task {
 					break;
 				}
 				//TODO wilderness rewards
-			}
-			
-			/*Here we add support for none wilderness related activities*/
-			if (victim.isDueling()) {
-				victim.getDuelArena().onDeath();
-			} else if (MinigameHandler.search(victim).isPresent()) {
-				MinigameHandler.search(victim).ifPresent($it -> $it.onDeath(victim));
 			} else {
-				if (!victim.canKeepItems()) {
-					dropPlayerItems(victim);
+				/*Here we add support for none wilderness related activities*/
+				if (victim.isDueling()) {
+					victim.getDuelArena().onDeath();
+				} else if (MinigameHandler.search(victim).isPresent()) {
+					MinigameHandler.search(victim).ifPresent($it -> $it.onDeath(victim));
+				} else {
+					if (!victim.canKeepItems()) {
+						dropPlayerItems(victim);
+					}
+					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
+					reset();
 				}
-				victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
-				reset();
 			}
 		}
 	}

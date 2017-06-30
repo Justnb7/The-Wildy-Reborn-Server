@@ -11,7 +11,7 @@ import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -29,7 +29,7 @@ public class MagicShortbow implements SpecialAttack {
 
 		RangeData.msbSpecProjectile(player);
 
-		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+		Server.getTaskScheduler().schedule(new Task(1) {
 			public void execute() {
 				RangeData.msbSpecProjectile(player);
 				this.stop();

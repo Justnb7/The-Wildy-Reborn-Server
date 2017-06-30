@@ -13,7 +13,7 @@ import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
@@ -146,7 +146,7 @@ public class Obelisks {
 		
 	}
 	
-	static final class Event extends ScheduledTask {
+	static final class Event extends Task {
 		
 		private Obelisk location;
 		

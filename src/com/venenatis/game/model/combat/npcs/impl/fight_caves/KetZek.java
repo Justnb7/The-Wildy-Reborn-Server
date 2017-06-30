@@ -10,7 +10,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -65,7 +65,7 @@ public class KetZek extends AbstractBossCombat {
 
             Combat.hitEvent(attacker, victim, delay, hitInfo, CombatStyle.MAGIC);
             
-            Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
+            Server.getTaskScheduler().schedule(new Task(delay) {
 				@Override
 				public void execute() {
 					this.stop();

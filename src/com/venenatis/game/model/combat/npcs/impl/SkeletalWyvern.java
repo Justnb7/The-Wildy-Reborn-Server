@@ -13,7 +13,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -103,7 +103,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 				// Send the hit task
 				Combat.hitEvent(attacker, victim, hitDelay, hitInfo, CombatStyle.MAGIC);
 
-				Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+				Server.getTaskScheduler().schedule(new Task(hitDelay) {
 					@Override
 					public void execute() {
 						if (projectile) {

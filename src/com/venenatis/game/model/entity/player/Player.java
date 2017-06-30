@@ -72,7 +72,7 @@ import com.venenatis.game.net.network.rsa.ISAACRandomGen;
 import com.venenatis.game.net.network.session.GameSession;
 import com.venenatis.game.net.packet.ActionSender;
 import com.venenatis.game.net.packet.Packet;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.DeathEvent;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.util.MutableNumber;
@@ -896,7 +896,7 @@ public class Player extends Entity {
 	 * @param player
 	 */
 	public void reloadItems(Player player) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(4) {
+		Server.getTaskScheduler().schedule(new Task(4) {
 			@Override
 			public void execute() {
 				GroundItemHandler.reloadGroundItems(player);
@@ -1515,7 +1515,7 @@ public class Player extends Entity {
 	/**
 	 * A list of running tasks for this player
 	 */
-	private List<ScheduledTask> runningTasks = new LinkedList<>();
+	private List<Task> runningTasks = new LinkedList<>();
 	
 	/**
 	 * Our players current controller
@@ -1533,7 +1533,7 @@ public class Player extends Entity {
 	 *            The {@link DistancedActionTask} to perform when the
 	 *            destination is reached
 	 */
-	public void setDistancedTask(ScheduledTask task) {
+	public void setDistancedTask(Task task) {
 		stopDistancedTask();
 		this.distancedTask = task;
 		if (task != null) {
@@ -1605,7 +1605,7 @@ public class Player extends Entity {
 		skillTask = null;
 	}
 
-	public List<ScheduledTask> getTasks() {
+	public List<Task> getTasks() {
 		return runningTasks;
 	}
 
@@ -1855,7 +1855,7 @@ public class Player extends Entity {
 	private DialogueManager dialogue;
 	private FriendAndIgnoreList friendAndIgnores = new FriendAndIgnoreList(this);
 	private RequestManager requestManager = new RequestManager(this);
-	private ScheduledTask distancedTask;
+	private Task distancedTask;
 	private SkillTask skillTask;
 	private int sessionExperience;
 	private LunarSpells lunar = new LunarSpells(this);
@@ -2206,7 +2206,7 @@ public class Player extends Entity {
 	 * @param canVengeance the canVengeance to set
 	 */
 	public void setCanVengeance(int ticks) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(ticks) {
+		Server.getTaskScheduler().schedule(new Task(ticks) {
 			@Override
 			public void execute() {
 				canVengeance = true;

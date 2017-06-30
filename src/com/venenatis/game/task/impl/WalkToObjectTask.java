@@ -3,7 +3,7 @@ package com.venenatis.game.task.impl;
 import com.venenatis.game.content.clicking.objects.ObjectInteraction;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 
 /**
  * This task handles walking towards objects.
@@ -12,7 +12,7 @@ import com.venenatis.game.task.ScheduledTask;
  * @date 24-5-2017
  *
  */
-public class WalkToObjectTask extends ScheduledTask {
+public class WalkToObjectTask extends Task {
 	
 	/**
 	 * The location of the object

@@ -10,7 +10,7 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -79,7 +79,7 @@ public class Prayer {
 			player.playAnimation(Animation.create(827));
 			player.getActionSender().sendMessage("You dig a hole in the ground.");
 			player.getInventory().removeSlot(slot, 1, true);
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+			Server.getTaskScheduler().schedule(new Task(1) {
 				public void execute() {
 					player.getSkills().addExperience(Skills.PRAYER, bone.getXp() * Constants.PRAYER_EXP_MODIFIER);
 					player.getActionSender().sendMessage("You bury the bones...");
@@ -102,7 +102,7 @@ public class Prayer {
 			player.playAnimation(Animation.create(883, 10));
 			player.getInventory().remove(item);
 			player.getActionSender().sendMessage("You use the bones on the altar.");
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+			Server.getTaskScheduler().schedule(new Task(1) {
 				public void execute() {
 					/**
 					 * The player is not active stop the task

@@ -10,7 +10,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -71,7 +71,7 @@ public class TzTokJad extends AbstractBossCombat {
 			randomHit = Utility.getRandom(maxHit);
 			
 			// Special case: the player actually has 2 ticks where they can change pray before getting smacked
-			Server.getTaskScheduler().schedule(new ScheduledTask(2) {
+			Server.getTaskScheduler().schedule(new Task(2) {
 				@Override
 				public void execute() {
 					this.stop();
@@ -80,7 +80,7 @@ public class TzTokJad extends AbstractBossCombat {
 				}
 			});
 			
-            Server.getTaskScheduler().schedule(new ScheduledTask(3) {
+            Server.getTaskScheduler().schedule(new Task(3) {
 				@Override
 				public void execute() {
 					this.stop();
@@ -113,7 +113,7 @@ public class TzTokJad extends AbstractBossCombat {
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, MAGIC_GFX.getId(), 25, 50, clientSpeed, 110, 36, 10, 48));
 			
 			// Special case: the player actually has 2 ticks where they can change pray before getting smacked
-			Server.getTaskScheduler().schedule(new ScheduledTask(2) {
+			Server.getTaskScheduler().schedule(new Task(2) {
 				@Override
 				public void execute() {
 					this.stop();

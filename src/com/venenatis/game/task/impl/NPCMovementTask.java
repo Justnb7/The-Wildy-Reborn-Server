@@ -2,7 +2,7 @@ package com.venenatis.game.task.impl;
 
 import com.venenatis.game.model.entity.following.NPCFollowing;
 import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -11,7 +11,7 @@ import com.venenatis.game.world.World;
  * 
  * @author Patrick van Elderen
  */
-public final class NPCMovementTask extends ScheduledTask {
+public final class NPCMovementTask extends Task {
 
 	public NPCMovementTask() {
 		super(1);

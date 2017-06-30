@@ -10,7 +10,7 @@ import com.venenatis.game.content.skills.slayer.interfaceController.UnlockInterf
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -235,7 +235,7 @@ public class SlayerInterface {
 	 * @param player
 	 */
 	public void open(Player player) {
-		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+		Server.getTaskScheduler().schedule(new Task(1) {
 			@Override
 			public void execute() {
 				//generateCheckMarks(player);

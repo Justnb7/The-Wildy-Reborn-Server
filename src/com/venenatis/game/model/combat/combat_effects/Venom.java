@@ -5,7 +5,7 @@ import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.server.Server;
 
 /**
@@ -39,7 +39,7 @@ public class Venom {
 		if(player != null){
 			player.damage(new Hit(damage, HitType.VENOM));
 			damage = (damage + 2 > 20 ? 20 : damage + 2);
-			Server.getTaskScheduler().schedule(new ScheduledTask(20) {
+			Server.getTaskScheduler().schedule(new Task(20) {
 				@Override
 				public void execute() {
 					if(player.infection == 0) {
@@ -64,7 +64,7 @@ public class Venom {
 			npc.damage(new Hit(damage, HitType.VENOM));
 			damage = (damage + 2 > 20 ? 20 : damage + 2);
 			npc.infected = true;
-			Server.getTaskScheduler().schedule(new ScheduledTask(20) {
+			Server.getTaskScheduler().schedule(new Task(20) {
 				@Override
 				public void execute() {
 					if(npc.isDead()) {

@@ -13,7 +13,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -154,7 +154,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 		attacker.getCombatState().setAttackDelay(5);
 		final int dmg = preHit;
 		CombatStyle preStyle = style;
-		World.getWorld().schedule(new ScheduledTask(hitDelay) {
+		World.getWorld().schedule(new Task(hitDelay) {
 			@Override
 			public void execute() {
 				this.stop();
@@ -210,7 +210,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 			if(victim.getActionSender() != null) {
 				victim.getActionSender().sendMessage("The fiend teleports you away.");
 			}
-			World.getWorld().schedule(new ScheduledTask(1) {
+			World.getWorld().schedule(new Task(1) {
 				public void execute() {
 					this.stop();
 					victim.setTeleportTarget(generateLocation());	

@@ -10,7 +10,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.instance.impl.KrakenInstance;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.RouteFinder;
 import com.venenatis.server.Server;
@@ -41,7 +41,7 @@ public class PlayerVsNpcCombat {
 			npc.setHitpoints(120);//reset hp when disturbed
 			npc.setHitpoints(npc.getHitpoints() - damage);
 
-			Server.getTaskScheduler().schedule(new ScheduledTask(3) {
+			Server.getTaskScheduler().schedule(new Task(3) {
 				
 				@Override
 				public void execute() {
@@ -58,7 +58,7 @@ public class PlayerVsNpcCombat {
 			npc.setHitpoints(255);//reset hp when disturbed
 			npc.setHitpoints(npc.getHitpoints() - damage);
 
-			Server.getTaskScheduler().schedule(new ScheduledTask(3) {
+			Server.getTaskScheduler().schedule(new Task(3) {
 				
 				@Override
 				public void execute() {
@@ -77,7 +77,7 @@ public class PlayerVsNpcCombat {
 			npc.setHitpoints(125);//reset hp when disturbed
 			npc.setHitpoints(npc.getHitpoints() - damage);
 
-			Server.getTaskScheduler().schedule(new ScheduledTask(3) {
+			Server.getTaskScheduler().schedule(new Task(3) {
 				
 				@Override
 				public void execute() {

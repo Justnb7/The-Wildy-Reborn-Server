@@ -11,7 +11,7 @@ import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -69,7 +69,7 @@ public class DarkBow implements SpecialAttack {
 		final int finalSecond = second;
 		
 		// Apply 2nd hitsplat 1 tick later
-		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+		Server.getTaskScheduler().schedule(new Task(1) {
 			@Override
 			public void execute() {
 				targ.damage(new Hit(finalSecond, finalSecond > 0 ? HitType.NORMAL : HitType.BLOCKED));
@@ -78,7 +78,7 @@ public class DarkBow implements SpecialAttack {
 		});
 
 		boolean dragArrow = player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212;
-		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+		Server.getTaskScheduler().schedule(new Task(1) {
 			@Override
 			public void execute() {
 				target.playGraphics(Graphic.create(dragArrow ? 1100 : 1103, 0, 0));

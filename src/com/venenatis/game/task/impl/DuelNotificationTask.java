@@ -1,11 +1,11 @@
 package com.venenatis.game.task.impl;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Stackable;
 import com.venenatis.game.task.Walkable;
 
-public class DuelNotificationTask extends ScheduledTask {
+public class DuelNotificationTask extends Task {
 
 	private final Player player;
 	private int time = 20;

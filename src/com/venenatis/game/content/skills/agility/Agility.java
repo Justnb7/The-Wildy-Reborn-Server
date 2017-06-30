@@ -10,7 +10,7 @@ import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
 
@@ -279,7 +279,7 @@ public class Agility {
 	}
 	
 	public static void forceMovement(final Player player, final Animation animation, final int[] forceMovement, int ticks, final boolean removeAttribute) {
-		Server.getTaskScheduler().submit(new ScheduledTask(ticks) {
+		Server.getTaskScheduler().submit(new Task(ticks) {
 			@Override
 			public void execute() {
 				player.playAnimation(animation);
@@ -295,7 +295,7 @@ public class Agility {
 			if(ticksBeforeAnim < 1) {
 				player.playAnimation(animation);
 			} else {
-				Server.getTaskScheduler().submit(new ScheduledTask(ticksBeforeAnim) {
+				Server.getTaskScheduler().submit(new Task(ticksBeforeAnim) {
 					@Override
 					public void execute() {
 						player.playAnimation(animation);
@@ -304,7 +304,7 @@ public class Agility {
 				});			
 			}
 		}
-		Server.getTaskScheduler().submit(new ScheduledTask(ticks) {
+		Server.getTaskScheduler().submit(new Task(ticks) {
 			@Override
 			public void execute() {
 				player.setTeleportTarget(newLocation);
@@ -323,7 +323,7 @@ public class Agility {
 		final int originalTurn90ccw = player.getTurn90CounterClockwiseAnimation();
 		final int originalTurn180 = player.getTurn90CounterClockwiseAnimation();
 
-		ScheduledTask task = new ScheduledTask(delayBeforeMovement) {
+		Task task = new Task(delayBeforeMovement) {
 			@Override
 			public void execute() {
 				if(animation != null) {
@@ -342,7 +342,7 @@ public class Agility {
 				player.getWalkingQueue().reset();
 				player.getWalkingQueue().addStep(x, y);
 				player.getWalkingQueue().finish();
-				Server.getTaskScheduler().submit(new ScheduledTask(ticks) {
+				Server.getTaskScheduler().submit(new Task(ticks) {
 					@Override
 					public void execute() {
 						player.setWalkAnimation(originalWalkAnimation);
@@ -372,7 +372,7 @@ public class Agility {
 	public static void setRunningToggled(final Player player, boolean toggled, int ticks) {
 		final boolean originalToggledState = player.getWalkingQueue().isRunningToggled();
 		player.getWalkingQueue().setRunningToggled(toggled);
-		ScheduledTask task = new ScheduledTask(ticks) {
+		Task task = new Task(ticks) {
 			@Override
 			public void execute() {
 				player.getWalkingQueue().setRunningToggled(originalToggledState);
@@ -388,7 +388,7 @@ public class Agility {
 	}
 	
 	public static void damage(final Player player, final int damage, int ticks) {		
-		ScheduledTask task = new ScheduledTask(ticks) {
+		Task task = new Task(ticks) {
 			@Override
 			public void execute() {
 				int dmg = damage;
@@ -410,7 +410,7 @@ public class Agility {
 	public static void jumpDitch(final Player player, final int animation, final int[] forceMovement, int ticks, final boolean removeAttribute) {
 		final int atY = forceMovement[3] == 3 ? 3520 : 3523;
 		final int atX = forceMovement[3] == 3 ? 2995 : 2998;
-		ScheduledTask task = new ScheduledTask(1) {
+		Task task = new Task(1) {
 			@Override
 			public void execute() {
 				player.playAnimation(Animation.create(animation));

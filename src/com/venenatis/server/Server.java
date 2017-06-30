@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
-import com.venenatis.game.task.TaskScheduler;
+import com.venenatis.game.task.TaskQueue;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.SystemLogger;
 import com.venenatis.game.world.object.GlobalObjects;
@@ -57,7 +57,7 @@ public class Server {
 	/**
 	 * The task scheduler.
 	 */
-	private static final TaskScheduler scheduler = new TaskScheduler();
+	private static final TaskQueue scheduler = new TaskQueue();
 
 	/**
 	 * The caller for the NPCHandler class
@@ -128,7 +128,7 @@ public class Server {
 	 * @return The task scheduler.
 	 */
 
-	public static TaskScheduler getTaskScheduler() {
+	public static TaskQueue getTaskScheduler() {
 		return scheduler;
 	}
 

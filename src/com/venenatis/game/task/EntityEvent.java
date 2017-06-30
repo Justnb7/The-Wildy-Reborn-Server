@@ -8,7 +8,7 @@ import com.venenatis.game.model.entity.Entity;
  * @author Arithium
  * 
  */
-public abstract class EntityEvent extends ScheduledTask {
+public abstract class EntityEvent extends Task {
 
 	/**
 	 * The entity performing the event

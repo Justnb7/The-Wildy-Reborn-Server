@@ -7,7 +7,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.object.GameObject;
@@ -67,7 +67,7 @@ public class Firemaking {
 				player.getInventory().remove(new Item(log.getLog()));
 				
 				GameObject fire = new GameObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 100);
-				Server.getTaskScheduler().schedule(new ScheduledTask(lightDelay(player, log.getLog())) {
+				Server.getTaskScheduler().schedule(new Task(lightDelay(player, log.getLog())) {
 					@Override
 					public void execute() {
 						
@@ -86,7 +86,7 @@ public class Firemaking {
 					}
 				}.attach(player));
 				
-				Server.getTaskScheduler().schedule(new ScheduledTask(100) {
+				Server.getTaskScheduler().schedule(new Task(100) {
 					@Override
 					public void execute() {
 						if (player.getOutStream() != null && player != null && player.isActive()) {

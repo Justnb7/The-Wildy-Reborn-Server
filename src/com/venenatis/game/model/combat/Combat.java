@@ -31,7 +31,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
@@ -247,7 +247,7 @@ public class Combat {
         // Graphic that appears when hit appears.
         final int endGfx = player.MAGIC_SPELLS[spell][5];
         final int endH = MagicData.getEndGfxHeight(player);
-        Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+        Server.getTaskScheduler().schedule(new Task(hitDelay) {
             @Override
             public void execute() {
                 if (splash)
@@ -361,7 +361,7 @@ public class Combat {
 
         int[] endGfx = RangeData.getRangeEndGFX(player, wepId);
         // Graphic that appears when hit appears.
-        Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+        Server.getTaskScheduler().schedule(new Task(hitDelay) {
             @Override
             public void execute() {
                 if (endGfx[0] > -1)
@@ -615,7 +615,7 @@ public class Combat {
         Animation a = Animation.create(blockAnim);
 
         // Schedule a task
-        attacker.run(new ScheduledTask(delay) {
+        attacker.run(new Task(delay) {
             public void execute() {
             	if (attacker.isPlayer() && hit != null)
             		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);

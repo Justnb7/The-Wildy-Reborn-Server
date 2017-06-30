@@ -10,7 +10,7 @@ import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -42,7 +42,7 @@ public class Ballista implements SpecialAttack {
 		final int finalDmg = damage;
 		
 		// Hit
-		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
+		Server.getTaskScheduler().schedule(new Task(2) {
 			@Override
 			public void execute() {
 				targ.damage(new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));

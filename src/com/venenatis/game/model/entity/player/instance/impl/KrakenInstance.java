@@ -7,7 +7,7 @@ import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.instance.SingleInstancedArea;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.server.Server;
 
 
@@ -61,7 +61,7 @@ public class KrakenInstance {
 		for (NPC n : npcs) {
 			n.setVisible(false);
 		}
-		Server.getTaskScheduler().schedule(new ScheduledTask(56) { 
+		Server.getTaskScheduler().schedule(new Task(56) { 
 			@Override
 			public void execute() {
 				if (player != null && instance != null) {
@@ -75,7 +75,7 @@ public class KrakenInstance {
 				this.stop();
 			}
 		});
-		Server.getTaskScheduler().schedule(new ScheduledTask(57) { 
+		Server.getTaskScheduler().schedule(new Task(57) { 
 			@Override
 			public void execute() {
 				if (player != null && instance != null) {

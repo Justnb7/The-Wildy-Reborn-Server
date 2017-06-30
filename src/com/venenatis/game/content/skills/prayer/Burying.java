@@ -9,7 +9,7 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Stackable;
 import com.venenatis.game.task.Walkable;
 import com.venenatis.game.util.Utility;
@@ -137,7 +137,7 @@ public class Burying {
 				player.playAnimation(Animation.create(BURY_ANIMATION));
 				player.getActionSender().sendMessage("You dig a hole in the ground...");
 				ItemDefinition itemDef = ItemDefinition.get(itemId);
-				Server.getTaskScheduler().schedule(new ScheduledTask(2) {
+				Server.getTaskScheduler().schedule(new Task(2) {
 					@Override
 					public void execute() {
 						player.getActionSender().sendMessage("You bury the " + itemDef.getName().toLowerCase());
@@ -169,7 +169,7 @@ public class Burying {
 				return false;
 			if (bone.getId() == itemId) {
 				player.playAnimation(Animation.create(ALTAR_ANIMATION));
-				Server.getTaskScheduler().schedule(new ScheduledTask(player, 4, Walkable.NON_WALKABLE, Stackable.NON_STACKABLE) {
+				Server.getTaskScheduler().schedule(new Task(player, 4, Walkable.NON_WALKABLE, Stackable.NON_STACKABLE) {
 					@Override
 					public void execute() {
 						if(!player.isActive()) {

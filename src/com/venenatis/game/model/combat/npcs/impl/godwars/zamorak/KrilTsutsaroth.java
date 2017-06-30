@@ -18,7 +18,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
@@ -140,7 +140,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 			Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);
 			
 			//Send the player gfx
-			Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+			Server.getTaskScheduler().schedule(new Task(hitDelay) {
 				@Override
 				public void execute() {
 					this.stop();

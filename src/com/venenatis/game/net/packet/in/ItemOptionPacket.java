@@ -21,7 +21,7 @@ import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.dialogue.impl.RottenPotato;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.net.packet.PacketType;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
@@ -458,7 +458,7 @@ public class ItemOptionPacket implements PacketType {
 	
 	private void handleShovel(final Player player) {
 		player.playAnimation(Animation.create(830));
-		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+		Server.getTaskScheduler().schedule(new Task(1) {
 
 			@Override
 			public void execute() {

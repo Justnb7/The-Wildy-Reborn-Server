@@ -12,7 +12,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -58,7 +58,7 @@ public class AbyssalDagger implements SpecialAttack {
 			
 			CombatExperience.handleCombatExperience(player, firstHit, CombatStyle.MELEE);
 			targPlayer.damage(new Hit(firstHit, firstHit > 0 ? HitType.NORMAL : HitType.BLOCKED));
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+			Server.getTaskScheduler().schedule(new Task(1) {
 
 				@Override
 				public void execute() {
@@ -83,7 +83,7 @@ public class AbyssalDagger implements SpecialAttack {
 			if(firstHit == 0) {
 				secondHit = 0;
 			}
-			Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+			Server.getTaskScheduler().schedule(new Task(1) {
 
 				@Override
 				public void execute() {

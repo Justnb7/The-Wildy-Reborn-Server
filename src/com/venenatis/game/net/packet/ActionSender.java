@@ -24,7 +24,7 @@ import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
@@ -999,7 +999,7 @@ public class ActionSender {
 	}
 	
 	public void updateAfterLogin() {
-		Server.getTaskScheduler().schedule(new ScheduledTask(2) {
+		Server.getTaskScheduler().schedule(new Task(2) {
 
 			@Override
 			public void execute() {

@@ -9,12 +9,12 @@ import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.equipment.PoisonType;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 
 /**
  * @author lare96 <http://www.rune-server.org/members/lare96/>
  */
-public final class PoisonCombatTask extends ScheduledTask {
+public final class PoisonCombatTask extends Task {
 
 	public static final Map<Integer, PoisonType> WEAPON_TYPES = new HashMap<>();
 	public static final Map<Integer, PoisonType> NPC_TYPES = new HashMap<>();

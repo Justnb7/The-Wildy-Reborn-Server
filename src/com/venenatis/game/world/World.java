@@ -16,7 +16,7 @@ import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.save.PlayerSerialization;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Service;
 import com.venenatis.game.task.impl.DidYouKnowEvent;
 import com.venenatis.game.task.impl.InstanceFloorReset;
@@ -140,7 +140,7 @@ public class World implements Service {
 	 *
 	 * @param task
 	 */
-	public void schedule(ScheduledTask task) {
+	public void schedule(Task task) {
 		Server.getTaskScheduler().schedule(task);
 	}
 	
@@ -341,8 +341,8 @@ public class World implements Service {
 		 * Stop all of the players tasks
 		 */
 
-		for (Iterator<ScheduledTask> t = player.getTasks().iterator(); t.hasNext();) {
-			ScheduledTask task = t.next();
+		for (Iterator<Task> t = player.getTasks().iterator(); t.hasNext();) {
+			Task task = t.next();
 			if (task.isRunning()) {
 				task.stop();
 			}

@@ -5,7 +5,7 @@ package com.venenatis.game.task;
  * 
  * @author lare96
  */
-public abstract class EventListener extends ScheduledTask {
+public abstract class EventListener extends Task {
 
 	/** If the listener should be shutdown once the code has been executed. */
 	private boolean shutdown;

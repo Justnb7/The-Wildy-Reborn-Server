@@ -1,7 +1,7 @@
 package com.venenatis.game.task.impl;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 
 /**
  * A simple task to restore the players energy.
@@ -9,7 +9,7 @@ import com.venenatis.game.task.ScheduledTask;
  * Credits to the creator, took this from a random Hyperion base.
  *
  */
-public class EnergyRestoreTick extends ScheduledTask {
+public class EnergyRestoreTick extends Task {
 
 	/**
 	 * The player whose energy we are restoring.

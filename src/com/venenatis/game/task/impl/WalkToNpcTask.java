@@ -4,7 +4,7 @@ import com.venenatis.game.content.clicking.npcs.NpcInteraction;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 
 /**
  * Handles walking towards npcs
@@ -12,7 +12,7 @@ import com.venenatis.game.task.ScheduledTask;
  * @author Patrick van Elderen
  *
  */
-public class WalkToNpcTask extends ScheduledTask {
+public class WalkToNpcTask extends Task {
 
 	/**
 	 * The npc we're interacting with

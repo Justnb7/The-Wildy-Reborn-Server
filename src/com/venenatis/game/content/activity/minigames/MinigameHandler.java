@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 import com.venenatis.game.content.activity.minigames.impl.SequencedMinigame;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 
 /**
@@ -17,7 +17,7 @@ import com.venenatis.game.world.World;
  *
  * @author lare96 <http://github.com/lare96>
  */
-public final class MinigameHandler extends ScheduledTask {
+public final class MinigameHandler extends Task {
 
 	/**
 	 * The hash collection of active minigames.

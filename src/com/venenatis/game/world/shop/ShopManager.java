@@ -3,7 +3,7 @@ package com.venenatis.game.world.shop;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
@@ -25,7 +25,7 @@ public class ShopManager {
 	 * Task for updating and re-stocking shops.
 	 */
 	static {
-		Server.getTaskScheduler().schedule(new ScheduledTask(100) {
+		Server.getTaskScheduler().schedule(new Task(100) {
 			@Override
 			public void execute() {
 				restock();

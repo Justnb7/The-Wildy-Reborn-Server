@@ -3,9 +3,6 @@ package com.venenatis.game.task;
 import java.util.Iterator;
 import java.util.Objects;
 
-import org.eclipse.jetty.util.thread.Scheduler.Task;
-
-import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -14,7 +11,7 @@ import com.venenatis.game.model.entity.player.Player;
  * @author Graham
  * @author lare96 <http://github.com/lare96>
  */
-public abstract class ScheduledTask {
+public abstract class Task {
 
 	/**
 	 * The default attachment for every task.
@@ -60,7 +57,7 @@ public abstract class ScheduledTask {
 	/**
 	 * Creates a new task with a delay of 1 cycle.
 	 */
-	public ScheduledTask() {
+	public Task() {
 		this(1);
 	}
 
@@ -71,7 +68,7 @@ public abstract class ScheduledTask {
 	 *            A flag that indicates if for the first execution there should
 	 *            be no delay.
 	 */
-	public ScheduledTask(boolean immediate) {
+	public Task(boolean immediate) {
 		this(1, immediate);
 	}
 
@@ -84,15 +81,15 @@ public abstract class ScheduledTask {
 	 * @throws IllegalArgumentException
 	 *             if the {@code delay} is not positive.
 	 */
-	public ScheduledTask(int delay) {
+	public Task(int delay) {
 		this(delay, false);
 	}
 	
-	public ScheduledTask(Player player, int delay) {
+	public Task(Player player, int delay) {
 		this(delay);
 	}
 
-	public ScheduledTask(Player player, int delay, boolean immediate, Walkable walkable, Stackable stackable) {
+	public Task(Player player, int delay, boolean immediate, Walkable walkable, Stackable stackable) {
 		checkDelay(delay);
 		this.tickDelay = delay;
 		this.remainingTicks = delay;
@@ -111,7 +108,7 @@ public abstract class ScheduledTask {
 	 * @param walkable
 	 * @param stackable
 	 */
-	public ScheduledTask(Player player, int delay, Walkable walkable, Stackable stackable) {
+	public Task(Player player, int delay, Walkable walkable, Stackable stackable) {
 		this(player, delay, false, walkable, stackable);
 	}
 
@@ -127,7 +124,7 @@ public abstract class ScheduledTask {
 	 * @throws IllegalArgumentException
 	 *             if the {@code delay} is not positive.
 	 */
-	public ScheduledTask(int delay, boolean immediate) {
+	public Task(int delay, boolean immediate) {
 		checkDelay(delay);
 		this.tickDelay = delay;
 		this.remainingTicks = delay;
@@ -168,7 +165,7 @@ public abstract class ScheduledTask {
 	 * 
 	 * @return this task for chaining.
 	 */
-	public ScheduledTask attach(Object attachment) {
+	public Task attach(Object attachment) {
 		this.attachment = Objects.requireNonNull(attachment, "Attachments of 'null' are not permitted!");
 		return this;
 	}
@@ -207,8 +204,8 @@ public abstract class ScheduledTask {
 	 */
 	public void stopNonStackableTasks(Player player) {
 		if (stackable == Stackable.NON_STACKABLE) {
-			for (Iterator<ScheduledTask> it$ = player.getTasks().iterator(); it$.hasNext();) {
-				ScheduledTask task = it$.next();
+			for (Iterator<Task> it$ = player.getTasks().iterator(); it$.hasNext();) {
+				Task task = it$.next();
 				if (task.stackable == Stackable.NON_STACKABLE) {
 					if (task.isRunning()) {
 						task.stop();

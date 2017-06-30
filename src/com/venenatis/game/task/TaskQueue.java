@@ -7,22 +7,22 @@ import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
- * A class which schedules the execution of {@link ScheduledTask}'s.
+ * A class which schedules the execution of {@link Task}'s.
  *
  * @author Graham
  * @author lare96
  */
-public final class TaskScheduler implements Service {
+public final class TaskQueue implements Service {
 
 	/**
 	 * A queue of pending tasks.
 	 */
-	private static final Queue<ScheduledTask> pendingTasks = new LinkedList<>();
+	private static final Queue<Task> pendingTasks = new LinkedList<>();
 
 	/**
 	 * A list of active tasks.
 	 */
-	private static final List<ScheduledTask> tasks = new LinkedList<>();
+	private static final List<Task> tasks = new LinkedList<>();
 
 	/**
 	 * Schedules the specified task. If this scheduler has been stopped with the
@@ -32,7 +32,7 @@ public final class TaskScheduler implements Service {
 	 * @param task
 	 *            The task to schedule.
 	 */
-	public void schedule(final ScheduledTask task) {
+	public void schedule(final Task task) {
 		if (task.isImmediate()) {
 			task.execute();
 		}
@@ -43,7 +43,7 @@ public final class TaskScheduler implements Service {
 		return pendingTasks.stream().anyMatch(t -> t.getAttachment().equals(key) && t.isRunning()) || tasks.stream().anyMatch(t -> t.getAttachment().equals(key) && t.isRunning());
 	}
 
-	public void submit(final ScheduledTask task) {
+	public void submit(final Task task) {
 		schedule(task);
 		
 	}
@@ -56,7 +56,7 @@ public final class TaskScheduler implements Service {
 	 */
 	@Override
 	public void pulse() {
-		ScheduledTask task;
+		Task task;
 
 		// add all of the pending tasks
 		while ((task = pendingTasks.poll()) != null) {
@@ -66,7 +66,7 @@ public final class TaskScheduler implements Service {
 		}
 
 		// process all existing tasks
-		Iterator<ScheduledTask> it = tasks.iterator();
+		Iterator<Task> it = tasks.iterator();
 		while (it.hasNext()) {
 			task = it.next();
 			if (task.isStopped()) {
@@ -81,7 +81,7 @@ public final class TaskScheduler implements Service {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Tasks active: " + tasks.size() + ", Pending Tasks: " + pendingTasks.size() + "\n");
-		for (ScheduledTask task : tasks) {
+		for (Task task : tasks) {
 			sb.append("Task alias: " + task.getAttachment().toString() + "\n");
 		}
 		return sb.toString();

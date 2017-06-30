@@ -21,7 +21,7 @@ import com.venenatis.game.model.masks.Sprites;
 import com.venenatis.game.model.masks.UpdateFlags;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.packet.ActionSender;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.PoisonCombatTask;
 import com.venenatis.game.util.MutableNumber;
 import com.venenatis.game.util.Utility;
@@ -43,19 +43,19 @@ public abstract class Entity {
 	/**
 	 * The players energy restore tickable.
 	 */
-	private ScheduledTask energyRestoreTick;
+	private Task energyRestoreTick;
 	
 	/**
 	 * @return the energyRestoreTick
 	 */
-	public ScheduledTask getEnergyRestoreTick() {
+	public Task getEnergyRestoreTick() {
 		return energyRestoreTick;
 	}
 	
 	/**
 	 * @param energyRestoreTick the energyRestoreTick to set
 	 */
-	public void setEnergyRestoreTick(ScheduledTask energyRestoreTick) {
+	public void setEnergyRestoreTick(Task energyRestoreTick) {
 		this.energyRestoreTick = energyRestoreTick;
 	}
 	
@@ -106,7 +106,7 @@ public abstract class Entity {
         this.followTarget = following;
     }
 
-    public void run(ScheduledTask o) {
+    public void run(Task o) {
     	Server.getTaskScheduler().schedule(o);
     }
 
@@ -497,7 +497,7 @@ public abstract class Entity {
 	private void sendDamage(Hit hit, Hit hit2, Hit hit3) {
 		sendDamage(hit, hit2); // two hitsplats
 
-		Server.getTaskScheduler().submit(new ScheduledTask(1, false) {
+		Server.getTaskScheduler().submit(new Task(1, false) {
 			@Override
 			public void execute() {
 				this.stop();
@@ -515,7 +515,7 @@ public abstract class Entity {
 	private void sendDamage(Hit hit, Hit hit2, Hit hit3, Hit hit4) {
 		sendDamage(hit, hit2);
 
-		Server.getTaskScheduler().submit(new ScheduledTask(1, false) {
+		Server.getTaskScheduler().submit(new Task(1, false) {
 			@Override
 			public void execute() {
 				this.stop();
@@ -1123,7 +1123,7 @@ public abstract class Entity {
 		this.forceWalk = forceWalk;
 		if(forceWalk.length > 0) {
 			
-			Server.getTaskScheduler().submit(new ScheduledTask(forceWalk[7]) {
+			Server.getTaskScheduler().submit(new Task(forceWalk[7]) {
 				@Override
 				public void execute() {
 					setForcedMovement(true);

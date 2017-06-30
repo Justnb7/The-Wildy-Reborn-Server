@@ -7,7 +7,7 @@ import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -36,7 +36,7 @@ public class CrystalHalberd implements SpecialAttack {
 		
 		target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player);
 		
-		Server.getTaskScheduler().schedule(new ScheduledTask(1) {
+		Server.getTaskScheduler().schedule(new Task(1) {
 
 			@Override
 			public void execute() {

@@ -5,7 +5,7 @@ import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.combat.data.CombatRequirements;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -16,7 +16,7 @@ import com.venenatis.game.world.World;
  * @author Mobster
  *
  */
-public class BountyHunter extends ScheduledTask {
+public class BountyHunter extends Task {
 	
 	/**
 	 * The time in milliseconds of the players last teleport

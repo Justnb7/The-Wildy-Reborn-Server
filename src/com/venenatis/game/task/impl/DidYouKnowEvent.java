@@ -9,11 +9,11 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
-public class DidYouKnowEvent extends ScheduledTask {
+public class DidYouKnowEvent extends Task {
 
 	/**
 	 * The amount of time in game cycles (600ms) that the event pulses at

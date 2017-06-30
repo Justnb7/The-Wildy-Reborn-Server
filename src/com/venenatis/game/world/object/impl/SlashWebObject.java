@@ -5,7 +5,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
@@ -32,7 +32,7 @@ public class SlashWebObject {
 		final GameObject closedWeb = new GameObject(733, position.getX(), position.getY(), position.getZ(), 0, 10);
 		player.playAnimation(Animation.create(451));
 		
-		Server.getTaskScheduler().schedule(new ScheduledTask(3) {
+		Server.getTaskScheduler().schedule(new Task(3) {
 
 			@Override
 			public void execute() {

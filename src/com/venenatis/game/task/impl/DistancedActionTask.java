@@ -1,13 +1,13 @@
 package com.venenatis.game.task.impl;
 
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 
 /**
- * A {@link ScheduledTask} which runs when a certain requirement is met such as
+ * A {@link Task} which runs when a certain requirement is met such as
  * reaching a destination
  *
  */
-public abstract class DistancedActionTask extends ScheduledTask {
+public abstract class DistancedActionTask extends Task {
 
 	@Override
 	public void execute() {

@@ -8,7 +8,7 @@ import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 
 
@@ -28,7 +28,7 @@ public class ActionQueue {
 	/**
 	 * The tickable.
 	 */
-	private ScheduledTask cycleTick;
+	private Task cycleTick;
 	
 	/**
 	 * The maximum number of actions allowed to be queued at once, deliberately
@@ -104,7 +104,7 @@ public class ActionQueue {
 		 * This system fixes that.
 		 */
 		if (cycleTick == null) {
-			cycleTick = new ScheduledTask(1) {
+			cycleTick = new Task(1) {
 				@Override
 				public void execute() {
 					try {

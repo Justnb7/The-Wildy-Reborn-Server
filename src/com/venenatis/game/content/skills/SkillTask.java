@@ -1,7 +1,7 @@
 package com.venenatis.game.content.skills;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Stackable;
 import com.venenatis.game.task.Walkable;
 
@@ -11,7 +11,7 @@ import com.venenatis.game.task.Walkable;
  * @author Mobster
  *
  */
-public abstract class SkillTask extends ScheduledTask {
+public abstract class SkillTask extends Task {
 	
 	private final Player player;
 	

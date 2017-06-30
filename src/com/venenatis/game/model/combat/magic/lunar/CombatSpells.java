@@ -6,7 +6,7 @@ import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.server.Server;
 
 public class CombatSpells {
@@ -29,7 +29,7 @@ public class CombatSpells {
 				return;
 			}
 			
-			Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
+			Server.getTaskScheduler().schedule(new Task(delay) {
 				@Override
 				public void execute() {
 					if (damage < 2) {
@@ -54,7 +54,7 @@ public class CombatSpells {
 		} else {
 			NPC attacker_npc = (NPC) entity_attacker;
 			
-			Server.getTaskScheduler().schedule(new ScheduledTask(delay) {
+			Server.getTaskScheduler().schedule(new Task(delay) {
 				@Override
 				public void execute() {
 					if (damage < 2) {

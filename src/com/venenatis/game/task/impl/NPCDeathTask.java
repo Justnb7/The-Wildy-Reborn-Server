@@ -13,7 +13,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
 
@@ -24,7 +24,7 @@ import com.venenatis.server.Server;
  * @author lare96 <http://github.com/lare96>
  * @author Patrick van Elderen
  */
-public class NPCDeathTask extends ScheduledTask {
+public class NPCDeathTask extends Task {
 
     /**
      * The time to tick while waiting to return the npc

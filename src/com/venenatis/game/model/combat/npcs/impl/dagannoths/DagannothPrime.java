@@ -11,7 +11,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.ScheduledTask;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
@@ -67,7 +67,7 @@ public class DagannothPrime extends AbstractBossCombat {
 			Hit hitInfo = victim.take_hit(attacker, hit, style, false, false);
 			// Send the hit task
 			Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);
-			Server.getTaskScheduler().schedule(new ScheduledTask(hitDelay) {
+			Server.getTaskScheduler().schedule(new Task(hitDelay) {
 				@Override
 				public void execute() {
 					this.stop();

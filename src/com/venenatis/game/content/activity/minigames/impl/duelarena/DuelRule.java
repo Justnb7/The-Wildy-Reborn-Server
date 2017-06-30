@@ -222,7 +222,7 @@ public enum DuelRule {
 			rules.alternate(rule);
 			other.get().getDuelArena().setRules(rules);
 
-			if (rule.getButtonId() >= 31034 && rule.getButtonId() <= 31056) {
+			if (rule.getButtonId() >= 121058 && rule.getButtonId() <= 121080) {
 				player.getActionSender().sendConfig(rule.getValue(), rules.get(rule) ? 1 : 0);
 				other.get().getActionSender().sendConfig(rule.getValue(), rules.get(rule) ? 1 : 0);
 			} else {

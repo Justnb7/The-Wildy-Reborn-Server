@@ -1453,7 +1453,7 @@ public class Player extends Entity {
 		this.session = session;
 	}
 
-	public boolean isActive() {//whats this, online? yeah
+	public boolean isActive() {
 		return isActive;
 	}
 

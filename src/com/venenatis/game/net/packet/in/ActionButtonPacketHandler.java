@@ -62,6 +62,11 @@ public class ActionButtonPacketHandler implements PacketType {
 			return;
 		}
 		
+		/* Controller Block */
+		if (!player.getController().canClickButton(button)) {
+			return;
+		}
+		
 		/* Clan Chat */
 		if (ClanButtons.handle(player, button)) {
 			return;

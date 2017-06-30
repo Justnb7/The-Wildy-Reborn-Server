@@ -454,8 +454,8 @@ public final class DuelArena extends Minigame {
 				acceptOffer();
 				break;
 
-			case 31710: // claim reward
-			case 31702: // exit claim reward
+			case 123222: // claim reward
+			case 123214: // exit claim reward
 				claimReward(won);
 				break;
 
@@ -731,7 +731,7 @@ public final class DuelArena extends Minigame {
 		winner.getActionSender().sendString("You are victorious!", 31705);
 		loser.getActionSender().sendString("You lost!", 31705);
 
-		if (winner.isActive()) {
+		if (!winner.isActive()) {
 			winner.getDuelArena().claimReward(true);
 		} else {
 			winner.getDuelArena().execute(DuelStage.REWARD);

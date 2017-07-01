@@ -93,6 +93,19 @@ public final class Stopwatch {
 		state = State.STOPPED;
 		return this;
 	}
+	
+	/**
+	 * Resets the internal cached time, but instead of resetting it to
+	 * <tt>0</tt> it resets it to start at <code>start</code>.
+	 * 
+	 * @param start
+	 *            the time to start this stopwatch at.
+	 * @return the stopwatch instance.
+	 */
+	public Stopwatch reset(long start) {
+		cachedTime = Stopwatch.currentTime() - start;
+		return this;
+	}
 
 	/**
 	 * Retrieves the elapsed time in {@code unit}. If this stopwatch is stopped

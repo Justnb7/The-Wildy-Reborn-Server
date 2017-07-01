@@ -21,7 +21,7 @@ import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.clan.ClanRank;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.task.Task;
@@ -905,10 +905,10 @@ public class ActionSender {
 		
 		//Update the players details
 		try {
-			if (!PlayerSerialization.load(player)) {
+			if (!PlayerSave.load(player)) {
 				player.setNewPlayer(true);
 				player.setTutorial(true);
-			} else if (PlayerSerialization.load(player)) {
+			} else if (PlayerSave.load(player)) {
 				player.setNewPlayer(false);
 			}
 		} catch (Exception e) {
@@ -1011,11 +1011,6 @@ public class ActionSender {
 				//We are new so we start the tutorial
 				if (!player.receivedStarter() && player.inTutorial()) {
 					player.dialogue().start("STARTER");
-				}
-				
-				//If the player is muted we tell them after they're logged in
-				if (player.isMuted()) {
-					sendMessage("You are currently muted. Other players will not see your chat messages.");
 				}
 				
 				//We can update our kills tracker after login

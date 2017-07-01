@@ -1,20 +1,23 @@
 package com.venenatis.game.net.network.session;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization.PlayerSaveDetail;
+import com.venenatis.game.model.entity.player.Sanctions;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
+import com.venenatis.game.model.entity.player.save.PlayerSave.PlayerSaveDetail;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
-import com.venenatis.game.net.ConnectionHandler;
 import com.venenatis.game.net.network.NetworkConstants;
 import com.venenatis.game.net.network.codec.RS2Decoder;
 import com.venenatis.game.net.network.codec.RS2Encoder;
@@ -48,114 +51,169 @@ public class LoginSession extends Session {
 		}
 		LoginCredential credential = (LoginCredential) object;
 		int returnCode = 2;
-		String name = credential.getName();
-		String pass = credential.getPassword();
-		name = name.trim();
-		name = name.toLowerCase();
-		pass = pass.toLowerCase();
-
-		if (name.length() > 12) {
-			sendReturnCode(ctx.channel(), 8);
-			return;
-		}
-
-		Player player = new Player(name);
-		player.setUsername(name);
-		player.setPassword(pass);
+		
+		final String username = credential.getName().trim();
+		//So this final statement can only be used here cant be final cos you change it
+		
+		final String password = credential.getPassword();
+		
+		final String hostAddress = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
+		
+		checkState(username.matches("^[a-zA-Z0-9_ ]{1,12}$") && !password.isEmpty() && password.length() <= 20, "A player tried logging in with an invalid username. [username= %s]", username);
+		
+		Player player = new Player(username);
+		
+		player.setUsername(username);
+		
+		player.setPassword(password);
+		
 		player.setIdentity(credential.getIdentity());
-		player.setMacAddress(credential.getMacAddress());
-		player.connectedFrom = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress(); 
 		player.setAttribute("identity", credential.getIdentity());
-		player.setAttribute("mac-address", credential.getMacAddress() );
+		
+		player.setMacAddress(credential.getMacAddress());
+		player.setAttribute("mac-address", credential.getMacAddress());
+		
+		player.setHostAddress(hostAddress);
 	
 		player.setInStreamDecryption(credential.getDecryptor());
 		player.setOutStreamDecryption(credential.getEncryptor());
 		player.outStream.packetEncryption = credential.getEncryptor();
 		
-		if (ConnectionHandler.isNamedBanned(player.getUsername())) {
-			sendReturnCode(ctx.channel(), 4);
-			return;
+		if (player.getSanctions() == null) {
+			player.setSanctions(new Sanctions(hostAddress, player.getMacAddress()));
 		}
-		if(ConnectionHandler.isMacBanned(player.getMacAddress())) {
-			sendReturnCode(ctx.channel(), 4);
-		}
-		if (ConnectionHandler.isIpBanned((player.connectedFrom))) {
-			sendReturnCode(ctx.channel(), 4);
-			return;
-		}
-		if (PlayerUpdating.getPlayerCount() >= World.getWorld().getPlayers().capacity()) {
-			sendReturnCode(ctx.channel(), 7);
+		
+		// username too long or too short
+		if (username.length() >= 13 || username.length() < 3) {
+			sendReturnCode(ctx.channel(), LoginCode.SHORT_USERNAME);
 			return;
 		}
 		
-		// prevents users from logging in before the network has been fully
-		// bound
-		if (!Server.SERVER_STARTED) {
-			sendReturnCode(ctx.channel(), 14);
-		}
-
-		// prevents users from logging in if the world is being updated
-		if (World.updateRunning) {
-			sendReturnCode(ctx.channel(), 14);
-		}
-		if (credential.getClientHash() == 0 || credential.getClientHash() == 99735086 || credential.getClientHash() == 69) {
-			sendReturnCode(ctx.channel(), 18);
+		// username contains invalid characters
+		if(!username.matches("^[a-zA-Z0-9_ ]{1,12}$")) {
+			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
 			return;
 		}
-		if (credential.getClientHash() != 39623221) {
-			sendReturnCode(ctx.channel(), 18);
-			return;
-		}
-		if (ConnectionHandler.isIdBanned(player.getIdentity())) {
-			sendReturnCode(ctx.channel(), 4);
-			return;
-		}
-		if (credential.getVersion() != Constants.CLIENT_VERSION) {
-			sendReturnCode(ctx.channel(), 18);
-			return;
-		}
-		int count = 0;
-		for (Player plr : World.getWorld().getPlayers()) {
-			if (plr == null)
-				continue;
-			if (plr.connectedFrom.equals(player.connectedFrom)) {
-				count++;
-			}
-		}
-		if (count >= 2) {
-			sendReturnCode(ctx.channel(), 9);
-			return;
-		}
-		if (returnCode == 2) {
-			File file = new File("data/characters/details/" + NameUtils.formatNameForProtocol(credential.getName()) + ".json");
-			if (file.exists()) {
-				try {
-					BufferedReader reader = new BufferedReader(new FileReader(file));
-					final PlayerSaveDetail details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
-					name = details.user();
-					pass = details.password();
-					if (!name.equals(NameUtils.formatName(credential.getName())) || !pass.equals(credential.getPassword())) {
-						sendReturnCode(ctx.channel(), 3);
-					}
-				} catch(IOException ex) {
-					logger.error("Unexpected problem occurred.", ex);
-					sendReturnCode(ctx.channel(), 3);
+		
+		// check if this user has a valid username
+		if(!Arrays.stream(Constants.USERNAME_EXCEPTIONS).anyMatch($it -> username.equalsIgnoreCase($it))) {//must be final here but down below
+			for (String bad : Constants.BAD_USERNAMES) {
+				if (username.toLowerCase().contains(bad.toLowerCase())) {
+					sendReturnCode(ctx.channel(), LoginCode.BAD_USERNAME);
+					return;
 				}
 			}
 		}
 		
-		for (String disabled : Constants.BAD_USERNAMES) {
-			if (name.contains(disabled)) {
-				sendReturnCode(ctx.channel(), 25);
-				return;
+		// evaluate the host
+		if (player.getSanctions().isBanned()) {
+			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+			return;
+		}
+		
+		// there is no password or password is too long
+		if (password.isEmpty() || password.length() >= 20) {
+			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			return;
+		}
+		
+		if (player.getPassword() == null || player.getPassword().isEmpty()) {
+			player.setPassword(password);
+		}
+
+		// there is no password or password is too long
+		if (password.isEmpty() || password.length() >= 20) {
+			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			return;
+		}
+
+		// password does not match password on file.
+		if (!password.equals(player.getPassword())) {
+			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			return;
+		}
+		
+		// the world is currently full
+		if (PlayerUpdating.getPlayerCount() >= World.getWorld().getPlayers().capacity()) {
+			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			return;
+		}
+		
+		// prevents users from logging in before the network has been fully bound
+		if (!Server.SERVER_STARTED) {
+			sendReturnCode(ctx.channel(), LoginCode.SERVER_BEING_UPDATED);
+			return;
+		}
+		
+		// prevents users from logging in if the world is being updated
+		if (World.updateRunning) {
+			sendReturnCode(ctx.channel(), LoginCode.SERVER_BEING_UPDATED);
+		}
+		
+		// check if this users computer is on the banned list
+		if (World.getWorld().getMacBans().contains(credential.getMacAddress())) {
+			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+			return;
+		}
+		
+		if (credential.getClientHash() == 0 || credential.getClientHash() == 99735086 || credential.getClientHash() == 69) {
+			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
+			return;
+		}
+		if (credential.getClientHash() != 39623221) {
+			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
+			return;
+		}
+
+		if (credential.getVersion() != Constants.CLIENT_VERSION) {
+			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
+			return;
+		}
+		
+		//if (!username.equals(NameUtils.formatName(credential.getName())) || !password.equals(credential.getPassword())) {
+			//sendReturnCode(ctx.channel(), 3);
+		//}
+
+		int players_online_sharing_one_host = 0;
+		for (Player plr : World.getWorld().getPlayers()) {
+			if (plr == null)
+				continue;
+			if (plr.getHostAddress().equals(player.getHostAddress())) {
+				players_online_sharing_one_host++;
+			}
+		}
+		
+		if (players_online_sharing_one_host >= 2) {
+			sendReturnCode(ctx.channel(), 9);
+			return;
+		}
+		
+		if (returnCode == 2) {
+			// whats the purpose of this?
+			//Logging in checking from the details of the player
+			File file = new File("data/characters/details/" + NameUtils.formatNameForProtocol(username) + ".json");
+			if (file.exists()) {
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(file));
+					final PlayerSaveDetail details = PlayerSave.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
+					final String stored_password = details.password();
+					// are you checking pw here? na u shouldnt be setting it, the info given by the player on login 
+					// never changes
+					if (!stored_password.equals(password)) { // there ya go ty
+						sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS); // INVALID PW!
+					}
+				} catch(IOException ex) {
+					logger.error("Unexpected problem occurred.", ex);
+					sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+				}
 			}
 		}
 		
 		/*
 		 * This bit should be done after the players loaded
 		 */
-		if (GameEngine.getLoginQueue().contains(player) || World.getWorld().getPlayerByRealName(name).isPresent()) {
-			sendReturnCode(ctx.channel(), 5);
+		if (GameEngine.getLoginQueue().contains(player) || World.getWorld().getPlayerByRealName(username).isPresent()) {
+			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_ONLINE);
 			return;
 		}
 

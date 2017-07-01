@@ -21,7 +21,7 @@ import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.Rights;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.task.impl.DeathTask;
 import com.venenatis.game.util.StringUtils;
 import com.venenatis.game.util.Utility;
@@ -866,7 +866,7 @@ public final class DuelArena extends Minigame {
 
 		player.setOtherPlayerDuelIndex(-1);
 		player.getActionSender().removeAllInterfaces();
-		PlayerSerialization.save(player);
+		PlayerSave.save(player);
 	}
 
 	/**

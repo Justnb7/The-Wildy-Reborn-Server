@@ -15,7 +15,7 @@ import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.Rights.Order;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Service;
@@ -337,7 +337,7 @@ public class World implements Service {
 		 * Once we're done disconnecting our player, we'll go ahead and save him
 		 */
 		//PlayerSerialization.saveGame(player);
-		PlayerSerialization.save(player);
+		PlayerSave.save(player);
 
 		/*
 		 * Remove from clan
@@ -385,7 +385,7 @@ public class World implements Service {
 						player.getOutStream().writeFrame(109);
 						player.flushOutStream();
 						unregister(player);
-						PlayerSerialization.save(player);
+						PlayerSave.save(player);
 						System.exit(1);
 					}
 				}
@@ -547,6 +547,24 @@ public class World implements Service {
 				continue;
 			p.getActionSender().sendMessage(message);
 		}
+	}
+	
+	/**
+	 * The {@likn Set} of banned ips.
+	 */
+	public static final Set<String> IP_BANS = new HashSet<>();
+	
+	public Set<String> getIpBans() {
+		return IP_BANS;
+	}
+	
+	/**
+	 * The {@link Set} of banned mac addresses.
+	 */
+	public static final Set<String> MAC_BANS = new HashSet<>();
+
+	public Set<String> getMacBans() {
+		return MAC_BANS;
 	}
 
 	public static ExecutorService getService() {

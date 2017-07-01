@@ -1,7 +1,7 @@
 package com.venenatis.game.task.impl;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 
@@ -16,7 +16,7 @@ public class SavePlayers extends Task {
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player != null) {
 				//PlayerSerialization.saveGame(player);
-				PlayerSerialization.save(player);
+				PlayerSave.save(player);
 			}
 		}
 	}

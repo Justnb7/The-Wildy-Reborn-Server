@@ -20,6 +20,7 @@ import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.container.impl.rune_pouch.RunePouchContainer;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
+import com.venenatis.game.model.entity.player.Sanctions;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.AccountType;
 
@@ -30,18 +31,20 @@ import com.venenatis.game.model.entity.player.account.AccountType;
  * @date 23-5-2017
  *
  */
-public class PlayerSerialization {
+public class PlayerSave {
 	
 	
 	public static final Gson SERIALIZE = new GsonBuilder().setPrettyPrinting().create();
 	
 	/**
 	 * The save types
-	 * - player_information is used for "name, password, IP, MAC etc.."
+	 * - Player_information is used for "name, password, IP, MAC etc.."
+	 * - Sanctions are used to store punishments.
 	 * - "Containers are based on Inventory, bank equipment etc..."
 	 */
 	public enum Type {
 		PLAYER_INFORMATION,
+		SANCTIONS,
 		CONTAINER;
 	}
 
@@ -110,7 +113,7 @@ public class PlayerSerialization {
 
 				reader = new BufferedReader(new FileReader(file));
 
-				final PlayerSaveDetail details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
+				final PlayerSaveDetail details = PlayerSave.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
 				player.setUsername(details.username);
 				player.setPassword(details.password);
 				player.setRights(details.rights);
@@ -118,6 +121,9 @@ public class PlayerSerialization {
 				player.setNewPlayer(details.newPlayer);
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);
+				if (details.sanctions != null) {
+					player.setSanctions(details.sanctions);
+				}
 				player.setPet(details.pet);
 				player.setTutorial(details.inTutorial);
 				player.setReceivedStarter(details.starterReceived);
@@ -136,7 +142,6 @@ public class PlayerSerialization {
 				player.setAmountDonated(details.amountDonated);
 				player.setTotalAmountDonated(details.totalAmountDonated);
 				player.getCombatState().setTeleblockUnlock(details.teleblockDuration);
-				player.isMuted = details.muted;
 				player.setSkullType(details.skullType);
 				player.setSkullTimer(details.skullDuration);
 				player.infection = details.infectionType;
@@ -205,6 +210,7 @@ public class PlayerSerialization {
 		private final boolean newPlayer;
 		private final String identity;
 		private final String mac;
+		private final Sanctions sanctions;
 		private final int pet;
 		private final boolean inTutorial;
 		private final boolean starterReceived;
@@ -221,7 +227,6 @@ public class PlayerSerialization {
 		private final int amountDonated;
 		private final int totalAmountDonated;
 		private final int teleblockDuration;
-		private final boolean muted;
 		private final SkullType skullType;
 		private final int skullDuration;
 		private final int infectionType;
@@ -281,6 +286,7 @@ public class PlayerSerialization {
 			newPlayer = player.isNewPlayer();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
+			sanctions = player.getSanctions();
 			pet = player.getPet();
 			inTutorial = player.inTutorial();
 			starterReceived = player.receivedStarter();
@@ -297,7 +303,6 @@ public class PlayerSerialization {
 			amountDonated = player.getAmountDonated();
 			totalAmountDonated = player.getTotalAmountDonated();
 			teleblockDuration = player.getCombatState().getTeleblockUnlock();
-			muted = player.isMuted;
 			skullType = player.getSkullType();
 			skullDuration = player.getSkullTimer();
 			infectionType = player.infection;
@@ -354,7 +359,7 @@ public class PlayerSerialization {
 			BufferedWriter writer = null;
 			try {
 				writer = new BufferedWriter(new FileWriter("./Data/characters/details/" + username + ".json", false));
-				writer.write(PlayerSerialization.SERIALIZE.toJson(this));
+				writer.write(PlayerSave.SERIALIZE.toJson(this));
 				writer.flush();
 			} finally {
 				if (writer != null) {
@@ -383,7 +388,7 @@ public class PlayerSerialization {
 			
 			final BufferedReader reader = new BufferedReader(new FileReader(file));
 			try {
-				final PlayerContainer details = PlayerSerialization.SERIALIZE.fromJson(reader, PlayerContainer.class);
+				final PlayerContainer details = PlayerSave.SERIALIZE.fromJson(reader, PlayerContainer.class);
 				
 				if (details.inventory != null) {
 					for (int i = 0; i < details.inventory.length; i++) {
@@ -445,7 +450,7 @@ public class PlayerSerialization {
 			}
 			final BufferedWriter writer = new BufferedWriter(new FileWriter("./Data/characters/containers/" + player.getUsername() + ".json", false));
 			try {
-				writer.write(PlayerSerialization.SERIALIZE.toJson(this));
+				writer.write(PlayerSave.SERIALIZE.toJson(this));
 				writer.flush();
 			} finally {
 				writer.close();

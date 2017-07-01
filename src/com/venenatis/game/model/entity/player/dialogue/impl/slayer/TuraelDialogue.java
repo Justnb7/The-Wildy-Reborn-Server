@@ -8,7 +8,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.model.entity.player.dialogue.Type;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
 
 /**
  * The dialogue enacted by Turael the beginner slayer master (Beginner Tasks)
@@ -106,7 +106,7 @@ public class TuraelDialogue extends Dialogue {
 															send(Type.PLAYER, Expression.DEFAULT, "Okay, great!");
 															player.setFirstSlayerTask(true);
 															//PlayerSerialization.saveGame(player);
-															PlayerSerialization.save(player);
+															PlayerSave.save(player);
 															setPhase(16);
 														} else {
 															if (getPhase() == 15) {

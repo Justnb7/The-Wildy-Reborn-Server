@@ -1310,10 +1310,6 @@ public class Player extends Entity {
 		getSession().getChannel().writeAndFlush(new Packet(-1, Unpooled.wrappedBuffer(temp)));
 		outStream.offset = 0;
 	}
-	
-	public boolean isMuted() {
-		return this.isMuted;
-	}
 
 	public void logout() {
 		MinigameHandler.execute(this, $it -> $it.onLogout(this));
@@ -1837,6 +1833,17 @@ public class Player extends Entity {
 		return this.macAddress;
 	}
 	
+	private String hostAddress;
+	
+	public String getHostAddress() {
+		return hostAddress;
+	}
+	
+	public void setHostAddress(String hostAddress) {
+		this.hostAddress = hostAddress;
+	}
+	
+	
 	public boolean isMaxed() {
 		int skill = 0;
 		for (int i = 0; i < 21; i++) {
@@ -2277,12 +2284,11 @@ public class Player extends Entity {
 	 */
 	public boolean dropListSorted;
 	public boolean dropRateInKills;
-	public boolean isMuted, properLogout;
+	public boolean properLogout;
 	
 	/**
 	 * Strings
 	 */
-	public String connectedFrom = "";
 	private String username = null;
 	private String password = "";
 	private String identity;
@@ -2870,6 +2876,16 @@ public class Player extends Entity {
 		} else {
 			return false;
 		}
+	}
+	
+	private Sanctions sanctions;
+
+	public Sanctions getSanctions() {
+		return sanctions;
+	}
+	
+	public void setSanctions(Sanctions sanctions) {
+		this.sanctions = sanctions;
 	}
 
 }

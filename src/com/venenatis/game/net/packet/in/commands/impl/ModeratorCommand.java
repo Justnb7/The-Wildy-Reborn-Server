@@ -1,8 +1,13 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
+import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
+import com.venenatis.game.model.entity.player.save.PlayerSave.PlayerContainer;
+import com.venenatis.game.model.entity.player.save.PlayerSave.Type;
+import com.venenatis.game.model.entity.player.save.PlayerSaveUtility;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.world.World;
@@ -21,12 +26,12 @@ public class ModeratorCommand implements Command {
 
 		/* Staffzone */
 		case "staffzone":
-			//player.getMagic().teleport(new Location(3159, 3485, 2), TeleportTypes.SPELL_BOOK, true);
+			player.getTeleportAction().teleport(new Location(3159, 3485, 2), TeleportTypes.SPELL_BOOK, true);
 			return true;
 
 		/* Save */
 		case "save":
-			PlayerSerialization.save(player);
+			PlayerSave.save(player);
 			player.getActionSender().sendMessage("Your account has been successfully saved.");
 			return true;
 
@@ -34,7 +39,7 @@ public class ModeratorCommand implements Command {
 		case "saveall":
 			for (Player players : World.getWorld().getPlayers()) {
 				if (players != null) {
-					PlayerSerialization.save(players);
+					PlayerSave.save(players);
 					player.getActionSender().sendMessage("Your account has been saved.");
 				}
 			}
@@ -83,6 +88,46 @@ public class ModeratorCommand implements Command {
 
 			}
 			return false;
+			
+			/* Mute */
+		case "mute":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+
+				final String playerName = name;
+
+				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
+					if (!PlayerSaveUtility.exists(name)) {
+						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
+						return true;
+					}
+
+					Player player2 = new Player(name);
+
+					if (PlayerContainer.loadDetails(player2)) {
+						player2.getSanctions().mute(60);
+					}
+
+					PlayerSave.save(player, Type.PLAYER_INFORMATION);
+					return true;
+				} else {
+
+					Player victim = World.getWorld().getPlayerByName(playerName).get();
+
+					victim.getSanctions().mute(2);
+					victim.getActionSender().sendMessage("You have been muted by " + playerName + "!");
+					player.getActionSender().sendMessage("You have muted " + playerName + "!");
+				}
+				return true;
+			}
+			return true;
+			
 		}
 		return false;
 	}

@@ -23,8 +23,13 @@ public class ChatPacketHandler implements PacketType {
 		
 		String term = Utility.textUnpack(player.getChatText(), packetSize - 2).toLowerCase();
 		
-		if (player.isMuted) {
-			player.getActionSender().sendMessage("Sorry, your account is still muted, please appeal on our forums.");
+		if (!player.getController().canTalk()) {
+			return;
+		}
+
+		if (player.getSanctions().isMuted()) {
+			long time = player.getSanctions().muteLeft();
+			player.getActionSender().sendMessage("You are muted and no one can hear you! You will be unmuted in " + time + " " + (time > 1 ? "minutes" : "minute") + ".");
 			return;
 		}
 		

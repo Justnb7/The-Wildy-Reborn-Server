@@ -7,7 +7,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
-import com.venenatis.game.model.entity.player.save.PlayerSerialization;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.net.packet.ActionSender.MinimapState;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.StringUtils;
@@ -283,8 +283,8 @@ public final class TradeSession {
 		player.getTradeContainer().clear(true);
 		other.ifPresent($it -> $it.getTradeContainer().clear(true));
 		
-		PlayerSerialization.save(player);
-		other.ifPresent($it -> PlayerSerialization.save($it));
+		PlayerSave.save(player);
+		other.ifPresent($it -> PlayerSave.save($it));
 
 		player.getActionSender().removeAllInterfaces();
 		other.ifPresent($it -> $it.getActionSender().removeAllInterfaces());

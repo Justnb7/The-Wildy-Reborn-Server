@@ -19,7 +19,9 @@ import com.venenatis.game.net.network.NettyChannelHandler;
 import com.venenatis.game.net.network.codec.RS2Encoder;
 import com.venenatis.game.net.network.handshake.HandshakeDecoder;
 import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
+import com.venenatis.game.util.parser.impl.IPBanParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
+import com.venenatis.game.util.parser.impl.MacBanParser;
 import com.venenatis.game.util.parser.impl.NPCDefinitionParser;
 import com.venenatis.game.util.parser.impl.ShopParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
@@ -125,6 +127,9 @@ public class Bootstrap {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}*/
+			
+			new IPBanParser().run();
+			new MacBanParser().run();
 
 			LOGGER.info("Loading all of the game data...");
 			new ItemDefinitionParser().run();

@@ -22,7 +22,7 @@ public class HomeQuestTabPage extends QuestTabPage {
 		long days = TimeUnit.MILLISECONDS.toDays(milliseconds);
 		long hours = TimeUnit.MILLISECONDS.toHours(milliseconds - TimeUnit.DAYS.toMillis(days));
 		String time = days + " days, " + hours + " hours.";
-		player.getActionSender().sendString("Online: @gre@" + World.getWorld().getActivePlayers() + "", 29155);
+		player.getActionSender().sendString("Online: @gre@" + World.getWorld().getPlayerCount() + "", 29155);
 		player.getActionSender().sendString("Information", 663);
 		
 		write(player, "<col=FFFFFF>Rank: <col=00CC00>"+player.getRights().getName(), 1);

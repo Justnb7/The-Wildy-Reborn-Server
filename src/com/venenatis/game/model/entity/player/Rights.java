@@ -39,7 +39,7 @@ public enum Rights {
 	EXTREME_DONATOR("Extreme Donator", Order.DONATOR, 6, "00BF3F"),
 
 	/* Helper */
-	HELPER("Helper", Order.PLAYER, 7, "3AB3D9"),
+	HELPER("Helper", Order.STAFF, 7, "3AB3D9"),
 	
 	/* YouTube */
 	YOUTUBER("Youtuber", Order.PLAYER, 9, "91111A"),

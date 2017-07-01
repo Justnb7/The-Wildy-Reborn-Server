@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.bounty.BountyHunter;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.MobileCharacterList;
 import com.venenatis.game.model.entity.Entity.EntityType;
@@ -24,13 +25,13 @@ import com.venenatis.game.task.impl.NPCMovementTask;
 import com.venenatis.game.task.impl.RestoreSpecialStats;
 import com.venenatis.game.task.impl.RestoreStats;
 import com.venenatis.game.task.impl.SavePlayers;
-import com.venenatis.game.util.NameUtils;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 /**
@@ -154,7 +155,7 @@ public class World implements Service {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Gets the player by the name.
 	 *
@@ -184,22 +185,6 @@ public class World implements Service {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Gets the player by the name hash.
-	 *
-	 * @param playerName the player name hash.
-	 * @return the player
-	 */
-
-	public Optional<Player> getOptionalByNameHash(long playerName) {
-		for (Player player : players) {
-			if (player != null && player.usernameHash == playerName) {
-				return Optional.of(player);
-			}
-		}
-		return Optional.empty();
 	}
 
 	/**
@@ -503,20 +488,6 @@ public class World implements Service {
 											// randomized iteration order.
 		return randomized;
 	}
-	
-	/**
-	 * The servers cycles?
-	 */
-	private static long cycles = 0L;
-	
-	/**
-	 * Gets the cycles
-	 * 
-	 * @return
-	 */
-	public static long getCycles() {
-		return cycles;
-	}
 
 	/**
 	 * Gets the list of players registered in the game world
@@ -540,39 +511,26 @@ public class World implements Service {
 		return getWorld().getPlayers().stream().filter(Objects::nonNull).filter(client -> client.getUsername().equalsIgnoreCase(name)).findFirst();
 	}
 	
-	/**
-	 * Checks if a player is online.
-	 * 
-	 * @param name
-	 *            The player's name.
-	 * @return <code>true</code> if they are online, <code>false</code> if not.
-	 */
-	public boolean isPlayerOnline(String name) {
-		name = NameUtils.formatName(name);
-		for (Player player : players) {
-			if (player.getUsername().equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public String getOnlineStatus(String playerName) {
-        for (Player p : getWorld().players) {
-                if (p == null || p.properLogout || !p.getUsername().equalsIgnoreCase(playerName))
-                        continue;
-                return "@gre@Online";
-        }
-        return "@red@Offline";
+	public int getPlayerCount() {
+		return Math.toIntExact(getPlayers().stream().filter(Objects::nonNull).count());
 	}
 
-	public void sendMessage(String message, List<Player> players) {
-		for (Player player : players) {
-			if (Objects.isNull(player)) {
-				continue;
-			}
-			player.getActionSender().sendMessage(message);
-		}
+	public int getPvPCount() {
+		return Math.toIntExact(getPlayers().stream().filter(Objects::nonNull).filter($it -> Area.inWilderness($it)).count());
+	}
+
+	public int getStaffCount() {
+		return Math.toIntExact(getPlayers().stream().filter(Objects::nonNull).filter($it -> Rights.isStaffMember($it)).count());
+	}
+
+	public void yell(String message) {
+		getPlayers().stream().filter(Objects::nonNull).forEach($it -> $it.getActionSender().sendMessage(message));
+	}
+	
+	public void kickPlayer(Predicate<Player> condition) {
+		getPlayers().stream().filter(Objects::nonNull).filter($it -> condition.test($it)).forEach($it -> {
+			$it.logout();
+		});
 	}
 	
 	/**
@@ -591,49 +549,8 @@ public class World implements Service {
 		}
 	}
 
-	public Player getPlayer(String name) {
-		for (int d = 0; d < World.getWorld().getPlayers().capacity(); d++) {
-			if (World.getWorld().getPlayers().get(d) != null) {
-				Player o = World.getWorld().getPlayers().get(d);
-				if (o.getUsername().equalsIgnoreCase(name)) {
-					return o;
-				}
-			}
-		}
-		return null;
-	}
-
 	public static ExecutorService getService() {
 		return SERVICE;
-	}
-
-	/**
-	 * Gets the active amount of players online
-	 * 
-	 * @return
-	 */
-	public int getActivePlayers() {
-		int r = 0;
-
-		for (Player players : World.getWorld().getPlayers()) {
-			if (players != null) {
-				r++;
-			}
-		}
-
-		return r;
-	}
-	
-	public int getStaff() {
-		int amount = 0;
-		for (Player players : World.getWorld().getPlayers()) {
-			if (players != null) {
-				if (Rights.isStaffMember(players)) {
-					amount++;
-				}
-			}
-		}
-		return amount;
 	}
 
 }

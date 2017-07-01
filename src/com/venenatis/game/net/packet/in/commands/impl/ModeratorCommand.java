@@ -89,6 +89,25 @@ public class ModeratorCommand implements Command {
 			}
 			return false;
 			
+			/* Kick */
+		case "kick":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+
+				final String playerName = name;
+
+				World.getWorld().kickPlayer(p -> p.getUsername().equalsIgnoreCase(playerName.trim()));
+				player.getActionSender().sendMessage("You have kicked " + playerName + "!");
+				return true;
+			}
+			return true;	
+			
 			/* Mute */
 		case "mute":
 			if (parser.hasNext()) {
@@ -123,6 +142,122 @@ public class ModeratorCommand implements Command {
 					victim.getSanctions().mute(2);
 					victim.getActionSender().sendMessage("You have been muted by " + playerName + "!");
 					player.getActionSender().sendMessage("You have muted " + playerName + "!");
+				}
+				return true;
+			}
+			return true;
+			
+			/* Un-mute */
+		case "unmute":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+
+				final String playerName = name;
+
+				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
+					if (!PlayerSaveUtility.exists(name)) {
+						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
+						return true;
+					}
+
+					Player player2 = new Player(name);
+
+					if (PlayerContainer.loadDetails(player2)) {
+						player2.getSanctions().unMute();
+					}
+
+					PlayerSave.save(player, Type.PLAYER_INFORMATION);
+					return true;
+				} else {
+					Player victim = World.getWorld().getPlayerByName(playerName).get();
+
+					victim.getSanctions().unMute();
+					victim.getActionSender().sendMessage("You have been un-muted by " + playerName + "!");
+					player.getActionSender().sendMessage("You have un-muted " + playerName + "!");
+					return true;
+				}
+			}
+			return true;
+
+		/* Banned */
+		case "ban":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+
+				final String playerName = name;
+
+				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
+					if (!PlayerSaveUtility.exists(name)) {
+						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
+						return true;
+					}
+
+					Player player2 = new Player(name);
+
+					if (PlayerContainer.loadDetails(player2)) {
+						player2.getSanctions().ban(60);
+					}
+
+					PlayerSave.save(player, Type.PLAYER_INFORMATION);
+					return true;
+				} else {
+
+					Player victim = World.getWorld().getPlayerByName(playerName).get();
+
+					victim.getSanctions().ban(60);
+					victim.getActionSender().sendMessage("You have been banned by " + playerName + "!");
+					player.getActionSender().sendMessage("You have banned " + playerName + "!");
+					World.getWorld().kickPlayer(p -> p.getUsername().equalsIgnoreCase(playerName.trim()));
+				}
+				return true;
+			}
+			return true;
+
+		/* Un-Banned */
+		case "unban":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+
+				final String playerName = name;
+
+				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
+					if (!PlayerSaveUtility.exists(name)) {
+						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
+						return true;
+					}
+
+					Player player2 = new Player(name);
+
+					if (PlayerContainer.loadDetails(player2)) {
+						player2.getSanctions().unBan();
+					}
+
+					PlayerSave.save(player, Type.PLAYER_INFORMATION);
+					return true;
+				} else {
+					Player victim = World.getWorld().getPlayerByName(playerName).get();
+
+					victim.getSanctions().unBan();
+					victim.getActionSender().sendMessage("You have been un-banned by " + playerName + "!");
+					player.getActionSender().sendMessage("You have un-banned " + playerName + "!");
 				}
 				return true;
 			}

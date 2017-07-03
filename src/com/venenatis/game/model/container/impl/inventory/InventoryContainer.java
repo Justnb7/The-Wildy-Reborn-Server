@@ -49,10 +49,10 @@ public class InventoryContainer extends Container {
 		} else if ((item.getAmount() > 1) && (!item.isStackable())) {
 			for (int i = 0; i < item.getAmount(); i++)
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
-			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
+			player.getActionSender().sendMessage("Inventory full item placed underneath you.");
 		} else {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getX(), player.getY(), player.getZ(), player));
-			player.getActionSender().sendMessage("Invntory full item placed underneath you.");
+			player.getActionSender().sendMessage("Inventory full item placed underneath you.");
 		}
 	}
 }

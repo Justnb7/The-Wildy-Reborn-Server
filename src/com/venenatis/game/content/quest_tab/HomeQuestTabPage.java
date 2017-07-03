@@ -35,20 +35,17 @@ public class HomeQuestTabPage extends QuestTabPage {
 		write(player, "<img=27><col=FFFFFF>Deaths: <col=00CC00>"+ player.getDeathCount(), 7);
 		write(player, "<img=27><col=FFFFFF>Current killstreak: <col=00CC00>"+ player.getCurrentKillStreak(), 8);
 		write(player, "<img=27><col=FFFFFF>Highest killstreak: <col=00CC00>"+ player.getHighestKillStreak(), 9);
-		write(player, "<img=27><col=FFFFFF>Wilderness killstreak: <col=00CC00>"+ player.getWildernessKillStreak(), 10);
-		write(player, "<img=27><col=FFFFFF>Targets Killed: <col=00CC00>"+ player.getWildernessKillStreak(), 11);
-		write(player, "<img=27><col=FFFFFF>Target Points: <col=00CC00>"+ player.getWildernessKillStreak(), 12);
-		write(player, "<img=27><col=FFFFFF>Bounties: <col=00CC00>"+ player.getBountyPoints(), 13);
+		write(player, "<img=27><col=FFFFFF>Bounties: <col=00CC00>"+ player.getBountyPoints(), 10);
 		if(player.getSlayerTaskAmount() <= 0) {
-			write(player, "<img=28><col=FFFFFF>Task: <col=00CC00>None", 14);
+			write(player, "<img=28><col=FFFFFF>Task: <col=00CC00>None", 11);
 		} else {
-			write(player, "<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 14);
+			write(player, "<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 11);
 		}
-		write(player, "<img=28><col=FFFFFF>tasks completed: <col=00CC00>"+ player.getSlayerTasksCompleted(), 15);
-		write(player, "<img=28><col=FFFFFF>Slayer Reward Points: <col=00CC00>"+ player.getSlayerPoints(), 16);
-		write(player, "<img=29><col=FFFFFF>Total Votes: <col=00CC00>"+ player.getTotalVotes(), 17);
-		write(player, "<img=29><col=FFFFFF>Vote points: <col=00CC00>"+ player.getVotePoints(), 18);
-		write(player, "<img=26><col=FFFFFF>Amount Donated: <col=00CC00>"+ player.getTotalAmountDonated()+ "$", 19);
+		write(player, "<img=28><col=FFFFFF>tasks completed: <col=00CC00>"+ player.getSlayerTasksCompleted(), 12);
+		write(player, "<img=28><col=FFFFFF>Slayer Reward Points: <col=00CC00>"+ player.getSlayerPoints(), 13);
+		write(player, "<img=29><col=FFFFFF>Total Votes: <col=00CC00>"+ player.getTotalVotes(), 14);
+		write(player, "<img=29><col=FFFFFF>Vote points: <col=00CC00>"+ player.getVotePoints(), 15);
+		write(player, "<img=26><col=FFFFFF>Amount Donated: <col=00CC00>"+ player.getTotalAmountDonated()+ "$", 16);
 	}
 	
 	@Override

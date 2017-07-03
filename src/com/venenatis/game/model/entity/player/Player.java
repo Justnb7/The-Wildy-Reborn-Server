@@ -428,19 +428,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Represents the players current wilderness killstreak
-	 */
-	private int wildernessKillStreak;
-	
-	public int getWildernessKillStreak() {
-		return wildernessKillStreak;
-	}
-	
-	public void setWildernessKillStreak(int wildernessKillStreak) {
-		this.wildernessKillStreak = wildernessKillStreak;
-	}
-	
-	/**
 	 * Teleport to slayer task abilitie
 	 */
 	private boolean canTeleToTask;

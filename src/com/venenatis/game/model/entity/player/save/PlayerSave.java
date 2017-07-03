@@ -157,7 +157,6 @@ public class PlayerSave {
 				player.setAuguryUnlocked(details.unlockedAugury);
 				player.setCurrentKillStreak(details.currentKillStreak);
 				player.setHighestKillStreak(details.highestKillStreak);
-				player.setWildernessKillStreak(details.wildernessKillStreak);
 				player.lastKilledList.add(details.lastKilled);
 				player.setKillCount(details.killCount);
 				player.setDeathCount(details.deathCount);
@@ -243,7 +242,6 @@ public class PlayerSave {
 		
 		private final int currentKillStreak;
 		private final int highestKillStreak;
-		private final int wildernessKillStreak;
 		private String lastKilled;
 		private final int killCount;
 		private final int deathCount;
@@ -318,7 +316,6 @@ public class PlayerSave {
 			unlockedAugury = player.isAuguryUnlocked();
 			currentKillStreak = player.getCurrentKillStreak();
 			highestKillStreak = player.getHighestKillStreak();
-			wildernessKillStreak = player.getWildernessKillStreak();
 			for (int i = 0; i < player.lastKilledList.size(); i++) {
 				if (player.lastKilledList.get(i) != null && !player.lastKilledList.get(i).equalsIgnoreCase("null")) {
 					lastKilled = player.lastKilledList.get(i);

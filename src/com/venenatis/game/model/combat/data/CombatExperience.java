@@ -18,8 +18,8 @@ public class CombatExperience {
 		switch (type) {
 		
 		case MAGIC:
-			player.getSkills().addExperience(Skills.MAGIC, (player.MAGIC_SPELLS[player.spellId][7] + damage));
-			player.getSkills().addExperience(Skills.HITPOINTS, (player.MAGIC_SPELLS[player.spellId][7] + damage * 1.33));
+			player.getSkills().addExperience(Skills.MAGIC, (player.MAGIC_SPELLS[player.getSpellId()][7] + damage));
+			player.getSkills().addExperience(Skills.HITPOINTS, (player.MAGIC_SPELLS[player.getSpellId()][7] + damage * 1.33));
 			break;
 		case MELEE:
 			switch (player.getAttackStyle()) {

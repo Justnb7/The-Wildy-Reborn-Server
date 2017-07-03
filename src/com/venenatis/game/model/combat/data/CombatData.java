@@ -8,7 +8,7 @@ public class CombatData {
 
 	public static int getHitDelay(Player player, String weaponName) {
 		if (player.getCombatType() == CombatStyle.MAGIC) {
-			switch (player.MAGIC_SPELLS[player.spellId][0]) {
+			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 			
 			case 12891:
 				return 4;

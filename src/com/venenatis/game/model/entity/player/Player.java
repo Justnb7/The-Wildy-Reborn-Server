@@ -704,12 +704,50 @@ public class Player extends Entity {
 	/**
 	 * The players spell Id
 	 */
-	public int spellId = -1;
+	private int spellId = -1;
+	
+	/**
+	 * Sets the players spell id
+	 * 
+	 * @param id
+	 *            The id of the spell
+	 */
+	public void setSpellId(int id) {
+		this.spellId = id;
+	}
+
+	/**
+	 * Returns the players spell id
+	 * 
+	 * @return
+	 */
+	public int getSpellId() {
+		return spellId;
+	}
 
 	/**
 	 * The players autocast Id
 	 */
-	public int autocastId = -1;
+	private int autocastId = -1;
+	
+	/**
+	 * Sets the players autocast id
+	 * 
+	 * @param id
+	 *            The id of the spell
+	 */
+	public void setAutocastId(int id) {
+		this.autocastId = id;
+	}
+
+	/**
+	 * Returns the players autocast id
+	 * 
+	 * @return
+	 */
+	public int getAutocastId() {
+		return autocastId;
+	}
 	
 	/**
 	 * The player is auto casting

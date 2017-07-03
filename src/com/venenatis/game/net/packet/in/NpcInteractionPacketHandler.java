@@ -96,11 +96,11 @@ public class NpcInteractionPacketHandler implements PacketType {
 		if (!npc.getDefinition().isAttackable()) {
 			return;
 		}
-		if (player.autocastId > 0) {
+		if (player.getAutocastId() > 0) {
 			player.autoCast = true;
 		}
-		if (!player.autoCast && player.spellId > 0) {
-			player.spellId = 0;
+		if (!player.autoCast && player.getSpellId() > 0) {
+			player.setSpellId(0);
 		}
 
 		player.faceEntity(npc);
@@ -124,7 +124,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 		int pid = player.getInStream().readSignedWordBigEndianA();
 		int castingSpellId = player.getInStream().readSignedWordA();
 		player.setCombatType(null);
-		player.spellId = -1;
+		player.setSpellId(-1);
 		NPC npc = World.getWorld().getNPCs().get(pid);
 		if (npc == null) {
 			return;
@@ -136,9 +136,9 @@ public class NpcInteractionPacketHandler implements PacketType {
 			player.getActionSender().sendMessage("You can't attack this npc.");
 			return;
 		}
-		for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {
-			if (castingSpellId == player.MAGIC_SPELLS[i][0]) {
-				player.spellId = i;
+		for (int spell = 0; spell < player.MAGIC_SPELLS.length; spell++) {
+			if (castingSpellId == player.MAGIC_SPELLS[spell][0]) {
+				player.setSpellId(spell);
 				player.setCombatType(CombatStyle.MAGIC);
 				break;
 			}

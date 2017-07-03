@@ -31,7 +31,7 @@ public class MagicData {
 	}
 
 	public static int getStartGfxHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.spellId][0]) {
+		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 12871:
 		case 12891:
 			return 0;
@@ -42,7 +42,7 @@ public class MagicData {
 	}
 
 	public static int getEndGfxHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.spellId][0]) {
+		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 12987:
 		case 12901:
 		case 12861:
@@ -65,7 +65,7 @@ public class MagicData {
 	}
 
 	public static boolean godSpells(Player c) {
-		switch (c.MAGIC_SPELLS[c.spellId][0]) {
+		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 1190:
 			return true;
 
@@ -81,7 +81,7 @@ public class MagicData {
 	}
 
 	public static int getStaffNeeded(Player c) {
-		switch (c.MAGIC_SPELLS[c.spellId][0]) {
+		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 1539:
 			return 1409;
 		case 12037:
@@ -98,7 +98,7 @@ public class MagicData {
 	}
 
 	public static int getStartDelay(Player c) {
-		switch (c.MAGIC_SPELLS[c.spellId][0]) {
+		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 1539:
 			return 60;
 		default:
@@ -107,7 +107,7 @@ public class MagicData {
 	}
 
 	public static int getEndHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.spellId][0]) {
+		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 1562: // stun
 			return 10;
 
@@ -135,7 +135,7 @@ public class MagicData {
 	}
 
 	public static int getStartHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.spellId][0]) {
+		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
 		case 1562: // stun
 			return 25;
 

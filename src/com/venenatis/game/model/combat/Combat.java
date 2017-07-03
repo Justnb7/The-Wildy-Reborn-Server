@@ -85,7 +85,7 @@ public class Combat {
 		
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
-            player.spellId = -1;
+            player.setSpellId(-1);
 			player.setCombatType(null);
 			player.faceEntity(null);
 	        player.getCombatState().reset();
@@ -189,7 +189,7 @@ public class Combat {
             // don't attack as our timer hasnt reached 0 yet
             return;
         }
-        int spell = player.spellId;
+        int spell = player.getSpellId();
         int req = MagicData.requirement(spell);
         if (player.skills.getLevel(4) < req) {
             player.message("You need a Magic level of "+req+" to cast this spell.");
@@ -308,7 +308,7 @@ public class Combat {
         target.take_hit(player, dam1, CombatStyle.MAGIC).giveXP(player).send(hitDelay);
         onAttackDone(player, target);
         // MUST BE THE LAST PIECE OF CODE IN THIS METHOD. Spellid is used in other methods as a reference.
-        player.spellId = -1;
+        player.setSpellId(-1);
     }
 
     private static void rangeAttack(Player player, Entity target) {
@@ -594,20 +594,21 @@ public class Combat {
         player.setCombatType(null); // reset
 
         if (player.autoCast && (player.getSpellBook() == SpellBookTypes.MODERN || player.getSpellBook() == SpellBookTypes.ANCIENTS)) {
-            player.spellId = player.autocastId;
+            player.setSpellId(player.getAutocastId());
+            
             player.setCombatType(CombatStyle.MAGIC);
         }
         int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null?-1:player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         if (wep == 11907) {
-            player.spellId = 52;
+            player.setSpellId(52);
             player.setCombatType(CombatStyle.MAGIC);
         }
         if (wep == 12899) {
-            player.spellId = 53;
+        	player.setSpellId(53);
             player.setCombatType(CombatStyle.MAGIC);
         }
         // Spell id set when packet: magic on player
-        if (player.spellId > 0) {
+        if (player.getSpellId() > 0) {
             player.setCombatType(CombatStyle.MAGIC);
         }
 

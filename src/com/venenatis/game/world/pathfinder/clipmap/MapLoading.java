@@ -217,10 +217,10 @@ public class MapLoading {
 					GameObject obj = new GameObject(objectId, rX + localX, rY + localY, height, direction, type);
 
 					Region.addClipping(obj);
-					World.getWorld().regions.getRegionByLocation(Location.create(obj.getX(), obj.getY(), obj.getHeight())).addObject(obj);
+					World.getWorld().regions.getRegionByLocation(Location.create(obj.getX(), obj.getY(), obj.getZ())).addObject(obj);
 
 					if (obj.getId() >= CachedObjectDefinition.objectDefinitions.length) {
-						System.err.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getHeight()+" type "+obj.getType()+","+obj.getFace());
+						System.err.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getZ()+" type "+obj.getType()+","+obj.getFace());
 					}
 				}
 			}

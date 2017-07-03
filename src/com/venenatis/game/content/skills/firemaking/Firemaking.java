@@ -1,7 +1,5 @@
 package com.venenatis.game.content.skills.firemaking;
 
-import java.util.Random;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -13,6 +11,8 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.server.Server;
+
+import java.util.Random;
 
 /**
  * The firemaking skill
@@ -90,7 +90,7 @@ public class Firemaking {
 					@Override
 					public void execute() {
 						if (player.getOutStream() != null && player != null && player.isActive()) {
-							GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getX(), fire.getY(), fire.getHeight(), player));
+							GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getX(), fire.getY(), fire.getZ(), player));
 						}
 						stop();
 					}

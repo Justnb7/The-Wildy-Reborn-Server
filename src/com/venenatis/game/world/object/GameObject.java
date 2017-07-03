@@ -100,7 +100,7 @@ public class GameObject {
 		return position.getY();
 	}
 	
-	public int getHeight() {
+	public int getZ() {
 		return position.getZ();
 	}
 	

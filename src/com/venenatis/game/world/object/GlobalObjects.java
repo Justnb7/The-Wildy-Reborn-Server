@@ -48,7 +48,7 @@ public class GlobalObjects {
 	 */
 	public void remove(int id, int x, int y, int height) {
 		Optional<GameObject> existing = objects.stream().filter(o -> o.getId() == id && o.getX() == x 
-				&& o.getY() == y && o.getHeight() == height).findFirst();
+				&& o.getY() == y && o.getZ() == height).findFirst();
 		if (!existing.isPresent()) {
 			return;
 		}
@@ -61,7 +61,7 @@ public class GlobalObjects {
 	 * @param height	the height the object must be on to be removed
 	 */
 	public void remove(int id, int height) {
-		objects.stream().filter(o -> o.getId() == id && o.getHeight() == height).forEach(this::remove);
+		objects.stream().filter(o -> o.getId() == id && o.getZ() == height).forEach(this::remove);
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class GlobalObjects {
 	 * @return			true if the object exists, otherwise false.
 	 */
 	public boolean exists(int id, Location location) {
-		return objects.stream().anyMatch(object -> object.getId() == id && object.getX() == location.getX() && object.getY() == location.getY() && object.getHeight() == location.getZ());
+		return objects.stream().anyMatch(object -> object.getId() == id && object.getX() == location.getX() && object.getY() == location.getY() && object.getZ() == location.getZ());
 	}
 	
 	/**
@@ -101,12 +101,12 @@ public class GlobalObjects {
 	 * @return			true if the object exists, otherwise false.
 	 */
 	public boolean anyExists(int x, int y, int height) {
-		return objects.stream().anyMatch(object ->object.getX() == x && object.getY() == y && object.getHeight() == height);
+		return objects.stream().anyMatch(object ->object.getX() == x && object.getY() == y && object.getZ() == height);
 	}
 	
 	public GameObject get(int id, int x, int y, int height) {
 		Optional<GameObject> obj = objects.stream().filter(object -> object.getId() == id && object.getX() == x
-				&& object.getY() == y && object.getHeight() == height).findFirst();
+				&& object.getY() == y && object.getZ() == height).findFirst();
 		return obj.orElse(null);
 		
 	}
@@ -147,8 +147,8 @@ public class GlobalObjects {
 	 */
 	public void updateObject(final GameObject object, final int objectId) {
 		List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player ->
-			player.distanceToPoint(object.getX(), object.getY()) <= 60 && player.getZ() == object.getHeight()).collect(Collectors.toList());
-		players.forEach(player -> player.getActionSender().sendObject(objectId, object.getX(), object.getY(), object.getHeight(), object.getFace(), object.getType()));
+			player.distanceToPoint(object.getX(), object.getY()) <= 60 && player.getZ() == object.getZ()).collect(Collectors.toList());
+		players.forEach(player -> player.getActionSender().sendObject(objectId, object.getX(), object.getY(), object.getZ(), object.getFace(), object.getType()));
  	}
 	
 	/**
@@ -157,8 +157,8 @@ public class GlobalObjects {
 	 */
 	public void updateRegionObjects(Player player) {
 		objects.stream().filter(Objects::nonNull).filter(object -> player.distanceToPoint(
-			object.getX(), object.getY()) <= 60 && object.getHeight() == player.getZ()).forEach(object -> player.getActionSender().sendObject(
-				object.getId(), object.getX(), object.getY(), object.getHeight(), object.getFace(), object.getType()));
+			object.getX(), object.getY()) <= 60 && object.getZ() == player.getZ()).forEach(object -> player.getActionSender().sendObject(
+				object.getId(), object.getX(), object.getY(), object.getZ(), object.getFace(), object.getType()));
 	}
 
 }

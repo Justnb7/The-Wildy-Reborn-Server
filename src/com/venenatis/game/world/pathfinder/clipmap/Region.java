@@ -1,7 +1,6 @@
 package com.venenatis.game.world.pathfinder.clipmap;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
-import com.venenatis.game.cache.definitions.r317.ObjectDefinition317;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.world.object.GameObject;
 
@@ -111,15 +110,15 @@ public class Region {
         }
         if (obj.getType() == 22) {
             if (def.roofclips() && def.hasActions()) {
-                addClipping(obj.getX(), obj.getY(), obj.getHeight(), 0x200000);
+                addClipping(obj.getX(), obj.getY(), obj.getZ(), 0x200000);
             }
         } else if (obj.getType() >= 9) {
             if (def.clips()) {
-                addClippingForSolidObject(obj.getX(), obj.getY(), obj.getHeight(), xLength, yLength, def.projectileClipped());
+                addClippingForSolidObject(obj.getX(), obj.getY(), obj.getZ(), xLength, yLength, def.projectileClipped());
             }
         } else if (obj.getType() >= 0 && obj.getType() <= 3) {
             if (def.clips()) {
-                addClippingForVariableObject(obj.getX(), obj.getY(), obj.getHeight(), obj.getType(), obj.getFace(), def.projectileClipped());
+                addClippingForVariableObject(obj.getX(), obj.getY(), obj.getZ(), obj.getType(), obj.getFace(), def.projectileClipped());
             }
         }
     }

@@ -204,10 +204,9 @@ public class RangeData {
 	}
 
 	/**
-	 * TODO Add support for deleting (1) bolts or (2) darts [either ammo or hand slot] depending on range type
-	 * plus chance for that ammo dropping to the floor
+	 * Remove ammo from arrow/hands slot + plus chance for that ammo drops to the floor
 	 */
-	public static void loseAmmo(Player player, Entity target, int wepId, int ammoId) {
+	public static void loseAmmo(Player player, Entity target) {
 		boolean avas = Combat.avas(player);
 		boolean bow = EquipmentConstants.wearingBlowpipe(player) || EquipmentConstants.usingCrystalBow(player) ||
 				EquipmentConstants.isCrossbow(player) || EquipmentConstants.isBow(player) || EquipmentConstants.wearingBallista(player);

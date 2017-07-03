@@ -213,9 +213,8 @@ public class Combat {
             // One time attack
             player.getCombatState().setTarget(null);
         }
-        int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
-        player.setCombatType(CombatStyle.MAGIC);
 
         if (player.MAGIC_SPELLS[spell][3] > 0) {
             if (player.getCombatState().getStartGfxHeight() == 100) {
@@ -230,6 +229,7 @@ public class Combat {
         }
 
         if (wepId == 11907 || wepId == 12899) {
+            // trident code + remove charge from weapon if you support that
             return;
         }
 
@@ -243,10 +243,7 @@ public class Combat {
         boolean splash = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
         if (!target.frozen() && !splash) {
         	//After the damage was taken we activate our spell effects.
-			SpellHandler.handleSpellEffect(player, target); 
-			if (player.getSpellId() > -1) {
-				player.setSpellId(-1);
-			}
+			SpellHandler.handleSpellEffect(player, target);
             if (target.isPlayer()) {
                 ((Player) target).getWalkingQueue().reset();
                 target.message("You have been frozen.");
@@ -355,7 +352,7 @@ public class Combat {
         player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
         player.getCombatState().fireProjectileAtTarget();
 
-        RangeData.loseAmmo(player, target, wepId, ammoId);
+        RangeData.loseAmmo(player, target);
 
         // Random dmg
         int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());

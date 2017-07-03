@@ -178,7 +178,8 @@ public class Combat {
             Combat.resetCombat(player);
             return;
         }*/
-        if (player.getSpellBook() != SpellBookTypes.MODERN && (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2417)) {
+        int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        if (player.getSpellBook() != SpellBookTypes.MODERN && (wepId == 2415 || wepId == 2416 || wepId == 2417)) {
             player.message("You must be on the modern spellbook to cast this spell.");
             resetCombat(player);
             return;
@@ -213,8 +214,7 @@ public class Combat {
             // One time attack
             player.getCombatState().setTarget(null);
         }
-        int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
-        int hitDelay = CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
+        int hitDelay = wepId == -1 ? 4 : CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
 
         if (player.MAGIC_SPELLS[spell][3] > 0) {
             if (player.getCombatState().getStartGfxHeight() == 100) {
@@ -249,10 +249,6 @@ public class Combat {
                 target.message("You have been frozen.");
                 ((Player) target).frozenBy = player.getIndex();
             }
-        }
-        // One time attack!
-        if (!player.autoCast) {
-            player.getCombatState().reset();
         }
 
         int dam1 = MagicCalculations.magicMaxHitModifier(player);
@@ -306,8 +302,14 @@ public class Combat {
 
         target.take_hit(player, dam1, CombatStyle.MAGIC).giveXP(player).send(hitDelay);
         onAttackDone(player, target);
+
         // MUST BE THE LAST PIECE OF CODE IN THIS METHOD. Spellid is used in other methods as a reference.
         player.setSpellId(-1);
+
+        // One time attack!
+        if (!player.autoCast) {
+            player.getCombatState().reset();
+        }
     }
 
     private static void rangeAttack(Player player, Entity target) {

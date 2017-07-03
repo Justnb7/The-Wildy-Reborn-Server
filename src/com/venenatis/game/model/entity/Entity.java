@@ -712,7 +712,7 @@ public abstract class Entity {
 			if (attacker.isPlayer())
 				PlayerVsNpcCombat.kraken((Player)attacker, victim_npc, damage);
 			if (victim_npc.getId() == 319) {
-				if (attacker.isNPC() || (attacker.isPlayer() && !PlayerVsNpcCombat.isWearingSpear(((Player)attacker)))) {
+				if (attacker.isNPC() || (attacker.isPlayer() && !EquipmentConstants.isWearingSpear(((Player)attacker)))) {
 					damage /= 2;
 				}
 			}

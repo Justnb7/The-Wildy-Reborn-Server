@@ -1,6 +1,5 @@
 package com.venenatis.game.model.combat.pvm;
 
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
@@ -24,15 +23,7 @@ import com.venenatis.server.Server;
  * @author Patrick van Elderen
  */
 public class PlayerVsNpcCombat {
-	
-	public static boolean isWearingSpear(Player player) {
-		
-		String weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getName().toLowerCase();
-		if (weapon.contains("spear") || weapon.contains("hasta"))
-			return true;
-		return false;
-	}
-	
+
 	public static void kraken(Player player, NPC npc, int damage) {
 		if (npc.getId() == 5534 && npc.transformId != 5535) {
 			npc.transforming = true;

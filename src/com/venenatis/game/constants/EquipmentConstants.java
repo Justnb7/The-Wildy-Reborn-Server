@@ -392,6 +392,14 @@ public final class EquipmentConstants {
 	public final Item[] VENEMOUS_WEPS = {new Item(12926), new Item(12904), new Item(12899), new Item(12904)};
 	public final Item[] VENEMOUS_HELMS = {new Item(13197), new Item(13199), new Item(12931)};
 
+	public static boolean isWearingSpear(Player player) {
+
+		String weapon = player.getEquipment().get(WEAPON_SLOT).getName().toLowerCase();
+		if (weapon.contains("spear") || weapon.contains("hasta"))
+			return true;
+		return false;
+	}
+
 	public boolean canInfect(Player player) {
 		for (Item i : VENEMOUS_WEPS) {
 			if (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == i) {

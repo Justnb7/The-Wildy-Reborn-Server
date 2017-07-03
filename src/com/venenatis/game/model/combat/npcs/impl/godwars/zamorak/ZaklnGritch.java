@@ -1,11 +1,9 @@
 package com.venenatis.game.model.combat.npcs.impl.godwars.zamorak;
 
 import com.venenatis.game.model.Projectile;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -55,10 +53,7 @@ public class ZaklnGritch extends AbstractBossCombat {
 		hit = randomHit;
 		
 		// Create the hit instance
-		Hit hitInfo = victim.take_hit(attacker, hit, CombatStyle.RANGE, false, false);
-
-		// Send the hit task
-		Combat.hitEvent(attacker, victim, hitDelay, hitInfo, CombatStyle.RANGE);
+		victim.take_hit(attacker, hit, CombatStyle.RANGE, false, false).send(hitDelay);
 		
 		attacker.getCombatState().setAttackDelay(6);
 	}

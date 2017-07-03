@@ -3,12 +3,10 @@ package com.venenatis.game.model.combat.npcs.impl.wilderness;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -163,8 +161,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 				default:
 				case MAGIC:
 				case RANGE:
-					Hit hitInfo = victim.take_hit(attacker, dmg, preStyle, false, false);
-			        Combat.hitEvent(attacker, victim, 1, hitInfo, preStyle);
+					victim.take_hit(attacker, dmg, preStyle, false, false).send();
 					break;
 				case TELEOTHER:
 				case DISARM:

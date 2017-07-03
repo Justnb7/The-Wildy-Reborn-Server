@@ -97,10 +97,16 @@ public final class Hit {
 
 	public Entity source, victim;
 
+    /**
+     * Once you've initialised a Hit, you then call this to actually apply it to the victim after 1 tick.
+     */
     public Hit send() {
         return send(1); // 1 tick default delay
     }
 
+    /**
+     * Once you've initialised a Hit, you then call this to actually apply it to the victim after (DELAY) tick(s).
+     */
     public Hit send(int delay) {
         Combat.hitEvent(source, victim, delay, this, cbType);
         return this;

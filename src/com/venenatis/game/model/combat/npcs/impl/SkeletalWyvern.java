@@ -1,14 +1,10 @@
 package com.venenatis.game.model.combat.npcs.impl;
 
-import java.util.Random;
-
 import com.venenatis.game.model.Projectile;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -16,6 +12,8 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
+
+import java.util.Random;
 
 public class SkeletalWyvern extends AbstractBossCombat {
 
@@ -57,10 +55,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 			int randomHit = Utility.random(maxHit);
 
 			// Create the hit instance
-			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false);
-
-			// Send the hit task
-			Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
+			victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false).send();
 			break;
 
 		case MAGIC:
@@ -98,10 +93,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 				}
 
 				// Create the hit instance
-				hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false);
-
-				// Send the hit task
-				Combat.hitEvent(attacker, victim, hitDelay, hitInfo, CombatStyle.MAGIC);
+				victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false).send(hitDelay);
 
 				Server.getTaskScheduler().schedule(new Task(hitDelay) {
 					@Override

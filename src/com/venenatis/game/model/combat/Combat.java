@@ -163,9 +163,7 @@ public class Combat {
         }
 
         //setup the Hit
-        Hit hitInfo = target.take_hit(player, dam1, CombatStyle.MELEE, false, false).giveXP(player);
-        // (2) Here: submit an event that applies the Hit X ticks later
-        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MELEE);
+        target.take_hit(player, dam1, CombatStyle.MELEE, false, false).giveXP(player).send();
     }
 
     private static void magicAttack(Player player, Entity target) {
@@ -291,7 +289,7 @@ public class Combat {
             }
         }
 
-        Combat.hitEvent(player, target, hitDelay, new Hit(dam1), CombatStyle.MAGIC);
+        target.take_hit(player, dam1, CombatStyle.MAGIC, false).giveXP(player).send(hitDelay);
         onAttackDone(player, target);
         // MUST BE THE LAST PIECE OF CODE IN THIS METHOD. Spellid is used in other methods as a reference.
         player.spellId = -1;
@@ -356,8 +354,7 @@ public class Combat {
         player.removeAttribute("ignore defence");
 
         // Apply dmg.
-        Hit hitInfo = target.take_hit(player, dam1, CombatStyle.RANGE, false, false).giveXP(player);
-        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.RANGE);
+        target.take_hit(player, dam1, CombatStyle.RANGE, false, false).giveXP(player).send();
 
         int[] endGfx = RangeData.getRangeEndGFX(player, wepId);
         // Graphic that appears when hit appears.

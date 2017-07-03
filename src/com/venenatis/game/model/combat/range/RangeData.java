@@ -38,6 +38,7 @@ public class RangeData {
 				player.getCombatState().getProjectileSpeed(), 50, getProjectileShowDelay(player), 43, 31, target.getProjectileLockonIndex(), 10, 64));
 	}
 
+	//TODO fix this
 	public static int getRangeStartGFX(Player player) {
 		int ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) == null ? -1 :  player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
 		int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
@@ -93,6 +94,7 @@ public class RangeData {
 		return str;
 	}
 
+	//TODO fix this
 	public static int getRangeProjectileGFX(Player player) {
 		int ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId();
 		int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
@@ -162,6 +164,7 @@ public class RangeData {
 		return str;
 	}
 
+	//TODO fix this
 	public static int[] getRangeEndGFX(Player player, int wepId) {
 		int[] info = new int[] {-1, -1};
 		int[][] data = {
@@ -176,6 +179,7 @@ public class RangeData {
 		return info;
 	}
 
+	//TODO fix this
 	public static int getProjectileSpeed(Player player) {
 		int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		if (wepId == 11235)
@@ -188,19 +192,20 @@ public class RangeData {
 		return 70;
 	}
 
+	//TODO fix this
 	public static int getProjectileShowDelay(Player player) {
 		int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		int[] data = {
-			806, 806, 808, 809, 810, 811,
+			806, 807, 808, 809, 810, 811,
 			10033, 10034, 11230,
 		};
-		int str = 53;
-		for(int i = 0; i < data.length; i++) {
-			if(wepId == data[i]) {
-				str = 32;
+		int delay = 53;
+		for(int index = 0; index < data.length; index++) {
+			if(wepId == data[index]) {
+				delay = 32;
 			}
 		}
-		return str;
+		return delay;
 	}
 
 	/**

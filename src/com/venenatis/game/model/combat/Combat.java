@@ -17,6 +17,7 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
 import com.venenatis.game.model.combat.magic.MagicData;
+import com.venenatis.game.model.combat.magic.spell.SpellHandler;
 import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
 import com.venenatis.game.model.combat.pvp.PlayerVsPlayerCombat;
 import com.venenatis.game.model.combat.range.ArrowRequirements;
@@ -224,11 +225,12 @@ public class Combat {
         }
 
         boolean splash = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
-
-        int spellFreezeTime = MagicData.getFreezeTime(player, spell);
-        if (spellFreezeTime > 0 && !target.frozen() && !splash) {
-
-            target.freeze(spellFreezeTime);
+        if (!target.frozen() && !splash) {
+        	//After the damage was taken we activate our spell effects.
+			SpellHandler.handleSpellEffect(player, target);
+			if (player.getSpellId() > -1) {
+				player.setSpellId(-1);
+			}
             if (target.isPlayer()) {
                 ((Player) target).getWalkingQueue().reset();
                 target.message("You have been frozen.");

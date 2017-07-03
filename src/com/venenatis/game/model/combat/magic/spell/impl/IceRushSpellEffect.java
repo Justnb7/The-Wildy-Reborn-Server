@@ -8,7 +8,7 @@ public class IceRushSpellEffect implements SpellEffect {
 
 	@Override
 	public void handle(Player attacker, Entity victim) {
-		victim.freeze(5);
+		victim.freeze(8);
 	}
 
 	@Override

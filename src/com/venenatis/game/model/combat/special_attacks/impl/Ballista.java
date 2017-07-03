@@ -3,16 +3,12 @@ package com.venenatis.game.model.combat.special_attacks.impl;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.CombatFormulae;
-import com.venenatis.game.model.combat.PrayerHandler;
+import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
-import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
-import com.venenatis.server.Server;
 
 public class Ballista implements SpecialAttack {
 
@@ -33,22 +29,7 @@ public class Ballista implements SpecialAttack {
 			damage = 0;
 		}
 
-		if (target instanceof Player && (((Player) target).isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MISSILE))) {
-			damage = (int) (damage * 0.6);
-		}
-		
-		Entity targ = (Entity) target;
-		
-		final int finalDmg = damage;
-		
-		// Hit
-		Server.getTaskScheduler().schedule(new Task(2) {
-			@Override
-			public void execute() {
-				targ.damage(new Hit(finalDmg, finalDmg > 0 ? HitType.NORMAL : HitType.BLOCKED));
-				this.stop();
-			}
-		});
+		target.take_hit(player, damage, CombatStyle.RANGE).giveXP(player).send(2);
 		
 	}
 

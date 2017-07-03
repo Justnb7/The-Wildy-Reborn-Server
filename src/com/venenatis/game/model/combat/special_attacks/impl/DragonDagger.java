@@ -21,7 +21,6 @@ public class DragonDagger implements SpecialAttack {
 	public void handleAttack(final Player player, final Entity target) {
 		int firstHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		int secondHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
-		final int finalDamage = secondHit;
 		
 		player.playAnimation(Animation.create(1062));
 		player.playGraphics(Graphic.highGraphic(252));
@@ -36,7 +35,7 @@ public class DragonDagger implements SpecialAttack {
 		
 		// Set up a Hit instance
         target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player).send(); // 1st hit
-		target.take_hit(player, finalDamage, CombatStyle.MELEE).giveXP(player).send(2); // 2nd hit, 1 tick later
+		target.take_hit(player, secondHit, CombatStyle.MELEE).giveXP(player).send(2); // 2nd hit, 1 tick later
 	}
 
 	@Override

@@ -4,10 +4,9 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.PrayerHandler;
+import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
-import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -60,22 +59,8 @@ public class DarkBow implements SpecialAttack {
 		// Dark bow is a special type where there is minimum damage of 4/4 or 8/8
 		// So we can't use the take_hit method - we need to put veng in here.. 
 		
-		// Cast target to a type which supports the damage() method -- damage is in MobileChar not Entity
-		Entity targ = (Entity) target;
-		
-		// Hit 1st
-		targ.damage(new Hit(first, first > 0 ? HitType.NORMAL : HitType.BLOCKED));
-		
-		final int finalSecond = second;
-		
-		// Apply 2nd hitsplat 1 tick later
-		Server.getTaskScheduler().schedule(new Task(1) {
-			@Override
-			public void execute() {
-				targ.damage(new Hit(finalSecond, finalSecond > 0 ? HitType.NORMAL : HitType.BLOCKED));
-				this.stop();
-			}
-		});
+		target.take_hit(player, first, CombatStyle.RANGE).giveXP(player).send();
+		target.take_hit(player, second, CombatStyle.RANGE).giveXP(player).send(2);
 
 		boolean dragArrow = player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212;
 		Server.getTaskScheduler().schedule(new Task(1) {

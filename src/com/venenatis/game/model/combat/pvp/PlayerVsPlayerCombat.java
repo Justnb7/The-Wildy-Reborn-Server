@@ -44,20 +44,18 @@ public class PlayerVsPlayerCombat {
 
 		boolean bypassCosImTheBest = player.getUsername().equalsIgnoreCase("test") ||
 				player.getUsername().equalsIgnoreCase("patrick");
-		if (Area.inWilderness(player)) {  // TODO fix this logic
-			/*int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
-			if (!bypassCosImTheBest &&
-					(combatDif1 > player.wildLevel || combatDif1 > ((Player) target).wildLevel)) {
-				player.message("Your level difference is too great! Move deeper into the wilderness.");
-				player.debug("threshold: "+combatDif1);
-				player.getMovementHandler().reset();
+		int myCB = player.getCombatLevel();
+		int target_CB = target.getCombatLevel();
+		if (Area.inWilderness(player)) {
+			if (!bypassCosImTheBest && ((myCB > target_CB + target.getWildLevel()) || (myCB < target_CB - target.getWildLevel()))) {
+				player.message("You can only fight players in your combat range!");
+				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
-			}*/
+			}
 		} else {
-			int myCB = player.getCombatLevel();
-			int pCB = ((Player) target).getCombatLevel();
-			if (!bypassCosImTheBest && ((myCB > pCB + 12) || (myCB < pCB - 12))) {
+			// All other places not in wildy: range is +/- 12 combat levels
+			if (!bypassCosImTheBest && ((myCB > target_CB + 12) || (myCB < target_CB - 12))) {
 				player.message("You can only fight players in your combat range!");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);

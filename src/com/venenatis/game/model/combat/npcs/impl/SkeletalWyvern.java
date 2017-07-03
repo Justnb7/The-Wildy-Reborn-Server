@@ -55,7 +55,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 			int randomHit = Utility.random(maxHit);
 
 			// Create the hit instance
-			victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false).send();
+			victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send();
 			break;
 
 		case MAGIC:
@@ -93,7 +93,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 				}
 
 				// Create the hit instance
-				victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false).send(hitDelay);
+				victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(hitDelay);
 
 				Server.getTaskScheduler().schedule(new Task(hitDelay) {
 					@Override

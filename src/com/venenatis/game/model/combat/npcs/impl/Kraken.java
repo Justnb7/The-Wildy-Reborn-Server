@@ -56,7 +56,7 @@ public class Kraken extends AbstractBossCombat {
 		attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 162, 45, 50, clientSpeed, 70, 35, victim.getProjectileLockonIndex(), 10, 48));
 
 		// Create the hit instance
-		Hit hitInfo = victim.take_hit(attacker, hit, style, false, false).send(hitDelay);
+		Hit hitInfo = victim.take_hit(attacker, hit, style).send(hitDelay);
 		
 		Server.getTaskScheduler().schedule(new Task(hitDelay) {
 			@Override

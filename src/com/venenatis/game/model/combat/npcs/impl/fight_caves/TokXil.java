@@ -27,7 +27,7 @@ public class TokXil extends AbstractBossCombat {
 
 			int randomHit = Utility.random(maxHit);
 
-			victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false).send();
+			victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send();
 
 			break;
 			
@@ -52,7 +52,7 @@ public class TokXil extends AbstractBossCombat {
 			int delay = (gfxDelay / 20) - 1;
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 443, 25, 50, clientSpeed, 43, 36, 10, 48));
 			
-			victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false).send(delay);
+			victim.take_hit(attacker, randomHit, CombatStyle.RANGE).send(delay);
 			break;
 		default:
 			break;

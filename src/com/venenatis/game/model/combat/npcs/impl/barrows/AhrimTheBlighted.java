@@ -40,7 +40,7 @@ public class AhrimTheBlighted extends AbstractBossCombat {
 		int randomHit = Utility.random(25);
 		victim.playGraphics(randomHit <= 0 ? Graphic.create(85, gfxDelay, 100) : Graphic.create(157, gfxDelay, 100));
 		
-		victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false).send(delay);
+		victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
          
         attacker.getCombatState().setAttackDelay(5);
 	}

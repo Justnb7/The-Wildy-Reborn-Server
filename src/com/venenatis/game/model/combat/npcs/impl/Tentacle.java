@@ -55,7 +55,7 @@ public class Tentacle extends AbstractBossCombat {
 		attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 156, 45, 50, clientSpeed, 70, 35, victim.getProjectileLockonIndex(), 10, 48));
 
 		// Create the hit instance
-		victim.take_hit(attacker, hit, style, false, false).send(hitDelay);
+		victim.take_hit(attacker, hit, style).send(hitDelay);
 		
 		Server.getTaskScheduler().schedule(new Task(hitDelay) {
 			@Override

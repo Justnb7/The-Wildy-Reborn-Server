@@ -163,7 +163,7 @@ public class Combat {
         }
 
         //setup the Hit
-        target.take_hit(player, dam1, CombatStyle.MELEE, false, false).giveXP(player).send();
+        target.take_hit(player, dam1, CombatStyle.MELEE).giveXP(player).send();
     }
 
     private static void magicAttack(Player player, Entity target) {
@@ -354,7 +354,7 @@ public class Combat {
         player.removeAttribute("ignore defence");
 
         // Apply dmg.
-        target.take_hit(player, dam1, CombatStyle.RANGE, false, false).giveXP(player).send();
+        target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send();
 
         int[] endGfx = RangeData.getRangeEndGFX(player, wepId);
         // Graphic that appears when hit appears.

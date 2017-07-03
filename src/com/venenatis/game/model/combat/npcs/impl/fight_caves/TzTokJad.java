@@ -59,7 +59,7 @@ public class TzTokJad extends AbstractBossCombat {
 			npc.playAnimation(MELEE_ANIMATION);
 			
 			int randomHit = Utility.getRandom(maxHit);
-			victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false).send();
+			victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send();
 			break;
 		case RANGE:
 			npc.playAnimation(RANGE_ANIMATION);
@@ -72,7 +72,7 @@ public class TzTokJad extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false).send();
+					victim.take_hit(attacker, randomHit, CombatStyle.RANGE).send();
 				}
 			});
 			
@@ -113,7 +113,7 @@ public class TzTokJad extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false).send(delay-2);
+					victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay-2);
 				}
 			});
 

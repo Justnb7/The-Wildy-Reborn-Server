@@ -53,7 +53,7 @@ public class ZaklnGritch extends AbstractBossCombat {
 		hit = randomHit;
 		
 		// Create the hit instance
-		victim.take_hit(attacker, hit, CombatStyle.RANGE, false, false).send(hitDelay);
+		victim.take_hit(attacker, hit, CombatStyle.RANGE).send(hitDelay);
 		
 		attacker.getCombatState().setAttackDelay(6);
 	}

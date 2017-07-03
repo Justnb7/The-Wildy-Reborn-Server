@@ -30,7 +30,7 @@ public class KetZek extends AbstractBossCombat {
 			npc.playAnimation(Animation.create(npc.getDefinition().getAttackAnimation()));
 			int randomHit = Utility.random(maxHit);
 			
-            victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false).send();
+            victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send();
 			
 			break;
 		case MAGIC:
@@ -57,7 +57,7 @@ public class KetZek extends AbstractBossCombat {
 			
 			randomHit = Utility.random(maxHit);
 			
-            victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false).send(delay);
+            victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
             
             Server.getTaskScheduler().schedule(new Task(delay) {
 				@Override

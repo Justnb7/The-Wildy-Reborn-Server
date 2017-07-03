@@ -225,7 +225,7 @@ public class NpcVsPlayerCombat {
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
 			// Set up a Hit instance
-            player.take_hit(npc, damage, npc.getCombatType(), false, false).send();
+            player.take_hit(npc, damage, npc.getCombatType()).send();
 		}
 	}
 

@@ -161,7 +161,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 				default:
 				case MAGIC:
 				case RANGE:
-					victim.take_hit(attacker, dmg, preStyle, false, false).send();
+					victim.take_hit(attacker, dmg, preStyle).send();
 					break;
 				case TELEOTHER:
 				case DISARM:

@@ -1,10 +1,7 @@
 package com.venenatis.game.model.entity.npc;
 
-import java.util.*;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
-import com.venenatis.game.model.combat.DamageMap;
 import com.venenatis.game.model.combat.nvp.NpcVsPlayerCombat;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.Boundary;
@@ -21,6 +18,9 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.server.Server;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NPC extends Entity {
 	
@@ -276,6 +276,11 @@ public class NPC extends Entity {
 	@Override
 	public int size() {
 		return getSize();
+	}
+
+	@Override
+	public void message(String s) {
+		// silent
 	}
 
 	@Override

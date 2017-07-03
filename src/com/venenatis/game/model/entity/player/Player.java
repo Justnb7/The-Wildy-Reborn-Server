@@ -1272,6 +1272,11 @@ public class Player extends Entity {
 	}
 
 	@Override
+	public void message(String s) {
+		getActionSender().sendMessage(s);
+	}
+
+	@Override
 	public Hit decrementHP(Hit hit) {
 		int damage = hit.getDamage(); 
 		if (this.getSkills().getLevel(3) - damage <= 0) {

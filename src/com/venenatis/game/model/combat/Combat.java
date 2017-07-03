@@ -289,7 +289,7 @@ public class Combat {
             }
         }
 
-        target.take_hit(player, dam1, CombatStyle.MAGIC, false).giveXP(player).send(hitDelay);
+        target.take_hit(player, dam1, CombatStyle.MAGIC).giveXP(player).send(hitDelay);
         onAttackDone(player, target);
         // MUST BE THE LAST PIECE OF CODE IN THIS METHOD. Spellid is used in other methods as a reference.
         player.spellId = -1;

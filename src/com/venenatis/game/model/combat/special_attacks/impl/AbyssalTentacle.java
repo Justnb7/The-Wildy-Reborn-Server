@@ -28,7 +28,7 @@ public class AbyssalTentacle implements SpecialAttack {
 			damage = 0;
 		
 		// Set up a Hit instance
-        target.take_hit(player, damage, CombatStyle.MELEE, false).giveXP(player).send(1);
+        target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player).send(1);
 		
 		target.freeze(8);
 	}

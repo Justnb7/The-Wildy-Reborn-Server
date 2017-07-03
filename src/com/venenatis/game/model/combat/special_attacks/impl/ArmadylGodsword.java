@@ -27,7 +27,7 @@ public class ArmadylGodsword implements SpecialAttack {
 			damage = 0;
 		
 		// Set up a Hit instance
-        target.take_hit(player, damage, CombatStyle.MELEE, false).giveXP(player).send();
+        target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player).send();
 	}
 
 	@Override

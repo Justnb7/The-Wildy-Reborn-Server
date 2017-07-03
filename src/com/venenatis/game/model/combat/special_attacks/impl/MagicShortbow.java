@@ -41,8 +41,8 @@ public class MagicShortbow implements SpecialAttack {
 		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?
 			dam2 = 0;
 		}
-		target.take_hit(player, dam1, CombatStyle.RANGE, false).giveXP(player).send(1);
-		target.take_hit(player, dam1, CombatStyle.RANGE, false).giveXP(player).send(1);
+		target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(1);
+		target.take_hit(player, dam2, CombatStyle.RANGE).giveXP(player).send(1);
 	}
 
 	@Override

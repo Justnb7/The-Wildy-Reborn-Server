@@ -742,7 +742,7 @@ public class Combat {
 	 * Is the attacker wearing an ava's device?
 	 * @return
 	 */
-	public boolean wearingAccumulator(Player player) {
+	public static boolean wearingAccumulator(Player player) {
 		Item cape = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
 		return (cape.getId() == 10499);
 	}
@@ -751,8 +751,12 @@ public class Combat {
 	 * Is the attacker wearing an attractor device?
 	 * @return
 	 */
-	public boolean wearingAttractor(Player player) {
+	public static boolean wearingAttractor(Player player) {
 		Item cape = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
 		return (cape.getId() == 10498);
 	}
+
+	public static boolean avas(Player player) {
+	    return wearingAccumulator(player) || wearingAttractor(player);
+    }
 }

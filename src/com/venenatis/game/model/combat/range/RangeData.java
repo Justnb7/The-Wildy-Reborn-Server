@@ -1,11 +1,15 @@
 package com.venenatis.game.model.combat.range;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
+import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
-
+import com.venenatis.game.util.RandomGenerator;
+import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.ground_item.GroundItemHandler;
 
 
 public class RangeData {
@@ -204,18 +208,37 @@ public class RangeData {
 	 * plus chance for that ammo dropping to the floor
 	 */
 	public static void loseAmmo(Player player, Entity target, int wepId, int ammoId) {
-		if (wepId == 11235 || wepId == 12765 || wepId == 12766 || wepId == 12767 || wepId == 12768) {
-			//TODO add arrow removement
-		}
+		boolean avas = Combat.avas(player);
+		boolean bow = EquipmentConstants.wearingBlowpipe(player) || EquipmentConstants.usingCrystalBow(player) ||
+				EquipmentConstants.isCrossbow(player) || EquipmentConstants.isBow(player) || EquipmentConstants.wearingBallista(player);
+		boolean hand = EquipmentConstants.isThrowingWeapon(player);
+		boolean dropArrows = !avas || (avas && RandomGenerator.nextInt(100) > 90);
+		Item drop = null;
 
-		//Arrows check
-		boolean dropArrows = true;
-		if (wepId == 12926 || wepId == 4222) {
-			dropArrows = false;
+		// Establish do we wanna drop
+		if (EquipmentConstants.wearingBlowpipe(player)) {
+			// if we have dart/scales support, handle that here
+		} else if (bow) {
+			if (dropArrows) {
+				Item arrow = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+				if (arrow != null) {
+					drop = new Item(arrow.id, 1);
+					player.getEquipment().setSlot(EquipmentConstants.AMMO_SLOT, arrow.amount > 1 ? new Item(arrow.id, arrow.amount - 1) : null);
+				}
+			}
+		} else if (hand) {
+			if (dropArrows) {
+				Item thrown = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+				if (thrown != null) {
+					drop = new Item(thrown.id, 1);
+					player.getEquipment().setSlot(EquipmentConstants.WEAPON_SLOT, thrown.amount > 1 ? new Item(thrown.id, thrown.amount - 1) : null);
+				}
+			}
+		} else {
+			System.err.println("UNKNOWN RANGE AMMO SITUATION"); // what wep u using?
 		}
-
-		if (dropArrows) {
-			//TODO add arrow removement
+		if (drop != null && RandomGenerator.nextInt(3) == 1) {
+			GroundItemHandler.createGroundItem(new GroundItem(drop, target.getX(), target.getY(), target.getZ(), player));
 		}
 	}
 }

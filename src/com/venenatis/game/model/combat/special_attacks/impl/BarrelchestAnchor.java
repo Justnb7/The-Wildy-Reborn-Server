@@ -27,7 +27,7 @@ public class BarrelchestAnchor implements SpecialAttack {
 		if (missed)
 			damage = 0;
 		
-		target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player);
+		target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player).send();
 	}
 
 	@Override

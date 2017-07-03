@@ -1,16 +1,12 @@
 package com.venenatis.game.model.combat.npcs.impl.godwars.zamorak;
 
-import java.util.Random;
-
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
@@ -22,6 +18,8 @@ import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
+
+import java.util.Random;
 
 /**
  * The K'ril Tsutsaroth combat script.
@@ -102,10 +100,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 			hit = randomHit;
 			
 			// Create the hit instance
-			Hit hitInfo = victim.take_hit(attacker, hit, style, false, troughPrayer);
-
-			// Send the hit task
-			Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);
+			victim.take_hit(attacker, hit, style, false, troughPrayer).send(hitDelay);
 			break;
 		case MAGIC:
 			maxHit = 30;
@@ -134,10 +129,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
             hit = randomHit;
 			
 			// Create the hit instance
-			hitInfo = victim.take_hit(attacker, hit, style, false, false);
-
-			// Send the hit task
-			Combat.hitEvent(attacker, victim, hitDelay, hitInfo, style);
+			victim.take_hit(attacker, hit, style, false, false).send(hitDelay);
 			
 			//Send the player gfx
 			Server.getTaskScheduler().schedule(new Task(hitDelay) {

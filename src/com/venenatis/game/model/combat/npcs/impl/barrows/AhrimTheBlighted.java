@@ -1,11 +1,9 @@
 package com.venenatis.game.model.combat.npcs.impl.barrows;
 
 import com.venenatis.game.model.Projectile;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -42,11 +40,9 @@ public class AhrimTheBlighted extends AbstractBossCombat {
 		int randomHit = Utility.random(25);
 		victim.playGraphics(randomHit <= 0 ? Graphic.create(85, gfxDelay, 100) : Graphic.create(157, gfxDelay, 100));
 		
-		 Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false);
-
-         Combat.hitEvent(attacker, victim, delay, hitInfo, CombatStyle.MAGIC);
+		victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, false).send(delay);
          
-         attacker.getCombatState().setAttackDelay(5);
+        attacker.getCombatState().setAttackDelay(5);
 	}
 
 	@Override

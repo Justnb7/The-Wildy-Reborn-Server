@@ -1,5 +1,6 @@
 package com.venenatis.game.model.entity;
 
+import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatExperience;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.player.Player;
@@ -93,4 +94,27 @@ public final class Hit {
 		this.cbType = combat_type;
 		return this;
 	}
+
+	public Entity source, victim;
+
+    /**
+     * Once you've initialised a Hit, you then call this to actually apply it to the victim after 1 tick.
+     */
+    public Hit send() {
+        return send(1); // 1 tick default delay
+    }
+
+    /**
+     * Once you've initialised a Hit, you then call this to actually apply it to the victim after (DELAY) tick(s).
+     */
+    public Hit send(int delay) {
+        Combat.hitEvent(source, victim, delay, this, cbType);
+        return this;
+    }
+
+    public Hit between(Entity attacker, Entity target) {
+        this.source = attacker;
+        this.victim = target;
+        return this;
+    }
 }

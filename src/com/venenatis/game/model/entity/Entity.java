@@ -8,7 +8,6 @@ import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.CombatState;
-import com.venenatis.game.model.combat.DamageMap;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -30,8 +29,6 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.Directions;
 import com.venenatis.game.world.pathfinder.region.Coverage;
 import com.venenatis.server.Server;
-
-import static com.google.common.base.Preconditions.checkState;
 
 import java.util.*;
 
@@ -109,6 +106,8 @@ public abstract class Entity {
 			return distance < dist;
 		}
 	}
+
+	public abstract void message(String s);
 
 	public enum EntityType {
 		PLAYER, NPC,
@@ -666,7 +665,11 @@ public abstract class Entity {
 
 	// Since damage gets reduced you need to add XP after this method.
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type) {
-		return take_hit(attacker, damage, combat_type, true, false);
+		return take_hit(attacker, damage, combat_type, false, false);
+	}
+
+	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean instant) {
+		return take_hit(attacker, damage, combat_type, instant, false);
 	}
 
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean troughPrayer) {
@@ -777,16 +780,19 @@ public abstract class Entity {
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid
 		} else if (isPlayer() && attacker.isPlayer()) {
 			//pvp
-			((Player)this).getCombatState().getDamageMap().appendDamage(((Player)attacker).getUsername(), damage);
+			getCombatState().getDamageMap().appendDamage(((Player)attacker).getUsername(), damage);
 		}
 
 		// Update hit instance since we've changed the 'damage' value
-		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type);
+		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type).between(attacker, this);
 
 		// NOTE: If not instantly applied, use EventManager.event(2) { entity.damage(hit) }
-		if (applyInstantly && this.isPlayer()) {
-			PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
+		if (applyInstantly) {
 			this.damage(hit);
+			if (this.isPlayer())
+				PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
+			if (attacker.isPlayer())
+				PlayerSounds.sendBlockOrHitSound((Player)attacker, damage > 0);
 		}
 		// Returning hit: might be helpful in the future. For chaining. Such as hit.x().y()..
 		return hit;

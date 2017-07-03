@@ -62,6 +62,7 @@ public class PlayerCommand implements Command {
 				player.getInventory().add(new Item(560, 1000));
 				player.getInventory().add(new Item(565, 1000));
 				player.setSpellBook(SpellBookTypes.ANCIENTS);
+				player.getActionSender().sendSidebarInterface(6, 12855);
 			}
 			return true;
 		

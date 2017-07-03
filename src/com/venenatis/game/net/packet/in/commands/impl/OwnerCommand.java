@@ -63,6 +63,11 @@ public class OwnerCommand implements Command {
 				player.getSkills().setLevel(skill, 99);
 			}
 			return true;
+			case "infhp":
+				boolean v = player.hasAttribute("infhp");
+				player.setAttribute("infhp", !v);
+				player.message("now: "+!v);
+				return true;
 		
 		/* Mass clan */
 		case "massclan":

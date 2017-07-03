@@ -7,7 +7,6 @@ import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Boundary;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -226,11 +225,7 @@ public class NpcVsPlayerCombat {
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
 			// Set up a Hit instance
-            Hit hitInfo = player.take_hit(npc, damage, npc.getCombatType(), false, false);
-
-            // apply damage - call this, change the 'delay' param to whatever you want the delay to be
-            // and the method submits the Event
-            Combat.hitEvent(npc, player, 1, hitInfo, npc.getCombatType());
+            player.take_hit(npc, damage, npc.getCombatType(), false, false).send();
 		}
 	}
 

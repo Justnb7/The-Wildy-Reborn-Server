@@ -1,11 +1,9 @@
 package com.venenatis.game.model.combat.npcs.impl.fight_caves;
 
 import com.venenatis.game.model.Projectile;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -29,9 +27,7 @@ public class TokXil extends AbstractBossCombat {
 
 			int randomHit = Utility.random(maxHit);
 
-			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false);
-
-			Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
+			victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false).send();
 
 			break;
 			
@@ -56,9 +52,7 @@ public class TokXil extends AbstractBossCombat {
 			int delay = (gfxDelay / 20) - 1;
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 443, 25, 50, clientSpeed, 43, 36, 10, 48));
 			
-			hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false);
-
-            Combat.hitEvent(attacker, victim, delay, hitInfo, CombatStyle.RANGE);
+			victim.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false).send(delay);
 			break;
 		default:
 			break;

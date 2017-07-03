@@ -1,14 +1,11 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.model.Item;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
@@ -44,10 +41,8 @@ public class MagicShortbow implements SpecialAttack {
 		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) { // TODO attack type set to range?
 			dam2 = 0;
 		}
-
-		// TODO maxhit, accuracy calc
-		Combat.hitEvent(player, target, 1, new Hit(dam1), CombatStyle.RANGE);
-		Combat.hitEvent(player, target, 1, new Hit(dam2), CombatStyle.RANGE);
+		target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(1);
+		target.take_hit(player, dam2, CombatStyle.RANGE).giveXP(player).send(1);
 	}
 
 	@Override

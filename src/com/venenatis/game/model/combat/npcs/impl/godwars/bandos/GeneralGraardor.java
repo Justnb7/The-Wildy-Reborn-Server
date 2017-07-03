@@ -1,21 +1,19 @@
 package com.venenatis.game.model.combat.npcs.impl.godwars.bandos;
 
-import java.util.Collection;
-import java.util.Random;
-
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
+
+import java.util.Collection;
+import java.util.Random;
 
 public class GeneralGraardor extends AbstractBossCombat {
 
@@ -68,10 +66,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 			int randomHit = Utility.random(maxHit);
 
 			// Create the hit instance
-			Hit hitInfo = victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false);
-
-			// Send the hit task
-			Combat.hitEvent(attacker, victim, 1, hitInfo, CombatStyle.MELEE);
+			victim.take_hit(attacker, randomHit, CombatStyle.MELEE, false, false).send();
 			break;
 
 		case RANGE:
@@ -99,10 +94,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 					randomHit = Utility.random(maxHit);
 
 					// Create the hit instance
-					hitInfo = near.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false);
-
-					// Send the hit task
-					Combat.hitEvent(attacker, near, 2, hitInfo, CombatStyle.RANGE);
+					near.take_hit(attacker, randomHit, CombatStyle.RANGE, false, false).send(2);
 				}
 			}
 			break;

@@ -1,11 +1,9 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -30,9 +28,7 @@ public class SaradominSword implements SpecialAttack {
 			damage = 0;
 		
 		// Set up a Hit instance
-        Hit hitInfo = target.take_hit(player, damage, CombatStyle.MAGIC).giveXP(player);
-
-        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MAGIC);
+        target.take_hit(player, damage, CombatStyle.MAGIC).giveXP(player).send();
 	}
 
 	@Override

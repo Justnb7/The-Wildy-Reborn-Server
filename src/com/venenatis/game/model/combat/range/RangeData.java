@@ -111,7 +111,7 @@ public class RangeData {
 				return 249;
 			}
 		}
-		boolean castingMagic = (player.getCombatType() == CombatStyle.MAGIC || player.spellId > 0);
+		boolean castingMagic = (player.getCombatType() == CombatStyle.MAGIC || player.getSpellId() > 0);
 		if(castingMagic) {
 			return -1;
 		}

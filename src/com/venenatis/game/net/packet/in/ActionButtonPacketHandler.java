@@ -178,7 +178,7 @@ public class ActionButtonPacketHandler implements PacketType {
 				player.getActionSender().sendMessage("You feel a drain on your memory.");
 				break;
 			}
-			player.autocastId = -1;
+			player.setAutocastId(-1);
 			player.resetAutoCast();
 			player.onAuto = false;
 			break;
@@ -464,7 +464,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		case 1094:
 		case 1097:
 			player.onAuto = true;
-			if (player.autocastId > 0) {
+			if (player.getAutocastId() > 0) {
 				player.resetAutoCast();
 			} else {
 				if (player.getSpellBook() == SpellBookTypes.ANCIENTS) {

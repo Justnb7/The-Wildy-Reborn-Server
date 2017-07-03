@@ -312,7 +312,7 @@ public class WeaponDefinition {
 			return 4;
 		
 		if (player.getCombatType() == CombatStyle.MAGIC) {
-			switch (player.MAGIC_SPELLS[player.spellId][0]) {
+			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 			default:
 				return 5;
 			}

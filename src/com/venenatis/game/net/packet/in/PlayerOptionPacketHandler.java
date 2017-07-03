@@ -227,15 +227,15 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 
-		for (int i = 0; i < player.MAGIC_SPELLS.length; i++) {
-			if (spell == player.MAGIC_SPELLS[i][0]) {
-				player.spellId = i;
+		for (int spellId = 0; spellId < player.MAGIC_SPELLS.length; spellId++) {
+			if (spell == player.MAGIC_SPELLS[spellId][0]) {
+				player.setSpellId(spellId);
 				player.setCombatType(CombatStyle.MAGIC);
 				break;
 			}
 		}
 		
-		if (!player.getCombatState().isTeleblocked() && player.MAGIC_SPELLS[player.spellId][0] == 12445) {
+		if (!player.getCombatState().isTeleblocked() && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
 			player.getActionSender().sendMessage("That player is already affected by this spell.");
 			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);

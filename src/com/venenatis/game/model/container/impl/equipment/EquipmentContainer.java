@@ -191,8 +191,8 @@ public class EquipmentContainer extends Container {
 	public void updateWeapon() {
 		updateWieldItemName();
         player.getWeaponInterface().restoreWeaponAttributes();
-		player.spellId = -1;
-        player.autocastId = -1;
+        player.setSpellId(-1);
+        player.setAutocastId(-1);
         player.autoCast = false;
 	}
 
@@ -316,8 +316,8 @@ public class EquipmentContainer extends Container {
 				updateWeapon();
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
-			player.spellId = -1;
-	        player.autocastId = -1;
+			player.setSpellId(-1);
+			player.setAutocastId(-1);
 	        player.autoCast = false;
 			player.setUsingSpecial(false);
 		}
@@ -403,8 +403,8 @@ public class EquipmentContainer extends Container {
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
 
-			player.spellId = -1;
-	        player.autocastId = -1;
+			player.setSpellId(-1);
+			player.setAutocastId(-1);
 	        player.autoCast = false;
 			player.setUsingSpecial(false);
 		}

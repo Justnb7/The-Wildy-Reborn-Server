@@ -1,12 +1,12 @@
 package com.venenatis.game.model.combat.range;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.player.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Holds the requirements for arrows
@@ -63,7 +63,7 @@ public enum ArrowRequirements {
 		Item arrow = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
 
 		if (arrow == null) {
-			player.getActionSender().sendMessage("You have no arrows in your quiver.");
+			player.message("You have no arrows in your quiver.");
 			Combat.resetCombat(player);
 			return false;
 		}
@@ -75,7 +75,7 @@ public enum ArrowRequirements {
 				if (arrowReq.getLevelRequired() <= bowReq.getLevelRequired()) {
 					return true;
 				} else {
-					player.getActionSender().sendMessage("You cannot use " + arrow.getName().toLowerCase() + "s with a " + bow.getName().toLowerCase() + ".");
+					player.message("You cannot use " + arrow.getName().toLowerCase() + "s with a " + bow.getName().toLowerCase() + ".");
 					Combat.resetCombat(player);
 					return false;
 				}

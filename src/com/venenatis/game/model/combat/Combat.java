@@ -60,10 +60,10 @@ public class Combat {
 		player.setSkullType(type);
 		player.setSkullTimer(seconds);
 		if(type == SkullType.RED_SKULL) {
-			player.getActionSender().sendMessage("@bla@You have received a @red@red skull@bla@! You can no longer use the protect item prayer!");
+			player.message("@bla@You have received a @red@red skull@bla@! You can no longer use the protect item prayer!");
 			PrayerHandler.deactivatePrayer(player, Prayers.PROTECT_ITEM);		
 		} else if(type == SkullType.SKULL) {
-			player.getActionSender().sendMessage("You've been skulled!");
+			player.message("You've been skulled!");
 		}
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
@@ -177,7 +177,7 @@ public class Combat {
             return;
         }*/
         if (player.getSpellBook() != SpellBookTypes.MODERN && (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2417)) {
-            player.getActionSender().sendMessage("You must be on the modern spellbook to cast this spell.");
+            player.message("You must be on the modern spellbook to cast this spell.");
             return;
         }
         if (player.touchDistance(target, 7))
@@ -231,7 +231,7 @@ public class Combat {
             target.freeze(spellFreezeTime);
             if (target.isPlayer()) {
                 ((Player) target).getWalkingQueue().reset();
-                ((Player) target).getActionSender().sendMessage("You have been frozen.");
+                target.message("You have been frozen.");
                 ((Player) target).frozenBy = player.getIndex();
             }
         }
@@ -308,7 +308,7 @@ public class Combat {
         boolean crystal = wepId >= 4212 && wepId <= 4223;
         boolean bp = wepId == 12926;
         if (!crystal && !bp && ammoId == -1) {
-            player.getActionSender().sendMessage("There is no ammo left in your quiver.");
+            player.message("There is no ammo left in your quiver.");
             player.getWalkingQueue().reset();
             player.getCombatState().reset();
             return;

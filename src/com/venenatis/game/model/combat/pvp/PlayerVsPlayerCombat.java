@@ -36,7 +36,7 @@ public class PlayerVsPlayerCombat {
 			return false;
 		}
 		if (target.inTutorial()) {
-			player.getActionSender().sendMessage("You cannot attack this player.");
+			player.message("You cannot attack this player.");
 			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);
 			return false;
@@ -48,7 +48,7 @@ public class PlayerVsPlayerCombat {
 			/*int combatDif1 = CombatRequirements.getCombatDifference(player.combatLevel, ((Player) target).combatLevel);
 			if (!bypassCosImTheBest &&
 					(combatDif1 > player.wildLevel || combatDif1 > ((Player) target).wildLevel)) {
-				player.getActionSender().sendMessage("Your level difference is too great! Move deeper into the wilderness.");
+				player.message("Your level difference is too great! Move deeper into the wilderness.");
 				player.debug("threshold: "+combatDif1);
 				player.getMovementHandler().reset();
 				Combat.resetCombat(player);
@@ -58,7 +58,7 @@ public class PlayerVsPlayerCombat {
 			int myCB = player.getCombatLevel();
 			int pCB = ((Player) target).getCombatLevel();
 			if (!bypassCosImTheBest && ((myCB > pCB + 12) || (myCB < pCB - 12))) {
-				player.getActionSender().sendMessage("You can only fight players in your combat range!");
+				player.message("You can only fight players in your combat range!");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
@@ -66,14 +66,14 @@ public class PlayerVsPlayerCombat {
 		}
 		if (!Area.inMultiCombatZone(target)) { // single combat zones
 			if (target.lastAttacker != player && Combat.hitRecently(target, 4000)) {
-				player.getActionSender().sendMessage("That player is already in combat.");
+				player.message("That player is already in combat.");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
 			}
 
 			if (target != player.lastAttacker && Combat.hitRecently(player, 4000)) {
-				player.getActionSender().sendMessage("You are already in combat.");
+				player.message("You are already in combat.");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;

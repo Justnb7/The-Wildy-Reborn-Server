@@ -47,7 +47,7 @@ public class Venom {
 						return;
 					}
 					player.damage(new Hit(damage, HitType.VENOM));
-					player.getActionSender().sendMessage("You have been hit by the venom infection.");
+					player.message("You have been hit by the venom infection.");
 					damage = (damage + 2 > 20 ? 20 : damage + 2);
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}

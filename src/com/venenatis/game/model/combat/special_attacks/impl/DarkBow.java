@@ -82,7 +82,7 @@ public class DarkBow implements SpecialAttack {
 	public boolean meetsRequirements(Player player, Entity target) {
 		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT); 
 		if (ammo.getId() < 2) {
-			player.getActionSender().sendMessage("You need at least two arrows to use this special attack.");
+			player.message("You need at least two arrows to use this special attack.");
 			return false;
 		}
 		return true;

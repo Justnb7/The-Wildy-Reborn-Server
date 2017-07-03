@@ -84,7 +84,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 					maxHit = 49;
 					troughPrayer = true;
 					attacker.sendForcedMessage("YARRRRRRR!");
-					victim.getActionSender().sendMessage("K'ril Tsutsaroth slams through your protection prayer, leaving you feeling drained.");
+					victim.message("K'ril Tsutsaroth slams through your protection prayer, leaving you feeling drained.");
 					player.getSkills().decreaseLevel(Skills.PRAYER, player.getSkills().getLevel(Skills.PRAYER) / 2);
 				}
 			} else {

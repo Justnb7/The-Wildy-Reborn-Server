@@ -1,8 +1,6 @@
 package com.venenatis.game.model.combat;
 
 
-import java.util.concurrent.TimeUnit;
-
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.combat.magic.MagicData;
 import com.venenatis.game.model.combat.magic.lunar.CombatSpells;
@@ -10,6 +8,8 @@ import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Stopwatch;
+
+import java.util.concurrent.TimeUnit;
 
 public class CombatState {
 	
@@ -201,7 +201,7 @@ public class CombatState {
 		setTeleblockUnlock(seconds);
 		getTeleblock().reset();
 		player.getActionSender().sendWidget(4, seconds);
-		player.getActionSender().sendMessage("You have been teleblocked!");
+		player.message("You have been teleblocked!");
 	}
 	
 	public boolean isTeleblocked() {

@@ -1,14 +1,14 @@
 package com.venenatis.game.model.combat;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.util.Utility;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PrayerHandler {
 
@@ -123,7 +123,7 @@ public class PrayerHandler {
 		if (player.getSkills().getLevelForExperience(Skills.PRAYER) < prayer.getLevelRequirement()) {
 			if(msg) {
 				player.getActionSender().sendConfig(prayer.configId, 0);
-				player.getActionSender().sendMessage("You need a Prayer level of at least " + prayer.getLevelRequirement() + " to use " + prayer.getPrayerName() + ".");
+				player.message("You need a Prayer level of at least " + prayer.getLevelRequirement() + " to use " + prayer.getPrayerName() + ".");
 				deactivatePrayer(player, prayer);
 			}
 			return false;
@@ -132,7 +132,7 @@ public class PrayerHandler {
 		if (prayer == Prayers.CHIVALRY && player.getSkills().getLevelForExperience(Skills.DEFENCE) < 60) {
 			if(msg) {
 				player.getActionSender().sendConfig(prayer.configId, 0);
-				player.getActionSender().sendMessage("You need a Defence level of at least 60 to use Chivalry.");
+				player.message("You need a Defence level of at least 60 to use Chivalry.");
 			}
 			return false;
 		}
@@ -140,14 +140,14 @@ public class PrayerHandler {
 		if ((prayer == Prayers.PIETY || prayer == Prayers.RIGOUR || prayer == Prayers.AUGURY) && player.getSkills().getLevelForExperience(Skills.DEFENCE) < 70) {
 			if(msg) {
 				player.getActionSender().sendConfig(prayer.configId, 0);
-				player.getActionSender().sendMessage("You need a Defence level of at least 70 to use "+prayer.getPrayerName()+".");
+				player.message("You need a Defence level of at least 70 to use "+prayer.getPrayerName()+".");
 			}
 			return false;
 		}
 		
 		if (prayer == Prayers.PROTECT_ITEM) {
 			if (!player.getAccount().getType().canUseItemProtection()) {
-				player.getActionSender().sendMessage("You're account is restricted from using protect item prayer.");
+				player.message("You're account is restricted from using protect item prayer.");
 				return false;
 			}
 		}
@@ -163,7 +163,7 @@ public class PrayerHandler {
 
 		if (locked) {
 			if (msg) {
-				player.getActionSender().sendMessage("You have not unlocked that Prayer yet.");
+				player.message("You have not unlocked that Prayer yet.");
 			}
 			return false;
 		}
@@ -175,13 +175,13 @@ public class PrayerHandler {
 		
 		if (player.getDuelArena().isDueling()) {
 			if (player.getDuelArena().getRules().get(DuelRule.PRAYER)) {
-				player.getActionSender().sendMessage("Prayer has been disabled in this duel.");
+				player.message("Prayer has been disabled in this duel.");
 				return;
 			}
 		}
 		
 		if (player.getSkills().getLevel(Skills.PRAYER) <= 0) {
-			player.getActionSender().sendMessage("You have run out of prayer points; recharge your prayer points at an altar.");
+			player.message("You have run out of prayer points; recharge your prayer points at an altar.");
 			deactivatePrayer(player, prayer);
 			return;
 		}
@@ -308,7 +308,7 @@ public class PrayerHandler {
 			if (player.getSkills().getLevel(Skills.PRAYER) > 1) {
 				player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevel(Skills.PRAYER) - 1);
 			} else {
-				player.getActionSender().sendMessage("You have run out of prayer points.");
+				player.message("You have run out of prayer points.");
 				player.getSkills().setLevel(Skills.PRAYER, 0);
 				for (Prayers prayer : Prayers.values()) {
 					deactivatePrayer(player, prayer);
@@ -354,7 +354,7 @@ public class PrayerHandler {
 		int reduce = damage / 4;
 		if (player.isActivePrayer(Prayers.SMITE)) {
 			defender.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevel(Skills.PRAYER) - reduce);
-			//player.getActionSender().sendMessage("reduced " + defender.getName() + "'s prayer level by, " + reduce + ". Also dealt "+damage+" damage."));
+			//player.message("reduced " + defender.getName() + "'s prayer level by, " + reduce + ". Also dealt "+damage+" damage."));
 			
 			if (defender.getSkills().getLevel(Skills.PRAYER) <= 0) {
 				defender.getSkills().setLevel(Skills.PRAYER, 0);

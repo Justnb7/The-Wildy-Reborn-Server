@@ -141,14 +141,14 @@ public class PlayerVsNpcCombat {
 		}*/
 		
 		if (npc.isArmadylNpc() && player.getCombatType() == CombatStyle.MELEE) {
-			player.getActionSender().sendMessage("You can only use range or magic against this npc.");
+			player.message("You can only use range or magic against this npc.");
 			Combat.resetCombat(player);
 			return false;
 		}
 		
 		if ((npc.getId() == 6611 || npc.getId() == 6612) && npc.dogs > 0) {
 			Combat.resetCombat(player);
-			player.getActionSender().sendMessage("You must vanquish Vet'ions dogs.");
+			player.message("You must vanquish Vet'ions dogs.");
 			return false;
 		}
 
@@ -157,7 +157,7 @@ public class PlayerVsNpcCombat {
 			if (i != null && i.npcs != null && i.npcs[0] == npc) {
 				for (NPC n : i.npcs) {
 					if (n.getId() == 5534) {
-						player.getActionSender().sendMessage("You can't disturb the kraken while the whirlpools are undisturbed.");
+						player.message("You can't disturb the kraken while the whirlpools are undisturbed.");
 						Combat.resetCombat(player);
 						return false;
 					}
@@ -167,24 +167,24 @@ public class PlayerVsNpcCombat {
 
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS) && !Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
 			Combat.resetCombat(player);
-			player.getActionSender().sendMessage("You cannot attack that npc from outside the room.");
+			player.message("You cannot attack that npc from outside the room.");
 			return false;
 		}
 		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !npc.inMulti()) {
 			player.getCombatState().reset();
-			player.getActionSender().sendMessage("This monster is already in combat.");
+			player.message("This monster is already in combat.");
 			return false;
 		}
 
 		if (Combat.incombat(player) && player.lastAttacker != npc && !Area.inMultiCombatZone(player) && !Boundary.isIn(player, Boundary.KRAKEN)) {
 			Combat.resetCombat(player);
-			player.getActionSender().sendMessage("I am already under attack.");
+			player.message("I am already under attack.");
 			return false;
 		}
 
 		if (npc.spawnedBy != player.getIndex() && npc.spawnedBy > 0) {
 			Combat.resetCombat(player);
-			player.getActionSender().sendMessage("This monster was not spawned for you.");
+			player.message("This monster was not spawned for you.");
 			return false;
 		}
 

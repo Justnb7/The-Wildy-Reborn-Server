@@ -41,7 +41,7 @@ public class Special {
 			
 			if (attacker.getDuelArena().isDueling()) {
 				if (attacker.getDuelArena().getRules().get(DuelRule.SPECIAL_ATTACKS)) {
-					attacker.getActionSender().sendMessage("Special attacks are disabled in this duel.");
+					attacker.message("Special attacks are disabled in this duel.");
 					return;
 				}
 			}
@@ -66,7 +66,7 @@ public class Special {
 					}
 				}
 			} else {
-				attacker.getActionSender().sendMessage("You do not have the required special amount.");
+				attacker.message("You do not have the required special amount.");
 			}
 		}
 		resetSpecial(attacker);

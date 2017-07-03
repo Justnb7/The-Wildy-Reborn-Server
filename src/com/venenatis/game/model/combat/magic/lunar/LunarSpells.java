@@ -37,7 +37,7 @@ public class LunarSpells {
 			player.getSkills().addExperience(Skills.MAGIC, 1000);
 			player.setVengeance(true);
 			player.lastCast = System.currentTimeMillis();
-			player.getActionSender().sendMessage("You cast a vengeance.");
+			player.message("You cast a vengeance.");
 		}
 	}
 	
@@ -45,16 +45,16 @@ public class LunarSpells {
 		
 		//Checking for already casted vengeance
 		if (player.hasVengeance()) {
-			player.getActionSender().sendMessage("You already have vengeance casted.");
+			player.message("You already have vengeance casted.");
 			return false;
 		}
 		
 		//Level requirement check
 		if (player.getSkills().getLevel(Skills.MAGIC) < 94) {
-			player.getActionSender().sendMessage("Your Magic level is not high enough for this spell.");
+			player.message("Your Magic level is not high enough for this spell.");
 			return false;
 		} else if (player.getSkills().getLevel(Skills.DEFENCE) < 40) {
-			player.getActionSender().sendMessage("You need a Defence level of 40 for this spell");
+			player.message("You need a Defence level of 40 for this spell");
 			return false;
 		}
 		
@@ -65,7 +65,7 @@ public class LunarSpells {
 		
 		//Checking duration
 		if (player.lastVeng != null && Utility.currentTimeMillis() - player.lastCast < 30000) {
-			player.getActionSender().sendMessage("Players may only cast vengeance once every 30 seconds.");
+			player.message("Players may only cast vengeance once every 30 seconds.");
 			return false;
 		}
 		return true;
@@ -84,7 +84,7 @@ public class LunarSpells {
 				//Checks for rune pouch or staff.
 			}
 			else if (!player.getInventory().contains(i.getId(), i.getAmount())) {
-				player.getActionSender().sendMessage("You do not have enough " + ItemDefinition.get(i.getId()).getName().replace("rune", "Rune") + "s to cast this spell.");
+				player.message("You do not have enough " + ItemDefinition.get(i.getId()).getName().replace("rune", "Rune") + "s to cast this spell.");
 				return false;
 			}
 			// at this point you have the required amount. if you've met all requirements (length of RUNES paramater)

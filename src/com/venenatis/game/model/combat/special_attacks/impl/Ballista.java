@@ -42,7 +42,7 @@ public class Ballista implements SpecialAttack {
 	public boolean meetsRequirements(Player player, Entity target) {
 		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT); 
 		if (ammo.getId() < 1) {
-			player.getActionSender().sendMessage("You need at least one javalin to use this special attack.");
+			player.message("You need at least one javalin to use this special attack.");
 			return false;
 		}
 		return true;

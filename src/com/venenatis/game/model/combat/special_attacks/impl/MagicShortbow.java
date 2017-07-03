@@ -53,7 +53,7 @@ public class MagicShortbow implements SpecialAttack {
 	@Override
 	public boolean meetsRequirements(Player player, Entity victim) {
 		if (player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() < 2) {
-			player.getActionSender().sendMessage("You need atleast 2 arrows to perform this special.");
+			player.message("You need atleast 2 arrows to perform this special.");
 			player.setUsingSpecial(false);
 			return false;
 		}

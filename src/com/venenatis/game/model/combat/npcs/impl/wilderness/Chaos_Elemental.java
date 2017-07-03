@@ -205,7 +205,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 		switch(style) {
 		case TELEOTHER:
 			if(victim.getActionSender() != null) {
-				victim.getActionSender().sendMessage("The fiend teleports you away.");
+				victim.message("The fiend teleports you away.");
 			}
 			World.getWorld().schedule(new Task(1) {
 				public void execute() {
@@ -216,7 +216,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 			break;
 		case DISARM:
 			if(victim.getActionSender() != null) {
-				victim.getActionSender().sendMessage("The fiend attempts to disarm you.");
+				victim.message("The fiend attempts to disarm you.");
 			}
 			int slot = 0;
 			if (p.getEquipment().getTakenSlots() == 0) {
@@ -231,7 +231,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 				return;
 			}
 			p.playGraphics(Graphic.create(557));
-			p.getActionSender().sendMessage("The Chaos Elemental has removed some of your worn equipment.");
+			p.message("The Chaos Elemental has removed some of your worn equipment.");
 			break;
 		default:
 			break;

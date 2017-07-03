@@ -35,7 +35,7 @@ public class DragonWarhammer implements SpecialAttack {
 				int current = targPlayer.getSkills().getLevel(Skills.DEFENCE);
 				int decrement = (int)(current * 0.7);
 				targPlayer.getSkills().decreaseLevelToZero(Skills.DEFENCE, decrement);
-				targPlayer.getActionSender().sendMessage("Your defence has been lowered.");
+				targPlayer.message("Your defence has been lowered.");
 			}
 		} else {
 			NPC targNpc = (NPC) target;

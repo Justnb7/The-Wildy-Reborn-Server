@@ -1,37 +1,13 @@
 package com.venenatis.game.model.combat.special_attacks;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.combat.special_attacks.impl.AbyssalBludgeon;
-import com.venenatis.game.model.combat.special_attacks.impl.AbyssalDagger;
-import com.venenatis.game.model.combat.special_attacks.impl.AbyssalTentacle;
-import com.venenatis.game.model.combat.special_attacks.impl.AbyssalWhip;
-import com.venenatis.game.model.combat.special_attacks.impl.ArmadylCrossbow;
-import com.venenatis.game.model.combat.special_attacks.impl.ArmadylGodsword;
-import com.venenatis.game.model.combat.special_attacks.impl.Ballista;
-import com.venenatis.game.model.combat.special_attacks.impl.BandosGodsword;
-import com.venenatis.game.model.combat.special_attacks.impl.BarrelchestAnchor;
-import com.venenatis.game.model.combat.special_attacks.impl.CrystalHalberd;
-import com.venenatis.game.model.combat.special_attacks.impl.DarkBow;
-import com.venenatis.game.model.combat.special_attacks.impl.DragonClaws;
-import com.venenatis.game.model.combat.special_attacks.impl.DragonDagger;
-import com.venenatis.game.model.combat.special_attacks.impl.DragonHalberd;
-import com.venenatis.game.model.combat.special_attacks.impl.DragonLongsword;
-import com.venenatis.game.model.combat.special_attacks.impl.DragonMace;
-import com.venenatis.game.model.combat.special_attacks.impl.DragonScimitar;
-import com.venenatis.game.model.combat.special_attacks.impl.DragonWarhammer;
-import com.venenatis.game.model.combat.special_attacks.impl.GraniteMaul;
-import com.venenatis.game.model.combat.special_attacks.impl.KorasiSword;
-import com.venenatis.game.model.combat.special_attacks.impl.MagicShortbow;
-import com.venenatis.game.model.combat.special_attacks.impl.SaradominGodsword;
-import com.venenatis.game.model.combat.special_attacks.impl.SaradominSword;
-import com.venenatis.game.model.combat.special_attacks.impl.ToxicBlowpipe;
-import com.venenatis.game.model.combat.special_attacks.impl.ZamorakGodsword;
+import com.venenatis.game.model.combat.special_attacks.impl.*;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The class which represents functionality to load the data for the special attacks.
@@ -119,7 +95,7 @@ public class SpecialAttackHandler {
 		for (int i : BUTTONS) {
 			if (buttonId == i) {
 				if (player.getSpecialAmount() <= 0) {
-					player.getActionSender().sendMessage("You do not have the required special amount.");
+					player.message("You do not have the required special amount.");
 					return false;
 				}
 				
@@ -144,7 +120,7 @@ public class SpecialAttackHandler {
 							special.handleAttack(player, target);
 						}
 					} else {
-						player.getActionSender().sendMessage("You do not have the required special amount.");
+						player.message("You do not have the required special amount.");
 					}
 					Special.resetSpecial(player);
 					return true;

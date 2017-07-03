@@ -1,8 +1,34 @@
 package com.venenatis.game.model.combat.magic;
 
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 
 public class MagicData {
+
+	public static int requirement(int spell_index) {
+		return Player.MAGIC_SPELLS[spell_index][1];
+	}
+	public static Item[] runes(int spell_index) {
+		int[] spelldata = Player.MAGIC_SPELLS[spell_index];
+		int[] rd = new int[] {spelldata[8], spelldata[10], spelldata[12], spelldata[14]};
+		int count = 0;
+		for (int a : rd)
+			if (a > 0)
+				count++;
+		Item[] r = new Item[count];
+		if (count > 0) {
+			r[0] = new Item(spelldata[8], spelldata[9]);
+			if (count > 1) {
+				r[1] = new Item(spelldata[10], spelldata[11]);
+				if (count > 2) {
+					r[2] = new Item(spelldata[12], spelldata[13]);
+					if (count > 4)
+						r[3] = new Item(spelldata[14], spelldata[15]);
+				}
+			}
+		}
+		return r;
+	}
 
 	public static int getStartGfxHeight(Player c) {
 		switch (c.MAGIC_SPELLS[c.spellId][0]) {

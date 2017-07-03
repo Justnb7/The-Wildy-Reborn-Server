@@ -17,6 +17,7 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
 import com.venenatis.game.model.combat.magic.MagicData;
+import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
 import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
 import com.venenatis.game.model.combat.pvp.PlayerVsPlayerCombat;
 import com.venenatis.game.model.combat.range.ArrowRequirements;
@@ -178,6 +179,7 @@ public class Combat {
         }*/
         if (player.getSpellBook() != SpellBookTypes.MODERN && (player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2415 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2416 || player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 2417)) {
             player.message("You must be on the modern spellbook to cast this spell.");
+            resetCombat(player);
             return;
         }
         if (player.touchDistance(target, 7))
@@ -188,7 +190,21 @@ public class Combat {
             return;
         }
         int spell = player.spellId;
-        // TODO check all magic pre requisits here.. rune requirements and rune deleting!
+        int req = MagicData.requirement(spell);
+        if (player.skills.getLevel(4) < req) {
+            player.message("You need a Magic level of "+req+" to cast this spell.");
+            resetCombat(player);
+            return;
+        }
+        Item[] runes = MagicData.runes(spell);
+        if (runes != null && runes.length > 0) {
+            //Runes check
+            if (!LunarSpells.checkRunes(player, true, runes) && player.getTotalAmountDonated() < 100) {
+                resetCombat(player);
+                return;
+            }
+        }
+
         // Magic attack anim
         player.playAnimation(Animation.create(player.MAGIC_SPELLS[spell][2]));
 

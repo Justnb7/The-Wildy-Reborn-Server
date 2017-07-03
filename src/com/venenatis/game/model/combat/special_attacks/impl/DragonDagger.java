@@ -1,17 +1,13 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
-import com.venenatis.server.Server;
 
 public class DragonDagger implements SpecialAttack {
 	
@@ -39,21 +35,8 @@ public class DragonDagger implements SpecialAttack {
 			secondHit = 0;
 		
 		// Set up a Hit instance
-        Hit hitInfo = target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player);
-
-        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MELEE);
-		
-		Server.getTaskScheduler().schedule(new Task(1) {
-
-			@Override
-			public void execute() {
-				// Set up a Hit instance
-		        Hit hitInfo = target.take_hit(player, finalDamage, CombatStyle.MELEE).giveXP(player);
-
-		        Combat.hitEvent(player, target, 1, hitInfo, CombatStyle.MELEE);
-				this.stop();
-			}
-		});
+        target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player).send(); // 1st hit
+		target.take_hit(player, finalDamage, CombatStyle.MELEE).giveXP(player).send(2); // 2nd hit, 1 tick later
 	}
 
 	@Override

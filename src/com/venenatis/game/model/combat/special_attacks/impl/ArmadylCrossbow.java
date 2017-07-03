@@ -1,12 +1,10 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
 import com.venenatis.game.model.Projectile;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Utility;
@@ -37,10 +35,7 @@ public class ArmadylCrossbow implements SpecialAttack {
 		}
 
 		// Step 3: check target's protection prayers
-		Hit hit = target.take_hit(player, dam1, CombatStyle.RANGE, false, false);
-
-		// Step 4: submit an Event where the hit appears.
-		Combat.hitEvent(player, target, 2, hit, CombatStyle.RANGE);
+		target.take_hit(player, dam1, CombatStyle.RANGE, false, false).send(2);
 	}
 
 	@Override

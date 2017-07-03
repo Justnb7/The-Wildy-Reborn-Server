@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.venenatis.game.constants.GameConstants;
 import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.player.Player;
 
 /**
  * Resembles an area or region of coordinates.
@@ -132,6 +133,14 @@ public abstract class Area {
 
 	public static boolean inGodwars(Entity entity) {
 		return inArea(entity, new Location(2816, 5243, 2), new Location(2960, 5400, 2));
+	}
+
+	public static boolean inClanWars(Player player) {
+		return GameConstants.CLAN_WARS.stream().anyMatch($it -> $it.inArea(player.getLocation()));
+	}
+
+	public static boolean inClanWarsSafe(Player player) {
+		return GameConstants.CLAN_WARS_SAFE.stream().anyMatch($it -> $it.inArea(player.getLocation()));
 	}
 
 }

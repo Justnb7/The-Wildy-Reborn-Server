@@ -24,7 +24,15 @@ public class GameConstants {
     public static final ImmutableList<Area> BARROWS_MINIGAME = ImmutableList.of(
     		new CircleArea("Outside circle", 3565, 3289, 0, 20));
     
-    public static final ImmutableList<Area> F2P_ARENA = ImmutableList.of(new SquareArea("F2P Minigame", 2076, 4459, 2095, 4473));
+    public static final ImmutableList<Area> F2P_ARENA = ImmutableList.of(new SquareArea("F2P minigame", 2076, 4459, 2095, 4473));
+    
+    //absX > 3272 && absX < 3391 && absY > 4759 && absY < 4863
+    
+    //int swX, int swY, int neX, int neY
+    public static final ImmutableList<Area> CLAN_WARS = ImmutableList.of(new SquareArea("Clan wars", 3272, 4759, 4863, 3391));
+    
+    //absX > 3263 && absX < 3390 && absY > 4735 && absY < 4761
+    public static final ImmutableList<Area> CLAN_WARS_SAFE = ImmutableList.of(new SquareArea("Clan wars safe", 3263, 4735, 3390, 4761));
 
     /**
      * The collection of areas that resemble multi-combat zones.

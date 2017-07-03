@@ -72,15 +72,15 @@ public class LunarSpells {
 		
 	}
 	
-	private final boolean checkRunes(Player player, boolean delete, Item... runes) {
-		Item weaponId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		Item shieldId = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
+	public static final boolean checkRunes(Player player, boolean delete, Item... runes) {
+		int weaponId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+		int shieldId = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId();
 		int runesCount = 0;
 		boolean has = false;
 		for (Item i : runes) {
 			if (i == null)
 				continue; // safety
-			if (hasInfiniteRunes(i.getId(), i.getAmount(), weaponId.getId(), shieldId.getId(), false)) {
+			if (hasInfiniteRunes(player, i.getId(), i.getAmount(), weaponId, shieldId, false)) {
 				//Checks for rune pouch or staff.
 			}
 			else if (!player.getInventory().contains(i.getId(), i.getAmount())) {
@@ -97,7 +97,7 @@ public class LunarSpells {
 			runesCount = 0;
 			for (Item i : runes) {
 				if (i == null) continue; // safety
-				if (hasInfiniteRunes(i.getId(), i.getAmount(), weaponId.getId(), shieldId.getId(), false))
+				if (hasInfiniteRunes(player, i.getId(), i.getAmount(), weaponId, shieldId, false))
 					continue;
 				player.getInventory().remove(new Item(i.getId(), i.getAmount()));
 			}
@@ -105,7 +105,7 @@ public class LunarSpells {
 		return has;
 	}
 	
-	public final boolean hasInfiniteRunes(int runeId, int amount, int weaponId, int shieldId, boolean deleteFromRunePouch) {
+	public static final boolean hasInfiniteRunes(Player player, int runeId, int amount, int weaponId, int shieldId, boolean deleteFromRunePouch) {
 		if (runeId == AIR_RUNE) {
 			if (weaponId == 1381) // air staff
 				return true;

@@ -32,11 +32,6 @@ public class ZamorakGodsword implements SpecialAttack {
 		target.freeze(33);
 		target.frozenBy(player);
 		
-		/*if (target.isPlayer() && ((Player) target).getPrayers()[Prayer.PROTECT_FROM_MAGIC.ordinal()]) {
-			// TODO int spellFeezeTime = 15; // f2p spell freeze time
-			//target.freeze(spellFreezeTime);
-		}*/
-		
 		// Set up a Hit instance
         target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player).send();
 			

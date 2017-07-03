@@ -1,6 +1,7 @@
 package com.venenatis.game.model.combat.pvm;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
@@ -133,12 +134,11 @@ public class PlayerVsNpcCombat {
 		}
 		if (npc.transforming)
 			return false;
-		
-		//TODO ask Jak how to do thiss
-		/*if(!Slayer.canAttack(player, npc)) {
-			player.debug("is it cuz of own stupidity?");
+
+		if (!Slayer.canAttack(player, npc)) {
+			player.debug("slayer req not met for combat");
 			return false;
-		}*/
+		}
 		
 		if (npc.isArmadylNpc() && player.getCombatType() == CombatStyle.MELEE) {
 			player.message("You can only use range or magic against this npc.");

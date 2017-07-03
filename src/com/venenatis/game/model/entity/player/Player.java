@@ -1045,7 +1045,13 @@ public class Player extends Entity {
 		this.suffering = suffering;
 	}
 
-	public int[][] MAGIC_SPELLS = { { 1152, 1, 711, 90, 91, 92, 2, 5, 556, 1, 558, 1, 0, 0, 0, 0, 993 }, // wind
+	// example {magicId, level req, animation, startGFX, projectile Id, endGFX, maxhit, exp gained,
+	// rune 1, rune 1 amount,
+	// rune 2, rune 2 amount,
+	// rune 3, rune 3 amount,
+	// rune 4, rune 4 amount}
+	// theres another param on end idk what it is [16]
+	public static int[][] MAGIC_SPELLS = { { 1152, 1, 711, 90, 91, 92, 2, 5, 556, 1, 558, 1, 0, 0, 0, 0, 993 }, // wind
 																												// strike
 			{ 1154, 5, 711, 93, 94, 95, 4, 7, 555, 1, 556, 1, 558, 1, 0, 0, 211 }, // water
 																					// strike
@@ -1155,8 +1161,13 @@ public class Player extends Entity {
 																				// of
 																				// the
 																				// swamp
+
 			{1337, 80, 2078, 145, 146, 147, 40, 1, 0, 0, 0, 0, 0, 0, 0, 0} //polypore 54
-			// example {magicId, level req, animation, startGFX, projectile Id, endGFX, maxhit, exp gained, rune 1, rune 1 amount, rune 2, rune 2 amount, rune 3, rune 3 amount, rune 4, rune 4 amount}
+			// example {magicId, level req, animation, startGFX, projectile Id, endGFX, maxhit, exp gained,
+			// rune 1, rune 1 amount,
+			// rune 2, rune 2 amount,
+			// rune 3, rune 3 amount,
+			// rune 4, rune 4 amount}
 			
 
 			// blast

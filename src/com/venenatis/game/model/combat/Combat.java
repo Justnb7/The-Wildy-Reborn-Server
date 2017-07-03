@@ -12,7 +12,6 @@ import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.CombatData;
-import com.venenatis.game.model.combat.data.CombatRequirements;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
@@ -697,7 +696,7 @@ public class Combat {
 			if (player.getX() != victim.getX() && player.getY() != victim.getY() && player.distanceToPoint(victim.getX(), victim.getY()) < 2) {
 				distance = 2;
 			} else {
-				distance = CombatRequirements.extraMovingTilesDistance(player);
+				distance = extraMovingTilesDistance(player);
 			}
 		}
 		if (player.getWalkingQueue().isMoving()) {
@@ -706,7 +705,17 @@ public class Combat {
 		return distance;
 	}
 
-    /**
+	private static int extraMovingTilesDistance(Player player) {
+		if (player.followTarget != null && player.frozen() && !player.getWalkingQueue().isMoving())
+			return 2;
+		else if (player.followTarget != null && player.frozen() && player.getWalkingQueue().isMoving()) {
+			return 3;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
 	public static boolean touches(Player player, Entity target) {

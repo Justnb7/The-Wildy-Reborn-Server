@@ -3,7 +3,6 @@ package com.venenatis.game.content.bounty;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.location.Area;
-import com.venenatis.game.model.combat.data.CombatRequirements;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
@@ -166,7 +165,7 @@ public class BountyHunter extends Task {
 			/*
 			 * The difference between yours and the targets combat level
 			 */
-			int difference = CombatRequirements.getCombatDifference(player.getCombatLevel(), target.getCombatLevel());
+			int difference = Utility.combatDifference(player.getCombatLevel(), target.getCombatLevel());
 
 			/*
 			 * Check that they are within 3 combat levels of us

@@ -14,7 +14,7 @@ public class IceBarrageSpellEffect implements SpellEffect {
 
 	@Override
 	public void handle(Player attacker, Entity victim) {
-		victim.freeze(20);
+		victim.freeze(33);
 	}
 
 	@Override

@@ -759,7 +759,6 @@ public abstract class Entity {
 					else
 						recoil.execute(me, (NPC)attacker, damage);
 				}*/
-
 			}
 
 			if (attacker.isPlayer()) {

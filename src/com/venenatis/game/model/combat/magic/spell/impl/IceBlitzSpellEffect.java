@@ -8,7 +8,7 @@ public class IceBlitzSpellEffect implements SpellEffect {
 
 	@Override
 	public void handle(Player attacker, Entity victim) {
-		victim.freeze(15);
+		victim.freeze(25);
 	}
 
 	@Override

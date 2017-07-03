@@ -162,26 +162,4 @@ public class MagicData {
 		}
 	}
 
-	public static int getFreezeTime(Player c, int spellId) {
-		switch (c.MAGIC_SPELLS[spellId][0]) {
-		case 1572:
-		case 12861: // ice rush
-			return 8;
-
-		case 1582:
-		case 12881: // ice burst
-			return 17;
-
-		case 1592:
-		case 12871: // ice blitz
-			return 25;
-
-		case 12891: // ice barrage
-			return 33;
-
-		default:
-			return 0;
-		}
-	}
-
 }

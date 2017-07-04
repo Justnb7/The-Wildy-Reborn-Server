@@ -75,7 +75,10 @@ public class CommandPacketHandler implements PacketType {
 				}
 			}
 		} catch (final Exception e) {
-			/* e.printStackTrace(); */
+			if (player.getRights() == Rights.OWNER) {
+				player.message("Exception: "+e.getMessage());
+				e.printStackTrace();
+			}
 		}
 
 		if (!success) {

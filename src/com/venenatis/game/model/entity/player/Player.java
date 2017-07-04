@@ -2370,7 +2370,7 @@ public class Player extends Entity {
 	public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
 
 	public void debug(String string) {
-		if (this.rights == Rights.ADMINISTRATOR) {
+		if (this.rights == Rights.OWNER) {
 			this.getActionSender().sendMessage(string);
 		}
 	}

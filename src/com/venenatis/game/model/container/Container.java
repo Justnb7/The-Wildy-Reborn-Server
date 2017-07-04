@@ -1329,7 +1329,7 @@ public abstract class Container {
 		}
 		return -1;
 	}
-
+	
 	/**
 	 * Returns the container's stack without null values.
 	 * 

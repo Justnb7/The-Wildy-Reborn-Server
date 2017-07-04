@@ -1,8 +1,5 @@
 package com.venenatis.game.content.killstreak;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
@@ -17,7 +14,6 @@ import com.venenatis.game.model.entity.player.Player;
  *
  */
 public class Killstreak {
-	
 
 	/**
 	 * The player receiving the killstreaks
@@ -47,9 +43,10 @@ public class Killstreak {
 	public void increase() {
 		if(Area.inWilderness(player)) {
 			player.setCurrentKillStreak(player.getCurrentKillStreak() + 1);
+			
 			if(player.getCurrentKillStreak() > player.getHighestKillStreak()) {
 				player.setHighestKillStreak(player.getCurrentKillStreak());
-				player.getActionSender().sendMessage("<img=22>[Killstreak]: <col=4891c9>You just broke your highest streak record your new highest streak is now</col> <col=eb42f4>"+player.getCurrentKillStreak()+"</col>");
+				player.getActionSender().sendMessage("<img=22>[Killstreak]: <col=4891c9>Congratulations, your highest kill streak has increased!</col>");
 			}
 			
 			//We can't receive any rewards untill we reach a streak of 2.

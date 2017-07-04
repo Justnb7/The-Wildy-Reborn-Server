@@ -19,6 +19,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
+import com.venenatis.game.content.killstreak.Killstreak;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
@@ -82,6 +83,12 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.server.Server;
 
 public class Player extends Entity {
+	
+	public Killstreak killstreak = new Killstreak(this);
+	
+	public Killstreak getKillstreak() {
+		return killstreak;
+	}
 	
 	/**
 	 * The player's appearance information.

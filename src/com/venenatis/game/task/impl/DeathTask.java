@@ -3,6 +3,7 @@ package com.venenatis.game.task.impl;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.DeathDropHandler;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.rewards.WildernessRewards;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
@@ -53,7 +54,7 @@ public class DeathTask extends Task {
 		stop();
 		if (victim.getCombatState().isDead()) {
 			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
-			if (killer != null && Area.inWilderness(killer) ) {//because i added else statements
+			if (killer != null && Area.inWilderness(killer) ) {
 				switch (RandomGenerator.nextInt(10)) {
 				default:
 				case 0:
@@ -88,7 +89,7 @@ public class DeathTask extends Task {
 					break;
 				}
 				//TODO wilderness rewards
-			} else {//were not in wild here but stil thinks we are
+			} else {
 				/*Here we add support for none wilderness related activities*/
 				if (victim.isDueling()) {
 					victim.getDuelArena().onDeath();
@@ -116,6 +117,7 @@ public class DeathTask extends Task {
 		PrayerHandler.resetAllPrayers(victim);
 		victim.setSpecialAmount(100);
 		victim.setUsingSpecial(false);
+		WildernessRewards.clearList(victim);
 		victim.getCombatState().getDamageMap().resetDealtDamage();
 		victim.playAnimation(Animation.create(-1));
 	}
@@ -127,8 +129,13 @@ public class DeathTask extends Task {
 	 *            The player losing his items
 	 */
 	public void dropPlayerItems(Player victim) {
+		/**
+		 * Are admins allowed to keep their items upon death?
+		 */
+		boolean admin_keeps_items = victim.getUsername().equalsIgnoreCase("patrick") || victim.getUsername().equalsIgnoreCase("matthew") ? true : false;
+		
 		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
-		if (!controller.isSafe()) {
+		if (!controller.isSafe() && !admin_keeps_items) {
 			DeathDropHandler.handleDeathDrop(victim);
 		}
 	}

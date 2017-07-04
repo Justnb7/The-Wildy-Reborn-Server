@@ -1,9 +1,10 @@
-package com.venenatis.game.content.killstreak;
+package com.venenatis.game.content.rewards;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.player.Player;
@@ -17,28 +18,19 @@ import com.venenatis.game.world.World;
  */
 public class WildernessRewards {
 	
-	/**
-	 * The player receiving the reward
-	 */
-	private Player killer;
 	
-	/**
-	 * Creates a new object that will manage player killstreaks
-	 * 
-	 * @param player the player
-	 */
-	public WildernessRewards(Player player) {
-		this.killer = player;
-	}
 	
-	public boolean receive_reward(Player opponent) {
+	public static boolean receive_reward(Player killer, Player opponent) {
+		long wealth = getWealth(opponent);
 		killer = World.getWorld().lookupPlayerByName(opponent.getCombatState().getDamageMap().getKiller());
 		
-		killer.getActionSender().sendMessage("test");
+		if(wealth > Constants.PK_POINTS_WEALTH) {
+			//TODO implement rewards here
+		}
 		return false;
 	}
 	
-	public static long getWealth(Player player) {
+	private static long getWealth(Player player) {
 		LinkedList<Item> all = new LinkedList<>();
 		
 		Item[] inv_items = player.getInventory().toNonNullArray();

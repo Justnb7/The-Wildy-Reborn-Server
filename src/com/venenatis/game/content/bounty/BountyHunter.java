@@ -1,12 +1,18 @@
 package com.venenatis.game.content.bounty;
 
+import java.util.Optional;
+
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.content.rewards.WildernessRewards;
 import com.venenatis.game.location.Area;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.ground_item.GroundItemHandler;
 
 
 /**
@@ -245,14 +251,14 @@ public class BountyHunter extends Task {
 		/*
 		 * Determine our carried wealth
 		 */
-		//long carried_wealth = player.getItems().getWealth();
+		long carried_wealth = WildernessRewards.getWealth(player);
 
 		int configId = -1;
 
 		/*
 		 * Determine which config to send based on the current bounty wealth
 		 */
-		/*if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
+		if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
 			configId = BountyHunterConstants.V_HIGH_WEALTH_CONFIG;
 			player.setAttribute("bounty_wealth", "Wealth: V. High");
 		} else if ((carried_wealth >= BountyHunterConstants.HIGH_WEALTH) && (carried_wealth < BountyHunterConstants.V_HIGH_WEALTH)) {
@@ -267,7 +273,7 @@ public class BountyHunter extends Task {
 		} else {
 			configId = BountyHunterConstants.V_LOW_WEALTH_CONFIG;
 			player.setAttribute("bounty_wealth", "Wealth: V. Low");
-		}*/
+		}
 
 		target.getActionSender().sendConfig(configId, 1);
 		target.getActionSender().sendConfig(BountyHunterConstants.DEFAULT_CONFIG, 1);
@@ -324,7 +330,14 @@ public class BountyHunter extends Task {
 				killer.setAttribute(BountyHunterConstants.HUNTER_RECORD, current + 1);
 			}
 			killer.setAttribute(BountyHunterConstants.HUNTER_CURRENT, current + 1);
-			//BountyTierHandler.upgrade(killer);
+			Optional<BountyHunterEmblem> emblem = BountyHunterEmblem.getBest(player, true);
+
+			if (emblem.isPresent()) {
+				killer.getInventory().remove(new Item(emblem.get().getItemId()));
+				killer.getInventory().add(new Item(emblem.get().getNextOrLast().getItemId()));
+			} else {
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), player.getX(), player.getY(), player.getZ(), killer));
+			}
 			killer.setAttribute("receive_emblem", handleItemGiving(player, killer));
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
 		} else {
@@ -343,10 +356,10 @@ public class BountyHunter extends Task {
 	 *            The {@link Player} that killed the target
 	 */
 	private static boolean handleItemGiving(Player player, Player killer) {
-		//long carried_wealth = player.getItems().getWealth();
+		long carried_wealth = WildernessRewards.getWealth(player);
 
 		int random = 0;
-		/*if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
+		if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {
 			random = 1;
 		} else if ((carried_wealth >= BountyHunterConstants.HIGH_WEALTH) && (carried_wealth < BountyHunterConstants.V_HIGH_WEALTH)) {
 			random = 2;
@@ -356,7 +369,7 @@ public class BountyHunter extends Task {
 			random = 4;
 		} else {
 			random = 5;
-		}*/
+		}
 
 		int randomChance = Utility.getRandom(random);
 		return randomChance == 1;
@@ -375,9 +388,9 @@ public class BountyHunter extends Task {
 	 * Calculates the total networth for the emblems in a players inventory.
 	 * @return	the total networth of all emblems in a players inventory
 	 */
-	/*public int getNetworthForEmblems(Player player) {
+	public int getNetworthForEmblems(Player player) {
 		int worth = 0;
-		for (int i = 0; i < player.getInventory().size(); i++) {
+		for (int i = 0; i < player.getInventory().capacity(); i++) {
 			int itemId = player.getInventory().getId(i) - 1;
 			Optional<BountyHunterEmblem> containsItem = BountyHunterEmblem.EMBLEMS.stream().filter(emblem ->
 				emblem.getItemId() == itemId).findFirst();
@@ -386,6 +399,6 @@ public class BountyHunter extends Task {
 			}
 		}
 		return worth;
-	}*/
+	}
 
 }

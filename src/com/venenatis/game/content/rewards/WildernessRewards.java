@@ -6,11 +6,13 @@ import java.util.LinkedList;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -31,10 +33,12 @@ public class WildernessRewards {
 	 *            The player who died
 	 */
 	public static boolean receive_reward(Player killer, Player opponent) {
+		
 		long wealth = getWealth(opponent);
+		int amount = 0;
 		killer = World.getWorld().lookupPlayerByName(opponent.getCombatState().getDamageMap().getKiller());
 		
-		if(wealth > Constants.PK_POINTS_WEALTH && isSameConnection(opponent, killer)) {
+		if(wealth > Constants.PK_POINTS_WEALTH && isSameConnection(opponent, killer) && !Rights.isOwner(killer)) {
 			if(hasKilledRecently(opponent.getUsername(), killer)) {
 				killer.getActionSender().sendMessage("You have already killed "+opponent.getUsername()+" kill 3 more players before receiving rewards again for killing "+opponent.getUsername());
 				return false;
@@ -44,12 +48,41 @@ public class WildernessRewards {
 				//Owners don't drop items, reward them with a random blood money reward
 				killer.getInventory().addOrCreateGroundItem(new Item(13307, Utility.random(5, 25)));
 			}
-			//TODO implement rewards here
+			
+			//The amount of blood money we receive per kill
+			switch (killer.getRights()) {
+
+			case PLAYER:
+				amount = 2;
+				break;
+
+			case DONATOR:
+				amount = 3;
+				break;
+
+			case SUPER_DONATOR:
+				amount = 5;
+				break;
+
+			case ELITE_DONATOR:
+				amount = 7;
+				break;
+
+			case EXTREME_DONATOR:
+				amount = 10;
+				break;
+
+			default:
+				break;
+			}
+			//Apply blood money reward
+			Item blood_money_reward = new Item(13307, amount);
+			killer.getInventory().addOrCreateGroundItem(blood_money_reward);
+			
+			//Send killstreak reward
 			killer.getKillstreak().reward();
 			return true;
 		} else {
-			//TODO other stuff here that does not effect wealth
-			//TODO add killstreak increase
 			killer.getKillstreak().increase();
 			if(killer.getCurrentKillStreak() >= 5) {
 				World.getWorld().sendWorldMessage("<img=22>[@red@Killstreak@bla@]: @dre@"+killer.getUsername()+"@red@ just "+killMessage[new java.util.Random().nextInt(killMessage.length)]+" @dre@"+opponent.getUsername()+"'s@red@ "+opponent.getCurrentKillStreak()+" killstreak!", false);
@@ -57,6 +90,9 @@ public class WildernessRewards {
 			
 			//Add identity to anti cheat list
 			addKilledEntry(opponent.getIdentity(), killer);
+			
+			//Apply bounty hunter kill
+			BountyHunter.handleBountyHunterKill(opponent, killer);
 			
 			//Increase death and kill count
 			killer.setKillCount(killer.getKillCount() + 1);
@@ -85,7 +121,7 @@ public class WildernessRewards {
 	 * @param player
 	 *            The player whose current wealth we're checking
 	 */
-	private static long getWealth(Player player) {
+	public static long getWealth(Player player) {
 		LinkedList<Item> all = new LinkedList<>();
 		
 		Item[] inv_items = player.getInventory().toNonNullArray();

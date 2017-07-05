@@ -88,7 +88,7 @@ public class DeathTask extends Task {
 					killer.getActionSender().sendMessage(victim.getUsername() + " didn't stand a chance against you.");
 					break;
 				}
-				//TODO wilderness rewards
+				WildernessRewards.receive_reward(killer, victim);
 			} else {
 				/*Here we add support for none wilderness related activities*/
 				if (victim.isDueling()) {

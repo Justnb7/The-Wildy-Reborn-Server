@@ -1,18 +1,24 @@
 package com.venenatis.game.content.bounty;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import com.venenatis.game.model.Item;
+import com.venenatis.game.model.entity.player.Player;
 
 /**
  * Handles the bounty hunter's emblems
  *
  * @author Gabriel | Wolfs Darker && Jason
  */
-public enum BountyHunterEmblem
-{
+public enum BountyHunterEmblem {
 
 	MYSTERIOUS_EMBLEM_1(12746, 50_000, 0),
 	MYSTERIOUS_EMBLEM_2(12748, 100_000, 1),
@@ -29,69 +35,55 @@ public enum BountyHunterEmblem
 	private final int bounties;
 	private final int index;
 
-	private BountyHunterEmblem(int itemId, int bounties, int index)
-	{
+	private BountyHunterEmblem(int itemId, int bounties, int index) {
 		this.itemId = itemId;
 		this.bounties = bounties;
 		this.index = index;
 	}
 
-	public static final Set<BountyHunterEmblem> EMBLEMS = Collections.unmodifiableSet(EnumSet.allOf(BountyHunterEmblem.class));
-	
-	private static Map<Integer, BountyHunterEmblem> emblem = new HashMap<>();
-	
-	static {
-		for (BountyHunterEmblem em : values()) {
-			emblem.put(em.getItemId(), em);
-		}
-	}
-	
-	public static BountyHunterEmblem get(int id) {
-		return emblem.get(id);
-	}
-
-	public static BountyHunterEmblem valueOf(int index)
-	{
-		if (index >= EMBLEMS.size())
-		{
-			return BountyHunterEmblem.MYSTERIOUS_EMBLEM_10;
-		}
-
-		for (BountyHunterEmblem emblem : EMBLEMS)
-		{
-			if (emblem.getIndex() == index)
-			{
-				return emblem;
-			}
-		}
-
-		return BountyHunterEmblem.MYSTERIOUS_EMBLEM_1;
-	}
-
-	public static BountyHunterEmblem getNext(BountyHunterEmblem emblem)
-	{
-		return valueOf(emblem.getIndex() + 1);
-	}
-
-	public static BountyHunterEmblem getPrevious(BountyHunterEmblem emblem)
-	{
-		return valueOf(emblem.getIndex() - 1);
-	}
-
-	public int getItemId()
-	{
+	public int getItemId() {
 		return itemId;
 	}
 
-	public int getBounties()
-	{
+	public int getBounties() {
 		return bounties;
 	}
 
-	public int getIndex()
-	{
+	public int getIndex() {
 		return index;
 	}
+	
+	public static Optional<BountyHunterEmblem> forId(int id) {
+		return Arrays.stream(values()).filter(a -> a.itemId == id).findAny();
+	}
 
+	public BountyHunterEmblem getNextOrLast() {
+		return valueOf(index + 1).orElse(MYSTERIOUS_EMBLEM_10);
+	}
 
+	public BountyHunterEmblem getPreviousOrFirst() {
+		return valueOf(index - 1).orElse(MYSTERIOUS_EMBLEM_1);
+	}
+
+	public static final Set<BountyHunterEmblem> EMBLEMS = Collections.unmodifiableSet(EnumSet.allOf(BountyHunterEmblem.class));
+
+	public static Optional<BountyHunterEmblem> valueOf(int index) {
+		return EMBLEMS.stream().filter(emblem -> emblem.index == index).findFirst();
+	}
+
+	static final Comparator<BountyHunterEmblem> BEST_EMBLEM_COMPARATOR = (first, second) -> Integer.compare(first.itemId, second.itemId);
+
+	public static Optional<BountyHunterEmblem> getBest(Player player, boolean exclude) {
+		List<BountyHunterEmblem> emblems = EMBLEMS.stream().filter(exclude(player, exclude)).collect(Collectors.toList());
+
+		if (emblems.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return emblems.stream().max(BEST_EMBLEM_COMPARATOR);
+	}
+
+	private static Predicate<BountyHunterEmblem> exclude(Player player, boolean exclude) {
+		return emblem -> player.getInventory().contains(new Item(emblem.getItemId())) && (!exclude || exclude && !emblem.equals(MYSTERIOUS_EMBLEM_10));
+	}
 }

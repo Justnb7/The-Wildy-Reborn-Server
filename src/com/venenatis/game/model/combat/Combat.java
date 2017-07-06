@@ -74,7 +74,7 @@ public class Combat {
      * The names of all the bonuses in their exact identified slots.
      */
     public static final String[] BONUS_NAMES = {"Stab", "Slash", "Crush", "Magic", "Range", "Stab", "Slash", "Crush", "Magic", "Range",
-            "Melee Strength", "Ranged strength",/* "Magic damage", "Prayer", "Undead", "Slayer"*/};
+            "Melee Strength", "Ranged strength", "Magic damage", "Prayer", /*"Undead", "Slayer"*/};
 
     /**
 	 * Resets the combat for the entity

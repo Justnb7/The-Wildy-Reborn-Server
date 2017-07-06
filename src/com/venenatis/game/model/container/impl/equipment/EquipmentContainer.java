@@ -137,8 +137,8 @@ public class EquipmentContainer extends Container {
         	player.getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (player.getBonuses()[i] >= 0 ? "+" : "") + player.getBonuses()[i], (1675 + i));
         }
         //Bonuses sent to the custom made frames
-        /*for (int bonus = 10; bonus < 16; bonus++) {
-			if (bonus == 12 || bonus == 14 || bonus == 15) {
+        for (int bonus = 10; bonus < 14; bonus++) {
+			if (bonus == 12 || bonus == 14/* || bonus == 15*/) {
 				player.getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (player.getBonuses()[bonus] >= 0 ? "+" : "") + player.getBonuses()[bonus] + "%", (15115 + bonus - 10));
 			} else {
 				player.getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (player.getBonuses()[bonus] >= 0 ? "+" : "") + player.getBonuses()[bonus], (15115 + bonus - 10));
@@ -146,7 +146,7 @@ public class EquipmentContainer extends Container {
 			
 			//Debug
 			//player.getActionSender().sendMessage(Combat.BONUS_NAMES[bonus]+" VS "+ (bonuses[bonus] >= 0 ? "+" : "")+ " VS "+ (15115 + bonus - 10));
-		}*/
+		}
         
         calculateWeight();
 	}
@@ -157,18 +157,22 @@ public class EquipmentContainer extends Container {
 	 */
     private double calculateWeight() {
     	double weight = 0;
-    	int weightToInt = (int) weight;
-    	player.getActionSender().sendString(weightToInt+" kg", 15122);
-    	return weight;
-    	/*
-    	for(int equipmentIndex = 0; equipmentIndex < 12; equipmentIndex++) {
-    		this.getEquipment().getId(equipmentIndex);
-    		
-    		if (this.getEquipment().getId(equipmentIndex) > 1) {
-    			
-    		}
-    	}*/
     	
+    	Item[] inv_items = player.getInventory().toNonNullArray();
+		for (Item inventory : inv_items) {
+			 weight += inventory.getWeight();
+			 //player.debug("inventory: "+inventory.getWeight());
+		}
+		
+		Item[] equipment_items = player.getEquipment().toNonNullArray();
+		for(Item equipment : equipment_items) {
+			weight += equipment.getWeight();
+			//player.debug("equipment: "+weight);
+		}
+		
+		int weightToInt = (int) weight;
+		player.getActionSender().sendString(weightToInt+" kg", 15122);
+    	return weight;
     }
 
 	/** Unequips an item. */
@@ -208,6 +212,7 @@ public class EquipmentContainer extends Container {
 			final WeaponDefinition def = WeaponDefinition.get(item.getId());
 			name = def.getName();
 			sidebarId = def.getType().getInterfaceId();
+			WeaponDefinition.execute(player, item);
 		}
 
 		player.getActionSender().sendString(name, EquipmentConstants.getTextIdForInterface(sidebarId));

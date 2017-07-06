@@ -74,7 +74,7 @@ public class Combat {
      * The names of all the bonuses in their exact identified slots.
      */
     public static final String[] BONUS_NAMES = {"Stab", "Slash", "Crush", "Magic", "Range", "Stab", "Slash", "Crush", "Magic", "Range",
-            "Melee Strength", "Ranged strength", "Magic damage", "Prayer", /*"Undead", "Slayer"*/};
+            "Melee Strength", "Ranged strength", "Magic damage", "Prayer", "Undead", "Slayer"};
 
     /**
 	 * Resets the combat for the entity
@@ -752,8 +752,7 @@ public class Combat {
 	 * @return
 	 */
 	public static boolean wearingAccumulator(Player player) {
-		Item cape = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
-		return (cape.getId() == 10499);
+		return player.getEquipment().contains(10499);
 	}
 	
 	/**
@@ -761,8 +760,7 @@ public class Combat {
 	 * @return
 	 */
 	public static boolean wearingAttractor(Player player) {
-		Item cape = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
-		return (cape.getId() == 10498);
+		return player.getEquipment().contains(10498);
 	}
 
 	public static boolean avas(Player player) {

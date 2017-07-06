@@ -38,28 +38,6 @@ public final class EquipmentConstants {
 	public static final int MAGIC_STRENGTH = 12;
 	public static final int PRAYER = 13;
 
-	/**
-	 * Item bonus names.
-	 */
-	public static final String[] BONUS_NAMES = {
-		/* 0 */  "Stab",
-		/* 1 */  "Slash",
-		/* 2 */  "Crush",
-		/* 3 */  "Magic",
-		/* 4 */  "Range",
-		/* - */
-		/* 5 */  "Stab",
-		/* 6 */  "Slash",
-		/* 7 */  "Crush",
-		/* 8 */  "Magic",
-		/* 9 */  "Range",
-		/* - */
-		/* 10 */ "Strength",
-		/* 11 */ "Ranged Strength",
-		/* 12 */ "Magic Strength",
-		/* 13 */ "Prayer"
-	};
-
 	public static final int getTextIdForInterface(int interfaceId) {
 		switch (interfaceId) {
 			case 4705:
@@ -168,9 +146,9 @@ public final class EquipmentConstants {
 	 */
 	public static boolean hasGodCape(Player player) {
 		final boolean inventory = player.getInventory().containsAny(2412, 2413, 2414);
-		//final boolean bank = player.getBank().containsAny(2412, 2413, 2414);
+		final boolean bank = player.getBank().containsAny(2412, 2413, 2414);
 		final boolean equipment = player.getEquipment().containsAny(2412, 2413, 2414);
-		return inventory /*|| bank*/ || equipment;
+		return inventory || bank || equipment;
 	}
 
 	/**

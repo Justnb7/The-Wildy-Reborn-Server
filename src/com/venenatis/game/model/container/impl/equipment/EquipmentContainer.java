@@ -137,8 +137,8 @@ public class EquipmentContainer extends Container {
         	player.getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (player.getBonuses()[i] >= 0 ? "+" : "") + player.getBonuses()[i], (1675 + i));
         }
         //Bonuses sent to the custom made frames
-        for (int bonus = 10; bonus < 14; bonus++) {
-			if (bonus == 12 || bonus == 14/* || bonus == 15*/) {
+        for (int bonus = 10; bonus < 16; bonus++) {
+			if (bonus == 12 || bonus == 14 || bonus == 15) {
 				player.getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (player.getBonuses()[bonus] >= 0 ? "+" : "") + player.getBonuses()[bonus] + "%", (15115 + bonus - 10));
 			} else {
 				player.getActionSender().sendString(Combat.BONUS_NAMES[bonus] + ": " + (player.getBonuses()[bonus] >= 0 ? "+" : "") + player.getBonuses()[bonus], (15115 + bonus - 10));
@@ -147,15 +147,13 @@ public class EquipmentContainer extends Container {
 			//Debug
 			//player.getActionSender().sendMessage(Combat.BONUS_NAMES[bonus]+" VS "+ (bonuses[bonus] >= 0 ? "+" : "")+ " VS "+ (15115 + bonus - 10));
 		}
-        
-        calculateWeight();
 	}
 	
 	/**
 	 * Calculates and writes the players weight to the equipment equipment
 	 * sidebar interface.
 	 */
-    private double calculateWeight() {
+    public double calculateWeight() {
     	double weight = 0;
     	
     	Item[] inv_items = player.getInventory().toNonNullArray();
@@ -293,7 +291,7 @@ public class EquipmentContainer extends Container {
 					WeaponDefinition.execute(player, weapon);
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
-
+				calculateWeight();
 				setBonus();
 				player.getCombatState().reset();
 				player.setUsingSpecial(false);

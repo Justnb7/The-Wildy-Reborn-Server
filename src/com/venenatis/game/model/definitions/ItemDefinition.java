@@ -8,9 +8,9 @@ package com.venenatis.game.model.definitions;
 public class ItemDefinition {
 
 	/**
-	 * The maximum amount of item definitions in #43 old school.
+	 * The maximum amount of item definitions in #148 old school.
 	 */
-	public static final int ITEM_LIMIT = 21_308;
+	public static final int ITEM_LIMIT = 21_358;
 
 	public static final ItemDefinition[] DEFINITIONS = new ItemDefinition[ITEM_LIMIT];
 

@@ -34,12 +34,14 @@ public class InventoryContainer extends Container {
 	@Override
 	public void refresh() {
 		player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_INTERFACE, toArray());
+		player.getEquipment().calculateWeight();
 	}
 
 	@Override
 	public void refresh(int... slots) {
 		for (final int slot : slots) {
 			player.getActionSender().sendItemOnInterfaceSlot(InterfaceConstants.INVENTORY_INTERFACE, stack[slot], slot);
+			player.getEquipment().calculateWeight();
 		}
 	}
 

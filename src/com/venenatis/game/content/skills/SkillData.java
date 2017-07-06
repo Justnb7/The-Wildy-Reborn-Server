@@ -9,6 +9,7 @@ import com.venenatis.game.util.Utility;
  * @author lare96 <http://github.com/lare96>
  */
 public enum SkillData {
+	
     ATTACK(Skills.ATTACK, 6248, 6249, 6247),
     DEFENCE(Skills.DEFENCE, 6254, 6255, 6253),
     STRENGTH(Skills.STRENGTH, 6207, 6208, 6206),

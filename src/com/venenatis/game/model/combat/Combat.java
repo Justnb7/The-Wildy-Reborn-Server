@@ -34,6 +34,7 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
@@ -111,19 +112,17 @@ public class Combat {
 			}
 		}
 
-        // TODO fix this.. it makes the client stop receiving data lol u just stand there and DC
-        /*if (target.isPlayer()) {
+        if (target.isPlayer()) {
             Player ptarg = (Player) target;
-            player.getActionSender().sendEntityFeed(Utility.formatPlayerName(ptarg.getName()), player.getSkills().getLevelForExperience(Skills.HITPOINTS), ptarg.getSkills().getLevel(Skills.HITPOINTS));
-            //player.getActionSender().sendString(ptarg.getName() + "-" + player.getSkills().getLevelForExperience(Skills.HITPOINTS) + "-" + ptarg.getSkills().getLevel(Skills.HITPOINTS) + "-" + player.getName(), 35000);
+            player.getActionSender().sendEntityFeed(Utility.formatName(ptarg.getUsername()), ptarg.getSkills().getLevel(Skills.HITPOINTS), ptarg.getSkills().getLevelForExperience(Skills.HITPOINTS));
         } else {
             NPC npc = (NPC) target;
             if (npc.getId() != 493 || npc.getId() != 496 || npc.getId() != 5534) {
-                Player attacker = World.getWorld().getPlayers().get(npc.underAttackBy);
-                //System.out.println(Npc.getName(npc.npcType).replaceAll("_", " ") + " - "+ npc.maximumHealth +" - "+ npc.HP +" - "+ ((attacker != null) ? "-"+attacker.getUsername() : "null"));
-                attacker.getActionSender().sendEntityFeed(NPC.getName(npc.getId()).replaceAll("_", " "), npc.getHitpoints(), npc.getMaxHitpoints());
+                String name = target.isNPC() ? npc.asNpc().getName() : "null";
+                player.getActionSender().sendEntityFeed(name, npc.getHitpoints(), npc.getMaxHitpoints());
+                //System.out.println("name: "+name+" current health: "+npc.getHitpoints()+" max health: "+npc.getMaxHitpoints());
             }
-        }*/
+        }
 
         if (player.getCombatType() == CombatStyle.RANGE) {
             rangeAttack(player, target);

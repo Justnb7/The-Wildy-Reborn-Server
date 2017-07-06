@@ -7,6 +7,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.NPCDefinitions;
+import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
@@ -43,16 +44,31 @@ public class OwnerCommand implements Command {
     		player.getWeaponInterface().refreshSpecialAttack();
 			return true;
 		
+		case "npc":
+			final int npc = parser.nextInt();
+			Location spawnLocation = new Location(player.getX(), player.getY() - 1, player.getZ());
+
+			if (npc > 0) {
+				NPC spawn = new NPC(npc, spawnLocation, 0);
+				spawn.setLocation(spawnLocation);
+				World.getWorld().register(spawn);
+				if (parser.hasNext()) {
+					int hp = parser.nextInt();
+					spawn.setHitpoints(hp);
+				}
+			}
+			return true;
+			
 		case "item":
 			if (parser.hasNext()) {
-				final int id = parser.nextInt();
+				final int item = parser.nextInt();
 				amount = 1;
 
 				if (parser.hasNext()) {
 					amount = Integer.parseInt(parser.nextString().toLowerCase().replaceAll("k", "000").replaceAll("m", "000000").replaceAll("b", "000000000"));
 				}
 
-				player.getInventory().add(id, amount);
+				player.getInventory().add(item, amount);
 				return true;
 			}
 			return true;

@@ -63,14 +63,14 @@ public class ActionSender {
 	 * @return send the health overlay
 	 */
     public ActionSender sendEntityFeed(String entity_name, int hp, int max_hp) {
-    	player.getOutStream().writeFrame(175);
-    	if (entity_name == null) {
-			entity_name = "null";
-		}
-    	player.getOutStream().putRS2String(entity_name);
-    	player.getOutStream().writeShort(hp);
-		player.getOutStream().writeShort(max_hp);
-    	player.flushOutStream();
+    	if (player.getOutStream() != null) {
+            player.getOutStream().putFrameVarByte(175);
+            int offset = player.getOutStream().offset;
+            player.getOutStream().putRS2String(entity_name == null ? "" : entity_name);
+            player.getOutStream().writeShort(hp);
+    		player.getOutStream().writeShort(max_hp);
+            player.getOutStream().putFrameSizeByte(offset);
+        }
     	return this;
     }
     

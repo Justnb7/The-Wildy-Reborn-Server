@@ -8,8 +8,6 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 
-
-
 /**
  * Contains all of the potion data
  * @author Arithium
@@ -553,7 +551,7 @@ public enum PotionData {
 		@Override
 		public void handle(Object... object) {
 			Player player = (Player) object[0];
-			drinkAntifire(player);//setting 6mins
+			drinkAntifire(player);
 		}
 	}),
 	ANTIFIRE_3(2454, 2456, new PotionEffect() {
@@ -574,7 +572,63 @@ public enum PotionData {
 		@Override
 		public void handle(Object... object) {
 			Player player = (Player) object[0];
-			drinkAntifire(player);//yh go for it
+			drinkAntifire(player);
+		}
+	}),
+	SUPER_ENERGY_4(3016, 3018, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_energy(player);
+		}
+	}),
+	SUPER_ENERGY_3(3018, 3020, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_energy(player);
+		}
+	}),
+	SUPER_ENERGY_2(3020, 3022, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_energy(player);
+		}
+	}),
+	SUPER_ENERGY_1(3022, 229, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_energy(player);
+		}
+	}),
+	ENERGY_4(3008, 3010, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_energy(player);
+		}
+	}),
+	ENERGY_3(3010, 3012, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_energy(player);
+		}
+	}),
+	ENERGY_2(3012, 3014, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_energy(player);
+		}
+	}),
+	ENERGY_1(3014, 229, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_energy(player);
 		}
 	}),
 	;
@@ -608,6 +662,22 @@ public enum PotionData {
 
 	public PotionEffect getPotionEffect() {
 		return effect;
+	}
+	
+	public static void drink_super_energy(Player player) {
+		player.setRunEnergy(player.getRunEnergy() + 20);
+		if (player.getRunEnergy() > 100) {
+			player.setRunEnergy(100);
+		}
+		player.getActionSender().sendRunEnergy();
+	}
+
+	public static void drink_energy(Player player) {
+		player.setRunEnergy(player.getRunEnergy() + 10);
+		if (player.getRunEnergy() > 100) {
+			player.setRunEnergy(100);
+		}
+		player.getActionSender().sendRunEnergy();
 	}
 
 	public static void enhanceStat(Player player, int skillID, boolean sup) {
@@ -652,23 +722,19 @@ public enum PotionData {
 	
 	public static void drinkAntiPoison(Player player, long duration) {
 		player.getActionSender().sendMessage("You have been cured of poison.");
-		/*player.setPoisonDamage((byte) 0);
-		player.setPoisonImmunity(duration);
-		player.setLastPoisonCure(System.currentTimeMillis());*/
+		player.getPoisonImmunity().set((int) System.currentTimeMillis());
 		player.infection = 0;
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 	
-	// shit naming of paramater - it's when you drank it in MS (sys.curtime) not how long it lasts
 	public static void drinkAntifire(Player player) {
 		player.getActionSender().sendMessage("You drink some of your antifire potion.");
-		player.setAttribute("antiFire", System.currentTimeMillis());//setting duration? this one :D
-		//so that would be better yes - hopping off back in 10 sure
+		player.setAttribute("antiFire", System.currentTimeMillis());
 	}
 	
 	public static void drinkExtendedAntifire(Player player, long duration) {
 		player.getActionSender().sendMessage("You drink some of your extended antifire potion.");
-		player.setAttribute("extended_antiFire", duration);//setting duration?
+		player.setAttribute("extended_antiFire", duration);
 	}
 	
 	public static void enchanceMagic(Player player, int skillID, boolean sup) {

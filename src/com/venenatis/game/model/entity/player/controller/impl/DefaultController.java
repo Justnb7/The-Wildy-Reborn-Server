@@ -192,7 +192,6 @@ public class DefaultController extends Controller {
 	@Override
 	public void process(Player player) {
 		if (!(player.getWalkingQueue().isMoving() && player.getWalkingQueue().isRunning()) && player.getRunEnergy() != 100) {
-
 			player.setRunRestore(player.getRunRestore() + 1);
 
 			if (player.getRunRestore() == 3) {

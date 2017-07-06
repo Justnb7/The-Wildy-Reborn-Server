@@ -881,6 +881,7 @@ public class ActionSender {
             player.getOutStream().writeFrame(50);
             player.getOutStream().putLong(username);
             player.getOutStream().writeByte(world);
+            player.flushOutStream();
         }
 		return this;
 	}
@@ -890,7 +891,15 @@ public class ActionSender {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(164);
 			player.getOutStream().writeWordBigEndian_dup(id);
+			player.flushOutStream();
 		}
+		return this;
+	}
+	
+	public ActionSender sendRunEnergy() {
+		player.getOutStream().writeFrame(110);
+		player.getOutStream().writeByte(player.getRunEnergy());
+		player.flushOutStream();
 		return this;
 	}
 	
@@ -1039,12 +1048,6 @@ public class ActionSender {
 				this.stop();
 			}
 		}.attach(this));
-	}
-
-	public ActionSender sendRunEnergy() {
-		player.getOutStream().writeFrame(110);
-		player.getOutStream().writeByte((byte) player.getWalkingQueue().getEnergy());
-		return this;
 	}
 	
 }

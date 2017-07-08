@@ -42,6 +42,7 @@ public class TriviaBot {
 			BOT_DATA.add(data);
 		}
 		logger.info("Loaded " + BOT_DATA.size() + " TriviaBot questions.");
+		//TODO ask Jak how to not sent the task if a player has trivia disabled
 		initialize();
 	}
 

@@ -2681,13 +2681,21 @@ public class Player extends Entity {
 		return this.timePlayed;
 	}
 	
-	public boolean didYouKnow;
+	private boolean didYouKnow;
+	
+	public boolean is_did_you_know_activated() {
+		return didYouKnow;
+	}
 	
 	public void setDidYouKnow(boolean active) {
 		this.didYouKnow = active;
 	}
 	
-	public boolean trivia;
+	private boolean trivia;
+	
+	public boolean is_trivia_activated() {
+		return trivia;
+	}
 	
 	public void setTrivia(boolean active) {
 		this.trivia = active;

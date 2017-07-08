@@ -115,18 +115,9 @@ public class Bootstrap {
 		LOGGER.info("Loading startup files..");
 		serviceLoader.execute(() -> {
 
-			OpenRsUnpacker.unpack(); // If ur loading OSRS cache .. containing game objects
+			OpenRsUnpacker.unpack();
 
-			//ObjectDefinition317.loadConfig(); // obj def for 317 .. if ur using collisiondata.dat
-
-			MapLoading.load(); // load ur dumped osrs cache clipping tiles .gz files
-
-			// A hardcoded dump of the entire world clipping flags released sometime around 2006 i think.. not used.
-			/*try {
-				CollisionMap.load("Data/data/collisiondata.dat");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}*/
+			MapLoading.load();
 			
 			new IPBanParser().run();
 			new MacBanParser().run();

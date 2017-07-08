@@ -625,7 +625,7 @@ public class PlayerUpdating {
 			if (player.getEquipment().get(EquipmentConstants.TORSO_SLOT) != null) {
 				player.getPlayerProps().writeShort(0x200 + player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId());
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.getAppearance().getChest());
+				player.getPlayerProps().writeShort(0x100 + app.getLook(2));
 			}
 
 			// shield
@@ -640,14 +640,14 @@ public class PlayerUpdating {
 					&& !EquipmentConstants.hasBody(player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId())) {
 				player.getPlayerProps().writeByte(0);
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.getAppearance().getArms());
+				player.getPlayerProps().writeShort(0x100 + app.getLook(3));
 			}
 
 			// legs
 			if (player.getEquipment().get(EquipmentConstants.LEGS_SLOT) != null) {
 				player.getPlayerProps().writeShort(0x200 + player.getEquipment().get(EquipmentConstants.LEGS_SLOT).getId());
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.getAppearance().getLegs());
+				player.getPlayerProps().writeShort(0x100 + app.getLook(5));
 			}
 
 			// full helm
@@ -655,21 +655,21 @@ public class PlayerUpdating {
 					&& EquipmentConstants.hasHead(player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId())) {
 				player.getPlayerProps().writeByte(0);
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.getAppearance().getHead());
+				player.getPlayerProps().writeShort(0x100 + app.getLook(0));
 			}
 
 			// hands
 			if (player.getEquipment().get(EquipmentConstants.GLOVES_SLOT) != null) {
 				player.getPlayerProps().writeShort(0x200 + player.getEquipment().get(EquipmentConstants.GLOVES_SLOT).getId());
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.getAppearance().getHands());
+				player.getPlayerProps().writeShort(0x100 + app.getLook(4));
 			}
 
 			// feet
 			if (player.getEquipment().get(EquipmentConstants.BOOTS_SLOT) != null) {
 				player.getPlayerProps().writeShort(0x200 + player.getEquipment().get(EquipmentConstants.BOOTS_SLOT).getId());
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.getAppearance().getFeet());
+				player.getPlayerProps().writeShort(0x100 + app.getLook(6));
 			}
 
 			// full helm
@@ -679,7 +679,7 @@ public class PlayerUpdating {
 					&& !EquipmentConstants.hasJaw(player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId())) {
 				player.getPlayerProps().writeByte(0);
 			} else {
-				player.getPlayerProps().writeShort(0x100 + player.getAppearance().getBeard());
+				player.getPlayerProps().writeShort(0x100 + app.getLook(1));
 			}
 
 		} else {
@@ -689,11 +689,9 @@ public class PlayerUpdating {
 		}
 		
 		//Update appearance
-		player.getPlayerProps().writeByte(app.getHairColour());
-		player.getPlayerProps().writeByte(app.getTorsoColour());
-		player.getPlayerProps().writeByte(app.getLegColour());
-		player.getPlayerProps().writeByte(app.getFeetColour());
-		player.getPlayerProps().writeByte(app.getSkinColour());
+		for(int colour : app.getColoursArray()) {
+			player.getPlayerProps().writeByte((byte) colour);
+		}
 		
 		//Update character animations
 		player.getPlayerProps().writeShort((short) player.getStandAnimation()); // stand

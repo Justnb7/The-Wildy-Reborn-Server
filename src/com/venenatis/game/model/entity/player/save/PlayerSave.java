@@ -184,7 +184,8 @@ public class PlayerSave {
 				if (details.ignoreList.size() > 0) {
 					player.getFAI().setIgnoreList(details.ignoreList);
 				}
-				player.appearance.setLook(details.look);
+				player.appearance.setLookArray(details.look);
+				player.appearance.setColoursArray(details.colors);
 				player.appearance.setGender(details.gender);
 				player.skills.setAllExp(details.skillXP);
 				player.skills.setDynamicLevels(details.dynamicLevels);
@@ -264,6 +265,7 @@ public class PlayerSave {
 		private final List<Long> friendList;
 		private final List<Long> ignoreList;
 		private final int[] look;
+		private final int[] colors;
 		private final int gender;
 		private final double[] skillXP;
 		private final int[] dynamicLevels;
@@ -289,8 +291,8 @@ public class PlayerSave {
 			inTutorial = player.inTutorial();
 			starterReceived = player.receivedStarter();
 			gameMode = player.getAccount().getType().alias();
-			didYouKnowActivated = player.didYouKnow;
-			triviaActivated = player.trivia;
+			didYouKnowActivated = player.is_did_you_know_activated();
+			triviaActivated = player.is_trivia_activated();
 			specialAmount = player.getSpecialAmount();
 			spellbook = player.getSpellBook();
 			expCounter = player.getSkills().getExpCounter();
@@ -342,6 +344,7 @@ public class PlayerSave {
 			friendList = player.getFAI().getFriendsList();
 			ignoreList = player.getFAI().getIgnoreList();
 			look = player.appearance.getLook();
+			colors = player.appearance.getColors();
 			gender = player.appearance.gender;
 			skillXP = player.skills.getAllXP();
 			dynamicLevels = player.skills.getAllDynamicLevels();

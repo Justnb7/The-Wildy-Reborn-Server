@@ -27,8 +27,8 @@ public class HomeQuestTabPage extends QuestTabPage {
 		
 		write(player, "<col=FFFFFF>Rank: <col=00CC00>"+player.getRights().getName(), 1);
 		write(player, "<col=FFFFFF>Played: <col=00CC00>"+time, 2);
-		write(player, "<col=FFFFFF>Did you know: "+(player.didYouKnow ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 3);
-		write(player, "<col=FFFFFF>Trivia: <col=00CC00>"+(player.trivia ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 4);
+		write(player, "<col=FFFFFF>Did you know: "+(player.is_did_you_know_activated() ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 3);
+		write(player, "<col=FFFFFF>Trivia: <col=00CC00>"+(player.is_trivia_activated() ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 4);
 		write(player, "", 5);
 		
 		write(player, "<img=27><col=FFFFFF>Kills: <col=00CC00>"+ player.getKillCount(), 6);
@@ -52,12 +52,20 @@ public class HomeQuestTabPage extends QuestTabPage {
 	public void onButtonClick(Player player, int button) {
 		switch (button) {
 		case 113236:
-			player.setDidYouKnow(player.didYouKnow = !player.didYouKnow);
-			write(player, "<col=FFFFFF>Did you know: "+(player.didYouKnow ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 3);
+			if(player.is_did_you_know_activated()) {
+				player.setDidYouKnow(false);
+			} else {
+				player.setDidYouKnow(true);
+			}
+			write(player, "<col=FFFFFF>Did you know: "+(player.is_did_you_know_activated() ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 3);
 			break;
 		case 113237:
-			player.setTrivia(player.trivia = !player.trivia);
-			write(player, "<col=FFFFFF>Trivia: <col=00CC00>"+(player.trivia ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 4);
+			if(player.is_trivia_activated()) {
+				player.setTrivia(false);
+			} else {
+				player.setTrivia(true);
+			}
+			write(player, "<col=FFFFFF>Trivia: <col=00CC00>"+(player.is_trivia_activated() ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 4);
 			break;
 			
 			

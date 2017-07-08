@@ -48,7 +48,7 @@ public class DidYouKnowEvent extends Task {
 		
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player != null) {
-				if (player.didYouKnow)
+				if (player.is_did_you_know_activated())
 					messages.forEach(m -> player.getActionSender().sendMessage(m));
 			}
 		}

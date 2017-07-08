@@ -143,19 +143,19 @@ public class Selection {
 	public void starter(Player player, int gameMode) {
 		switch (gameMode) {
 		case 0: //Ironman
-			/*player.getItems().setEquipment(12810, 1, 0);
-			player.getItems().setEquipment(12811, 1, 4);
-			player.getItems().setEquipment(12812, 1, 7);*/
+			player.getEquipment().setSlot(0, new Item(12810));
+			player.getEquipment().setSlot(4, new Item(12811));
+			player.getEquipment().setSlot(7, new Item(12812));
 			break;
 		case 1: //Hardcore ironman
-			/*player.getItems().setEquipment(20792, 1, 0);
-			player.getItems().setEquipment(20794, 1, 4);
-			player.getItems().setEquipment(20796, 1, 7);*/
+			player.getEquipment().setSlot(0, new Item(20792));
+			player.getEquipment().setSlot(4, new Item(20794));
+			player.getEquipment().setSlot(7, new Item(20796));
 			break;
 		case 2: //Ultimate ironman
-			/*player.getItems().setEquipment(12813, 1, 0);
-			player.getItems().setEquipment(12814, 1, 4);
-			player.getItems().setEquipment(12815, 1, 7);*/
+			player.getEquipment().setSlot(0, new Item(12813));
+			player.getEquipment().setSlot(4, new Item(12814));
+			player.getEquipment().setSlot(7, new Item(12815));
 			break;
 		case 3: //Regular account
 			
@@ -175,8 +175,10 @@ public class Selection {
 		player.setTutorial(false);
 		player.setReceivedStarter(true);
 		//Update players gear bonusses
-		//player.getItems().getBonus();
-		//player.getItems().writeBonus();
+		player.getEquipment().calculateWeight();
+		player.getEquipment().updateWeapon();
+		player.getEquipment().setBonus();
+		player.setRunEnergy(100);
 	}
 	
 	/**

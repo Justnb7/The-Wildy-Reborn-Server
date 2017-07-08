@@ -35,8 +35,8 @@ public class ObjectPathFinder {
 			type = object.getType();
 			direction = object.getFace();
 		}
-		final int finalX = object.getPosition().getX();
-		final int finalY = object.getPosition().getY();
+		final int finalX = object.getLocation().getX();
+		final int finalY = object.getLocation().getY();
 		return PathFinder.doPath(
 				new VariablePathFinder(type, walkToData, direction, sizeX,
 						sizeY), player, finalX, finalY);

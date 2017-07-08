@@ -129,7 +129,7 @@ public class RegionStoreManager {
 		RegionStore[] regions = getSurroundingRegions(location);
 		for (RegionStore region : regions) {
 			for (GameObject object : region.getGameObjects()) {
-				if (object.getPosition().equals(location) && object.getId() == id) {
+				if (object.getLocation().equals(location) && object.getId() == id) {
 					return object;
 				}
 			}

@@ -450,7 +450,7 @@ public class Mining extends HarvestingAction {
 				break;
 			}
 		}
-		return new GameObject(rock.getReplacementRocks()[index], getGameObject().getPosition(), getGameObject().getType(), getGameObject().getFace());
+		return new GameObject(rock.getReplacementRocks()[index], getGameObject().getLocation(), getGameObject().getType(), getGameObject().getFace());
 	}
 
 	@Override

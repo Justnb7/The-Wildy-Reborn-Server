@@ -35,9 +35,9 @@ public final class GroundItemHandler {
 	 */
 	public static boolean register(GroundItem groundItem) {
 		Item item = new Item(groundItem.getItem());
-		if (find(groundItem.getPosition(), groundItem.getItem().getId()) != null) {
+		if (find(groundItem.getLocation(), groundItem.getItem().getId()) != null) {
 			if (item.isStackable()) {
-				find(groundItem.getPosition(), groundItem.getItem().getId()).setItem(new Item(groundItem.getItem().getId(), find(groundItem.getPosition(), groundItem.getItem().getId()).getItem().getAmount() + groundItem.getItem().getAmount()));
+				find(groundItem.getLocation(), groundItem.getItem().getId()).setItem(new Item(groundItem.getItem().getId(), find(groundItem.getLocation(), groundItem.getItem().getId()).getItem().getAmount() + groundItem.getItem().getAmount()));
 				return false;
 			}
 		}
@@ -59,7 +59,7 @@ public final class GroundItemHandler {
 			if (groundItem == null) {
 				continue;
 			}
-			if (groundItem.getPosition().equals(position) && groundItem.getItem().getId() == itemIndex) {
+			if (groundItem.getLocation().equals(position) && groundItem.getItem().getId() == itemIndex) {
 				return groundItem;
 			}
 		}
@@ -67,8 +67,8 @@ public final class GroundItemHandler {
 	}
 
 	public static Optional<GroundItem> get(int id, Location position/*int x, int y, int z*/) {
-		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getPosition().getX() == position.getX()
-				&& item.getPosition().getY() == position.getY() && item.getPosition().getZ() == position.getZ()).findFirst();
+		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getLocation().getX() == position.getX()
+				&& item.getLocation().getY() == position.getY() && item.getLocation().getZ() == position.getZ()).findFirst();
 	}
 
 	/**
@@ -83,9 +83,9 @@ public final class GroundItemHandler {
 	public static boolean removeGroundItem(GroundItem groundItem) {
 		for (GroundItem other : groundItems) {
 			if (groundItem.getItem().getId() == other.getItem().getId()
-					&& groundItem.getPosition().getX() == other.getPosition().getX()
-					&& groundItem.getPosition().getY() == other.getPosition().getY()
-					&& groundItem.getPosition().getZ() == other.getPosition().getZ() && !other.isRemoved()
+					&& groundItem.getLocation().getX() == other.getLocation().getX()
+					&& groundItem.getLocation().getY() == other.getLocation().getY()
+					&& groundItem.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()
 					&& groundItem.getItem().getAmount() == other.getItem().getAmount()) {
 				other.setRemoved(true);
 				removeRegionalItem(other);
@@ -97,7 +97,7 @@ public final class GroundItemHandler {
 
 	private static void removeRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player == null || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+			if (player == null || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
 				continue;
 			}
 
@@ -107,7 +107,7 @@ public final class GroundItemHandler {
 
 	private static void addRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player == null || player.getLocation().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+			if (player == null || player.getLocation().getZ() != groundItem.getLocation().getZ() || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
 				continue;
 			}
 			
@@ -134,7 +134,7 @@ public final class GroundItemHandler {
 
 				// get the owner of the item by name and see if they are
 				// online.
-				if (player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) <= 60
+				if (player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) <= 60
 						&& player.getLocation().getZ() == player.getLocation().getZ()) {
 					player.getActionSender().sendGroundItem(groundItem);
 				}
@@ -158,12 +158,6 @@ public final class GroundItemHandler {
 					item.setRemoved(true);
 					iterator.remove();
 					removeRegionalItem(item);
-					if (item.deathShop()) {
-						Player owner = item.getOwner();
-						if (owner != null) {
-							
-						}
-					}
 				}
 
 				if (item.getState() == State.PRIVATE) {
@@ -184,9 +178,9 @@ public final class GroundItemHandler {
 		for (GroundItem other : groundItems) {
 			if (groundItem.getOwnerHash() == other.getOwnerHash() || other.getState() == (State.GLOBAL)) {
 				if (groundItem.getItem().getId() == other.getItem().getId()
-						&& groundItem.getPosition().getX() == other.getPosition().getX()
-						&& groundItem.getPosition().getY() == other.getPosition().getY()
-						&& groundItem.getPosition().getZ() == other.getPosition().getZ() && !other.isRemoved()) {
+						&& groundItem.getLocation().getX() == other.getLocation().getX()
+						&& groundItem.getLocation().getY() == other.getLocation().getY()
+						&& groundItem.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
 					if (item.isStackable()) {
 						int existingCount = other.getItem().getAmount();
 						long newCount = (long) existingCount + item.getAmount();
@@ -203,7 +197,7 @@ public final class GroundItemHandler {
 
 	public static void reloadGroundItems(Player player) {
 		for (GroundItem groundItem : groundItems) {
-			if (player.getLocation().getZ() != groundItem.getPosition().getZ() || player.distanceToPoint(groundItem.getPosition().getX(), groundItem.getPosition().getY()) > 60) {
+			if (player.getLocation().getZ() != groundItem.getLocation().getZ() || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
 				continue;
 			}
 			
@@ -262,9 +256,9 @@ public final class GroundItemHandler {
 
 		for (GroundItem other : groundItems) {
 			if (groundItem.getItem().getId() == other.getItem().getId()
-					&& groundItem.getPosition().getX() == other.getPosition().getX()
-					&& groundItem.getPosition().getY() == other.getPosition().getY()
-					&& groundItem.getPosition().getZ() == other.getPosition().getZ() && !other.isRemoved()) {
+					&& groundItem.getLocation().getX() == other.getLocation().getX()
+					&& groundItem.getLocation().getY() == other.getLocation().getY()
+					&& groundItem.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
 				if (other.getState() == State.GLOBAL || other.getOwnerHash() == player.usernameHash) {
 					int existing = getItemAmount(groundItem);
 
@@ -324,8 +318,8 @@ public final class GroundItemHandler {
 
 				Item item = groundItem.getItem();
 
-				if (player.getLocation().getX() == groundItem.getPosition().getX()
-						&& player.getLocation().getY() == groundItem.getPosition().getY()) {
+				if (player.getLocation().getX() == groundItem.getLocation().getX()
+						&& player.getLocation().getY() == groundItem.getLocation().getY()) {
 
 					if (player.getInventory().getFreeSlots() == 0
 							&& !(player.getInventory().contains(item.getId()) && item.isStackable())) {

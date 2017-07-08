@@ -633,7 +633,7 @@ public class ActionSender {
 	 * @return
 	 */
 	public ActionSender sendGroundItem(GroundItem groundItem) {
-		sendCoordinates(groundItem.getPosition());
+		sendCoordinates(groundItem.getLocation());
 		player.getOutStream().writeFrame(44);
 		player.getOutStream().writeWordBigEndianA(groundItem.getItem().getId());
 		player.getOutStream().writeShort(groundItem.getItem().getAmount());
@@ -643,7 +643,7 @@ public class ActionSender {
 	}
 	
 	public ActionSender sendRemoveGroundItem(GroundItem groundItem) {
-		sendCoordinates(groundItem.getPosition());
+		sendCoordinates(groundItem.getLocation());
 		player.getOutStream().writeFrame(156);
 		player.getOutStream().writeByteS(0);
 		player.getOutStream().writeShort(groundItem.getItem().getId());

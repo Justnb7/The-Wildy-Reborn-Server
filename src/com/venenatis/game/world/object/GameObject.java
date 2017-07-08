@@ -5,7 +5,7 @@ import com.venenatis.game.location.Location;
 
 /**
  * A global object is a visual model that is viewed by all players within a region.
- * This class represents the identification value, x and y position, as well as the
+ * This class represents the identification value, x and y location, as well as the
  * height of the object. 
  * 
  * A key factor is the ticks remaining. The ticksRemaining variable represents how
@@ -41,35 +41,35 @@ public class GameObject {
 	/**
 	 * The location.
 	 */
-	private Location position;
+	private Location location;
 	
 	/**
 	 * Creates the game object.
-	 * @param position The position.
+	 * @param location The location.
 	 * @param type The type.
 	 * @param direction The rotation.
 	 */
-	public GameObject(int id, Location position, int type, int direction) {
+	public GameObject(int id, Location location, int type, int direction) {
 		this.id = id;
-		this.position = position;
+		this.location = location;
 		this.type = type;
 		this.face = direction;
 	}
 	
 	public GameObject(int id, int x, int y, int height) {
 		this.id = id;
-		this.position = Location.create(x, y, height);
+		this.location = Location.create(x, y, height);
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face) {
 		this.id = id;
-		this.position = Location.create(x, y, height);
+		this.location = Location.create(x, y, height);
 		this.face = face;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face, int type) {
 		this.id = id;
-		this.position = Location.create(x, y, height);
+		this.location = Location.create(x, y, height);
 		this.type = type;
 		this.face = face;
 	}
@@ -93,15 +93,15 @@ public class GameObject {
 	}
 	
 	public int getX() {
-		return position.getX();
+		return location.getX();
 	}
 	
 	public int getY() {
-		return position.getY();
+		return location.getY();
 	}
 	
 	public int getZ() {
-		return position.getZ();
+		return location.getZ();
 	}
 	
 	public int getFace() {
@@ -121,11 +121,11 @@ public class GameObject {
 	}
 	
 	/**
-	 * Gets the position.
-	 * @return The position.
+	 * Gets the location.
+	 * @return The location.
 	 */
-	public Location getPosition() {
-		return position;
+	public Location getLocation() {
+		return location;
 	}
 
 	

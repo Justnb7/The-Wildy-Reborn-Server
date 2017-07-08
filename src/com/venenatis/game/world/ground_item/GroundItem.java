@@ -4,45 +4,76 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 
-
+/**
+ * An instance of a ground item (items shown on the floor when they are
+ * dropped).
+ * 
+ * @author Patrick van Elderen
+ *
+ */
 public final class GroundItem {
 
 	public enum State {
-		PRIVATE, GLOBAL
+		/**
+		 * A private item can be viewed by only the owner
+		 */
+		PRIVATE,
+
+		/**
+		 * Everyone can view this item
+		 */
+		GLOBAL;
 	}
 
+	/**
+	 * The ground item
+	 */
 	private Item item;
+
+	/**
+	 * The location of the ground item
+	 */
+	private Location location;
+
+	/**
+	 * The owner of the ground item
+	 */
 	private final Player owner;
 
+	/**
+	 * Checks if the ground item was already removed
+	 */
 	private boolean removed;
+
+	/**
+	 * The amount of ticks before the type changes to PUBLIC
+	 */
 	private int timer;
-	private boolean deathShop;
+
+	/**
+	 * The item type which is either PRIVATE or PUBLIC
+	 */
 	private GroundItemType itemType = GroundItemType.PUBLIC;
 
+	/**
+	 * The current state of the ground item
+	 */
 	private State state = State.PRIVATE;
 
-	public GroundItem(Item item, int x, int y, int z, Player owner) {
-		this(item, new Location(x, y, z), owner);
-	}
-
-	public GroundItem(Item item, Location position, Player owner) {
-		this.item = item;
-		this.setLocation(position);
-		this.owner = owner;
-	}
-
-	private Location position;
-	
-	public void setLocation(Location position) {
-		this.position = position;
-	}
-	
 	/**
-	 * Returns the items position
-	 * @return
+	 * Constructs a new ground item object
+	 * 
+	 * @param item
+	 *            The ground item
+	 * @param location
+	 *            The location of the ground item
+	 * @param owner
+	 *            The player that owns the ground item
 	 */
-	public Location getPosition() {
-		return position;
+	public GroundItem(Item item, Location location, Player owner) {
+		this.item = item;
+		this.setLocation(location);
+		this.owner = owner;
 	}
 
 	/**
@@ -53,23 +84,52 @@ public final class GroundItem {
 	public Item getItem() {
 		return item;
 	}
-	
+
 	/**
 	 * Sets the ground items item
+	 * 
 	 * @param item
 	 */
 	public void setItem(Item item) {
 		this.item = item;
 	}
 
+	/**
+	 * Returns the items location
+	 * 
+	 * @return the location of the ground item
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	/**
+	 * Sets the location of the ground item
+	 * 
+	 * @param location
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
 	public long getOwnerHash() {
 		return owner == null ? -1 : owner.usernameHash;
 	}
 
+	/**
+	 * Checks if the item was already removed
+	 * 
+	 * @return removed
+	 */
 	public boolean isRemoved() {
 		return removed;
 	}
 
+	/**
+	 * Activates or disables ground items
+	 * 
+	 * @param removed
+	 */
 	public void setRemoved(boolean removed) {
 		this.removed = removed;
 	}
@@ -98,6 +158,12 @@ public final class GroundItem {
 		return state;
 	}
 
+	/**
+	 * Sets the current ground item state
+	 * 
+	 * @param state
+	 *            The current state
+	 */
 	public void setState(State state) {
 		this.state = state;
 	}
@@ -111,25 +177,29 @@ public final class GroundItem {
 		return owner;
 	}
 
-	public boolean deathShop() {
-		return deathShop;
-	}
-
-	public void setDeathShop(boolean deathShop) {
-		this.deathShop = deathShop;
-	}
-
+	/**
+	 * Sets the current ground item type
+	 * 
+	 * @param type
+	 *            PUBLIC or PRIVATE
+	 */
 	public void setGroundItemType(GroundItemType type) {
 		this.itemType = type;
 	}
 
+	/**
+	 * Gets the current type of the ground item
+	 * 
+	 * @return Either PRIVATE or PUBLIC
+	 */
 	public GroundItemType getType() {
 		return itemType;
 	}
 
 	@Override
 	public String toString() {
-		return "GroundItem [item=" + item + ", owner=" + owner + ", removed=" + removed + ", timer=" + timer + ", state=" + state + "]";
+		return "GroundItem [item=" + item + ", owner=" + owner + ", removed=" + removed + ", timer=" + timer
+				+ ", state=" + state + "]";
 	}
 
 }

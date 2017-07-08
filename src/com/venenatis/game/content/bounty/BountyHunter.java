@@ -336,7 +336,7 @@ public class BountyHunter extends Task {
 				killer.getInventory().remove(new Item(emblem.get().getItemId()));
 				killer.getInventory().add(new Item(emblem.get().getNextOrLast().getItemId()));
 			} else {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), player.getX(), player.getY(), player.getZ(), killer));
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), player.getLocation(), killer));
 			}
 			killer.setAttribute("receive_emblem", handleItemGiving(player, killer));
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);

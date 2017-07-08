@@ -90,7 +90,7 @@ public class Firemaking {
 					@Override
 					public void execute() {
 						if (player.getOutStream() != null && player != null && player.isActive()) {
-							GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getX(), fire.getY(), fire.getZ(), player));
+							GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getLocation(), player));
 						}
 						stop();
 					}

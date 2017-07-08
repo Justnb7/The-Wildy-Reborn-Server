@@ -132,7 +132,7 @@ public class DropManager {
 			List<Item> drops = g.access(player, modifier, repeats);
 			
 			for (Item item : drops) {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location.getX(), location.getY(), location.getZ(), player));
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location, player));
 			}
 			
 			/**
@@ -140,7 +140,7 @@ public class DropManager {
 			 */
 			if (Utility.random(115) == 1) {
 				player.getActionSender().sendMessage("@pur@You sense a crystal key being dropped to the ground.");
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(989, 1), location.getX(), location.getY(), location.getZ(), player));
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(989, 1), location, player));
 			}
 		});
 	}

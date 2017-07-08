@@ -242,7 +242,7 @@ public class RangeData {
 			System.err.println("UNKNOWN RANGE AMMO SITUATION"); // what wep u using?
 		}
 		if (drop != null && RandomGenerator.nextInt(3) == 1) {
-			GroundItemHandler.createGroundItem(new GroundItem(drop, target.getX(), target.getY(), target.getZ(), player));
+			GroundItemHandler.createGroundItem(new GroundItem(drop, target.getLocation(), player));
 		}
 	}
 }

@@ -189,9 +189,9 @@ public class ProjectileClipping {
 		if (def.rangableObject()) {
 			return;
 		}
-		int x = obj.getPosition().getX();
-		int y = obj.getPosition().getY();
-		int height = obj.getPosition().getZ();
+		int x = obj.getLocation().getX();
+		int y = obj.getLocation().getY();
+		int height = obj.getLocation().getZ();
 		int xLength;
 		int yLength;
 		if (obj.getFace() != 1 && obj.getFace()  != 3) {
@@ -228,9 +228,9 @@ public class ProjectileClipping {
 			return;
 		int xLength;
 		int yLength;
-		int x = obj.getPosition().getX();
-		int y = obj.getPosition().getY();
-		int height = obj.getPosition().getZ();
+		int x = obj.getLocation().getX();
+		int y = obj.getLocation().getY();
+		int height = obj.getLocation().getZ();
 		if (obj.getFace() != 1 && obj.getFace() != 3) {
 			xLength = def.xLength();
 			yLength = def.yLength();

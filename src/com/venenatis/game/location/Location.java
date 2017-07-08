@@ -717,7 +717,7 @@ public class Location {
 	}
 
 	public Location transform(int diffX, int diffY) {
-		return create(getZ(), getX() + diffX, getY() + diffY);
+		return create(getX() + diffX, getY() + diffY, z);
 	}
 
 	@Override

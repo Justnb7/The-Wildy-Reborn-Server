@@ -282,7 +282,7 @@ public class PlayerSave {
 			username = player.getUsername();
 			password = player.getPassword();
 			rights = player.getRights();
-			location = player.getPosition();
+			location = player.getLocation();
 			newPlayer = player.isNewPlayer();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();

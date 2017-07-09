@@ -139,7 +139,7 @@ public class Coverage {
 		case RANGE:
 			return center().distanceToPoint(c.center()) <= distance
 					&& !ProjectilePathFinder.projectileBlocked(
-							entity.getPosition(), partner.getPosition());
+							entity.getLocation(), partner.getLocation());
 		}
 		return false;
 	}

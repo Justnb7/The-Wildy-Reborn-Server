@@ -493,7 +493,7 @@ public class NPC extends Entity {
 			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() || World.getWorld().getPlayers().get(spawnedBy).getCombatState().isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
 				World.getWorld().unregister(this);
 			}
-			updateCoverage(getPosition());
+			updateCoverage(getLocation());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -351,9 +351,9 @@ public class Directions {
 		 * @return {@code True} if not, {@code false} if so.
 		 */
 		public static boolean isWallInPath(Entity mob, Entity other) {
-			int dirX = other.getPosition().getX() - mob.getPosition().getX();
-			int dirY = other.getPosition().getY() - mob.getPosition().getY();
-			return !PrimitivePathFinder.canMove(mob, mob.getPosition(), Directions.directionFor(dirX, dirY), false);
+			int dirX = other.getLocation().getX() - mob.getLocation().getX();
+			int dirY = other.getLocation().getY() - mob.getLocation().getY();
+			return !PrimitivePathFinder.canMove(mob, mob.getLocation(), Directions.directionFor(dirX, dirY), false);
 		}
 
 		public static final int getMoveDirection(int xOffset, int yOffset) {

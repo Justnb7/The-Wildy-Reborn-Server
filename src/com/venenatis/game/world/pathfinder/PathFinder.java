@@ -37,13 +37,13 @@ public interface PathFinder {
 		//public static int[] dummies = new int[] {995, 6685, 3024, 2440, 2436, 2444, 2432};
 		//	mob.dummyIdx = 0;//reset
 		//int item = World.dummies[mob.dummyIdx];
-		Location destination = Location.create(x, y, mob.getPosition().getZ());
-		Location base = mob.getPosition();
+		Location destination = Location.create(x, y, mob.getLocation().getZ());
+		Location base = mob.getLocation();
 		int srcX = base.localX_hyperion();
 		int srcY = base.localY_hyperion();
 		int destX = destination.localX_formatted_hyperion(base);
 		int destY = destination.localY_formatted_hyperion(base);
-		PathState state = pathFinder.findPath(mob, target, mob.getPosition(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
+		PathState state = pathFinder.findPath(mob, target, mob.getLocation(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
 		if (state != null && addToWalking) {
 			if (mob.isPlayer()) {
 				Player p = (Player)mob;

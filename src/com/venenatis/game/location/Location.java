@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A position point on the map.
+ * A location point on the map.
  * 
  * @author blakeman8192
  * @author lare96
@@ -27,7 +27,7 @@ public class Location {
 	private int z;
 
 	/**
-	 * Creates a new Position with the specified coordinates. The Z coordinate
+	 * Creates a new location with the specified coordinates. The Z coordinate
 	 * is set to 0.
 	 * 
 	 * @param x
@@ -40,7 +40,7 @@ public class Location {
 	}
 
 	/**
-	 * Creates a new Position with the specified coordinates.
+	 * Creates a new location with the specified coordinates.
 	 * 
 	 * @param x
 	 *            the X coordinate.
@@ -56,7 +56,7 @@ public class Location {
 	}
 
 	/**
-	 * Creates a new position with default values (0) for the coordinates.
+	 * Creates a new location with default values (0) for the coordinates.
 	 */
 	public Location() {
 
@@ -91,12 +91,12 @@ public class Location {
 	}
 
 	/**
-	 * Sets this position as the other position. <b>Please use this method
-	 * instead of entity.setPosition(other)</b> because of reference conflicts
-	 * (if the other position gets modified, so will the entity's).
+	 * Sets this location as the other location. <b>Please use this method
+	 * instead of entity.setLocation(other)</b> because of reference conflicts
+	 * (if the other location gets modified, so will the entity's).
 	 * 
 	 * @param other
-	 *            the other position.
+	 *            the other location.
 	 */
 	public Location setAs(Location other) {
 		this.x = other.x;
@@ -106,13 +106,13 @@ public class Location {
 	}
 
 	/**
-	 * Moves the position.
+	 * Moves the location.
 	 * 
 	 * @param amountX
 	 *            the amount of X coordinates.
 	 * @param amountY
 	 *            the amount of Y coordinates.
-	 * @return this position.
+	 * @return this location.
 	 */
 	public Location move(int amountX, int amountY) {
 		setX(getX() + amountX);
@@ -121,7 +121,7 @@ public class Location {
 	}
 
 	/**
-	 * Moves the position.
+	 * Moves the location.
 	 * 
 	 * @param amountX
 	 *            the amount of X coordinates.
@@ -129,7 +129,7 @@ public class Location {
 	 *            the amount of Y coordinates.
 	 * @param amountZ
 	 *            the amount of Z coordinates.
-	 * @return this position.
+	 * @return this location.
 	 */
 	public Location move(int amountX, int amountY, int amountZ) {
 		setX(getX() + amountX);
@@ -140,7 +140,7 @@ public class Location {
 
 	@Override
 	public String toString() {
-		return "Position(" + x + ", " + y + ", " + z + ")";
+		return "Location(" + x + ", " + y + ", " + z + ")";
 	}
 
 	@Override
@@ -214,7 +214,7 @@ public class Location {
 		return z;
 	}
 	/**
-	 * Gets the X coordinate of the region containing this Position.
+	 * Gets the X coordinate of the region containing this location.
 	 * 
 	 * @return the region X coordinate.
 	 */
@@ -223,7 +223,7 @@ public class Location {
 	}
 
 	/**
-	 * Gets the Y coordinate of the region containing this Position.
+	 * Gets the Y coordinate of the region containing this location.
 	 * 
 	 * @return the region Y coordinate.
 	 */
@@ -232,10 +232,10 @@ public class Location {
 	}
 
 	/**
-	 * Gets the local X coordinate relative to the base Position.
+	 * Gets the local X coordinate relative to the base location.
 	 * 
 	 * @param base
-	 *            the base Position.
+	 *            the base location.
 	 * @return the local X coordinate.
 	 */
 	public int getLocalX(Location base) {
@@ -243,10 +243,10 @@ public class Location {
 	}
 
 	/**
-	 * Gets the local Y coordinate relative to the base Position.
+	 * Gets the local Y coordinate relative to the base location.
 	 * 
 	 * @param base
-	 *            the base Position.
+	 *            the base location.
 	 * @return the local Y coordinate.
 	 */
 	public int getLocalY(Location base) {
@@ -254,7 +254,7 @@ public class Location {
 	}
 
 	/**
-	 * Gets the local X coordinate relative to this Position.
+	 * Gets the local X coordinate relative to this location.
 	 * 
 	 * @return the local X coordinate.
 	 */
@@ -263,7 +263,7 @@ public class Location {
 	}
 
 	/**
-	 * Gets the local Y coordinate relative to this Position.
+	 * Gets the local Y coordinate relative to this location.
 	 * 
 	 * @return the local Y coordinate.
 	 */
@@ -293,7 +293,7 @@ public class Location {
 	}
 
 	/**
-	 * Gets the X map region chunk relative to this position.
+	 * Gets the X map region chunk relative to this location.
 	 * 
 	 * @return the X region chunk.
 	 */
@@ -302,7 +302,7 @@ public class Location {
 	}
 
 	/**
-	 * Gets the Y map region chunk relative to this position.
+	 * Gets the Y map region chunk relative to this location.
 	 * 
 	 * @return the Y region chunk.
 	 */
@@ -311,7 +311,7 @@ public class Location {
 	}
 
 	/**
-	 * Gets the region id relative to this position.
+	 * Gets the region id relative to this location.
 	 * 
 	 * @return the region id.
 	 */
@@ -320,10 +320,10 @@ public class Location {
 	}
 
 	/**
-	 * Checks if this position is viewable from the other position.
+	 * Checks if this location is viewable from the other location.
 	 * 
 	 * @param other
-	 *            the other position.
+	 *            the other location.
 	 * @return true if it is viewable, false otherwise.
 	 */
 	public boolean isViewableFrom(Location other) {
@@ -437,19 +437,19 @@ public class Location {
 	}
 
 	/**
-	 * Checks if this position is within distance of another position.
+	 * Checks if this location is within distance of another location.
 	 * 
-	 * @param position
-	 *            the position to check the distance for.
+	 * @param location
+	 *            the location to check the distance for.
 	 * @param distance
 	 *            the distance to check.
-	 * @return true if this position is within the distance of another position.
+	 * @return true if this location is within the distance of another location.
 	 */
-	public boolean withinDistance(Location position, int distance) {
-		if (this.getZ() != position.getZ())
+	public boolean withinDistance(Location location, int distance) {
+		if (this.getZ() != location.getZ())
 			return false;
 
-		return Math.abs(position.getX() - this.getX()) <= distance && Math.abs(position.getY() - this.getY()) <= distance;
+		return Math.abs(location.getX() - this.getX()) <= distance && Math.abs(location.getY() - this.getY()) <= distance;
 	}
 	
 	/**
@@ -508,10 +508,10 @@ public class Location {
 	}
 	
 	/**
-	 * Gets the distance between this position and another position. Only X and
+	 * Gets the distance between this location and another location. Only X and
 	 * Y are considered (i.e. 2 dimensions).
 	 *
-	 * @param other The other position.
+	 * @param other The other location.
 	 * @return The distance.
 	 */
 	public int getDistance(Location other) {
@@ -522,7 +522,7 @@ public class Location {
 
 
 	public static boolean canMove(Entity mob, Directions.NormalDirection dir, int size, boolean npcCheck) {
-		return PrimitivePathFinder.canMove(mob, mob.getPosition(), dir, size, npcCheck);
+		return PrimitivePathFinder.canMove(mob, mob.getLocation(), dir, size, npcCheck);
 	}
 	public boolean canMove(Directions.NormalDirection dir, int size, boolean checkType) {
 		/*final int npcHeight = z;
@@ -647,8 +647,8 @@ public class Location {
 		return true;
 	}
 	public static boolean isDiagonal(Entity source, Entity target) {
-		Location l = source.getPosition();
-		Location l2 = target.getPosition();
+		Location l = source.getLocation();
+		Location l2 = target.getLocation();
 		if (l.getSouthEast().equals(l2)) {
 			return true;
 		}
@@ -750,10 +750,10 @@ public class Location {
 	public static boolean standingOn(Entity mob, Entity other) {
 		int firstSize = mob.size();
 		int secondSize = other.size();
-		int x = mob.getPosition().getX();
-		int y = mob.getPosition().getY();
-		int vx = other.getPosition().getX();
-		int vy = other.getPosition().getY();
+		int x = mob.getLocation().getX();
+		int y = mob.getLocation().getY();
+		int vx = other.getLocation().getX();
+		int vy = other.getLocation().getY();
 		for (int i = x; i < x + firstSize; i++) {
 			for (int j = y; j < y + firstSize; j++) {
 				if (i >= vx && i < secondSize + vx && j >= vy && j < secondSize + vy) {

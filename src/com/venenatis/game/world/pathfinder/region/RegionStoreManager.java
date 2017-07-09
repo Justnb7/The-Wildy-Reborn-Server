@@ -84,10 +84,10 @@ public class RegionStoreManager {
 	 */
 	public Collection<Player> getLocalPlayers(Entity mob) {
 		List<Player> localPlayers = new LinkedList<Player>();
-		RegionStore[] regions = getSurroundingRegions(mob.getPosition());
+		RegionStore[] regions = getSurroundingRegions(mob.getLocation());
 		for (RegionStore region : regions) {
 			for (Player player : region.getPlayers()) {
-				if (player.getPosition().isWithinDistance(mob.getPosition())) {
+				if (player.getLocation().isWithinDistance(mob.getLocation())) {
 					localPlayers.add(player);
 				}
 			}
@@ -104,10 +104,10 @@ public class RegionStoreManager {
 	 */
 	public Collection<NPC> getLocalNpcs(Entity mob) {
 		List<NPC> npcs = new LinkedList<NPC>();
-		RegionStore[] regions = getSurroundingRegions(mob.getPosition());
+		RegionStore[] regions = getSurroundingRegions(mob.getLocation());
 		for (RegionStore region : regions) {
 			for (NPC npc : region.getNpcs()) {
-				if (npc.getPosition().isWithinDistance(mob.getPosition())) {
+				if (npc.getLocation().isWithinDistance(mob.getLocation())) {
 					npcs.add(npc);
 				}
 			}

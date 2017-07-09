@@ -38,7 +38,7 @@ public class DefaultPathFinder implements PathFinder {
 		if (srcX == dstX && srcY == dstY) {
 			return state;
 		}
-		int z = mob.getPosition().getZ();
+		int z = mob.getLocation().getZ();
 	
 		int zX = (base.regionX_hyperion() - 6) << 3;
 		int zY = (base.regionY_hyperion() - 6) << 3;

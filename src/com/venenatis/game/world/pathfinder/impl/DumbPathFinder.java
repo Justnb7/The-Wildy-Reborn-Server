@@ -10,7 +10,7 @@ public class DumbPathFinder {
 	
 	
 	public static void generateMovement(Entity entity) {
-		Location loc = entity.getPosition();
+		Location loc = entity.getLocation();
 		int dir = -1;
 		if (!RegionStoreManager.get().blockedNorth(loc, entity)) {
 			dir = 0;

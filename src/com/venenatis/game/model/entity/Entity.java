@@ -123,8 +123,23 @@ public abstract class Entity {
 	public int faceTileX = -1, faceTileY = -1;
 	public Location lastTile;
 
-	public Location getPosition() {
+	/**
+	 * Gets the current location.
+	 * 
+	 * @return The current location.
+	 */
+	public Location getLocation() {
 		return location;
+	}
+	
+	/**
+	 * Sets the current location.
+	 * 
+	 * @param location
+	 *            The current location.
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	public int getX() {
@@ -894,25 +909,6 @@ public abstract class Entity {
 		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
 	}
-	
-	/**
-	 * Sets the current location.
-	 * 
-	 * @param location
-	 *            The current location.
-	 */
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	/**
-	 * Gets the current location.
-	 * 
-	 * @return The current location.
-	 */
-	public Location getLocation() {
-		return location;
-	}
 
 	public void playGraphics(Graphic graphic) {
 		currentGraphic = graphic;
@@ -1160,7 +1156,7 @@ public abstract class Entity {
 	}
 
 	private void setCoverage() {
-		coverage = new Coverage(getPosition(), size());
+		coverage = new Coverage(getLocation(), size());
 	}
 
 	private void updateCoverage(Directions.NormalDirection direction) {

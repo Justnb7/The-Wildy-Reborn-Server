@@ -56,7 +56,7 @@ public class SizedPathFinder implements PathFinder {
 		if (srcX == dstX && srcY == dstY) {
 			return state;
 		}
-		int z = mob.getPosition().getZ();
+		int z = mob.getLocation().getZ();
 		if (z > 3) {
 			z = 0;
 		}

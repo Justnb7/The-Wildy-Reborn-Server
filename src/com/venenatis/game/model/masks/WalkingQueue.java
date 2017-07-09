@@ -476,8 +476,8 @@ public class WalkingQueue {
 			 */
 			int diffX = WalkingConstants.DIRECTION_DELTA_X[p.dir];
 			int diffY = WalkingConstants.DIRECTION_DELTA_Y[p.dir];
-			player.setLocation(player.getPosition().transform(diffX, diffY, 0));
-			player.updateCoverage(player.getPosition().transform(diffX, diffY, 0));
+			player.setLocation(player.getLocation().transform(diffX, diffY, 0));
+			player.updateCoverage(player.getLocation().transform(diffX, diffY, 0));
 			if (player.getController() != null) {
 				player.getController().onStep(player);
 			}

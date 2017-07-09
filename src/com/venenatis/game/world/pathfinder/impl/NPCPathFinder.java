@@ -13,14 +13,14 @@ public class NPCPathFinder {
 	public static boolean execute_path(Entity mob, Entity partner, boolean combat) {
 		try {
 			//mob.setFollowingMob(partner); // TODO
-			Location pos = mob.getPosition();
-			int dx = pos.getX() - partner.getPosition().getX(); 
-			int dy = pos.getY() - partner.getPosition().getY();
+			Location pos = mob.getLocation();
+			int dx = pos.getX() - partner.getLocation().getX(); 
+			int dy = pos.getY() - partner.getLocation().getY();
 			int distance = mob.getCoverage().center().distanceToPoint(
 					partner.getCoverage().center());
 			boolean successful = false;
-			int x = mob.getPosition().getX();
-			int y = mob.getPosition().getY();
+			int x = mob.getLocation().getX();
+			int y = mob.getLocation().getY();
 			int counter = 1;
 			if (mob.isPlayer()) {
 				Player player = (Player) mob;
@@ -34,7 +34,7 @@ public class NPCPathFinder {
 			}
 			for (int i = 0; i < counter; i++) {
 				successful = false;
-				pos = Location.create(x, y, mob.getPosition().getZ());
+				pos = Location.create(x, y, mob.getLocation().getZ());
 				NextNode next = getNextNode(pos, dx, dy, distance, combat, mob, partner);
 				if (next == null) {
 					break;
@@ -49,8 +49,8 @@ public class NPCPathFinder {
 					}
 					x = next.tile.getX();
 					y = next.tile.getY();
-					dx = x - partner.getPosition().getX();
-					dy = y - partner.getPosition().getY();
+					dx = x - partner.getLocation().getX();
+					dy = y - partner.getLocation().getY();
 					successful = true;
 					mob.updateCoverage(next.tile);
 					if (mob.isPlayer()) {

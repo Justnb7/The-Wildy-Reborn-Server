@@ -45,7 +45,7 @@ public class VariablePathFinder implements PathFinder {
     public PathState findPath(Entity mob, Entity target, Location base,
                               int srcX, int srcY, int dstX, int dstY, int radius, boolean running,
                               boolean ignoreLastStep, boolean moveNear) {
-        z = mob.getPosition().getZ();
+        z = mob.getLocation().getZ();
         if (srcX < 0 || srcY < 0 || srcX >= 104 || srcY >= 104 || dstX < 0
                 || dstY < 0 || dstX >= 104 || dstY >= 104) {
             state.routeFailed();

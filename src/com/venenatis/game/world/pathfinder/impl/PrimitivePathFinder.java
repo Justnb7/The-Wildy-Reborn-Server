@@ -110,7 +110,7 @@ public class PrimitivePathFinder implements PathFinder {
 	}
 	
 	public static boolean canMove(Entity mob, int x, int y, Directions.NormalDirection dir, int size, int checkType) {
-		final int z = mob.getPosition().getZ();
+		final int z = mob.getLocation().getZ();
 		final int npc_height = z;
 		boolean checkingNPCs = (checkType == 1);
 		if (dir == null) {

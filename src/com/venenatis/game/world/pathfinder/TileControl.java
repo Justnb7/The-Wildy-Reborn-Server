@@ -23,7 +23,7 @@ public class TileControl {
     }
 
     public static Location[] getHoveringTiles(Entity mob) {
-        return getHoveringTiles(mob, mob.getPosition());
+        return getHoveringTiles(mob, mob.getLocation());
     }
 
     public static Location[] getHoveringTiles(Entity mob, Location location) {
@@ -112,7 +112,7 @@ public class TileControl {
         if ((locations == null) || (mob == null))
             return true;
         Location[] npcLocations = null;
-        for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(mob.getPosition())) {
+        for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(mob.getLocation())) {
             for (NPC npc : r.getNpcs()) {
                 if ((mob.isNPC()) && ((npc == null) || (npc == mob))) {
                     continue;

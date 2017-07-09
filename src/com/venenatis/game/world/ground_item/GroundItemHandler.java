@@ -25,7 +25,10 @@ import com.venenatis.server.Server;
  */
 public final class GroundItemHandler {
 
-	private static final List<GroundItem> groundItems = new ArrayList<>();
+	/**
+	 * A list containing all of the ground items
+	 */
+	private static final List<GroundItem> groundItems = new ArrayList<GroundItem>();
 	
 	/**
 	 * Registers a new ground item.
@@ -66,21 +69,25 @@ public final class GroundItemHandler {
 		return null;
 	}
 
-	public static Optional<GroundItem> get(int id, Location position/*int x, int y, int z*/) {
-		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getLocation().getX() == position.getX()
-				&& item.getLocation().getY() == position.getY() && item.getLocation().getZ() == position.getZ()).findFirst();
+	/**
+	 * Checks if the ground item is actually on the clicked location.
+	 * 
+	 * @param id
+	 *            The ground item being checked
+	 * @param location
+	 *            The location of the ground item
+	 */
+	public static Optional<GroundItem> get(int id, Location location) {
+		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getLocation().getX() == location.getX() && item.getLocation().getY() == location.getY() && item.getLocation().getZ() == location.getZ()).findFirst();
 	}
 
 	/**
-	 * Creates the ground item
+	 * Sends a remove ground item packet to all players.
+	 * 
+	 * @param groundItem
+	 *            the ground item
 	 */
-	public static int[][] brokenBarrows = { { 4708, 4860 }, { 4710, 4866 }, { 4712, 4872 }, { 4714, 4878 },
-			{ 4716, 4884 }, { 4720, 4896 }, { 4718, 4890 }, { 4722, 4902 }, { 4732, 4932 }, { 4734, 4938 },
-			{ 4736, 4944 }, { 4738, 4950 }, { 4724, 4908 }, { 4726, 4914 }, { 4728, 4920 }, { 4730, 4926 },
-			{ 4745, 4956 }, { 4747, 4962 }, { 4749, 4968 }, { 4751, 4974 }, { 4753, 4980 }, { 4755, 4986 },
-			{ 4757, 4992 }, { 4759, 4998 } };
-
-	public static boolean removeGroundItem(GroundItem groundItem) {
+	public static boolean sendRemoveGroundItem(GroundItem groundItem) {
 		for (GroundItem other : groundItems) {
 			if (groundItem.getItem().getId() == other.getItem().getId()
 					&& groundItem.getLocation().getX() == other.getLocation().getX()
@@ -95,6 +102,12 @@ public final class GroundItemHandler {
 		return false;
 	}
 
+	/**
+	 * Removes all ground items when the player leaves the region
+	 * 
+	 * @param groundItem
+	 *            the ground item
+	 */
 	private static void removeRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player == null || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
@@ -105,12 +118,19 @@ public final class GroundItemHandler {
 		}
 	}
 
+	/**
+	 * Add ground items for players when entering region.
+	 * 
+	 * @param groundItem
+	 *            The ground item
+	 */
 	private static void addRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player == null || player.getLocation().getZ() != groundItem.getLocation().getZ() || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
 				continue;
 			}
-			
+
+			//Skip iron man game modes, we can't pick up items anyways.
 			if (player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
 				continue;
 			}
@@ -118,16 +138,14 @@ public final class GroundItemHandler {
 			// If we are globalizing an item, don't re-add it for the owner
 			if (player.usernameHash != groundItem.getOwnerHash()) {
 
+				//Don't add private items to the region yet, we only add public items
 				if (groundItem.getType() == GroundItemType.PRIVATE) {
 					continue;
 				}
-				
+
 				Item item = new Item(groundItem.getItem().getId());
 
-				/**
-				 * If the item is a non-tradable item continue
-				 * 
-				 */
+				//If the item is a non-tradable item continue
 				if (!item.isTradeable()) {
 					continue;
 				}
@@ -142,6 +160,9 @@ public final class GroundItemHandler {
 		}
 	}
 	
+	/**
+	 * The ground item task, removes the ticks
+	 */
 	public static void pulse() {
 		Iterator<GroundItem> iterator = groundItems.iterator();
 		while (iterator.hasNext()) {
@@ -152,7 +173,6 @@ public final class GroundItemHandler {
 				continue;
 			}
 			
-			
 			if (item.decreaseTimer() < 1) {
 				if (item.getState() == State.GLOBAL) {
 					item.setRemoved(true);
@@ -162,7 +182,7 @@ public final class GroundItemHandler {
 
 				if (item.getState() == State.PRIVATE) {
 					item.setState(State.GLOBAL);
-					item.setTimer(400);
+					item.setTimer(200);
 					addRegionalItem(item);
 				}
 			}
@@ -238,15 +258,6 @@ public final class GroundItemHandler {
 		//PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
 		if (player != null && player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
 			groundItem.setGroundItemType(GroundItemType.PRIVATE);
-		}
-		
-		if (groundItem.getItem().getId() > 4705 && groundItem.getItem().getId() < 4760) {
-			for (int[] brokenBarrow : brokenBarrows) {
-				if (brokenBarrow[0] == groundItem.getItem().getId()) {
-					groundItem.getItem().id = brokenBarrow[1];
-					break;
-				}
-			}
 		}
 		
 		if (groundItem.getItem().getId() >= 2412 && groundItem.getItem().getId() <= 2414) {
@@ -327,7 +338,7 @@ public final class GroundItemHandler {
 						stop();
 						return;
 					}
-					removeGroundItem(groundItem);
+					sendRemoveGroundItem(groundItem);
 					player.getInventory().add(item);
 					player.getInventory().refresh();
 					PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Item Dropped: " + groundItem.getItem().getId() + " Items picked up by : " + player.getUsername() + " Amount:  " + groundItem.getItem().getAmount() );

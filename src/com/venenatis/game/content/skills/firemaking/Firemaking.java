@@ -74,7 +74,7 @@ public class Firemaking {
 						Server.getGlobalObjects().add(fire);
 						
 						if (item != null) {
-							GroundItemHandler.removeGroundItem(item);
+							GroundItemHandler.sendRemoveGroundItem(item);
 						}
 						player.getActionSender().sendMessage("The fire catches and the logs begin to burn.");
 						walk(player, location);

@@ -363,6 +363,15 @@ public class Item {
 		return def.getParentId() != -1 ? new Item(def.getParentId(), amount) : this;
 	}
 	
+	/**
+	 * Gets the definition of this item.
+	 * 
+	 * @return The definition.
+	 */
+	public ItemDefinition getDefinition() {
+		return ItemDefinition.get(id);
+	}
+	
 	public Item copy() {
 		return new Item(id, amount);
 	}

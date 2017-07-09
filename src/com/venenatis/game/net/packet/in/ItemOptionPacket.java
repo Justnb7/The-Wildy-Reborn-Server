@@ -492,10 +492,10 @@ public class ItemOptionPacket implements PacketType {
 	 * @param z
 	 *            The z coordinate of the item
 	 */
-	private void pickup(Player player, int id, Location position/*int x, int y, int z*/) {
-		if (GroundItemHandler.get(id, position) != null) {
+	private void pickup(Player player, int id, Location location) {
+		if (GroundItemHandler.get(id, location) != null) {
 			player.getActionSender().sendSound(356, 0, 0);
-			GroundItemHandler.pickup(player, id, position);
+			GroundItemHandler.pickup(player, id, location);
 			BountyHunter.determineWealth(player);
 		}
 	}

@@ -293,7 +293,7 @@ public final class GroundItemHandler {
 			groundItem.setTimer(groundItem.getState() == State.GLOBAL ? 200 : 100);
 			if (player != null) {
 				player.getActionSender().sendGroundItem(groundItem);
-				//System.out.println("Grounditem height: "+player.getLocation().getH());
+				player.debug("drop: "+groundItem.getLocation().toString());
 			}
 			if (groundItem.getState() == State.GLOBAL) {
 				addRegionalItem(groundItem);

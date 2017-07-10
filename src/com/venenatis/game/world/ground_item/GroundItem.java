@@ -199,7 +199,7 @@ public final class GroundItem {
 	@Override
 	public String toString() {
 		return "GroundItem [item=" + item + ", owner=" + owner + ", removed=" + removed + ", timer=" + timer
-				+ ", state=" + state + "]";
+				+ ", state=" + state + ", location="+getLocation()+"]";
 	}
 
 }

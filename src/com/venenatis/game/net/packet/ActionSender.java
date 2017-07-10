@@ -99,8 +99,8 @@ public class ActionSender {
 	public ActionSender sendMapRegionPacket() {
 		player.setLastKnownRegion(player.getLocation());
 		player.getOutStream().writeFrame(73);
-		player.getOutStream().writeWordA(player.getLocation().getRegionX() + 6);
-		player.getOutStream().writeShort(player.getLocation().getRegionY() + 6);
+		player.getOutStream().writeWordA(player.getLastKnownRegion().getRegionX() + 6);
+		player.getOutStream().writeShort(player.getLastKnownRegion().getRegionY() + 6);
 		player.flushOutStream();
 		return this;
 	}
@@ -618,8 +618,8 @@ public class ActionSender {
 	
 	public ActionSender sendCoordinates(Location location) {
 		player.getOutStream().writeFrame(85);
-		int y = location.getY() - player.getLocation().getRegionY() * 8;
-		int x = location.getX() - player.getLocation().getRegionX() * 8;
+		int y = location.getY() - player.getLastKnownRegion().getRegionY() * 8;
+		int x = location.getX() - player.getLastKnownRegion().getRegionX() * 8;
 		player.getOutStream().writeByteC(y);
 		player.getOutStream().writeByteC(x);
 		player.flushOutStream();
@@ -657,8 +657,8 @@ public class ActionSender {
 		}
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(85);
-			player.getOutStream().writeByteC(y - (player.getLocation().getRegionY() * 8));
-			player.getOutStream().writeByteC(x - (player.getLocation().getRegionX() * 8));
+			player.getOutStream().writeByteC(y - (player.getLastKnownRegion().getRegionY() * 8));
+			player.getOutStream().writeByteC(x - (player.getLastKnownRegion().getRegionX() * 8));
 			
 			//Still gfx packet
 			player.getOutStream().writeFrame(4);
@@ -715,7 +715,7 @@ public class ActionSender {
 		player.getOutStream().writeFrame(85);
 		
 		int difx = position.getX(), dify = position.getY();
-		int regionX = player.getLocation().getRegionX(), regionY = player.getLocation().getRegionY();
+		int regionX = player.getLastKnownRegion().getRegionX(), regionY = player.getLastKnownRegion().getRegionY();
 		player.getOutStream().writeByteC((dify - (regionY * 8)) + yOffset);
 		player.getOutStream().writeByteC((difx - (regionX * 8)) + xOffset);
 

@@ -286,7 +286,6 @@ public final class GroundItemHandler {
 			groundItem.setTimer(groundItem.getState() == State.PUBLIC ? 200 : 100);
 			if (player != null) {
 				player.getActionSender().sendGroundItem(groundItem);
-				player.debug("drop: "+groundItem.getLocation().toString());
 			}
 			if (groundItem.getState() == State.PUBLIC) {
 				addRegionalItem(groundItem);

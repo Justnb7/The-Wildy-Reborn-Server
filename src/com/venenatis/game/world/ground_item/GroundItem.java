@@ -22,7 +22,7 @@ public final class GroundItem {
 		/**
 		 * Everyone can view this item
 		 */
-		GLOBAL;
+		PUBLIC;
 	}
 
 	/**
@@ -49,11 +49,6 @@ public final class GroundItem {
 	 * The amount of ticks before the type changes to PUBLIC
 	 */
 	private int timer;
-
-	/**
-	 * The item type which is either PRIVATE or PUBLIC
-	 */
-	private GroundItemType itemType = GroundItemType.PUBLIC;
 
 	/**
 	 * The current state of the ground item
@@ -175,25 +170,6 @@ public final class GroundItem {
 	 */
 	public Player getOwner() {
 		return owner;
-	}
-
-	/**
-	 * Sets the current ground item type
-	 * 
-	 * @param type
-	 *            PUBLIC or PRIVATE
-	 */
-	public void setGroundItemType(GroundItemType type) {
-		this.itemType = type;
-	}
-
-	/**
-	 * Gets the current type of the ground item
-	 * 
-	 * @return Either PRIVATE or PUBLIC
-	 */
-	public GroundItemType getType() {
-		return itemType;
 	}
 
 	@Override

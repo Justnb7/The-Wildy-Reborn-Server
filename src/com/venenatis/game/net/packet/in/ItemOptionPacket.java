@@ -242,8 +242,6 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		
-		
 		//We can go ahead and drop the item on the ground.
 		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.getInventory().get(slot).getAmount()), player.getLocation(), player));
 		

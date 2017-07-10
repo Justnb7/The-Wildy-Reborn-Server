@@ -7,7 +7,6 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
-import com.venenatis.game.world.ground_item.GroundItemType;
 
 /**
  * Handles dropping items on death
@@ -88,7 +87,6 @@ public class DeathDropHandler {
 		for (Item item : drop) {
 			if (item != null) {
 				GroundItem x = new GroundItem(item, player.getLocation(), killer);
-				x.setGroundItemType(GroundItemType.PRIVATE);
 				GroundItemHandler.register(x);
 				killer.getActionSender().sendGroundItem(x);
 			}

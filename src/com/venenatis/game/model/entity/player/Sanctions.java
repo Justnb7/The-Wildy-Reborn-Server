@@ -4,10 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import com.google.gson.JsonObject;
 import com.venenatis.game.util.JsonSaver;
 import com.venenatis.game.util.Stopwatch;
-import com.venenatis.game.util.parser.GsonParser;
 
 public class Sanctions {
 	
@@ -109,26 +107,6 @@ public class Sanctions {
 	
 	public long banLeft() {
 		return banLength - ban.elapsed(TimeUnit.MINUTES);
-	}
-	
-	public static void load() {
-		new GsonParser("ip_sanctions") {
-			
-			@Override
-			protected void parse(JsonObject data) {
-				String host = data.get("host").getAsString();
-				String type = data.get("type").getAsString();
-				
-				if (type.equals("mute")) {
-					muted.add(host);
-				} else if (type.equals("mute")) {
-					banned.add(host);
-				} else if (type.equals("mac")) {
-					macBanned.add(host);
-				}
-				
-			}
-		}.run();
 	}
 	
 	private static void save() {

@@ -22,6 +22,8 @@ import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.shop.ShopManager;
 import com.venenatis.server.Server;
 
@@ -35,6 +37,14 @@ public class OwnerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
+		
+		case "drop":
+			GroundItem groundItem = new GroundItem(new Item(4151), player.getLocation(), player);
+			if (!GroundItemHandler.register(groundItem)) {
+				return false;
+			}
+			player.getActionSender().sendGroundItem(groundItem);
+			return true;
 		
 		case "spec":
 		case "special":

@@ -110,10 +110,11 @@ public final class GroundItemHandler {
 	 */
 	private static void removeRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player == null || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
+			if (player == null || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 64) {
 				continue;
 			}
 
+			//We can go ahead and send the remove ground item packet
 			player.getActionSender().sendRemoveGroundItem(groundItem);
 		}
 	}
@@ -126,7 +127,7 @@ public final class GroundItemHandler {
 	 */
 	private static void addRegionalItem(GroundItem groundItem) {
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player == null || player.getLocation().getZ() != groundItem.getLocation().getZ() || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
+			if (player == null || player.getLocation().getZ() != groundItem.getLocation().getZ() || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 64) {
 				continue;
 			}
 
@@ -139,7 +140,7 @@ public final class GroundItemHandler {
 			if (player.usernameHash != groundItem.getOwnerHash()) {
 
 				//Don't add private items to the region yet, we only add public items
-				if (groundItem.getType() == GroundItemType.PRIVATE) {
+				if (groundItem.getState() == State.PRIVATE) {
 					continue;
 				}
 
@@ -150,10 +151,8 @@ public final class GroundItemHandler {
 					continue;
 				}
 
-				// get the owner of the item by name and see if they are
-				// online.
-				if (player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) <= 60
-						&& player.getLocation().getZ() == player.getLocation().getZ()) {
+				//Checks if we're able to view the ground item
+				if (player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) <= 60 && player.getLocation().getZ() == player.getLocation().getZ()) {
 					player.getActionSender().sendGroundItem(groundItem);
 				}
 			}
@@ -174,14 +173,14 @@ public final class GroundItemHandler {
 			}
 			
 			if (item.decreaseTimer() < 1) {
-				if (item.getState() == State.GLOBAL) {
+				if (item.getState() == State.PUBLIC) {
 					item.setRemoved(true);
 					iterator.remove();
 					removeRegionalItem(item);
 				}
 
 				if (item.getState() == State.PRIVATE) {
-					item.setState(State.GLOBAL);
+					item.setState(State.PUBLIC);
 					item.setTimer(200);
 					addRegionalItem(item);
 				}
@@ -196,7 +195,7 @@ public final class GroundItemHandler {
 	public static int getItemAmount(GroundItem groundItem) {
 		Item item = groundItem.getItem();
 		for (GroundItem other : groundItems) {
-			if (groundItem.getOwnerHash() == other.getOwnerHash() || other.getState() == (State.GLOBAL)) {
+			if (groundItem.getOwnerHash() == other.getOwnerHash() || other.getState() == (State.PUBLIC)) {
 				if (groundItem.getItem().getId() == other.getItem().getId()
 						&& groundItem.getLocation().getX() == other.getLocation().getX()
 						&& groundItem.getLocation().getY() == other.getLocation().getY()
@@ -222,13 +221,7 @@ public final class GroundItemHandler {
 			}
 			
 			if (groundItem.getOwnerHash() != player.usernameHash) {
-				if (!player.getAccount().getType().unownedDropsVisible() || (groundItem.getType() == GroundItemType.PRIVATE)) {
-					continue;
-				}
-			}
-			
-			if (groundItem.getOwnerHash() != player.usernameHash) {
-				if (groundItem.getType() == GroundItemType.PRIVATE) {
+				if (!player.getAccount().getType().unownedDropsVisible() || (groundItem.getState() == State.PRIVATE)) {
 					continue;
 				}
 			}
@@ -237,7 +230,7 @@ public final class GroundItemHandler {
 			
 			if (item.isTradeable() || groundItem.getOwnerHash() == player.usernameHash) {
 				
-				if (groundItem.getState() == State.GLOBAL || groundItem.getOwnerHash() == player.usernameHash) {
+				if (groundItem.getState() == State.PUBLIC || groundItem.getOwnerHash() == player.usernameHash) {
 					//System.out.println(player.getPosition() + " : " + groundItem.getPosition());
 					player.getActionSender().sendRemoveGroundItem(groundItem);
 					player.getActionSender().sendGroundItem(groundItem);
@@ -252,12 +245,12 @@ public final class GroundItemHandler {
 			return false;
 		}
 		if (player == null) {
-			groundItem.setState(State.GLOBAL);
+			groundItem.setState(State.PUBLIC);
 		}
 
 		//PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
 		if (player != null && player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
-			groundItem.setGroundItemType(GroundItemType.PRIVATE);
+			groundItem.setState(State.PRIVATE);
 		}
 		
 		if (groundItem.getItem().getId() >= 2412 && groundItem.getItem().getId() <= 2414) {
@@ -270,7 +263,7 @@ public final class GroundItemHandler {
 					&& groundItem.getLocation().getX() == other.getLocation().getX()
 					&& groundItem.getLocation().getY() == other.getLocation().getY()
 					&& groundItem.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
-				if (other.getState() == State.GLOBAL || other.getOwnerHash() == player.usernameHash) {
+				if (other.getState() == State.PUBLIC || other.getOwnerHash() == player.usernameHash) {
 					int existing = getItemAmount(groundItem);
 
 					if (existing == -1) {
@@ -282,7 +275,7 @@ public final class GroundItemHandler {
 
 					if (existing > 0) {
 						other.getItem().setAmount(existing);
-						other.setTimer(groundItem.getState() == State.GLOBAL ? 200 : 100);
+						other.setTimer(groundItem.getState() == State.PUBLIC ? 200 : 100);
 						return true;
 					}
 				}
@@ -290,12 +283,12 @@ public final class GroundItemHandler {
 		}
 
 		if (add(groundItem)) {
-			groundItem.setTimer(groundItem.getState() == State.GLOBAL ? 200 : 100);
+			groundItem.setTimer(groundItem.getState() == State.PUBLIC ? 200 : 100);
 			if (player != null) {
 				player.getActionSender().sendGroundItem(groundItem);
 				player.debug("drop: "+groundItem.getLocation().toString());
 			}
-			if (groundItem.getState() == State.GLOBAL) {
+			if (groundItem.getState() == State.PUBLIC) {
 				addRegionalItem(groundItem);
 			}
 		}
@@ -318,7 +311,7 @@ public final class GroundItemHandler {
 					stop();
 					return;
 				}
-				if (groundItem.getState() != State.GLOBAL && groundItem.getOwnerHash() != player.usernameHash) {
+				if (groundItem.getState() != State.PUBLIC && groundItem.getOwnerHash() != player.usernameHash) {
 					stop();
 					return;
 				}
@@ -329,11 +322,9 @@ public final class GroundItemHandler {
 
 				Item item = groundItem.getItem();
 
-				if (player.getLocation().getX() == groundItem.getLocation().getX()
-						&& player.getLocation().getY() == groundItem.getLocation().getY()) {
+				if (player.getLocation().getX() == groundItem.getLocation().getX() && player.getLocation().getY() == groundItem.getLocation().getY()) {
 
-					if (player.getInventory().getFreeSlots() == 0
-							&& !(player.getInventory().contains(item.getId()) && item.isStackable())) {
+					if (player.getInventory().getFreeSlots() == 0 && !(player.getInventory().contains(item.getId()) && item.isStackable())) {
 						player.getActionSender().sendMessage("You do not have enough inventory space to pick that up.");
 						stop();
 						return;

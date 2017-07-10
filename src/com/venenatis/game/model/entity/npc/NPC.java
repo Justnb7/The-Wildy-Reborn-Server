@@ -31,8 +31,11 @@ public class NPC extends Entity {
 	public NPC(int id, Location spawn, int dir) {
 		super(EntityType.NPC);
 		direction = dir;
-		if (spawn != null)
+		if (spawn != null) {
 			setLocation(spawn);
+			makeX = spawn.getX(); // boundaries where combat is cancelled stops dragging npcs over the map
+			makeY = spawn.getY();
+		}
 		npcId = id;
 		getCombatState().setDead(false);
 		randomWalk = true;

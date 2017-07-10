@@ -1240,4 +1240,9 @@ public abstract class Entity {
 		return border;
 	}
 
+	@Override
+	public String toString() {
+		return isPlayer() ? ((Player)this).getUsername() : ((NPC)this).getName();
+	}
+
 }

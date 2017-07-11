@@ -22,11 +22,6 @@ public class PlayerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 
-		if (player.isDueling() || player.getDuelArena().isInSession() && !Rights.isSuperStaff(player)) {
-			player.getActionSender().sendMessage("You cannot use commands while dueling.");
-			return true;
-		}
-
 		switch (parser.getCommand()) {
 		
 		/* Home Teleport */

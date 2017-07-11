@@ -411,12 +411,6 @@ public final class DuelArena extends Minigame {
 					other.get().setTeleportTarget(new Location(3345 + (addX2 ? x2 : -x2), 3251 + (addY2 ? y2 : -y2)));
 				}
 
-				// need to load new maps for this to work
-//				if (arena.getName().contains("South West Arena")) {
-//					player.getPA().move(new Location(3344 + (right ? 1 : 0) + (addX ? x : -x), 3213 + (addY ? y : -y)));
-//					other.getPA().move(new Location(3344 + (right ? 1 : 0) + (addX2 ? x2 : -x2), 3213 + (addY2 ? y2 : -y2)));
-//				}
-
 			}
 
 			new DuelArenaTask();

@@ -114,7 +114,7 @@ public final class DuelArena extends Minigame {
 	 * The time required in seconds before players can move and attack each
 	 * other in the arena.
 	 */
-	private int waitCounter = 6;
+	private int waitCounter = 5;
 	
 	/**
 	 * The time in seconds it took to kill a player in the arena.
@@ -1060,7 +1060,7 @@ public final class DuelArena extends Minigame {
 	 */
 	private final class DuelArenaTask extends Timer {
 
-		private final int startTime = 6;
+		private final int startTime = 5;
 
 		public DuelArenaTask() {
 			execute();
@@ -1098,7 +1098,7 @@ public final class DuelArena extends Minigame {
 
 		private void countdown() {
 			incrementArenaTime(1);
-
+			
 			if (getArenaTime() <= startTime) {
 
 				decrementWaitTime(1);

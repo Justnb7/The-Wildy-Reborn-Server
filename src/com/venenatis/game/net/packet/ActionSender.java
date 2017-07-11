@@ -2,6 +2,7 @@ package com.venenatis.game.net.packet;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.KillTracker;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
@@ -942,6 +943,9 @@ public class ActionSender {
 			sendSidebarInterface(6, 29999);
 		}
 		
+		//Reset the players location
+		resetLocation();
+		
 		player.getController().onStartup(player);
 		
 		//Reset prayers
@@ -996,7 +1000,6 @@ public class ActionSender {
 	
 	public void updateConfigs() {
 		player.setScreenBrightness((byte) 4);
-		sendString("100%", 149);
 		sendConfig(166, player.getScreenBrightness());
 		sendConfig(207, player.isEnableMusic() ? 1 : 0);
 		sendConfig(206, player.isEnableSound() ? 1 : 0);
@@ -1005,6 +1008,8 @@ public class ActionSender {
 		sendConfig(200, player.getAcceptAid() ? 1 : 0);
 		sendConfig(172, player.isAutoRetaliating() ? 1 : 0);
 		sendConfig(152, player.getWalkingQueue().isRunningToggled() ? 1 : 0);
+		sendString("100%", 149);
+		sendRunEnergy();
 	}
 	
 	public void updateAfterLogin() {
@@ -1048,6 +1053,12 @@ public class ActionSender {
 				this.stop();
 			}
 		}.attach(this));
+	}
+	
+	private final void resetLocation() {
+		if(DuelArena.inArena(player)) {
+			player.setTeleportTarget(DuelArena.DUEL_RESPAWN);
+		}
 	}
 	
 }

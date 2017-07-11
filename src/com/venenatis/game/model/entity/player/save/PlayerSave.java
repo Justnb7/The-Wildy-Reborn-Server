@@ -171,6 +171,7 @@ public class PlayerSave {
 				player.setScreenBrightness(details.brightness);
 				player.setSplitPrivateChat(details.splitPrivateChat);
 				player.setRunEnergy(details.runEnergy);
+				player.getWalkingQueue().setRunningToggled(details.runToggled);
 				player.setEnableMusic(details.music);
 				player.setAttribute("music_volume", details.musicVolume);
 				player.setEnableSound(details.sounds);
@@ -257,6 +258,7 @@ public class PlayerSave {
 		private final byte brightness;
 		private final boolean splitPrivateChat;
 		private final int runEnergy;
+		private boolean runToggled;
 		private final boolean music;
 		private final int musicVolume;
 		private final boolean sounds;
@@ -336,6 +338,7 @@ public class PlayerSave {
 			brightness = player.getScreenBrightness();
 			splitPrivateChat = player.getSplitPrivateChat();
 			runEnergy = player.getRunEnergy();
+			runToggled = player.getWalkingQueue().isRunningToggled();
 			music = player.isEnableMusic();
 			musicVolume = player.getAttribute("music_volume", 3);
 			sounds = player.isEnableSound();

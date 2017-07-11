@@ -215,7 +215,6 @@ public class OwnerCommand implements Command {
 
 		case "duel":
 			player.setTeleportTarget(new Location(3363, 3275));
-			player.getActionSender().sendMessage(player.getDuelArena().toString());
 			return true;
 
 		case "69":
@@ -330,6 +329,7 @@ public class OwnerCommand implements Command {
 				int id = parser.nextInt();
 				int state = parser.nextInt();
 				player.getActionSender().sendConfig(id, state);
+				player.debug("config: "+id+ " state: "+state);
 				return true;
 			}
 			return false;

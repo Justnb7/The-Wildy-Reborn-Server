@@ -208,7 +208,7 @@ public class Teleport {
 
 		setTeleporting(true);
 
-		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, StackType.STACK, BreakType.ON_MOVE) {
+		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, StackType.STACK, BreakType.NEVER) {
 			@Override
 			public void execute() {
 				player.setTeleportTarget(location);

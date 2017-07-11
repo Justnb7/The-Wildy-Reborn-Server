@@ -283,8 +283,13 @@ public final class DuelArena extends Minigame {
 		heal.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
 		heal.getSkills().setPrayerPoints(player.getSkills().getLevelForExperience(Skills.PRAYER), true);
 		
+		/*Reset the players run energy*/
+		heal.setRunEnergy(100);
+		heal.getActionSender().sendRunEnergy();
+		
 		/*Reset the players special attack back to 100%*/
 		heal.setSpecialAmount(100);
+		heal.getWeaponInterface().restoreWeaponAttributes();
 	}
 
 	/**

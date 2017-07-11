@@ -115,11 +115,9 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 
 			if (player.isTrading()) {
-				int limit = player.getInventory().getAmount(removeId);
-				player.getTradeContainer().offerItem(item, limit);
+				player.getTradeContainer().offerItem(new Item(removeId), 1);
 			} else if (player.getDuelArena().canOffer()) {
-				int limit = player.getInventory().getAmount(removeId);
-				player.getDuelContainer().offerItem(item, limit);
+				player.getDuelContainer().offerItem(new Item(removeId), 1);
 			}
 		}
 			break;
@@ -132,9 +130,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 
 			if (player.isTrading()) {
-				int limit = player.getTradeContainer().getAmount(removeId);
-
-				player.getTradeContainer().removeOffer(item, limit);
+				player.getTradeContainer().removeOffer(new Item(removeId), 1);
 			}
 		}
 			break;
@@ -147,8 +143,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 
 			if (player.getDuelArena().canOffer()) {
-				int limit = player.getDuelContainer().getAmount(removeId);
-				player.getDuelContainer().removeOffer(item, limit);
+				player.getDuelContainer().removeOffer(new Item(removeId), 1);
 			}
 		}
 			break;

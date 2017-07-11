@@ -8,15 +8,19 @@ import com.venenatis.game.net.packet.PacketType;
 public class WithdrawAllButOneAction implements PacketType {
 
 	@Override
-	public void handle(Player player, int packetType, int packetSize) {
-		
-		final int slot = player.getInStream().readSignedWordBigEndianA();
-		final int interfaceId = player.getInStream().readUnsignedWord();
+	public void handle(Player player, int packetType, int packetSize) {	
+		final int slot = player.getInStream().readSignedWordBigEndian();
+		final int interfaceId = player.getInStream().readSignedWordBigEndianA();
 		final int itemId = player.getInStream().readSignedWordBigEndianA();
+		
+		if (player.inDebugMode()) {
+			System.out.printf("Slot %d Interface %d item %d%n", slot, interfaceId, itemId);
+		}
 		
 		switch (interfaceId) {
 		
 		case InterfaceConstants.WITHDRAW_BANK:
+			
 			final Item item = player.getBank().get(slot);
 			
 			if (item == null || item.getId() != itemId || item.getAmount() <= 0) {

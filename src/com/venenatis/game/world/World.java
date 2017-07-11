@@ -1,24 +1,33 @@
 package com.venenatis.game.world;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+
 import com.google.common.collect.Sets;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.MobileCharacterList;
 import com.venenatis.game.model.entity.Entity.EntityType;
+import com.venenatis.game.model.entity.MobileCharacterList;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.updating.NpcUpdating;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.Rights.Order;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
-import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Service;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.DidYouKnowEvent;
 import com.venenatis.game.task.impl.InstanceFloorReset;
 import com.venenatis.game.task.impl.NPCMovementTask;
@@ -27,12 +36,6 @@ import com.venenatis.game.task.impl.RestoreStats;
 import com.venenatis.game.task.impl.SavePlayers;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
-
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Predicate;
-import java.util.logging.Logger;
 
 /**
  * Holds data global to the game world.
@@ -520,7 +523,7 @@ public class World implements Service {
 	}
 
 	public int getStaffCount() {
-		return Math.toIntExact(getPlayers().stream().filter(Objects::nonNull).filter($it -> Rights.isStaffMember($it)).count());
+		return Math.toIntExact(getPlayers().stream().filter(Objects::nonNull).filter($it -> $it.getRights().isStaffMember($it)).count());
 	}
 
 	public void yell(String message) {

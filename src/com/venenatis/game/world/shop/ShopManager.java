@@ -2,7 +2,6 @@ package com.venenatis.game.world.shop;
 
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -125,7 +124,7 @@ public class ShopManager {
 	 * @param id
 	 */
 	public static void open(Player player, int id) {
-		if (Rights.isIron(player)) {
+		if (player.getRights().isIron(player)) {
 			boolean can = false;
 
 			for (int shops : IRON_SHOPS) {

@@ -559,6 +559,6 @@ public class OwnerCommand implements Command {
 
 	@Override
 	public boolean meetsRequirements(Player player) {
-		return Rights.isOwner(player);
+		return player.getRights().isOwner(player);
 	}
 }

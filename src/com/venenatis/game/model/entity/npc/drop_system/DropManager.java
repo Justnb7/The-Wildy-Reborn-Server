@@ -1,5 +1,20 @@
 package com.venenatis.game.model.entity.npc.drop_system;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,18 +27,9 @@ import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
-
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class DropManager {
 	
@@ -152,7 +158,7 @@ public class DropManager {
 		} else if (player.getEquipment().contains(12785)) {
 			modifier -= .05;
 		}
-		if (Rights.isDonator(player)) {
+		if (player.getRights().isDonator(player)) {
 			modifier -= 0.020;
 		}
 		return modifier;

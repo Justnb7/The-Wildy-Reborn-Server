@@ -18,7 +18,7 @@ public class Yell {
 
 		color = rights.getColor();
 
-		return "[<col=" + color + ">" + rights.getName() + "</col>]<col=" + color + "> " + Rights.getStringForRights(player) + " " + name + "</col>:";
+		return "[<col=" + color + ">" + rights.getName() + "</col>]<col=" + color + "> " + player.getRights().getStringForRights(player) + " " + name + "</col>:";
 	}
 	
 	public static void yell(Player player, String message) {

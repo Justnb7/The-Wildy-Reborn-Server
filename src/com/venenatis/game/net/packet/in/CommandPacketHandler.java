@@ -52,7 +52,7 @@ public class CommandPacketHandler implements PacketType {
 			}
 		}
 
-		if (player.getDuelArena().isDueling() || player.getDuelArena().isInSession() && !Rights.isSuperStaff(player)) {
+		if (player.getDuelArena().isDueling() || player.getDuelArena().isInSession() && !player.getRights().isSuperStaff(player)) {
 			player.getActionSender().sendMessage("You cannot use commands while dueling.");
 			return;
 		}

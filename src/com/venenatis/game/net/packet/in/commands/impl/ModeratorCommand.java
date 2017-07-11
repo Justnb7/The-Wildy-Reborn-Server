@@ -3,7 +3,6 @@ package com.venenatis.game.net.packet.in.commands.impl;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.save.PlayerSave.PlayerContainer;
 import com.venenatis.game.model.entity.player.save.PlayerSave.Type;
@@ -269,6 +268,6 @@ public class ModeratorCommand implements Command {
 
 	@Override
 	public boolean meetsRequirements(Player player) {
-		return Rights.isStaffMember(player);
+		return player.getRights().isStaffMember(player);
 	}
 }

@@ -3,7 +3,6 @@ package com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_cav
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.model.entity.player.dialogue.Type;
@@ -289,7 +288,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 											}
 											player.getInventory().remove(new Item(6570));
 											int roll = Utility.getRandom(25);
-											if (roll == 1 || Rights.isOwner(player)) {
+											if (roll == 1 || player.getRights().isOwner(player)) {
 												receivedPet = true;
 											}
 											

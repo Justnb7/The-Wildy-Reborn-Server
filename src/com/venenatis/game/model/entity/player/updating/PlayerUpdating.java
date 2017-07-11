@@ -7,7 +7,6 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Appearance;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.masks.UpdateFlags;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
@@ -61,7 +60,7 @@ public class PlayerUpdating {
 	public static int getStaffCount() {
 		int count = 0;
 		for (Player player : World.getWorld().getPlayers()) {
-			if (player != null && Rights.isStaffMember(player)) {
+			if (player != null && player.getRights().isStaffMember(player)) {
 				count++;
 			}
 		}

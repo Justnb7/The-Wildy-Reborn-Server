@@ -6,7 +6,6 @@ import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.net.packet.in.commands.Yell;
@@ -40,7 +39,7 @@ public class PlayerCommand implements Command {
 		case "vengeance":
 		case "vengerune":
 		case "vengerunes":
-			if (!Rights.isIron(player)) {
+			if (!player.getRights().isIron(player)) {
 				player.getInventory().add(new Item(557, 1000));
 				player.getInventory().add(new Item(560, 1000));
 				player.getInventory().add(new Item(9075, 1000));
@@ -52,7 +51,7 @@ public class PlayerCommand implements Command {
 		case "barrage":
 		case "barragerune":
 		case "barragerunes":
-			if (!Rights.isIron(player)) {
+			if (!player.getRights().isIron(player)) {
 				player.getInventory().add(new Item(555, 1000));
 				player.getInventory().add(new Item(560, 1000));
 				player.getInventory().add(new Item(565, 1000));

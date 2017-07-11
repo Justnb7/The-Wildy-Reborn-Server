@@ -8,7 +8,6 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
@@ -39,7 +38,7 @@ public class Prayer {
 	 *         The location of the alter
 	 */
 	public void prayAltar(Location loc) {
-		if (Rights.isDonator(player)) {
+		if (player.getRights().isDonator(player)) {
 			if (player.getLastAltarPrayer() < 120000) {
 				player.getActionSender().sendMessage("You can only use the altar to restore your special attack every 2 minutes");
 			} else {

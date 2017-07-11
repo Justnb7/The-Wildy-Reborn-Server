@@ -20,7 +20,6 @@ import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.PlayerOption;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.task.impl.DeathTask;
 import com.venenatis.game.util.StringUtils;
@@ -231,7 +230,7 @@ public final class DuelArena extends Minigame {
 				break;
 
 			case FIRST_SCREEN:
-				player.getActionSender().sendString("Dueling with: " + Rights.getStringForRights(player) + " " + Utility.formatName(other.get().getUsername()), 31005);
+				player.getActionSender().sendString("Dueling with: " + player.getRights().getStringForRights(player) + " " + Utility.formatName(other.get().getUsername()), 31005);
 				player.getActionSender().sendString("Opponent's combat level: <col=ff7000>" + other.get().getCombatLevel(), 31006);
 				player.getActionSender().sendString("", 31009);
 				player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());

@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.net.packet.ActionSender.MinimapState;
 import com.venenatis.game.util.Stopwatch;
@@ -151,7 +150,7 @@ public final class TradeSession {
 		case OFFER:
 			int remaining = other.get().getInventory().getFreeSlots();
 			player.getActionSender().sendItemOnInterface(3322, player.getInventory().toArray());
-			player.getActionSender().sendString(String.format("Trading with: %s %s ", Rights.getStringForRights(other.get()), Utility.formatName(other.get().getUsername()), remaining), 33002);
+			player.getActionSender().sendString(String.format("Trading with: %s %s ", other.get().getRights().getStringForRights(other.get()), Utility.formatName(other.get().getUsername()), remaining), 33002);
 			player.getActionSender().sendString(Utility.formatName(other.get().getUsername()), 33003);
 			player.getActionSender().sendString("inventory spaces", 33005);
 			player.getActionSender().sendString("<col=ffffff> Absolutely nothing!", 33018);
@@ -166,7 +165,7 @@ public final class TradeSession {
 			player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_INTERFACE, player.getInventory().toArray());
 			player.getActionSender().sendString("<col=65535>Are you sure you want to make this trade?", 33202);
 			player.getActionSender().sendString("<col=65535>Trading With:", 33207);
-			player.getActionSender().sendString(String.format("%s <col=65535>%s", Rights.getStringForRights(other.get()), Utility.formatName(other.get().getUsername())), 33208);
+			player.getActionSender().sendString(String.format("%s <col=65535>%s", other.get().getRights().getStringForRights(other.get()), Utility.formatName(other.get().getUsername())), 33208);
 			player.getActionSender().sendString(StringUtils.getItemNames(player.getTradeContainer().toArray()), 33221);
 			player.getActionSender().sendString(StringUtils.getItemNames(other.get().getTradeContainer().toArray()), 33251);
 			player.getActionSender().sendInterfaceWithInventoryOverlay(InterfaceConstants.SECOND_TRADE_SCREEN, 3213);

@@ -17,7 +17,6 @@ import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.PlayerOption;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.clan.ClanRank;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
@@ -1040,7 +1039,7 @@ public class ActionSender {
 		        }
 				
 				//If we're a Administrator we choose to play in debug mode
-				if (Rights.isOwner(player)) {
+				if (player.getRights().isOwner(player)) {
 					player.setDebugMode(true);
 				}
 				

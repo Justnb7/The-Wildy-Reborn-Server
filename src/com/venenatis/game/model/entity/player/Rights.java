@@ -56,7 +56,7 @@ public enum Rights {
 	/* Hardcore Iron Man */
 	HARDCORE_IRON_MAN("Hardcore Iron Man", Order.PLAYER, 13, "7A6F74");
 
-	public static enum Order {
+	public enum Order {
 		PLAYER(0),
 
 		DONATOR(1),
@@ -91,11 +91,11 @@ public enum Rights {
 		this.color = color;
 	}
 	
-	public static Optional<Rights> forValue(int id) {
+	public Optional<Rights> forValue(int id) {
 		return Arrays.stream(values()).filter(a -> a.getOrder().getCode() == id).findAny();
 	}
 	
-	public static Optional<Rights> get(int id) {
+	public Optional<Rights> get(int id) {
 		return Arrays.stream(values()).filter(a -> a.crown == id).findAny();
 	}
 	
@@ -135,46 +135,46 @@ public enum Rights {
 		return getOrder().getCode() <= other.getOrder().getCode();
 	}
 
-	public static String getStringForRights(Player player) {
+	public String getStringForRights(Player player) {
 		if (player.getRights().getCrown() == 0) {
 			return "";
 		}
 		return "<img=" + (player.getRights().getCrown()) + ">";
 	}
 
-	public static boolean isDonator(Player player) {
+	public boolean isDonator(Player player) {
 		return player.getRights() != PLAYER;
 	}
 	
-	public static boolean isStaffMember(Player player) {
+	public boolean isStaffMember(Player player) {
 		if (player.getRights().getOrder() == Order.MODERATOR || player.getRights().getOrder() == Order.STAFF) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean isSuperStaff(Player player) {
+	public boolean isSuperStaff(Player player) {
 		if (player.getRights() == Rights.ADMINISTRATOR || player.getRights() == Rights.OWNER) {
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean isOwner(Player player) {
+	public boolean isOwner(Player player) {
 		if (player.getRights() == Rights.OWNER) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean isIron(Player player) {
+	public boolean isIron(Player player) {
 		if (player.getRights() == IRON_MAN || player.getRights() == ULTIMATE_IRON_MAN || player.getRights() == HARDCORE_IRON_MAN) {
 			return true;
 		}
 		return false;
 	}
 	
-	public static void upgrade(Player player) {
+	public void upgrade(Player player) {
 		if (isIron(player)) {
 			return;
 		}

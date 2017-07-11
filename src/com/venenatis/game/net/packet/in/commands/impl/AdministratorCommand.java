@@ -3,7 +3,6 @@ package com.venenatis.game.net.packet.in.commands.impl;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.util.StringUtils;
@@ -125,6 +124,6 @@ public class AdministratorCommand implements Command {
 
 	@Override
 	public boolean meetsRequirements(Player player) {
-		return Rights.isSuperStaff(player);
+		return player.getRights().isSuperStaff(player);
 	}
 }

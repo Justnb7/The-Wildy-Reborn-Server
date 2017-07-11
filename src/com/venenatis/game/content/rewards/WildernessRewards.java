@@ -12,7 +12,6 @@ import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -38,7 +37,7 @@ public class WildernessRewards {
 		int amount = 0;
 		killer = World.getWorld().lookupPlayerByName(opponent.getCombatState().getDamageMap().getKiller());
 		
-		if(wealth > Constants.PK_POINTS_WEALTH && isSameConnection(opponent, killer) && !Rights.isOwner(killer)) {
+		if(wealth > Constants.PK_POINTS_WEALTH && isSameConnection(opponent, killer) && !killer.getRights().isOwner(killer)) {
 			if(hasKilledRecently(opponent.getUsername(), killer)) {
 				killer.getActionSender().sendMessage("You have already killed "+opponent.getUsername()+" kill 3 more players before receiving rewards again for killing "+opponent.getUsername());
 				return false;

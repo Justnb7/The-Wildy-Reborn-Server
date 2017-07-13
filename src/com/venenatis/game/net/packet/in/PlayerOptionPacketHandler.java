@@ -2,6 +2,7 @@ package com.venenatis.game.net.packet.in;
 
 import static com.google.common.base.Preconditions.checkState;
 
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Skills;
@@ -213,17 +214,17 @@ public class PlayerOptionPacketHandler implements PacketType {
 			}
 		}
 
-		if (!Area.inWilderness(other)) {
-			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is currently in a safe zone and can not be attacked.");
+		if (!Area.inWilderness(other) || !MinigameHandler.execute(other, true, $it -> $it.canAttack(other))) {
+			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is currently in a safe zone and can not be attacked. 12");
+			return;
+		}
+
+		if (!Area.inWilderness(player) || !MinigameHandler.execute(player, true, $it -> $it.canAttack(player))) {
+			player.getActionSender().sendMessage("You can not attack players while in a safe zone! 2323");
 			return;
 		}
 
 		if (!player.getController().canAttackPlayer(player, other)) {
-			return;
-		}
-
-		if (!Area.inWilderness(player)) {
-			player.getActionSender().sendMessage("You can not attack players while in a safe zone!");
 			return;
 		}
 

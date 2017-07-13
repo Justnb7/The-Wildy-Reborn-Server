@@ -25,6 +25,7 @@ import com.venenatis.game.task.impl.DeathTask;
 import com.venenatis.game.util.StringUtils;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.clipmap.Region;
 
 /**
  * Represents a minigame in which {@link Player}s fight in a arena and can choose to stake their items for their opponents.
@@ -69,20 +70,20 @@ public final class DuelArena extends Minigame {
 	}
 
 	/**
-	 * The default location a player will respawn to if they died in the duel
+	 * The default locations a player will respawn to if they died in the duel
 	 * arena.
 	 */
-	public static final Location DUEL_RESPAWN = new Location(3367, 3266);
-
 	public static final ImmutableList<SquareArea> RESPAWN_LOCATIONS = ImmutableList.of(
 			new SquareArea(3356, 3268, 3359, 3274),
 			new SquareArea(3360, 3274, 3378, 3277),
 			new SquareArea(3355, 3274, 3357, 3278),
 			new SquareArea(3373, 3264, 3373, 3268));
+	
 	/**
 	 * The collection of arena coordinates.
 	 */
 	public static final ImmutableList<Area> ARENAS = ImmutableList.of(new SquareArea("North West Arena", 3331, 3243, 3359, 3259), new SquareArea("South West Arena", 3331, 3205, 3358, 3219), new SquareArea("East Arena", 3363, 3226, 3390, 3240));
+	
 	public static final ImmutableList<Area> OBSTACLE_ARENAS = ImmutableList.of(new SquareArea("North West Obstacle Arena", 3331, 3224, 3358, 3238), new SquareArea("South East Obstacle Arena", 3362, 3205, 3390, 3221), new SquareArea("North East Obstacle Arena", 3363, 3245, 3390, 3259));
 
 	/**
@@ -116,6 +117,8 @@ public final class DuelArena extends Minigame {
 	 */
 	private int waitCounter = 5;
 	
+	// both 5 lol duplicates
+	//Looks like they're using this aswell as it is increemnting and such
 	/**
 	 * The time in seconds it took to kill a player in the arena.
 	 */
@@ -351,35 +354,20 @@ public final class DuelArena extends Minigame {
 	private void moveToArena() {
 		if (stage == DuelStage.ARENA && other.get().getDuelArena().getStage() == DuelStage.ARENA) {
 			onStart();
-
+			
 			SquareArea arena;
-
-			boolean addX = Utility.random(1) == 1 ? true : false;
-
-			boolean addY = Utility.random(1) == 1 ? true : false;
-
-			boolean addX2 = Utility.random(1) == 1 ? true : false;
-
-			boolean addY2 = Utility.random(1) == 1 ? true : false;
-
-			int x = addX ? Utility.random(11) : -Utility.random(11);
-			int y = addY ? Utility.random(5) : -Utility.random(5);
-
-			int x2 = Utility.random(12);
-			int y2 = Utility.random(5);
 
 			if (rules.get(DuelRule.MOVEMENT)) {
 				arena = (SquareArea) ARENAS.get(Utility.random(ARENAS.size(), false));
 
-				player.face(other.get(), new Location(x, y));
-				other.get().face(player, new Location(x, y));
-
 				if (arena.getName().contains("East Arena")) {
-					player.setTeleportTarget(new Location(3376 + x, 3232 + y));
-					other.get().setTeleportTarget(new Location(3376 + x2, 3232 + y2));
+					Location tile = findUnclipped(new Location(3376, 3232), 14, 5);
+					player.setTeleportTarget(tile);
+					other.get().setTeleportTarget(tile.transform(0, 1));
 				} else {
-					player.setTeleportTarget(new Location(3345 + x, 3251 + y));
-					other.get().setTeleportTarget(new Location(3345 + x2, 3251 + y2));
+					Location tile = findUnclipped(new Location(3345, 3251), 14, 5);
+					player.setTeleportTarget(tile);
+					other.get().setTeleportTarget(tile.transform(0, 1));
 				}
 			} else if  (rules.get(DuelRule.OBSTACLES)) {
 				int randomIndex = Utility.random(OBSTACLE_ARENAS.size(), false);
@@ -403,13 +391,23 @@ public final class DuelArena extends Minigame {
 				arena = (SquareArea) ARENAS.get(randomIndex);
 
 				if (arena.getName().contains("East Arena")) {
-					player.setTeleportTarget(new Location(3376 + (addX ? x : -x), 3232 + (addY ? y : -y)));
-					other.get().setTeleportTarget(new Location(3376 + (addX2 ? x2 : -x2), 3232 + (addY2 ? y2 : -y2)));
+					Location tile = findUnclipped(new Location(3376, 3232), 14, 5);
+					
+					Location random_spawn_tile = findUnclipped(new Location(3376, 3232), 14, 5);
+					while (tile.equals(random_spawn_tile))
+						random_spawn_tile = findUnclipped(new Location(3376, 3232), 14, 5);
+					player.setTeleportTarget(tile);
+					other.get().setTeleportTarget(random_spawn_tile);
 				} else {
-					player.setTeleportTarget(new Location(3345 + (addX ? x : -x), 3251 + (addY ? y : -y)));
-					other.get().setTeleportTarget(new Location(3345 + (addX2 ? x2 : -x2), 3251 + (addY2 ? y2 : -y2)));
+					Location tile = findUnclipped(new Location(3345, 3251), 14, 5);
+					
+					Location random_spawn_tile = findUnclipped(new Location(3345, 3251), 14, 5);
+					while (tile.equals(random_spawn_tile))
+						random_spawn_tile = findUnclipped(new Location(3345, 3251), 14, 5);
+					
+					player.setTeleportTarget(tile);
+					other.get().setTeleportTarget(random_spawn_tile);
 				}
-
 			}
 
 			new DuelArenaTask();
@@ -417,6 +415,21 @@ public final class DuelArena extends Minigame {
 			player.getActionSender().createPlayerHint(10, other.get().getIndex());
 			other.get().getActionSender().createPlayerHint(10, player.getIndex());
 		}
+	}
+
+	private Location findUnclipped(Location base, int x, int y) {
+		
+		Location possible = base.transform(-x, -y).transform(Utility.random(x*2), Utility.random(y*2)); 
+		// repeatedly check if this position has no clip mask
+		
+		while (Region.getClippingMask(possible.getX(), possible.getY(), possible.getZ()) != 0) {
+			// if it is clipped it's invalid, so lets randomize the initial position 
+			// start by making base 3722 3232 into base x-14 and y-5 then add a random number 0-(14*2=28) to x and 5*2=10 to y
+			possible = base.transform(-x, -y).transform(Utility.random(x*2), Utility.random(y*2));
+			// so ends anywhere where the clip of (3722,3232) and (basex+28, basey+10) is unclipped
+		}
+		System.out.printf("possible %s base %s%n", possible, base);
+		return possible;
 	}
 
 	/**
@@ -1060,8 +1073,6 @@ public final class DuelArena extends Minigame {
 	 */
 	private final class DuelArenaTask extends Timer {
 
-		private final int startTime = 5;
-
 		public DuelArenaTask() {
 			execute();
 		}
@@ -1097,21 +1108,17 @@ public final class DuelArena extends Minigame {
 		}
 
 		private void countdown() {
-			incrementArenaTime(1);
-			
-			if (getArenaTime() <= startTime) {
-
+			if (getWaitTime() > -1) {
 				decrementWaitTime(1);
 				other.ifPresent($it -> $it.getDuelArena().decrementWaitTime(1));
-
-				if (getWaitTime() <= 3 && getWaitTime() >= 1) {
-					player.sendForcedMessage("" + getWaitTime());
-					other.ifPresent($it -> $it.sendForcedMessage("" + getWaitTime()));
-				} else if (getWaitTime() <= 0) {
-					player.sendForcedMessage("FIGHT!");
-					other.ifPresent($it -> $it.sendForcedMessage("FIGHT!"));
-				}
-
+			}
+			
+			if (getWaitTime() <= 3 && getWaitTime() >= 1) {
+				player.sendForcedMessage("" + getWaitTime());
+				other.ifPresent($it -> $it.sendForcedMessage("" + getWaitTime()));
+			} else if (getWaitTime() == 0) {
+				player.sendForcedMessage("FIGHT!");
+				other.ifPresent($it -> $it.sendForcedMessage("FIGHT!"));
 			}
 		}
 	}

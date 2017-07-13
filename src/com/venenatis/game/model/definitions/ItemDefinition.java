@@ -60,8 +60,10 @@ public class ItemDefinition {
 	private final boolean weapon;
 
 	private final double weight;
+	
+	//private final int special_value;
 
-	public ItemDefinition(int id, String name, String examine, boolean noted, boolean noteable, int parentId, int notedId, boolean stackable, boolean destroyable, boolean tradeable, boolean members, boolean questItem, int value, int highAlch, int lowAlch, boolean equipable, boolean weapon, double weight) {
+	public ItemDefinition(int id, String name, String examine, boolean noted, boolean noteable, int parentId, int notedId, boolean stackable, boolean destroyable, boolean tradeable, boolean members, boolean questItem, int value, int highAlch, int lowAlch, boolean equipable, boolean weapon, double weight/*, int special_value*/) {
 		this.id = id;
 		this.name = name;
 		this.examine = examine;
@@ -80,6 +82,7 @@ public class ItemDefinition {
 		this.equipable = equipable;
 		this.weapon = weapon;
 		this.weight = weight;
+		//this.special_value = special_value;
 	}
 
 	/**
@@ -207,6 +210,10 @@ public class ItemDefinition {
 	public boolean isWeapon() {
 		return weapon;
 	}
+	
+	/*public int getSpecialValue() {
+		return special_value;
+	}*/
 
 	@Override
 	public String toString() {

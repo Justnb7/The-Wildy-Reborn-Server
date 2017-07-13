@@ -42,8 +42,7 @@ public class PlayerVsPlayerCombat {
 			return false;
 		}
 
-		boolean bypassCosImTheBest = player.getUsername().equalsIgnoreCase("test") ||
-				player.getUsername().equalsIgnoreCase("patrick");
+		boolean bypassCosImTheBest = player.getUsername().equalsIgnoreCase("test") || player.getUsername().equalsIgnoreCase("patrick");
 		int myCB = player.getCombatLevel();
 		int target_CB = target.getCombatLevel();
 		if (Area.inWilderness(player)) {
@@ -78,7 +77,6 @@ public class PlayerVsPlayerCombat {
 			}
 		}
 		if (!player.getController().canAttackPlayer(player, target)) {
-			player.debug("controller denied attack");
 			player.getWalkingQueue().reset();
 			return false;
 		}

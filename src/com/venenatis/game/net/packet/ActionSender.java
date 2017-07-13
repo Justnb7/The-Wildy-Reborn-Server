@@ -1056,7 +1056,7 @@ public class ActionSender {
 	
 	private final void resetLocation() {
 		if(DuelArena.inArena(player)) {
-			player.setTeleportTarget(DuelArena.DUEL_RESPAWN);
+			player.setTeleportTarget(DuelArena.RESPAWN_LOCATIONS.get(Utility.random(DuelArena.RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
 		}
 	}
 	

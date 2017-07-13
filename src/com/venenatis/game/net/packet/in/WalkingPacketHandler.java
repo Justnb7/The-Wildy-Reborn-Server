@@ -1,5 +1,6 @@
 package com.venenatis.game.net.packet.in;
 
+import com.venenatis.game.content.activity.minigames.impl.duelarena.*;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
@@ -52,9 +53,25 @@ public class WalkingPacketHandler implements PacketType {
 		player.removeAttribute("fishing");
 		player.stopSkillTask();
 		
-		//When walking during a trade we don't decline trades
-		if (player.isTrading()) {
-			player.getTradeSession().declineTrade(false);
+		if (player.isDueling()) {
+			if (player.getDuelArena().getRules().get(DuelRule.MOVEMENT)) {
+				player.getActionSender().sendMessage("Movement is disabled in this duel.");
+				return;
+			}
+		}
+
+		if (player.getDuelArena().isInSession()) {
+			player.getActionSender().sendMessage("Please close what you're doing before trying to move.");
+			return;
+		}
+
+		if (player.getDuelArena().getStage() == DuelArena.DuelStage.REWARD) {
+			player.getDuelArena().claimReward(player.getDuelArena().isWon());
+		}
+
+		if (player.getTradeSession().isTrading()) {
+			player.getActionSender().sendMessage("Please close what you're doing before trying to move.");
+			return;
 		}
 		
 		//When walking reset the following variables

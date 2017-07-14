@@ -117,8 +117,6 @@ public final class DuelArena extends Minigame {
 	 */
 	private int waitCounter = 5;
 	
-	// both 5 lol duplicates
-	//Looks like they're using this aswell as it is increemnting and such
 	/**
 	 * The time in seconds it took to kill a player in the arena.
 	 */

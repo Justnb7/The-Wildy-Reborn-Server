@@ -30,6 +30,7 @@ public class SpellHandler {
 		int spellId = player.getSpellId() > -1 ? player.getSpellId() : player.getAutocastId() > -1 ? player.getAutocastId() : -1;
 		SpellEffect effect = forId(spellId);
 		if (effect == null) {
+			player.debug("return");
 			return;
 		}
 		if (!effect.noEffect(player, victim))

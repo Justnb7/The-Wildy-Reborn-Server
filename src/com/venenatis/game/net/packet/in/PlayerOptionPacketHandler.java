@@ -208,6 +208,13 @@ public class PlayerOptionPacketHandler implements PacketType {
 		final int spell = player.getInStream().readSignedWordBigEndian();
 
 		if (player.getDuelArena().isDueling()) {
+			if (player.getDuelArena().getWaitTime() > 0) {
+				player.getActionSender().sendMessage("The duel has not started yet.");
+				return;
+			}
+		}
+		
+		if (player.getDuelArena().isDueling()) {
 			if (player.getDuelArena().getRules().get(DuelRule.MAGIC)) {
 				player.getActionSender().sendMessage("Magic is disabled in this duel.");
 				return;
@@ -230,6 +237,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 		for (int spellId = 0; spellId < player.MAGIC_SPELLS.length; spellId++) {
 			if (spell == player.MAGIC_SPELLS[spellId][0]) {
+				player.debug("using spell: "+spellId);
 				player.setSpellId(spellId);
 				player.setCombatType(CombatStyle.MAGIC);
 				break;

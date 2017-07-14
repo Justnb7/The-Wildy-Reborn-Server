@@ -19,7 +19,7 @@ public class IceBarrageSpellEffect implements SpellEffect {
 
 	@Override
 	public boolean noEffect(Player attacker, Entity victim) {
-		if (victim.frozen() || ((Boolean) victim.getAttribute("frozen_immunity"))) {
+		if (victim.frozen()) {
 			return true;
 		}
 		return false;
@@ -27,6 +27,6 @@ public class IceBarrageSpellEffect implements SpellEffect {
 
 	@Override
 	public int spellId() {
-		return 12891;
+		return 47;
 	}
 }

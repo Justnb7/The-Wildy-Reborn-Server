@@ -13,11 +13,11 @@ public class IceRushSpellEffect implements SpellEffect {
 
 	@Override
 	public boolean noEffect(Player attacker, Entity victim) {
-		return victim.frozen() || (Boolean) victim.getAttribute("frozen_immunity");
+		return victim.frozen();
 	}
 
 	@Override
 	public int spellId() {
-		return 12861;
+		return 35;
 	}
 }

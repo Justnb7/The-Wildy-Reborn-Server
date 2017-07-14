@@ -122,37 +122,9 @@ public class PlayerFollowing {
             return;
         }
 
-        boolean inside = false;
-        if (following.size() == 1) {
-            if (player.getX() == otherX && player.getY() == otherY) {
-                inside = true;
-            }
-        } else {
-            Location[] occupied = following.getTiles();
-            for (Location tile : occupied) {
-                if (player.getX() == tile.getX() && player.getY() == tile.getY()) {
-                    inside = true;
-                    break;
-                }
-            }
-        }
-        if (inside) {
-            if (following.size() > 1) {
-                moveOutFromUnderLargeNpc(player, following);
-            } else {
-                if (Region.getClipping(player.getX() - 1, player.getY(), player.getZ(), -1, 0)) {
-                    walkTo(-1, 0);
-                } else if (Region.getClipping(player.getX() + 1, player.getY(), player.getZ(), 1, 0)) {
-                    walkTo(1, 0);
-                } else if (Region.getClipping(player.getX(), player.getY() - 1, player.getZ(), 0, -1)) {
-                    walkTo(0, -1);
-                } else if (Region.getClipping(player.getX(), player.getY() + 1, player.getZ(), 0, 1)) {
-                    walkTo(0, 1);
-                }
-            }
-            player.debug("inside target, manovouring..");
+        boolean inside = manoveringFromUnderTarg(player, following);
+        if (inside)
             return;
-        }
 
         //Start facing the player you want to follow
         player.faceEntity(following);
@@ -203,8 +175,45 @@ public class PlayerFollowing {
             }
         }
     }
-    
-	/**
+
+    private static boolean manoveringFromUnderTarg(Player player, Entity following) {
+        int otherX = following.getX();
+        int otherY = following.getY();
+        boolean inside = false;
+        if (following.size() == 1) {
+            if (player.getX() == otherX && player.getY() == otherY) {
+                inside = true;
+            }
+        } else {
+            Location[] occupied = following.getTiles();
+            for (Location tile : occupied) {
+                if (player.getX() == tile.getX() && player.getY() == tile.getY()) {
+                    inside = true;
+                    break;
+                }
+            }
+        }
+        if (inside) {
+            if (following.size() > 1) {
+                moveOutFromUnderLargeNpc(player, following);
+            } else {
+                if (Region.getClipping(player.getX() - 1, player.getY(), player.getZ(), -1, 0)) {
+                    walkTo(player, -1, 0);
+                } else if (Region.getClipping(player.getX() + 1, player.getY(), player.getZ(), 1, 0)) {
+                    walkTo(player, 1, 0);
+                } else if (Region.getClipping(player.getX(), player.getY() - 1, player.getZ(), 0, -1)) {
+                    walkTo(player, 0, -1);
+                } else if (Region.getClipping(player.getX(), player.getY() + 1, player.getZ(), 0, 1)) {
+                    walkTo(player, 0, 1);
+                }
+            }
+            player.debug("inside target, manovouring..");
+            return true;
+        }
+        return false;
+    }
+
+    /**
 	 * Stops diagonal movements
 	 * 
 	 * @param player
@@ -238,6 +247,10 @@ public class PlayerFollowing {
 	 *            The y position
 	 */
     public void walkTo(int moveX, int moveY) {
+        walkTo(player, moveX, moveY);
+    }
+
+    public static void walkTo(Player player, int moveX, int moveY) {
         player.getWalkingQueue().reset();
         player.getWalkingQueue().addStep(player.getX() + moveX, player.getY() + moveY);
         player.getWalkingQueue().finish();

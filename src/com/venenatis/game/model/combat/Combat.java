@@ -27,6 +27,7 @@ import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
+import com.venenatis.game.model.entity.following.PlayerFollowing;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -34,7 +35,6 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
-import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
@@ -730,21 +730,22 @@ public class Combat {
 
         // Above - path was executed, now check for line of sight, and distance
 
+        boolean samespot = Location.standingOn(player, target);
         if (!com.venenatis.game.world.pathfinder.impl.ProjectilePathFinder.hasLineOfSight(player, target)) {
-            if (!Location.standingOn(player, target)) {
+            if (!samespot) {
                 player.debug("no line of sight");
                 return false;
-            } else if (Location.standingOn(player, target)) {
+            } else if (samespot) {
                 if (player.frozen()) {
                     return false;
                 }
             }
         }
+        if (samespot)
+            PlayerFollowing.moveOutFromUnderLargeNpc(player, target);
         // Now pathfinder has updated out path.. check LOS and distance.
-        
-        // projectile path clear is PI's line of sight.. apparently? idk was already there
-		return /*ProjectilePathFinder.isProjectilePathClear(player.getLocation(), target.getLocation()) && */
-                player.touchDistance(target, calculateAttackDistance(player, target));
+
+		return player.touchDistance(target, calculateAttackDistance(player, target));
 	}
 	
 	/**

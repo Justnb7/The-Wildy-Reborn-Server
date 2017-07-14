@@ -20,7 +20,7 @@ import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
 import com.venenatis.game.model.combat.magic.spell.SpellHandler;
 import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
 import com.venenatis.game.model.combat.pvp.PlayerVsPlayerCombat;
-import com.venenatis.game.model.combat.range.ArrowRequirements;
+import com.venenatis.game.model.combat.range.AmmoRequirements;
 import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.combat.special_attacks.Special;
 import com.venenatis.game.model.definitions.ItemDefinition;
@@ -329,7 +329,7 @@ public class Combat {
             return;
         }
 
-        if (!ArrowRequirements.canUseArrowWithBow(player))
+        if (!AmmoRequirements.canUseArrowWithBow(player))
             return;
 
         if (player.getCombatState().getAttackDelay() > 0) {

@@ -277,8 +277,9 @@ public class CombatFormulae {
         }
         att_hit_chance = Utility.getRandom((int) (att_hit_chance + 20 + (!attacker.isNPC() ? attacker.toPlayer().isUsingSpecial() ? 20 * additionalSpecMulti : 0 : 0)));
         tar_block_chance = Utility.getRandom((int) tar_block_chance);
-        /*if (attacker.isPlayer())
-        	System.out.println("target "+target+" hit = "+((int)att_hit_chance)+" > "+((int) tar_block_chance * repBonus)+" also additionalSpecMulti "+additionalSpecMulti);*/
+        if (attacker.isPlayer())
+        	if (attacker.asPlayer().inDebugMode())
+        		System.out.printf("target %s hit = %s >? %s%n", target, att_hit_chance, tar_block_chance);
         return (int) att_hit_chance > (int) tar_block_chance;
     }
     

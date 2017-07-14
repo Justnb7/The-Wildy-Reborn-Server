@@ -1,18 +1,18 @@
 package com.venenatis.game.model.container.impl.equipment;
 
-import java.util.Arrays;
-
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
-import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.definitions.EquipmentDefinition.EquipmentType;
+import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.EquipmentRequirement;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+
+import java.util.Arrays;
 
 /**
  * Holds the player's equipment items.
@@ -126,7 +126,7 @@ public class EquipmentContainer extends Container {
 			if (item != null) {
 				EquipmentDefinition def = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
 
-				for (int slot = 0; slot < player.getBonuses().length; slot++) {
+				for (int slot = 0; slot < Math.min(player.getBonuses().length, def.getBonuses().length); slot++) {
 					player.getBonuses()[slot] += def.getBonuses()[slot];
 				}
 			}

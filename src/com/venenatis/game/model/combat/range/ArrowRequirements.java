@@ -72,16 +72,15 @@ public enum ArrowRequirements {
 			BowRequirements bowReq = BowRequirements.forId(bow.getId());
 
 			if (arrowReq != null && bowReq != null) {
-				if (arrowReq.getLevelRequired() <= bowReq.getLevelRequired()) {
-					return true;
-				} else {
+				if (arrowReq.getLevelRequired() > bowReq.getLevelRequired()) {
 					player.message("You cannot use " + arrow.getName().toLowerCase() + "s with a " + bow.getName().toLowerCase() + ".");
 					Combat.resetCombat(player);
 					return false;
+				} else {
+					return true;
 				}
 			}
 		}
-		player.debug("bad ammo");
-		return false;
+		return true;
 	}
 }

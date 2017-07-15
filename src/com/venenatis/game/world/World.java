@@ -135,7 +135,7 @@ public class World implements Service {
 		schedule(new NPCMovementTask());
 		schedule(new RestoreSpecialStats());
 		schedule(new SavePlayers());
-		schedule(new BountyHunter());
+		//schedule(new BountyHunter());
 		schedule(new InstanceFloorReset());
 	}
 	

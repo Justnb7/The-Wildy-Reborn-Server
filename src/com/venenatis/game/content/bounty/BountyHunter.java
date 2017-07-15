@@ -191,7 +191,7 @@ public class BountyHunter extends Task {
 			 * Prevent ourself and people connected to our identity to be set as
 			 * a target
 			 */
-			if (target.getIdentity().equalsIgnoreCase(player.getIdentity()) || target.getMacAddress().equalsIgnoreCase(player.getMacAddress())) {
+			if (target.getIdentity().equalsIgnoreCase(player.getIdentity()) || target.getMacAddress().equalsIgnoreCase(player.getMacAddress()) || !WildernessRewards.isSameConnection(target, player)) {
 				continue;
 			}
 			
@@ -209,7 +209,6 @@ public class BountyHunter extends Task {
 			target.setAttribute(BountyHunterConstants.BOUNTY_TARGET, player.getIndex());
 			target.getActionSender().createPlayerHint(10, player.getIndex());
 			determineWealth(target);
-
 			return;
 		}
 	}

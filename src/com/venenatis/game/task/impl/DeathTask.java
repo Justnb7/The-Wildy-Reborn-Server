@@ -120,6 +120,7 @@ public class DeathTask extends Task {
 		victim.getActionSender().sendMessage("Oh dear, you are dead!");
 		victim.getCombatState().setDead(false);
 		victim.freeze(0);
+		victim.setCurrentKillStreak(0);
 		PrayerHandler.resetAllPrayers(victim);
 		victim.setSpecialAmount(100);
 		victim.setUsingSpecial(false);

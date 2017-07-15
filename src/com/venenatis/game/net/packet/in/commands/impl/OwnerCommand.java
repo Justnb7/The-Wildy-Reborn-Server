@@ -22,6 +22,8 @@ import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.shop.ShopManager;
 import com.venenatis.server.Server;
 
@@ -36,10 +38,20 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "drop":
+			GroundItem groundItem = new GroundItem(new Item(4151), player.getLocation(), player);
+			if (!GroundItemHandler.register(groundItem)) {
+				return false;
+			}
+			player.getActionSender().sendGroundItem(groundItem);
+			return true;
+		
 		case "spec":
+		case "special":
 			int amount = parser.nextInt();
 			player.setSpecialAmount(parser.hasNext() ? amount : 100);
-			player.getSpecial().restoreSpecialAttributes();
+    		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
+    		player.getWeaponInterface().refreshSpecialAttack();
 			return true;
 		
 		case "npc":
@@ -483,66 +495,6 @@ public class OwnerCommand implements Command {
 				}
 			}
 			System.out.println();
-			return true;
-			
-			/* Teleport To */
-		case "tele":
-			if (parser.hasNext(2)) {
-				final int x = parser.nextInt();
-				final int y = parser.nextInt();
-
-				Location location = new Location(x, y);
-				player.setTeleportTarget(location);
-				player.getActionSender().sendMessage("<col=800000>You have teleported to the coordinates: " + location.toString());
-				return true;
-			} else if (parser.hasNext(3)) {
-				final int x = parser.nextInt();
-				final int y = parser.nextInt();
-				final int z = parser.nextInt();
-
-				Location location = new Location(x, y, z);
-				player.setTeleportTarget(location);
-				player.getActionSender().sendMessage("<col=800000>You have teleported to the coordinates: " + location.toString());
-				return true;
-			}
-			return false;
-
-		/* Minimap Teleport */
-		case "minimaptele":
-			if (parser.hasNext(2)) {
-				final int x = parser.nextInt();
-				final int y = parser.nextInt();
-				final int z = player.getLocation().getZ();
-
-				player.setTeleportTarget(new Location(x, y, z));
-				player.getActionSender().sendMessage("<col=800000>You have teleported to the coordinates: " + x + ", " + y + ", " + z);
-				return true;
-			}
-			return true;
-
-		/* All To Me */
-		case "alltome":
-		case "teleall":
-			Location playerLocation = player.getLocation();
-			for (Player players : World.getWorld().getPlayers()) {
-				if (players != null && players != player) {
-					players.setTeleportTarget(playerLocation);
-					players.getActionSender().sendMessage("<col=ff0000>You have been mass teleported by " + Utility.formatName(player.getUsername()) + ".");
-				}
-			}
-			player.getActionSender().sendMessage("All players have been teleported to your location.");
-			return true;
-
-		/* My Position */
-		case "pos":
-		case "mypos":
-		case "coords":
-			player.getActionSender().sendMessage("Your location is: " + player.getLocation() + ".");
-			return true;
-
-		/* Bank */
-		case "bank":
-			player.getBank().open();
 			return true;
 
 		case "move":

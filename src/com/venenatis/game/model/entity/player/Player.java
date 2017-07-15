@@ -34,9 +34,9 @@ import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.SkullType;
+import com.venenatis.game.model.combat.data.WeaponInterface;
 import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
-import com.venenatis.game.model.combat.special_attacks.Special;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
@@ -83,12 +83,6 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.server.Server;
 
 public class Player extends Entity {
-	
-	public Special special = new Special(this);
-	
-	public Special getSpecial() {
-		return special;
-	}
 	
 	public Killstreak killstreak = new Killstreak(this);
 	
@@ -2016,6 +2010,12 @@ public class Player extends Entity {
 
 	public boolean getAcceptAid() {
 		return acceptAid;
+	}
+	
+    private final WeaponInterface weaponInterface = new WeaponInterface(this);
+	
+	public WeaponInterface getWeaponInterface() {
+		return weaponInterface;
 	}
 
 	/**

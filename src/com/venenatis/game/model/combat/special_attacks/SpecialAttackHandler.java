@@ -109,7 +109,7 @@ public class SpecialAttackHandler {
 
 					if (special == null) {
 						System.out.println("Invalid special attack: " + weapon);
-						player.getSpecial().resetSpecial(player);
+						Special.resetSpecial(player);
 						return false;
 					}
 
@@ -122,11 +122,11 @@ public class SpecialAttackHandler {
 					} else {
 						player.message("You do not have the required special amount.");
 					}
-					player.getSpecial().resetSpecial(player);
+					Special.resetSpecial(player);
 					return true;
 				}
 				player.setUsingSpecial(!player.isUsingSpecial());
-				player.getSpecial().updateText();
+				player.getWeaponInterface().refreshSpecialAttack();
 				return true;
 			}
 		}

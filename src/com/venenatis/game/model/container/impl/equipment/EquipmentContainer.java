@@ -183,7 +183,7 @@ public class EquipmentContainer extends Container {
 				player.setUsingSpecial(false);
 			}
 			player.setDefaultAnimations();
-            player.getSpecial().restoreSpecialAttributes();
+            player.getWeaponInterface().restoreWeaponAttributes();
 			player.getCombatState().reset();
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			setBonus();
@@ -192,7 +192,7 @@ public class EquipmentContainer extends Container {
 
 	public void updateWeapon() {
 		updateWieldItemName();
-        player.getSpecial().restoreSpecialAttributes();
+        player.getWeaponInterface().restoreWeaponAttributes();
         player.setSpellId(-1);
         player.setAutocastId(-1);
         player.autoCast = false;

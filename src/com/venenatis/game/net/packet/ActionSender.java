@@ -107,11 +107,11 @@ public class ActionSender {
 
     public ActionSender sendProgressInterface() {
     	sendConfig(406, player.getProgressBar());
-		sendInterfaceConfig(12224, true);
-		sendInterfaceConfig(12225, true);
-		sendInterfaceConfig(12226, true);
-		sendInterfaceConfig(12227, true);
-		sendInterfaceConfig(12161, false);
+		sendInterfaceConfig(1, 12224);
+		sendInterfaceConfig(1, 12225);
+		sendInterfaceConfig(1, 12226);
+		sendInterfaceConfig(1, 12227);
+		sendInterfaceConfig(0, 12161);
 		sendString("% Done", 12224);
 		sendWalkableInterface(8680);
 		return this;
@@ -333,20 +333,11 @@ public class ActionSender {
 		return this;
 	}
 	
-	 /**
-     * Creates a new {@link sendInterfaceConfig).
-     * 
-     * @param id
-     *            The id of the interface.
-     * 
-     * @param hide
-     *            The toggle to display the interface.
-     */
-	public ActionSender sendInterfaceConfig(int id, boolean hide) {
+	public ActionSender sendInterfaceConfig(int interfaceId, int state) {
 		if (player.getOutStream() != null) {
             player.getOutStream().writeFrame(171);
-            player.getOutStream().writeByte(id);
-            player.getOutStream().writeShort(hide ? 1 : 0);
+            player.getOutStream().writeByte(interfaceId);
+            player.getOutStream().writeShort(state);
         }
 		return this;
 	}
@@ -971,7 +962,7 @@ public class ActionSender {
 		player.getEquipment().refresh();
 		
 		//Update the weapon attributes
-		player.getSpecial().restoreSpecialAttributes();
+		player.getWeaponInterface().restoreWeaponAttributes();
 		
 		//Send the interaction options
 		showContextMenus();

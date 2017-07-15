@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
@@ -98,7 +99,8 @@ public class WildernessRewards {
 			
 			//Renew special attack for the killer
 			killer.setSpecialAmount(100);
-			killer.getSpecial().restoreSpecialAttributes();
+			killer.getWeaponInterface().sendSpecialBar(killer.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
+			killer.getWeaponInterface().refreshSpecialAttack();
 			
 			//Update information tab
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);

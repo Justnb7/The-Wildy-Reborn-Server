@@ -1,6 +1,5 @@
 package com.venenatis.game.task.impl;
 
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
@@ -29,8 +28,7 @@ public class RestoreSpecialStats extends Task {
 								player.setSpecialAmount(100);
 								//System.out.println("Special attack already full.");
 							}
-							player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
-							player.getWeaponInterface().refreshSpecialAttack();
+							player.getSpecial().restoreSpecialAttributes();
 							//System.out.println("Special bar updated.");
 					}
 				}

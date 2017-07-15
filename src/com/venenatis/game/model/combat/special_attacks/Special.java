@@ -3,6 +3,7 @@ package com.venenatis.game.model.combat.special_attacks;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 
@@ -12,6 +13,12 @@ import com.venenatis.game.model.entity.player.Player;
  * @date 13-12-2016
  */
 public class Special {
+	
+	private Player player;
+	
+	public Special(Player player) {
+		this.player = player;
+	}
 
 	/**
 	 * Handles a special attack for a specific player
@@ -19,13 +26,13 @@ public class Special {
 	 * @param attacker
 	 *            The player performing the special attack
 	 */
-	public static void handleSpecialAttack(Player attacker, Entity target) {
+	public void handleSpecialAttack(Player attacker, Entity target) {
 		if (target == null) {
 			return;
 		}
 		
-		attacker.getWeaponInterface().sendSpecialBar(attacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
-		attacker.getWeaponInterface().refreshSpecialAttack();
+		updateInterface();
+		updateText();
 		attacker.setUsingSpecial(true);
 
 		Item weapon = attacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
@@ -78,11 +85,53 @@ public class Special {
 	 * @param player
 	 *            The player resetting the special attack
 	 */
-	public static void resetSpecial(Player player) {
-		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		
+	public void resetSpecial(Player player) {
 		player.setUsingSpecial(false);
-		player.getWeaponInterface().refreshSpecialAttack();
-		player.getWeaponInterface().sendSpecialBar(weapon);
+		updateText();
+		updateInterface();
+	}
+	
+	public void updateInterface() {
+		Item item = player.getEquipment().getWeapon();
+
+
+		if (item == null || SpecialAttackHandler.get(item.getId()) != null) {
+			if (item != null) {
+				WeaponDefinition def = WeaponDefinition.get(item.getId());
+				player.getActionSender().sendInterfaceConfig(def.getType().getLayerId(), false);
+			}
+		} else {
+			player.getActionSender().sendInterfaceConfig(7549, true);
+			player.getActionSender().sendInterfaceConfig(7561, true);
+			player.getActionSender().sendInterfaceConfig(7574, true);
+			player.getActionSender().sendInterfaceConfig(12323, true);
+			player.getActionSender().sendInterfaceConfig(7599, true);
+			player.getActionSender().sendInterfaceConfig(7674, true);
+			player.getActionSender().sendInterfaceConfig(7474, true);
+			player.getActionSender().sendInterfaceConfig(7499, true);
+			player.getActionSender().sendInterfaceConfig(8493, true);
+			player.getActionSender().sendInterfaceConfig(7574, true);
+			player.getActionSender().sendInterfaceConfig(7624, true);
+			player.getActionSender().sendInterfaceConfig(7699, true);
+			player.getActionSender().sendInterfaceConfig(7800, true);
+		}
+	}
+	
+	public void updateText() {
+		Item weapon = player.getEquipment().get(3);
+
+		if (weapon != null) {
+			WeaponDefinition def = WeaponDefinition.get(weapon.getId());
+
+			if (SpecialAttackHandler.get(weapon.getId()) != null) {
+				String col = player.isUsingSpecial() ? "<col=ffff00>" : "<col=0>";
+				player.getActionSender().sendString(String.format("%sSpecial Attack - %s%%", col, player.getSpecialAmount()), def.getType().getSpecialStringId());
+			}
+		}
+	}
+	
+	public void restoreSpecialAttributes() {
+		updateText();
+		updateInterface();
 	}
 }

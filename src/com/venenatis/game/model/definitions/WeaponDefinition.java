@@ -16,15 +16,6 @@ import com.venenatis.game.model.entity.player.Player;
  */
 public class WeaponDefinition {
 
-	/**
-	 * Represents the enumerated types of ammo.
-	 */
-	public static enum AmmoType {
-		SHOT,
-		DOUBLE_SHOT,
-		THROWN
-	}
-
 	// TODO: Finish the weapon types
 	public static enum WeaponType {
 		DEFAULT(5855, 5857, new SpecialAttackDefinition(7749, 7761, 7737)),
@@ -77,25 +68,6 @@ public class WeaponDefinition {
 		public int getSound() {
 			return 0;
 		}
-	}
-
-	public static class RangedWeaponDefinition {
-		private final AmmoType type;
-		private final int[] arrowsAllowed;
-
-		public RangedWeaponDefinition(int[] allowed, AmmoType type) {
-			this.type = type;
-			this.arrowsAllowed = allowed;
-		}
-
-		public int[] getArrowsAllowed() {
-			return arrowsAllowed;
-		}
-
-		public AmmoType getType() {
-			return type;
-		}
-
 	}
 
 	public static class SpecialAttackDefinitions {
@@ -177,7 +149,6 @@ public class WeaponDefinition {
 	private final String name;
 	private WeaponType type;
 	private final CombatStyle combatType;
-	private final RangedWeaponDefinition rangedWeapon;
 	private final boolean twoHanded;
 	private final int blockAnimation;
 	private final int standAnimation;
@@ -186,12 +157,11 @@ public class WeaponDefinition {
 	private final int attackSpeed;
 	private final int[] animations;
 
-	public WeaponDefinition(int id, String name, WeaponType type, CombatStyle combatType, RangedWeaponDefinition rangedWeaponDefinition, boolean twoHanded, int blockAnimation, int standAnimation, int walkAnimation, int runAnimation, int attackSpeed, int[] animations) {
+	public WeaponDefinition(int id, String name, WeaponType type, CombatStyle combatType, boolean twoHanded, int blockAnimation, int standAnimation, int walkAnimation, int runAnimation, int attackSpeed, int[] animations) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.combatType = combatType;
-		this.rangedWeapon = rangedWeaponDefinition;
 		this.twoHanded = twoHanded;
 		this.blockAnimation = blockAnimation;
 		this.standAnimation = standAnimation;
@@ -242,13 +212,6 @@ public class WeaponDefinition {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @return the rangedWeapon
-	 */
-	public RangedWeaponDefinition getRangedWeapon() {
-		return rangedWeapon;
 	}
 
 	/**

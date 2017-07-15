@@ -15,21 +15,15 @@ public class RestoreSpecialStats extends Task {
 	@Override
 	public void execute() {
 		counter++;
-		//System.out.println(""+counter);
 		for (Player player : World.getWorld().getPlayers()) {
 			if (player != null) {
 					if (counter >= 4) {
-						//System.out.println("Here");
 						if (player.getSpecialAmount() < 100) {
-							//System.out.println("special amount below 100");
 							player.setSpecialAmount(player.getSpecialAmount() + 10);
-							//System.out.println("Special amount give + 10%");
 							if (player.getSpecialAmount() > 100) {
 								player.setSpecialAmount(100);
-								//System.out.println("Special attack already full.");
 							}
-							player.getSpecial().restoreSpecialAttributes();
-							//System.out.println("Special bar updated.");
+							player.getSpecial().update();
 					}
 				}
 			}

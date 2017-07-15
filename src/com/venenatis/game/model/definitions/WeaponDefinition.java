@@ -18,22 +18,22 @@ public class WeaponDefinition {
 
 	// TODO: Finish the weapon types
 	public static enum WeaponType {
-		DEFAULT(5855, 5857, new SpecialAttackDefinition(7749, 7761, 7737)),
-		THROWN(4446, 4449, new SpecialAttackDefinition(7649, 7661, 7637)),
-		BOW(1764, 1767, new SpecialAttackDefinition(7549, 7561, 7548)),
-		WHIP(12290, 12293, new SpecialAttackDefinition(12323, 12335, 12322)),
-		WARHAMMER_OR_MAUL(425, 428, new SpecialAttackDefinition(7474, 7486, 7473)),
-		SPEAR(4679, 4682, new SpecialAttackDefinition(7674, 7686, 7662)),
-		STAFF(6103, 6132, new SpecialAttackDefinition(6117, 6129, 6104)),
-		MAGIC_STAFF(328, 355, new SpecialAttackDefinition(18566, 18569, 340)),
-		HALBERD(8460, 8463, new SpecialAttackDefinition(8493, 8505, 8481)),
-		SWORD_OR_DAGGER(2276, 2279, new SpecialAttackDefinition(7574, 7586, 7562)),
-		TWO_HANDED(4705, 4708, new SpecialAttackDefinition(7699, 7711, 7687)),
-		LONGSWORD_OR_SCIMITAR(2423, 2426, new SpecialAttackDefinition(7599, 7611, 7587)),
-		PICKAXE(5570, 5573, new SpecialAttackDefinition(7724, 7736, 7723)),
-		BATTLEAXE(1698, 1701, new SpecialAttackDefinition(7499, 7591, 7498)),
-		CLAWS(7762, 7765, new SpecialAttackDefinition(7800, 7812, 7788)),
-		MACE(3796, 3799, new SpecialAttackDefinition(7624, 7636, 7623));
+		DEFAULT(5855, 5857, new SpecialAttackDefinition(7749, 7761)),
+		THROWN(4446, 4449, new SpecialAttackDefinition(7649, 7661)),
+		BOW(1764, 1767, new SpecialAttackDefinition(7549, 7561)),
+		WHIP(12290, 12293, new SpecialAttackDefinition(12323, 12335)),
+		WARHAMMER_OR_MAUL(425, 428, new SpecialAttackDefinition(7474, 7486)),
+		SPEAR(4679, 4682, new SpecialAttackDefinition(7674, 7686)),
+		STAFF(6103, 6132, new SpecialAttackDefinition(6117, 6129)),
+		MAGIC_STAFF(328, 355, new SpecialAttackDefinition(18566, 18569)),
+		HALBERD(8460, 8463, new SpecialAttackDefinition(8493, 8505)),
+		SWORD_OR_DAGGER(2276, 2279, new SpecialAttackDefinition(7574, 7586)),
+		TWO_HANDED(4705, 4708, new SpecialAttackDefinition(7699, 7711)),
+		LONGSWORD_OR_SCIMITAR(2423, 2426, new SpecialAttackDefinition(7599, 7611)),
+		PICKAXE(5570, 5573, new SpecialAttackDefinition(7724, 7736)),
+		BATTLEAXE(1698, 1701, new SpecialAttackDefinition(7499, 7591)),
+		CLAWS(7762, 7765, new SpecialAttackDefinition(7800, 7812)),
+		MACE(3796, 3799, new SpecialAttackDefinition(7624, 7636));
 
 		private final int interfaceId;
 		private final int stringId;
@@ -53,82 +53,31 @@ public class WeaponDefinition {
 			return stringId;
 		}
 		
-		public int getLayerId() {
-			return special.getLayerId();
+		public int getConfigId() {
+			return special.getConfigId();
 		}
 		
-		public int getSpecialStringId() {
-			return special.getStringId();
+		public int getSpecialBarId() {
+			return special.getSpecialBarId();
 		}
-		
-		public int getButton() {
-			return special.getButton();
-		}
-		
-		public int getSound() {
-			return 0;
-		}
-	}
-
-	public static class SpecialAttackDefinitions {
-
-		private final int barId1;
-		private final int barId2;
-		private final int buttonId;
-		private final int soundId;
-		private final double amount;
-
-		public SpecialAttackDefinitions(int barId1, int barId2, int buttonId, int soundId, double amount) {
-			this.barId1 = barId1;
-			this.barId2 = barId2;
-			this.buttonId = buttonId;
-			this.soundId = -1;
-			this.amount = amount;
-		}
-
-		public double getAmount() {
-			return amount;
-		}
-
-		public int getBarId1() {
-			return barId1;
-		}
-
-		public int getBarId2() {
-			return barId2;
-		}
-
-		public int getButton() {
-			return buttonId;
-		}
-
-		public int getSoundId() {
-			return soundId;
-		}
-
 	}
 
 	public static class SpecialAttackDefinition {
-		private final int layerId;
-		private final int stringId;
-		private final int buttonId;
+		
+		private final int configId;
+		private final int specialBarId;
 
-		public SpecialAttackDefinition(int layerId, int stringId, int buttonId) {
-			this.layerId = layerId;
-			this.stringId = stringId;
-			this.buttonId = buttonId;
+		public SpecialAttackDefinition(int configId, int specialBarId) {
+			this.configId = configId;
+			this.specialBarId = specialBarId;
 		}
 
-		public int getLayerId() {
-			return layerId;
+		public int getConfigId() {
+			return configId;
 		}
 
-		public int getStringId() {
-			return stringId;
-		}
-
-		public int getButton() {
-			return buttonId;
+		public int getSpecialBarId() {
+			return specialBarId;
 		}
 	}
 
@@ -275,7 +224,7 @@ public class WeaponDefinition {
 			return 4;
 		
 		if (player.getCombatType() == CombatStyle.MAGIC) {
-			switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
+			switch (Player.MAGIC_SPELLS[player.getSpellId()][0]) {
 			default:
 				return 5;
 			}

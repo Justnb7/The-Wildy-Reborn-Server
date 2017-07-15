@@ -289,7 +289,7 @@ public final class DuelArena extends Minigame {
 		
 		/*Reset the players special attack back to 100%*/
 		heal.setSpecialAmount(100);
-		heal.getSpecial().restoreSpecialAttributes();
+		heal.getSpecial().update();
 	}
 
 	/**

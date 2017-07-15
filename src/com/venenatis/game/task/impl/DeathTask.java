@@ -116,6 +116,7 @@ public class DeathTask extends Task {
 		victim.freeze(0);
 		PrayerHandler.resetAllPrayers(victim);
 		victim.setSpecialAmount(100);
+		victim.getSpecial().update();
 		victim.setUsingSpecial(false);
 		WildernessRewards.clearList(victim);
 		victim.getCombatState().getDamageMap().resetDealtDamage();

@@ -97,6 +97,7 @@ public class DeathDropHandler {
 				player.getInventory().add(item);
 			}
 		}
+		GroundItemHandler.createGroundItem(new GroundItem(new Item(526), player.getLocation(), killer));
 		player.setUsingSpecial(false);
 		AttackStyle.adjustAttackStyleOnLogin(player);
 		player.getActionSender().sendSidebarInterface(0, 5855);

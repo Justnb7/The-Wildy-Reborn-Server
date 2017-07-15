@@ -53,6 +53,7 @@ public class DeathTask extends Task {
 	public void execute() {
 		stop();
 		if (victim.getCombatState().isDead()) {
+
 			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
 			if (killer != null && Area.inWilderness(killer) ) {
 				switch (RandomGenerator.nextInt(10)) {
@@ -88,7 +89,11 @@ public class DeathTask extends Task {
 					killer.getActionSender().sendMessage(victim.getUsername() + " didn't stand a chance against you.");
 					break;
 				}
+				// this is wildy death
 				WildernessRewards.receive_reward(killer, victim);
+				dropPlayerItems(victim);
+				reset(victim);
+				victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
 			} else {
 				/*Here we add support for none wilderness related activities*/
 				if (victim.isDueling()) {
@@ -96,6 +101,7 @@ public class DeathTask extends Task {
 				} else if (MinigameHandler.search(victim).isPresent()) {
 					MinigameHandler.search(victim).ifPresent($it -> $it.onDeath(victim));
 				} else {
+					// this is non wilderness death
 					if (!victim.canKeepItems()) {
 						dropPlayerItems(victim);
 					}
@@ -136,6 +142,7 @@ public class DeathTask extends Task {
 		
 		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
 		if (!controller.isSafe() && !admin_keeps_items) {
+			victim.debug(""+admin_keeps_items);
 			DeathDropHandler.handleDeathDrop(victim);
 		}
 	}

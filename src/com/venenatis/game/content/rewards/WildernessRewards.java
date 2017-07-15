@@ -37,7 +37,10 @@ public class WildernessRewards {
 		int amount = 0;
 		killer = World.getWorld().lookupPlayerByName(opponent.getCombatState().getDamageMap().getKiller());
 		
-		if(wealth > Constants.PK_POINTS_WEALTH && isSameConnection(opponent, killer) && !killer.getRights().isOwner(killer)) {
+		//System.out.printf("%s %s %s%n", killer, wealth, isSameConnection(opponent, killer));
+		
+		if(wealth > Constants.PK_POINTS_WEALTH && (!isSameConnection(opponent, killer) || killer.getRights().isOwner(killer))) {
+			
 			if(hasKilledRecently(opponent.getUsername(), killer)) {
 				killer.getActionSender().sendMessage("You have already killed "+opponent.getUsername()+" kill 3 more players before receiving rewards again for killing "+opponent.getUsername());
 				return false;
@@ -52,22 +55,29 @@ public class WildernessRewards {
 			switch (killer.getRights()) {
 
 			case PLAYER:
+			case MODERATOR:
+			case HELPER:
+			case YOUTUBER:
 				amount = 2;
 				break;
 
 			case DONATOR:
+			case IRON_MAN:
 				amount = 3;
 				break;
 
 			case SUPER_DONATOR:
+			case ULTIMATE_IRON_MAN:
 				amount = 5;
 				break;
 
 			case ELITE_DONATOR:
+			case HARDCORE_IRON_MAN:
 				amount = 7;
 				break;
 
 			case EXTREME_DONATOR:
+			case OWNER:
 				amount = 10;
 				break;
 
@@ -78,14 +88,13 @@ public class WildernessRewards {
 			Item blood_money_reward = new Item(13307, amount);
 			killer.getInventory().addOrCreateGroundItem(blood_money_reward);
 			
-			//Send killstreak reward
-			killer.getKillstreak().reward();
-			return true;
-		} else {
 			killer.getKillstreak().increase();
 			if(killer.getCurrentKillStreak() >= 5) {
 				World.getWorld().sendWorldMessage("<img=22>[@red@Killstreak@bla@]: @dre@"+killer.getUsername()+"@red@ just "+killMessage[new java.util.Random().nextInt(killMessage.length)]+" @dre@"+opponent.getUsername()+"'s@red@ "+opponent.getCurrentKillStreak()+" killstreak!", false);
 			}
+			
+			//Send killstreak reward
+			killer.getKillstreak().reward();
 			
 			//Add identity to anti cheat list
 			addKilledEntry(opponent.getIdentity(), killer);
@@ -105,6 +114,7 @@ public class WildernessRewards {
 			//Update information tab
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
 			QuestTabPageHandler.write(opponent, QuestTabPages.HOME_PAGE);
+			return true;
 		}
 		return false;
 	}

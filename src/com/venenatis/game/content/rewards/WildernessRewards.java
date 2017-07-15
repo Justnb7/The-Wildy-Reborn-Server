@@ -98,7 +98,7 @@ public class WildernessRewards {
 			
 			//Renew special attack for the killer
 			killer.setSpecialAmount(100);
-			killer.getSpecial().update();
+			killer.getSpecial().restoreSpecialAttributes();
 			
 			//Update information tab
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);

@@ -339,24 +339,14 @@ public class ActionSender {
      * @param id
      *            The id of the interface.
      * 
-     * @param visible
+     * @param hide
      *            The toggle to display the interface.
      */
-	public ActionSender sendInterfaceConfig(int id, boolean visible) {
+	public ActionSender sendInterfaceConfig(int id, boolean hide) {
 		if (player.getOutStream() != null) {
             player.getOutStream().writeFrame(171);
             player.getOutStream().writeByte(id);
-            player.getOutStream().writeShort(visible ? 1 : 0);
-            System.out.printf("Interface: %d State: %s%n", id, visible);
-        }
-		return this;
-	}
-	
-	public ActionSender sendInterfaceConfig(int interfaceId, int state) {
-		if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(171);
-            player.getOutStream().writeByte(interfaceId);
-            player.getOutStream().writeShort(state);
+            player.getOutStream().writeShort(hide ? 1 : 0);
         }
 		return this;
 	}
@@ -981,8 +971,7 @@ public class ActionSender {
 		player.getEquipment().refresh();
 		
 		//Update the weapon attributes
-		player.getEquipment().updateWeapon();
-		player.getSpecial().updateText();
+		player.getSpecial().restoreSpecialAttributes();
 		
 		//Send the interaction options
 		showContextMenus();

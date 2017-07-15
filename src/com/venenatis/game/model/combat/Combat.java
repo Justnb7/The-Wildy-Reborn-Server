@@ -147,7 +147,7 @@ public class Combat {
             return;
         }
         if (player.isUsingSpecial()) {
-            player.getSpecial().execute(player, target);
+            player.getSpecial().handleSpecialAttack(player, target);
             onAttackDone(player, target);
             return;
         }
@@ -339,7 +339,7 @@ public class Combat {
         if (!target.moving())
             player.getWalkingQueue().reset();
         if (player.isUsingSpecial()) {
-        	player.getSpecial().execute(player, target);
+        	player.getSpecial().handleSpecialAttack(player, target);
             onAttackDone(player, target);
             return;
         }

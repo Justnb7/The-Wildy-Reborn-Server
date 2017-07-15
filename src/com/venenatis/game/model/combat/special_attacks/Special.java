@@ -26,11 +26,12 @@ public class Special {
 	 * @param attacker
 	 *            The player performing the special attack
 	 */
-	public void execute(Player attacker, Entity target) {
+	public void handleSpecialAttack(Player attacker, Entity target) {
 		if (target == null) {
 			return;
 		}
 		
+		updateInterface();
 		updateText();
 		attacker.setUsingSpecial(true);
 
@@ -41,7 +42,7 @@ public class Special {
 
 			if (special == null) {
 				System.out.println("Invalid special attack: " + weapon);
-				resetSpecial();
+				resetSpecial(attacker);
 				return;
 			}
 			
@@ -75,7 +76,7 @@ public class Special {
 				attacker.message("You do not have the required special amount.");
 			}
 		}
-		resetSpecial();
+		resetSpecial(attacker);
 	}
 
 	/**
@@ -84,65 +85,20 @@ public class Special {
 	 * @param player
 	 *            The player resetting the special attack
 	 */
-	public void resetSpecial() {
+	public void resetSpecial(Player player) {
 		player.setUsingSpecial(false);
 		updateText();
 		updateInterface();
 	}
 	
-	public void update() {
-		updateAmount();
-		updateText();
-	}
-	
-	public void updateAmount() {
+	public void updateInterface() {
 		Item item = player.getEquipment().getWeapon();
 
-		if (item != null) {// this is new method
-			final WeaponDefinition def = WeaponDefinition.get(item.getId());
-			if (SpecialAttackHandler.get(item.getId()) != null) {
-				int id = def.getType().getSpecialBarId(); // u sure this is right
-				System.out.println("spec bar id: "+id);
-				int specialCheck = 100;
-				for (int i = 0; i < 10; i++) { // ya theyre the same just using a loop to stop duplicating same line of code 10 times yeah thats what i thought
-					//so issue cant be here
-					id--;
-					player.getActionSender().moveComponent(player.getSpecialAmount() >= specialCheck ? 500 : 0, 0, id);
-					player.debug("sending barId:"+id);
-					specialCheck -= 10;
-				}
-			}
-		}
-	}
-	
-	//old
-	
-	/*public void specialAmount(int weapon, int specAmount, int barId) {
-		player.specBarId = barId;
-		player.getActionSender().moveComponent(specAmount >= 100 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 90 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 80 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 70 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 60 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 50 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 40 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 30 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 20 ? 500 : 0, 0, (--barId));
-		player.getActionSender().moveComponent(specAmount >= 10 ? 500 : 0, 0, (--barId));
-		refreshSpecialAttack();
-		sendWeapon(weapon, ItemDefinition.forId(weapon).getName());
-	}*/
-	
-	public void updateInterface() {
-		player.debug("Enter method to write special attack interface");
-		Item item = player.getEquipment().getWeapon();
 
 		if (item == null || SpecialAttackHandler.get(item.getId()) != null) {
 			if (item != null) {
 				WeaponDefinition def = WeaponDefinition.get(item.getId());
-				player.getActionSender().sendInterfaceConfig(def.getType().getConfigId(), false);
-				player.debug("send interface config: "+def.getType().getConfigId());
-				updateAmount();
+				player.getActionSender().sendInterfaceConfig(def.getType().getLayerId(), false);
 			}
 		} else {
 			player.getActionSender().sendInterfaceConfig(7549, true);
@@ -169,8 +125,13 @@ public class Special {
 
 			if (SpecialAttackHandler.get(weapon.getId()) != null) {
 				String col = player.isUsingSpecial() ? "<col=ffff00>" : "<col=0>";
-				player.getActionSender().sendString(String.format("%sSpecial Attack - %s%%", col, player.getSpecialAmount()), def.getType().getSpecialBarId());
+				player.getActionSender().sendString(String.format("%sSpecial Attack - %s%%", col, player.getSpecialAmount()), def.getType().getSpecialStringId());
 			}
 		}
+	}
+	
+	public void restoreSpecialAttributes() {
+		updateText();
+		updateInterface();
 	}
 }

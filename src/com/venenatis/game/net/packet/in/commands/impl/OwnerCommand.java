@@ -37,9 +37,9 @@ public class OwnerCommand implements Command {
 		switch (parser.getCommand()) {
 		
 		case "spec":
-			player.setSpecialAmount(100);
-			player.getSpecial().updateAmount();
-			player.getSpecial().updateText();
+			int amount = parser.nextInt();
+			player.setSpecialAmount(parser.hasNext() ? amount : 100);
+			player.getSpecial().restoreSpecialAttributes();
 			return true;
 		
 		case "npc":
@@ -60,7 +60,7 @@ public class OwnerCommand implements Command {
 		case "item":
 			if (parser.hasNext()) {
 				final int item = parser.nextInt();
-				int amount = 1;
+				amount = 1;
 
 				if (parser.hasNext()) {
 					amount = Integer.parseInt(parser.nextString().toLowerCase().replaceAll("k", "000").replaceAll("m", "000000").replaceAll("b", "000000000"));

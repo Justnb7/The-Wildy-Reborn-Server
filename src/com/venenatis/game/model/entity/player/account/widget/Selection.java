@@ -179,6 +179,7 @@ public class Selection {
 		player.getEquipment().updateWeapon();
 		player.getEquipment().setBonus();
 		player.setRunEnergy(100);
+		player.getActionSender().sendRunEnergy();
 	}
 	
 	/**

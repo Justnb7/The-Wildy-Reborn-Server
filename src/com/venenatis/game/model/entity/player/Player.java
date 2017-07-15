@@ -25,7 +25,6 @@ import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
 import com.venenatis.game.content.skills.thieving.Thieving;
 import com.venenatis.game.content.teleportation.Teleport;
-import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.InterfaceState;
@@ -37,6 +36,7 @@ import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.data.WeaponInterface;
 import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
+import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
@@ -765,14 +765,14 @@ public class Player extends Entity {
 	/**
 	 * The player's spell book.
 	 */
-	private SpellBookTypes spellBook;
+	private SpellBook spellBook;
 	
 	/**
 	 * Get the players current spellbook
 	 * 
 	 * @return the spellbook
 	 */
-	public SpellBookTypes getSpellBook() {
+	public SpellBook getSpellBook() {
 		return spellBook;
 	}
 	
@@ -780,7 +780,7 @@ public class Player extends Entity {
 	 * Set the players spellbook
 	 *
 	 */
-	public void setSpellBook(SpellBookTypes spellBook) {
+	public void setSpellBook(SpellBook spellBook) {
 		this.spellBook = spellBook;
 	}
 	

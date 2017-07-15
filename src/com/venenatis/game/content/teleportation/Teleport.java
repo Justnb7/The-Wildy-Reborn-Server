@@ -3,6 +3,7 @@ package com.venenatis.game.content.teleportation;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Task.BreakType;
@@ -26,19 +27,6 @@ public class Teleport {
 	}
 	
 	/**
-	 * Current player spell book type.
-	 */
-	private SpellBookTypes spellBookType = SpellBookTypes.MODERN;
-	
-	/**
-	 * Gets the current spellbook
-	 * @return the spellbook we're currently using
-	 */
-	public SpellBookTypes getSpellBookType() {
-		return spellBookType;
-	}
-	
-	/**
 	 * Check to see if player is teleporting.
 	 */
 	private boolean isTeleporting = false;
@@ -58,16 +46,6 @@ public class Teleport {
 	 */
 	public boolean isTeleporting() {
 		return isTeleporting;
-	}
-	
-	/**
-	 * Enum of all available spell books.
-	 *
-	 */
-	public enum SpellBookTypes {
-		MODERN,
-		ANCIENTS,
-		LUNARS;
 	}
 
 	/**
@@ -182,11 +160,11 @@ public class Teleport {
 		TeleportTypes type = teleportType;
 
 		if (type == TeleportTypes.SPELL_BOOK) {
-			if (player.getSpellBook() == SpellBookTypes.MODERN) {
+			if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
 				type = TeleportTypes.MODERN;
-			} else if (player.getSpellBook() == SpellBookTypes.ANCIENTS) {
+			} else if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
 				type = TeleportTypes.ANCIENT;
-			} else if (player.getSpellBook() == SpellBookTypes.LUNARS) {
+			} else if (player.getSpellBook() == SpellBook.LUNAR_MAGICS) {
 				type = TeleportTypes.MODERN;
 			} else {
 				type = TeleportTypes.MODERN;

@@ -1020,7 +1020,7 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * Plays graphics.
+	 * Plays projectiles.
 	 */
 	public void playProjectile(Projectile projectile) {
 		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {

@@ -4,7 +4,6 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
-import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -17,6 +16,7 @@ import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
 import com.venenatis.game.model.combat.magic.MagicData;
 import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
+import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.combat.magic.spell.SpellHandler;
 import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
 import com.venenatis.game.model.combat.pvp.PlayerVsPlayerCombat;
@@ -177,7 +177,7 @@ public class Combat {
             return;
         }*/
         int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
-        if (player.getSpellBook() != SpellBookTypes.MODERN && (wepId == 2415 || wepId == 2416 || wepId == 2417)) {
+        if (player.getSpellBook() != SpellBook.MODERN_MAGICS && (wepId == 2415 || wepId == 2416 || wepId == 2417)) {
             player.message("You must be on the modern spellbook to cast this spell.");
             resetCombat(player);
             return;
@@ -592,7 +592,7 @@ public class Combat {
     public static void setCombatStyle(Player player) {
         player.setCombatType(null); // reset
 
-        if (player.autoCast && (player.getSpellBook() == SpellBookTypes.MODERN || player.getSpellBook() == SpellBookTypes.ANCIENTS)) {
+        if (player.autoCast && (player.getSpellBook() == SpellBook.MODERN_MAGICS || player.getSpellBook() == SpellBook.ANCIENT_MAGICKS)) {
             player.setSpellId(player.getAutocastId());
             
             player.setCombatType(CombatStyle.MAGIC);

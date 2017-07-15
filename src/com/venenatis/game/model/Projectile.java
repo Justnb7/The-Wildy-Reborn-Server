@@ -13,10 +13,6 @@ public class Projectile {
 	public static Projectile create(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int lockon, int slope, int radius) {
 		return new Projectile(start, finish, id, delay, angle, speed, startHeight, endHeight, lockon, slope, radius);
 	}
-
-	public static Projectile convert(int id, Location start, Location finish, int angle, int speed, int startHeight, int endHeight, int slope) {
-		return new Projectile(start, finish, id, 0, angle, speed, startHeight, endHeight, 0, slope, 64);
-	}
 	
 	/**
 	 * Creates a projectile.
@@ -143,6 +139,15 @@ public class Projectile {
 		this.lockon = lockon;
 		this.slope = slope;
 		this.radius = radius;
+	}
+	
+	public Projectile(int id, int delay, int speed, int startHeight, int endHeight, int slope) {
+		this.id = id;
+		this.delay = delay;
+		this.speed = speed;
+		this.startHeight = startHeight;
+		this.endHeight = endHeight;
+		this.slope = slope;
 	}
 
 	/**

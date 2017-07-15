@@ -10,11 +10,11 @@ import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.skills.fletching.Fletching;
 import com.venenatis.game.content.sounds_and_music.MusicData;
 import com.venenatis.game.content.teleportation.Teleport;
-import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
+import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttackHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.model.entity.player.Player;
@@ -162,18 +162,18 @@ public class ActionButtonPacketHandler implements PacketType {
 				return;
 			}
 			switch (player.getSpellBook()) {
-			case MODERN:
-				player.setSpellBook(SpellBookTypes.ANCIENTS);
+			case MODERN_MAGICS:
+				player.setSpellBook(SpellBook.ANCIENT_MAGICKS);
 				player.getActionSender().sendSidebarInterface(6, 12855);
 				player.getActionSender().sendMessage("An ancient wisdom fills your mind.");
 				break;
-			case ANCIENTS:
-				player.setSpellBook(SpellBookTypes.LUNARS);
+			case ANCIENT_MAGICKS:
+				player.setSpellBook(SpellBook.LUNAR_MAGICS);
 				player.getActionSender().sendSidebarInterface(6, 29999);
 				player.getActionSender().sendMessage("The power of the moon overpowers you.");
 				break;
-			case LUNARS:
-				player.setSpellBook(SpellBookTypes.MODERN);
+			case LUNAR_MAGICS:
+				player.setSpellBook(SpellBook.MODERN_MAGICS);
 				player.getActionSender().sendSidebarInterface(6, 1151);
 				player.getActionSender().sendMessage("You feel a drain on your memory.");
 				break;
@@ -467,9 +467,9 @@ public class ActionButtonPacketHandler implements PacketType {
 			if (player.getAutocastId() > 0) {
 				player.resetAutoCast();
 			} else {
-				if (player.getSpellBook() == SpellBookTypes.ANCIENTS) {
+				if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
 					player.getActionSender().sendSidebarInterface(0, 1689);
-				} else if (player.getSpellBook() == SpellBookTypes.MODERN) {
+				} else if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
 					player.getActionSender().sendSidebarInterface(0, 12050);
 				}
 			}

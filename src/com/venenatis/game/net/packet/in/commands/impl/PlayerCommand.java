@@ -1,10 +1,10 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.teleportation.Teleport.SpellBookTypes;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
@@ -43,7 +43,8 @@ public class PlayerCommand implements Command {
 				player.getInventory().add(new Item(557, 1000));
 				player.getInventory().add(new Item(560, 1000));
 				player.getInventory().add(new Item(9075, 1000));
-				player.setSpellBook(SpellBookTypes.LUNARS);
+				player.setSpellBook(SpellBook.LUNAR_MAGICS);
+				player.getActionSender().sendSidebarInterface(6, 29999);
 			}
 			return true;
 
@@ -55,7 +56,7 @@ public class PlayerCommand implements Command {
 				player.getInventory().add(new Item(555, 1000));
 				player.getInventory().add(new Item(560, 1000));
 				player.getInventory().add(new Item(565, 1000));
-				player.setSpellBook(SpellBookTypes.ANCIENTS);
+				player.setSpellBook(SpellBook.ANCIENT_MAGICKS);
 				player.getActionSender().sendSidebarInterface(6, 12855);
 			}
 			return true;

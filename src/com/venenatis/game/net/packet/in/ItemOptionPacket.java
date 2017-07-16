@@ -313,7 +313,7 @@ public class ItemOptionPacket implements PacketType {
 		switch (item.getId()) {
 
 		case 5733: // rotten potato jagex item
-			if (player.rights == Rights.ADMINISTRATOR) {
+			if (player.rights == Rights.OWNER) {
 				RottenPotato.option = 0;
 				player.dialogue().start("POTATO", player);
 			}
@@ -396,7 +396,7 @@ public class ItemOptionPacket implements PacketType {
 		
 		switch (item.getId()) {
 		case 5733: // rotten potato jagex item
-			if (player.rights == Rights.ADMINISTRATOR) {
+			if (player.rights == Rights.OWNER) {
 				RottenPotato.option = 2;
 				player.dialogue().start("POTATO", player);
 			}
@@ -444,7 +444,7 @@ public class ItemOptionPacket implements PacketType {
 		
 		switch (item.getId()) {
 		case 5733: // rotten potato jagex item
-			if (player.rights == Rights.ADMINISTRATOR) {
+			if (player.rights == Rights.OWNER) {
 				RottenPotato.option = 3;
 				player.dialogue().start("POTATO", player);
 			}

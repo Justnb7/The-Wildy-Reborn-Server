@@ -154,7 +154,7 @@ public enum Rights {
 	}
 
 	public boolean isSuperStaff(Player player) {
-		if (player.getRights() == Rights.ADMINISTRATOR || player.getRights() == Rights.OWNER) {
+		if (player.getRights() == Rights.OWNER) {
 			return true;
 		}
 		return false;

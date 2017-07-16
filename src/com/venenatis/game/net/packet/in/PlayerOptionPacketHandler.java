@@ -18,36 +18,41 @@ import com.venenatis.game.world.World;
 public class PlayerOptionPacketHandler implements PacketType {
 	
 	 /**
-     * Sent when a player uses the right-click follow option to follow another
-     * player.
-     */
-    public static final int FOLLOW_PLAYER = 139;
-	
-	 /**
      * Send when a player uses the attack right-click option on another player.
      */
     public static final int ATTACK_PLAYER = 73;
     
     /**
+     * Sent when a player requests a trade with another player.
+     */
+    public static final int TRADE_REQUEST = 139;
+    
+    public static final int DUEL_REQUEST = 153;
+    
+    /**
      * Sent when a player uses the right-click challenge option to challenge
      * another player.
      */
-    public static final int CHALLENGE_PLAYER = 128;
-    
-    /**
-     * Sent when a player requests a trade with another player.
-     */
-    public static final int TRADE_REQUEST = 39;
-    
-    /**
-     * Sent when a player answers a trade request from another player.
-     */
-    public static final int TRADE_ANSWER = 153;
+    public static final int ACCEPT_CHALLENGE = 128;
 	
 	/**
      * Sent when a player attempts to cast magic on another player.
      */
     public static final int MAGIC_ON_PLAYER = 249;
+
+    /**
+     * Sent when a player uses the right-click follow option to follow another
+     * player.
+     */
+	private static final int FOLLOW_PLAYER = 39;
+    
+    /**
+     * OP 1 = dueling (128)
+     * OP 2 = UNK (153)
+     * OP 3 = Attack packet (73)
+     * OP 4 = Follow packet (39)
+     * OP 5 = Trade with packet (139)
+     */
 
 	@Override
 	public void handle(Player player, int packet, int size) {
@@ -57,7 +62,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 		
-		if (player.getRights() == Rights.ADMINISTRATOR && player.inDebugMode()) {
+		if (player.getRights() == Rights.OWNER && player.inDebugMode()) {
 			player.getActionSender().sendMessage("[PlayerInteractionPacket] Opcode: " + packet);
 		}
 		
@@ -76,7 +81,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			handleMagicOnPlayer(player, packet);
 			break;
 
-		case CHALLENGE_PLAYER:
+		case ACCEPT_CHALLENGE:
 			handleDuelRequest(player, packet);
 			break;
 
@@ -88,8 +93,6 @@ public class PlayerOptionPacketHandler implements PacketType {
 			handleTradeRequest(player, packet);
 			break;
 
-		case TRADE_ANSWER:
-			break;
 		}
 	}
 	

@@ -33,7 +33,7 @@ public class ItemOnItem {
 		
 		Firemaking.startFire(player, usedItem.getId(), withItem.getId(), new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
 		
-		if (player.rights == Rights.ADMINISTRATOR) {
+		if (player.rights == Rights.OWNER) {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {
 				//int amount = player.getItems().checkAmount(withItem.getId());
 				//player.getInventory().remove(new Item(withItem.getId(), amount));

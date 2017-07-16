@@ -320,7 +320,7 @@ public class ActionSender {
 			player.getOutStream().putFrameVarByte(104);
 			int offset = player.getOutStream().offset;
 			player.getOutStream().writeByte((byte) -slot);
-			player.getOutStream().putByteA(top ? (byte) 0 : (byte) 1);
+			player.getOutStream().putByteA(top ? (byte) 1 : (byte) 0);
 			player.getOutStream().putRS2String(option);
 			player.getOutStream().putFrameSizeByte(offset);
 			player.flushOutStream();
@@ -960,8 +960,8 @@ public class ActionSender {
 		player.getWeaponInterface().restoreWeaponAttributes();
 		
 		//Send the interaction options
-		sendInteractionOption("Follow", 4, true);
-		sendInteractionOption("Trade With", 5, true);
+		sendInteractionOption("Follow", 4, false);
+		sendInteractionOption("Trade With", 5, false);
 		
 		//We can go ahead and finalize the game configs
 		updateConfigs();

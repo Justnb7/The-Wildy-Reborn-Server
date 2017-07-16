@@ -22,7 +22,7 @@ public class NpcInteraction {
 	 */
 	public static void firstOption(Player player, NPC npc) {
 
-		if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
+		if (player.getRights().equals(Rights.OWNER) && player.inDebugMode()) {
 			player.getActionSender().sendMessage(String.format("[NpcInteraction #1] - NpcId: %d", npc.getId()));
 		}
 		
@@ -111,7 +111,7 @@ public class NpcInteraction {
 	 */
 	public static void secondOption(Player player, NPC npc) {
 		
-		if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
+		if (player.getRights().equals(Rights.OWNER) && player.inDebugMode()) {
 			player.getActionSender().sendMessage(String.format("[NpcInteraction #2] - NpcId: %d", npc.getId()));
 		}
 		

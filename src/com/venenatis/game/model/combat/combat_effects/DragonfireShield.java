@@ -19,11 +19,17 @@ public class DragonfireShield {
 			return;
 		}
 		
-		NPC npc_victim = (NPC)victim;
-		
-		if(player.getSkills().getLevel(Skills.HITPOINTS) < 1 || npc_victim.getHitpoints() < 1) {
-			return;
+		if (victim instanceof NPC) {
+			NPC n = (NPC) victim;
+			if (n.getHitpoints() < 1) {
+				return;
+			}
+		} else {
+			if (player.getSkills().getLevel(Skills.HITPOINTS) < 1) {
+				return;
+			}
 		}
+		
 		if(victim.getCombatState().getTarget() != null) {
 			player.getActionSender().sendMessage("You must be in combat to operate your dragonfire shield.");
 			return;

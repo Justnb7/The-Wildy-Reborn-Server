@@ -19,7 +19,7 @@ public class InputFieldPacketHandler implements PacketType {
 			return;
 		}
 
-		if (player.getRights() == Rights.ADMINISTRATOR && player.inDebugMode()) {
+		if (player.getRights() == Rights.OWNER && player.inDebugMode()) {
 			player.getActionSender().sendMessage("[InputFieldPacketListener] Component: " + component + " | Text: " + text);
 		}
 		

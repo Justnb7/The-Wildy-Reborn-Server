@@ -24,7 +24,7 @@ public class WieldPacketHandler implements SubPacketType {
 		final int slot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();
 		
-		if (player.getRights().equals(Rights.ADMINISTRATOR) && player.inDebugMode()) {
+		if (player.getRights().equals(Rights.OWNER) && player.inDebugMode()) {
 			player.debug(String.format("[WieldPacketHandler] [id= %d] [slot= %d] [interface %d]", id, slot, interfaceId));
 		}
 		

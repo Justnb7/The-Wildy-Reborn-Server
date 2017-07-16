@@ -1,6 +1,5 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.combat_effects.DragonfireShield;

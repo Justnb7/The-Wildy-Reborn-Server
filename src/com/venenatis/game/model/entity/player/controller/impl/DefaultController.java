@@ -1,5 +1,6 @@
 package com.venenatis.game.model.entity.player.controller.impl;
 
+import com.venenatis.game.constants.StringConstants;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.bounty.BountyHunter;
@@ -149,7 +150,10 @@ public class DefaultController extends Controller {
 	@Override
 	public void onStep(Player player) {
 		player.getActionSender().sendMultiIcon(Area.inMultiCombatZone(player) ? 1 : -1);
-
+		
+	
+		//Time for visual effect:
+		
 		/* Minigame */
 		if (MinigameHandler.search(player).isPresent()) {
 			MinigameHandler.search(player).ifPresent(m -> m.onDisplay(player));
@@ -161,7 +165,8 @@ public class DefaultController extends Controller {
 
 			player.setWildLevel(((modY - 3521) / 8) + 1);
 			
-			player.getActionSender().sendInteractionOption("Attack", 1, true);
+			player.getActionSender().sendInteractionOption(StringConstants.ATTACK_ACTION, 3, true);
+			player.getActionSender().sendInteractionOption("null", 2, false);
 	        player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
 
 	        player.setAttribute("left_wild_delay", 0);
@@ -170,15 +175,21 @@ public class DefaultController extends Controller {
 
 			/* Duel Arena */
 		} else if (Area.inDuelArena(player) || player.getDuelArena().getStage() == DuelStage.ARENA) {
+
+			/*for (int option = 0; option < 8; i++)
+				player.getActionSender().sendInteractionOption("option"+option, option, false);*/
 			if (player.getDuelArena().getStage() != DuelStage.ARENA) {
-				player.getActionSender().sendInteractionOption("Challenge", 1, true);
+				player.getActionSender().sendInteractionOption(StringConstants.DUEL_ACTION, 1, false);
 			} else {
 				player.getActionSender().sendInteractionOption("Fight", 3, true);
+				player.getActionSender().sendInteractionOption("null", 1, false);
 			}
 			player.getActionSender().sendWalkableInterface(player.getDuelArena().getStage() == DuelStage.ARENA ? -1 : 201);
 		} else {
 			player.getActionSender().sendWalkableInterface(-1);
-			player.getActionSender().sendInteractionOption("null", 3, true);
+			player.getActionSender().sendInteractionOption("null", 1, true);
+			for(int option = 2; option < 4; option++)
+			player.getActionSender().sendInteractionOption("null", option, false);
 		}
 	}
 

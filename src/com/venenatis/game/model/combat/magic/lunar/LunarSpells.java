@@ -34,10 +34,11 @@ public class LunarSpells {
 		if (vengeanceRequirements()) {
 			player.playAnimation(Animation.create(4410));
 			player.playGraphics(Graphic.create(726, 0, 0));
-			player.getSkills().addExperience(Skills.MAGIC, 1000);
+			player.getSkills().addExperience(Skills.MAGIC, 112);
 			player.setVengeance(true);
 			player.lastCast = System.currentTimeMillis();
 			player.message("You cast a vengeance.");
+			player.getInventory().refresh();
 		}
 	}
 	

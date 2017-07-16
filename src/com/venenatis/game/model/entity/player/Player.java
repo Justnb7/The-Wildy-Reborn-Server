@@ -1015,16 +1015,6 @@ public class Player extends Entity {
 		return bountyPoints;
 	}
 	
-	private int recoil = 40;
-	
-	public int getRecoil() {
-		return recoil;
-	}
-
-	public void setRecoil(int recoil) {
-		this.recoil = recoil;
-	}
-	
     private int suffering = 0;
 	
 	public int getROSuffering() {
@@ -2875,6 +2865,16 @@ public class Player extends Entity {
 
 	public void setRunRestore(int runRestore) {
 		this.runRestore = runRestore;
+	}
+	
+	private int dfsWaitTimer;
+	
+	public int getDfsTimer() {
+		return dfsWaitTimer;
+	}
+
+	public void setDfsTimer(int time) {
+		this.dfsWaitTimer = time;
 	}
 
 	/**

@@ -135,7 +135,7 @@ public class PlayerSave {
 				player.setSpecialAmount(details.specialAmount);
 				player.setSpellBook(details.spellbook);
 				player.getSkills().setExpCounter(details.expCounter);
-				player.setRecoil(details.recoil);
+				player.getCombatState().setRingOfRecoil(details.recoil);
 				player.setVotePoints(details.votePoints);
 				player.setTotalVotes(details.totalVotes);
 				player.setSlayerPoints(details.slayerPoints);
@@ -298,7 +298,7 @@ public class PlayerSave {
 			specialAmount = player.getSpecialAmount();
 			spellbook = player.getSpellBook();
 			expCounter = player.getSkills().getExpCounter();
-			recoil = player.getRecoil();
+			recoil = player.getCombatState().getRingOfRecoil();
 			votePoints = player.getVotePoints();
 			totalVotes = player.getTotalVotes();
 			slayerPoints = player.getSlayerPoints();

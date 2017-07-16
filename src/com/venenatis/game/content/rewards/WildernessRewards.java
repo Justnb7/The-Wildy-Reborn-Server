@@ -12,6 +12,7 @@ import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.net.Connection;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -39,7 +40,7 @@ public class WildernessRewards {
 		
 		//System.out.printf("%s %s %s%n", killer, wealth, isSameConnection(opponent, killer));
 		
-		if(wealth > Constants.PK_POINTS_WEALTH && (!isSameConnection(opponent, killer) || killer.getRights().isOwner(killer))) {
+		if(wealth > Constants.PK_POINTS_WEALTH && (!Connection.isSameConnection(opponent, killer) || killer.getRights().isOwner(killer))) {
 			
 			if(hasKilledRecently(opponent.getUsername(), killer)) {
 				killer.getActionSender().sendMessage("You have already killed "+opponent.getUsername()+" kill 3 more players before receiving rewards again for killing "+opponent.getUsername());
@@ -216,18 +217,5 @@ public class WildernessRewards {
 			clearList(player);
 		return false;
 	}
-
-	/**
-	 * Checks if the killer and the opponent are using the same address.
-	 * 
-	 * @param opponent
-	 *            The player that lost the battle
-	 * @param killer
-	 *            The player who won the battle
-	 */
-	public static boolean isSameConnection(Player opponent, Player killer) {
-		return killer.getHostAddress().equals(opponent.getHostAddress()) || killer.getMacAddress().equals(opponent.getMacAddress()) || killer.getIdentity().equals(opponent.getIdentity());
-	}
-
 
 }

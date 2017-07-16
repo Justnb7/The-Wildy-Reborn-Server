@@ -8,6 +8,7 @@ import com.venenatis.game.content.rewards.WildernessRewards;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.net.Connection;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -121,6 +122,10 @@ public class BountyHunter extends Task {
 			player.getActionSender().sendMessage("@red@Your target has logged out, searching for new target.");
 			return false;
 		}
+		
+		if(Connection.isSameConnection(target, player)) {
+			return false;
+		}
 
 		if (!Area.inWilderness(player)) {
 
@@ -191,7 +196,7 @@ public class BountyHunter extends Task {
 			 * Prevent ourself and people connected to our identity to be set as
 			 * a target
 			 */
-			if (target.getIdentity().equalsIgnoreCase(player.getIdentity()) || target.getMacAddress().equalsIgnoreCase(player.getMacAddress()) || !WildernessRewards.isSameConnection(target, player)) {
+			if (Connection.isSameConnection(target, player)) {
 				continue;
 			}
 			

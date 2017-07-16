@@ -1,7 +1,9 @@
 package com.venenatis.game.net.packet.in;
 
+import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.combat.combat_effects.DragonfireShield;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.PacketType;
@@ -199,12 +201,23 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 
-			if (removeId == 2550) {
-				player.getActionSender().sendMessage("You can recoil " + (40 - player.getRecoil()) + " more damage.");
+			Item ring = player.getEquipment().get(EquipmentConstants.RING_SLOT);
+			if (ring.getId() == 2550) {
+				player.getActionSender().sendMessage("<col=7f00ff>Your Ring of Recoil can deal " + player.getCombatState().getRingOfRecoil() + " more points of damage before shattering.");
 				return;
 			}
-		}
+			
+			Item shield = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
+			if (shield != null) {
+				switch (shield.getId()) {
+					case 11283:
+					case 11284:
+						DragonfireShield.dfsSpec(player, player.getCombatState().getTarget());
+						break;
+				}
+			}
 			break;
+		}
 
 		case InterfaceConstants.SHOP_INTERFACE:
 			ShopManager.buy(player, removeId, 1, removeSlot);

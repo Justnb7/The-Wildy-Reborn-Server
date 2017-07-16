@@ -7,6 +7,7 @@ import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
+import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatState;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
@@ -378,6 +379,7 @@ public abstract class Entity {
 	public long lastWasHitTime;
 	public Entity lastAttacker;
 
+	//TODO figure out are we even use this
 	public boolean inCombat() {
 		return inCombat;
 	}
@@ -762,18 +764,12 @@ public abstract class Entity {
 			Player me = (Player)this;
 
 			if (damage > 0) {
-				// Trigger veng once the damage has been reduced by effects/protection prayers
+				// Trigger veng and recoil once the damage has been reduced by effects/protection prayers
 				if (me.hasVengeance()) {
 					me.getCombatState().vengeance(attacker, damage, 1);
 				}
 
-				/*RingOfRecoil recoil = new RingOfRecoil();
-				if (recoil.isExecutable(me)) {
-					if (attacker.isPlayer())
-						recoil.execute(me, (Player)attacker, damage);
-					else
-						recoil.execute(me, (NPC)attacker, damage);
-				}*/
+				me.getCombatState().recoil(attacker, damage);
 			}
 
 			if (attacker.isPlayer()) {
@@ -1244,5 +1240,9 @@ public abstract class Entity {
 	public String toString() {
 		return isPlayer() ? ((Player)this).getUsername() : ((NPC)this).getName();
 	}
+
+	public Entity getEntity() {//Would this work? :d
+		return isPlayer() ? asPlayer() : asNpc();
+	}//trying to fill this part
 
 }

@@ -59,10 +59,9 @@ public class Combat {
 					recoil = defender.getCombatState().getRingOfRecoil();
 				}
 				
-				Player p = (Player)entity_attacker;
-				if(p instanceof Player) {
-					if (recoil > p.getSkills().getLevel(Skills.HITPOINTS)) {
-						recoil = p.getSkills().getLevel(Skills.HITPOINTS);
+				if(entity_attacker instanceof Player) {
+					if (recoil > defender.getSkills().getLevel(Skills.HITPOINTS)) {
+						recoil = defender.getSkills().getLevel(Skills.HITPOINTS);
 					}
 				} else { 
 					NPC n = (NPC)entity_attacker;
@@ -89,10 +88,9 @@ public class Combat {
 				recoil = 1;
 			}
 
-			Player p = (Player)entity_attacker;
-			if(p instanceof Player) {
-				if (recoil > p.getSkills().getLevel(Skills.HITPOINTS)) {
-					recoil = p.getSkills().getLevel(Skills.HITPOINTS);
+			if(entity_attacker instanceof Player) {
+				if (recoil > defender.getSkills().getLevel(Skills.HITPOINTS)) {
+					recoil = defender.getSkills().getLevel(Skills.HITPOINTS);
 				}
 			} else { 
 				NPC n = (NPC)entity_attacker;

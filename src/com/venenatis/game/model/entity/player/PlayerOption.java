@@ -10,22 +10,22 @@ public enum PlayerOption  {
 	/**
 	 * The option for challenging another player to a duel.
 	 */
-	DUEL_REQUEST(1, "Challenge"),
+	DUEL_REQUEST(2, "Challenge"),
 	
 	/**
 	 * The option for attacking another player.
 	 */
-	ATTACK(3, "Attack"),
-	
-	/**
-	 * The option for trading another player.
-	 */
-	TRADE_REQUEST(4, "Trade with"),
+	ATTACK(1, "Attack"),
 	
 	/**
 	 * The option for following another player.
 	 */
-	FOLLOW(5, "Follow");
+	FOLLOW(3, "Follow"),
+	
+	/**
+	 * The option for trading another player.
+	 */
+	TRADE_REQUEST(4, "Trade with");
 	
 	/**
 	 * The id of this option as seen by the client.

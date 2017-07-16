@@ -21,7 +21,7 @@ public class PlayerOptionPacketHandler implements PacketType {
      * Sent when a player uses the right-click follow option to follow another
      * player.
      */
-    public static final int FOLLOW_PLAYER = 39;
+    public static final int FOLLOW_PLAYER = 139;
 	
 	 /**
      * Send when a player uses the attack right-click option on another player.
@@ -37,7 +37,7 @@ public class PlayerOptionPacketHandler implements PacketType {
     /**
      * Sent when a player requests a trade with another player.
      */
-    public static final int TRADE_REQUEST = 139;
+    public static final int TRADE_REQUEST = 39;
     
     /**
      * Sent when a player answers a trade request from another player.
@@ -95,7 +95,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 	
 	private void handleDuelRequest(Player player, int packet) {
 		final int otherPlayerIndex = player.getInStream().readUnsignedWord();
-
+		
 		checkState(World.getWorld().getPlayers().search(otherPlayerIndex).isPresent(), "%s tried dueling a player that doesn't exist. [index= %s]", player.getUsername(), otherPlayerIndex);
 
 		if (!player.canDuel()) {

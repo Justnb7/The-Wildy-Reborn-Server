@@ -5,7 +5,6 @@ import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -16,7 +15,6 @@ import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.clan.ClanRank;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
@@ -309,24 +307,21 @@ public class ActionSender {
 	}
 	
 	/**
-	 * Creates a new {@link PlayerOption}.
+	 * Sends the player an option.
 	 * 
-	 * @param option
-	 * 		The option to show.
-	 * 
+	 * @param slot
+	 *            The slot to place the option in the menu.
 	 * @param top
-	 * 		The flag to display this as the first option.
-	 * 
-	 * @param disable
-	 * 		The flag to remove this option.
+	 *            Flag which indicates the item should be placed at the top.
+	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendPlayerOption(PlayerOption option, boolean top, boolean disable) {
+	public ActionSender sendInteractionOption(String option, int slot, boolean top) {
 		if (player.getOutStream() != null && player != null) {
 			player.getOutStream().putFrameVarByte(104);
 			int offset = player.getOutStream().offset;
-			player.getOutStream().writeByte((byte) -option.getSlot());
+			player.getOutStream().writeByte((byte) -slot);
 			player.getOutStream().putByteA(top ? (byte) 0 : (byte) 1);
-			player.getOutStream().putRS2String(disable ? "null" : option.getName());
+			player.getOutStream().putRS2String(option);
 			player.getOutStream().putFrameSizeByte(offset);
 			player.flushOutStream();
 		}
@@ -965,7 +960,8 @@ public class ActionSender {
 		player.getWeaponInterface().restoreWeaponAttributes();
 		
 		//Send the interaction options
-		showContextMenus();
+		sendInteractionOption("Follow", 4, true);
+		sendInteractionOption("Trade With", 5, true);
 		
 		//We can go ahead and finalize the game configs
 		updateConfigs();
@@ -982,19 +978,6 @@ public class ActionSender {
 		//activate login delay
 		player.setAttribute("login_delay", System.currentTimeMillis());
 		return this;
-	}
-	
-	public void showContextMenus() {
-		if (Area.inWilderness(player)) {
-			sendPlayerOption(PlayerOption.ATTACK, true, false);
-			sendPlayerOption(PlayerOption.FOLLOW, false, false);
-		} else if (Area.inDuelArena(player)) {
-			sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
-			sendPlayerOption(PlayerOption.FOLLOW, false, false);
-		} else {
-			sendPlayerOption(PlayerOption.FOLLOW, false, false);
-		}
-		sendPlayerOption(PlayerOption.TRADE_REQUEST, false, false);
 	}
 	
 	public void updateConfigs() {

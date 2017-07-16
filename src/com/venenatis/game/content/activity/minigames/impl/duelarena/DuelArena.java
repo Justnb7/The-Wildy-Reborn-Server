@@ -19,7 +19,6 @@ import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.task.impl.DeathTask;
 import com.venenatis.game.util.StringUtils;
@@ -702,9 +701,6 @@ public final class DuelArena extends Minigame {
 	@Override
 	public void onStart() {
 		onReset(player);
-		
-		player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, true, true);
-		other.get().getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, true, true);
 	}
 
 	@Override
@@ -719,12 +715,6 @@ public final class DuelArena extends Minigame {
 
 		winner.getActionSender().createPlayerHint(10, -1);
 		loser.getActionSender().createPlayerHint(10, -1);
-
-		winner.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
-		loser.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
-		
-		winner.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
-		loser.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
 
 		DeathTask.reset(loser);
 		DeathTask.reset(winner);

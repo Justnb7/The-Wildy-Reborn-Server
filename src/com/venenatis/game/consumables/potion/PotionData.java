@@ -631,6 +631,34 @@ public enum PotionData {
 			drink_energy(player);
 		}
 	}),
+	SUPER_COMBAT_4(12695, 12697, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_combat(player);
+		}
+	}),
+	SUPER_COMBAT_3(12697, 12699, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_combat(player);
+		}
+	}),
+	SUPER_COMBAT_2(12699, 12701, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_combat(player);
+		}
+	}),
+	SUPER_COMBAT_1(12701, 229, new PotionEffect() {
+		@Override
+		public void handle(Object... object) {
+			Player player = (Player) object[0];
+			drink_super_combat(player);
+		}
+	}),
 	;
 	int potionId, replacement;
 	PotionEffect effect;
@@ -662,6 +690,10 @@ public enum PotionData {
 
 	public PotionEffect getPotionEffect() {
 		return effect;
+	}
+	
+	public static void drink_super_combat(Player player) {
+		
 	}
 	
 	public static void drink_super_energy(Player player) {

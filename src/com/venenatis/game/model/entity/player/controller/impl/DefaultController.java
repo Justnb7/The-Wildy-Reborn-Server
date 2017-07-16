@@ -8,7 +8,6 @@ import com.venenatis.game.location.Area;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.PlayerOption;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
 
@@ -161,31 +160,25 @@ public class DefaultController extends Controller {
 			int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
 
 			player.setWildLevel(((modY - 3521) / 8) + 1);
-
+			
+			player.getActionSender().sendInteractionOption("Attack", 1, true);
 	        player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
 
 	        player.setAttribute("left_wild_delay", 0);
 	        BountyHunter.writeBountyStrings(player);
 	        player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
 
-			player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, false);
-
-			player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
-
 			/* Duel Arena */
 		} else if (Area.inDuelArena(player) || player.getDuelArena().getStage() == DuelStage.ARENA) {
 			if (player.getDuelArena().getStage() != DuelStage.ARENA) {
-				player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, true);
-				player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, false);
+				player.getActionSender().sendInteractionOption("Challenge", 1, true);
 			} else {
-				player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, true, false);
-				player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
+				player.getActionSender().sendInteractionOption("Fight", 3, true);
 			}
 			player.getActionSender().sendWalkableInterface(player.getDuelArena().getStage() == DuelStage.ARENA ? -1 : 201);
 		} else {
-			player.getActionSender().sendPlayerOption(PlayerOption.ATTACK, false, true);
-			player.getActionSender().sendPlayerOption(PlayerOption.DUEL_REQUEST, false, true);
-            player.getActionSender().sendWalkableInterface(-1);
+			player.getActionSender().sendWalkableInterface(-1);
+			player.getActionSender().sendInteractionOption("null", 3, true);
 		}
 	}
 

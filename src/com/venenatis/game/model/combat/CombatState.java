@@ -63,6 +63,10 @@ public class CombatState {
 	public void vengeance(Entity attacker, int damage, int delay) {
 		CombatSpells.vengeance(entity.asPlayer(), attacker, damage, delay);
 	}
+	
+	public void recoil(Entity attacker, int damage) {
+		Combat.recoil(entity.asPlayer(), attacker, damage);
+	}
 
 	public int getRangeStartGFX() {
 		return RangeData.getRangeStartGFX(entity.asPlayer());
@@ -312,5 +316,24 @@ public class CombatState {
 	
 	public void setLastAte(Food lastAte) {
 		this.lastAte = lastAte;
+	}
+	
+	/**
+	 * Ring of Recoil use amount.
+	 */
+	private int ringOfRecoil = 40;
+
+	/**
+	 * @return the ringOfRecoil
+	 */
+	public int getRingOfRecoil() {
+		return ringOfRecoil;
+	}
+
+	/**
+	 * @param ringOfRecoil the ringOfRecoil to set
+	 */
+	public void setRingOfRecoil(int ringOfRecoil) {
+		this.ringOfRecoil = ringOfRecoil;
 	}
 }

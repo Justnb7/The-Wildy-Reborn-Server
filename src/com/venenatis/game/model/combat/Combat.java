@@ -1,5 +1,7 @@
 package com.venenatis.game.model.combat;
 
+import java.util.Random;
+
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -40,6 +42,71 @@ import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
 
 public class Combat {
+	
+	/**
+	 * The random number generator.
+	 */
+	protected final static Random random = new Random();
+	
+	public static void recoil(Player defender, Entity entity_attacker, final int damage) {
+		if (defender.getEquipment().get(EquipmentConstants.RING_SLOT) != null && defender.getEquipment().get(EquipmentConstants.RING_SLOT).getId() == 2550) {
+			if (damage > 0) {
+				int recoil = (int) Math.ceil(damage / 10);
+				if (recoil < 1) {
+					recoil = 1;
+				}
+				if (recoil > defender.getCombatState().getRingOfRecoil()) {
+					recoil = defender.getCombatState().getRingOfRecoil();
+				}
+				
+				Player p = (Player)entity_attacker;
+				if(p instanceof Player) {
+					if (recoil > p.getSkills().getLevel(Skills.HITPOINTS)) {
+						recoil = p.getSkills().getLevel(Skills.HITPOINTS);
+					}
+				} else { 
+					NPC n = (NPC)entity_attacker;
+					if(recoil > n.getHitpoints()) {
+						recoil = n.getHitpoints();
+					}
+				}
+				if (recoil < 1) {
+					return;
+				}
+				defender.getCombatState().setRingOfRecoil(defender.getCombatState().getRingOfRecoil() - recoil);
+				entity_attacker.damage(new Hit(recoil));
+				if (defender.getCombatState().getRingOfRecoil() < 1) {
+					defender.asPlayer().getEquipment().remove(new Item(2550));
+					defender.getCombatState().setRingOfRecoil(40);
+					defender.getActionSender().sendMessage("Your Ring of Recoil has shattered.");
+				}
+			}
+		}
+		if (random.nextFloat() <= 0.25f && CombatFormulae.fullDharok(defender) && CombatFormulae.hasAmuletOfTheDamned(defender) && damage > 0) {
+			int recoil = (int) Math.ceil((float) damage * 0.15);
+
+			if (recoil < 1) {
+				recoil = 1;
+			}
+
+			Player p = (Player)entity_attacker;
+			if(p instanceof Player) {
+				if (recoil > p.getSkills().getLevel(Skills.HITPOINTS)) {
+					recoil = p.getSkills().getLevel(Skills.HITPOINTS);
+				}
+			} else { 
+				NPC n = (NPC)entity_attacker;
+				if(recoil > n.getHitpoints()) {
+					recoil = n.getHitpoints();
+				}
+			}
+			if (recoil < 1) {
+				return;
+			}
+
+			entity_attacker.damage(new Hit(recoil));
+		}
+	}
 	
 	/**
 	 * Skulls the specified player

@@ -200,23 +200,29 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			if (item == null || item.getId() != removeId) {
 				return;
 			}
-
-			Item ring = player.getEquipment().get(EquipmentConstants.RING_SLOT);
-			if (ring.getId() == 2550) {
-				player.getActionSender().sendMessage("<col=7f00ff>Your Ring of Recoil can deal " + player.getCombatState().getRingOfRecoil() + " more points of damage before shattering.");
-				return;
-			}
 			
-			Item shield = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
-			if (shield != null) {
-				switch (shield.getId()) {
-					case 11283:
-					case 11284:
-						DragonfireShield.dfsSpec(player, player.getCombatState().getTarget());
-						break;
+			//player.debug(""+removeSlot);
+			
+			Item equipment = player.getEquipment().get(removeSlot);
+			
+			switch(removeSlot) {
+			case 5:// Shield
+				if (equipment != null) {
+					switch (equipment.getId()) {
+						case 11283:
+						case 11284:
+							DragonfireShield.dfsSpec(player, player.getCombatState().getTarget());
+							break;
+					}
 				}
+				break;
+			case 12:// Ring
+				if(equipment.getId() == 2550) {
+					player.getActionSender().sendMessage("<col=7f00ff>Your Ring of Recoil can deal " + player.getCombatState().getRingOfRecoil() + " more points of damage before shattering.");
+				}
+				break;
+			
 			}
-			break;
 		}
 
 		case InterfaceConstants.SHOP_INTERFACE:

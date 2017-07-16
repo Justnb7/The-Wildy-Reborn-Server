@@ -430,6 +430,25 @@ public class Skills {
     }
     
     /**
+	 * Decreases a level to 1.
+	 *
+	 * @param skill        The skill id.
+	 * @param modification The modification amount.
+	 */
+	public void decreaseLevelToOne(int skill, int modification) {
+		if (levels[skill] > 1) {
+			setLevel(skill, levels[skill] - modification <= 0 ? 0 : levels[skill] - modification);
+		}
+	}
+    
+    public void increaseLevelToSetMaximum(int skill, int modification, int max) {
+		if (levels[skill] < getLevelForExperience(skill) + max) {
+			int level = levels[skill] + modification >= max ? max : levels[skill] + modification;
+			setLevel(skill, level);
+		}
+	}
+    
+    /**
      * Increases a level to its level for experience, depending on the modification amount.
      *
      * @param skill        The skill id.

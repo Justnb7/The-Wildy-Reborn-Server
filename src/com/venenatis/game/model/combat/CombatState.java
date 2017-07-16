@@ -1,15 +1,16 @@
 package com.venenatis.game.model.combat;
 
 
+import java.util.concurrent.TimeUnit;
+
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.consumables.Consumables.Food;
 import com.venenatis.game.model.combat.magic.MagicData;
 import com.venenatis.game.model.combat.magic.lunar.CombatSpells;
 import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Stopwatch;
-
-import java.util.concurrent.TimeUnit;
 
 public class CombatState {
 	
@@ -27,7 +28,7 @@ public class CombatState {
 	}
 	
 	/**
-	 * The mob's target
+	 * The entity's target
 	 */
 	private Entity target;
 	
@@ -228,18 +229,88 @@ public class CombatState {
 	private boolean isDead;
 
 	/**
-	 * Gets the mob's state of life.
-	 * @return The mob's state of life.
+	 * Gets the entity's state of life.
+	 * @return The entity's state of life.
 	 */
 	public boolean isDead() {
 		return isDead;
 	}
 
 	/**
-	 * Sets the mob's state of life.
+	 * Sets the entity's state of life.
 	 * @param isDead The state of life to set.
 	 */
 	public void setDead(boolean isDead) {
 		this.isDead = isDead;
+	}
+	
+	private int eatDelay;
+	
+	public void setEatDelay(int eatDelay) {
+		this.eatDelay = eatDelay;
+	}
+
+	public int getEatDelay() {
+		return eatDelay;
+	}
+
+	public void decreaseEatDelay(int i) {
+		eatDelay -= i;
+		if (eatDelay <= 0) {
+			setCanEat(true);
+		}
+	}
+	
+	/**
+	 * The eating flag.
+	 */
+	private boolean canEat = true;
+	
+	
+	/**
+	 * Sets the mob's eating flag.
+	 * @param canEat The eating flag to set.
+	 */
+	public void setCanEat(boolean canEat) {
+		this.canEat = canEat;
+	}
+	
+	/**
+	 * Gets the mob's eating flag.
+	 * @return The mob's eating flag.
+	 */
+	public boolean canEat() {
+		return canEat;
+	}
+	
+	/**
+	 * The drinking flag.
+	 */
+	private boolean canDrink = true;
+	
+	/**
+	 * Sets the mob's drinking flag.
+	 * @param canEat The drinking flag to set.
+	 */
+	public void setCanDrink(boolean canDrink) {
+		this.canDrink = canDrink;
+	}
+	
+	/**
+	 * Gets the mob's drinking flag.
+	 * @return The mob's drinking flag.
+	 */
+	public boolean canDrink() {
+		return canDrink;
+	}
+	
+	private Food lastAte;
+
+	public Food getLastAte() {
+		return lastAte;
+	}
+	
+	public void setLastAte(Food lastAte) {
+		this.lastAte = lastAte;
 	}
 }

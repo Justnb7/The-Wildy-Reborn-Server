@@ -88,6 +88,16 @@ public class Item {
 		this(id, 1);
 	}
 	
+	/**
+	 * Creates a new item.
+	 * @param id
+	 * @param amount
+	 * @return
+	 */
+	public static Item create(int id, int amount) {
+		return new Item(id, amount);
+	}
+	
 	public void add(int amount) {
 		this.amount += amount;
 	}

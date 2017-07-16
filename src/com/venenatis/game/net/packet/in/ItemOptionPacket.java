@@ -1,5 +1,7 @@
 package com.venenatis.game.net.packet.in;
 
+import com.venenatis.game.action.Action;
+import com.venenatis.game.action.impl.actions.ConsumeItemAction;
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.clicking.items.ItemOnItem;
@@ -359,6 +361,10 @@ public class ItemOptionPacket implements PacketType {
 
 		case 952:
 			handleShovel(player);
+			break;
+		default:
+			Action action = new ConsumeItemAction(player, item, slot);
+			action.execute();
 			break;
 		}
 	}

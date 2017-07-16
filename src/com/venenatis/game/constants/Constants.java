@@ -1,6 +1,7 @@
 package com.venenatis.game.constants;
 
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.entity.player.Player;
 
 public class Constants {
 	
@@ -195,5 +196,52 @@ public class Constants {
 	 * The rate in milliseconds in which the game thread processes logic.
 	 */
 	public static final int CYLCE_RATE = 600;
+
+	/**
+	 * Returns the amount of hitpoints extra will be health eating anglerfish
+	 * 
+	 * @param level
+	 *            The players hitpoints level
+	 */
+	public static int getModification(int level) {
+		if (level >= 20 && level <= 24) {
+			return 4;
+		}
+		if (level >= 25 && level <= 29) {
+			return 6;
+		}
+		if (level >= 30 && level <= 39) {
+			return 7;
+		}
+		if (level >= 40 && level <= 49) {
+			return 8;
+		}
+		if (level >= 50 && level <= 59) {
+			return 11;
+		}
+		if (level >= 60 && level <= 69) {
+			return 12;
+		}
+		if (level >= 70 && level <= 74) {
+			return 13;
+		}
+		if (level >= 75 && level <= 79) {
+			return 15;
+		}
+		if (level >= 80 && level <= 89) {
+			return 16;
+		}
+		if (level >= 90 && level <= 92) {
+			return 17;
+		}
+		if (level >= 93 && level <= 99) {
+			return 22;
+		}
+		return 3;
+	}
+
+	public static boolean hasSerpHelm(Player player) {
+		return player.getEquipment() != null && (player.getEquipment().contains(12931) || player.getEquipment().contains(13197) || player.getEquipment().contains(13199));
+	}
 
 }

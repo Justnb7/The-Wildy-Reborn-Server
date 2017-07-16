@@ -1413,6 +1413,10 @@ public class Player extends Entity {
 				removeAttribute("antiFire");
 			}
 		}
+		
+		if (getCombatState().getEatDelay() > 0) {
+			getCombatState().decreaseEatDelay(1);
+		}
 
 	}
 

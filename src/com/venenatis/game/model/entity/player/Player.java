@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.consumables.Consumable;
-import com.venenatis.game.consumables.food.FoodConsumable;
-import com.venenatis.game.consumables.potion.PotionData;
-import com.venenatis.game.consumables.potion.Potions;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.KillTracker.KillEntry;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -2038,43 +2034,6 @@ public class Player extends Entity {
 			kraken = new KrakenInstance();
 		return kraken;
 	}
-	
-	/**
-	 * Gets the players current consumable type
-	 * 
-	 * @return
-	 */
-	public Consumable getConsumable() {
-		return consumable;
-	}
-	
-	/**
-	 * The players current consumable
-	 */
-	private Consumable consumable;
-
-	/**
-	 * Sends a new consumable to be consumed
-	 * 
-	 * @param type
-	 *            The type of consumable
-	 * @param id
-	 *            The id of the consumable item
-	 * @param slot
-	 *            The slot of the consumable item
-	 */
-	public void sendConsumable(String type, int id, int slot) {
-		if (this.consumable != null) {
-			if (System.currentTimeMillis() - this.consumable.getCurrentDelay(type) < this.consumable.getDelay(type)) {
-				return;
-			}
-		}
-		Consumable consumable = new Potions(this, PotionData.forId(id), slot);
-		this.consumable = consumable;
-		if (consumable != null) {
-			consumable.consume();
-		}
-	}				
 
 	private long lastAltarPrayer = -3000;
 	
@@ -2274,12 +2233,6 @@ public class Player extends Entity {
 
 	public void setDestroyItem(int destroyItem) {
 		this.destroyItem = destroyItem;
-	}
-	
-	private FoodConsumable food = new FoodConsumable(this);
-
-	public FoodConsumable getFood() {
-		return food;
 	}
 	
 	/**

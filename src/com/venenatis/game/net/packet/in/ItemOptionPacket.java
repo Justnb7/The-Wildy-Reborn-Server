@@ -1,6 +1,5 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.consumables.potion.PotionData;
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.clicking.items.ItemOnItem;
@@ -295,15 +294,6 @@ public class ItemOptionPacket implements PacketType {
 		
 		//Last clicked item
 		player.lastClickedItem = id;
-		
-		PotionData potion = PotionData.forId(item.getId());
-		if (potion != null) {
-			player.sendConsumable("potion", potion.getPotionId(), slot);
-		}
-		
-		if (player.getFood().isFood(item.getId())) {
-			player.getFood().eat(item.getId(), slot);
-		}
 		
 		if(player.getRunePouch().open(player, item.getId())) {
 			return;

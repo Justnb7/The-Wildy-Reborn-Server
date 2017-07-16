@@ -197,6 +197,7 @@ public class BountyHunter extends Task {
 			 * a target
 			 */
 			if (Connection.isSameConnection(target, player)) {
+				//player.getActionSender().sendMessage("[Target found]: Target found on same connection, skipping target.");
 				continue;
 			}
 			

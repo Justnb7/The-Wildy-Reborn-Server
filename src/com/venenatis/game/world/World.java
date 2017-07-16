@@ -34,6 +34,7 @@ import com.venenatis.game.task.impl.NPCMovementTask;
 import com.venenatis.game.task.impl.RestoreSpecialStats;
 import com.venenatis.game.task.impl.RestoreStats;
 import com.venenatis.game.task.impl.SavePlayers;
+import com.venenatis.game.task.impl.SecondTask;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
@@ -130,6 +131,7 @@ public class World implements Service {
 	 * Initializes the game world
 	 */
 	public void init() {
+		schedule(new SecondTask());
 		schedule(new DidYouKnowEvent());
 		schedule(new RestoreStats());
 		schedule(new NPCMovementTask());

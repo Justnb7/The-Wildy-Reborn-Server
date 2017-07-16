@@ -14,6 +14,7 @@ import com.venenatis.game.world.World;
 public class DragonfireShield {
 	
 	public static void dfsSpec(final Player player, final Entity victim) {
+		
 		if(player == null || victim == null) {
 			return;
 		}
@@ -27,11 +28,12 @@ public class DragonfireShield {
 			player.getActionSender().sendMessage("You must be in combat to operate your dragonfire shield.");
 			return;
 		}
+		
 		if(player.getDfsTimer() > 0) {
-			player.getActionSender().sendMessage("Let your dragonfire shield cool down for " + player.getDfsTimer() + " more seconds.");
+			player.getActionSender().sendMessage("You must let your dragonfire shield cool down before using it again.");
 			return;
 		}
-		player.setDfsTimer(240);
+		player.setDfsTimer(50);
 		player.getCombatState().setAttackDelay(6);
 		player.face(player, victim.getLocation());
 		player.playAnimation(Animation.create(6696));
@@ -61,13 +63,8 @@ public class DragonfireShield {
 				World.getWorld().schedule(new Task(hitDelay) {
 					public void execute() {
 						victim.playGraphics(Graphic.create(1167, 0, 100));
-						World.getWorld().schedule(new Task(1) {
-							public void execute() {
-								int hit = (int)(Math.ceil((double) Math.random() * (double) 37));
-								victim.damage(new Hit(hit));
-								this.stop();
-							}
-						});
+						int hit = (int) (Math.ceil((double) Math.random() * (double) 37));
+						victim.damage(new Hit(hit));
 						this.stop();
 					}
 				});

@@ -39,12 +39,12 @@ public class PlayerSave {
 	/**
 	 * The save types
 	 * - Player_information is used for "name, password, IP, MAC etc.."
-	 * - Sanctions are used to store punishments.
+	 * - Presets are used to store your saved presets.
 	 * - "Containers are based on Inventory, bank equipment etc..."
 	 */
 	public enum Type {
 		PLAYER_INFORMATION,
-		SANCTIONS,
+		PRESETS,
 		CONTAINER;
 	}
 
@@ -57,6 +57,9 @@ public class PlayerSave {
 	 */
 	public static synchronized boolean load(Player player) throws Exception {
 		if (!PlayerSaveDetail.loadDetails(player)) {
+			return false;
+		}
+		if (!PlayerPresets.loadDetails(player)) {
 			return false;
 		}
 		if (!PlayerContainer.loadDetails(player)) {
@@ -355,13 +358,13 @@ public class PlayerSave {
 		}
 
 		public void parseDetails() throws Exception {
-			File dir = new File("./Data/characters/details/");
+			File dir = new File("./data/characters/details/");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
 			BufferedWriter writer = null;
 			try {
-				writer = new BufferedWriter(new FileWriter("./Data/characters/details/" + username + ".json", false));
+				writer = new BufferedWriter(new FileWriter("./data/characters/details/" + username + ".json", false));
 				writer.write(PlayerSave.SERIALIZE.toJson(this));
 				writer.flush();
 			} finally {
@@ -373,17 +376,107 @@ public class PlayerSave {
 	}
 	
 	/**
+	 * Saves presets
+	 * 
+	 * @author Daniel
+	 *
+	 */
+	public static final class PlayerPresets {
+
+		public static boolean loadDetails(Player player) throws Exception {
+			BufferedReader reader = null;
+			try {
+				final File file = new File("./data/characters/presets/" + player.getUsername() + ".json");
+
+				if (!file.exists()) {
+					return false;
+				}
+
+				reader = new BufferedReader(new FileReader(file));
+
+				final PlayerPresets details = PlayerSave.SERIALIZE.fromJson(reader, PlayerPresets.class);
+
+				player.getPresets().setDeathOpen(details.deathOpen);
+				player.getPresets().setGearBank(details.gearBank);
+				if (details.presetTitles != null) {
+					player.getPresets().setPresetTitle(details.presetTitles);
+				}
+				if (details.presetSpellbook != null) {
+					player.getPresets().setPresetSpellbook(details.presetSpellbook);
+				}
+				if (details.presetSkills != null) {
+					player.getPresets().setPresetSkill(details.presetSkills);
+				}
+				if (details.quickPrayer != null) {
+					player.getPresets().setQuickPrayers(details.quickPrayer);
+				}
+				if (details.presetInventory != null) {
+					player.getPresets().setPresetInventory(details.presetInventory);
+				}
+				if (details.presetEquipment != null) {
+					player.getPresets().setPresetEquipment(details.presetEquipment);
+				}
+
+				return true;
+
+			} finally {
+				if (reader != null) {
+					try {
+						reader.close();
+					} catch (final IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		private final boolean deathOpen;
+		private final boolean gearBank;
+		private final String[] presetTitles;
+		private final SpellBook[] presetSpellbook;
+		private final int[][] presetSkills;
+		private final boolean[][] quickPrayer;
+		private final Item[][] presetInventory;
+		private final Item[][] presetEquipment;
+
+		public PlayerPresets(Player player) {
+			deathOpen = player.getPresets().isDeathOpen();
+			gearBank = player.getPresets().isGearBank();
+			presetTitles = player.getPresets().getPresetTitle();
+			presetSpellbook = player.getPresets().getPresetSpellbook();
+			presetSkills = player.getPresets().getPresetSkill();
+			quickPrayer = player.getPresets().getQuickPrayers();
+			presetInventory = player.getPresets().getPresetInventory();
+			presetEquipment = player.getPresets().getPresetEquipment();
+		}
+
+		public void parseDetails(Player player) throws Exception {
+			BufferedWriter writer = null;
+			try {
+				writer = new BufferedWriter(new FileWriter("./data/characters/presets/" + player.getUsername() + ".json", false));
+				writer.write(PlayerSave.SERIALIZE.toJson(this));
+				writer.flush();
+			} finally {
+				if (writer != null) {
+					writer.close();
+				}
+			}
+		}
+
+	}
+	
+	/**
 	 * Handles saving and loading player's container.
 	 *
 	 */
 	public static final class PlayerContainer {
 
 		public static boolean loadDetails(Player player) throws Exception {
-			File dir = new File("./Data/characters/containers/");
+			File dir = new File("./data/characters/containers/");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			final File file = new File("./Data/characters/containers/" + player.getUsername() + ".json");
+			final File file = new File("./data/characters/containers/" + player.getUsername() + ".json");
 			
 			if (!file.exists()) {
 				return false;
@@ -447,11 +540,11 @@ public class PlayerSave {
 		}
 
 		public void parseDetails(Player player) throws IOException {
-			File dir = new File("./Data/characters/containers/");
+			File dir = new File("./data/characters/containers/");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			final BufferedWriter writer = new BufferedWriter(new FileWriter("./Data/characters/containers/" + player.getUsername() + ".json", false));
+			final BufferedWriter writer = new BufferedWriter(new FileWriter("./data/characters/containers/" + player.getUsername() + ".json", false));
 			try {
 				writer.write(PlayerSave.SERIALIZE.toJson(this));
 				writer.flush();

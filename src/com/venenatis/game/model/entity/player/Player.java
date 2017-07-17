@@ -16,6 +16,7 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
 import com.venenatis.game.content.killstreak.Killstreak;
+import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
@@ -1265,7 +1266,7 @@ public class Player extends Entity {
 	public void putInCombat(int attacker) {
 		logoutDelay.reset();
 		updateLastCombatAction();
-		setInCombat(true);
+		getCombatState().setInCombat(true);
 	}
 
 	public String getIdentity() {
@@ -1434,7 +1435,7 @@ public class Player extends Entity {
 
 	public void combatProcessing() {
 		if (lastCombatAction.elapsed(6000)) {
-			setInCombat(false);
+			getCombatState().setInCombat(false);
 		}
 
 		if (getSkullTimer() > 0) {
@@ -2899,6 +2900,12 @@ public class Player extends Entity {
 	
 	public void setSanctions(Sanctions sanctions) {
 		this.sanctions = sanctions;
+	}
+	
+	private PreloadingGear presets = new PreloadingGear(this);
+
+	public PreloadingGear getPresets() {
+		return presets;
 	}
 
 }

@@ -147,7 +147,7 @@ public class Combat {
 	 * @param entity
 	 */
     public static void resetCombat(Entity entity) {
-		entity.setInCombat(false);
+		entity.getCombatState().setInCombat(false);
 		
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
@@ -552,7 +552,7 @@ public class Combat {
             target.getActionSender().removeAllInterfaces();
         }
         player.updateLastCombatAction();
-        player.setInCombat(true);
+        player.getCombatState().setInCombat(true);
         target.lastAttacker = player;
         target.lastWasHitTime = System.currentTimeMillis();
 		/*if (player.petBonus) {

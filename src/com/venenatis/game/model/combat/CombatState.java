@@ -336,4 +336,14 @@ public class CombatState {
 	public void setRingOfRecoil(int ringOfRecoil) {
 		this.ringOfRecoil = ringOfRecoil;
 	}
+
+	private boolean inCombat;
+	
+	public boolean inCombat() {
+		return inCombat;
+	}
+	
+	public void setInCombat(boolean inCombat) {
+		this.inCombat = inCombat;
+	}
 }

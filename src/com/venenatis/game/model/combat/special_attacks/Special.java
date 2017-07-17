@@ -62,7 +62,7 @@ public class Special {
 						targPlayer.putInCombat(attacker.getIndex());
 						targPlayer.logoutDelay.reset();
 						attacker.updateLastCombatAction();
-						attacker.setInCombat(true);
+						attacker.getCombatState().setInCombat(true);
 					}
 				}
 			} else {

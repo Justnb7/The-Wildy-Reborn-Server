@@ -66,7 +66,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			player.getActionSender().sendMessage("[PlayerInteractionPacket] Opcode: " + packet);
 		}
 		
-		if (player.inCombat()) {
+		if (player.getCombatState().inCombat()) {
 			if (packet != ATTACK_PLAYER && packet != MAGIC_ON_PLAYER) {
 				player.getCombatState().reset();
 			}

@@ -226,6 +226,20 @@ public class Skills {
 		}
 	}
 
+	public void setMaxLevel(int skillId, int level) {
+		if (level <= 0) {
+			level = 1;
+		}
+		
+		player.getSkills().setLevel(skillId, level);
+		player.getSkills().setExperience(skillId, getXPForLevel(level));
+		player.getActionSender().sendSkillLevel(skillId);
+		
+		if (level > 99) {
+			level = 99;
+		}
+	}
+
 	/**
 	 * Increments a level.
 	 * 
@@ -536,4 +550,11 @@ public class Skills {
 	 public Prayer getPrayer() {
         return new Prayer(player);
     }
+
+	/**
+	 * @return the max level
+	 */
+	public int getMaxLevel(int skill) {
+		return 99;
+	}
 }

@@ -258,6 +258,13 @@ public class ActionSender {
 		for (int i = 0; i < 15; i++) {
 			sendSidebarInterface(i, interfaces[i]);
 		}
+		if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
+			sendSidebarInterface(6, 1151);
+		} else if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
+			sendSidebarInterface(6, 12855);
+		} else {
+			sendSidebarInterface(6, 29999);
+		}
 		return this;
 	}
 	

@@ -34,7 +34,7 @@ public class PriceChecker extends Container {
 
 	public void open() {
 		
-		if (player.inCombat()) {
+		if (player.getCombatState().inCombat()) {
 			player.getActionSender().sendMessage("You can not open the price checker while in combat.");
 			return;
 		}

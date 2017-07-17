@@ -114,7 +114,7 @@ public class NpcVsPlayerCombat {
 				player.lastWasHitTime = System.currentTimeMillis();
 				npc.oldIndex = player.getIndex();
 				player.updateLastCombatAction();
-				player.setInCombat(true);
+				player.getCombatState().setInCombat(true);
 				player.getActionSender().removeAllInterfaces();
 			}
 		}

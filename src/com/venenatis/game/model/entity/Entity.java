@@ -375,18 +375,8 @@ public abstract class Entity {
      */
     public abstract void onDeath();
 
-	private boolean inCombat;
 	public long lastWasHitTime;
 	public Entity lastAttacker;
-
-	//TODO figure out are we even use this
-	public boolean inCombat() {
-		return inCombat;
-	}
-
-	public void setInCombat(boolean inCombat) {
-		this.inCombat = inCombat;
-	}
 	
 	/**
      * Gets the amount of poison damage this character has.

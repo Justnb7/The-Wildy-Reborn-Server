@@ -81,7 +81,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int removeSlot = player.getInStream().readUnsignedWordA();
 		final int removeId = player.getInStream().readUnsignedWordA();
 
-		if (player.inDebugMode() && player.getRights().isSuperStaff(player)) {
+		if (player.inDebugMode() && player.getRights().isOwner(player)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FirstAction - InterfaceId: " + interfaceId + " (" + removeId + ", " + removeSlot + ")");
 		}
 
@@ -187,7 +187,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int removeId = player.getInStream().readSignedWordBigEndianA();
 		final int removeSlot = player.getInStream().readSignedWordBigEndian();
 
-		if (player.inDebugMode() && player.getRights().isSuperStaff(player)) {
+		if (player.inDebugMode() && player.getRights().isOwner(player)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - SecondClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
 		}
 
@@ -321,7 +321,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int removeId = player.getInStream().readUnsignedWordA();
 		final int removeSlot = player.getInStream().readUnsignedWordA();
 
-		if (player.inDebugMode() && player.getRights().isSuperStaff(player)) {
+		if (player.inDebugMode() && player.getRights().isOwner(player)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - ThirdClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
 		}
 
@@ -421,7 +421,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int interfaceId = player.getInStream().readUnsignedWord();
 		final int removeId = player.getInStream().readUnsignedWordA();
 
-		if (player.inDebugMode() && player.getRights().isSuperStaff(player)) {
+		if (player.inDebugMode() && player.getRights().isOwner(player)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FourthAction - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
 		}
 
@@ -524,7 +524,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		player.xInterfaceId = player.getInStream().readUnsignedWordA();
 		player.xRemoveId = player.getInStream().readSignedWordBigEndian();
 
-		if (player.inDebugMode() && player.getRights().isSuperStaff(player)) {
+		if (player.inDebugMode() && player.getRights().isOwner(player)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FifthOption - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
 		}
 
@@ -554,7 +554,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			amountX = 1;
 		}
 
-		if (player.inDebugMode() && player.getRights().isSuperStaff(player)) {
+		if (player.inDebugMode() && player.getRights().isOwner(player)) {
 			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
 		}
 		

@@ -3,9 +3,13 @@ package com.venenatis.game.net.packet.in.commands.impl;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.content.trivia.TriviaBot;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.combat.Combat;
+import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.net.packet.in.commands.Yell;
@@ -23,6 +27,57 @@ public class PlayerCommand implements Command {
 
 		switch (parser.getCommand()) {
 		
+		case "skull":
+			Combat.skull(player, SkullType.SKULL, 300);
+			return true;
+			
+		case "redskull":
+		case "red":
+			Combat.skull(player, SkullType.RED_SKULL, 300);
+			return true;
+			
+		case "unkskull":
+			if(player.getTotalAmountDonated() >= 10) {
+				player.setSkullType(SkullType.NONE);
+				player.setSkullTimer(-1);
+				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+				player.getActionSender().sendMessage("You've been unskulled.");
+			} else {
+				player.getActionSender().sendMessage("Only donators can use ::unskull.");
+				return false;
+			}
+			return true;
+			
+		case "food":
+			//Regular donator
+			if(player.getTotalAmountDonated() >= 10) {
+				//TODO create a fill method, fill the empty slots rather then spawning 28 items
+				player.getInventory().add(new Item(385, 28), true);
+				player.getActionSender().sendMessage("Did you know? Super donators receive dark crabs instead.");
+			//Super
+			} else if(player.getTotalAmountDonated() >= 30) {
+				player.getInventory().add(new Item(11936, 28), true);
+				player.getActionSender().sendMessage("Did you know? Elite donators receive anglerfish instead.");
+			//elite
+			} else if(player.getTotalAmountDonated() >= 100 || player.getRights().isOwner(player)) {
+				player.getInventory().add(new Item(13441, 28), true);
+			}
+			return true;
+			
+		case "empty":
+			if (Area.inWilderness(player)) {
+				player.getActionSender().sendMessage("Please enter safe zone to do this!");
+				return true;
+			}
+
+			if (player.getCombatState().inCombat()) {
+				player.getActionSender().sendMessage("Please get out of combat to do this.");
+				return true;
+			}
+			player.getInventory().clear(true);
+			player.getActionSender().sendMessage("You have cleared your inventory.");
+			return true;
+		
 		/* Home Teleport */
 		case "home":
 			player.getTeleportAction().teleport(Constants.RESPAWN_PLAYER_LOCATION, TeleportTypes.SPELL_BOOK, false);
@@ -39,26 +94,22 @@ public class PlayerCommand implements Command {
 		case "vengeance":
 		case "vengerune":
 		case "vengerunes":
-			if (!player.getRights().isIron(player)) {
-				player.getInventory().add(new Item(557, 1000));
-				player.getInventory().add(new Item(560, 1000));
-				player.getInventory().add(new Item(9075, 1000));
-				player.setSpellBook(SpellBook.LUNAR_MAGICS);
-				player.getActionSender().sendSidebarInterface(6, 29999);
-			}
+			player.getInventory().add(new Item(557, 1000));
+			player.getInventory().add(new Item(560, 1000));
+			player.getInventory().add(new Item(9075, 1000));
+			player.setSpellBook(SpellBook.LUNAR_MAGICS);
+			player.getActionSender().sendSidebarInterface(6, 29999);
 			return true;
 
 		/* Barrage Runes */
 		case "barrage":
 		case "barragerune":
 		case "barragerunes":
-			if (!player.getRights().isIron(player)) {
-				player.getInventory().add(new Item(555, 1000));
-				player.getInventory().add(new Item(560, 1000));
-				player.getInventory().add(new Item(565, 1000));
-				player.setSpellBook(SpellBook.ANCIENT_MAGICKS);
-				player.getActionSender().sendSidebarInterface(6, 12855);
-			}
+			player.getInventory().add(new Item(555, 1000));
+			player.getInventory().add(new Item(560, 1000));
+			player.getInventory().add(new Item(565, 1000));
+			player.setSpellBook(SpellBook.ANCIENT_MAGICKS);
+			player.getActionSender().sendSidebarInterface(6, 12855);
 			return true;
 		
 		/* Yell */

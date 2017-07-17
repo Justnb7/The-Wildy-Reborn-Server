@@ -1,14 +1,14 @@
 package com.venenatis.game.model.combat;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.util.Utility;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PrayerHandler {
 
@@ -98,6 +98,10 @@ public class PrayerHandler {
 			return name;
 		}
 	}
+	
+	public static boolean isActivated(Player player, int prayer) {
+		return player.getPrayers()[prayer];
+	}
 
 	public static void togglePrayer(final Player player, final int buttonId) {
 		for (Prayers prayer : Prayers.values()) {
@@ -171,7 +175,7 @@ public class PrayerHandler {
 		return true;
 	}
 
-	private static void activatePrayer(final Player player, final Prayers prayer) {
+	public static void activatePrayer(final Player player, final Prayers prayer) {
 		
 		if (player.getDuelArena().isDueling()) {
 			if (player.getDuelArena().getRules().get(DuelRule.PRAYER)) {
@@ -234,11 +238,11 @@ public class PrayerHandler {
 		player.getActionSender().sendConfig(prayer.getConfigId(), 0);
 	}
 
-	private static Prayers[] defensePrayers = { Prayers.THICK_SKIN, Prayers.ROCK_SKIN, Prayers.STEEL_SKIN,
+	public static Prayers[] DEFENCE_PRAYERS = { Prayers.THICK_SKIN, Prayers.ROCK_SKIN, Prayers.STEEL_SKIN, Prayers.CHIVALRY, Prayers.PIETY, Prayers.RIGOUR, Prayers.AUGURY
 
 	};
 
-	private static Prayers[] strengthPrayers = { Prayers.BURST_OF_STRENGTH, Prayers.SUPERHUMAN_STRENGTH, Prayers.ULTIMATE_STRENGTH,
+	public static Prayers[] STRENGTH_PRAYERS = { Prayers.BURST_OF_STRENGTH, Prayers.SUPERHUMAN_STRENGTH, Prayers.ULTIMATE_STRENGTH,
 
 	Prayers.CHIVALRY, Prayers.PIETY,
 
@@ -248,7 +252,7 @@ public class PrayerHandler {
 
 	};
 
-	private static Prayers[] attackPrayers = { Prayers.CLARITY_OF_THOUGHT, Prayers.IMPROVED_REFLEXES, Prayers.INCREDIBLE_REFLEXES,
+	public static Prayers[] ATTACK_PRAYERS = { Prayers.CLARITY_OF_THOUGHT, Prayers.IMPROVED_REFLEXES, Prayers.INCREDIBLE_REFLEXES,
 
 	Prayers.CHIVALRY, Prayers.PIETY,
 
@@ -261,27 +265,28 @@ public class PrayerHandler {
 	private static Prayers[] restorePrayers = { Prayers.RAPID_RESTORE, Prayers.RAPID_HEAL, Prayers.PRESERVE,
 
 	};
-	private static Prayers[] overheadPrayers = { Prayers.PROTECT_FROM_MAGIC, Prayers.PROTECT_FROM_MISSILE, Prayers.PROTECT_FROM_MELEE, Prayers.RETRIBUTION, Prayers.REDEMPTION, Prayers.SMITE
+	
+	public static Prayers[] OVERHEAD_PRAYERS = { Prayers.PROTECT_FROM_MAGIC, Prayers.PROTECT_FROM_MISSILE, Prayers.PROTECT_FROM_MELEE, Prayers.RETRIBUTION, Prayers.REDEMPTION, Prayers.SMITE
 
 	};
 
 	private static Map<Prayers, Prayers[]> unstackable = new HashMap<Prayers, Prayers[]>();
 
 	static {
-		for (Prayers p : defensePrayers) {
-			unstackable.put(p, defensePrayers);
+		for (Prayers p : DEFENCE_PRAYERS) {
+			unstackable.put(p, DEFENCE_PRAYERS);
 		}
-		for (Prayers p : strengthPrayers) {
-			unstackable.put(p, strengthPrayers);
+		for (Prayers p : STRENGTH_PRAYERS) {
+			unstackable.put(p, STRENGTH_PRAYERS);
 		}
-		for (Prayers p : attackPrayers) {
-			unstackable.put(p, attackPrayers);
+		for (Prayers p : ATTACK_PRAYERS) {
+			unstackable.put(p, ATTACK_PRAYERS);
 		}
 		for (Prayers p : restorePrayers) {
 			unstackable.put(p, restorePrayers);
 		}
-		for (Prayers p : overheadPrayers) {
-			unstackable.put(p, overheadPrayers);
+		for (Prayers p : OVERHEAD_PRAYERS) {
+			unstackable.put(p, OVERHEAD_PRAYERS);
 		}
 	}
 

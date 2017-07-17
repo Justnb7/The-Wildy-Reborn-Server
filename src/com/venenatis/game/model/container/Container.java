@@ -218,7 +218,6 @@ public abstract class Container {
 		if (succesfullAdds > 0 && refresh) {
 			refresh();
 		}
-
 		return succesfullAdds;
 	}
 

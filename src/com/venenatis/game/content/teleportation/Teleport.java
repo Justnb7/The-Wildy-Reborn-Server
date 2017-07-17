@@ -111,7 +111,7 @@ public class Teleport {
 		}
 
 		if (!override) {
-			if (player.getWildLevel() > 30 && !player.getRights().isSuperStaff(player)) {
+			if (player.getWildLevel() > 30 && !player.getRights().isOwner(player)) {
 				player.getActionSender().sendMessage("You can not teleport past 30 wilderness!");
 				return false;
 			}

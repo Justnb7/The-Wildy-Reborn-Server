@@ -143,18 +143,11 @@ public enum Rights {
 	}
 
 	public boolean isDonator(Player player) {
-		return player.getRights() != PLAYER;
+		return player.getRights().getOrder() == Order.DONATOR;
 	}
 	
 	public boolean isStaffMember(Player player) {
 		if (player.getRights().getOrder() == Order.MODERATOR || player.getRights().getOrder() == Order.STAFF) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean isSuperStaff(Player player) {
-		if (player.getRights() == Rights.OWNER) {
 			return true;
 		}
 		return false;

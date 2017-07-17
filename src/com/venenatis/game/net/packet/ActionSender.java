@@ -253,18 +253,32 @@ public class ActionSender {
 	 * 
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendSidebarInterfaces() {
-		int[] interfaces = { 2423, 3917, 638, 3213, 1644, 5608, -1, 33800, 5065, 5715, 2449, 904, 147, -1, -1 };//15
-		for (int i = 0; i < 15; i++) {
-			sendSidebarInterface(i, interfaces[i]);
-		}
+	public ActionSender setSideBarInterfaces() {
+		sendSidebarInterface(Constants.SKILL_TAB, 3917);
+		sendSidebarInterface(Constants.QUEST_TAB, 638);
+		sendSidebarInterface(Constants.INVENTORY_TAB, 3213);
+		sendSidebarInterface(Constants.EQUIPMENT_TAB, 1644);
+		boolean curses = false;
+		if (curses)
+			sendSidebarInterface(Constants.PRAYER_TAB, 21356);
+		else
+			sendSidebarInterface(Constants.PRAYER_TAB, 5608);
 		if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
-			sendSidebarInterface(6, 1151);
+			sendSidebarInterface(Constants.MAGIC_TAB, 1151);
 		} else if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
-			sendSidebarInterface(6, 12855);
+			sendSidebarInterface(Constants.MAGIC_TAB, 12855);
 		} else {
-			sendSidebarInterface(6, 29999);
+			sendSidebarInterface(Constants.MAGIC_TAB, 29999);
 		}
+		sendSidebarInterface(Constants.CLAN_TAB, 33800);
+		sendSidebarInterface(Constants.FRIENDS_TAB, 5065);
+		sendSidebarInterface(Constants.IGNORE_TAB, 5715);
+		sendSidebarInterface(Constants.WRENCH_TAB, 904);
+		sendSidebarInterface(Constants.EMOTE_TAB, 147);
+		sendSidebarInterface(Constants.MUSIC_TAB, -1);
+		sendSidebarInterface(Constants.ATTACK_TAB, 5855);
+		sendSidebarInterface(Constants.SPAWN_TAB, 61250);
+		sendSidebarInterface(Constants.LOGOUT_TAB, 2449);
 		return this;
 	}
 	
@@ -919,6 +933,8 @@ public class ActionSender {
 			if (!PlayerSave.load(player)) {
 				player.setNewPlayer(true);
 				player.setTutorial(true);
+				player.setRunEnergy(100);
+				sendRunEnergy();
 			} else if (PlayerSave.load(player)) {
 				player.setNewPlayer(false);
 			}
@@ -933,7 +949,7 @@ public class ActionSender {
 		sendMapRegionPacket();
 		
 		//We can go ahead and update out sidebars
-		sendSidebarInterfaces();
+		setSideBarInterfaces();
 		
 		//Update the magic book
 		if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {

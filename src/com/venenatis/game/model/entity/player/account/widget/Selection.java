@@ -178,8 +178,6 @@ public class Selection {
 		player.getEquipment().calculateWeight();
 		player.getEquipment().updateWeapon();
 		player.getEquipment().setBonus();
-		player.setRunEnergy(100);
-		player.getActionSender().sendRunEnergy();
 	}
 	
 	/**

@@ -59,10 +59,10 @@ public class PlayerSave {
 		if (!PlayerSaveDetail.loadDetails(player)) {
 			return false;
 		}
-		if (!PlayerPresets.loadDetails(player)) {
+		if (!PlayerContainer.loadDetails(player)) {
 			return false;
 		}
-		if (!PlayerContainer.loadDetails(player)) {
+		if (!PlayerPresets.loadDetails(player)) {
 			return false;
 		}
 		return true;
@@ -78,6 +78,7 @@ public class PlayerSave {
 		try {
 			new PlayerSaveDetail(player).parseDetails();
 			new PlayerContainer(player).parseDetails(player);
+			new PlayerPresets(player).parseDetails(player);
 			return true;
 		} catch (final Exception e) {
 			e.printStackTrace();

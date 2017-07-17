@@ -220,7 +220,7 @@ public class PreloadingGear {
 		player.getInventory().refresh();
 		player.getEquipment().refresh();
 		player.setSpellBook(presetSpellbook[preset]);
-		player.getActionSender().sendSidebarInterfaces();
+		player.getActionSender().setSideBarInterfaces();
 		player.getEquipment().updateWeapon();
 		player.getActionSender().sendMessage("<col=800000>" + presetTitle[preset] + " has been activated. Go kick some ass!");
 	}

@@ -8,6 +8,26 @@ import com.venenatis.game.model.equipment.EquipmentRequirement;
 
 public class ItemConstants {
 	
+	/**
+	 * Spawnable items
+	 */
+	public static final String[] SPAWNABLES = { "Helm of neitiznot", "Prayer potion(4)", "Prayer potion(3)", "Prayer potion(2)",
+			"Prayer potion(1)", "Super restore(4)", "Super restore(3)", "Super restore(2)", "Super restore(1)",
+			"Magic potion(4)", "Magic potion(3)", "Magic potion(2)", "Magic potion(1)", "Super attack(4)",
+			"Super attack(3)", "Super attack(2)", "Super attack(1)", "Super strength(4)", "Super strength(3)",
+			"Super strength(2)", "Super strength(1)", "Super defence(4)", "Super defence(3)", "Super defence(2)",
+			"Super defence(1)", "Ranging potion(4)", "Ranging potion(3)", "Ranging potion(2)", "Ranging potion(1)",
+			"Saradomin brew(4)", "Saradomin brew(3)", "Saradomin brew(2)", "Saradomin brew(1)", "Black d'hide vamb",
+			"Black d'hide chaps", "Blue d'hide body", "Shark", "Anglerfish", "Manta ray", "Fire rune", "Water rune",
+			"Air rune", "Earth rune", "Mind rune", "Body rune", "Death rune", "Nature rune", "Chaos rune", "Law rune",
+			"Cosmic rune", "Blood rune", "Soul rune", "Astral rune", "Rune full helm", "Rune platebody", "Rune platelegs",
+			"Rune kiteshield", "Rune boots", "Climbing boots", "Dragon dagger", "Dragon dagger(p++)", "Dragon mace",
+			"Dragon scimitar", "Dragon longsword", "Amulet of glory", "Amulet of glory(1)", "Amulet of glory(2)",
+			"Amulet of glory(3)", "Amulet of glory(4)", "Amulet of strength", "Mystic hat", "Mystic robe top",
+			"Mystic robe bottom", "Mystic gloves", "Mystic boots", "Rune boots", "Rune arrow", "Iron scimitar",
+			"Ring of recoil", "Magic shortbow", "Rune crossbow", "Diamong bolts (e)", "Ava's accumulator",
+			"Initiate sallet", "Initiate hauberk", "Initiate cuisse", "Granite shield", "Rune plateskirt" };
+	
 	public static int getDegradeItemWhenWear(int id) {
 		// pvp armors
 		if (id == 13958 || id == 13961 || id == 13964 || id == 13967 || id == 13970 || id == 13973 || id == 13858 || id == 13861 || id == 13864 || id == 13867 || id == 13870 || id == 13873 || id == 13876 || id == 13884 || id == 13887 || id == 13890 || id == 13893 || id == 13896 || id == 13899 || id == 13902 || id == 13905 || id == 13908 || id == 13911 || id == 13914 || id == 13917 || id == 13920 || id == 13923 || id == 13926 || id == 13929 || id == 13932 || id == 13935 || id == 13938 || id == 13941 || id == 13944 || id == 13947 || id == 13950 || id == 13958)

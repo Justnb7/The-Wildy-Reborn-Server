@@ -6,26 +6,6 @@ import com.venenatis.game.model.entity.player.Player;
 public class Constants {
 	
 	/**
-	 * Spawnable items
-	 */
-	public static final String[] SPAWNABLES = { "Helm of neitiznot", "Prayer potion(4)", "Prayer potion(3)", "Prayer potion(2)",
-			"Prayer potion(1)", "Super restore(4)", "Super restore(3)", "Super restore(2)", "Super restore(1)",
-			"Magic potion(4)", "Magic potion(3)", "Magic potion(2)", "Magic potion(1)", "Super attack(4)",
-			"Super attack(3)", "Super attack(2)", "Super attack(1)", "Super strength(4)", "Super strength(3)",
-			"Super strength(2)", "Super strength(1)", "Super defence(4)", "Super defence(3)", "Super defence(2)",
-			"Super defence(1)", "Ranging potion(4)", "Ranging potion(3)", "Ranging potion(2)", "Ranging potion(1)",
-			"Saradomin brew(4)", "Saradomin brew(3)", "Saradomin brew(2)", "Saradomin brew(1)", "Black d'hide vamb",
-			"Black d'hide chaps", "Blue d'hide body", "Shark", "Anglerfish", "Manta ray", "Fire rune", "Water rune",
-			"Air rune", "Earth rune", "Mind rune", "Body rune", "Death rune", "Nature rune", "Chaos rune", "Law rune",
-			"Cosmic rune", "Blood rune", "Soul rune", "Astral rune", "Rune full helm", "Rune platebody", "Rune platelegs",
-			"Rune kiteshield", "Rune boots", "Climbing boots", "Dragon dagger", "Dragon dagger(p++)", "Dragon mace",
-			"Dragon scimitar", "Dragon longsword", "Amulet of glory", "Amulet of glory(1)", "Amulet of glory(2)",
-			"Amulet of glory(3)", "Amulet of glory(4)", "Amulet of strength", "Mystic hat", "Mystic robe top",
-			"Mystic robe bottom", "Mystic gloves", "Mystic boots", "Rune boots", "Rune arrow", "Iron scimitar",
-			"Ring of recoil", "Magic shortbow", "Rune crossbow", "Diamong bolts (e)", "Ava's accumulator",
-			"Initiate sallet", "Initiate hauberk", "Initiate cuisse", "Granite shield", "Rune plateskirt" };
-	
-	/**
 	 * Bonus weekends
 	 */
 	public static final boolean PK_REWARDS = false;
@@ -135,21 +115,6 @@ public class Constants {
 	 * Determines the buffering size (10000)
 	 */
 	public static final int BUFFER_SIZE = 10000;
-	
-	/**
-	 * Duel respawn X coordinate
-	 */
-	public static final int DUELING_RESPAWN_X = 3362;
-	
-	/**
-	 * Duel respawn Y coordinate
-	 */
-	public static final int DUELING_RESPAWN_Y = 3263;
-	
-	/**
-	 * Add random 5 tiles to the current coordinate
-	 */
-	public static final int RANDOM_DUELING_RESPAWN = 5; 
 
 	/**
 	 * The npc max cap.
@@ -243,5 +208,21 @@ public class Constants {
 	public static boolean hasSerpHelm(Player player) {
 		return player.getEquipment() != null && (player.getEquipment().contains(12931) || player.getEquipment().contains(13197) || player.getEquipment().contains(13199));
 	}
+	
+	public static final int ATTACK_TAB = 0;
+	public static final int SKILL_TAB = 1;
+	public static final int QUEST_TAB = 2;
+	public static final int INVENTORY_TAB = 3;
+	public static final int EQUIPMENT_TAB = 4;
+	public static final int PRAYER_TAB = 5;
+	public static final int MAGIC_TAB = 6;
+	public static final int SPAWN_TAB = 7;
+	public static final int FRIENDS_TAB = 8;
+	public static final int IGNORE_TAB = 9;
+	public static final int CLAN_TAB = 10;
+	public static final int WRENCH_TAB = 11;
+	public static final int EMOTE_TAB = 12;
+	public static final int MUSIC_TAB = 13;
+	public static final int LOGOUT_TAB = 14;
 
 }

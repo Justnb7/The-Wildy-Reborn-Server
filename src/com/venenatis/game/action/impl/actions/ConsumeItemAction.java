@@ -30,21 +30,6 @@ public class ConsumeItemAction extends Action {
 	 */
 	private int slot;
 
-	public enum Monkey {
-		MONKEY(23), SMALL_NINJA(1462), MEDIUM_NINJA(1463), ANCIENT(1466), SMALL_ZOMBIE_MONKEY(
-				1467), LARGE_ZOMBIE_MONKEY(1468), BLUE_MONKEY(1825), RED_MONKEY(1826);
-
-		final int id;
-
-		Monkey(int id) {
-			this.id = id;
-		}
-
-		public int getId() {
-			return id;
-		}
-	}
-
 	public ConsumeItemAction(Entity entity, Item item, int slot) {
 		super(entity, 0);
 		this.item = item;
@@ -89,8 +74,7 @@ public class ConsumeItemAction extends Action {
 				player.getCombatState().setCanEat(true);
 				player.playAnimation(Animation.create(829));
 				if (food != Food.PURPLE_SWEETS)
-					player.getInventory().remove(item);
-
+				player.getInventory().removeSlot(slot, item.getAmount(), true);
 				int delay = food == Food.KARAMBWAN && last == Food.KARAMBWAN ? 1 : 3;
 				player.getCombatState().setEatDelay(delay);
 

@@ -64,6 +64,27 @@ public class PlayerCommand implements Command {
 			}
 			return true;
 			
+		case "pots":
+			return true;
+			
+		case "restore":
+		case "srestore":
+		case "pray":
+			return true;
+			
+		case "brew":
+		case "sbrew":
+		case "sarabrew":
+			return true;
+			
+		case "range":
+		case "rpot":
+			return true;
+			
+		case "mage":
+		case "mpot":
+			return true;
+			
 		case "empty":
 			if (Area.inWilderness(player)) {
 				player.getActionSender().sendMessage("Please enter safe zone to do this!");

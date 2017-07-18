@@ -4,6 +4,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.location.Area;
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.SkullType;
@@ -26,6 +27,16 @@ public class PlayerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 
 		switch (parser.getCommand()) {
+		
+		case "donze":
+		case "dz":
+			if(player.getTotalAmountDonated() >= 10) {
+				player.getTeleportAction().teleport(new Location(2518, 3369));
+			} else {
+				player.getActionSender().sendMessage("Only donators can use ::unskull.");
+				return false;
+			}
+			return true;
 		
 		case "skull":
 			Combat.skull(player, SkullType.SKULL, 300);
@@ -65,24 +76,39 @@ public class PlayerCommand implements Command {
 			return true;
 			
 		case "pots":
+			if(player.getTotalAmountDonated() >= 30) {
+				player.getInventory().add(new Item(12695, 1), true);
+			} else if(player.getTotalAmountDonated() >= 100) {
+				player.getInventory().add(new Item(11730, 1), true);
+			} else {
+				player.getInventory().add(new Item(2440, 1), true);
+				player.getInventory().add(new Item(2436, 1), true);
+				player.getInventory().add(new Item(2442, 1), true);
+			}
+			player.getInventory().add(new Item(3024, 2), true);
+			player.getInventory().add(new Item(6685, 2), true);
 			return true;
 			
 		case "restore":
 		case "srestore":
 		case "pray":
+			player.getInventory().add(new Item(3024, 1), true);
 			return true;
 			
 		case "brew":
 		case "sbrew":
 		case "sarabrew":
+			player.getInventory().add(new Item(6685, 1), true);
 			return true;
 			
 		case "range":
 		case "rpot":
+			player.getInventory().add(new Item(2444, 1), true);
 			return true;
 			
 		case "mage":
 		case "mpot":
+			player.getInventory().add(new Item(3040, 1), true);
 			return true;
 			
 		case "empty":

@@ -239,7 +239,7 @@ public class ItemOptionPacket implements PacketType {
 		GroundItemHandler.createGroundItem(new GroundItem(new Item(itemId, player.getInventory().get(slot).getAmount()), player.getLocation(), player));
 		
 		//After we've dropped our item, the server deletes it from our inventory.
-		player.getInventory().remove(item);
+		player.getInventory().removeSlot(slot, item.getAmount(), true);
 		player.getInventory().refresh();
 		
 		//When dropping items combat resets.

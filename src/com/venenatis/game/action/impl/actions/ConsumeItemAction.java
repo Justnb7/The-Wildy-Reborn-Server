@@ -90,8 +90,7 @@ public class ConsumeItemAction extends Action {
 				if (food == Food.PURPLE_SWEETS) {
 					player.getActionSender().sendMessage("The sugary goodness heals some energy.");
 				} else {
-					player.getActionSender()
-							.sendMessage("You eat the " + item.getDefinition().getName().toLowerCase() + ".");
+					player.getActionSender().sendMessage("You eat the " + item.getDefinition().getName().toLowerCase() + ".");
 				}
 				player.getCombatState().setLastAte(food);
 				int increasedBy = 0;

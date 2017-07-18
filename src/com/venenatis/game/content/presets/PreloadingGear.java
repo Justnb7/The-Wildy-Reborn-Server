@@ -202,7 +202,6 @@ public class PreloadingGear {
 		}
 		
 		player.setCombatLevel(player.getSkills().getCombatLevel());
-		//player.getPrayer().setQuickPrayers(Arrays.copyOf(quickPrayers[preset], 26));
 		player.getInventory().refresh();
 		player.getEquipment().refresh();
 		player.setSpellBook(presetSpellbook[preset]);
@@ -222,19 +221,20 @@ public class PreloadingGear {
 			player.getActionSender().sendMessage("<col=800000>Please title your preset before doing this.");
 			return;
 		}
-		player.debug("this one");
-		// And then start dialogue
-		DialogueManager.start(player, 23);
-		// Set dialogue options
+		
+		//And then start dialogue
+		DialogueManager.start(player,23);
+		//Set dialogue options
 		player.setDialogueOptions(new DialogueOptions() {
 			@Override
 			public void handleOption(Player player, int option) {
-				switch (option) {
-				case 0:
-					upload(preset);
-					open(preset);
-					break;
+				switch(option) {
 				case 1:
+					//Action 1
+					upload(preset);
+					break;
+				case 2:
+					//Action 2
 					open(preset);
 					break;
 				}

@@ -71,13 +71,11 @@ public class Buttons {
 			player.getPresets().clear(player.getPresets().getViewing());
 			break;
 		case 222230:
-		case -8473:
 			player.getPresets().setDeathOpen(player.getPresets().isDeathOpen() ? false : true);
 			player.getActionSender().sendConfig(345, player.getPresets().isDeathOpen() ? 1 : 0);
 			player.getActionSender().sendMessage("The preloading gear will " + (player.getPresets().isDeathOpen() ? "now" : "now not") + " open on death.");
 			break;
 		case 222232:
-		case -8471:
 			player.getPresets().setGearBank(player.getPresets().isGearBank() ? false : true);
 			player.getActionSender().sendConfig(346, player.getPresets().isGearBank() ? 1 : 0);
 			player.getActionSender().sendMessage("All equipment and inventory will " + (player.getPresets().isGearBank() ? "now" : "now not") + " automatically deposit into bank.");

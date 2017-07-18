@@ -216,13 +216,12 @@ public class Constants {
 	public static final int EQUIPMENT_TAB = 4;
 	public static final int PRAYER_TAB = 5;
 	public static final int MAGIC_TAB = 6;
-	public static final int SPAWN_TAB = 7;
 	public static final int FRIENDS_TAB = 8;
 	public static final int IGNORE_TAB = 9;
-	public static final int CLAN_TAB = 10;
+	public static final int CLAN_TAB = 7;
 	public static final int WRENCH_TAB = 11;
 	public static final int EMOTE_TAB = 12;
 	public static final int MUSIC_TAB = 13;
-	public static final int LOGOUT_TAB = 14;
+	public static final int LOGOUT_TAB = 10;
 
 }

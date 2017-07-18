@@ -115,7 +115,7 @@ public class PrayerHandler {
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	/**

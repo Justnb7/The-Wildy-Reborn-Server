@@ -393,7 +393,7 @@ public class BountyHunter extends Task {
 	 * Calculates the total networth for the emblems in a players inventory.
 	 * @return	the total networth of all emblems in a players inventory
 	 */
-	public int getNetworthForEmblems(Player player) {
+	public static int getNetworthForEmblems(Player player) {
 		int worth = 0;
 		for (int i = 0; i < player.getInventory().capacity(); i++) {
 			int itemId = player.getInventory().getId(i) - 1;

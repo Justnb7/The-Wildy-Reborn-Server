@@ -547,12 +547,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		if (Area.inWilderness(player)) {
 			return;
 		}
-		
-		if (player.dialogue().isActive()) {
-			if (player.dialogue().input(amountX)) {
-				return;
-			}
-		}
 
 		if (player.getInputAmount() != null) {
 			player.getInputAmount().input(amountX);

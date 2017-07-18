@@ -11,7 +11,11 @@ import com.venenatis.game.content.skills.thieving.Stalls;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
+import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
+import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
@@ -72,6 +76,38 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+		
+		case MAGICAL_ALTAR:
+			DialogueManager.start(player, 8);
+			player.setDialogueOptions(new DialogueOptions() {
+				@Override
+				public void handleOption(Player player, int option) {
+					switch(option) {
+					case 1: //Normal spellbook option
+						player.getActionSender().removeAllInterfaces();
+						player.setSpellBook(SpellBook.MODERN_MAGICS);
+						break;
+					case 2: //Ancient spellbook option
+						player.getActionSender().removeAllInterfaces();
+						player.setSpellBook(SpellBook.ANCIENT_MAGICKS);
+						break;
+					case 3: //Lunar spellbook option
+						player.getActionSender().removeAllInterfaces();
+						player.setSpellBook(SpellBook.LUNAR_MAGICS);
+						break;
+					case 4: //Cancel option
+						player.getActionSender().removeAllInterfaces();
+						break;
+					}
+				}
+			});				
+			break;
+
+		case REJUVENATION_POOL:
+			player.getActionSender().sendMessage("You feel slightly renewed.");
+			player.playGraphics(new Graphic(683));
+			break;
+		
 		case 7812: //Altar at Clan Wars
 		case 409:
 			action = new RestorePrayerPointsAction(player, objectId);
@@ -185,5 +221,8 @@ public class ObjectInteraction {
 	public static void handleThirdClickAction(Player player, Location position, int id) {
 		player.debug(String.format("[ObjectInteraction option 3] - position: %s object: %d ", position, id));
 	}
+	
+	private static final int MAGICAL_ALTAR = 29150;
+	private static final int REJUVENATION_POOL = 29241;
 
 }

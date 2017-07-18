@@ -32,6 +32,7 @@ public class ActionButtonPacketHandler implements PacketType {
 	@Override
 	public void handle(final Player player, int id, int size) {
 		int button = Utility.hexToInt(player.getInStream().buffer, 0, size);
+		//player.getInStream().readUnsignedWord();
 		
 		/**
 		 * How are we going to click buttons when we're dead!

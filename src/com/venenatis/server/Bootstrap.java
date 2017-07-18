@@ -1,5 +1,11 @@
 package com.venenatis.server;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.ScriptManager;
 import com.venenatis.game.cache.OpenRsUnpacker;
@@ -15,6 +21,7 @@ import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.model.entity.player.clan.ClanRepository;
+import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.net.network.NettyChannelHandler;
 import com.venenatis.game.net.network.codec.RS2Encoder;
 import com.venenatis.game.net.network.handshake.HandshakeDecoder;
@@ -34,11 +41,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ResourceLeakDetector;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * The bootstrap that will prepare the game and network.
@@ -123,6 +125,7 @@ public class Bootstrap {
 			new MacBanParser().run();
 
 			LOGGER.info("Loading all of the game data...");
+			DialogueManager.parse().load();
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();

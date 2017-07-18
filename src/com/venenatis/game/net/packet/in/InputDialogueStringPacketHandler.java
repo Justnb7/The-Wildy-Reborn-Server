@@ -17,10 +17,6 @@ public class InputDialogueStringPacketHandler implements PacketType {
 
 		String stringValue = Utility.longToPlayerName2(value);
 		
-		if (player.dialogue().input(stringValue)) {
-			return;
-		}
-		
 		if (player.getInputString() != null) {
 			player.getInputString().input(stringValue);
 			player.setInputString(null);

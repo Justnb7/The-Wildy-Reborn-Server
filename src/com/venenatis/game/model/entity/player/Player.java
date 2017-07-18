@@ -54,7 +54,9 @@ import com.venenatis.game.model.entity.player.clan.Clan;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
+import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
+import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
@@ -79,6 +81,26 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.server.Server;
 
 public class Player extends Entity {
+	
+	private Dialogue dialogue;
+	
+	public Dialogue getDialogue() {
+		return this.dialogue;
+	}
+
+	public void setDialogue(Dialogue dialogue) {
+		this.dialogue = dialogue;
+	}
+	
+	private DialogueOptions dialogueOptions;
+
+	public DialogueOptions getDialogueOptions() {
+		return dialogueOptions;
+	}
+
+	public void setDialogueOptions(DialogueOptions dialogueOptions) {
+		this.dialogueOptions = dialogueOptions;
+	}
 	
 	public Killstreak killstreak = new Killstreak(this);
 	
@@ -1282,7 +1304,6 @@ public class Player extends Entity {
 		this.username = username;
 		usernameHash = Utility.playerNameToInt64(username);
 		getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		dialogue = new DialogueManager(this);
 		getWalkingQueue().reset();
 		outStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		outStream.offset = 0;
@@ -1825,10 +1846,6 @@ public class Player extends Entity {
 	public void setCurrentTitleColor(String color) {
 		this.currentTitleColor = color;
 	}
-	
-	public DialogueManager dialogue() {
-		return dialogue;
-	}
 
 	public int getSessionExperience() {
 		return sessionExperience;
@@ -1841,7 +1858,6 @@ public class Player extends Entity {
 	/**
 	 * Instances
 	 */
-	private DialogueManager dialogue;
 	private FriendAndIgnoreList friendAndIgnores = new FriendAndIgnoreList(this);
 	private RequestManager requestManager = new RequestManager(this);
 	private Task distancedTask;
@@ -2194,21 +2210,11 @@ public class Player extends Entity {
 		return shopping;
 	}
 	
-    private boolean banking;
-	
-	public void setBanking(boolean banking) {
-		this.banking = banking;
-	}
-
-	public boolean isBanking() {
-		return this.banking;
-	}
-	
 	/**
 	 * We can't perform actions while the other person is busy.
 	 */
 	public boolean isBusy() {
-		if(isTeleporting() || isShopping() || isTrading() || isBanking()) {
+		if(isTeleporting() || isShopping() || isTrading()) {
 			return true;
 		}
 		return false;
@@ -2742,8 +2748,7 @@ public class Player extends Entity {
 	
 	public void removeInterfaceAttributes() {
 		setShopping(false);
-		setBanking(false);
-		dialogue().interrupt();
+		this.setDialogue(null);
 	}
 	
 	private final PriceChecker priceChecker = new PriceChecker(this);

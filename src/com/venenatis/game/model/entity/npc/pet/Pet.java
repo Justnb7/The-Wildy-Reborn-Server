@@ -160,7 +160,6 @@ public class Pet extends NPC {
 			case KRIL_TSUTSAROTH:
 				break;
 			case OLMLET:
-				player.dialogue().start("OLMLET");
 				break;
 			case PENANCE_PET:
 				break;

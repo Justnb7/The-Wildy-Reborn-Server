@@ -18,8 +18,6 @@ import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
-import com.venenatis.game.model.entity.player.dialogue.impl.RottenPotato;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.task.Task;
@@ -304,21 +302,6 @@ public class ItemOptionPacket implements PacketType {
 		
 		switch (item.getId()) {
 
-		case 5733: // rotten potato jagex item
-			if (player.rights == Rights.OWNER) {
-				RottenPotato.option = 0;
-				player.dialogue().start("POTATO", player);
-			}
-			break;
-
-		case 13658:
-			player.dialogue().start("TELEPORT_CARD", player);
-			break;
-
-		case 6798:
-			player.dialogue().start("TELEPORT_TO_TASK", player);
-			break;
-
 		case 21999:
 			RewardCasket.armourCasket(player);
 			break;
@@ -345,10 +328,6 @@ public class ItemOptionPacket implements PacketType {
 
 		case 6199:
 			Mysterybox.open(player);
-			break;
-
-		case 4155: // Enchanted Gem
-			player.dialogue().start("ENCHANTED_GEM", player);
 			break;
 
 		case 952:
@@ -385,12 +364,6 @@ public class ItemOptionPacket implements PacketType {
 		player.lastClickedItem = item.getId();
 		
 		switch (item.getId()) {
-		case 5733: // rotten potato jagex item
-			if (player.rights == Rights.OWNER) {
-				RottenPotato.option = 2;
-				player.dialogue().start("POTATO", player);
-			}
-			break;
 			
 		case 4155:
 			Teleports.teleport(player);
@@ -431,12 +404,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		switch (item.getId()) {
-		case 5733: // rotten potato jagex item
-			if (player.rights == Rights.OWNER) {
-				RottenPotato.option = 3;
-				player.dialogue().start("POTATO", player);
-			}
-			break;
+
 		}
 	}
 	

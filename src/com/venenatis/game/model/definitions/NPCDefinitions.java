@@ -32,6 +32,10 @@ public final class NPCDefinitions {
 		}
 		return definitions[npcId];
 	}
+	
+	public static NPCDefinitions forId(int id) {
+		return id > definitions.length ? null : definitions[id];
+	}
 
 	/**
 	 * Attempts to retrieve the {@link NPCDefinitions} object with the exact same name as specified.

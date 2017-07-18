@@ -20,6 +20,7 @@ import com.venenatis.game.model.entity.player.clan.ClanRank;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
+import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.task.Task;
@@ -883,11 +884,12 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendInterfaceAnimation(int id, int child) {
+	public ActionSender sendInterfaceAnimation(int id, Animation animation) {
 		if (player.getOutStream() != null) {
 			player.getOutStream().writeFrame(200);
 			player.getOutStream().writeShort(id);
-			player.getOutStream().writeShort(child);
+			player.getOutStream().writeShort(animation.getId());
+			player.flushOutStream();
 		}
 		return this;
 	}
@@ -1029,7 +1031,7 @@ public class ActionSender {
 				
 				//We are new so we start the tutorial
 				if (!player.receivedStarter() && player.inTutorial()) {
-					player.dialogue().start("STARTER");
+					//TODO starter dialogue
 				}
 				
 				//We can update our kills tracker after login

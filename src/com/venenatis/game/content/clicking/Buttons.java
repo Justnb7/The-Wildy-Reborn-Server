@@ -25,7 +25,7 @@ public class Buttons {
 	 *            The id of the button being clicked.
 	 */
 	public static void handleButton(Player player, int button) {
-		player.debug("enter");
+		System.out.println("enter "+button);
 		switch (button) {
 
 		/* Close */
@@ -65,7 +65,7 @@ public class Buttons {
 			player.getPresets().gearUp(player.getPresets().getViewing());
 			break;
 		case 222222:
-			//TODO save preset
+			player.getPresets().uploadCheck(player.getPresets().getViewing());
 			break;
 		case 222227:
 			player.getPresets().clear(player.getPresets().getViewing());
@@ -206,115 +206,42 @@ public class Buttons {
 			}
 			break;
 
-		/** Dialogue options */
-		case 9190:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(1)) {
-					break;
-				}
-			}
-			break;
-		case 9191:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(2)) {
-					break;
-				}
+		case FIRST_DIALOGUE_OPTION_OF_FIVE:
+		case FIRST_DIALOGUE_OPTION_OF_FOUR:
+		case FIRST_DIALOGUE_OPTION_OF_THREE:
+		case FIRST_DIALOGUE_OPTION_OF_TWO:
+			if(player.getDialogueOptions() != null) {
+				player.getDialogueOptions().handleOption(player, 1);
 			}
 			break;
 
-		case 9192:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(3)) {
-					break;
-				}
+		case SECOND_DIALOGUE_OPTION_OF_FIVE:
+		case SECOND_DIALOGUE_OPTION_OF_FOUR:
+		case SECOND_DIALOGUE_OPTION_OF_THREE:
+		case SECOND_DIALOGUE_OPTION_OF_TWO:
+			if(player.getDialogueOptions() != null) {
+				player.getDialogueOptions().handleOption(player, 2);
 			}
 			break;
 
-		case 9193:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(4)) {
-					break;
-				}
+		case THIRD_DIALOGUE_OPTION_OF_FIVE:
+		case THIRD_DIALOGUE_OPTION_OF_FOUR:
+		case THIRD_DIALOGUE_OPTION_OF_THREE:
+			if(player.getDialogueOptions() != null) {
+				player.getDialogueOptions().handleOption(player, 3);
 			}
 			break;
 
-		case 9194:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(5)) {
-					break;
-				}
+		case FOURTH_DIALOGUE_OPTION_OF_FIVE:
+		case FOURTH_DIALOGUE_OPTION_OF_FOUR:
+			if(player.getDialogueOptions() != null) {
+				player.getDialogueOptions().handleOption(player, 4);
 			}
 			break;
 
-		case 9167:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(1)) {
-					break;
-				}
-			}
-			break;
-
-		case 9168:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(2)) {
-					break;
-				}
-			}
-			break;
-
-		case 9169:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(3)) {
-					break;
-				}
-			}
-			break;
-
-		case 9178:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(1)) {
-					break;
-				}
-			}
-			break;
-
-		case 9179:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(2)) {
-					break;
-				}
-			}
-			break;
-
-		case 9180:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(3)) {
-					break;
-				}
-			}
-			break;
-
-		case 9181:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(4)) {
-					break;
-				}
-			}
-			break;
-
-		case 9157:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(1)) {
-					break;
-				}
-			}
-			break;
-
-		case 9158:
-			if (player.dialogue().isActive()) {
-				if (player.dialogue().select(2)) {
-					break;
-				}
+		case FIFTH_DIALOGUE_OPTION_OF_FIVE:
+			if(player.getDialogueOptions() != null) {
+				player.getDialogueOptions().handleOption(player, 5);
 			}
 			break;
 		}
@@ -330,4 +257,23 @@ public class Buttons {
 			}
 		}
 	}
+	
+	// Dialogues
+	private static final int FIRST_DIALOGUE_OPTION_OF_FIVE = 9190;
+	private static final int SECOND_DIALOGUE_OPTION_OF_FIVE = 9191;
+	private static final int THIRD_DIALOGUE_OPTION_OF_FIVE = 9192;
+	private static final int FOURTH_DIALOGUE_OPTION_OF_FIVE = 9193;
+	private static final int FIFTH_DIALOGUE_OPTION_OF_FIVE = 9194;
+
+	private static final int FIRST_DIALOGUE_OPTION_OF_FOUR = 9178;
+	private static final int SECOND_DIALOGUE_OPTION_OF_FOUR = 9179;
+	private static final int THIRD_DIALOGUE_OPTION_OF_FOUR = 9180;
+	private static final int FOURTH_DIALOGUE_OPTION_OF_FOUR = 9181;
+
+	private static final int FIRST_DIALOGUE_OPTION_OF_THREE = 9167;
+	private static final int SECOND_DIALOGUE_OPTION_OF_THREE = 9168;
+	private static final int THIRD_DIALOGUE_OPTION_OF_THREE = 9169;
+
+	private static final int FIRST_DIALOGUE_OPTION_OF_TWO = 9157;
+	private static final int SECOND_DIALOGUE_OPTION_OF_TWO = 9158;
 }

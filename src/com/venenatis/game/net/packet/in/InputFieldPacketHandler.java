@@ -22,6 +22,11 @@ public class InputFieldPacketHandler implements PacketType {
 		
 		switch (component) {
 		
+		/* Preset */
+		case 57034:
+			player.getPresets().setTitle(player.getPresets().getViewing(), text);
+		break;
+		
 		/* Clan Chat */
 		case 47828:
 			ClanManager.kickMember(player, text);

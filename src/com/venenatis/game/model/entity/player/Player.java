@@ -32,7 +32,6 @@ import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.data.WeaponInterface;
-import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
@@ -1834,10 +1833,6 @@ public class Player extends Entity {
 	public int getSessionExperience() {
 		return sessionExperience;
 	}
-	
-	public LunarSpells getLunarSpell() {
-		return lunar;
-	}
 
 	/**
 	 * End of constructors
@@ -1852,7 +1847,6 @@ public class Player extends Entity {
 	private Task distancedTask;
 	private SkillTask skillTask;
 	private int sessionExperience;
-	private LunarSpells lunar = new LunarSpells(this);
 	
 	/**
 	 * End of instances
@@ -2325,7 +2319,7 @@ public class Player extends Entity {
 	public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
 
 	public void debug(String string) {
-		if (this.rights == Rights.OWNER) {
+		if (this.rights == Rights.OWNER && this.inDebugMode()) {
 			this.getActionSender().sendMessage(string);
 		}
 	}

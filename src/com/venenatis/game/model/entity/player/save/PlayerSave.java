@@ -408,9 +408,6 @@ public class PlayerSave {
 				if (details.presetSkills != null) {
 					player.getPresets().setPresetSkill(details.presetSkills);
 				}
-				if (details.quickPrayer != null) {
-					player.getPresets().setQuickPrayers(details.quickPrayer);
-				}
 				if (details.presetInventory != null) {
 					player.getPresets().setPresetInventory(details.presetInventory);
 				}
@@ -436,7 +433,6 @@ public class PlayerSave {
 		private final String[] presetTitles;
 		private final SpellBook[] presetSpellbook;
 		private final int[][] presetSkills;
-		private final boolean[][] quickPrayer;
 		private final Item[][] presetInventory;
 		private final Item[][] presetEquipment;
 
@@ -446,7 +442,6 @@ public class PlayerSave {
 			presetTitles = player.getPresets().getPresetTitle();
 			presetSpellbook = player.getPresets().getPresetSpellbook();
 			presetSkills = player.getPresets().getPresetSkill();
-			quickPrayer = player.getPresets().getQuickPrayers();
 			presetInventory = player.getPresets().getPresetInventory();
 			presetEquipment = player.getPresets().getPresetEquipment();
 		}

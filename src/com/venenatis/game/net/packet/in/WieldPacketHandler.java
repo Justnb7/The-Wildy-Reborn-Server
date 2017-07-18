@@ -7,7 +7,6 @@ import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.EquipmentDefinition.EquipmentType;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.net.packet.SubPacketType;
 
 /**
@@ -24,9 +23,7 @@ public class WieldPacketHandler implements SubPacketType {
 		final int slot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();
 		
-		if (player.getRights().equals(Rights.OWNER) && player.inDebugMode()) {
-			player.debug(String.format("[WieldPacketHandler] [id= %d] [slot= %d] [interface %d]", id, slot, interfaceId));
-		}
+		player.debug(String.format("[WieldPacketHandler] [id= %d] [slot= %d] [interface %d]", id, slot, interfaceId));
 		
 		if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.isTeleporting()) {
 			return;

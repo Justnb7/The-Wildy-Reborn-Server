@@ -62,9 +62,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 		
-		if (player.getRights() == Rights.OWNER && player.inDebugMode()) {
-			player.getActionSender().sendMessage("[PlayerInteractionPacket] Opcode: " + packet);
-		}
+		player.debug(String.format("[PlayerInteractionPacket] Opcode: ", packet));
 		
 		if (player.getCombatState().inCombat()) {
 			if (packet != ATTACK_PLAYER && packet != MAGIC_ON_PLAYER) {

@@ -27,9 +27,7 @@ public class ItemOnItem {
 	 *            The {@link Item} that is being selected on.
 	 */
 	public static void handleAction(Player player, Item usedItem, Item withItem) {
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", usedItem.getId(), withItem.getId()));
-		}
+		player.debug(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", usedItem.getId(), withItem.getId()));
 		
 		Firemaking.startFire(player, usedItem.getId(), withItem.getId(), new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
 		

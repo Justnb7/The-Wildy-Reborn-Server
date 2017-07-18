@@ -6,7 +6,6 @@ import com.venenatis.game.content.skills.thieving.Pickpocket;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.world.shop.ShopManager;
 
 
@@ -22,9 +21,7 @@ public class NpcInteraction {
 	 */
 	public static void firstOption(Player player, NPC npc) {
 
-		if (player.getRights().equals(Rights.OWNER) && player.inDebugMode()) {
-			player.getActionSender().sendMessage(String.format("[NpcInteraction #1] - NpcId: %d", npc.getId()));
-		}
+		player.debug(String.format("[NpcInteraction #1] - NpcId: %d", npc.getId()));
 		
 		if (Pet.talktoPet(player, npc)) {
 			return;
@@ -111,12 +108,9 @@ public class NpcInteraction {
 	 */
 	public static void secondOption(Player player, NPC npc) {
 		
-		if (player.getRights().equals(Rights.OWNER) && player.inDebugMode()) {
-			player.getActionSender().sendMessage(String.format("[NpcInteraction #2] - NpcId: %d", npc.getId()));
-		}
+		player.debug(String.format("[NpcInteraction #2] - NpcId: %d", npc.getId()));
 		
 		if (Pet.pickup(player, npc)) {
-			player.debug("attempting to pick up pet....");
 			return;
 		}
 

@@ -1,4 +1,4 @@
-package com.venenatis.game.model.combat.magic.lunar;
+package com.venenatis.game.model.combat.magic.spell;
 
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;

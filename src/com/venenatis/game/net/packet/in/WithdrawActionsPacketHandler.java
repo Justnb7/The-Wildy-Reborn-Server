@@ -81,9 +81,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int removeSlot = player.getInStream().readUnsignedWordA();
 		final int removeId = player.getInStream().readUnsignedWordA();
 
-		if (player.inDebugMode() && player.getRights().isOwner(player)) {
-			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FirstAction - InterfaceId: " + interfaceId + " (" + removeId + ", " + removeSlot + ")");
-		}
+		player.debug("[WithdrawActionsPacketHandler] - FirstAction - InterfaceId: " + interfaceId + " (" + removeId + ", " + removeSlot + ")");
 
 		switch (interfaceId) {
 
@@ -108,8 +106,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case InterfaceConstants.REMOVE_INVENTORY_ITEM: {
 			final Item item = player.getInventory().get(removeSlot);
-
-			System.out.println(item);
 
 			if (item == null || item.getId() != removeId) {
 				return;
@@ -187,9 +183,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int removeId = player.getInStream().readSignedWordBigEndianA();
 		final int removeSlot = player.getInStream().readSignedWordBigEndian();
 
-		if (player.inDebugMode() && player.getRights().isOwner(player)) {
-			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - SecondClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
-		}
+		player.debug("[WithdrawActionsPacketHandler] - SecondClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
 
 		switch (interfaceId) {
 
@@ -321,9 +315,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int removeId = player.getInStream().readUnsignedWordA();
 		final int removeSlot = player.getInStream().readUnsignedWordA();
 
-		if (player.inDebugMode() && player.getRights().isOwner(player)) {
-			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - ThirdClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
-		}
+		player.debug("[WithdrawActionsPacketHandler] - ThirdClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
 
 		switch (interfaceId) {
 
@@ -421,9 +413,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		final int interfaceId = player.getInStream().readUnsignedWord();
 		final int removeId = player.getInStream().readUnsignedWordA();
 
-		if (player.inDebugMode() && player.getRights().isOwner(player)) {
-			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FourthAction - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
-		}
+		player.debug("[WithdrawActionsPacketHandler] - FourthAction - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
 
 		switch (interfaceId) {
 
@@ -524,9 +514,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		player.xInterfaceId = player.getInStream().readUnsignedWordA();
 		player.xRemoveId = player.getInStream().readSignedWordBigEndian();
 
-		if (player.inDebugMode() && player.getRights().isOwner(player)) {
-			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - FifthOption - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
-		}
+		player.debug("[WithdrawActionsPacketHandler] - FifthOption - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
 
 		if (player.xInterfaceId == InterfaceConstants.SHOP_INTERFACE) {
 			ShopManager.buy(player, player.xRemoveId, 500, player.xRemoveSlot);
@@ -554,9 +542,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			amountX = 1;
 		}
 
-		if (player.inDebugMode() && player.getRights().isOwner(player)) {
-			player.getActionSender().sendMessage("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
-		}
+		player.debug("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
 		
 		if (Area.inWilderness(player)) {
 			return;

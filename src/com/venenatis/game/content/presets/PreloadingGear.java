@@ -1,17 +1,11 @@
 package com.venenatis.game.content.presets;
 
-import java.util.Arrays;
-
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
-import com.venenatis.game.model.entity.player.save.PlayerSave.Type;
 import com.venenatis.game.util.NameUtils;
 import com.venenatis.game.util.StringUtils;
-import com.venenatis.game.util.Utility;
 
 /**
  * Handles player's preloading gear.
@@ -43,18 +37,16 @@ public class PreloadingGear {
 
 	private int[][] presetSkill = new int[6][7];
 
-	private boolean[][] quickPrayers = new boolean[6][26];
-
 	public void open() {
 		open(getViewing() == -1 ? 0 : getViewing());
 	}
 
 	public void open(int preset) {
-		//TODO can only open presets in edgevile
-		/*if (!Area.inSafezone(player)) {
-			player.getActionSender().sendMessage("You can only do this in a safe-zone."));
+
+		if (!Area.inSafezone(player)) {
+			player.getActionSender().sendMessage("You can only do this in a safe-zone.");
 			return;
-		}*/
+		}
 		
 		if (player.getCombatState().inCombat()) {
 			player.getActionSender().sendMessage("You can not do this while in combat.");
@@ -85,12 +77,6 @@ public class PreloadingGear {
 		player.getActionSender().sendString("Preloading Gear", 57002);
 		player.getActionSender().sendString("<col=BD23E8>" + getSpellbook(preset), 57040);
 
-		if (Arrays.equals(quickPrayers[preset], new boolean[26])) {
-			player.getActionSender().sendString("<col=99E823>" + "Not Set!", 57041);
-		} else {
-			player.getActionSender().sendString("<col=99E823>" + "Set!", 57041);
-		}
-
 		for (int index = 0; index < 6; index++) {
 			player.getActionSender().sendString((preset == index ? "<col=ff7000>" : "<col=ff9040>") + "" + (presetTitle[index] == null ? "Empty" : "" + presetTitle[index]), 57024 + index);
 		}
@@ -109,10 +95,6 @@ public class PreloadingGear {
 		
 		for (int index = 0; index < 7; index++) {
 			presetSkill[preset][index] = 0;
-		}
-		
-		for (int index = 0; index < 26; index++) {
-			quickPrayers[preset][index] = false;
 		}
 		
 		for (int index = 0; index < 15; index++) {
@@ -134,11 +116,11 @@ public class PreloadingGear {
 		if (!player.getInterfaceState().isInterfaceOpen(57_000)) {
 			return;
 		}
-		//TODO
-		/*if (!Area.inSafezone(player)) {
-			player.getActionSender().sendMessage("You can only do this in a safe-zone."));
+		
+		if (!Area.inSafezone(player)) {
+			player.getActionSender().sendMessage("You can only do this in a safe-zone.");
 			return;
-		}*/
+		}
 		
 		if (player.getCombatState().inCombat()) {
 			player.getActionSender().sendMessage("You can not do this while in combat.");
@@ -231,47 +213,6 @@ public class PreloadingGear {
 		player.getActionSender().sendMessage("<col=800000>You have set the title of your preset to " + input + ".");
 	}
 
-	public void uploadCheck(int preset) {
-		if (presetTitle[preset] == null) {
-			player.getActionSender().sendMessage("<col=800000>Please title your preset before doing this.");
-			return;
-		}
-		/*player.getDialogueFactory().sendOption("Yes, upload this set!", () -> {
-			upload(preset);
-			open(preset);
-		}, "Nevermind.", () -> {
-			open(preset);
-		}).executeNoClose();*/
-	}
-
-	public void upload(int preset) {
-		presetSpellbook[preset] = player.getSpellBook();
-		presetEquipment[preset][1] = player.getEquipment().get(EquipmentConstants.HELM_SLOT);
-		presetEquipment[preset][3] = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
-		presetEquipment[preset][4] = player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT);
-		presetEquipment[preset][5] = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-		presetEquipment[preset][6] = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		presetEquipment[preset][7] = player.getEquipment().get(EquipmentConstants.TORSO_SLOT);
-		presetEquipment[preset][8] = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
-		presetEquipment[preset][10] = player.getEquipment().get(EquipmentConstants.LEGS_SLOT);
-		presetEquipment[preset][12] = player.getEquipment().get(EquipmentConstants.GLOVES_SLOT);
-		presetEquipment[preset][13] = player.getEquipment().get(EquipmentConstants.BOOTS_SLOT);
-		presetEquipment[preset][14] = player.getEquipment().get(EquipmentConstants.RING_SLOT);
-		for (int index = 0; index < player.getInventory().getSize(); index++) {
-			if (player.getInventory().get(index) == null) {
-				presetInventory[preset][index] = null;
-				continue;
-			}
-			presetInventory[preset][index] = player.getInventory().get(index).copy();
-		}
-		for (int index = 0; index < 7; index++) {
-			presetSkill[preset][index] = player.getSkills().getMaxLevel(index);
-		}
-		//quickPrayers[preset] = Arrays.copyOf(player.getPrayer().getQuickPrayers(), 26);
-		open(preset);
-		PlayerSave.save(player, Type.PRESETS);
-	}
-
 	public String getSpellbook(int preset) {
 		if (presetSpellbook[preset] == SpellBook.MODERN_MAGICS) {
 			return "Modern";
@@ -345,14 +286,6 @@ public class PreloadingGear {
 
 	public void setPresetTitle(String[] presetTitle) {
 		this.presetTitle = presetTitle;
-	}
-
-	public boolean[][] getQuickPrayers() {
-		return quickPrayers;
-	}
-
-	public void setQuickPrayers(boolean[][] quickPrayers) {
-		this.quickPrayers = quickPrayers;
 	}
 
 	public int[][] getPresetSkill() {

@@ -13,9 +13,7 @@ public class WithdrawAllButOneAction implements PacketType {
 		final int interfaceId = player.getInStream().readSignedWordBigEndianA();
 		final int itemId = player.getInStream().readSignedWordBigEndianA();
 		
-		if (player.inDebugMode()) {
-			System.out.printf("Slot %d Interface %d item %d%n", slot, interfaceId, itemId);
-		}
+		player.debug(String.format("Slot %d Interface %d item %d%n", slot, interfaceId, itemId));
 		
 		switch (interfaceId) {
 		

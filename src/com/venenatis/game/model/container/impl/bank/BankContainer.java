@@ -56,6 +56,7 @@ public class BankContainer extends Container {
 
 		/* Preloading Gear */
 		case 234168:
+			player.getPresets().open();
 			return true;
 
 		/* Deposit Inventory */

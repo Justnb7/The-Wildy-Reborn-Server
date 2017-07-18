@@ -6,7 +6,6 @@ import com.venenatis.game.content.skills.cooking.Cooking;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.util.Utility;
 
 public class ItemOnObjectInteract {
 	
@@ -35,8 +34,7 @@ public class ItemOnObjectInteract {
 		switch (obj) {
 			
 		default:
-			if (player.inDebugMode())
-				Utility.println("Player At Object id: " + obj + " with Item id: " + item);
+			player.debug(String.format("Player At Object id: %d with Item id: %s%n",obj, item));
 			break;
 		}
 	}

@@ -18,9 +18,7 @@ public class SwitchItemPacketHandler implements PacketType {
 		int fromSlot = player.getInStream().readUnsignedWordBigEndianA();
 		int toSlot = player.getInStream().readUnsignedWordBigEndian();
 		
-		if (player.inDebugMode()) {
-			System.out.printf("SwitchItemPacketHandler: interfaceId %d - fromSlot %d - toSlot %d%n", interfaceId, fromSlot, toSlot);
-		}
+		player.debug(String.format("SwitchItemPacketHandler: interfaceId %d - fromSlot %d - toSlot %d%n", interfaceId, fromSlot, toSlot));
 		
 		if (interfaceId < 0 || fromSlot < 0 || toSlot < 0)
             return;

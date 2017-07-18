@@ -159,12 +159,8 @@ public class NpcInteractionPacketHandler implements PacketType {
 		int index = player.inStream.readSignedWordBigEndian();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
 
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[NpcInteractionPacketHandler] - npc: %d ", npc.getDefinition().getId()));
-		}
-		if (npc == null) {
-			return;
-		}
+		player.debug(String.format("[NpcInteractionPacketHandler] - npc: %d ", npc.getDefinition().getId()));
+		
 		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 1));
 	}
 
@@ -172,12 +168,8 @@ public class NpcInteractionPacketHandler implements PacketType {
 		int index = player.inStream.readUnsignedWordBigEndianA();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
 		
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[NpcInteractionPacketHandler second option] - npc: %d ", npc.getDefinition().getId()));
-		}
-		if (npc == null) {
-			return;
-		}
+		player.debug(String.format("[NpcInteractionPacketHandler second option] - npc: %d ", npc.getDefinition().getId()));
+
 		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 2));
 	}
 
@@ -185,12 +177,8 @@ public class NpcInteractionPacketHandler implements PacketType {
 		int index = player.inStream.readSignedWord();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
 		
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[NpcInteractionPacketHandler third option] - npc: %d ", npc.getDefinition().getId()));
-		}
-		if (npc == null) {
-			return;
-		}
+		player.debug(String.format("[NpcInteractionPacketHandler third option] - npc: %d ", npc.getDefinition().getId()));
+		
 		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 3));
 	}
 
@@ -198,12 +186,8 @@ public class NpcInteractionPacketHandler implements PacketType {
 		int index = player.inStream.readSignedWordBigEndian();
 		NPC npc = (NPC) World.getWorld().getNPCs().get(index);
 
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[NpcInteractionPacketHandler fourth option] - npc: %d ", npc.getDefinition().getId()));
-		}
-		if (npc == null) {
-			return;
-		}
+		player.debug(String.format("[NpcInteractionPacketHandler fourth option] - npc: %d ", npc.getDefinition().getId()));
+		
 		Server.getTaskScheduler().schedule(new WalkToNpcTask(player, npc, 4));
 	}
 }

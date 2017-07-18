@@ -103,18 +103,19 @@ public class PrayerHandler {
 		return player.getPrayers()[prayer];
 	}
 
-	public static void togglePrayer(final Player player, final int buttonId) {
+	public static boolean togglePrayer(final Player player, final int buttonId) {
 		for (Prayers prayer : Prayers.values()) {
 			if (buttonId == prayer.getButtonId()) {
 				if (player.isActivePrayer(prayer)) {
 					deactivatePrayer(player, prayer);
-					return;
+					return false;
 				} else {
 					activatePrayer(player, prayer);
-					return;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
 	/**

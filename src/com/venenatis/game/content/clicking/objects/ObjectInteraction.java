@@ -37,9 +37,7 @@ public class ObjectInteraction {
 	public static void handleFirstClickAction(Player player, Location location, int objectId) {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(objectId);
 		
-		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
-		}
+		player.debug(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
 		
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
@@ -132,9 +130,7 @@ public class ObjectInteraction {
 	 *            The object
 	 */
 	public static void handleSecondClickAction(Player player, Location location, int id) {
-		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 2] - position: %s object: %d ", location, id));
-		}
+		player.debug(String.format("[ObjectInteraction option 2] - position: %s object: %d ", location, id));
 
 		AnyRevObjectDefinition objectDef = AnyRevObjectDefinition.get(id);
 		
@@ -187,9 +183,7 @@ public class ObjectInteraction {
 	 *            The object
 	 */
 	public static void handleThirdClickAction(Player player, Location position, int id) {
-		if (player.inDebugMode()) {
-			player.getActionSender().sendMessage(String.format("[ObjectInteraction option 3] - position: %s object: %d ", position, id));
-		}
+		player.debug(String.format("[ObjectInteraction option 3] - position: %s object: %d ", position, id));
 	}
 
 }

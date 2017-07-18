@@ -15,9 +15,8 @@ import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.CombatData;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
+import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
-import com.venenatis.game.model.combat.magic.MagicData;
-import com.venenatis.game.model.combat.magic.lunar.LunarSpells;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.combat.magic.spell.SpellHandler;
 import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
@@ -255,16 +254,16 @@ public class Combat {
             return;
         }
         int spell = player.getSpellId();
-        int req = MagicData.requirement(spell);
+        int req = Magic.requirement(spell);
         if (player.skills.getLevel(4) < req) {
             player.message("You need a Magic level of "+req+" to cast this spell.");
             resetCombat(player);
             return;
         }
-        Item[] runes = MagicData.runes(spell);
+        Item[] runes = Magic.runes(spell);
         if (runes != null && runes.length > 0) {
             //Runes check
-            if (!LunarSpells.checkRunes(player, true, runes) && player.getTotalAmountDonated() < 100) {
+            if (!Magic.checkRunes(player, true, runes) && player.getTotalAmountDonated() < 100) {
                 resetCombat(player);
                 return;
             }
@@ -318,7 +317,7 @@ public class Combat {
 
         // Graphic that appears when hit appears.
         final int endGfx = player.MAGIC_SPELLS[spell][5];
-        final int endH = MagicData.getEndGfxHeight(player);
+        final int endH = Magic.getEndGfxHeight(player);
         Server.getTaskScheduler().schedule(new Task(hitDelay) {
             @Override
             public void execute() {

@@ -137,9 +137,7 @@ public class ItemOptionPacket implements PacketType {
 
 		Location position = new Location(gItemX, gItemY, player.getLocation().getZ());
 		
-		if (player.inDebugMode()) {
-			System.out.println("ItemUsed: " + itemUsed + " groundItem: " + groundItem + " itemUsedSlot: " + itemUsedSlot + " gItemX: " + gItemX + " gItemY: " + gItemY + " a1: " + a1);
-		}
+		player.debug(String.format("ItemUsed: %d groundItem: %d itemUsedSlot: %d gItemX: %d gItemY: %d a1: %d%n",itemUsed, groundItem, itemUsedSlot, gItemX, gItemY, a1));
 		
 		if (!player.getInventory().contains(itemUsed) || GroundItemHandler.get(groundItem, position) == null) {
 			return;
@@ -156,9 +154,7 @@ public class ItemOptionPacket implements PacketType {
 		
 		Location position = new Location(x, y, player.getLocation().getZ());
 		
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[handlePickup] - Item: %s Location: %s", item.toString(), position.toString()));
-		}
+		player.debug(String.format("[handlePickup] - Item: %s Location: %s", item.toString(), position.toString()));
 		
 		if (Math.abs(player.getLocation().getX() - x) > 25 || Math.abs(player.getLocation().getY() - y) > 25) {
 			player.getWalkingQueue().reset();
@@ -211,9 +207,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if(player.inDebugMode()) {
-			System.out.println("drop_or_destroy option: dropped: " + item.getId() + " from slot: " + slot);
-		}
+		player.debug(String.format("drop_or_destroy option: %s dropped: from slot: %d%n", item.getId(), slot));
 		
 		//During teleport we cannot drop any items.
 		if(player.isTeleporting()) {
@@ -290,9 +284,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//Debug mode
-		if(player.inDebugMode()) {
-			System.out.println(String.format("[handleItemOption1] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceIndex, slot));
-		}
+		player.debug(String.format("[handleItemOption1] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceIndex, slot));
 		
 		//Last clicked item
 		player.lastClickedItem = id;
@@ -387,9 +379,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 
 		// Debug mode
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[handleItemOption2] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceId, slot));
-		}
+		player.debug(String.format("[handleItemOption2] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceId, slot));
 
 		// Last clicked item
 		player.lastClickedItem = item.getId();
@@ -431,9 +421,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 
 		// Debug mode
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[handleItemOption3] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceId, slot));
-		}
+		player.debug(String.format("[handleItemOption3] - Item: %s Interface: %s Slot: %s", item.toString(), interfaceId, slot));
 
 		// Last clicked item
 		player.lastClickedItem = item.getId();

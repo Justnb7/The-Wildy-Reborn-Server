@@ -23,14 +23,12 @@ public class SpellHandler {
 		spells.put(effect.spellId(), effect);
 		effect = new IceBlitzSpellEffect();
 		spells.put(effect.spellId(), effect);
-		
 	}
 	
 	public static void handleSpellEffect(Player player, Entity victim) {
 		int spellId = player.getSpellId() > -1 ? player.getSpellId() : player.getAutocastId() > -1 ? player.getAutocastId() : -1;
 		SpellEffect effect = forId(spellId);
 		if (effect == null) {
-			player.debug("return");
 			return;
 		}
 		if (!effect.noEffect(player, victim))

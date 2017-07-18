@@ -5,8 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.consumables.Consumables.Food;
-import com.venenatis.game.model.combat.magic.MagicData;
-import com.venenatis.game.model.combat.magic.lunar.CombatSpells;
+import com.venenatis.game.model.combat.magic.Magic;
+import com.venenatis.game.model.combat.magic.spell.CombatSpells;
 import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
@@ -105,27 +105,27 @@ public class CombatState {
 	}
 
 	public int getStartHeight() {
-		return MagicData.getStartHeight(entity.asPlayer());
+		return Magic.getStartHeight(entity.asPlayer());
 	}
 
 	public int getEndHeight() {
-		return MagicData.getEndHeight(entity.asPlayer());
+		return Magic.getEndHeight(entity.asPlayer());
 	}
 
 	public int getStartDelay() {
-		return MagicData.getStartDelay(entity.asPlayer());
+		return Magic.getStartDelay(entity.asPlayer());
 	}
 
 	public int getStaffNeeded() {
-		return MagicData.getStaffNeeded(entity.asPlayer());
+		return Magic.getStaffNeeded(entity.asPlayer());
 	}
 
 	public boolean godSpells() {
-		return MagicData.godSpells(entity.asPlayer());
+		return Magic.godSpells(entity.asPlayer());
 	}
 
 	public int getStartGfxHeight() {
-		return MagicData.getStartGfxHeight(entity.asPlayer());
+		return Magic.getStartGfxHeight(entity.asPlayer());
 	}
 
 	public void fireProjectileAtTarget() {

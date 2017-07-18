@@ -38,9 +38,7 @@ public class MagicOnItems {
 			return;
 		}
 
-		if (player.inDebugMode()) {
-			System.out.println(String.format("[MagicOnItem] - ItemId: %d Slot: %d ChildId: %d SpellId: %d", itemId, slot, childId, spellId));
-		}
+		player.debug(String.format("[MagicOnItem] - ItemId: %d Slot: %d ChildId: %d SpellId: %d", itemId, slot, childId, spellId));
 
 		final Item item = player.getInventory().get(slot);
 

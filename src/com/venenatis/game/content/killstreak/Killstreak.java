@@ -55,13 +55,12 @@ public class Killstreak {
 	 * Rewards the player with a random currency, this can vary from Blood money, coins, emblems to points.
 	 */
 	public void reward() {
-		Item blood_money = new Item(13307, player.getCurrentKillStreak());
 		
 		Item[] emblem = { new Item(12750), new Item(12751), new Item(12752), new Item(12753), new Item(12754), new Item(12755), new Item(12756) };
 		
 		if(player.getCurrentKillStreak() > 2 && player.getCurrentKillStreak() <= 10) {
 			player.getActionSender().sendMessage("<img=21>[Killstreak]: @bla@You gain @red@" + player.getCurrentKillStreak() + " @bla@extra blood money because of your @red@" + player.getCurrentKillStreak() + " @bla@killstreak.");
-			player.getInventory().addOrCreateGroundItem(blood_money);
+			player.setPkPoints(player.getPkPoints() + 3 +player.getCurrentKillStreak());
 		} else {
 			player.getActionSender().sendMessage("<img=21>[Killstreak]: @bla@You gain @red@ 1 @bla@extra blood money because of your @red@" + player.getCurrentKillStreak() + " @bla@killstreak.");
 			player.getInventory().addOrCreateGroundItem(new Item(13307, 1));

@@ -17,7 +17,6 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.packet.ActionSender.MinimapState;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
-import com.venenatis.game.util.Utility;
 import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
@@ -238,18 +237,6 @@ public class OwnerCommand implements Command {
 				return true;
 			}
 			return false;
-
-		case "figure":
-			Item itemsz[] = { 
-			new Item(13302), new Item(13303), new Item(13304), 
-			new Item(13305), new Item(13306), 
-			};
-			player.getActionSender().sendItemOnInterface(53612, itemsz);
-
-			Item itemsz1[] = { new Item(Utility.random(13000)),  new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(Utility.random(13000)), new Item(11802), new Item(10828), new Item(1050) };
-			player.getActionSender().sendItemOnInterface(53618, itemsz1);
-
-			return true;
 
 		case "debug":
 			if (parser.hasNext()) {
@@ -498,6 +485,7 @@ public class OwnerCommand implements Command {
 			return true;
 
 		case "move":
+		case "tele":
 			if (parser.hasNext(2)) {
 				final int x = parser.nextInt();
 				final int y = parser.nextInt();
@@ -507,12 +495,20 @@ public class OwnerCommand implements Command {
 					z = parser.nextInt();
 				}
 
-				Location location = new Location(player.getX() + x, player.getY() + y, player.getLocation().getZ() + z);
+				Location location = new Location(x, y, z);
 				player.setTeleportTarget(location);
 				player.getActionSender().sendMessage("You moved to: " + player.getLocation() + ".");
 				return true;
 			}
 			return false;
+			
+		case "object":
+			if (parser.hasNext()) {
+				final int object = parser.nextInt();
+				player.getActionSender().sendObject(object, player.getX(), player.getY(), player.getZ(), 0, 10);
+				player.getActionSender().sendMessage("Spawned object: " + object);
+			}
+			return true;
 
 		case "reload":
 			if (parser.hasNext()) {

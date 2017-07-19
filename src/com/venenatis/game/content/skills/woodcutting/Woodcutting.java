@@ -194,7 +194,7 @@ public class Woodcutting extends HarvestingAction {
 		/**
 		 * Magic tree.
 		 */
-		MAGIC(1513, 75, 500, 150, 18, new int[]{7483,}, 2500),
+		MAGIC(1761, 75, 500, 150, 18, new int[]{7483,}, 2500),
 
 		/**
 		 * Maple tree.

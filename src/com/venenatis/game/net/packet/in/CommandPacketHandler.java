@@ -95,7 +95,6 @@ public class CommandPacketHandler implements PacketType {
 				command = command.trim();
 				command += " }";
 			}
-
 			player.getActionSender().sendMessage("The command ::" + command + " is invalid.");
 		}
 	}

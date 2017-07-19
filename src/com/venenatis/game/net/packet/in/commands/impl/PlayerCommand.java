@@ -28,16 +28,17 @@ public class PlayerCommand implements Command {
 
 		switch (parser.getCommand()) {
 		
-		case "donze":
+		case "dzone":
 		case "dz":
-			if(player.getTotalAmountDonated() >= 10) {
+			if(player.getTotalAmountDonated() >= 10 || player.getRights().isOwner(player)) {
 				player.getTeleportAction().teleport(new Location(2518, 3369));
+				player.getActionSender().sendMessage("You have teleported to the <img=26> <shad=7832575>donator zone.");
 			} else {
-				player.getActionSender().sendMessage("Only donators can use ::unskull.");
+				player.getActionSender().sendMessage("Only donators can use this command.");
 				return false;
 			}
 			return true;
-		
+			
 		case "skull":
 			Combat.skull(player, SkullType.SKULL, 300);
 			return true;
@@ -47,8 +48,8 @@ public class PlayerCommand implements Command {
 			Combat.skull(player, SkullType.RED_SKULL, 300);
 			return true;
 			
-		case "unkskull":
-			if(player.getTotalAmountDonated() >= 10) {
+		case "unskull":
+			if(player.getTotalAmountDonated() >= 10 || player.getRights().isOwner(player)) {
 				player.setSkullType(SkullType.NONE);
 				player.setSkullTimer(-1);
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);

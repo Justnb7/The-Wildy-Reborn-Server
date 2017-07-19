@@ -58,6 +58,63 @@ public enum Currency {
 			return "tokkul";
 		}
 	}),
+	
+	/**
+	 * Donator tickets
+	 */
+	DONATOR_TICKETS(new CurrencyUtility() {
+
+		@Override
+		public int addCurrency(Player player, int amount) {
+			if (!player.getInventory().hasSpaceFor(new Item(4067, amount))) {
+				return 0;
+			}
+			return player.getInventory().add(4067, amount);
+		}
+
+		@Override
+		public int removeCurrency(Player player, int amount, int minimum) {
+			if (player.getInventory().getAmount(4067) < minimum) {
+				return 0;
+			}
+			return player.getInventory().remove(4067, amount);
+		}
+
+		@Override
+		public String getCurrencyName() {
+			return "Donator tickets";
+		}
+	}),
+	
+	/**
+	 * Pestcontrol
+	 */
+	PK_POINTS(new CurrencyUtility() {
+
+		@Override
+		public int addCurrency(Player player, int amount) {
+			player.setPkPoints(player.getPkPoints() + amount);
+			return amount;
+		}
+
+		@Override
+		public int removeCurrency(Player player, int amount, int minimum) {
+			if (player.getPkPoints() < minimum) {
+				return 0;
+			}
+			
+			if (amount > player.getPkPoints()) {
+				amount = (player.getPkPoints() / amount) * minimum;
+			}
+			
+			player.setPkPoints(player.getPkPoints() - amount);
+			return amount;
+		}
+		@Override
+		public String getCurrencyName() {
+			return "PK points";
+		}
+	}),
 
 	/**
 	 * Voting
@@ -150,6 +207,37 @@ public enum Currency {
 			return "Pest control";
 		}
 	}),
+	
+	/**
+	 * Achievement
+	 */
+	ACHIEVEMENT_POINTS(new CurrencyUtility() {
+
+		@Override
+		public int addCurrency(Player player, int amount) {
+			player.setAchievementPoints(player.getAchievementsPoints() + amount);
+			return amount;
+		}
+
+		@Override
+		public int removeCurrency(Player player, int amount, int minimum) {
+			if (player.getAchievementsPoints() < minimum) {
+				return 0;
+			}
+			
+			if (amount > player.getAchievementsPoints()) {
+				amount = (player.getAchievementsPoints() / amount) * minimum;
+			}
+			
+			player.setAchievementPoints(player.getAchievementsPoints() - amount);
+			return amount;
+		}
+
+		@Override
+		public String getCurrencyName() {
+			return "Achievement points";
+		}
+	}),
 
 	;
 
@@ -167,6 +255,12 @@ public enum Currency {
 
 		case TOKKUL:
 			return 1;
+			
+		case DONATOR_TICKETS:
+			return 2;
+			
+		case PK_POINTS:
+			return 3;
 
 		case SLAYER:
 			return 4;
@@ -176,6 +270,9 @@ public enum Currency {
 
 		case VOTING:
 			return 6;
+			
+		case ACHIEVEMENT_POINTS:
+			return 8;
 
 		default:
 			return 0;

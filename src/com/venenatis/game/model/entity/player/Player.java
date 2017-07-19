@@ -1,7 +1,5 @@
 package com.venenatis.game.model.entity.player;
 
-import io.netty.buffer.Unpooled;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -55,7 +53,6 @@ import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
@@ -79,6 +76,8 @@ import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.server.Server;
+
+import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
 	
@@ -503,6 +502,20 @@ public class Player extends Entity {
 	public void setPkPoints(int pkPoints) {
 		this.pkPoints = pkPoints;
 	}
+	
+	/**
+	 * A reward for completing achievements
+	 */
+	private int achievementsPoints;
+	
+	public int getAchievementsPoints() {
+		return achievementsPoints;
+	}
+	
+	public void setAchievementPoints(int points) {
+		this.achievementsPoints = points;
+	}
+
 	
 	/**
 	 * A reward for playing pest control

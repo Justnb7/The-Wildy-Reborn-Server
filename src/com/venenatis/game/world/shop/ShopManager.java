@@ -15,11 +15,6 @@ import com.venenatis.server.Server;
  */
 public class ShopManager {
 
-	/**
-	 * Allowed shops for Ultimate Iron man accounts.
-	 */
-	private final static int[] IRON_SHOPS = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
 	/*
 	 * Task for updating and re-stocking shops.
 	 */
@@ -124,21 +119,6 @@ public class ShopManager {
 	 * @param id
 	 */
 	public static void open(Player player, int id) {
-		if (player.getRights().isIron(player)) {
-			boolean can = false;
-
-			for (int shops : IRON_SHOPS) {
-				if (shops == id) {
-					can = true;
-					break;
-				}
-			}
-
-			if (!can) {
-				player.getActionSender().sendMessage("Your current game mode restricts you from this shop.");
-				return;
-			}
-		}
 
 		final Shop shop = Shop.SHOPS.get(id);
 
@@ -151,14 +131,6 @@ public class ShopManager {
 		player.getAttributes().put("shopping", true);
 
 		player.setShopId(shop.getShopId());
-		
-//		for (int index = 0; index < shop.toNonNullArray().length; index++) {
-//			String name = shop.toArray()[index].getName();
-//			String formatted_name = name.toUpperCase().replaceAll(" ", "_").replaceAll("'", "");
-//			int item = shop.toArray()[index].getId();
-//			int cost = shop.toArray()[index].getValue();
-//			System.out.println(formatted_name + "(\"" + name + "\", " + item + ", " + cost + "),");
-//		}
 
 		player.getActionSender().sendItemOnInterface(40051, shop.toArray());
 
@@ -196,7 +168,7 @@ public class ShopManager {
 
 		final int price = shop.get(item).getValue();
 
-		player.getActionSender().sendMessage("<col=057A13>" + shop.get(item).getName() + " is valued at " + Utility.formatDigits(price) + " " + currency.getUtility().getCurrencyName() + ".");
+		player.getActionSender().sendMessage("" + shop.get(item).getName() + " is valued at " + Utility.formatDigits(price) + " " + currency.getUtility().getCurrencyName() + ".");
 	}
 
 	/**
@@ -219,7 +191,7 @@ public class ShopManager {
 		}
 
 		if (player.getInventory().getFreeSlots() == 0) {
-			player.getActionSender().sendMessage("<col=057A13>You do not have enough inventory space to buy that.");
+			player.getActionSender().sendMessage("You do not have enough inventory space to buy that.");
 			return;
 		}
 
@@ -234,7 +206,7 @@ public class ShopManager {
 		if (!item.isStackable()) {
 			if (item.getAmount() > player.getInventory().getFreeSlots()) {
 				item.setAmount(player.getInventory().getFreeSlots());
-				player.getActionSender().sendMessage("<col=057A13>You do not have enough inventory space to buy all those.");
+				player.getActionSender().sendMessage("You do not have enough inventory space to buy all those.");
 			}
 		}
 
@@ -249,13 +221,13 @@ public class ShopManager {
 		item.setAmount(removed / shop.get(item).getValue());
 
 		if (removed == 0 && price > 0) {
-			player.getActionSender().sendMessage("<col=057A13>You do not have enough " + currency.getUtility().getCurrencyName() + " to buy that.");
+			player.getActionSender().sendMessage("You do not have enough " + currency.getUtility().getCurrencyName() + " to buy that.");
 		} else {
 			player.getInventory().add(id, item.getAmount(), true);
 			shop.remove(id, item.getAmount(), false);
 			shop.shift(false);
 			update(player.getShopId());
-			player.getActionSender().sendMessage("<col=057A13>You bought " + item.getAmount() + " " + item.getName() + " for " + Utility.formatDigits(price) + " " + currency.getUtility().getCurrencyName() + ".");
+			player.getActionSender().sendMessage("You bought " + item.getAmount() + " " + item.getName() + " for " + Utility.formatDigits(price) + " " + currency.getUtility().getCurrencyName() + ".");
 			player.getActionSender().sendItemOnInterface(3823, player.getInventory().toArray());
 		}
 	}
@@ -284,17 +256,17 @@ public class ShopManager {
 		}
 
 		if (!shop.canSell()) {
-			player.getActionSender().sendMessage("<col=057A13>You can't sell any items to this shop!");
+			player.getActionSender().sendMessage("You can't sell any items to this shop!");
 			return;
 		}
 
 		if (!item.isTradeable()) {
-			player.getActionSender().sendMessage("<col=057A13>You can not sell this item.");
+			player.getActionSender().sendMessage("You can not sell this item.");
 			return;
 		}
 
 		final int price = item.getValue() * item.getAmount();
-		player.getActionSender().sendMessage("<col=057A13>Shop will buy this " + item.getName() + " for " + Utility.formatDigits(price) + " coin" + (price == 1 ? "" : "s") + ".");
+		player.getActionSender().sendMessage("Shop will buy this " + item.getName() + " for " + Utility.formatDigits(price) + " coin" + (price == 1 ? "" : "s") + ".");
 	}
 
 	/**
@@ -319,7 +291,7 @@ public class ShopManager {
 		}
 
 		if (!shop.canSell()) {
-			player.getActionSender().sendMessage("<col=057A13>You can't sell items to this shop.");
+			player.getActionSender().sendMessage("You can't sell items to this shop.");
 			return;
 		}
 

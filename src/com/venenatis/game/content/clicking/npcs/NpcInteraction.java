@@ -39,9 +39,14 @@ public class NpcInteraction {
 
 		switch (npc.getId()) {
 		
-		/* Skilling store */
-		case 1325:
-			ShopManager.open(player, 10);
+		/* General store */
+		case 506:
+			ShopManager.open(player, 0);
+			break;
+			
+		/* Mandrith PK Rewards */
+		case 6599:
+			ShopManager.open(player, 1);
 			break;
 
 		case 3257:
@@ -141,6 +146,16 @@ public class NpcInteraction {
 		}
 
 		switch (npc.getId()) {
+		
+		/* General store */
+		case 506:
+			ShopManager.open(player, 0);
+			break;
+			
+		/* Mandrith PK Rewards */
+		case 6599:
+			ShopManager.open(player, 1);
+			break;
 		
 		case 315:
 			ShopManager.open(player, 10);

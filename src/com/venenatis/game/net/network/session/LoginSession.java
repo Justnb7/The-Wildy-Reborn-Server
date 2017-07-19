@@ -59,7 +59,12 @@ public class LoginSession extends Session {
 		
 		final String hostAddress = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
 		
-		checkState(username.matches("^[a-zA-Z0-9_ ]{1,12}$") && !password.isEmpty() && password.length() <= 20, "A player tried logging in with an invalid username. [username= %s]", username);
+		//checkState(username.matches("^[a-zA-Z0-9_ ]{1,12}$") && !password.isEmpty() && password.length() <= 20, "A player tried logging in with an invalid username. [username= %s]", username);
+		
+		if(username.matches("") || username.matches(" ")) {
+			sendReturnCode(ctx.channel(), LoginCode.SHORT_USERNAME);
+			return;
+		}
 		
 		Player player = new Player(username);
 		

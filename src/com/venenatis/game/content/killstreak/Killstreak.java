@@ -56,14 +56,17 @@ public class Killstreak {
 	 */
 	public void reward() {
 		
+		int pk_points = 3;
+		
 		Item[] emblem = { new Item(12750), new Item(12751), new Item(12752), new Item(12753), new Item(12754), new Item(12755), new Item(12756) };
 		
 		if(player.getCurrentKillStreak() > 2 && player.getCurrentKillStreak() <= 10) {
-			player.getActionSender().sendMessage("<img=21>[Killstreak]: @bla@You gain @red@" + player.getCurrentKillStreak() + " @bla@extra blood money because of your @red@" + player.getCurrentKillStreak() + " @bla@killstreak.");
-			player.setPkPoints(player.getPkPoints() + 3 +player.getCurrentKillStreak());
+			pk_points = player.getCurrentKillStreak();
+			player.setPkPoints(player.getPkPoints() + pk_points);
+			player.getActionSender().sendMessage("<img=21>[Killstreak]: @bla@You gain @red@" + pk_points + " @bla@extra pk points because of your @red@" + player.getCurrentKillStreak() + " @bla@killstreak.");
 		} else {
-			player.getActionSender().sendMessage("<img=21>[Killstreak]: @bla@You gain @red@ 1 @bla@extra blood money because of your @red@" + player.getCurrentKillStreak() + " @bla@killstreak.");
-			player.getInventory().addOrCreateGroundItem(new Item(13307, 1));
+			player.setPkPoints(player.getPkPoints() + pk_points);
+			player.getActionSender().sendMessage("<img=21>[Killstreak]: @bla@You gain @red@ 3 @bla@extra pk points because of your @red@" + player.getCurrentKillStreak() + " @bla@killstreak.");
 		}
 		
 		//Once reached killstreak 10 we'll start rewarding emblems

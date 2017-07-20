@@ -12,6 +12,7 @@ import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.net.Connection;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -33,9 +34,9 @@ public class WildernessRewards {
 	 *            The player who died
 	 */
 	public static boolean receive_reward(Player killer, Player opponent) {
-		
+		int pk_points = 5;
+		int trained_account_bonus = 2;
 		long wealth = getWealth(opponent);
-		int amount = 0;
 		killer = World.getWorld().lookupPlayerByName(opponent.getCombatState().getDamageMap().getKiller());
 		
 		//System.out.printf("%s %s %s%n", killer, wealth, isSameConnection(opponent, killer));
@@ -53,41 +54,21 @@ public class WildernessRewards {
 			}
 			
 			//The amount of blood money we receive per kill
-			switch (killer.getRights()) {
-
-			case PLAYER:
-			case MODERATOR:
-			case HELPER:
-			case YOUTUBER:
-				amount = 2;
-				break;
-
-			case DONATOR:
-			case IRON_MAN:
-				amount = 3;
-				break;
-
-			case SUPER_DONATOR:
-			case ULTIMATE_IRON_MAN:
-				amount = 5;
-				break;
-
-			case ELITE_DONATOR:
-			case HARDCORE_IRON_MAN:
-				amount = 7;
-				break;
-
-			case EXTREME_DONATOR:
-			case OWNER:
-				amount = 10;
-				break;
-
-			default:
-				break;
+			if(killer.getTotalAmountDonated() >= 10) {
+				pk_points += 2;
+			} else if(killer.getTotalAmountDonated() >= 30) {
+				pk_points += 5;
+			} else {
+				pk_points += 10;
 			}
-			//Apply blood money reward
-			Item blood_money_reward = new Item(13307, amount);
-			killer.getInventory().addOrCreateGroundItem(blood_money_reward);
+			
+			if(killer.getAccount().equals(Account.IRON_MAN_TYPE)) {
+				pk_points += trained_account_bonus;
+			}
+			
+			//Apply the pkp reward
+			killer.setPkPoints(killer.getPkPoints() + pk_points);
+			killer.getActionSender().sendMessage("You've received @red@"+pk_points+" and now have a total of "+killer.getPkPoints()+" @blu@pk points.");
 			
 			killer.getKillstreak().increase();
 			if(killer.getCurrentKillStreak() >= 5) {

@@ -468,6 +468,7 @@ public class Combat {
         Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
         int wepId = wep == null ? -1 : wep.getId();
         final WeaponDefinition def = WeaponDefinition.get(wepId);
+
         if (wepId <= 0) { // defaults no weapon hands
             switch(player.getAttackStyle()) {
                 case 0:

@@ -2926,4 +2926,14 @@ public class Player extends Entity {
 		return presets;
 	}
 
+	private int gear_points;
+	
+	public int getGearPoints() {
+		return gear_points;
+	}
+	
+	public void setGearPoints(int points) {
+		this.gear_points = points;
+	}
+
 }

@@ -76,6 +76,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 			for(final Player near : localPlayers) {
 				if(near != null && near != attacker && near.getSkills().getLevel(Skills.HITPOINTS) > 0) {
 					if (attacker.getCentreLocation().isWithinDistance(attacker, near, 10)) {
+						near.debug("getting hiit? "+near.getUsername());
 						// Set the projectile speed based on distance
 						int speedEquation;
 						if(attacker.getLocation().isWithinDistance(attacker, near, 1)) {

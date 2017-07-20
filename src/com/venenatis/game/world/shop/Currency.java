@@ -269,6 +269,36 @@ public enum Currency {
 		}
 	}),
 
+	/**
+	 * Gear points
+	 */
+	GEAR_POINTS(new CurrencyUtility() {
+
+		@Override
+		public int addCurrency(Player player, int amount) {
+			player.setGearPoints(player.getGearPoints() + amount);
+			return amount;
+		}
+
+		@Override
+		public int removeCurrency(Player player, int amount, int minimum) {
+			if (player.getGearPoints() < minimum) {
+				return 0;
+			}
+			
+			if (amount > player.getGearPoints()) {
+				amount = (player.getGearPoints() / amount) * minimum;
+			}
+			
+			player.setGearPoints(player.getGearPoints() - amount);
+			return amount;
+		}
+		@Override
+		public String getCurrencyName() {
+			return "Gear points";
+		}
+	}),
+	
 	;
 
 	private CurrencyUtility utility;
@@ -291,6 +321,7 @@ public enum Currency {
 			
 		case PK_POINTS:
 		case BOUNTIES:
+		case GEAR_POINTS:
 			return 3;
 
 		case SLAYER:

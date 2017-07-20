@@ -576,4 +576,41 @@ public class World implements Service {
 		return SERVICE;
 	}
 
+	public void sendMessageToStaff(String message) {
+		for (Player player : World.getWorld().getPlayers()) {
+			if (player != null) {
+				if (player.getRights().getCrown() > 0 && player.getRights().getCrown() < 3) {
+					Player client = player;
+					client.getActionSender().sendMessage("<col=255>[STAFF MESSAGE] " + message + "</col>");
+				}
+			}
+		}
+	}
+
+	public String getOnlineStatus(String playerName) {
+		for (Player p : getWorld().getPlayers()) {
+			if (p == null || p.properLogout || !p.getUsername().equalsIgnoreCase(playerName))
+				continue;
+			return "@gre@Online";
+		}
+		return "@red@Offline";
+	}
+
+	/**
+	 * Gets the active amount of players online
+	 * 
+	 * @return
+	 */
+	public int getActivePlayers() {
+		int r = 0;
+
+		for (Player players : World.getWorld().getPlayers()) {
+			if (players != null) {
+				r++;
+			}
+		}
+
+		return r;
+	}
+
 }

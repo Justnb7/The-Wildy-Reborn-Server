@@ -24,6 +24,7 @@ import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
+import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.game.world.shop.ShopManager;
 import com.venenatis.server.Server;
 
@@ -38,6 +39,31 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "unlock":
+			int type = parser.nextInt();
+			if (type == 0) {
+				player.setPreserveUnlocked(true);
+			} else if (type == 1) {
+				player.setRigourUnlocked(true);
+			} else if (type == 2) {
+				player.setAuguryUnlocked(true);
+			}
+			player.getActionSender().sendConfig(709, player.isPreserveUnlocked() ? 1 : 0);
+			player.getActionSender().sendConfig(711, player.isRigourUnlocked() ? 1 : 0);
+			player.getActionSender().sendConfig(713, player.isAuguryUnlocked() ? 1 : 0);
+			return true;
+		
+		case "showclipmap":
+			for (int x = player.getX() - 4; x < player.getX()+4; x++)
+				for (int y = player.getY() - 4; y < player.getY()+4; y++)
+					if (Region.getClippingMask(x, y, player.getZ()) != 0)
+						player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), player.getLocation(), player));
+			return true;
+		
+		case "bank":
+    		player.getBank().open();
+    		return true;
+		
 		case "drop":
 			GroundItem groundItem = new GroundItem(new Item(4151), player.getLocation(), player);
 			if (!GroundItemHandler.register(groundItem)) {
@@ -48,8 +74,7 @@ public class OwnerCommand implements Command {
 		
 		case "spec":
 		case "special":
-			int amount = parser.nextInt();
-			player.setSpecialAmount(parser.hasNext() ? amount : 100);
+			player.setSpecialAmount(100);
     		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
     		player.getWeaponInterface().refreshSpecialAttack();
 			return true;
@@ -69,10 +94,25 @@ public class OwnerCommand implements Command {
 			}
 			return true;
 			
+		case "setstat":
+    		try {
+    			final int stat = parser.nextInt();
+    			final int level = parser.nextInt();
+				player.getSkills().setExperience(stat, player.getSkills().getXPForLevel(level) + 1);
+				player.getSkills().setLevel(stat, level);
+				player.getActionSender().sendMessage(Skills.SKILL_NAME[stat] + " level is now " +level+ ".");	
+    		} catch(Exception e) {
+				e.printStackTrace();
+				player.getActionSender().sendMessage("Syntax is ::lvl [skill] [lvl].");				
+
+			}
+    		player.setCombatLevel(player.getSkills().getCombatLevel());
+    		break;
+			
 		case "item":
 			if (parser.hasNext()) {
 				final int item = parser.nextInt();
-				amount = 1;
+				int amount = 1;
 
 				if (parser.hasNext()) {
 					amount = Integer.parseInt(parser.nextString().toLowerCase().replaceAll("k", "000").replaceAll("m", "000000").replaceAll("b", "000000000"));

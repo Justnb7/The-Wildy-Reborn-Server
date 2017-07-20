@@ -10,11 +10,14 @@ import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.net.packet.in.commands.Yell;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
+import com.venenatis.server.Server;
 
 /**
  * A list of commands accessible to all players disregarding rank.
@@ -27,6 +30,47 @@ public class PlayerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 
 		switch (parser.getCommand()) {
+		
+		case "stuck":
+			World.getWorld().sendMessageToStaff(player.getUsername() + " Has just used ::stuck");
+			World.getWorld().sendMessageToStaff("Player Location: X: " + player.getX() + " Player Y: " + player.getY());
+			player.getActionSender().sendMessage("<col=255>You have requested to be sent home assuming you are stuck</col>");
+			player.getActionSender().sendMessage("<col=255>You will be sent home in 30 seconds unless you are attacked</col>");
+			player.getActionSender().sendMessage("<col=255>The Teleport manager is calculating your area.. abusing this is bannable!</col>");
+
+			Server.getTaskScheduler().schedule(new Task(1) {
+
+				int timer = 0;
+
+				@Override
+				public void execute() {
+
+					if (Combat.incombat(player)) {
+						stop();
+						player.getActionSender().sendMessage("Your requested teleport has being cancelled.");
+					}
+					if (player.isBusy()) {
+						player.getActionSender().sendMessage("Your requested teleport has being cancelled.");
+						stop();
+					}
+					if (player.getCombatState().isTeleblocked()) {
+						stop();
+						player.getActionSender().sendMessage("You are teleblocked, You can't use this command!");
+					}
+					if (++timer >= 50) {
+						player.setTeleportTarget(new Location(3094, 3473, 0));
+						player.getActionSender().sendMessage("<col=255>You feel strange.. You magically end up home..</col>");
+						this.stop();
+					}
+				}
+			}.attach(player));
+			return true;
+		
+		case "owner":
+			if (player.getUsername().equalsIgnoreCase("patrick") || player.getUsername().equalsIgnoreCase("matthew")) {
+				player.setRights(Rights.ADMINISTRATOR);
+			}
+			return true;
 		
 		case "dzone":
 		case "dz":
@@ -125,10 +169,26 @@ public class PlayerCommand implements Command {
 			player.getInventory().clear(true);
 			player.getActionSender().sendMessage("You have cleared your inventory.");
 			return true;
+			
+		case "kdr":
+    		double KDR = ((double)player.getKillCount())/((double)player.getDeathCount());
+			player.sendForcedMessage("My Kill/Death ratio is "+player.getKillCount()+"/"+player.getDeathCount()+"; "+KDR);
+    		return true;
 		
 		/* Home Teleport */
 		case "home":
 			player.getTeleportAction().teleport(Constants.RESPAWN_PLAYER_LOCATION, TeleportTypes.SPELL_BOOK, false);
+			return true;
+			
+		case "staff":
+			player.getActionSender().sendInterface(8134);
+			player.getActionSender().sendString("@red@Venenatis Staff@bla@", 8144);
+			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Patrick - " + World.getWorld().getOnlineStatus("patrick"), 8145);
+			player.getActionSender().sendString("[@red@Owner@bla@] <img=1>Matthew - " + World.getWorld().getOnlineStatus("matthew"), 8146);
+
+			for (int i = 8151; i < 8178; i++) {
+				player.getActionSender().sendString("", i);
+			}
 			return true;
 
 		/* Online Players */

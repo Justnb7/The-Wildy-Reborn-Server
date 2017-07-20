@@ -105,7 +105,24 @@ public class ModeratorCommand implements Command {
 				player.getActionSender().sendMessage("You have kicked " + playerName + "!");
 				return true;
 			}
-			return true;	
+			return true;
+			
+    	case "kickall":
+            try {
+            	if (World.getWorld().getActivePlayers() > 10) {
+            		player.getActionSender().sendMessage("Are you on the LIVE game? shit nigga dont wanna forcekick everyone");
+            		return true;
+            	} else { 
+	            	for (Player op : World.getWorld().getPlayers()) {
+	            		if (op == null) continue;
+	    				op.logout();
+	            	}
+            	}
+            } catch (Exception e) {
+                e.printStackTrace();
+                player.getActionSender().sendMessage("player must be online.");
+            }
+     		return true;
 			
 			/* Mute */
 		case "mute":

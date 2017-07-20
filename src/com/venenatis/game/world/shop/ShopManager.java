@@ -307,7 +307,6 @@ public class ShopManager {
 
 		if (removed > 0) {
 			shop.add(id, removed, false);
-			player.getInventory().remove(id, removed);
 			currency.getUtility().addCurrency(player, price);
 			shop.shift(false);
 			update(player.getShopId());

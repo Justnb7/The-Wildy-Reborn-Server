@@ -179,13 +179,13 @@ public class WithdrawActionsPacketHandler implements PacketType {
 	 *            The packet for this option.
 	 */
 	private void secondAction(Player player, int packet) {
-		final int interfaceId = player.getInStream().readSignedWordBigEndianA();
+		final int component = player.getInStream().readSignedWordBigEndianA();
 		final int removeId = player.getInStream().readSignedWordBigEndianA();
 		final int removeSlot = player.getInStream().readSignedWordBigEndian();
 
-		player.debug("[WithdrawActionsPacketHandler] - SecondClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
+		player.debug(String.format("Packet 117: component %d item %d slot %d%n", component, removeId, removeSlot));
 
-		switch (interfaceId) {
+		switch (component) {
 
 		case InterfaceConstants.EQUIPMENT: {
 			final Item item = player.getEquipment().get(removeSlot);
@@ -218,7 +218,8 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			}
 		}
 
-		case InterfaceConstants.SHOP_INTERFACE:
+		//case InterfaceConstants.SHOP_INTERFACE:
+		case -25485:
 			ShopManager.buy(player, removeId, 1, removeSlot);
 			break;
 

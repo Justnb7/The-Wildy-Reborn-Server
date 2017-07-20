@@ -90,7 +90,7 @@ public class DeathTask extends Task {
 					break;
 				}
 				// this is wildy death
-				WildernessRewards.receive_reward(killer, victim);
+				WildernessRewards.killed_player(killer, victim);
 				dropPlayerItems(victim);
 				reset(victim);
 				victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);

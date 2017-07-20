@@ -19,6 +19,7 @@ import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
+import com.venenatis.game.util.parser.impl.ShopParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
@@ -537,7 +538,7 @@ public class OwnerCommand implements Command {
 				case "shop":
 				case "shops":
 				case "store":
-					ShopManager.update();
+					new ShopParser().run();
 					player.getActionSender().sendMessage("Successfully reloaded shops.");
 					return true;
 

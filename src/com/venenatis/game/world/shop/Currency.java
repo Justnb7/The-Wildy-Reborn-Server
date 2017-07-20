@@ -87,7 +87,7 @@ public enum Currency {
 	}),
 	
 	/**
-	 * Pestcontrol
+	 * PkP
 	 */
 	PK_POINTS(new CurrencyUtility() {
 
@@ -238,6 +238,36 @@ public enum Currency {
 			return "Achievement points";
 		}
 	}),
+	
+	/**
+	 * Bounty hunter
+	 */
+	BOUNTIES(new CurrencyUtility() {
+
+		@Override
+		public int addCurrency(Player player, int amount) {
+			player.setBountyPoints(player.getBountyPoints() + amount);
+			return amount;
+		}
+
+		@Override
+		public int removeCurrency(Player player, int amount, int minimum) {
+			if (player.getBountyPoints() < minimum) {
+				return 0;
+			}
+			
+			if (amount > player.getBountyPoints()) {
+				amount = (player.getBountyPoints() / amount) * minimum;
+			}
+			
+			player.setBountyPoints(player.getBountyPoints() - amount);
+			return amount;
+		}
+		@Override
+		public String getCurrencyName() {
+			return "Bounties";
+		}
+	}),
 
 	;
 
@@ -260,6 +290,7 @@ public enum Currency {
 			return 2;
 			
 		case PK_POINTS:
+		case BOUNTIES:
 			return 3;
 
 		case SLAYER:

@@ -13,7 +13,6 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
-import com.venenatis.game.content.killstreak.Killstreak;
 import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.herblore.Herblore;
@@ -99,12 +98,6 @@ public class Player extends Entity {
 
 	public void setDialogueOptions(DialogueOptions dialogueOptions) {
 		this.dialogueOptions = dialogueOptions;
-	}
-	
-	public Killstreak killstreak = new Killstreak(this);
-	
-	public Killstreak getKillstreak() {
-		return killstreak;
 	}
 	
 	/**
@@ -423,6 +416,19 @@ public class Player extends Entity {
 	
 	public void setKillCount(int killCount) {
 		this.killCount = killCount;
+	}
+	
+	/**
+	 * Represents the players current wilderness streak, (inside the wilderness)
+	 */
+	private int wilderness_streak;
+	
+	public int getWildernessKillStreak() {
+		return wilderness_streak;
+	}
+	
+	public void setWildernessStreak(int wilderness_streak) {
+		this.wilderness_streak = wilderness_streak;
 	}
 	
 	/**

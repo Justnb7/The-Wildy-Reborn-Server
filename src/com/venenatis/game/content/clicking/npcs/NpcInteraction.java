@@ -70,7 +70,7 @@ public class NpcInteraction {
 					switch(option) {
 					case 1:
 						//Open pvp shop
-						ShopManager.open(player, 10);
+						ShopManager.open(player, 2);
 						break;
 					case 2:
 						//Sell emblems option
@@ -158,7 +158,7 @@ public class NpcInteraction {
 			break;
 		
 		case 315:
-			ShopManager.open(player, 10);
+			ShopManager.open(player, 2);
 			break;
 
 		case 3078:

@@ -20,7 +20,7 @@ import com.venenatis.game.world.World;
 /**
  * This class represents the wilderness rewards for killing players.
  * Rewards such as blood money points emblems etc...
- * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van  Elderen</a>
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  *
  */
 public class WildernessRewards {
@@ -33,13 +33,17 @@ public class WildernessRewards {
 	 * @param opponent
 	 *            The player who died
 	 */
-	public static boolean receive_reward(Player killer, Player opponent) {
-		int pk_points = 5;
-		int trained_account_bonus = 2;
+	public static boolean killed_player(Player killer, Player opponent) {
 		long wealth = getWealth(opponent);
+		double member_bonus = 1;
+		double iron_bonus = 1;
+		int totalPoints = 5;
 		killer = World.getWorld().lookupPlayerByName(opponent.getCombatState().getDamageMap().getKiller());
 		
 		//System.out.printf("%s %s %s%n", killer, wealth, isSameConnection(opponent, killer));
+		
+		//Apply bounty hunter kill
+		BountyHunter.handleBountyHunterKill(opponent, killer);
 		
 		if(wealth > Constants.PK_POINTS_WEALTH && (!Connection.isSameConnection(opponent, killer) || killer.getRights().isOwner(killer))) {
 			
@@ -53,51 +57,71 @@ public class WildernessRewards {
 				killer.getInventory().addOrCreateGroundItem(new Item(13307, Utility.random(5, 25)));
 			}
 			
-			//The amount of blood money we receive per kill
+			//Send killstreak reward
+			killer.setCurrentKillStreak(killer.getCurrentKillStreak() + 1);
+			killer.setWildernessStreak(killer.getWildernessKillStreak() + 1);
+			if (killer.getCurrentKillStreak() > 2) {
+				if (killer.getWildernessKillStreak() == killer.getCurrentKillStreak()) {
+					World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@" + killer.getUsername() + "@red@ has killed @dre@" + opponent.getUsername() + "@red@ and is on a @dre@" + killer.getCurrentKillStreak() + "@red@ Wilderness killstreak!", false);
+				} else {
+					World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@" + killer.getUsername() + "@red@ has killed @dre@" + opponent.getUsername() + "@red@ and is on a @dre@" + killer.getCurrentKillStreak() + "@red@ killstreak! Wildy Streak: @dre@" + killer.getWildernessKillStreak(), false);
+				}
+				if (killer.getCurrentKillStreak() < 6) {
+					killer.getActionSender().sendMessage("@bla@You gain @red@" + killer.getCurrentKillStreak() + " @bla@extra PK Points because of your @red@" + killer.getCurrentKillStreak() + " @bla@killstreak.");
+					totalPoints += killer.getCurrentKillStreak();
+				} else {
+					killer.getActionSender().sendMessage("@bla@You gain @red@ 1 @bla@extra PK Points because of your @red@" + killer.getCurrentKillStreak() + " @bla@killstreak.");
+					totalPoints += 1;
+				}
+			}
+
+			//Update highest streak
+			if (killer.getCurrentKillStreak() > killer.getHighestKillStreak()) {
+				killer.getActionSender().sendMessage("Congratulations, your highest kill streak has increased!");
+				killer.setHighestKillStreak(killer.getCurrentKillStreak());
+			}
+			
+			//Apply member bonus
 			if(killer.getTotalAmountDonated() >= 10) {
-				pk_points += 2;
+				member_bonus += Utility.isWeekend() ? 10 : 20;
 			} else if(killer.getTotalAmountDonated() >= 30) {
-				pk_points += 5;
+				member_bonus += Utility.isWeekend() ? 15 : 30;
 			} else {
-				pk_points += 10;
+				member_bonus += Utility.isWeekend() ? 20 : 40;
 			}
 			
 			if(killer.getAccount().equals(Account.IRON_MAN_TYPE)) {
-				pk_points += trained_account_bonus;
+				iron_bonus += Utility.isWeekend() ? 1 : 2;
 			}
-			
+	
 			//Apply the pkp reward
-			killer.setPkPoints(killer.getPkPoints() + pk_points);
-			killer.getActionSender().sendMessage("You've received @red@"+pk_points+" and now have a total of "+killer.getPkPoints()+" @blu@pk points.");
-			
-			killer.getKillstreak().increase();
-			if(killer.getCurrentKillStreak() >= 5) {
-				World.getWorld().sendWorldMessage("<img=22>[@red@Killstreak@bla@]: @dre@"+killer.getUsername()+"@red@ just "+killMessage[new java.util.Random().nextInt(killMessage.length)]+" @dre@"+opponent.getUsername()+"'s@red@ "+opponent.getCurrentKillStreak()+" killstreak!", false);
-			}
-			
-			//Send killstreak reward
-			killer.getKillstreak().reward();
-			
-			//Add identity to anti cheat list
-			addKilledEntry(opponent.getIdentity(), killer);
-			
-			//Apply bounty hunter kill
-			BountyHunter.handleBountyHunterKill(opponent, killer);
-			
-			//Increase death and kill count
-			killer.setKillCount(killer.getKillCount() + 1);
-			opponent.setDeathCount(opponent.getDeathCount() + 1);
-			
-			//Renew special attack for the killer
-			killer.setSpecialAmount(100);
-			killer.getWeaponInterface().sendSpecialBar(killer.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
-			killer.getWeaponInterface().refreshSpecialAttack();
-			
-			//Update information tab
-			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
-			QuestTabPageHandler.write(opponent, QuestTabPages.HOME_PAGE);
+			totalPoints = (int) ((double) totalPoints * member_bonus * iron_bonus);
+			killer.setPkPoints(killer.getPkPoints() + totalPoints);
+			killer.getActionSender().sendMessage("You now have @blu@" + killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" + totalPoints + "@bla@)");
 			return true;
+		} else {
+			killer.getActionSender().sendMessage(opponent.getUsername() + " wasn't risking enough for you to gain any Pk points.");
 		}
+		
+		if(opponent.getCurrentKillStreak() >= 5) {
+			World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@"+killer.getUsername()+"@red@ just "+killMessage[new java.util.Random().nextInt(killMessage.length)]+" @dre@"+opponent.getUsername()+"'s@red@ "+opponent.getCurrentKillStreak()+" killstreak!", false);
+		}
+		
+		//Add identity to anti cheat list
+		addKilledEntry(opponent.getIdentity(), killer);
+		
+		//Increase death and kill count
+		killer.setKillCount(killer.getKillCount() + 1);
+		opponent.setDeathCount(opponent.getDeathCount() + 1);
+		
+		//Renew special attack for the killer
+		killer.setSpecialAmount(100);
+		killer.getWeaponInterface().sendSpecialBar(killer.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
+		killer.getWeaponInterface().refreshSpecialAttack();
+		
+		//Update information tab
+		QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
+		QuestTabPageHandler.write(opponent, QuestTabPages.HOME_PAGE);
 		return false;
 	}
 	

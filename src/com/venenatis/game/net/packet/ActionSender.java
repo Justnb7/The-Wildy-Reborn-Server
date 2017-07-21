@@ -277,7 +277,7 @@ public class ActionSender {
 		sendSidebarInterface(Constants.WRENCH_TAB, 904);
 		sendSidebarInterface(Constants.EMOTE_TAB, 147);
 		sendSidebarInterface(Constants.MUSIC_TAB, -1);
-		sendSidebarInterface(Constants.ATTACK_TAB, 5855);
+		sendSidebarInterface(Constants.ATTACK_TAB, 2423);
 		sendSidebarInterface(Constants.LOGOUT_TAB, 2449);
 		return this;
 	}

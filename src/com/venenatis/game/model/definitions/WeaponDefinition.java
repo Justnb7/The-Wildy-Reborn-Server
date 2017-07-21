@@ -29,7 +29,7 @@ public class WeaponDefinition {
 		HALBERD(8460, 8463, new SpecialAttackDefinition(8493, 8505, 8481)),
 		SWORD_OR_DAGGER(2276, 2279, new SpecialAttackDefinition(7574, 7586, 7562)),
 		TWO_HANDED(4705, 4708, new SpecialAttackDefinition(7699, 7711, 7687)),
-		LONGSWORD_OR_SCIMITAR(2423, 2426, new SpecialAttackDefinition(7599, 7611, 7587)),
+		LONGSWORD_OR_SCIMITAR(2423, 2426, new SpecialAttackDefinition(7599, 7611, 7587)),//2423, 2426, 2424
 		PICKAXE(5570, 5573, new SpecialAttackDefinition(7724, 7736, 7723)),
 		BATTLEAXE(1698, 1701, new SpecialAttackDefinition(7499, 7591, 7498)),
 		CLAWS(7762, 7765, new SpecialAttackDefinition(7800, 7812, 7788)),

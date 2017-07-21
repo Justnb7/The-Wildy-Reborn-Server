@@ -33,7 +33,8 @@ public enum BowRequirements {
 	ARMADYL_CROSSBOW(11785, 70),
 	BLOWPIPE(12926, 75),
 	HEAVY_BALLISTA(19481, 75),
-	TWISTED_BOW(20997, 75);
+	TWISTED_BOW(20997, 75),
+	CHAOTIC_CROSSBOW(18357, 80);
 
 	int bowId, levelRequired;
 

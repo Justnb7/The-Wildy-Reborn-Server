@@ -8,6 +8,8 @@ import com.venenatis.game.location.Location;
  * Created by Jak on 12/06/2017.
  *
  * A duplicate of the Coverage system in hyperion. Npc stacking where-as they cannot walk through each other in certain circumstances.
+ * 
+ * TODO possibly remove use already working TileControl
  */
 public class RegionEntities {
 

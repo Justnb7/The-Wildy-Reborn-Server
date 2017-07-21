@@ -8,6 +8,12 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.world.pathfinder.region.RegionStore;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
+/**
+ * System to track if an entity covers a tile(s) depending on how large it is ex 1x1 (player) or 2x2 3x3 npc
+ * Used to adjust movement; npcs can 'stack' such as npcs in fight caves which get stuck behind each other
+ * This doesn't happen for players.
+ * Entity based=)
+ */
 public class TileControl {
 	
 	private static TileControl singleton = null;
@@ -78,7 +84,7 @@ public class TileControl {
     public void setOccupiedLocation(Entity mob, Location[] locations) {
         if ((mob == null) || (locations == null))
             return;
-        this.occupiedLocations.remove(mob);
+        this.occupiedLocations.remove(mob); // good removes previous
         this.occupiedLocations.put(mob, locations);
     }
 

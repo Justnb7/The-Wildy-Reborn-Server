@@ -961,6 +961,9 @@ public class ActionSender {
 			sendSidebarInterface(6, 29999);
 		}
 		
+		//Update our attack style
+		AttackStyle.adjustAttackStyleOnLogin(player);
+		
 		//Reset the players location
 		resetLocation();
 		
@@ -992,9 +995,6 @@ public class ActionSender {
 		
 		//Update the skills
 		sendSkills();
-		
-		//Update our attack style
-		AttackStyle.adjustAttackStyleOnLogin(player);
 		
 		sendMessage("Welcome to " + Constants.SERVER_NAME + ".");
 		updateAfterLogin();

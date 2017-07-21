@@ -57,7 +57,7 @@ public class OwnerCommand implements Command {
 			for (int x = player.getX() - 4; x < player.getX()+4; x++)
 				for (int y = player.getY() - 4; y < player.getY()+4; y++)
 					if (Region.getClippingMask(x, y, player.getZ()) != 0)
-						player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), player.getLocation(), player));
+						player.getActionSender().sendGroundItem(new GroundItem(new Item(229, 1), Location.create(x, y, player.getZ()), player));
 			return true;
 		
 		case "bank":

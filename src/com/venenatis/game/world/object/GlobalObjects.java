@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.pathfinder.clipmap.Region;
 
 
 /**
@@ -36,6 +37,7 @@ public class GlobalObjects {
 	public void add(GameObject object) {
 		updateObject(object, object.getId());
 		objects.add(object);
+		Region.addClipping(object);
 	}
 	
 	/**
@@ -74,6 +76,7 @@ public class GlobalObjects {
 		}
 		updateObject(object, -1);
 		remove.add(object);
+		Region.removeClipping(object);
 	}
 	
 	public void replaceObject(GameObject gameObject, GameObject replacementObject, int objectRespawnTimer) {

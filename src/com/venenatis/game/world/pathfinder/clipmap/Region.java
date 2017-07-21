@@ -123,6 +123,8 @@ public class Region {
         }
     }
 
+	// call this when you remove a object from the game world
+	// and addclip above when u add probs best to keep it together in World
     public static void removeClipping(GameObject obj) {
         ProjectileClipping.removeClipping(obj);
         AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj.getId());
@@ -707,6 +709,10 @@ public class Region {
 		return false;
 	}
 
+	/**
+	 * A duplicate 'region storage' system i created when i ported hyp clipping
+	 * @return
+	 */
 	public RegionEntities getStore() {
 		return store;
 	}

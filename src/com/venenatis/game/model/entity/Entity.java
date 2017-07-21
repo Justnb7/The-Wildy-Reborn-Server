@@ -28,6 +28,7 @@ import com.venenatis.game.util.MutableNumber;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.Directions;
+import com.venenatis.game.world.pathfinder.TileControl;
 import com.venenatis.game.world.pathfinder.region.Coverage;
 import com.venenatis.server.Server;
 
@@ -140,7 +141,21 @@ public abstract class Entity {
 	 *            The current location.
 	 */
 	public void setLocation(Location location) {
+		// While location is currently the older one, remove from previous regions
+		if (this.isPlayer())
+			World.getWorld().regions.getRegionByLocation(location).removePlayer((Player)this);
+		else 
+			World.getWorld().regions.getRegionByLocation(location).removeNpc((NPC)this);		
+		
+		// Set new position
 		this.location = location;
+		
+		// TODO update tilecontrol system position? and region
+		TileControl.getSingleton().setOccupiedLocation(this, this.getTiles());
+		if (this.isPlayer())
+			World.getWorld().regions.getRegionByLocation(location).addPlayer((Player)this);
+		else 
+			World.getWorld().regions.getRegionByLocation(location).addNpc((NPC)this);
 	}
 
 	public int getX() {

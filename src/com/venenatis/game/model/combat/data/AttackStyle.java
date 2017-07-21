@@ -211,7 +211,6 @@ public class AttackStyle {
 	 */
 	public static void adjustAttackStyleOnLogin(Player player) {
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		
 		if (weapon == null) {
 			player.setAttackStyle(0);
 			player.getActionSender().sendConfig(43, 0);

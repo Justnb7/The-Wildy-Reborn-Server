@@ -234,6 +234,7 @@ public class DropManager {
 				break;
 			}
 			player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(index).getName().toLowerCase().replaceAll("_", " ")), 42531 + index);
+			player.debug("npc name: "+StringUtils.capitalize(NPCDefinitions.get(index).getName().toLowerCase().replaceAll("_", " ")));
 		}
 
 		player.searchList = definitions;

@@ -298,6 +298,8 @@ public class PrayerHandler {
 	 *            The player with active prayers
 	 */
 	public static void handlePrayerDraining(Player player) {
+		if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0)
+			return;
 		double toRemove = 0.0;
 		for (Prayers prayer : Prayers.values()) {
 			if (player.isActivePrayer(prayer)) {
@@ -309,6 +311,7 @@ public class PrayerHandler {
 		}
 		//System.out.println("Remove prayer point: "+toRemove);
 		player.setPrayerPoint(player.getPrayerPoint() - toRemove);
+		
 		if (player.getPrayerPoint() <= 0) {
 			player.setPrayerPoint(1.0 + player.getPrayerPoint());
 			if (player.getSkills().getLevel(Skills.PRAYER) > 1) {
@@ -321,6 +324,7 @@ public class PrayerHandler {
 				}
 			}
 		}
+		player.getActionSender().sendSkillLevel(Skills.PRAYER);
 	}
 
 	/**

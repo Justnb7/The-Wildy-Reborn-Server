@@ -1,7 +1,6 @@
 package com.venenatis.game.content.clicking.objects;
 
 import com.venenatis.game.action.Action;
-import com.venenatis.game.action.impl.actions.RestorePrayerPointsAction;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.skills.agility.Agility;
@@ -52,6 +51,11 @@ public class ObjectInteraction {
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
 			action = new Mining(player, obj);
+		}
+		
+		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
+			player.getSkills().getPrayer().prayAltar(location);
+			return;
 		}
 		
 		/** Duel Arena */
@@ -106,11 +110,6 @@ public class ObjectInteraction {
 		case REJUVENATION_POOL:
 			player.getActionSender().sendMessage("You feel slightly renewed.");
 			player.playGraphics(new Graphic(683));
-			break;
-		
-		case 7812: //Altar at Clan Wars
-		case 409:
-			action = new RestorePrayerPointsAction(player, objectId);
 			break;
 			
 		/* Deposit Box */

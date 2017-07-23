@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
 /**
@@ -38,29 +38,19 @@ public class Prayer {
 	 *         The location of the alter
 	 */
 	public void prayAltar(Location loc) {
-		if (player.getRights().isDonator(player)) {
-			if (player.getLastAltarPrayer() < 120000) {
-				player.getActionSender().sendMessage("You can only use the altar to restore your special attack every 2 minutes");
-			} else {
-				player.setSpecialAmount(100);
-				player.setLastAltarPrayer(System.currentTimeMillis());
-				player.getSkills().increaseLevelToMaximum(Skills.HITPOINTS, player.getSkills().getLevelForExperience(Skills.HITPOINTS));
-			}
-        } else if (Utility.random(4) == 0) {
-        	player.getActionSender().sendMessage("Did you know if you were a donator you'd restore special energy and hitpoints?");
-        }
-		if (player.getPrayerPoint() >= player.getSkills().getLevelForExperience(Skills.PRAYER)) {
-			player.getActionSender().sendMessage("You already have full prayer points.");
+		
+		if (Area.inWilderness(player)) {
 			return;
 		}
-		player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
-		player.getSkills().setPrayerPoints(player.getSkills().getLevelForExperience(Skills.PRAYER), true);
-		if (player.getActionSender() != null) {
+		if (player.getSkills().getLevel(Skills.PRAYER) < player.getSkills().getLevelForExperience(Skills.PRAYER)) {
+			player.playAnimation(Animation.create(645));
+			player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
+			player.getActionSender().sendMessage("You recharge your prayer points.");
 			player.getActionSender().sendSkills();
+		} else {
+			player.getActionSender().sendMessage("You already have full prayer points.");
 		}
-		player.playAnimation(Animation.create(645));
-		player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
-		player.getActionSender().sendMessage("You pray at the altar...");
+		
 	}
 
 	/**

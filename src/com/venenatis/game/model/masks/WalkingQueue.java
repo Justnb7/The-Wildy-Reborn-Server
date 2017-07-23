@@ -379,6 +379,7 @@ public class WalkingQueue {
 	 * Process player movement
 	 */
 	public void processNextMovement() {
+		//long startTime = System.currentTimeMillis();
 		/*
 		 * Store the teleporting flag.
 		 */
@@ -449,6 +450,7 @@ public class WalkingQueue {
 		if (deltaX < 16 || deltaX >= 88 || deltaY < 16 || deltaY >= 88) {
 			player.setMapRegionChanging(true);
 		}
+		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[processNextMovement] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 
 	/**

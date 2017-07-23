@@ -1165,10 +1165,12 @@ public abstract class Entity {
 	}
 
 	public void updateCoverage(Location loc) {
+		//long startTime = System.currentTimeMillis();
 		if (coverage == null) {
 			setCoverage();
 		}
 		coverage.update(loc, size());
+		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[updateCoverage] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 
 	public Location[] getTiles(Location location) {

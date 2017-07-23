@@ -19,7 +19,6 @@ public class SecondTask extends Task {
 	public void timers(Player p) {
 		if (p.getDfsTimer() > 0) {
 			p.setDfsTimer(p.getDfsTimer() -1);
-			p.debug("ticks left: "+p.getDfsTimer());
 		}
 	}
 

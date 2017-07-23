@@ -7,6 +7,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.Packet;
 import com.venenatis.game.net.packet.PacketHandler;
+import com.venenatis.game.world.World;
 
 import io.netty.channel.Channel;
 
@@ -31,6 +32,7 @@ public class GameSession extends Session {
 	 * Processes incoming packets for the player
 	 */
 	public void processQueuedPackets() {
+		//long startTime = System.currentTimeMillis();
 		Packet p = null;
 		int processed = 0;
 		while ((p = queuedPackets.poll()) != null) {
@@ -45,6 +47,7 @@ public class GameSession extends Session {
 				processed++;
 			}
 		}
+		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[processQueuedPackets] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 	
 	public Player getPlayer() {

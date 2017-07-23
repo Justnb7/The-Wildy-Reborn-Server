@@ -383,6 +383,7 @@ public class World implements Service {
 	 */
 	@Override
 	public void pulse() {
+		//long startTime = System.currentTimeMillis();
 		try {
 			if (kickAllPlayers) {
 				for (Player player : World.getWorld().getPlayers()) {
@@ -443,6 +444,8 @@ public class World implements Service {
 			e.printStackTrace();
 		}
 		gametick++;
+		
+		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[pulse] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 
 	/**
@@ -451,6 +454,7 @@ public class World implements Service {
 	 * @param player The player being pre-updated
 	 */
 	private void handlePreUpdating(Player player) {
+		//long startTime = System.currentTimeMillis();
 		try {
 			 // Use randomized iteration order for PID shuffling.
 	        for (Player p : World.getWorld().getUnorderedPlayers()) {
@@ -470,6 +474,7 @@ public class World implements Service {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[handlePreUpdating] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 
 	/**

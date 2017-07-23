@@ -42,7 +42,7 @@ public class KorasiSword implements SpecialAttack {
 	
 	@Override
 	public double getAccuracyMultiplier() {
-		return 8.0;
+		return 10.0;
 	}
 
 	@Override

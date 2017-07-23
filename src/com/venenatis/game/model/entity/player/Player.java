@@ -1416,6 +1416,7 @@ public class Player extends Entity {
 
 	@Override
 	public void process() {
+		//long startTime = System.currentTimeMillis();
 		if (this.getTimePlayed() < Integer.MAX_VALUE) {
 			this.setTimePlayed(this.getTimePlayed() + 1);
 		}
@@ -1447,7 +1448,7 @@ public class Player extends Entity {
 		if (getCombatState().getEatDelay() > 0) {
 			getCombatState().decreaseEatDelay(1);
 		}
-
+		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[process] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 
 	public GameBuffer getInStream() {

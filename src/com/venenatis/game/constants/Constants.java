@@ -6,6 +6,11 @@ import com.venenatis.game.model.entity.player.Player;
 public class Constants {
 	
 	/**
+	 * Decides max incoming packets per cycle
+	 */
+	public static final int MAX_INCOMING_PACKETS_PER_CYCLE = 20;
+	
+	/**
 	 * Bonus weekends
 	 */
 	public static final boolean PK_REWARDS = false;

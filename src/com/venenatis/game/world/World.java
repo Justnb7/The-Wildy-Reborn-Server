@@ -452,7 +452,12 @@ public class World implements Service {
 	 */
 	private void handlePreUpdating(Player player) {
 		try {
-			player.getSession().processQueuedPackets();
+			 // Use randomized iteration order for PID shuffling.
+	        for (Player p : World.getWorld().getUnorderedPlayers()) {
+	            if (p != null && p.getSession() != null && p.isActive()) {
+					p.getSession().processQueuedPackets();
+	            }
+	        }
 		} catch (Exception e) {
 			e.printStackTrace();
 			queueLogout(player);

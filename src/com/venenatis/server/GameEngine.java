@@ -36,7 +36,7 @@ public final class GameEngine implements Runnable {
     /**
      * The rate in which to pulse the server.
      */
-    private static final int PULSE_RATE = 300;
+    private static final int PULSE_RATE = 600;
 
     /**
      * A logger which will log messages.
@@ -80,11 +80,8 @@ public final class GameEngine implements Runnable {
             benchmark.reset();
             if (state == EngineState.NORMAL) {
                 cycle();
-            } else if (state == EngineState.PACKET_PROCESS) {
-                subcycle();
             }
             benchmark.ifElapsed(600, t -> logger.warning("Engine has reached maximum load! [overhead= " + t + "ms, state= " + state + "]"));
-            state = state.next();
         } catch (Exception reason) {
             logger.log(Level.SEVERE, "Fatal error while handling server logic loop", reason);
             reason.printStackTrace();
@@ -118,23 +115,9 @@ public final class GameEngine implements Runnable {
         Server.getTaskScheduler().pulse();
         World.getWorld().pulse();
         GroundItemHandler.pulse();
+        
         // long end = (System.currentTimeMillis() - start);
 
-    }
-
-    /**
-     * Performs a sub-cycle where packets are processed. These are done every
-     * {@code 300}ms.
-     */
-    private static void subcycle() {
-
-        // Use randomized iteration order for PID shuffling.
-        for (Player p : World.getWorld().getUnorderedPlayers()) {
-            if (p != null && p.getSession() != null && p.isActive()) {
-            	p.getSession().processSubQueuedPackets();
-				p.getSession().processQueuedPackets();
-            }
-        }
     }
 
     /**
@@ -156,16 +139,6 @@ public final class GameEngine implements Runnable {
          * The engine needs to perform a normal cycle; Synchronization with the
          * {@link World}.
          */
-        NORMAL,
-
-        /**
-         * The engine needs to perform a sub-cycle; Packet processing for
-         * improved speed.
-         */
-        PACKET_PROCESS;
-
-        public EngineState next() {
-            return this == NORMAL ? PACKET_PROCESS : NORMAL;
-        }
+        NORMAL
     }
 }

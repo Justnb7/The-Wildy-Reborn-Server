@@ -238,8 +238,7 @@ public class PlayerUpdating {
 		buffer.putFrameSizeShort(start);
 		player.flushOutStream();
 		
-		//long endTime = System.currentTimeMillis() - startTime; 
-		//System.out.println(endTime + " : " + World.getWorld().getPlayers().size());
+		//long endTime = System.currentTimeMillis() - startTime; System.out.println(endTime + " : " + World.getWorld().getPlayers().size());
 
 	}
 

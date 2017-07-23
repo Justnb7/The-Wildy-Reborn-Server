@@ -9,7 +9,6 @@ import com.venenatis.game.world.World;
 public class PacketHandler {
 
 	private static PacketType packetId[] = new PacketType[256];
-	private static SubPacketType subPacketId[] = new SubPacketType[256];
 
 	static {
 
@@ -59,7 +58,7 @@ public class PacketHandler {
 		packetId[135] = wap;
 		packetId[208] = wap;
 		
-		subPacketId[41] = new WieldPacketHandler();
+		packetId[41] = new WieldPacketHandler();
 		packetId[241] = new ClickOnGameScreen();
 		
 		//PI
@@ -123,12 +122,11 @@ public class PacketHandler {
 	}
 
 	public static void processPacket(Player player, int packetType, int packetSize) {
-		if(packetType == 41) {
-			player.debug("called: "+packetType);
-		}
+
 		if (packetType == -1 || packetType == 181) {
 			return;
 		}
+		
 		PacketType p = packetId[packetType];
 
 		if (p != null) {
@@ -141,26 +139,6 @@ public class PacketHandler {
 			}
 		} else {
 			System.out.println("Unhandled packet type: " + packetType + " - size: " + packetSize);
-			World.getWorld().queueLogout(player);
-		}
-	}
-
-	public static void processSubPacket(Player player, int packetType, int packetSize) {
-		if (packetType == -1 || packetType == 181) {
-			return;
-		}
-		SubPacketType p = subPacketId[packetType];
-
-		if (p != null) {
-			try {
-				if (p != null) {
-					p.processSubPacket(player, packetType, packetSize);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("Unhandled subpacket type: " + packetType + " - size: " + packetSize);
 			World.getWorld().queueLogout(player);
 		}
 	}

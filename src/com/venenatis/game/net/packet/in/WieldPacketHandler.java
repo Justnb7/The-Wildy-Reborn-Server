@@ -7,7 +7,7 @@ import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.EquipmentDefinition.EquipmentType;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.SubPacketType;
+import com.venenatis.game.net.packet.PacketType;
 
 /**
  * Handles the 'wield' option on items.
@@ -15,10 +15,10 @@ import com.venenatis.game.net.packet.SubPacketType;
  * @author Patrick van Elderen
  * 
  */
-public class WieldPacketHandler implements SubPacketType {
+public class WieldPacketHandler implements PacketType {
 
 	@Override
-	public void processSubPacket(Player player, int packetType, int packetSize) {
+	public void handle(Player player, int packetType, int packetSize) {
 		final int id = player.getInStream().readUnsignedWord();
 		final int slot = player.getInStream().readUnsignedWordA();
 		final int interfaceId = player.getInStream().readUnsignedWordA();

@@ -20,7 +20,7 @@ public class GameObject {
 	
 	private int id;
 	
-	private int face;
+	private int direction;
 	
 	private int ticksRemaining;
 	
@@ -49,11 +49,11 @@ public class GameObject {
 	 * @param type The type.
 	 * @param direction The rotation.
 	 */
-	public GameObject(int id, Location location, int type, int direction) {
-		this.id = id;
+	public GameObject(Location location, int id,  int type, int direction) {
 		this.location = location;
+		this.id = id;
 		this.type = type;
-		this.face = direction;
+		this.direction = direction;
 	}
 	
 	public GameObject(int id, int x, int y, int height) {
@@ -64,14 +64,14 @@ public class GameObject {
 	public GameObject(int id, int x, int y, int height, int face) {
 		this.id = id;
 		this.location = Location.create(x, y, height);
-		this.face = face;
+		this.direction = face;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face, int type) {
 		this.id = id;
 		this.location = Location.create(x, y, height);
 		this.type = type;
-		this.face = face;
+		this.direction = face;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face, int type, int ticksRemaining) {
@@ -104,8 +104,8 @@ public class GameObject {
 		return location.getZ();
 	}
 	
-	public int getFace() {
-		return face;
+	public int getDirection() {
+		return direction;
 	}
 	
 	public int getTicksRemaining() {

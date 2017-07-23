@@ -425,7 +425,7 @@ public class Woodcutting extends HarvestingAction {
 
 	@Override
 	public GameObject getReplacementObject() {
-		return new GameObject(1342, getGameObject().getLocation(), 10, 0);
+		return new GameObject(getGameObject().getLocation(), 1342, 10, 0);
 	}
 
 	@Override
@@ -442,6 +442,8 @@ public class Woodcutting extends HarvestingAction {
 		}
 		return new Item(tree.getLogId(), 1);
 	}
+	
+	
 
 	@Override
 	public int getSkill() {

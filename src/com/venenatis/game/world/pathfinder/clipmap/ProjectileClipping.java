@@ -194,7 +194,7 @@ public class ProjectileClipping {
 		int height = obj.getLocation().getZ();
 		int xLength;
 		int yLength;
-		if (obj.getFace() != 1 && obj.getFace()  != 3) {
+		if (obj.getDirection() != 1 && obj.getDirection()  != 3) {
 			xLength = def.xLength();
 			yLength = def.yLength();
 		} else {
@@ -217,7 +217,7 @@ public class ProjectileClipping {
 			}
 		} else if (type >= 0 && type <= 3) {
 			if (def.clips()) {
-				addClippingForVariableObject(x, y, height, type, obj.getFace(), def.projectileClipped(), def.ignoreAlt());
+				addClippingForVariableObject(x, y, height, type, obj.getDirection(), def.projectileClipped(), def.ignoreAlt());
 			}
 		}
 	}
@@ -231,7 +231,7 @@ public class ProjectileClipping {
 		int x = obj.getLocation().getX();
 		int y = obj.getLocation().getY();
 		int height = obj.getLocation().getZ();
-		if (obj.getFace() != 1 && obj.getFace() != 3) {
+		if (obj.getDirection() != 1 && obj.getDirection() != 3) {
 			xLength = def.xLength();
 			yLength = def.yLength();
 		} else {
@@ -248,7 +248,7 @@ public class ProjectileClipping {
 			}
 		} else if (obj.getType() >= 0 && obj.getType() <= 3) {
 			if (def.clips()) {
-				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getFace(), def.projectileClipped(), def.ignoreAlt());
+				removeClippingForVariableObject(x, y, height, obj.getType(), obj.getDirection(), def.projectileClipped(), def.ignoreAlt());
 			}
 		}
 	}

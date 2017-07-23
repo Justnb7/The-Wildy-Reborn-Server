@@ -3,6 +3,8 @@ package com.venenatis.game.action.impl;
 import com.venenatis.game.action.Action;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
@@ -29,6 +31,14 @@ public abstract class HarvestingAction extends Action {
 	 */
 	public HarvestingAction(Entity entity) {
 		super(entity, 0);
+	}
+	
+	/**
+	 * Optoinally overrideable method which is called whenever an item has been harvested.
+	 * @param item The item.
+	 */
+	public void onSuccessfulHarvest(final Item item) {
+
 	}
 	
 	/**
@@ -152,15 +162,19 @@ public abstract class HarvestingAction extends Action {
 
 	@Override
 	public void execute() {
-		if(!getEntity().asPlayer().getInventory().hasSpaceFor(getReward())) {
-			getEntity().getActionSender().sendMessage(getInventoryFullMessage()); //Think this is how 317 did it?
-			getEntity().playAnimation(Animation.create(-1));
+		final Item reward = getReward();
+		Player player = (Player) getEntity();
+		
+		if(reward != null && !player.getInventory().hasSpaceFor(reward)) {
+			player.getActionSender().sendMessage(getInventoryFullMessage());
+			DialogueManager.sendStatement(player, getInventoryFullMessage());
+			player.playAnimation(Animation.create(-1));
 			this.stop();
 			return;
 		}
-		if(getEntity().asPlayer().getSkills().getLevelForExperience(getSkill()) < getRequiredLevel()) {
-			getEntity().getActionSender().sendMessage(getLevelTooLowMessage()); //Think this is how 317 did it?
-			getEntity().playAnimation(Animation.create(-1));
+		if(player.getSkills().getLevelForExperience(getSkill()) < getRequiredLevel()) {
+			DialogueManager.sendStatement(player, getLevelTooLowMessage());
+			player.playAnimation(Animation.create(-1));
 			this.stop();
 			return;
 		}
@@ -170,22 +184,17 @@ public abstract class HarvestingAction extends Action {
 		}
 		if(!started) {
 			started = true;
-			getEntity().playAnimation(getAnimation());
-			getEntity().getActionSender().sendMessage(getHarvestStartedMessage());
+			player.playAnimation(getAnimation());
+			player.getActionSender().sendMessage(getHarvestStartedMessage());
 			if(getGameObject().getMaxHealth() == 0) {
 				getGameObject().setMaxHealth(getGameObjectMaxHealth());
 			}
 			currentCycles = getCycleCount();
 			return;
 		}
-		if(getGameObject().getCurrentHealth() < 1) {
-			this.stop();
-			return;
-		}
-		
 
 		if(lastAnimation > 3) {
-			getEntity().playAnimation(getAnimation()); //keeps the emote playing
+			player.playAnimation(getAnimation()); //keeps the emote playing
 			lastAnimation = 0;
 		}
 		lastAnimation++;
@@ -198,9 +207,14 @@ public abstract class HarvestingAction extends Action {
 		//execute
 		currentCycles = getCycleCount();
 		getGameObject().decreaseCurrentHealth(1); //decreases the health by one, e.g. lost a log
-		getEntity().getActionSender().sendMessage(getSuccessfulHarvestMessage());
-		getEntity().asPlayer().getInventory().add(getReward());
-		getEntity().asPlayer().getSkills().addExperience(getSkill(), getExperience());
+		player.getActionSender().sendMessage(getSuccessfulHarvestMessage());
+		
+		if (reward != null) {
+			player.getInventory().add(reward);
+			onSuccessfulHarvest(reward);
+		}
+		
+		player.getSkills().addExperience(getSkill(), getExperience());
 		
 		if(getGameObject().getCurrentHealth() < 1) {
 			
@@ -209,13 +223,13 @@ public abstract class HarvestingAction extends Action {
 			
 			Server.getGlobalObjects().replaceObject(getGameObject(), getReplacementObject(), getObjectRespawnTimer());
 
-			getEntity().playAnimation(Animation.create(-1));
+			player.playAnimation(Animation.create(-1));
 			this.stop(); //stops the action as the object is completely harvested.
 			return;
 		}
-		if(!getEntity().asPlayer().getInventory().hasSpaceFor(getReward())) {
-			getEntity().getActionSender().sendMessage(getInventoryFullMessage()); //Think this is how 317 did it?
-			getEntity().playAnimation(Animation.create(-1));
+		if(!player.getInventory().hasSpaceFor(getReward())) {
+			DialogueManager.sendStatement(player, getInventoryFullMessage());
+			player.playAnimation(Animation.create(-1));
 			this.stop();
 			return;
 		}

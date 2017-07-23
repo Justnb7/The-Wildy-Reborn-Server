@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 
@@ -71,17 +72,35 @@ public class GlobalObjects {
 	 * @param object	the global object
 	 */
 	public void remove(GameObject object) {
-		if (!objects.contains(object)) {
-			return;
-		}
 		updateObject(object, -1);
 		remove.add(object);
 		Region.removeClipping(object);
 	}
 	
-	public void replaceObject(GameObject gameObject, GameObject replacementObject, int objectRespawnTimer) {
+	/*public void replaceObject(GameObject gameObject, GameObject replacementObject, int objectRespawnTimer) {
 		remove(gameObject);
 		add(replacementObject);
+	}*/
+	
+	public void replaceObject(final GameObject original, final GameObject replacement, int cycles) {
+		remove(original);
+		if (replacement != null) {
+			add(replacement);
+		}
+		if (cycles < 0)
+			return;
+		World.getWorld().schedule(new Task(cycles) {
+			@Override
+			public void execute() {
+				if (replacement != null) {
+					remove(replacement);
+				}
+				GameObject addOrig = new GameObject(original.getLocation(), original.getId(), original.getType(),
+						original.getDirection());
+				add(addOrig);
+				stop();
+			}
+		});
 	}
 	
 	/**
@@ -151,7 +170,7 @@ public class GlobalObjects {
 	public void updateObject(final GameObject object, final int objectId) {
 		List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player ->
 			player.distanceToPoint(object.getX(), object.getY()) <= 60 && player.getZ() == object.getZ()).collect(Collectors.toList());
-		players.forEach(player -> player.getActionSender().sendObject(objectId, object.getX(), object.getY(), object.getZ(), object.getFace(), object.getType()));
+		players.forEach(player -> player.getActionSender().sendObject(objectId, object.getX(), object.getY(), object.getZ(), object.getDirection(), object.getType()));
  	}
 	
 	/**
@@ -161,7 +180,7 @@ public class GlobalObjects {
 	public void updateRegionObjects(Player player) {
 		objects.stream().filter(Objects::nonNull).filter(object -> player.distanceToPoint(
 			object.getX(), object.getY()) <= 60 && object.getZ() == player.getZ()).forEach(object -> player.getActionSender().sendObject(
-				object.getId(), object.getX(), object.getY(), object.getZ(), object.getFace(), object.getType()));
+				object.getId(), object.getX(), object.getY(), object.getZ(), object.getDirection(), object.getType()));
 	}
 
 }

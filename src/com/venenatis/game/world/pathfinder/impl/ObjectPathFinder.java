@@ -16,7 +16,7 @@ public class ObjectPathFinder {
 		int sizeY;
 		if ((object.getType() == 10 || object.getType() == 11 || object.getType() == 22)) {
 			type = -1;
-			int rotation = object.getFace();
+			int rotation = object.getDirection();
 			AnyRevObjectDefinition def = object.getDefinition();
 			if (rotation == 1 || rotation == 3) {
 				sizeX = object.getDefinition().xLength();
@@ -26,14 +26,14 @@ public class ObjectPathFinder {
 				sizeY = object.getDefinition().yLength();
 			}
 			walkToData = object.getDefinition().getWalkToFlag();
-			if (object.getFace() != 0)
+			if (object.getDirection() != 0)
 				walkToData = (walkToData << rotation & 0xf)
 						+ (walkToData >> 4 - rotation);
 			direction = 0;
 		} else {
 			sizeX = sizeY = 1;
 			type = object.getType();
-			direction = object.getFace();
+			direction = object.getDirection();
 		}
 		final int finalX = object.getLocation().getX();
 		final int finalY = object.getLocation().getY();

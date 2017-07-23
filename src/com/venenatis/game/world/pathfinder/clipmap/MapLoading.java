@@ -220,7 +220,7 @@ public class MapLoading {
 					World.getWorld().regions.getRegionByLocation(Location.create(obj.getX(), obj.getY(), obj.getZ())).addObject(obj);
 
 					if (obj.getId() >= CachedObjectDefinition.objectDefinitions.length) {
-						System.err.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getZ()+" type "+obj.getType()+","+obj.getFace());
+						System.err.println("Object id "+obj.getId()+" not supported! at "+obj.getX()+","+obj.getY()+","+obj.getZ()+" type "+obj.getType()+","+obj.getDirection());
 					}
 				}
 			}

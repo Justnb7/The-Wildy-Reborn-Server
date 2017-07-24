@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Appearance;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags;
@@ -635,7 +636,7 @@ public class PlayerUpdating {
 
 			// full body
 			if (player.getEquipment().get(EquipmentConstants.TORSO_SLOT) != null
-					&& !EquipmentConstants.hasBody(player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId())) {
+					&& ItemDefinition.get(player.getEquipment().get(EquipmentConstants.TORSO_SLOT).getId()).isPlatebody()) {
 				player.getPlayerProps().writeByte(0);
 			} else {
 				player.getPlayerProps().writeShort(0x100 + app.getLook(3));
@@ -650,7 +651,7 @@ public class PlayerUpdating {
 
 			// full helm
 			if (player.getEquipment().get(EquipmentConstants.HELM_SLOT) != null
-					&& EquipmentConstants.hasHead(player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId())) {
+					&& ItemDefinition.get(player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId()).isFullHelm()) {
 				player.getPlayerProps().writeByte(0);
 			} else {
 				player.getPlayerProps().writeShort(0x100 + app.getLook(0));
@@ -674,7 +675,7 @@ public class PlayerUpdating {
 			if (player.getAppearance().getGender() == 1) {
 				player.getPlayerProps().writeByte(0);
 			} else if (player.getEquipment().get(EquipmentConstants.HELM_SLOT) != null
-					&& !EquipmentConstants.hasJaw(player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId())) {
+					&& !ItemDefinition.get(player.getEquipment().get(EquipmentConstants.HELM_SLOT).getId()).isFullMask()) {
 				player.getPlayerProps().writeByte(0);
 			} else {
 				player.getPlayerProps().writeShort(0x100 + app.getLook(1));

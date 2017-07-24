@@ -54,8 +54,8 @@ public class DragonScimitar implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired() {
-		return 55;
+	public int amountRequired(Player player) {
+		return 55 * (int) player.getAttribute("vigour");
 	}
 
 	@Override

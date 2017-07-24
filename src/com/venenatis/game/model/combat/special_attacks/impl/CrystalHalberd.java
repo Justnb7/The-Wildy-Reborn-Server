@@ -36,8 +36,8 @@ public class CrystalHalberd implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired() {
-		return 30;
+	public int amountRequired(Player player) {
+		return 30 * (int) player.getAttribute("vigour");
 	}
 
 	@Override

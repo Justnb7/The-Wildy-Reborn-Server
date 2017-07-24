@@ -50,12 +50,14 @@ public class Special {
 				return;
 			}
 
-			if (attacker.getSpecialAmount() >= special.amountRequired()) {
+			if (attacker.getSpecialAmount() >= special.amountRequired(attacker)) {
 				if (special.meetsRequirements(attacker, target)) {
-					attacker.setSpecialAmount(attacker.getSpecialAmount() - special.amountRequired());
+					if (attacker.getEquipment().contains(773)) {
+						attacker.setAttribute("vigour", .8);
+					}
+					attacker.setSpecialAmount(attacker.getSpecialAmount() - special.amountRequired(attacker));
 					special.handleAttack(attacker, target);
 
-					attacker.debug("speced");
 					attacker.logoutDelay.reset();
 					if (attacker.getCombatState().getTarget().isPlayer()) { // playerIndex is the indexId of the player we're attacking
 						Player targPlayer = (Player) target; // type cast

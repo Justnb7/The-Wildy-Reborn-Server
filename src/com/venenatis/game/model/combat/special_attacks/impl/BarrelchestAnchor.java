@@ -31,8 +31,8 @@ public class BarrelchestAnchor implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired() {
-		return 50;
+	public int amountRequired(Player player) {
+		return 50 * (int) player.getAttribute("vigour");
 	}
 
 	@Override

@@ -2285,6 +2285,7 @@ public class Player extends Entity {
 		this.wildLevel = wildLevel;
 	}
 	
+	
     /**
      * Integers
      */

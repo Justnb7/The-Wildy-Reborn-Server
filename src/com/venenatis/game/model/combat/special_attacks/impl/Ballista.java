@@ -34,8 +34,8 @@ public class Ballista implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired() {
-		return 65;
+	public int amountRequired(Player player) {
+		return 65 * (int) player.getAttribute("vigour");
 	}
 
 	@Override

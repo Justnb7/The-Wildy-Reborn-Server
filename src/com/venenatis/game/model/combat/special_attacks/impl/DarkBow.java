@@ -74,8 +74,8 @@ public class DarkBow implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired(Player player) {
-		return 65 * (int) player.getAttribute("vigour");
+	public int amountRequired() {
+		return 65;
 	}
 
 	@Override

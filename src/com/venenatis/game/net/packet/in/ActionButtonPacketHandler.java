@@ -71,7 +71,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		/* Dueling */
 		if (player.getDuelArena().isInSession() || player.getDuelArena().getStage() == DuelStage.REWARD) {
 			player.getDuelArena().handleButton(button);
-			player.debug("duel blocking");
 			return;
 		}
 		
@@ -81,38 +80,32 @@ public class ActionButtonPacketHandler implements PacketType {
 		/* Trading */
 		if (player.getTradeSession().isTrading()) {
 			player.getTradeSession().onButtonClick(button);
-			player.debug("trade blocking");
 			return;
 		}
 		
 		/* Banking */
 		if (player.getBank().clickButton(button)) {
-			player.debug("bank blocking");
 			return;
 		}
 		
 		/* Price checker */
 		if(player.getPriceChecker().buttonAction(button)) {
-			player.debug("pc blocking");
 			return;
 		}
 		
 		/* Drop Tables */
 		if (button >= 166035 && button < 166035 + DropManager.AMOUNT_OF_TABLES) {
 			Server.getDropManager().select(player, button);
-			player.debug("drop blocking");
 			return;
 		}
 		
 		/* Clan Chat */
 		if (ClanButtons.handle(player, button)) {
-			player.debug("clan blocking");
 			return;
 		}
 		
 		/* Slayer Actions */
 		if (player.getSlayerInterface().controlPanel(player, button)) {
-			player.debug("slayer blocking");
 			return;
 		}
 
@@ -124,37 +117,31 @@ public class ActionButtonPacketHandler implements PacketType {
 		/* Teleporting */
 		if(Teleport.isTeleportButton(player, button)) {
 			player.getTeleportAction().handleButtons(button);
-			player.debug("teleport blocking");
 			return;
 		}
 		
 		/* Special attacks */
 		if (SpecialAttackHandler.handleButtons(player, button)) {
-			player.debug("spec blocking");
 			return;
 		}
 		
 		/* Attack style */
 		if (FightType.setStyle(player, button)) {
-			player.debug("attk blocking");
 			return;
 		}
 		
 		/* Fletching */
 		if (Fletching.SINGLETON.clickButton(player, button)) {
-			player.debug("fletcing blocking");
 			return;
 		}
 		
 		/* Prayer */
 		if(!PrayerHandler.togglePrayer(player, button)) {
-			player.debug("prayer blocking");
 			return;
 		}
 		
 		/* Handle clickable spells such as Vengeance */
 		if(Magic.handleButton(player, button)) {
-			player.debug("magic blocking");
 			return;
 		}
 		

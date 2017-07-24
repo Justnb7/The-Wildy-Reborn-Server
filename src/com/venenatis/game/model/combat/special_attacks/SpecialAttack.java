@@ -30,7 +30,7 @@ public interface SpecialAttack {
 	 * 
 	 * @return The amount of special required
 	 */
-	public int amountRequired(Player attacker);
+	public int amountRequired();
 
 	/**
 	 * Determines if the entity meets the requirements to activate the special

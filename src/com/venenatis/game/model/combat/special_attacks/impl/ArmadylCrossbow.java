@@ -39,8 +39,8 @@ public class ArmadylCrossbow implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired(Player player) {
-		return 40 * (int) player.getAttribute("vigour");
+	public int amountRequired() {
+		return 40;
 	}
 
 	@Override

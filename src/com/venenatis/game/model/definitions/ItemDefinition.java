@@ -8,9 +8,9 @@ package com.venenatis.game.model.definitions;
 public class ItemDefinition {
 
 	/**
-	 * The maximum amount of item definitions in #148 old school.
+	 * The maximum amount of item definitions in #150 old school.
 	 */
-	public static final int ITEM_LIMIT = 21_358;
+	public static final int ITEM_LIMIT = 21_394;
 
 	public static final ItemDefinition[] DEFINITIONS = new ItemDefinition[ITEM_LIMIT];
 
@@ -61,9 +61,24 @@ public class ItemDefinition {
 
 	private final double weight;
 	
-	//private final int special_value;
+	private final int special_value;
+	
+	/**
+     * The flag that determines if this item is a full helmet.
+     */
+    private final boolean fullHelm;
+    
+    /**
+     * The flag denoting whether or not a helmet is a full mask, which hides the beard.
+     */
+    private final boolean fullMask;
 
-	public ItemDefinition(int id, String name, String examine, boolean noted, boolean noteable, int parentId, int notedId, boolean stackable, boolean destroyable, boolean tradeable, boolean members, boolean questItem, int value, int highAlch, int lowAlch, boolean equipable, boolean weapon, double weight/*, int special_value*/) {
+    /**
+     * The flag that determines if this item is a platebody.
+     */
+    private final boolean platebody;
+
+	public ItemDefinition(int id, String name, String examine, boolean noted, boolean noteable, int parentId, int notedId, boolean stackable, boolean destroyable, boolean tradeable, boolean members, boolean questItem, int value, int highAlch, int lowAlch, boolean equipable, boolean weapon, double weight, int special_value, boolean fullHelm, boolean fullMask, boolean platebody) {
 		this.id = id;
 		this.name = name;
 		this.examine = examine;
@@ -82,7 +97,10 @@ public class ItemDefinition {
 		this.equipable = equipable;
 		this.weapon = weapon;
 		this.weight = weight;
-		//this.special_value = special_value;
+		this.special_value = special_value;
+		this.fullHelm = fullHelm;
+        this.fullMask = fullMask;
+        this.platebody = platebody;
 	}
 
 	/**
@@ -211,10 +229,37 @@ public class ItemDefinition {
 		return weapon;
 	}
 	
-	/*public int getSpecialValue() {
+	public int getSpecialValue() {
 		return special_value;
-	}*/
+	}
 
+	/**
+     * Determines if this item is a full helmet or not.
+     *
+     * @return {@code true} if this item is a full helmet, {@code false} otherwise.
+     */
+    public boolean isFullHelm() {
+        return fullHelm;
+    }
+    
+    /**
+     * Determines if this item is a full mask or not.
+     *
+     * @return {@code true} if this item is a full mask, {@code false} otherwise.
+     */
+    public boolean isFullMask() {
+    	return fullMask;
+    }
+
+    /**
+     * Determines if this item is a platebody or not.
+     *
+     * @return {@code true} if this item is a platebody, {@code false} otherwise.
+     */
+    public boolean isPlatebody() {
+        return platebody;
+    }
+	
 	@Override
 	public String toString() {
 		return "ITEM[" + id + "," + name + "]";

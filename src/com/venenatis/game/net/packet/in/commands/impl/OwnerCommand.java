@@ -565,7 +565,6 @@ public class OwnerCommand implements Command {
 
 				case "equipment":
 					new EquipmentDefinitionParser().run();
-					EquipmentConstants.declare();
 					player.getActionSender().sendMessage("Successfully reloaded equipment definitions.");
 					return true;
 

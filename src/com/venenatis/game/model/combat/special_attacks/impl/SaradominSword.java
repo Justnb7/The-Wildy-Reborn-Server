@@ -32,8 +32,8 @@ public class SaradominSword implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired(Player player) {
-		return 100 * (int) player.getAttribute("vigour");
+	public int amountRequired() {
+		return 100;
 	}
 
 	@Override

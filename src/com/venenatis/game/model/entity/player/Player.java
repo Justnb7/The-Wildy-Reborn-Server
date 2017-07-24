@@ -2938,4 +2938,15 @@ public class Player extends Entity {
 		this.gear_points = points;
 	}
 
+	private double vigour = 1.0;
+	
+	public double getVigour() {
+		return vigour;
+	}
+	
+	public void setVigour(double vigour) {
+		this.vigour = vigour;
+	}
+	
+	
 }

@@ -40,8 +40,8 @@ public class AbyssalDagger implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired(Player player) {
-		return 50 * (int) player.getAttribute("vigour");
+	public int amountRequired() {
+		return 50;
 	}
 
 	@Override

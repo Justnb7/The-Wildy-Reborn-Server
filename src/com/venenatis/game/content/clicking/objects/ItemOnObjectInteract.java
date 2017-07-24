@@ -13,6 +13,7 @@ public class ItemOnObjectInteract {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj);
 		if (!player.getInventory().contains(item.getId()))
 			return;
+		
 		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().bonesOnAltar(item);
 			return;

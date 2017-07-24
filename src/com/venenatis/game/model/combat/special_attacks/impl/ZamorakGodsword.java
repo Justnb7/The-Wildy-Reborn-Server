@@ -38,8 +38,8 @@ public class ZamorakGodsword implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired(Player player) {
-		return 55 * (int) player.getAttribute("vigour");
+	public int amountRequired() {
+		return 55;
 	}
 
 	@Override

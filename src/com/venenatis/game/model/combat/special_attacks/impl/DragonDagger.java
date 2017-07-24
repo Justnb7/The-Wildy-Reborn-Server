@@ -39,8 +39,8 @@ public class DragonDagger implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired(Player player) {
-		return 25 * (int) player.getAttribute("vigour");
+	public int amountRequired() {
+		return 25;
 	}
 
 	@Override

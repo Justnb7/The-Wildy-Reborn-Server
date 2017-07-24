@@ -113,12 +113,12 @@ public class SpecialAttackHandler {
 						return false;
 					}
 
-					if (player.getSpecialAmount() >= special.amountRequired(player)) {
+					if (player.getSpecialAmount() >= special.amountRequired()) {
 						Entity target = player.getCombatState().getTarget();
 						if (special.meetsRequirements(player, target)) {
-							//TODO check if we need to apply here instead
-							player.setSpecialAmount(player.getSpecialAmount() - special.amountRequired(player));
+							player.setSpecialAmount(player.getSpecialAmount() - special.amountRequired());
 							special.handleAttack(player, target);
+							Special.refreshSpecial(player);
 						}
 					} else {
 						player.message("You do not have the required special amount.");

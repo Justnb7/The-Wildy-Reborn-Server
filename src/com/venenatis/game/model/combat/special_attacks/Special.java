@@ -50,14 +50,14 @@ public class Special {
 				return;
 			}
 
-			if (attacker.getSpecialAmount() >= special.amountRequired(attacker)) {
+			if (attacker.getSpecialAmount() >= special.amountRequired()) {
 				if (special.meetsRequirements(attacker, target)) {
 					if (attacker.getEquipment().contains(773)) {
-						attacker.setAttribute("vigour", .8);
+						attacker.setVigour(.83);
 					}
-					attacker.setSpecialAmount(attacker.getSpecialAmount() - special.amountRequired(attacker));
+					attacker.setSpecialAmount((int) (attacker.getSpecialAmount() - special.amountRequired() * attacker.getVigour()));
+					refreshSpecial(attacker);
 					special.handleAttack(attacker, target);
-
 					attacker.logoutDelay.reset();
 					if (attacker.getCombatState().getTarget().isPlayer()) { // playerIndex is the indexId of the player we're attacking
 						Player targPlayer = (Player) target; // type cast
@@ -84,6 +84,19 @@ public class Special {
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 		
 		player.setUsingSpecial(false);
+		player.getWeaponInterface().refreshSpecialAttack();
+		player.getWeaponInterface().sendSpecialBar(weapon);
+	}
+	
+	/**
+	 * This method refreshes the players special attacker bar.
+	 * 
+	 * @param player
+	 *            The player we refresh special attack for
+	 */
+	public static void refreshSpecial(Player player) {
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		
 		player.getWeaponInterface().refreshSpecialAttack();
 		player.getWeaponInterface().sendSpecialBar(weapon);
 	}

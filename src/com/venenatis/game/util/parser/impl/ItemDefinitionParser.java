@@ -38,8 +38,12 @@ public class ItemDefinitionParser extends GsonParser {
 		final boolean equipable = data.get("equipable").getAsBoolean();
 		final boolean weapon = data.get("weapon").getAsBoolean();
 		final double weight = data.get("weight").getAsDouble();
-		//final int special_value = data.get("special_value").getAsInt();
+		final int special_value = data.get("special_value").getAsInt();
+		final boolean fullHelm = data.get("fullHelm").getAsBoolean();
+		final boolean fullMask = data.get("fullMask").getAsBoolean();
+		final boolean platebody = data.get("platebody").getAsBoolean();
+		
 
-		ItemDefinition.DEFINITIONS[id] = new ItemDefinition(id, name, examine, noted, noteable, parentId, notedId, stackable, destroyable, tradeable, members, questItem, value, highAlch, lowAlch, equipable, weapon, weight/*, special_value*/);
+		ItemDefinition.DEFINITIONS[id] = new ItemDefinition(id, name, examine, noted, noteable, parentId, notedId, stackable, destroyable, tradeable, members, questItem, value, highAlch, lowAlch, equipable, weapon, weight, special_value, fullHelm, fullMask, platebody);
 	}
 }

@@ -1,7 +1,6 @@
 package com.venenatis.game.constants;
 
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -70,75 +69,6 @@ public final class EquipmentConstants {
 				return 5573;
 		}
 		return 5857;
-	}
-
-	private static final boolean[] HAS_BODY = new boolean[Constants.ITEM_LIMIT];
-
-	private static final boolean[] HAS_HEAD = new boolean[Constants.ITEM_LIMIT];
-
-	private static final boolean[] HAS_JAW = new boolean[Constants.ITEM_LIMIT];
-
-	public static void declare() {
-		for (int index = 0; index < Constants.ITEM_LIMIT; index++) {
-			HAS_BODY[index] = true;
-			HAS_HEAD[index] = true;
-			HAS_JAW[index] = true;
-		}
-
-		final String[] remove_head = {
-				"helm", "coif", "sallet", "hood", "hat"
-		};
-
-		final String[] remove_body = {
-				"blouse", "chestplate", "top", "shirt", "brassard",
-				"torso", "hauberk", "platebody", "robe", "splitbark body", "jacket"
-		};
-
-		final String[] has_jaw = {
-				"mask", "med helm", "coif", "hood", "neitiznot", "armadyl helmet",
-				"berserker helm", "archer helm", "farseer helm", "warrior helm",
-				"void", "bandana", "bearhead", "dharok's helm", "hat"
-		};
-
-		for (final ItemDefinition def : ItemDefinition.DEFINITIONS) {
-			if (def != null) {
-				final String itemName = def.getName().trim().toLowerCase();
-				for (final String name : remove_head) {
-					if (itemName.contains(name) && !itemName.equals("robin hood hat")) {
-						HAS_HEAD[def.getId()] = false;
-						HAS_JAW[def.getId()] = false;
-					}
-				}
-
-				for (final String name : remove_body) {
-					if (itemName.contains(name) && !itemName.equals("angler top") && !itemName.contains("Farmer's shirt")) {
-						HAS_BODY[def.getId()] = false;
-					}
-				}
-
-				for (final String name : has_jaw) {
-					if (itemName.contains(name)) {
-						HAS_JAW[def.getId()] = true;
-					}
-				}
-				if (itemName.contains("full ")) {
-					HAS_JAW[def.getId()] = false;
-					HAS_HEAD[def.getId()] = true;
-				}
-			}
-		}
-	}
-
-	public static boolean hasBody(int id) {
-		return HAS_BODY[id];
-	}
-
-	public static boolean hasHead(int id) {
-		return HAS_HEAD[id];
-	}
-
-	public static boolean hasJaw(int id) {
-		return HAS_JAW[id];
 	}
 
 	/**

@@ -5,12 +5,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.ScriptManager;
 import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Arrow;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Bolt;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Carvable;
@@ -147,7 +145,6 @@ public class Bootstrap {
 			Featherable.declare();
 			Stringable.declare();
 			TriviaBot.declare();
-			EquipmentConstants.declare();
 			World.getWorld().init();
 			ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
 		});

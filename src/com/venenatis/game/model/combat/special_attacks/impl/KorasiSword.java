@@ -31,8 +31,8 @@ public class KorasiSword implements SpecialAttack {
 	}
 
 	@Override
-	public int amountRequired(Player player) {
-		return 60 * (int) player.getAttribute("vigour");
+	public int amountRequired() {
+		return 60;
 	}
 
 	@Override

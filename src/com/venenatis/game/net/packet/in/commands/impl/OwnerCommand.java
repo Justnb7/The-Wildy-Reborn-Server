@@ -39,6 +39,12 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "pos":
+		case "mypos":
+		case "coords":
+			player.message(player.getLocation().toString());
+			return true;
+		
 		case "unlock":
 			int type = parser.nextInt();
 			if (type == 0) {

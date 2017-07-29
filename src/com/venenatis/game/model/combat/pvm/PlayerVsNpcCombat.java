@@ -161,7 +161,7 @@ public class PlayerVsNpcCombat {
 			player.message("You cannot attack that npc from outside the room.");
 			return false;
 		}
-		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !npc.inMulti()) {
+		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !Area.inMultiCombatZone(npc)) {
 			player.getCombatState().reset();
 			player.message("This monster is already in combat.");
 			return false;

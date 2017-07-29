@@ -27,6 +27,10 @@ public class Buttons {
 	public static void handleButton(Player player, int button) {
 		System.out.println("enter "+button);
 		switch (button) {
+		
+		case 51061:
+			player.getActionSender().sendInterface(37700);
+			break;
 
 		/* Close */
 		case 42210:

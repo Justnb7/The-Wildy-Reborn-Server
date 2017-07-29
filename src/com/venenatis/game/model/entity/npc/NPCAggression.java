@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.player.Player;
  
@@ -76,7 +77,7 @@ public final class NPCAggression {
         if (p.getZ() != npc.getZ() || !p.isVisible()) {
             return false;
         }
-        if (p.aggressionTolerance.elapsed(5, TimeUnit.MINUTES) && !npc.inMulti() && npc.getDefinition().getCombatLevel() < COMBAT_LEVEL_TOLERANCE) {
+        if (p.aggressionTolerance.elapsed(5, TimeUnit.MINUTES) && !Area.inMultiCombatZone(npc) && npc.getDefinition().getCombatLevel() < COMBAT_LEVEL_TOLERANCE) {
         	return false;
         }
         // Bad distance

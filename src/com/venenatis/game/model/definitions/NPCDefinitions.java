@@ -30,33 +30,12 @@ public final class NPCDefinitions {
 		if (definitions[npcId] == null) {
 			definitions[npcId] = new NPCDefinitions(npcId);
 		}
+		//System.out.println("npc id: "+npcId);
 		return definitions[npcId];
 	}
 	
 	public static NPCDefinitions forId(int id) {
 		return id > definitions.length ? null : definitions[id];
-	}
-
-	/**
-	 * Attempts to retrieve the {@link NPCDefinitions} object with the exact same name as specified.
-	 * 
-	 * <p>
-	 * <b>Please note that this is a fairly resource intensive function as we are sifting through thousands of definitions in hopes to retrieve a definition with the same name.</b>
-	 * </p>
-	 * 
-	 * @param name the name of the npc
-	 * @return the definition with the same name if possible, otherwise null
-	 */
-	public static NPCDefinitions get(String name) {
-		for (NPCDefinitions definition : definitions) {
-			if (definition == null || definition.name == null) {
-				continue;
-			}
-			if (definition.name.equalsIgnoreCase(name)) {
-				return definition;
-			}
-		}
-		return null;
 	}
 	
 	public NPCDefinitions(int id) {

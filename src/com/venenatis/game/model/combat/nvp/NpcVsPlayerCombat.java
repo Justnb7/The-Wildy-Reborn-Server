@@ -1,5 +1,6 @@
 package com.venenatis.game.model.combat.nvp;
 
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -146,11 +147,11 @@ public class NpcVsPlayerCombat {
 			return false;
 		}
 		if (npc.getId() != 5535 && npc.getId() != 494) { // small tent and kraken can attack in single
-			if (!npc.inMulti() && npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex()) {
+			if (!Area.inMultiCombatZone(npc) && npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex()) {
 				npc.targetId = 0;
 				return false;
 			}
-			if (!npc.inMulti()) {
+			if (!Area.inMultiCombatZone(npc)) {
 				if ((npc.lastAttacker != player && Combat.hitRecently(npc, 4000)) || npc != player.lastAttacker && Combat.hitRecently(player, 4000)) {
 					npc.targetId = 0;
 					return false;

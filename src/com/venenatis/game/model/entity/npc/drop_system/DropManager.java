@@ -186,11 +186,6 @@ public class DropManager {
 			player.getActionSender().sendMessage("You may not search for alphabetical and numerical combinations.");
 			return;
 		}
-		if (System.currentTimeMillis() - player.lastDropTableSearch < TimeUnit.SECONDS.toMillis(5)) {
-			player.getActionSender().sendMessage("You can only do this once every 5 seconds.");
-			return;
-		}
-		player.lastDropTableSearch = System.currentTimeMillis();
 		
 		clear(player);
 
@@ -214,14 +209,18 @@ public class DropManager {
 								}
 								
 								if(ItemDefinition.get(drop.getItemId()).getName().toLowerCase().contains(name.toLowerCase())) {
+									//player.debug(String.format("drop %s vs name %s%n", ItemDefinition.get(drop.getItemId()).getName().toLowerCase(), name.toLowerCase()));
 									npcs.add(index);
 									player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(NPCDefinitions.get(index).getId()).getName().toLowerCase().replaceAll("_", " ")), 42531 + count);
 									count++;
 								}
 							}
+							
+							
 						}
 					}
 				};
+
 			}
 			
 			player.searchList = npcs;
@@ -229,12 +228,13 @@ public class DropManager {
 			
 		}
 		
-		for(int index = 0; index < definitions.size(); index++) {
-			if(index >= 150) {
+		for(int npcId = 0; npcId < definitions.size(); npcId++) {
+			//player.debug(String.format("npcId %d%n", npcId));
+			if(npcId >= 150) {
 				break;
 			}
-			player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(index).getName().toLowerCase().replaceAll("_", " ")), 42531 + index);
-			player.debug("npc name: "+StringUtils.capitalize(NPCDefinitions.get(index).getName().toLowerCase().replaceAll("_", " ")));
+			//player.debug(String.format("npc name: %s%n", NPCDefinitions.get(definitions.get(npcId)).getName()));
+			player.getActionSender().sendString(StringUtils.capitalize(NPCDefinitions.get(definitions.get(npcId)).getName().toLowerCase().replaceAll("_", " ")), 42531 + npcId);
 		}
 
 		player.searchList = definitions;

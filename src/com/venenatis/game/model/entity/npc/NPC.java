@@ -601,56 +601,12 @@ public class NPC extends Entity {
 		if (NPCDefinitions.get(npcId) == null || npcId < 0 || npcId >= NPCDefinitions.NPCS) {
 			return "None";
 		}
+		//System.out.println("NPC NAME: "+NPCDefinitions.get(npcId).getName());
 		return NPCDefinitions.get(npcId).getName();
 	}
 
 	public String getName() {
 		return npcName;
-	}
-
-	public boolean inMulti() {
-		if (getX() >= 2840 && getY() >= 5270 && getX() >= 2920 && getY() <= 5360) {
-			return true;
-		}
-
-		if (Boundary.isIn(this, Boundary.GODWARS_BOSSROOMS) || Boundary.isIn(this, Boundary.SCORPIA_PIT)) {
-			return true;
-		}
-
-		return (getX() >= 3136 && getX() <= 3327 && getY() >= 3519 && getY() <= 3607)
-				|| (getX() >= 3190 && getX() <= 3327 && getY() >= 3648 && getY() <= 3839)
-				|| (getX() >= 2625 && getX() <= 2685 && getY() >= 2550 && getY() <= 2620)
-				|| // Pest
-				(getX() >= 3200 && getX() <= 3390 && getY() >= 3840 && getY() <= 3967)
-				|| (getX() >= 2864 && getX() <= 2877 && getY() >= 5348 && getY() <= 5374)
-				|| // bandos
-				(getX() >= 2884 && getX() <= 2991 && getY() >= 5255 && getY() <= 5278)
-				|| // sara
-				(getX() >= 2821 && getX() <= 2844 && getY() >= 5292 && getY() <= 5311)
-				|| // armadyl
-				(getX() >= 2968 && getX() <= 2988 && getY() >= 9512 && getY() <= 9523)
-				|| // barrelchest
-				(getX() >= 2992 && getX() <= 3007 && getY() >= 3912 && getY() <= 3967) ||
-				(getX() >= 2680 && getX() <= 2750 && getY() >= 3685 && getY() <= 3765)
-				|| (getX() >= 2946 && getX() <= 2959 && getY() >= 3816 && getY() <= 3831)
-				|| (getX() >= 3008 && getX() <= 3199 && getY() >= 3856 && getY() <= 3903)
-				|| (getX() >= 3008 && getX() <= 3071 && getY() >= 3600 && getY() <= 3711)
-				|| (getX() >= 3072 && getX() <= 3327 && getY() >= 3608 && getY() <= 3647)
-				|| (getX() >= 2624 && getX() <= 2690 && getY() >= 2550 && getY() <= 2619)
-				|| (getX() >= 2371 && getX() <= 2422 && getY() >= 5062 && getY() <= 5117)
-				|| (getX() >= 2892 && getX() <= 2932 && getY() >= 4435 && getY() <= 4464)
-				|| (getX() >= 2256 && getX() <= 2287 && getY() >= 4680 && getY() <= 4711)
-				|| (getX() >= 3157 && getX() <= 3191 && getY() >= 2965 && getY() <= 2995)
-				|| (getX() >= 2512 && getX() <= 2540 && getY() >= 4633 && getY() <= 4659)
-				|| (getX() >= 3461 && getX() <= 3494 && getY() >= 9476 && getY() <= 9506)
-				|| (getX() >= 3357 && getX() <= 3383 && getY() >= 3721 && getY() <= 3749)
-				|| (getX() >= 2785 && getX() <= 2809 && getY() >= 2775 && getY() <= 2795)
-				|| (getX() >= 3093 && getX() <= 3118 && getY() >= 3922 && getY() <= 3947)
-                || (getX() >= 2932 && getX() <= 2992 && getY() >= 9745 && getY() <= 9825)
-				|| (getX() >= 2980 && getX() <= 2995 && getY() >= 4375 && getY() <= 4390)
-
-				|| (getX() >= 2660 && getX() <= 2730 && getY() >= 3707 && getY() <= 3737);
-
 	}
 
 	@Override

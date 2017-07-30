@@ -41,7 +41,6 @@ public class TableGroup extends ArrayList<Table> {
 			if (policy.equals(TablePolicy.CONSTANT)) {
 				for (Drop drop : table) {
 					int minimumAmount = drop.getMinimumAmount();
-
 					items.add(new Item(drop.getItemId(), minimumAmount + Utility.random(drop.getMaximumAmount() - minimumAmount)));
 				}
 			} else {
@@ -61,20 +60,7 @@ public class TableGroup extends ArrayList<Table> {
 						items.add(item);
 						if (chance <= 1.5) {
 							if (policy.equals(TablePolicy.VERY_RARE) || policy.equals(TablePolicy.RARE)) {
-								if (item.getName().toLowerCase().contains("cowhide")
-										|| item.getName().toLowerCase().contains("feather")
-										|| item.getName().toLowerCase().contains("arrow")
-										|| item.getName().toLowerCase().contains("sq shield")
-										|| item.getName().toLowerCase().contains("rune warhammer")
-										|| item.getName().toLowerCase().contains("rune battleaxe")
-										|| item.getName().toLowerCase().contains("casket")
-										|| item.getName().toLowerCase().contains("silver ore")
-										|| item.getName().toLowerCase().contains("rune spear")
-										|| item.getId() >= 554 && item.getId() <= 566) {
-									
-								} else {
-									World.getWorld().sendWorldMessage("<col=FF0000>[Lootations] @cr19@ </col><col=255><img=" + rights + ">" + Utility.capitalize(player.getUsername()) + "</col> received <col=255>" + item.getAmount() + "</col>x <col=255>" + ItemDefinition.get(item.getId()).getName() + "</col>.", false);
-								}
+								World.getWorld().sendWorldMessage("<col=FF0000>[Lootations] <img=26> </col><col=255><img=" + rights + ">" + Utility.capitalize(player.getUsername()) + "</col> received <col=255>" + item.getAmount() + "</col>x <col=255>" + ItemDefinition.get(item.getId()).getName() + "</col>.", false);
 							}
 						}
 					}

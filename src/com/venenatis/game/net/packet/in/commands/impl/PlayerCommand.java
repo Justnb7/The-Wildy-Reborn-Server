@@ -93,6 +93,9 @@ public class PlayerCommand implements Command {
 			return true;
 			
 		case "unskull":
+			if(Area.inWilderness(player)) {
+				return false;
+			}
 			if(player.getTotalAmountDonated() >= 10 || player.getRights().isOwner(player)) {
 				player.setSkullType(SkullType.NONE);
 				player.setSkullTimer(-1);
@@ -105,6 +108,9 @@ public class PlayerCommand implements Command {
 			return true;
 			
 		case "food":
+			if(Area.inWilderness(player)) {
+				return false;
+			}
 			//Regular donator
 			if(player.getTotalAmountDonated() >= 10) {
 				//TODO create a fill method, fill the empty slots rather then spawning 28 items
@@ -121,6 +127,9 @@ public class PlayerCommand implements Command {
 			return true;
 			
 		case "pots":
+			if(Area.inWilderness(player)) {
+				return false;
+			}
 			if(player.getTotalAmountDonated() >= 30) {
 				player.getInventory().add(new Item(12695, 1), true);
 			} else if(player.getTotalAmountDonated() >= 100) {
@@ -137,33 +146,43 @@ public class PlayerCommand implements Command {
 		case "restore":
 		case "srestore":
 		case "pray":
+			if(Area.inWilderness(player)) {
+				return false;
+			}
 			player.getInventory().add(new Item(3024, 1), true);
 			return true;
 			
 		case "brew":
 		case "sbrew":
 		case "sarabrew":
+			if(Area.inWilderness(player)) {
+				return false;
+			}
 			player.getInventory().add(new Item(6685, 1), true);
 			return true;
 			
 		case "range":
 		case "rpot":
+			if(Area.inWilderness(player)) {
+				return false;
+			}
 			player.getInventory().add(new Item(2444, 1), true);
 			return true;
 			
 		case "mage":
 		case "mpot":
+			if(Area.inWilderness(player)) {
+				return false;
+			}
 			player.getInventory().add(new Item(3040, 1), true);
 			return true;
 			
 		case "empty":
 			if (Area.inWilderness(player)) {
-				player.getActionSender().sendMessage("Please enter safe zone to do this!");
 				return true;
 			}
 
 			if (player.getCombatState().inCombat()) {
-				player.getActionSender().sendMessage("Please get out of combat to do this.");
 				return true;
 			}
 			player.getInventory().clear(true);

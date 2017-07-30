@@ -390,12 +390,7 @@ public class NPC extends Entity {
 		direction = -1;
 		this.entityFaceIndex = -1;
 		faceTileY = -1;
-		Object tele = getAttribute("teleporting", null);
-		boolean teleporting = tele != null && (boolean) tele;
-		if (teleporting) {
-			setOnTile(getX(), getY(), getZ());
-			setAttribute("teleporting", false);
-		}
+		this.removeAttribute("teleporting");
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();

@@ -699,7 +699,7 @@ public class Combat {
             		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
             	
             	// Apply the damage inside Hit
-                if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC)) // dont show 0 for splash
+                if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC && attacker != null && attacker.isPlayer())) // dont show 0 for splash
                     target.damage(hit);
 
                 if (attacker.isPlayer()) {

@@ -76,6 +76,15 @@ public abstract class Entity {
 	 * The random identifier
 	 */
 	private Random random = new Random();
+	
+	/**
+	 * Gets the random number generator.
+	 *
+	 * @return The random number generator.
+	 */
+	public Random getRandom() {
+		return random;
+	}
 
 	public Entity followTarget;
 
@@ -248,7 +257,8 @@ public abstract class Entity {
 	 * @param teleportTarget The target location.
 	 */
 	public void setTeleportTarget(Location teleportTarget) {
-		asPlayer().getWalkingQueue().reset();
+		if (this.isPlayer())
+			asPlayer().getWalkingQueue().reset();
 		this.teleportTarget = teleportTarget;
 	}
 	
@@ -441,6 +451,7 @@ public abstract class Entity {
 					return false;
 				player.getActionSender().sendMessage("You have been poisoned!");
 				infection = 1;
+				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
 			entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
 			Server.getTaskScheduler().schedule(new PoisonCombatTask(this));
@@ -718,9 +729,23 @@ public abstract class Entity {
 			}
 			int shield = player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT) == null ? -1 : player_me.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId();
 			// TODO special reduction effects can go here, like Ely
-			if (shield == 12817) {
+			
+			if (shield == 13740) { //Divine
+				if (player_me.getPrayerPoint() > 0) {
+					double damageRecieved = damage * 0.7;
+					int prayerLost = (int) (damage * 0.5);
+					if (player_me.getPrayerPoint() >= prayerLost) {
+						damage = (int) damageRecieved;
+						player_me.setPrayerPoint(player_me.getPrayerPoint() - prayerLost);
+						if (player_me.getPrayerPoint() < 0)
+							player_me.setPrayerPoint(0);
+					}
+				}
+			}
+			if (shield == 12817) { //Elysian
 				if (Utility.getRandom(100) > 30 && damage > 0) {
 					damage *= .75;
+					player_me.playGraphics(Graphic.highGraphic(321));
 				}
 			}
 
@@ -758,6 +783,7 @@ public abstract class Entity {
 				damage = 0;
 			}
 			if (combat_type == CombatStyle.MAGIC && victim_npc.getId() == 5535) {
+				
 				damage = 0;
 			}
 		}
@@ -801,7 +827,7 @@ public abstract class Entity {
 		// Update hit instance since we've changed the 'damage' value
 		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type).between(attacker, this);
 
-		// NOTE: If not instantly applied, use EventManager.event(2) { entity.damage(hit) }
+		// NOTE: If not instantly applied, use hit.delay(ticks) to make it appear after X ticks
 		if (applyInstantly) {
 			this.damage(hit);
 			if (this.isPlayer())
@@ -1248,8 +1274,8 @@ public abstract class Entity {
 		return isPlayer() ? ((Player)this).getUsername() : ((NPC)this).getName();
 	}
 
-	public Entity getEntity() {//Would this work? :d
+	public Entity getEntity() {
 		return isPlayer() ? asPlayer() : asNpc();
-	}//trying to fill this part
+	}
 
 }

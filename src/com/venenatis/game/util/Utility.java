@@ -569,9 +569,21 @@ public class Utility {
 
     public static byte xlateDirectionToClient[] = new byte[] { 1, 2, 4, 7, 6, 5, 3, 0 };
 
-    public static int random(int min, int max) {
-        return getRandom(max - min + 1) + min;
-    }
+    /**
+	 * Generates an inclusive pseudo-random number with (approximately) equal
+	 * probability.
+	 *
+	 * @param min
+	 *            The minimum value.
+	 *
+	 * @param max
+	 *            The maximum value.
+	 *
+	 * @return The random generated number.
+	 */
+	public static int random(int min, int max) {
+		return Utility.random(min, max, true);
+	}
 
     public static int getIndex(int id, int[] array) {
         for (int i = 0; i < array.length; i++)

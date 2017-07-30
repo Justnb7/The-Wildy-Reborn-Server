@@ -73,42 +73,6 @@ public class Skills {
 		levels[3] = 10;
 		exps[3] = 1184;
 	}
-
-    /**
-     * Sets the mob's prayer points.
-     *
-     * @param prayerPoints The amount of prayer points to set.
-     */
-    public void setPrayerPoints(double prayerPoints, boolean update) {
-        int lvlBefore = (int) Math.ceil(player.getPrayerPoint());
-        player.setPrayerPoint(prayerPoints);
-        int lvlAfter = (int) Math.ceil(player.getPrayerPoint());
-        if (update && (lvlBefore - lvlAfter >= 1 || lvlAfter - lvlBefore >= 1) && player != null) {
-        	player.getActionSender().sendSkillLevel(PRAYER);
-        }
-    }
-
-    /**
-     * Increases the mob's prayer points to its maxmimum.
-     *
-     * @param modification The amount to increase by.
-     */
-    public void increasePrayerPoints(double modification) {
-        if (player.getPrayerPoint() < getLevelForExperience(PRAYER)) {
-            setPrayerPoints(player.getPrayerPoint() + modification >= getLevelForExperience(PRAYER) ? getLevelForExperience(PRAYER) : player.getPrayerPoint() + modification, true);
-        }
-    }
-
-    /**
-     * Decreases the mob's prayer points to its minimum.
-     *
-     * @param modification The amount to increase by.
-     */
-    public void decreasePrayerPoints(double modification) {
-        if (player.getPrayerPoint() > 0) {
-            setPrayerPoints(player.getPrayerPoint() - modification, true);
-        }
-    }
 	
 	public void handleLevelUp(int skillId) {
 		final SkillData skillData = SkillData.values()[skillId];

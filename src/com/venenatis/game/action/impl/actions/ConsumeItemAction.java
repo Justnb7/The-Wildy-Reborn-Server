@@ -174,28 +174,10 @@ public class ConsumeItemAction extends Action {
 					break;
 				case PRAYER_POTION:
 					player.getActionSender().sendMessage("You drink some of your restore prayer potion.");
-					for (int i = 0; i < drink.getSkills().length; i++) {
-						int skill = drink.getSkill(i);
-						int modification = (int) Math
-								.floor(7 + (player.getSkills().getLevelForExperience(skill) * 0.25));
-						/**
-						 * Holy wrench increases prayer restoration.
-						 */
-						if (skill == Skills.PRAYER) {
-							if (player.getInventory().contains(6714)) {
-								modification++;
-								if (player.getSkills().getLevelForExperience(Skills.PRAYER) >= 40) {
-									modification++;
-								}
-								if (player.getSkills().getLevelForExperience(Skills.PRAYER) >= 70) {
-									modification++;
-								}
-							}
-							player.getSkills().increasePrayerPoints(modification);
-						} else {
-							player.getSkills().increaseLevelToMaximum(skill, modification);
-						}
-					}
+					player.getSkills().setLevel(5, (int) (player.getSkills().getLevel(5) + (player.getSkills().getLevelForExperience(5) * .33)));
+					if (player.getSkills().getLevel(5) > player.getSkills().getLevelForExperience(5))
+						player.getSkills().setLevel(5, player.getSkills().getLevelForExperience(5));
+					player.getActionSender().sendSkillLevel(Skills.PRAYER);
 					break;
 				case RESTORE:
 				case SUPER_RESTORE:
@@ -203,20 +185,11 @@ public class ConsumeItemAction extends Action {
 					for (int i = 0; i < drink.getSkills().length; i++) {
 						int skill = drink.getSkill(i);
 						int modification = (int) (player.getSkills().getLevelForExperience(skill) / 3);
-						/**
-						 * Holy wrench increases prayer restoration.
-						 */
 						if (skill == Skills.PRAYER) {
-							if (player.getInventory().contains(6714)) {
-								modification++;
-								if (player.getSkills().getLevelForExperience(Skills.PRAYER) >= 40) {
-									modification++;
-								}
-								if (player.getSkills().getLevelForExperience(Skills.PRAYER) >= 70) {
-									modification++;
-								}
-							}
-							player.getSkills().increasePrayerPoints(modification);
+							player.getSkills().setLevel(5, (int) (player.getSkills().getLevel(5) + 1 + (player.getSkills().getLevelForExperience(5) * .33)));
+							if (player.getSkills().getLevel(5) > player.getSkills().getLevelForExperience(5))
+								player.getSkills().setLevel(5, player.getSkills().getLevelForExperience(5));
+							player.getActionSender().sendSkillLevel(Skills.PRAYER);
 						} else {
 							player.getSkills().increaseLevelToMaximum(skill, modification);
 						}
@@ -231,16 +204,10 @@ public class ConsumeItemAction extends Action {
 						 * Holy wrench increases prayer restoration.
 						 */
 						if (skill == Skills.PRAYER) {
-							if (player.getInventory().contains(6714)) {
-								modification++;
-								if (player.getSkills().getLevelForExperience(Skills.PRAYER) >= 40) {
-									modification++;
-								}
-								if (player.getSkills().getLevelForExperience(Skills.PRAYER) >= 70) {
-									modification++;
-								}
-							}
-							player.getSkills().increasePrayerPoints(modification);
+							player.getSkills().setLevel(5, (int) (player.getSkills().getLevel(5) + (player.getSkills().getLevelForExperience(5) * .33)));
+							if (player.getSkills().getLevel(5) > player.getSkills().getLevelForExperience(5))
+								player.getSkills().setLevel(5, player.getSkills().getLevelForExperience(5));
+							player.getActionSender().sendSkillLevel(Skills.PRAYER);
 						} else {
 							player.getSkills().increaseLevelToMaximum(skill, modification);
 						}

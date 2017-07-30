@@ -146,6 +146,7 @@ public class PlayerCommand implements Command {
 		case "restore":
 		case "srestore":
 		case "pray":
+		case "rest":
 			if(Area.inWilderness(player)) {
 				return false;
 			}

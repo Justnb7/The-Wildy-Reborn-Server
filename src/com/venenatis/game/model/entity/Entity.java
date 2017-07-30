@@ -442,7 +442,7 @@ public abstract class Entity {
 
 	public boolean poison(PoisonType poisonType) {
 		Entity entity = this;
-		if (entity.isPoisoned() || entity.getPoisonType() == null)
+		if (entity.isPoisoned() || entity.getPoisonType() != null)
 			return false;
 		if (random.nextInt(3) == 0) {
 			if (entity.type == EntityType.PLAYER) {

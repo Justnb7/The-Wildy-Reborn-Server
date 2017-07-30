@@ -39,6 +39,10 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "removep":
+			player.getSkills().setLevel(Skills.PRAYER, 1);
+			return true;
+		
 		case "pos":
 		case "mypos":
 		case "coords":

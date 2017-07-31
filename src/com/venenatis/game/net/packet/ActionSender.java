@@ -667,21 +667,22 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendStillGFX(int id, int x, int y, int height, int time) {
+	public ActionSender sendStillGFX(final int id, final int height, final Location loc) {
 		if (id >= 65535) {
 			throw new IllegalArgumentException("Identification value for the still graphic is prohibited; " + id);
 		}
 		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(85);
-			player.getOutStream().writeByteC(y - (player.getLastKnownRegion().getRegionY() * 8));
-			player.getOutStream().writeByteC(x - (player.getLastKnownRegion().getRegionX() * 8));
+			/*player.getOutStream().writeFrame(85);
+			player.getOutStream().writeByteC(loc.getY() - (player.getLastKnownRegion().getRegionY() * 8));
+			player.getOutStream().writeByteC(loc.getX() - (player.getLastKnownRegion().getRegionX() * 8));*/
+			sendLocalCoordinates(loc, 0, 0);
 			
 			//Still gfx packet
 			player.getOutStream().writeFrame(4);
 			player.getOutStream().writeByte(0);
 			player.getOutStream().writeShort(id);
 			player.getOutStream().writeByte(height);
-			player.getOutStream().writeShort(time);
+			player.getOutStream().writeShort(0);
 		}
 		return this;
 	}

@@ -17,6 +17,7 @@ import com.venenatis.game.model.combat.npcs.impl.fight_caves.TzTokJad;
 import com.venenatis.game.model.combat.npcs.impl.godwars.bandos.GeneralGraardor;
 import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.KrilTsutsaroth;
 import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.ZaklnGritch;
+import com.venenatis.game.model.combat.npcs.impl.wilderness.ChaosFanatic;
 import com.venenatis.game.model.combat.npcs.impl.wilderness.Chaos_Elemental;
 import com.venenatis.game.model.combat.npcs.impl.wilderness.King_Black_Dragon;
 import com.venenatis.game.model.entity.Entity;
@@ -57,6 +58,7 @@ public abstract class AbstractBossCombat {
 		
 		bosses.put(2054, new Chaos_Elemental());
 		bosses.put(239,  new King_Black_Dragon());
+		bosses.put(6619,  new ChaosFanatic());
 
 	}
 	

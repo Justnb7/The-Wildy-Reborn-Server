@@ -40,5 +40,10 @@ public enum CombatStyle {
     /**
      * The Chaos elementals disarm attack
      */
-	DISARM;
+	DISARM, 
+	
+	/**
+	 * Chaos fanatic special attack
+	 */
+	GREEN_BOMB;
 }

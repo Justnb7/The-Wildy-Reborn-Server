@@ -17,8 +17,6 @@ import com.venenatis.game.world.World;
 
 public class Chaos_Elemental extends AbstractBossCombat {
 	
-	
-
 	@Override
 	public void execute(Entity attacker, Entity victim) {
 		if(!attacker.isNPC()) {
@@ -72,7 +70,6 @@ public class Chaos_Elemental extends AbstractBossCombat {
 			}
 			hitDelay = (gfxDelay / 20) - 1;
 			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 551, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
-			victim.asPlayer().debug("DISARM");
 			break;
 		case TELEOTHER:
 			maxHit = 28;
@@ -92,7 +89,6 @@ public class Chaos_Elemental extends AbstractBossCombat {
 			}
 			hitDelay = (gfxDelay / 20) - 1;
 			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 554, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
-			victim.asPlayer().debug("TELEOTHER");
 			break;
 		case RANGE:
 			maxHit = 28;
@@ -120,7 +116,6 @@ public class Chaos_Elemental extends AbstractBossCombat {
 				randomHit = player.getSkills().getLevel(Skills.HITPOINTS);
 			}
 			preHit = randomHit;
-			victim.asPlayer().debug("RANGE");
 			break;
 		case MAGIC:
 			maxHit = 28;
@@ -148,7 +143,6 @@ public class Chaos_Elemental extends AbstractBossCombat {
 				randomHit = player.getSkills().getLevel(Skills.HITPOINTS);
 			}
 			preHit = randomHit;
-			victim.asPlayer().debug("MAGIC");
 			break;
 		default:
 			preHit = 0;

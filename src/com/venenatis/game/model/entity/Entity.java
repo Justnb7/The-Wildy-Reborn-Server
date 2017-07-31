@@ -1,5 +1,11 @@
 package com.venenatis.game.model.entity;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import com.google.common.base.Preconditions;
 import com.venenatis.game.action.ActionQueue;
 import com.venenatis.game.constants.EquipmentConstants;
@@ -7,7 +13,6 @@ import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatState;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
@@ -31,8 +36,6 @@ import com.venenatis.game.world.pathfinder.Directions;
 import com.venenatis.game.world.pathfinder.TileControl;
 import com.venenatis.game.world.pathfinder.region.Coverage;
 import com.venenatis.server.Server;
-
-import java.util.*;
 
 /**
  * @author Patrick van Elderen
@@ -723,7 +726,7 @@ public abstract class Entity {
 				if (combat_type == CombatStyle.RANGE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
 					damage *= prayProtection;
 				}
-				if (combat_type == CombatStyle.MAGIC && player_me.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+				if (combat_type == CombatStyle.MAGIC && combat_type == CombatStyle.GREEN_BOMB && player_me.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 					damage *= prayProtection;
 				}
 			}

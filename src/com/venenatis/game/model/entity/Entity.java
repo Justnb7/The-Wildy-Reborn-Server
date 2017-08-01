@@ -35,6 +35,8 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.Directions;
 import com.venenatis.game.world.pathfinder.TileControl;
 import com.venenatis.game.world.pathfinder.region.Coverage;
+import com.venenatis.game.world.pathfinder.region.RegionStore;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
 /**
@@ -1050,16 +1052,14 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * Plays projectiles.
+	 * Plays graphics.
+	 * @param graphic The graphics.
 	 */
 	public void playProjectile(Projectile projectile) {
-		for (int i = 0; i < World.getWorld().getPlayers().capacity(); i++) {
-			Player p = World.getWorld().getPlayers().get(i);
-			if (p != null) {
-				if (p.getOutStream() != null) {
-					if (p.getLocation().isWithinDistance(this.getLocation())) {
-						p.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(),  projectile.getSlope(), projectile.getRadius(), projectile.getLockon());
-					}
+		for(RegionStore r : RegionStoreManager.get().getSurroundingRegions(this.getLocation())) {
+			for(Player p : r.getPlayers()) {
+				if(p.getLocation().isWithinDistance(this.getLocation())) {
+					p.getActionSender().sendProjectile(projectile.getStart(), projectile.getFinish(), projectile.getId(), projectile.getDelay(), projectile.getAngle(), projectile.getSpeed(), projectile.getStartHeight(), projectile.getEndHeight(),  projectile.getSlope(), projectile.getRadius(), projectile.getLockon());
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package com.venenatis.game.location;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.pathfinder.Directions;
+import com.venenatis.game.world.pathfinder.ProjectilePathFinder.Direction;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.game.world.pathfinder.impl.PrimitivePathFinder;
 
@@ -799,5 +800,9 @@ public class Location {
 		int pointX = other.getX();
 		int pointY = other.getY();
 		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
+	}
+
+	public Location add(Direction direction) {
+		return new Location(x + direction.getStepX(), y + direction.getStepY(), z);
 	}
 }

@@ -3,7 +3,6 @@ package com.venenatis.game.model.combat.npcs.impl.wilderness;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
@@ -17,6 +16,7 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.pathfinder.ProjectilePathFinder.Direction;
 
 public class ChaosFanatic extends AbstractBossCombat {
 	
@@ -59,11 +59,10 @@ public class ChaosFanatic extends AbstractBossCombat {
 			break;
 		}*/
 		style = CombatStyle.GREEN_BOMB;
-
-		//Basicaly first one is @ vics location the other two are random
-		Location firstLocation = victim.getLocation();
-		Location secondLocation = victim.getLocation().transform(1, 1, 0);
-		Location thirdLocation = victim.getLocation().transform(-1, -1, 0);
+		
+		Location firstLocation = victim.getLocation().clone();
+		Location secondLocation = victim.getLocation().clone().add(Direction.SOUTH_EAST);
+		Location thirdLocation = victim.getLocation().clone().add(Direction.SOUTH_WEST);
 
 		attacker.sendForcedMessage(MESSAGES[random.nextInt(MESSAGES.length)]);
 
@@ -113,12 +112,15 @@ public class ChaosFanatic extends AbstractBossCombat {
 				gfxDelay = 140;
 			}
 			hitDelay = (gfxDelay / 20) - 1;
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), firstLocation, 551, 45, 50,
-					clientSpeed, 43, 35, 0, 10, 48));
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), secondLocation, 551, 45, 50,
-					clientSpeed, 43, 35, 0, 10, 48));
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), thirdLocation, 551, 45, 50,
-					clientSpeed, 43, 35, 0, 10, 48));
+			player.debug(String.format("First location: %s%n ", firstLocation.toString()));
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), firstLocation, 551, 45, 50, 70, 43, 35, 0, 10, 10));
+			//attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), firstLocation, 551, 45, 50,
+					//clientSpeed, 43, 35, 0, 10, 48));
+			//attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), secondLocation, 551, 45, 50,
+					//clientSpeed, 43, 35, 0, 10, 48));
+			//attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), thirdLocation, 551, 45, 50,
+					//clientSpeed, 43, 35, 0, 10, 48));
+			
 			break;
 		default:
 			preHit = 0;
@@ -153,10 +155,12 @@ public class ChaosFanatic extends AbstractBossCombat {
 							enemies.add(p);
 						}
 					}
-					//code seems correct
-					victim.getActionSender().stillGfx(157, firstLocation.getX(), firstLocation.getY(), player.getZ(), 5);
-					victim.getActionSender().stillGfx(157, secondLocation.getX(), secondLocation.getY(), player.getZ(), 5);
-					victim.getActionSender().stillGfx(157, thirdLocation.getX(), thirdLocation.getY(), player.getZ(), 5);
+					player.debug(String.format("First location still gfx:  %s%n ", firstLocation));
+					//victim.getActionSender().stillGfx(157, firstLocation.getX(), firstLocation.getY(), player.getZ(), 5);
+					//victim.getActionSender().stillGfx(157, player.getX() -3, player.getY() -3, player.getZ(), 0);
+					victim.getActionSender().stillGfx(157, firstLocation); // fine
+					//victim.getActionSender().stillGfx(157, secondLocation.getX(), secondLocation.getY(), player.getZ(), 5);
+					//victim.getActionSender().stillGfx(157, thirdLocation.getX(), thirdLocation.getY(), player.getZ(), 5);
 
 					if (!victim.getLocation().equals(firstLocation) && !victim.getLocation().equals(secondLocation)
 							&& !victim.getLocation().equals(thirdLocation)) {

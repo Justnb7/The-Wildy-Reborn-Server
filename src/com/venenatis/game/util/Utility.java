@@ -821,32 +821,6 @@ public class Utility {
 		int y = (int) Math.pow(y1 - y2, 2.0D);
 		return (int) Math.floor(Math.sqrt(x + y));
 	}
-	
-	public enum Direction {
-		NORTH,
-		NORTH_NORTH_EAST,
-		NORTH_EAST,
-		EAST_NORTH_EAST,
-		EAST,
-		EAST_SOUTH_EAST,
-		SOUTH_EAST,
-		SOUTH_SOUTH_EAST,
-		SOUTTH,
-		SOUTH_SOUTH_WEST,
-		SOUTH_WEST,
-		WEST_SOUTH_WEST,
-		WEST,
-		WEST_NORTH_WEST,
-		NORTH_WEST,
-		NORTH_NORTH_WEST;
-		
-		public static String getName(int ordinal) {
-			if (ordinal < 0 || ordinal > Direction.values().length - 1)
-				ordinal = 0;
-			return Utility.capitalize(Direction.values()[ordinal].name().toLowerCase().
-					replaceAll("_", " "));
-		}
-	}
 
 	public static int combatDifference(int combat1, int combat2) {
 

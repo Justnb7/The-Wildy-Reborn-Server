@@ -683,6 +683,21 @@ public class ActionSender {
 		return this;
 	}
 	
+	public ActionSender stillGfx(int id, Location location) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().writeFrame(85);
+			player.getOutStream().writeByteC(location.getY() - (player.getLastKnownRegion().getRegionY() * 8));
+			player.getOutStream().writeByteC(location.getX() - (player.getLastKnownRegion().getRegionX() * 8));
+			player.getOutStream().writeFrame(4);
+			player.getOutStream().writeByte(0);
+			player.getOutStream().writeWord(id);
+			player.getOutStream().writeByte(location.getZ());
+			player.getOutStream().writeWord(0);
+			player.flushOutStream();
+		}
+		return this;
+	}
+	
 	/**
      * Sends a projectile to a location.
      *

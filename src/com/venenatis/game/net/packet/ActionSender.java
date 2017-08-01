@@ -667,22 +667,18 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendStillGFX(final int id, final int height, final Location loc) {
-		if (id >= 65535) {
-			throw new IllegalArgumentException("Identification value for the still graphic is prohibited; " + id);
-		}
-		if (player.getOutStream() != null) {
-			/*player.getOutStream().writeFrame(85);
-			player.getOutStream().writeByteC(loc.getY() - (player.getLastKnownRegion().getRegionY() * 8));
-			player.getOutStream().writeByteC(loc.getX() - (player.getLastKnownRegion().getRegionX() * 8));*/
-			sendLocalCoordinates(loc, 0, 0);
-			
-			//Still gfx packet
+	
+	public ActionSender stillGfx(int id, int x, int y, int height, int time) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().writeFrame(85);
+			player.getOutStream().writeByteC(y - (player.getLastKnownRegion().getRegionY() * 8));
+			player.getOutStream().writeByteC(x - (player.getLastKnownRegion().getRegionX() * 8));
 			player.getOutStream().writeFrame(4);
 			player.getOutStream().writeByte(0);
-			player.getOutStream().writeShort(id);
+			player.getOutStream().writeWord(id);
 			player.getOutStream().writeByte(height);
-			player.getOutStream().writeShort(0);
+			player.getOutStream().writeWord(time);
+			player.flushOutStream();
 		}
 		return this;
 	}
@@ -706,8 +702,8 @@ public class ActionSender {
      * @return The action sender instance, for chaining.
      */
     public ActionSender sendProjectile(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
-    	int offsetX = (start.getX() - finish.getX()) * -1;
-		int offsetY = (start.getY() - finish.getY()) * -1;
+    	int offsetX = (start.getX() - finish.getX());
+		int offsetY = (start.getY() - finish.getY());
 
         sendLocalCoordinates(start, -3, -2);
         player.getOutStream().writeFrame(117);

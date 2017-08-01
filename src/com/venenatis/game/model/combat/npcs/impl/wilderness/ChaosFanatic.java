@@ -60,6 +60,7 @@ public class ChaosFanatic extends AbstractBossCombat {
 		}*/
 		style = CombatStyle.GREEN_BOMB;
 
+		//Basicaly first one is @ vics location the other two are random
 		Location firstLocation = victim.getLocation();
 		Location secondLocation = victim.getLocation().transform(1, 1, 0);
 		Location thirdLocation = victim.getLocation().transform(-1, -1, 0);
@@ -152,9 +153,10 @@ public class ChaosFanatic extends AbstractBossCombat {
 							enemies.add(p);
 						}
 					}
-					victim.getActionSender().sendStillGFX(157, 100, firstLocation);
-					victim.getActionSender().sendStillGFX(157, 100, secondLocation);
-					victim.getActionSender().sendStillGFX(157, 100, thirdLocation);
+					//code seems correct
+					victim.getActionSender().stillGfx(157, firstLocation.getX(), firstLocation.getY(), player.getZ(), 5);
+					victim.getActionSender().stillGfx(157, secondLocation.getX(), secondLocation.getY(), player.getZ(), 5);
+					victim.getActionSender().stillGfx(157, thirdLocation.getX(), thirdLocation.getY(), player.getZ(), 5);
 
 					if (!victim.getLocation().equals(firstLocation) && !victim.getLocation().equals(secondLocation)
 							&& !victim.getLocation().equals(thirdLocation)) {

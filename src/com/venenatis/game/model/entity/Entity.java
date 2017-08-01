@@ -14,10 +14,10 @@ import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.CombatState;
+import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
 import com.venenatis.game.model.combat.data.CombatStyle;
-import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
@@ -762,7 +762,7 @@ public abstract class Entity {
 			NPC victim_npc = (NPC) this;
 			
 			if (attacker.isPlayer())
-				PlayerVsNpcCombat.kraken((Player)attacker, victim_npc, damage);
+				NpcCombat.kraken((Player)attacker, victim_npc, damage);
 			if (victim_npc.getId() == 319) {
 				if (attacker.isNPC() || (attacker.isPlayer() && !EquipmentConstants.isWearingSpear(((Player)attacker)))) {
 					damage /= 2;

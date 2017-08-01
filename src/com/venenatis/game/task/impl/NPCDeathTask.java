@@ -6,8 +6,8 @@ import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
+import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
-import com.venenatis.game.model.combat.nvp.NPCCombatData;
 import com.venenatis.game.model.entity.npc.GroupRespawn;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
@@ -112,7 +112,7 @@ public class NPCDeathTask extends Task {
      * @return If the npc is unspawnable
      */
     private boolean isUnspawnableNpc(NPC npc) {
-        return NPCCombatData.getUnspawnableNpcs().contains(npc.getId());
+        return NpcCombat.getUnspawnableNpcs().contains(npc.getId());
     }
 
     /**

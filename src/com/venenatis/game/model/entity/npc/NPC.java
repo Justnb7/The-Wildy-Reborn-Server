@@ -1,10 +1,12 @@
 package com.venenatis.game.model.entity.npc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
-import com.venenatis.game.model.combat.nvp.NpcVsPlayerCombat;
+import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.definitions.NPCDefinitions;
-import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.following.NPCFollowing;
@@ -18,9 +20,6 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.server.Server;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NPC extends Entity {
 	
@@ -486,7 +485,7 @@ public class NPC extends Entity {
 			/*
 			 * Handle our combat timers
 			 */
-			NpcVsPlayerCombat.handleCombatTimer(this);
+			NpcCombat.handleCombatTimer(this);
 
 			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() || World.getWorld().getPlayers().get(spawnedBy).getCombatState().isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
 				World.getWorld().unregister(this);

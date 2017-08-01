@@ -19,8 +19,6 @@ import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.combat.magic.spell.SpellHandler;
-import com.venenatis.game.model.combat.pvm.PlayerVsNpcCombat;
-import com.venenatis.game.model.combat.pvp.PlayerVsPlayerCombat;
 import com.venenatis.game.model.combat.range.AmmoRequirements;
 import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.combat.special_attacks.Special;
@@ -446,18 +444,87 @@ public class Combat {
             }
         });
     }
+    
+    /**
+	 * Validates that the attack can be made
+	 * 
+	 * @param player
+	 *            The {@link Player} attacking the oppponent
+	 * @param target
+	 *            The {@link Player} being attacked
+	 * @return If the attack is successful
+	 */
+	private static boolean validateAttack(Player player, Player target) {
+		if (target == null || player.getCombatState().isDead() || target.getCombatState().isDead() || !target.isActive() || target.getSkills().getLevel(Skills.HITPOINTS) <= 0 || target.getZ() != player.getZ()) {
+			Combat.resetCombat(player);
+			player.getWalkingQueue().reset();
+			return false;
+		}
+		if (target.inTutorial()) {
+			Combat.resetCombat(player);
+			player.getWalkingQueue().reset();
+			player.debug("target in tut");
+			return false;
+		}
+		if (target.inTutorial()) {
+			player.message("You cannot attack this player.");
+			player.getWalkingQueue().reset();
+			Combat.resetCombat(player);
+			return false;
+		}
+
+		boolean bypassCosImTheBest = player.getUsername().equalsIgnoreCase("test") || player.getUsername().equalsIgnoreCase("patrick");
+		int myCB = player.getCombatLevel();
+		int target_CB = target.getCombatLevel();
+		if (Area.inWilderness(player)) {
+			if (!bypassCosImTheBest && ((myCB > target_CB + target.getWildLevel()) || (myCB < target_CB - target.getWildLevel()))) {
+				player.message("You can only fight players in your combat range!");
+				player.getWalkingQueue().reset();
+				Combat.resetCombat(player);
+				return false;
+			}
+		} else {
+			// All other places not in wildy: range is +/- 12 combat levels
+			if (!bypassCosImTheBest && ((myCB > target_CB + 12) || (myCB < target_CB - 12))) {
+				player.message("You can only fight players in your combat range!");
+				player.getWalkingQueue().reset();
+				Combat.resetCombat(player);
+				return false;
+			}
+		}
+		if (!Area.inMultiCombatZone(target)) { // single combat zones
+			if (target.lastAttacker != player && Combat.hitRecently(target, 4000)) {
+				player.message("That player is already in combat.");
+				player.getWalkingQueue().reset();
+				Combat.resetCombat(player);
+				return false;
+			}
+
+			if (target != player.lastAttacker && Combat.hitRecently(player, 4000)) {
+				player.message("You are already in combat.");
+				player.getWalkingQueue().reset();
+				Combat.resetCombat(player);
+				return false;
+			}
+		}
+		if (!player.getController().canAttackPlayer(player, target)) {
+			player.getWalkingQueue().reset();
+			return false;
+		}
+		return true;
+	}
 
     private static boolean attackable(Player player, Entity target) {
         // Can we attack the target? Not distance checks (yet) as they come later.
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
-            if (!PlayerVsPlayerCombat.validateAttack(player, ptarg)) {
+            if (!validateAttack(player, ptarg)) {
                 return false;
             }
         } else {
             NPC npc = (NPC) target;
             // Can attack check
-            if (!PlayerVsNpcCombat.canAttackNpc(player, npc)) {
+            if (!NpcCombat.canAttackNpc(player, npc)) {
                 return false;
             }
         }

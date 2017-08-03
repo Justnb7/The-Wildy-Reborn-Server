@@ -376,6 +376,47 @@ public class Combat {
             player.getCombatState().reset();
         }
     }
+    
+	private final static boolean canWeFire(Player attacker) {
+		Item weapon = attacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) {
+			return false;
+		}
+		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
+
+		BowType bowType = weaponEquipDef.getBowType();
+		if (bowType != null && bowType != BowType.CRYSTAL_BOW) {
+			String ammo_response = isCrossBow(bowType) ? "bolts" : "arrows";
+			Item arrows = attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+			if (arrows == null) {
+				attacker.getActionSender().sendMessage("There are no " + ammo_response + " left in your quiver.");
+				return false;
+			}
+
+			if (bowType == BowType.DARK_BOW) {
+				if (arrows.getAmount() < 2) {
+					attacker.getActionSender().sendMessage("You need atleast 2 arrows to use the Dark bow's attack.");
+					return false;
+				}
+			}
+
+			EquipmentDefinition arrowEquipDef = arrows.getEquipmentDefinition();
+			ArrowType arrowType = arrowEquipDef.getArrowType();
+
+			boolean hasCorrectArrows = false;
+			for (ArrowType correctArrowType : bowType.getValidArrows()) {
+				if (correctArrowType == arrowType) {
+					hasCorrectArrows = true;
+					break;
+				}
+			}
+			if (!hasCorrectArrows) {
+				attacker.getActionSender().sendMessage("You can't use " + arrows.getDefinition().getName() + "s with a " + weapon.getDefinition().getName() + ".");
+				return false;
+			}
+		}
+		return true;
+	}
 
 	private static void rangeAttack(Player player, Entity target) {
 		if (!touches(player, target))
@@ -398,61 +439,8 @@ public class Combat {
 
 			// TODO add charges
 		} else {
-			BowType bowType = weaponEquipDef.getBowType();
-
-			if (bowType != null && bowType != BowType.CRYSTAL_BOW) {
-				Item arrows = player.getEquipment().get(
-						EquipmentConstants.AMMO_SLOT);
-
-				if (arrows == null) {
-					player.getActionSender()
-							.sendMessage(
-									"There are no "
-											+ ((bowType == BowType.KARILS_XBOW
-													|| bowType == BowType.BRONZE_CBOW
-													|| bowType == BowType.IRON_CBOW
-													|| bowType == BowType.STEEL_CBOW
-													|| bowType == BowType.MITH_CBOW
-													|| bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW) ? "bolts"
-													: "arrows")
-											+ " left in your quiver.");
-					player.getWalkingQueue().reset();
-					player.getCombatState().reset();
-					return;
-				}
-
-				if (bowType == BowType.DARK_BOW) {
-					if (arrows.getAmount() < 2) {
-						player.getActionSender()
-								.sendMessage(
-										"You need atleast 2 arrows to use the Dark bow's attack.");
-						player.getWalkingQueue().reset();
-						player.getCombatState().reset();
-						return;
-					}
-				}
-
-				EquipmentDefinition arrowEquipDef = arrows
-						.getEquipmentDefinition();
-				ArrowType arrowType = arrowEquipDef.getArrowType();
-
-				boolean hasCorrectArrows = false;
-				for (ArrowType correctArrowType : bowType.getValidArrows()) {
-					if (correctArrowType == arrowType) {
-						hasCorrectArrows = true;
-						break;
-					}
-				}
-				if (!hasCorrectArrows) {
-					player.getActionSender().sendMessage(
-							"You can't use " + arrows.getDefinition().getName()
-									+ "s with a "
-									+ weapon.getDefinition().getName() + ".");
-					player.getWalkingQueue().reset();
-					player.getCombatState().reset();
-					return;
-				}
-			}
+			if(!canWeFire(player))
+				return;
 		}
 
 		if (player.getCombatState().getAttackDelay() > 0) {
@@ -472,25 +460,26 @@ public class Combat {
 		// Normal attack
 		doAttackAnim(player, target);
 		onAttackDone(player, target);
+		
+		Graphic pullback = null;
+		int projectile = -1;
+		int hitDelay = 2;
 
 		Item ammunition = null;
-        Graphic pullback = null;
-        int projectile = -1;
-        int hitDelay = 2;
-        RangeWeaponType rangeWeaponType = null;
-        BowType bowType = null;
-        EquipmentDefinition arrowEquipDef = null;
-        
-        if (pullback == null && projectile == -1 && player.getEquipment() != null) {
-        	weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-            if (weapon == null) {
-                return; //every range type requires a weapon
-            }
-            
-            weaponEquipDef = weapon.getEquipmentDefinition();
-            bowType = weaponEquipDef.getBowType();
-            
-            if (weapon.getId() == 12926) {// toxic blowpipe
+		EquipmentDefinition arrowEquipDef = null;
+
+		BowType bowType = null;
+		RangeWeaponType rangeWeaponType = null;
+
+		if (pullback == null && projectile == -1 && player.getEquipment() != null) {
+			weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+			if (weapon == null) {
+				return; // every range type requires a weapon
+			}
+			weaponEquipDef = weapon.getEquipmentDefinition();
+			bowType = weaponEquipDef.getBowType();
+
+			if (weapon.getId() == 12926) {// toxic blowpipe
             	//TODO check for charges
             	EquipmentDefinition chargeDef = EquipmentDefinition.get(11230);
 
@@ -502,117 +491,117 @@ public class Combat {
                     pullback = rangeWeaponType.getPullbackGraphic();
                     projectile = rangeWeaponType.getProjectileId();
                 }
-            } else {
-            	 if (bowType != null) { //standard bow and arrow
-            		 ArrowType arrowType;
-            		 if (bowType == BowType.CRYSTAL_BOW) {
-                         arrowType = ArrowType.CRYSTAL_ARROW;
-                         ammunition = null;
-                     } else {
-                         Item arrows = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-                         arrowEquipDef = arrows.getEquipmentDefinition();
-                         arrowType = arrowEquipDef.getArrowType();
-                         ammunition = arrows;
-                     }
-            		 if (bowType == BowType.DARK_BOW) {
-                         if (ammunition != null && ammunition.getId() != 11212) {
-                             pullback = Graphic.create(arrowType.getPullbackGraphic().getId() + 1085, arrowType.getPullbackGraphic().getDelay(), arrowType.getPullbackGraphic().getHeight());
-                         } else {
-                             pullback = arrowType.getPullbackGraphic();
-                         }
-                     } else {
-                         pullback = arrowType.getPullbackGraphic();
-                     }
-                     projectile = arrowType.getProjectileId();
-            	 } else { //ranged weapon
-            		 rangeWeaponType = weaponEquipDef.getRangeWeaponType();
-                     if (rangeWeaponType != null) {
-                         ammunition = weapon;
+            }
+			
+			if (bowType != null) { // standard bow and arrow
+				ArrowType arrowType;
+				if (bowType == BowType.CRYSTAL_BOW) {
+					arrowType = ArrowType.CRYSTAL_ARROW;
+					ammunition = null;
+				} else {
+					Item arrows = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+					arrowEquipDef = arrows.getEquipmentDefinition();
+					arrowType = arrowEquipDef.getArrowType();
+					ammunition = arrows;
+				}
+				if (bowType == BowType.DARK_BOW) {
+					if (ammunition != null && ammunition.getId() != 11212) {
+						pullback = Graphic.create(arrowType.getPullbackGraphic().getId() + 1085, arrowType.getPullbackGraphic().getDelay(), arrowType.getPullbackGraphic().getHeight());
+					} else {
+						pullback = arrowType.getPullbackGraphic();
+					}
+				} else {
+					pullback = arrowType.getPullbackGraphic();
+				}
+				projectile = arrowType.getProjectileId();
+			} else { // ranged weapon
+				rangeWeaponType = weaponEquipDef.getRangeWeaponType();
+				if (rangeWeaponType != null) {
+					ammunition = weapon;
 
-                         pullback = rangeWeaponType.getPullbackGraphic();
-                         projectile = rangeWeaponType.getProjectileId();
-                     }
-            	 }
-            }
-        }
-        
-        boolean special = player.isUsingSpecial() ? true : false;
+					pullback = rangeWeaponType.getPullbackGraphic();
+					projectile = rangeWeaponType.getProjectileId();
+				}
+			}
+		}
 
-        int clientSpeed;
-        int showDelay;
-        int slope;
-        if (!special || (bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW || bowType == BowType.STEEL_CBOW
-                || bowType == BowType.MITH_CBOW || bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW)) {
-            if (pullback != null) {
-                player.playGraphics(pullback);
-            }
+		boolean special = player.isUsingSpecial() ? true : false;
 
-            if (rangeWeaponType != null) {
-                if (rangeWeaponType == RangeWeaponType.BRONZE_DART || rangeWeaponType == RangeWeaponType.IRON_DART || rangeWeaponType == RangeWeaponType.STEEL_DART
-                        || rangeWeaponType == RangeWeaponType.MITHRIL_DART || rangeWeaponType == RangeWeaponType.ADAMANT_DART || rangeWeaponType == RangeWeaponType.RUNE_DART
-                        || rangeWeaponType == RangeWeaponType.BLACK_DART) {
-                    clientSpeed = 35;
-                    showDelay = 20;
-                    slope = 13;
-                } else {
-                    clientSpeed = 55;
-                    showDelay = 45;
-                    slope = 5;
-                }
-            } else {
-                if (bowType == BowType.KARILS_XBOW || bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW || bowType == BowType.STEEL_CBOW || bowType == BowType.MITH_CBOW
-                        || bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW) {
-                    clientSpeed = 55;
-                    showDelay = 45;
-                    slope = 5;
-                } else {
-                    int distance = player.getLocation().distanceToEntity(player, target);
-                    clientSpeed = 55 + (distance * 5);
-                    if (distance > 2) {
-                        hitDelay += 1;
-                    }
-                    showDelay = 45;
-                    slope = 15;
-                }
-            }
-            if (bowType == BowType.DARK_BOW) {
-                hitDelay += 1;
-                clientSpeed += 15;
-                player.playProjectile(Projectile.create(player.getLocation(), target, projectile, showDelay, 50, clientSpeed - 10, 41, 31, slope - 6, 64));
-                player.playProjectile(Projectile.create(player.getLocation(), target, projectile, showDelay, 50, clientSpeed, 46, 36, slope + 3, 64));
-            } else {
-                player.playProjectile(Projectile.create(player.getLocation(), target, projectile, showDelay, 50, clientSpeed, 38, 36, slope, 64));
-            }
-        } else { //spec attacks
-            if (bowType == BowType.DARK_BOW) {
-                if (pullback != null) {
-                    player.playGraphics(pullback);
-                }
-                if (ammunition != null && ammunition.getId() != 11212) {
-                    if (player.getLocation().isWithinDistance(player, target, 1)) {
-                        clientSpeed = 55;
-                    } else if (player.getLocation().isWithinDistance(player, target, 3)) {
-                        clientSpeed = 55;
-                    } else if (player.getLocation().isWithinDistance(player, target, 8)) {
-                        clientSpeed = 65;
-                        hitDelay += 1;
-                    } else {
-                        clientSpeed = 75;
-                    }
-                    showDelay = 45;
-                    slope = 15;
-                    clientSpeed += 30;
-                    player.playProjectile(Projectile.create(player.getLocation(), target, projectile, showDelay, 50, clientSpeed, 41, 31, 3, 36));
-                    player.playProjectile(Projectile.create(player.getLocation(), target, projectile, showDelay, 50, clientSpeed + 10, 46, 36, slope + 6, 36));
-                }
-            }
-        }
+		int clientSpeed;
+		int showDelay;
+		int slope;
+		if (!special || (bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW || bowType == BowType.STEEL_CBOW || bowType == BowType.MITH_CBOW || bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW)) {
+			if (pullback != null) {
+				player.playGraphics(pullback);
+			}
 
+			if (rangeWeaponType != null) {
+				if (rangeWeaponType == RangeWeaponType.BRONZE_DART || rangeWeaponType == RangeWeaponType.IRON_DART || rangeWeaponType == RangeWeaponType.STEEL_DART || rangeWeaponType == RangeWeaponType.MITHRIL_DART || rangeWeaponType == RangeWeaponType.ADAMANT_DART || rangeWeaponType == RangeWeaponType.RUNE_DART || rangeWeaponType == RangeWeaponType.BLACK_DART) {
+					clientSpeed = 35;
+					showDelay = 20;
+					slope = 13;
+				} else {
+					clientSpeed = 55;
+					showDelay = 45;
+					slope = 5;
+				}
+			} else {
+				if (bowType == BowType.KARILS_XBOW || bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW || bowType == BowType.STEEL_CBOW || bowType == BowType.MITH_CBOW || bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW) {
+					clientSpeed = 55;
+					showDelay = 45;
+					slope = 5;
+				} else {
+					int distance = player.getLocation().distanceToEntity(player, target);
+					clientSpeed = 55 + (distance * 5);
+					if (distance > 2) {
+						hitDelay += 1;
+					}
+					showDelay = 45;
+					slope = 15;
+				}
+			}
+			if (bowType == BowType.DARK_BOW) {
+				hitDelay += 1;
+				clientSpeed += 15;
+				player.playProjectile(Projectile.create(player.getLocation(), target.getCentreLocation(), projectile, showDelay, 50, clientSpeed - 10, 41, 31, target.getProjectileLockonIndex(), slope - 6, 64));
+				player.playProjectile(Projectile.create(player.getLocation(), target.getCentreLocation(), projectile, showDelay, 50, clientSpeed, 46, 36, target.getProjectileLockonIndex(), slope + 3, 64));
+			} else {
+				player.playProjectile(Projectile.create(player.getLocation(), target.getCentreLocation(), projectile, showDelay, 50, clientSpeed, 46, 36, target.getProjectileLockonIndex(), slope, 86));
+			}
+
+		} else { // spec attacks
+			if (bowType == BowType.DARK_BOW) {
+				if (pullback != null) {
+					player.playGraphics(pullback);
+				}
+				if (ammunition != null && ammunition.getId() != 11212) {
+					if (player.getLocation().isWithinDistance(player, target, 1)) {
+						clientSpeed = 55;
+					} else if (player.getLocation().isWithinDistance(player, target, 3)) {
+						clientSpeed = 55;
+					} else if (player.getLocation().isWithinDistance(player, target, 8)) {
+						clientSpeed = 65;
+						hitDelay += 1;
+					} else {
+						clientSpeed = 75;
+					}
+					showDelay = 45;
+					slope = 15;
+					clientSpeed += 30;
+					player.playProjectile(Projectile.create(player.getLocation(), target.getCentreLocation(), projectile, showDelay, 50, clientSpeed, 41, 31, target.getProjectileLockonIndex(), 3, 36));
+					player.playProjectile(Projectile.create(player.getLocation(), target.getCentreLocation(), projectile, showDelay, 50, clientSpeed + 10, 46, 36, target.getProjectileLockonIndex(), slope + 6, 36));
+				}
+			}
+		}
+   
         loseAmmo(player, target);
 
         // Random dmg
         int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
 
+        //Random dmg2 (special case such as darkbow)
+        int dam2 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
+        
         // Bolt special increases damage.
         boolean boltSpec = EquipmentConstants.isCrossbow(player) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;
         if (boltSpec && dam1 > 0)
@@ -621,20 +610,38 @@ public class Combat {
         // Missed?
         if (!player.hasAttribute("ignore defence") && !CombatFormulae.getAccuracy(player, target, 1, 1.0)) {
             dam1 = 0;
+            dam2 = 0;
         }
         player.removeAttribute("ignore defence");
 
-        // Apply dmg.
-        target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(hitDelay);
+		// Apply dmg.
+		target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(hitDelay);
+
+		// Apply second dmg.
+		target.take_hit(player, dam2, CombatStyle.RANGE).giveXP(player).send(hitDelay);
+	}
+	
+	private static boolean isCrossBow(BowType bowType) {
+		return ((bowType == BowType.KARILS_XBOW
+				|| bowType == BowType.BRONZE_CBOW
+				|| bowType == BowType.IRON_CBOW
+				|| bowType == BowType.STEEL_CBOW
+				|| bowType == BowType.MITH_CBOW
+				|| bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW));
 	}
     
     /**
 	 * Remove ammo from arrow/hands slot + plus chance for that ammo drops to the floor
 	 */
 	private static void loseAmmo(Player player, Entity target) {
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
+
+		BowType bowType = weaponEquipDef.getBowType();
+		
 		boolean avas = Combat.avas(player);
 		boolean bow = EquipmentConstants.wearingBlowpipe(player) || EquipmentConstants.usingCrystalBow(player) ||
-				EquipmentConstants.isCrossbow(player) || EquipmentConstants.isBow(player) || EquipmentConstants.wearingBallista(player);
+				isCrossBow(bowType) || EquipmentConstants.isBow(player) || EquipmentConstants.wearingBallista(player);
 		boolean hand = EquipmentConstants.isThrowingWeapon(player);
 		boolean dropArrows = !avas || (avas && RandomGenerator.nextInt(100) > 90);
 		Item drop = null;

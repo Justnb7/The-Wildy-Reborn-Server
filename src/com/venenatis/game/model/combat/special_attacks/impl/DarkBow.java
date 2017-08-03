@@ -25,6 +25,7 @@ public class DarkBow implements SpecialAttack {
 	@Override
 	public void handleAttack(Player player, Entity target) {
 		player.playAnimation(Animation.create(426));
+		int hitDelay = 2;
 		
 		int clientSpeed;
 		int showDelay;
@@ -35,6 +36,7 @@ public class DarkBow implements SpecialAttack {
 			clientSpeed = 55;
 		} else if (player.getLocation().isWithinDistance(player, target, 8)) {
 			clientSpeed = 65;
+			hitDelay += 1;
 		} else {
 			clientSpeed = 75;
 		}
@@ -74,8 +76,8 @@ public class DarkBow implements SpecialAttack {
 		// Dark bow is a special type where there is minimum damage of 4/4 or 8/8
 		// So we can't use the take_hit method - we need to put veng in here.. 
 		
-		target.take_hit(player, first, CombatStyle.RANGE).giveXP(player).send();
-		target.take_hit(player, second, CombatStyle.RANGE).giveXP(player).send(2);
+		target.take_hit(player, first, CombatStyle.RANGE).giveXP(player).send(hitDelay);
+		target.take_hit(player, second, CombatStyle.RANGE).giveXP(player).send(hitDelay+1);
 
 		boolean dragArrow = player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212;
 		Server.getTaskScheduler().schedule(new Task(1) {

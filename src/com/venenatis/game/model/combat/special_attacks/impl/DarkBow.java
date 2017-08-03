@@ -2,6 +2,7 @@ package com.venenatis.game.model.combat.special_attacks.impl;
 
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -25,10 +26,24 @@ public class DarkBow implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		player.playAnimation(Animation.create(426));
 		
-		player.playGraphics(Graphic.create(player.getCombatState().getRangeStartGFX(), 0, 100));
-		
-		// Send the projectile TODO adjust the height and duration for the 2nd arrow
-		player.getCombatState().fireProjectileAtTarget();
+		int clientSpeed;
+		int showDelay;
+		int slope;
+		if (player.getLocation().isWithinDistance(player, target, 1)) {
+			clientSpeed = 55;
+		} else if (player.getLocation().isWithinDistance(player, target, 3)) {
+			clientSpeed = 55;
+		} else if (player.getLocation().isWithinDistance(player, target, 8)) {
+			clientSpeed = 65;
+		} else {
+			clientSpeed = 75;
+		}
+		showDelay = 45;
+		slope = 15;
+		clientSpeed += 30;
+		player.playProjectile(Projectile.create(player.getLocation(), target, player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1099 : 1101, showDelay, 50, clientSpeed - 10, 41, 31, 3, 36));
+		player.playProjectile(Projectile.create(player.getLocation(), target, player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1099 : 1101, showDelay, 50, clientSpeed + 10, 46, 36, slope + 6, 36));
+		target.playGraphics(Graphic.create(player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1100 : 1103, clientSpeed, 100));
 		
 		int first = Utility.random(player.getCombatState().calculateRangeMaxHit());
 		int second = Utility.random(player.getCombatState().calculateRangeMaxHit());

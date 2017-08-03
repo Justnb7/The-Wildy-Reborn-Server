@@ -20,8 +20,8 @@ public class Ballista implements SpecialAttack {
 	@Override
 	public void handleAttack(Player player, Entity target) {
 		player.playAnimation(Animation.create(7222));
-
-		player.getCombatState().fireProjectileAtTarget();
+		
+		//TODO implement projectile
 		
 		int damage = Utility.random(player.getCombatState().calculateRangeMaxHit());
 		boolean success = CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());

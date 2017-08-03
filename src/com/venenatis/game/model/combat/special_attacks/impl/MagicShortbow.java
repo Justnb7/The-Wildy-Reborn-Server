@@ -1,16 +1,17 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
-import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
-import com.venenatis.server.Server;
+import com.venenatis.game.world.World;
 
 public class MagicShortbow implements SpecialAttack {
 
@@ -23,15 +24,16 @@ public class MagicShortbow implements SpecialAttack {
 	public void handleAttack(final Player player, final Entity target) {
 
 		player.playAnimation(Animation.create(1074));
-
-		RangeData.msbSpecProjectile(player);
-
-		Server.getTaskScheduler().schedule(new Task(1) {
+		int distance = player.getLocation().distanceToEntity(player, target);
+		
+		World.getWorld().schedule(new Task(1) {
 			public void execute() {
-				RangeData.msbSpecProjectile(player);
+				player.playGraphics(Graphic.create(256, 0, 100));
 				this.stop();
 			}
 		});
+		player.playProjectile(Projectile.create(player.getLocation(), target, 249, 30, 50, 40 + (distance * 5), 43, 35, 10, 36));
+		player.playProjectile(Projectile.create(player.getLocation(), target, 249, 60, 50, 65 + (distance * 5), 43, 35, 10, 36));
 
 		int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
 		int dam2 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());

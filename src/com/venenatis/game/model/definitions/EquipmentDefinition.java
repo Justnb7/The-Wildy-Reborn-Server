@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.venenatis.game.content.skills.SkillRequirement;
+import com.venenatis.game.model.combat.range.RangeConstants.ArrowType;
+import com.venenatis.game.model.combat.range.RangeConstants.BowType;
+import com.venenatis.game.model.combat.range.RangeConstants.RangeWeaponType;
 
 /**
  * Represents an in-game equipped item.
@@ -122,6 +125,21 @@ public class EquipmentDefinition {
 	 * The bonuses for this item.
 	 */
 	private final int[] bonuses;
+	
+	/**
+	 * The bow type of this item.
+	 */
+	private BowType bowType;
+	
+	/**
+	 * The arrow type of this item.
+	 */
+	private ArrowType arrowType;
+	
+	/**
+	 * The range weapon type of this item.
+	 */
+	private RangeWeaponType rangeWeaponType;
 
 	/**
 	 * Creates a new {@link EquipmentDefinition}.
@@ -141,12 +159,15 @@ public class EquipmentDefinition {
 	 * @param bonuses
 	 *            The bonuses of the item.
 	 */
-	public EquipmentDefinition(int id, String name, EquipmentType type, SkillRequirement[] requirements, int[] bonuses) {
+	public EquipmentDefinition(int id, String name, EquipmentType type, SkillRequirement[] requirements, int[] bonuses, BowType bowType, ArrowType arrowType, RangeWeaponType rangeWeaponType) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.requirements = requirements;
 		this.bonuses = bonuses;
+		this.bowType = bowType;
+		this.arrowType = arrowType;
+		this.rangeWeaponType = rangeWeaponType;
 	}
 
 	/**
@@ -182,6 +203,27 @@ public class EquipmentDefinition {
 	 */
 	public EquipmentType getType() {
 		return type;
+	}
+	
+	/**
+	 * @return the bowType
+	 */
+	public BowType getBowType() {
+		return bowType;
+	}
+
+	/**
+	 * @return the arrowType
+	 */
+	public ArrowType getArrowType() {
+		return arrowType;
+	}
+
+	/**
+	 * @return the rangeWeaponType
+	 */
+	public RangeWeaponType getRangeWeaponType() {
+		return rangeWeaponType;
 	}
 
 }

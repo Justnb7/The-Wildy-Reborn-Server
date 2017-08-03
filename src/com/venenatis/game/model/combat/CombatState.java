@@ -3,11 +3,9 @@ package com.venenatis.game.model.combat;
 
 import java.util.concurrent.TimeUnit;
 
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.consumables.Consumables.Food;
 import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.spell.CombatSpells;
-import com.venenatis.game.model.combat.range.RangeData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Stopwatch;
@@ -68,42 +66,6 @@ public class CombatState {
 		Combat.recoil(entity.asPlayer(), attacker, damage);
 	}
 
-	public int getRangeStartGFX() {
-		return RangeData.getRangeStartGFX(entity.asPlayer());
-	}
-
-	public int getRangeProjectileGFX() {
-		return RangeData.getRangeProjectileGFX(entity.asPlayer());
-	}
-
-	public int getProjectileShowDelay() {
-		return RangeData.getProjectileShowDelay(entity.asPlayer());
-	}
-
-	public int getProjectileSpeed() {
-		return RangeData.getProjectileSpeed(entity.asPlayer());
-	}
-	
-	public boolean properJavalins() {
-		return usingJavalins(entity.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
-	}
-
-	public boolean usingDbow() {
-		return entity.asPlayer().getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId() == 11235;
-	}
-
-	public boolean properBolts() {
-		return usingBolts(entity.asPlayer().getEquipment().get(EquipmentConstants.AMMO_SLOT).getId());
-	}
-	
-	public boolean usingJavalins(int javalin) {
-		return (javalin >= 825 && javalin <= 830) || javalin == 19484;
-	}
-
-	public boolean usingBolts(int i) {
-		return (i >= 9140 && i <= 9145) || i >= 9334 && i <= 9344 || (i >= 9236 && i <= 9245) || i == 11875;
-	}
-
 	public int getStartHeight() {
 		return Magic.getStartHeight(entity.asPlayer());
 	}
@@ -126,10 +88,6 @@ public class CombatState {
 
 	public int getStartGfxHeight() {
 		return Magic.getStartGfxHeight(entity.asPlayer());
-	}
-
-	public void fireProjectileAtTarget() {
-		RangeData.fireProjectileAtTarget(entity.asPlayer());
 	}
 	
 	public int calculateMeleeMaxHit() {

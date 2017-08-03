@@ -3,6 +3,7 @@ package com.venenatis.game.model;
 import java.util.Comparator;
 import java.util.Objects;
 
+import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.ItemDefinition;
 
 public class Item {
@@ -381,6 +382,10 @@ public class Item {
 	public ItemDefinition getDefinition() {
 		return ItemDefinition.get(id);
 	}
+	
+	public EquipmentDefinition getEquipmentDefinition() {
+        return EquipmentDefinition.get(id);
+    }
 	
 	public Item copy() {
 		return new Item(id, amount);

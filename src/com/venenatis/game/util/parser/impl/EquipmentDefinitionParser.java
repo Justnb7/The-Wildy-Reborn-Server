@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 import com.google.gson.JsonObject;
 import com.venenatis.game.content.skills.SkillData;
 import com.venenatis.game.content.skills.SkillRequirement;
+import com.venenatis.game.model.combat.range.RangeConstants.ArrowType;
+import com.venenatis.game.model.combat.range.RangeConstants.BowType;
+import com.venenatis.game.model.combat.range.RangeConstants.RangeWeaponType;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.EquipmentDefinition.EquipmentType;
 import com.venenatis.game.util.JsonSaver;
@@ -49,8 +52,27 @@ public class EquipmentDefinitionParser extends GsonParser {
 				bonuses = Arrays.copyOfRange(bonuses, 0, 14);
 			}
 		}
+		
+		BowType bowType = null;
 
-		EquipmentDefinition.EQUIPMENT_DEFINITIONS.put(id, new EquipmentDefinition(id, name, type, requirement, bonuses));
+		if (data.has("bowType")) {
+			bowType = builder.fromJson(data.get("bowType"), BowType.class);
+		}
+		
+		ArrowType arrowType = null;
+
+		if (data.has("arrowType")) {
+			arrowType = builder.fromJson(data.get("arrowType"), ArrowType.class);
+		}
+		
+		RangeWeaponType rangeWeaponType = null;
+
+		if (data.has("rangeWeaponType")) {
+			rangeWeaponType = builder.fromJson(data.get("rangeWeaponType"), RangeWeaponType.class);
+		}
+		
+
+		EquipmentDefinition.EQUIPMENT_DEFINITIONS.put(id, new EquipmentDefinition(id, name, type, requirement, bonuses, bowType, arrowType, rangeWeaponType));
 	}
 
 	public static void main(String[] args) {
@@ -71,7 +93,7 @@ public class EquipmentDefinitionParser extends GsonParser {
 				int req = getReq(first, second, third, def.getType());
 				
 				if (req > -1) {
-					toAdd.add(new EquipmentDefinition(def.getId(), def.getName(), def.getType(), new SkillRequirement[] { new SkillRequirement(req, SkillData.DEFENCE) }, def.getBonuses()));
+					toAdd.add(new EquipmentDefinition(def.getId(), def.getName(), def.getType(), new SkillRequirement[] { new SkillRequirement(req, SkillData.DEFENCE) }, def.getBonuses(), def.getBowType(), def.getArrowType(), def.getRangeWeaponType()));
 				} else {
 					System.out.println(def.getName());
 					toAdd.add(def);
@@ -79,7 +101,7 @@ public class EquipmentDefinitionParser extends GsonParser {
 				
 				continue;
 			}
-			EquipmentDefinition eq = new EquipmentDefinition(def.getId(), def.getName(), def.getType(), EquipmentParser.LOADED.get(def.getId()).getReqs(), def.getBonuses());
+			EquipmentDefinition eq = new EquipmentDefinition(def.getId(), def.getName(), def.getType(), EquipmentParser.LOADED.get(def.getId()).getReqs(), def.getBonuses(), def.getBowType(), def.getArrowType(), def.getRangeWeaponType());
 			toAdd.add(eq);
 		}
 		

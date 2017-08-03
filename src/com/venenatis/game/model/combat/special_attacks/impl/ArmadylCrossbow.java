@@ -19,12 +19,10 @@ public class ArmadylCrossbow implements SpecialAttack {
 	@Override
 	public void handleAttack(Player player, Entity target) {
 		player.playAnimation(Animation.create(4230));
-		//player.playGraphics(Graphic.create(player.getCombat().getRangeStartGFX(), 0, 0));
 
 		//TODO implement gfx 301
 		int d = player.getLocation().distanceToEntity(player, target);
 		player.playProjectile(Projectile.create(player.getLocation(), target, 301, 60, 50, 65 + (d * 5), 43, 35, 10, 36));
-		player.getCombatState().fireProjectileAtTarget();
 
 		// Step 1: calculate a hit
 		int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());

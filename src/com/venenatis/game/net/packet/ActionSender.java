@@ -274,7 +274,7 @@ public class ActionSender {
 		sendSidebarInterface(Constants.CLAN_TAB, 33800);
 		sendSidebarInterface(Constants.FRIENDS_TAB, 5065);
 		sendSidebarInterface(Constants.IGNORE_TAB, 5715);
-		sendSidebarInterface(Constants.WRENCH_TAB, 13000);
+		sendSidebarInterface(Constants.WRENCH_TAB, 16000);
 		sendSidebarInterface(Constants.EMOTE_TAB, 147);
 		sendSidebarInterface(Constants.MUSIC_TAB, -1);
 		sendSidebarInterface(Constants.ATTACK_TAB, 2423);

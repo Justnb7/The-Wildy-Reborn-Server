@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.venenatis.game.content.skills.SkillRequirement;
-import com.venenatis.game.model.combat.range.RangeConstants.ArrowType;
-import com.venenatis.game.model.combat.range.RangeConstants.BowType;
-import com.venenatis.game.model.combat.range.RangeConstants.RangeWeaponType;
+import com.venenatis.game.model.combat.RangeConstants.ArrowType;
+import com.venenatis.game.model.combat.RangeConstants.BowType;
+import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
 
 /**
  * Represents an in-game equipped item.

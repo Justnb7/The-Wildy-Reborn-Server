@@ -1,4 +1,4 @@
-package com.venenatis.game.model.combat.range;
+package com.venenatis.game.model.combat;
 
 import com.venenatis.game.model.masks.Graphic;
 

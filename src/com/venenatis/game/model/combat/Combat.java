@@ -46,6 +46,11 @@ import com.venenatis.server.Server;
 public class Combat {
 	
 	/**
+	 * The blowpipe attribute
+	 */
+	public static int BLOWPIPE = 12926;
+	
+	/**
 	 * The random number generator.
 	 */
 	protected final static Random random = new Random();
@@ -435,7 +440,7 @@ public class Combat {
 
 		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
 
-		if (weapon.getId() == 12926) {
+		if (weapon.getId() == BLOWPIPE) {
 
 			// TODO add charges
 		} else {
@@ -479,7 +484,7 @@ public class Combat {
 			weaponEquipDef = weapon.getEquipmentDefinition();
 			bowType = weaponEquipDef.getBowType();
 
-			if (weapon.getId() == 12926) {// toxic blowpipe
+			if (weapon.getId() == BLOWPIPE) {
             	//TODO check for charges
             	EquipmentDefinition chargeDef = EquipmentDefinition.get(11230);
 
@@ -603,7 +608,7 @@ public class Combat {
         int dam2 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
         
         // Bolt special increases damage.
-        boolean boltSpec = EquipmentConstants.isCrossbow(player) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;
+        boolean boltSpec = isCrossBow(bowType) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;
         if (boltSpec && dam1 > 0)
             dam1 = Combat.boltSpecialVsEntity(player, target, dam1);
 
@@ -618,16 +623,46 @@ public class Combat {
 		target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(hitDelay);
 
 		// Apply second dmg.
+		if(player.getEquipment().contains(11235))
 		target.take_hit(player, dam2, CombatStyle.RANGE).giveXP(player).send(hitDelay);
 	}
 	
-	private static boolean isCrossBow(BowType bowType) {
-		return ((bowType == BowType.KARILS_XBOW
-				|| bowType == BowType.BRONZE_CBOW
-				|| bowType == BowType.IRON_CBOW
-				|| bowType == BowType.STEEL_CBOW
-				|| bowType == BowType.MITH_CBOW
-				|| bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW));
+	public static boolean isCrossBow(BowType bowType) {
+		return ((bowType == BowType.KARILS_XBOW || bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW
+				|| bowType == BowType.STEEL_CBOW || bowType == BowType.MITH_CBOW || bowType == BowType.ADAMANT_CBOW
+				|| bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW || bowType == BowType.CHAOTIC_CBOW
+				|| bowType == BowType.DRAGON_CBOW));
+	}
+	
+	public static boolean isBow(BowType bowType) {
+		return ((bowType == BowType.SHORTBOW) || bowType == BowType.LONGBOW || bowType == BowType.OAK_SHORTBOW
+				|| bowType == BowType.OAK_LONGBOW || bowType == BowType.WILLOW_SHORTBOW
+				|| bowType == BowType.WILLOW_LONGBOW || bowType == BowType.MAPLE_SHORTBOW
+				|| bowType == BowType.MAPLE_LONGBOW || bowType == BowType.YEW_SHORTBOW || bowType == BowType.YEW_LONGBOW
+				|| bowType == BowType.MAGIC_SHORTBOW || bowType == BowType.MAGIC_LONGBOW || bowType == BowType.DARK_BOW
+				|| bowType == BowType.TWISTED_BOW);
+	}
+	
+	public static boolean isHandWeapon(RangeWeaponType rangeWeaponType) {
+		return ((rangeWeaponType == RangeWeaponType.BRONZE_DART || rangeWeaponType == RangeWeaponType.IRON_DART
+				|| rangeWeaponType == RangeWeaponType.STEEL_DART || rangeWeaponType == RangeWeaponType.BLACK_DART
+				|| rangeWeaponType == RangeWeaponType.MITHRIL_DART) || rangeWeaponType == RangeWeaponType.ADAMANT_DART
+				|| rangeWeaponType == RangeWeaponType.RUNE_DART || rangeWeaponType == RangeWeaponType.DRAGON_DART
+				|| rangeWeaponType == RangeWeaponType.BRONZE_JAVELIN || rangeWeaponType == RangeWeaponType.IRON_JAVELIN
+				|| rangeWeaponType == RangeWeaponType.STEEL_JAVELIN
+				|| rangeWeaponType == RangeWeaponType.MITHRIL_JAVELIN
+				|| rangeWeaponType == RangeWeaponType.ADAMANT_JAVELIN || rangeWeaponType == RangeWeaponType.RUNE_JAVELIN
+				|| rangeWeaponType == RangeWeaponType.DRAGON_JAVELIN || rangeWeaponType == RangeWeaponType.BRONZE_KNIFE
+				|| rangeWeaponType == RangeWeaponType.IRON_KNIFE || rangeWeaponType == RangeWeaponType.STEEL_KNIFE
+				|| rangeWeaponType == RangeWeaponType.BLACK_KNIFE || rangeWeaponType == RangeWeaponType.MITHRIL_KNIFE
+				|| rangeWeaponType == RangeWeaponType.ADAMANT_KNIFE || rangeWeaponType == RangeWeaponType.RUNE_KNIFE
+				|| rangeWeaponType == RangeWeaponType.BRONZE_THROWNAXE
+				|| rangeWeaponType == RangeWeaponType.IRON_THROWNAXE
+				|| rangeWeaponType == RangeWeaponType.STEEL_THROWNAXE
+				|| rangeWeaponType == RangeWeaponType.MITHRIL_THROWNAXE
+				|| rangeWeaponType == RangeWeaponType.MITHRIL_THROWNAXE
+				|| rangeWeaponType == RangeWeaponType.RUNE_THROWNAXE
+				|| rangeWeaponType == RangeWeaponType.DRAGON_THROWNAXE);
 	}
     
     /**
@@ -639,15 +674,17 @@ public class Combat {
 
 		BowType bowType = weaponEquipDef.getBowType();
 		
+		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
+		
 		boolean avas = Combat.avas(player);
-		boolean bow = EquipmentConstants.wearingBlowpipe(player) || EquipmentConstants.usingCrystalBow(player) ||
-				isCrossBow(bowType) || EquipmentConstants.isBow(player) || EquipmentConstants.wearingBallista(player);
-		boolean hand = EquipmentConstants.isThrowingWeapon(player);
+		boolean bow = player.getEquipment().contains(BLOWPIPE) || player.getEquipment().contains(4222) || player.getEquipment().contains(19481)
+				|| isCrossBow(bowType) || isBow(bowType);
+		boolean hand = isHandWeapon(rangeWeaponType);
 		boolean dropArrows = !avas || (avas && RandomGenerator.nextInt(100) > 90);
 		Item drop = null;
 
 		// Establish do we wanna drop
-		if (EquipmentConstants.wearingBlowpipe(player)) {
+		if (player.getEquipment().contains(BLOWPIPE)) {
 			// if we have dart/scales support, handle that here
 		} else if (bow) {
 			if (dropArrows) {
@@ -950,6 +987,16 @@ public class Combat {
 
 
     public static void setCombatStyle(Player player) {
+    	
+    	Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) {
+			return;
+		}
+		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
+
+		BowType bowType = weaponEquipDef.getBowType();
+		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
+    	
         player.setCombatType(null); // reset
 
         if (player.autoCast && (player.getSpellBook() == SpellBook.MODERN_MAGICS || player.getSpellBook() == SpellBook.ANCIENT_MAGICKS)) {
@@ -973,7 +1020,7 @@ public class Combat {
 
 		// Check if we are using ranged
         if (player.getCombatType() != CombatStyle.MAGIC) {
-            if (EquipmentConstants.usingRange(player)) {
+            if (isCrossBow(bowType) || isBow(bowType) || isHandWeapon(rangeWeaponType) || player.getEquipment().contains(BLOWPIPE)) {
                 player.setCombatType(CombatStyle.RANGE);
             }
         }
@@ -1039,11 +1086,16 @@ public class Combat {
 	 * @return We are within distance to interact with the other player
 	 */
 	public static int calculateAttackDistance(Player player, Entity victim) {
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
+		
+		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
+		
 		int distance = 1;
 		if (player.getCombatType() == CombatStyle.RANGE) {
-		    if (EquipmentConstants.isThrowingWeapon(player))
+		    if (isHandWeapon(rangeWeaponType))
 			    distance = 4;
-		    else if (EquipmentConstants.wearingBlowpipe(player))
+		    else if (player.getEquipment().contains(BLOWPIPE))
 		        distance = 4;
 		    else
 		        distance = 7;

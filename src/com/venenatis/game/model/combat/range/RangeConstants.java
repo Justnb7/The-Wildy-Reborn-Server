@@ -41,6 +41,8 @@ public class RangeConstants {
 
 		DARK_BOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.DRAGON_ARROW }, new int[] { 10, 10, 10 }),
 
+		TWISTED_BOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.DRAGON_ARROW }, new int[] { 10, 10, 10 }),
+		
 		BRONZE_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT }, new int[] { 7, 7, 9 }),
 
 		IRON_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT }, new int[] { 7, 7, 9 }),
@@ -51,9 +53,13 @@ public class RangeConstants {
 
 		ADAMANT_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT, ArrowType.STEEL_BOLT, ArrowType.MITHRIL_BOLT, ArrowType.ADAMANT_BOLT }, new int[] { 7, 7, 9 }),
 
-		RUNE_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT, ArrowType.STEEL_BOLT, ArrowType.MITHRIL_BOLT, ArrowType.ADAMANT_BOLT, ArrowType.RUNE_BOLT }, new int[] { 7, 7, 9 }), 
+		RUNE_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT, ArrowType.STEEL_BOLT, ArrowType.MITHRIL_BOLT, ArrowType.ADAMANT_BOLT, ArrowType.RUNE_BOLT }, new int[] { 7, 7, 9 }),
 		
-		ARMADYL_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT, ArrowType.STEEL_BOLT, ArrowType.MITHRIL_BOLT, ArrowType.ADAMANT_BOLT, ArrowType.RUNE_BOLT }, new int[] { 7, 7, 9 }), 
+		ARMADYL_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT, ArrowType.STEEL_BOLT, ArrowType.MITHRIL_BOLT, ArrowType.ADAMANT_BOLT, ArrowType.RUNE_BOLT }, new int[] { 7, 7, 9 }),
+		
+		CHAOTIC_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT, ArrowType.STEEL_BOLT, ArrowType.MITHRIL_BOLT, ArrowType.ADAMANT_BOLT, ArrowType.RUNE_BOLT }, new int[] { 7, 7, 9 }), 
+		
+		DRAGON_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT, ArrowType.STEEL_BOLT, ArrowType.MITHRIL_BOLT, ArrowType.ADAMANT_BOLT, ArrowType.RUNE_BOLT }, new int[] { 7, 7, 9 }), 
 		
 		;//end of enum
 
@@ -227,6 +233,8 @@ public class RangeConstants {
 
 		IRON_DART(0.7, Graphic.create(1235, 0, 100), 227, new int[] { 3, 3, 5 }),
 
+		BLACK_DART(0.6, Graphic.create(1238, 0, 100), 231, new int[] { 3, 3, 5 }),
+		
 		STEEL_DART(0.65, Graphic.create(1236, 0, 100), 228, new int[] { 3, 3, 5 }),
 
 		MITHRIL_DART(0.6, Graphic.create(1237, 0, 100), 229, new int[] { 3, 3, 5 }),
@@ -234,8 +242,8 @@ public class RangeConstants {
 		ADAMANT_DART(0.5, Graphic.create(1239, 0, 100), 230, new int[] { 3, 3, 5 }),
 
 		RUNE_DART(0.4, Graphic.create(1240, 0, 100), 231, new int[] { 3, 3, 5 }),
-
-		BLACK_DART(0.6, Graphic.create(1238, 0, 100), 231, new int[] { 3, 3, 5 }),
+		
+		DRAGON_DART(0.4, Graphic.create(1123, 0, 100), 1122, new int[] { 3, 3, 5 }),
 
 		BRONZE_THROWNAXE(0.75, Graphic.create(42, 0, 100), 36, new int[] { 4, 4, 6 }),
 
@@ -248,6 +256,8 @@ public class RangeConstants {
 		ADAMANT_THROWNAXE(0.5, Graphic.create(46, 0, 100), 39, new int[] { 4, 4, 6 }),
 
 		RUNE_THROWNAXE(0.4, Graphic.create(48, 0, 100), 41, new int[] { 4, 4, 6 }),
+		
+		DRAGON_THROWNAXE(0.4, Graphic.create(1317, 0, 100), 1317, new int[] { 4, 4, 6 }),
 
 		BRONZE_JAVELIN(0.75, Graphic.create(206, 0, 100), 200, new int[] { 4, 4, 6 }),
 
@@ -260,6 +270,8 @@ public class RangeConstants {
 		ADAMANT_JAVELIN(0.5, Graphic.create(210, 0, 100), 204, new int[] { 4, 4, 6 }),
 
 		RUNE_JAVELIN(0.4, Graphic.create(211, 0, 100), 205, new int[] { 4, 4, 6 }),
+		
+		DRAGON_JAVELIN(0.4, null, 1301, new int[] { 4, 4, 6 }),
 
 		OBSIDIAN_RING(0.45, null, 442, new int[] { 7, 7, 9 }), ;
 

@@ -132,6 +132,14 @@ public class EquipmentContainer extends Container {
 			}
 		}
 		
+		if(player.getEquipment().contains(12926)) {
+			
+			int chargedWith = player.getToxicBlowpipeAmmo();
+			EquipmentDefinition chargeDef = EquipmentDefinition.get(chargedWith);
+			player.getBonuses()[4] += chargeDef.getBonuses()[4];// ranged attack of toxic blowpipe + ranged attack of the loaded dart
+			player.getBonuses()[11] += chargeDef.getBonuses()[11];// ranged strength of toxic blowpipe + ranged strength of the loaded dart
+		}
+		
 		//Bonuses sent to the original interface frames
         for (int i = 0; i < 10; i++) {
         	player.getActionSender().sendString(Combat.BONUS_NAMES[i] + ": " + (player.getBonuses()[i] >= 0 ? "+" : "") + player.getBonuses()[i], (1675 + i));

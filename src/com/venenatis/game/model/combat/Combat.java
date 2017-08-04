@@ -485,49 +485,41 @@ public class Combat {
 			bowType = weaponEquipDef.getBowType();
 
 			if (weapon.getId() == BLOWPIPE) {
-            	//TODO check for charges
-            	EquipmentDefinition chargeDef = EquipmentDefinition.get(11230);
+				projectile = 1122;
+			} else {
 
-                rangeWeaponType = chargeDef.getRangeWeaponType();
-
-                if (rangeWeaponType != null) {
-                	player.getBonuses()[12] += (int) (65 + (player.getBonuses()[12] + chargeDef.getBonuses()[12] * 1.8));
-
-                    pullback = rangeWeaponType.getPullbackGraphic();
-                    projectile = rangeWeaponType.getProjectileId();
-                }
-            }
-			
-			if (bowType != null) { // standard bow and arrow
-				ArrowType arrowType;
-				if (bowType == BowType.CRYSTAL_BOW) {
-					arrowType = ArrowType.CRYSTAL_ARROW;
-					ammunition = null;
-				} else {
-					Item arrows = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-					arrowEquipDef = arrows.getEquipmentDefinition();
-					arrowType = arrowEquipDef.getArrowType();
-					ammunition = arrows;
-				}
-				if (bowType == BowType.DARK_BOW) {
-					if (ammunition != null && ammunition.getId() != 11212) {
-						pullback = Graphic.create(arrowType.getPullbackGraphic().getId() + 1085, arrowType.getPullbackGraphic().getDelay(), arrowType.getPullbackGraphic().getHeight());
+				if (bowType != null) { // standard bow and arrow
+					ArrowType arrowType;
+					if (bowType == BowType.CRYSTAL_BOW) {
+						arrowType = ArrowType.CRYSTAL_ARROW;
+						ammunition = null;
+					} else {
+						Item arrows = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+						arrowEquipDef = arrows.getEquipmentDefinition();
+						arrowType = arrowEquipDef.getArrowType();
+						ammunition = arrows;
+					}
+					if (bowType == BowType.DARK_BOW) {
+						if (ammunition != null && ammunition.getId() != 11212) {
+							pullback = Graphic.create(arrowType.getPullbackGraphic().getId() + 1085, arrowType.getPullbackGraphic().getDelay(), arrowType.getPullbackGraphic().getHeight());
+						} else {
+							pullback = arrowType.getPullbackGraphic();
+						}
 					} else {
 						pullback = arrowType.getPullbackGraphic();
 					}
-				} else {
-					pullback = arrowType.getPullbackGraphic();
-				}
-				projectile = arrowType.getProjectileId();
-			} else { // ranged weapon
-				rangeWeaponType = weaponEquipDef.getRangeWeaponType();
-				if (rangeWeaponType != null) {
-					ammunition = weapon;
+					projectile = arrowType.getProjectileId();
+				} else { // ranged weapon
+					rangeWeaponType = weaponEquipDef.getRangeWeaponType();
+					if (rangeWeaponType != null) {
+						ammunition = weapon;
 
-					pullback = rangeWeaponType.getPullbackGraphic();
-					projectile = rangeWeaponType.getProjectileId();
+						pullback = rangeWeaponType.getPullbackGraphic();
+						projectile = rangeWeaponType.getProjectileId();
+					}
 				}
 			}
+			player.getEquipment().setBonus();
 		}
 
 		boolean special = player.isUsingSpecial() ? true : false;

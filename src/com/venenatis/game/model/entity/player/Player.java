@@ -2947,6 +2947,14 @@ public class Player extends Entity {
 	public void setVigour(double vigour) {
 		this.vigour = vigour;
 	}
+
+	public int getToxicBlowpipeCharge() {
+		return 16383;
+	}
+
+	public int getToxicBlowpipeAmmo() {
+		return 11230;
+	}
 	
 	
 }

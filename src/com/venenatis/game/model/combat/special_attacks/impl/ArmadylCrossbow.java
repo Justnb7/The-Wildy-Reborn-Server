@@ -20,7 +20,6 @@ public class ArmadylCrossbow implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		player.playAnimation(Animation.create(4230));
 
-		//TODO implement gfx 301
 		int d = player.getLocation().distanceToEntity(player, target);
 		player.playProjectile(Projectile.create(player.getLocation(), target, 301, 60, 50, 65 + (d * 5), 43, 35, 10, 36));
 

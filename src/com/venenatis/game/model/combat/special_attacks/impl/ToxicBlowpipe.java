@@ -1,5 +1,7 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
+import com.venenatis.game.model.Projectile;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
@@ -17,14 +19,22 @@ public class ToxicBlowpipe implements SpecialAttack {
 
 	@Override
 	public void handleAttack(Player player, Entity target) {
-		int damage = Utility.random(player.getCombatState().calculateRangeMaxHit());
-		if (!(CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier()))) {
-			damage = 0;
-		}
 		player.playAnimation(Animation.create(5061));
+		player.playProjectile(Projectile.create(player.getLocation(), target, 1043, 20, 50, 35, 38, 36, 13, 64));
 
-		//TODO implement gfx 1043
-		target.take_hit(player, damage, CombatStyle.RANGE).giveXP(player).send();
+		// Step 1: calculate a hit
+		int randomHit = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
+
+		// Step 2: check if it missed
+		if (!CombatFormulae.getAccuracy(player, target, 1, 1.0)) {
+			randomHit = 0;
+		}
+
+		//Increase hitpoints
+        player.getSkills().increaseLevelToMaximum(Skills.HITPOINTS, (randomHit / 2) + 1);
+
+		// Step 3: check target's protection prayers
+		target.take_hit(player, randomHit, CombatStyle.RANGE).send(2);
 	}
 
 	@Override

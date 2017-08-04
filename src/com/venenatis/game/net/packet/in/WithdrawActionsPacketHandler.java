@@ -194,11 +194,24 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				return;
 			}
 			
-			//player.debug(""+removeSlot);
+			player.debug("equipment slot: "+removeSlot);
 			
 			Item equipment = player.getEquipment().get(removeSlot);
 			
 			switch(removeSlot) {
+			
+			case 3:
+				if (equipment.getId() == 12926 && equipment != null) {
+					int charges = player.getToxicBlowpipeCharge();
+
+					if (charges < 0) {
+						charges = 0;
+					}
+
+					player.getActionSender().sendMessage("Your blowpipe has " + charges + " remaining charges.");
+				}
+				break;
+			
 			case 5:// Shield
 				if (equipment != null) {
 					switch (equipment.getId()) {
@@ -210,7 +223,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 				}
 				break;
 			case 12:// Ring
-				if(equipment.getId() == 2550) {
+				if(equipment.getId() == 2550 && equipment != null) {
 					player.getActionSender().sendMessage("<col=7f00ff>Your Ring of Recoil can deal " + player.getCombatState().getRingOfRecoil() + " more points of damage before shattering.");
 				}
 				break;

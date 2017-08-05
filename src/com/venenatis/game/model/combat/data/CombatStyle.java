@@ -45,5 +45,10 @@ public enum CombatStyle {
 	/**
 	 * Chaos fanatic special attack
 	 */
-	GREEN_BOMB;
+	GREEN_BOMB, 
+	
+	/**
+	 * Giant mole special move
+	 */
+	DIG;
 }

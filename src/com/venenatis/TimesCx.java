@@ -21,11 +21,14 @@ public class TimesCx {
 	public long login, objs, tasks, world, items, total;
 
 	public void print() {
+		boolean debug = false;
+		if(debug) {
         System.out.printf("[GameEngine] %sms for a game cycle. [login:%s, objs:%s, tasks:%s, world:%s, items:%s] ~~ [%s, %s, %s, %s, %s | %s %s %s] %n",
         		total, login, objs, tasks, world, items, 
         		wp.player_pre, wp.npc_pre, wp.update, wp.player_post, wp.npc_post,
         		pp.process, pp.walk, pp.coverage);
         System.out.println();
+		}
 	}
 
 }

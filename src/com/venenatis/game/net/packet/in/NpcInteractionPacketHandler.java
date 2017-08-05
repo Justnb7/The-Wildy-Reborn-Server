@@ -1,12 +1,6 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.model.Item;
-import com.venenatis.game.model.combat.Combat;
-import com.venenatis.game.model.combat.RangeConstants.BowType;
-import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
 import com.venenatis.game.model.combat.data.CombatStyle;
-import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.PacketType;
@@ -88,18 +82,12 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 	private void handleAttackNpcPacket(Player player, int packet) {
 		int pid = player.getInStream().readUnsignedWordA();
-		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
-
-		BowType bowType = weaponEquipDef.getBowType();
 		
-		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
 		NPC npc = World.getWorld().getNPCs().get(pid);
 		if (npc == null) {
 			return;
 		}
 		if (npc.getHitpoints() == 0) {
-			player.debug("stop");
 			player.getCombatState().reset();
 			return;
 		}
@@ -115,15 +103,10 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 		player.faceEntity(npc);
 		player.setCombatType(null);
-		boolean usingBow = Combat.isBow(bowType);
-		boolean throwingWeapon = Combat.isHandWeapon(rangeWeaponType);
-		boolean usingCross = Combat.isCrossBow(bowType);
 
-		if ((usingBow || usingCross || player.autoCast)
+
+		if ((player.getCombatType() != CombatStyle.MELEE || player.autoCast)
 				&& player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {
-			player.getWalkingQueue().reset();
-		}
-		if (throwingWeapon && player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 4)) {
 			player.getWalkingQueue().reset();
 		}
 

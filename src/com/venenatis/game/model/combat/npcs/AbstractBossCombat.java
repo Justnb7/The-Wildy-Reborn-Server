@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.venenatis.game.model.combat.npcs.impl.Cave_Kraken;
+import com.venenatis.game.model.combat.npcs.impl.GiantMole;
 import com.venenatis.game.model.combat.npcs.impl.Kraken;
 import com.venenatis.game.model.combat.npcs.impl.SkeletalWyvern;
 import com.venenatis.game.model.combat.npcs.impl.barrows.AhrimTheBlighted;
@@ -59,6 +60,8 @@ public abstract class AbstractBossCombat {
 		bosses.put(2054, new Chaos_Elemental());
 		bosses.put(239,  new King_Black_Dragon());
 		bosses.put(6619,  new ChaosFanatic());
+		
+		bosses.put(5779, new GiantMole());
 
 	}
 	

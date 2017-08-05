@@ -1023,13 +1023,20 @@ public class ActionSender {
 		sendConfig(166, player.getScreenBrightness());
 		sendConfig(207, player.isEnableMusic() ? 1 : 0);
 		sendConfig(206, player.isEnableSound() ? 1 : 0);
-		sendConfig(287, player.getSplitPrivateChat() ? 1 : 0);
+		sendConfig(16109, player.getSplitPrivateChat() ? 1 : 0);
 		sendConfig(205, player.getSplitPrivateChat() ? 1 : 0);
 		sendConfig(200, player.getAcceptAid() ? 1 : 0);
 		sendConfig(172, player.isAutoRetaliating() ? 1 : 0);
 		sendConfig(152, player.getWalkingQueue().isRunningToggled() ? 1 : 0);
-		sendString("100%", 149);
+		sendString(player.getRunEnergy()+"%", 149);
 		sendRunEnergy();
+		sendConfig(16101, player.getDataOrbs() ? 1 : 0);
+		sendConfig(16103, player.getRoofsToggled() ? 1 : 0);
+		sendConfig(16105, player.getLeftClickAttack() ? 1 : 0);
+		sendConfig(16111, player.getGameTimers() ? 1 : 0);
+		sendConfig(16113, player.toggleTargetTracking() ? 1 : 0);
+		sendConfig(16115, player.toggleGroundItems() ? 1 : 0);
+		sendConfig(16118, player.toggleShiftClick() ? 1 : 0);
 	}
 	
 	public void updateAfterLogin() {

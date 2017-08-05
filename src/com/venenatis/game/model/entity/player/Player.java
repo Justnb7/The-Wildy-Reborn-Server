@@ -2003,7 +2003,7 @@ public class Player extends Entity {
 		return isAutoRetaliating;
 	}
 	
-	private boolean enableSound = true;
+	private boolean enableSound = false;
 	
 	public boolean isEnableSound() {
 		return enableSound;
@@ -2031,6 +2031,76 @@ public class Player extends Entity {
 
 	public boolean getAcceptAid() {
 		return acceptAid;
+	}
+	
+	private boolean dataOrbs;
+
+	public void setDataOrbs(boolean dataOrbs) {
+		this.dataOrbs = dataOrbs;
+	}
+
+	public boolean getDataOrbs() {
+		return dataOrbs;
+	}
+	
+	private boolean roofs;
+
+	public void setRoofsToggled(boolean roofs) {
+		this.roofs = roofs;
+	}
+
+	public boolean getRoofsToggled() {
+		return roofs;
+	}
+	
+	private boolean leftClickAttack;
+
+	public void setLeftClickAttack(boolean leftClickAttack) {
+		this.leftClickAttack = leftClickAttack;
+	}
+
+	public boolean getLeftClickAttack() {
+		return leftClickAttack;
+	}
+	
+	private boolean gameTimers;
+
+	public void setGameTimers(boolean gameTimers) {
+		this.gameTimers = acceptAid;
+	}
+
+	public boolean getGameTimers() {
+		return gameTimers;
+	}
+
+	private boolean targetTracking;
+
+	public void setTargetTracking(boolean targetTracking) {
+		this.targetTracking = targetTracking;
+	}
+
+	public boolean toggleTargetTracking() {
+		return targetTracking;
+	}
+	
+	private boolean groundItems;
+
+	public void setGroundItems(boolean groundItems) {
+		this.groundItems = groundItems;
+	}
+
+	public boolean toggleGroundItems() {
+		return groundItems;
+	}
+	
+	private boolean shiftDrop;
+
+	public void setShiftDrops(boolean shiftDrop) {
+		this.shiftDrop = shiftDrop;
+	}
+
+	public boolean toggleShiftClick() {
+		return shiftDrop;
 	}
 	
     private final WeaponInterface weaponInterface = new WeaponInterface(this);

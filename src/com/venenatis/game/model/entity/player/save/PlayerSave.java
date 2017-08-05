@@ -181,6 +181,13 @@ public class PlayerSave {
 				player.setAttribute("music_volume", details.musicVolume);
 				player.setEnableSound(details.sounds);
 				player.setAttribute("sound_volume", details.soundsVolume);
+				player.setDataOrbs(details.dataOrbs);
+				player.setRoofsToggled(details.roofs);
+				player.setLeftClickAttack(details.leftClickAttack);
+				player.setGameTimers(details.gameTimers);
+				player.setTargetTracking(details.targetTracking);
+				player.setGroundItems(details.groundItems);
+				player.setShiftDrops(details.shiftDrop);
 				if (details.killTracker != null) {
 					player.setKillTracker(details.killTracker);
 				}
@@ -269,6 +276,13 @@ public class PlayerSave {
 		private final int musicVolume;
 		private final boolean sounds;
 		private final int soundsVolume;
+		private final boolean dataOrbs;
+		private final boolean roofs;
+		private final boolean leftClickAttack;
+		private final boolean gameTimers;
+		private final boolean targetTracking;
+		private final boolean groundItems;
+		private final boolean shiftDrop;
 		private CopyOnWriteArrayList<KillEntry> killTracker = new CopyOnWriteArrayList<KillEntry>();
 		private final List<Long> friendList;
 		private final List<Long> ignoreList;
@@ -350,6 +364,13 @@ public class PlayerSave {
 			musicVolume = player.getAttribute("music_volume", 3);
 			sounds = player.isEnableSound();
 			soundsVolume = player.getAttribute("sound_volume", 3);
+			dataOrbs = player.getDataOrbs();
+			roofs = player.getRoofsToggled();
+			leftClickAttack = player.getLeftClickAttack();
+			gameTimers = player.getGameTimers();
+			targetTracking = player.toggleTargetTracking();
+			groundItems = player.toggleGroundItems();
+			shiftDrop = player.toggleShiftClick();
 			killTracker = player.getKillTracker();	
 			friendList = player.getFAI().getFriendsList();
 			ignoreList = player.getFAI().getIgnoreList();

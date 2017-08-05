@@ -208,6 +208,7 @@ public class DefaultController extends Controller {
 
 				player.setRunEnergy(energy);
 				player.getActionSender().sendRunEnergy();
+				player.getActionSender().sendString(energy+"%", 149);
 			}
 		} else if (player.getWalkingQueue().isMoving() && player.getWalkingQueue().isRunning()) {
 			if (player.getRunEnergy() <= 0) {
@@ -216,6 +217,7 @@ public class DefaultController extends Controller {
 			} else {
 				player.setRunEnergy(player.getRunEnergy() - 1);
 				player.getActionSender().sendRunEnergy();
+				player.getActionSender().sendString(player.getRunEnergy()+"%", 149);
 			}
 		}
 	}

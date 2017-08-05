@@ -385,6 +385,14 @@ public class OwnerCommand implements Command {
 				return true;
 			}
 			return false;
+			
+		case "ts":
+			if(parser.hasNext()) {
+				String text = parser.nextString();
+				int interfaceId = parser.nextInt();
+				player.getActionSender().sendString(text, interfaceId);
+			}
+			return true;
 
 		case "song":
 			if (parser.hasNext()) {

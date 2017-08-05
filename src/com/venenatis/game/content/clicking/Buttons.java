@@ -125,11 +125,9 @@ public class Buttons {
 			break;
 
 		/** Settings */
-		case 4026:
-			player.getWalkingQueue().setRunningToggled(
-					!player.getWalkingQueue().isRunningToggled());
-			player.getActionSender().sendConfig(152,
-					player.getWalkingQueue().isRunning() ? 1 : 0);
+		case 152:
+			player.getWalkingQueue().setRunningToggled(!player.getWalkingQueue().isRunningToggled());
+			player.getActionSender().sendConfig(152, player.getWalkingQueue().isRunning() ? 1 : 0);
 			break;
 
 		case 3138:
@@ -145,40 +143,31 @@ public class Buttons {
 			player.setScreenBrightness((byte) 4);
 			break;
 
-		case 140181:
+		case 48167:
 			player.setAcceptAid(!player.getAcceptAid());
-			player.getActionSender().sendConfig(200,
-					player.getAcceptAid() ? 1 : 0);
+			player.getActionSender().sendConfig(200, player.getAcceptAid() ? 1 : 0);
 			break;
 
-		case 140185:
+		case 62237:
 			player.setSplitPrivateChat(!player.getSplitPrivateChat());
-			player.getActionSender().sendConfig(287,
-					player.getSplitPrivateChat() ? 1 : 0);
-			player.getActionSender().sendConfig(205,
-					player.getSplitPrivateChat() ? 1 : 0);
+			player.getActionSender().sendConfig(287, player.getSplitPrivateChat() ? 1 : 0);
+			player.getActionSender().sendConfig(205, player.getSplitPrivateChat() ? 1 : 0);
 			break;
 
 		case 140186:
 			player.setEnableSound(!player.isEnableSound());
-			player.getActionSender().sendConfig(206,
-					player.isEnableSound() ? 1 : 0);
-			player.getActionSender().sendMessage(
-					String.format("You have %s sound effects.",
-							player.isEnableSound() ? "enabled" : "disabled"));
+			player.getActionSender().sendConfig(206, player.isEnableSound() ? 1 : 0);
+			player.getActionSender().sendMessage(String.format("You have %s sound effects.", player.isEnableSound() ? "enabled" : "disabled"));
 			break;
 
 		case 140187:
 			player.setEnableMusic(!player.isEnableMusic());
-			player.getActionSender().sendConfig(207,
-					player.isEnableMusic() ? 1 : 0);
+			player.getActionSender().sendConfig(207, player.isEnableMusic() ? 1 : 0);
 			if (player.isEnableMusic()) {
-				player.getActionSender().sendMessage(
-						"You've enabled your music player.");
+				player.getActionSender().sendMessage("You've enabled your music player.");
 				MusicData.playMusic(player);
 			} else if (!player.isEnableMusic()) {
-				player.getActionSender().sendMessage(
-						"You've disabled your music player.");
+				player.getActionSender().sendMessage("You've disabled your music player.");
 				player.getActionSender().sendSong(-1);
 			}
 			break;

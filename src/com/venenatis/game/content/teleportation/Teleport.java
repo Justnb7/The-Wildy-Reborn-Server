@@ -137,7 +137,7 @@ public class Teleport {
 		/* Home Telport */
 		case 75010:
 		case 21741:
-		case 30000:
+		case 117048:
 			player.getTeleportAction().teleport(Constants.RESPAWN_PLAYER_LOCATION, TeleportTypes.SPELL_BOOK, false);
 			break;
 			

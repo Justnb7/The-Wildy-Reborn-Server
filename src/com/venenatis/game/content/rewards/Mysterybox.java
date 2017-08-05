@@ -32,12 +32,14 @@ public class Mysterybox {
 			new Item(10352, 1), // 3rd age kiteshield
 			new Item(12424, 1), // 3rd age bow
 			new Item(12426, 1), // 3rd age longsword
-			new Item(10330, 1) // 3rd age range top
+			new Item(10330, 1), // 3rd age range top
+			new Item(13652, 1), //Dragon claws
+			new Item(11802, 1) //Armadyl godsword
 			};
 	/**
      * All available uncommon items to win
      */
-	public static final Item[] UNCOMMON_REWARDS = { new Item(13307, 5), // Blood money
+	public static final Item[] UNCOMMON_REWARDS = {
 			new Item(995, 5_000_000), // Coins
 			new Item(4716, 1), // Dharok's helm
 			new Item(4718, 1), // Dharok's greataxe
@@ -95,7 +97,6 @@ public class Mysterybox {
 			new Item(11937, 250), // Dark crab
 			new Item(8839, 1), // Void knight top
 			new Item(8840, 1), // Void knight robe
-			new Item(8841, 1), // Void knight mace
 			new Item(8842, 1), // Void knight gloves
 			new Item(10611, 1), // Void knight top
 			new Item(11663, 1), // Void mage helm
@@ -142,7 +143,7 @@ public class Mysterybox {
 			default:
 				itemReceived = Utility.randomElement(COMMON_REWARDS);
 			}
-			//TODO spawn pet in inv or bank
+			player.getInventory().add(itemReceived);
 			player.getActionSender().sendMessage("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getName()) + " " + itemReceived.getName() + ".");
 			player.getInventory().remove(MYSTERY_BOX);
 		}

@@ -19,6 +19,8 @@ import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
 import com.venenatis.game.content.skills.thieving.Thieving;
 import com.venenatis.game.content.teleportation.Teleport;
+import com.venenatis.game.content.teleportation.TeleportationInterface.TeleportData;
+import com.venenatis.game.content.teleportation.TeleportationInterface.TeleportType;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.InterfaceState;
@@ -3026,5 +3028,8 @@ public class Player extends Entity {
 		return 11230;
 	}
 	
-	
+	public TeleportData teleportData;
+	public int lastMenuChosen;
+	public long lastTeleport;
+	public TeleportType teleportType;
 }

@@ -25,7 +25,7 @@ public class Buttons {
 	 *            The id of the button being clicked.
 	 */
 	public static void handleButton(Player player, int button) {
-		System.out.println("enter "+button);
+		System.out.println("btn "+button);
 		switch (button) {
 		
 		case 51061:

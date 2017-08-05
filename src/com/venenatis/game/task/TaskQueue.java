@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.venenatis.server.GameEngine;
+
 /**
  * A class which schedules the execution of {@link Task}'s.
  *
@@ -55,6 +57,7 @@ public final class TaskQueue implements Service {
 	 */
 	@Override
 	public void pulse() {
+		 long start = System.currentTimeMillis();
 		Task task;
 
 		// add all of the pending tasks
@@ -74,6 +77,9 @@ public final class TaskQueue implements Service {
 			}
 			task.tick();
 		}
+		long end = (System.currentTimeMillis() - start);
+		GameEngine.profile.tasks = end;
+        //System.out.println("[TaskQueue] "+end+"ms for "+tasks.size()+" tasks.");
 	}
 	
 	@Override

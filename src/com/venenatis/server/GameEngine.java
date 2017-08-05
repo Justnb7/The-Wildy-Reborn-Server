@@ -2,6 +2,7 @@ package com.venenatis.server;
 
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.venenatis.TimesCx;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.world.World;
@@ -54,11 +55,6 @@ public final class GameEngine implements Runnable {
     private static final Stopwatch benchmark = new Stopwatch();
 
     /**
-     * The state that this engine is currently in.
-     */
-    private static EngineState state = EngineState.NORMAL;
-
-    /**
      * Private constructor to restrict external instantiation.
      */
     private GameEngine() {
@@ -78,10 +74,8 @@ public final class GameEngine implements Runnable {
     public void run() {
         try {
             benchmark.reset();
-            if (state == EngineState.NORMAL) {
-                cycle();
-            }
-            benchmark.ifElapsed(600, t -> logger.warning("Engine has reached maximum load! [overhead= " + t + "ms, state= " + state + "]"));
+            cycle();
+            benchmark.ifElapsed(600, t -> logger.warning("Engine has reached maximum load! [overhead= " + t + "ms]"));
         } catch (Exception reason) {
             logger.log(Level.SEVERE, "Fatal error while handling server logic loop", reason);
             reason.printStackTrace();
@@ -98,26 +92,32 @@ public final class GameEngine implements Runnable {
         Preconditions.checkArgument(!loginQueue.contains(player), "Login queue already contains " + player);
         loginQueue.add(player);
     }
+    
+    public static TimesCx profile;
 
     /**
      * Performs a normal cycle where the {@link World} is synchronized with the
      * game thread. These are done every {@code 600}ms.
      */
     private static void cycle() {
+    	profile = new TimesCx();
+    	long start = System.currentTimeMillis();
         for (int count = 0; count < LOGIN_THRESHOLD; count++) {
             Player p = loginQueue.poll();
             if (p == null)
                 break;
             World.getWorld().register(p);
         }
-        // long start = System.currentTimeMillis();
+        profile.login = System.currentTimeMillis() - start;
+        
+        //So all this is triggered when clicking the buttons lol
         Server.getGlobalObjects().pulse();
         Server.getTaskScheduler().pulse();
         World.getWorld().pulse();
         GroundItemHandler.pulse();
         
-        // long end = (System.currentTimeMillis() - start);
-
+        profile.total = (System.currentTimeMillis() - start);
+        profile.print();
     }
 
     /**
@@ -128,17 +128,5 @@ public final class GameEngine implements Runnable {
      */
     public static Collection<Player> getLoginQueue() {
         return Collections.unmodifiableCollection(loginQueue);
-    }
-
-    /**
-     * The enumerated type representing the different states of this engine.
-     */
-    private enum EngineState {
-
-        /**
-         * The engine needs to perform a normal cycle; Synchronization with the
-         * {@link World}.
-         */
-        NORMAL
     }
 }

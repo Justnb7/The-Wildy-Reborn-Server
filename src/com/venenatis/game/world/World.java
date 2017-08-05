@@ -29,6 +29,7 @@ import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
 import com.venenatis.game.task.Service;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.DidYouKnowEvent;
+import com.venenatis.game.task.impl.GearPointsTask;
 import com.venenatis.game.task.impl.InstanceFloorReset;
 import com.venenatis.game.task.impl.NPCMovementTask;
 import com.venenatis.game.task.impl.RestoreSpecialStats;
@@ -36,6 +37,7 @@ import com.venenatis.game.task.impl.RestoreStats;
 import com.venenatis.game.task.impl.SavePlayers;
 import com.venenatis.game.task.impl.SecondTask;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
+import com.venenatis.server.GameEngine;
 import com.venenatis.server.Server;
 
 /**
@@ -139,6 +141,7 @@ public class World implements Service {
 		schedule(new SavePlayers());
 		schedule(new BountyHunter());
 		schedule(new InstanceFloorReset());
+		schedule(new GearPointsTask());
 	}
 	
 	/**
@@ -383,7 +386,7 @@ public class World implements Service {
 	 */
 	@Override
 	public void pulse() {
-		//long startTime = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 		try {
 			if (kickAllPlayers) {
 				for (Player player : World.getWorld().getPlayers()) {
@@ -397,19 +400,24 @@ public class World implements Service {
 				}
 			}
 			
+			final long player_pre = System.currentTimeMillis();
 			// Use randomized iteration order for PID shuffling.
 			for (Player player : World.getWorld().getUnorderedPlayers()) {
 				if (player != null && player.isActive()) {
 					handlePreUpdating(player);
 				}
 			}
+			GameEngine.profile.wp.player_pre = System.currentTimeMillis() - player_pre;
 
+			final long npc_pre = System.currentTimeMillis();
 			for (NPC npc : npcs) {
 				if (npc != null && npc.isVisible()) {
 					npc.process();
 				}
 			}
+			GameEngine.profile.wp.npc_pre = System.currentTimeMillis() - npc_pre;
 
+			final long upd = System.currentTimeMillis();
 			for (Player player : players) {
 				if (player == null || !player.isActive()) {
 					continue;
@@ -417,17 +425,23 @@ public class World implements Service {
 				PlayerUpdating.updatePlayer(player, player.outStream);
 				NpcUpdating.updateNPC(player, player.outStream);
 			}
+			GameEngine.profile.wp.update = System.currentTimeMillis() - upd;
 
+			final long player_post = System.currentTimeMillis();
 			for (Player player : players) {
 				if (player != null && player.isActive()) {
 					handlePostUpdating(player);
 				}
 			}
+			GameEngine.profile.wp.player_post = System.currentTimeMillis() - player_post;
+
+			final long npc_post = System.currentTimeMillis();
 			for (NPC npc : npcs) {
 				if (npc != null) {
 					npc.clearUpdateFlags();
 				}
 			}
+			GameEngine.profile.wp.npc_post = System.currentTimeMillis() - npc_post;
 
 			if (updateRunning && !updateAnnounced) {
 				updateAnnounced = true;
@@ -445,7 +459,9 @@ public class World implements Service {
 		}
 		gametick++;
 		
-		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[pulse] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
+		long endTime = System.currentTimeMillis() - startTime;
+		GameEngine.profile.world = endTime;
+		//System.out.println("[World pulse] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 
 	/**
@@ -454,7 +470,7 @@ public class World implements Service {
 	 * @param player The player being pre-updated
 	 */
 	private void handlePreUpdating(Player player) {
-		//long startTime = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 		try {
 			 // Use randomized iteration order for PID shuffling.
 	        for (Player p : World.getWorld().getUnorderedPlayers()) {
@@ -468,9 +484,18 @@ public class World implements Service {
 			// logout cos bad packets will fuck up entire networking
 		}
 		try {
+			long p1 = System.currentTimeMillis();
 			player.process();
+			GameEngine.profile.pp.process += System.currentTimeMillis()-p1;
+			
+			p1 = System.currentTimeMillis();
 			player.getWalkingQueue().processNextMovement();
+			GameEngine.profile.pp.walk += System.currentTimeMillis()-p1;
+
+			p1 = System.currentTimeMillis();
 			player.updateCoverage(player.getLocation());
+			GameEngine.profile.pp.coverage += System.currentTimeMillis()-p1;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

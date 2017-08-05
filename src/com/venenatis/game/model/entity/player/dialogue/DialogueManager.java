@@ -154,6 +154,9 @@ public class DialogueManager {
 		//Make sure the next dialogue is valid..
 		if (next == null || next.id() < 0) {
 			player.getActionSender().removeAllInterfaces();
+			if(player.inTutorial()) {
+				player.getGameModeSelection().open(player);
+			}
 			return;
 		}
 
@@ -177,6 +180,8 @@ public class DialogueManager {
 			player.getActionSender().sendInterfaceAnimation(headChildId, dialogue.animation().getAnimation());
 			player.getActionSender().sendString(NPCDefinitions.forId(dialogue.npcId()) != null ? NPCDefinitions.forId(dialogue.npcId()).getName().replaceAll("_", " ") : "", startDialogueChildId - 1);
 			for (int i = 0; i < lines.length; i++) {
+				if (lines[i].contains("<player>"))
+					lines[i] = lines[i].replaceAll("<player>", player.getUsername());
 				player.getActionSender().sendString(lines[i], startDialogueChildId + i);
 			}
 			player.getActionSender().sendChatBoxInterface(startDialogueChildId - 3);

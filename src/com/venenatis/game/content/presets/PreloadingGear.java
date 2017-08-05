@@ -223,7 +223,7 @@ public class PreloadingGear {
 		}
 		
 		//And then start dialogue
-		DialogueManager.start(player,23);
+		DialogueManager.start(player, 7);
 		//Set dialogue options
 		player.setDialogueOptions(new DialogueOptions() {
 			@Override

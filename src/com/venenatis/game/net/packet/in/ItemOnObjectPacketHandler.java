@@ -50,7 +50,6 @@ public class ItemOnObjectPacketHandler implements PacketType {
 			return;
 		}
 		
-        player.face(player, obj.getLocation());
 		ItemOnObjectInteract.handle(player, id, loc, item);
 	}
 

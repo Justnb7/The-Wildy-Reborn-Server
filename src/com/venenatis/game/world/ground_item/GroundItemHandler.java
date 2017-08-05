@@ -16,6 +16,7 @@ import com.venenatis.game.util.logging.PlayerLogging;
 import com.venenatis.game.util.logging.PlayerLogging.LogType;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem.State;
+import com.venenatis.server.GameEngine;
 import com.venenatis.server.Server;
 
 /**
@@ -163,6 +164,7 @@ public final class GroundItemHandler {
 	 * The ground item task, removes the ticks
 	 */
 	public static void pulse() {
+		long start = System.currentTimeMillis();
 		Iterator<GroundItem> iterator = groundItems.iterator();
 		while (iterator.hasNext()) {
 			GroundItem item = iterator.next();
@@ -186,6 +188,9 @@ public final class GroundItemHandler {
 				}
 			}
 		}
+		long end = (System.currentTimeMillis() - start);
+		GameEngine.profile.items = end;
+       // System.out.println("[GroundItemHandler] it took "+end+"ms for "+groundItems.size()+" gitems.");
 	}
 
 	public static boolean add(GroundItem groundItem) {

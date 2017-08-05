@@ -224,9 +224,12 @@ public class ShopManager {
 			player.getActionSender().sendMessage("You do not have enough " + currency.getUtility().getCurrencyName() + " to buy that.");
 		} else {
 			player.getInventory().add(id, item.getAmount(), true);
-			shop.remove(id, item.getAmount(), false);
-			shop.shift(false);
-			update(player.getShopId());
+			if (shop.getCurrency() != Currency.GEAR_POINTS) {
+				player.debug("enter");
+				shop.remove(id, item.getAmount(), false);
+				shop.shift(false);
+				update(player.getShopId());
+			}
 			player.getActionSender().sendMessage("You bought " + item.getAmount() + " " + item.getName() + " for " + Utility.formatDigits(price) + " " + currency.getUtility().getCurrencyName() + ".");
 			player.getActionSender().sendItemOnInterface(3823, player.getInventory().toArray());
 		}

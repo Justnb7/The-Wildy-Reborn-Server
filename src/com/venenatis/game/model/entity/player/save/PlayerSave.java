@@ -148,7 +148,8 @@ public class PlayerSave {
 				player.getCombatState().setTeleblockUnlock(details.teleblockDuration);
 				player.setSkullType(details.skullType);
 				player.setSkullTimer(details.skullDuration);
-				player.infection = details.infectionType;
+				player.setInfection(details.infectionType);
+				player.setGearPoints(details.gearPoints);
 				player.setSlayerTask(details.slayertask);
 				player.setSlayerTaskAmount(details.slayerTaskAmount);
 				player.setSlayerTaskDifficulty(details.taskDifficulity);
@@ -235,6 +236,7 @@ public class PlayerSave {
 		private final SkullType skullType;
 		private final int skullDuration;
 		private final int infectionType;
+		private final int gearPoints;
 		private final int slayertask;
 		private final int slayerTaskAmount;
 		private final int taskDifficulity;
@@ -311,7 +313,8 @@ public class PlayerSave {
 			teleblockDuration = player.getCombatState().getTeleblockUnlock();
 			skullType = player.getSkullType();
 			skullDuration = player.getSkullTimer();
-			infectionType = player.infection;
+			infectionType = player.getInfection();
+			gearPoints = player.getGearPoints();
 			slayertask = player.getSlayerTask();
 			slayerTaskAmount = player.getSlayerTaskAmount();
 			taskDifficulity = player.getSlayerTaskDifficulty();

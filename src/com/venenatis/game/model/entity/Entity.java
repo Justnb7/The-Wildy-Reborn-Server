@@ -122,6 +122,17 @@ public abstract class Entity {
 			return distance < dist;
 		}
 	}
+	
+	private int infection;
+	
+	public int getInfection() {
+		return infection;
+	}
+	
+	public void setInfection(int infection) {
+		this.infection = infection;
+	}
+	
 
 	public abstract void message(String s);
 
@@ -133,7 +144,6 @@ public abstract class Entity {
 	public int lastY;
 	public transient Object distanceEvent;
 	private boolean registered;
-	public int infection;
 	public boolean infected;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;

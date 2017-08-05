@@ -34,7 +34,7 @@ public class Venom {
 	 * @param player
 	 */
 	private void playerVenom(Player player) {
-		player.infection = 2;
+		player.setInfection(2);
 		player.infected = true;
 		if(player != null){
 			player.damage(new Hit(damage, HitType.VENOM));
@@ -42,7 +42,7 @@ public class Venom {
 			Server.getTaskScheduler().schedule(new Task(20) {
 				@Override
 				public void execute() {
-					if(player.infection == 0) {
+					if(player.getInfection() == 0) {
 						stop();
 						return;
 					}

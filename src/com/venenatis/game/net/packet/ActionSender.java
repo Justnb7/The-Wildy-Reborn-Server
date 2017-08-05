@@ -17,6 +17,7 @@ import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.clan.ClanRank;
+import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
@@ -1043,11 +1044,12 @@ public class ActionSender {
 				
 				//We are new so we start the tutorial
 				if (!player.receivedStarter() && player.inTutorial()) {
-					//TODO starter dialogue
+					DialogueManager.start(player, 8);
 				}
 				
 				//We can update our kills tracker after login
 				KillTracker.loadDefault(player);
+				
 				//Update the quest tab info
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 				
@@ -1058,8 +1060,8 @@ public class ActionSender {
 		            World.getWorld().register(pet);
 		        }
 				
-				//If we're a Administrator we choose to play in debug mode
-				if (player.getRights().isOwner(player)) {
+				//If we're a Owner we choose to play in debug mode
+				if (player.getRights().isOwner(player) && !player.getUsername().equalsIgnoreCase("Matthew")) {
 					player.setDebugMode(true);
 				}
 				

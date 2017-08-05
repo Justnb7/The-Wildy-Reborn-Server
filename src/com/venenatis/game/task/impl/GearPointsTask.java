@@ -2,28 +2,26 @@ package com.venenatis.game.task.impl;
 
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.world.World;
 
 /**
- * This task will renew your gear points every 5 mintes.
+ * This task will renew your gear points every 6 minutes.
  * @author Patrick van Elderen
  *
  */
 public class GearPointsTask extends Task {
-	
-	/**
-	 * The player whose energy we are restoring.
-	 */
-	private Player player;
 
-	public GearPointsTask(Player player) {
-		super(500);
-		this.player = player;
+	public GearPointsTask() {
+		super(600);
 	}
 
 	@Override
 	public void execute() {
-		player.setGearPoints(2500);
-		player.getActionSender().sendMessage("You're gear points have been renewed, you now have 2500 gear points.");
+		for (Player player : World.getWorld().getPlayers()) {
+			if (player != null) {
+				player.setGearPoints(2000);
+				player.getActionSender().sendMessage("@blu@[Server]@bla@ Your Gear Points just refilled to 2500. Spend them at a Legends Guard.");
+			}
+		}
 	}
-
 }

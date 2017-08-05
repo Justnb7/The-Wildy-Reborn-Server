@@ -48,6 +48,13 @@ public class NpcInteraction {
 		case 6599:
 			ShopManager.open(player, 1);
 			break;
+			
+		/* Gear points */
+		case 3951:
+			player.getActionSender().sendMessage("@dre@[Server]: Free points refill to 2500 every 6 minutes.");
+			player.getActionSender().sendMessage("@dre@[DYK]: You can type ::food, ::veng, ::barrage, and ::pots, to spawn them?");
+			ShopManager.open(player, 3);
+			break;
 
 		case 3257:
 			player.getThieving().pickpocket(Pickpocket.FARMER, npc);
@@ -99,7 +106,7 @@ public class NpcInteraction {
 						if(player.isSkulled()) {
 							DialogueManager.start(player, 3);
 						} else {
-							DialogueManager.start(player, 22);
+							DialogueManager.start(player, 6);
 							player.setDialogueOptions(new DialogueOptions() {
 								@Override
 								public void handleOption(Player player, int option) {
@@ -226,7 +233,7 @@ public class NpcInteraction {
 			if(player.isSkulled()) {
 				DialogueManager.start(player, 3);
 			} else {
-				DialogueManager.start(player, 22);
+				DialogueManager.start(player, 6);
 				player.setDialogueOptions(new DialogueOptions() {
 					@Override
 					public void handleOption(Player player, int option) {

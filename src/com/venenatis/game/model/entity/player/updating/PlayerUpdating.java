@@ -588,7 +588,7 @@ public class PlayerUpdating {
 		player.getPlayerProps().writeByte(player.isSkulled() ? player.getSkullType().getId() : -1);
 		
 		//Update the player infection 0 = healthy, 1 poison and 2 is venomed
-		player.getPlayerProps().writeByte(player.infection);
+		player.getPlayerProps().writeByte(player.getInfection());
 		
 		// Update Equipment
 		if (!player.isPlayerTransformed()) {

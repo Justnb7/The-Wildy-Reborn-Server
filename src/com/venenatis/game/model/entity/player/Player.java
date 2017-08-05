@@ -1394,7 +1394,7 @@ public class Player extends Entity {
 		}
 		
 		//Reset poison and venom
-		this.infection = 0;
+		this.setInfection(0);
 		this.infected = false;
 		
 		if (isDueling() || getDuelArena().isInSession()) {

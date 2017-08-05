@@ -12,6 +12,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
+import com.venenatis.server.GameEngine;
 
 
 /**
@@ -22,7 +23,7 @@ import com.venenatis.game.world.pathfinder.clipmap.Region;
 public class GlobalObjects {
 	
 	/**
-	 * A collection of all existing objects
+	 * A collection of all existing objects - note these are custom spawned objects NOT objects that exist by default in the game world such as grass etc
 	 */
 	Queue<GameObject> objects = new LinkedList<>();
 	
@@ -140,6 +141,7 @@ public class GlobalObjects {
 	 * tick remaining value that is negative, the object is never removed unless indicated otherwise.
 	 */
 	public void pulse() {
+		 long start = System.currentTimeMillis();
 		if (objects.size() == 0) {
 			return;
 		}
@@ -147,6 +149,8 @@ public class GlobalObjects {
 		GameObject object = null;
 		objects.removeAll(remove);
 		remove.clear();
+		// note; gonna add a pointless amount of overhead removing and readding unless ticks were zero every game cylce LUL
+		final int toCheck = objects.size();
 		while ((object = objects.poll()) != null) {
 			if (object.getTicksRemaining() < 0) {
 				updated.add(object);
@@ -160,6 +164,9 @@ public class GlobalObjects {
 			}
 		}
 		objects.addAll(updated);
+		long end = (System.currentTimeMillis() - start);
+		GameEngine.profile.objs = end;
+        //System.out.println("[GlobalObjects] it took "+end+"ms for "+toCheck+" custom spawned objs.");
 	}
 	
 	/**

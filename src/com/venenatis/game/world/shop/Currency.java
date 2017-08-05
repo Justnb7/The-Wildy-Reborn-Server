@@ -321,9 +321,11 @@ public enum Currency {
 			
 		case PK_POINTS:
 		case BOUNTIES:
-		case GEAR_POINTS:
 			return 3;
 
+		case GEAR_POINTS:
+			return -1;
+			
 		case SLAYER:
 			return 4;
 

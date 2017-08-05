@@ -211,7 +211,7 @@ public class ConsumeItemAction extends Action {
 						} else {
 							player.getSkills().increaseLevelToMaximum(skill, modification);
 						}
-						player.infection = 0;
+						player.setInfection(0);
 						player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 					}
 
@@ -290,7 +290,7 @@ public class ConsumeItemAction extends Action {
 				case SUPER_ANTIPOISON:
 					player.getActionSender().sendMessage("You drink some of your " + item.getDefinition().getName()
 							.toLowerCase().substring(0, item.getDefinition().getName().length() - 3) + ".");
-					player.infection = 0;
+					player.setInfection(0);
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 					break;
 				case BEER:
@@ -337,7 +337,7 @@ public class ConsumeItemAction extends Action {
 					player.getActionSender().sendMessage("You drink some of your " + item.getDefinition().getName()
 							.toLowerCase().substring(0, item.getDefinition().getName().length() - 3) + ".");
 					player.setVenomImmunity(0);
-					player.infection = 0;
+					player.setInfection(0);
 					player.setLastVenomCure(System.currentTimeMillis());
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 					break;
@@ -345,7 +345,7 @@ public class ConsumeItemAction extends Action {
 					player.getActionSender().sendMessage("You drink some of your " + item.getDefinition().getName()
 							.toLowerCase().substring(0, item.getDefinition().getName().length() - 3) + ".");
 					player.setVenomImmunity(TimeUnit.MINUTES.toMillis(5));
-					player.infection = 0;
+					player.setInfection(0);
 					player.setLastVenomCure(System.currentTimeMillis());
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 					break;

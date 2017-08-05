@@ -29,7 +29,7 @@ public class PlayerSaveUtility {
 	public static int getStarters(String host) {
 		int amount = 0;
 		try {
-			File file = new File("./data/logs/starters/" + host + ".txt");
+			File file = new File("./data/starters/" + host + ".txt");
 			if (!file.exists()) {
 				return 0;
 			}
@@ -68,7 +68,7 @@ public class PlayerSaveUtility {
 		}
 		
 		try {
-			File file = new File("./data/logs/starters/" + host + ".txt");
+			File file = new File("./data/starters/" + host + ".txt");
 			BufferedWriter out = new BufferedWriter(new FileWriter(file, false));
 			out.write(String.valueOf(amount));
 			out.close();

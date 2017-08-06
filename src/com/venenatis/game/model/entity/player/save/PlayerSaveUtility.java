@@ -26,10 +26,32 @@ public class PlayerSaveUtility {
 		return false;
 	}
 	
-	public static int getStarters(String host) {
+	public static int checkAddress(String host, String mac) {
 		int amount = 0;
 		try {
 			File file = new File("./data/starters/" + host + ".txt");
+			if (!file.exists()) {
+				return 0;
+			}
+			BufferedReader in = new BufferedReader(new FileReader(file));
+			
+			String whatever = in.readLine();
+			
+			long max = Long.parseLong(whatever);
+			
+			if (max > Integer.MAX_VALUE) {
+				amount = 2;
+			} else {
+				amount = (int) max;				
+			}
+			
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			File file = new File("./data/starters/" + mac + ".txt");
 			if (!file.exists()) {
 				return 0;
 			}
@@ -53,9 +75,10 @@ public class PlayerSaveUtility {
 	}	
 	
 	public static boolean setStarter(Player player) {
-		String host = player.getHostAddress();	
+		String host = player.getHostAddress();
+		String mac = player.getMacAddress();
 		
-		int amount = getStarters(host);
+		int amount = checkAddress(host, mac);
 		
 		if (amount >= 2) {
 			return false;
@@ -65,6 +88,16 @@ public class PlayerSaveUtility {
 			amount = 1;
 		} else if (amount == 1) {
 			amount = 2;
+		}
+		
+		try {
+			File file = new File("./data/starters/" + mac + ".txt");
+			BufferedWriter out = new BufferedWriter(new FileWriter(file, false));
+			out.write(String.valueOf(amount));
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 		
 		try {

@@ -1,7 +1,5 @@
 package com.venenatis.game.net.network.session;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -53,7 +51,6 @@ public class LoginSession extends Session {
 		int returnCode = 2;
 		
 		final String username = credential.getName().trim();
-		//So this final statement can only be used here cant be final cos you change it
 		
 		final String password = credential.getPassword();
 		
@@ -101,7 +98,7 @@ public class LoginSession extends Session {
 		}
 		
 		// check if this user has a valid username
-		if(!Arrays.stream(Constants.USERNAME_EXCEPTIONS).anyMatch($it -> username.equalsIgnoreCase($it))) {//must be final here but down below
+		if(!Arrays.stream(Constants.USERNAME_EXCEPTIONS).anyMatch($it -> username.equalsIgnoreCase($it))) {
 			for (String bad : Constants.BAD_USERNAMES) {
 				if (username.toLowerCase().contains(bad.toLowerCase())) {
 					sendReturnCode(ctx.channel(), LoginCode.BAD_USERNAME);
@@ -165,7 +162,7 @@ public class LoginSession extends Session {
 			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
 			return;
 		}
-		if (credential.getClientHash() != 39623221) {
+		if (credential.getClientHash() != 78305513) {
 			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
 			return;
 		}
@@ -188,7 +185,7 @@ public class LoginSession extends Session {
 			}
 		}
 		
-		if (players_online_sharing_one_host >= 2) {
+		if (players_online_sharing_one_host >= 3) {
 			sendReturnCode(ctx.channel(), 9);
 			return;
 		}

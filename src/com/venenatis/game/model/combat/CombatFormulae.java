@@ -47,16 +47,16 @@ public class CombatFormulae {
      */
     public static boolean getAccuracy(Entity attacker, Entity target, int att_type, double additionalSpecMulti) {
 
-        int att_curr_attack = attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.ATTACK);
-        int att_curr_range = attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.RANGE);
-        int att_curr_magic = attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.MAGIC);
+        int att_curr_attack = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.ATTACK);
+        int att_curr_range = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.RANGE);
+        int att_curr_magic = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.MAGIC);
 
-        int tar_curr_magic = target.isNPC() ? target.toNPC().getDefinition().getMagicDefence() : target.toPlayer().getSkills().getLevel(Skills.MAGIC);
-        int tar_curr_defence = target.isNPC() ? npcDef(target.toNPC(), att_type) : target.toPlayer().toPlayer().getSkills().getLevel(Skills.DEFENCE);
+        int tar_curr_magic = target != null && target.isNPC() ? target.toNPC().getDefinition().getMagicDefence() : target.toPlayer().getSkills().getLevel(Skills.MAGIC);
+        int tar_curr_defence = target != null && target.isNPC() ? npcDef(target.toNPC(), att_type) : target.toPlayer().toPlayer().getSkills().getLevel(Skills.DEFENCE);
 
-        int att_base_attack = attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevelForExperience(Skills.ATTACK);
-        int att_base_range = attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevelForExperience(Skills.RANGE);
-        int att_base_magic = attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevelForExperience(Skills.MAGIC);
+        int att_base_attack = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevelForExperience(Skills.ATTACK);
+        int att_base_range = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevelForExperience(Skills.RANGE);
+        int att_base_magic = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevelForExperience(Skills.MAGIC);
 
         double att_prayer_bonus = 1.0;
         double att_style_bonus = 0;
@@ -121,6 +121,10 @@ public class CombatFormulae {
                  if (p.isActivePrayer(Prayers.EAGLE_EYE)) {
                      att_prayer_bonus += 0.15;
                  }
+                 
+                 if (p.isActivePrayer(Prayers.RIGOUR)) {
+                     att_prayer_bonus += 0.20;
+                 }
 
                 att_equipment_bonus = p.getBonuses()[4];
                 att_void_bonus = wearingFullVoid(p, att_type) ? 1.1 : 1;
@@ -136,6 +140,10 @@ public class CombatFormulae {
 
                  if (p.isActivePrayer(Prayers.MYSTIC_MIGHT)) {
                      att_prayer_bonus += 0.15;
+                 }
+                 
+                 if (p.isActivePrayer(Prayers.AUGURY)) {
+                     att_prayer_bonus += 0.25;
                  }
 
                 att_spell_bonus += ((att_base_magic - p.MAGIC_SPELLS[p.getSpellId()][1]) * 0.3);
@@ -197,6 +205,14 @@ public class CombatFormulae {
             }
 
             if (t.isActivePrayer(Prayers.PIETY)) {
+                tar_prayer_bonus += 0.25;
+            }
+            
+            if (t.isActivePrayer(Prayers.RIGOUR)) {
+                tar_prayer_bonus += 0.25;
+            }
+            
+            if (t.isActivePrayer(Prayers.AUGURY)) {
                 tar_prayer_bonus += 0.25;
             }
 
@@ -405,6 +421,8 @@ public class CombatFormulae {
 			prayerMultiplier = 1.10;
 		} else if (player.isActivePrayer(Prayers.EAGLE_EYE)) {
 			prayerMultiplier = 1.15;
+		} else if (player.isActivePrayer(Prayers.RIGOUR)) {
+			prayerMultiplier = 1.23;
 		}
 		
 		switch(player.getAttackStyle()) {

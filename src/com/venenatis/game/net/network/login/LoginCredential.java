@@ -5,7 +5,7 @@ import com.venenatis.game.net.network.session.LoginSession;
 import com.venenatis.game.net.network.session.Session;
 
 /**
- * Represents a 'Login Credential' for a player who is attempting to login
+ * Represents a 'Login Credential' for a player who is attempting to login .. strictly data sent from the client not the netty Session 
  * 
  * @author Mobster
  *

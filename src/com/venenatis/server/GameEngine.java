@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.TimesCx;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
+import com.venenatis.game.net.LoginManager;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
@@ -38,6 +40,7 @@ public final class GameEngine implements Runnable {
      * The rate in which to pulse the server.
      */
     private static final int PULSE_RATE = 600;
+    
 
     /**
      * A logger which will log messages.
@@ -45,21 +48,28 @@ public final class GameEngine implements Runnable {
     private static final Logger logger = Logger.getLogger(GameEngine.class.getName());
 
     /**
-     * A queue of {@link Player}s who are waiting to be logged in.
+     * A queue of {@link Player}s who are waiting to be added to the Game Engine. This is NOT a list of people
+     * requesting to be logged in. That is done in {@link LoginManager}
      */
-    private static final Queue<Player> loginQueue = new ConcurrentLinkedQueue<>();
+    private static final Queue<Player> loginQueue = new ConcurrentLinkedQueue<>(); // we'll steal this in a sec
 
     /**
      * The stopwatch which will time how long server cycles take.
      */
     private static final Stopwatch benchmark = new Stopwatch();
+    
+    public static GameEngine engine; // probs a reference to it already but temp one for now
 
     /**
      * Private constructor to restrict external instantiation.
      */
     private GameEngine() {
-    	
+    	engine = this;
     }
+    
+    public static LoginManager loginMgr;
+    
+    //Am i even doing it right?
 
     /**
      * Initializes and starts this {@link GameLogicService}.
@@ -67,7 +77,9 @@ public final class GameEngine implements Runnable {
     public static void start() {
         ThreadFactory factory = new ThreadFactoryBuilder().setNameFormat("GameLogicService").setPriority(Thread.MAX_PRIORITY).build();
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(factory);
-        service.scheduleAtFixedRate(new GameEngine(), 0, PULSE_RATE, TimeUnit.MILLISECONDS);
+        GameEngine engine = new GameEngine();
+        service.scheduleAtFixedRate(engine, 0, PULSE_RATE, TimeUnit.MILLISECONDS);
+        loginMgr = new LoginManager(engine);
     }
 
     @Override
@@ -81,7 +93,7 @@ public final class GameEngine implements Runnable {
             reason.printStackTrace();
         }
     }
-
+    
     /**
      * Adds {@code player} to the login queue.
      *
@@ -102,6 +114,8 @@ public final class GameEngine implements Runnable {
     private static void cycle() {
     	profile = new TimesCx();
     	long start = System.currentTimeMillis();
+    	
+    	// Put these people into the game world
         for (int count = 0; count < LOGIN_THRESHOLD; count++) {
             Player p = loginQueue.poll();
             if (p == null)

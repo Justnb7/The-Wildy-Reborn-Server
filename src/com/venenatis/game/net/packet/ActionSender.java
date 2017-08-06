@@ -20,7 +20,6 @@ import com.venenatis.game.model.entity.player.clan.ClanRank;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
@@ -942,20 +941,6 @@ public class ActionSender {
 		
 		//Activate our players session
 		player.setActive(true);
-		
-		//Update the players details
-		try {
-			if (!PlayerSave.load(player)) {
-				player.setNewPlayer(true);
-				player.setTutorial(true);
-				player.setRunEnergy(100);
-				sendRunEnergy();
-			} else if (PlayerSave.load(player)) {
-				player.setNewPlayer(false);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		//Finalize our ignore and friends list
 		player.getFAI().handleLogin();

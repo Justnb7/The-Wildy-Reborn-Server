@@ -42,14 +42,21 @@ public class MagicCalculations {
         case 8841: // Void Knight Mace
             damageMultiplier += 0.10;
             break;
+            
+        case 18355: // Chaotic Staff
+			damageMultiplier += 0.20;
+			break;
         }
-        int neck = player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT)==null? -1:player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT).getId();
-            switch (neck) {
-            case 12002: // Occult
-                damageMultiplier += 0.10;
-                break;
-            }
+		int neck = player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT).getId();
+		switch (neck) {
+		case 12002: // Occult
+			damageMultiplier += 0.10;
+			break;
 
+		case 18335:// Arcane Stream Necklace
+			damageMultiplier += 0.15;
+			break;
+		}
         damage *= damageMultiplier;
         return (int) damage;
 	}

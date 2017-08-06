@@ -19,9 +19,6 @@ import com.venenatis.game.model.entity.player.save.PlayerSaveUtility;
  */
 public class Selection {
 	
-	//Simple loop shouldn't break networking?
-	// static = only one of it rather than duplicates
-	
 	private static final Item[] starterItems = { new Item(4587, 10), new Item(1305, 10), new Item(1434, 10),
 			new Item(5698, 10), new Item(1215, 10), new Item(10828, 10), new Item(3751, 10), new Item(2550, 10),
 			new Item(3105, 10), new Item(1725, 10), new Item(1704, 10), new Item(1731, 10), new Item(1163, 10),
@@ -195,8 +192,6 @@ public class Selection {
 			player.getEquipment().setSlot(7, new Item(12815));
 			break;
 		case 3: //Regular account
-			System.out.println("Execute starter");
-			long start = System.currentTimeMillis();
 			if (player.getBank().isEmpty()) {
 				player.getBank().clear(false);
 				player.getBank().add(starterItems);
@@ -206,8 +201,6 @@ public class Selection {
 			for (int skill = 0; skill < 7; skill++) {
 				player.getSkills().setMaxLevel(skill, 99);
 			}
-			long end = (System.currentTimeMillis() - start);
-		    System.out.println("[Starter regular players] it took "+end+" ms to load.");
 			break;
 		}
 		

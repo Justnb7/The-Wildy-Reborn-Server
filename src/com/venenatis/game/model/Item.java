@@ -371,7 +371,7 @@ public class Item {
 
 	public Item unnoted() {
 		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
-		return def.getParentId() != -1 ? new Item(def.getParentId(), amount) : this;
+		return def != null && def.getParentId() != -1 ? new Item(def.getParentId(), amount) : this;
 	}
 	
 	/**

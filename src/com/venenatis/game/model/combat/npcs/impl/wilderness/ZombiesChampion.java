@@ -76,11 +76,13 @@ public class ZombiesChampion extends AbstractBossCombat {
 		default:
 			break;
         }
+		
+		attacker.getCombatState().setAttackDelay(5);
 	}
 
 	@Override
 	public int distance(Entity attacker) {
-		return 6;
+		return 10;
 	}
 
 	@Override

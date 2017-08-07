@@ -996,7 +996,14 @@ public class Combat {
             
             player.setCombatType(CombatStyle.MAGIC);
         }
-        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null?-1:player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        
+        int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        
+        //Boxing and Kicking
+		if (wep == -1) {
+			player.setCombatType(CombatStyle.MELEE);
+		}
+        
         if (wep == 11907) {
             player.setSpellId(52);
             player.setCombatType(CombatStyle.MAGIC);
@@ -1078,19 +1085,20 @@ public class Combat {
 	 * @return We are within distance to interact with the other player
 	 */
 	public static int calculateAttackDistance(Player player, Entity victim) {
-		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
-		
-		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
 		
 		int distance = 1;
 		if (player.getCombatType() == CombatStyle.RANGE) {
-		    if (isHandWeapon(rangeWeaponType))
-			    distance = 4;
-		    else if (player.getEquipment().contains(BLOWPIPE))
-		        distance = 4;
-		    else
-		        distance = 7;
+			Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+			if (weapon != null) {
+				EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
+				if (weaponEquipDef.getBowType() != null) {
+					distance = 7;
+				} else if (weaponEquipDef.getRangeWeaponType() != null) {
+					distance = 4;
+				}
+			} else {
+				distance = 9;
+			}
 		} else if (usingHalberd(player) && player.getCombatType() == CombatStyle.MELEE) {
 			distance = 2;
 		} else if (player.getCombatType() == CombatStyle.MAGIC) {

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.venenatis.game.model.combat.npcs.impl.CaveKraken;
+import com.venenatis.game.model.combat.npcs.impl.DagannothMother;
 import com.venenatis.game.model.combat.npcs.impl.GiantMole;
 import com.venenatis.game.model.combat.npcs.impl.Kraken;
 import com.venenatis.game.model.combat.npcs.impl.SkeletalWyvern;
@@ -64,7 +65,11 @@ public abstract class AbstractBossCombat {
 		bosses.put(3359, new ZombiesChampion());
 		
 		bosses.put(5779, new GiantMole());
-
+		AbstractBossCombat mo = new DagannothMother();
+		bosses.put(6361, mo);
+		bosses.put(6362, mo);
+		bosses.put(6365, mo);//? that should be fine OOOH never thought about that lmao!!!
+		
 	}
 	
 	public static AbstractBossCombat get(int npcId) {

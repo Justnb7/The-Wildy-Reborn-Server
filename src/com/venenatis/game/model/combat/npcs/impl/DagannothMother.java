@@ -1,4 +1,4 @@
-package com.venenatis.game.model.combat.npcs.impl.wilderness;
+package com.venenatis.game.model.combat.npcs.impl;
 
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -7,29 +7,86 @@ import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
 
-public class ZombiesChampion extends AbstractBossCombat {
+public class DagannothMother extends AbstractBossCombat {
+	
+	private final int MELEE_FORM = 6361;
+	
+	private final int RANGE_FORM = 6365;
+	
+	private final int MAGE_FORM = 6362;
+	
+	private void changeForm(NPC npc) {
+		int roll = Utility.getRandom(30);
+		/*World.getWorld().schedule(new Task(25) {
+
+			@Override
+			public void execute() {*/
+				if(npc.getId() == MELEE_FORM) {
+					if (roll >= 0 && roll <= 15) {
+						System.out.println("transform RANGE");
+						npc.requestTransform(RANGE_FORM);
+					} else {
+						System.out.println("transform MAGE");
+						npc.requestTransform(MAGE_FORM);
+					}
+				} else if(npc.getId() == RANGE_FORM) {
+					if (roll >= 0 && roll <= 15) {
+						System.out.println("transform MELEE");
+						npc.requestTransform(MELEE_FORM);
+					} else {
+						System.out.println("transform MAGE");
+						npc.requestTransform(MAGE_FORM);
+					}
+				} else if(npc.getId() == MAGE_FORM) {
+					if (roll >= 0 && roll <= 15) {
+						System.out.println("transform MELEE");
+						npc.requestTransform(MELEE_FORM);
+					} else {
+						npc.requestTransform(RANGE_FORM);
+						System.out.println("transform RANGE");
+					}
+				}
+				/*this.stop();
+			}
+		});*/
+		
+	}
 
 	@Override
 	public void execute(Entity attacker, Entity victim) {
 		if(!attacker.isNPC()) {
 			return; //this should be an NPC!
 		}
-        
-        NPC npc = (NPC) attacker;
-        CombatStyle style = attacker.getLocation().distance(victim.getLocation()) <= 2 ? CombatStyle.MELEE : Utility.random(9) <= 4 ? CombatStyle.MAGIC : CombatStyle.RANGE;
-        int maxHit = 45;
+		
+		NPC npc = (NPC) attacker;
+        int maxHit = 50;
         int clientSpeed;
 		int gfxDelay;
 		npc.playAnimation(Animation.create(npc.getAttackAnimation()));
-        
-		switch (style) {
-        case MELEE:
+		
+		World.getWorld().schedule(new Task(25) {
+			@Override
+			public void execute() {
+				if (npc.getIndex() == -1 || npc.getHitpoints() < 1 || npc.getCombatState().isDead()) {
+					this.stop(); // only stop if dead otherwise keep going forever
+					return;
+				}
+				changeForm(npc);
+				this.stop();
+			}
+		});
+		
+		
+		switch (npc.getId()) {
+        case MELEE_FORM:
 			int randomHit = Utility.getRandom(maxHit);
 			victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send();
 			break;
-		case RANGE:
+		case RANGE_FORM:
 			randomHit = Utility.random(maxHit);
 			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				clientSpeed = 70;
@@ -49,7 +106,7 @@ public class ZombiesChampion extends AbstractBossCombat {
 			victim.getActionSender().stillGfx(755, victim.getLocation());
 			victim.take_hit(attacker, randomHit, CombatStyle.RANGE).send(delay);
 			break;
-		case MAGIC:
+		case MAGE_FORM:
 			randomHit = Utility.random(maxHit);
 			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				clientSpeed = 70;
@@ -73,7 +130,7 @@ public class ZombiesChampion extends AbstractBossCombat {
 			break;
         }
 		
-		attacker.getCombatState().setAttackDelay(5);
+		attacker.getCombatState().setAttackDelay(npc.getDefinition().getAttackSpeed());
 	}
 
 	@Override
@@ -83,7 +140,7 @@ public class ZombiesChampion extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		
+		//This is a special death case
 	}
 
 }

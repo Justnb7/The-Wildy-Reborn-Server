@@ -136,6 +136,7 @@ public class NPC extends Entity {
 	 */
 	public void requestTransform(int Id) {
 		transformId = Id;
+		npcId = Id;
 		getUpdateFlags().flag(UpdateFlag.TRANSFORM);
 	}
 	

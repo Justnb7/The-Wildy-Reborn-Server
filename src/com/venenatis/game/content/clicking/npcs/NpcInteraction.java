@@ -38,6 +38,11 @@ public class NpcInteraction {
 		}
 
 		switch (npc.getId()) {
+		/* Vote store */
+		case 5362:
+			player.getActionSender().sendMessage("You currently have "+player.getVotePoints()+" vote points and "+player.getTotalVotes()+" total votes.");
+			ShopManager.open(player, 4);
+			break;
 		
 		/* General store */
 		case 506:

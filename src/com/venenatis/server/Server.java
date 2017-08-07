@@ -122,7 +122,7 @@ public class Server {
 								}
 								player.getActionSender().sendMessage("You've received your vote reward! Congratulations!");
 								player.setTotalVotes(player.getTotalVotes() + 1);
-								player.setVotePoints(player.getVotePoints() + 1);
+								player.setVotePoints(player.getVotePoints() + 4);
 								QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 							}
 						});

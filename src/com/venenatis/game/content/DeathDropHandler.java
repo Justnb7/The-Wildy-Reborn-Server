@@ -97,11 +97,25 @@ public class DeathDropHandler {
 				player.getInventory().add(item);
 			}
 		}
+		
 		GroundItemHandler.createGroundItem(new GroundItem(new Item(526), player.getLocation(), killer));
 		player.setUsingSpecial(false);
 		AttackStyle.adjustAttackStyleOnLogin(player);
 		player.getActionSender().sendSidebarInterface(0, 5855);
 		player.getActionSender().sendString("Unarmed", 5857);
 		player.getActionSender().sendWalkableInterface(-1);
+		
+		if(keep != null) {
+			for(Item it : keep) {
+				int id = it.getId();
+
+				BrokenItem brokenItem = BrokenItem.get(id);
+				if(brokenItem != null) {
+					id = brokenItem.getBrokenItem();
+				}
+
+				player.getInventory().add(new Item(id, it.getAmount()));
+			}
+		}
 	}
 }

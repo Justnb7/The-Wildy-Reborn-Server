@@ -143,7 +143,6 @@ public class DeathTask extends Task {
 		
 		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
 		if (!controller.isSafe() && !admin_keeps_items) {
-			victim.debug(""+admin_keeps_items);
 			DeathDropHandler.handleDeathDrop(victim);
 		}
 	}

@@ -122,8 +122,8 @@ public class DagannothMother extends AbstractBossCombat {
 				gfxDelay = 140;
 			}
 			delay = (gfxDelay / 20) - 1;
-			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 782, 25, 50, clientSpeed, 43, 36, 10, 48));
-			victim.getActionSender().stillGfx(783, victim.getLocation());
+			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 986, 25, 50, clientSpeed, 43, 36, 10, 48));
+			victim.getActionSender().stillGfx(775, victim.getLocation());
 			victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
 			break;
 		default:

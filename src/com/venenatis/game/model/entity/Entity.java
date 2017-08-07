@@ -784,19 +784,20 @@ public abstract class Entity {
 			if (victim_npc.getId() == 5535) {
 				damage = 0;
 			}
+			
 			//Rex and Prime do not take melee damage
-			if (combat_type == CombatStyle.MELEE && (victim_npc.getId() == 2267 || victim_npc.getId() == 2266)) {
+			if (combat_type == CombatStyle.MELEE && (victim_npc.getId() == 2267 || victim_npc.getId() == 2266 || victim_npc.getId() == 6365 || victim_npc.getId() == 6362)) {
 				if (attacker.isPlayer())
 					((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 			//Rex and Supreme do not take range damage
-			if (combat_type == CombatStyle.RANGE && (victim_npc.getId() == 2265 || victim_npc.getId() == 2267)) {
+			if (combat_type == CombatStyle.RANGE && (victim_npc.getId() == 2265 || victim_npc.getId() == 2267 || victim_npc.getId() == 6362 || victim_npc.getId() == 6361)) {
 				((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
 			//Supreme and Prime do not take magic damage
-			if (combat_type == CombatStyle.MAGIC && (victim_npc.getId() == 2265 || victim_npc.getId() == 2266)) {
+			if (combat_type == CombatStyle.MAGIC && (victim_npc.getId() == 2265 || victim_npc.getId() == 2266 || victim_npc.getId() == 6361 || victim_npc.getId() == 6365)) {
 				((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}

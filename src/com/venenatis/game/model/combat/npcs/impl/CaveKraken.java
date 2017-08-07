@@ -13,7 +13,7 @@ import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
 
-public class Cave_Kraken extends AbstractBossCombat {
+public class CaveKraken extends AbstractBossCombat {
 
 	@Override
 	public void execute(Entity attacker, Entity victim) {

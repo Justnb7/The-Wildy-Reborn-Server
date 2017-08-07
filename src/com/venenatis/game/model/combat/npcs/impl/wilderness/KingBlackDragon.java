@@ -17,7 +17,7 @@ import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
-public class King_Black_Dragon extends AbstractBossCombat {
+public class KingBlackDragon extends AbstractBossCombat {
 	
 	/**
 	 * The random number generator.

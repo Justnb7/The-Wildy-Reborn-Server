@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.venenatis.game.model.combat.npcs.impl.Cave_Kraken;
+import com.venenatis.game.model.combat.npcs.impl.CaveKraken;
 import com.venenatis.game.model.combat.npcs.impl.GiantMole;
 import com.venenatis.game.model.combat.npcs.impl.Kraken;
 import com.venenatis.game.model.combat.npcs.impl.SkeletalWyvern;
@@ -20,7 +20,8 @@ import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.KrilTsutsaroth;
 import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.ZaklnGritch;
 import com.venenatis.game.model.combat.npcs.impl.wilderness.ChaosFanatic;
 import com.venenatis.game.model.combat.npcs.impl.wilderness.Chaos_Elemental;
-import com.venenatis.game.model.combat.npcs.impl.wilderness.King_Black_Dragon;
+import com.venenatis.game.model.combat.npcs.impl.wilderness.KingBlackDragon;
+import com.venenatis.game.model.combat.npcs.impl.wilderness.ZombiesChampion;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
@@ -47,7 +48,7 @@ public abstract class AbstractBossCombat {
 		
 		bosses.put(465, new SkeletalWyvern());
 		
-		bosses.put(492, new Cave_Kraken());
+		bosses.put(492, new CaveKraken());
 		bosses.put(494, new Kraken());
 		
 		bosses.put(2267, new DagannothRex());
@@ -58,8 +59,9 @@ public abstract class AbstractBossCombat {
 		bosses.put(3131, new ZaklnGritch());
 		
 		bosses.put(2054, new Chaos_Elemental());
-		bosses.put(239,  new King_Black_Dragon());
-		bosses.put(6619,  new ChaosFanatic());
+		bosses.put(239,  new KingBlackDragon());
+		bosses.put(6619, new ChaosFanatic());
+		bosses.put(3359, new ZombiesChampion());
 		
 		bosses.put(5779, new GiantMole());
 

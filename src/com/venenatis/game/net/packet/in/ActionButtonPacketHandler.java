@@ -9,7 +9,6 @@ import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.skills.fletching.Fletching;
 import com.venenatis.game.content.teleportation.Teleport;
-import com.venenatis.game.content.teleportation.TeleportationInterface;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
 import com.venenatis.game.model.combat.magic.Magic;
@@ -143,11 +142,6 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		/* Handle clickable spells such as Vengeance */
 		if(Magic.handleButton(player, button)) {
-			return;
-		}
-		
-		/* Custom teleporting interface */
-		if(TeleportationInterface.actions(player, button)) {
 			return;
 		}
 		

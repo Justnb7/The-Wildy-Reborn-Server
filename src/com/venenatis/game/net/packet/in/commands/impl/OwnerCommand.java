@@ -3,7 +3,6 @@ package com.venenatis.game.net.packet.in.commands.impl;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.teleportation.TeleportationInterface;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;

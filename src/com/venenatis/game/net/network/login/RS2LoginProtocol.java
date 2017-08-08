@@ -42,7 +42,7 @@ public class RS2LoginProtocol extends ByteToMessageDecoder {
 		ByteBuf buffer = channel.alloc().buffer(Byte.BYTES).writeByte(code);
 		ChannelFuture future = channel.writeAndFlush(new Packet(-1, buffer));
 		future.addListener(ChannelFutureListener.CLOSE);
-		buffer.release();
+		//buffer.release();
 	}
 
 	private static void finish(ByteBuf buf) {

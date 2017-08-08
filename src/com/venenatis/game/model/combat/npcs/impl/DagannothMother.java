@@ -21,39 +21,26 @@ public class DagannothMother extends AbstractBossCombat {
 	
 	private void changeForm(NPC npc) {
 		int roll = Utility.getRandom(30);
-		/*World.getWorld().schedule(new Task(25) {
-
-			@Override
-			public void execute() {*/
-				if(npc.getId() == MELEE_FORM) {
-					if (roll >= 0 && roll <= 15) {
-						System.out.println("transform RANGE");
-						npc.requestTransform(RANGE_FORM);
-					} else {
-						System.out.println("transform MAGE");
-						npc.requestTransform(MAGE_FORM);
-					}
-				} else if(npc.getId() == RANGE_FORM) {
-					if (roll >= 0 && roll <= 15) {
-						System.out.println("transform MELEE");
-						npc.requestTransform(MELEE_FORM);
-					} else {
-						System.out.println("transform MAGE");
-						npc.requestTransform(MAGE_FORM);
-					}
-				} else if(npc.getId() == MAGE_FORM) {
-					if (roll >= 0 && roll <= 15) {
-						System.out.println("transform MELEE");
-						npc.requestTransform(MELEE_FORM);
-					} else {
-						npc.requestTransform(RANGE_FORM);
-						System.out.println("transform RANGE");
-					}
-				}
-				/*this.stop();
+		if (npc.getId() == MELEE_FORM) {
+			if (roll >= 0 && roll <= 15) {
+				npc.requestTransform(RANGE_FORM);
+			} else {
+				npc.requestTransform(MAGE_FORM);
 			}
-		});*/
-		
+		} else if (npc.getId() == RANGE_FORM) {
+			if (roll >= 0 && roll <= 15) {
+				npc.requestTransform(MELEE_FORM);
+			} else {
+				npc.requestTransform(MAGE_FORM);
+			}
+		} else if (npc.getId() == MAGE_FORM) {
+			if (roll >= 0 && roll <= 15) {
+				npc.requestTransform(MELEE_FORM);
+			} else {
+				npc.requestTransform(RANGE_FORM);
+			}
+		}
+
 	}
 
 	@Override
@@ -68,17 +55,20 @@ public class DagannothMother extends AbstractBossCombat {
 		int gfxDelay;
 		npc.playAnimation(Animation.create(npc.getAttackAnimation()));
 		
-		World.getWorld().schedule(new Task(25) {
-			@Override
-			public void execute() {
-				if (npc.getIndex() == -1 || npc.getHitpoints() < 1 || npc.getCombatState().isDead()) {
-					this.stop(); // only stop if dead otherwise keep going forever
-					return;
+		if (!npc.hasAttribute("trans")) {
+			Task t;
+			World.getWorld().schedule(t = new Task(25, false) {
+				@Override
+				public void execute() {
+					if (npc.getIndex() == -1 || npc.getHitpoints() < 1 || npc.getCombatState().isDead()) {
+						this.stop(); // only stop if dead otherwise keep going forever
+						return;
+					}
+					changeForm(npc);
 				}
-				changeForm(npc);
-				this.stop();
-			}
-		});
+			});
+			npc.setAttribute("trans", t);
+		}
 		
 		
 		switch (npc.getId()) {

@@ -7,7 +7,6 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.Packet;
 import com.venenatis.game.net.packet.PacketHandler;
-import com.venenatis.game.world.World;
 
 import io.netty.channel.Channel;
 

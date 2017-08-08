@@ -4,6 +4,7 @@ import com.venenatis.game.content.ItemsKeptOnDeath;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.sounds_and_music.MusicData;
+import com.venenatis.game.content.teleportation.TeleportationInterface;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 
@@ -30,6 +31,10 @@ public class Buttons {
 		
 		case 51061:
 			player.getActionSender().sendInterface(37700);
+			break;
+			
+		case 3082:
+			TeleportationInterface.open(player);
 			break;
 
 		/* Close */

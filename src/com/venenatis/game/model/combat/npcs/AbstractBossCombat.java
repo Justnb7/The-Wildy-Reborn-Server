@@ -68,7 +68,7 @@ public abstract class AbstractBossCombat {
 		AbstractBossCombat mo = new DagannothMother();
 		bosses.put(6361, mo);
 		bosses.put(6362, mo);
-		bosses.put(6365, mo);//? that should be fine OOOH never thought about that lmao!!!
+		bosses.put(6365, mo);
 		
 	}
 	

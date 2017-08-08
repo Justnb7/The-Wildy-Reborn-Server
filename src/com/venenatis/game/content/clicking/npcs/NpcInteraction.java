@@ -38,11 +38,6 @@ public class NpcInteraction {
 		}
 
 		switch (npc.getId()) {
-		/* Vote store */
-		case 5362:
-			player.getActionSender().sendMessage("You currently have "+player.getVotePoints()+" vote points and "+player.getTotalVotes()+" total votes.");
-			ShopManager.open(player, 4);
-			break;
 		
 		/* General store */
 		case 506:
@@ -54,11 +49,31 @@ public class NpcInteraction {
 			ShopManager.open(player, 1);
 			break;
 			
+		/* F2P Gear */	
+		case 1304:
+			ShopManager.open(player, 2);
+			break;
+			
+		/* Vote store */
+		case 5362:
+			player.getActionSender().sendMessage("You currently have " + player.getVotePoints() + " vote points and " + player.getTotalVotes() + " total votes.");
+			ShopManager.open(player, 4);
+			break;
+			
 		/* Gear points */
 		case 3951:
 			player.getActionSender().sendMessage("@dre@[Server]: Free points refill to 2500 every 6 minutes.");
 			player.getActionSender().sendMessage("@dre@[DYK]: You can type ::food, ::veng, ::barrage, and ::pots, to spawn them?");
-			ShopManager.open(player, 3);
+			ShopManager.open(player, 7);
+			break;
+			
+		/* PK Supplies */
+		case 3894:
+			ShopManager.open(player, 8);
+			break;
+		/* Skiller Shop */	
+		case 505:
+			ShopManager.open(player, 9);
 			break;
 
 		case 3257:
@@ -82,7 +97,7 @@ public class NpcInteraction {
 					switch(option) {
 					case 1:
 						//Open pvp shop
-						ShopManager.open(player, 2);
+						ShopManager.open(player, 6);
 						break;
 					case 2:
 						//Sell emblems option
@@ -170,7 +185,7 @@ public class NpcInteraction {
 			break;
 		
 		case 315:
-			ShopManager.open(player, 2);
+			ShopManager.open(player, 6);
 			break;
 
 		case 3078:

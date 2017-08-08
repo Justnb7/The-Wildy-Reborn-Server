@@ -40,10 +40,6 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
-		case "telep":
-			TeleportationInterface.open(player);
-			return true;
-		
 		case "sg":
 			player.getActionSender().stillGfx(369, player.getX() -1, player.getY(), player.getZ(), 0);
 			return true;

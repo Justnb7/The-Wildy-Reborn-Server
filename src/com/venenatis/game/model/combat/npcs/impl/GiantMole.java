@@ -35,7 +35,7 @@ public class GiantMole extends AbstractBossCombat {
 		 * causing it to flee by burrowing in the ground, requiring players to
 		 * track down the mole.
 		 */
-		if (npc.getHitpoints() > 100) {
+		if (npc.getHitpoints() > 500) {
 			style = CombatStyle.MELEE;
 		} else {
 			switch (Utility.random(4)) {

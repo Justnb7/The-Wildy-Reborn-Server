@@ -30,10 +30,63 @@ public class GameConstants {
     
     public static final ImmutableList<Area> CLAN_WARS_SAFE = ImmutableList.of(new SquareArea("Clan wars safe", 3263, 4735, 3390, 4761));
 
+    public static final ImmutableList<Area> DAGANNOTH_MOTHER = ImmutableList.of(new SquareArea("Dagannoth Mother", 2508, 4631, 2537, 4662));
+    
+    // never done this btw LOL
+    // kk i g2g but ignore for now ill play about with it on my end xd push it
+    /*public static void verifyCoords() {
+    	GameConstants dummy = new GameConstants();
+    	int total = 0;
+    	int[] ok = new int[] {0};
+    	for (Field f : GameConstants.class.getDeclaredFields()) {
+    		System.out.println(f.getName()+": "+f.getGenericType()+" & "+f.getType());
+    		// generic type above is area.. but the raw data is sq areas
+    		if (f.getType().equals(ImmutableList.class) && f.getGenericType().equals(ImmutableList.class)) {
+    			total++;
+    			try {
+    				// this cast here probably wont work
+					ImmutableList<Area> places = (ImmutableList<Area>) f.get(dummy);
+					// ^ loses sqarea by casting to super class
+					places.stream().forEach(System.out::println);
+					
+					places.forEach(p -> {
+						if (p instanceof SquareArea) {
+							SquareArea sp = (SquareArea) p;
+							if (sp.getSwX() > sp.getNeX() || sp.getSwY() > sp.getNeY()) {
+								System.out.println("Incorrect bound! of "+f.getName());
+							} else {
+								ok[0]++; // has to be array (we just access 1st element) because lamda's cry when
+								// operating on non-final fields
+							}
+						}
+					});
+					System.out.println("Done! "+ok[0]+"/"+total+" fields checked");
+				} catch (HeadlessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			
+    		}
+    	}
+    	System.out.println("End  "+ok[0]+"/"+total+"");
+    }
+    
+    public static void main(String[] args) {
+    	// testing
+    	verifyCoords();
+    }*/
+    
     /**
      * The collection of areas that resemble safe zones.
      */
     public static final ImmutableList<Area> SAFE_ZONES = ImmutableList.of(
+    	new SquareArea("Wilderness castle", 3014, 3631, 3024, 3635),
 	    new SquareArea("Varrock West Bank", 3180, 3433, 3190, 3447),
 	    new SquareArea("Varrock East Bank Downstairs", 3250, 3416, 3257, 3423),
 	    new SquareArea("Varrock East Bank Upstairs", 3250, 3416, 3257, 3423, 1),

@@ -99,6 +99,19 @@ public abstract class Area {
 	public static boolean inBarrows(Entity entity) {
 		return GameConstants.BARROWS_MINIGAME.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
 	}
+	
+	/**
+	 * Determines if an entity is in the dagannoth mother cave.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 * 
+	 * @return {@code true} If this entity is in the dagannoth mother cave.
+	 *         {@code false} otherwise.
+	 */
+	public static boolean inDaganothMotherCave(Entity entity) {
+		return GameConstants.DAGANNOTH_MOTHER.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
+	}
 
 	/**
 	 * Determines if an entity is in a multi-combat zone.
@@ -110,7 +123,7 @@ public abstract class Area {
 	 *         {@code false} otherwise.
 	 */
 	public static boolean inMultiCombatZone(Entity entity) {
-		return GameConstants.MULTI_COMBAT_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity));
+		return GameConstants.MULTI_COMBAT_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity) || inDaganothMotherCave(entity));
 	}
 
 	/**
@@ -124,7 +137,7 @@ public abstract class Area {
 	 */
 	public static boolean inWilderness(Entity entity) {
 		return GameConstants.WILDERNESS != null 
-				&& GameConstants.WILDERNESS.stream().anyMatch($it -> $it != null && $it.inArea(entity.getLocation()));
+				&& GameConstants.WILDERNESS.stream().anyMatch($it -> $it != null && $it.inArea(entity.getLocation()) || inDaganothMotherCave(entity) && !inSafezone(entity));
 	}
 	
 	public static boolean inF2P(Entity entity) {

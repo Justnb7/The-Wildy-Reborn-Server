@@ -157,22 +157,21 @@ public class DefaultController extends Controller {
 		/* Minigame */
 		if (MinigameHandler.search(player).isPresent()) {
 			MinigameHandler.search(player).ifPresent(m -> m.onDisplay(player));
-
-			/* Wilderness */
+		/* Wilderness */
 		} else if (Area.inWilderness(player)) {
-
-			int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
-
-			player.setWildLevel(((modY - 3521) / 8) + 1);
-			
+			if (Area.inDaganothMotherCave(player)) {
+				player.setWildLevel(20);
+			} else {
+				int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
+				player.setWildLevel(((modY - 3521) / 8) + 1);
+			}
 			player.getActionSender().sendInteractionOption(StringConstants.ATTACK_ACTION, 3, true);
 			player.getActionSender().sendInteractionOption("null", 2, false);
-	        player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
+			player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
 
-	        player.setAttribute("left_wild_delay", 0);
-	        BountyHunter.writeBountyStrings(player);
-	        player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
-
+			player.setAttribute("left_wild_delay", 0);
+			BountyHunter.writeBountyStrings(player);
+			player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
 			/* Duel Arena */
 		} else if (Area.inDuelArena(player) || player.getDuelArena().getStage() == DuelStage.ARENA) {
 

@@ -33,7 +33,30 @@ public class Pet extends NPC {
 	 *         The pet item being dropped
 	 * @return Spawn the pet
 	 */
-	public static boolean drop(Player player, Item item) {
+	public static boolean drop(Player player, Item item, boolean onLogin) {
+		if(onLogin) {
+			if (player.getPet() > -1) {
+	            Pet pet = new Pet(player, player.getPet());
+	            player.setPet(player.getPet());
+	            World.getWorld().register(pet);
+	            Server.getTaskScheduler().schedule(new Task(4) {
+
+					@Override
+					public void execute() {
+						// Pet despawned or owner offline
+						if (player.getIndex() < 1 || pet.getIndex() < 1) {
+							stop();
+							return;
+						}
+						int delta = player.getLocation().distance(pet.getLocation());
+						if (delta >= 13 || delta <= -13) {
+							pet.teleport(player.getLocation().transform(-1, 0)); 
+						}
+					}
+				});
+	        }
+			return false;
+		}
 		Pets petIds = Pets.from(item.getId());
 		if (petIds != null) {
 			if (player.getPet() > -1) {
@@ -56,11 +79,9 @@ public class Pet extends NPC {
 						}
 						int delta = player.getLocation().distance(pet.getLocation());
 						if (delta >= 13 || delta <= -13) {
-							player.debug("teleport pet to player");
 							pet.teleport(player.getLocation().transform(-1, 0)); 
 						}
 					}
-
 				});
 				return false;
 			}

@@ -1046,11 +1046,8 @@ public class ActionSender {
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 				
 				//If we had a pet spawned, we spawn it after the login protocol
-				if (player.getPet() > -1) {
-		            Pet pet = new Pet(player, player.getPet());
-		            player.setPet(player.getPet());
-		            World.getWorld().register(pet);
-		        }
+				if (player.getPet() > -1)
+					Pet.drop(player, null, true);
 				
 				//If we're a Owner we choose to play in debug mode
 				if (player.getRights().isOwner(player) && !player.getUsername().equalsIgnoreCase("Matthew")) {

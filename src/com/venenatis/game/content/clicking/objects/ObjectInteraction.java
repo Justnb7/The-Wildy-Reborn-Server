@@ -9,6 +9,7 @@ import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.thieving.Stalls;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
@@ -74,12 +75,23 @@ public class ObjectInteraction {
 		case "bank booth":
 		case "booth":
 		case "bank chest":
+			if(Area.inWilderness(player))
+				return;
 			player.getBank().open();
 			break;
 			
 		}
 		
 		switch(objectId) {
+		
+		
+		case 10229:
+			player.setTeleportTarget(new Location(1912, 4367, 0));
+		break;
+		
+		case 10230:
+			player.setTeleportTarget(new Location(2899, 4449, 0));
+		break;
 		
 		case MAGICAL_ALTAR:
 			DialogueManager.start(player, 8);

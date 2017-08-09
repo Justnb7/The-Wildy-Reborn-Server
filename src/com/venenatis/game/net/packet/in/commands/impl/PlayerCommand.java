@@ -2,6 +2,8 @@ package com.venenatis.game.net.packet.in.commands.impl;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
+import com.venenatis.game.content.teleportation.TeleportHandler;
+import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
@@ -30,6 +32,13 @@ public class PlayerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 
 		switch (parser.getCommand()) {
+		
+		/* Teleport */
+		case "teleport":
+		case "teleporting":
+			TeleportHandler.open(player, TeleportationTypes.SKILLING);
+			player.getActionSender().sendMessage("Alternatively, you can open the teleportation menu by clicking on the world map.");
+			return true;
 		
 		case "stuck":
 			World.getWorld().sendMessageToStaff(player.getUsername() + " Has just used ::stuck");

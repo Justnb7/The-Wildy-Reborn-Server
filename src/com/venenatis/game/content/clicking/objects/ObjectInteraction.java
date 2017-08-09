@@ -11,6 +11,7 @@ import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
@@ -84,7 +85,6 @@ public class ObjectInteraction {
 		
 		switch(objectId) {
 		
-		
 		case 10229:
 			player.setTeleportTarget(new Location(1912, 4367, 0));
 		break;
@@ -94,7 +94,7 @@ public class ObjectInteraction {
 		break;
 		
 		case MAGICAL_ALTAR:
-			DialogueManager.start(player, 8);
+			DialogueManager.start(player, 9);
 			player.setDialogueOptions(new DialogueOptions() {
 				@Override
 				public void handleOption(Player player, int option) {
@@ -102,14 +102,17 @@ public class ObjectInteraction {
 					case 1: //Normal spellbook option
 						player.getActionSender().removeAllInterfaces();
 						player.setSpellBook(SpellBook.MODERN_MAGICS);
+						player.getActionSender().sendSidebarInterface(6, 1151);
 						break;
 					case 2: //Ancient spellbook option
 						player.getActionSender().removeAllInterfaces();
 						player.setSpellBook(SpellBook.ANCIENT_MAGICKS);
+						player.getActionSender().sendSidebarInterface(6, 12855);
 						break;
 					case 3: //Lunar spellbook option
 						player.getActionSender().removeAllInterfaces();
 						player.setSpellBook(SpellBook.LUNAR_MAGICS);
+						player.getActionSender().sendSidebarInterface(6, 29999);
 						break;
 					case 4: //Cancel option
 						player.getActionSender().removeAllInterfaces();
@@ -120,7 +123,16 @@ public class ObjectInteraction {
 			break;
 
 		case REJUVENATION_POOL:
-			player.getActionSender().sendMessage("You feel slightly renewed.");
+			if(player.getTotalAmountDonated() >= 100) {
+				player.setSpecialAmount(100);
+				player.getWeaponInterface().restoreWeaponAttributes();
+			} else {
+				player.getActionSender().sendMessage("@red@[DYK]: Elite donators renew special attack aswell?");
+			}
+			player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevelForExperience(Skills.HITPOINTS));
+			player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
+			player.setRunEnergy(100);
+			player.getActionSender().sendRunEnergy();
 			player.playGraphics(new Graphic(683));
 			break;
 			

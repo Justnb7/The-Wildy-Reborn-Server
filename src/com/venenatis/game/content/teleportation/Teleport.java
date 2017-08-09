@@ -2,6 +2,7 @@ package com.venenatis.game.content.teleportation;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
@@ -141,7 +142,40 @@ public class Teleport {
 		case 117048:
 			player.getTeleportAction().teleport(Constants.RESPAWN_PLAYER_LOCATION, TeleportTypes.SPELL_BOOK, false);
 			break;
-			//TODO add other teleport types such as pvp minigames etc
+			
+		/* Minigames */
+		case 117112:
+		case 52035:
+		case 4140:
+			TeleportHandler.open(player, TeleportationTypes.MINIGAME);
+			break;
+			
+		/* Skilling */
+		case 117123:
+		case 50245:
+		case 4143:
+			TeleportHandler.open(player, TeleportationTypes.SKILLING);
+			break;
+			
+		/* PVM */
+		case 117131:
+		case 50253:
+		case 4146:
+			TeleportHandler.open(player, TeleportationTypes.PVM);
+			break;
+			
+		/* PK */
+		case 117154:
+		case 51005:
+		case 4150:
+			TeleportHandler.open(player, TeleportationTypes.PVP);
+			break;
+			
+		/* Shops */
+		case 117162:
+		case 51013:
+		case 6004:
+			break;
 		}
 		return false;
 	}

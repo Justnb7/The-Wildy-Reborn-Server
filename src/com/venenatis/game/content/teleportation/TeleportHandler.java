@@ -254,13 +254,16 @@ public class TeleportHandler {
 				player.getActionSender().sendMessage("You do not have enough coins to do this!");
 			}
 		} else {
-			player.getActionSender().sendMessage("You did not have to pay a fee as the teleport was free.");
 			can = true;
 		}
 
 		if (can) {
 			player.getTeleportAction().teleport(currentData.getLocation(), TeleportTypes.SPELL_BOOK, false);
-			player.getActionSender().sendMessage("You have teleported to " + currentData.getName() + ".");
+			if(currentData.getName().equalsIgnoreCase("Giant Mole")) {
+				player.getActionSender().sendMessage("You seem to have dropped down into a network of mole tunnels.");
+			} else {
+				player.getActionSender().sendMessage("You have teleported to " + currentData.getName() + ".");
+			}
 			player.setTeleportationType(null);
 		}
 	}

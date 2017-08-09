@@ -6,7 +6,7 @@ import com.venenatis.game.model.masks.Graphic;
 
 public enum Teleportation {
 	MODERN(TeleportTypes.MODERN, 3, 202, new Animation(714), new Graphic(308, 4, 100), new Animation(715), new Graphic(308, 4, 100)),
-	ANCIENT(TeleportTypes.ANCIENT, 3, 202, new Animation(1979), new Graphic(392, 100), new Animation(65535), new Graphic(-1)),
+	ANCIENT(TeleportTypes.ANCIENT, 3, 202, new Animation(1979), new Graphic(392, 0, 0), new Animation(65535), new Graphic(-1)),
 	LUNAR(TeleportTypes.LUNAR, 3, 202, new Animation(714), new Graphic(308, 4, 100), new Animation(715), new Graphic(308, 4, 100)),
 	LEVER(TeleportTypes.LEVER, 3, 202, new Animation(714), new Graphic(308, 4, 100), new Animation(715), new Graphic(308, 4, 100));
 	

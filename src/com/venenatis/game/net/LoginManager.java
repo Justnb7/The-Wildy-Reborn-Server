@@ -47,7 +47,11 @@ public class LoginManager {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
-	private final GameEngine engine; // not used but oh well nice to have a private ref
+	private final GameEngine engine; // not used but oh well nice to have a private reference
+	
+	public GameEngine getEngine() {
+		return engine;
+	}
 	
 	public static class LoginRequest {
 		public LoginRequest(ChannelHandlerContext ctx2, Channel chan2, LoginCredential credential) {
@@ -66,7 +70,7 @@ public class LoginManager {
 	}
 	
 	// TODO change to queue see demenethium pretty sure they've got a good impl
-	public final List<LoginRequest> loginRequests = new ArrayList<>(); // fuck cant remember types of queue l0l
+	public final List<LoginRequest> loginRequests = new ArrayList<>();
 	
 	/**
 	 * Submits the main Runnable which will handle login requests on the Login Thread.
@@ -112,8 +116,6 @@ public class LoginManager {
 		final String password = credential.getPassword();
 		
 		final String hostAddress = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
-		
-		//checkState(username.matches("^[a-zA-Z0-9_ ]{1,12}$") && !password.isEmpty() && password.length() <= 20, "A player tried logging in with an invalid username. [username= %s]", username);
 		
 		if(username.matches("") || username.matches(" ")) {
 			sendReturnCode(ctx.channel(), LoginCode.SHORT_USERNAME);
@@ -220,20 +222,19 @@ public class LoginManager {
 			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
 			return;
 		}
+		
+		//Check if the Client is connecting to the server with the correct UID
 		if (credential.getClientHash() != 78305513) {
 			System.err.println("Got "+credential.getClientHash()+" expected "+78305513);
 			sendReturnCode(ctx.channel(), LoginCode.LOGIN_SERVER_REJECTED_SESSION);
 			return;
 		}*/
 
+		//Is the server on the same version as the client
 		if (credential.getVersion() != Constants.CLIENT_VERSION) {
 			sendReturnCode(ctx.channel(), LoginCode.GAME_UPDATED);
 			return;
 		}
-		
-		//if (!username.equals(NameUtils.formatName(credential.getName())) || !password.equals(credential.getPassword())) {
-			//sendReturnCode(ctx.channel(), 3);
-		//}
 
 		int players_online_sharing_one_host = 0;
 		for (Player plr : World.getWorld().getPlayers()) {
@@ -244,13 +245,13 @@ public class LoginManager {
 			}
 		}
 		
+		//We allow three clients from the same connection
 		if (players_online_sharing_one_host >= 3) {
 			sendReturnCode(ctx.channel(), 9);
 			return;
 		}
 		
 		if (returnCode == 2) {
-			// whats the purpose of this?
 			//Logging in checking from the details of the player
 			File file = new File("data/characters/details/" + NameUtils.formatNameForProtocol(username) + ".json");
 			if (file.exists()) {
@@ -258,9 +259,7 @@ public class LoginManager {
 					BufferedReader reader = new BufferedReader(new FileReader(file));
 					final PlayerSaveDetail details = PlayerSave.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
 					final String stored_password = details.password();
-					// are you checking pw here? na u shouldnt be setting it, the info given by the player on login 
-					// never changes
-					if (!stored_password.equals(password)) { // there ya go ty
+					if (!stored_password.equals(password)) {
 						sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS); // INVALID PW!
 						return;
 					}
@@ -355,6 +354,4 @@ public class LoginManager {
 			GameEngine.loginMgr.loginRequests.add(loginRequest);
 		}
 	}
-	
-	
 }

@@ -4,6 +4,8 @@ import com.venenatis.game.content.ItemsKeptOnDeath;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.sounds_and_music.MusicData;
+import com.venenatis.game.content.teleportation.TeleportHandler;
+import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 
@@ -28,6 +30,48 @@ public class Buttons {
 		System.out.println("btn "+button);
 		switch (button) {
 		
+		/* Teleport */
+		case 3082:
+			TeleportHandler.open(player, player.getTeleportationType() == null ? TeleportationTypes.SKILLING : player.getTeleportationType());
+			break;
+
+		case 226150:
+			TeleportHandler.open(player, TeleportationTypes.SKILLING);
+			break;
+
+		case 226154:
+			TeleportHandler.open(player, TeleportationTypes.PVP);
+			break;
+
+		case 226158:
+			TeleportHandler.open(player, TeleportationTypes.PVM);
+			break;
+
+		case 226162:
+			TeleportHandler.open(player, TeleportationTypes.MINIGAME);
+			break;
+
+		case 226171:
+			TeleportHandler.teleport(player);
+			break;
+
+		case 226195:
+		case 226199:
+		case 226203:
+		case 226207:
+		case 226211:
+		case 226215:
+		case 226219:
+		case 226223:
+		case 226227:
+		case 226231:
+		case 226235:
+		case 226239:
+		case 226243:
+		case 226247:
+			TeleportHandler.select(player, button);
+			break;
+		
 		case 51061:
 			player.getActionSender().sendInterface(37700);
 			break;
@@ -45,6 +89,7 @@ public class Buttons {
 		case 166023:
 		case 66207:
 		case 210242:
+		case 226146:
 			player.getActionSender().removeAllInterfaces();
 			break;
 			

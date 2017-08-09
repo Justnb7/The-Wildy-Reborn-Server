@@ -3,7 +3,6 @@ package com.venenatis.game.net.packet.in.commands.impl;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.teleportation.TeleportationInterface;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -39,10 +38,6 @@ public class OwnerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
-		
-		case "telep":
-			TeleportationInterface.open(player);
-			return true;
 		
 		case "sg":
 			player.getActionSender().stillGfx(369, player.getX() -1, player.getY(), player.getZ(), 0);

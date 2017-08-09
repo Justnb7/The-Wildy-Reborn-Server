@@ -67,7 +67,7 @@ public class Teleport {
 	 * The buttons stored in an array
 	 */
 	public static final int[] teleport_button_ids = new int[] {
-			117048, 75010, 84237, 4171, 50056, 4140, 4143, 4146, 4150, 6004, 6005, 29031, 72038, 50235, 50245, 50253, 51005, 51013, 51023, 51031, 51039, 117112, 117154, 117162, 117123, 117131
+			84237, 117048, 75010, 84237, 4171, 50056, 4140, 4143, 4146, 4150, 6004, 6005, 29031, 72038, 50235, 50245, 50253, 51005, 51013, 51023, 51031, 51039, 117112, 117154, 117162, 117123, 117131
 	};
 
 	/**
@@ -132,15 +132,15 @@ public class Teleport {
 	 * @return
 	 */
 	public boolean handleButtons(int button) {
+
 		switch (button) {
 
 		/* Home Telport */
 		case 75010:
-		case 21741:
+		case 84237:
 		case 117048:
 			player.getTeleportAction().teleport(Constants.RESPAWN_PLAYER_LOCATION, TeleportTypes.SPELL_BOOK, false);
 			break;
-			
 			//TODO add other teleport types such as pvp minigames etc
 		}
 		return false;

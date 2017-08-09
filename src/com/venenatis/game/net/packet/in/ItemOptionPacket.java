@@ -224,7 +224,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		// We are dropping an pet item.
-		if (!Pet.drop(player, item)) {
+		if (!Pet.drop(player, item, false)) {
 			return;
 		}
 

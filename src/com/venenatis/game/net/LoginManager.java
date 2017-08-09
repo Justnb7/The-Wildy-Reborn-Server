@@ -1,5 +1,29 @@
 package com.venenatis.game.net;
 
+import com.venenatis.game.constants.Constants;
+import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Sanctions;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
+import com.venenatis.game.model.entity.player.save.PlayerSave.PlayerSaveDetail;
+import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
+import com.venenatis.game.net.network.NetworkConstants;
+import com.venenatis.game.net.network.codec.RS2Decoder;
+import com.venenatis.game.net.network.codec.RS2Encoder;
+import com.venenatis.game.net.network.login.LoginCredential;
+import com.venenatis.game.net.network.login.LoginResponse;
+import com.venenatis.game.net.network.session.GameSession;
+import com.venenatis.game.net.network.session.LoginCode;
+import com.venenatis.game.util.NameUtils;
+import com.venenatis.game.world.World;
+import com.venenatis.server.GameEngine;
+import com.venenatis.server.Server;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,38 +33,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.venenatis.game.constants.Constants;
-import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Sanctions;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
-import com.venenatis.game.model.entity.player.save.PlayerSave.PlayerSaveDetail;
-import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
-import com.venenatis.game.net.LoginManager.LoginRequest;
-import com.venenatis.game.net.network.NetworkConstants;
-import com.venenatis.game.net.network.codec.RS2Decoder;
-import com.venenatis.game.net.network.codec.RS2Encoder;
-import com.venenatis.game.net.network.login.LoginCredential;
-import com.venenatis.game.net.network.login.LoginResponse;
-import com.venenatis.game.net.network.session.GameSession;
-import com.venenatis.game.net.network.session.LoginCode;
-import com.venenatis.game.net.network.session.LoginSession;
-import com.venenatis.game.util.NameUtils;
-import com.venenatis.game.world.World;
-import com.venenatis.server.GameEngine;
-import com.venenatis.server.Server;
-
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * This class contains the bulk of the login handling code such as loading profile and sending a responce. 
@@ -219,18 +214,20 @@ public class LoginManager {
 			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
 			return;
 		}
-		
-		if (credential.getClientHash() == 0 || credential.getClientHash() == 99735086 || credential.getClientHash() == 69) {
+
+		// in traditial PI's with hash not used at all
+		/*if (credential.getClientHash() == 0 || credential.getClientHash() == 99735086 || credential.getClientHash() == 69) {
 			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
 			return;
 		}
 		if (credential.getClientHash() != 78305513) {
-			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
+			System.err.println("Got "+credential.getClientHash()+" expected "+78305513);
+			sendReturnCode(ctx.channel(), LoginCode.LOGIN_SERVER_REJECTED_SESSION);
 			return;
-		}
+		}*/
 
 		if (credential.getVersion() != Constants.CLIENT_VERSION) {
-			sendReturnCode(ctx.channel(), LoginCode.BAD_SESSION_ID);
+			sendReturnCode(ctx.channel(), LoginCode.GAME_UPDATED);
 			return;
 		}
 		
@@ -265,10 +262,12 @@ public class LoginManager {
 					// never changes
 					if (!stored_password.equals(password)) { // there ya go ty
 						sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS); // INVALID PW!
+						return;
 					}
 				} catch(IOException ex) {
 					logger.error("Unexpected problem occurred.", ex);
 					sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+					return;
 				}
 			}
 		}
@@ -334,6 +333,7 @@ public class LoginManager {
 	public static void sendReturnCode(Channel channel, int code) {
 		ChannelFuture future = channel.writeAndFlush(new LoginResponse(code, 0, 0));
 		future.addListener(ChannelFutureListener.CLOSE);
+		logger.info("Responded code "+code);
 	}
 
 	/**

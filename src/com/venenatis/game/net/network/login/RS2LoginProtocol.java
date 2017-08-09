@@ -1,14 +1,9 @@
 package com.venenatis.game.net.network.login;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.List;
-
 import com.venenatis.game.net.network.NetworkConstants;
 import com.venenatis.game.net.network.rsa.ISAACRandomGen;
 import com.venenatis.game.net.packet.Packet;
 import com.venenatis.game.util.Utility;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -16,6 +11,10 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.List;
 
 public class RS2LoginProtocol extends ByteToMessageDecoder {
 
@@ -138,6 +137,7 @@ public class RS2LoginProtocol extends ByteToMessageDecoder {
 			String pass = readRS2String(encryptedBuffer);
 			String identity = readRS2String(encryptedBuffer);
 			String macAddress = readRS2String(encryptedBuffer);
+			System.out.println("yo "+name+" "+pass+" "+identity+" "+macAddress+" "+uid);
 			ctx.channel().pipeline().replace("encoder", "encoder", new LoginEncoder());
 			out.add(new LoginCredential(name, pass, identity, macAddress, inCipher, outCipher, uid, clientVersion));
 		}

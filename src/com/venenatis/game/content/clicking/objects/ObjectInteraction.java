@@ -48,7 +48,6 @@ public class ObjectInteraction {
 		Tree tree = Tree.forId(objectId);
 		Rock rock = Rock.forId(objectId);
 		final GameObject obj = RegionStoreManager.get().getGameObject(location, objectId);
-		//GameObject obj = new GameObject(objectId, location.getX(), location.getY(), location.getZ());
 		if (tree != null) {
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
@@ -84,6 +83,24 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+		
+		case 1727:
+			if (player.getX() == 3007)
+				player.setTeleportTarget(new Location(3008, 3849, 0));
+			else if (player.getX() == 3008)
+				player.setTeleportTarget(new Location(3007, 3849, 0));
+			break;
+		
+		case 1728:
+			if (player.getX() == 3007)
+				player.setTeleportTarget(new Location(3008, 3850, 0));
+			else if (player.getX() == 3008)
+				player.setTeleportTarget(new Location(3007, 3850, 0));
+			break;
+			
+		case 18987:
+			player.setTeleportTarget(new Location(2271, 4698, 0));
+			break;
 		
 		case 10229:
 			player.setTeleportTarget(new Location(1912, 4367, 0));

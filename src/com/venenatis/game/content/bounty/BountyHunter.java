@@ -310,7 +310,7 @@ public class BountyHunter extends Task {
 		 */
 		player.setAttribute(BountyHunterConstants.BOUNTY_TARGET, 0);
 		player.getActionSender().createPlayerHint(10, -1);
-		player.setAttribute("left_wild_delay", 0);
+		player.setAttribute("left_wild_delay", 0L); // L = long
 	}
 
 	/**

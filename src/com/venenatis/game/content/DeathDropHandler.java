@@ -107,14 +107,15 @@ public class DeathDropHandler {
 		
 		if(keep != null) {
 			for(Item it : keep) {
-				int id = it.getId();
-
-				BrokenItem brokenItem = BrokenItem.get(id);
-				if(brokenItem != null) {
-					id = brokenItem.getBrokenItem();
+				if(it != null) {
+					int id = it.getId();
+					BrokenItem brokenItem = BrokenItem.get(id);
+					if(brokenItem != null) {
+						id = brokenItem.getBrokenItem();
+					}
+					
+					player.getInventory().add(new Item(id, it.getAmount()));
 				}
-
-				player.getInventory().add(new Item(id, it.getAmount()));
 			}
 		}
 	}

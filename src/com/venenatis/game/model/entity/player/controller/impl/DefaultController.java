@@ -169,7 +169,7 @@ public class DefaultController extends Controller {
 			player.getActionSender().sendInteractionOption("null", 2, false);
 			player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
 
-			player.setAttribute("left_wild_delay", 0);
+			player.setAttribute("left_wild_delay", 0L);
 			BountyHunter.writeBountyStrings(player);
 			player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
 			/* Duel Arena */

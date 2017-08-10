@@ -81,7 +81,7 @@ public class GiantMole extends AbstractBossCombat {
 	}
 
 	private final static Location locs[] = {
-			Location.create(1778, 5237), Location.create(1761, 5186), Location.create(1737, 5709),
+			Location.create(1778, 5237), Location.create(1761, 5186), Location.create(1737, 5209),
 			Location.create(1737, 5227) };
 
 	private Location dig() {

@@ -214,6 +214,7 @@ public class DefaultController extends Controller {
 				player.getWalkingQueue().setRunningToggled(false);
 				player.getActionSender().sendConfig(152, 0);
 			} else {
+				if(!player.getRights().isOwner(player))
 				player.setRunEnergy(player.getRunEnergy() - 1);
 				player.getActionSender().sendRunEnergy();
 				player.getActionSender().sendString(player.getRunEnergy()+"%", 149);

@@ -8,6 +8,7 @@ import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.PrayerHandler;
+import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
@@ -125,6 +126,7 @@ public class DeathTask extends Task {
 		victim.setSpecialAmount(100);
 		victim.setUsingSpecial(false);
 		WildernessRewards.clearList(victim);
+		Combat.skull(victim, SkullType.NONE, 0);
 		victim.getCombatState().getDamageMap().resetDealtDamage();
 		victim.playAnimation(Animation.create(-1));
 	}

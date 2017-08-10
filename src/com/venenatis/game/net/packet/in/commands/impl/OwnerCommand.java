@@ -45,7 +45,7 @@ public class OwnerCommand implements Command {
 			
 		case "sp":
 			player.getActionSender().sendProjectile(player.getCentreLocation(), player.getLocation().transform(3, 3), 551, 45, 50, 70, 43, 35, 0, 10, 48);
-			player.getActionSender().stillGfx(369, player.getX() -3, player.getY() -3, player.getZ(), 0);
+			player.getActionSender().stillGfx(157, player.getX() -3, player.getY() -3, player.getZ(), 0);
 			return true;
 		
 		case "sgfx":

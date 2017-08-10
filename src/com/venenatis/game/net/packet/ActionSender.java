@@ -720,7 +720,16 @@ public class ActionSender {
     	int offsetX = (start.getX() - finish.getX());
 		int offsetY = (start.getY() - finish.getY());
 
-        sendLocalCoordinates(start, -3, -2);
+        //sendLocalCoordinates(start, -3, -2);
+        player.getOutStream().writeFrame(85);
+		
+        //player.getOutStream().writeByteC(start.getY() - player.getLastKnownRegion().getY() * 8 - 2);
+		//player.getOutStream().writeByteC(start.getX() - player.getLastKnownRegion().getX() * 8 - 3);
+        
+        int difx = start.getX(), dify = start.getY();
+		int regionX = player.getLastKnownRegion().getRegionX(), regionY = player.getLastKnownRegion().getRegionY();
+		player.getOutStream().writeByteC((dify - regionY * 8 - 2));
+		player.getOutStream().writeByteC((difx - regionX * 8 - 3));
         player.getOutStream().writeFrame(117);
         player.getOutStream().writeByte(angle);
         player.getOutStream().writeByte(offsetY);

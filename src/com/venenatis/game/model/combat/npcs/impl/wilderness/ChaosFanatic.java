@@ -39,7 +39,9 @@ public class ChaosFanatic extends AbstractBossCombat {
 			return; // this should be an NPC!
 		}
 
-		Player player = (Player) victim;
+		Player pVictim = (Player) victim;
+		
+		NPC npc = (NPC) attacker;
 
 		CombatStyle style = CombatStyle.MAGIC;
 
@@ -60,9 +62,9 @@ public class ChaosFanatic extends AbstractBossCombat {
 		}*/
 		style = CombatStyle.GREEN_BOMB;
 		
-		Location firstLocation = victim.getLocation().clone();
-		Location secondLocation = victim.getLocation().clone().add(Direction.SOUTH_EAST);
-		Location thirdLocation = victim.getLocation().clone().add(Direction.SOUTH_WEST);
+		Location firstLocation = pVictim.getLocation().clone();
+		Location secondLocation = pVictim.getLocation().clone().add(Direction.SOUTH_EAST);
+		Location thirdLocation = pVictim.getLocation().clone().add(Direction.SOUTH_WEST);
 
 		attacker.sendForcedMessage(MESSAGES[random.nextInt(MESSAGES.length)]);
 
@@ -86,12 +88,12 @@ public class ChaosFanatic extends AbstractBossCombat {
 			hitDelay = (gfxDelay / 20) - 1;
 			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), RED_GFX,
 					45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
-			if (player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+			if (pVictim.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
 				maxHit = 7;
 			}
 			randomHit = Utility.random(maxHit);
-			if (randomHit > player.getSkills().getLevel(Skills.HITPOINTS)) {
-				randomHit = player.getSkills().getLevel(Skills.HITPOINTS);
+			if (randomHit > pVictim.getSkills().getLevel(Skills.HITPOINTS)) {
+				randomHit = pVictim.getSkills().getLevel(Skills.HITPOINTS);
 			}
 			preHit = randomHit;
 			break;
@@ -112,14 +114,11 @@ public class ChaosFanatic extends AbstractBossCombat {
 				gfxDelay = 140;
 			}
 			hitDelay = (gfxDelay / 20) - 1;
-			player.debug(String.format("First location: %s%n ", firstLocation.toString()));
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), firstLocation, 551, 45, 50, 70, 43, 35, 0, 10, 10));
-			//attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), firstLocation, 551, 45, 50,
-					//clientSpeed, 43, 35, 0, 10, 48));
-			//attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), secondLocation, 551, 45, 50,
-					//clientSpeed, 43, 35, 0, 10, 48));
-			//attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), thirdLocation, 551, 45, 50,
-					//clientSpeed, 43, 35, 0, 10, 48));
+			//TODO fix projectile sending, projectile sending for this particular MOB is off, there a couple of more mobs that use a simliar attack
+			//We need to fix this in order to write those scripts aswell!!!!!
+			npc.playProjectile(Projectile.create(npc.getCentreLocation(), firstLocation, 551, 45, 50, 70, 43, 35, 0, 10, 10));
+			npc.playProjectile(Projectile.create(npc.getCentreLocation(), secondLocation, 551, 45, 50, clientSpeed, 43, 35, 0, 10, 48));
+			npc.playProjectile(Projectile.create(npc.getCentreLocation(), thirdLocation, 551, 45, 50, clientSpeed, 43, 35, 0, 10, 48));
 			
 			break;
 		default:
@@ -147,7 +146,7 @@ public class ChaosFanatic extends AbstractBossCombat {
 				case GREEN_BOMB:
 					List<Player> enemies = new ArrayList<>();
 					for (Player p : victim.getLocalPlayers()) {
-						if (p.getLocation().equals(firstLocation) || p.getLocation().equals(secondLocation)
+						if (p.getLocation().equals(p.getLocation()) || p.getLocation().equals(secondLocation)
 								|| p.getLocation().equals(thirdLocation)) {
 							if (p == victim) {
 								continue;
@@ -155,21 +154,15 @@ public class ChaosFanatic extends AbstractBossCombat {
 							enemies.add(p);
 						}
 					}
-					player.debug(String.format("First location still gfx:  %s%n ", firstLocation));
-					//victim.getActionSender().stillGfx(157, firstLocation.getX(), firstLocation.getY(), player.getZ(), 5);
-					//victim.getActionSender().stillGfx(157, player.getX() -3, player.getY() -3, player.getZ(), 0);
-					victim.getActionSender().stillGfx(157, firstLocation); // fine
-					//victim.getActionSender().stillGfx(157, secondLocation.getX(), secondLocation.getY(), player.getZ(), 5);
-					//victim.getActionSender().stillGfx(157, thirdLocation.getX(), thirdLocation.getY(), player.getZ(), 5);
+					pVictim.getActionSender().stillGfx(157, firstLocation.getX(), firstLocation.getY(), pVictim.getZ(), 5);
+					pVictim.getActionSender().stillGfx(157, secondLocation.getX(), secondLocation.getY(), pVictim.getZ(), 5);
+					pVictim.getActionSender().stillGfx(157, thirdLocation.getX(), thirdLocation.getY(), pVictim.getZ(), 5);
 
-					if (!victim.getLocation().equals(firstLocation) && !victim.getLocation().equals(secondLocation)
-							&& !victim.getLocation().equals(thirdLocation)) {
+					if (!victim.getLocation().equals(firstLocation) && !victim.getLocation().equals(secondLocation) && !victim.getLocation().equals(thirdLocation)) {
 						doDamage = false;
 					}
 					if (doDamage) {
 						victim.take_hit(attacker, dmg, preStyle).send();
-						Player pVictim = (Player)victim;
-						pVictim.debug("we didn't dodge so we got hit.");
 					}
 					for (Player p : enemies) {
 						if(doDamage)

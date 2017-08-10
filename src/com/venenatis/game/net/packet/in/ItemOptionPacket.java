@@ -287,10 +287,6 @@ public class ItemOptionPacket implements PacketType {
 		//Last clicked item
 		player.lastClickedItem = id;
 		
-		if(player.getRunePouch().open(player, item.getId())) {
-			return;
-		}
-		
 
 		Bone bone = Bone.forId(item.getId());
 		if (bone != null) {
@@ -301,6 +297,10 @@ public class ItemOptionPacket implements PacketType {
 		player.getHerblore().clean(item.getId());
 		
 		switch (item.getId()) {
+		
+		case 12791: // Rune Pouch
+			player.getRunePouch().display();
+			break;
 
 		case 21999:
 			RewardCasket.armourCasket(player);

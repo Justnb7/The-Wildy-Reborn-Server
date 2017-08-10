@@ -4,6 +4,7 @@ import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.combat_effects.DragonfireShield;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
+import com.venenatis.game.model.container.impl.rune_pouch.RunePouchContainer;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.world.shop.ShopManager;
@@ -84,6 +85,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		player.debug("[WithdrawActionsPacketHandler] - FirstAction - InterfaceId: " + interfaceId + " (" + removeId + ", " + removeSlot + ")");
 
 		switch (interfaceId) {
+		
+		case RunePouchContainer.INVENTORY_INTERFACE:
+			player.getRunePouch().addItem(removeId, 1, removeSlot);
+			break;
 
 		case InterfaceConstants.EQUIPMENT:
 			player.getEquipment().unequip(removeSlot);

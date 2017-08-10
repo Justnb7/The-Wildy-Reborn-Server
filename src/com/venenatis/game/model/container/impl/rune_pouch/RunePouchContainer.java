@@ -1,6 +1,5 @@
 package com.venenatis.game.model.container.impl.rune_pouch;
 
-import com.google.common.collect.ImmutableSet;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.entity.player.Player;
@@ -19,6 +18,11 @@ public final class RunePouchContainer extends Container {
 	public final Item RUNE_POUCH = new Item(12791);
 	
 	/**
+	 * The interface id of the container
+	 */
+	private static final int INTERFACE = 29875;
+	
+	/**
 	 * The start of the item group widget
 	 */
 	private final static int START_ITEM_INTERFACE = 29908;
@@ -26,12 +30,17 @@ public final class RunePouchContainer extends Container {
 	/**
 	 * The start of the inventory interface widget
 	 */
-	private final int START_INVENTORY_INTERFACE = 29880;
+	public final static int INVENTORY_INTERFACE = 29880;
 	
 	/**
 	 * The size of the container
 	 */
 	public static final int SIZE = 3;
+	
+	/**
+	 * The absolute max number of runes per stack
+	 */
+	public static final int MAX_COUNT = 16000;
 
 	/**
 	 * The player this container is for.
@@ -45,6 +54,14 @@ public final class RunePouchContainer extends Container {
 		super(SIZE, ContainerType.ALWAYS_STACK);
 		this.player = player;
 	}
+	
+	/**
+	 * Checks if the player owns a rune pouch already
+	 * @return
+	 */
+	public boolean ownsPouch() {
+		return (player.getBank().contains(12791) || (player.getInventory().contains(12791)));
+	}
 
 	/**
 	 * Checks if the underlying player has a rune pouch in his inventory and
@@ -57,24 +74,28 @@ public final class RunePouchContainer extends Container {
 	}
 	
 	/**
-	 * Opens the rune pouch interface.
-	 * 
-	 * @param player
-	 *            the player to open this for.
+	 * Gets the amount for the specified slot in the container
 	 * @param id
-	 *            the item id that was clicked.
-	 * @return {@code true} if the interface was opened, {@code false}
-	 *         otherwise.
+	 * @return
 	 */
-	public boolean open(Player player, int id) {
-		if(id != RUNE_POUCH.getId()) {
-			return false;
+	public int getAmountForSlot(int id) {
+		for (int i = 0; i < RunePouchContainer.SIZE; i++) {
+			if (player.getRunePouch().get(i).getId() == id) {
+				return player.getRunePouch().get(i).getAmount();
+			}
 		}
-		refresh();
-		player.getActionSender().sendInterface(29875);
-		return true;
+		return 0;
 	}
 	
+	/**
+	 * Sends all the respective data for the rune pouch
+	 */
+	public void display() {
+		player.getActionSender().sendInterface(INTERFACE);
+		player.getActionSender().sendItemOnInterface(INVENTORY_INTERFACE, player.getInventory().toArray());
+		refresh();
+		player.getActionSender().sendMessage("Sending rune pouch widget.");
+	}
 
 	/**
 	 * Attempts to store an item to the container by the specified
@@ -89,7 +110,18 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if an item is stored, {@code false} otherwise.
 	 */
 	public void addItem(int id, int amount, int slot) {
-		
+		if (player.getInterfaceState().getCurrentInterface() != RunePouchContainer.INTERFACE) {
+			return;
+		}
+		if (id == 12791) {
+			player.getActionSender().sendMessage("Don't be silly.");
+			return;
+		}
+		RuneType runeType = RuneType.forId(id);
+		if (runeType == null || runeType.equals(RuneType.NONE)) {
+			player.getActionSender().sendMessage("You can only place runes inside your rune pouch.");
+			return;
+		}
 		int containerSize = player.getRunePouch().getSize();
 		Item rune = player.getInventory().get(slot);
 		boolean containsRune = player.getRunePouch().contains(id);
@@ -100,15 +132,16 @@ public final class RunePouchContainer extends Container {
 			return;
 		}
 		int existing_count = player.getRunePouch().getAmount(rune.getId());
-		if (existing_count + amount > 16_000) {
+		if (existing_count + amount > RunePouchContainer.MAX_COUNT) {
 			player.getActionSender().sendMessage("Your pouch cannot carry anymore of this rune.");
 			return;
 		}
-		if (containerSize >= 3 && !containsRune) {
+		
+		/*
+		if (containerSize >= RunePouchContainer.SIZE && !containsRune) {
 			player.getActionSender().sendMessage("Your pouch cannot hold anymore runes.");
 			return;
 		}
-
 		try {
 			int transferAmount = player.getInventory().getAmount(id);
 			if (transferAmount >= amount) {
@@ -116,14 +149,12 @@ public final class RunePouchContainer extends Container {
 			} else if (transferAmount == 0) {
 				return;
 			}
-			/*if (player.getRunePouch().add(new Item(rune.getId(), transferAmount), -1)) {
+			//if (player.getRunePouch().add(new Item(rune.getId(), transferAmount))) {
 				player.getInventory().remove(new Item(rune.getId(), transferAmount));
-			}*/
-			player.getInventory().remove(new Item(rune.getId(), transferAmount));
-
+			//}
 		} finally {
 			refresh();
-		}
+		}*/
 	}
 
 	/**
@@ -154,24 +185,52 @@ public final class RunePouchContainer extends Container {
 		}
 	}
 	
-
-	/**
-	 * The runes which can be added to this container.
-	 */
-	private static final ImmutableSet<Integer> RUNES = ImmutableSet.of(554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 9075);
-
-	public boolean canAdd(Item item, int slot) {
-		boolean canAdd = RUNES.stream().filter(rune -> rune == item.getId()).findAny().isPresent();
-
-		if(!canAdd) {
-			player.getActionSender().sendMessage("Don't be silly.");
+	public enum RuneType {
+		NONE(-1),
+		AIR(556),
+		WATER(555),
+		EARTH(557),
+		FIRE(554),
+		MIND(558),
+		CHAOS(562),
+		DEATH(560),
+		BLOOD(565),
+		COSMIC(564),
+		NATURE(561),
+		LAW(563),
+		BODY(559),
+		SOUL(566),
+		ASTRAL(9075),
+		MIST(324),
+		MUD(4698),
+		DUST(4696),
+		LAVA(4699),
+		STEAM(4694),
+		SMOKE(4697);
+		
+		private int id;
+		
+		RuneType(int id) {
+			this.id = id;
 		}
 		
-		if(this.getSize() == this.capacity() && !this.hasSpaceFor(item)) {
-			player.getActionSender().sendMessage("Your rune pouch is currently full.");
-			return false;
+		public int getId() {
+			return id;
 		}
-		return canAdd;
+		
+		/**
+		 * 
+		 * @param rune
+		 * @return
+		 */
+		public static RuneType forId(int rune) {
+			for (RuneType type : RuneType.values()) {
+				if (type.getId() == rune) {
+					return type;
+				}
+			}
+			return null;
+		}
 	}
 	
 	/**
@@ -203,22 +262,9 @@ public final class RunePouchContainer extends Container {
 
 		sendToClient.getActionSender().sendString(sb.toString(), 49999);
 	}
-	
-	/**
-	 * Updates the inventory widget of the rune pouch interface.
-	 */
-	private void sendInventoryItems() {
-		if (!player.getInventory().contains(RUNE_POUCH)) {
-			return;
-		}
-		//Sent the items on the interface
-		player.getActionSender().sendItemOnInterface(START_INVENTORY_INTERFACE, player.getInventory().toArray());
-	}
 
 	@Override
 	public void refresh() {
-		// the rune pouch inventory group
-		sendInventoryItems();
 
 		// The rune pouch item group
 		for (int slot = 0; slot < 3; slot++) {

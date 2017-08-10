@@ -115,11 +115,14 @@ public abstract class Entity {
 			for (Location a : me) {
 				for (Location b : other) {
 					int gap = a.distance(b);
-					if (gap < dist)
+					if (gap <= dist)
 						distance = gap;
 				}
 			}
-			return distance < dist;
+			if (this.isPlayer()) {
+				((Player)this).debug("dist to >1x1 npc is "+distance+" goal "+dist);
+			}
+			return distance <= dist;
 		}
 	}
 	

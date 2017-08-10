@@ -153,18 +153,26 @@ public class Obelisks {
 
 		@Override
 		public void execute() {
-					state.put(location.objectId, false);
-					stop();
-					Boundary boundary = new Boundary(location.boundary.getMinimumX() + 1, location.boundary.getMinimumY() + 1, location.boundary.getMinimumX() + 3, location.boundary.getMinimumY() + 3);
-					List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player -> Boundary.isIn(player, boundary)).collect(Collectors.toList());
-					if (players.size() > 0) {
-						Obelisk randomObelisk = Obelisk.getRandom(location);
-						int x = randomObelisk.getBoundaries().getMinimumX() + 1;
-						int y = randomObelisk.getBoundaries().getMinimumY() + 1;
-						players.forEach(player -> player.getTeleportAction().teleport(new Location(x + Utility.getRandom(2), y + Utility.getRandom(2), 0), TeleportTypes.OBELISK, false));
-						for (Player p : World.getWorld().getPlayers()) {
-							if (p != null) {
-								p.usingObelisk = false;
+			System.out.println("execute");
+			state.put(location.objectId, false);
+			stop();
+			System.out.println("Still executing");
+			Boundary boundary = new Boundary(location.boundary.getMinimumX() + 1, location.boundary.getMinimumY() + 1,
+					location.boundary.getMinimumX() + 3, location.boundary.getMinimumY() + 3);
+			List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull)
+					.filter(player -> Boundary.isIn(player, boundary)).collect(Collectors.toList());
+			if (players.size() > 0) {
+				System.out.println("Still executing 2");
+				Obelisk randomObelisk = Obelisk.getRandom(location);
+				int x = randomObelisk.getBoundaries().getMinimumX() + 1;
+				int y = randomObelisk.getBoundaries().getMinimumY() + 1;
+
+				players.forEach(player -> player.getTeleportAction().teleport(
+						new Location(x + Utility.getRandom(2), y + Utility.getRandom(2), 0), TeleportTypes.OBELISK,
+						false));
+				for (Player p : World.getWorld().getPlayers()) {
+					if (p != null) {
+						p.usingObelisk = false;
 					}
 				}
 			}

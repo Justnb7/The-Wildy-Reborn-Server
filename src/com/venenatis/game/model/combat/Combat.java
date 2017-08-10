@@ -206,8 +206,10 @@ public class Combat {
     }
 
     private static void meleeAttack(Player player, Entity target) {
-        if (!touches(player, target))
+        if (!touches(player, target)) {
+        	player.debug("cant touch");
             return;
+        }
         if (!attackable(player, target))
             return;
 
@@ -239,8 +241,8 @@ public class Combat {
     }
 
     private static void magicAttack(Player player, Entity target) {
-        if (!touches(player, target))
-            return;
+        /*if (!touches(player, target))
+            return;*/
         if (!attackable(player, target))
             return;
         /*if (!player.getCombatState().checkMagicReqs(player.getSpellId())) {
@@ -424,8 +426,8 @@ public class Combat {
 	}
 
 	private static void rangeAttack(Player player, Entity target) {
-		if (!touches(player, target))
-			return;
+		/*if (!touches(player, target))
+			return;*/
 		if (!attackable(player, target))
 			return;
 
@@ -938,7 +940,7 @@ public class Combat {
                     dam1 *= 1.15;
                 }
                 boolean fire = true;
-                int shield = defender.isPlayer() ? ((Player) defender).getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() : -1;
+                int shield = defender != null && defender.isPlayer() ? ((Player) defender).getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() : -1;
                 if (shield == 11283 || shield == 1540) {
                     fire = false;
                 }
@@ -1149,6 +1151,7 @@ public class Combat {
                 return false;
             } else if (samespot) {
                 if (player.frozen()) {
+                	player.debug("we're frozen");
                     return false;
                 }
             }
@@ -1157,7 +1160,9 @@ public class Combat {
             PlayerFollowing.moveOutFromUnderLargeNpc(player, target);
         // Now pathfinder has updated out path.. check LOS and distance.
 
-		return player.touchDistance(target, calculateAttackDistance(player, target));
+        boolean d = player.touchDistance(target, calculateAttackDistance(player, target));
+        player.debug("dist: "+d);
+		return d;
 	}
 	
 	/**

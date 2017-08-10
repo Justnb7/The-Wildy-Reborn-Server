@@ -40,20 +40,17 @@ public class EquipmentRequirement extends SkillRequirement {
 		final EquipmentDefinition req = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(itemId);
 		if (req != null) {
 			for (final SkillRequirement r : req.getRequirements()) {
-
-				if (r == null) {
-					continue;
-				}
-				
-				if (r.getSkill().getId() == Skills.PRAYER || r.getSkill().getId() == Skills.HITPOINTS) {
-					if (player.getSkills().getXPForLevel(r.getSkill().getId()) < r.getLevel()) {
-						player.getActionSender().sendMessage("You need " + Utility.getAOrAn(r.getSkill().toString()) + " " + r.getSkill().toString() + " level of " + r.getLevel() + " to equip this item.");
-						return false;
-					}
-				} else {
-					if (player.getSkills().getLevel(r.getSkill().getId()) < r.getLevel()) {
-						player.getActionSender().sendMessage("You need " + Utility.getAOrAn(r.getSkill().toString()) + " " + r.getSkill().toString() + " level of " + r.getLevel() + " to equip this item.");
-						return false;
+				if(r != null) {
+					if (r.getSkill().getId() == Skills.PRAYER || r.getSkill().getId() == Skills.HITPOINTS) {
+						if (player.getSkills().getXPForLevel(r.getSkill().getId()) < r.getLevel()) {
+							player.getActionSender().sendMessage("You need " + Utility.getAOrAn(r.getSkill().toString()) + " " + r.getSkill().toString() + " level of " + r.getLevel() + " to equip this item.");
+							return false;
+						}
+					} else {
+						if (player.getSkills().getLevel(r.getSkill().getId()) < r.getLevel()) {
+							player.getActionSender().sendMessage("You need " + Utility.getAOrAn(r.getSkill().toString()) + " " + r.getSkill().toString() + " level of " + r.getLevel() + " to equip this item.");
+							return false;
+						}
 					}
 				}
 			}

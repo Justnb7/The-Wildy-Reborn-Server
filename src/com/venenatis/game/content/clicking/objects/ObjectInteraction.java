@@ -9,6 +9,7 @@ import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.thieving.Stalls;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
+import com.venenatis.game.content.teleportation.obelisk.Obelisks;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
@@ -67,6 +68,9 @@ public class ObjectInteraction {
 		
 		/** Minigame */
 		MinigameHandler.execute(player, $it -> $it.onFirstClickObject(player, obj));
+		
+		/** Obelisk teleportation */
+		//Obelisks.get().activate(player, obj.getId());
 		
 		switch (def.getName().toLowerCase()) {
 
@@ -184,11 +188,6 @@ public class ObjectInteraction {
 				Agility.jumpDitch(player, 6132, forceMovementVars, 0, true);
 			break;
 		
-			default:
-				if (action == null) {
-					player.getActionSender().sendMessage("Nothing interesting happens.");
-				}
-				break;
 		}
 		if (action != null) {
 			player.getActionQueue().addAction(action);

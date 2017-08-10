@@ -178,7 +178,7 @@ public class GlobalObjects {
 		List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player ->
 			player.distanceToPoint(object.getX(), object.getY()) <= 60 && player.getZ() == object.getZ()).collect(Collectors.toList());
 		players.forEach(player -> player.getActionSender().sendObject(objectId, object.getX(), object.getY(), object.getZ(), object.getDirection(), object.getType()));
- 	}
+	}
 	
 	/**
 	 * Updates all region objects for a specific player

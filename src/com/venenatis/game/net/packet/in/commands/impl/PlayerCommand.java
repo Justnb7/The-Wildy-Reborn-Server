@@ -2,8 +2,6 @@ package com.venenatis.game.net.packet.in.commands.impl;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
-import com.venenatis.game.content.teleportation.TeleportHandler;
-import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
@@ -33,11 +31,16 @@ public class PlayerCommand implements Command {
 
 		switch (parser.getCommand()) {
 		
-		/* Teleport */
-		case "teleport":
-		case "teleporting":
-			TeleportHandler.open(player, TeleportationTypes.SKILLING);
-			player.getActionSender().sendMessage("Alternatively, you can open the teleportation menu by clicking on the world map.");
+		case "rules":
+			player.getActionSender().sendString("www.venenatis.com/forum/index.php?topic=6.0", -1);
+			return true;
+			
+		case "shops":
+			player.getTeleportAction().teleport(new Location(3095, 3510, 0), TeleportTypes.SPELL_BOOK, true);
+			return true;
+			
+		case "commands":
+			player.getActionSender().sendString("www.venenatis.com/forum/index.php?board=18.0", -1);
 			return true;
 		
 		case "stuck":
@@ -53,8 +56,8 @@ public class PlayerCommand implements Command {
 
 				@Override
 				public void execute() {
-
-					if (Combat.incombat(player)) {
+					
+					if (Combat.incombat(player) || player.isDueling() || player.getDuelArena().isInSession()) {
 						stop();
 						player.getActionSender().sendMessage("Your requested teleport has being cancelled.");
 					}
@@ -83,6 +86,8 @@ public class PlayerCommand implements Command {
 		
 		case "dzone":
 		case "dz":
+			if(Area.inWilderness(player))
+				return false;
 			if(player.getTotalAmountDonated() >= 10 || player.getRights().isOwner(player)) {
 				player.getTeleportAction().teleport(new Location(2518, 3369));
 				player.getActionSender().sendMessage("You have teleported to the <img=26> <shad=7832575>donator zone.");
@@ -120,10 +125,13 @@ public class PlayerCommand implements Command {
 			if(Area.inWilderness(player)) {
 				return false;
 			}
+			if(player.getTotalAmountDonated() < 10) {
+				player.getInventory().add(new Item(385, 28), true);
+			} else
 			//Regular donator
 			if(player.getTotalAmountDonated() >= 10) {
 				//TODO create a fill method, fill the empty slots rather then spawning 28 items
-				player.getInventory().add(new Item(385, 28), true);
+				player.getInventory().add(new Item(391, 28), true);
 				player.getActionSender().sendMessage("Did you know? Super donators receive dark crabs instead.");
 			//Super
 			} else if(player.getTotalAmountDonated() >= 30) {
@@ -231,6 +239,8 @@ public class PlayerCommand implements Command {
 		case "vengeance":
 		case "vengerune":
 		case "vengerunes":
+			if(Area.inWilderness(player))
+				return false;
 			player.getInventory().add(new Item(557, 1000));
 			player.getInventory().add(new Item(560, 1000));
 			player.getInventory().add(new Item(9075, 1000));
@@ -242,6 +252,8 @@ public class PlayerCommand implements Command {
 		case "barrage":
 		case "barragerune":
 		case "barragerunes":
+			if(Area.inWilderness(player))
+				return false;
 			player.getInventory().add(new Item(555, 1000));
 			player.getInventory().add(new Item(560, 1000));
 			player.getInventory().add(new Item(565, 1000));

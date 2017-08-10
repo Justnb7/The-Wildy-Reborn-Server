@@ -25,7 +25,6 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
-import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.server.Server;
 
@@ -1065,9 +1064,9 @@ public class ActionSender {
 				
 				//If the player is not in a clan chat we'll add them in the server clan chat
 				if (player.getClanChat() != null || player.getClanChat() == "") {
-					ClanManager.join(player, player.getClanChat());
-				} else {
 					ClanManager.join(player, "help");
+				} else {
+					ClanManager.join(player, player.getClanChat());
 				}
 				this.stop();
 			}

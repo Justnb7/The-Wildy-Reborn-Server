@@ -112,9 +112,9 @@ public class DeathDropHandler {
 					BrokenItem brokenItem = BrokenItem.get(id);
 					if(brokenItem != null) {
 						id = brokenItem.getBrokenItem();
+						player.getInventory().add(new Item(id, it.getAmount()));
+						// only give back if its a broken item
 					}
-					
-					player.getInventory().add(new Item(id, it.getAmount()));
 				}
 			}
 		}

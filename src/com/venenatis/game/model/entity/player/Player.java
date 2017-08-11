@@ -75,6 +75,7 @@ import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
+import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
 
 import io.netty.buffer.Unpooled;
@@ -3035,5 +3036,45 @@ public class Player extends Entity {
 
 	public int getToxicBlowpipeAmmo() {
 		return 11230;
+	}
+
+	public void faceObject(GameObject object) {
+		if (object.getId() == 11374) {
+			face(this, Location.create(2713, 3494));
+			return;
+		} else if (object.getId() == 11375) {
+			face(this, object.getLocation());
+			return;
+		} else if (object.getId() == 11377) {
+			face(this, Location.create(2704, 3464));
+			return;
+		}
+		if (getLocation().equals(object.getLocation())) {
+			int offX = 0;
+			int offY = 0;
+			switch (object.getDirection()) {
+				case 0:
+					offX = -1;
+					break;
+				case 1:
+					offY = 1;
+					break;
+				case 2:
+					offX = 1;
+					break;
+				case 3:
+					offY = -1;
+					break;
+			}
+			face(this, object.getLocation().transform(offX, offY, 0));
+		} else if (object.getType() >= 9
+				&& object.getType() <= 11
+				&& (object.getDefinition().xLength() > 1 || object.getDefinition().yLength() > 1)) {
+			face(this, object.getLocation().transform(
+					object.getDefinition().xLength() >> 1,
+					object.getDefinition().yLength() >> 1, 0));
+		} else {
+			face(this, object.getLocation());
+		}
 	}
 }

@@ -9,6 +9,7 @@ import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.thieving.Stalls;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
+import com.venenatis.game.content.teleportation.lever.Levers;
 import com.venenatis.game.content.teleportation.obelisk.Obelisks;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
@@ -63,6 +64,11 @@ public class ObjectInteraction {
 		/** Duel Arena */
 		if (player.getDuelArena().isDueling()) {
 			player.getDuelArena().onFirstClickObject(obj);
+			return;
+		}
+		
+		/** Levers */
+		if (Levers.handle(player, obj)) {
 			return;
 		}
 		

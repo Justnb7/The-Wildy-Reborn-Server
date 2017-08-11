@@ -48,6 +48,16 @@ public class Teleport {
 	public boolean isTeleporting() {
 		return isTeleporting;
 	}
+	
+	private long lastTeleport = -3000;
+	
+	public long getLastTeleport() {
+		return System.currentTimeMillis() - lastTeleport;
+	}
+	
+	public void setLastTeleport(long currentTimeMillis) {
+		this.lastTeleport = currentTimeMillis;
+	}
 
 	/**
 	 * Enum for all the teleporting types.

@@ -142,6 +142,7 @@ public class PlayerSave {
 				player.getCombatState().setRingOfRecoil(details.recoil);
 				player.setVotePoints(details.votePoints);
 				player.setTotalVotes(details.totalVotes);
+				player.setPkPoints(details.pkPoints);
 				player.setSlayerPoints(details.slayerPoints);
 				player.setAmountDonated(details.amountDonated);
 				player.setTotalAmountDonated(details.totalAmountDonated);
@@ -236,6 +237,7 @@ public class PlayerSave {
 		private final int recoil;
 		private final int votePoints;
 		private final int totalVotes;
+		private final int pkPoints;
 		private final int slayerPoints;
 		private final int amountDonated;
 		private final int totalAmountDonated;
@@ -321,6 +323,7 @@ public class PlayerSave {
 			recoil = player.getCombatState().getRingOfRecoil();
 			votePoints = player.getVotePoints();
 			totalVotes = player.getTotalVotes();
+			pkPoints = player.getPkPoints();
 			slayerPoints = player.getSlayerPoints();
 			amountDonated = player.getAmountDonated();
 			totalAmountDonated = player.getTotalAmountDonated();

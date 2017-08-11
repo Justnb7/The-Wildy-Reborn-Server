@@ -86,7 +86,7 @@ public class WildernessRewards {
 				member_bonus += Utility.isWeekend() ? 10 : 20;
 			} else if(killer.getTotalAmountDonated() >= 30) {
 				member_bonus += Utility.isWeekend() ? 15 : 30;
-			} else {
+			} else if(killer.getTotalAmountDonated() >= 100) {
 				member_bonus += Utility.isWeekend() ? 20 : 40;
 			}
 			
@@ -103,6 +103,8 @@ public class WildernessRewards {
 			killer.getActionSender().sendMessage(opponent.getUsername() + " wasn't risking enough for you to gain any Pk points.");
 		}
 		
+		killer.getActionSender().sendMessage("test");
+		
 		if(opponent.getCurrentKillStreak() >= 5) {
 			World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@"+killer.getUsername()+"@red@ just "+killMessage[new java.util.Random().nextInt(killMessage.length)]+" @dre@"+opponent.getUsername()+"'s@red@ "+opponent.getCurrentKillStreak()+" killstreak!", false);
 		}
@@ -113,6 +115,10 @@ public class WildernessRewards {
 		//Increase death and kill count
 		killer.setKillCount(killer.getKillCount() + 1);
 		opponent.setDeathCount(opponent.getDeathCount() + 1);
+		
+		killer.getActionSender().sendMessage("[DEBUG]: I am the killer my name is "+killer.getUsername()+" i killed, "+opponent.getUsername()+" and gained "+totalPoints+" PKP.");
+		opponent.getActionSender().sendMessage("[DEBUG]: I am the victim my name is "+opponent.getUsername()+" i was killed by "+killer.getUsername()+" i gained a total of "+totalPoints+" PKP.");
+		
 		
 		//Renew special attack for the killer
 		killer.setSpecialAmount(100);

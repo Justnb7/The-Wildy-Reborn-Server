@@ -36,7 +36,7 @@ public class Constants {
 	/**
 	 * The experience multiplier given to non-combat stats
 	 */
-	public static final int SKILL_MODIFIER = 125;
+	public static final int SKILL_MODIFIER = 25;
 	
 	/**
 	 * Strings that can not be used in a username

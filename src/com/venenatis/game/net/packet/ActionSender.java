@@ -1063,9 +1063,11 @@ public class ActionSender {
 				}
 				
 				//If the player is not in a clan chat we'll add them in the server clan chat
-				if (player.getClanChat() != null || player.getClanChat() == "") {
+				if (player.getClanChat() == null || player.getClanChat() == "") {
+					System.out.println("add to clan? Current clan: "+player.getClanChat());
 					ClanManager.join(player, "help");
 				} else {
+					System.out.println("player already added in a clan, "+player.getClanChat());
 					ClanManager.join(player, player.getClanChat());
 				}
 				this.stop();

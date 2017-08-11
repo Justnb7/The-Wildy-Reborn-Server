@@ -57,6 +57,8 @@ public class Firemaking {
 					return false;
 				}
 				
+				player.getAttributes().put("firemaking", true);
+				
 				final GroundItem item = new GroundItem(new Item(log.getLog()), player.getLocation(), player);
 				
 				if (GroundItemHandler.register(item)) {
@@ -72,6 +74,10 @@ public class Firemaking {
 				Server.getTaskScheduler().schedule(new Task(player, lightDelay(player, log.getLog()), false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
 					@Override
 					public void execute() {
+						if(!player.hasAttribute("firemaking")) {
+							player.playAnimation(Animation.create(65535));
+							stop();
+						}
 						
 						Server.getGlobalObjects().add(fire);
 						
@@ -84,6 +90,7 @@ public class Firemaking {
 						Location face = new Location(fire.getX(), fire.getY());
 						player.face(player, face);
 						player.setLastFire(System.currentTimeMillis());
+						player.getAttributes().remove("firemaking");
 						stop();
 					}
 				}.attach(player));

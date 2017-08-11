@@ -344,7 +344,7 @@ public class Skills {
 	public void addExperience(int skillId, double experience) {
 
 		boolean combatSkill = skillId >= ATTACK && skillId <= MAGIC && skillId != PRAYER;
-        int multi = combatSkill ? Constants.EXP_MODIFIER : Constants.EXP_MODIFIER;
+        int multi = combatSkill ? Constants.EXP_MODIFIER : Constants.SKILL_MODIFIER;
         int oldLevel = getLevelForExperience(skillId);
         
 

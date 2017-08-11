@@ -146,16 +146,17 @@ public class Obelisks {
 		private Obelisk location;
 		
 		public Event(Obelisk location, int cycles) {
+			super(cycles, false);
 			this.location = location;
-			this.setTickDelay(cycles);
 		}
 
 		@Override
 		public void execute() {
 			state.put(location.objectId, false);
 			stop();
+			
 			Boundary boundary = location.getBoundaries();
-			//Boundary boundary = new Boundary(location.boundary.getMinimumX() + 1, location.boundary.getMinimumY() + 1, location.boundary.getMinimumX() + 3, location.boundary.getMinimumY() + 3);
+			
 			List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player -> Boundary.isIn(player, boundary)).collect(Collectors.toList());
 			
 			if (players.size() > 0) {

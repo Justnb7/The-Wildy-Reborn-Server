@@ -29,7 +29,9 @@ public class ItemOnItem {
 	public static void handleAction(Player player, Item usedItem, Item withItem) {
 		player.debug(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", usedItem.getId(), withItem.getId()));
 		
-		Firemaking.startFire(player, usedItem.getId(), withItem.getId(), new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+		if(Firemaking.startFire(player, usedItem, withItem, new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()))) {
+			return;
+		}
 		
 		if (player.rights == Rights.OWNER) {
 			if(usedItem.getId() == 5733 || withItem.getId() == 5733) {

@@ -6,6 +6,8 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.task.Task.BreakType;
+import com.venenatis.game.task.Task.StackType;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.object.GameObject;
@@ -33,26 +35,26 @@ public class Firemaking {
 	 * @param location
 	 *            The location of the fire
 	 */
-	public static void startFire(final Player player, int itemUsed, int usedWith, Location location) {
+	public static boolean startFire(final Player player, Item itemUsed, Item usedWith, Location location) {
 		for (final LogData log : LogData.values()) {
-			if (itemUsed == 590 && usedWith == log.getLog() || itemUsed == log.getLog() && usedWith == 590) {
+			if (itemUsed.getId() == 590 && usedWith.getId() == log.getLog() || itemUsed.getId() == log.getLog() && usedWith.getId() == 590) {
 				
 				if (System.currentTimeMillis() - player.getLastFire() < 200) {
-					return;
+					return false;
 				}
 				
 				if (Server.getGlobalObjects().exists(log.getFire(), location)) {
 					player.getActionSender().sendMessage("You can't light a fire on a fire!");
-					return;
+					return false;
 				}
 				
 				if (player.getSkills().getLevel(Skills.FIREMAKING) < log.getLevel()) {
 					player.getActionSender().sendMessage("You need a firemaking level of " + log.getLevel() + " to light this.");
-					return;
+					return false;
 				}
 				
 				if (!player.getInventory().contains(590, 1)) {
-					return;
+					return false;
 				}
 				
 				final GroundItem item = new GroundItem(new Item(log.getLog()), player.getLocation(), player);
@@ -67,7 +69,7 @@ public class Firemaking {
 				player.getInventory().remove(new Item(log.getLog()));
 				
 				GameObject fire = new GameObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 100);
-				Server.getTaskScheduler().schedule(new Task(lightDelay(player, log.getLog())) {
+				Server.getTaskScheduler().schedule(new Task(player, lightDelay(player, log.getLog()), false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
 					@Override
 					public void execute() {
 						
@@ -97,6 +99,7 @@ public class Firemaking {
 				}.attach(player));
 			}
 		}
+		return true;
 	}
 
 	/**

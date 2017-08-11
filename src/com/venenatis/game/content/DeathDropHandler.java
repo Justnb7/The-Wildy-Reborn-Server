@@ -1,8 +1,11 @@
 package com.venenatis.game.content;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Item.ItemComparator;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
-import com.venenatis.game.model.combat.data.AttackStyle;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
@@ -29,81 +32,78 @@ public class DeathDropHandler {
 			killer = player;
 		}
 
-		Item[] keep = new Item[3 + (player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0)];
+		final Item[] keep = player.isSkulled() ? new Item[player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0]
+				: new Item[player.isActivePrayer(Prayers.PROTECT_ITEM) ? 4 : 3];
 
-		Item[] drop = new Item[(28 - player.getInventory().getFreeSlots()) + (14 - player.getEquipment().getFreeSlots())];
+		final Queue<Item> items = new PriorityQueue<Item>(ItemComparator.SHOP_VALUE_COMPARATOR);
 
-		eqp_loop: for (Item equip : player.getEquipment().toArray()) {
-			if (equip != null) {
-				int itemValue = equip.getValue();
-
-				int keepValue = 0;
-				for (int i = 0; i < keep.length; i++) {
-					if (keep[i] != null) {
-						keepValue = keep[i].getValue();
-					}
-					if (itemValue > keepValue) {
-						keep[i] = equip;
-						keepValue = 0;
-						continue eqp_loop;
-					}
-					keepValue = 0;
-				}
-				for (int x = 0; x < drop.length; x++) {
-					if (drop[x] == null) {
-						drop[x] = equip;
-						continue eqp_loop;
-					}
-				}
-			}
-		}
-		inv_loop: for (Item equip : player.getInventory().toArray()) {
-			if (equip != null) {
-				int itemValue = equip.getValue();
-				int keepValue = 0;
-				for (int i = 0; i < keep.length; i++) {
-					if (keep[i] != null) {
-						keepValue = keep[i].getValue();
-					}
-					if (itemValue > keepValue) {
-						keep[i] = equip;
-						keepValue = 0;
-						continue inv_loop;
-					}
-					keepValue = 0;
-				}
-				for (int x = 0; x < drop.length; x++) {
-					if (drop[x] == null) {
-						drop[x] = equip;
-						continue inv_loop;
-					}
-				}
+		for (final Item item : player.getInventory().toNonNullArray()) {
+			if (item != null) {
+				items.add(item.copy());
 			}
 		}
 
+		for (final Item item : player.getEquipment().toNonNullArray()) {
+			if (item != null) {
+				items.add(item.copy());
+			}
+		}
+
+		final Queue<Item> temp = new PriorityQueue<>(items);
+
+		for (int index = 0, taken = 0; index < keep.length; index++) {
+			keep[index] = temp.poll();
+			items.remove(keep[index]);
+
+			if (keep[index] != null) {
+				if (keep[index].getAmount() == keep.length - taken) {
+					break;
+				}
+
+				if (keep[index].getAmount() > keep.length - taken) {
+					items.add(new Item(keep[index].getId(), keep[index].getAmount() - (keep.length - taken)));
+					keep[index].setAmount(keep.length - taken);
+					break;
+				}
+
+				taken += keep[index].getAmount();
+			}
+		}
+
+		player.getInventory().clear(false);
 		player.getEquipment().clear(true);
-		player.getInventory().clear(true);
 
-		for (Item item : drop) {
-			if (item != null) {
-				GroundItem x = new GroundItem(item, player.getLocation(), killer);
-				GroundItemHandler.register(x);
-				killer.getActionSender().sendGroundItem(x);
+		if (player.getInventory().add(keep) == 0) {
+			player.getInventory().refresh();
+		}
+
+		while (!items.isEmpty()) {
+			final Item item = items.poll();
+
+			if (item == null) {
+				continue;
+			}
+
+			// If killer is null, drop is for victim
+			if (killer == null) {
+				GroundItemHandler.createGroundItem(new GroundItem(item, player.getLocation().clone(), player));
+
+				// If killer is null, drop is for victim
+			} else if (killer.isNPC()) {
+				GroundItemHandler.createGroundItem(new GroundItem(item, player.getLocation().clone(), player));
+
+				// Drop all items for killer no random
+			} else {
+				GroundItemHandler.createGroundItem(new GroundItem(item, player.getLocation().clone(), (Player) killer));
 			}
 		}
 
-		for (Item item : keep) {
-			if (item != null) {
-				player.getInventory().add(item);
-			}
+		if (killer != null && killer.isPlayer()) {
+			GroundItemHandler
+					.createGroundItem(new GroundItem(new Item(526), player.getLocation().clone(), killer.asPlayer()));
+		} else {
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(526), player.getLocation().clone(), player));
 		}
-		
-		GroundItemHandler.createGroundItem(new GroundItem(new Item(526), player.getLocation(), killer));
-		player.setUsingSpecial(false);
-		AttackStyle.adjustAttackStyleOnLogin(player);
-		player.getActionSender().sendSidebarInterface(0, 5855);
-		player.getActionSender().sendString("Unarmed", 5857);
-		player.getActionSender().sendWalkableInterface(-1);
 		
 		if(keep != null) {
 			for(Item it : keep) {

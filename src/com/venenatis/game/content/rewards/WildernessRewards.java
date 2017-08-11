@@ -26,33 +26,41 @@ import com.venenatis.game.world.World;
 public class WildernessRewards {
 	
 	/**
+	 * Messages of killing a player.
+	 */
+	public static final String[] DEATH_MESSAGES = { "You have defeated -victim-.", "With a crushing blow, you defeat -victim-.", "It's a humiliating defeat for -victim-.", "-victim- didn't stand a chance against you.", "You have defeated -victim-.", "It's all over for -victim-.", "-victim- regrets the day they met you in combat.", "-victim- falls before your might.", "Can anyone defeat you? Certainly not -victim-.", "You were clearly a better fighter than -victim-." };
+	
+	
+	/**
 	 * This method will reward the killer
 	 * 
 	 * @param killer
 	 *            The player who killed his opponent
-	 * @param opponent
+	 * @param victim
 	 *            The player who died
 	 */
-	public static boolean killed_player(Player killer, Player opponent) {
-		long wealth = getWealth(opponent);
+	public static boolean killed_player(Player killer, Player victim) {
+		long wealth = getWealth(victim);
 		double member_bonus = 1;
 		double iron_bonus = 1;
 		int totalPoints = 5;
-		killer = World.getWorld().lookupPlayerByName(opponent.getCombatState().getDamageMap().getKiller());
+		killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
+		
+		killer.getActionSender().sendMessage(Utility.randomElement(DEATH_MESSAGES).replaceAll("-victim-", Utility.formatName(victim.getUsername())));
 		
 		//System.out.printf("%s %s %s%n", killer, wealth, isSameConnection(opponent, killer));
 		
 		//Apply bounty hunter kill
-		BountyHunter.handleBountyHunterKill(opponent, killer);
+		BountyHunter.handleBountyHunterKill(victim, killer);
 		
-		if(wealth > Constants.PK_POINTS_WEALTH && (!Connection.isSameConnection(opponent, killer) || killer.getRights().isOwner(killer))) {
+		if(wealth > Constants.PK_POINTS_WEALTH && (!Connection.isSameConnection(victim, killer) || killer.getRights().isOwner(killer))) {
 			
-			if(hasKilledRecently(opponent.getUsername(), killer)) {
-				killer.getActionSender().sendMessage("You have already killed "+opponent.getUsername()+" kill 3 more players before receiving rewards again for killing "+opponent.getUsername());
+			if(hasKilledRecently(victim.getUsername(), killer)) {
+				killer.getActionSender().sendMessage("You have already killed "+victim.getUsername()+" kill 3 more players before receiving rewards again for killing "+victim.getUsername());
 				return false;
 			}
 			
-			if(opponent.getUsername().equalsIgnoreCase("patrick") || opponent.getUsername().equalsIgnoreCase("matthew")) {
+			if(victim.getUsername().equalsIgnoreCase("patrick") || victim.getUsername().equalsIgnoreCase("matthew")) {
 				//Owners don't drop items, reward them with a random blood money reward
 				killer.getInventory().addOrCreateGroundItem(new Item(13307, Utility.random(5, 25)));
 			}
@@ -62,9 +70,9 @@ public class WildernessRewards {
 			killer.setWildernessStreak(killer.getWildernessKillStreak() + 1);
 			if (killer.getCurrentKillStreak() > 2) {
 				if (killer.getWildernessKillStreak() == killer.getCurrentKillStreak()) {
-					World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@" + killer.getUsername() + "@red@ has killed @dre@" + opponent.getUsername() + "@red@ and is on a @dre@" + killer.getCurrentKillStreak() + "@red@ Wilderness killstreak!", false);
+					World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@" + killer.getUsername() + "@red@ has killed @dre@" + victim.getUsername() + "@red@ and is on a @dre@" + killer.getCurrentKillStreak() + "@red@ Wilderness killstreak!", false);
 				} else {
-					World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@" + killer.getUsername() + "@red@ has killed @dre@" + opponent.getUsername() + "@red@ and is on a @dre@" + killer.getCurrentKillStreak() + "@red@ killstreak! Wildy Streak: @dre@" + killer.getWildernessKillStreak(), false);
+					World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@" + killer.getUsername() + "@red@ has killed @dre@" + victim.getUsername() + "@red@ and is on a @dre@" + killer.getCurrentKillStreak() + "@red@ killstreak! Wildy Streak: @dre@" + killer.getWildernessKillStreak(), false);
 				}
 				if (killer.getCurrentKillStreak() < 6) {
 					killer.getActionSender().sendMessage("@bla@You gain @red@" + killer.getCurrentKillStreak() + " @bla@extra PK Points because of your @red@" + killer.getCurrentKillStreak() + " @bla@killstreak.");
@@ -100,24 +108,22 @@ public class WildernessRewards {
 			killer.getActionSender().sendMessage("You now have @blu@" + killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" + totalPoints + "@bla@)");
 			return true;
 		} else {
-			killer.getActionSender().sendMessage(opponent.getUsername() + " wasn't risking enough for you to gain any Pk points.");
+			killer.getActionSender().sendMessage(victim.getUsername() + " wasn't risking enough for you to gain any Pk points.");
 		}
 		
-		killer.getActionSender().sendMessage("test");
-		
-		if(opponent.getCurrentKillStreak() >= 5) {
-			World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@"+killer.getUsername()+"@red@ just "+killMessage[new java.util.Random().nextInt(killMessage.length)]+" @dre@"+opponent.getUsername()+"'s@red@ "+opponent.getCurrentKillStreak()+" killstreak!", false);
+		if(victim.getCurrentKillStreak() >= 5) {
+			World.getWorld().sendWorldMessage("<img=12>[@red@Server@bla@]: @dre@"+killer.getUsername()+"@red@ just "+killMessage[new java.util.Random().nextInt(killMessage.length)]+" @dre@"+victim.getUsername()+"'s@red@ "+victim.getCurrentKillStreak()+" killstreak!", false);
 		}
 		
 		//Add identity to anti cheat list
-		addKilledEntry(opponent.getIdentity(), killer);
+		addKilledEntry(victim.getIdentity(), killer);
 		
 		//Increase death and kill count
 		killer.setKillCount(killer.getKillCount() + 1);
-		opponent.setDeathCount(opponent.getDeathCount() + 1);
+		victim.setDeathCount(victim.getDeathCount() + 1);
 		
-		killer.getActionSender().sendMessage("[DEBUG]: I am the killer my name is "+killer.getUsername()+" i killed, "+opponent.getUsername()+" and gained "+totalPoints+" PKP.");
-		opponent.getActionSender().sendMessage("[DEBUG]: I am the victim my name is "+opponent.getUsername()+" i was killed by "+killer.getUsername()+" i gained a total of "+totalPoints+" PKP.");
+		killer.getActionSender().sendMessage("[DEBUG]: I am the killer my name is "+killer.getUsername()+" i killed, "+victim.getUsername()+" and gained "+totalPoints+" PKP.");
+		victim.getActionSender().sendMessage("[DEBUG]: I am the victim my name is "+victim.getUsername()+" i was killed by "+killer.getUsername()+" i gained a total of "+totalPoints+" PKP.");
 		
 		
 		//Renew special attack for the killer
@@ -127,7 +133,7 @@ public class WildernessRewards {
 		
 		//Update information tab
 		QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
-		QuestTabPageHandler.write(opponent, QuestTabPages.HOME_PAGE);
+		QuestTabPageHandler.write(victim, QuestTabPages.HOME_PAGE);
 		return false;
 	}
 	

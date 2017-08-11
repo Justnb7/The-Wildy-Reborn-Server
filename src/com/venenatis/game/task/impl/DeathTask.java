@@ -56,41 +56,7 @@ public class DeathTask extends Task {
 		if (victim.getCombatState().isDead()) {
 
 			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
-			if (killer != null && Area.inWilderness(killer) ) {
-				switch (RandomGenerator.nextInt(10)) {
-				default:
-				case 0:
-					killer.getActionSender().sendMessage("You have defeated " + victim.getUsername() + ".");
-					break;
-				case 1:
-					killer.getActionSender().sendMessage("Can anyone defeat you? Certainly not " + victim.getUsername() + ".");
-					break;
-				case 2:
-					killer.getActionSender().sendMessage(victim.getUsername() + " falls before your might.");
-					break;
-				case 3:
-					killer.getActionSender().sendMessage("A humiliating defeat for " + victim.getUsername() + ".");
-					break;
-				case 4:
-					killer.getActionSender().sendMessage("You were clearly a better fighter than " + victim.getUsername() + ".");
-					break;
-				case 5:
-					killer.getActionSender().sendMessage(victim.getUsername() + " has won a free ticket to Edgeville.");
-					break;
-				case 6:
-					killer.getActionSender().sendMessage("It's all over for " + victim.getUsername() + ".");
-					break;
-				case 7:
-					killer.getActionSender().sendMessage("With a crushing blow you finish " + victim.getUsername() + ".");
-					break;
-				case 8:
-					killer.getActionSender().sendMessage(victim.getUsername() + " regrets the day they met you in combat.");
-					break;
-				case 9:
-					killer.getActionSender().sendMessage(victim.getUsername() + " didn't stand a chance against you.");
-					break;
-				}
-				// this is wildy death
+			if (killer != null && Area.inWilderness(killer)) {
 				WildernessRewards.killed_player(killer, victim);
 				dropPlayerItems(victim);
 				reset(victim);
@@ -141,7 +107,7 @@ public class DeathTask extends Task {
 		/**
 		 * Are admins allowed to keep their items upon death?
 		 */
-		boolean admin_keeps_items = victim.getUsername().equalsIgnoreCase("patrick") || victim.getUsername().equalsIgnoreCase("matthew") ? true : false;
+		boolean admin_keeps_items = victim.getUsername().equalsIgnoreCase("patrick") || victim.getUsername().equalsIgnoreCase("matthew") ? false : false;
 		
 		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
 		if (!controller.isSafe() && !admin_keeps_items) {

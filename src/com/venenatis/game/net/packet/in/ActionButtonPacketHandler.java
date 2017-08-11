@@ -1,6 +1,7 @@
 package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.content.EmotesManager.EmoteData;
+import com.venenatis.game.content.achievements.AchievementButtons;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.clicking.Buttons;
@@ -67,6 +68,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */
+		
+		/* Achievements */
+		if (AchievementButtons.handleButtons(player, button)) {
+			return;
+		}
 		
 		/* Dueling */
 		if (player.getDuelArena().isInSession() || player.getDuelArena().getStage() == DuelStage.REWARD) {

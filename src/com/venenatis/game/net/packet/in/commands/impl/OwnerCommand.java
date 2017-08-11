@@ -39,6 +39,22 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		/* Mass Banner */
+		case "massbanner":
+			String message = "";
+			if (parser.hasNext()) {
+				message = parser.nextString();
+			}
+			if (message.length() != 0) {
+				for (Player players : World.getWorld().getPlayers()) {
+					if (players != null) {
+						players.getActionSender().sendBanner("Battle-OS Notification", message, 0xFA960A);
+
+					}
+				}
+			}
+			return true;
+		
 		case "sg":
 			player.getActionSender().stillGfx(369, player.getX() -1, player.getY(), player.getZ(), 0);
 			return true;

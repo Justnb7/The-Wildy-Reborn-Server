@@ -447,12 +447,11 @@ public class ActionSender {
 		return this;
 	}
 	
-	public ActionSender sendStringColor(int stringId, int color) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(122);
-			player.getOutStream().writeWordBigEndianA(stringId);
-			player.getOutStream().writeWordBigEndianA(color);	
-		}
+	public ActionSender sendStringColor(int id, int color) {
+		player.getOutStream().writeFrame(122);
+		player.getOutStream().writeShort(id);
+		player.getOutStream().putInt(color);
+		player.flushOutStream();
 		return this;
 	}
 	
@@ -937,6 +936,16 @@ public class ActionSender {
 		player.getOutStream().writeFrame(110);
 		player.getOutStream().writeByte(player.getRunEnergy());
 		player.flushOutStream();
+		return this;
+	}
+	
+	public ActionSender sendBanner(String title, String message, int color) {
+		if (title != null) {
+			player.getOutStream().putRS2String(title);
+			player.getOutStream().putRS2String(message);
+			player.getOutStream().putInt(color);
+			player.flushOutStream();
+		}
 		return this;
 	}
 	

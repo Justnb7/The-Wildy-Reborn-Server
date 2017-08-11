@@ -1,6 +1,10 @@
 package com.venenatis.game.content.clicking;
 
 import com.venenatis.game.content.ItemsKeptOnDeath;
+import com.venenatis.game.content.achievements.AchievementHandler.AchievementDifficulty;
+import com.venenatis.game.content.achievements.AchievementInterface;
+import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.interfaces.InterfaceWriter;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.sounds_and_music.MusicData;
@@ -29,6 +33,33 @@ public class Buttons {
 	public static void handleButton(Player player, int button) {
 		System.out.println("btn "+button);
 		switch (button) {
+		
+		case 113230:
+			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.EASY));
+			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.VIRGIN);
+			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.EASY);
+			player.getActionSender().sendInterface(35_000);
+			break;
+		
+		/* Achievement */
+		case -30519:
+			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.EASY));
+			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.VIRGIN);
+			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.EASY);
+			player.getActionSender().sendInterface(35_000);
+			break;
+		case -30516:
+			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.MEDIUM));
+			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.LEARNING_CURVE);
+			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.MEDIUM);
+			player.getActionSender().sendInterface(35_000);
+			break;
+		case -30513:
+			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.HARD));
+			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.MASTER);
+			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.HARD);
+			player.getActionSender().sendInterface(35_000);
+			break;
 		
 		/* Teleport */
 		case 3082:

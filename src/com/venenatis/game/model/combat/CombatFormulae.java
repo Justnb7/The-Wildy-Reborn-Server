@@ -407,7 +407,6 @@ public class CombatFormulae {
 		double otherBonusMultiplier = 1;	
 		int rangedStrength = player.getBonuses().length < 13 ? 0 : player.getBonuses()[11];
 		
-		System.out.println("range strength: "+player.getBonuses()[11]);
 		if (player.getBonuses().length < 13) {
 			System.err.println("NO RANGE STR BONUSES DEFINED");
 		}

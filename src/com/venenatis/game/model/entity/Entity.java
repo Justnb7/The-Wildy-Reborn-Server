@@ -471,7 +471,8 @@ public abstract class Entity {
 				infection = 1;
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
-			entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
+			if (entity != null)
+				entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
 			Server.getTaskScheduler().schedule(new PoisonCombatTask(this));
 			return true;
 		}

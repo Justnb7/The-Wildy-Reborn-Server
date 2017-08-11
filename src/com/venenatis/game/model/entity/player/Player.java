@@ -2,6 +2,7 @@ package com.venenatis.game.model.entity.player;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -9,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.KillTracker.KillEntry;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
@@ -3076,4 +3078,39 @@ public class Player extends Entity {
 			}
 		}
 	}
+	
+	private HashMap<AchievementList, Integer> playerAchievements = new HashMap<AchievementList, Integer>(AchievementList.values().length) {
+		private static final long serialVersionUID = 1842952445111093360L;
+
+		{
+			for (final AchievementList achievement : AchievementList.values()) {
+				put(achievement, 0);
+			}
+		}
+	};
+
+	public HashMap<AchievementList, Integer> getPlayerAchievements() {
+		return playerAchievements;
+	}
+	
+	public void setPlayerAchievements(HashMap<AchievementList, Integer> playerAchievements) {
+		this.playerAchievements = playerAchievements;
+	}
+	
+	public int achievementsCompleted() {
+		int completed = 0;
+		for (final AchievementList achievement : this.getPlayerAchievements().keySet()) {
+			if (achievement != null && this.getPlayerAchievements().get(achievement) == achievement.getCompleteAmount()) {
+				completed++;
+			}
+		}
+		return completed;
+	}
+
+	public boolean completedAchievements() {
+		return achievementsCompleted() >= AchievementList.getTotal() ? true : false;
+	}
+	
+	
+	
 }

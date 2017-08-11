@@ -131,6 +131,7 @@ public class DropManager {
 	 *            the npc dropping the items
 	 */
 	public void create(Player player, NPC npc, Location location, int repeats) {
+		
 		Optional<TableGroup> group = groups.values().stream().filter(g -> g.getNpcIds().contains(npc.getId())).findFirst();
 		
 		group.ifPresent(g -> {

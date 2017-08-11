@@ -18,35 +18,36 @@ public class AchievementButtons {
 	private static final HashMap<Integer, AchievementList> BUTTONS_3 = new HashMap<Integer, AchievementList>();
 
 	static {
-		int button = -30505;
-		button = -30505;
+		int button = 136215;
+		button = 136215;
 		for (final AchievementList achievement : AchievementList.asList(AchievementDifficulty.EASY)) {
 			BUTTONS_1.put(button++, achievement);
 		}
-		button = -30505;
+		button = 136215;
 		for (final AchievementList achievement : AchievementList.asList(AchievementDifficulty.MEDIUM)) {
 			BUTTONS_2.put(button++, achievement);
 		}
-		button = -30505;
+		button = 136215;
 		for (final AchievementList achievement : AchievementList.asList(AchievementDifficulty.HARD)) {
 			BUTTONS_3.put(button++, achievement);
 		}
 	}
 
 	public static boolean handleButtons(Player player, int buttonId) {
-		/*case BUTTONS_1.containsKey(buttonId):
+		if (player.getAttributes().get("ACHIEVEMENT_PAGE") == AchievementDifficulty.EASY && BUTTONS_1.containsKey(buttonId)) {
 			AchievementInterface.sendInterfaceForAchievement(player, BUTTONS_1.get(buttonId));
 			return true;
-
-		if (player.attr().get(PlayerAttributes.ACHIEVEMENT_PAGE) == AchievementDifficulty.MEDIUM && BUTTONS_2.containsKey(buttonId)) {
+		}
+		
+		if (player.getAttributes().get("ACHIEVEMENT_PAGE") == AchievementDifficulty.MEDIUM && BUTTONS_2.containsKey(buttonId)) {
 			AchievementInterface.sendInterfaceForAchievement(player, BUTTONS_2.get(buttonId));
 			return true;
 		}
 
-		if (player.attr().get(PlayerAttributes.ACHIEVEMENT_PAGE) == AchievementDifficulty.HARD && BUTTONS_3.containsKey(buttonId)) {
+		if (player.getAttributes().get("ACHIEVEMENT_PAGE") == AchievementDifficulty.HARD && BUTTONS_3.containsKey(buttonId)) {
 			AchievementInterface.sendInterfaceForAchievement(player, BUTTONS_3.get(buttonId));
 			return true;
-		}*/
+		}
 		return false;
 	}
 

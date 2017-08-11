@@ -86,8 +86,20 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		switch (interfaceId) {
 		
-		case RunePouchContainer.INVENTORY_INTERFACE:
+		case RunePouchContainer.INVNTORY_CONTAINER:
 			player.getRunePouch().addItem(removeId, 1, removeSlot);
+			break;
+
+		case RunePouchContainer.RUNE_POUCH_CONTAINER:
+			player.getRunePouch().removeItem(removeId, 1, removeSlot);
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
+			player.getRunePouch().removeItem(removeId, 1, 1);
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
+			player.getRunePouch().removeItem(removeId, 1, 2);
 			break;
 
 		case InterfaceConstants.EQUIPMENT:
@@ -191,6 +203,22 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		player.debug(String.format("Packet 117: component %d item %d slot %d%n", component, removeId, removeSlot));
 
 		switch (component) {
+		
+		case RunePouchContainer.INVNTORY_CONTAINER:
+			player.getRunePouch().addItem(removeId, 5, removeSlot);
+			break;
+
+		case RunePouchContainer.RUNE_POUCH_CONTAINER:
+			player.getRunePouch().removeItem(removeId, 5, removeSlot);
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
+			player.getRunePouch().removeItem(removeId, 5, 1);
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
+			player.getRunePouch().removeItem(removeId, 5, 2);
+			break;
 
 		case InterfaceConstants.EQUIPMENT: {
 			final Item item = player.getEquipment().get(removeSlot);
@@ -416,6 +444,26 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		case InterfaceConstants.SHOP_INVENTORY:
 			ShopManager.sell(player, removeId, 5, removeSlot);
+			break;
+			
+		case RunePouchContainer.INVNTORY_CONTAINER:
+			int limit = player.getInventory().getAmount(removeId);
+			player.getRunePouch().addItem(removeId, limit, removeSlot);
+			break;
+
+		case RunePouchContainer.RUNE_POUCH_CONTAINER:
+			limit = player.getRunePouch().getAmount(removeId);
+			player.getRunePouch().removeItem(removeId, limit, removeSlot);
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
+			limit = player.getRunePouch().getAmount(removeId);
+			player.getRunePouch().removeItem(removeId, limit, 1);
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
+			limit = player.getRunePouch().getAmount(removeId);
+			player.getRunePouch().removeItem(removeId, limit, 2);
 			break;
 		}
 	}

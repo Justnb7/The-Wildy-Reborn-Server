@@ -25,12 +25,12 @@ public final class RunePouchContainer extends Container {
 	/**
 	 * The start of the item group widget
 	 */
-	private final static int START_ITEM_INTERFACE = 29908;
+	public final static int RUNE_POUCH_CONTAINER = 29908;
 	
 	/**
 	 * The start of the inventory interface widget
 	 */
-	public final static int INVENTORY_INTERFACE = 29880;
+	public final static int INVNTORY_CONTAINER = 29880;
 	
 	/**
 	 * The size of the container
@@ -92,9 +92,8 @@ public final class RunePouchContainer extends Container {
 	 */
 	public void display() {
 		player.getActionSender().sendInterface(INTERFACE);
-		player.getActionSender().sendItemOnInterface(INVENTORY_INTERFACE, player.getInventory().toArray());
+		player.getActionSender().sendItemOnInterface(INVNTORY_CONTAINER, player.getInventory().toArray());
 		refresh();
-		player.getActionSender().sendMessage("Sending rune pouch widget.");
 	}
 
 	/**
@@ -110,51 +109,77 @@ public final class RunePouchContainer extends Container {
 	 * @return {@code true} if an item is stored, {@code false} otherwise.
 	 */
 	public void addItem(int id, int amount, int slot) {
+		//We can't add runes to the container when if we are not actually opening the rune pouch
 		if (player.getInterfaceState().getCurrentInterface() != RunePouchContainer.INTERFACE) {
 			return;
 		}
+		
+		//We can't store a rune pouch in a rune pouch
 		if (id == 12791) {
 			player.getActionSender().sendMessage("Don't be silly.");
 			return;
 		}
+		
+		//The rune we want to store
 		RuneType runeType = RuneType.forId(id);
+		
+		//We can only store runes in the rune pouch
 		if (runeType == null || runeType.equals(RuneType.NONE)) {
 			player.getActionSender().sendMessage("You can only place runes inside your rune pouch.");
 			return;
 		}
+		
+		//The size of the rune pouch container
 		int containerSize = player.getRunePouch().getSize();
+		
 		Item rune = player.getInventory().get(slot);
+		
+		//Checks if we have this rune already stored
 		boolean containsRune = player.getRunePouch().contains(id);
+		
+		//If the rune is null do nothing
 		if (rune == null) {
 			return;
 		}
+		
+		//If we're trying to fake the rune do nothing
 		if (rune.getId() != id) {
 			return;
 		}
+		
+		//amount = Math.min(16000, amount);
+		
+		//Check the amount in the rune pouch we can't go over 16,000
 		int existing_count = player.getRunePouch().getAmount(rune.getId());
 		if (existing_count + amount > RunePouchContainer.MAX_COUNT) {
 			player.getActionSender().sendMessage("Your pouch cannot carry anymore of this rune.");
 			return;
 		}
 		
-		/*
-		if (containerSize >= RunePouchContainer.SIZE && !containsRune) {
+		//Check if all three slots are filled, or have a maximum amount of runes stored
+		if (containerSize > RunePouchContainer.SIZE && !containsRune) {
 			player.getActionSender().sendMessage("Your pouch cannot hold anymore runes.");
 			return;
 		}
-		try {
-			int transferAmount = player.getInventory().getAmount(id);
-			if (transferAmount >= amount) {
-				transferAmount = amount;
-			} else if (transferAmount == 0) {
-				return;
-			}
-			//if (player.getRunePouch().add(new Item(rune.getId(), transferAmount))) {
-				player.getInventory().remove(new Item(rune.getId(), transferAmount));
-			//}
-		} finally {
-			refresh();
-		}*/
+		
+		//The amount we want to add
+		int transferAmount = player.getInventory().getAmount(id);
+		
+		//We can't add more runes then we actually have
+		if (transferAmount >= amount) {
+			transferAmount = amount;
+		} else if (transferAmount == 0) {
+			return;
+		}
+		
+		//Add the runes to the container
+		player.getRunePouch().add(new Item(rune.getId(), transferAmount));
+		
+		//Remove the runes from the inventory
+		player.getInventory().remove(new Item(rune.getId(), transferAmount), true);
+		
+		//Refresh the containers
+		refresh();
 	}
 
 	/**
@@ -164,25 +189,37 @@ public final class RunePouchContainer extends Container {
 	 * @param slot
 	 */
 	public void removeItem(int id, int amount, int slot) {
-		Item rune = player.getRunePouch().get(slot);
-		
-		try {
-			if (rune == null || rune.getId() != id) {
-				return;
-			}
-			int transferAmount = player.getRunePouch().getAmount(id);
-			if (transferAmount >= amount) {
-				transferAmount = amount;
-			} else if (transferAmount == 0) {
-				return;
-			}
-			player.getRunePouch().remove(new Item(rune.getId(), transferAmount));
-			/*if (player.getInventory().add(rune.getId(), transferAmount)) {
-				player.getRunePouch().remove(new Item(rune.getId(), transferAmount));
-			}*/
-		} finally {
-			refresh();
+		// We can't remove runes from the container when if we are not actually in the rune pouch interface
+		if (player.getInterfaceState().getCurrentInterface() != RunePouchContainer.INTERFACE) {
+			return;
 		}
+		
+		Item rune = player.getRunePouch().get(slot);
+		//player.debug(String.format("removing from slot %d%n", slot));
+
+		// If the rune is null or when people try to fake runes we do nothing
+		if (rune == null || rune.getId() != id) {
+			return;
+		}
+
+		// The amount we want to remove from the pouch
+		int transferAmount = player.getRunePouch().getAmount(id);
+
+		// We can't remove more runes then we actually have stored
+		if (transferAmount >= amount) {
+			transferAmount = amount;
+		} else if (transferAmount == 0) {
+			return;
+		}
+
+		// Remove runes from the pouch
+		player.getRunePouch().remove(new Item(rune.getId(), transferAmount));
+
+		// Add the runes in the players inventory
+		player.getInventory().add(new Item(rune.getId(), transferAmount));
+
+		// Refresh the containers
+		refresh();
 	}
 	
 	public enum RuneType {
@@ -270,16 +307,19 @@ public final class RunePouchContainer extends Container {
 		for (int slot = 0; slot < 3; slot++) {
 			int id = this.getId(slot);
 			if (id == -1) {
-				player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + slot, -1, 0, 0);
+				player.getActionSender().sendUpdateItem(RUNE_POUCH_CONTAINER + slot, -1, 0, 0);
 				continue;
 			}
 			int amt = this.get(slot).amount;
-			player.getActionSender().sendUpdateItem(START_ITEM_INTERFACE + slot, id, 0, amt);
+			player.getActionSender().sendUpdateItem(RUNE_POUCH_CONTAINER + slot, id, 0, amt);
 		}
+		
+		//Update the inventory container
+		player.getActionSender().sendItemOnInterface(INVNTORY_CONTAINER, player.getInventory().toArray());
+		player.getInventory().refresh();
 
 		// Custom method sending the runeIds to the client
 		sendCounts(this.player);
-
 	}
 
 	@Override

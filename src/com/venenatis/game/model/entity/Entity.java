@@ -471,8 +471,9 @@ public abstract class Entity {
 				infection = 1;
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
-			if (entity != null)
+			if (entity != null) {
 				entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
+			}
 			Server.getTaskScheduler().schedule(new PoisonCombatTask(this));
 			return true;
 		}
@@ -725,7 +726,7 @@ public abstract class Entity {
 	}
 
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean troughPrayer) {
-
+		
 		if(!this.canBeDamaged()) {
 			damage = 0;
 		}
@@ -807,7 +808,6 @@ public abstract class Entity {
 				damage = 0;
 			}
 			if (combat_type == CombatStyle.MAGIC && victim_npc.getId() == 5535) {
-				
 				damage = 0;
 			}
 		}
@@ -840,6 +840,11 @@ public abstract class Entity {
 		if (this.isNPC() && attacker.isPlayer()) {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
+			
+			/*if(attacker_player.getEquipment().contains(13652)) {
+				damage = 100;
+			}*/
+			
 			victim_npc.retaliate(attacker);
 			victim_npc.getCombatState().getDamageMap().appendDamage(attacker_player.getUsername(), damage);
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid

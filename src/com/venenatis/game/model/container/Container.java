@@ -631,6 +631,17 @@ public abstract class Container {
 
 		return stack[slot];
 	}
+	
+	/**
+	 * Gets an item.
+	 * 
+	 * @param index
+	 *            The position in the container.
+	 * @return The item.
+	 */
+	public Item fromSlot(int index) {
+		return stack[index];
+	}
 
 	/**
 	 * Gets the amount of the specified item in the container.

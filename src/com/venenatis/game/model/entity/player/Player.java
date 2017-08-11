@@ -3019,13 +3019,13 @@ public class Player extends Entity {
 		this.gear_points = points;
 	}
 
-	private double vigour = 1.0;
+	private int vigour = 0;
 	
-	public double getVigour() {
+	public int getVigour() {
 		return vigour;
 	}
 	
-	public void setVigour(double vigour) {
+	public void setVigour(int vigour) {
 		this.vigour = vigour;
 	}
 

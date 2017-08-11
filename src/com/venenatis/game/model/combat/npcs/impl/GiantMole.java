@@ -34,8 +34,10 @@ public class GiantMole extends AbstractBossCombat {
 		 * 50% of its Hitpoints, every attack done to it has a 25% chance of
 		 * causing it to flee by burrowing in the ground, requiring players to
 		 * track down the mole.
+		 * 
+		 * Customized the script for RSPS
 		 */
-		if (npc.getHitpoints() > 100) {
+		if (npc.getHitpoints() > 150) {
 			style = CombatStyle.MELEE;
 		} else {
 			switch (Utility.random(4)) {
@@ -43,6 +45,7 @@ public class GiantMole extends AbstractBossCombat {
 				style = CombatStyle.MELEE;
 				break;
 			case 4:
+			case 2:
 				if(npc.getHitpoints() > 0 || !npc.getCombatState().isDead()) {
 					style = CombatStyle.DIG;
 				}

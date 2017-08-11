@@ -55,7 +55,7 @@ public class Special {
 					if (attacker.getEquipment().contains(19671)) {
 						attacker.setVigour(10);
 					}
-					attacker.setSpecialAmount((int) (attacker.getSpecialAmount() - special.amountRequired() + attacker.getVigour()));
+					attacker.setSpecialAmount(attacker.getSpecialAmount() - special.amountRequired() + attacker.getVigour());
 					refreshSpecial(attacker);
 					special.handleAttack(attacker, target);
 					attacker.logoutDelay.reset();

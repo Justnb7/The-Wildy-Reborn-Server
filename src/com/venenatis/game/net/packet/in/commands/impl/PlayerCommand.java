@@ -9,6 +9,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
@@ -122,7 +123,7 @@ public class PlayerCommand implements Command {
 			return true;
 			
 		case "food":
-			if(Area.inWilderness(player)) {
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE)) {
 				return false;
 			}
 			if(player.getTotalAmountDonated() < 10) {
@@ -144,7 +145,7 @@ public class PlayerCommand implements Command {
 			return true;
 			
 		case "pots":
-			if(Area.inWilderness(player)) {
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE)) {
 				return false;
 			}
 			if(player.getTotalAmountDonated() >= 30) {
@@ -164,7 +165,7 @@ public class PlayerCommand implements Command {
 		case "srestore":
 		case "pray":
 		case "rest":
-			if(Area.inWilderness(player)) {
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE)) {
 				return false;
 			}
 			player.getInventory().add(new Item(3024, 1), true);
@@ -173,7 +174,7 @@ public class PlayerCommand implements Command {
 		case "brew":
 		case "sbrew":
 		case "sarabrew":
-			if(Area.inWilderness(player)) {
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE)) {
 				return false;
 			}
 			player.getInventory().add(new Item(6685, 1), true);
@@ -181,7 +182,7 @@ public class PlayerCommand implements Command {
 			
 		case "range":
 		case "rpot":
-			if(Area.inWilderness(player)) {
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE)) {
 				return false;
 			}
 			player.getInventory().add(new Item(2444, 1), true);
@@ -189,7 +190,7 @@ public class PlayerCommand implements Command {
 			
 		case "mage":
 		case "mpot":
-			if(Area.inWilderness(player)) {
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE)) {
 				return false;
 			}
 			player.getInventory().add(new Item(3040, 1), true);
@@ -239,7 +240,7 @@ public class PlayerCommand implements Command {
 		case "vengeance":
 		case "vengerune":
 		case "vengerunes":
-			if(Area.inWilderness(player))
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE))
 				return false;
 			player.getInventory().add(new Item(557, 1000));
 			player.getInventory().add(new Item(560, 1000));
@@ -252,7 +253,7 @@ public class PlayerCommand implements Command {
 		case "barrage":
 		case "barragerune":
 		case "barragerunes":
-			if(Area.inWilderness(player))
+			if(Area.inWilderness(player) || !Boundary.isIn(player, Boundary.EDGEVILLE))
 				return false;
 			player.getInventory().add(new Item(555, 1000));
 			player.getInventory().add(new Item(560, 1000));

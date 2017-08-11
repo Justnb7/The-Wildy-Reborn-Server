@@ -682,6 +682,7 @@ public class NPC extends Entity {
 		239, //King Black Dragon
 		3129, //K'ril Tsutsaroth
 		2215, //General Graardor
+		5779, //Giant mole
 	};
 	
 	/**

@@ -111,6 +111,7 @@ public class GameConstants {
      * The collection of areas that resemble multi-combat zones.
      */
     public static final ImmutableList<Area> MULTI_COMBAT_ZONES = ImmutableList.of(
+    	new SquareArea("Giant mole", 1700, 5100, 1780, 5230),	
 	    new SquareArea("Start of Varrock Wilderness", 3134, 3525, 3327, 3607),
 	    new SquareArea("North of GE, near gravestones", 3190, 3648, 3327, 3839),
 	    new SquareArea("Near Chaos Elemental", 3200, 3840, 3390, 3967),

@@ -139,6 +139,7 @@ public class DropManager {
 			
 			for (Item item : drops) {
 				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location, player));
+				player.debug(String.format("drop %s on location %s%n", new Item(item.getId(), item.getAmount()), location));
 			}
 			
 			/**

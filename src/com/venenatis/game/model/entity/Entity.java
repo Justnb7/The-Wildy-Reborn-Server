@@ -725,8 +725,9 @@ public abstract class Entity {
 
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean troughPrayer) {
 
-		if(!this.canBeDamaged())
+		if(!this.canBeDamaged()) {
 			damage = 0;
+		}
 		
 		// ALWAYS: FIRST APPLY DAMAGE REDUCTIONS, ABSORBS ETC. Protection pray/ely.
 		// The entity taking damage is a player. 

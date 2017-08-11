@@ -43,7 +43,9 @@ public class GiantMole extends AbstractBossCombat {
 				style = CombatStyle.MELEE;
 				break;
 			case 4:
-				style = CombatStyle.DIG;
+				if(npc.getHitpoints() > 0 || !npc.getCombatState().isDead()) {
+					style = CombatStyle.DIG;
+				}
 				break;
 			}
 		}

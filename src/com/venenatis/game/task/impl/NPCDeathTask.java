@@ -53,7 +53,6 @@ public class NPCDeathTask extends Task {
         }
         if (counter == 0) {
             initialDeath(npc);
-            
         } else if (counter == 5) {
             npc.removeFromTile();
             setNpcToInvisible(npc);
@@ -72,7 +71,7 @@ public class NPCDeathTask extends Task {
             	}
 			}
             if (killer != null || isUnspawnableNpc(npc) || !npc.shouldRespawn) {
-				handleUnspawnableNpc(npc);
+            	handleUnspawnableNpc(npc);
 				removeMobFromWorld(killer, npc);
 				stop();
 				return;
@@ -86,7 +85,7 @@ public class NPCDeathTask extends Task {
         		stop();
         	}
         } else if (counter == (6 + npc.getDefinition().getRespawnTime())) { //60s later
-            respawn(npc);
+        	respawn(npc);
             GroupRespawn.on_boss_spawned(npc);
             stop();
             return;
@@ -245,12 +244,18 @@ public class NPCDeathTask extends Task {
         npc.killedBy = -1;
         npc.setVisible(true);
         npc.getCombatState().setDead(false);
-        npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
+        if(npc.getId() == 5779) {
+        	 npc.setOnTile(1762, 5184, 0);
+        	 npc.makeX = 1762;
+        	 npc.makeY = 5184;
+        	 npc.setLocation(new Location(1762, 5184, 0));
+        } else {
+        	npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
+        }
     }
     
     private final static void onDeath(NPC npc) {
-    	
-		if (npc.killedBy == -1) {
+    	if (npc.killedBy == -1) {
 			return;
 		}
 		
@@ -268,16 +273,15 @@ public class NPCDeathTask extends Task {
 			}
 			if (npc.getId() == player.getSlayerTask())
 				player.getSlayerDeathTracker().add(npc);
-			
+
 			AbstractBossCombat boss = AbstractBossCombat.get(npc.getId());
-			
+
 			if (boss != null) {
 				boss.dropLoot(player, npc);
 			}
-		
-		// get the drop table
-		int amountOfDrops = 1;
-		Server.getDropManager().create(player, npc, npc.getLocation(), amountOfDrops);
+			// get the drop table
+			int amountOfDrops = 1;
+			Server.getDropManager().create(player, npc, npc.getLocation(), amountOfDrops);
 		}
 	}
 

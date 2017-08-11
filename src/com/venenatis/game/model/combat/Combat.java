@@ -206,10 +206,8 @@ public class Combat {
     }
 
     private static void meleeAttack(Player player, Entity target) {
-        if (!touches(player, target)) {
-        	player.debug("cant touch");
+        if (!touches(player, target))
             return;
-        }
         if (!attackable(player, target))
             return;
 
@@ -241,8 +239,8 @@ public class Combat {
     }
 
     private static void magicAttack(Player player, Entity target) {
-        /*if (!touches(player, target))
-            return;*/
+        if (!touches(player, target))
+            return;
         if (!attackable(player, target))
             return;
         /*if (!player.getCombatState().checkMagicReqs(player.getSpellId())) {
@@ -426,8 +424,8 @@ public class Combat {
 	}
 
 	private static void rangeAttack(Player player, Entity target) {
-		/*if (!touches(player, target))
-			return;*/
+		if (!touches(player, target))
+			return;
 		if (!attackable(player, target))
 			return;
 

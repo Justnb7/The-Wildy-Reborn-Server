@@ -1367,4 +1367,8 @@ public abstract class Container {
 
 		return Arrays.copyOf(stack, lastIndex + 1);
 	}
+	
+	public Item[] getItems() {
+		return stack;
+	}
 }

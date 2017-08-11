@@ -10,7 +10,6 @@ import com.venenatis.game.content.skills.thieving.Stalls;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
 import com.venenatis.game.content.teleportation.lever.Levers;
-import com.venenatis.game.content.teleportation.obelisk.Obelisks;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
@@ -20,6 +19,7 @@ import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.object.impl.webs.SlashWebObject;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
 /**
@@ -69,6 +69,11 @@ public class ObjectInteraction {
 		
 		/** Levers */
 		if (Levers.handle(player, obj)) {
+			return;
+		}
+		
+		/** Spider Webs */
+		if (SlashWebObject.slash(player, obj)) {
 			return;
 		}
 		

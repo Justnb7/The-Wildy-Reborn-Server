@@ -67,8 +67,7 @@ public class SlashWebObject {
 				@Override
 				public void execute() {
 					this.stop();
-					//TODO spawn webs @ the actual coords
-					Server.getGlobalObjects().replaceObject(obj, new GameObject(734, obj.getX(), obj.getY(), obj.getZ()), 30);
+					Server.getGlobalObjects().replaceObject(obj, new GameObject(734, obj.getX(), obj.getY(), obj.getZ(), obj.getDirection()), 30);
 					player.getActionSender().sendMessage("You successfully cut the web.");
 				}
 			});

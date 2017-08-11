@@ -122,7 +122,7 @@ public class Teleport {
 		}
 
 		if (!override) {
-			if (player.getWildLevel() > 30 && !player.usingObelisk && !player.getRights().isOwner(player)) {
+			if (player.getWildLevel() > 30 && !player.getRights().isOwner(player)) {
 				player.getActionSender().sendMessage("You can not teleport past 30 wilderness!");
 				return false;
 			}
@@ -197,9 +197,7 @@ public class Teleport {
 	 * @param teleportType
 	 */
 	public void teleport(final Location location, TeleportTypes teleportType, boolean override) {
-		System.out.println("active");
 		if (!canTeleport(override)) {
-			System.out.println("sr");
 			return;
 		}
 		

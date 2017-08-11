@@ -1809,7 +1809,6 @@ public class Player extends Entity {
 	}
 	
 	public long lastCast;
-	public boolean usingObelisk = false;
 
 	public int getMaximumHealth() {
 		int base = this.getSkills().getLevelForExperience(Skills.HITPOINTS);

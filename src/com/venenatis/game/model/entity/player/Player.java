@@ -3038,20 +3038,21 @@ public class Player extends Entity {
 	}
 
 	public void faceObject(GameObject object) {
-		if (object.getId() == 11374) {
-			face(this, Location.create(2713, 3494));
-			return;
-		} else if (object.getId() == 11375) {
-			face(this, object.getLocation());
-			return;
-		} else if (object.getId() == 11377) {
-			face(this, Location.create(2704, 3464));
-			return;
-		}
-		if (getLocation().equals(object.getLocation())) {
-			int offX = 0;
-			int offY = 0;
-			switch (object.getDirection()) {
+		if (object != null) {
+			if (object.getId() == 11374) {
+				face(this, Location.create(2713, 3494));
+				return;
+			} else if (object.getId() == 11375) {
+				face(this, object.getLocation());
+				return;
+			} else if (object.getId() == 11377) {
+				face(this, Location.create(2704, 3464));
+				return;
+			}
+			if (getLocation().equals(object.getLocation())) {
+				int offX = 0;
+				int offY = 0;
+				switch (object.getDirection()) {
 				case 0:
 					offX = -1;
 					break;
@@ -3064,16 +3065,15 @@ public class Player extends Entity {
 				case 3:
 					offY = -1;
 					break;
+				}
+				face(this, object.getLocation().transform(offX, offY, 0));
+			} else if (object.getType() >= 9 && object.getType() <= 11
+					&& (object.getDefinition().xLength() > 1 || object.getDefinition().yLength() > 1)) {
+				face(this, object.getLocation().transform(object.getDefinition().xLength() >> 1,
+						object.getDefinition().yLength() >> 1, 0));
+			} else {
+				face(this, object.getLocation());
 			}
-			face(this, object.getLocation().transform(offX, offY, 0));
-		} else if (object.getType() >= 9
-				&& object.getType() <= 11
-				&& (object.getDefinition().xLength() > 1 || object.getDefinition().yLength() > 1)) {
-			face(this, object.getLocation().transform(
-					object.getDefinition().xLength() >> 1,
-					object.getDefinition().yLength() >> 1, 0));
-		} else {
-			face(this, object.getLocation());
 		}
 	}
 }

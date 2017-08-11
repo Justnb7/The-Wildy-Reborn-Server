@@ -23,6 +23,15 @@ import com.venenatis.server.GameEngine;
 public class GlobalObjects {
 	
 	/**
+	 * Used for spawning objects that cannot be inserted into the file
+	 * 
+	 * @param player the player
+	 */
+	private void loadCustomObjects(Player player) {
+		player.getActionSender().sendObject(13291, 3087, 3504, 0, 0, 10);
+	}
+	
+	/**
 	 * A collection of all existing objects - note these are custom spawned objects NOT objects that exist by default in the game world such as grass etc
 	 */
 	Queue<GameObject> objects = new LinkedList<>();
@@ -188,6 +197,7 @@ public class GlobalObjects {
 		objects.stream().filter(Objects::nonNull).filter(object -> player.distanceToPoint(
 			object.getX(), object.getY()) <= 60 && object.getZ() == player.getZ()).forEach(object -> player.getActionSender().sendObject(
 				object.getId(), object.getX(), object.getY(), object.getZ(), object.getDirection(), object.getType()));
+		loadCustomObjects(player);
 	}
 
 }

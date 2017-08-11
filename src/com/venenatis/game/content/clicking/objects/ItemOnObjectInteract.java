@@ -10,6 +10,7 @@ import com.venenatis.game.model.entity.player.Player;
 public class ItemOnObjectInteract {
 	
 	public static void handle(Player player, int obj, Location loc, Item item) {
+		
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj);
 		if (!player.getInventory().contains(item.getId()))
 			return;

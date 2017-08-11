@@ -69,12 +69,12 @@ public class ObjectInteraction {
 		}
 		
 		/** Levers */
-		if (Levers.handle(player, obj)) {
+		if (Levers.handle(player, obj) && obj != null) {
 			return;
 		}
 		
 		/** Spider Webs */
-		if (SlashWebObject.slash(player, obj)) {
+		if (SlashWebObject.slash(player, obj) && obj != null) {
 			return;
 		}
 		
@@ -82,7 +82,8 @@ public class ObjectInteraction {
 		MinigameHandler.execute(player, $it -> $it.onFirstClickObject(player, obj));
 		
 		/** Obelisk teleportation */
-		Obelisks.get().activate(player, obj.getId());
+		if (obj != null)
+			Obelisks.get().activate(player, obj.getId());
 		
 		switch (def.getName().toLowerCase()) {
 

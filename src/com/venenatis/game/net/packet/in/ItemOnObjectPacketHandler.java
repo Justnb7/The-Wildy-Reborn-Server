@@ -2,6 +2,7 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.clicking.objects.ItemOnObjectInteract;
+import com.venenatis.game.content.rewards.CrystalChest;
 import com.venenatis.game.content.rewards.ShinyChest;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -36,6 +37,8 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		
 		//The object
 		final GameObject obj = RegionStoreManager.get().getGameObject(loc, id);
+		
+		player.faceObject(obj);
         
 		//The item used on the object
 		final Item item = player.getInventory().get(slot);
@@ -47,6 +50,11 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		
 		if(def.getName().toLowerCase().contains("magic chest") && def.getActions()[0].toLowerCase().contains("open")) {
 			ShinyChest.searchChest(player, item, slot);
+			return;
+		}
+		
+		if(def.getName().toLowerCase().contains("open chest") && def.getActions()[0].toLowerCase().contains("search")) {
+			CrystalChest.searchChest(player, loc);
 			return;
 		}
 		

@@ -559,9 +559,29 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case InterfaceConstants.SHOP_INVENTORY:
-			ShopManager.sell(player, removeId, 10, removeSlot);
+			player.getOutStream().writeFrame(27);
+			player.flushOutStream();
 			break;
 
+		case RunePouchContainer.INVNTORY_CONTAINER:
+			player.getOutStream().writeFrame(27);
+			player.flushOutStream();
+			break;
+
+		case RunePouchContainer.RUNE_POUCH_CONTAINER:
+			player.getOutStream().writeFrame(27);
+			player.flushOutStream();
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
+			player.getOutStream().writeFrame(27);
+			player.flushOutStream();
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
+			player.getOutStream().writeFrame(27);
+			player.flushOutStream();
+			break;
 		}
 	}
 
@@ -621,6 +641,27 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		}
 
 		switch (player.xInterfaceId) {
+		
+		case RunePouchContainer.INVNTORY_CONTAINER:
+			player.debug("woop");
+			if (player.getInterfaceState().isInterfaceOpen(RunePouchContainer.INTERFACE)) {
+				player.getRunePouch().addItem(player.xRemoveId, amountX, player.xRemoveSlot);
+				return;
+			}
+			player.getRunePouch().addItem(player.xRemoveId, amountX, player.xRemoveSlot);
+			break;
+
+		case RunePouchContainer.RUNE_POUCH_CONTAINER:
+			
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
+			
+			break;
+			
+		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
+			
+			break;
 
 		case InterfaceConstants.INVENTORY_STORE:
 			if (player.getInterfaceState().isInterfaceOpen(48500)) {

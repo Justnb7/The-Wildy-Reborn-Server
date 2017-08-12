@@ -17,7 +17,6 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
-import com.venenatis.game.model.container.impl.rune_pouch.RunePouchContainer;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.Sanctions;
@@ -534,7 +533,8 @@ public class PlayerSave {
 				}
 				
 				if (details.runePouch != null) {
-					for(int i = 0; i < RunePouchContainer.SIZE; i++) {
+					for(int i = 0; i < details.runePouch.length; i++) {
+						
 						player.runePouchContainer.setSlot(i, details.runePouch[i]);
 					}
 				}

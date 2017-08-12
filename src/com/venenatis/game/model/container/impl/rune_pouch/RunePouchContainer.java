@@ -20,7 +20,7 @@ public final class RunePouchContainer extends Container {
 	/**
 	 * The interface id of the container
 	 */
-	private static final int INTERFACE = 29875;
+	public static final int INTERFACE = 29875;
 	
 	/**
 	 * The start of the item group widget

@@ -45,7 +45,7 @@ public class NPC extends Entity {
 				size = 1;
 			}
 			npcName = definition.getName();
-			combatLevel = definition == null ? 1 : definition.getCombatLevel();
+			setCombatLevel(definition == null ? 1 : definition.getCombatLevel());
 			hitpoints = maxHitpoints = definition.getHitpoints();
 			//System.out.printf("npc: %s hitpoints: %d%n ",definition.getName(), definition.getHitpoints());
 			maxHit = definition.getMaxHit();
@@ -157,7 +157,7 @@ public class NPC extends Entity {
 	 */
 	public int makeX, makeY;
 	
-	public int combatLevel, spawnedBy, oldIndex, underAttackBy, walking_type;
+	public int spawnedBy, oldIndex, underAttackBy, walking_type;
 	
 	/**
 	 * The hitpoints of the npc

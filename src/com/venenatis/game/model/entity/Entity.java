@@ -45,6 +45,16 @@ import com.venenatis.server.Server;
  */
 public abstract class Entity {
 	
+    private int combatLevel;
+	
+	public int getCombatLevel() {
+		return combatLevel;
+	}
+
+	public void setCombatLevel(int combatLevel) {
+		this.combatLevel = combatLevel;
+	}
+	
 	/**
 	 * The players energy restore tickable.
 	 */

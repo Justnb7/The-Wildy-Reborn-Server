@@ -1011,6 +1011,7 @@ public class ActionSender {
 		
 		//Update the skills
 		sendSkills();
+		player.setCombatLevel(player.getSkills().getCombatLevel());
 		
 		sendMessage("Welcome to " + Constants.SERVER_NAME + ".");
 		updateAfterLogin();

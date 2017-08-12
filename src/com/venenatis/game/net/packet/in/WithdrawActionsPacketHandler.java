@@ -446,23 +446,19 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 			
 		case RunePouchContainer.INVNTORY_CONTAINER:
-			int limit = player.getInventory().getAmount(removeId);
-			player.getRunePouch().addItem(removeId, limit, removeSlot);
+			player.getRunePouch().addItem(removeId, 10, removeSlot);
 			break;
 
 		case RunePouchContainer.RUNE_POUCH_CONTAINER:
-			limit = player.getRunePouch().getAmount(removeId);
-			player.getRunePouch().removeItem(removeId, limit, removeSlot);
+			player.getRunePouch().removeItem(removeId, 10, removeSlot);
 			break;
 			
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
-			limit = player.getRunePouch().getAmount(removeId);
-			player.getRunePouch().removeItem(removeId, limit, 1);
+			player.getRunePouch().removeItem(removeId, 10, 1);
 			break;
 			
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
-			limit = player.getRunePouch().getAmount(removeId);
-			player.getRunePouch().removeItem(removeId, limit, 2);
+			player.getRunePouch().removeItem(removeId, 10, 2);
 			break;
 		}
 	}
@@ -564,23 +560,23 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case RunePouchContainer.INVNTORY_CONTAINER:
-			player.getOutStream().writeFrame(27);
-			player.flushOutStream();
+			int limit = player.getInventory().getAmount(removeId);
+			player.getRunePouch().addItem(removeId, limit, removeSlot);
 			break;
 
 		case RunePouchContainer.RUNE_POUCH_CONTAINER:
-			player.getOutStream().writeFrame(27);
-			player.flushOutStream();
+			limit = player.getRunePouch().getAmount(removeId);
+			player.getRunePouch().removeItem(removeId, limit, removeSlot);
 			break;
 			
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
-			player.getOutStream().writeFrame(27);
-			player.flushOutStream();
+			limit = player.getRunePouch().getAmount(removeId);
+			player.getRunePouch().removeItem(removeId, limit, 1);
 			break;
 			
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
-			player.getOutStream().writeFrame(27);
-			player.flushOutStream();
+			limit = player.getRunePouch().getAmount(removeId);
+			player.getRunePouch().removeItem(removeId, limit, 2);
 			break;
 		}
 	}
@@ -639,11 +635,9 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.setInputAmount(null);
 			return;
 		}
-		player.debug("woop12 "+player.xInterfaceId);
 		switch (player.xInterfaceId) {
 		
-		case RunePouchContainer.INTERFACE:
-			player.debug("woop");
+		case RunePouchContainer.INVNTORY_CONTAINER:
 			if (player.getInterfaceState().isInterfaceOpen(RunePouchContainer.INTERFACE)) {
 				player.getRunePouch().addItem(player.xRemoveId, amountX, player.xRemoveSlot);
 				return;
@@ -652,15 +646,27 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			break;
 
 		case RunePouchContainer.RUNE_POUCH_CONTAINER:
-			
+			if (player.getInterfaceState().isInterfaceOpen(RunePouchContainer.INTERFACE)) {
+				player.getRunePouch().removeItem(player.xRemoveId, amountX, player.xRemoveSlot);
+				return;
+			}
+			player.getRunePouch().removeItem(player.xRemoveId, amountX, player.xRemoveSlot);
 			break;
 			
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
-			
+			if (player.getInterfaceState().isInterfaceOpen(RunePouchContainer.INTERFACE)) {
+				player.getRunePouch().removeItem(player.xRemoveId, amountX, player.xRemoveSlot);
+				return;
+			}
+			player.getRunePouch().removeItem(player.xRemoveId, amountX, player.xRemoveSlot);
 			break;
 			
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
-			
+			if (player.getInterfaceState().isInterfaceOpen(RunePouchContainer.INTERFACE)) {
+				player.getRunePouch().removeItem(player.xRemoveId, amountX, player.xRemoveSlot);
+				return;
+			}
+			player.getRunePouch().removeItem(player.xRemoveId, amountX, player.xRemoveSlot);
 			break;
 
 		case InterfaceConstants.INVENTORY_STORE:

@@ -11,7 +11,7 @@ public class GameConstants {
      * The collection of areas that resemble the wilderness area.
      */
     public static final ImmutableList<Area> WILDERNESS = ImmutableList
-	    .of(new SquareArea("Wilderness", 2941, 3524, 3392, 3968), new SquareArea("Wilderness underground", 2941, 9918, 3392, 10366));
+	    .of(new SquareArea("Wilderness", 2941, 3524, 3392, 3966), new SquareArea("Wilderness underground", 2941, 9918, 3392, 10366));
 
     /**
      * The collection of areas that resemble the duel arena.
@@ -32,8 +32,7 @@ public class GameConstants {
 
     public static final ImmutableList<Area> DAGANNOTH_MOTHER = ImmutableList.of(new SquareArea("Dagannoth Mother", 2508, 4631, 2537, 4662));
     
-    // never done this btw LOL
-    // kk i g2g but ignore for now ill play about with it on my end xd push it
+
     /*public static void verifyCoords() {
     	GameConstants dummy = new GameConstants();
     	int total = 0;

@@ -622,13 +622,13 @@ public class WithdrawActionsPacketHandler implements PacketType {
 	 *            The packet for this option.
 	 */
 	private void sixthAction(Player player, int packet) {
-		int amountX = player.getInStream().readDWord();;
+		int amountX = player.getInStream().readDWord();
 
 		if (amountX == 0) {
 			amountX = 1;
 		}
 
-		player.debug("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
+		player.debug("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.getInterfaceState().getCurrentInterface() + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
 		
 		if (Area.inWilderness(player)) {
 			return;
@@ -639,10 +639,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.setInputAmount(null);
 			return;
 		}
-
+		player.debug("woop12 "+player.getInterfaceState().getCurrentInterface());
 		switch (player.xInterfaceId) {
 		
-		case RunePouchContainer.INVNTORY_CONTAINER:
+		case RunePouchContainer.INTERFACE:
 			player.debug("woop");
 			if (player.getInterfaceState().isInterfaceOpen(RunePouchContainer.INTERFACE)) {
 				player.getRunePouch().addItem(player.xRemoveId, amountX, player.xRemoveSlot);

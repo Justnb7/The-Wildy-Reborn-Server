@@ -255,16 +255,15 @@ public class NPCDeathTask extends Task {
     }
     
     private final static void onDeath(NPC npc) {
-    	if (npc.killedBy == -1) {
-			return;
-		}
 		
 		Player player = World.getWorld().getPlayers().get(npc.killedBy);
-		if (player == null) {
+		
+    	if (npc.killedBy == -1) {
+    		player.getActionSender().sendMessage("[Server]: ERROR, notice staff member, killerId = -1.");
 			return;
 		}
 
-		if (npc != null) {
+		if (npc != null || player != null) {
 			/* Add kills to tracker */
 			for (int id : NPC.BOSSES) {
 				if (npc.getId() == id) {
@@ -280,8 +279,8 @@ public class NPCDeathTask extends Task {
 				boss.dropLoot(player, npc);
 			}
 			// get the drop table
-			int amountOfDrops = 1;
-			Server.getDropManager().create(player, npc, npc.getLocation(), amountOfDrops);
+			int amountOfDrops = 1;//Here
+			Server.getDropManager().create(player, npc, npc.getLocation(), amountOfDrops);//Maybe we move this to top?
 		}
 	}
 

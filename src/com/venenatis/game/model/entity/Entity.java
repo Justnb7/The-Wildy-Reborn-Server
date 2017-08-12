@@ -467,13 +467,12 @@ public abstract class Entity {
 				Player player = (Player) entity;
 				if (player.getPoisonImmunity().get() > 0)
 					return false;
+				player.setPoisonType(poisonType);
 				player.getActionSender().sendMessage("You have been poisoned!");
 				infection = 1;
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
-			if (entity != null) {
-				entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
-			}
+			entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
 			Server.getTaskScheduler().schedule(new PoisonCombatTask(this));
 			return true;
 		}
@@ -841,9 +840,9 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			
-			/*if(attacker_player.getEquipment().contains(13652)) {
+			if(attacker_player.getEquipment().contains(13652)) {
 				damage = 100;
-			}*/
+			}
 			
 			victim_npc.retaliate(attacker);
 			victim_npc.getCombatState().getDamageMap().appendDamage(attacker_player.getUsername(), damage);

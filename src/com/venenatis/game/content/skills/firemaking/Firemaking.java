@@ -74,9 +74,11 @@ public class Firemaking {
 				Server.getTaskScheduler().schedule(new Task(player, lightDelay(player, log.getLog()), false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
 					@Override
 					public void execute() {
+	
 						if(!player.hasAttribute("firemaking")) {
 							player.playAnimation(Animation.create(65535));
 							stop();
+							return;
 						}
 						
 						Server.getGlobalObjects().add(fire);

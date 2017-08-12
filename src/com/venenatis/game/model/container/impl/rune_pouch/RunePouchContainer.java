@@ -147,28 +147,26 @@ public final class RunePouchContainer extends Container {
 			return;
 		}
 		
-		//amount = Math.min(16000, amount);
+		//The amount we want to add
+		int transferAmount = player.getInventory().getAmount(id);
+
+		// We can't add more then 16,000 runes
+		if (transferAmount >= amount) {
+			transferAmount = Math.min(MAX_COUNT, amount);
+		} else if (transferAmount == 0) {
+			return;
+		}
 		
 		//Check the amount in the rune pouch we can't go over 16,000
 		int existing_count = player.getRunePouch().getAmount(rune.getId());
-		if (existing_count + amount > RunePouchContainer.MAX_COUNT) {
-			player.getActionSender().sendMessage("Your pouch cannot carry anymore of this rune.");
+		if (existing_count >= MAX_COUNT) {
+			player.getActionSender().sendMessage("Your pouch is full.");
 			return;
 		}
 		
 		//Check if all three slots are filled, or have a maximum amount of runes stored
 		if (containerSize > RunePouchContainer.SIZE && !containsRune) {
 			player.getActionSender().sendMessage("Your pouch cannot hold anymore runes.");
-			return;
-		}
-		
-		//The amount we want to add
-		int transferAmount = player.getInventory().getAmount(id);
-		
-		//We can't add more runes then we actually have
-		if (transferAmount >= amount) {
-			transferAmount = amount;
-		} else if (transferAmount == 0) {
 			return;
 		}
 		

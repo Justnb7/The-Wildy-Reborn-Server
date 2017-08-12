@@ -97,7 +97,6 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 1:
 			player.getRunePouch().removeItem(removeId, 1, 1);
 			break;
-			
 		case RunePouchContainer.RUNE_POUCH_CONTAINER + 2:
 			player.getRunePouch().removeItem(removeId, 1, 2);
 			break;

@@ -12,8 +12,7 @@ public class ClickOnGameScreen implements PacketType {
 	@Override
 	public void handle(Player player, int id, int size) {
 		if(player.hasAttribute("firemaking")) {
-			player.getAttributes().put("firemaking", false);
-			player.debug("as");
+			player.getAttributes().remove("firemaking");
 		}
 		player.stopSkillTask();
 	}

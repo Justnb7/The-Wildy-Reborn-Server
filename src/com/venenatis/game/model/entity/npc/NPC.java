@@ -73,11 +73,6 @@ public class NPC extends Entity {
 	public void setId(int npcId) {
 		this.npcId = npcId;
 	}
-	
-	/**
-	 * Checks if the minions can be respawned
-	 */
-	public boolean spawnedScorpiaMinions, spawnedVetionMinions;
 
 	/**
 	 * Checks if the npc is a pet
@@ -88,11 +83,6 @@ public class NPC extends Entity {
 	 * Checks if the player owns the pet
 	 */
 	public int ownerId;
-	
-	/**
-	 * Checks if the npc should respawn
-	 */
-	public boolean shouldRespawn = true;
 	
 	/**
 	 * Stopwatch delay
@@ -420,22 +410,6 @@ public class NPC extends Entity {
 		return surrounding;
 	}
 
-	public int dogs = 0;
-
-	public void spawnVetDogs(Player player) {
-		if (npcId == 6611) {
-			NPCHandler.spawnNpc(player, 6613, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6613, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
-			dogs += 2;
-			spawnedVetionMinions = true;
-		} else if (npcId == 6612) {
-			NPCHandler.spawnNpc(player, 6614, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
-			NPCHandler.spawnNpc(player, 6614, new Location(getX() - 1, getY(), getZ()), 1, true, false, true);
-			dogs += 2;
-			spawnedVetionMinions = true;
-		}
-	}
-
 	@Override
 	public void process() {
 		try {
@@ -460,12 +434,7 @@ public class NPC extends Entity {
 					NPCFollowing.attemptFollowEntity(this, followTarget);
 				}
 
-				if (npcId == 6611 || npcId == 6612) {
-					if (this.getHitpoints() < (this.getMaxHitpoints() / 2) && !spawnedVetionMinions) {
-						spawnVetDogs(spawnedByPlr);
-					}
-				}
-				else if (npcId == 6615) {
+				/*else if (npcId == 6615) {
 					if (this.getHitpoints() <= 100 && !spawnedScorpiaMinions) {
 						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, true, false, true);
 						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, true, false, true);
@@ -480,7 +449,7 @@ public class NPC extends Entity {
 						//Scorpia.heal_scorpia(this, min1);
 						//Scorpia.heal_scorpia(this, min2);
 					}
-				}
+				}*/
 			}
 
 			/*

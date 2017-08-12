@@ -219,12 +219,6 @@ public class NpcCombat {
 			return false;
 		}
 		
-		if ((npc.getId() == 6611 || npc.getId() == 6612) && npc.dogs > 0) {
-			Combat.resetCombat(player);
-			player.message("You must vanquish Vet'ions dogs.");
-			return false;
-		}
-
 		if (npc.getId() == 496 && npc.transformId != 494) {
 			KrakenInstance i = player.getKraken();
 			if (i != null && i.npcs != null && i.npcs[0] == npc) {

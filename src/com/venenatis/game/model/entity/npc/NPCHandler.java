@@ -89,7 +89,7 @@ public final class NPCHandler {
 		World.getWorld().register(npc);
 	}
 	
-	public static NPC spawnNpc(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon, boolean bossOffspring) {
+	public static NPC spawnNpc(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
 		npc.setLocation(spawn);
@@ -107,9 +107,6 @@ public final class NPCHandler {
 		}
 		if (hasHeadIcon) {
 			player.getActionSender().drawHeadIcon(1, npc.getIndex(), 0, 0);
-		}
-		if (bossOffspring) {
-			npc.shouldRespawn = false;
 		}
 		World.getWorld().register(npc);
 		return npc;

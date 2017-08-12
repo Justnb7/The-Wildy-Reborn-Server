@@ -2871,16 +2871,6 @@ public class Player extends Entity {
 		this.shopId = shopId;
 	}
 	
-	private int combatLevel;
-	
-	public int getCombatLevel() {
-		return combatLevel;
-	}
-
-	public void setCombatLevel(int combatLevel) {
-		this.combatLevel = combatLevel;
-	}
-	
 	private boolean newPlayer;
 	
 	public boolean isNewPlayer() {

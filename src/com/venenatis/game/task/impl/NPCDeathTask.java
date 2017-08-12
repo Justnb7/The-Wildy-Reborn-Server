@@ -70,7 +70,7 @@ public class NPCDeathTask extends Task {
     				killer.getKraken().spawnNextWave(killer);
             	}
 			}
-            if (killer != null || isUnspawnableNpc(npc) || !npc.shouldRespawn) {
+            if (killer != null || isUnspawnableNpc(npc)) {
             	handleUnspawnableNpc(npc);
 				removeMobFromWorld(killer, npc);
 				stop();

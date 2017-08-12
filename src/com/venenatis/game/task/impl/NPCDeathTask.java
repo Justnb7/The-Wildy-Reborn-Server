@@ -55,8 +55,8 @@ public class NPCDeathTask extends Task {
             initialDeath(npc);
         } else if (counter == 5) {
             npc.removeFromTile();
-            setNpcToInvisible(npc);
             Player killer = World.getWorld().getPlayers().get(npc.spawnedBy);
+            setNpcToInvisible(npc);
             if (killer != null && killer.getKraken() != null && killer.getKraken().npcs != null && killer.getKraken().npcs[0] != null) {
             	if (npc == killer.getKraken().npcs[0]) {
             		for (NPC n : killer.getKraken().npcs) {
@@ -160,61 +160,16 @@ public class NPCDeathTask extends Task {
 
         
         final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
-
-        if (killer != null) {
-            npc.killedBy = killer.getIndex();
-        } else {
-            npc.killedBy = -1;
-        }
-        if (npc.getId() == 6618 && npc.getCombatState().isDead()) {
-        	npc.sendForcedMessage("Ow!");
-        }
-        if (npc.getId() == 6615 && npc.getCombatState().isDead()) {
-        	npc.spawnedScorpiaMinions = false;
-        }
-        if (npc.getId() == 6611 && npc.transformId != 6612) {
-			npc.requestTransform(6612);
-			npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
-			npc.setHitpoints(255);
-			npc.getCombatState().setDead(false);
-			npc.spawnedVetionMinions = false;
-			npc.sendForcedMessage("Do it again!!");
-			stop();
-			return;
-		} else {
-			if (npc.getId() == 6612) {
-				npc.setId(6611);
-				npc.spawnedVetionMinions = false;
-				npc.sendForcedMessage("Got'em");
+        
+		if (killer != null) {
+			if (npc.getId() == killer.getSlayerTask() || NPC.getName(npc.getId()).toLowerCase().equalsIgnoreCase(NPC.getName(killer.getSlayerTask()).toLowerCase())) {
+				SlayerTaskManagement.decreaseTask(killer, npc);
 			}
+			Combat.resetCombat(killer);
 		}
-        if (npc.killedBy >= 0) {
-			Player player = World.getWorld().getPlayers().get(npc.killedBy);
-			if (player != null) {
-				if (npc.getId() == player.getSlayerTask() || NPC.getName(npc.getId()).toLowerCase().equalsIgnoreCase(NPC.getName(player.getSlayerTask()).toLowerCase())) {
-					SlayerTaskManagement.decreaseTask(player, npc);
-				}
-				Combat.resetCombat(player);
-			}
-		}
-
-		if (npc.getId() == 6613 || npc.getId() == 6614) {
-        	for (NPC i : World.getWorld().getNPCs()) {
-        		if(i == null)
-        			continue;
-        		if(i.getId() == 6611 || i.getId() == 6612 && i.dogs > 0) {
-        			i.dogs--;
-        		}
-        	}
-        }
 		
         if (npc.getId() != 6611) // vetion or somet
 			npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead emote
-
-        if (npc.transformId == 6612) {
-			npc.requestTransform(6611);
-			npc.getUpdateFlags().flag(UpdateFlag.TRANSFORM);
-		}
        
         if (!npc.noDeathEmote) {
             npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead
@@ -241,7 +196,6 @@ public class NPCDeathTask extends Task {
      *
      */
     public static void respawn(NPC npc) {
-        npc.killedBy = -1;
         npc.setVisible(true);
         npc.getCombatState().setDead(false);
         if(npc.getId() == 5779) {
@@ -255,32 +209,31 @@ public class NPCDeathTask extends Task {
     }
     
     private final static void onDeath(NPC npc) {
+    	
+    	Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
 		
-		Player player = World.getWorld().getPlayers().get(npc.killedBy);
-		
-    	if (npc.killedBy == -1) {
-    		player.getActionSender().sendMessage("[Server]: ERROR, notice staff member, killerId = -1.");
+		if(killer == null) {
 			return;
 		}
 
-		if (npc != null || player != null) {
+		if (npc != null) {
 			/* Add kills to tracker */
 			for (int id : NPC.BOSSES) {
 				if (npc.getId() == id) {
-					KillTracker.submit(player, new KillEntry(npc.getName(), 1), true);
+					KillTracker.submit(killer, new KillEntry(npc.getName(), 1), true);
 				}
 			}
-			if (npc.getId() == player.getSlayerTask())
-				player.getSlayerDeathTracker().add(npc);
+			if (npc.getId() == killer.getSlayerTask())
+				killer.getSlayerDeathTracker().add(npc);
 
 			AbstractBossCombat boss = AbstractBossCombat.get(npc.getId());
 
 			if (boss != null) {
-				boss.dropLoot(player, npc);
+				boss.dropLoot(killer, npc);
 			}
 			// get the drop table
 			int amountOfDrops = 1;//Here
-			Server.getDropManager().create(player, npc, npc.getLocation(), amountOfDrops);//Maybe we move this to top?
+			Server.getDropManager().create(killer, npc, npc.getLocation(), amountOfDrops);
 		}
 	}
 

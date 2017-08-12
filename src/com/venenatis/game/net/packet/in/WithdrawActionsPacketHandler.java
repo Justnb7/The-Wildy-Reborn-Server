@@ -628,7 +628,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			amountX = 1;
 		}
 
-		player.debug("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.getInterfaceState().getCurrentInterface() + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
+		player.debug("[WithdrawActionsPacketHandler] - Sixth Option - InterfaceId: " + player.xInterfaceId + " removeId: " + player.xRemoveId + " slot: " + player.xRemoveSlot);
 		
 		if (Area.inWilderness(player)) {
 			return;
@@ -639,7 +639,7 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			player.setInputAmount(null);
 			return;
 		}
-		player.debug("woop12 "+player.getInterfaceState().getCurrentInterface());
+		player.debug("woop12 "+player.xInterfaceId);
 		switch (player.xInterfaceId) {
 		
 		case RunePouchContainer.INTERFACE:

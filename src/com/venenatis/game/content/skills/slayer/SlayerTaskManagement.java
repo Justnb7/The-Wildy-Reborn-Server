@@ -405,7 +405,8 @@ public class SlayerTaskManagement {
 		
 		//Safety check
 		if (player != null) {
-			player = World.getWorld().getPlayers().get(npc.killedBy);
+			
+			player = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
 			
 			//Decrease task
 			if (player.getSlayerTask() == npc.getId() ||  NPC.getName(npc.getId()).toLowerCase().equalsIgnoreCase(NPC.getName(player.getSlayerTask()).toLowerCase())) {

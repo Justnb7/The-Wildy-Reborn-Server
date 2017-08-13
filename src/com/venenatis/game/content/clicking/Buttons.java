@@ -276,45 +276,6 @@ public class Buttons {
 						"You cannot view items kept on death while in combat!");
 			}
 			break;
-
-		case FIRST_DIALOGUE_OPTION_OF_FIVE:
-		case FIRST_DIALOGUE_OPTION_OF_FOUR:
-		case FIRST_DIALOGUE_OPTION_OF_THREE:
-		case FIRST_DIALOGUE_OPTION_OF_TWO:
-			if(player.getDialogueOptions() != null) {
-				player.getDialogueOptions().handleOption(player, 1);
-			}
-			break;
-
-		case SECOND_DIALOGUE_OPTION_OF_FIVE:
-		case SECOND_DIALOGUE_OPTION_OF_FOUR:
-		case SECOND_DIALOGUE_OPTION_OF_THREE:
-		case SECOND_DIALOGUE_OPTION_OF_TWO:
-			if(player.getDialogueOptions() != null) {
-				player.getDialogueOptions().handleOption(player, 2);
-			}
-			break;
-
-		case THIRD_DIALOGUE_OPTION_OF_FIVE:
-		case THIRD_DIALOGUE_OPTION_OF_FOUR:
-		case THIRD_DIALOGUE_OPTION_OF_THREE:
-			if(player.getDialogueOptions() != null) {
-				player.getDialogueOptions().handleOption(player, 3);
-			}
-			break;
-
-		case FOURTH_DIALOGUE_OPTION_OF_FIVE:
-		case FOURTH_DIALOGUE_OPTION_OF_FOUR:
-			if(player.getDialogueOptions() != null) {
-				player.getDialogueOptions().handleOption(player, 4);
-			}
-			break;
-
-		case FIFTH_DIALOGUE_OPTION_OF_FIVE:
-			if(player.getDialogueOptions() != null) {
-				player.getDialogueOptions().handleOption(player, 5);
-			}
-			break;
 		}
 	}
 
@@ -328,23 +289,4 @@ public class Buttons {
 			}
 		}
 	}
-	
-	// Dialogues
-	private static final int FIRST_DIALOGUE_OPTION_OF_FIVE = 9190;
-	private static final int SECOND_DIALOGUE_OPTION_OF_FIVE = 9191;
-	private static final int THIRD_DIALOGUE_OPTION_OF_FIVE = 9192;
-	private static final int FOURTH_DIALOGUE_OPTION_OF_FIVE = 9193;
-	private static final int FIFTH_DIALOGUE_OPTION_OF_FIVE = 9194;
-
-	private static final int FIRST_DIALOGUE_OPTION_OF_FOUR = 9178;
-	private static final int SECOND_DIALOGUE_OPTION_OF_FOUR = 9179;
-	private static final int THIRD_DIALOGUE_OPTION_OF_FOUR = 9180;
-	private static final int FOURTH_DIALOGUE_OPTION_OF_FOUR = 9181;
-
-	private static final int FIRST_DIALOGUE_OPTION_OF_THREE = 9167;
-	private static final int SECOND_DIALOGUE_OPTION_OF_THREE = 9168;
-	private static final int THIRD_DIALOGUE_OPTION_OF_THREE = 9169;
-
-	private static final int FIRST_DIALOGUE_OPTION_OF_TWO = 9157;
-	private static final int SECOND_DIALOGUE_OPTION_OF_TWO = 9158;
 }

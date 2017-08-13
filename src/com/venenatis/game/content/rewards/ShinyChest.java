@@ -76,7 +76,7 @@ public class ShinyChest {
 			}
 			player.getInventory().removeSlot(slot, SHINY_KEY.getAmount(), true);
 			player.getActionSender().sendMessage("You unlock the chest with your shiny key.");
-			player.getInventory().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
+			player.getInventory().addOrCreateGroundItem(player, new Item(itemReceived.getId(), itemReceived.getAmount()));
 		} else if (PURPLE_KEY.getId() == item.getId()) {
 			Item itemReceived;
 			switch (Utility.getRandom(50)) {
@@ -103,7 +103,7 @@ public class ShinyChest {
 			
 			player.getInventory().removeSlot(slot, PURPLE_KEY.getAmount(), true);
 			player.getActionSender().sendMessage("You unlock the chest with your purple key.");
-			player.getInventory().addOrCreateGroundItem(new Item(itemReceived.getId(), itemReceived.getAmount()));
+			player.getInventory().addOrCreateGroundItem(player, new Item(itemReceived.getId(), itemReceived.getAmount()));
 		}
 		player.playAnimation(Animation.create(881));
 		player.playGraphics(Graphic.create(390));

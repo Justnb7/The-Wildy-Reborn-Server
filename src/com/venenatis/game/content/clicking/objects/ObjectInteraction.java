@@ -14,10 +14,7 @@ import com.venenatis.game.content.teleportation.obelisk.Obelisks;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
-import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.object.impl.webs.SlashWebObject;
@@ -128,7 +125,7 @@ public class ObjectInteraction {
 		break;
 		
 		case MAGICAL_ALTAR:
-			DialogueManager.start(player, 9);
+			/*DialogueManager.start(player, 9);
 			player.setDialogueOptions(new DialogueOptions() {
 				@Override
 				public void handleOption(Player player, int option) {
@@ -153,7 +150,7 @@ public class ObjectInteraction {
 						break;
 					}
 				}
-			});				
+			});	*/		
 			break;
 
 		case REJUVENATION_POOL:

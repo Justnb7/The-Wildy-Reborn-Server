@@ -174,7 +174,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 
 	@Override
 	public int distance(Entity attacker) {
-		return 7;
+		return 15;
 	}
 
 	@Override

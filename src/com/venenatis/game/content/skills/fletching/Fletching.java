@@ -8,7 +8,7 @@ import com.venenatis.game.content.skills.fletching.fletchable.impl.Log;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
+import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Task.BreakType;
@@ -241,7 +241,7 @@ public enum Fletching {
 		player.getActionSender().removeAllInterfaces();
 
 		if (player.getSkills().getLevel(Skills.FLETCHING) < item.getLevel()) {
-			DialogueManager.sendStatement(player, "<col=369>You need a Fletching level of " + item.getLevel() + " to do that.");
+			SimpleDialogues.sendStatement(player, "<col=369>You need a Fletching level of " + item.getLevel() + " to do that.");
 			return true;
 		}
 
@@ -310,7 +310,7 @@ public enum Fletching {
 
 				if (!(player.getInventory().hasAllItems(fletchable.getIngediants()))) {
 					stop();
-					DialogueManager.sendStatement(player, "<col=369>You have run out of materials.");
+					SimpleDialogues.sendStatement(player, "<col=369>You have run out of materials.");
 					return;
 				}
 			}

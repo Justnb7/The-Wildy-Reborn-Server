@@ -61,8 +61,8 @@ public class WildernessRewards {
 			}
 			
 			if(victim.getUsername().equalsIgnoreCase("patrick") || victim.getUsername().equalsIgnoreCase("matthew")) {
-				//Owners don't drop items, reward them with a random blood money reward
-				killer.getInventory().addOrCreateGroundItem(new Item(13307, Utility.random(5, 25)));
+				//Owners don't drop items, reward them with a random amount of PKP
+				killer.setPkPoints(killer.getPkPoints() + Utility.random(5, 25));
 			}
 			
 			//Send killstreak reward

@@ -17,9 +17,9 @@ import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.clan.ClanRank;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
+import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
@@ -1052,9 +1052,9 @@ public class ActionSender {
 					return;
 				}
 				
-				//We are new so we start the tutorial
 				if (!player.receivedStarter() && player.inTutorial()) {
-					DialogueManager.start(player, 8);
+					player.getDialogueManager().start("STARTER");
+					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername()) + "</col> Has joined Venenatis for the first time.");
 				}
 				
 				//We can update our kills tracker after login

@@ -19,7 +19,6 @@ import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.content.trivia.TriviaBot;
 import com.venenatis.game.model.entity.player.clan.ClanRepository;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.net.network.NettyChannelHandler;
 import com.venenatis.game.net.network.codec.RS2Encoder;
 import com.venenatis.game.net.network.handshake.HandshakeDecoder;
@@ -123,7 +122,6 @@ public class Bootstrap {
 			new MacBanParser().run();
 
 			LOGGER.info("Loading all of the game data...");
-			DialogueManager.parse().load();
 			new ItemDefinitionParser().run();
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();

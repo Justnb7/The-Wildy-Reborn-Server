@@ -8,7 +8,10 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.ground_item.GroundItemHandler;
 
 /**
  * The class <code>Container</code> represents a container that can hold an
@@ -1381,5 +1384,31 @@ public abstract class Container {
 	
 	public Item[] getItems() {
 		return stack;
+	}
+	
+	public void addOrCreateGroundItem(Player player, Item item) {
+		if (getFreeSlots() > 0) {
+			add(new Item(item.getId(), item.getAmount()));
+		} else if ((item.getAmount() > 1) && (!item.isStackable())) {
+			for (int i = 0; i < item.getAmount(); i++)
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getLocation(), player));
+			player.getActionSender().sendMessage("Inventory full item placed underneath you.");
+		} else {
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getLocation(), player));
+			player.getActionSender().sendMessage("Inventory full item placed underneath you.");
+		}
+	}
+	
+	public void addOrSentToBank(Player player, Item item) {
+		if (getFreeSlots() > 0) {
+			add(new Item(item.getId(), item.getAmount()));
+		} else if ((item.getAmount() > 1) && (!item.isStackable())) {
+			for (int i = 0; i < item.getAmount(); i++)
+				player.getBank().add(item);
+			player.getActionSender().sendMessage("Inventory full item sent to the bank.");
+		} else {
+			player.getBank().add(item);
+			player.getActionSender().sendMessage("Inventory full item sent to the bank.");
+		}
 	}
 }

@@ -54,8 +54,7 @@ import com.venenatis.game.model.entity.player.clan.Clan;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
-import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
+import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
@@ -84,24 +83,17 @@ import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
 	
-	private Dialogue dialogue;
+	/**
+	 * The dialogue manager instance
+	 */
+	private final DialogueManager dialogueManager = new DialogueManager(this);
 	
-	public Dialogue getDialogue() {
-		return this.dialogue;
-	}
-
-	public void setDialogue(Dialogue dialogue) {
-		this.dialogue = dialogue;
-	}
-	
-	private DialogueOptions dialogueOptions;
-
-	public DialogueOptions getDialogueOptions() {
-		return dialogueOptions;
-	}
-
-	public void setDialogueOptions(DialogueOptions dialogueOptions) {
-		this.dialogueOptions = dialogueOptions;
+	/**
+	 * Gets the dialogue manager
+	 * @return
+	 */
+	public DialogueManager getDialogueManager() {
+		return dialogueManager;
 	}
 	
 	/**
@@ -2852,7 +2844,7 @@ public class Player extends Entity {
 	
 	public void removeInterfaceAttributes() {
 		setShopping(false);
-		this.setDialogue(null);
+		getDialogueManager().interrupt();
 	}
 	
 	private final PriceChecker priceChecker = new PriceChecker(this);

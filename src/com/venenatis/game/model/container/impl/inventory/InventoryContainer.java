@@ -1,11 +1,8 @@
 package com.venenatis.game.model.container.impl.inventory;
 
-import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.world.ground_item.GroundItem;
-import com.venenatis.game.world.ground_item.GroundItemHandler;
 
 public class InventoryContainer extends Container {
 
@@ -42,19 +39,6 @@ public class InventoryContainer extends Container {
 		for (final int slot : slots) {
 			player.getActionSender().sendItemOnInterfaceSlot(InterfaceConstants.INVENTORY_INTERFACE, stack[slot], slot);
 			player.getEquipment().calculateWeight();
-		}
-	}
-
-	public void addOrCreateGroundItem(Item item) {
-		if (getFreeSlots() > 0) {
-			add(new Item(item.getId(), item.getAmount()));
-		} else if ((item.getAmount() > 1) && (!item.isStackable())) {
-			for (int i = 0; i < item.getAmount(); i++)
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getLocation(), player));
-			player.getActionSender().sendMessage("Inventory full item placed underneath you.");
-		} else {
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getLocation(), player));
-			player.getActionSender().sendMessage("Inventory full item placed underneath you.");
 		}
 	}
 }

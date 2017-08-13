@@ -118,7 +118,7 @@ public class Server {
 							if (r2.success()) {
 								int mystery_box_roll = Utility.random(10);
 								if(mystery_box_roll == 8) {
-									player.getInventory().addOrCreateGroundItem(new Item(6199));
+									player.getInventory().addOrCreateGroundItem(player, new Item(6199));
 								}
 								player.getActionSender().sendMessage("You've received your vote reward! Congratulations!");
 								player.setTotalVotes(player.getTotalVotes() + 1);

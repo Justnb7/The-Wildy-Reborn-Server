@@ -4,7 +4,7 @@ import com.venenatis.game.action.Action;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
+import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
@@ -167,13 +167,13 @@ public abstract class HarvestingAction extends Action {
 		
 		if(reward != null && !player.getInventory().hasSpaceFor(reward)) {
 			player.getActionSender().sendMessage(getInventoryFullMessage());
-			DialogueManager.sendStatement(player, getInventoryFullMessage());
+			SimpleDialogues.sendStatement(player, getInventoryFullMessage());
 			player.playAnimation(Animation.create(-1));
 			this.stop();
 			return;
 		}
 		if(player.getSkills().getLevelForExperience(getSkill()) < getRequiredLevel()) {
-			DialogueManager.sendStatement(player, getLevelTooLowMessage());
+			SimpleDialogues.sendStatement(player, getLevelTooLowMessage());
 			player.playAnimation(Animation.create(-1));
 			this.stop();
 			return;
@@ -228,7 +228,7 @@ public abstract class HarvestingAction extends Action {
 			return;
 		}
 		if(!player.getInventory().hasSpaceFor(getReward())) {
-			DialogueManager.sendStatement(player, getInventoryFullMessage());
+			SimpleDialogues.sendStatement(player, getInventoryFullMessage());
 			player.playAnimation(Animation.create(-1));
 			this.stop();
 			return;

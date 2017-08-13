@@ -5,7 +5,6 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
-import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.save.PlayerSave.Type;
 import com.venenatis.game.util.NameUtils;
@@ -222,7 +221,7 @@ public class PreloadingGear {
 			return;
 		}
 		
-		//And then start dialogue
+		/*//And then start dialogue
 		DialogueManager.start(player, 7);
 		//Set dialogue options
 		player.setDialogueOptions(new DialogueOptions() {
@@ -239,7 +238,7 @@ public class PreloadingGear {
 					break;
 				}
 			}
-		});
+		});*/
 	}
 
 	public void upload(int preset) {

@@ -1,5 +1,6 @@
 package com.venenatis.game.content.bounty;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
@@ -390,20 +391,39 @@ public class BountyHunter extends Task {
 	}
 	
 	/**
-	 * Calculates the total networth for the emblems in a players inventory.
-	 * @return	the total networth of all emblems in a players inventory
+	 * Gets the amount of value for a player's emblems.
+	 * @param player
+	 * @param performSale
+	 * @return
 	 */
-	public static int getNetworthForEmblems(Player player) {
-		int worth = 0;
-		for (int i = 0; i < player.getInventory().capacity(); i++) {
-			int itemId = player.getInventory().getId(i) - 1;
-			Optional<BountyHunterEmblem> containsItem = BountyHunterEmblem.EMBLEMS.stream().filter(emblem ->
-				emblem.getItemId() == itemId).findFirst();
-			if (containsItem.isPresent()) {
-				worth += containsItem.get().getBounties();
+	public static int getValueForEmblems(Player player, boolean performSale) {
+		ArrayList<BountyHunterEmblem> list = new ArrayList<BountyHunterEmblem>();
+		for(BountyHunterEmblem emblem : BountyHunterEmblem.values()) {
+			if(player.getInventory().contains(emblem.getItemId())) {
+				list.add(emblem);
 			}
 		}
-		return worth;
+
+		if(list.isEmpty()) {
+			return 0;
+		}
+
+		int value = 0;
+
+		for(BountyHunterEmblem emblem : list) {
+			int amount = player.getInventory().getAmount(emblem.getItemId());
+			if(amount > 0) {
+
+				if(performSale) {
+					player.getInventory().remove(emblem.getItemId(), amount);
+					player.setBountyPoints(player.getBountyPoints() + emblem.getBounties() * amount);
+				}
+
+				value += (emblem.getBounties() * amount);
+			}
+		}
+
+		return value;
 	}
 
 }

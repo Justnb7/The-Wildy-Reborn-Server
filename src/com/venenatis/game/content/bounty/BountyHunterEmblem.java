@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -85,5 +87,11 @@ public enum BountyHunterEmblem {
 
 	private static Predicate<BountyHunterEmblem> exclude(Player player, boolean exclude) {
 		return emblem -> player.getInventory().contains(new Item(emblem.getItemId())) && (!exclude || exclude && !emblem.equals(MYSTERIOUS_EMBLEM_10));
+	}
+	
+	private static Map<Integer, BountyHunterEmblem> emblem = new HashMap<>();
+
+	public static BountyHunterEmblem get(int id) {
+		return emblem.get(id);
 	}
 }

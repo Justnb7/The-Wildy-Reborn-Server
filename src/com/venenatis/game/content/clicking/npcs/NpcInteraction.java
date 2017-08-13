@@ -10,7 +10,6 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
-import com.venenatis.game.model.entity.player.dialogue.DialogueOptions;
 import com.venenatis.game.world.shop.ShopManager;
 
 
@@ -88,65 +87,7 @@ public class NpcInteraction {
 			break;
 			
 		case 315:
-			//And then start dialogue
-			DialogueManager.start(player, 0);
-			//Set dialogue options
-			player.setDialogueOptions(new DialogueOptions() {
-				@Override
-				public void handleOption(Player player, int option) {
-					switch(option) {
-					case 1:
-						//Open pvp shop
-						ShopManager.open(player, 6);
-						break;
-					case 2:
-						//Sell emblems option
-						player.setDialogueOptions(new DialogueOptions() {
-							@Override
-							public void handleOption(Player player, int option) {
-								if(option == 1) {
-									int cost = BountyHunter.getNetworthForEmblems(player);
-									player.getActionSender().sendMessage("@red@You have received "+cost+" blood money for your emblem(s).");
-									DialogueManager.start(player, 4);
-								} else {
-									player.getActionSender().removeAllInterfaces();
-								}
-							}
-						});
-						int value = BountyHunter.getNetworthForEmblems(player);
-						if(value > 0) {
-							player.setDialogue(DialogueManager.getDialogues().get(10)); //Yes / no option
-							DialogueManager.sendStatement(player, "I will give you "+value+" blood money for those emblems. Agree?");
-						} else {
-							DialogueManager.start(player, 5);
-						}
-						break;
-					case 3:
-						//Skull me option
-						if(player.isSkulled()) {
-							DialogueManager.start(player, 3);
-						} else {
-							DialogueManager.start(player, 6);
-							player.setDialogueOptions(new DialogueOptions() {
-								@Override
-								public void handleOption(Player player, int option) {
-									if(option == 1) {
-										Combat.skull(player, SkullType.SKULL, 300);
-									} else if(option == 2) {
-										Combat.skull(player, SkullType.RED_SKULL, 300);
-									}
-									player.getActionSender().removeAllInterfaces();
-								}
-							});
-						}
-						break;
-					case 4:
-						//Cancel option
-						player.getActionSender().removeAllInterfaces();
-						break;
-					}
-				}
-			});
+			
 			break;
 		}
 	}
@@ -214,26 +155,7 @@ public class NpcInteraction {
 		
 		switch (npc.getId()) {
 		case 315:
-			//Sell emblems option
-			player.setDialogueOptions(new DialogueOptions() {
-				@Override
-				public void handleOption(Player player, int option) {
-					if(option == 1) {
-						int cost = BountyHunter.getNetworthForEmblems(player);
-						player.getActionSender().sendMessage("@red@You have received "+cost+" blood money for your emblem(s).");
-						DialogueManager.start(player, 4);
-					} else {
-						player.getActionSender().removeAllInterfaces();
-					}
-				}
-			});
-			int value = BountyHunter.getNetworthForEmblems(player);
-			if(value > 0) {
-				player.setDialogue(DialogueManager.getDialogues().get(10)); //Yes / no option
-				DialogueManager.sendStatement(player, "I will give you "+value+" blood money for those emblems. Agree?");
-			} else {
-				DialogueManager.start(player, 5);
-			}
+			
 			break;
 		}
 	}
@@ -250,22 +172,7 @@ public class NpcInteraction {
 
 		switch (npc.getId()) {
 		case 315:
-			if(player.isSkulled()) {
-				DialogueManager.start(player, 3);
-			} else {
-				DialogueManager.start(player, 6);
-				player.setDialogueOptions(new DialogueOptions() {
-					@Override
-					public void handleOption(Player player, int option) {
-						if(option == 1) {
-							Combat.skull(player, SkullType.SKULL, 300);
-						} else if(option == 2) {
-							Combat.skull(player, SkullType.RED_SKULL, 300);
-						}
-						player.getActionSender().removeAllInterfaces();
-					}
-				});
-			}
+			
 			break;
 		}
 	}

@@ -27,9 +27,8 @@ public class ChatPacketHandler implements PacketType {
 			return;
 		}
 
-		if (player.getSanctions().isMuted()) {
-			long time = player.getSanctions().muteLeft();
-			player.getActionSender().sendMessage("You are muted and no one can hear you! You will be unmuted in " + time + " " + (time > 1 ? "minutes" : "minute") + ".");
+		if (player.isMuted()) {
+			player.getActionSender().sendMessage("You are muted and no one can hear you!");
 			return;
 		}
 		

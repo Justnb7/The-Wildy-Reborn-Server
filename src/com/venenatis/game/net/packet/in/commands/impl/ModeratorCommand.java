@@ -1,12 +1,12 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
+import java.util.Optional;
+
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Sanctions;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
-import com.venenatis.game.model.entity.player.save.PlayerSave.PlayerContainer;
-import com.venenatis.game.model.entity.player.save.PlayerSave.Type;
-import com.venenatis.game.model.entity.player.save.PlayerSaveUtility;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.world.World;
@@ -123,8 +123,138 @@ public class ModeratorCommand implements Command {
                 player.getActionSender().sendMessage("player must be online.");
             }
      		return true;
+     		
+    	case "macban":
+    		if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+				
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					Optional<Player> optionalPlayer = World.getWorld().getOptionalPlayer(name);
+					if (optionalPlayer.isPresent()) {
+						Player c2 = optionalPlayer.get();
+						if (c2.getRights().isBetween(1, 3)) {
+							player.getActionSender().sendMessage("You cannot ban this player.");
+							return false;
+						}
+						Sanctions.addNameToBanList(name);
+						Sanctions.addNameToBanFile(name);
+						player.getActionSender().sendMessage("You have MAC banned " + name + ".");
+						World.getWorld().queueLogout(c2);
+					}
+				} else {
+					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
+					return false;
+				}
+    		}
+    		return true;
+     		
+    	case "ban":
+    		if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+				
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					Optional<Player> optionalPlayer = World.getWorld().getOptionalPlayer(name);
+					if (optionalPlayer.isPresent()) {
+						Player c2 = optionalPlayer.get();
+						if (c2.getRights().isBetween(1, 3)) {
+							player.getActionSender().sendMessage("You cannot ban this player.");
+							return false;
+						}
+						Sanctions.addMacBan(c2.getMacAddress());
+	 					player.getActionSender().sendMessage("[" + name + "] has been Banned");
+						World.getWorld().queueLogout(c2);
+					}
+				} else {
+					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
+					return false;
+				}
+    		}
+    		return true;
+    		
+   	 case "banip":
+   	 case "ipban":
+   		if (parser.hasNext()) {
+			String name = parser.nextString();
+
+			while (parser.hasNext()) {
+				name += " " + parser.nextString();
+			}
+
+			name = name.replaceAll("_", " ");
 			
-			/* Mute */
+			if (World.getWorld().getPlayerByName(name).isPresent()) {
+				Optional<Player> optionalPlayer = World.getWorld().getOptionalPlayer(name);
+				if (optionalPlayer.isPresent()) {
+					Player c2 = optionalPlayer.get();
+					if (c2.getRights().isBetween(1, 3)) {
+						player.getActionSender().sendMessage("You cannot ban this player.");
+						return false;
+					}
+					Sanctions.addIpToBanList(c2.getHostAddress());
+ 					player.getActionSender().sendMessage("[" + name + "] has been IP Banned");
+					World.getWorld().queueLogout(c2);
+				}
+			} else {
+				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
+				return false;
+			}
+		}
+   		 return true;
+   		 
+   	case "unmacban":
+		
+		if (parser.hasNext()) {
+			String address = parser.nextString();
+
+			while (parser.hasNext()) {
+				address += " " + parser.nextString();
+			}
+
+			address = address.replaceAll("_", " ");
+			if (address != null) {
+				if (!Sanctions.isMacBanned(address)) {
+					player.getActionSender().sendMessage("The address does not exist in the list, make sure it matches perfectly. A example 'Z8-12-F6-77-8G-D1'");
+					return false;
+				}
+				Sanctions.removeMacBan(address);
+				player.getActionSender().sendMessage("The mac ban on the address; " + address + " has been lifted.");
+			}
+		}
+		 return true;
+   		
+			
+    	case "unban":
+    		
+    		if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				name = name.replaceAll("_", " ");
+				
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					Sanctions.removeNameFromBanList(name);
+				} else {
+					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
+					return false;
+				}
+    		}
+   		 return true;
+   		 
 		case "mute":
 			if (parser.hasNext()) {
 				String name = parser.nextString();
@@ -134,154 +264,50 @@ public class ModeratorCommand implements Command {
 				}
 
 				name = name.replaceAll("_", " ");
-
-				final String playerName = name;
-
-				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
-					if (!PlayerSaveUtility.exists(name)) {
-						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
-						return true;
+				
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					Optional<Player> optionalPlayer = World.getWorld().getOptionalPlayer(name);
+					if (optionalPlayer.isPresent()) {
+						Player c2 = optionalPlayer.get();
+						if (c2.getRights().isBetween(1, 3)) {
+							player.getActionSender().sendMessage("You cannot mute this player.");
+							return false;
+						}
+	 					c2.setMuted(true);
+	 					player.getActionSender().sendMessage("You have muted " + name + ".");
 					}
-
-					Player player2 = new Player(name);
-
-					if (PlayerContainer.loadDetails(player2)) {
-						player2.getSanctions().mute(60);
-					}
-
-					PlayerSave.save(player, Type.PLAYER_INFORMATION);
-					return true;
 				} else {
-
-					Player victim = World.getWorld().getPlayerByName(playerName).get();
-
-					victim.getSanctions().mute(2);
-					victim.getActionSender().sendMessage("You have been muted by " + playerName + "!");
-					player.getActionSender().sendMessage("You have muted " + playerName + "!");
+					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
+					return false;
 				}
-				return true;
 			}
 			return true;
+   		 
+   	 case "unmute":
+   		if (parser.hasNext()) {
+			String name = parser.nextString();
+
+			while (parser.hasNext()) {
+				name += " " + parser.nextString();
+			}
+
+			name = name.replaceAll("_", " ");
 			
-			/* Un-mute */
-		case "unmute":
-			if (parser.hasNext()) {
-				String name = parser.nextString();
-
-				while (parser.hasNext()) {
-					name += " " + parser.nextString();
+			if (World.getWorld().getPlayerByName(name).isPresent()) {
+				Optional<Player> optionalPlayer = World.getWorld().getOptionalPlayer(name);
+				if (optionalPlayer.isPresent()) {
+					Player c2 = optionalPlayer.get();
+ 					c2.setMuted(false);
+ 					player.getActionSender().sendMessage("You have unmuted " + name + ".");
+ 					c2.getActionSender().sendMessage("You have been unmuted by " + player.getUsername() + ".");
 				}
-
-				name = name.replaceAll("_", " ");
-
-				final String playerName = name;
-
-				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
-					if (!PlayerSaveUtility.exists(name)) {
-						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
-						return true;
-					}
-
-					Player player2 = new Player(name);
-
-					if (PlayerContainer.loadDetails(player2)) {
-						player2.getSanctions().unMute();
-					}
-
-					PlayerSave.save(player, Type.PLAYER_INFORMATION);
-					return true;
-				} else {
-					Player victim = World.getWorld().getPlayerByName(playerName).get();
-
-					victim.getSanctions().unMute();
-					victim.getActionSender().sendMessage("You have been un-muted by " + playerName + "!");
-					player.getActionSender().sendMessage("You have un-muted " + playerName + "!");
-					return true;
-				}
+			} else {
+				player.getActionSender().sendMessage("Couldn't find player " + name + ".");
+				return false;
 			}
-			return true;
-
-		/* Banned */
-		case "ban":
-			if (parser.hasNext()) {
-				String name = parser.nextString();
-
-				while (parser.hasNext()) {
-					name += " " + parser.nextString();
-				}
-
-				name = name.replaceAll("_", " ");
-
-				final String playerName = name;
-
-				boolean test = World.getWorld().getPlayerByRealName(playerName).isPresent();
-				
-				player.debug(""+test);
-				
-				if (!World.getWorld().getPlayerByRealName(playerName).isPresent()) {
-					if (!PlayerSaveUtility.exists(name)) {
-						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
-						return true;
-					}
-
-					Player player2 = new Player(name);
-
-					if (PlayerContainer.loadDetails(player2)) {
-						player2.getSanctions().ban(60);
-					}
-
-					PlayerSave.save(player, Type.PLAYER_INFORMATION);
-					return true;
-				} else {
-
-					Player victim = World.getWorld().getPlayerByName(playerName).get();
-
-					victim.getSanctions().ban(60);
-					victim.getActionSender().sendMessage("You have been banned by " + playerName + "!");
-					player.getActionSender().sendMessage("You have banned " + playerName + "!");
-					World.getWorld().kickPlayer(p -> p.getUsername().equalsIgnoreCase(playerName.trim()));
-				}
-				return true;
-			}
-			return true;
-
-		/* Un-Banned */
-		case "unban":
-			if (parser.hasNext()) {
-				String name = parser.nextString();
-
-				while (parser.hasNext()) {
-					name += " " + parser.nextString();
-				}
-
-				name = name.replaceAll("_", " ");
-
-				final String playerName = name;
-
-				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
-					if (!PlayerSaveUtility.exists(name)) {
-						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
-						return true;
-					}
-
-					Player player2 = new Player(name);
-
-					if (PlayerContainer.loadDetails(player2)) {
-						player2.getSanctions().unBan();
-					}
-
-					PlayerSave.save(player, Type.PLAYER_INFORMATION);
-					return true;
-				} else {
-					Player victim = World.getWorld().getPlayerByName(playerName).get();
-
-					victim.getSanctions().unBan();
-					victim.getActionSender().sendMessage("You have been un-banned by " + playerName + "!");
-					player.getActionSender().sendMessage("You have un-banned " + playerName + "!");
-				}
-				return true;
-			}
-			return true;
+		}
+   		return true;
+   		
 			
 		}
 		return false;

@@ -2977,16 +2977,6 @@ public class Player extends Entity {
 		}
 	}
 	
-	private Sanctions sanctions;
-
-	public Sanctions getSanctions() {
-		return sanctions;
-	}
-	
-	public void setSanctions(Sanctions sanctions) {
-		this.sanctions = sanctions;
-	}
-	
 	private PreloadingGear presets = new PreloadingGear(this);
 
 	public PreloadingGear getPresets() {
@@ -3019,6 +3009,16 @@ public class Player extends Entity {
 
 	public int getToxicBlowpipeAmmo() {
 		return 11230;
+	}
+	
+	private boolean muted;
+	
+	public boolean isMuted() {
+		return muted;
+	}
+
+	public void setMuted(boolean m) {
+		this.muted = m;
 	}
 
 	public void faceObject(GameObject object) {

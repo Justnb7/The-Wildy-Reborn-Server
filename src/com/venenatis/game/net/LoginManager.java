@@ -1,5 +1,21 @@
 package com.venenatis.game.net;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Sanctions;
@@ -17,25 +33,11 @@ import com.venenatis.game.util.NameUtils;
 import com.venenatis.game.world.World;
 import com.venenatis.server.GameEngine;
 import com.venenatis.server.Server;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class contains the bulk of the login handling code such as loading profile and sending a responce. 
@@ -140,10 +142,6 @@ public class LoginManager {
 		player.setOutStreamDecryption(credential.getEncryptor());
 		player.outStream.packetEncryption = credential.getEncryptor();
 		
-		if (player.getSanctions() == null) {
-			player.setSanctions(new Sanctions(hostAddress, player.getMacAddress()));
-		}
-		
 		// username too long or too short
 		if (username.length() >= 13 || username.length() < 3) {
 			sendReturnCode(ctx.channel(), LoginCode.SHORT_USERNAME);
@@ -166,8 +164,18 @@ public class LoginManager {
 			}
 		}
 		
-		// evaluate the host
-		if (player.getSanctions().isBanned()) {
+		// evaluate if the host is mac banned
+		if(Sanctions.isMacBanned(player.getMacAddress())) {
+			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+		}
+		
+		// evaluate if the host is banned
+		if(Sanctions.isNamedBanned(player.getUsername())) {
+			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+		}
+		
+		// evaluate if the host is IP banned
+		if (Sanctions.isIpBanned((player.getHostAddress()))) {
 			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
 			return;
 		}

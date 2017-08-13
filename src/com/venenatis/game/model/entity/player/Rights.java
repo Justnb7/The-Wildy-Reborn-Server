@@ -194,4 +194,18 @@ public enum Rights {
 		}
 	}
 
+	/**
+	 * Determines if the players rights are in-between two values.
+	 * @param start	the lowest range
+	 * @param end	the highest range
+	 * @return		true if the rights are greater than the start and lower
+	 * than the end value.
+	 */
+	public boolean isBetween(int start, int end) {
+		if (start < 0 || end < 0 || start > end || start == end) {
+			throw new IllegalStateException();
+		}
+		return getCrown() >= start && getCrown() <= end;
+	}
+
 }

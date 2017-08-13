@@ -25,7 +25,7 @@ public class PrivateMessaging implements PacketType {
 			final int size = (byte) (packetSize - 8);
 			byte[] data = chatMessage;
 			player.getInStream().readBytes(chatMessage, size, 0);
-			if (player.getSanctions().isMuted()) {
+			if (player.isMuted()) {
 	            player.getActionSender().sendMessage("You are muted for breaking a rule.");
 				return;
 			}
@@ -49,7 +49,7 @@ public class PrivateMessaging implements PacketType {
 				offline = true;
 			}
 			
-			if(player.getSanctions().isMuted()) {
+			if (player.isMuted()) {
 				player.getActionSender().sendMessage("You are muted and therefore cannot private message players");
 				return;
 			}

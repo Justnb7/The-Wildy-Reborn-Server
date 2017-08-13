@@ -19,7 +19,6 @@ import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
-import com.venenatis.game.model.entity.player.Sanctions;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.AccountType;
 
@@ -124,9 +123,7 @@ public class PlayerSave {
 				player.setNewPlayer(details.newPlayer);
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);
-				if (details.sanctions != null) {
-					player.setSanctions(details.sanctions);
-				}
+				player.setMuted(details.muted);
 				player.setPet(details.pet);
 				player.setTutorial(details.inTutorial);
 				player.setReceivedStarter(details.starterReceived);
@@ -223,7 +220,7 @@ public class PlayerSave {
 		private final boolean newPlayer;
 		private final String identity;
 		private final String mac;
-		private final Sanctions sanctions;
+		private final boolean muted;
 		private final int pet;
 		private final boolean inTutorial;
 		private final boolean starterReceived;
@@ -309,7 +306,7 @@ public class PlayerSave {
 			newPlayer = player.isNewPlayer();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
-			sanctions = player.getSanctions();
+			muted = player.isMuted();
 			pet = player.getPet();
 			inTutorial = player.inTutorial();
 			starterReceived = player.receivedStarter();

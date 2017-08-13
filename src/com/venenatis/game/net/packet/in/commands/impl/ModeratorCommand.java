@@ -139,13 +139,13 @@ public class ModeratorCommand implements Command {
 					if (optionalPlayer.isPresent()) {
 						Player c2 = optionalPlayer.get();
 						if (c2.getRights().isBetween(1, 3)) {
-							player.getActionSender().sendMessage("You cannot ban this player.");
+							player.getActionSender().sendMessage("You cannot MAC ban this player.");
 							return false;
 						}
 						Sanctions.addNameToBanList(name);
 						Sanctions.addNameToBanFile(name);
 						player.getActionSender().sendMessage("You have MAC banned " + name + ".");
-						World.getWorld().queueLogout(c2);
+						c2.logout();
 					}
 				} else {
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
@@ -172,9 +172,9 @@ public class ModeratorCommand implements Command {
 							player.getActionSender().sendMessage("You cannot ban this player.");
 							return false;
 						}
-						Sanctions.addMacBan(c2.getMacAddress());
+						Sanctions.addNameToBanFile(c2.getUsername());
 	 					player.getActionSender().sendMessage("[" + name + "] has been Banned");
-						World.getWorld().queueLogout(c2);
+						c2.logout();
 					}
 				} else {
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
@@ -199,12 +199,12 @@ public class ModeratorCommand implements Command {
 				if (optionalPlayer.isPresent()) {
 					Player c2 = optionalPlayer.get();
 					if (c2.getRights().isBetween(1, 3)) {
-						player.getActionSender().sendMessage("You cannot ban this player.");
+						player.getActionSender().sendMessage("You cannot IP ban this player.");
 						return false;
 					}
 					Sanctions.addIpToBanList(c2.getHostAddress());
  					player.getActionSender().sendMessage("[" + name + "] has been IP Banned");
-					World.getWorld().queueLogout(c2);
+ 					c2.logout();
 				}
 			} else {
 				player.getActionSender().sendMessage("Couldn't find player " + name + ".");

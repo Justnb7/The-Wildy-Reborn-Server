@@ -91,11 +91,6 @@ public class Sanctions {
 		deleteFromFile("./data/bans/UsersBanned.txt", name);
 	}
 
-	public static void removeNameFromMuteList(String name) {
-		bannedNames.remove(name.toLowerCase());
-		deleteFromFile("./data/bans/UsersMuted.txt", name);
-	}
-
 	/**
 	 * Removes an IP address from the IPmuted list.
 	 */

@@ -54,9 +54,9 @@ public class PlayerDrops {
 
 		PlayerKilling.addHostToList(killer, victim.getHostAddress());
 		
-		AchievementHandler.activate(killer, AchievementList.FIRST_KILL, 1);
+		/*AchievementHandler.activate(killer, AchievementList.FIRST_KILL, 1);
 		AchievementHandler.activate(killer, AchievementList.LEARNING_CURVE, 1);
-		AchievementHandler.activate(killer, AchievementList.MASTER, 1);
+		AchievementHandler.activate(killer, AchievementList.MASTER, 1);*/
 		
 		BountyHunter.handleBountyHunterKill(victim, killer);
 		

@@ -329,6 +329,10 @@ public class ItemOptionPacket implements PacketType {
 		case 6199:
 			Mysterybox.open(player);
 			break;
+			
+		case 4155: // Enchanted Gem
+			player.getDialogueManager().start("ENCHANTED_GEM", player);
+			break;
 
 		case 952:
 			handleShovel(player);

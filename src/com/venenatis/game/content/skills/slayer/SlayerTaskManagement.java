@@ -413,7 +413,7 @@ public class SlayerTaskManagement {
 				player.setSlayerTaskAmount(player.getSlayerTaskAmount() - 1);
 				player.getSkills().addExperience(Skills.SLAYER, npc.getMaxHitpoints());
 				//player.getActionSender().sendMessage("Slayertask: "+Npc.getName(npc.npcId)+ " left: "+player.getSlayerTaskAmount()));
-				player.getActionSender().sendString("<img=28><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 29511);
+				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 29172);
 			}
 			
 			//Kills left messages

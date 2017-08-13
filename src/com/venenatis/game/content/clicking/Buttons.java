@@ -34,6 +34,117 @@ public class Buttons {
 		System.out.println("btn "+button);
 		switch (button) {
 		
+		case 9190:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(1)) {
+					break;
+				}
+			}
+			break;
+		case 9191:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(2)) {
+					break;
+				}
+			}
+			break;
+
+		case 9192:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(3)) {
+					break;
+				}
+			}
+			break;
+
+		case 9193:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(4)) {
+					break;
+				}
+			}
+			break;
+			
+		case 9194:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(5)) {
+					break;
+				}
+			}
+			break;
+
+		case 9167:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(1)) {
+					break;
+				}
+			}
+			break;
+
+		case 9168:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(2)) {
+					break;
+				}
+			}
+			break;
+
+		case 9169:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(3)) {
+					break;
+				}
+			}
+			break;
+
+		case 9178:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(1)) {
+					break;
+				}
+			}
+			break;
+
+		case 9179:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(2)) {
+					break;
+				}
+			}
+			break;
+
+		case 9180:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(3)) {
+					break;
+				}
+			}
+			break;
+
+		case 9181:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(4)) {
+					break;
+				}
+			}
+			break;
+
+		case 9157:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(1)) {
+					break;
+				}
+			}
+			break;
+
+		case 9158:
+			if (player.getDialogueManager().isActive()) {
+				if (player.getDialogueManager().select(2)) {
+					break;
+				}
+			}
+			break;
+		
 		case 113230:
 			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.EASY));
 			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.FIRST_KILL);

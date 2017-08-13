@@ -1,5 +1,7 @@
 package com.venenatis.game.model.entity.player.dialogue.impl.slayer;
 
+import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
+import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.content.skills.slayer.SlayerMasters;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
@@ -47,7 +49,7 @@ public class TuraelDialogue extends Dialogue {
 				if (getPhase() == 3) {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT,
 							"After every task you complete you gain @blu@Slayer Points@bla@",
-							"the amount varies depending on the ifficulty of",
+							"the amount varies depending on the difficulty of",
 							"the task. You can spend these points in the",
 							"@blu@Rewars Store@bla@ accessible through Nieve.");
 					setPhase(4);
@@ -167,6 +169,7 @@ public class TuraelDialogue extends Dialogue {
 																					SlayerTaskManagement.beginnerTask(player);
 																					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
 																					setPhase(16);
+																					QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 																				} else {
 																					if (getPhase() == 23) {
 																						stop();

@@ -219,10 +219,9 @@ public class NpcCombat {
 			return false;
 		}
 
-		if (!Slayer.canAttack(player, npc)) {
-			player.debug("slayer req not met for combat");
+		/*if (!Slayer.canAttack(player, npc)) {
 			return false;
-		}
+		}*/
 		
 		if (npc.isArmadylNpc() && player.getCombatType() == CombatStyle.MELEE) {
 			player.message("You can only use range or magic against this npc.");

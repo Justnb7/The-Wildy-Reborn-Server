@@ -3,9 +3,11 @@ package com.venenatis.game.model.combat;
 import java.util.Arrays;
 import java.util.List;
 
+import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.definitions.WeaponDefinition;
@@ -207,6 +209,15 @@ public class NpcCombat {
 		}
 		if (npc.transforming)
 			return false;
+		
+		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+		boolean quiver = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null && ammo.getId() > -1 ? true : false;
+		
+		if(CombatFormulae.usingThrowingWeapon(player) && quiver) {
+			player.getActionSender().sendMessage("Remove your ammo first before using knives.");
+			Combat.resetCombat(player);
+			return false;
+		}
 
 		if (!Slayer.canAttack(player, npc)) {
 			player.debug("slayer req not met for combat");

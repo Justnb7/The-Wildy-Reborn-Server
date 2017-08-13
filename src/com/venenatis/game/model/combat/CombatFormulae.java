@@ -493,7 +493,7 @@ public class CombatFormulae {
 	 * @param player
 	 *            The player wearing the throwing weapon
 	 */
-	private static boolean usingThrowingWeapon(Player player) {
+	static boolean usingThrowingWeapon(Player player) {
 		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 		if (weapon == null) {
 			return false;

@@ -3,6 +3,7 @@ package com.venenatis.game.model.container.impl.equipment;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
+import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
@@ -118,6 +119,9 @@ public class EquipmentContainer extends Container {
 
 	/** Gets the item player.getBonuses() from item_definitions.json */
 	public void setBonus() {
+		
+		//TODO ignore range str of ammo slot when wearing throwing weapons
+		
 		Arrays.fill(player.getBonuses(), 0);
 		
 		for (int index = 0; index < player.getBonuses().length; index++) {

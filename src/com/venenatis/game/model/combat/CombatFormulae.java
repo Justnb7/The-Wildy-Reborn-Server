@@ -4,7 +4,9 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
 import com.venenatis.game.model.combat.data.CombatStyle;
+import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -407,6 +409,14 @@ public class CombatFormulae {
 		double otherBonusMultiplier = 1;	
 		int rangedStrength = player.getBonuses().length < 13 ? 0 : player.getBonuses()[11];
 		
+		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+
+		boolean quiver = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null && ammo.getId() > -1 ? true : false;
+		
+		if (quiver && usingThrowingWeapon(player)) {
+			//TODO ignore other slot range str
+		}
+		
 		if (player.getBonuses().length < 13) {
 			System.err.println("NO RANGE STR BONUSES DEFINED");
 		}
@@ -438,7 +448,8 @@ public class CombatFormulae {
 		
 		int effectiveRangeDamage = (int) ((rangeLevel * prayerMultiplier * otherBonusMultiplier) + combatStyleBonus);
 		double baseDamage = 1.3 + (effectiveRangeDamage / 10) + (rangedStrength / 80) + ((effectiveRangeDamage * rangedStrength) / 640);
-		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+		
+		
 		if(special) {
 			if(player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null) {
 				switch(ammo.getId()) {
@@ -474,6 +485,26 @@ public class CombatFormulae {
 		maxHit = (int) (baseDamage * specialMultiplier);
 		
 		return maxHit;
+	}
+
+	/**
+	 * Checks if we're using a throwing weapon
+	 * 
+	 * @param player
+	 *            The player wearing the throwing weapon
+	 */
+	private static boolean usingThrowingWeapon(Player player) {
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+		if (weapon == null) {
+			return false;
+		}
+		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
+		
+		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
+		if (Combat.isHandWeapon(rangeWeaponType)) {
+			return true;
+		}
+		return false;
 	}
 
 	public static boolean hasAmuletOfTheDamned(Player player) {

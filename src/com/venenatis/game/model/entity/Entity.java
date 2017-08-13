@@ -850,8 +850,8 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			
-			if(attacker_player.getEquipment().contains(13652)) {
-				damage = 100;
+			if(attacker_player.getEquipment().contains(4151) && attacker_player.inDebugMode()) {
+				damage = victim_npc.getHitpoints();
 			}
 			
 			victim_npc.retaliate(attacker);

@@ -214,7 +214,11 @@ public class ModeratorCommand implements Command {
 
 				final String playerName = name;
 
-				if (!World.getWorld().getPlayerByName(playerName).isPresent()) {
+				boolean test = World.getWorld().getPlayerByRealName(playerName).isPresent();
+				
+				player.debug(""+test);
+				
+				if (!World.getWorld().getPlayerByRealName(playerName).isPresent()) {
 					if (!PlayerSaveUtility.exists(name)) {
 						player.getActionSender().sendMessage("It appears " + playerName + " does not exist!");
 						return true;

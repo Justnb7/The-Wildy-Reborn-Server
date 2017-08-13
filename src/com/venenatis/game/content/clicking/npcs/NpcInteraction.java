@@ -1,15 +1,11 @@
 package com.venenatis.game.content.clicking.npcs;
 
-import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.skills.fishing.Fishing;
 import com.venenatis.game.content.skills.fishing.FishingSpot;
 import com.venenatis.game.content.skills.thieving.Pickpocket;
-import com.venenatis.game.model.combat.Combat;
-import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.world.shop.ShopManager;
 
 
@@ -87,8 +83,34 @@ public class NpcInteraction {
 			break;
 			
 		case 315:
-			
+			player.getDialogueManager().start("emblem_trader_dialogue", player);
 			break;
+			
+			/**
+			 * Slayer masters
+			 */
+			case 401: // Turael
+				player.getDialogueManager().start("TURAEL_DIALOGUE", player);
+				break;
+			case 402: // Mazchna
+				player.getDialogueManager().start("MAZCHNA_DIALOGUE", player);
+				break;
+
+			case 403: // Vannaka
+				player.getDialogueManager().start("VANNAKA_DIALOGUE", player);
+				break;
+
+			case 404: // Chaeldar
+				player.getDialogueManager().start("CHAELDAR_DIALOGUE", player);
+				break;
+
+			case 405: // Duradel
+				player.getDialogueManager().start("DURADEL_DIALOGUE", player);
+				break;
+
+			case 490: // Nieve
+				player.getDialogueManager().start("NIEVE_DIALOGUE", player);
+				break;
 		}
 	}
 

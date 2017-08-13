@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
-import com.venenatis.game.content.rewards.WildernessRewards;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.Connection;
 import com.venenatis.game.task.Task;
@@ -257,7 +257,7 @@ public class BountyHunter extends Task {
 		/*
 		 * Determine our carried wealth
 		 */
-		long carried_wealth = WildernessRewards.getWealth(player);
+		long carried_wealth = Container.getWealth(player);
 
 		int configId = -1;
 
@@ -317,18 +317,18 @@ public class BountyHunter extends Task {
 	/**
 	 * Handles the actions taken when you kill a player in bounty hunter
 	 * 
-	 * @param player
+	 * @param victim
 	 *            The {@link Player} that has died
 	 * @param killer
 	 *            The {@link Player} who has killed this player
 	 */
-	public static void handleBountyHunterKill(Player player, Player killer) {
+	public static void handleBountyHunterKill(Player victim, Player killer) {
 		int index = killer.getAttribute(BountyHunterConstants.BOUNTY_TARGET, 0);
 
 		/*
 		 * The killer has killed his target
 		 */
-		if (index == player.getIndex()) {
+		if (index == victim.getIndex()) {
 			int current = killer.getAttribute(BountyHunterConstants.HUNTER_CURRENT, 0);
 			int record = killer.getAttribute(BountyHunterConstants.HUNTER_RECORD, 0);
 
@@ -336,15 +336,15 @@ public class BountyHunter extends Task {
 				killer.setAttribute(BountyHunterConstants.HUNTER_RECORD, current + 1);
 			}
 			killer.setAttribute(BountyHunterConstants.HUNTER_CURRENT, current + 1);
-			Optional<BountyHunterEmblem> emblem = BountyHunterEmblem.getBest(player, true);
+			Optional<BountyHunterEmblem> emblem = BountyHunterEmblem.getBest(victim, true);
 
 			if (emblem.isPresent()) {
 				killer.getInventory().remove(new Item(emblem.get().getItemId()));
 				killer.getInventory().add(new Item(emblem.get().getNextOrLast().getItemId()));
 			} else {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), player.getLocation(), killer));
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), victim.getLocation(), killer));
 			}
-			killer.setAttribute("receive_emblem", handleItemGiving(player, killer));
+			killer.setAttribute("receive_emblem", handleItemGiving(victim, killer));
 			QuestTabPageHandler.write(killer, QuestTabPages.HOME_PAGE);
 		} else {
 			int current = killer.getAttribute(BountyHunterConstants.ROGUE_CURRENT, 0);
@@ -362,7 +362,7 @@ public class BountyHunter extends Task {
 	 *            The {@link Player} that killed the target
 	 */
 	private static boolean handleItemGiving(Player player, Player killer) {
-		long carried_wealth = WildernessRewards.getWealth(player);
+		long carried_wealth = Container.getWealth(player);
 
 		int random = 0;
 		if (carried_wealth > BountyHunterConstants.V_HIGH_WEALTH) {

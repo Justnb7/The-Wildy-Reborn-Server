@@ -2,12 +2,16 @@ package com.venenatis.game.model.container;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
@@ -1410,5 +1414,50 @@ public abstract class Container {
 			player.getBank().add(item);
 			player.getActionSender().sendMessage("Inventory full item sent to the bank.");
 		}
+	}
+
+	/**
+	 * Calculates the players current wealth, checks for armour and inventory.
+	 * 
+	 * @param player
+	 *            The player whose current wealth we're checking
+	 */
+	public static long getWealth(Player player) {
+		LinkedList<Item> all = new LinkedList<>();
+		
+		Item[] inv_items = player.getInventory().toNonNullArray();
+		for (Item inventory : inv_items) {
+			all.add(inventory);
+		}
+		
+		Item[] equipment_items = player.getEquipment().toNonNullArray();
+		for(Item equipment : equipment_items) {
+			all.addLast(equipment);
+		}
+
+		int finalamount = player.isSkulled() ? 0 : 3;
+		if (player.isActivePrayer(Prayers.PROTECT_ITEM))
+			finalamount++;
+		int amount = finalamount;
+		if (amount > 0) {
+			all.sort(Collections.reverseOrder((one, two) -> Double.compare(one.getValue(), two.getValue())));
+			for (Iterator<Item> it = all.iterator(); it.hasNext();) {
+				Item next = it.next();
+				if (amount == 0) {
+					break;
+				}
+				if (next.isStackable() && next.getAmount() > 1) {
+					next.amount -= finalamount == 0 ? 1 : finalamount;
+				} else {
+					it.remove();
+				}
+				amount--;
+			}
+		}
+		long wealth = 0;
+		for (Item totalWealth : all) {
+			wealth += (totalWealth.getValue() * totalWealth.amount);
+		}
+		return wealth;
 	}
 }

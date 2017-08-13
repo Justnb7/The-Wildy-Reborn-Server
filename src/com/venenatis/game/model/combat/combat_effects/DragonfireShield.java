@@ -9,6 +9,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
 public class DragonfireShield {
@@ -69,7 +70,7 @@ public class DragonfireShield {
 				World.getWorld().schedule(new Task(hitDelay) {
 					public void execute() {
 						victim.playGraphics(Graphic.create(1167, 0, 100));
-						int hit = (int) (Math.ceil((double) Math.random() * (double) 37));
+						int hit = Utility.random(25);
 						victim.damage(new Hit(hit));
 						this.stop();
 					}

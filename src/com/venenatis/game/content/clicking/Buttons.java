@@ -36,7 +36,7 @@ public class Buttons {
 		
 		case 113230:
 			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.EASY));
-			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.VIRGIN);
+			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.FIRST_KILL);
 			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.EASY);
 			player.getActionSender().sendInterface(35_000);
 			break;
@@ -44,7 +44,7 @@ public class Buttons {
 		/* Achievement */
 		case 136201:
 			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.EASY));
-			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.VIRGIN);
+			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.FIRST_KILL);
 			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.EASY);
 			player.getActionSender().sendInterface(35_000);
 			break;

@@ -1,7 +1,9 @@
 package com.venenatis.game.model.entity.player;
 
 import java.text.DecimalFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -2416,8 +2418,6 @@ public class Player extends Entity {
 	public Stopwatch cannotUsePrayer = new Stopwatch();
 	public Stopwatch lastVeng = new Stopwatch();
 	
-	
-	public ArrayList<String> lastKilledList = new ArrayList<String>();
 	public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
 
 	public void debug(String string) {
@@ -3091,6 +3091,23 @@ public class Player extends Entity {
 
 	public boolean completedAchievements() {
 		return achievementsCompleted() >= AchievementList.getTotal() ? true : false;
+	}
+	
+	private Deque<String> lastKilledPlayers = new ArrayDeque<>(3);
+
+	/**
+	 * @return the lastKilledPlayers
+	 */
+	public Deque<String> getLastKilledPlayers() {
+		return lastKilledPlayers;
+	}
+
+	/**
+	 * @param lastKilledPlayers
+	 *            the lastKilledPlayers to set
+	 */
+	public void setLastKilledPlayers(Deque<String> lastKilledPlayers) {
+		this.lastKilledPlayers = lastKilledPlayers;
 	}
 	
 	

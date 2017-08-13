@@ -1,20 +1,19 @@
 package com.venenatis.game.task.impl;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.DeathDropHandler;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.rewards.WildernessRewards;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.SkullType;
+import com.venenatis.game.model.combat.impl.PlayerDrops;
+import com.venenatis.game.model.combat.impl.PlayerKilling;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.util.RandomGenerator;
 import com.venenatis.game.world.World;
 
 
@@ -57,7 +56,6 @@ public class DeathTask extends Task {
 
 			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
 			if (killer != null && Area.inWilderness(killer)) {
-				WildernessRewards.killed_player(killer, victim);
 				dropPlayerItems(victim);
 				reset(victim);
 				victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
@@ -91,7 +89,7 @@ public class DeathTask extends Task {
 		PrayerHandler.resetAllPrayers(victim);
 		victim.setSpecialAmount(100);
 		victim.setUsingSpecial(false);
-		WildernessRewards.clearList(victim);
+		PlayerKilling.removeHostFromList(victim, victim.getHostAddress());
 		Combat.skull(victim, SkullType.NONE, 0);
 		victim.getCombatState().getDamageMap().resetDealtDamage();
 		victim.playAnimation(Animation.create(-1));
@@ -111,7 +109,7 @@ public class DeathTask extends Task {
 		
 		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
 		if (!controller.isSafe() && !admin_keeps_items) {
-			DeathDropHandler.handleDeathDrop(victim);
+			PlayerDrops.dropItems(victim);
 		}
 	}
 }

@@ -15,14 +15,14 @@ import com.venenatis.game.content.achievements.AchievementHandler.AchievementDif
 public enum AchievementList {
 
 	/* Easy Achievements */
-	VIRGIN("Virgin", "Get your first kill in PvP.", 1, AchievementDifficulty.EASY),
-	YUM("Yum", "Eat 300 foods.", 300, AchievementDifficulty.EASY),
+	FIRST_KILL("First kill", "Get your first kill in PvP.", 1, AchievementDifficulty.EASY),
+	YUM("Yum", "Eat 300 consumables.", 300, AchievementDifficulty.EASY),
 	BOX_MAN("Box Man", "Open 35 armour sets.", 35, AchievementDifficulty.EASY),
 	OOH_FANCY("Ooh Fancy", "Setup your first preloading set.", 1, AchievementDifficulty.EASY),
 	FFS_MAN("FFS Man", "Die by poison 5 times.", 5, AchievementDifficulty.EASY),
 	SCHOOL_BASICS("School Basics", "Successfully answer 10 TriviaBot questions.", 10, AchievementDifficulty.EASY),
-	THE_GIVER("The Giver", "Cast Vengeance other 30 times.", 30, AchievementDifficulty.EASY),
-	MONEY_MAKER("Money Maker", "Cast the high alchemy spell 500 times.", 500, AchievementDifficulty.EASY),
+	THE_GIVER("Vengeance", "Cast Vengeance 30 times.", 30, AchievementDifficulty.EASY),
+	MONEY_MAKER("Thief", "Pickpocket mans 100 times", 100, AchievementDifficulty.EASY),
 	WHATS_IN_THE_BOX("What's in the box?", "Open the mystery box 1 time.", 1, AchievementDifficulty.EASY),
 
 	/* Medium Achievements */

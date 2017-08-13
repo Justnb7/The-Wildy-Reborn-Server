@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -136,6 +137,7 @@ public class PlayerSave {
 				player.setSpellBook(details.spellbook);
 				player.getSkills().setExpCounter(details.expCounter);
 				player.getCombatState().setRingOfRecoil(details.recoil);
+				
 				player.setVotePoints(details.votePoints);
 				player.setTotalVotes(details.totalVotes);
 				player.setPkPoints(details.pkPoints);
@@ -159,7 +161,9 @@ public class PlayerSave {
 				player.setAuguryUnlocked(details.unlockedAugury);
 				player.setCurrentKillStreak(details.currentKillStreak);
 				player.setHighestKillStreak(details.highestKillStreak);
-				player.lastKilledList.add(details.lastKilled);
+				if (details.lastKilledPlayers != null) {
+					player.setLastKilledPlayers(details.lastKilledPlayers);
+				}
 				player.setKillCount(details.killCount);
 				player.setDeathCount(details.deathCount);
 				player.setAttribute(BountyHunterConstants.ROGUE_CURRENT, details.rogueCurrent);
@@ -255,7 +259,7 @@ public class PlayerSave {
 		
 		private final int currentKillStreak;
 		private final int highestKillStreak;
-		private String lastKilled;
+		private final Deque<String> lastKilledPlayers;
 		private final int killCount;
 		private final int deathCount;
 		private final int rogueCurrent;
@@ -340,11 +344,7 @@ public class PlayerSave {
 			unlockedAugury = player.isAuguryUnlocked();
 			currentKillStreak = player.getCurrentKillStreak();
 			highestKillStreak = player.getHighestKillStreak();
-			for (int i = 0; i < player.lastKilledList.size(); i++) {
-				if (player.lastKilledList.get(i) != null && !player.lastKilledList.get(i).equalsIgnoreCase("null")) {
-					lastKilled = player.lastKilledList.get(i);
-				}
-			}
+			lastKilledPlayers = player.getLastKilledPlayers();
 			killCount = player.getKillCount();
 			deathCount = player.getDeathCount();
 			rogueCurrent = player.getAttribute(BountyHunterConstants.ROGUE_CURRENT, 0);

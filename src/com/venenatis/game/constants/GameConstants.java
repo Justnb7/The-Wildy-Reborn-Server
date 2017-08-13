@@ -1,9 +1,14 @@
 package com.venenatis.game.constants;
 
+import java.util.Arrays;
+
 import com.google.common.collect.ImmutableList;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.impl.CircleArea;
 import com.venenatis.game.location.impl.SquareArea;
+import com.venenatis.game.model.Item;
+import com.venenatis.game.util.chance.Chance;
+import com.venenatis.game.util.chance.WeightedChance;
 
 public class GameConstants {
 	
@@ -125,4 +130,52 @@ public class GameConstants {
 	    new SquareArea("Dagannoth lair", 2892, 4435, 2932, 4464),
 	    new SquareArea("Grand Exchange", 3178, 3502, 3190, 3514),
 	    new SquareArea("King Black Dragon lair", 2256, 4680, 2287, 4711));
+
+	public static Chance < Item > PVP_LOOTS = new Chance<> (Arrays.asList(
+		    new WeightedChance < Item > (10, new Item(4153, 1)), //Granite maul
+				
+		    new WeightedChance < Item > (1, new Item(4716, 1)), //Dharok's helm
+	        new WeightedChance < Item > (1, new Item(4718, 1)), //Dharok's greataxe
+	        new WeightedChance < Item > (1, new Item(4720, 1)), //Dharok's platebody
+	        new WeightedChance < Item > (1, new Item(4722, 1)), //Dharok's platelegs
+	        new WeightedChance < Item > (1, new Item(4724, 1)), //Guthan's helm
+	        new WeightedChance < Item > (1, new Item(4726, 1)), //Guthan's warspear
+	        new WeightedChance < Item > (1, new Item(4728, 1)), //Guthan's platebody
+	        new WeightedChance < Item > (1, new Item(4730, 1)), //Guthan's chainskirt
+	        new WeightedChance < Item > (1, new Item(4753, 1)), //Verac's helm
+	        new WeightedChance < Item > (1, new Item(4755, 1)), //Verac's flail
+	        new WeightedChance < Item > (1, new Item(4757, 1)), //Verac's brassard
+	        new WeightedChance < Item > (1, new Item(4759, 1)), //Verac's plateskirt
+	        new WeightedChance < Item > (1, new Item(4732, 1)), //Karil's coif
+	        new WeightedChance < Item > (1, new Item(4734, 1)), //Karil's crossbow
+	        new WeightedChance < Item > (1, new Item(4736, 1)), //Karil's leathertop
+	        new WeightedChance < Item > (1, new Item(4738, 1)), //Karil's leatherskirt
+	        new WeightedChance < Item > (1, new Item(4708, 1)), //Ahrim's hood
+	        new WeightedChance < Item > (1, new Item(4710, 1)), //Ahrim's staff
+	        new WeightedChance < Item > (1, new Item(4712, 1)), //Ahrim's robetop
+	        new WeightedChance < Item > (1, new Item(4714, 1)), //Ahrim's robeskirt
+	        new WeightedChance < Item > (1, new Item(4745, 1)), //Torag's helm
+	        new WeightedChance < Item > (1, new Item(4747, 1)), //Torag's hammers
+	        new WeightedChance < Item > (1, new Item(4749, 1)), //Torag's platebody
+	        new WeightedChance < Item > (1, new Item(4751, 1)), //Torag's platelegs			
+			new WeightedChance < Item > (1, new Item(11840, 1)), //Dragon boots        
+			
+			new WeightedChance < Item > (0.3, new Item(12829, 1)), //Spirit shield
+			new WeightedChance < Item > (0.3, new Item(6731, 1)), //Seers ring
+			new WeightedChance < Item > (0.3, new Item(6733, 1)), //Archers ring
+			new WeightedChance < Item > (0.3, new Item(6735, 1)), //Warrior ring
+			new WeightedChance < Item > (0.3, new Item(6585, 1)), //Amulet of fury
+			new WeightedChance < Item > (0.3, new Item(11283, 1)), //Dragonfire shield
+			new WeightedChance < Item > (0.3, new Item(6737, 1)), //Berserker ring
+			new WeightedChance < Item > (0.3, new Item(12926, 1)), //Blowpipe
+			new WeightedChance < Item > (0.3, new Item(11335, 1)), //Dragon full helm
+			new WeightedChance < Item > (0.3, new Item(11791, 1)), //Staff of the dead
+			new WeightedChance < Item > (0.3, new Item(12904, 1)), //Toxic staff of the dead
+			new WeightedChance < Item > (0.3, new Item(12899, 1)), //Trident of the swamp
+			new WeightedChance < Item > (0.3, new Item(11907, 1)), //Trident of the seas
+			new WeightedChance < Item > (0.3, new Item(11235, 1)), //Dark bow
+			new WeightedChance < Item > (0.3, new Item(12931, 1)), //Serpentine helm
+			new WeightedChance < Item > (0.3, new Item(13199, 1)), //Magma helm
+			new WeightedChance < Item > (0.3, new Item(13197, 1)) //Tanzanite helm
+		));
 }

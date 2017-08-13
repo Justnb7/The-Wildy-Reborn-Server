@@ -246,12 +246,12 @@ public class ModeratorCommand implements Command {
 
 				name = name.replaceAll("_", " ");
 				
-				if (World.getWorld().getPlayerByName(name).isPresent()) {
-					Sanctions.removeNameFromBanList(name);
-				} else {
+				Player target = World.getWorld().lookupPlayerByName(name);
+				if(target == null)
 					player.getActionSender().sendMessage("Couldn't find player " + name + ".");
-					return false;
-				}
+				else
+					Sanctions.removeNameFromBanList(name);
+				player.getActionSender().sendMessage(name + " has been unbanned.");
     		}
    		 return true;
    		 

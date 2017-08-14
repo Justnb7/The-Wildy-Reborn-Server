@@ -19,24 +19,26 @@ public class TeleportHandler {
 	public enum TeleportData {
 
 		/* Skilling */
-		WOODCUTTING(TeleportationTypes.SKILLING, 226195, 58054, "Woodcutting", new Location(2726, 3490), 0, "---", "Safe", false),
-		MINING(TeleportationTypes.SKILLING, 226199, 58058, "Mining", new Location(3253, 3421, 0), 0, "---", "<col=ff0000>Safe", true),
-		FISHING_AND_COOKING(TeleportationTypes.SKILLING, 226203, 58062, "Fishing & Cooking", new Location(2809, 3440, 0), 0, "---", "<col=ff0000>Danger", false),
-		AGILITY(TeleportationTypes.SKILLING, 226207, 58066, "Agility", new Location(3222, 3218, 0), 0, "---", "<col=ff0000>Danger", true),
+		WOODCUTTING(TeleportationTypes.SKILLING, 226195, 58054, "Woodcutting", new Location(2726, 3490), 0, "---", "---", false),
+		MINING(TeleportationTypes.SKILLING, 226199, 58058, "Mining", new Location(-1, -1, 0), 0, "---", "---", true),
+		FISHING_AND_COOKING(TeleportationTypes.SKILLING, 226203, 58062, "Fishing & Cooking", new Location(2809, 3440, 0), 0, "---", "---", false),
+		AGILITY(TeleportationTypes.SKILLING, 226207, 58066, "Agility", new Location(-1, -1, 0), 0, "---", "---", true),
 		
 		/* Player Vs Player */
 		WILDERNESS(TeleportationTypes.PVP, 226195, 58054, "Wilderness", new Location(3093, 3523), 0, "---", "---", false),
 		MAGE_BANK(TeleportationTypes.PVP, 226199, 58058, "Mage Bank", new Location(2540, 4717, 0), 0, "---", "---", false),
-		EAST_DRAGONS(TeleportationTypes.PVP, 226203, 58062, "East Dragons", new Location(3333, 3666, 0), 0, "---", "---", false),
-		CASTLE(TeleportationTypes.PVP, 226207, 58066, "Castle", new Location(3002, 3626, 0), 0, "---", "---", false),
+		EAST_DRAGONS(TeleportationTypes.PVP, 226203, 58062, "East Dragons", new Location(3333, 3666, 0), 0, "---", "19+ Wilderness", false),
+		CASTLE(TeleportationTypes.PVP, 226207, 58066, "Castle", new Location(3002, 3626, 0), 0, "---", "14+ Wilderness", false),
 
 		/* Player Vs Monster */
-		KING_BLACK_DRAGON(TeleportationTypes.PVM, 226195, 58054, "King Black Dragon", new Location(2997, 3849, 0), 0, "High combat", "40+ Wilderness", false),
-		CHAOS_ELEMENTAL(TeleportationTypes.PVM, 226199, 58058, "Chaos Elemental", new Location(3284, 3913, 0), 0, "High combat", "50+ Wilderness", false),
-		DAGANNOTHS(TeleportationTypes.PVM, 226203, 58062, "Dagannoth Kings", new Location(1912, 4367, 0), 0, "---", "---", false),
-		DAGANNOTH_MOTHER(TeleportationTypes.PVM, 226207, 58066, "Dagannoth Mother", new Location(2530, 4649, 0), 0, "High combat", "20+ Wild", false),
-		ZOMBIES_CHAMPION(TeleportationTypes.PVM, 226211, 58070, "Zombies Champion", new Location(3022, 3632, 0), 0, "High combat", "20+ Wild", false),
-		GIANT_MOLE(TeleportationTypes.PVM, 226215, 58074, "Giant Mole", new Location(1761, 5186, 0), 0, "High combat", "20+ Wild", false),
+		SLAYER_LOCATIONS(TeleportationTypes.PVM, 226195, 58054, "Slayer locations", new Location(-1, -1, 0), 0, "---", "---", true),
+		TRAINING_LOCATIONS(TeleportationTypes.PVM, 226199, 58058, "Training locations", new Location(-1, -1, 0), 0, "---", "---", true),
+		KING_BLACK_DRAGON(TeleportationTypes.PVM, 226203, 58062, "King black dragon", new Location(2997, 3849, 0), 0, "High combat", "40+ Wilderness", false),
+		CHAOS_ELEMENTAL(TeleportationTypes.PVM, 226207, 58066, "Chaos elemental", new Location(3284, 3913, 0), 0, "High combat", "50+ Wilderness", false),
+		DAGANNOTHS(TeleportationTypes.PVM, 226211, 58070, "Dagannoth kings", new Location(1912, 4367, 0), 0, "---", "---", false),
+		DAGANNOTH_MOTHER(TeleportationTypes.PVM, 226215, 58074, "Dagannoth mother", new Location(2530, 4649, 0), 0, "High combat", "20+ Wild", false),
+		ZOMBIES_CHAMPION(TeleportationTypes.PVM, 226219, 58078, "Zombies champion", new Location(3022, 3632, 0), 0, "High combat", "20+ Wild", false),
+		GIANT_MOLE(TeleportationTypes.PVM, 226223, 58082, "Giant mole", new Location(1761, 5186, 0), 0, "High combat", "20+ Wild", false),
 
 		/* Minigame */
 		DUEL_ARENA(TeleportationTypes.MINIGAME, 226195, 58054, "Duel Arena", new Location(3365, 3265, 0), 0, "---", "---", false),
@@ -145,7 +147,7 @@ public class TeleportHandler {
 			player.getActionSender().sendConfig(678, 0);
 			player.getActionSender().sendConfig(679, 1);
 			player.getActionSender().sendConfig(680, 0);
-			player.getActionSender().sendScrollBar(58050, 0);
+			player.getActionSender().sendScrollBar(58050, 250);
 			break;
 
 		case MINIGAME:
@@ -287,37 +289,17 @@ public class TeleportHandler {
 
 	private static void handleSpecial(Player player, TeleportData data) {
 		switch (data) {
+		case SLAYER_LOCATIONS:
+			player.getDialogueManager().start("SLAYER_TELEPORTS");
+			break;
+		case TRAINING_LOCATIONS:
+			player.getDialogueManager().start("TRAINING_TELEPORTS");
+			break;
 		case MINING:
-			/*player.getDialogueFactory().sendOption("Lumbridge (Danger)", () -> {
-				player.getMagic().teleport(new Location(3148, 3155, 0), TeleportTypes.SPELL_BOOK, false);
-				player.setTeleportationType(null);
-			}, "Varrock (Danger)", () -> {
-				player.getMagic().teleport(new Location(3285, 3371, 0), TeleportTypes.SPELL_BOOK, false);
-				player.setTeleportationType(null);
-			}, "Falador (Danger)", () -> {
-				player.getMagic().teleport(new Location(3044, 9785, 0), TeleportTypes.SPELL_BOOK, false);
-				player.setTeleportationType(null);
-			}).execute();*/
+			player.getDialogueManager().start("MINING_TELEPORTS");
 			break;
 		case AGILITY:
-			/*player.getDialogueFactory().sendOption("Gnome agility course", () -> {
-				player.getMagic().teleport(new Location(2480, 3437, 0), TeleportTypes.SPELL_BOOK, false);
-				player.setTeleportationType(null);
-			}, "Barbarian agility course", () -> {
-				player.getMagic().teleport(new Location(2546, 3551, 0), TeleportTypes.SPELL_BOOK, false);
-				player.setTeleportationType(null);
-			}, "Wilderness agility course (50+ wild)", () -> {
-				player.getMagic().teleport(new Location(2998, 3915, 0), TeleportTypes.SPELL_BOOK, false);
-				player.setTeleportationType(null);
-			}, "Rooftop courses", () -> {	
-				player.getDialogueFactory().sendOption("Seer's course", () -> {
-					player.getMagic().teleport(new Location(2729, 3488, 0), TeleportTypes.SPELL_BOOK, false);
-					player.setTeleportationType(null);
-				}, "Ardougne course", () -> {
-					player.getMagic().teleport(new Location(2674, 3297, 0), TeleportTypes.SPELL_BOOK, false);
-					player.setTeleportationType(null);
-				}).execute();		
-			}).execute();*/
+			player.getDialogueManager().start("AGILITY_TELEPORTS");
 			break;
 		default:
 			break;

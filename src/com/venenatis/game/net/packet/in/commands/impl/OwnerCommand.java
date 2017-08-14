@@ -41,6 +41,10 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "opensi":
+    		player.getSlayerInterface().open(player);
+    		break;
+		
 		/* Mass Banner */
 		case "massbanner":
 			String message = "";

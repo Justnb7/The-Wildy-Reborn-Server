@@ -1,9 +1,9 @@
 package com.venenatis.game.task.impl;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
+import com.venenatis.server.GameEngine;
 
 public class SavePlayers extends Task {
 
@@ -13,10 +13,10 @@ public class SavePlayers extends Task {
 
 	@Override
 	public void execute() {
-		for (Player player : World.getWorld().getPlayers()) {
-			if (player != null) {
-				//PlayerSerialization.saveGame(player);
-				PlayerSave.save(player);
+		for (Player p2 : World.getWorld().getPlayers()) {
+			if (p2 != null) {
+				//PlayerSerialization.saveGame(p2);
+				GameEngine.loginMgr.requestSave(p2);
 			}
 		}
 	}

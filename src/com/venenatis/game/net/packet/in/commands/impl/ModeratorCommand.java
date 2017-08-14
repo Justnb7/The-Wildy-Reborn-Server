@@ -1,15 +1,15 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
-import java.util.Optional;
-
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Sanctions;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.world.World;
+import com.venenatis.server.GameEngine;
+
+import java.util.Optional;
 
 /**
  * A list of commands accessible to all players with the moderator's rank or
@@ -30,16 +30,16 @@ public class ModeratorCommand implements Command {
 
 		/* Save */
 		case "save":
-			PlayerSave.save(player);
-			player.getActionSender().sendMessage("Your account has been successfully saved.");
+			GameEngine.loginMgr.requestSave(player);
+			player.getActionSender().sendMessage("Submitted save request.");
 			return true;
 
 		/* Saveall */
 		case "saveall":
-			for (Player players : World.getWorld().getPlayers()) {
-				if (players != null) {
-					PlayerSave.save(players);
-					player.getActionSender().sendMessage("Your account has been saved.");
+			for (Player p2 : World.getWorld().getPlayers()) {
+				if (p2 != null) {
+					GameEngine.loginMgr.requestSave(p2);
+					player.getActionSender().sendMessage("Submitted save requests for everybody online.");
 				}
 			}
 			return true;

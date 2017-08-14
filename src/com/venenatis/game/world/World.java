@@ -388,6 +388,7 @@ public class World implements Service {
 						player.getOutStream().writeFrame(109);
 						player.flushOutStream();
 						unregister(player);
+						// Force save, don't don't put it in the queue otherwise we'll just kill the server below without saving.
 						PlayerSave.save(player);
 						System.exit(1);
 					}

@@ -1,16 +1,15 @@
 package com.venenatis.game.model.entity.player.account.widget;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
-
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.save.PlayerSaveUtility;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * The class which represents functionality for selecting your game mode.
@@ -218,8 +217,7 @@ public class Selection {
 		player.getEquipment().calculateWeight();
 		player.getEquipment().updateWeapon();
 		player.getEquipment().setBonus();
-		
-		PlayerSave.save(player);
+
 	}
 	
 	/**

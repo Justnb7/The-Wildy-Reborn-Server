@@ -1,10 +1,5 @@
 package com.venenatis.game.content.activity.minigames.impl.duelarena;
 
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.stream.IntStream;
-
 import com.google.common.collect.ImmutableList;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.achievements.AchievementHandler;
@@ -21,12 +16,17 @@ import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.task.impl.DeathTask;
 import com.venenatis.game.util.StringUtils;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
+import com.venenatis.server.GameEngine;
+
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.stream.IntStream;
 
 /**
  * Represents a minigame in which {@link Player}s fight in a arena and can choose to stake their items for their opponents.
@@ -870,7 +870,7 @@ public final class DuelArena extends Minigame {
 
 		player.setOtherPlayerDuelIndex(-1);
 		player.getActionSender().removeAllInterfaces();
-		PlayerSave.save(player);
+		GameEngine.loginMgr.requestSave(player);
 	}
 
 	/**

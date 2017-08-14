@@ -122,19 +122,8 @@ public class EquipmentContainer extends Container {
 		
 		//TODO ignore range str of ammo slot when wearing throwing weapons
 		
-		Arrays.fill(player.getBonuses(), 0);
 		
-		for (int index = 0; index < player.getBonuses().length; index++) {
-			final Item item = get(index);
-			
-			if (item != null) {
-				EquipmentDefinition def = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
-
-				for (int slot = 0; slot < Math.min(player.getBonuses().length, def.getBonuses().length); slot++) {
-					player.getBonuses()[slot] += def.getBonuses()[slot];
-				}
-			}
-		}
+		EquipmentContainer.calcBonuses(player);
 		
 		if(player.getEquipment().contains(12926)) {
 			
@@ -160,7 +149,27 @@ public class EquipmentContainer extends Container {
 			//player.getActionSender().sendMessage(Combat.BONUS_NAMES[bonus]+" VS "+ (bonuses[bonus] >= 0 ? "+" : "")+ " VS "+ (15115 + bonus - 10));
 		}
 	}
-	
+
+	private static void calcBonuses(Player player) {
+		calcBonuses(player, false);
+	}
+	public static void calcBonuses(Player player, boolean ignoreArrows) {
+		Arrays.fill(player.getBonuses(), 0);
+		for (int index = 0; index < player.getBonuses().length; index++) {
+			if (index == EquipmentConstants.AMMO_SLOT && ignoreArrows)
+				continue; 
+			final Item item = player.getEquipment().get(index);
+			
+			if (item != null) {
+				EquipmentDefinition def = EquipmentDefinition.EQUIPMENT_DEFINITIONS.get(item.getId());
+
+				for (int slot = 0; slot < Math.min(player.getBonuses().length, def.getBonuses().length); slot++) {
+					player.getBonuses()[slot] += def.getBonuses()[slot];
+				}
+			}
+		}
+	}
+
 	/**
 	 * Calculates and writes the players weight to the equipment equipment
 	 * sidebar interface.

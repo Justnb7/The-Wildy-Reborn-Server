@@ -592,12 +592,15 @@ public class Combat {
 		}
    
         loseAmmo(player, target);
+        
+        boolean ignoreArrows = rangeWeaponType != null && Combat.isHandWeapon(rangeWeaponType);
+        player.debug("ignore arrow str:"+ignoreArrows);
 
         // Random dmg
-        int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
+        int dam1 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit(ignoreArrows));
 
         //Random dmg2 (special case such as darkbow)
-        int dam2 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit());
+        int dam2 = Utility.getRandom(player.getCombatState().calculateRangeMaxHit(ignoreArrows));
         
         // Bolt special increases damage.
         boolean boltSpec = isCrossBow(bowType) && Utility.getRandom(target.isPlayer() ? 10 : 8) == 1;

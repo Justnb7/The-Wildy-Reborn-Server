@@ -95,7 +95,13 @@ public class CombatState {
 	}
 	
 	public int calculateRangeMaxHit() {
-		return CombatFormulae.calculateRangeMaxHit(entity.asPlayer(), entity.asPlayer().getCombatState().target, entity.asPlayer().isUsingSpecial());
+		return calculateRangeMaxHit(false); // dont ignore by default
+	}
+	
+	public int calculateRangeMaxHit(boolean ignoreArrowRangeStr) {
+		return CombatFormulae.calculateRangeMaxHit(entity.asPlayer(), entity.asPlayer().getCombatState().target, 
+				entity.asPlayer().isUsingSpecial(), ignoreArrowRangeStr 
+				);
 	}
 
 	public void reset() {

@@ -210,14 +210,14 @@ public class NpcCombat {
 		if (npc.transforming)
 			return false;
 		
-		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-		boolean quiver = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null && ammo.getId() > -1 ? true : false;
+		/*Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
+		boolean quiver = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null && ammo.getId() > -1 ? true : false;*/
 		
-		if(CombatFormulae.usingThrowingWeapon(player) && quiver) {
+		/*if(CombatFormulae.usingThrowingWeapon(player) && quiver) {
 			player.getActionSender().sendMessage("Remove your ammo first before using knives.");
 			Combat.resetCombat(player);
 			return false;
-		}
+		}*/
 
 		if (!Slayer.canAttack(player, npc)) {
 			return false;

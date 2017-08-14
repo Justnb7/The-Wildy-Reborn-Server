@@ -6,6 +6,7 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
 import com.venenatis.game.model.combat.data.CombatStyle;
+import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Entity;
@@ -401,20 +402,21 @@ public class CombatFormulae {
 	/**
 	 * Calculates a mob's range max hit.
 	 */
-	public static int calculateRangeMaxHit(Entity mob, Entity victim, boolean special) {
+	public static int calculateRangeMaxHit(Entity mob, Entity victim, boolean special, boolean ignoreArrowStr) {
 		Player player = (Player) mob;
 		int maxHit = 0;
 		double specialMultiplier = 1;
 		double prayerMultiplier = 1;
-		double otherBonusMultiplier = 1;	
+		double otherBonusMultiplier = 1;
+		if (ignoreArrowStr && mob.isPlayer()) {
+			EquipmentContainer.calcBonuses((Player)mob, true);
+		}
 		int rangedStrength = player.getBonuses().length < 13 ? 0 : player.getBonuses()[11];
+		System.out.println("str used: "+rangedStrength);
 		
-		Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-
-		boolean quiver = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null && ammo.getId() > -1 ? true : false;
-		
-		if (quiver && usingThrowingWeapon(player)) {
-			//TODO ignore other slot range str
+		if (ignoreArrowStr && mob.isPlayer()) {
+			// reset to normal afterwards for any future attacks
+			EquipmentContainer.calcBonuses((Player)mob, false);
 		}
 		
 		if (player.getBonuses().length < 13) {
@@ -452,7 +454,7 @@ public class CombatFormulae {
 		
 		if(special) {
 			if(player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null) {
-				switch(ammo.getId()) {
+				switch(player.getEquipment().get(EquipmentConstants.AMMO_SLOT) .getId()) {
 				case 11212:
 					specialMultiplier = 1.5;
 					break;

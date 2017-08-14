@@ -1383,17 +1383,10 @@ public class Player extends Entity {
 		outStream.offset = 0;
 	}
 
+	/**
+	 * Try to logout. Prompted by messages if not allowed, such as in a stake.
+	 */
 	public void logout() {
-		MinigameHandler.execute(this, $it -> $it.onLogout(this));
-		
-		
-		if (getClan() != null) {
-			ClanManager.leave(this, true);
-		}
-		
-		//Reset poison and venom
-		this.setInfection(0);
-		this.infected = false;
 		
 		if (isDueling() || getDuelArena().isInSession()) {
 			getActionSender().sendMessage("You cannot logout while in duel arena.");
@@ -1409,7 +1402,6 @@ public class Player extends Entity {
 		} else {
 			getActionSender().sendMessage("You must wait 10 seconds before logging out.");
 		}
-		controller.onLogout(this);
 	}
 
 	@Override

@@ -253,8 +253,7 @@ public class World implements Service {
 			/*
 			 * Once we're done disconnecting our player, we'll go ahead and save him
 			 */
-			//PlayerSerialization.saveGame(player);
-			PlayerSave.save(player);
+			GameEngine.loginMgr.requestSave(player);
 
 			System.out.println("[Deregistered] " + player + ", Proper Logout: " + player.properLogout);
 			/*

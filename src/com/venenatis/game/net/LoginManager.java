@@ -5,11 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
@@ -56,7 +53,11 @@ public class LoginManager {
 	public GameEngine getEngine() {
 		return engine;
 	}
-	
+
+	public void requestSave(Player player) {
+		pendingSaves.offer(player);
+	}
+
 	public static class LoginRequest {
 		public LoginRequest(ChannelHandlerContext ctx2, Channel chan2, LoginCredential credential) {
 			this.creds = credential;
@@ -85,10 +86,19 @@ public class LoginManager {
         IO_THREAD.scheduleAtFixedRate(() -> {
 
 			// Handle requests.
-			LoginRequest r;
+			LoginRequest r = null;
 			while ((r = loginRequests.poll()) != null) {
-				logger.info("Login req being handled: "+r);
+				logger.info("Login request being handled for "+r.creds.getName()+" on the Login IO thread.");
 				handleRequest(r);
+			}
+
+			Player p = null;
+			// Peek because we don't want to remove it before the save is complete.
+			while ((p = pendingSaves.peek()) != null) {
+				//PlayerSerialization.saveGame(player);
+				PlayerSave.save(p);
+				pendingSaves.poll(); // remove from the backing queue after save is complete.
+				logger.info("Profile saved for "+p.getUsername()+" on the Login IO thread.");
 			}
         }, 0, IO_PULE_RATE, TimeUnit.SECONDS);
 	}
@@ -351,13 +361,29 @@ public class LoginManager {
     private static final ScheduledExecutorService IO_THREAD = Executors.newSingleThreadScheduledExecutor();
     
     private final LinkedList<String> queuedLoginNames = new LinkedList<String>();
+	private final LinkedList<Player> pendingSaves = new LinkedList<Player>();
 
     /**
      * Add the request to the Queue. Why have a method instead of just list.add()? Because we need to SYNCHONIZE on it to avoid other threads messing with it.
      * @param loginRequest
      */
 	public static void requestLogin(LoginRequest loginRequest) {
-		if (!GameEngine.loginMgr.queuedLoginNames.contains(loginRequest.creds.getName().toLowerCase()))
-				GameEngine.loginMgr.loginRequests.offer(loginRequest);
+		String name = loginRequest.creds.getName().toLowerCase();
+
+		// Only put request into queue if not already logging in, or being saved.
+		if (GameEngine.loginMgr.queuedLoginNames.contains(name)) {
+			logger.info("Rejected login request - login already pending");
+			sendReturnCode(LoginCode.ACCOUNT_ONLINE, loginRequest);
+		} else if (GameEngine.loginMgr.isSavePending(name)) {
+			logger.info("Rejected login request - profile being saved");
+			sendReturnCode(LoginCode.ACCOUNT_ONLINE, loginRequest);
+		}
+		else {
+			GameEngine.loginMgr.loginRequests.offer(loginRequest);
+		}
+	}
+
+	public boolean isSavePending(String name) {
+		return pendingSaves.stream().filter(p -> p != null && p.getUsername().equalsIgnoreCase(name)).findAny().isPresent();
 	}
 }

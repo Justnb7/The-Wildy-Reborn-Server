@@ -137,7 +137,7 @@ public class RS2LoginProtocol extends ByteToMessageDecoder {
 			String pass = readRS2String(encryptedBuffer);
 			String identity = readRS2String(encryptedBuffer);
 			String macAddress = readRS2String(encryptedBuffer);
-			System.out.println("yo "+name+" "+pass+" "+identity+" "+macAddress+" "+uid);
+			//System.out.println("yo "+name+" "+pass+" "+identity+" "+macAddress+" "+uid);
 			ctx.channel().pipeline().replace("encoder", "encoder", new LoginEncoder());
 			out.add(new LoginCredential(name, pass, identity, macAddress, inCipher, outCipher, uid, clientVersion));
 		}

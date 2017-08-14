@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -72,7 +73,7 @@ public class LoginManager {
 	}
 	
 	// TODO change to queue see demenethium pretty sure they've got a good impl
-	public final List<LoginRequest> loginRequests = new ArrayList<>();
+	public final LinkedBlockingQueue<LoginRequest> loginRequests = new LinkedBlockingQueue<>();
 	
 	/**
 	 * Submits the main Runnable which will handle login requests on the Login Thread.
@@ -81,20 +82,13 @@ public class LoginManager {
 	public LoginManager(GameEngine engine) {
 		this.engine = engine;
         IO_THREAD.scheduleAtFixedRate(() -> {
-        	
-        	// Lock the loginRequests object .. this means other Threads cannot access it and add/remove items.
-        	synchronized (loginRequests) {
-        		
-				// Handle requests.
-        		Iterator<LoginRequest> it = loginRequests.iterator();
-        		LoginRequest r;
-        		while (it.hasNext()) {
-        			r = it.next();
-        			logger.info("Login req being handled: "+r);
-        			handleRequest(r);
-        			it.remove();
-        		}
-        	}
+
+			// Handle requests.
+			LoginRequest r;
+			while ((r = loginRequests.poll()) != null) {
+				logger.info("Login req being handled: "+r);
+				handleRequest(r);
+			}
         }, 0, IO_PULE_RATE, TimeUnit.SECONDS);
 	}
 
@@ -358,8 +352,6 @@ public class LoginManager {
      * @param loginRequest
      */
 	public static void requestLogin(LoginRequest loginRequest) {
-		synchronized (GameEngine.loginMgr.loginRequests) {
-			GameEngine.loginMgr.loginRequests.add(loginRequest);
-		}
+		GameEngine.loginMgr.loginRequests.offer(loginRequest);
 	}
 }

@@ -32,6 +32,14 @@ public class PlayerCommand implements Command {
 
 		switch (parser.getCommand()) {
 		
+		case "resettask":
+			if(player.getUsername().equalsIgnoreCase("killa")) {
+				player.setSlayerTask(0);
+				player.setSlayerTaskAmount(0);
+				player.getActionSender().sendMessage("[Server] You're slayer task has been resetted.");
+			}
+			return true;
+		
 		case "rules":
 			player.getActionSender().sendString("www.venenatis.com/forum/index.php?topic=6.0", -1);
 			return true;

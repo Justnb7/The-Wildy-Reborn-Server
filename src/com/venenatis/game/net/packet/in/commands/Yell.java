@@ -23,7 +23,7 @@ public class Yell {
 	
 	public static void yell(Player player, String message) {
 
-		if (player.getRights().equal(Rights.PLAYER) && player.getKillCount() < 100 && player.getUsername().equalsIgnoreCase("killa") || !player.getUsername().equalsIgnoreCase("julio") || !player.getUsername().equalsIgnoreCase("impossible")) {
+		if (player.getRights().equal(Rights.PLAYER) && player.getKillCount() < 100 && !player.getUsername().equalsIgnoreCase("killa") && !player.getUsername().equalsIgnoreCase("julio") && !player.getUsername().equalsIgnoreCase("impossible")) {
 			player.getActionSender().sendMessage("You need atleast a killcount of 100 to yell.");
 			return;
 		}

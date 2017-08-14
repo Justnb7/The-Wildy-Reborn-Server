@@ -17,11 +17,10 @@ public class UnlockInterface {
 	
 	public enum UnlockButtons {
 		
-		TELEPORTING(new int[]{91110}, 13666, 
-				"Task Teleport",
-				"Teleport to your tasks by right"
-				+ "\\non your slayer gem <col=ff0000>(150 points)</col>"
-				+ "\\n"),;
+		TELEPORTING(new int[]{91110}, 4147, 
+				"Gargoyle smasher",
+				"Automatically smash gargoyles when"
+				+ "\\nthey're on critical health, if you have the\\nright tool. <col=ff0000>(120 points)</col>"),;
 		
 		
 		

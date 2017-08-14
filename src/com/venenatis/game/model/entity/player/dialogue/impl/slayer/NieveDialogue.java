@@ -80,7 +80,7 @@ public class NieveDialogue extends Dialogue {
 										setPhase(11);
 									} else {
 										if (getPhase() == 12) {
-											send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Duradel can be found in Burthorpe.", "You can get there using the 'Teleport' option", "on an Enchanted gem.");
+											send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Duradel can be found in Edgevile.", "You can get there using the 'Teleport' option", "on an Enchanted gem.");
 											setPhase(9);
 										} else {
 											if (getPhase() == 13) {

@@ -25,7 +25,7 @@ public class MazchnaDialogue extends Dialogue {
 			setPhase(0);
 		} else {
 			player.getActionSender().sendMessage("You cannot talk to Mazchna as you are yet to start the 'Slayer' skill.");
-			player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ in Edgeville to do so.");
+			player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ in Edgevile.");
 		}
 		
 	}
@@ -82,7 +82,7 @@ public class MazchnaDialogue extends Dialogue {
 								send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Nieve can be found in Draynor Village.", "You can get there using the 'Teleport' option", "on an Enchanted gem.");
 								setPhase(3);
 							} else if (Slayer.suitableMaster(player) == SlayerMasters.DURADEL) {
-								send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Duradel can be found in Burthorpe.", "You can get there by using the 'Teleport' option", "on your Enchanted gem.");
+								send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Duradel can be found in Edgevile.", "You can get there by using the 'Teleport' option", "on your Enchanted gem.");
 								setPhase(3);
 							}
 						} else {

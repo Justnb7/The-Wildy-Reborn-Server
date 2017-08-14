@@ -21,7 +21,7 @@ public class DuradelDialogue extends Dialogue {
 	protected void start(Object... parameters) {
 		if (!player.getFirstSlayerTask()) {
 			player.getActionSender().sendMessage("You cannot talk to Duradel as you are yet to start the 'Slayer' skill.");
-			player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ in Edgeville to do so.");
+			player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ in Edgevile.");
 		} else {
 			send(Type.NPC, NPC_ID, Expression.DEFAULT, "What do you want?");
 			if (!player.getFirstBossSlayerTask()) {

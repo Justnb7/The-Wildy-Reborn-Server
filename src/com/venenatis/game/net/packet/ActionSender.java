@@ -941,10 +941,12 @@ public class ActionSender {
 	
 	public ActionSender sendBanner(String title, String message, int color) {
 		if (title != null) {
+			player.outStream.putFrameVarByte(202);
+			int offset = player.getOutStream().offset;
 			player.getOutStream().putRS2String(title);
 			player.getOutStream().putRS2String(message);
 			player.getOutStream().putInt(color);
-			player.flushOutStream();
+			player.outStream.putFrameSizeByte(offset);
 		}
 		return this;
 	}

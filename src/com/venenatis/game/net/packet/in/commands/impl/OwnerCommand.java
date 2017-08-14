@@ -55,7 +55,6 @@ public class OwnerCommand implements Command {
 				for (Player players : World.getWorld().getPlayers()) {
 					if (players != null) {
 						players.getActionSender().sendBanner("Venenatis Notification", message, 0xFA960A);
-
 					}
 				}
 			}

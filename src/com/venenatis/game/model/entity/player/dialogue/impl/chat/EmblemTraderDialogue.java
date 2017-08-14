@@ -1,7 +1,6 @@
 package com.venenatis.game.model.entity.player.dialogue.impl.chat;
 
-import com.venenatis.game.content.bounty.BountyHunterEmblem;
-import com.venenatis.game.model.Item;
+import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.model.entity.player.dialogue.Type;
@@ -41,17 +40,7 @@ public class EmblemTraderDialogue extends Dialogue {
 			setPhase(2);
 		} else if (isPhase(2)) {
 			send(Type.STATEMENT, "Calculating total points...");
-			totalPoints = 0;
-			for (Item i : player.getInventory().toArray()) {
-				int id = i.getId();
-				if (id <= 0) {
-					continue;
-				}
-				BountyHunterEmblem emblem = BountyHunterEmblem.get(id);
-				if (emblem != null) {
-					totalPoints += emblem.getBounties();
-				}
-			}
+			totalPoints = BountyHunter.getValueForEmblems(player, false);
 			setPhase(3);
 		} else if (isPhase(3)) {
 			if (totalPoints > 0) {
@@ -79,18 +68,8 @@ public class EmblemTraderDialogue extends Dialogue {
 			}
 		} else if (isPhase(4)) {
 			if (index == 1) {
-				totalPoints = 0;
-				for (int i = 0; i < player.getInventory().getSize(); i++) {
-					int id = player.getInventory().getId(i);
-					if (id <= 0) {
-						continue;
-					}
-					BountyHunterEmblem emblem = BountyHunterEmblem.get(id);
-					if (emblem != null) {
-						totalPoints += emblem.getBounties();
-						player.getInventory().remove(new Item(emblem.getItemId(), i));
-					}
-				}
+				totalPoints = BountyHunter.getValueForEmblems(player, true);
+				
 				if(player.getBountyPoints() == Integer.MAX_VALUE) {
 					return;
 				}

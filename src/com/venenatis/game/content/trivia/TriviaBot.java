@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.venenatis.game.content.achievements.AchievementHandler;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
@@ -111,6 +113,8 @@ public class TriviaBot {
 		Item reward = Utility.randomElement(REWARDS);
 		World.getWorld().sendWorldMessage("<img=12><col=0066FF><shad=222222>[Trivia]: Congratulations, "+Utility.formatName(player.getUsername())+" has won "+reward.getName()+".", false);
 		player.getInventory().addOrCreateGroundItem(player, reward);
+		AchievementHandler.activate(player, AchievementList.SCHOOL_BASICS, 1);
+		AchievementHandler.activate(player, AchievementList.BRAINS, 1);
 		reset();
 	}
 

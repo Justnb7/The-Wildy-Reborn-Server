@@ -54,9 +54,9 @@ public class PlayerDrops {
 
 		PlayerKilling.addHostToList(killer, victim.getHostAddress());
 		
-		/*AchievementHandler.activate(killer, AchievementList.FIRST_KILL, 1);
+		AchievementHandler.activate(killer, AchievementList.FIRST_KILL, 1);
 		AchievementHandler.activate(killer, AchievementList.LEARNING_CURVE, 1);
-		AchievementHandler.activate(killer, AchievementList.MASTER, 1);*/
+		AchievementHandler.activate(killer, AchievementList.MASTER, 1);
 		
 		BountyHunter.handleBountyHunterKill(victim, killer);
 		
@@ -76,6 +76,10 @@ public class PlayerDrops {
 				killer.getActionSender().sendMessage("@bla@You gain @red@ 1 @bla@extra PK Points because of your @red@" + killer.getCurrentKillStreak() + " @bla@killstreak.");
 				totalPoints += 1;
 			}
+		}
+		
+		if (killer.getHighestKillStreak() == 30) {
+			AchievementHandler.activate(killer, AchievementList.SETTING_THE_RECORD, 1);
 		}
 		
 		//Apply member bonus
@@ -98,6 +102,10 @@ public class PlayerDrops {
 		if (killer.getCurrentKillStreak() > killer.getHighestKillStreak()) {
 			killer.getActionSender().sendMessage("Congratulations, your highest kill streak has increased!");
 			killer.setHighestKillStreak(killer.getCurrentKillStreak());
+		}
+		
+		if (victim.getCurrentKillStreak() >= 30) {
+			AchievementHandler.activate(killer, AchievementList.RECORD_BREAKER, 1);
 		}
 		
 		//Increase death and kill count

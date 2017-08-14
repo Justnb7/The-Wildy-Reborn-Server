@@ -1,6 +1,7 @@
 package com.venenatis.game.content.clicking.objects;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
+import com.venenatis.game.content.ArmourSets;
 import com.venenatis.game.content.skills.cooking.Cookables;
 import com.venenatis.game.content.skills.cooking.Cooking;
 import com.venenatis.game.location.Location;
@@ -31,6 +32,40 @@ public class ItemOnObjectInteract {
 				return;
 			}
 			break;
+			
+		/* Bank */
+		case "bank":
+		case "Bank":
+		case "bank booth":
+		case "booth":
+		case "bank chest":
+			if (ArmourSets.isSet(player, item.getId())) {
+				ArmourSets.openSet(player, item.getId());
+				return;
+			}
+			
+			if (!item.isNoted()) {
+				return;
+			}
+			
+			int amount = item.getAmount();
+			
+			int space = player.getInventory().getFreeSlots();
+			
+			if (space == 0) {
+				return;
+			}
+			
+			if (space > amount)
+				amount = space;
+			
+			player.getInventory().remove(item.getId(), space);
+			
+			int unnoted = item.unnoted().getId();
+			
+			player.getInventory().add(new Item(unnoted, space), true);
+			break;
+		
 		}
 		
 		switch (obj) {

@@ -1141,4 +1141,14 @@ public class Utility {
 	    return map;
 	}
 
+	/**
+	 * Formats name of enum.
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String formatEnumName(final String string) {
+		return capitalizeSentence(string.toLowerCase().replaceAll("_", " "));
+	}
+
 }

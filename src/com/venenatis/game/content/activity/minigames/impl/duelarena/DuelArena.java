@@ -7,6 +7,8 @@ import java.util.stream.IntStream;
 
 import com.google.common.collect.ImmutableList;
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.achievements.AchievementHandler;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameType;
 import com.venenatis.game.location.Area;
@@ -729,6 +731,10 @@ public final class DuelArena extends Minigame {
 		winner.getActionSender().sendString("You are victorious!", 31705);
 		loser.getActionSender().sendString("You lost!", 31705);
 
+		if (winner.getHostAddress() != loser.getHostAddress()) {
+			AchievementHandler.activate(winner, AchievementList.DUELIST, 1);
+		}
+		
 		if (!winner.isActive()) {
 			winner.getDuelArena().claimReward(true);
 		} else {

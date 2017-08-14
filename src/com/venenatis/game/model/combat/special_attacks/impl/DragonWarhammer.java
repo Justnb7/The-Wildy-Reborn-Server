@@ -1,5 +1,7 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
+import com.venenatis.game.content.achievements.AchievementHandler;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -36,6 +38,7 @@ public class DragonWarhammer implements SpecialAttack {
 				int decrement = (int)(current * 0.7);
 				targPlayer.getSkills().decreaseLevelToZero(Skills.DEFENCE, decrement);
 				targPlayer.message("Your defence has been lowered.");
+				AchievementHandler.activate(player, AchievementList.HAMMER_TIME, 1);
 			}
 		} else {
 			NPC targNpc = (NPC) target;

@@ -1,5 +1,7 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
+import com.venenatis.game.content.achievements.AchievementHandler;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
@@ -36,6 +38,13 @@ public class DragonDagger implements SpecialAttack {
 		// Set up a Hit instance
         target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player).send(); // 1st hit
 		target.take_hit(player, secondHit, CombatStyle.MELEE).giveXP(player).send(2); // 2nd hit, 1 tick later
+		
+		AchievementHandler.activate(player, AchievementList.MR_POKEY, 1);
+		if (target.isPlayer()) {
+			if (firstHit >= 35 && secondHit >= 35) {
+				AchievementHandler.activate(player, AchievementList.OUCH, 1);
+			}			
+		}
 	}
 
 	@Override

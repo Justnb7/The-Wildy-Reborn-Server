@@ -1,5 +1,7 @@
 package com.venenatis.game.content.presets;
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.achievements.AchievementHandler;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.magic.spell.SpellBook;
@@ -265,6 +267,7 @@ public class PreloadingGear {
 			presetSkill[preset][index] = player.getSkills().getMaxLevel(index);
 		}
 		open(preset);
+		AchievementHandler.activate(player, AchievementList.OOH_FANCY, 1);
 		PlayerSave.save(player, Type.PRESETS);
 	}
 

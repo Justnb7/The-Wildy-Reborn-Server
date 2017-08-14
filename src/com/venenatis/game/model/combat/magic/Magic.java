@@ -1,6 +1,8 @@
 package com.venenatis.game.model.combat.magic;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.achievements.AchievementHandler;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
@@ -221,6 +223,8 @@ public class Magic {
 			player.lastCast = System.currentTimeMillis();
 			player.message("You cast a vengeance.");
 			player.getInventory().refresh();
+			AchievementHandler.activate(player, AchievementList.TASTE_ME, 1);
+			player.getActionSender().sendWidget(2, 30);
 		}
 	}
 	

@@ -1,18 +1,9 @@
 package com.venenatis.game.world;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Predicate;
-import java.util.logging.Logger;
-
 import com.google.common.collect.Sets;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
+import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.entity.Entity;
@@ -28,17 +19,16 @@ import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
 import com.venenatis.game.task.Service;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.impl.DidYouKnowEvent;
-import com.venenatis.game.task.impl.GearPointsTask;
-import com.venenatis.game.task.impl.InstanceFloorReset;
-import com.venenatis.game.task.impl.NPCMovementTask;
-import com.venenatis.game.task.impl.RestoreSpecialStats;
-import com.venenatis.game.task.impl.RestoreStats;
-import com.venenatis.game.task.impl.SavePlayers;
-import com.venenatis.game.task.impl.SecondTask;
+import com.venenatis.game.task.impl.*;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.GameEngine;
 import com.venenatis.server.Server;
+
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
 
 /**
  * Holds data global to the game world.
@@ -167,7 +157,7 @@ public class World implements Service {
 	/**
 	 * Gets the player by the name.
 	 *
-	 * @param playerName the player name.
+	 * @param name the player name.
 	 * @return the player
 	 */
 	public Optional<Player> getPlayerByName(String name) {
@@ -260,6 +250,12 @@ public class World implements Service {
 			 */
 			player.getSession().getChannel().close();
 
+			/*
+			 * Once we're done disconnecting our player, we'll go ahead and save him
+			 */
+			//PlayerSerialization.saveGame(player);
+			PlayerSave.save(player);
+
 			System.out.println("[Deregistered] " + player + ", Proper Logout: " + player.properLogout);
 			/*
 			 * Once the player is fully disconnected, we can go ahead and remove them from updating
@@ -301,7 +297,6 @@ public class World implements Service {
 			player.getDuelArena().getOther().get().getDuelArena().setWon(true);
 			player.getDuelArena().setWon(false);
 			player.getDuelArena().onEnd();
-			return;
 		}
 		
 		/*
@@ -342,16 +337,16 @@ public class World implements Service {
 		}
 
 		/*
-		 * Once we're done disconnecting our player, we'll go ahead and save him
-		 */
-		//PlayerSerialization.saveGame(player);
-		PlayerSave.save(player);
-
-		/*
 		 * Remove from clan
 		 */
 		ClanManager.leave(player, true);
 
+		MinigameHandler.execute(player, $it -> $it.onLogout(player));
+
+		//Reset poison and venom
+		player.setInfection(0);
+		player.infected = false;
+		player.getController().onLogout(player);
 	}
 
 	/**

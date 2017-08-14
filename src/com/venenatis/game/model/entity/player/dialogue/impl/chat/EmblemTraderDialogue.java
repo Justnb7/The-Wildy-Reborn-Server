@@ -43,7 +43,7 @@ public class EmblemTraderDialogue extends Dialogue {
 			send(Type.STATEMENT, "Calculating total points...");
 			totalPoints = 0;
 			for (Item i : player.getInventory().toArray()) {
-				int id = i.getId() - 1;
+				int id = i.getId();
 				if (id <= 0) {
 					continue;
 				}
@@ -81,7 +81,7 @@ public class EmblemTraderDialogue extends Dialogue {
 			if (index == 1) {
 				totalPoints = 0;
 				for (int i = 0; i < player.getInventory().getSize(); i++) {
-					int id = player.getInventory().getId(i) - 1;
+					int id = player.getInventory().getId(i);
 					if (id <= 0) {
 						continue;
 					}

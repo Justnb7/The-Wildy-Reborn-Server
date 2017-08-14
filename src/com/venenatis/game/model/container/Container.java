@@ -128,7 +128,8 @@ public abstract class Container {
 		// here you can have an optimisation: instead of refreshing (sending packet to update items) after each individual add
 		// do it afterwards
 		for (final Item item : items) {
-			added += add(item.getId(), item.getAmount(), false);
+			if (item != null)
+				added += add(item.getId(), item.getAmount(), false);
 		}
 		refresh();
 

@@ -161,7 +161,7 @@ public class PlayerDrops {
 
 		victim.getInventory().clear(false);
 		victim.getEquipment().clear(true);
-
+		
 		if (victim.getInventory().add(keep) == 0) {
 			victim.getInventory().refresh();
 		}

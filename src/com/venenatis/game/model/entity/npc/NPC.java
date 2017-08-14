@@ -652,6 +652,13 @@ public class NPC extends Entity {
 		3129, //K'ril Tsutsaroth
 		2215, //General Graardor
 		5779, //Giant mole
+		6361, //Dagannoth mother
+		6362, //Dagannoth mother
+		6365, //Dagannoth mother
+		3359, //Zombies champion
+		2267, //Dagannoth rex
+		2266, //Dagannoth prime
+		2265, //Dagannoth supreme
 	};
 	
 	/**

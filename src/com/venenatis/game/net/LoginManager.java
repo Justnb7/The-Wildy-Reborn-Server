@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -114,7 +115,7 @@ public class LoginManager {
 		final String hostAddress = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
 		
 		if(username.matches("") || username.matches(" ")) {
-			sendReturnCode(ctx.channel(), LoginCode.SHORT_USERNAME);
+			sendReturnCode(LoginCode.SHORT_USERNAME, req);
 			return;
 		}
 		
@@ -138,13 +139,13 @@ public class LoginManager {
 		
 		// username too long or too short
 		if (username.length() >= 13 || username.length() < 3) {
-			sendReturnCode(ctx.channel(), LoginCode.SHORT_USERNAME);
+			sendReturnCode(LoginCode.SHORT_USERNAME, req);
 			return;
 		}
 		
 		// username contains invalid characters
 		if(!username.matches("^[a-zA-Z0-9_ ]{1,12}$")) {
-			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			sendReturnCode(LoginCode.INVALID_CREDENTIALS, req);
 			return;
 		}
 		
@@ -152,7 +153,7 @@ public class LoginManager {
 		if(!Arrays.stream(Constants.USERNAME_EXCEPTIONS).anyMatch($it -> username.equalsIgnoreCase($it))) {
 			for (String bad : Constants.BAD_USERNAMES) {
 				if (username.toLowerCase().contains(bad.toLowerCase())) {
-					sendReturnCode(ctx.channel(), LoginCode.BAD_USERNAME);
+					sendReturnCode(LoginCode.BAD_USERNAME, req);
 					return;
 				}
 			}
@@ -160,23 +161,23 @@ public class LoginManager {
 		
 		// evaluate if the host is mac banned
 		if(Sanctions.isMacBanned(player.getMacAddress())) {
-			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+			sendReturnCode(LoginCode.ACCOUNT_DISABLED, req);
 		}
 		
 		// evaluate if the host is banned
 		if(Sanctions.isNamedBanned(player.getUsername())) {
-			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+			sendReturnCode(LoginCode.ACCOUNT_DISABLED, req);
 		}
 		
 		// evaluate if the host is IP banned
 		if (Sanctions.isIpBanned((player.getHostAddress()))) {
-			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+			sendReturnCode(LoginCode.ACCOUNT_DISABLED, req);
 			return;
 		}
 		
 		// there is no password or password is too long
 		if (password.isEmpty() || password.length() >= 20) {
-			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			sendReturnCode(LoginCode.INVALID_CREDENTIALS, req);
 			return;
 		}
 		
@@ -186,36 +187,36 @@ public class LoginManager {
 
 		// there is no password or password is too long
 		if (password.isEmpty() || password.length() >= 20) {
-			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			sendReturnCode(LoginCode.INVALID_CREDENTIALS, req);
 			return;
 		}
 
 		// password does not match password on file.
 		if (!password.equals(player.getPassword())) {
-			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			sendReturnCode(LoginCode.INVALID_CREDENTIALS, req);
 			return;
 		}
 		
 		// the world is currently full
 		if (PlayerUpdating.getPlayerCount() >= World.getWorld().getPlayers().capacity()) {
-			sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+			sendReturnCode(LoginCode.INVALID_CREDENTIALS, req);
 			return;
 		}
 		
 		// prevents users from logging in before the network has been fully bound
 		if (!Server.SERVER_STARTED) {
-			sendReturnCode(ctx.channel(), LoginCode.SERVER_BEING_UPDATED);
+			sendReturnCode(LoginCode.SERVER_BEING_UPDATED, req);
 			return;
 		}
 		
 		// prevents users from logging in if the world is being updated
 		if (World.updateRunning) {
-			sendReturnCode(ctx.channel(), LoginCode.SERVER_BEING_UPDATED);
+			sendReturnCode(LoginCode.SERVER_BEING_UPDATED, req);
 		}
 		
 		// check if this users computer is on the banned list
 		if (World.getWorld().getMacBans().contains(credential.getMacAddress())) {
-			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_DISABLED);
+			sendReturnCode(LoginCode.ACCOUNT_DISABLED, req);
 			return;
 		}
 
@@ -234,7 +235,7 @@ public class LoginManager {
 
 		//Is the server on the same version as the client
 		if (credential.getVersion() != Constants.CLIENT_VERSION) {
-			sendReturnCode(ctx.channel(), LoginCode.GAME_UPDATED);
+			sendReturnCode(LoginCode.GAME_UPDATED, req);
 			return;
 		}
 
@@ -249,7 +250,7 @@ public class LoginManager {
 		
 		//We allow three clients from the same connection
 		if (players_online_sharing_one_host >= 3) {
-			sendReturnCode(ctx.channel(), 9);
+			sendReturnCode(9, req);
 			return;
 		}
 		
@@ -262,12 +263,12 @@ public class LoginManager {
 					final PlayerSaveDetail details = PlayerSave.SERIALIZE.fromJson(reader, PlayerSaveDetail.class);
 					final String stored_password = details.password();
 					if (!stored_password.equals(password)) {
-						sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS); // INVALID PW!
+						sendReturnCode(LoginCode.INVALID_CREDENTIALS, req); // INVALID PW!
 						return;
 					}
 				} catch(IOException ex) {
 					logger.error("Unexpected problem occurred.", ex);
-					sendReturnCode(ctx.channel(), LoginCode.INVALID_CREDENTIALS);
+					sendReturnCode(LoginCode.INVALID_CREDENTIALS, req);
 					return;
 				}
 			}
@@ -277,7 +278,7 @@ public class LoginManager {
 		 * This bit should be done after the players loaded
 		 */
 		if (GameEngine.getLoginQueue().contains(player) || World.getWorld().getPlayerByRealName(username).isPresent()) {
-			sendReturnCode(ctx.channel(), LoginCode.ACCOUNT_ONLINE);
+			sendReturnCode(LoginCode.ACCOUNT_ONLINE, req);
 			return;
 		}
 
@@ -328,12 +329,14 @@ public class LoginManager {
 			GameEngine.queueLogin(player);
 			logger.info("Login req for "+credential.getName()+" complete on the LOGIN thread in "+(start-System.currentTimeMillis())+"ms!");
 		}
+		GameEngine.loginMgr.queuedLoginNames.remove(req.creds.getName().toLowerCase());
     	
 	}
 
-	public static void sendReturnCode(Channel channel, int code) {
-		ChannelFuture future = channel.writeAndFlush(new LoginResponse(code, 0, 0));
+	public static void sendReturnCode(int code, LoginRequest req) {
+		ChannelFuture future = req.chan.writeAndFlush(new LoginResponse(code, 0, 0));
 		future.addListener(ChannelFutureListener.CLOSE);
+		GameEngine.loginMgr.queuedLoginNames.remove(req.creds.getName().toLowerCase());
 		logger.info("Responded code "+code);
 	}
 
@@ -346,12 +349,15 @@ public class LoginManager {
      * Handles the IO processing, such as player saves.
      */
     private static final ScheduledExecutorService IO_THREAD = Executors.newSingleThreadScheduledExecutor();
+    
+    private final LinkedList<String> queuedLoginNames = new LinkedList<String>();
 
     /**
      * Add the request to the Queue. Why have a method instead of just list.add()? Because we need to SYNCHONIZE on it to avoid other threads messing with it.
      * @param loginRequest
      */
 	public static void requestLogin(LoginRequest loginRequest) {
-		GameEngine.loginMgr.loginRequests.offer(loginRequest);
+		if (!GameEngine.loginMgr.queuedLoginNames.contains(loginRequest.creds.getName().toLowerCase()))
+				GameEngine.loginMgr.loginRequests.offer(loginRequest);
 	}
 }

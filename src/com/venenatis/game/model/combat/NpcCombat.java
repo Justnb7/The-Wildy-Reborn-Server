@@ -219,9 +219,9 @@ public class NpcCombat {
 			return false;
 		}
 
-		/*if (!Slayer.canAttack(player, npc)) {
+		if (!Slayer.canAttack(player, npc)) {
 			return false;
-		}*/
+		}
 		
 		if (npc.isArmadylNpc() && player.getCombatType() == CombatStyle.MELEE) {
 			player.message("You can only use range or magic against this npc.");

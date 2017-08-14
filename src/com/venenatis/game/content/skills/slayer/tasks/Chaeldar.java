@@ -21,7 +21,7 @@ public enum Chaeldar implements Task {
 	 CAVE_CRAWLERS(406, 10, 5, 0),
 	 CAVE_SLIMES(480, 17, 6, 0),
 	 COCKATRICE(419, 25, 6, 0),
-	 DAGANNOTH(140,1,11,0),
+	 DAGANNOTH(970,1,11,0),
 	 FIRE_GIANT(2075, 1, 12, 0),
 	 GARGOYLE(412, 75, 11, 0),
 

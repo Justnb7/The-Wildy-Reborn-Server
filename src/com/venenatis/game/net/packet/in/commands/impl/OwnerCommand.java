@@ -8,6 +8,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
@@ -19,6 +20,7 @@ import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
+import com.venenatis.game.util.parser.impl.NPCDefinitionParser;
 import com.venenatis.game.util.parser.impl.ShopParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
@@ -48,7 +50,7 @@ public class OwnerCommand implements Command {
 			if (message.length() != 0) {
 				for (Player players : World.getWorld().getPlayers()) {
 					if (players != null) {
-						players.getActionSender().sendBanner("Battle-OS Notification", message, 0xFA960A);
+						players.getActionSender().sendBanner("Venenatis Notification", message, 0xFA960A);
 
 					}
 				}
@@ -604,6 +606,21 @@ public class OwnerCommand implements Command {
 				final String input = parser.nextString();
 
 				switch (input) {
+				
+				case "spawns":
+					for (NPC n : World.getWorld().getNPCs()) {
+						if (n != null) {
+							World.getWorld().unregister(n);
+						}
+					}
+					NPCHandler.loadAutoSpawn("./data/text_files/npc_spawns.txt");
+					player.getActionSender().sendMessage("Succesfully reloaded the spawns");
+					return true;
+					
+				case "npcs":
+					player.getActionSender().sendMessage("Succesfully reloaded npcdefinitions");
+					new NPCDefinitionParser().run();
+					return true;
 
 				case "item":
 				case "items":

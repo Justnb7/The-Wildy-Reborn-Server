@@ -25,7 +25,7 @@ public class ChaeldarDialogue extends Dialogue {
 			setPhase(0);
 		} else {
 			player.getActionSender().sendMessage("You cannot speak to Chaeldar as you are yet to start the 'Slayer' skill.");
-			player.getActionSender().sendMessage("Speak to @blu@Turael@bla@ who is located in Edgeville to do so.");
+			player.getActionSender().sendMessage("Speak to @blu@Turael@bla@ who is located in Edgevile.");
 		}
 	}
 
@@ -63,7 +63,7 @@ public class ChaeldarDialogue extends Dialogue {
 				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Nieve can be found in Draynor.", "You can get there using the 'Teleport' option", "on an Enchanted gem.");
 				setPhase(3);
 			} else if (Slayer.suitableMaster(player) == SlayerMasters.DURADEL) {
-				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Duradel can be found in Burthorpe.", "You can get there using the 'Teleport' option", "on an Enchanted gem.");
+				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Duradel can be found in Edgevile.", "You can get there using the 'Teleport' option", "on an Enchanted gem.");
 				setPhase(3);
 			}
 		} else if (getPhase() == 7) {
@@ -87,7 +87,7 @@ public class ChaeldarDialogue extends Dialogue {
 				if (player.getFirstSlayerTask()) {
 					setPhase(3);
 					player.getActionSender().sendMessage("You do not have access to the Slayer store as you have not started the 'Slayer' skill.");
-					player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ who is located in Edgeville to do.");
+					player.getActionSender().sendMessage("Talk to @blu@Turael@bla@ who is located in Edgevile.");
 				} else if (index == 3) {
 					send(Type.PLAYER, Expression.DEFAULT, "Nothing.");
 					setPhase(3);

@@ -9,19 +9,17 @@ import com.venenatis.game.model.entity.player.Player;
  *
  */
 public class TaskInterface {
-
+	
 	public void write(Player player) {
 		try {
 
-			String currentTask = player.getSlayerTask() > 0
-					? "" + NPC.getName(player.getSlayerTask()) + " X " + player.getSlayerTaskAmount() : "Nothing";
+			String currentTask = player.getSlayerTask() > 0 ? "" + NPC.getName(player.getSlayerTask()) + " X " + player.getSlayerTaskAmount() : "Nothing";
 			player.getActionSender().sendString("" + currentTask, 23208);
 
 			for (int i = 0; i < 6; i++) {
 				player.getActionSender().sendString("Empty", 23220 + i);
 				player.getActionSender().sendString("<col=-8434673>Unblock Task</col>", 23232 + i);
-				player.getActionSender()
-						.sendString(" " + NPC.getName(player.getSlayerInterface().getBlockedTasks().get(i)), 23220 + i);
+				player.getActionSender().sendString(" " + NPC.getName(player.getSlayerInterface().getBlockedTasks().get(i)), 23220 + i);
 				player.getActionSender().sendString("<col=ffa500>Unblock Task </col>", 23232 + i);
 			}
 

@@ -489,22 +489,20 @@ public class Utility {
         }
         return new String(Utility.decodeBuf, 0, idx);
     }
-
-    public static String optimizeText(String text) {
-        char buf[] = text.toCharArray();
-        boolean endMarker = true;
-        for (int i = 0; i < buf.length; i++) {
-            char c = buf[i];
-            if (endMarker && c >= 'a' && c <= 'z') {
-                buf[i] -= 0x20;
-                endMarker = false;
-            }
-            if (c == '.' || c == '!' || c == '?') {
-                endMarker = true;
-            }
-        }
-        return new String(buf, 0, buf.length);
-    }
+    
+	public static String optimizeText(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			if (i == 0) {
+				s = String.format("%s%s", Character.toUpperCase(s.charAt(0)), s.substring(1));
+			}
+			if (!Character.isLetterOrDigit(s.charAt(i))) {
+				if (i + 1 < s.length()) {
+					s = String.format("%s%s%s", s.subSequence(0, i + 1), Character.toUpperCase(s.charAt(i + 1)), s.substring(i + 2));
+				}
+			}
+		}
+		return s;
+	}
 
     public static char xlateTable[] = { ' ', 'e', 't', 'a', 'o', 'i', 'h', 'n', 's', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'f', 'g', 'p',
             'b', 'v', 'k', 'x', 'j', 'q', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '!', '?', '.', ',', ':', ';', '(',

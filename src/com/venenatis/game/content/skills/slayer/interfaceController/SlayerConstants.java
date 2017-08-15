@@ -55,10 +55,10 @@ public class SlayerConstants {
 	public static int SUQA = 9081;
 	public static int MITHRIL_BAR = 2360;
 	public static int SLAYER_HELMET = 11864;
+	public static int SLAYER_RING = 11866;
 	public static int BLACK_SLAYER_HELMET = 19639;
 	public static int RED_SLAYER_HELMET = 19647;
 	public static int GREEN_SLAYER_HELMET = 19643;
-	public static int SLAYER_RING = 11873;
 	public static int FEATHER = 11525;
 	public static int LIZARDMAN = 13391;
 	public static int VENENATIS = 13177;

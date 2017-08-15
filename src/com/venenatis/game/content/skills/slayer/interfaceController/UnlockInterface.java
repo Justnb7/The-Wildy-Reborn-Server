@@ -6,21 +6,102 @@ import com.venenatis.game.model.entity.player.Player;
 
 
 /**
- * 
- * @author Harambe_
  * Class represents and handles the Slayer Interface
+ * @author Harambe_ && Patrick van Elderen redone the data loading, all other credits go to Harambe_
  *
  */
 public class UnlockInterface {
 	
-
-	
 	public enum UnlockButtons {
 		
-		TELEPORTING(new int[]{91110}, 4147, 
+		GARGOYLE_SMASHER(new int[]{91110}, 4147, 
 				"Gargoyle smasher",
 				"Automatically smash gargoyles when"
-				+ "\\nthey're on critical health, if you have the\\nright tool. <col=ff0000>(120 points)</col>"),;
+				+ "\\nthey're on critical health, if you have the\\nright tool. <col=ff0000>(120 points)</col>"),
+		
+		SLUG_SALTER(new int[]{91111}, SlayerConstants.ROCKSLUG, 
+				"Slug slater",
+				"Autmatically salt rock slugs when they're"
+				+ "\\non critical health, if you have salt.@red@(80 \\n@red@points)"),
+				
+		REPTILE_FREEZER(new int[]{91112}, SlayerConstants.DESERT_LIZARD,
+				"Reptile freezer",
+				"Autmatically freeze desert lizards when"
+				+ "\\nthey're on critical health, if you have ice"
+				+ "\\nwater. @red@90 points)"),
+		
+		SHROOM_SPRAYER(new int[]{91113}, SlayerConstants.BROAD_ARROWS, 
+				"'Shroom sprayer",
+				"Autmatically spray mutated zygomites"
+				+ "\\nwhen they're on critical health, if you"
+				+ "\\nhave fungicide.@red@(110 points)"),
+		
+		BROADER_FLETCHING(new int[]{91114}, SlayerConstants.BROAD_ARROWS, 
+				"Broader fletching",
+				"Learn to fletch borad arrows (with level 52\\n"
+				+ "Fletching), broad bolts (with level 55\\n"
+				+ "Fletching) and amethyst broad bolts (with\\nlevel 76 Fletching). @red@(300 points)"),
+		
+		MALEVOLENT_MASQUERADE(new int[]{91115}, SlayerConstants.SLAYER_HELMET, 
+				"Malevolent masquerade",
+				"Learn to combine the protective Slayer"
+				+ "\\nheadgear and Slayer gem into one"
+				+ "\\n universal helmet, with level 55 crafting \\n@red@(400 points)"),
+		
+		RING_BLING(new int[]{91116},  SlayerConstants.SLAYER_RING, 
+				"Ring bling",
+				"Learn to craft your own Slayer Rings, with"
+				+ "\\nlevel 75 crafting @red@(300 points)"),
+		
+		SEEING_RED(new int[]{91117},SlayerConstants.BABY_RED_DRAGON, 
+				"Seeing red",
+				"Duradel and Nieve will be able to assign\\nRed Dragons as your task. red@(50 points)"),
+		
+		MITH_ME(new int[]{91118}, SlayerConstants.MITHRIL_DRAGON_MASK, 
+				"I hope you mith me",
+				"Duradel and Nieve will be able to assign \\nMithril Dragons as your task. \\n@red@(80 points)"),
+		
+		WATCH_THE_BIRDIE(new int[]{91119}, SlayerConstants.FEATHER, 
+				"Watch The Birdie",
+				"Duradel and Nieve will be able to assign\\n Aviansies as your task. @red@(80 points)"),
+		
+		HOT_STUFF(new int[]{91120}, SlayerConstants.TOK_XIL, 
+				"Hot stuff",
+				"Duradel, Nieve and Chaeldar will be able \\nto assign TzHaar as your task You may\\nalso be offered a chance to slay TzTok-Jad\\nor Tzkal-Zuk. @red@(100 points)"),
+		
+		REPTILE_GOT_RIPPED(new int[]{91121}, SlayerConstants.LIZARDMAN, 
+				"Reptile got ripped",
+				"Duradel, Nieve and Chaeldar will be able\\n to assign you Lizardmen. You need"
+				+ "\\nShayzien House favour to fight lizardmen."
+				+ "\\n@red@(75 points)"),
+		
+		LIKE_A_BOSS(new int[]{91122}, SlayerConstants.VENENATIS, 
+				"Like a boss",
+				"Duradel and Nieve will be able to assign\\n boss monsters as your task. They will \\nchoose which boss you must kill. @red@(200 \\n@red@points)"),
+		
+		KING_BLACK_BONNET(new int[]{91123},SlayerConstants.BLACK_SLAYER_HELMET, 
+				"King black bonnet",
+				"Learn how to combine a KBD head with your \\nslayer helm to colour it black.@red@(1000 poitns)"),
+		
+		KALPHITE_KHAT(new int[]{91124}, SlayerConstants.GREEN_SLAYER_HELMET, 
+				"Kalphite Khat",
+				"Learn how to combine a Kalphite Queen \\nhead with your slayer helm to colour it\\ngreen @red@(1000 points)"),
+		
+		UNHOLY_HELMET(new int[]{91125}, SlayerConstants.RED_SLAYER_HELMET, 
+				"Unholy helmet",
+				"Learn how to combine a Abyssal Demon \\nhead with your slayer helm to colour it red \\n@red@(1000 points)"),
+		
+		BIGGER_AND_BADDER(new int[]{91126}, SlayerConstants.ABERANT_SPECTRE, 
+				"Bigger and Badder",
+				"Increase the risk against certain slayer"
+				+ "\\nmonsters with the chance of a superior "
+				+ "\\nversion spawning whilst on a slayer task\\n@red@ (150 points)"),
+		
+		DULY_NOTED(new int[]{91127}, SlayerConstants.MITHRIL_BAR, 
+				"Duly Noted",
+				"Mithril dragons drop mithril bars in"
+				+ "\\nbanknote form while killed on assignment."
+				+ "\\n@red@ (200 points) ");
 		
 		
 		
@@ -56,8 +137,7 @@ public class UnlockInterface {
 					UnlockButtons.unlockButtons.put(button, unlockButtons);
 				}
 			}
-
-	}
+		}
 	}
 	
 	public void write(Player player){

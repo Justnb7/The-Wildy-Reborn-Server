@@ -15,7 +15,7 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 public enum Rights {
 	
 	/* Player */
-	PLAYER("Player", Order.PLAYER, 0, "6FE019"),
+	PLAYER("Player", Order.PLAYER, 0, "0000"),
 
 	/* Moderator */
 	MODERATOR("Moderator", Order.MODERATOR, 1, "4A7AA7"),

@@ -115,6 +115,32 @@ public class ShopManager {
 	}
 
 	/**
+	 * Writes the slayer shop onto the hardcoded interface
+	 * @param player
+	 */
+	public static void slayerShop(Player player) {
+
+		//The shop representing the 'Slayer Rewards'
+		final Shop shop = Shop.SHOPS.get(10);
+
+		if (shop == null) {
+			return;
+		}
+		
+		//Set attributes
+		player.getAttributes().put("shopping", true);
+		player.getActionSender().sendItemOnInterface(23016, shop.toNonNullArray());
+		
+		System.out.println("shop items: "+shop.toNonNullArray().length);
+		for (int i = 0; i < shop.toNonNullArray().length; i++) {
+			player.getActionSender().sendString(shop.toNonNullArray()[i] == null ? "" : "" + shop.toNonNullArray()[i].getValue(), 23016 + i);
+			player.debug(String.format("%s", shop.toNonNullArray()[i]));
+		}
+		
+		player.getActionSender().sendInterfaceWithInventoryOverlay(ShopConstants.SLAYER_REWARDS_INTERFACE, 3822);
+	}
+	
+	/**
 	 * Opens a shop based on the id given.
 	 * 
 	 * @param player

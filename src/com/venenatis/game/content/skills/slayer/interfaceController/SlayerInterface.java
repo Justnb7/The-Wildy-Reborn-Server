@@ -11,6 +11,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.shop.ShopManager;
 import com.venenatis.server.Server;
 
 /**
@@ -355,8 +356,9 @@ public class SlayerInterface {
 			player.getActionSender().sendMessage("Previous interface = " + getPreviousInterface());
 			return true;
 		case SHOP:
+			ShopManager.slayerShop(player);
 			//Shop.SHOPS.get("Slayer Equipment").openSlayerShop(player);
-			player.getActionSender().sendInterface(button.getInterface());
+			//player.getActionSender().sendInterface(button.getInterface());
 			return true;
 		case CANCEL:
 			if (!Slayer.hasTask(player))

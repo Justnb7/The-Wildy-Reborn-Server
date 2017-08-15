@@ -7,12 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.venenatis.game.content.KillTracker.KillEntry;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -192,6 +194,10 @@ public class PlayerSave {
 				if (details.killTracker != null) {
 					player.setKillTracker(details.killTracker);
 				}
+				if (details.playerAchievements != null) {
+					player.getPlayerAchievements().putAll(details.playerAchievements);
+				}
+				player.setAchievementPoints(details.achievementsPoints);
 				if (details.friendList.size() > 0) {
 					player.getFAI().setFriendsList(details.friendList);
 				}
@@ -203,7 +209,6 @@ public class PlayerSave {
 				player.appearance.setGender(details.gender);
 				player.skills.setAllExp(details.skillXP);
 				player.skills.setDynamicLevels(details.dynamicLevels);
-				
 				return true;
 
 			} finally {
@@ -286,6 +291,8 @@ public class PlayerSave {
 		private final boolean groundItems;
 		private final boolean shiftDrop;
 		private CopyOnWriteArrayList<KillEntry> killTracker = new CopyOnWriteArrayList<KillEntry>();
+		private final HashMap<AchievementList, Integer> playerAchievements;
+		private final int achievementsPoints;
 		private final List<Long> friendList;
 		private final List<Long> ignoreList;
 		private final int[] look;
@@ -370,7 +377,9 @@ public class PlayerSave {
 			targetTracking = player.toggleTargetTracking();
 			groundItems = player.toggleGroundItems();
 			shiftDrop = player.toggleShiftClick();
-			killTracker = player.getKillTracker();	
+			killTracker = player.getKillTracker();
+			playerAchievements = player.getPlayerAchievements();
+			achievementsPoints = player.getAchievementsPoints();
 			friendList = player.getFAI().getFriendsList();
 			ignoreList = player.getFAI().getIgnoreList();
 			look = player.appearance.getLook();

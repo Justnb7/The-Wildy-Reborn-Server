@@ -7,6 +7,11 @@ package com.venenatis.game.world.shop;
  *
  */
 public class ShopConstants {
+	
+	/**
+	 * The identification for the slayer shop interface;
+	 */
+	public static final int SLAYER_REWARDS_INTERFACE = 23000;
 
     /**
      * The identification for the shop interface.

@@ -34,7 +34,7 @@ public class SlayerInterface {
 		/**
 		 * Unlock Buttons
 		 */
-		TELEPORTING(new int[] { 91110 }, 0, Action.UNLOCK_BUTTON, 0, 150), LIMEY(new int[] { 91111 }, 0, Action.UNLOCK_BUTTON, 0, 400), IRON_MAIDEN(new int[] { 91112 }, 0, Action.UNLOCK_BUTTON, 0, 110), MALEVOLENT_MASQUERADE(new int[] { 91113 }, 0, Action.UNLOCK_BUTTON, 0, 400), RING_BLING(new int[] { 91114 }, 0, Action.UNLOCK_BUTTON, 0, 300), SEEING_RED(new int[] { 91115 }, 0, Action.UNLOCK_BUTTON, 247, 80), MITH_ME(new int[] { 91116 }, 0, Action.UNLOCK_BUTTON, 2919, 80), BIRDIE(new int[] { 91117 }, 0, Action.UNLOCK_BUTTON, 0, 80), HOT_STUFF(new int[] { 91118 }, 0, Action.UNLOCK_BUTTON, 0, 100), REPTILE_GOT_RIPPED(new int[] { 91119 }, 0, Action.UNLOCK_BUTTON, 0, 75), LIKE_A_BOSS(new int[] { 91120 }, 0, Action.UNLOCK_BUTTON, 0, 200), KING_BLACK_BONNET(new int[] { 91121 }, 0, Action.UNLOCK_BUTTON, 0, 1000), KALPHITE_KAT(new int[] { 91122 }, 0, Action.UNLOCK_BUTTON, 0, 1000), UNHOLY_HELMET(new int[] { 91123 }, 0, Action.UNLOCK_BUTTON, 0, 1000), BIGGER_AND_BADDER(new int[] { 91124 }, 0, Action.UNLOCK_BUTTON, 0, 150), DULY_NOTED(new int[] { 91125 }, 0, Action.UNLOCK_BUTTON, 0, 200),
+		GARGOYLE_SMASHER(new int[] { 91110 }, 0, Action.UNLOCK_BUTTON, 0, 150), SLUG_SALTER(new int[] { 91111 }, 0, Action.UNLOCK_BUTTON, 0, 150), REPTILE_FREEZER(new int[] { 91112 }, 0, Action.UNLOCK_BUTTON, 0, 150), SHROOM_SPRAYER(new int[] { 91113 }, 0, Action.UNLOCK_BUTTON, 0, 400), BROADER_FLETCHING(new int[] { 91114 }, 0, Action.UNLOCK_BUTTON, 0, 110), MALEVOLENT_MASQUERADE(new int[] { 91115 }, 0, Action.UNLOCK_BUTTON, 0, 400), RING_BLING(new int[] { 91116 }, 0, Action.UNLOCK_BUTTON, 0, 300), SEEING_RED(new int[] { 91117 }, 0, Action.UNLOCK_BUTTON, 247, 80), MITH_ME(new int[] { 91118 }, 0, Action.UNLOCK_BUTTON, 2919, 80), WATCH_THE_BIRDIE(new int[] { 91119 }, 0, Action.UNLOCK_BUTTON, 0, 80), HOT_STUFF(new int[] { 91120 }, 0, Action.UNLOCK_BUTTON, 0, 100), REPTILE_GOT_RIPPED(new int[] { 91121 }, 0, Action.UNLOCK_BUTTON, 0, 75), LIKE_A_BOSS(new int[] { 91122 }, 0, Action.UNLOCK_BUTTON, 0, 200), KING_BLACK_BONNET(new int[] { 91123 }, 0, Action.UNLOCK_BUTTON, 0, 1000), KALPHITE_KHAT(new int[] { 91124 }, 0, Action.UNLOCK_BUTTON, 0, 1000), UNHOLY_HELMET(new int[] { 91125 }, 0, Action.UNLOCK_BUTTON, 0, 1000), BIGGER_AND_BADDER(new int[] { 91126 }, 0, Action.UNLOCK_BUTTON, 0, 150), DULY_NOTED(new int[] { 91127 }, 0, Action.UNLOCK_BUTTON, 0, 200),
 
 		// 25
 		/**
@@ -102,6 +102,10 @@ public class SlayerInterface {
 	 */
 	private ArrayList<Integer> blockedTasks = new ArrayList<Integer>(6);
 
+	public void setBlockedTasks(ArrayList<Integer> blockedTasks) {
+		this.blockedTasks = blockedTasks;
+	}
+
 	/**
 	 * Blocked task getter method
 	 * 
@@ -115,7 +119,6 @@ public class SlayerInterface {
 	 * Stores all extension HashMaps
 	 */
 	private HashMap<Integer, Integer> extensions = new HashMap<Integer, Integer>();
-
 	/**
 	 * Retuns the extension HashMaps
 	 * 
@@ -128,10 +131,10 @@ public class SlayerInterface {
 	/**
 	 * Sets the extension
 	 * 
-	 * @param unlocks
+	 * @param extension
 	 */
-	public void setExtension(HashMap<Integer, Integer> unlocks) {
-		this.extensions = unlocks;
+	public void setExtension(HashMap<Integer, Integer> extension) {
+		this.extensions = extension;
 	}
 
 	/**
@@ -207,7 +210,7 @@ public class SlayerInterface {
 		for (Entry<Integer, String> entrys : player.getSlayerInterface().getUnlocks().entrySet()) {
 			for (ButtonData buttonData : ButtonData.values()) {
 				if (entrys.getValue().equals(buttonData.name())) {
-					player.getActionSender().sendMessage("We have found: " + entrys.getValue());
+					player.debug("We have found: " + entrys.getValue());
 					if (buttonData.getAction() == Action.UNLOCK_BUTTON) {
 						player.getActionSender().sendConfig(580 + (buttonData.ordinal() - 10), 1);
 					}
@@ -219,7 +222,7 @@ public class SlayerInterface {
 			for (ButtonData buttonData : ButtonData.values()) {
 				for (int button : buttonData.getButton()) {
 					if (entrys.getKey().equals(button)) {
-						player.getActionSender().sendMessage("We have found extend " + entrys.getValue());
+						player.debug("We have found extend " + entrys.getValue());
 						if (buttonData.getAction() == Action.EXTEND_BUTTON) {
 							player.getActionSender().sendConfig(560 + (buttonData.ordinal() - 26), 1);
 						}
@@ -257,7 +260,7 @@ public class SlayerInterface {
 	public boolean unlock(Player player, int buttonId) {
 		UnlockButtons button = UnlockButtons.unlockButtons.get(buttonId);
 		if (button == null) {
-			player.getActionSender().sendMessage("Null unlock button");
+			player.debug("Null unlock button");
 			return false;
 		}
 		player.getActionSender().sendString("" + Utility.optimizeText(button.getName()), 23106); 
@@ -278,7 +281,7 @@ public class SlayerInterface {
 	public static boolean extend(Player player, int buttonId) {
 		ExtendButtons button = ExtendButtons.extendButtons.get(buttonId);
 		if (button == null) {
-			player.getActionSender().sendMessage("Null extend button");
+			player.debug("Null extend button");
 			return false;
 		}
 		player.getActionSender().sendString("" + Utility.optimizeText(button.getName()), 23106);
@@ -295,7 +298,7 @@ public class SlayerInterface {
 	 * @return Handles unlocking of slayer additions
 	 */
 	public static boolean block(Player player, int buttonId) {
-		player.setAttribute("slayer_action", 1);
+		player.setSlayerAction(1);
 		player.getActionSender().sendString("You are about to block: " + NPC.getName(player.getSlayerTask()), 23106); 
 		player.getActionSender().sendString("This costs 100 Slayer Points", 23107);
 		player.getActionSender().sendString("<col=ff0000>Are you sure you want to pay?</col>", 23110);
@@ -330,35 +333,32 @@ public class SlayerInterface {
 	public boolean controlPanel(Player player, int buttonId) {
 		ButtonData button = ButtonData.buttonMap.get(buttonId);
 		if (button == null) {
-			player.getActionSender().sendMessage("Null");
 			return false;
 		}
 		player.getActionSender().sendString("Reward Points: " + player.getSlayerPoints(), 23014);
 		if(player.getSlayerInterface().getUnlocks().containsKey(buttonId)) {
 			if (button.getAction() == Action.UNLOCK_BUTTON) {
 				player.getActionSender().sendConfig(580 + (button.ordinal() - 10), 1);
-				player.getActionSender().sendMessage("<img=8>You have already purchased this unlock.<img=8>");
+				player.getActionSender().sendMessage("You have already purchased this unlock.");
 				return false;
 			}
 		}
 		if(player.getSlayerInterface().getExtensions().containsKey(buttonId)){
 			if (button.getAction() == Action.EXTEND_BUTTON) {
 				player.getActionSender().sendConfig(560 + (button.ordinal() - 26), 1); //turn back on
-				player.getActionSender().sendMessage("<img=8>You have already purchased this unlock.<img=8>");
+				player.getActionSender().sendMessage("You have already purchased this unlock.");
 				return false;
 			}
 		}
 		switch (button.getAction()) {	
 		case INTERFACE:
-			player.getActionSender().sendMessage("Button: " + buttonId + " trying to open interface " + button.getInterface());
+			player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
 			player.getActionSender().sendInterface(button.getInterface());
 			setPreviousInterface(button.getInterface());
 			player.getActionSender().sendMessage("Previous interface = " + getPreviousInterface());
 			return true;
 		case SHOP:
 			ShopManager.slayerShop(player);
-			//Shop.SHOPS.get("Slayer Equipment").openSlayerShop(player);
-			//player.getActionSender().sendInterface(button.getInterface());
 			return true;
 		case CANCEL:
 			if (!Slayer.hasTask(player))
@@ -419,20 +419,20 @@ public class SlayerInterface {
 			player.getActionSender().sendInterface(button.getInterface());
 			setPreviousInterface(button.getInterface());
 			player.getActionSender().sendString("Current Streak: " + player.getSlayerStreak() + " Record: " + player.getSlayerStreakRecord(), 23399);
-			player.getActionSender().sendMessage("Previous interface = " + getPreviousInterface());
+			player.debug("Previous interface = " + getPreviousInterface());
 			return true;
 		case UNLOCK_BUTTON:
 			unlock(player, buttonId);
 			player.setSlayerSelection(buttonId, button.getunlockId(), button.name(), button.ordinal() - 7, 0);
-			player.getActionSender().sendMessage("Button: " + buttonId + " trying to open interface " + button.getInterface());
+			player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
 			return true;
 		case EXTEND_BUTTON:
 			extend(player, buttonId);
 			player.setSlayerSelection(buttonId, button.getunlockId(), button.name(), button.ordinal() - 23, 1);
-			player.getActionSender().sendMessage("Button: " + buttonId + " trying to open interface " + button.getInterface());
+			player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
 			return true;
 		case PURCHASE:
-			if ((Integer) player.getAttribute("slayer_action") == 0) {
+			if (player.getSlayerAction() == 0) {
 				if (!purchase(player, ButtonData.buttonMap.get(player.getSlayerSelection()).getPoints())) {
 					player.getActionSender().sendMessage("You don't have enough points");
 					return false;
@@ -443,29 +443,29 @@ public class SlayerInterface {
 				return true;
 			} else
 			// block
-			if ((Integer) player.getAttribute("slayer_action") == 1) {
+			if (player.getSlayerAction() == 1) {
 				if (!purchase(player, 100)) {
 					player.getActionSender().sendMessage("@red@You don't have enough points");
-					player.setAttribute("slayer_action", 0);
+					player.setSlayerAction(0);
 					return false;
 				}
 				try {
 					if (blockedTasks.contains(player.getSlayerTask())) {
 						player.getActionSender().sendMessage("This task is already blocked.");
 						player.getActionSender().removeAllInterfaces();
-						player.setAttribute("slayer_action", 0);
+						player.setSlayerAction(0);
 						return false;
 					}
 					if (blockedTasks.size() >= 6) {
 						player.getActionSender().sendMessage("You have the maximum amount of blocks.");
-						player.setAttribute("slayer_action", 0);
+						player.setSlayerAction(0);
 						return false;
 					}
 					blockedTasks.add(player.getSlayerTask());
 					TaskInterface task1 = new TaskInterface();
 					task1.write(player);
 					player.getActionSender().sendInterface(getPreviousInterface());
-					player.setAttribute("slayer_action", 0);
+					player.setSlayerAction(0);
 					return true;
 
 				} catch (Exception name) {

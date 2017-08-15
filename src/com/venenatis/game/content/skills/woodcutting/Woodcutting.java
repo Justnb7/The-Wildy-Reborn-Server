@@ -180,6 +180,11 @@ public class Woodcutting extends HarvestingAction {
 				1283, 1284, 1285, 1286, 1289, 1290, 1291, 1315, 1316, 1318,
 				1319, 1330, 1331, 1332, 1365, 1383, 1384, 3033, 3034, 3035,
 				3036, 3881, 3882, 3883, 5902, 5903, 5904}, 10000),
+		
+		/**
+		 * Oak tree.
+		 */
+		OAK(1521, 15, 75, 22, 12, new int[]{1751}, 8000),
 
 		/**
 		 * Willow tree.
@@ -187,19 +192,9 @@ public class Woodcutting extends HarvestingAction {
 		WILLOW(1519, 30, 135, 22, 16, new int[]{7480, 7422, 7482, 7424}, 7000),
 
 		/**
-		 * Oak tree.
-		 */
-		OAK(1521, 15, 75, 22, 12, new int[]{7417}, 8000),
-
-		/**
-		 * Magic tree.
-		 */
-		MAGIC(1761, 75, 500, 150, 18, new int[]{7483,}, 2500),
-
-		/**
 		 * Maple tree.
 		 */
-		MAPLE(1517, 45, 200, 60, 17, new int[]{7481,}, 5000),
+		MAPLE(1517, 45, 200, 60, 17, new int[]{1759,}, 5000),
 
 		/**
 		 * Mahogany tree.
@@ -219,7 +214,12 @@ public class Woodcutting extends HarvestingAction {
 		/**
 		 * Yew tree.
 		 */
-		YEW(1515, 60, 350, 120, 16, new int[]{7419}, 4000),
+		YEW(1515, 60, 350, 120, 16, new int[]{1753, 1754}, 4000),
+		
+		/**
+		 * Magic tree.
+		 */
+		MAGIC(1761, 75, 500, 150, 18, new int[]{1761,}, 2500),
 
 		/**
 		 * Dramen tree
@@ -382,11 +382,7 @@ public class Woodcutting extends HarvestingAction {
 			}
 			Player player = (Player) getEntity();
 			if (player.getPet() > -1) {
-				if (player.getInventory().getFreeSlots() < 1) {
-					player.getInventory().add(new Item(13322));
-				} else {
-					//player.getBank().add(new Item(13322));
-				}
+				player.getInventory().addOrSentToBank(player, new Item(13322));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Beaver.", false);
 			} else {
 				Pet pet = new Pet(player, pets.getNpc());

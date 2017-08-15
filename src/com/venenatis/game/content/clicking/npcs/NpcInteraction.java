@@ -1,7 +1,9 @@
 package com.venenatis.game.content.clicking.npcs;
 
+import com.venenatis.game.action.Action;
 import com.venenatis.game.content.skills.fishing.Fishing;
-import com.venenatis.game.content.skills.fishing.FishingSpot;
+import com.venenatis.game.content.skills.fishing.FishingOld;
+import com.venenatis.game.content.skills.fishing.FishingSpotOld;
 import com.venenatis.game.content.skills.thieving.Pickpocket;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
@@ -26,9 +28,13 @@ public class NpcInteraction {
 		if (Pet.talktoPet(player, npc)) {
 			return;
 		}
+		
+		Action action;
+		
+		Fishing fishing = Fishing.isAction(player, npc, 1);
 
-		if (FishingSpot.fishingNPC(npc.getId())) {
-			Fishing.attemptFishing(player, npc, 1);
+		if (FishingSpotOld.fishingNPC(npc.getId())) {
+			FishingOld.attemptFishing(player, npc, 1);
 			return;
 		}
 
@@ -112,6 +118,10 @@ public class NpcInteraction {
 				player.getDialogueManager().start("NIEVE_DIALOGUE", player);
 				break;
 		}
+		
+		if (action != null) {
+			player.getActionQueue().addAction(action);
+		}
 	}
 
 	/**
@@ -130,8 +140,8 @@ public class NpcInteraction {
 			return;
 		}
 
-		if (FishingSpot.fishingNPC(npc.getId())) {
-			Fishing.attemptFishing(player, npc, 2);
+		if (FishingSpotOld.fishingNPC(npc.getId())) {
+			FishingOld.attemptFishing(player, npc, 2);
 			return;
 		}
 

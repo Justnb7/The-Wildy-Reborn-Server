@@ -106,9 +106,10 @@ public class Firemaking {
 						stop();
 					}
 				}.attach(player));
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	/**

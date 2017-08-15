@@ -30,6 +30,11 @@ public class ItemOnItem {
 		player.debug(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", usedItem.getId(), withItem.getId()));
 		
 		if(Firemaking.startFire(player, usedItem, withItem, new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()))) {
+			player.debug("stop");
+			return;
+		}
+		
+		if (Fletching.SINGLETON.itemOnItem(player, withItem, usedItem)) {
 			return;
 		}
 		
@@ -39,10 +44,6 @@ public class ItemOnItem {
 				//player.getInventory().remove(new Item(withItem.getId(), amount));
 				player.getActionSender().sendMessage("Whee... "+ItemDefinition.get(withItem.getId()).getName()+" All gone!");
 			}
-		}
-		
-		if (Fletching.SINGLETON.itemOnItem(player, usedItem, withItem)) {
-			return;
 		}
 		
 		if (PotionCombinating.get().isPotion(usedItem) && PotionCombinating.get().isPotion(withItem)) {

@@ -53,7 +53,6 @@ import com.venenatis.game.model.entity.npc.SlayerDeathTracker;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.widget.Selection;
 import com.venenatis.game.model.entity.player.clan.Clan;
-import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
@@ -2993,6 +2992,16 @@ public class Player extends Entity {
 	
 	public void setVigour(int vigour) {
 		this.vigour = vigour;
+	}
+	
+	private int slayer_action = 0;
+	
+	public int getSlayerAction() {
+		return slayer_action;
+	}
+	
+	public void setSlayerAction(int slayer_action) {
+		this.slayer_action = slayer_action;
 	}
 
 	public int getToxicBlowpipeCharge() {

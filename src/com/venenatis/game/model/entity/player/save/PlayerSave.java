@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -157,6 +158,8 @@ public class PlayerSave {
 				player.setFirstSlayerTask(details.completedFirstTask);
 				player.setFirstBossSlayerTask(details.completedFirstBossTask);
 				player.setCanTeleportToTask(details.teleportToTaskUnlocked);
+				player.setSlayerStreak(details.slayerStreak);
+				player.setSlayerStreakRecord(details.slayerStreakRecord);
 				player.setClanChat(details.clan);
 				player.setPreserveUnlocked(details.unlockedPreserve);
 				player.setRigourUnlocked(details.unlockedRigour);
@@ -209,6 +212,15 @@ public class PlayerSave {
 				player.appearance.setGender(details.gender);
 				player.skills.setAllExp(details.skillXP);
 				player.skills.setDynamicLevels(details.dynamicLevels);
+				if (details.blockedSlayerTasks != null) {
+					player.getSlayerInterface().setBlockedTasks(details.blockedSlayerTasks);
+				}
+				if (details.slayerUnlocks != null) {
+					player.getSlayerInterface().setUnlocks(details.slayerUnlocks);
+				}
+				if (details.slayerExtensions != null) {
+					player.getSlayerInterface().setExtension(details.slayerExtensions);
+				}
 				return true;
 
 			} finally {
@@ -257,6 +269,8 @@ public class PlayerSave {
 		private final boolean completedFirstTask;
 		private final boolean completedFirstBossTask;
 		private final boolean teleportToTaskUnlocked;
+		private final int slayerStreak;
+		private final int slayerStreakRecord;
 		private final String clan;
 		private final boolean unlockedPreserve;
 		private final boolean unlockedRigour;
@@ -300,6 +314,9 @@ public class PlayerSave {
 		private final int gender;
 		private final double[] skillXP;
 		private final int[] dynamicLevels;
+		private final ArrayList<Integer> blockedSlayerTasks;
+		private final HashMap<Integer, String> slayerUnlocks;
+		private final HashMap<Integer, Integer> slayerExtensions;
 		
 		public String user() {
 			return this.username;
@@ -345,6 +362,8 @@ public class PlayerSave {
 			completedFirstTask = player.getFirstSlayerTask();
 			completedFirstBossTask = player.getFirstBossSlayerTask();
 			teleportToTaskUnlocked = player.canTeleportToSlayerTask();
+			slayerStreak = player.getSlayerStreak();
+			slayerStreakRecord = player.getSlayerStreakRecord();
 			clan = player.getClanChat();
 			unlockedPreserve = player.isPreserveUnlocked();
 			unlockedRigour = player.isRigourUnlocked();
@@ -387,7 +406,9 @@ public class PlayerSave {
 			gender = player.appearance.gender;
 			skillXP = player.skills.getAllXP();
 			dynamicLevels = player.skills.getAllDynamicLevels();
-			
+			blockedSlayerTasks = player.getSlayerInterface().getBlockedTasks();
+			slayerUnlocks = player.getSlayerInterface().getUnlocks();
+			slayerExtensions = player.getSlayerInterface().getExtensions();
 		}
 
 		public void parseDetails() throws Exception {

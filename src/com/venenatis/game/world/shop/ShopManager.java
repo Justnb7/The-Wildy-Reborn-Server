@@ -133,7 +133,7 @@ public class ShopManager {
 		
 		System.out.println("shop items: "+shop.toNonNullArray().length);
 		for (int i = 0; i < shop.toNonNullArray().length; i++) {
-			player.getActionSender().sendString(shop.toNonNullArray()[i] == null ? "" : "" + shop.toNonNullArray()[i].getValue(), 23016 + i);
+			player.getActionSender().sendString(shop.toNonNullArray()[i] == null ? "" : ""+ shop.toNonNullArray()[i].getValue(), 23016 + i);
 			player.debug(String.format("%s", shop.toNonNullArray()[i]));
 		}
 		

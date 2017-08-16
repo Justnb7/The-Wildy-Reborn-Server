@@ -1,16 +1,20 @@
 package com.venenatis.game.model.combat.npcs.impl;
 
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
 
 public class Kraken extends AbstractBossCombat {
@@ -76,7 +80,24 @@ public class Kraken extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
+		/**
+		 * Players have a one in 1000 chance of dropping the pet table.
+		 */
+		int random = Utility.random(1000);
 
+		if (random == 1) {
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(12655));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Kraken pet.", false);
+			} else {
+				Pets pets = Pets.KRAKEN;
+				Pet pet = new Pet(player, pets.getNpc());
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Kraken pet.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
+			}
+		}
 	}
 
 }

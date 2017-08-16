@@ -1,6 +1,7 @@
 package com.venenatis.game.model.combat.npcs.impl.wilderness;
 
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
@@ -8,6 +9,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -179,7 +182,24 @@ public class Chaos_Elemental extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		
+		/**
+		 * Players have a one in 1000 chance of dropping the pet table.
+		 */
+		int random = Utility.random(1000);
+
+		if (random == 1) {
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(11995));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Chais elemental pet.", false);
+			} else {
+				Pets pets = Pets.CHAOS_ELEMENTAL;
+				Pet pet = new Pet(player, pets.getNpc());
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Chaos elemental pet.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
+			}
+		}
 	}
 	
 	private Graphic breakGraphic(CombatStyle style) {

@@ -131,6 +131,7 @@ public class DagannothMother extends AbstractBossCombat {
 	@Override
 	public void dropLoot(Player player, NPC npc) {
 		//This is a special death case
+		//TODO add custom pet
 	}
 
 }

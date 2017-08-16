@@ -101,24 +101,20 @@ public class GiantMole extends AbstractBossCombat {
 	@Override
 	public void dropLoot(Player player, NPC npc) {
 		/**
-		 * Players have a one in 250 chance of dropping the pet table.
+		 * Players have a one in 1000 chance of dropping the pet table.
 		 */
-		int random = Utility.random(250);
+		int random = Utility.random(1000);
 		
 		if (random == 1) {
 			if (player.getPet() > -1) {
-				if (player.getInventory().getFreeSlots() < 1) {
-					player.getInventory().add(new Item(12646));
-				} else {
-					player.getBank().add(new Item(12646));
-				}
+				player.getInventory().addOrSentToBank(player, new Item(12646));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Giant mole pet.", false);
 			} else {
 				Pets pets = Pets.BABY_MOLE;
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Giant mole pett.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Giant mole pet.", false);
 				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}

@@ -83,7 +83,7 @@ public class ZombiesChampion extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		
+		//TODO add custom pet
 	}
 
 }

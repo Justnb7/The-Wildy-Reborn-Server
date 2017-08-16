@@ -2,6 +2,7 @@ package com.venenatis.game.model.combat.npcs.impl.wilderness;
 
 import java.util.Random;
 
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.CombatFormulae;
@@ -10,6 +11,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
 import com.venenatis.game.model.masks.Animation;
@@ -170,7 +173,24 @@ public class KingBlackDragon extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		
+		/**
+		 * Players have a one in 1000 chance of dropping the pet table.
+		 */
+		int random = Utility.random(1000);
+
+		if (random == 1) {
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(12653));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Prince black dragon pet.", false);
+			} else {
+				Pets pets = Pets.PRINCE_BLACK_DRAGON;
+				Pet pet = new Pet(player, pets.getNpc());
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Prince black dragon pet.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
+			}
+		}
 		
 	}
 	

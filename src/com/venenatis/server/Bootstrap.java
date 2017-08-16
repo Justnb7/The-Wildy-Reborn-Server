@@ -9,6 +9,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.ScriptManager;
 import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.content.skills.crafting.impl.*;
 import com.venenatis.game.content.skills.fishing.*;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.*;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
@@ -125,6 +126,8 @@ public class Bootstrap {
 		LOGGER.info("Loading content...");
 		serviceLoader.execute(() -> {
 			ClanRepository.load();
+			Gem.declare();
+			Hide.declare();
 			Arrow.declare();
 			Bolt.declare();
 			Carvable.declare();

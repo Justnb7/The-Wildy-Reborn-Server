@@ -2,8 +2,7 @@ package com.venenatis.game.content.clicking.items;
 
 import com.venenatis.game.content.PotionCombinating;
 import com.venenatis.game.content.rewards.CrystalChest;
-import com.venenatis.game.content.skills.crafting.GemCutting;
-import com.venenatis.game.content.skills.crafting.Gems;
+import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.firemaking.Firemaking;
 import com.venenatis.game.content.skills.fletching.Fletching;
 import com.venenatis.game.model.Item;
@@ -32,6 +31,10 @@ public class ItemOnItem {
 			return;
 		}
 		
+		if (Crafting.SINGLETON.itemOnItem(player, withItem, usedItem)) {
+			return;
+		}
+		
 		if (Fletching.SINGLETON.itemOnItem(player, withItem, usedItem)) {
 			return;
 		}
@@ -51,20 +54,6 @@ public class ItemOnItem {
 				player.getActionSender().sendMessage("You cannot combine two potions of different types.");
 			}
 			return;
-		}
-		
-		if (usedItem.getId() == 1755 || withItem.getId() == 1755) {
-			Item uncut = null;
-			if (usedItem.getId() == 1755) {
-				uncut = withItem;
-			} else {
-				uncut = usedItem;
-			}
-			Gems gem = Gems.forId(uncut.getId());
-			
-			if (gem != null) {
-				GemCutting.attemptGemCutting(player, usedItem.getId(), withItem.getId());
-			}
 		}
 		
 		if (CrystalChest.createKey(player)) {

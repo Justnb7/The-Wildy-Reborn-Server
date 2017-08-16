@@ -23,6 +23,7 @@ public enum AchievementList {
 	SCHOOL_BASICS("School Basics", "Successfully answer 10 TriviaBot questions.", 10, AchievementDifficulty.EASY),
 	THE_GIVER("Vengeance", "Cast Vengeance 30 times.", 30, AchievementDifficulty.EASY),
 	MONEY_MAKER("Thief", "Pickpocket mans 100 times", 100, AchievementDifficulty.EASY),
+	LAPIDARIST("Lapidarist", "Cut mans 250 gems", 250, AchievementDifficulty.EASY),
 	WHATS_IN_THE_BOX("What's in the box?", "Open the mystery box 1 time.", 1, AchievementDifficulty.EASY),
 
 	/* Medium Achievements */

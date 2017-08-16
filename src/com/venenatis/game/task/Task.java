@@ -297,7 +297,7 @@ public abstract class Task {
 	 *             if the delay is not positive.
 	 */
 	private void checkDelay(int delay) {
-		if (delay <= 0)
+		if (delay < 0)
 			throw new IllegalArgumentException("Delay must be positive.");
 	}
 	

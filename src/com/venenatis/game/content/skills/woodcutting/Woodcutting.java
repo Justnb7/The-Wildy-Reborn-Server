@@ -176,7 +176,7 @@ public class Woodcutting extends HarvestingAction {
 		/**
 		 * Normal tree.
 		 */
-		NORMAL(1511, 1, 50, 15, 1, new int[]{1276, 1277, 1278, 1279, 1280, 1282,
+		NORMAL(1511, 1, 25, 15, 1, new int[]{1276, 1277, 1278, 1279, 1280, 1282,
 				1283, 1284, 1285, 1286, 1289, 1290, 1291, 1315, 1316, 1318,
 				1319, 1330, 1331, 1332, 1365, 1383, 1384, 3033, 3034, 3035,
 				3036, 3881, 3882, 3883, 5902, 5903, 5904}, 10000),
@@ -184,42 +184,42 @@ public class Woodcutting extends HarvestingAction {
 		/**
 		 * Oak tree.
 		 */
-		OAK(1521, 15, 75, 22, 12, new int[]{1751}, 8000),
+		OAK(1521, 15, 37.5, 22, 12, new int[]{1751}, 8000),
 
 		/**
 		 * Willow tree.
 		 */
-		WILLOW(1519, 30, 135, 22, 16, new int[]{7480, 7422, 7482, 7424}, 7000),
+		WILLOW(1519, 30, 67.5, 22, 16, new int[]{7480, 7422, 7482, 7424}, 7000),
 
 		/**
 		 * Maple tree.
 		 */
-		MAPLE(1517, 45, 200, 60, 17, new int[]{1759,}, 5000),
+		MAPLE(1517, 45, 100, 60, 17, new int[]{1759,}, 5000),
 
 		/**
 		 * Mahogany tree.
 		 */
-		MAHOGANY(6332, 50, 60, 22, 12, new int[]{9034}, 10000),
+		MAHOGANY(6332, 125, 60, 22, 12, new int[]{9034}, 10000),
 
 		/**
 		 * Teak tree.
 		 */
-		TEAK(6333, 35, 170, 22, 10, new int[]{9036}, 10000),
+		TEAK(6333, 35, 85, 22, 10, new int[]{9036}, 10000),
 
 		/**
 		 * Achey tree.
 		 */
-		ACHEY(2862, 1, 50, 22, 4, new int[]{2023}, 10000),
+		ACHEY(2862, 1, 25, 22, 4, new int[]{2023}, 10000),
 
 		/**
 		 * Yew tree.
 		 */
-		YEW(1515, 60, 350, 120, 16, new int[]{1753, 1754}, 4000),
+		YEW(1515, 60, 175, 120, 16, new int[]{1753, 1754}, 4000),
 		
 		/**
 		 * Magic tree.
 		 */
-		MAGIC(1513, 75, 500, 150, 18, new int[]{1761,}, 2500),
+		MAGIC(1513, 75, 250, 150, 18, new int[]{1761,}, 2500),
 
 		/**
 		 * Dramen tree
@@ -335,7 +335,7 @@ public class Woodcutting extends HarvestingAction {
 		 * @return The experience.
 		 */
 		public double getExperience() {
-			return experience * 2;
+			return experience;
 		}
 
 		/**
@@ -386,12 +386,12 @@ public class Woodcutting extends HarvestingAction {
 			Player player = (Player) getEntity();
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(13322));
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Beaver.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Beaver.", false);
 			} else {
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Beaver.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Beaver.", false);
 				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}

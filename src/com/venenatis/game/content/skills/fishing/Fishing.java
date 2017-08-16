@@ -231,13 +231,13 @@ public class Fishing {
 		if (random == 0) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(13320));
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Heron.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Heron.", false);
 			} else {
 				Pets pets = Pets.HERON;
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Heron.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Heron.", false);
 				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}

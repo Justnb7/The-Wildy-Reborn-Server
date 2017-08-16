@@ -7,6 +7,7 @@ import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
+import com.venenatis.game.content.skills.runecrafting.Runecrafting;
 import com.venenatis.game.content.skills.thieving.Stalls;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
@@ -81,6 +82,8 @@ public class ObjectInteraction {
 		
 		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().prayAltar(location);
+			return;
+		} else if (Runecrafting.handleObject(player, obj)) {
 			return;
 		}
 		

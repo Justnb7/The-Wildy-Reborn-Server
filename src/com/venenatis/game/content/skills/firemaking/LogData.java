@@ -1,5 +1,8 @@
 package com.venenatis.game.content.skills.firemaking;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
  * Represents all our log data, for the firemaking skill.
  * @author Patrick van Elderen
@@ -51,6 +54,10 @@ public enum LogData {
 	
 	public int getFire() {
 		return fire;
+	}
+	
+	public static Optional<LogData> forId(int id) {
+		return Arrays.stream(values()).filter(a -> a.log == id).findAny();
 	}
 
 }

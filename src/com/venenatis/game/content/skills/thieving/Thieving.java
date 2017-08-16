@@ -40,6 +40,8 @@ public class Thieving {
 	 */
 	private final Animation STEAL_ANIMATION = Animation.create(881);
 	
+	private final int EXP_MODIFIER = 2;
+	
 	/**
 	 * Constructs a new {@link Thieving} object that manages interactions 
 	 * between players and stalls, as well as players and non playable characters.
@@ -85,7 +87,7 @@ public class Thieving {
 		player.getInventory().add(new Item(lootReceived.getId(), lootReceived.getAmount()));
 		
 		//Finish, we receive experience and now we can set the delay.
-		player.getSkills().addExperience(Skills.THIEVING, stall.getExperience());
+		player.getSkills().addExperience(Skills.THIEVING, stall.getExperience() *EXP_MODIFIER);
 		
 		//After the experience drop we add the random pet chance
 				pet(player);
@@ -144,12 +146,12 @@ public class Thieving {
 			// Player already has a pet roaming
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(20663));
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Rocky.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rocky.", false);
 			} else {
 				Pet pet = new Pet(player, rocky.getNpc());
 				player.setPet(rocky.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Rocky.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rocky.", false);
 				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}

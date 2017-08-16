@@ -348,7 +348,6 @@ public class Skills {
         int oldLevel = getLevelForExperience(skillId);
         
 
-        //TODO add 1.25 and 1.50 exp additional for extreme/gold donator
         exps[skillId] += experience * multi;
         expCounter += experience*multi;
         player.getActionSender().sendExperienceCounter(skillId, (int) (experience*multi));

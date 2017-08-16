@@ -21,7 +21,7 @@ public class TeleportHandler {
 		/* Skilling */
 		WOODCUTTING(TeleportationTypes.SKILLING, 226195, 58054, "Woodcutting", new Location(2726, 3490), 0, "---", "---", false),
 		MINING(TeleportationTypes.SKILLING, 226199, 58058, "Mining", new Location(-1, -1, 0), 0, "---", "---", true),
-		FISHING_AND_COOKING(TeleportationTypes.SKILLING, 226203, 58062, "Fishing & Cooking", new Location(2809, 3440, 0), 0, "---", "---", false),
+		FISHING_AND_COOKING(TeleportationTypes.SKILLING, 226203, 58062, "Fishing & Cooking", new Location(2876, 3336, 0), 0, "---", "---", false),
 		AGILITY(TeleportationTypes.SKILLING, 226207, 58066, "Agility", new Location(-1, -1, 0), 0, "---", "---", true),
 		
 		/* Player Vs Player */

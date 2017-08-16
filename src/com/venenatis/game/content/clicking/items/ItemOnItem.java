@@ -6,7 +6,6 @@ import com.venenatis.game.content.skills.crafting.GemCutting;
 import com.venenatis.game.content.skills.crafting.Gems;
 import com.venenatis.game.content.skills.firemaking.Firemaking;
 import com.venenatis.game.content.skills.fletching.Fletching;
-import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
@@ -29,8 +28,7 @@ public class ItemOnItem {
 	public static void handleAction(Player player, Item usedItem, Item withItem) {
 		player.debug(String.format("[ItemOnItem] - itemUsed: %d usedWith: %d ", usedItem.getId(), withItem.getId()));
 		
-		if(Firemaking.startFire(player, usedItem, withItem, new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()))) {
-			player.debug("stop");
+		if (Firemaking.startFire(player, usedItem, withItem, player.getLocation())) {
 			return;
 		}
 		

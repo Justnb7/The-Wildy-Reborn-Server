@@ -3,6 +3,8 @@ package com.venenatis.game.content.skills.runecrafting;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.venenatis.game.world.object.GameObject;
+
 /**
  * The runecrafting data
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>

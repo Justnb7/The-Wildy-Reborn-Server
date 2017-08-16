@@ -193,7 +193,7 @@ public class ChaosFanatic extends AbstractBossCombat {
 		if (random == 1) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(11995));
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Chais elemental pet.", false);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Chaos elemental pet.", false);
 			} else {
 				Pets pets = Pets.CHAOS_ELEMENTAL;
 				Pet pet = new Pet(player, pets.getNpc());

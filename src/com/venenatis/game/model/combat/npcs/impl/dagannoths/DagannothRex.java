@@ -1,13 +1,17 @@
 package com.venenatis.game.model.combat.npcs.impl.dagannoths;
 
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
 
 public class DagannothRex extends AbstractBossCombat {
 
@@ -63,7 +67,24 @@ public class DagannothRex extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		//TODO pet drop
+		/**
+		 * Players have a one in 1000 chance of dropping the pet table.
+		 */
+		int random = Utility.random(1000);
+
+		if (random == 1) {
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(12645));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Dagannoth rex pet.", false);
+			} else {
+				Pets pets = Pets.DAGANNOTH_REX;
+				Pet pet = new Pet(player, pets.getNpc());
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Dagannoth rex pet.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
+			}
+		}
 	}
 
 }

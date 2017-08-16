@@ -1,161 +1,48 @@
 package com.venenatis.game.content.skills.fishing;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum FishingSpot {
-	
-	
-	SHRIMPS_AND_ANCHOVIES(1521, 317, 321, 1, 303, 621, false, true, 180, 1, 4, 8000),
-	TROUT_AND_SALMON(1521, 335, 331, 20, 307, 622, true, true, 460, 2, 4, 7000),
-	MACKREL(1520, 353, 335, 16, 305, 620, false, false, 360, 1, 4, 7000),
-	LOBSTER(1519, 377, -1, 40, 301, 619, false, false, 1180, 1, 6, 5000),
-	KARAMBWAN(635, 3142, -1, 65, 303, 620, false, false, 105, 1, 9, 4500),
-	MANTA(1526, 389, -1, 81, 303, 620, false, false, 1235, 2, 8, 4000),
-	TUNA_SWORDFISH(1519, 359, 371, 50, 311, 618,false, true, 760, 2, 5, 4500),
-	SHARK(1520, 383, 383, 76, 311, 618, false, false, 1620, 2, 7, 3000);
-	
-	/**
-	 * The fishable spot ID
-	 */
-	private final int spot;
-	
-	/**
-	 * The ID of the fish
-	 */
-	private final int fishId;
-	
-	/**
-	 * The ID of the second fish
-	 */
-	private final int secondFishId;
-	
-	/**
-	 * The level required to use the fishing spot
-	 */
-	private final int levelRequired;
-	
-	/**
-	 * The tool required to fish
-	 */
-	private final int toolRequired;
-	
-	/**
-	 * The animation ID
-	 */
-	private final int animationId;
-	/**
-	 * The secondary ingredient check
-	 */
-	private final boolean baitRequired;
-	
-	/**
-	 * Does the fishing spot have more than one type of fish?
-	 */
-	private final boolean secondFishAvailable;
-	
-	/**
-	 * The experience received from fishing
-	 */
-	private final double experience;
-	
-	/**
-	 * The option ID
-	 */
-	private final int option;
-	
-	/**
-	 * The timer required to fish
-	 */
-	private final int timer;
-	
-	/**
-	 * The chance of receiving a pet
-	 */
-	private final int petChance;
 
-	FishingSpot(int spotId, int fishId, int secondFishId, int levelRequired, int toolRequired, int animationId, boolean baitRequired, boolean secondFishAvailable, double experience, int option, int timer, int petChance) {
-		this.spot = spotId;
-		this.fishId = fishId;
-		this.secondFishId = secondFishId;
-		this.levelRequired = levelRequired;
-		this.animationId = animationId;
-		this.toolRequired = toolRequired;
-		this.baitRequired = baitRequired;
-		this.secondFishAvailable = secondFishAvailable;
-		this.experience = experience;
-		this.option = option;
-		this.timer = timer;
-		this.petChance = petChance;
-	}
-	
-	private static final Set<FishingSpot> FISH = Collections.unmodifiableSet(EnumSet.allOf(FishingSpot.class));
+	SMALL_NET_OR_BAIT(1518, new FishableData.Fishable[] { FishableData.Fishable.SHRIMP, FishableData.Fishable.ANCHOVIES }, new FishableData.Fishable[] { FishableData.Fishable.SARDINE, FishableData.Fishable.HERRING, FishableData.Fishable.PIKE }),
+	LURE_OR_BAIT(1526, new FishableData.Fishable[] { FishableData.Fishable.TROUT, FishableData.Fishable.SALMON }, new FishableData.Fishable[] { FishableData.Fishable.SARDINE, FishableData.Fishable.HERRING, FishableData.Fishable.PIKE }),
+	CAGE_OR_HARPOON(1519, new FishableData.Fishable[] { FishableData.Fishable.LOBSTER }, new FishableData.Fishable[] { FishableData.Fishable.TUNA, FishableData.Fishable.SWORD_FISH }),
+	LARGE_NET_OR_HARPOON(1520, new FishableData.Fishable[] { FishableData.Fishable.MACKEREL, FishableData.Fishable.COD, FishableData.Fishable.BASS }, new FishableData.Fishable[] { FishableData.Fishable.SHARK }),
+	HARPOON_OR_SMALL_NET(1534, new FishableData.Fishable[] { FishableData.Fishable.MONK_FISH }, new FishableData.Fishable[] { FishableData.Fishable.TUNA, FishableData.Fishable.SWORD_FISH }),
+	MANTA_RAY(3019, new FishableData.Fishable[] { FishableData.Fishable.MANTA_RAY }, new FishableData.Fishable[] { FishableData.Fishable.MANTA_RAY }),
+	DARK_CRAB(1536, new FishableData.Fishable[] { FishableData.Fishable.DARK_CRAB }, new FishableData.Fishable[] { FishableData.Fishable.DARK_CRAB }),
+	KARAMBWAN(635, new FishableData.Fishable[] { FishableData.Fishable.KARAMBWAN }, new FishableData.Fishable[] { FishableData.Fishable.KARAMBWAN });
 
-	public int getSpotId() {
-		return spot;
+	private int id;
+	private FishableData.Fishable[] option_1;
+	private FishableData.Fishable[] option_2;
+	private static Map<Integer, FishingSpot> fishingSpots = new HashMap<Integer, FishingSpot>();
+
+	public static final void declare() {
+		for (FishingSpot spots : values())
+			fishingSpots.put(Integer.valueOf(spots.getId()), spots);
 	}
 
-	public int getFishId() {
-		return fishId;
+	public static FishingSpot forId(int id) {
+		return fishingSpots.get(Integer.valueOf(id));
 	}
 
-	public int getSecondFishId() {
-		return secondFishId;
-	}
-	public int getLevelRequired() {
-		return levelRequired;
-	}
-
-	public int getAnimationId() {
-		return animationId;
+	private FishingSpot(int id, FishableData.Fishable[] option_1, FishableData.Fishable[] option_2) {
+		this.id = id;
+		this.option_1 = option_1;
+		this.option_2 = option_2;
 	}
 
-	public int getToolId() {
-		return toolRequired;
+	public int getId() {
+		return id;
 	}
 
-	public boolean isBaitRequired() {
-		return baitRequired;
+	public FishableData.Fishable[] getOption_1() {
+		return option_1;
 	}
 
-	public boolean isSecondFishAvailable() {
-		return secondFishAvailable;
+	public FishableData.Fishable[] getOption_2() {
+		return option_2;
 	}
-
-	public double getExperience() {
-		return experience;
-	}
-	
-	public int getOption() {
-		return option;
-	}
-	
-	public int getTimer() {
-		return timer;
-	}
-	
-	public int getPetChance() { 
-		return petChance; 
-	}
-	
-	/**
-	 * 
-	 * @param id 
-	 * @param option
-	 * @return the id and option 
-	 */
-	public static FishingSpot forId(int id, int option) {
-		return FISH.stream().filter(fish -> fish.spot == id && fish.option == option).findFirst().orElse(null);
-	}
-	/**
-	 * 
-	 * @param spot
-	 * @return true if the spot matches a defined spot id
-	 */
-	public static boolean fishingNPC(int spot) {
-		return FISH.stream().anyMatch(fish -> fish.spot == spot);
-	}
-	
-
 }

@@ -19,6 +19,7 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.Du
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
 import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.skills.SkillTask;
+import com.venenatis.game.content.skills.fishing.Fishing;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
 import com.venenatis.game.content.skills.thieving.Thieving;
@@ -3111,6 +3112,10 @@ public class Player extends Entity {
 		this.lastKilledPlayers = lastKilledPlayers;
 	}
 	
-	
+	private Fishing fishing = new Fishing(this);
+
+	public Fishing getFishing() {
+		return fishing;
+	}
 	
 }

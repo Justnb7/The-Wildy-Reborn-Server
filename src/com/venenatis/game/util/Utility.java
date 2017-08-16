@@ -1149,4 +1149,14 @@ public class Utility {
 		return capitalizeSentence(string.toLowerCase().replaceAll("_", " "));
 	}
 
+	/**
+	 * Gets random number
+	 * 
+	 * @param length
+	 * @return
+	 */
+	public static int randomNumber(int length) {
+		return (int) (java.lang.Math.random() * length);
+	}
+
 }

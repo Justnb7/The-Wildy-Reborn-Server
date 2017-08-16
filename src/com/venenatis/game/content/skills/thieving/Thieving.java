@@ -4,9 +4,12 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
 
 /**
  * The thieving skill.
@@ -83,6 +86,9 @@ public class Thieving {
 		
 		//Finish, we receive experience and now we can set the delay.
 		player.getSkills().addExperience(Skills.THIEVING, stall.getExperience());
+		
+		//After the experience drop we add the random pet chance
+				pet(player);
 		lastInteraction = System.currentTimeMillis();
 		
 	}
@@ -124,7 +130,29 @@ public class Thieving {
 		
 		//Finish, we receive experience and now we can set the delay.
 		player.getSkills().addExperience(Skills.THIEVING, pickpocket.getExperience());
+		
+		//After the experience drop we add the random pet chance
+		pet(player);
 		lastInteraction = System.currentTimeMillis();
+	}
+	
+	private void pet(Player player) {
+		int roll = Utility.random(1000);
+		Pets rocky = Pets.ROCKY;
+		
+		if (roll == 155) {//Drop pet when the roll drops on 155
+			// Player already has a pet roaming
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(20663));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Rocky.", false);
+			} else {
+				Pet pet = new Pet(player, rocky.getNpc());
+				player.setPet(rocky.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Rocky.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
+			}
+		}
 	}
 
 }

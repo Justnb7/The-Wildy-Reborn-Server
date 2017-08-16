@@ -303,8 +303,8 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 													player.setPet(pets.getNpc());
 													World.getWorld().register(pet);
 													World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Tzrek Jad.", false);
+													player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 												}
-												player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 												setPhase(39);
 											} else {
 												send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You not lucky. Maybe next time, JalYt.");

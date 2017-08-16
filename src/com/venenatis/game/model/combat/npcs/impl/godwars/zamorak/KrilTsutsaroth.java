@@ -170,6 +170,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the K'ril pet.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}
 	}

@@ -26,7 +26,6 @@ public class NpcInteraction {
 		}
 		
 		if (player.getFishing().clickNpc(player, npc, 1)) {
-			player.debug("hmmmm");
 			return;
 		}
 

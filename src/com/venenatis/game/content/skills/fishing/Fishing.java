@@ -75,9 +75,7 @@ public class Fishing {
 	}
 
 	public boolean clickNpc(Player player, NPC npc, int option) {
-		player.debug("enter");
 		if (FishingSpot.forId(npc.getId()) == null) {
-			player.debug("null");
 			return false;
 		}
 

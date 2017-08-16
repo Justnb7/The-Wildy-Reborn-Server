@@ -8,6 +8,7 @@ import com.venenatis.game.content.clicking.Buttons;
 import com.venenatis.game.content.quest_tab.QuestTabPage;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.fletching.Fletching;
 import com.venenatis.game.content.teleportation.Teleport;
 import com.venenatis.game.model.combat.PrayerHandler;
@@ -138,6 +139,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		/* Fletching */
 		if (Fletching.SINGLETON.clickButton(player, button)) {
+			return;
+		}
+		
+		/* Crafting */
+		if (Crafting.SINGLETON.clickButton(player, button)) {
 			return;
 		}
 		

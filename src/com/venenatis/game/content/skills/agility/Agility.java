@@ -5,13 +5,20 @@ import java.util.List;
 
 import com.venenatis.ScriptManager;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Hit;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.region.RegionStore;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
 public class Agility {
@@ -146,27 +153,25 @@ public class Agility {
 //        ALKHARID_ZIPLINE(10356, Location.create(3302, 3163, 3), 1, 5, "kharidZipline", false),
 //
 //        ALKHARID_TREE(10357, Location.create(3318, 3166, 1), 1, 5, "kharidTree", false);
-//		
-//		/**
-//		 * Barbarian agility course
-//		 */
-//		
-//		BARBARIAN_COURSE_OBSTACLE_PIPE(2287, Location.create(2552, 3559, 0), 35, 0, "barbarianObstaclePipe"),
-//		
-//		BARBARIAN_COURSE_ROPE_SWING(2282, Location.create(2551, 3550, 0), 35, 22, "barbarianRopeSwing"),
-//		
-//		BARBARIAN_COURSE_LOG_BALANCE(2294, Location.create(2550, 3546, 0), 35, 13.7, "barbarianLogBalance"),
-//		
-//		BARBARIAN_COURSE_OBSTACLE_NET(2284, Location.create(2538, 3545, 0), 35, 8.2, "barbarianObstacleNet"),
-//		
-//		BARBARIAN_COURSE_LEDGE(2302, Location.create(2535, 3547, 1), 35, 22, "barbarianLedge"),
-//		
-//		BARBARIAN_COURSE_CRUMBLING_WALL_1(1948, Location.create(2536, 3553, 0), 35, 13.7, "barbarianCrumblingWall1"),
-//		
-//		BARBARIAN_COURSE_CRUMBLING_WALL_2(1948, Location.create(2539, 3553, 0), 35, 13.7, "barbarianCrumblingWall2"),
-//		
-//		BARBARIAN_COURSE_CRUMBLING_WALL_3(1948, Location.create(2542, 3553, 0), 35, 13.7, "barbarianCrumblingWall3"),
-//		
+		
+		/**
+		 * Barbarian agility course
+		 */
+		BARBARIAN_COURSE_OBSTACLE_PIPE(20210, Location.create(2552, 3559, 0), 35, 0, "barbarianObstaclePipe", false),
+
+		BARBARIAN_COURSE_ROPE_SWING(23131, Location.create(2551, 3550, 0), 35, 22, "barbarianRopeSwing", false),
+
+		BARBARIAN_COURSE_LOG_BALANCE(23144, Location.create(2550, 3546, 0), 35, 13.7, "barbarianLogBalance", false),
+
+		BARBARIAN_COURSE_OBSTACLE_NET(20211, Location.create(2538, 3545, 0), 35, 8.2, "barbarianObstacleNet", false),
+
+		BARBARIAN_COURSE_LEDGE(23547, Location.create(2535, 3547, 1), 35, 22, "barbarianLedge", false),
+
+		BARBARIAN_COURSE_CRUMBLING_WALL_1(1948, Location.create(2536, 3553, 0), 35, 13.7, "barbarianCrumblingWall1", false),
+
+		BARBARIAN_COURSE_CRUMBLING_WALL_2(1948, Location.create(2539, 3553, 0), 35, 13.7, "barbarianCrumblingWall2", false),
+
+		BARBARIAN_COURSE_CRUMBLING_WALL_3(1948, Location.create(2542, 3553, 0), 35, 13.7, "barbarianCrumblingWall3", false),	
         ;
 
         /**
@@ -261,17 +266,54 @@ public class Agility {
             return shortcut;
         }
     }
+    
+    public static void animateObject(final GameObject gameObject, final Animation animation, int ticks) {
+    	Task tick = new Task(ticks) {
+            @Override
+            public void execute() {
+                for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(gameObject.getLocation())) {
+                    for (Player player : r.getPlayers()) {
+                        player.getActionSender().animateObject(gameObject, animation.getId());
+                    }
+                }
+                this.stop();
+            }
+        };
+        if (tick.getTickDelay() >= 1) {
+            World.getWorld().schedule(tick);
+        } else {
+            tick.execute();
+        }
+    }
+    
+	private static void pet(Player player) {
+		int random = Utility.random(1500);
+		if (random == 0) {
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(20659));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Giant squirrel.", false);
+			} else {
+				Pets pets = Pets.GIANT_SQUIRREL;
+				Pet pet = new Pet(player, pets.getNpc());
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received 1x Giant squirrel.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
+			}
+		}
+	}
 	
-	public static void tackleObstacle(Player player, Obstacle obstacle, int object) {
+	public static void tackleObstacle(Player player, Obstacle obstacle, GameObject object) {
 		if ((!obstacle.isShortCut() && player.getSkills().getLevelForExperience(Skills.AGILITY) < obstacle.getLevelRequired()) || (player.getSkills().getLevelForExperience(Skills.AGILITY) < obstacle.getLevelRequired() && obstacle.isShortCut())) {
 			player.getActionSender().removeAllInterfaces();
 			player.getActionSender().sendMessage("You need an Agility level of " + obstacle.getLevelRequired() + " to tackle this obstacle.");
 			player.playAnimation(Animation.create(-1));
 			return;
 		};
-		//player.debug("Obstacle: "+obstacle.getScriptString()+" player: "+player.getName()+" object: "+object);
+		player.debug("Obstacle: "+obstacle.getScriptString()+" player: "+player.getUsername()+" object: "+object);
 		player.getAttributes().put("busy", true);
 		if(ScriptManager.getScriptManager().invokeWithFailTest(obstacle.getScriptString(), player, obstacle, object)) {
+			pet(player);
 		} else {
 			player.getAttributes().remove("busy");
 			player.getActionSender().sendMessage("Nothing interesting happens.");

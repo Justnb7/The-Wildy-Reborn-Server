@@ -20,13 +20,6 @@ import com.venenatis.game.world.object.GameObject;
 
 
 public class Mining extends HarvestingAction {
-	
-	/*
-	 * 317 style rock replacements; 8828-8830
-	 * 474+ style rock replacements; 
-	 * 
-	 * Replacements: [13456, 15198],
-	 */
 
 	/**
 	 * The rock we are mining.
@@ -193,34 +186,32 @@ public class Mining extends HarvestingAction {
 		/**
 		 * Silver ore.
 		 */
-		SILVER(442, 20, 80, 100, 1, new int[] { 8976, 8977, 8978,  13439, 13440, 13447, 13438, }, new int[] { 8979, 8980, 8981, 13460, 13461, 13459, 13459}, 8500),
+		SILVER(442, 20, 80, 20, 1, new int[] { 8976, 8977, 8978,  13439, 13440, 13447, 13438, }, new int[] { 8979, 8980, 8981, 13460, 13461, 13459, 13459}, 8500),
 		
 		/**
 		 * Gold ore.
 		 */
-		GOLD(444, 40, 130, 100, 1, new int[] { 7458, 7491 }, new int[] { 7469, 7468 }, 7000),
+		GOLD(444, 40, 130, 25, 1, new int[] { 7458, 7491 }, new int[] { 7469, 7468 }, 7000),
 		
 		/**
 		 * Coal ore.
 		 */
-		COAL(453, 30, 100, 50, 1, new int[] { 7456, 7489,  }, new int[] { 7469, 7468,  }, 5000),
+		COAL(453, 30, 100, 25, 1, new int[] { 7456, 7489,  }, new int[] { 7469, 7468,  }, 5000),
 		
 		/**
 		 * Mithril ore.
 		 */
-		MITHRIL(447, 55, 160, 200, 1, new int[] {7459, 7492 }, new int[] { 7468, 7469 }, 3000),
+		MITHRIL(447, 55, 160, 25, 1, new int[] {7459, 7492 }, new int[] { 7468, 7469 }, 3000),
 		
 		/**
 		 * Adamantite ore.
 		 */
-		ADAMANTITE(449, 70, 190, 400, 1, new int[] { 7460 }, new int[] { 7469 }, 2000),
+		ADAMANTITE(449, 70, 190, 25, 1, new int[] { 7460 }, new int[] { 7493, 7460, 7469 }, 2000),
 		
 		/**
 		 * Rune ore.
 		 */
-		RUNE(451, 85, 430, 1000, 1, new int[] { 7418, 7419, 7494, 7461, }, new int[] { 7468, 7469, 7469, 7469, }, 1000)
-		
-		;
+		RUNE(451, 85, 430, 25, 1, new int[] { 7418, 7419, 7494, 7461, }, new int[] { 7468, 7469, 7469, 7469, }, 1000);
 		
 		/**
 		 * The object ids of this rock.
@@ -356,7 +347,13 @@ public class Mining extends HarvestingAction {
 			return oreCount;
 		}
 
-		public int getPetRate() { return petRate; }
+		/**
+		 * The chance of receiving a pet
+		 * @return
+		 */
+		public int getPetRate() {
+			return petRate;
+		}
 	}
 
 	@Override

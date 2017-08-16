@@ -219,7 +219,7 @@ public class Woodcutting extends HarvestingAction {
 		/**
 		 * Magic tree.
 		 */
-		MAGIC(1761, 75, 500, 150, 18, new int[]{1761,}, 2500),
+		MAGIC(1513, 75, 500, 150, 18, new int[]{1761,}, 2500),
 
 		/**
 		 * Dramen tree
@@ -256,6 +256,9 @@ public class Woodcutting extends HarvestingAction {
 		 */
 		private double experience;
 
+		/**
+		 * Chance of receiving a pet
+		 */
 		private int petRate;
 
 		/**

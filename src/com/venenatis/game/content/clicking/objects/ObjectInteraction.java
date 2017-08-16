@@ -1,9 +1,12 @@
 package com.venenatis.game.content.clicking.objects;
 
+import java.util.Random;
+
 import com.venenatis.game.action.Action;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.skills.agility.Agility;
+import com.venenatis.game.content.skills.agility.Agility.Obstacle;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.thieving.Stalls;
@@ -15,6 +18,7 @@ import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.object.impl.webs.SlashWebObject;
@@ -43,15 +47,69 @@ public class ObjectInteraction {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(objectId);
 		
 		player.debug(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
+		final GameObject obj = RegionStoreManager.get().getGameObject(location, objectId);
+		/*if(objectId == 23131) {
+			if(!player.getLocation().equals(Location.create(2551, 3554, 0))) {
+				player.removeAttribute("busy");
+				return;
+			}
+			
+			Random random = new Random();
+			int randomVar = random.nextInt(player.getSkills().getLevel(Skills.AGILITY));
+			boolean success = true;
+			
+			if(randomVar < 20) {
+				success = false;
+			}
+
+			Agility.animateObject(obj, Animation.create(54), 1);
+			Agility.animateObject(obj, Animation.create(55), 2);
+			if(success) {
+
+				int forceMovementVars[] =  { 0, 0, 0, -5, 30, 50, 2, 2 };
+				Agility.forceMovement(player, Animation.create(751), forceMovementVars, 1, true);
+				player.getSkills().addExperience(Skills.AGILITY, 100);
+			} else {
+				int forceMovementVars[] =  { 0, 0, 0, -3, 30, 50, 2, 2 };
+				Agility.forceMovement(player, Animation.create(751), forceMovementVars, 1, true);
+				Agility.forceTeleport(player, Animation.create(766), Location.create(2551, 9951, 0), 3, 6);
+				Agility.forceWalkingQueue(player, null, 2549, 9951, 7, 2, true);
+				Agility.setRunningToggled(player, false, 9);
+				Agility.damage(player, 5, 7);
+			}
+		}*/
 		
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
 		Rock rock = Rock.forId(objectId);
-		final GameObject obj = RegionStoreManager.get().getGameObject(location, objectId);
+		final Obstacle obstacle = Obstacle.forLocation(location);
 		if (tree != null) {
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
 			action = new Mining(player, obj);
+		} else if (obstacle != null) {
+			action = new Action(player, 0) {
+				@Override
+				public CancelPolicy getCancelPolicy() {
+					return CancelPolicy.ALWAYS;
+				}
+
+				@Override
+				public StackPolicy getStackPolicy() {
+					return StackPolicy.NEVER;
+				}
+
+				@Override
+				public AnimationPolicy getAnimationPolicy() {
+					return AnimationPolicy.RESET_ALL;
+				}
+
+				@Override
+				public void execute() {
+					this.stop();
+					Agility.tackleObstacle(player, obstacle, obj);
+				}
+			};
 		}
 		
 		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {

@@ -466,7 +466,7 @@ public class Location {
 			return false;
 		}
 		int deltaX = other.x - x, deltaY = other.y - y;
-		return deltaX <= 2 && deltaX >= -3 && deltaY <= 2 && deltaY >= -3;
+		return deltaX <= 5 && deltaX >= -5 && deltaY <= 5 && deltaY >= -5;
 	}
 
 	/**

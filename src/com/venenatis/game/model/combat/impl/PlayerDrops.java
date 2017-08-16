@@ -202,8 +202,8 @@ public class PlayerDrops {
 		} else {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(526), victim.getLocation().clone(), victim));
 		}
-		if (killer != null)
-			dropRandom(victim, killer);
+		/*if (killer != null)
+			dropRandom(victim, killer);*/
 		
 		if(keep != null) {
 			for(Item it : keep) {

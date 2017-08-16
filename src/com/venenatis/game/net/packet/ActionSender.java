@@ -26,6 +26,7 @@ import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
 
 /**
@@ -950,6 +951,24 @@ public class ActionSender {
 		}
 		return this;
 	}
+	
+	/**
+     * Animates an object.
+     *
+     * @param obj The object.
+     * @return The action sender instance, for chaining.
+     */
+    public ActionSender animateObject(GameObject obj, int animationId) {
+        sendLocalCoordinates(obj.getLocation(), 0, 0);
+		player.getOutStream().writeFrame(160);
+        int ot = ((obj.getType() << 2) + (obj.getDirection() & 3));
+        
+        player.getOutStream().writeByteS((byte) ((obj.getX()&7) << 4) + (obj.getY()&7));
+        player.getOutStream().writeByteS((byte) ot);
+        player.getOutStream().writeWordA(animationId);
+        player.flushOutStream();
+        return this;
+    }
 	
 	/**
 	 * Sends all the login packets.

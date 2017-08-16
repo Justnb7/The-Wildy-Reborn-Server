@@ -18,12 +18,12 @@ import javax.script.ScriptException;
  * 
  */
 public class ScriptManager {
-
+	
 	/**
 	 * The singleton of this class.
 	 */
 	private static final ScriptManager INSTANCE = new ScriptManager();
-
+	
 	/**
 	 * Gets the ScriptManager singleton.
 	 * @return The ScriptManager singleton.
@@ -50,10 +50,15 @@ public class ScriptManager {
 	/**
 	 * Creates the script manager.
 	 */
-	private ScriptManager() {// google this error i dont know javascritp lel
+	private ScriptManager() {
 		mgr = new ScriptEngineManager();
-        jsEngine = mgr.getEngineByName("JavaScript");
+		jsEngine = mgr.getEngineByExtension("js");
 		logger.info("Loading scripts...");
+		try {
+			jsEngine.eval("load(\"nashorn:mozilla_compat.js\");");
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -104,12 +109,11 @@ public class ScriptManager {
 			for (File child : children) {
 				if (child.isFile() && child.getName().endsWith(".js"))
 					try {
-						jsEngine.eval(new InputStreamReader(
-								new FileInputStream(child)));
+						jsEngine.eval(new InputStreamReader(new FileInputStream(child)));
 					} catch (ScriptException ex) {
-						//logger.logging(Level.SEVERE, "Unable to load script!", ex);
+						logger.log(Level.SEVERE, "Unable to load script!", ex);
 					} catch (FileNotFoundException ex) {
-						//logger.logging(Level.SEVERE, "Unable to find script!", ex);
+						logger.log(Level.SEVERE, "Unable to find script!", ex);
 					}
 				else if (child.isDirectory())
 					loadScripts(child.getPath());

@@ -485,7 +485,6 @@ public class Agility {
 					forceMovement[3] = amount;
 				}
 				this.stop();
-				//We're resting the walk here arent we? sec
 				player.getWalkingQueue().reset();
 				player.setForceWalk(forceMovement, removeAttribute);
 				player.getUpdateFlags().flag(UpdateFlag.FORCE_MOVEMENT);

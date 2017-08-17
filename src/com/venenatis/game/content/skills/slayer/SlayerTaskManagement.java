@@ -2,6 +2,7 @@ package com.venenatis.game.content.skills.slayer;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
@@ -69,31 +70,50 @@ public class SlayerTaskManagement {
 	 * @param player
 	 * @return task
 	 */
-
-
-	public static Task turaelTask(Player player) {
+	public static Task turaelTask(Player player) {//Doesn't matter which we pick so i added this check so it skips task you do not have the req lvl for right ye
 		Task task = null;
 		int taskAmount = 5 + Utility.random(3, 10);
 		int currentCount = 1;
 		int totalPercentage = 1;
-		int total = Turael.getTotal();
-		ArrayList<Turael> array = new ArrayList<Turael>();
+		int[] total = {Turael.getTotal()};
+		java.util.List<Turael> array = new ArrayList<Turael>();
+		//Shall i test? nah im just reasding this logic
 		for (Turael t : Turael.values()) {
-			do {
-				t = Turael.values()[(int) (Math.random() * Turael.values().length)];
+			// did u write this or take from another src? Take from my base i gave to someone he made it :) got it free
+			// this do { } code is dogshit like it randoly selects a task and adds it until it finds one which isn't allowed
+			// the first take it finds might be not allowed therefore it ignores all the other possible tasks lmfao
+			// not stable at all the goal i assume it to add all possible tasks ye? well this has the chance to literally skip and probably does most tasks u can do
+			array.add(t);
+			//But in some ocasions you get task 0 which doesn't excist? so  it sets a random task numbr 0
+			/*do {
+				t = Turael.values()[(int) (Math.random() * Turael.values().length)]; // that 0? no idea idk how the math works saw it in some hyperion what goes to 0
+				//Well if i add just two tasks like one i need 60 slayer and the other 1 slayer it gives me the the task with slayer req 1 bu when there like 20 tasks sometimes it gives me task 0
+				//which isnt even in the enum
+				// u mean orn value? whatever its cazlled er 
+				// that? Ya basiacally what i'm trying to do is give you a task that you can actually attk skip all the tasks you don't have the slayer level for
 			} while (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER));
+			// whats the weight system? I believe it was made to match oSRS
 			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
 				//System.out.println("Skipping: " + t.getId());
 				total = total - t.getWeight();
 			} else {
 				array.add(t);
-			}
+			}*/
 		}
+		// meh should work lol
+		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER)).collect(Collectors.toList());
+		array.forEach(t -> {
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				//System.out.println("Skipping: " + t.getId());
+				total[0] -= t.getWeight();
+			}
+		});
+		
 		RandomGenerator r = new RandomGenerator();
 		int random = r.exclusive(1, 100);
 
 		for (int i = 0; i < array.size(); i++) {
-			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total) * 100));
+			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
 			//System.out.print("NPC " + array.get(i).name() + " Percentage:  " + array.get(i).getPercentage() + "\n");
 			totalPercentage += array.get(i).getPercentage();
 		}

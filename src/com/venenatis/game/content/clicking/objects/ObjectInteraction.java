@@ -2,9 +2,11 @@ package com.venenatis.game.content.clicking.objects;
 
 import com.venenatis.game.action.Action;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
+import com.venenatis.game.content.BrimhavenVines;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
+import com.venenatis.game.content.skills.agility.Shortcut;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
@@ -51,6 +53,11 @@ public class ObjectInteraction {
 		Tree tree = Tree.forId(objectId);
 		Rock rock = Rock.forId(objectId);
 		final Obstacle obstacle = Obstacle.forLocation(location);
+		
+		if(BrimhavenVines.handleBrimhavenVines(player, objectId)) {
+			return;
+		}
+		
 		if (tree != null) {
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
@@ -127,6 +134,81 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+		
+		/**
+		 * Slayer tower
+		 */
+		case 16537:
+			if (player.getZ() == 0) {
+				player.setTeleportTarget(new Location(player.getX(), player.getY(), 1));
+			} else if (player.getZ() == 1) {
+				player.setTeleportTarget(new Location(player.getX(), player.getY(), 2));
+			}
+			break;
+
+		case 16538:
+			if (player.getZ() == 1) {
+				player.setTeleportTarget(new Location(player.getX(), player.getY(), 0));
+			} else if (player.getZ() == 2) {
+				player.setTeleportTarget(new Location(player.getX(), player.getY(), 1));
+			}
+			break;
+
+		case 2120:
+		case 4494:
+			if (player.getZ() == 2) {
+				player.setTeleportTarget(new Location(player.getX() - 5, player.getY(), 1));
+			} else if (player.getZ() == 1) {
+				player.setTeleportTarget(new Location(player.getX() + 5, player.getY(), 0));
+			}
+			break;
+
+		case 2114:
+			if (player.getZ() == 0) {
+				player.setTeleportTarget(new Location(3433, 3538, 1));
+			} else if (player.getZ() == 1) {
+				player.setTeleportTarget(new Location(3433, 3538, 1));
+			}
+			break;
+
+		case 2119:
+			if (player.getZ() == 1) {
+				player.setTeleportTarget(new Location(3417, 3540, 2));
+			}
+			break;
+		
+		/**
+		 * Shortcuts
+		 */
+		case 9328:
+		case 11844:
+		case 9301:
+		case 9302:
+		case 2322:
+		case 2323:
+		case 2296:
+		case 5100:
+		case 21738:
+		case 21739:
+		case 14922:
+		case 3067:
+		case 9309:
+		case 9310:
+		case 2618:
+		case 2332:
+		case 20882:
+		case 20884:
+		case 4615:
+		case 4616:
+		case 3933:
+		case 12127:
+		case 16544:
+		case 16539:
+		case 993:
+		case 51:
+		case 8739:
+			Shortcut.processAgilityShortcut(player, obj);
+			break;
 		
 		case 1727:
 			if (player.getX() == 3007)

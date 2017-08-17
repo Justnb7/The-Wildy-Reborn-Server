@@ -46,14 +46,16 @@ public class DuradelDialogue extends Dialogue {
 			setPhase(3);
 		} else if (getPhase() == 3) {
 			send(Type.NPC, NPC_ID, Expression.DEFAULT, "The assignments I set are for boss-slayers.", "You will have to kill high-leveled monsters,", "in the aim to complete the task I set.");
+			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 			setPhase(4);
 		} else if (getPhase() == 4) {
 			if (Slayer.hasTask(player)) {
 				send(Type.NPC, NPC_ID, Expression.DEFAULT, "It seems like you have a task anyway.", "You should probably go and finish that or you", "can reset it by talking to Nieve.");
 				setPhase(9);
 			} else {
-				SlayerTaskManagement.bossTask(player);
+				SlayerTaskManagement.duradelTask(player);
 				send(Type.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getUsername() + ", you'll need it.");
+				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 				player.setFirstBossSlayerTask(false);
 				setPhase(9);
 			}
@@ -61,8 +63,9 @@ public class DuradelDialogue extends Dialogue {
 			send(Type.CHOICE, DEFAULT_OPTION_TITLE, "I would like a boss task please.", "No thanks, I'd rather stick to normal combatants.");
 			setPhase(7);
 		} else if (getPhase() == 6) {
-			SlayerTaskManagement.bossTask(player);
+			SlayerTaskManagement.duradelTask(player);
 			send(Type.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getUsername() + ", you'll need it.");
+			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 			player.setFirstBossSlayerTask(false);
 			setPhase(9);
 		} else if (getPhase() == 7) {
@@ -76,6 +79,7 @@ public class DuradelDialogue extends Dialogue {
 				setPhase(9);
 			} else {
 				send(Type.NPC, NPC_ID, Expression.DEFAULT, "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
+				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 				setPhase(9);
 			}
 		}

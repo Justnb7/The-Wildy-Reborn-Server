@@ -74,13 +74,12 @@ public class Firemaking {
 				Server.getTaskScheduler().schedule(new Task(player, lightDelay(player, log.getLog()), false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
 					@Override
 					public void execute() {
-	
 						if(!player.hasAttribute("firemaking")) {
 							player.playAnimation(Animation.create(65535));
 							stop();
 							return;
 						}
-						
+						player.getActionSender().sendMessage("we here");
 						Server.getGlobalObjects().add(fire);
 						
 						if (item != null) {
@@ -94,18 +93,19 @@ public class Firemaking {
 						player.setLastFire(System.currentTimeMillis());
 						player.getAttributes().remove("firemaking");
 						stop();
+						
+						Server.getTaskScheduler().schedule(new Task(100) {
+							@Override
+							public void execute() {
+								if (player.getOutStream() != null && player != null && player.isActive()) {
+									GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getLocation(), player));
+								}
+								stop();
+							}
+						}.attach(player));
 					}
 				}.attach(player));
 				
-				Server.getTaskScheduler().schedule(new Task(100) {
-					@Override
-					public void execute() {
-						if (player.getOutStream() != null && player != null && player.isActive()) {
-							GroundItemHandler.createGroundItem(new GroundItem(new Item(592), fire.getLocation(), player));
-						}
-						stop();
-					}
-				}.attach(player));
 				return true;
 			}
 		}

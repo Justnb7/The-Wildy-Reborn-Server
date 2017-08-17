@@ -39,8 +39,9 @@ public class NieveDialogue extends Dialogue {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "You already have an assignment.", "Would you like to reset your task?");
 					setPhase(3);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.NIEVE && !Slayer.hasTask(player)) {
-					SlayerTaskManagement.eliteTask(player);
+					SlayerTaskManagement.nieveTask(player);
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, your new task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
+					player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 					setPhase(9);
 				} else if (player.getCombatLevel() < 85) {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "You are not strong enough to handle my assignments.", "Come back to me when you are a bit more experienced.");
@@ -84,8 +85,9 @@ public class NieveDialogue extends Dialogue {
 											setPhase(9);
 										} else {
 											if (getPhase() == 13) {
-												SlayerTaskManagement.eliteTask(player);
+												SlayerTaskManagement.nieveTask(player);
 												send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
+												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 												setPhase(9);
 											} else {
 												if (getPhase() == 14) {

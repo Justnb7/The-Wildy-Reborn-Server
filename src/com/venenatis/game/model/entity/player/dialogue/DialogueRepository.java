@@ -77,6 +77,11 @@ public class DialogueRepository {
 		 * Bounty hunter
 		 */
 		dialogues.put("emblem_trader_dialogue", EmblemTraderDialogue.class);
+		
+		/**
+		 * Options
+		 */
+		dialogues.put("MAGIC_BOOK", MagicBook.class);
 	}
 
 	/**

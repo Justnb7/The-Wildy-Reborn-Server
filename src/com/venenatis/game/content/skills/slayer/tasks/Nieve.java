@@ -10,11 +10,11 @@ import com.venenatis.game.util.Utility;
  */
 public enum Nieve implements Task {
 	
-	ABERRANT_SPECTRE(7,60,9,0),
+	ABERRANT_SPECTRE(7, 60, 9, 0),
+	BLACK_DEMON(1432, 1, 9, 0),
 	ABYSSAL_DEMON(415, 85,9,0), 
 	ANKOU(7257,70,5,0),
 	//AVIANSIE
-	BLACK_DEMON(1432,1,9,0),
 	BLACK_DRAGON(252, 1,6,0), 
 	BLOODVELD(484, 50,9,0), 
 	BLUE_DRAGON(268, 1,4,0), 

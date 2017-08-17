@@ -1,7 +1,6 @@
 package com.venenatis.game.content.skills.cooking;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -33,7 +32,7 @@ public class Cooking extends SkillTask {
 	 *         The cookable data
 	 */
 	public Cooking(Player player, int delay, Cookables data) {
-		super(player, 4, BreakType.ON_MOVE, StackType.NEVER_STACK, false);
+		super(player, 4, BreakType.ON_MOVE, StackType.NEVER_STACK, true);
 		this.cookables = data;
 	}
 

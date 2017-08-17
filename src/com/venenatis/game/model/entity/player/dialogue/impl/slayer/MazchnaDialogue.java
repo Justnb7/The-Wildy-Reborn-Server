@@ -42,8 +42,9 @@ public class MazchnaDialogue extends Dialogue {
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "You already have an assignment,", "you can reset your task by talking to Nieve.");
 					setPhase(3);
 				} else if (!Slayer.hasTask(player) && Slayer.suitableMaster(player) == SlayerMasters.MAZCHNA) {
-					SlayerTaskManagement.easyTask(player);
+					SlayerTaskManagement.mazchnaTask(player);
 					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, your task is to kill " + player.getSlayerTaskAmount(), " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
+					player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 					player.getActionSender().sendMessage("Remember you can use an Enchanted gem to remind you of your task.");
 					setPhase(3);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.TURAEL && !Slayer.hasTask(player)) {
@@ -88,6 +89,7 @@ public class MazchnaDialogue extends Dialogue {
 						} else {
 							if (getPhase() == 7) {
 								send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay fine. Your task is to kill " + player.getSlayerTaskAmount(), " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername());
+								player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 								setPhase(3);
 							} else {
 								if (getPhase() == 8) {
@@ -95,8 +97,9 @@ public class MazchnaDialogue extends Dialogue {
 									player.getActionSender().sendMessage("The @blu@Rewards@bla@ store can be accessed by speaking to Nieve.");
 								} else {
 									if (getPhase() == 9) {
-										SlayerTaskManagement.easyTask(player);
+										SlayerTaskManagement.mazchnaTask(player);
 										send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task", "is to kill " + player.getSlayerTaskAmount() + " @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
+										player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 										setPhase(3);
 									}
 								}

@@ -58,7 +58,6 @@ public class SlayerTaskManagement {
 
 	public static int extension(Player player, int id) {
 		if (player.getSlayerInterface().getUnlocks().containsKey(id) || id == 270 || id == 272 || id == 274) {
-			System.out.println("Adding extra points");
 			return Utility.random(10, 35);
 		}
 		return 0;
@@ -71,19 +70,8 @@ public class SlayerTaskManagement {
 	 * @return task
 	 */
 
-	// checking if the task exists
-	/*
-	 * else for (Entry<Integer, String> entrys :
-	 * player.getSlayerInterface().getUnlocks().entrySet()) { ButtonData button
-	 * = ButtonData.buttonMap.get(entrys.getKey()); if(button.getAction() ==
-	 * Action.UNLOCK_BUTTON) { for(int i = 0; i < button.getunlockId().length;
-	 * i++){ if(button.getunlockId()[i] != t.getId()) {
-	 * 
-	 * } if(button.getunlockId()[i] == t.getId()) {
-	 * System.out.println("PRINTING I: "+i); System.out.print("We found it"); }
-	 * else { break; } } } }
-	 */
-	public static Task beginnerTask(Player player) {
+
+	public static Task turaelTask(Player player) {
 		Task task = null;
 		int taskAmount = 5 + Utility.random(3, 10);
 		int currentCount = 1;
@@ -91,16 +79,14 @@ public class SlayerTaskManagement {
 		int total = Turael.getTotal();
 		ArrayList<Turael> array = new ArrayList<Turael>();
 		for (Turael t : Turael.values()) {
-			if (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER))
-				;
-			{
-				if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-					System.out.println("Skipping: " + t.getId());
-					total = total - t.getWeight();
-				} else {
-
-					array.add(t);
-				}
+			do {
+				t = Turael.values()[(int) (Math.random() * Turael.values().length)];
+			} while (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER));
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				//System.out.println("Skipping: " + t.getId());
+				total = total - t.getWeight();
+			} else {
+				array.add(t);
 			}
 		}
 		RandomGenerator r = new RandomGenerator();
@@ -108,18 +94,16 @@ public class SlayerTaskManagement {
 
 		for (int i = 0; i < array.size(); i++) {
 			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total) * 100));
-			System.out.print("NPC " + array.get(i).name() + " Percentage:  " + array.get(i).getPercentage() + "\n");
+			//System.out.print("NPC " + array.get(i).name() + " Percentage:  " + array.get(i).getPercentage() + "\n");
 			totalPercentage += array.get(i).getPercentage();
 		}
-		System.out.println("\nRANDOM PERCENT ROLL: " + random);
+		//System.out.println("\nRANDOM PERCENT ROLL: " + random);
 		for (int i = 0; i < array.size(); i++) {
-			System.out.println("NAME " + array.get(i).name() + " ID: " + array.get(i).getId() + " CURRENT COUNT: "
-					+ currentCount + " Current Count limit " + (currentCount + array.get(i).getPercentage())
-					+ " Percentage: " + array.get(i).getPercentage());
+			//System.out.println("NAME " + array.get(i).name() + " ID: " + array.get(i).getId() + " CURRENT COUNT: " + currentCount + " Current Count limit " + (currentCount + array.get(i).getPercentage()) + " Percentage: " + array.get(i).getPercentage());
 			currentCount += array.get(i).getPercentage();
 			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
-				System.out.println("\nCURRENT COUNT: " + currentCount);
-				System.out.println("Assignment Found[" + i + "] ID: " + array.get(i).getId());
+				//System.out.println("\nCURRENT COUNT: " + currentCount);
+				//System.out.println("Assignment Found[" + i + "] ID: " + array.get(i).getId());
 				if (array.get(i).getId() == player.getLastSlayerTask()) {
 					// WHAT TO DO IF ITS SAME ASSIGNMENT
 				}
@@ -129,8 +113,8 @@ public class SlayerTaskManagement {
 				break;
 			}
 		}
-		System.out.println("\nTOTAL PERCENT " + totalPercentage);
-		System.out.println("TOTAL WEIGHT " + total);
+		//System.out.println("\nTOTAL PERCENT " + totalPercentage);
+		//System.out.println("TOTAL WEIGHT " + total);
 		array.clear();
 		return task;
 	}
@@ -141,7 +125,7 @@ public class SlayerTaskManagement {
 	 * @param player
 	 * @return task
 	 */
-	public static Task easyTask(Player player) {
+	public static Task mazchnaTask(Player player) {
 		Task task = null;
 		int taskAmount = 13 + Utility.random(5, 10);
 		int currentCount = 1;
@@ -149,14 +133,13 @@ public class SlayerTaskManagement {
 		int total = Mazchna.getTotal();
 		ArrayList<Mazchna> array = new ArrayList<Mazchna>();
 		for (Mazchna t : Mazchna.values()) {
-			if (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER))
-				;
-			{
-				if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-					total = total - t.getWeight();
-				} else {
-					array.add(t);
-				}
+			do {
+				t = Mazchna.values()[(int) (Math.random() * Mazchna.values().length)];
+			} while (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER));
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				total = total - t.getWeight();
+			} else {
+				array.add(t);
 			}
 		}
 		RandomGenerator r = new RandomGenerator();
@@ -180,13 +163,8 @@ public class SlayerTaskManagement {
 		return task;
 	}
 
-	/**
-	 * Randomises a medium task.
-	 * 
-	 * @param player
-	 * @return task
-	 */
-	public static Task mediumTask(Player player) {
+
+	public static Task vannakaTask(Player player) {
 		Task task = null;
 		int taskAmount = 25 + Utility.random(5, 15);
 		int currentCount = 1;
@@ -194,15 +172,13 @@ public class SlayerTaskManagement {
 		int total = Vannaka.getTotal();
 		ArrayList<Vannaka> array = new ArrayList<Vannaka>();
 		for (Vannaka t : Vannaka.values()) {
-			if (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER))
-				;
-			{
-				if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-					total = total - t.getWeight();
-				} else {
-
-					array.add(t);
-				}
+			do {
+				t = Vannaka.values()[(int) (Math.random() * Vannaka.values().length)];
+			} while (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER));
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				total = total - t.getWeight();
+			} else {
+				array.add(t);
 			}
 		}
 		RandomGenerator r = new RandomGenerator();
@@ -228,13 +204,8 @@ public class SlayerTaskManagement {
 		return task;
 	}
 
-	/**
-	 * Randomises a hard task.
-	 * 
-	 * @param player
-	 * @return task
-	 */
-	public static Task hardTask(Player player) {
+
+	public static Task chaeldarTask(Player player) {
 		Task task = null;
 		int taskAmount = 25 + Utility.random(15, 35);
 		int currentCount = 1;
@@ -242,16 +213,15 @@ public class SlayerTaskManagement {
 		int total = Chaeldar.getTotal();
 		ArrayList<Chaeldar> array = new ArrayList<Chaeldar>();
 		for (Chaeldar t : Chaeldar.values()) {
-			if (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER))
-				;
-			{
-				if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-					System.out.println("Skipping: " + t.getId());
-					total = total - t.getWeight();
-				} else {
+			do {
+				t = Chaeldar.values()[(int) (Math.random() * Chaeldar.values().length)];
+			} while (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER));
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				//System.out.println("Skipping: " + t.getId());
+				total = total - t.getWeight();
+			} else {
 
-					array.add(t);
-				}
+				array.add(t);
 			}
 		}
 		RandomGenerator r = new RandomGenerator();
@@ -277,13 +247,7 @@ public class SlayerTaskManagement {
 		return task;
 	}
 
-	/**
-	 * Randomises an elite task.
-	 * 
-	 * @param player
-	 * @return task
-	 */
-	public static Task eliteTask(Player player) {
+	public static Task nieveTask(Player player) {
 		Task task = null;
 		int taskAmount = 25 + Utility.random(15, 35);
 		int currentCount = 1;
@@ -292,17 +256,14 @@ public class SlayerTaskManagement {
 		ArrayList<Nieve> array = new ArrayList<Nieve>();
 
 		for (Nieve t : Nieve.values()) {
-			if (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER))
-				;
-			{
-				if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())
-						|| t.getId() == 2919 && !player.getSlayerInterface().getUnlocks().containsKey(91116)
-						|| t.getId() == 247 && !player.getSlayerInterface().getUnlocks().containsKey(91115)) {
-					System.out.println("Skipping: " + t.getId());
-					total = total - t.getWeight();
-				} else {
-					array.add(t);
-				}
+			do {
+				t = Nieve.values()[(int) (Math.random() * Nieve.values().length)];
+			} while (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER));
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId()) || t.getId() == 2919 && !player.getSlayerInterface().getUnlocks().containsKey(91116) || t.getId() == 247 && !player.getSlayerInterface().getUnlocks().containsKey(91115)) {
+				//System.out.println("Skipping: " + t.getId());
+				total = total - t.getWeight();
+			} else {
+				array.add(t);
 			}
 		}
 		RandomGenerator r = new RandomGenerator();
@@ -332,15 +293,10 @@ public class SlayerTaskManagement {
 	}
 
 	public static int assignTaskAmount(Player player, int task, int difficulty) {
-		int amount = difficulty == 0 ? 13 + Utility.random(5, 10)
-				: difficulty == 1 ? 13 + Utility.random(5, 10)
-						: difficulty == 2 ? 25 + Utility.random(5, 15)
-								: difficulty == 3 ? 25 + Utility.random(15, 35)
-										: difficulty == 4 ? 25 + Utility.random(15, 35) : Utility.random(5, 35);
+		int amount = difficulty == 0 ? 13 + Utility.random(5, 10) : difficulty == 1 ? 13 + Utility.random(5, 10) : difficulty == 3 ? 25 + Utility.random(15, 35) : difficulty == 4 ? 25 + Utility.random(15, 35) : Utility.random(5, 35);
 		for (Entry<Integer, Integer> entrys : player.getSlayerInterface().getExtensions().entrySet()) {
 			if (entrys.getValue() == 270) {
-				if (task == 270 || task == 272 || task == 274) { // dragon
-																	// extensions
+				if (task == 270 || task == 272 || task == 274) { // dragon extensions
 					player.getActionSender().sendMessage("@red@You receive your task extension.");
 					return (int) (amount * 1.5);
 				}
@@ -348,20 +304,13 @@ public class SlayerTaskManagement {
 			if (entrys.getValue() == task) {
 				player.getActionSender().sendMessage("@red@You receive your task extension.");
 				return (int) (amount * 1.5);
-
 			}
 		}
 
 		return amount;
 	}
 
-	/**
-	 * Randomises a boss task.
-	 * 
-	 * @param player
-	 * @return task
-	 */
-	public static Task bossTask(Player player) {
+	public static Task duradelTask(Player player) {
 		Task task = null;
 		int taskAmount = 25 + Utility.random(15, 35);
 		int currentCount = 1;
@@ -369,16 +318,14 @@ public class SlayerTaskManagement {
 		int total = Duradel.getTotal();
 		ArrayList<Duradel> array = new ArrayList<Duradel>();
 		for (Duradel t : Duradel.values()) {
-			if (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER))
-				;
-			{
-				if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-					System.out.println("Skipping: " + t.getId());
-					total = total - t.getWeight();
-				} else {
-
-					array.add(t);
-				}
+			do {
+				t = Duradel.values()[(int) (Math.random() * Duradel.values().length)];
+			} while (t.getSlayerReq() > player.getSkills().getLevel(Skills.SLAYER));
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				//System.out.println("Skipping: " + t.getId());
+				total = total - t.getWeight();
+			} else {
+				array.add(t);
 			}
 		}
 		RandomGenerator r = new RandomGenerator();
@@ -399,7 +346,6 @@ public class SlayerTaskManagement {
 				player.setSlayerTaskDifficulty(5);
 				break;
 			}
-
 		}
 		return task;
 	}

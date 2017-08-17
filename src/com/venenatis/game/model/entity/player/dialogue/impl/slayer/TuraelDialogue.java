@@ -1,7 +1,5 @@
 package com.venenatis.game.model.entity.player.dialogue.impl.slayer;
 
-import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
-import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.content.skills.slayer.SlayerMasters;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
@@ -90,8 +88,9 @@ public class TuraelDialogue extends Dialogue {
 											setPhase(10);
 										} else {
 											if (getPhase() == 10) {
-												SlayerTaskManagement.beginnerTask(player);
+												SlayerTaskManagement.turaelTask(player);
 												send(Type.NPC, NPC_ID, Expression.DEFAULT, "We'll start you off hunting @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@,", "you'll need to kill 10 of them");
+												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 												player.setFirstSlayerTask(true);
 												setPhase(11);
 											} else {
@@ -121,8 +120,9 @@ public class TuraelDialogue extends Dialogue {
 																			send(Type.NPC, NPC_ID, Expression.DEFAULT, "You already have an assignment, you can reset", "your task by talking to Nieve.");
 																			setPhase(16);
 																		} else if (Slayer.suitableMaster(player) == SlayerMasters.TURAEL && !Slayer.hasTask(player)) {
-																			SlayerTaskManagement.beginnerTask(player);
+																			SlayerTaskManagement.turaelTask(player);
 																			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getUsername() + ".");
+																			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 																			setPhase(16);
 																		} else if (Slayer.suitableMaster(player) == SlayerMasters.MAZCHNA && !Slayer.hasTask(player)) {
 																			send(Type.NPC, NPC_ID, Expression.DEFAULT, "Someone of your strength should go and see Mazchna.", "Would you like to get an assignment from him?");
@@ -164,10 +164,10 @@ public class TuraelDialogue extends Dialogue {
 																				}
 																			} else {
 																				if (getPhase() == 22) {
-																					SlayerTaskManagement.beginnerTask(player);
+																					SlayerTaskManagement.turaelTask(player);
 																					send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
+																					player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 																					setPhase(16);
-																					QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 																				} else {
 																					if (getPhase() == 23) {
 																						stop();
@@ -225,8 +225,9 @@ public class TuraelDialogue extends Dialogue {
 																											}
 																										} else {
 																											if (getPhase() == 31) {
-																												SlayerTaskManagement.beginnerTask(player);
+																												SlayerTaskManagement.turaelTask(player);
 																												send(Type.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill ", player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
+																												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
 																												setPhase(16);
 																											}
 																										}

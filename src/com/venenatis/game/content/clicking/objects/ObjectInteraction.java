@@ -155,32 +155,7 @@ public class ObjectInteraction {
 		break;
 		
 		case MAGICAL_ALTAR:
-			/*DialogueManager.start(player, 9);
-			player.setDialogueOptions(new DialogueOptions() {
-				@Override
-				public void handleOption(Player player, int option) {
-					switch(option) {
-					case 1: //Normal spellbook option
-						player.getActionSender().removeAllInterfaces();
-						player.setSpellBook(SpellBook.MODERN_MAGICS);
-						player.getActionSender().sendSidebarInterface(6, 1151);
-						break;
-					case 2: //Ancient spellbook option
-						player.getActionSender().removeAllInterfaces();
-						player.setSpellBook(SpellBook.ANCIENT_MAGICKS);
-						player.getActionSender().sendSidebarInterface(6, 12855);
-						break;
-					case 3: //Lunar spellbook option
-						player.getActionSender().removeAllInterfaces();
-						player.setSpellBook(SpellBook.LUNAR_MAGICS);
-						player.getActionSender().sendSidebarInterface(6, 29999);
-						break;
-					case 4: //Cancel option
-						player.getActionSender().removeAllInterfaces();
-						break;
-					}
-				}
-			});	*/		
+			player.getDialogueManager().start("MAGIC_BOOK", player);	
 			break;
 
 		case REJUVENATION_POOL:

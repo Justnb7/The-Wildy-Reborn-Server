@@ -24,6 +24,7 @@ public enum AchievementList {
 	THE_GIVER("Vengeance", "Cast Vengeance 30 times.", 30, AchievementDifficulty.EASY),
 	MONEY_MAKER("Thief", "Pickpocket mans 100 times", 100, AchievementDifficulty.EASY),
 	LAPIDARIST("Lapidarist", "Cut mans 250 gems", 250, AchievementDifficulty.EASY),
+	CHEF("Chef", "Cook food 250 times", 250, AchievementDifficulty.EASY),
 	WHATS_IN_THE_BOX("What's in the box?", "Open the mystery box 1 time.", 1, AchievementDifficulty.EASY),
 
 	/* Medium Achievements */
@@ -54,7 +55,7 @@ public enum AchievementList {
 	GENERAL("General", "Kill General Graardor 500 times.", 500, AchievementDifficulty.HARD),
 	KING("King", "Kill King Black Dragon 1,000 times.", 1000, AchievementDifficulty.HARD),
 	MYSTERY("Mystery", "Open the mystery box 500 times.", 500, AchievementDifficulty.HARD),
-	
+	MASTER_CHEF("Master chef", "Cook food 1000 times.", 1000, AchievementDifficulty.HARD),
 	;
 
 	public static List<AchievementList> asList(AchievementDifficulty difficulty) {

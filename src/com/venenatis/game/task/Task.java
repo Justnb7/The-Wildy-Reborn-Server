@@ -3,6 +3,7 @@ package com.venenatis.game.task;
 import java.util.Iterator;
 import java.util.Objects;
 
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -158,6 +159,15 @@ public abstract class Task {
 		this.remainingTicks = delay;
 		this.immediate = immediate;
 		this.attach(DEFAULT_ATTACHMENT);
+	}
+
+	public Task(Entity entity, int delay) {
+		checkDelay(delay);
+		this.tickDelay = delay;
+		this.remainingTicks = delay;
+		this.immediate = false;
+		breakType = BreakType.NEVER;
+		stackType = StackType.STACK;
 	}
 
 	/**

@@ -176,6 +176,12 @@ public class Selection {
 	public void starter(Player player, int gameMode) {
 		switch (gameMode) {
 		case 0: //Ironman
+			if (player.getBank().isEmpty()) {
+				player.getBank().clear(false);
+				player.getBank().add(starterItems);
+				System.arraycopy(NORMAL_TAB_AMOUNTS, 0, player.getBank().getTabAmounts(), 0, NORMAL_TAB_AMOUNTS.length);
+				player.getBank().shift(false);
+			}
 			player.getEquipment().setSlot(0, new Item(12810));
 			player.getEquipment().setSlot(4, new Item(12811));
 			player.getEquipment().setSlot(7, new Item(12812));
@@ -242,12 +248,9 @@ public class Selection {
 		switch (selectedIronmanButton) {
 
 		case 165162:
-			player.getAccount().setType(Account.REGULAR_TYPE);
-			player.setRights(Rights.PLAYER);
-			starter(player, 3);
-			/*player.getAccount().setType(Account.IRON_MAN_TYPE);
+			player.getAccount().setType(Account.IRON_MAN_TYPE);
 			player.setRights(Rights.IRON_MAN);
-			starter(player, 0);*/
+			starter(player, 0);
 			break;
 
 		case 165163:

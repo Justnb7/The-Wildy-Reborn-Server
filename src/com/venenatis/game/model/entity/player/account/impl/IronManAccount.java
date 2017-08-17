@@ -25,37 +25,37 @@ public class IronManAccount extends AccountType {
 
     @Override
     public boolean unownedDropsVisible() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean tradingPermitted() {
-        return true;
+        return false;
     }
     
 	@Override
 	public boolean stakingPermitted() {
-		return true;
+		return false;
 	}
 	
 	@Override
     public List<String> attackableTypes() {
-        return Arrays.asList(Account.IRON_MAN_TYPE.alias(), Account.ULTIMATE_IRON_MAN_TYPE.alias(), Account.HARDCORE_IRON_MAN_TYPE.alias());
+		return Arrays.asList(Account.REGULAR_TYPE.alias(), Account.IRON_MAN_TYPE.alias(), Account.ULTIMATE_IRON_MAN_TYPE.alias(), Account.HARDCORE_IRON_MAN_TYPE.alias());
     }
 
     @Override
     public boolean shopAccessible(String shop) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean changable() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean dropAnnouncementVisible() {
-        return false;
+        return true;
     }
     
     @Override

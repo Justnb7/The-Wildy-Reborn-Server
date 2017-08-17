@@ -133,9 +133,9 @@ public final class GroundItemHandler {
 			}
 
 			//Skip iron man game modes, we can't pick up items anyways.
-			if (player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
+			/*if (player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
 				continue;
-			}
+			}*/
 
 			// If we are globalizing an item, don't re-add it for the owner
 			if (player.usernameHash != groundItem.getOwnerHash()) {
@@ -254,9 +254,9 @@ public final class GroundItemHandler {
 		}
 
 		//PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
-		if (player != null && player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
+		/*if (player != null && player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
 			groundItem.setState(State.PRIVATE);
-		}
+		}*/
 		
 		if (groundItem.getItem().getId() >= 2412 && groundItem.getItem().getId() <= 2414) {
 			player.getActionSender().sendMessage("The cape vanishes as it touches the ground.");

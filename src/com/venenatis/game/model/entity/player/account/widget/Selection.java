@@ -173,7 +173,7 @@ public class Selection {
 	 * @param gameMode
 	 *        The game mode
 	 */
-	public void starter(Player player, int gameMode) {
+	private void starter(Player player, int gameMode) {
 		switch (gameMode) {
 		case 0: //Ironman
 			if (player.getBank().isEmpty()) {
@@ -233,7 +233,6 @@ public class Selection {
 	 */
 	public void confirm(Player player) {
 		
-		//We can only steal once per 2 seconds
 		if (System.currentTimeMillis() - lastInteraction < INTERACTION_DELAY) {
 			return;
 		}
@@ -273,6 +272,7 @@ public class Selection {
 
 		}
 		player.getActionSender().removeAllInterfaces();
+		
 		//Open make-over interface
 		player.getActionSender().sendInterface(3559);
 	}

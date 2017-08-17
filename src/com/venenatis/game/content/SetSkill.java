@@ -18,13 +18,13 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 public class SetSkill {
 
 	public enum SkillData {
-		ATTACK("Attack", Skills.ATTACK, 8654),
-		STRENGTH("Strength", Skills.STRENGTH, 8657),
-		DEFENCE("Defence", Skills.DEFENCE, 8660),
-		RANGE("Range", Skills.RANGE, 8663),
-		PRAYER("Prayer", Skills.PRAYER, 8666),
-		MAGIC("Magic", Skills.MAGIC, 8669),
-		HITPOINTS("Hitpoints", Skills.HITPOINTS, 8655);
+		ATTACK("Attack", Skills.ATTACK, 33206),
+		STRENGTH("Strength", Skills.STRENGTH, 33209),
+		DEFENCE("Defence", Skills.DEFENCE, 33212),
+		RANGE("Range", Skills.RANGE, 33215),
+		PRAYER("Prayer", Skills.PRAYER, 33218),
+		MAGIC("Magic", Skills.MAGIC, 33221),
+		HITPOINTS("Hitpoints", Skills.HITPOINTS, 33207);
 
 		private final String name;
 		private final int skill;
@@ -51,7 +51,6 @@ public class SetSkill {
 
 	public static boolean handle(Player player, int button) {
 		if (player.getRights().isIron(player)) {
-			player.getActionSender().sendMessage("Ironmen can't change their levels.");
 			return false;
 		}
 

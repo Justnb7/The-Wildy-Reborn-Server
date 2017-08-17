@@ -76,7 +76,13 @@ public class DialogueRepository {
 		/**
 		 * Bounty hunter
 		 */
-		dialogues.put("emblem_trader_dialogue", EmblemTraderDialogue.class);
+		dialogues.put("EMBLEM_TRADER", EmblemTraderDialogue.class);
+		
+		/**
+		 * Ironman
+		 */
+		dialogues.put("IRONMAN_PAUL", IronManPaul.class);
+		dialogues.put("CLEAR_ACCOUNT", ClearAccount.class);
 		
 		/**
 		 * Options

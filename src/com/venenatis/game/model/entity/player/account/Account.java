@@ -118,6 +118,15 @@ public class Account {
 	}
 
 	/**
+	 * Determines if the {@link #type} is equal to {@link ModeType#NONE}
+	 * 
+	 * @return {@code true} if the player is of this type, otherwise {@code false}
+	 */
+	public boolean isRegular() {
+		return type == REGULAR_TYPE;
+	}
+	
+	/**
 	 * The static constructor that will assist us in storing some basic
 	 * information into a hashmap when the class if first referenced. Creating a
 	 * new AccountType for each entry may seem a bit odd but it ensures that the

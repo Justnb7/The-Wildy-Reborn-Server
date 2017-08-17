@@ -160,7 +160,6 @@ public class Obelisks {
 			List<Player> players = World.getWorld().getPlayers().stream().filter(Objects::nonNull).filter(player -> Boundary.isIn(player, boundary)).collect(Collectors.toList());
 			
 			if (players.size() > 0) {
-				System.out.println("execute");
 				Obelisk randomObelisk = Obelisk.getRandom(location);
 				int x = randomObelisk.getBoundaries().getMinimumX() + 1;
 				int y = randomObelisk.getBoundaries().getMinimumY() + 1;

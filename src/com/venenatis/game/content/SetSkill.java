@@ -50,7 +50,7 @@ public class SetSkill {
 	}
 
 	public static boolean handle(Player player, int button) {
-		if (player.getRights().isIron(player)) {
+		if (player.getAccount().isIron()) {
 			return false;
 		}
 

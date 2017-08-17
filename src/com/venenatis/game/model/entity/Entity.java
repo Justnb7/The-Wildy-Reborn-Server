@@ -736,7 +736,7 @@ public abstract class Entity {
 
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean troughPrayer) {
 		
-		if(!this.canBeDamaged()) {
+		if(!this.hasAttribute("can_take_damage")) {
 			damage = 0;
 		}
 		
@@ -1312,16 +1312,6 @@ public abstract class Entity {
 
 	public Entity getEntity() {
 		return isPlayer() ? asPlayer() : asNpc();
-	}
-
-	private boolean canDamaged = true;
-
-	public boolean canBeDamaged() {
-		return canDamaged;
-	}
-
-	public void setCanBeDamaged(boolean b) {
-		canDamaged = b;
 	}
 
 }

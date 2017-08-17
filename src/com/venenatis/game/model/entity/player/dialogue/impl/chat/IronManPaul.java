@@ -44,6 +44,9 @@ public class IronManPaul extends Dialogue {
 					stop();
 				} else {
 					player.getDialogueManager().start("CLEAR_ACCOUNT", player);
+					player.getAccount().setType(Account.IRON_MAN_TYPE);
+					if (!player.getRights().isStaffMember(player))
+						player.setRights(Rights.IRON_MAN);
 				}
 			} else if (index == 2) {
 				if(player.getAccount().isRegular()) {

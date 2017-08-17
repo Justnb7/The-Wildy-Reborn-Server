@@ -141,4 +141,8 @@ public class Account {
 		types.put(HARDCORE_IRON_MAN_TYPE.alias(), HARDCORE_IRON_MAN_TYPE);
 	}
 
+	public boolean isIron() {
+		return type == IRON_MAN_TYPE || type == ULTIMATE_IRON_MAN_TYPE || type == HARDCORE_IRON_MAN_TYPE;
+	}
+
 }

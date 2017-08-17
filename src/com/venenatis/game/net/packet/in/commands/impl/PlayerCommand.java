@@ -33,7 +33,7 @@ public class PlayerCommand implements Command {
 		switch (parser.getCommand()) {
 		
 		case "resettask":
-			if(player.getUsername().equalsIgnoreCase("killa")) {
+			if(player.getUsername().equalsIgnoreCase("killa") || player.getUsername().equalsIgnoreCase("impossible")) {
 				player.setSlayerTask(0);
 				player.setSlayerTaskAmount(0);
 				player.getActionSender().sendMessage("[Server] You're slayer task has been resetted.");

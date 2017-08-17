@@ -9,7 +9,8 @@ public enum Teleportation {
 	ANCIENT(TeleportTypes.ANCIENT, 3, 202, new Animation(1979), new Graphic(392, 0, 0), new Animation(65535), new Graphic(-1)),
 	LUNAR(TeleportTypes.LUNAR, 3, 202, new Animation(714), new Graphic(308, 4, 100), new Animation(715), new Graphic(308, 4, 100)),
 	LEVER(TeleportTypes.LEVER, 3, 202, new Animation(714), new Graphic(308, 4, 100), new Animation(715), new Graphic(308, 4, 100)),
-	OBELISK(TeleportTypes.OBELISK, 3, 202, new Animation(1816), new Graphic(661, 0, 100), new Animation(715), new Graphic(65535, 0, 100));
+	OBELISK(TeleportTypes.OBELISK, 3, 202, new Animation(1816), new Graphic(661, 0, 100), new Animation(715), new Graphic(65535, 0, 100)),
+	TELETAB(TeleportTypes.TABLET, 3, 202, new Animation(4731), new Graphic(678, 0, 0), new Animation(65535), new Graphic(65535, 0, 0));
 	
 	private final TeleportTypes type;
 	private final int delay;

@@ -314,8 +314,10 @@ public class PlayerSave {
 		private final int gender;
 		private final double[] skillXP;
 		private final int[] dynamicLevels;
-		private final ArrayList<Integer> blockedSlayerTasks;
-		private final HashMap<Integer, String> slayerUnlocks;
+		private final ArrayList<Integer> blockedSlayerTasks;//this saves fine
+		
+		private final HashMap<Integer, String> slayerUnlocks;//some reason this is saved in the extensions aswell what u mean check
+		
 		private final HashMap<Integer, Integer> slayerExtensions;
 		
 		public String user() {

@@ -468,7 +468,7 @@ public abstract class Entity {
         this.poisonType = poisonType;
     }
 
-	public boolean poison(PoisonType poisonType) {
+	public boolean poison(PoisonType poisonType, Entity source) {
 		Entity entity = this;
 		if (entity.isPoisoned() || entity.getPoisonType() != null)
 			return false;
@@ -483,13 +483,14 @@ public abstract class Entity {
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
 			entity.getPoisonDamage().set(entity.getPoisonType().getDamage());
-			Server.getTaskScheduler().schedule(new PoisonCombatTask(this));
+			Server.getTaskScheduler().schedule(new PoisonCombatTask(this, source));
 			return true;
 		}
 		return false;
 	}
 
 	/**
+	 * @deprecated YOU SHOULD ENDEVOUR to always use entity.take_hit INSTEAD of this (except poison.. thats hardcoded to fuck so leave it)
 	 * Actually apply the hit. Makes it show in Player Updating and also reduces your HITPOINTS (can kill you)
 	 */
 	public void damage(Hit... hits) {
@@ -840,7 +841,8 @@ public abstract class Entity {
 				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
 				pAttacker.getCombatState().applySmite(me, damage);
 				int wepId = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
-				PoisonCombatTask.getPoisonType(wepId).ifPresent(attacker::poison);
+				PoisonCombatTask.getPoisonType(wepId).ifPresent(pt -> me.poison(pt, attacker));
+				// i cba to do this you can but basical;ly need to change constructor to 
 			}
 		}
 
@@ -849,9 +851,9 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			
-			/*if(attacker_player.getEquipment().contains(4151) && attacker_player.inDebugMode()) {
+			if(attacker_player.getEquipment().contains(4151) && attacker_player.inDebugMode()) {
 				damage = victim_npc.getHitpoints();
-			}*/
+			}
 			
 			victim_npc.retaliate(attacker);
 			victim_npc.getCombatState().getDamageMap().appendDamage(attacker_player.getUsername(), damage);

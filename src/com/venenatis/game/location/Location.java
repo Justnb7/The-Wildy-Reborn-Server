@@ -467,6 +467,8 @@ public class Location {
 		}
 		int deltaX = other.x - x, deltaY = other.y - y;
           return deltaX <= 2 && deltaX >= -3 && deltaY <= 2 && deltaY >= -3;
+          //When i was using the below it works but then it opens banks like 3 tiles away
+          //if you know what i mean
 		//return deltaX <= 5 && deltaX >= -5 && deltaY <= 5 && deltaY >= -5;
 	}
 

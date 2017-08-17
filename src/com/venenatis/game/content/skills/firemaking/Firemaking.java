@@ -65,20 +65,37 @@ public class Firemaking {
 					GroundItemHandler.createGroundItem(item);
 				}
 				
+				//Start anim
 				player.playAnimation(Animation.create(733));
 				player.getActionSender().sendMessage("You attempt to light the logs.");
 				
 				player.getInventory().remove(new Item(log.getLog()));
 				
 				GameObject fire = new GameObject(log.getFire(), player.getX(), player.getY(), player.getZ(), -1, 10, 100);
-				Server.getTaskScheduler().schedule(new Task(player, lightDelay(player, log.getLog()), false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
+				
+				final int delay = lightDelay(player, log.getLog());
+				player.debug("delay firemake "+delay);
+	
+				// no idea wtfs happening
+			// what does stack mean stackable takss can we stack multiple or not it allows multiple right? ya
+				
+				//Start task
+				Server.getTaskScheduler().schedule(new Task(player, 1, false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
+					
+					int clock = 0;
 					@Override
 					public void execute() {
+						// why
 						if(!player.hasAttribute("firemaking")) {
 							player.playAnimation(Animation.create(65535));
 							stop();
+							player.debug("why the fuck");
 							return;
 						}
+						if (clock++ % 12 == 0)
+							player.playAnimation(Animation.create(733));
+						if (clock < delay)
+							return;
 						player.getActionSender().sendMessage("we here");
 						Server.getGlobalObjects().add(fire);
 						
@@ -105,7 +122,25 @@ public class Firemaking {
 						}.attach(player));
 					}
 				}.attach(player));
-				
+				// im guessing u can only do 1 task at once or some gay shit
+				/*Server.getTaskScheduler().schedule(new Task(player, 12, true, StackType.NEVER_STACK, BreakType.ON_MOVE) {
+	
+					int cycles =0;
+					@Override
+					public void execute() {
+						player.debug("fire anim yo: "+cycles);
+						if(!player.hasAttribute("firemaking") || cycles++ >= 1+(delay/12)) {
+							player.playAnimation(Animation.create(65535));
+							stop();
+							player.debug("neck it");
+							return;
+						}
+						// u have to do the anim every tick until its finished
+						player.playAnimation(Animation.create(733));
+					}
+					
+				}.attach(player));*/
+
 				return true;
 			}
 		}

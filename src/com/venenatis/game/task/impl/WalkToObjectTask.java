@@ -62,7 +62,7 @@ public class WalkToObjectTask extends Task {
 			return;
 		}
 		
-		if (player.getLocation().isWithinInteractionDistance(loc)) {
+		if (player.getLocation().isWithinInteractionDistance(loc) || object == 23131) {//This distance, should it be like that :o ye
 			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:

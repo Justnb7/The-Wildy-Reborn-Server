@@ -432,12 +432,23 @@ public class SlayerInterface {
 			player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
 			return true;
 		case PURCHASE:
-			if (player.getSlayerAction() == 0) {
+			if (player.getSlayerAction() == 0) { /// what one is unlock? what do you mean
 				if (!purchase(player, ButtonData.buttonMap.get(player.getSlayerSelection()).getPoints())) {
 					player.getActionSender().sendMessage("You don't have enough points");
 					return false;
 				}
-				player.getSlayerInterface().getExtensions().put(player.getSlayerSelection(), player.getSlayerNpcId());
+				///unlocks
+				if (player.getType() == 0) {
+					if(getButtonLowercaseName(player.getSlayerSelection()).equals("teleporting")) {
+						player.getInventory().contains(6798, 1);
+						player.getActionSender().sendMessage("@red@You have received your Slayer Teleportation scroll");
+					}
+					player.getSlayerInterface().getUnlocks().put(player.getSlayerSelection(),
+							player.getSlayerSelectionName());
+				} else {
+					player.getSlayerInterface().getExtensions().put(player.getSlayerSelection(),
+							player.getSlayerNpcId());
+				}
 				player.getActionSender().sendMessage("You successfully purchased ");
 				player.getActionSender().sendInterface(getPreviousInterface());
 				return true;

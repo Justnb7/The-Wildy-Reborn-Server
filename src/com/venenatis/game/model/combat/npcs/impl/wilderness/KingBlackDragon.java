@@ -137,7 +137,7 @@ public class KingBlackDragon extends AbstractBossCombat {
 						break;
 					case 394:
 						if(victim.getPoisonDamage().get() < 1 && random.nextInt(10) < 7 && !victim.isPoisoned()) {
-							victim.poison(PoisonType.DEFAULT_NPC);
+							victim.poison(PoisonType.DEFAULT_NPC, attacker);
 						}
 						break;
 					case 395:

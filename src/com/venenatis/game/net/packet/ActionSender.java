@@ -963,10 +963,12 @@ public class ActionSender {
 		player.getOutStream().writeFrame(160);
         int ot = ((obj.getType() << 2) + (obj.getDirection() & 3));
         
-        player.getOutStream().writeByteS((byte) ((obj.getX()&7) << 4) + (obj.getY()&7));
+        byte jew = (byte) (((obj.getX()&7) << 4) + (obj.getY()&7));
+        player.getOutStream().writeByteS(jew);
         player.getOutStream().writeByteS((byte) ot);
         player.getOutStream().writeWordA(animationId);
         player.flushOutStream();
+        System.out.printf("jew btw %s %s anim:%s%n", jew, ot, animationId);
         return this;
     }
 	

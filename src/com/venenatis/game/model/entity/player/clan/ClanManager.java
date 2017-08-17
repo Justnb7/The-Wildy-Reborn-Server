@@ -246,8 +246,16 @@ public class ClanManager {
 		String name = player.getUsername().toLowerCase().trim();
 		
 		Clan clan = ClanRepository.get(name);
+		if (clan == null) {
+			player.getActionSender().sendMessage("fucking cant find this clan for user "+name);
+			return;
+		}
 		
 		ClanMember member = clan.get(player.getUsername());
+		if (member == null) {
+			player.getActionSender().sendMessage("member in clan not there? wtf "+player.getUsername());
+			return;
+		}
 
 		if (!clan.getOwner().equalsIgnoreCase(player.getUsername())) {
 			if (!clan.canManage(member)) {

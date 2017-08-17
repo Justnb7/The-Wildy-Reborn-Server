@@ -11,6 +11,7 @@ import com.venenatis.game.content.rewards.RewardCasket;
 import com.venenatis.game.content.skills.prayer.Prayer.Bone;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement.Teleports;
+import com.venenatis.game.content.teleportation.teletab.Tablet;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -287,6 +288,9 @@ public class ItemOptionPacket implements PacketType {
 		//Last clicked item
 		player.lastClickedItem = id;
 		
+		if(Tablet.breakTablet(player, item.getId())) {
+			return;
+		}
 
 		Bone bone = Bone.forId(item.getId());
 		if (bone != null) {
@@ -338,6 +342,7 @@ public class ItemOptionPacket implements PacketType {
 			handleShovel(player);
 			break;
 		default:
+			
 			Action action = new ConsumeItemAction(player, item, slot);
 			action.execute();
 			break;

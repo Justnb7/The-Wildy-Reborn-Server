@@ -735,8 +735,7 @@ public abstract class Entity {
 	}
 
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean troughPrayer) {
-		
-		if(!this.hasAttribute("can_take_damage")) {
+        if(!this.canBeDamaged()) {
 			damage = 0;
 		}
 		
@@ -850,9 +849,9 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			
-			if(attacker_player.getEquipment().contains(4151) && attacker_player.inDebugMode()) {
+			/*if(attacker_player.getEquipment().contains(4151) && attacker_player.inDebugMode()) {
 				damage = victim_npc.getHitpoints();
-			}
+			}*/
 			
 			victim_npc.retaliate(attacker);
 			victim_npc.getCombatState().getDamageMap().appendDamage(attacker_player.getUsername(), damage);
@@ -1313,5 +1312,16 @@ public abstract class Entity {
 	public Entity getEntity() {
 		return isPlayer() ? asPlayer() : asNpc();
 	}
+	
+    private boolean canDamaged = true;
+    
+    public boolean canBeDamaged() {
+        return canDamaged;
+    }
+    
+    public void setCanBeDamaged(boolean b) {
+        canDamaged = b;
+    }
+
 
 }

@@ -1322,6 +1322,7 @@ public class Player extends Entity {
 		usernameHash = Utility.playerNameToInt64(username);
 		getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		getWalkingQueue().reset();
+		getAttributes().put("can_take_damage", true);
 		outStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);
 		outStream.offset = 0;
 		inStream = new GameBuffer(new byte[Constants.BUFFER_SIZE]);

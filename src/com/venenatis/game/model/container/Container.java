@@ -1037,7 +1037,6 @@ public abstract class Container {
 		if (item == null) {
 			return 0;
 		}
-
 		return remove(item.getId(), item.getAmount(), true);
 	}
 

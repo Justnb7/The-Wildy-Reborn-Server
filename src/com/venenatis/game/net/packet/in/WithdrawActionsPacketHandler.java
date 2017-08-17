@@ -733,6 +733,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		case InterfaceConstants.DEPOSIT_BOX:
 			player.getBank().deposit(player.xRemoveId, player.xRemoveSlot, amountX);
 			break;
+			
+		case InterfaceConstants.SHOP_INVENTORY:
+			ShopManager.sell(player, player.xRemoveId, amountX, player.xRemoveSlot);
+			break;
 		}
 	}
 

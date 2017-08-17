@@ -56,13 +56,14 @@ public class ConsumeItemAction extends Action {
 	@Override
 	public void execute() {
 		Player player = (Player) getEntity();
+		
 		this.stop();
 		if (player.getCombatState().isDead()) {
 			return;
 		}
 		final Food food = Food.forId(item.getId());
 		final Drink drink = Drink.forId(item.getId());
-
+       
 		/**
 		 * Food
 		 */
@@ -71,7 +72,7 @@ public class ConsumeItemAction extends Action {
 			if (food == Food.KARAMBWAN && last != Food.KARAMBWAN) {
 				player.getCombatState().setEatDelay(0);
 			}
-			// System.out.println(food + ", " + last + ", " + player.getCombatState().getEatDelay());
+			//System.out.println(food + ", " + last + ", " + player.getCombatState().getEatDelay());
 			if (player.getCombatState().getEatDelay() == 0) {
 				player.getCombatState().setCanEat(true);
 				player.playAnimation(Animation.create(829));

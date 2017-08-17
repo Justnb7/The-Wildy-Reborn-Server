@@ -64,7 +64,7 @@ public class GiantMole extends AbstractBossCombat {
 		case DIG:
 			hitDelay = 0;
 			hit = 0;
-			attacker.getAttributes().put("can_take_damage", false);
+            attacker.setCanBeDamaged(false);
 			break;
 		}
 
@@ -76,7 +76,7 @@ public class GiantMole extends AbstractBossCombat {
 				public void execute() {
 					npc.teleport(dig());
 					attacker.playAnimation(Animation.create(3315));
-					attacker.getAttributes().put("can_take_damage", true);
+		            attacker.setCanBeDamaged(true);
 					this.stop();
 				}
 			});

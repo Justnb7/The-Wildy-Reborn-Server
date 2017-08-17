@@ -147,6 +147,11 @@ public class NpcInteraction {
 			ShopManager.open(player, 1);
 			break;
 		
+		/* Skiller Shop */	
+		case 505:
+			ShopManager.open(player, 11);
+			break;	
+			
 		case 315:
 			ShopManager.open(player, 6);
 			break;

@@ -120,6 +120,7 @@ public class BankContainer extends Container {
 		shift(true);
 		player.getEquipment().refresh();
 		player.getEquipment().setBonus();
+		player.setDefaultAnimations();
 		if (message) {
 			player.getActionSender().sendMessage("You have deposited some of your worn-items.");
 		}

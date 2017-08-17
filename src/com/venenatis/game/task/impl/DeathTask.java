@@ -12,6 +12,8 @@ import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.impl.PlayerDrops;
 import com.venenatis.game.model.combat.impl.PlayerKilling;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
+import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.masks.Animation;
@@ -85,6 +87,10 @@ public class DeathTask extends Task {
 		victim.getActionQueue().clearRemovableActions();
 		victim.getSkills().setLevel(Skills.HITPOINTS, victim.getSkills().getLevelForExperience(Skills.HITPOINTS));
 		victim.getActionSender().sendMessage("Oh dear, you are dead!");
+		if(victim.getAccount().getType().loseStatusOnDeath()) {
+			victim.getAccount().setType(Account.HARDCORE_IRON_MAN_TYPE);
+			victim.setRights(Rights.HARDCORE_IRON_MAN);
+		}
 		victim.getCombatState().setDead(false);
 		victim.freeze(0);
 		victim.setCurrentKillStreak(0);

@@ -116,6 +116,7 @@ public class SpecialAttackHandler {
 					if (player.getSpecialAmount() >= special.amountRequired()) {
 						Entity target = player.getCombatState().getTarget();
 						if (special.meetsRequirements(player, target)) {
+							player.setSpecialAmount(player.getSpecialAmount() - special.amountRequired() + player.getVigour());
 							special.handleAttack(player, target);
 							Special.refreshSpecial(player);
 						}

@@ -1,6 +1,7 @@
 package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.content.EmotesManager.EmoteData;
+import com.venenatis.game.content.SetSkill;
 import com.venenatis.game.content.achievements.AchievementButtons;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
@@ -21,7 +22,7 @@ import com.venenatis.game.model.entity.player.clan.ClanButtons;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.net.packet.in.button.ActionButtonEventListener;
 import com.venenatis.game.util.Utility;
-import com.venenatis.server.Server;;
+import com.venenatis.server.Server;
 
 /**
  * Handles clicking on most buttons in the interface.
@@ -69,6 +70,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */
+		
+		/* Set Skills */
+		if (SetSkill.handle(player, button)) {
+			return;
+		}
 		
 		/* Achievements */
 		if (AchievementButtons.handleButtons(player, button)) {

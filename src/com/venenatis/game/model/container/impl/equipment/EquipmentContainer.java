@@ -3,7 +3,6 @@ package com.venenatis.game.model.container.impl.equipment;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
-import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;

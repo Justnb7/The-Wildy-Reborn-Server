@@ -254,21 +254,15 @@ public class Selection {
 			break;
 
 		case 165163:
-			player.getAccount().setType(Account.REGULAR_TYPE);
-			player.setRights(Rights.PLAYER);
-			starter(player, 3);
-			/*player.getAccount().setType(Account.HARDCORE_IRON_MAN_TYPE);
+			player.getAccount().setType(Account.HARDCORE_IRON_MAN_TYPE);
 			player.setRights(Rights.HARDCORE_IRON_MAN);
-			starter(player, 1);*/
+			starter(player, 1);
 			break;
 
 		case 165164:
-			player.getAccount().setType(Account.REGULAR_TYPE);
-			player.setRights(Rights.PLAYER);
-			starter(player, 3);
-			/*player.getAccount().setType(Account.ULTIMATE_IRON_MAN_TYPE);
+			player.getAccount().setType(Account.ULTIMATE_IRON_MAN_TYPE);
 			player.setRights(Rights.ULTIMATE_IRON_MAN);
-			starter(player, 2);*/
+			starter(player, 2);
 			break;
 			
 		case 165165:

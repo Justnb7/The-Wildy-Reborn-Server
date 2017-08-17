@@ -131,10 +131,14 @@ public class ShopManager {
 		player.getAttributes().put("shopping", true);
 		player.getActionSender().sendItemOnInterface(23016, shop.toNonNullArray());
 		
+		//So imma check null items send string "" which is empty? ye
+		
+		//print says 4 items in container yet they others are not removed
+		
 		System.out.println("shop items: "+shop.toNonNullArray().length);
-		for (int i = 0; i < shop.toNonNullArray().length; i++) {
-			player.getActionSender().sendString(shop.toNonNullArray()[i] == null ? "" : ""+ shop.toNonNullArray()[i].getValue(), 23016 + i);
-			player.debug(String.format("%s", shop.toNonNullArray()[i]));
+		for (int i = 0; i < shop.toArray().length - 1; i++) { // ah yeah when i use toArray imma get some weird error
+			player.getActionSender().sendString(shop.toArray()[i] == null ? "" : ""+ shop.toArray()[i].getValue(), 23017 + i);
+			player.debug(String.format("%s", shop.toArray()[i]));
 		}
 		
 		player.getActionSender().sendInterfaceWithInventoryOverlay(ShopConstants.SLAYER_REWARDS_INTERFACE, 3822);

@@ -83,7 +83,9 @@ public class ObjectInteraction {
 		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().prayAltar(location);
 			return;
-		} else if (Runecrafting.handleObject(player, obj)) {
+		}
+		
+		if (Runecrafting.handleObject(player, obj)) {
 			return;
 		}
 		

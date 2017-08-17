@@ -54,7 +54,7 @@ public class CombatFormulae {
         int att_curr_range = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.RANGE);
         int att_curr_magic = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.MAGIC);
 
-        int tar_curr_magic = target != null && target.isNPC() ? target.toNPC().getDefinition().getMagicDefence() : target.toPlayer().getSkills().getLevel(Skills.MAGIC);
+        int tar_curr_magic = target != null && attacker != null && target.isNPC() ? target.toNPC().getDefinition().getMagicDefence() : target.toPlayer().getSkills().getLevel(Skills.MAGIC);
         int tar_curr_defence = target != null && target.isNPC() ? npcDef(target.toNPC(), att_type) : target.toPlayer().toPlayer().getSkills().getLevel(Skills.DEFENCE);
 
         int att_base_attack = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevelForExperience(Skills.ATTACK);

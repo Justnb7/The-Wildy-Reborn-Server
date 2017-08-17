@@ -963,6 +963,10 @@ public class Utility {
     public static String appendIndefiniteArticle(String thing) {
         return determineIndefiniteArticle(thing).concat(" " + thing);
     }
+    
+    public static int random_drop_system(int range) {
+		return (int) (java.lang.Math.random() * (range + 1));
+	}
 
 	/**
 	 * Generates an inclusive pseudo-random number with (approximately) equal

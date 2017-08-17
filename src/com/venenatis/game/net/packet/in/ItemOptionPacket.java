@@ -201,7 +201,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//We don't even have the item
-		if (!player.getInventory().contains(item.getId())) {
+		if (!player.getInventory().contains(item.getId()) && item != null) {
 			return;
 		}
 		

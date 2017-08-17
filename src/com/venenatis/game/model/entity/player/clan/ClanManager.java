@@ -247,32 +247,31 @@ public class ClanManager {
 		
 		Clan clan = ClanRepository.get(name);
 		
-		if(name != null || player.getUsername() != null || clan != null) {
-			ClanMember member = clan.get(player.getUsername());
+		ClanMember member = clan.get(player.getUsername());
 
-			if (!clan.getOwner().equalsIgnoreCase(player.getUsername())) {
-				if (!clan.canManage(member)) {
-					player.getActionSender().sendMessage("You do not have sufficient permisson to manage this channel!");
-					return;
-				}
+		if (!clan.getOwner().equalsIgnoreCase(player.getUsername())) {
+			if (!clan.canManage(member)) {
+				player.getActionSender().sendMessage("You do not have sufficient permisson to manage this channel!");
+				return;
 			}
-
-			int index = 0;
-			for (int i = index; i < 50; i++) {
-				player.getActionSender().sendString("", 44001 + index);
-				player.getActionSender().sendString("", 44801 + index);
-			}
-			
-			for (ClanMember other : clan.members()) {
-				player.getActionSender().sendString(Utility.formatName(other.getName()), 44001 + index);
-				player.getActionSender().sendString("<clan=" + other.getRank().getRankIndex() + ">" + other.getRank().getName(), 44801 + index);
-				index++;
-			}
-
-			player.getActionSender().sendString(Utility.formatName(clan.getName()), 47814);
-
-			player.getActionSender().sendInterface(40172);
 		}
+
+		int index = 0;
+		for (int i = index; i < 50; i++) {
+			player.getActionSender().sendString("", 44001 + index);
+			player.getActionSender().sendString("", 44801 + index);
+		}
+
+		for (ClanMember other : clan.members()) {
+			player.getActionSender().sendString(Utility.formatName(other.getName()), 44001 + index);
+			player.getActionSender().sendString(
+					"<clan=" + other.getRank().getRankIndex() + ">" + other.getRank().getName(), 44801 + index);
+			index++;
+		}
+
+		player.getActionSender().sendString(Utility.formatName(clan.getName()), 47814);
+
+		player.getActionSender().sendInterface(40172);
 	}
 
 	public static void kickMember(Player player, String name) {

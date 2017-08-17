@@ -94,6 +94,9 @@ public class Runecrafting extends SkillTask {
 	 *        The altar
 	 */
 	public static boolean meetsRequirements(Player player, GameObject id) {
+		if(id == null) {
+			return false;
+		}
 		Talisman talisman = Talisman.getTalismanByAltar(id.getId());
 		if(talisman != null) {
 			if(player.getSkills().getLevel(Skills.RUNECRAFTING) < Talisman.getTalismanByAltar(talisman.getAlterId()).getLevel()) {

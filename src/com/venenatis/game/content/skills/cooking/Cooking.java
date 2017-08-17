@@ -102,7 +102,7 @@ public class Cooking extends SkillTask {
 	 */
 	private boolean burned(Cookables cook, Player player) {
 		int level = player.getSkills().getLevel(Skills.COOKING);
-		if (player.getEquipment().get(EquipmentConstants.GLOVES_SLOT).getId() == 775) {
+		if (player.getEquipment().contains(775)) {
 			if (level >= (cook.getBurningLvl() - (cook.getProduct() == 391 ? 0 : 6)))
 				return false;
 		}

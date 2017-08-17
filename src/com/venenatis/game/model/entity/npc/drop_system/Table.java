@@ -34,7 +34,7 @@ public class Table extends ArrayList<Drop> {
 	 * @return a random drop
 	 */
 	public Drop fetchRandom() {
-		return get(Utility.random(size() - 1));
+		return get(Utility.random_drop_system(size() - 1));
 	}
 
 	/**

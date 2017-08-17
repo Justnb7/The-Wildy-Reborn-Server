@@ -203,6 +203,10 @@ public class WithdrawActionsPacketHandler implements PacketType {
 
 		switch (component) {
 		
+		case 23016:
+			ShopManager.buy(player, removeId, 1, removeSlot);
+			break;
+		
 		case RunePouchContainer.INVNTORY_CONTAINER:
 			player.getRunePouch().addItem(removeId, 5, removeSlot);
 			break;

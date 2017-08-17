@@ -163,6 +163,30 @@ public class NpcInteraction {
 		case 394:
 			player.getBank().open();
 			break;
+			
+		case 401: // Turael
+			ShopManager.open(player, 12);
+			break;
+		case 402: // Mazchna
+			ShopManager.open(player, 12);
+			break;
+
+		case 403: // Vannaka
+			ShopManager.open(player, 12);
+			break;
+
+		case 404: // Chaeldar
+			ShopManager.open(player, 12);
+			break;
+
+		case 405: // Duradel
+			ShopManager.open(player, 12);
+			break;
+
+		case 490: // Nieve
+			ShopManager.open(player, 12);
+			break;
+		
 		}
 	}
 
@@ -181,9 +205,7 @@ public class NpcInteraction {
 		}
 		
 		switch (npc.getId()) {
-		case 315:
-			
-			break;
+		
 		}
 	}
 
@@ -198,8 +220,27 @@ public class NpcInteraction {
 	public static void fourthOption(Player player, NPC npc) {
 
 		switch (npc.getId()) {
-		case 315:
-			
+		case 401: // Turael
+			player.getSlayerInterface().controlPanel(player, 91005);
+			break;
+		case 402: // Mazchna
+			player.getSlayerInterface().controlPanel(player, 91005);
+			break;
+
+		case 403: // Vannaka
+			player.getSlayerInterface().controlPanel(player, 91005);
+			break;
+
+		case 404: // Chaeldar
+			player.getSlayerInterface().controlPanel(player, 91005);
+			break;
+
+		case 405: // Duradel
+			player.getSlayerInterface().controlPanel(player, 91005);
+			break;
+
+		case 490: // Nieve
+			player.getSlayerInterface().controlPanel(player, 91005);
 			break;
 		}
 	}

@@ -720,13 +720,13 @@ public class Combat {
 			player.getWalkingQueue().reset();
 			return false;
 		}
-		if (target.inTutorial()) {
+		if (!player.receivedStarter()) {
 			Combat.resetCombat(player);
 			player.getWalkingQueue().reset();
 			player.debug("target in tut");
 			return false;
 		}
-		if (target.inTutorial()) {
+		if (!player.receivedStarter()) {
 			player.message("You cannot attack this player.");
 			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);

@@ -415,7 +415,7 @@ public class NpcCombat {
 			return false;
 		}
 
-		if (player.inTutorial()) {
+		if (!player.receivedStarter()) {
 			npc.targetId = 0;
 			return false;
 		}

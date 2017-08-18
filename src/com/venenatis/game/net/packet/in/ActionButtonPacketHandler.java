@@ -63,7 +63,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * When we're in the tutorial we're only allowed to click the following buttons
 		 */
-		if (player.inTutorial() && button != 9178 && button != 9179 && button != 9180 && button != 9181 && button != 9154 && button != 165179 && button != 165162 && button != 165163 && button != 165164 && button != 165165) {
+		if (!player.receivedStarter() && button != 9178 && button != 9179 && button != 9180 && button != 9181 && button != 9154 && button != 165179 && button != 165162 && button != 165163 && button != 165164 && button != 165165) {
 			return;
 		}
 		

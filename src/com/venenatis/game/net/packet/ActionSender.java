@@ -1075,7 +1075,7 @@ public class ActionSender {
 					return;
 				}
 				
-				if (!player.receivedStarter() && player.inTutorial()) {
+				if (!player.receivedStarter()) {
 					player.getDialogueManager().start("STARTER");
 					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername()) + "</col> Has joined Venenatis for the first time.");
 				}

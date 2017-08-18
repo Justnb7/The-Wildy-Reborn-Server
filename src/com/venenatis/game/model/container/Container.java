@@ -651,6 +651,28 @@ public abstract class Container {
 		return stack[index];
 	}
 
+	public boolean hasItemAmount(int id, int amount) {
+		return hasItemAmount(new Item(id, amount));
+	}
+	
+	public boolean hasItemAmount(Item item) {
+		boolean stackable = isStackable(item);
+
+		for (Item i : stack) {
+			if (i != null && i.getId() == item.getId()) {
+				if (stackable) {
+					return i.getAmount() >= item.getAmount();
+				}
+				item.remove(1);
+
+				if (item.getAmount() <= 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Gets the amount of the specified item in the container.
 	 * 

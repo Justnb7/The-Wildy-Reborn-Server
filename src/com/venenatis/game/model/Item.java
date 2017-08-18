@@ -383,6 +383,10 @@ public class Item {
 		return ItemDefinition.get(id);
 	}
 	
+	public static ItemDefinition getDefinition(int id) {
+		return ItemDefinition.get(id);
+	}
+	
 	public EquipmentDefinition getEquipmentDefinition() {
         return EquipmentDefinition.get(id);
     }

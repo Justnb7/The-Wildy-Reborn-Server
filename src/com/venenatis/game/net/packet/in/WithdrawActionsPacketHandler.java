@@ -1,5 +1,6 @@
 package com.venenatis.game.net.packet.in;
 
+import com.venenatis.game.content.skills.smithing.SmithingTask;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.combat_effects.DragonfireShield;
@@ -85,6 +86,14 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		player.debug("[WithdrawActionsPacketHandler] - FirstAction - InterfaceId: " + interfaceId + " (" + removeId + ", " + removeSlot + ")");
 
 		switch (interfaceId) {
+		
+		case 1119:// Smithing
+		case 1120:
+		case 1121:
+		case 1122:
+		case 1123:
+			SmithingTask.start(player, removeId, 1, interfaceId, removeSlot);
+			break;
 		
 		case RunePouchContainer.INVNTORY_CONTAINER:
 			player.getRunePouch().addItem(removeId, 1, removeSlot);
@@ -202,6 +211,14 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		player.debug(String.format("Packet 117: component %d item %d slot %d%n", component, removeId, removeSlot));
 
 		switch (component) {
+		
+		case 1119:
+		case 1120:
+		case 1121:
+		case 1122:
+		case 1123:
+			SmithingTask.start(player, removeId, 5, component, removeSlot);
+			break;
 		
 		case 23016:
 			ShopManager.buy(player, removeId, 1, removeSlot);
@@ -368,6 +385,14 @@ public class WithdrawActionsPacketHandler implements PacketType {
 		player.debug("[WithdrawActionsPacketHandler] - ThirdClick - InterfaceId: " + interfaceId + " removeId: " + removeId + " slot: " + removeSlot);
 
 		switch (interfaceId) {
+		
+		case 1119:
+		case 1120:
+		case 1121:
+		case 1122:
+		case 1123:
+			SmithingTask.start(player, removeId, 10, interfaceId, removeSlot);
+			break;
 
 		case InterfaceConstants.SHOP_INTERFACE:
 			ShopManager.buy(player, removeId, 10, removeSlot);

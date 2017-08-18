@@ -47,6 +47,7 @@ public class Tablet {
 				//No teleporting above level 20 wilderness
 				if(player.getWildLevel() > 20) {
 					player.getActionSender().sendMessage("You can not teleport past 20 wilderness!");
+					return false;
 				}
 
 				//We cannot teleport out of the dueling arena

@@ -4,6 +4,7 @@ import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.ArmourSets;
 import com.venenatis.game.content.skills.cooking.Cookables;
 import com.venenatis.game.content.skills.cooking.Cooking;
+import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
@@ -22,6 +23,12 @@ public class ItemOnObjectInteract {
 		}
 		
 		switch (def.getName().toLowerCase()) {
+		
+		case "anvil":
+			if (SmithingConstants.useBarOnAnvil(player, obj, item.getId())) {
+				return;
+			}
+			break;
 			
 		case "range":
 		case "cooking range":

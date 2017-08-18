@@ -11,6 +11,7 @@ import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.fletching.Fletching;
+import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.content.teleportation.Teleport;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
@@ -70,6 +71,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */
+		
+		/* Smithing */
+		if (SmithingConstants.clickSmeltSelection(player, button)) {
+			return;
+		}
 		
 		/* Set Skills */
 		if (SetSkill.handle(player, button)) {

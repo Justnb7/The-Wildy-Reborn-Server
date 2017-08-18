@@ -10,6 +10,7 @@ import com.venenatis.game.content.skills.agility.Shortcut;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
+import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.content.skills.thieving.Stalls;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
@@ -55,6 +56,14 @@ public class ObjectInteraction {
 		final Obstacle obstacle = Obstacle.forLocation(location);
 		
 		if(BrimhavenVines.handleBrimhavenVines(player, objectId)) {
+			return;
+		}
+		
+		/*if(BrimhavenVines.chop(player, obj)) {
+			return;
+		}*/
+		
+		if (SmithingConstants.clickAnvil(player, objectId)) {
 			return;
 		}
 		
@@ -120,6 +129,16 @@ public class ObjectInteraction {
 			Obelisks.get().activate(player, obj.getId());
 		
 		switch (def.getName().toLowerCase()) {
+		
+		case "furnace":
+			SmithingConstants.sendSmeltSelectionInterface(player);
+			break;
+			
+		case "anvil":
+			if (SmithingConstants.clickAnvil(player, obj.getId())) {
+				return;
+			}
+			break;
 
 		case "bank":
 		case "Bank":
@@ -181,7 +200,6 @@ public class ObjectInteraction {
 		 * Shortcuts
 		 */
 		case 9328:
-		case 11844:
 		case 9301:
 		case 9302:
 		case 2322:
@@ -202,7 +220,6 @@ public class ObjectInteraction {
 		case 4616:
 		case 3933:
 		case 12127:
-		case 16544:
 		case 16539:
 		case 993:
 		case 51:
@@ -312,6 +329,16 @@ public class ObjectInteraction {
 		MinigameHandler.execute(player, $it -> $it.onSecondClickObject(player, obj));
 		
 		switch (objectDef.getName().toLowerCase()) {
+		
+		case "anvil":
+			if (SmithingConstants.clickAnvil(player, obj.getId())) {
+				return;
+			}
+			break;
+		
+		case "furnace":
+			SmithingConstants.sendSmeltSelectionInterface(player);
+			break;
 
 		case "bank":
 		case "Bank":

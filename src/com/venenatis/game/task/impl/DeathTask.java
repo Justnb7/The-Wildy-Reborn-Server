@@ -11,6 +11,7 @@ import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.impl.PlayerDrops;
 import com.venenatis.game.model.combat.impl.PlayerKilling;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
@@ -60,7 +61,7 @@ public class DeathTask extends Task {
 
 			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
 			if (killer != null && Area.inWilderness(killer)) {
-				dropPlayerItems(victim);
+				dropPlayerItems(victim, killer);
 				reset(victim);
 				victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
 			} else {
@@ -72,7 +73,7 @@ public class DeathTask extends Task {
 				} else {
 					// this is non wilderness death
 					if (!victim.canKeepItems()) {
-						dropPlayerItems(victim);
+						dropPlayerItems(victim, killer);
 					}
 					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
 					reset(victim);
@@ -110,15 +111,16 @@ public class DeathTask extends Task {
 	 * @param victim
 	 *            The player losing his items
 	 */
-	public void dropPlayerItems(Player victim) {
+	public void dropPlayerItems(Player victim, Entity attacker) {
+		
 		/**
 		 * Are admins allowed to keep their items upon death?
 		 */
-		boolean admin_keeps_items = victim.getUsername().equalsIgnoreCase("patrick") || victim.getUsername().equalsIgnoreCase("matthew") ? false : false;
+		boolean admin_keeps_items = victim.getUsername().equalsIgnoreCase("patrick") && victim.inDebugMode() || victim.getUsername().equalsIgnoreCase("matthew") ? true : false;
 		
 		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
 		if (!controller.isSafe() && !admin_keeps_items) {
-			PlayerDrops.dropItems(victim);
+			PlayerDrops.dropItems(victim, attacker);
 		}
 	}
 }

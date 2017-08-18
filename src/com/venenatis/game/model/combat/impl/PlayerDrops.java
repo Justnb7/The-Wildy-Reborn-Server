@@ -13,6 +13,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Item.ItemComparator;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.util.Utility;
@@ -124,8 +125,8 @@ public class PlayerDrops {
 	 * @param victim
 	 *            The player losing their items
 	 */
-	public static void dropItems(Player victim) {
-		Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
+	public static void dropItems(Player victim, Entity killer) {
+		killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
 
 		if (killer == null) {
 			killer = victim;
@@ -181,15 +182,12 @@ public class PlayerDrops {
 			if (item == null) {
 				continue;
 			}
-
+			
+			victim.debug("killer: "+killer);
+			
 			// If killer is null, drop is for victim
-			if (killer == null) {
+			if (killer == null || killer.isNPC()) {
 				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), victim));
-
-				// If killer is null, drop is for victim
-			} else if (killer.isNPC()) {
-				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), victim));
-
 				// Drop all items for killer no random
 			} else {
 				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), (Player) killer));

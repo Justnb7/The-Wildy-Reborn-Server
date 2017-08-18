@@ -635,7 +635,7 @@ public class Combat {
 				|| bowType == BowType.WILLOW_LONGBOW || bowType == BowType.MAPLE_SHORTBOW
 				|| bowType == BowType.MAPLE_LONGBOW || bowType == BowType.YEW_SHORTBOW || bowType == BowType.YEW_LONGBOW
 				|| bowType == BowType.MAGIC_SHORTBOW || bowType == BowType.MAGIC_LONGBOW || bowType == BowType.DARK_BOW
-				|| bowType == BowType.TWISTED_BOW);
+				|| bowType == BowType.TWISTED_BOW || bowType == BowType.CRYSTAL_BOW);
 	}
 	
 	public static boolean isHandWeapon(RangeWeaponType rangeWeaponType) {

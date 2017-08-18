@@ -1101,6 +1101,22 @@ public class ActionSender {
 				} else {
 					ClanManager.join(player, player.getClanChat());
 				}
+				
+				//Update farming
+				player.getFarming().doCalculations();
+				player.getFarming().getAllotment().updateAllotmentsStates();
+				player.getFarming().getHerbs().updateHerbsStates();
+				player.getFarming().getTrees().updateTreeStates();
+				player.getFarming().getFruitTrees().updateFruitTreeStates();
+				player.getFarming().getFlowers().updateFlowerStates();
+				player.getFarming().getSpecialPlantOne().updateSpecialPlants();
+				player.getFarming().getSpecialPlantTwo().updateSpecialPlants();
+				player.getFarming().getHops().updateHopsStates();
+				player.getFarming().getBushes().updateBushesStates();
+
+				for (int i = 0; i < 4; i++) {
+					player.getFarming().getCompost().updateCompostBin(i);
+				}
 				this.stop();
 			}
 		}.attach(this));

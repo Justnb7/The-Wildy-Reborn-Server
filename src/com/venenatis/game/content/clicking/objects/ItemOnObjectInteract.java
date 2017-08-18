@@ -4,6 +4,7 @@ import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.ArmourSets;
 import com.venenatis.game.content.skills.cooking.Cookables;
 import com.venenatis.game.content.skills.cooking.Cooking;
+import com.venenatis.game.content.skills.farming.Farming;
 import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -21,6 +22,10 @@ public class ItemOnObjectInteract {
 		
 		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().bonesOnAltar(item);
+			return;
+		}
+		
+		if (Farming.prepareCrop(player, item.getId(), obj, loc.getX(), loc.getY())) {
 			return;
 		}
 		

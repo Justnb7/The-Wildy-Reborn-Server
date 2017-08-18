@@ -7,6 +7,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
 import com.venenatis.game.content.skills.agility.Shortcut;
+import com.venenatis.game.content.skills.farming.Farming;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
@@ -98,6 +99,14 @@ public class ObjectInteraction {
 		
 		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
 			player.getSkills().getPrayer().prayAltar(location);
+			return;
+		}
+		
+		if (Farming.harvest(player, location.getX(), location.getY())) {
+			return;
+		}
+		
+		if (Farming.inspectObject(player, location.getX(), location.getY())) {
 			return;
 		}
 		

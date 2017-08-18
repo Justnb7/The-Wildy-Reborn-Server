@@ -1130,6 +1130,21 @@ public abstract class Container {
 			refresh();
 		}
 	}
+	
+	public int removeFromSlot(int slot, int expectedId, int amount) {
+		if ((stack[slot] == null) || (stack[slot].getId() != expectedId)) {
+			return 0;
+		}
+
+		if (stack[slot].getAmount() <= amount) {
+			int am = stack[slot].getAmount();
+			stack[slot] = null;
+			return am;
+		}
+
+		stack[slot].remove(amount);
+		return amount;
+	}
 
 	/**
 	 * Removes a given amount of an item in the container matching the specified

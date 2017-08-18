@@ -23,7 +23,7 @@ public class Cooking extends Task {
 	/**
 	 * Action buttons
 	 */
-	private static final int[][] ACTION_BUTTON = { { 53152, 1 }, { 53151, 5 }, {53150, -1}, {53150, -1} };
+	private static final int[][] ACTION_BUTTON = { { 53152, 1 }, { 53151, 5 }, {53150, -1}, {53150, 28} };
 	
 	/**
 	 * Pulls the cookable data
@@ -166,10 +166,8 @@ public class Cooking extends Task {
 		if (amount == 0) {
 			return false;
 		}
-		if (buttonId == 53152 || buttonId == 53153) {
+		if (buttonId == 53152 || buttonId == 53153 || buttonId == 53149) {
 			attemptCooking(player, ((Integer) player.getAttributes().get("cookingitem")).intValue(), ((Integer) player.getAttributes().get("cookingobject")).intValue(), amount);
-		} else if(buttonId == 53149) {
-			attemptCooking(player, ((Integer) player.getAttributes().get("cookingitem")).intValue(), ((Integer) player.getAttributes().get("cookingobject")).intValue(), player.getInventory().getAmount((int) player.getAttributes().get("cookingitem")));
 		} else {
 			player.getActionSender().sendInput((InputAmount) input -> {
 				attemptCooking(player, ((Integer) player.getAttributes().get("cookingitem")).intValue(), ((Integer) player.getAttributes().get("cookingobject")).intValue(), input);

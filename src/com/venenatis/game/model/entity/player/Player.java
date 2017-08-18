@@ -19,6 +19,7 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.Du
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
 import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.skills.SkillTask;
+import com.venenatis.game.content.skills.farming.Farming;
 import com.venenatis.game.content.skills.fishing.Fishing;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
@@ -3117,6 +3118,16 @@ public class Player extends Entity {
 
 	public Fishing getFishing() {
 		return fishing;
+	}
+	
+	private Farming farming = new Farming(this);
+
+	public Farming getFarming() {
+		return farming;
+	}
+
+	public void setFarming(Farming farming) {
+		this.farming = farming;
 	}
 	
 }

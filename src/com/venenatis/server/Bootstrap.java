@@ -10,6 +10,7 @@ import com.venenatis.ScriptManager;
 import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.skills.crafting.impl.*;
+import com.venenatis.game.content.skills.farming.Farming;
 import com.venenatis.game.content.skills.fishing.*;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.*;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
@@ -126,6 +127,7 @@ public class Bootstrap {
 		LOGGER.info("Loading content...");
 		serviceLoader.execute(() -> {
 			ClanRepository.load();
+			Farming.declare();
 			Gem.declare();
 			Hide.declare();
 			Arrow.declare();

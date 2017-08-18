@@ -4,25 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.venenatis.game.model.combat.npcs.impl.CaveKraken;
-import com.venenatis.game.model.combat.npcs.impl.DagannothMother;
-import com.venenatis.game.model.combat.npcs.impl.GiantMole;
-import com.venenatis.game.model.combat.npcs.impl.Kraken;
-import com.venenatis.game.model.combat.npcs.impl.SkeletalWyvern;
-import com.venenatis.game.model.combat.npcs.impl.barrows.AhrimTheBlighted;
-import com.venenatis.game.model.combat.npcs.impl.dagannoths.DagannothPrime;
-import com.venenatis.game.model.combat.npcs.impl.dagannoths.DagannothRex;
-import com.venenatis.game.model.combat.npcs.impl.dagannoths.DagannothSupreme;
-import com.venenatis.game.model.combat.npcs.impl.fight_caves.KetZek;
-import com.venenatis.game.model.combat.npcs.impl.fight_caves.TokXil;
-import com.venenatis.game.model.combat.npcs.impl.fight_caves.TzTokJad;
-import com.venenatis.game.model.combat.npcs.impl.godwars.bandos.GeneralGraardor;
-import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.KrilTsutsaroth;
-import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.ZaklnGritch;
-import com.venenatis.game.model.combat.npcs.impl.wilderness.ChaosFanatic;
-import com.venenatis.game.model.combat.npcs.impl.wilderness.Chaos_Elemental;
-import com.venenatis.game.model.combat.npcs.impl.wilderness.KingBlackDragon;
-import com.venenatis.game.model.combat.npcs.impl.wilderness.ZombiesChampion;
+import com.venenatis.game.model.combat.npcs.impl.*;
+import com.venenatis.game.model.combat.npcs.impl.barrows.*;
+import com.venenatis.game.model.combat.npcs.impl.dagannoths.*;
+import com.venenatis.game.model.combat.npcs.impl.fight_caves.*;
+import com.venenatis.game.model.combat.npcs.impl.godwars.armadyl.*;
+import com.venenatis.game.model.combat.npcs.impl.godwars.bandos.*;
+import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.*;
+import com.venenatis.game.model.combat.npcs.impl.wilderness.*;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
@@ -58,6 +47,10 @@ public abstract class AbstractBossCombat {
 		
 		bosses.put(3129, new KrilTsutsaroth());
 		bosses.put(3131, new ZaklnGritch());
+		
+		bosses.put(3162, new Kreearra());
+		bosses.put(3163, new WingmanSkree());
+		bosses.put(3164, new FlockleaderGeerin());
 		
 		bosses.put(2054, new Chaos_Elemental());
 		bosses.put(239,  new KingBlackDragon());

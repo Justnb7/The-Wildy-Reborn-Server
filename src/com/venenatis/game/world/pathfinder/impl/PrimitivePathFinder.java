@@ -1,11 +1,15 @@
 package com.venenatis.game.world.pathfinder.impl;
 
+import java.awt.Point;
+
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.world.pathfinder.*;
+import com.venenatis.game.world.pathfinder.BasicPoint;
+import com.venenatis.game.world.pathfinder.Directions;
+import com.venenatis.game.world.pathfinder.PathFinder;
+import com.venenatis.game.world.pathfinder.PathState;
+import com.venenatis.game.world.pathfinder.TileControl;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
-
-import java.awt.*;
 
 public class PrimitivePathFinder implements PathFinder {
 	

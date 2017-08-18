@@ -263,7 +263,7 @@ public class Combat {
         }
         int spell = player.getSpellId();
         int req = Magic.requirement(spell);
-        if (player.skills.getLevel(4) < req) {
+        if (player.getSkills().getLevel(Skills.MAGIC) < req) {
             player.message("You need a Magic level of "+req+" to cast this spell.");
             resetCombat(player);
             return;

@@ -808,4 +808,8 @@ public class Location {
 	public Location add(Direction direction) {
 		return new Location(x + direction.getStepX(), y + direction.getStepY(), z);
 	}
+
+	public Location getDelta(Location location) {
+		return transform(getX() - location.getX(), getY() - location.getY(), 0);
+	}
 }

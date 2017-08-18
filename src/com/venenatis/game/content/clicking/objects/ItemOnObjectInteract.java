@@ -8,11 +8,13 @@ import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
 public class ItemOnObjectInteract {
 	
 	public static void handle(Player player, int obj, Location loc, Item item) {
-		
+		final GameObject gameObject = RegionStoreManager.get().getGameObject(loc, obj);
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(obj);
 		if (!player.getInventory().contains(item.getId()))
 			return;
@@ -35,9 +37,12 @@ public class ItemOnObjectInteract {
 		case "stove":
 		case "fire":
 			if (Cookables.isCookable(item.getId())) {
+				Cooking.showInterface(player, gameObject, item);
+			}
+			/*if (Cookables.isCookable(item.getId())) {
 				Cooking.attemptCooking(player, item.getId(), obj);
 				return;
-			}
+			}*/
 			break;
 			
 		/* Bank */

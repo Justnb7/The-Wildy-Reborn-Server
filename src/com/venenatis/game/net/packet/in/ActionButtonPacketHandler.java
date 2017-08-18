@@ -9,6 +9,7 @@ import com.venenatis.game.content.clicking.Buttons;
 import com.venenatis.game.content.quest_tab.QuestTabPage;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.content.skills.cooking.Cooking;
 import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.fletching.Fletching;
 import com.venenatis.game.content.skills.smithing.SmithingConstants;
@@ -79,6 +80,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		
 		/* Set Skills */
 		if (SetSkill.handle(player, button)) {
+			return;
+		}
+		
+		/* Cooking */
+		if (Cooking.cook(player, button)) {
 			return;
 		}
 		

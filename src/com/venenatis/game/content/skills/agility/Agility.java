@@ -7,7 +7,6 @@ import com.venenatis.ScriptManager;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
@@ -437,7 +436,7 @@ public class Agility {
 				if(dmg > player.getSkills().getLevel(Skills.HITPOINTS)) {
 					dmg = player.getSkills().getLevel(Skills.HITPOINTS);
 				}
-				player.damage(new Hit(damage));
+				player.take_hit(null, damage);
 				this.stop();
 			}
 		};

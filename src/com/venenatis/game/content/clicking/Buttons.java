@@ -34,6 +34,10 @@ public class Buttons {
 		System.out.println("btn "+button);
 		switch (button) {
 		
+		case 53150:
+			
+			break;
+		
 		case 9190:
 			if (player.getDialogueManager().isActive()) {
 				if (player.getDialogueManager().select(1)) {

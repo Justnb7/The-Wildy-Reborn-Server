@@ -45,17 +45,17 @@ public enum TabletData {
 	LUMBERYARD(new Item(12642), new Location(3306, 3483, 0), true),
 	ZUL_ANDRA(new Item(12938), new Location(2200, 3055, 0), true),
 	KEY_MASTER(new Item(13249), new Location(), true),
-	LUMBRIDGE_GRAVEYARD(new Item(19613), new Location(3244, 3199, 0), true),
-	DRAYNOR_MANOR(new Item(19615), new Location(3111, 3326, 0), true),
-	MIND_ALTAR(new Item(19617), new Location(), true),
-	SALVE_GRAVEYARD(new Item(19619), new Location(), true),
-	FENKENSTRAINS_CASTLE(new Item(19621), new Location(3549, 3528, 0), true),
-	WEST_ARDOUGNE(new Item(19623), new Location(2524, 3306, 0), true),
-	HARMONY_ISLAND(new Item(19625), new Location(3801, 2857, 0), true),
-	CEMETARY(new Item(19627), new Location(2976, 3750, 0), true),
-	BARROWS(new Item(19629), new Location(3565, 3306, 0), true),
-	APE_ATOLL(new Item(19631), new Location(2778, 2786, 0), true),
-	KOUREND(new Item(19651), new Location(1645, 3667, 0), true);
+	LUMBRIDGE_GRAVEYARD(new Item(19613), new Location(3244, 3199, 0), false),
+	DRAYNOR_MANOR(new Item(19615), new Location(3111, 3326, 0), false),
+	MIND_ALTAR(new Item(19617), new Location(), false),
+	SALVE_GRAVEYARD(new Item(19619), new Location(), false),
+	FENKENSTRAINS_CASTLE(new Item(19621), new Location(3549, 3528, 0), false),
+	WEST_ARDOUGNE(new Item(19623), new Location(2524, 3306, 0), false),
+	HARMONY_ISLAND(new Item(19625), new Location(3801, 2857, 0), false),
+	CEMETARY(new Item(19627), new Location(2976, 3750, 0), false),
+	BARROWS(new Item(19629), new Location(3565, 3306, 0), false),
+	APE_ATOLL(new Item(19631), new Location(2778, 2786, 0), false),
+	KOUREND(new Item(19651), new Location(1645, 3667, 0), false);
 
 	/**
 	 * The teletab id

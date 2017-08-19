@@ -590,6 +590,9 @@ public class PlayerUpdating {
 		//Update the player infection 0 = healthy, 1 poison and 2 is venomed
 		player.getPlayerProps().writeByte(player.getInfection());
 		
+		//Sent the stamina config
+		player.getPlayerProps().writeByte(player.getStaminaConfig());
+		
 		// Update Equipment
 		if (!player.isPlayerTransformed()) {
 			// helm or hat

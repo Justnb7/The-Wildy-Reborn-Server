@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
-import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
 import com.venenatis.game.task.Task;
@@ -47,13 +45,11 @@ public final class PoisonCombatTask extends Task {
 			stop();
 			return;
 		}
-		entity.damage(new Hit(entity.getPoisonDamage().get(), HitType.POISON));
 			amount--;
 			if (source.isPlayer()) { // 
 				Player src = (Player)source;
 				entity.getCombatState().getDamageMap().appendDamage(src.getUsername(), entity.getPoisonDamage().get());
 			}
-			entity.damage(new Hit(entity.getPoisonDamage().get(), HitType.POISON));
 	        if (amount == 0) {
 	            amount = 4;
 	            entity.getPoisonDamage().decrementAndGet();

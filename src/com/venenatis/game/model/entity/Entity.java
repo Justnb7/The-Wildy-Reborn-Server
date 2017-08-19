@@ -136,6 +136,16 @@ public abstract class Entity {
 		}
 	}
 	
+	private int stamina;
+	
+	public int getStaminaConfig() {
+		return stamina;
+	}
+	
+	public void setStamina(int stamina) {
+		this.stamina = stamina;
+	}
+	
 	private int infection;
 	
 	public int getInfection() {
@@ -145,7 +155,6 @@ public abstract class Entity {
 	public void setInfection(int infection) {
 		this.infection = infection;
 	}
-	
 
 	public abstract void message(String s);
 

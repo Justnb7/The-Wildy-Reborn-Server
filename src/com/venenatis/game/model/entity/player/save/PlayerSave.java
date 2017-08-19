@@ -163,6 +163,7 @@ public class PlayerSave {
 				player.setSkullType(details.skullType);
 				player.setSkullTimer(details.skullDuration);
 				player.setInfection(details.infectionType);
+				player.setStamina(details.staminaType);
 				player.setGearPoints(details.gearPoints);
 				player.setSlayerTask(details.slayertask);
 				player.setSlayerTaskAmount(details.slayerTaskAmount);
@@ -275,6 +276,7 @@ public class PlayerSave {
 		private final SkullType skullType;
 		private final int skullDuration;
 		private final int infectionType;
+		private final int staminaType;
 		private final int gearPoints;
 		private final int slayertask;
 		private final int slayerTaskAmount;
@@ -371,6 +373,7 @@ public class PlayerSave {
 			skullType = player.getSkullType();
 			skullDuration = player.getSkullTimer();
 			infectionType = player.getInfection();
+			staminaType = player.getStaminaConfig();
 			gearPoints = player.getGearPoints();
 			slayertask = player.getSlayerTask();
 			slayerTaskAmount = player.getSlayerTaskAmount();

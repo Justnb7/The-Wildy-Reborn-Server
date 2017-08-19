@@ -41,6 +41,16 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "stamina":
+			int t = parser.nextInt();
+			if (t == 1) {
+				player.setStamina(1);
+			} else if (t == 0) {
+				player.setStamina(0);
+			}
+			player.debug("setting stamina config. Type: "+t);
+			return true;
+		
 		case "opensi":
     		player.getSlayerInterface().open(player);
     		break;

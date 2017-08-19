@@ -59,7 +59,7 @@ public class Constants {
 	 * The current version of the client. Used to notify player to update
 	 * client.
 	 */
-	public static final int CLIENT_VERSION = 3;
+	public static final int CLIENT_VERSION = 4;
 
 	/**
 	 * The name of the server
@@ -160,7 +160,7 @@ public class Constants {
 	 */
 	public static final String DATA_DIR = "./data/";
 
-	public static final int TOTAL_MOBS = 7730;
+	public static final int TOTAL_MOBS = 7750;
 
 	/**
 	 * The rate in milliseconds in which the game thread processes logic.

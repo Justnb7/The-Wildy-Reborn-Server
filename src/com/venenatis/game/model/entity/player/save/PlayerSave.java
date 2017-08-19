@@ -138,6 +138,7 @@ public class PlayerSave {
 				player.setNewPlayer(details.newPlayer);
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);
+				player.setHostAddress(details.hostAddress);
 				player.setMuted(details.muted);
 				player.setPet(details.pet);
 				player.setTutorial(details.inTutorial);
@@ -252,6 +253,7 @@ public class PlayerSave {
 		private final boolean newPlayer;
 		private final String identity;
 		private final String mac;
+		private final String hostAddress;
 		private final boolean muted;
 		private final int pet;
 		private final boolean inTutorial;
@@ -347,6 +349,7 @@ public class PlayerSave {
 			newPlayer = player.isNewPlayer();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
+			hostAddress = player.getHostAddress();
 			muted = player.isMuted();
 			pet = player.getPet();
 			inTutorial = player.inTutorial();

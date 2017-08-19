@@ -142,8 +142,8 @@ public class ModeratorCommand implements Command {
 							player.getActionSender().sendMessage("You cannot MAC ban this player.");
 							return false;
 						}
-						Sanctions.addNameToBanList(name);
-						Sanctions.addNameToBanFile(name);
+						String address = c2.getMacAddress();
+						Sanctions.addMacBan(address);
 						player.getActionSender().sendMessage("You have MAC banned " + name + ".");
 						c2.logout();
 					}

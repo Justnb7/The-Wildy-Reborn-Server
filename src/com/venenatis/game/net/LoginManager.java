@@ -245,7 +245,7 @@ public class LoginManager {
 
 		//Is the server on the same version as the client
 		if (credential.getVersion() != Constants.CLIENT_VERSION) {
-			sendReturnCode(LoginCode.GAME_UPDATED, req);
+			sendReturnCode(LoginCode.OUT_OF_DATE_CLIENT, req);
 			logger.warn(req.creds.getName()+" connected with an outdated client: rev "+credential.getVersion()+" whereas expected "+Constants.CLIENT_VERSION);
 			return;
 		}
@@ -261,7 +261,7 @@ public class LoginManager {
 		
 		//We allow three clients from the same connection
 		if (players_online_sharing_one_host >= 3) {
-			sendReturnCode(9, req);
+			sendReturnCode(LoginCode.LOGIN_LIMIT_EXCEEDED, req);
 			return;
 		}
 		

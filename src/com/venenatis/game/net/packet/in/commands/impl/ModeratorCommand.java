@@ -1,5 +1,6 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
+import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
@@ -22,6 +23,51 @@ public class ModeratorCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
+		
+		case "jail":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					final Player target = World.getWorld().getPlayerByName(name).get();
+					target.setTeleportTarget(new Location(3015, 3194, 0));
+					player.getActionSender().sendMessage("You've jailed "+name+".");
+					target.getActionSender().sendMessage("You have been jailed by "+player.getUsername()+".");
+					target.setJailed(true);
+					return true;
+				} else {
+					player.getActionSender().sendMessage("The player '" + name + "' either doesn't exist, or is offline.");
+					return false;
+				}
+			}
+			return true;
+			
+		case "unjail":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					final Player target = World.getWorld().getPlayerByName(name).get();
+					target.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
+					player.getActionSender().sendMessage("You have unjailed "+name+".");
+					target.getActionSender().sendMessage("You have been unjailed by "+player.getUsername()+".");
+					target.setJailed(false);
+					return true;
+				} else {
+					player.getActionSender().sendMessage("The player '" + name + "' either doesn't exist, or is offline.");
+					return false;
+				}
+			}
+			return true;
+
 
 		/* Staffzone */
 		case "staffzone":

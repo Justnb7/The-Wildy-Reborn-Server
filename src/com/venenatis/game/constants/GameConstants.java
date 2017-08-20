@@ -37,6 +37,8 @@ public class GameConstants {
 
     public static final ImmutableList<Area> DAGANNOTH_MOTHER = ImmutableList.of(new SquareArea("Dagannoth Mother", 2508, 4631, 2537, 4662));
     
+    public static final ImmutableList<Area> IN_JAIL = ImmutableList.of(new SquareArea("Jail", 3009, 3023, 3198, 3203));
+    
 
     /*public static void verifyCoords() {
     	GameConstants dummy = new GameConstants();

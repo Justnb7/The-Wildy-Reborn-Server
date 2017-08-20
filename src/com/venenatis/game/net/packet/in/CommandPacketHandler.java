@@ -21,6 +21,11 @@ public class CommandPacketHandler implements PacketType {
     	final String input = player.getInStream().readString().trim().toLowerCase();
 		CommandParser parser = CommandParser.create(input);
 		
+		if(player.isJailed()) {
+			player.getActionSender().sendMessage("You can't perform any commands while being jailed.");
+			return;
+		}
+		
 		if (!player.getController().canCommand()) {
 			return;
 		}

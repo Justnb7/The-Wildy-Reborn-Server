@@ -39,6 +39,10 @@ public class ActionButtonPacketHandler implements PacketType {
 		int button = Utility.hexToInt(player.getInStream().buffer, 0, size);
 		//player.getInStream().readUnsignedWord();
 		
+		if(player.isJailed()) {
+			return;
+		}
+		
 		/**
 		 * How are we going to click buttons when we're dead!
 		 */

@@ -6,6 +6,7 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.Du
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.location.Area;
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
@@ -149,10 +150,12 @@ public class DefaultController extends Controller {
 
 	@Override
 	public void onStep(Player player) {
-		player.getActionSender().sendMultiIcon(Area.inMultiCombatZone(player) ? 1 : -1);
 		
-	
-		//Time for visual effect:
+		if(player.isJailed() && !Area.inside_jail(player)) {
+			player.setTeleportTarget(new Location(3015, 3194, 0));
+		}
+		
+		player.getActionSender().sendMultiIcon(Area.inMultiCombatZone(player) ? 1 : -1);
 		
 		/* Minigame */
 		if (MinigameHandler.search(player).isPresent()) {

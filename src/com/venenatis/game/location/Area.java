@@ -112,6 +112,19 @@ public abstract class Area {
 	public static boolean inDaganothMotherCave(Entity entity) {
 		return GameConstants.DAGANNOTH_MOTHER.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
 	}
+	
+	/**
+	 * Determines if an entity is in the jail.
+	 * 
+	 * @param entity
+	 *            The entity to check.
+	 * 
+	 * @return {@code true} If this entity is in the jail.
+	 *         {@code false} otherwise.
+	 */
+	public static boolean inside_jail(Entity entity) {
+		return GameConstants.IN_JAIL.stream().anyMatch($it -> $it.inArea(entity.getLocation()));
+	}
 
 	/**
 	 * Determines if an entity is in a multi-combat zone.

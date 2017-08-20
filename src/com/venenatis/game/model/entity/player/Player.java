@@ -3139,4 +3139,14 @@ public class Player extends Entity {
 		this.showDamage = show;
 	}
 	
+	private boolean jailed;
+	
+	public boolean isJailed() {
+		return jailed;
+	}
+
+	public void setJailed(boolean jailed) {
+		this.jailed = jailed;
+	}
+	
 }

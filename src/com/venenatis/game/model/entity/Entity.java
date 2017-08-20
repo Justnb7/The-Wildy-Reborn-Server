@@ -851,7 +851,6 @@ public abstract class Entity {
 				pAttacker.getCombatState().applySmite(me, damage);
 				int wepId = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 				PoisonCombatTask.getPoisonType(wepId).ifPresent(pt -> me.poison(pt, attacker));
-				// i cba to do this you can but basical;ly need to change constructor to 
 			}
 		}
 

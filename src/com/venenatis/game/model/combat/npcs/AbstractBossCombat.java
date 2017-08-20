@@ -10,6 +10,9 @@ import com.venenatis.game.model.combat.npcs.impl.dagannoths.*;
 import com.venenatis.game.model.combat.npcs.impl.fight_caves.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.armadyl.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.bandos.*;
+import com.venenatis.game.model.combat.npcs.impl.godwars.saradomin.Bree;
+import com.venenatis.game.model.combat.npcs.impl.godwars.saradomin.CommanderZilyana;
+import com.venenatis.game.model.combat.npcs.impl.godwars.saradomin.Growler;
 import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.*;
 import com.venenatis.game.model.combat.npcs.impl.slayer.DarkBeast;
 import com.venenatis.game.model.combat.npcs.impl.slayer.Kraken;
@@ -37,7 +40,6 @@ public abstract class AbstractBossCombat {
 		bosses.put(2193, new TokXil());
 		
 		bosses.put(1672, new AhrimTheBlighted());
-		bosses.put(2215, new GeneralGraardor());
 		
 		bosses.put(465, new SkeletalWyvern());
 		
@@ -48,6 +50,13 @@ public abstract class AbstractBossCombat {
 		bosses.put(2267, new DagannothRex());
 		bosses.put(2266, new DagannothPrime());
 		bosses.put(2265, new DagannothSupreme());
+		
+		bosses.put(2215, new GeneralGraardor());
+		
+		
+		bosses.put(2205, new CommanderZilyana());
+		bosses.put(2207, new Growler());
+		bosses.put(2208, new Bree());
 		
 		bosses.put(3129, new KrilTsutsaroth());
 		bosses.put(3131, new ZaklnGritch());

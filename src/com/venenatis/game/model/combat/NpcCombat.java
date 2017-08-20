@@ -315,6 +315,7 @@ public class NpcCombat {
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
 			// Actually damage our target
+			if(!isBoss)
 			player.take_hit(npc, damage, npc.getCombatType()).send(0);
 		}
 	}

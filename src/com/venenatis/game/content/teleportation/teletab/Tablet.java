@@ -26,6 +26,10 @@ public class Tablet {
 	 *            The tablet thats being broken
 	 */
 	public static boolean breakTablet(final Player player, int tabletId) {
+		if(player.isJailed()) {
+			player.getActionSender().sendMessage("You cannot teleport while you are jailed.");
+			return false;
+		}
 		for(TabletData tablet : TabletData.values()) {
 			//Check if we're actually breaking the correct tablet.
 			if(tablet.getTablet().getId() == tabletId) {

@@ -104,6 +104,10 @@ public class Teleport {
 	 * @return
 	 */
 	public boolean canTeleport(boolean override) {
+		if(player.isJailed()) {
+			player.getActionSender().sendMessage("You cannot teleport while you are jailed.");
+			return false;
+		}
 		if (!player.getController().canTeleport()) {
 			return false;
 		}

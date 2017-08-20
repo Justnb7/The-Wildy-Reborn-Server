@@ -47,7 +47,7 @@ public class DragonClaws implements SpecialAttack {
 		target.take_hit(player, third, CombatStyle.MELEE, false, true).send(2);
 		target.take_hit(player, fourth, CombatStyle.MELEE, false, true).send(2);
 
-		CombatExperience.handleCombatExperience(player, first+second+third+fourth, CombatStyle.MELEE);
+		CombatExperience.handleCombatExperience(player, first+second+third+fourth, CombatStyle.MELEE, player.showDamage());
 	}
 
 	@Override

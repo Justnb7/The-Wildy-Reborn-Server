@@ -41,6 +41,16 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "showdmg":
+			if (!player.showDamage()) {
+				player.setShowDamage(true);
+				player.debug("showing damage instead of exp : " + player.showDamage());
+			} else {
+				player.setShowDamage(false);
+				player.debug("showing damage instead of exp : " + player.showDamage());
+			}
+			return true;
+		
 		case "stamina":
 			int t = parser.nextInt();
 			if (t == 1) {

@@ -14,7 +14,12 @@ public class CombatExperience {
 	/**
 	 * Add's the combat experience to the player.
 	 */
-	public static void handleCombatExperience(Player player, int damage, CombatStyle type) {
+	public static void handleCombatExperience(Player player, int damage, CombatStyle type, boolean drawDmg) {
+		
+		if(drawDmg) {
+			player.getActionSender().sendExperienceCounter(255, damage);
+		}
+		
 		switch (type) {
 		
 		case MAGIC:

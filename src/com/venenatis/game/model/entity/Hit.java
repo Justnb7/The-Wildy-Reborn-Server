@@ -83,7 +83,7 @@ public final class Hit {
     
     public Hit giveXP(Player attacker) {
     	if (cbType != null) {
-			CombatExperience.handleCombatExperience(attacker, damage, cbType);
+			CombatExperience.handleCombatExperience(attacker, damage, cbType, attacker.showDamage());
 		}
 		return this;
     }

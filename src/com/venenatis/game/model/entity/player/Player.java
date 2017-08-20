@@ -3130,4 +3130,14 @@ public class Player extends Entity {
 		this.farming = farming;
 	}
 	
+	private boolean showDamage;
+
+	public boolean showDamage() {
+		return showDamage;
+	}
+	
+	public void setShowDamage(boolean show) {
+		this.showDamage = show;
+	}
+	
 }

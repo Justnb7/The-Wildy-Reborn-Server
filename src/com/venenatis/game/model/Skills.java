@@ -347,10 +347,11 @@ public class Skills {
         int multi = combatSkill ? Constants.EXP_MODIFIER : Constants.SKILL_MODIFIER;
         int oldLevel = getLevelForExperience(skillId);
         
-
         exps[skillId] += experience * multi;
         expCounter += experience*multi;
-        player.getActionSender().sendExperienceCounter(skillId, (int) (experience*multi));
+		if (!player.showDamage()) {
+			player.getActionSender().sendExperienceCounter(skillId, (int) (experience * multi));
+		}
         //player.getActionSender().sendMessage("Exp received: "+experience+ " times "+multi+" so "+(experience*multi));
        
 		if (exps[skillId] > MAXIMUM_EXP) {

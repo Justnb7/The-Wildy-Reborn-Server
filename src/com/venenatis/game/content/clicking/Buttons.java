@@ -300,6 +300,14 @@ public class Buttons {
 			player.getActionSender().sendMessage(
 					"You have reset your experience counter to zero.");
 			break;
+			
+		case 1220:
+			if (!player.showDamage()) {
+				player.setShowDamage(true);
+			} else {
+				player.setShowDamage(false);
+			}
+			break;
 
 		/**
 		 * Item destroy

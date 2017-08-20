@@ -51,6 +51,7 @@ public class DialogueRepository {
 		dialogues.put("MINING_TELEPORTS", MiningTeleports.class);
 		dialogues.put("SLAYER_TELEPORTS", SlayerTeleports.class);
 		dialogues.put("TRAINING_TELEPORTS", TrainingTeleports.class);
+		dialogues.put("GODWARS_TELEPORTS", GodwarsTeleports.class);
 		
 		/**
 		 * Starter dialogue

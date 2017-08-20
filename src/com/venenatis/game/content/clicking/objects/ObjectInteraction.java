@@ -163,6 +163,42 @@ public class ObjectInteraction {
 		
 		switch(objectId) {
 		
+		case 26502:
+			Location gwdLoc = player.getLocation();
+			if (gwdLoc.getY() == 5294) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX(), gwdLoc.getY() + 2, location.getZ()));
+			} else if (gwdLoc.getY() == 5296) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX(), gwdLoc.getY() - 2, location.getZ()));
+			}
+			break;
+			
+		case 26503:
+			gwdLoc = player.getLocation();
+			if (gwdLoc.getX() == 2862) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX() + 2, gwdLoc.getY(), location.getZ()));
+			} else if (gwdLoc.getX() == 2864) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX() - 2, gwdLoc.getY(), location.getZ()));
+			}
+			break;
+			
+		case 26504:
+			gwdLoc = player.getLocation();
+			if (gwdLoc.getX() == 2909) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX() - 2, gwdLoc.getY(), location.getZ()));
+			} else if (gwdLoc.getX() == 2907) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX() + 2, gwdLoc.getY(), location.getZ()));
+			}
+			break;
+			
+		case 26505:
+			gwdLoc = player.getLocation();
+			if (gwdLoc.getY() == 5333) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX(), gwdLoc.getY() - 2, location.getZ()));
+			} else if (gwdLoc.getY() == 5331) {
+				player.setTeleportTarget(Location.create(gwdLoc.getX(), gwdLoc.getY() + 2, location.getZ()));
+			}
+			break;
+		
 		/**
 		 * Slayer tower
 		 */

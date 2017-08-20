@@ -78,6 +78,7 @@ public class SmithingConstants {
 	};
 
 	public static boolean clickAnvil(Player p, int id) {
+		
 		for (Item i : p.getInventory().getItems()) {
 			if (i != null) {
 				for (int k = 0; k < BARS.length; k++) {
@@ -88,9 +89,7 @@ public class SmithingConstants {
 				}
 			}
 		}
-
-		p.getActionSender().sendMessage("You do not have any bars to smith.");
-
+		//p.getActionSender().sendMessage("You do not have any bars to smith.");
 		return false;
 	}
 

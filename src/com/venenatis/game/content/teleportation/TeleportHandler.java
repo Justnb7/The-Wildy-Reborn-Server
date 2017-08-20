@@ -39,6 +39,7 @@ public class TeleportHandler {
 		DAGANNOTH_MOTHER(TeleportationTypes.PVM, 226215, 58074, "Dagannoth mother", new Location(2530, 4649, 0), 0, "High combat", "20+ Wild", false),
 		ZOMBIES_CHAMPION(TeleportationTypes.PVM, 226219, 58078, "Zombies champion", new Location(3022, 3632, 0), 0, "High combat", "20+ Wild", false),
 		GIANT_MOLE(TeleportationTypes.PVM, 226223, 58082, "Giant mole", new Location(1761, 5186, 0), 0, "High combat", "20+ Wild", false),
+		GODWARS(TeleportationTypes.PVM, 226227, 58086, "Godwars dungeon", new Location(-1, -1, 0), 0, "High combat", "20+ Wild", true),
 
 		/* Minigame */
 		DUEL_ARENA(TeleportationTypes.MINIGAME, 226195, 58054, "Duel Arena", new Location(3365, 3265, 0), 0, "---", "---", false),
@@ -147,7 +148,7 @@ public class TeleportHandler {
 			player.getActionSender().sendConfig(678, 0);
 			player.getActionSender().sendConfig(679, 1);
 			player.getActionSender().sendConfig(680, 0);
-			player.getActionSender().sendScrollBar(58050, 250);
+			player.getActionSender().sendScrollBar(58050, 325);
 			break;
 
 		case MINIGAME:
@@ -300,6 +301,9 @@ public class TeleportHandler {
 			break;
 		case AGILITY:
 			player.getDialogueManager().start("AGILITY_TELEPORTS");
+			break;
+		case GODWARS:
+			player.getDialogueManager().start("GODWARS_TELEPORTS");
 			break;
 		default:
 			break;

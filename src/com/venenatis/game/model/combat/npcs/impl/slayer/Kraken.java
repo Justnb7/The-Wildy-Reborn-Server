@@ -1,4 +1,4 @@
-package com.venenatis.game.model.combat.npcs.impl;
+package com.venenatis.game.model.combat.npcs.impl.slayer;
 
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;

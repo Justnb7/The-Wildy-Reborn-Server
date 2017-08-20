@@ -25,9 +25,9 @@ public final class LoginCode {
     public static int RECONNECTING =15;
     public static int LOGIN_ATTEMPTS_EXCEEDED = 16;
     public static int MEMBERS_ONLY_AREA = 17;
-    public static int OUT_OF_DATE_CLIENT = 18;
+    public static int OUT_OF_DATE_CLIENT = 23;
     public static int INVALID_LOGIN_SERVER = 20;
     public static int TRANSFERING_PROFILE = 21;
     public static int BAD_USERNAME = 22;
-    public static int SHORT_USERNAME = 23;
+    public static int SHORT_USERNAME = 3;
 }

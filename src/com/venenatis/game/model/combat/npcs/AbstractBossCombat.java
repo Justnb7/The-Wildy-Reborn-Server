@@ -11,6 +11,9 @@ import com.venenatis.game.model.combat.npcs.impl.fight_caves.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.armadyl.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.bandos.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.*;
+import com.venenatis.game.model.combat.npcs.impl.slayer.DarkBeast;
+import com.venenatis.game.model.combat.npcs.impl.slayer.Kraken;
+import com.venenatis.game.model.combat.npcs.impl.slayer.SkeletalWyvern;
 import com.venenatis.game.model.combat.npcs.impl.wilderness.*;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -40,6 +43,7 @@ public abstract class AbstractBossCombat {
 		
 		bosses.put(492, new CaveKraken());
 		bosses.put(494, new Kraken());
+		bosses.put(4005, new DarkBeast());
 		
 		bosses.put(2267, new DagannothRex());
 		bosses.put(2266, new DagannothPrime());

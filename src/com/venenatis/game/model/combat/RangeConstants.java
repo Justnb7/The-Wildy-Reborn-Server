@@ -31,17 +31,17 @@ public class RangeConstants {
 
 		YEW_SHORTBOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW }, new int[] { 7, 7, 9 }),
 
-		MAGIC_LONGBOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW }, new int[] { 10, 10, 10 }),
+		MAGIC_LONGBOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.AMETHYST_ARROW }, new int[] { 10, 10, 10 }),
 
-		MAGIC_SHORTBOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW }, new int[] { 7, 7, 9 }),
+		MAGIC_SHORTBOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.AMETHYST_ARROW }, new int[] { 7, 7, 9 }),
 
 		CRYSTAL_BOW(new ArrowType[0], new int[] { 10, 10, 10 }),
 
 		KARILS_XBOW(new ArrowType[] { ArrowType.BOLT_RACK }, new int[] { 7, 7, 9 }),
 
-		DARK_BOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.DRAGON_ARROW }, new int[] { 10, 10, 10 }),
+		DARK_BOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.AMETHYST_ARROW, ArrowType.DRAGON_ARROW }, new int[] { 10, 10, 10 }),
 
-		TWISTED_BOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.DRAGON_ARROW }, new int[] { 10, 10, 10 }),
+		TWISTED_BOW(new ArrowType[] { ArrowType.BRONZE_ARROW, ArrowType.IRON_ARROW, ArrowType.STEEL_ARROW, ArrowType.MITHRIL_ARROW, ArrowType.ADAMANT_ARROW, ArrowType.RUNE_ARROW, ArrowType.AMETHYST_ARROW, ArrowType.DRAGON_ARROW }, new int[] { 10, 10, 10 }),
 		
 		BRONZE_CBOW(new ArrowType[] { ArrowType.BRONZE_BOLT, ArrowType.IRON_BOLT }, new int[] { 7, 7, 9 }),
 
@@ -132,6 +132,8 @@ public class RangeConstants {
 		ADAMANT_ARROW(0.5, Graphic.create(22, 0, 100), 13),
 
 		RUNE_ARROW(0.4, Graphic.create(24, 0, 100), 15),
+		
+		AMETHYST_ARROW(0.4, Graphic.create(1385, 0, 100), 1384),
 
 		BOLT_RACK(1.1, null, 27),
 

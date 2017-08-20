@@ -285,6 +285,11 @@ public class Item {
 	 * @return The weight.
 	 */
 	public double getWeight() {
+		if (id >= ItemDefinition.getDefinitions().length) {
+			System.err.println("Warning: item ID too high - not supported by ItemDefs");
+			return 0.0;
+		}
+		
 		final ItemDefinition def = ItemDefinition.getDefinitions()[getId()];
 
 		if (def == null) {

@@ -10,7 +10,7 @@ public class ItemDefinition {
 	/**
 	 * The maximum amount of item definitions in #150 old school.
 	 */
-	public static final int ITEM_LIMIT = 21_394;
+	public static final int ITEM_LIMIT = 21_394 + 1000;//We have custom items range 22000
 
 	public static final ItemDefinition[] DEFINITIONS = new ItemDefinition[ITEM_LIMIT];
 

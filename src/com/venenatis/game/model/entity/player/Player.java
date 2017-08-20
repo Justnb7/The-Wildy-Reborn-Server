@@ -1893,7 +1893,7 @@ public class Player extends Entity {
 		return this.macAddress;
 	}
 	
-	private String hostAddress;
+	private String hostAddress = "";
 	
 	public String getHostAddress() {
 		return hostAddress;
@@ -1902,7 +1902,6 @@ public class Player extends Entity {
 	public void setHostAddress(String hostAddress) {
 		this.hostAddress = hostAddress;
 	}
-	
 	
 	public boolean isMaxed() {
 		int skill = 0;

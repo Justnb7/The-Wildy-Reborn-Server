@@ -136,9 +136,9 @@ public class PlayerSave {
 				player.setRights(details.rights);
 				player.setLocation(player.isNewPlayer() ? new Location(3087, 3495, 0) : details.location);
 				player.setNewPlayer(details.newPlayer);
+				player.setHostAddress(details.hostAddress);
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);
-				//player.setHostAddress(details.hostAddress);
 				player.setMuted(details.muted);
 				player.setPet(details.pet);
 				player.setTutorial(details.inTutorial);
@@ -252,9 +252,9 @@ public class PlayerSave {
 		private final Rights rights;
 		private final Location location;
 		private final boolean newPlayer;
+		private final String hostAddress;
 		private final String identity;
 		private final String mac;
-		//private final String hostAddress;
 		private final boolean muted;
 		private final int pet;
 		private final boolean inTutorial;
@@ -349,9 +349,9 @@ public class PlayerSave {
 			rights = player.getRights();
 			location = player.getLocation();
 			newPlayer = player.isNewPlayer();
+			hostAddress = player.getHostAddress();
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
-			//hostAddress = player.getHostAddress();
 			muted = player.isMuted();
 			pet = player.getPet();
 			inTutorial = player.inTutorial();

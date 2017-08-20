@@ -85,11 +85,16 @@ public class LoginManager {
 		this.engine = engine;
         IO_THREAD.scheduleAtFixedRate(() -> {
 
+        	logger.info("LoginThread: there are "+loginRequests.size()+" login reqs pending");
 			// Handle requests.
 			LoginRequest r = null;
 			while ((r = loginRequests.poll()) != null) {
 				logger.info("Login request being handled for "+r.creds.getName()+" on the Login IO thread.");
-				handleRequest(r);
+				try {
+					handleRequest(r);
+				} catch (Exception e) {
+					logger.error("Error handling login request for "+r.creds.getName()+": "+e.getMessage(), e);
+				}
 			}
 
 			Player p = null;
@@ -123,6 +128,7 @@ public class LoginManager {
 		final String password = credential.getPassword();
 		
 		final String hostAddress = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
+		// shouldnt ever be null tbh idk why this shit happens
 		
 		if(username.matches("") || username.matches(" ")) {
 			sendReturnCode(LoginCode.SHORT_USERNAME, req);
@@ -141,6 +147,7 @@ public class LoginManager {
 		player.setMacAddress(credential.getMacAddress());
 		player.setAttribute("mac-address", credential.getMacAddress());
 		
+		logger.info(credential.getName()+" from "+hostAddress);
 		player.setHostAddress(hostAddress);
 	
 		player.setInStreamDecryption(credential.getDecryptor());
@@ -252,7 +259,7 @@ public class LoginManager {
 
 		int players_online_sharing_one_host = 0;
 		for (Player plr : World.getWorld().getPlayers()) {
-			if (plr == null)
+			if (plr == null || plr.getHostAddress() == null || plr.getHostAddress().length() == 0)
 				continue;
 			if (plr.getHostAddress().equals(player.getHostAddress())) {
 				players_online_sharing_one_host++;
@@ -303,6 +310,8 @@ public class LoginManager {
 				returnCode = LoginCode.COULD_NOT_COMPLETE_LOGIN;
 			}
 		}
+		// set again incase json loaded null field (because our profile is older than when we implemented saving this specific field)
+		player.setHostAddress(hostAddress);
 
 		LoginResponse response = new LoginResponse(returnCode, player.getRights().getCrown(), 0);
 
@@ -381,6 +390,7 @@ public class LoginManager {
 		}
 		else {
 			GameEngine.loginMgr.loginRequests.offer(loginRequest);
+			logger.info("Added pending login req");
 		}
 	}
 

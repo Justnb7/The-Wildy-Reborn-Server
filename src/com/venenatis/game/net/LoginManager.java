@@ -85,7 +85,7 @@ public class LoginManager {
 		this.engine = engine;
         IO_THREAD.scheduleAtFixedRate(() -> {
 
-        	logger.info("LoginThread: there are "+loginRequests.size()+" login reqs pending");
+        	//logger.info("LoginThread: there are "+loginRequests.size()+" login reqs pending");
 			// Handle requests.
 			LoginRequest r = null;
 			while ((r = loginRequests.poll()) != null) {

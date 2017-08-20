@@ -1033,31 +1033,41 @@ public class Combat {
     }
 
     public static void hitEvent(Entity attacker, Entity target, int delay, Hit hit, CombatStyle combatType) {
-        final int blockAnim = target.isPlayer() ? WeaponDefinition.sendBlockAnimation(target.asPlayer()) : target.asNpc().getDefendAnimation();
-        Animation a = Animation.create(blockAnim);
+    	if (delay < 1) {
+    		// Done instantly. Melee npcs damage on players appears instantly.
+    		onHitExecuted(attacker, target, delay, hit, combatType);
+    	} else {
 
-        // Schedule a task
-        attacker.run(new Task(delay) {
-            public void execute() {
-            	if (attacker.isPlayer() && hit != null)
-            		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
-            	
-            	// Apply the damage inside Hit
-                if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC && attacker != null && attacker.isPlayer())) // dont show 0 for splash
-                    target.damage(hit);
-
-                if (attacker.isPlayer()) {
-	                // Range attack invoke block emote when hit appears.
-	                if (hit.cbType == CombatStyle.RANGE && target.getCombatState().getAttackDelay() < 5) {
-                        target.playAnimation(a);
-	                }
-                }
-                this.stop();
-            }
-        });
+	        // Schedule a task if delay is >0
+	        attacker.run(new Task(delay) {
+	            public void execute() {
+	                this.stop();
+	                onHitExecuted(attacker, target, delay, hit, combatType);
+	            }
+	        });
+    	}
     }
 
-    public static boolean hitRecently(Entity target, int timeframe) {
+    private static void onHitExecuted(Entity attacker, Entity target, int delay, Hit hit, CombatStyle combatType) {
+
+    	if (attacker.isPlayer() && hit != null)
+    		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
+    	
+    	// Apply the damage inside Hit
+        if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC && attacker != null && attacker.isPlayer())) // dont show 0 for splash
+            target.damage(hit);
+
+        if (attacker.isPlayer()) {
+            // Range attack invoke block emote when hit appears.
+            if (hit.cbType == CombatStyle.RANGE && target.getCombatState().getAttackDelay() < 5) {
+                final int blockAnim = target.isPlayer() ? WeaponDefinition.sendBlockAnimation(target.asPlayer()) : target.asNpc().getDefendAnimation();
+                final Animation a = Animation.create(blockAnim);
+                target.playAnimation(a);
+            }
+        }
+	}
+
+	public static boolean hitRecently(Entity target, int timeframe) {
         return System.currentTimeMillis() - target.lastWasHitTime <= timeframe;
     }
 

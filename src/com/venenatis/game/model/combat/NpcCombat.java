@@ -52,60 +52,7 @@ public class NpcCombat {
 		if (AbstractBossCombat.isBoss(npc.getId())) {
 			return AbstractBossCombat.get(npc.getId()).distance(null);
 		}
-		switch (npc.getId()) {
-		
-		case 1672: // Ahrim the Blighted
-		case 1675: // Karil the Tainted
-			return 6;
-		case 2044: // Zulrah
-		case 2043: // Zulrah
-		case 2042: // Zulrah
-			return 20;
-		case 494: // Kraken
-		case 492: // Cave Kraken
-		case 5535: // Enormous tentacle
-			return 20;
-		case 3130: // Tstanon Karlak
-		case 2206: // Starlight
-			return 2;
-		case 3121: // Tok-Xil
-		case 3125: // Ket-Zek
-		case 2167: // TzHaar-Xil
-		case 3127: // TzTok-Jad
-		case 2218:
-		case 2217:
-		case 6618:
-		case 3164:
-		case 3163:
-		case 3162:
-		case 319:
-		case 2207:
-			return 4;
-		case 6616:
-			return 4;
-
-		case 6615:
-			return 5;
-
-		case 6766:
-			return 3;
-
-		case 6611:
-		case 6612:
-		case 2265:
-		case 3428:
-		case 5961:
-		case 5947:
-			return 12;
-
-		case 2054:
-			return 6;
-
-		case 3165:
-			return 2;
-		default:
-			return 1;
-		}
+		return 1;
 	}
 
 	public static void kraken(Player player, NPC npc, int damage) {
@@ -209,15 +156,6 @@ public class NpcCombat {
 		}
 		if (npc.transforming)
 			return false;
-		
-		/*Item ammo = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-		boolean quiver = player.getEquipment().get(EquipmentConstants.AMMO_SLOT) != null && ammo.getId() > -1 ? true : false;*/
-		
-		/*if(CombatFormulae.usingThrowingWeapon(player) && quiver) {
-			player.getActionSender().sendMessage("Remove your ammo first before using knives.");
-			Combat.resetCombat(player);
-			return false;
-		}*/
 
 		if (!Slayer.canAttack(player, npc)) {
 			return false;
@@ -281,19 +219,11 @@ public class NpcCombat {
 	 */
 	public static void handleCombatTimer(NPC npc) {
 		//npc.forceChat("attacktimer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
-		
-		boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
 
 		// Delay before we can attack again
 		if (npc.getCombatState().getAttackDelay() > 0) {
 			npc.getCombatState().decreaseAttackDelay(1);
 			//npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
-		}
-		
-		if(!isBoss) {
-			if (npc.getCombatState().getAttackDelay() == 1) {
-				executeDamage(npc);
-			}
 		}
 
 		// If we havent been attacked within last 5 secs reset who last attack us
@@ -331,42 +261,61 @@ public class NpcCombat {
 	 *            The {@link NPC} attacking the player
 	 */
 	public static void attackPlayer(Player player, NPC npc) {
-		if (npc != null) {
-			if (npc.getCombatState().isDead()) {
+		if (npc == null || npc.getCombatState().isDead())
+			return;
+		
+		// Check validty of rooms
+		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
+			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
+				npc.targetId = 0;
+				npc.underAttack = false;
 				return;
 			}
-			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
-				if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
-					npc.targetId = 0;
-					npc.underAttack = false;
-					return;
+		}
+		
+		// Attacks allowed? Height, dead, in tutorial. NOT distance (.. yet)
+		if (!validateAttack(player, npc)) {
+			return;
+		}
+		
+		npc.faceEntity(player);
+		
+		// Execute our attack if we're in range.
+		if (goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distanceRequired(npc))) {
+			npc.randomWalk = false;
+			
+			boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
+			AbstractBossCombat boss_cb = AbstractBossCombat.get(npc.getId());
+			if (isBoss) {
+				boss_cb.execute(npc, player);
+				// don't do any code below this, boss script handles all.
+			} else {
+				// Default npcs use defition anim & delay
+				npc.getCombatState().setAttackDelay(npc.getDefinition().getAttackSpeed());
+				npc.playAnimation(Animation.create(npc.getAttackAnimation()));
+			}
+			player.lastAttacker = npc;
+			player.lastWasHitTime = System.currentTimeMillis();
+			npc.oldIndex = player.getIndex();
+			player.updateLastCombatAction();
+			player.getCombatState().setInCombat(true);
+			player.getActionSender().removeAllInterfaces();
+
+			// Make the target Autoretal
+			if (player.getCombatState().noTarget()) {
+				if (player.isAutoRetaliating()) {
+					player.getCombatState().setTarget(npc);
 				}
 			}
-			if (!validateAttack(player, npc)) {
-				return;
+			// Make our target do their block anim
+			if (player.getCombatState().getAttackDelay() <= 3 || player.getCombatState().getAttackDelay() == 0) {
+				//tried to make a instance didnt work ether
+				player.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
 			}
-			
-			npc.faceEntity(player);
-			
-			if (goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distanceRequired(npc))) {
-				npc.randomWalk = false;
-				
-				boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
-				AbstractBossCombat boss_cb = AbstractBossCombat.get(npc.getId());
-				if (isBoss) {
-					boss_cb.execute(npc, player);
-					// don't do any code below this, boss script handles all.
-				} else {
-					npc.getCombatState().setAttackDelay(npc.getDefinition().getAttackSpeed());
-					npc.playAnimation(Animation.create(npc.getAttackAnimation()));
-				}
-				player.lastAttacker = npc;
-				player.lastWasHitTime = System.currentTimeMillis();
-				npc.oldIndex = player.getIndex();
-				player.updateLastCombatAction();
-				player.getCombatState().setInCombat(true);
-				player.getActionSender().removeAllInterfaces();
-			}
+
+			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
+			// Actually damage our target
+			player.take_hit(npc, damage, npc.getCombatType()).send(0);
 		}
 	}
 
@@ -444,39 +393,6 @@ public class NpcCombat {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Applies damage to the target, for non boss characters.
-	 * 
-	 * @param npc
-	 *            The {@link NPC} attacking the player
-	 */
-	public static void executeDamage(NPC npc) {
-		
-		if (npc != null) {
-
-			Player player = World.getWorld().getPlayers().get(npc.oldIndex);
-
-			if (npc.getCombatState().isDead() || player == null || player.getCombatState().isDead()) {
-				return;
-			}
-			// Autoretal
-			if (player.getCombatState().noTarget()) {
-				if (player.isAutoRetaliating()) {
-					player.getCombatState().setTarget(npc);
-				}
-			}
-			// block anim
-			if (player.getCombatState().getAttackDelay() <= 3 || player.getCombatState().getAttackDelay() == 0) {
-				//tried to make a instance didnt work ether
-				player.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
-			}
-
-			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
-			// Set up a Hit instance
-            player.take_hit(npc, damage, npc.getCombatType()).send();
-		}
 	}
 
 }

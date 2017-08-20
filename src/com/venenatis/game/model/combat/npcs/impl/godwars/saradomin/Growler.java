@@ -8,9 +8,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
-import com.venenatis.game.world.World;
 
 public class Growler  extends AbstractBossCombat {
 
@@ -40,17 +38,7 @@ public class Growler  extends AbstractBossCombat {
 		attacker.playGraphics(Graphic.create(1182, 100));
 		attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1183, 0, 50, clientSpeed, 0, 35, victim.getProjectileLockonIndex(), 10, 48));
 		int randomHit = Utility.random(16);
-		
-		attacker.getCombatState().setAttackDelay(5);
-		World.getWorld().schedule(new Task(delay) {
-
-			@Override
-			public void execute() {
-				this.stop();
-
-				victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
-			}
-		});
+		victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
 	}
 
 	@Override

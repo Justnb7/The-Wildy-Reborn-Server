@@ -75,48 +75,74 @@ public class SlayerTaskManagement {
 		int taskAmount = 5 + Utility.random(3, 10);
 		int currentCount = 1;
 		int totalPercentage = 1;
-		int[] total = {Turael.getTotal()};
+		int[] total = { Turael.getTotal() };
 		java.util.List<Turael> array = new ArrayList<Turael>();
-		
+
 		for (Turael t : Turael.values()) {
 			array.add(t);
 		}
-		
-		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER)).collect(Collectors.toList());
+
+		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER))
+				.collect(Collectors.toList());
 		array.forEach(t -> {
 			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-				//System.out.println("Skipping: " + t.getId());
+				// System.out.println("Skipping: " + t.getId());
 				total[0] -= t.getWeight();
 			}
 		});
-		
+
+		// We need to identify the highest possibility
+		int max = 1;
+		for (int i = 0; i < array.size(); i++) {
+			Turael t = array.get(i);
+			max += t.getPercentage();
+		}
+		max = Math.min(100, max); // choose from lowest value out of (100, cap)
+
 		RandomGenerator r = new RandomGenerator();
-		int random = r.exclusive(1, 100);
+		// The RNG value / index in the possible tasks array we're gonna take.
+		int random = r.exclusive(1, max);
 
 		for (int i = 0; i < array.size(); i++) {
 			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
-			//System.out.print("NPC " + array.get(i).name() + " Percentage:  " + array.get(i).getPercentage() + "\n");
+			// System.out.print("NPC "+array.get(i).name()+ " Percentage:
+			// "+array.get(i).getPercentage()+"\n");
 			totalPercentage += array.get(i).getPercentage();
 		}
-		//System.out.println("\nRANDOM PERCENT ROLL: " + random);
-		for (int i = 0; i < array.size(); i++) {
-			//System.out.println("NAME " + array.get(i).name() + " ID: " + array.get(i).getId() + " CURRENT COUNT: " + currentCount + " Current Count limit " + (currentCount + array.get(i).getPercentage()) + " Percentage: " + array.get(i).getPercentage());
-			currentCount += array.get(i).getPercentage();
-			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
-				//System.out.println("\nCURRENT COUNT: " + currentCount);
-				//System.out.println("Assignment Found[" + i + "] ID: " + array.get(i).getId());
-				if (array.get(i).getId() == player.getLastSlayerTask()) {
-					// WHAT TO DO IF ITS SAME ASSIGNMENT
+
+		// Mark the start of this block as 'main'
+		main: for (int i = 0; i < array.size(); i++) {
+			Turael t = array.get(i);
+			currentCount += t.getPercentage();
+
+			// Hit in the table
+			int lowbound = (currentCount - t.getPercentage());
+			// System.out.println("GOAL: "+random+" (max possibility: "+max+")
+			// ... trying "+lowbound+" -> "+random+" <- "+currentCount);
+			if (currentCount >= random && lowbound <= random) {
+
+				// Don't assign two in a row ..
+				if (t.getId() == player.getLastSlayerTask()) {
+					// with bad rng u could re-roll the same task again (very
+					// small but yeah)
+					// task = Turael.values()[(int) (Math.random() *
+					// Turael.values().length)];
+
+					// Restart the loop, we landed on the same task as we had
+					// before.
+					continue main;
 				}
-				player.setSlayerTask(array.get(i).getId());
+				player.setSlayerTask(t.getId());
 				player.setSlayerTaskAmount(taskAmount);
 				player.setSlayerTaskDifficulty(0);
+				task = t;
 				break;
 			}
+
 		}
-		//System.out.println("\nTOTAL PERCENT " + totalPercentage);
-		//System.out.println("TOTAL WEIGHT " + total);
-		array.clear();
+		if (task == null) {
+			System.err.println("wtf lol " + random + "/" + array.size());
+		}
 		return task;
 	}
 
@@ -131,148 +157,32 @@ public class SlayerTaskManagement {
 		int taskAmount = 13 + Utility.random(5, 10);
 		int currentCount = 1;
 		int totalPercentage = 0;
-		int[] total = {Mazchna.getTotal()};
+		int[] total = { Mazchna.getTotal() };
 		java.util.List<Mazchna> array = new ArrayList<Mazchna>();
-		
+
 		for (Mazchna t : Mazchna.values()) {
 			array.add(t);
 		}
-		
-		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER)).collect(Collectors.toList());
+
+		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER))
+				.collect(Collectors.toList());
 		array.forEach(t -> {
 			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-				//System.out.println("Skipping: " + t.getId());
+				// System.out.println("Skipping: " + t.getId());
 				total[0] -= t.getWeight();
 			}
 		});
+		// We need to identify the highest possibility
+		int max = 1;
+		for (int i = 0; i < array.size(); i++) {
+			Mazchna t = array.get(i);
+			max += t.getPercentage();
+		}
+		max = Math.min(100, max); // choose from lowest value out of (100, cap)
+
 		RandomGenerator r = new RandomGenerator();
-		int random = r.exclusive(1, 100);
-		for (int i = 0; i < array.size(); i++) {
-			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
-			totalPercentage += array.get(i).getPercentage();
-		}
-		for (int i = 0; i < array.size(); i++) {
-			currentCount += array.get(i).getPercentage();
-			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
-				if (array.get(i).getId() == player.getLastSlayerTask()) {
-					task = Mazchna.values()[(int) (Math.random() * Mazchna.values().length)];
-				}
-				player.setSlayerTask(array.get(i).getId());
-				player.setSlayerTaskAmount(taskAmount);
-				player.setSlayerTaskDifficulty(1);
-				break;
-			}
-		}
-		return task;
-	}
-
-
-	public static Task vannakaTask(Player player) {
-		Task task = null;
-		int taskAmount = 25 + Utility.random(5, 15);
-		int currentCount = 1;
-		int totalPercentage = 0;
-		int[] total = {Vannaka.getTotal()};
-		java.util.List<Vannaka> array = new ArrayList<Vannaka>();
-		
-		for (Vannaka t : Vannaka.values()) {
-			array.add(t);
-		}
-		
-		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER)).collect(Collectors.toList());
-		array.forEach(t -> {
-			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-				//System.out.println("Skipping: " + t.getId());
-				total[0] -= t.getWeight();
-			}
-		});
-		RandomGenerator r = new RandomGenerator();
-		int random = r.exclusive(1, 100);
-
-		for (int i = 0; i < array.size(); i++) {
-			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
-			totalPercentage += array.get(i).getPercentage();
-		}
-		for (int i = 0; i < array.size(); i++) {
-			currentCount += array.get(i).getPercentage();
-			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
-				if (array.get(i).getId() == player.getLastSlayerTask()) {
-					task = Vannaka.values()[(int) (Math.random() * Vannaka.values().length)];
-				}
-				player.setSlayerTask(array.get(i).getId());
-				player.setSlayerTaskAmount(taskAmount);
-				player.setSlayerTaskDifficulty(2);
-				break;
-			}
-
-		}
-		return task;
-	}
-
-
-	public static Task chaeldarTask(Player player) {
-		Task task = null;
-		int taskAmount = 25 + Utility.random(15, 35);
-		int currentCount = 1;
-		int totalPercentage = 1;
-		int[] total = {Chaeldar.getTotal()};
-		java.util.List<Chaeldar> array = new ArrayList<Chaeldar>();
-		
-		for (Chaeldar t : Chaeldar.values()) {
-			array.add(t);
-		}
-		
-		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER)).collect(Collectors.toList());
-		array.forEach(t -> {
-			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-				//System.out.println("Skipping: " + t.getId());
-				total[0] -= t.getWeight();
-			}
-		});
-		RandomGenerator r = new RandomGenerator();
-		int random = r.exclusive(1, 100);
-
-		for (int i = 0; i < array.size(); i++) {
-			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
-			totalPercentage += array.get(i).getPercentage();
-		}
-		for (int i = 0; i < array.size(); i++) {
-			currentCount += array.get(i).getPercentage();
-			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
-				if (array.get(i).getId() == player.getLastSlayerTask()) {
-					task = Chaeldar.values()[(int) (Math.random() * Chaeldar.values().length)];
-				}
-				player.setSlayerTask(array.get(i).getId());
-				player.setSlayerTaskAmount(taskAmount);
-				player.setSlayerTaskDifficulty(3);
-				break;
-			}
-
-		}
-		return task;
-	}
-
-	public static Task nieveTask(Player player) {
-		Task task = null;
-		int currentCount = 1;
-		int totalPercentage = 1;
-		int[] total = {Nieve.getTotal()};
-		java.util.List<Nieve> array = new ArrayList<Nieve>();
-		
-		for (Nieve t : Nieve.values()) {
-			array.add(t);
-		}
-		
-		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER)).collect(Collectors.toList());
-		array.forEach(t -> {
-			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId()) || t.getId() == 2919 && !player.getSlayerInterface().getUnlocks().containsKey(91116) || t.getId() == 247 && !player.getSlayerInterface().getUnlocks().containsKey(91115)) {
-				//System.out.println("Skipping: " + t.getId());
-				total[0] -= t.getWeight();
-			}
-		});
-		
-		RandomGenerator r = new RandomGenerator();
-		int random = r.exclusive(1, 100);
+		// The RNG value / index in the possible tasks array we're gonna take.
+		int random = r.exclusive(1, max);
 
 		for (int i = 0; i < array.size(); i++) {
 			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
@@ -281,27 +191,277 @@ public class SlayerTaskManagement {
 			totalPercentage += array.get(i).getPercentage();
 		}
 
-		for (int i = 0; i < array.size(); i++) {
-			currentCount += array.get(i).getPercentage();
-			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
-				if (array.get(i).getId() == player.getLastSlayerTask()) {
-					task = Nieve.values()[(int) (Math.random() * Nieve.values().length)];
+		// Mark the start of this block as 'main'
+		main: for (int i = 0; i < array.size(); i++) {
+			Mazchna t = array.get(i);
+			currentCount += t.getPercentage();
+
+			// Hit in the table
+			int lowbound = (currentCount - t.getPercentage());
+			// System.out.println("GOAL: "+random+" (max possibility: "+max+")
+			// ... trying "+lowbound+" -> "+random+" <- "+currentCount);
+			if (currentCount >= random && lowbound <= random) {
+
+				// Don't assign two in a row ..
+				if (t.getId() == player.getLastSlayerTask()) {
+					// with bad rng u could re-roll the same task again (very
+					// small but yeah)
+					// task = Mazchna.values()[(int) (Math.random() *
+					// Mazchna.values().length)];
+
+					// Restart the loop, we landed on the same task as we had
+					// before.
+					continue main;
 				}
-				player.setSlayerTask(array.get(i).getId());
-				player.setSlayerTaskAmount(assignTaskAmount(player, array.get(i).getId(), 4));
-				player.setSlayerTaskDifficulty(4);
+				player.setSlayerTask(t.getId());
+				player.setSlayerTaskAmount(taskAmount);
+				player.setSlayerTaskDifficulty(1);
+				task = t;
 				break;
 			}
 
+		}
+		if (task == null) {
+			System.err.println("wtf lol " + random + "/" + array.size());
+		}
+		return task;
+	}
+
+	public static Task vannakaTask(Player player) {
+		Task task = null;
+		int taskAmount = 25 + Utility.random(5, 15);
+		int currentCount = 1;
+		int totalPercentage = 0;
+		int[] total = { Vannaka.getTotal() };
+		java.util.List<Vannaka> array = new ArrayList<Vannaka>();
+
+		for (Vannaka t : Vannaka.values()) {
+			array.add(t);
+		}
+
+		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER))
+				.collect(Collectors.toList());
+		array.forEach(t -> {
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				// System.out.println("Skipping: " + t.getId());
+				total[0] -= t.getWeight();
+			}
+		});
+
+		// We need to identify the highest possibility
+		int max = 1;
+		for (int i = 0; i < array.size(); i++) {
+			Vannaka t = array.get(i);
+			max += t.getPercentage();
+		}
+		max = Math.min(100, max); // choose from lowest value out of (100, cap)
+
+		RandomGenerator r = new RandomGenerator();
+		// The RNG value / index in the possible tasks array we're gonna take.
+		int random = r.exclusive(1, max);
+
+		for (int i = 0; i < array.size(); i++) {
+			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
+			// System.out.print("NPC "+array.get(i).name()+ " Percentage:
+			// "+array.get(i).getPercentage()+"\n");
+			totalPercentage += array.get(i).getPercentage();
+		}
+
+		// Mark the start of this block as 'main'
+		main: for (int i = 0; i < array.size(); i++) {
+			Vannaka t = array.get(i);
+			currentCount += t.getPercentage();
+
+			// Hit in the table
+			int lowbound = (currentCount - t.getPercentage());
+			// System.out.println("GOAL: "+random+" (max possibility: "+max+")
+			// ... trying "+lowbound+" -> "+random+" <- "+currentCount);
+			if (currentCount >= random && lowbound <= random) {
+
+				// Don't assign two in a row ..
+				if (t.getId() == player.getLastSlayerTask()) {
+					// with bad rng u could re-roll the same task again (very
+					// small but yeah)
+					// task = Vannaka.values()[(int) (Math.random() *
+					// Vannaka.values().length)];
+
+					// Restart the loop, we landed on the same task as we had
+					// before.
+					continue main;
+				}
+				player.setSlayerTask(t.getId());
+				player.setSlayerTaskAmount(taskAmount);
+				player.setSlayerTaskDifficulty(2);
+				task = t;
+				break;
+			}
+
+		}
+		if (task == null) {
+			System.err.println("wtf lol " + random + "/" + array.size());
+		}
+		return task;
+	}
+
+	public static Task chaeldarTask(Player player) {
+		Task task = null;
+		int taskAmount = 25 + Utility.random(15, 35);
+		int currentCount = 1;
+		int totalPercentage = 1;
+		int[] total = { Chaeldar.getTotal() };
+		java.util.List<Chaeldar> array = new ArrayList<Chaeldar>();
+
+		for (Chaeldar t : Chaeldar.values()) {
+			array.add(t);
+		}
+
+		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER))
+				.collect(Collectors.toList());
+		array.forEach(t -> {
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
+				// System.out.println("Skipping: " + t.getId());
+				total[0] -= t.getWeight();
+			}
+		});
+
+		// We need to identify the highest possibility
+		int max = 1;
+		for (int i = 0; i < array.size(); i++) {
+			Chaeldar t = array.get(i);
+			max += t.getPercentage();
+		}
+		max = Math.min(100, max); // choose from lowest value out of (100, cap)
+
+		RandomGenerator r = new RandomGenerator();
+		// The RNG value / index in the possible tasks array we're gonna take.
+		int random = r.exclusive(1, max);
+
+		for (int i = 0; i < array.size(); i++) {
+			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
+			// System.out.print("NPC "+array.get(i).name()+ " Percentage:
+			// "+array.get(i).getPercentage()+"\n");
+			totalPercentage += array.get(i).getPercentage();
+		}
+
+		// Mark the start of this block as 'main'
+		main: for (int i = 0; i < array.size(); i++) {
+			Chaeldar t = array.get(i);
+			currentCount += t.getPercentage();
+
+			// Hit in the table
+			int lowbound = (currentCount - t.getPercentage());
+			// System.out.println("GOAL: "+random+" (max possibility: "+max+")
+			// ... trying "+lowbound+" -> "+random+" <- "+currentCount);
+			if (currentCount >= random && lowbound <= random) {
+
+				// Don't assign two in a row ..
+				if (t.getId() == player.getLastSlayerTask()) {
+					// with bad rng u could re-roll the same task again (very
+					// small but yeah)
+					// task = Chaeldar.values()[(int) (Math.random() *
+					// Chaeldar.values().length)];
+
+					// Restart the loop, we landed on the same task as we had
+					// before.
+					continue main;
+				}
+				player.setSlayerTask(t.getId());
+				player.setSlayerTaskAmount(taskAmount);
+				player.setSlayerTaskDifficulty(3);
+				task = t;
+				break;
+			}
+
+		}
+		if (task == null) {
+			System.err.println("wtf lol " + random + "/" + array.size());
+		}
+		return task;
+	}
+
+	public static Task nieveTask(Player player) {
+		Task task = null;
+		int currentCount = 1;
+		int totalPercentage = 1;
+		int[] total = { Nieve.getTotal() };
+
+		// Tasks which are valid (based on our combat level)
+		java.util.List<Nieve> array = new ArrayList<Nieve>();
+
+		for (Nieve t : Nieve.values()) {
+			array.add(t);
+		}
+
+		array = array.stream().filter(t1 -> t1.getSlayerReq() <= player.skills.getLevel(Skills.SLAYER))
+				.collect(Collectors.toList());
+		array.forEach(t -> {
+			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())
+					|| t.getId() == 2919 && !player.getSlayerInterface().getUnlocks().containsKey(91116)
+					|| t.getId() == 247 && !player.getSlayerInterface().getUnlocks().containsKey(91115)) {
+				// System.out.println("Skipping: " + t.getId());
+				total[0] -= t.getWeight();
+			}
+		});
+
+		// We need to identify the highest possibility
+		int max = 1;
+		for (int i = 0; i < array.size(); i++) {
+			Nieve t = array.get(i);
+			max += t.getPercentage();
+		}
+		max = Math.min(100, max); // choose from lowest value out of (100, cap)
+
+		RandomGenerator r = new RandomGenerator();
+		// The RNG value / index in the possible tasks array we're gonna take.
+		int random = r.exclusive(1, max);
+
+		for (int i = 0; i < array.size(); i++) {
+			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
+			// System.out.print("NPC "+array.get(i).name()+ " Percentage: "+array.get(i).getPercentage()+"\n");
+			totalPercentage += array.get(i).getPercentage();
+		}
+
+		// Mark the start of this block as 'main'
+		main: for (int i = 0; i < array.size(); i++) {
+			Nieve t = array.get(i);
+			currentCount += t.getPercentage();
+
+			// Hit in the table
+			int lowbound = (currentCount - t.getPercentage());
+			// System.out.println("GOAL: "+random+" (max possibility: "+max+") ... trying "+lowbound+" -> "+random+" <- "+currentCount);
+			if (currentCount >= random && lowbound <= random) {
+
+				// Don't assign two in a row ..
+				if (t.getId() == player.getLastSlayerTask()) {
+					// with bad rng u could re-roll the same task again (very small but yeah)
+					// task = Nieve.values()[(int) (Math.random() * Nieve.values().length)];
+
+					// Restart the loop, we landed on the same task as we had before.
+					continue main;
+				}
+				player.setSlayerTask(t.getId());
+				player.setSlayerTaskAmount(assignTaskAmount(player, t.getId(), 4));
+				player.setSlayerTaskDifficulty(4);
+				task = t;
+				break;
+			}
+
+		}
+		if (task == null) {
+			System.err.println("wtf lol " + random + "/" + array.size());
 		}
 		return task;
 	}
 
 	public static int assignTaskAmount(Player player, int task, int difficulty) {
-		int amount = difficulty == 0 ? 13 + Utility.random(5, 10) : difficulty == 1 ? 13 + Utility.random(5, 10) : difficulty == 3 ? 25 + Utility.random(15, 35) : difficulty == 4 ? 25 + Utility.random(15, 35) : Utility.random(5, 35);
+		int amount = difficulty == 0 ? 13 + Utility.random(5, 10)
+				: difficulty == 1 ? 13 + Utility.random(5, 10)
+						: difficulty == 3 ? 25 + Utility.random(15, 35)
+								: difficulty == 4 ? 25 + Utility.random(15, 35) : Utility.random(5, 35);
 		for (Entry<Integer, Integer> entrys : player.getSlayerInterface().getExtensions().entrySet()) {
 			if (entrys.getValue() == 270) {
-				if (task == 270 || task == 272 || task == 274) { // dragon extensions
+				if (task == 270 || task == 272 || task == 274) { // dragon
+																	// extensions
 					player.getActionSender().sendMessage("@red@You receive your task extension.");
 					return (int) (amount * 1.5);
 				}
@@ -320,39 +480,74 @@ public class SlayerTaskManagement {
 		int taskAmount = 25 + Utility.random(15, 35);
 		int currentCount = 1;
 		int totalPercentage = 1;
-		int[] total = {Duradel.getTotal()};
+		int[] total = { Duradel.getTotal() };
 		java.util.List<Duradel> array = new ArrayList<Duradel>();
-		
+
 		for (Duradel t : Duradel.values()) {
 			array.add(t);
 		}
-		
-		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER)).collect(Collectors.toList());
+
+		array = array.stream().filter(t1 -> t1.getSlayerReq() >= player.skills.getLevel(Skills.SLAYER))
+				.collect(Collectors.toList());
 		array.forEach(t -> {
 			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())) {
-				//System.out.println("Skipping: " + t.getId());
+				// System.out.println("Skipping: " + t.getId());
 				total[0] -= t.getWeight();
 			}
 		});
-		
+
+		// We need to identify the highest possibility
+		int max = 1;
+		for (int i = 0; i < array.size(); i++) {
+			Duradel t = array.get(i);
+			max += t.getPercentage();
+		}
+		max = Math.min(100, max); // choose from lowest value out of (100, cap)
+
 		RandomGenerator r = new RandomGenerator();
-		int random = r.exclusive(1, 100);
+		// The RNG value / index in the possible tasks array we're gonna take.
+		int random = r.exclusive(1, max);
 
 		for (int i = 0; i < array.size(); i++) {
 			array.get(i).setPercentage((int) Math.round(((double) array.get(i).getWeight() / (double) total[0]) * 100));
+			// System.out.print("NPC "+array.get(i).name()+ " Percentage:
+			// "+array.get(i).getPercentage()+"\n");
 			totalPercentage += array.get(i).getPercentage();
 		}
-		for (int i = 0; i < array.size(); i++) {
-			currentCount += array.get(i).getPercentage();
-			if (currentCount >= random && (currentCount - array.get(i).getPercentage()) < random) {
-				if (array.get(i).getId() == player.getLastSlayerTask()) {
-					task = Duradel.values()[(int) (Math.random() * Duradel.values().length)];
+
+		// Mark the start of this block as 'main'
+		main: for (int i = 0; i < array.size(); i++) {
+			Duradel t = array.get(i);
+			currentCount += t.getPercentage();
+
+			// Hit in the table
+			int lowbound = (currentCount - t.getPercentage());
+			// System.out.println("GOAL: " + random + " (max possibility: " +
+			// max + ") ... trying " + lowbound + " -> " + random + " <- " +
+			// currentCount);
+			if (currentCount >= random && lowbound <= random) {
+
+				// Don't assign two in a row ..
+				if (t.getId() == player.getLastSlayerTask()) {
+					// with bad rng u could re-roll the same task again (very
+					// small but yeah)
+					// task = Duradel.values()[(int) (Math.random() *
+					// Duradel.values().length)];
+
+					// Restart the loop, we landed on the same task as we had
+					// before.
+					continue main;
 				}
-				player.setSlayerTask(array.get(i).getId());
+				player.setSlayerTask(t.getId());
 				player.setSlayerTaskAmount(taskAmount);
 				player.setSlayerTaskDifficulty(5);
+				task = t;
 				break;
 			}
+
+		}
+		if (task == null) {
+			System.err.println("wtf lol " + random + "/" + array.size());
 		}
 		return task;
 	}

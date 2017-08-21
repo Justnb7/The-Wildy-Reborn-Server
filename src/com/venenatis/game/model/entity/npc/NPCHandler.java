@@ -141,7 +141,7 @@ public final class NPCHandler {
 				
 				// Add a reference from the minion instance to the boss instance.
 				n.setAttribute("boss_owner", tempboss);
-				//System.out.println("minion now has boss reference");
+				//System.out.println("minion "+n+" now has boss reference "+tempboss);
 				
 				// The list of minions is full with the correct minions (3 in the case of bandos)
 				// (not including the boss npc)

@@ -125,10 +125,10 @@ public enum GroupRespawn {
 	}
 
 	// If we're going to be spawned by our boss, not just 60s later from our death.
-	public static boolean check_groups(NPC npc) {
+	public static boolean is_my_boss_dead(NPC npc) {
 		NPC boss = (NPC) npc.getAttributes().getOrDefault("boss_owner", null);
 		if (boss != null) {
-			//System.out.println("boss found for "+npc+" : "+boss);
+			//System.out.println("boss found for "+npc+" : "+boss+" -> "+(boss.getHitpoints() == 0)+" or "+boss.getCombatState().isDead());
 			// If the boss isn't dead we just respawn 60s later as usual.
 			// Otherwise, my nigga bandos graddor jr will respawn me.
 			if (boss.getCombatState().isDead()) {
@@ -143,7 +143,7 @@ public enum GroupRespawn {
 		ArrayList<NPC> minions = (ArrayList<NPC>) npc.getAttributes().getOrDefault("group_spawn_map", null);
 		if (minions != null) {
 			minions.stream().forEach(min -> {
-				//System.out.println("minion "+min+" beglongs to "+npc);
+				//System.out.println("minion "+min+" belongs to boss: "+npc);
 				if (min.getCombatState().isDead()) {
 					NPCDeathTask.respawn(min);
 				}

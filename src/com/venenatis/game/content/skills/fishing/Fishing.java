@@ -225,14 +225,19 @@ public class Fishing {
 	 *        The player receiving the Heron pet.
 	 */
 	private void heronPet(Player player) {
+		Pets pets = Pets.HERON;
+		Pet pet = new Pet(player, pets.getNpc());
+		
+		if(player.alreadyHasPet(player, 13320) || player.getPet() == pets.getNpc()) {
+			return;
+		}
+		
 		int random = Utility.random(1500);
 		if (random == 0) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(13320));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Heron.", false);
 			} else {
-				Pets pets = Pets.HERON;
-				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Heron.", false);

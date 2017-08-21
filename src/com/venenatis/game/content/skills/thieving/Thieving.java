@@ -141,6 +141,10 @@ public class Thieving {
 	private void pet(Player player) {
 		int roll = Utility.random(1000);
 		Pets rocky = Pets.ROCKY;
+		Pet pet = new Pet(player, rocky.getNpc());
+		if (player.alreadyHasPet(player, 20663) || player.getPet() == rocky.getNpc()) {
+			return;
+		}
 		
 		if (roll == 155) {//Drop pet when the roll drops on 155
 			// Player already has a pet roaming
@@ -148,7 +152,6 @@ public class Thieving {
 				player.getInventory().addOrSentToBank(player, new Item(20663));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rocky.", false);
 			} else {
-				Pet pet = new Pet(player, rocky.getNpc());
 				player.setPet(rocky.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rocky.", false);

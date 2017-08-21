@@ -87,6 +87,11 @@ public class DagannothPrime extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
+		Pets pets = Pets.DAGANNOTH_PRIME;
+		Pet pet = new Pet(player, pets.getNpc());
+		if (player.alreadyHasPet(player, 12644) || player.getPet() == pets.getNpc()) {
+			return;
+		}
 		/**
 		 * Players have a one in 1000 chance of dropping the pet table.
 		 */
@@ -97,8 +102,6 @@ public class DagannothPrime extends AbstractBossCombat {
 				player.getInventory().addOrSentToBank(player, new Item(12644));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Dagannoth prime pet.", false);
 			} else {
-				Pets pets = Pets.DAGANNOTH_PRIME;
-				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Dagannoth prime pet.", false);

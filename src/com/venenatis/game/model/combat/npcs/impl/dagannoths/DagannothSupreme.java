@@ -80,14 +80,18 @@ public class DagannothSupreme extends AbstractBossCombat {
 		 * Players have a one in 1000 chance of dropping the pet table.
 		 */
 		int random = Utility.random(1000);
+		
+		Pets pets = Pets.DAGANNOTH_SUPREME;
+		Pet pet = new Pet(player, pets.getNpc());
+		if (player.alreadyHasPet(player, 12643) || player.getPet() == pets.getNpc()) {
+			return;
+		}
 
 		if (random == 1) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(12643));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Dagannoth supreme pet.", false);
 			} else {
-				Pets pets = Pets.DAGANNOTH_SUPREME;
-				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Dagannoth supreme pet.", false);

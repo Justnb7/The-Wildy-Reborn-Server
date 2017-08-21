@@ -286,14 +286,19 @@ public class Agility {
     }
     
 	private static void pet(Player player) {
+		Pets pets = Pets.GIANT_SQUIRREL;
+		Pet pet = new Pet(player, pets.getNpc());
+		
+		if(player.alreadyHasPet(player, 20659) || player.getPet() == pets.getNpc()) {
+			return;
+		}
+		
 		int random = Utility.random(1500);
 		if (random == 0) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(20659));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Giant squirrel.", false);
 			} else {
-				Pets pets = Pets.GIANT_SQUIRREL;
-				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Giant squirrel.", false);

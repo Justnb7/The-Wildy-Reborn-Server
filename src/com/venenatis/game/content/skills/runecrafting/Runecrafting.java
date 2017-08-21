@@ -139,12 +139,16 @@ public class Runecrafting extends SkillTask {
 		if (random == 0) {
 			switch (talisman.getId()) {
 			case 1438:
+				Pets pets = Pets.RIFT_GUARDIAN_AIR;
+				Pet pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20667) || player.getPet() == pets.getNpc()) {
+					return;
+				}
+				
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20667));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_AIR;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -152,12 +156,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1448:
+				pets = Pets.RIFT_GUARDIAN_MIND;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20669) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20669));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_MIND;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -165,12 +172,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1444:
+				pets = Pets.RIFT_GUARDIAN_WATER;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20671) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20671));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_WATER;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -178,12 +188,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1440:
+				pets = Pets.RIFT_GUARDIAN_EARTH;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20673) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20673));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_EARTH;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -191,12 +204,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1442:
+				pets = Pets.RIFT_GUARDIAN_WATER;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20665) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20665));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_FIRE;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -204,12 +220,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1446:
+				pets = Pets.RIFT_GUARDIAN_BODY;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20677) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20677));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_BODY;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -217,12 +236,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1454:
+				pets = Pets.RIFT_GUARDIAN_COSMIC;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20679) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20677));
+					player.getInventory().addOrSentToBank(player, new Item(20679));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_COSMIC;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -230,12 +252,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1452:
+				pets = Pets.RIFT_GUARDIAN_CHAOS;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20675) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20675));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_CHAOS;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -243,12 +268,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1462:
+				pets = Pets.RIFT_GUARDIAN_NATURE;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20681) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20681));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_NATURE;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -256,12 +284,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1458:
+				pets = Pets.RIFT_GUARDIAN_LAW;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20683) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20683));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_LAW;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -269,12 +300,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1456:
+				pets = Pets.RIFT_GUARDIAN_DEATH;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20685) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20685));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_DEATH;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
@@ -282,12 +316,15 @@ public class Runecrafting extends SkillTask {
 				}
 				break;
 			case 1450:
+				pets = Pets.RIFT_GUARDIAN_BLOOD;
+				pet = new Pet(player, pets.getNpc());
+				if (player.alreadyHasPet(player, 20691) || player.getPet() == pets.getNpc()) {
+					return;
+				}
 				if (player.getPet() > -1) {
 					player.getInventory().addOrSentToBank(player, new Item(20691));
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
 				} else {
-					Pets pets = Pets.RIFT_GUARDIAN_BLOOD;
-					Pet pet = new Pet(player, pets.getNpc());
 					player.setPet(pets.getNpc());
 					World.getWorld().register(pet);
 					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);

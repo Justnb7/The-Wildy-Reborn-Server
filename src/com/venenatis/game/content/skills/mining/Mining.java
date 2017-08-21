@@ -373,28 +373,32 @@ public class Mining extends HarvestingAction {
 		}
 		return (int) cycleCount;
 	}
+	
+	private final void pet(Player player) {
+		Pets pets = Pets.ROCK_GOLEM;
+		if (player.alreadyHasPet(player, 13321) || player.getPet() == pets.getNpc()) {
+			return;
+		}
 
-	@Override
-	public double getExperience() {
 		int random = Utility.random(rock.getPetRate());
 		if (random == 0) {
-			Pets pets = Pets.ROCK_GOLEM;
-			if (!getEntity().isPlayer()) {
-			}
-			Player player = (Player) getEntity();
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(13321));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rock Golem.", false);
-				return rock.getExperience() * (getEntity().isPlayer() ? getProspectorKitExperienceModifier((Player) getEntity()) : 1f) * 2;
 			} else {
 				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rock Golem.", false);
 				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				return rock.getExperience() * (getEntity().isPlayer() ? getProspectorKitExperienceModifier((Player) getEntity()) : 1f) * 2;
 			}
 		}
+	}
+
+	@Override
+	public double getExperience() {
+		Player player = (Player)getEntity().asPlayer();
+		pet(player);
 		return rock.getExperience() * (getEntity().isPlayer() ? getProspectorKitExperienceModifier((Player) getEntity()) : 1f) * 2;
 	}
 

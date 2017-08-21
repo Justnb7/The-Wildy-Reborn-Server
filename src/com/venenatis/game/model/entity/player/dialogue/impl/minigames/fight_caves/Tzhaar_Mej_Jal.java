@@ -293,13 +293,16 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 											}
 											
 											if (receivedPet) {
+												Pets pets = Pets.TZREK_JAD;
+												Pet pet = new Pet(player, pets.getNpc());
+												if (player.alreadyHasPet(player, 13225) || player.getPet() == pets.getNpc()) {
+													return;
+												}
 												send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You lucky. Better train him good else TzTok-Jad find", "you JalYt.");
 												if (player.getPet() > -1) {
 													player.getInventory().addOrSentToBank(player, new Item(13225));
 													World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Tzrek Jad.", false);
 												} else {
-													Pets pets = Pets.TZREK_JAD;
-													Pet pet = new Pet(player, pets.getNpc());
 													player.setPet(pets.getNpc());
 													World.getWorld().register(pet);
 													World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Tzrek Jad.", false);

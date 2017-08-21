@@ -3149,4 +3149,11 @@ public class Player extends Entity {
 		this.jailed = jailed;
 	}
 	
+	public boolean alreadyHasPet(Player player, int item) {
+		final boolean inventory = player.getInventory().containsAny(item);
+		final boolean bank = player.getBank().containsAny(item);
+		final boolean equipment = player.getEquipment().containsAny(item);
+		return inventory || bank || equipment;
+	}
+	
 }

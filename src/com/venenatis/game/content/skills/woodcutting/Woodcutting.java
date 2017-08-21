@@ -375,26 +375,32 @@ public class Woodcutting extends HarvestingAction {
 		}
 		return (int) cycleCount;
 	}
-
-	@Override
-	public double getExperience() {
+	
+	private final void pet(Player player) {
+		Pets pets = Pets.BEAVER;
+		Pet pet = new Pet(player, pets.getNpc());
+		if (player.alreadyHasPet(player, 13322) || player.getPet() == pets.getNpc()) {
+			return;
+		}
+		
 		int random = Utility.random(tree.getPetRate());
 		if (random == 0) {
-			Pets pets = Pets.BEAVER;
-			if (!getEntity().isPlayer()) {
-			}
-			Player player = (Player) getEntity();
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(13322));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Beaver.", false);
 			} else {
-				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Beaver.", false);
 				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}
+	}
+
+	@Override
+	public double getExperience() {
+		Player player = (Player) getEntity();
+		pet(player);
 		return tree.getExperience();
 	}
 

@@ -119,9 +119,6 @@ public class EquipmentContainer extends Container {
 	/** Gets the item player.getBonuses() from item_definitions.json */
 	public void setBonus() {
 		
-		//TODO ignore range str of ammo slot when wearing throwing weapons
-		
-		
 		EquipmentContainer.calcBonuses(player);
 		
 		if(player.getEquipment().contains(12926)) {

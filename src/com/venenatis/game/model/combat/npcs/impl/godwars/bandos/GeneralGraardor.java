@@ -126,14 +126,18 @@ public class GeneralGraardor extends AbstractBossCombat {
 		 * Players have a one in 1000 chance of dropping the pet table.
 		 */
 		int random = Utility.random(1000);
+		
+		Pets pets = Pets.GENERAL_GRAARDOR;
+		Pet pet = new Pet(player, pets.getNpc());
+		if (player.alreadyHasPet(player, 12650) || player.getPet() == pets.getNpc()) {
+			return;
+		}
 
 		if (random == 1) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(12650));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the General graardor Jr. pet.", false);
 			} else {
-				Pets pets = Pets.GENERAL_GRAARDOR;
-				Pet pet = new Pet(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the General graardor Jr. pet.", false);

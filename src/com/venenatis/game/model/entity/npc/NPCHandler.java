@@ -78,8 +78,6 @@ public final class NPCHandler {
 		NPC npc = new NPC(npcType);
 
 		npc.setLocation(Location.create(x, y, heightLevel));
-		npc.makeX = x;
-		npc.makeY = y;
         npc.walking_type = WalkingType;
 		npc.setOnTile(x, y, heightLevel);
 		if (World.getWorld().register(npc)) {
@@ -93,8 +91,6 @@ public final class NPCHandler {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
 		npc.setLocation(spawn);
-		npc.makeX = spawn.getX();
-		npc.makeY = spawn.getY();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
 		npc.setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());

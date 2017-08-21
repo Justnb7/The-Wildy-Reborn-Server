@@ -45,16 +45,16 @@ public final class NPCMovementTask extends Task {
 				}
 				
 				if (npc.spawnedBy == 0) {
-					if ((npc.getX() > npc.makeX + walkingDistance) || (npc.getX() < npc.makeX - walkingDistance) || (npc.getY() > npc.makeY + walkingDistance)
-							|| (npc.getY() < npc.makeY - walkingDistance)) {
+					if ((npc.getX() > npc.getX() + walkingDistance) || (npc.getX() < npc.getX() - walkingDistance) || (npc.getY() > npc.getY() + walkingDistance)
+							|| (npc.getY() < npc.getY() - walkingDistance)) {
 						npc.walkingHome = true;
 					}
 				}
-				if (npc.walkingHome && npc.getX() == npc.makeX && npc.getY() == npc.makeY) {
+				if (npc.walkingHome && npc.getX() == npc.getX() && npc.getY() == npc.getY()) {
 					npc.walkingHome = false;
 					npc.randomWalk = true;
 				} else if (npc.walkingHome) {
-					NPCFollowing.walkToNextTile(npc, npc.makeX, npc.makeY);
+					NPCFollowing.walkToNextTile(npc, npc.getX(), npc.getY());
 				}
 			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.walking_type == 1)) {
 				if (npc.walking_type == 1337 && ((npc.getX() != npc.walkX) || (npc.getY() != npc.walkY))) {
@@ -101,7 +101,7 @@ public final class NPCMovementTask extends Task {
 					}
 
 					if (MoveX == walking_type) {
-						if (npc.getX() + MoveX < npc.makeX + 1) {
+						if (npc.getX() + MoveX < npc.getX() + 1) {
 							npc.moveX = MoveX;
 						} else {
 							npc.moveX = 0;
@@ -109,7 +109,7 @@ public final class NPCMovementTask extends Task {
 
 					}
 					if (MoveX == -walking_type) {
-						if (npc.getX() - MoveX > npc.makeX - 1) {
+						if (npc.getX() - MoveX > npc.getX() - 1) {
 							npc.moveX = MoveX;
 						} else {
 							npc.moveX = 0;
@@ -117,7 +117,7 @@ public final class NPCMovementTask extends Task {
 
 					}
 					if (MoveY == walking_type) {
-						if (npc.getY() + MoveY < npc.makeY + 1) {
+						if (npc.getY() + MoveY < npc.getY() + 1) {
 							npc.moveY = MoveY;
 						} else {
 							npc.moveY = 0;
@@ -125,7 +125,7 @@ public final class NPCMovementTask extends Task {
 
 					}
 					if (MoveY == -walking_type) {
-						if (npc.getY() - MoveY > npc.makeY - 1) {
+						if (npc.getY() - MoveY > npc.getY() - 1) {
 							npc.moveY = MoveY;
 						} else {
 							npc.moveY = 0;

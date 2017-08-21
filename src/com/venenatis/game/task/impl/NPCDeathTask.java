@@ -49,6 +49,7 @@ public class NPCDeathTask extends Task {
 
         if (npc == null || World.getWorld().getNPCs().get(npc.getIndex()) == null) {
             stop();
+            System.out.println("Stop task null");
             return;
         }
         if (counter == 0) {
@@ -74,11 +75,13 @@ public class NPCDeathTask extends Task {
             	handleUnspawnableNpc(npc);
 				removeMobFromWorld(killer, npc);
 				stop();
+				System.out.println("Stop task block");
 				return;
 			}
         } else if (counter == 6) {
         	if (GroupRespawn.check_groups(npc)) {
         		stop();
+        		System.out.println("Stop task");
         		return;
         	}
         	if (npc.getDefinition().getRespawnTime() == -1) {// this npc does not respawn
@@ -88,6 +91,7 @@ public class NPCDeathTask extends Task {
         	respawn(npc);
             GroupRespawn.on_boss_spawned(npc);
             stop();
+            System.out.println("Stop task here");
             return;
         }
         counter++;
@@ -134,7 +138,7 @@ public class NPCDeathTask extends Task {
         npc.removeFromTile();
         onDeath(npc);
         npc.setVisible(false);
-        npc.setLocation(Location.create(npc.makeX, npc.makeY)); // No height level change assumed
+        npc.setLocation(Location.create(npc.getX(), npc.getY())); // No height level change assumed
         npc.setHitpoints(npc.getMaxHitpoints());
 		
         if (!npc.noDeathEmote) {
@@ -200,8 +204,6 @@ public class NPCDeathTask extends Task {
         npc.getCombatState().setDead(false);
         if(npc.getId() == 5779) {
         	 npc.setOnTile(1762, 5184, 0);
-        	 npc.makeX = 1762;
-        	 npc.makeY = 5184;
         	 npc.setLocation(new Location(1762, 5184, 0));
         } else {
         	npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());

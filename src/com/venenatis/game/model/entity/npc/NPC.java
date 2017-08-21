@@ -31,9 +31,7 @@ public class NPC extends Entity {
 		super(EntityType.NPC);
 		direction = dir;
 		if (spawn != null) {
-			setLocation(spawn);
-			makeX = spawn.getX(); // boundaries where combat is cancelled stops dragging npcs over the map
-			makeY = spawn.getY();
+			setLocation(spawn); // boundaries where combat is cancelled stops dragging npcs over the map
 		}
 		npcId = id;
 		getCombatState().setDead(false);
@@ -142,11 +140,6 @@ public class NPC extends Entity {
 	 */
 	private int npcId;
 	
-	/**
-	 * npc Locations
-	 */
-	public int makeX, makeY;
-	
 	public int spawnedBy, oldIndex, underAttackBy, walking_type;
 	
 	/**
@@ -250,8 +243,6 @@ public class NPC extends Entity {
 	 */
 	public void teleport(Location position) {
 		setOnTile(position.getX(), position.getY(), position.getZ());
-		makeX = position.getX();
-		makeY = position.getY();
 		setLocation(position);
 		getAttributes().put("teleporting", true);
 	}

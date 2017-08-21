@@ -232,7 +232,7 @@ public class Fishing {
 			return;
 		}
 		
-		int random = Utility.random(1500);
+		int random = Utility.random(5000);
 		if (random == 0) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(13320));

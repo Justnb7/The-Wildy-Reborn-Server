@@ -92,12 +92,7 @@ public class NPCFollowing {
 		// Spawned by a player.. we're (1) a pet (2) a warrior guild armour.. we follow forever
 		boolean locked_to_plr = npc.spawnedBy > 0 || npc.ownerId > 0; // pets have spawnBy set
 		// Within +/- 15 tiles from where our spawn pos is.
-<<<<<<< HEAD
-		//Yeah it was also used here i added the getSpawnLocation thingy but it wont work lol
-		boolean in_spawn_area = ((npc.getX() < npc.getSpawnLocation().getX() + 15) && (npc.getX() > npc.getSpawnLocation().getX() - 15) && (npc.getY() < npc.getSpawnLocation().getY() + 15) && (npc.getY() > npc.getSpawnLocation().getY() - 15));
-=======
 		boolean in_spawn_area = ((npc.getX() < npc.makeX + 15) && (npc.getX() > npc.makeX - 15) && (npc.getY() < npc.makeY + 15) && (npc.getY() > npc.makeY - 15));
->>>>>>> parent of de892fc... Remocal of duplicate x,y values.
 		
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {

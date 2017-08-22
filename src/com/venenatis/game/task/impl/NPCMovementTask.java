@@ -35,28 +35,16 @@ public final class NPCMovementTask extends Task {
 			if (npc == null) {
 				continue;
 			}
-			final int makeX = npc.getSpawnLocation().getX(), makeY = npc.getSpawnLocation().getY();
 			if (!npc.getCombatState().isDead() && npc.walkingHome) {
 				npc.resetFace();
-				System.out.println("NPC movement task: "+npc.getDefinition().getName());
+				System.out.println(npc.getDefinition().getName());
 				npc.targetId = 0;
 				int walkingDistance = 18;
 				if (npc.getDefinition() != null && npc.walking_type > 5) {
 					walkingDistance = npc.walking_type;
 				}
+				
 				if (npc.spawnedBy == 0) {
-<<<<<<< HEAD
-					if ((npc.getX() >makeX + walkingDistance) || (npc.getX() <makeX - walkingDistance) || (npc.getY() > makeY + walkingDistance)
-							|| (npc.getY() < makeY - walkingDistance)) {
-						npc.walkingHome = true;
-					}
-				}
-				if (npc.walkingHome && npc.getX() == makeX && npc.getY() == makeY) {
-					npc.walkingHome = false;
-					npc.randomWalk = true;
-				} else if (npc.walkingHome) {
-					NPCFollowing.walkToNextTile(npc, makeX, makeY);
-=======
 					if ((npc.getX() > npc.makeX + walkingDistance) || (npc.getX() < npc.makeX - walkingDistance) || (npc.getY() > npc.makeY + walkingDistance)
 							|| (npc.getY() < npc.makeY - walkingDistance)) {
 						npc.walkingHome = true;
@@ -67,7 +55,6 @@ public final class NPCMovementTask extends Task {
 					npc.randomWalk = true;
 				} else if (npc.walkingHome) {
 					NPCFollowing.walkToNextTile(npc, npc.makeX, npc.makeY);
->>>>>>> parent of de892fc... Remocal of duplicate x,y values.
 				}
 			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.walking_type == 1)) {
 				if (npc.walking_type == 1337 && ((npc.getX() != npc.walkX) || (npc.getY() != npc.walkY))) {
@@ -114,11 +101,7 @@ public final class NPCMovementTask extends Task {
 					}
 
 					if (MoveX == walking_type) {
-<<<<<<< HEAD
-						if (npc.getX() + MoveX < makeX + 1) {
-=======
 						if (npc.getX() + MoveX < npc.makeX + 1) {
->>>>>>> parent of de892fc... Remocal of duplicate x,y values.
 							npc.moveX = MoveX;
 						} else {
 							npc.moveX = 0;
@@ -126,11 +109,7 @@ public final class NPCMovementTask extends Task {
 
 					}
 					if (MoveX == -walking_type) {
-<<<<<<< HEAD
-						if (npc.getX() - MoveX > makeX - 1) {
-=======
 						if (npc.getX() - MoveX > npc.makeX - 1) {
->>>>>>> parent of de892fc... Remocal of duplicate x,y values.
 							npc.moveX = MoveX;
 						} else {
 							npc.moveX = 0;
@@ -138,11 +117,7 @@ public final class NPCMovementTask extends Task {
 
 					}
 					if (MoveY == walking_type) {
-<<<<<<< HEAD
-						if (npc.getY() + MoveY < makeY + 1) {
-=======
 						if (npc.getY() + MoveY < npc.makeY + 1) {
->>>>>>> parent of de892fc... Remocal of duplicate x,y values.
 							npc.moveY = MoveY;
 						} else {
 							npc.moveY = 0;
@@ -150,11 +125,7 @@ public final class NPCMovementTask extends Task {
 
 					}
 					if (MoveY == -walking_type) {
-<<<<<<< HEAD
-						if (npc.getY() - MoveY > makeY - 1) {
-=======
 						if (npc.getY() - MoveY > npc.makeY - 1) {
->>>>>>> parent of de892fc... Remocal of duplicate x,y values.
 							npc.moveY = MoveY;
 						} else {
 							npc.moveY = 0;

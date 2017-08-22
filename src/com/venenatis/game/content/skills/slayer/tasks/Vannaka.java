@@ -5,11 +5,11 @@ import com.venenatis.game.model.entity.player.Player;
 public enum Vannaka implements Task {
 	
 	
-	ABERRANT_SPECTRE(7,60,5,0),
-	ABYSSAL_DEMON(415, 85,8,0), 
+	ABERRANT_SPECTRE(7, 60, 5, 0),
+	ABYSSAL_DEMON(415, 85, 8, 0), 
 	ANKOU(7257,70,7,0),
 	//AVIANSIE
-	BANSHEE(414, 1, 6, 0),
+	BANSHEE(414, 15, 6, 0),
 	BASILISK(418, 1, 8, 0),
 	BLUE_DRAGON(265, 1, 7, 0),
 	BLOODVELD(484, 50,8,0), 

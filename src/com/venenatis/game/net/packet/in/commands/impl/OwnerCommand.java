@@ -44,12 +44,12 @@ public class OwnerCommand implements Command {
 		
 		case "lolxd":
 			for (int i = 0; i < 20; i++) {
-				SlayerTaskManagement.nieveTask(player);
+				SlayerTaskManagement.vannakaTask(player);
 			}
 			return true;
 			
 		case "lolxd1":
-			SlayerTaskManagement.nieveTask(player);
+			SlayerTaskManagement.vannakaTask(player);
 			return true;
 		
 		case "showdmg":

@@ -134,7 +134,11 @@ public class NPCDeathTask extends Task {
         npc.removeFromTile();
         onDeath(npc);
         npc.setVisible(false);
+<<<<<<< HEAD
         npc.setLocation(Location.create(npc.getX(), npc.getY(), npc.getZ()));
+=======
+        npc.setLocation(Location.create(npc.makeX, npc.makeY)); // No height level change assumed
+>>>>>>> parent of de892fc... Remocal of duplicate x,y values.
         npc.setHitpoints(npc.getMaxHitpoints());
 		
         if (!npc.noDeathEmote) {
@@ -200,6 +204,8 @@ public class NPCDeathTask extends Task {
         npc.getCombatState().setDead(false);
         if(npc.getId() == 5779) {
         	 npc.setOnTile(1762, 5184, 0);
+        	 npc.makeX = 1762;
+        	 npc.makeY = 5184;
         	 npc.setLocation(new Location(1762, 5184, 0));
         } else {
         	npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());

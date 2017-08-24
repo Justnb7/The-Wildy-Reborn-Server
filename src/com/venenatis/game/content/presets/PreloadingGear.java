@@ -4,7 +4,7 @@ import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.save.PlayerSave;

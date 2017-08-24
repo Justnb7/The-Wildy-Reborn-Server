@@ -36,7 +36,8 @@ import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.data.WeaponInterface;
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.combat.magic.Magic;
+import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
@@ -3154,6 +3155,16 @@ public class Player extends Entity {
 		final boolean bank = player.getBank().containsAny(item);
 		final boolean equipment = player.getEquipment().containsAny(item);
 		return inventory || bank || equipment;
+	}
+	
+	private Magic magic = new Magic(this);
+
+	public Magic getMagic() {
+		return magic;
+	}
+	
+	public void setMagic(Magic magic) {
+		this.magic = magic;
 	}
 	
 }

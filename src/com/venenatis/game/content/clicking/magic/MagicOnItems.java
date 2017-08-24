@@ -1,6 +1,8 @@
 package com.venenatis.game.content.clicking.magic;
 
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.combat.magic.spell.impl.HighAlchemy;
+import com.venenatis.game.model.combat.magic.spell.impl.LowAlchemy;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -45,16 +47,20 @@ public class MagicOnItems {
 		if (item == null || item.getId() != itemId) {
 			return;
 		}
+		
+		player.getMagic().setItemUsed(item);
 
 		switch (spellId) {
 
 		/* Low Alchemy */
 		case 1162:
-			break;
+		    player.getMagic().cast(new LowAlchemy());
+		    break;
 
 		/* High Alchemy */
 		case 1178:
-			break;
+		    player.getMagic().cast(new HighAlchemy());
+		    break;
 
 		}
 	}

@@ -11,6 +11,9 @@ import com.venenatis.game.content.sounds_and_music.MusicData;
 import com.venenatis.game.content.teleportation.TeleportHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.combat.magic.spell.impl.BonesToBananas;
+import com.venenatis.game.model.combat.magic.spell.impl.BonesToPeaches;
+import com.venenatis.game.model.combat.magic.spell.impl.Vengeance;
 import com.venenatis.game.model.entity.player.Player;
 
 /**

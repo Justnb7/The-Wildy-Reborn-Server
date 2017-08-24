@@ -1,4 +1,4 @@
-package com.venenatis.game.model.combat.magic.spell;
+package com.venenatis.game.model.combat.magic;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -5,6 +5,9 @@ import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.combat.magic.spell.impl.BonesToBananas;
+import com.venenatis.game.model.combat.magic.spell.impl.BonesToPeaches;
+import com.venenatis.game.model.combat.magic.spell.impl.Vengeance;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -12,12 +15,87 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.util.Utility;
 
 public class Magic {
+	
+	/**
+	 * The player.
+	 */
+	private final Player player;
+
+	/**
+	 * The Magic skill.
+	 * 
+	 * @param player
+	 */
+	public Magic(Player player) {
+		this.player = player;
+	}
+
+	/**
+	 * Last vengeance timer.
+	 */
+	private long lastVengeance = 0L;
+
+	/**
+	 * Spells Ids that can be used on another player and is safe.
+	 */
+	public final static int[] SAFE_SPELLS = { 30298 };
+	
+	/**
+	 * The item being used.
+	 */
+	private Item itemUsed;
+
+	/**
+	 * The delay of spell.
+	 */
+	private long delay;
+	
+	/**
+	 * Casts the spell.
+	 * 
+	 * @param spell
+	 */
+	public void cast(MagicSpell spell) {
+
+		// Return if player does not meet the level required.
+		if (player.getSkills().getLevel(Skills.MAGIC) < spell.getLevel()) {
+			player.getActionSender().sendMessage("You need a Magic level of " + spell.getLevel() + " to do this!");
+			return;
+		}
+
+		// Return if the player does not have the runes required.
+		if (spell.getRunes() != null) {
+			if (!player.getInventory().contains(spell.getRunes())) {
+				player.getActionSender().sendMessage("You do not have the required runes to do this!");
+				return;
+			}
+		}
+
+		// Execute the spell.
+		if (spell.execute(player)) {
+			player.getInventory().remove(spell.getRunes());
+			player.getSkills().addExperience(Skills.MAGIC, spell.getExperience());
+		}
+
+	}
 
 	public static boolean handleButton(Player player, int button) {
 		switch(button) {
+		
+		/* Bones to Bananas */
+		case 1159:
+			player.getMagic().cast(new BonesToBananas());
+			break;
+
+		/* Bones to Peaches */
+		case 15877:
+			player.getMagic().cast(new BonesToPeaches());
+			break;
+
+		/* Vengeance */
 		case 118098:
-			castVengeance(player);
-			return true;
+			player.getMagic().cast(new Vengeance());
+			break;
 		}
 		return false;
 	}
@@ -287,6 +365,30 @@ public class Magic {
 			return true;
 		}
 		return false;
+	}
+
+	public long getLastVengeance() {
+		return lastVengeance;
+	}
+
+	public void setLastVengeance(long lastVengeance) {
+		this.lastVengeance = lastVengeance;
+	}
+	
+	public long getDelay() {
+		return delay;
+	}
+	
+	public void setDelay(long delay) {
+		this.delay = delay;
+	}
+	
+	public Item getItemUsed() {
+		return itemUsed;
+	}
+
+	public void setItemUsed(Item itemUsed) {
+		this.itemUsed = itemUsed;
 	}
 
 }

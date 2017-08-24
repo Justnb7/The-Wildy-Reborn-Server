@@ -4,7 +4,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.location.Location;
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Task.BreakType;

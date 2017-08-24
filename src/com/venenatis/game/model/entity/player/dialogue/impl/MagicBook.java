@@ -1,6 +1,6 @@
 package com.venenatis.game.model.entity.player.dialogue.impl;
 
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Type;
 

@@ -11,7 +11,7 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.AttackStyle;
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;

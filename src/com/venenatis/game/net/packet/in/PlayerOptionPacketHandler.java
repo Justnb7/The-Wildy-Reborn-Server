@@ -207,7 +207,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 		Player other = World.getWorld().getPlayers().search(otherPlayerIndex).get();	
 		
 		final int spell = player.getInStream().readSignedWordBigEndian();
-
+		
 		if (player.getDuelArena().isDueling()) {
 			if (player.getDuelArena().getWaitTime() > 0) {
 				player.getActionSender().sendMessage("The duel has not started yet.");

@@ -20,7 +20,7 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.combat.magic.spell.SpellHandler;
 import com.venenatis.game.model.combat.special_attacks.Special;
 import com.venenatis.game.model.definitions.EquipmentDefinition;

@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.venenatis.game.consumables.Consumables.Food;
 import com.venenatis.game.model.combat.magic.Magic;
-import com.venenatis.game.model.combat.magic.spell.CombatSpells;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Stopwatch;
@@ -52,14 +51,6 @@ public class CombatState {
 
 	public void applySmite(Player defender, int damage) {
 		PrayerHandler.handleSmite(entity.asPlayer(), defender, damage);
-	}
-
-	/**
-	 * 
-	 * @param attacker The person who is hitting someone. The target is the one with veng active.
-	 */
-	public void vengeance(Entity attacker, int damage, int delay) {
-		CombatSpells.vengeance(entity.asPlayer(), attacker, damage, delay);
 	}
 	
 	public void recoil(Entity attacker, int damage) {

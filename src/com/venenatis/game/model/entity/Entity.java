@@ -18,6 +18,7 @@ import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
 import com.venenatis.game.model.combat.data.CombatStyle;
+import com.venenatis.game.model.combat.magic.spell.impl.Vengeance;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
@@ -839,7 +840,7 @@ public abstract class Entity {
 			if (damage > 0) {
 				// Trigger veng and recoil once the damage has been reduced by effects/protection prayers
 				if (me.hasVengeance()) {
-					me.getCombatState().vengeance(attacker, damage, 1);
+					Vengeance.handle(me, attacker, damage);
 				}
 
 				me.getCombatState().recoil(attacker, damage);

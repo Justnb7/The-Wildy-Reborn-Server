@@ -21,7 +21,7 @@ import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.data.SkullType;
-import com.venenatis.game.model.combat.magic.spell.SpellBook;
+import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;

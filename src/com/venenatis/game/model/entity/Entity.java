@@ -500,8 +500,8 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @deprecated YOU SHOULD ENDEVOUR to always use entity.take_hit INSTEAD of this (except poison.. thats hardcoded to fuck so leave it)
-	 * Actually apply the hit. Makes it show in Player Updating and also reduces your HITPOINTS (can kill you)
+	 * Makes it show in Player Updating and also reduces your HITPOINTS (can kill you).
+	 * This should only be called by take_hit. Take_hit deals with veng, recoil, protection prayers, auto retal etc, all bundled into one for simplicity.
 	 */
 	public void damage(Hit... hits) {
 		Preconditions.checkArgument(hits.length >= 1 && hits.length <= 4);
@@ -744,8 +744,17 @@ public abstract class Entity {
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean instant) {
 		return take_hit(attacker, damage, combat_type, instant, false);
 	}
+	
+	// Means you don't have to type as many arguments. Used for venom, poison, can be for veng/recoil
+	public Hit take_hit_generic(Entity attacker, int dmg, HitType type) {
+		return take_hit(attacker, dmg, CombatStyle.GENERIC, false, false, type);
+	}
 
-	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean troughPrayer) {
+	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean throughPrayer) {
+		return take_hit(attacker, damage, combat_type, applyInstantly, throughPrayer, null);
+	}
+
+	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean throughPrayer, HitType type) {
         if(!this.canBeDamaged()) {
 			damage = 0;
 		}
@@ -757,7 +766,7 @@ public abstract class Entity {
 			player_me.putInCombat(attacker.getIndex()); // we're taking a hit. we can't logout for 10s.
 			
 			// The victim (this) has protection prayer enabled.
-			if (combat_type != null && !troughPrayer) {
+			if (combat_type != null && !throughPrayer) {
 				// 40% Protection from player attacks, 100% protection from Npc attacks
 				double prayProtection = attacker.isPlayer() ? 0.6D : 0.0D;
 				if (combat_type == CombatStyle.MELEE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
@@ -873,10 +882,11 @@ public abstract class Entity {
 		}
 
 		// Update hit instance since we've changed the 'damage' value
-		Hit hit = new Hit(damage, damage > 0 ? HitType.NORMAL : HitType.BLOCKED).type(combat_type).between(attacker, this);
+		Hit hit = new Hit(damage, damage == 0 ? HitType.BLOCKED : type != null ? type : HitType.NORMAL).type(combat_type).between(attacker, this);
 
 		// NOTE: If not instantly applied, use hit.delay(ticks) to make it appear after X ticks
 		if (applyInstantly) {
+			// The only place the damage() method should be called from, this method.
 			this.damage(hit);
 			if (this.isPlayer())
 				PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);

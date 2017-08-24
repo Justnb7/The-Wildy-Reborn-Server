@@ -1,5 +1,6 @@
 package com.venenatis.game.model.combat.combat_effects;
 
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -21,23 +22,25 @@ public class Venom {
 	 */
 	private int damage = 6;
 	
-	public Venom(Player player){
-		playerVenom(player);
+	// Not used yet
+	public Venom(Player player, Entity source) {
+		playerVenom(player, source);
 	}
 	
-	public Venom(NPC npc){
-		npcVenom(npc);
+	// Not used .. yet
+	public Venom(NPC npc, Entity source) {
+		npcVenom(npc, source);
 	}
 	
 	/**
 	 * This method venoms players.
 	 * @param player
 	 */
-	private void playerVenom(Player player) {
+	private void playerVenom(Player player, Entity source) {
 		player.setInfection(2);
 		player.infected = true;
 		if(player != null){
-			player.damage(new Hit(damage, HitType.VENOM));
+			player.take_hit_generic(source,  damage, HitType.VENOM);
 			damage = (damage + 2 > 20 ? 20 : damage + 2);
 			Server.getTaskScheduler().schedule(new Task(20) {
 				@Override
@@ -46,7 +49,7 @@ public class Venom {
 						stop();
 						return;
 					}
-					player.damage(new Hit(damage, HitType.VENOM));
+					player.take_hit_generic(source,  damage, HitType.VENOM);
 					player.message("You have been hit by the venom infection.");
 					damage = (damage + 2 > 20 ? 20 : damage + 2);
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
@@ -58,10 +61,11 @@ public class Venom {
 	/**
 	 * This method venoms npcs.
 	 * @param npc
+	 * @param source 
 	 */
-	private void npcVenom(NPC npc) {
+	private void npcVenom(NPC npc, Entity source) {
 		if(npc != null && !npc.getCombatState().isDead()) {
-			npc.damage(new Hit(damage, HitType.VENOM));
+			npc.take_hit_generic(source,  damage, HitType.VENOM);
 			damage = (damage + 2 > 20 ? 20 : damage + 2);
 			npc.infected = true;
 			Server.getTaskScheduler().schedule(new Task(20) {
@@ -70,7 +74,7 @@ public class Venom {
 					if(npc.getCombatState().isDead()) {
 						stop();
 					}
-					npc.damage(new Hit(damage, HitType.VENOM));
+					npc.take_hit_generic(source,  damage, HitType.VENOM);
 					damage = (damage + 2 > 20 ? 20 : damage + 2);
 				}
 			}.attach(npc));

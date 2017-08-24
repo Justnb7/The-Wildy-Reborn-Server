@@ -3,7 +3,6 @@ package com.venenatis.game.model.combat.combat_effects;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -67,15 +66,10 @@ public class DragonfireShield {
 				
 				player.playProjectile(Projectile.create(player.getCentreLocation(), victim.getCentreLocation(), 1166, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
 				
-				World.getWorld().schedule(new Task(hitDelay) {
-					public void execute() {
-						victim.playGraphics(Graphic.create(1167, 0, 100));
-						int hit = Utility.random(25);
-						victim.damage(new Hit(hit));
-						this.stop();
-					}
-				});
-				this.stop();
+				victim.playGraphics(Graphic.create(1167, 0, 100));
+				int hit = Utility.random(25);
+				victim.take_hit(player, hit, null).send(hitDelay);//2 or hitDelay?
+				stop();
 			}
 		});
 	}

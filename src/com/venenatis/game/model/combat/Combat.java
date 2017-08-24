@@ -77,10 +77,11 @@ public class Combat {
 					}
 				}
 				if (recoil < 1) {
+					System.out.println("r<1 btw");
 					return;
 				}
 				defender.getCombatState().setRingOfRecoil(defender.getCombatState().getRingOfRecoil() - recoil);
-				entity_attacker.damage(new Hit(recoil));
+				entity_attacker.take_hit(defender, recoil, null).send(1);//null style so we don't get XP and protection prayers don't reduce it
 				if (defender.getCombatState().getRingOfRecoil() < 1) {
 					defender.asPlayer().getEquipment().remove(new Item(2550));
 					defender.getCombatState().setRingOfRecoil(40);
@@ -108,8 +109,10 @@ public class Combat {
 			if (recoil < 1) {
 				return;
 			}
-
-			entity_attacker.damage(new Hit(recoil));
+			entity_attacker.take_hit(defender, recoil, null);//Should be correct order right?
+			//Here i'm now replacing all the dead code @deprecated from hit.damage :d well some are special like veng recoil won't trigger from itself erm
+			//Was confused maybe was using diff recoil or w/e but yeah should be good okay so what do we do then instead of the old
+			//hit.damage you deprecated it last time but like recoil dfs etc was using it
 		}
 	}
 	
@@ -921,7 +924,7 @@ public class Combat {
                 if (selfDamage < attacker.getSkills().getLevel(Skills.HITPOINTS)) {
                     int opHP = defender.isPlayer() ? ((Player) defender).getSkills().getLevel(Skills.HITPOINTS) : ((NPC) defender).getHitpoints();
                     dam1 += opHP * 0.2;
-                    attacker.damage(new Hit(selfDamage));
+                    attacker.take_hit(attacker, selfDamage, CombatStyle.GENERIC);
                 }
                 break;
             case 9243: // Armour Piercing
@@ -1060,8 +1063,10 @@ public class Combat {
     		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
     	
     	// Apply the damage inside Hit
-        if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC && attacker != null && attacker.isPlayer())) // dont show 0 for splash
+        if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC && attacker != null && attacker.isPlayer())) {// dont show 0 for splash
+        	// Show damage on player. Take_hit has already been used at this point.
             target.damage(hit);
+        }
 
         if (attacker.isPlayer()) {
             // Range attack invoke block emote when hit appears.

@@ -994,6 +994,7 @@ public class Combat {
     	
     	Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 		if (weapon == null) {
+			player.setCombatType(CombatStyle.MELEE);
 			return;
 		}
 		EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
@@ -1010,11 +1011,6 @@ public class Combat {
         }
         
         int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
-        
-        //Boxing and Kicking
-		if (wep == -1) {
-			player.setCombatType(CombatStyle.MELEE);
-		}
         
         if (wep == 11907) {
             player.setSpellId(52);

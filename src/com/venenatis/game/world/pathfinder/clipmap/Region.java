@@ -716,4 +716,13 @@ public class Region {
 	public RegionEntities getStore() {
 		return store;
 	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 }

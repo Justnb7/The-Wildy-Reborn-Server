@@ -4,7 +4,6 @@ package com.venenatis.game.model.combat;
 import java.util.concurrent.TimeUnit;
 
 import com.venenatis.game.consumables.Consumables.Food;
-import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Stopwatch;
@@ -58,27 +57,33 @@ public class CombatState {
 	}
 
 	public int getStartHeight() {
-		return Magic.getStartHeight(entity.asPlayer());
+		Player player = (Player)entity;
+		return player.getMagic().getStartHeight(entity.asPlayer());
 	}
 
 	public int getEndHeight() {
-		return Magic.getEndHeight(entity.asPlayer());
+		Player player = (Player)entity;
+		return player.getMagic().getEndHeight(entity.asPlayer());
 	}
 
 	public int getStartDelay() {
-		return Magic.getStartDelay(entity.asPlayer());
+		Player player = (Player)entity;
+		return player.getMagic().getStartDelay(entity.asPlayer());
 	}
 
 	public int getStaffNeeded() {
-		return Magic.getStaffNeeded(entity.asPlayer());
+		Player player = (Player)entity;
+		return player.getMagic().getStaffNeeded(entity.asPlayer());
 	}
 
 	public boolean godSpells() {
-		return Magic.godSpells(entity.asPlayer());
+		Player player = (Player)entity;
+		return player.getMagic().godSpells(entity.asPlayer());
 	}
 
 	public int getStartGfxHeight() {
-		return Magic.getStartGfxHeight(entity.asPlayer());
+		Player player = (Player)entity;
+		return player.getMagic().getStartGfxHeight(entity.asPlayer());
 	}
 	
 	public int calculateMeleeMaxHit() {
@@ -101,6 +106,32 @@ public class CombatState {
 		// Reset all styles
 		entity.asPlayer().setCombatType(null);
 		entity.asPlayer().setFollowing(null);
+	}
+	
+	/**
+	 * The spell delay. (Each value of 1 counts for 600ms, e.g. 3 = 1800ms).
+	 */
+	private int spellDelay;
+
+	/**
+	 * @return the spellDelay
+	 */
+	public int getSpellDelay() {
+		return spellDelay;
+	}
+
+	/**
+	 * @param spellDelay the spellDelay to set
+	 */
+	public void setSpellDelay(int spellDelay) {
+		this.spellDelay = spellDelay;
+	}
+
+	/**
+	 * @param spellDelay the spellDelay to set
+	 */
+	public void decreaseSpellDelay(int amount) {
+		this.spellDelay -= amount;
 	}
 	
 	/**

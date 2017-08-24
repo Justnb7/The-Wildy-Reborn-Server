@@ -121,8 +121,7 @@ public class Coverage {
 		return false;
 	}
 
-	public boolean correctCombatPosition(Entity entity, Entity partner,
-										 Coverage c, int distance, CombatStyle type) {
+	public boolean correctCombatPosition(Entity entity, Entity partner, Coverage c, int distance, CombatStyle type) {
 		if (intersect(c)) {
 			return false;
 		}
@@ -140,6 +139,8 @@ public class Coverage {
 			return center().distanceToPoint(c.center()) <= distance
 					&& !ProjectilePathFinder.projectileBlocked(
 							entity.getLocation(), partner.getLocation());
+		default:
+			break;
 		}
 		return false;
 	}

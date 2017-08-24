@@ -2,6 +2,7 @@ package com.venenatis.game.model.combat;
 
 import java.util.Random;
 
+import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -18,7 +19,6 @@ import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
 import com.venenatis.game.model.combat.data.CombatData;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
-import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.MagicCalculations;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.combat.magic.spell.SpellHandler;
@@ -257,21 +257,25 @@ public class Combat {
         if (player.touchDistance(target, 7))
             player.getWalkingQueue().reset();
 
+    	if (player.getCombatState().getSpellDelay() > 0) {
+			return;
+		}
+        
         if (player.getCombatState().getAttackDelay() > 0) {
             // don't attack as our timer hasnt reached 0 yet
             return;
         }
         int spell = player.getSpellId();
-        int req = Magic.requirement(spell);
+        int req = player.getMagic().requirement(spell);
         if (player.getSkills().getLevel(Skills.MAGIC) < req) {
             player.message("You need a Magic level of "+req+" to cast this spell.");
             resetCombat(player);
             return;
         }
-        Item[] runes = Magic.runes(spell);
+        Item[] runes = player.getMagic().runes(spell);
         if (runes != null && runes.length > 0) {
             //Runes check
-            if (!Magic.checkRunes(player, true, runes) && player.getTotalAmountDonated() < 100) {
+            if (!player.getMagic().checkRunes(player, true, runes) && player.getTotalAmountDonated() < 100) {
                 resetCombat(player);
                 return;
             }
@@ -314,7 +318,7 @@ public class Combat {
         if (!target.frozen() && !splash) {
         	//After the damage was taken we activate our spell effects.
 			SpellHandler.handleSpellEffect(player, target);
-            if (target.isPlayer()) {
+            if (target.isPlayer() && target.frozen()) {
                 ((Player) target).getWalkingQueue().reset();
                 target.message("You have been frozen.");
                 ((Player) target).frozenBy = player.getIndex();
@@ -325,7 +329,7 @@ public class Combat {
 
         // Graphic that appears when hit appears.
         final int endGfx = player.MAGIC_SPELLS[spell][5];
-        final int endH = Magic.getEndGfxHeight(player);
+        final int endH = player.getMagic().getEndGfxHeight(player);
         Server.getTaskScheduler().schedule(new Task(hitDelay) {
             @Override
             public void execute() {
@@ -346,7 +350,6 @@ public class Combat {
                         Player defender = (Player) target;
                         if (!defender.getCombatState().isTeleblocked()) {
                             defender.getCombatState().getTeleblock().reset();
-                            defender.getActionSender().sendMessage("You have been teleblocked.");
                             defender.putInCombat(1);
                             if (defender.isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MAGIC)) {
                             	defender.getCombatState().teleblock(150);				
@@ -833,6 +836,9 @@ public class Combat {
 
 		// Set our attack timer so we dont instantly hit again
         player.getCombatState().setAttackDelay(WeaponDefinition.sendAttackSpeed(player));
+        
+        //Set the magic delay, which is 5 by default otherwise we adjust them in the script
+        player.getCombatState().setSpellDelay(Constants.MAGIC_ATTACK_DELAY);
 
         // Rapid reduce delay by 1 faster
         if (player.getCombatType() == CombatStyle.RANGE) {

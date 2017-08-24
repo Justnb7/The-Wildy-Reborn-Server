@@ -9,7 +9,6 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.util.Utility;
@@ -245,7 +244,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			}
 		}
 		
-		if (!player.getCombatState().isTeleblocked() && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
+		if (other.getCombatState().isTeleblocked() && player.MAGIC_SPELLS[player.getSpellId()][0] == 12445) {
 			player.getActionSender().sendMessage("That player is already affected by this spell.");
 			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);

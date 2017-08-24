@@ -1,6 +1,5 @@
 package com.venenatis.game.model.entity.following;
 
-import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.WalkingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.data.CombatStyle;

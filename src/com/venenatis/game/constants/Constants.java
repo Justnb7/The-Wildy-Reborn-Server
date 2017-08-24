@@ -6,6 +6,11 @@ import com.venenatis.game.model.entity.player.Player;
 public class Constants {
 	
 	/**
+	 * Magic attack delay
+	 */
+	public static int MAGIC_ATTACK_DELAY = 5;
+	
+	/**
 	 * Decides max incoming packets per cycle
 	 */
 	public static final int MAX_INCOMING_PACKETS_PER_CYCLE = 20;

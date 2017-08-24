@@ -16,7 +16,6 @@ import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.content.teleportation.Teleport;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
-import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttackHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.model.entity.player.Player;
@@ -175,7 +174,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		}
 		
 		/* Handle clickable spells such as Vengeance */
-		if(Magic.handleButton(player, button)) {
+		if(player.getMagic().handleButton(player, button)) {
 			return;
 		}
 		

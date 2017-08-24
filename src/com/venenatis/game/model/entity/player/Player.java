@@ -1072,7 +1072,7 @@ public class Player extends Entity {
 	// rune 3, rune 3 amount,
 	// rune 4, rune 4 amount}
 	// theres another param on end idk what it is [16]
-	public static int[][] MAGIC_SPELLS = { { 1152, 1, 711, 90, 91, 92, 2, 5, 556, 1, 558, 1, 0, 0, 0, 0, 993 }, // wind
+	public int[][] MAGIC_SPELLS = { { 1152, 1, 711, 90, 91, 92, 2, 5, 556, 1, 558, 1, 0, 0, 0, 0, 993 }, // wind
 																												// strike
 			{ 1154, 5, 711, 93, 94, 95, 4, 7, 555, 1, 556, 1, 558, 1, 0, 0, 211 }, // water
 																					// strike
@@ -1132,7 +1132,7 @@ public class Player extends Entity {
 																					// of
 																					// zammy
 
-			{ 12445, 85, 1819, 0, 0, 1299, 0, 65, 563, 1, 562, 1, 560, 1, 0, 0, 0 }, // teleblock
+			{ 12445, 85, 1819, 0, 1299, -1, 0, 65, 563, 1, 562, 1, 560, 1, 0, 0, 0 }, // teleblock
 
 			// Ancient Spells
 			{ 12939, 50, 1978, 0, 384, 385, 13, 30, 560, 2, 562, 2, 554, 1, 556, 1, 0 }, // smoke
@@ -1485,6 +1485,10 @@ public class Player extends Entity {
 
 		if (getCombatState().getAttackDelay() > 0) {
 			getCombatState().decreaseAttackDelay(1);
+		}
+		
+		if (getCombatState().getSpellDelay() > 0) {
+			getCombatState().decreaseSpellDelay(1);
 		}
 
 		// Handles following every game tick, only attacks when delay=0

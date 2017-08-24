@@ -3,11 +3,9 @@ package com.venenatis.game.model.combat;
 import java.util.Arrays;
 import java.util.List;
 
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
-import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.definitions.WeaponDefinition;
@@ -224,6 +222,10 @@ public class NpcCombat {
 		if (npc.getCombatState().getAttackDelay() > 0) {
 			npc.getCombatState().decreaseAttackDelay(1);
 			//npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
+		}
+		
+		if (npc.getCombatState().getSpellDelay() > 0) {
+			npc.getCombatState().decreaseSpellDelay(1);
 		}
 
 		// If we havent been attacked within last 5 secs reset who last attack us

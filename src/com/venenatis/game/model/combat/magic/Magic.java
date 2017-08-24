@@ -1,8 +1,6 @@
 package com.venenatis.game.model.combat.magic;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.magic.spell.impl.BonesToBananas;
@@ -10,9 +8,6 @@ import com.venenatis.game.model.combat.magic.spell.impl.BonesToPeaches;
 import com.venenatis.game.model.combat.magic.spell.impl.Vengeance;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.util.Utility;
 
 public class Magic {
 	
@@ -79,7 +74,7 @@ public class Magic {
 
 	}
 
-	public static boolean handleButton(Player player, int button) {
+	public boolean handleButton(Player player, int button) {
 		switch(button) {
 		
 		/* Bones to Bananas */
@@ -101,12 +96,12 @@ public class Magic {
 	}
 	
 	
-	public static int requirement(int spell_index) {
-		return Player.MAGIC_SPELLS[spell_index][1];
+	public int requirement(int spell_index) {
+		return player.MAGIC_SPELLS[spell_index][1];
 	}
 	
-	public static Item[] runes(int spell_index) {
-		int[] spelldata = Player.MAGIC_SPELLS[spell_index];
+	public Item[] runes(int spell_index) {
+		int[] spelldata = player.MAGIC_SPELLS[spell_index];
 		int[] rd = new int[] {spelldata[8], spelldata[10], spelldata[12], spelldata[14]};
 		int count = 0;
 		for (int a : rd)
@@ -127,8 +122,8 @@ public class Magic {
 		return r;
 	}
 
-	public static int getStartGfxHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
+	public int getStartGfxHeight(Player player) {
+		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 12871:
 		case 12891:
 			return 0;
@@ -138,8 +133,8 @@ public class Magic {
 		}
 	}
 
-	public static int getEndGfxHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
+	public int getEndGfxHeight(Player player) {
+		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 12987:
 		case 12901:
 		case 12861:
@@ -161,8 +156,8 @@ public class Magic {
 		}
 	}
 
-	public static boolean godSpells(Player c) {
-		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
+	public boolean godSpells(Player player) {
+		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 1190:
 			return true;
 
@@ -177,8 +172,8 @@ public class Magic {
 		}
 	}
 
-	public static int getStaffNeeded(Player c) {
-		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
+	public int getStaffNeeded(Player player) {
+		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 1539:
 			return 1409;
 		case 12037:
@@ -194,8 +189,8 @@ public class Magic {
 		}
 	}
 
-	public static int getStartDelay(Player c) {
-		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
+	public int getStartDelay(Player player) {
+		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 1539:
 			return 60;
 		default:
@@ -203,8 +198,8 @@ public class Magic {
 		}
 	}
 
-	public static int getEndHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
+	public int getEndHeight(Player player) {
+		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 1562: // stun
 			return 10;
 
@@ -231,8 +226,8 @@ public class Magic {
 		}
 	}
 
-	public static int getStartHeight(Player c) {
-		switch (c.MAGIC_SPELLS[c.getSpellId()][0]) {
+	public int getStartHeight(Player player) {
+		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 1562: // stun
 			return 25;
 
@@ -259,7 +254,7 @@ public class Magic {
 		}
 	}
 	
-	public static final boolean checkRunes(Player player, boolean delete, Item... runes) {
+	public final boolean checkRunes(Player player, boolean delete, Item... runes) {
 		int weaponId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		int shieldId = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId();
 		int runesCount = 0;
@@ -292,58 +287,10 @@ public class Magic {
 		return has;
 	}
 	
-	private static void castVengeance(Player player) {
-		if (vengeanceRequirements(player)) {
-			player.playAnimation(Animation.create(4410));
-			player.playGraphics(Graphic.create(726, 0, 0));
-			player.getSkills().addExperience(Skills.MAGIC, 112);
-			player.setVengeance(true);
-			player.lastCast = System.currentTimeMillis();
-			player.message("You cast a vengeance.");
-			player.getInventory().refresh();
-			AchievementHandler.activate(player, AchievementList.TASTE_ME, 1);
-			player.getActionSender().sendWidget(2, 30);
-		}
-	}
-	
-	
-	
-	private static boolean vengeanceRequirements(Player player) {
-		
-		//Checking for already casted vengeance
-		if (player.hasVengeance()) {
-			player.message("You already have vengeance casted.");
-			return false;
-		}
-		
-		//Level requirement check
-		if (player.getSkills().getLevel(Skills.MAGIC) < 94) {
-			player.message("Your Magic level is not high enough for this spell.");
-			return false;
-		} else if (player.getSkills().getLevel(Skills.DEFENCE) < 40) {
-			player.message("You need a Defence level of 40 for this spell");
-			return false;
-		}
-		
-		//Runes check
-		if (!checkRunes(player, true, new Item(ASTRAL_RUNE, 4), new Item(DEATH_RUNE, 2), new Item(EARTH_RUNE, 10)) && player.getTotalAmountDonated() < 100) {
-			return false;
-		}
-		
-		//Checking duration
-		if (player.lastVeng != null && Utility.currentTimeMillis() - player.lastCast < 30000) {
-			player.message("Players may only cast vengeance once every 30 seconds.");
-			return false;
-		}
-		return true;
-		
-	}
-	
 	private static final int AIR_RUNE = 556, WATER_RUNE = 555,
-			EARTH_RUNE = 557, FIRE_RUNE = 554, DEATH_RUNE = 560,
-			ASTRAL_RUNE = 9075;
+			EARTH_RUNE = 557, FIRE_RUNE = 554;
 	
-	public static final boolean hasInfiniteRunes(Player player, int runeId, int amount, int weaponId, int shieldId, boolean deleteFromRunePouch) {
+	public final boolean hasInfiniteRunes(Player player, int runeId, int amount, int weaponId, int shieldId, boolean deleteFromRunePouch) {
 		if (runeId == AIR_RUNE) {
 			if (weaponId == 1381) // air staff
 				return true;

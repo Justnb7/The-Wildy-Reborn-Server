@@ -1232,6 +1232,7 @@ public abstract class Entity {
 		coverage = new Coverage(getLocation(), size());
 	}
 
+	@SuppressWarnings("unused")
 	private void updateCoverage(Directions.NormalDirection direction) {
 		coverage.update(direction, size());
 	}

@@ -17,6 +17,7 @@ public class ProjectileClipping {
 		17473,*/
 	};
 
+	@SuppressWarnings("unused")
 	private static int hash(int x, int y) {
 		return x >> 7 << 8 | y >> 7;
 	}
@@ -32,6 +33,7 @@ public class ProjectileClipping {
 		region.clippingMasks[z][localX][localY] |= shift;
 	}
 
+	@SuppressWarnings("unused")
 	private static void setClippingMask(int x, int y, int z, int shift) {
 		ProjectileClipping region = forCoords(x, y);
 		int localX = x - ((x >> 7) << 7);
@@ -62,6 +64,7 @@ public class ProjectileClipping {
 		return r;
 	}
 
+	@SuppressWarnings("unused")
 	private static int getClippingMask(Location loc) {
 		return getClippingMask(loc.getX(), loc.getY(), loc.getZ());
 	}

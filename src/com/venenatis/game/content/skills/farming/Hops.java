@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.venenatis.game.content.skills.farming.ChopTree.Tree;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.controller.Controller;

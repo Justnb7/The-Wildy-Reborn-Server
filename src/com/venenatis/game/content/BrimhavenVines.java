@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.skills.woodcutting.Woodcutting.Hatchet;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;

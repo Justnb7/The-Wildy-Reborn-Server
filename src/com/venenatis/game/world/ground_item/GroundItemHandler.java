@@ -8,7 +8,6 @@ import java.util.Optional;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Task.BreakType;
 import com.venenatis.game.task.Task.StackType;

@@ -39,7 +39,8 @@ public class Mining extends HarvestingAction {
 	public Mining(Entity entity, GameObject object) {
 		super(entity);
 		this.object = object;
-		this.rock = Rock.forId(object.getId());
+		if (object != null)
+			this.rock = Rock.forId(object.getId());
 	}
 	
 	/**
@@ -211,7 +212,7 @@ public class Mining extends HarvestingAction {
 		/**
 		 * Rune ore.
 		 */
-		RUNE(451, 85, 430, 25, 1, new int[] { 7418, 7419, 7494, 7461, }, new int[] { 7468, 7469, 7469, 7469, }, 1000);
+		RUNE(451, 85, 430, 25, 1, new int[] { 7418, 7419, 7494, 7461 }, new int[] { 7468, 7469, 7469, 7469, }, 1000);
 		
 		/**
 		 * The object ids of this rock.

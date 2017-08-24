@@ -3,7 +3,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.slayer;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The teleport options for the enchanted gem.
@@ -18,7 +18,7 @@ public class EnchantedGemTeleport extends Dialogue {
 		if (player.getWildLevel() > 30) {
 			player.getActionSender().sendMessage("You need to be lower than level 30 in the wilderness to do this action.");
 		} else {
-			send(Type.CHOICE, DEFAULT_OPTION_TITLE, "Mazchna", "Vannaka", "Chaeldar", "Nieve", "Duradel");
+			send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, "Mazchna", "Vannaka", "Chaeldar", "Nieve", "Duradel");
 			setPhase(0);
 		}
 	}

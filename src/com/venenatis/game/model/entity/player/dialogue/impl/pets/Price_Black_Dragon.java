@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Prince black dragon pet chat dialogue
@@ -16,7 +16,7 @@ public class Price_Black_Dragon extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "Shouldn't a prince only have two heads?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Shouldn't a prince only have two heads?");
 		setPhase(0);
 	}
 	
@@ -24,15 +24,15 @@ public class Price_Black_Dragon extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Why is that?");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Why is that?");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Well,", "a standard Black dragon has one,", "the King has three so inbetween must have two?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Well,", "a standard Black dragon has one,", "the King has three so inbetween must have two?");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "You're overthinking this.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "You're overthinking this.");
 			setPhase(3);
 			break;
 		case 3:

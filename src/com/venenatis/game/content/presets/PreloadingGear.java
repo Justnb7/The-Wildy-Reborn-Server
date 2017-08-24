@@ -1,14 +1,8 @@
 package com.venenatis.game.content.presets;
-import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
-import com.venenatis.game.model.entity.player.save.PlayerSave;
-import com.venenatis.game.model.entity.player.save.PlayerSave.Type;
 import com.venenatis.game.util.NameUtils;
 import com.venenatis.game.util.StringUtils;
 
@@ -222,53 +216,7 @@ public class PreloadingGear {
 			player.getActionSender().sendMessage("<col=800000>Please title your preset before doing this.");
 			return;
 		}
-		
-		/*//And then start dialogue
-		DialogueManager.start(player, 7);
-		//Set dialogue options
-		player.setDialogueOptions(new DialogueOptions() {
-			@Override
-			public void handleOption(Player player, int option) {
-				switch(option) {
-				case 1:
-					//Action 1
-					upload(preset);
-					break;
-				case 2:
-					//Action 2
-					open(preset);
-					break;
-				}
-			}
-		});*/
-	}
-
-	public void upload(int preset) {
-		presetSpellbook[preset] = player.getSpellBook();
-		presetEquipment[preset][1] = player.getEquipment().get(EquipmentConstants.HELM_SLOT);
-		presetEquipment[preset][3] = player.getEquipment().get(EquipmentConstants.CAPE_SLOT);
-		presetEquipment[preset][4] = player.getEquipment().get(EquipmentConstants.NECKLACE_SLOT);
-		presetEquipment[preset][5] = player.getEquipment().get(EquipmentConstants.AMMO_SLOT);
-		presetEquipment[preset][6] = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-		presetEquipment[preset][7] = player.getEquipment().get(EquipmentConstants.TORSO_SLOT);
-		presetEquipment[preset][8] = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
-		presetEquipment[preset][10] = player.getEquipment().get(EquipmentConstants.LEGS_SLOT);
-		presetEquipment[preset][12] = player.getEquipment().get(EquipmentConstants.GLOVES_SLOT);
-		presetEquipment[preset][13] = player.getEquipment().get(EquipmentConstants.BOOTS_SLOT);
-		presetEquipment[preset][14] = player.getEquipment().get(EquipmentConstants.RING_SLOT);
-		for (int index = 0; index < player.getInventory().getSize(); index++) {
-			if (player.getInventory().get(index) == null) {
-				presetInventory[preset][index] = null;
-				continue;
-			}
-			presetInventory[preset][index] = player.getInventory().get(index).copy();
-		}
-		for (int index = 0; index < 7; index++) {
-			presetSkill[preset][index] = player.getSkills().getMaxLevel(index);
-		}
-		open(preset);
-		AchievementHandler.activate(player, AchievementList.OOH_FANCY, 1);
-		PlayerSave.save(player, Type.PRESETS);
+		player.getDialogueManager().start("PRESETS");
 	}
 
 	public String getSpellbook(int preset) {

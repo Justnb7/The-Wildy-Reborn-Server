@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Vet'ion jr pet chat dialogue
@@ -16,7 +16,7 @@ public class Vetion_Jr extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "Who is the true lord and king of the lands?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Who is the true lord and king of the lands?");
 		setPhase(0);
 	}
 	
@@ -24,23 +24,23 @@ public class Vetion_Jr extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "The mighty heir and lord of the Wilderness.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "The mighty heir and lord of the Wilderness.");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Where is he? Why hasn't he lifted your burden?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Where is he? Why hasn't he lifted your burden?");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "I have not fulfilled my purpose.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "I have not fulfilled my purpose.");
 			setPhase(3);
 			break;
 		case 3:
-			send(Type.PLAYER, Expression.DEFAULT, "What is your purpose?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "What is your purpose?");
 			setPhase(4);
 			break;
 		case 4:
-			send(Type.NPC, Expression.DEFAULT, PET, "Not what is,", "what was. A great war tore this land apart and,", "for my failings in protecting this ", "land, I carry the burden of its waste.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Not what is,", "what was. A great war tore this land apart and,", "for my failings in protecting this ", "land, I carry the burden of its waste.");
 			setPhase(5);
 			break;
 		case 5:

@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Chaos elemental Jr pet chat dialogue
@@ -16,7 +16,7 @@ public class Chaos_Elemental_Jr extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "Is it true a level 3 skiller caught one of your siblings?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Is it true a level 3 skiller caught one of your siblings?");
 		setPhase(0);
 	}
 	
@@ -24,15 +24,15 @@ public class Chaos_Elemental_Jr extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Yes, they killed my mummy,", "kidnapped my brother,", "smiled about it and went to sleep.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Yes, they killed my mummy,", "kidnapped my brother,", "smiled about it and went to sleep.");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Aww, well you have me now!", "I shall call you Squishy and you shall be mine", "and you shall be my Squishy");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Aww, well you have me now!", "I shall call you Squishy and you shall be mine", "and you shall be my Squishy");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.PLAYER, Expression.DEFAULT, "Come on, Squishy come on, little Squishy!");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Come on, Squishy come on, little Squishy!");
 			setPhase(3);
 			break;
 		case 3:

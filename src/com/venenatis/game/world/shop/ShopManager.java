@@ -253,7 +253,6 @@ public class ShopManager {
 		} else {
 			player.getInventory().add(id, item.getAmount(), true);
 			if (shop.getCurrency() != Currency.GEAR_POINTS) {
-				player.debug("enter");
 				shop.remove(id, item.getAmount(), false);
 				shop.shift(false);
 				update(player.getShopId());

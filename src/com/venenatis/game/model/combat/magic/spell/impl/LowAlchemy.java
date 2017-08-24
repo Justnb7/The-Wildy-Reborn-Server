@@ -1,7 +1,7 @@
 package com.venenatis.game.model.combat.magic.spell.impl;
 
-import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.magic.MagicSpell;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -49,9 +49,10 @@ public class LowAlchemy implements MagicSpell {
 
 		player.getInventory().refresh();
 
-		player.getActionSender().sendSidebarInterface(Constants.MAGIC_TAB, 1151);
+		player.getActionSender().changeSidebar(6);
 
 		player.getMagic().setDelay(System.currentTimeMillis());
+		player.getSkills().addExperience(Skills.MAGIC, 31);
 
 		return false;
 	}

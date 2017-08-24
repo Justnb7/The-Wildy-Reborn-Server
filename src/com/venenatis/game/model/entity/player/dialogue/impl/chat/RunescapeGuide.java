@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.chat;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 public class RunescapeGuide extends Dialogue {
 	
@@ -10,7 +10,7 @@ public class RunescapeGuide extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.NPC, NPC_ID, Expression.DEFAULT, "Welcome to Venenatis, "+player.getUsername(), "First, you need to choose your game mode.");
+		send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Welcome to Venenatis, "+player.getUsername(), "First, you need to choose your game mode.");
 		setPhase(0);
 	}
 	

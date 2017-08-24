@@ -3,7 +3,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 public class RottenPotato extends Dialogue {
 
@@ -18,16 +18,16 @@ public class RottenPotato extends Dialogue {
 	@Override
 	protected void start(Object... parameters) {
 		if(option == 0) {
-			send(Type.CHOICE, "Select Option", "Set all stats", "Wipe inventory");
+			send(DialogueType.CHOICE, "Select Option", "Set all stats", "Wipe inventory");
 			setPhase(0);
 		} else if(option == 1) {
-			send(Type.CHOICE, "Select Option", "invulnerability", "invincible", "invisibility");
+			send(DialogueType.CHOICE, "Select Option", "invulnerability", "invincible", "invisibility");
 			setPhase(2);
 		} else if(option == 2) {
-			send(Type.CHOICE, "Select Option", "Bank menu", "Show AMEs", "AMEs for all!", "Spawn RARE!");
+			send(DialogueType.CHOICE, "Select Option", "Bank menu", "Show AMEs", "AMEs for all!", "Spawn RARE!");
 			setPhase(3);
 		} else if(option == 3) {
-			send(Type.CHOICE, "Select Option", "Keep me logged in.", "Kick me out.", "Kill me.", "Transmogrify me...");
+			send(DialogueType.CHOICE, "Select Option", "Keep me logged in.", "Kick me out.", "Kill me.", "Transmogrify me...");
 			setPhase(4);
 		}
 	}

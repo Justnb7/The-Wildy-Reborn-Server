@@ -4,7 +4,7 @@ import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 public class IronManPaul extends Dialogue {
 	
@@ -15,13 +15,13 @@ public class IronManPaul extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.NPC, NPC_ID, Expression.CALM_TALK, "Hello there " + player.getUsername() + ", how can i help you?");
+		send(DialogueType.NPC, NPC_ID, Expression.CALM_TALK, "Hello there " + player.getUsername() + ", how can i help you?");
 	}
 	
 	@Override
 	public void next() {
 		if (isPhase(0)) {
-			send(Type.CHOICE, DEFAULT_OPTION_TITLE, "Change game mode", "I've lost my ironman armour", "Nevermind");
+			send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, "Change game mode", "I've lost my ironman armour", "Nevermind");
 		}
 	}
 
@@ -29,10 +29,10 @@ public class IronManPaul extends Dialogue {
 	public void select(int index) {
 		if (isPhase(0)) {
 			if (index == 1) {
-				send(Type.CHOICE, DEFAULT_OPTION_TITLE, "Become an ironman", "Become an regular account", "nevermind");
+				send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, "Become an ironman", "Become an regular account", "nevermind");
 				setPhase(1);
 			} else if (index == 2) {
-				send(Type.PLAYER, Expression.VERY_SAD, "I've lost my ironman armour.");
+				send(DialogueType.PLAYER, Expression.VERY_SAD, "I've lost my ironman armour.");
 				setPhase(2);
 			} else if (index == 3) {
 				stop();

@@ -2,13 +2,13 @@ package com.venenatis.game.model.entity.player.dialogue.impl;
 
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 public class MagicBook extends Dialogue {
 	
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.CHOICE, DEFAULT_OPTION_TITLE, "Modern", "Ancients", "Lunars", "Nevermind");
+		send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, "Modern", "Ancients", "Lunars", "Nevermind");
 	}
 
 	@Override

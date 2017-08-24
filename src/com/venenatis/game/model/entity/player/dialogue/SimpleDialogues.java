@@ -16,7 +16,7 @@ public final class SimpleDialogues {
 		player.getDialogueManager().start(new Dialogue() {
 			@Override
 			protected void start(Object... parameters) {
-				send(Type.STATEMENT, strings);
+				send(DialogueType.STATEMENT, strings);
 			}
 		});
 	}
@@ -29,7 +29,7 @@ public final class SimpleDialogues {
 				Deque<Object> objs = new LinkedList<>(Arrays.asList(strings));
 				objs.addFirst(Expression.ANGRY);
 				objs.addFirst(id);
-				send(Type.NPC, Iterables.toArray(objs, Object.class));
+				send(DialogueType.NPC, Iterables.toArray(objs, Object.class));
 			}
 		});
 	}

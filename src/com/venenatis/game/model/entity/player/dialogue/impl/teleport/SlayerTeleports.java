@@ -3,7 +3,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.teleport;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The class which represents functionality for the slayer teleports.
@@ -46,7 +46,7 @@ public class SlayerTeleports extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.CHOICE, DEFAULT_OPTION_TITLE, OPTION_1[0], OPTION_1[1], OPTION_1[2], OPTION_1[3], OPTION_1[4]);
+		send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, OPTION_1[0], OPTION_1[1], OPTION_1[2], OPTION_1[3], OPTION_1[4]);
 		phase = 0;
 	}
 
@@ -57,7 +57,7 @@ public class SlayerTeleports extends Dialogue {
 		if (phase == 0) {
 			if (index == 5) {
 				phase = 1;
-				send(Type.CHOICE, DEFAULT_OPTION_TITLE, OPTION_2[0], OPTION_2[1], OPTION_2[2], OPTION_2[3]);
+				send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, OPTION_2[0], OPTION_2[1], OPTION_2[2], OPTION_2[3]);
 			} else if(index == 1) {
 					player.getDialogueManager().start("ENCHANTED_GEM_TELEPORT", player);
 			} else {
@@ -66,7 +66,7 @@ public class SlayerTeleports extends Dialogue {
 		} else if (phase == 1) {
 			if (index == 4) {
 				phase = 0;
-				send(Type.CHOICE, DEFAULT_OPTION_TITLE, OPTION_1[0], OPTION_1[1], OPTION_1[2], OPTION_1[3], OPTION_1[4]);
+				send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, OPTION_1[0], OPTION_1[1], OPTION_1[2], OPTION_1[3], OPTION_1[4]);
 			} else {
 				player.getTeleportAction().teleport(new Location(OPTION_2_TELEPORT[index - 1][0], OPTION_2_TELEPORT[index - 1][1], OPTION_2_TELEPORT[index - 1][2]), TeleportTypes.SPELL_BOOK, false);
 			}

@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_cav
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 public class ExitCave extends Dialogue {
 
@@ -10,7 +10,7 @@ public class ExitCave extends Dialogue {
 	
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.NPC, TZHAAR_MEJ_JAL, Expression.CALM_TALK, "Well I suppose you tried... better luck next time.");
+		send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.CALM_TALK, "Well I suppose you tried... better luck next time.");
 		setPhase(0);
 	}
 	

@@ -5,7 +5,7 @@ import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -18,10 +18,10 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 	@Override
 	protected void start(Object... parameters) {
 		if (player.getInventory().contains(6570) && player.hasAttribute("second_option")) {
-			send(Type.PLAYER, Expression.DEFAULT, "I have a fire cape here.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "I have a fire cape here.");
 			setPhase(36);
 		} else {
-			send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You want help JalYt-Mej-"+player.getUsername()+"?");
+			send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You want help JalYt-Mej-"+player.getUsername()+"?");
 			setPhase(0);
 		}
 	}
@@ -29,68 +29,68 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 	@Override
 	protected void next() {
 		if (getPhase() == 0) {
-			send(Type.CHOICE, "Select an Option", "What is this place?", "What did you call me?", "No i'm fine thanks.");
+			send(DialogueType.CHOICE, "Select an Option", "What is this place?", "What did you call me?", "No i'm fine thanks.");
 			setPhase(1);
 		} else {
 			if (getPhase() == 2) {
-				send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "This is the fight cave, Tzhaar-Xil made it for practise,", "but many JalYt come here to fight too.", "Just enter the cave and make sure you're prepared.");
+				send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "This is the fight cave, Tzhaar-Xil made it for practise,", "but many JalYt come here to fight too.", "Just enter the cave and make sure you're prepared.");
 				setPhase(3);
 			} else {
 				if (getPhase() == 3) {
-					send(Type.CHOICE, "Select an Option", "Are there any rules?", "Ok thanks.");
+					send(DialogueType.CHOICE, "Select an Option", "Are there any rules?", "Ok thanks.");
 					setPhase(4);
 				} else {
 					if (getPhase() == 5) {
-						send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Rules? Survival is the only rule in there.");
+						send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Rules? Survival is the only rule in there.");
 						setPhase(7);
 					} else {
 						if (getPhase() == 6) {
 							stop();
 						} else {
 							if (getPhase() == 7) {
-								send(Type.CHOICE, "Select an Option", "Do I win anything?", "Sounds good.");
+								send(DialogueType.CHOICE, "Select an Option", "Do I win anything?", "Sounds good.");
 								setPhase(29);
 							} else {
 								if (getPhase() == 8) {
 									stop();
 								} else {
 									if (getPhase() == 9) {
-										send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Are you not JalYt-Mej?");
+										send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Are you not JalYt-Mej?");
 										setPhase(10);
 									} else {
 										if (getPhase() == 10) {
-										send(Type.CHOICE, "Select an Option", "What's a 'JalYt-Mej?", "I guess so...", "No I'm not!");
+										send(DialogueType.CHOICE, "Select an Option", "What's a 'JalYt-Mej?", "I guess so...", "No I'm not!");
 										setPhase(11);
 										} else {
 											if (getPhase() == 12) {
-												send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "That what you are... you user of mystic powers no?");
+												send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "That what you are... you user of mystic powers no?");
 												setPhase(13);
 											} else {
 												if (getPhase() == 13) {
-													send(Type.PLAYER, Expression.DEFAULT, "Well yes I suppose I am...");
+													send(DialogueType.PLAYER, Expression.DEFAULT, "Well yes I suppose I am...");
 													setPhase(14);
 												} else {
 													if (getPhase() == 14) {
-														send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Then you JalYt-Mej!");
+														send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Then you JalYt-Mej!");
 														setPhase(15);
 													} else {
 														if (getPhase() == 15) {
-															send(Type.CHOICE, "Select an Option", "What's a 'What are you then?", "Thanks for explaining it.");
+															send(DialogueType.CHOICE, "Select an Option", "What's a 'What are you then?", "Thanks for explaining it.");
 															setPhase(16);
 														} else {
 															if (getPhase() == 17) {
-																send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Foolish JalYt, I am TzHaar-Mej, one of the mystics of", "this city.");
+																send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Foolish JalYt, I am TzHaar-Mej, one of the mystics of", "this city.");
 																setPhase(19);
 															} else {
 																if (getPhase() == 18) {
 																	stop();
 																} else {
 																	if (getPhase() == 19) {
-																		send(Type.CHOICE, "Select an Option", "What other types are there?", "Ah ok then.");
+																		send(DialogueType.CHOICE, "Select an Option", "What other types are there?", "Ah ok then.");
 																		setPhase(20);
 																	} else {
 																		if (getPhase() == 21) {
-																			send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "There are the mighty TzHaar-Ket who guard us, the", "swift TzHaar-Xil who hunt for our food. and the skilled", "TzHaar-Hur who craft our homes and tools.");
+																			send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "There are the mighty TzHaar-Ket who guard us, the", "swift TzHaar-Xil who hunt for our food. and the skilled", "TzHaar-Hur who craft our homes and tools.");
 																			setPhase(23);
 																		} else {
 																			if (getPhase() == 22) {
@@ -100,15 +100,15 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 																					stop();
 																				} else {
 																					if (getPhase() == 24) {
-																						send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Well then, no problems.");
+																						send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Well then, no problems.");
 																						setPhase(28);
 																					} else {
 																						if (getPhase() == 25) {
-																							send(Type.PLAYER, Expression.DEFAULT, "No I'm not!");
+																							send(DialogueType.PLAYER, Expression.DEFAULT, "No I'm not!");
 																							setPhase(26);
 																						} else {
 																							if (getPhase() == 26) {
-																								send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "What ever you say, crazy JalYt!");
+																								send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "What ever you say, crazy JalYt!");
 																								setPhase(27);
 																							} else {
 																								if (getPhase() == 27) {
@@ -118,29 +118,29 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 																										stop();
 																									} else {
 																										if (getPhase() == 30) {
-																											send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You ask a lot of questions.", "Might give you TokKul if you last long enough.");
+																											send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You ask a lot of questions.", "Might give you TokKul if you last long enough.");
 																											setPhase(32);
 																										} else {
 																											if (getPhase() == 31) {
 																												stop();
 																											} else {
 																												if (getPhase() == 32) {
-																													send(Type.PLAYER, Expression.DEFAULT, "...");
+																													send(DialogueType.PLAYER, Expression.DEFAULT, "...");
 																													setPhase(33);
 																												} else {
 																													if (getPhase() == 33) {
-																														send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Before you ask, TokKul is like your Coins.");
+																														send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Before you ask, TokKul is like your Coins.");
 																														setPhase(34);
 																													} else {
 																														if (getPhase() == 34) {
-																															send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Gold is like you JalYt, soft and easily broken, we use", "hard rock forged in fire like TzHaar!");
+																															send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "Gold is like you JalYt, soft and easily broken, we use", "hard rock forged in fire like TzHaar!");
 																															setPhase(35);
 																														} else {
 																															if (getPhase() == 35) {
 																																stop();
 																															} else {
 																																if (getPhase() == 36) {
-																																	send(Type.CHOICE, "Sell your fire cape?", "Yes, sell it for 8,000 TokKul.", "No, keep it.", "Bargain for TzRek-Jad.");
+																																	send(DialogueType.CHOICE, "Sell your fire cape?", "Yes, sell it for 8,000 TokKul.", "No, keep it.", "Bargain for TzRek-Jad.");
 																																	setPhase(37);
 																																	} else {
 																																		if (getPhase() == 39) {
@@ -184,15 +184,15 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 		if (getPhase() == 1) {
 			switch (index) {
 			case 1:
-				send(Type.PLAYER, Expression.DEFAULT, "What is this place?");
+				send(DialogueType.PLAYER, Expression.DEFAULT, "What is this place?");
 				setPhase(2);
 				break;
 			case 2:
-				send(Type.PLAYER, Expression.DEFAULT, "What did you call me?");
+				send(DialogueType.PLAYER, Expression.DEFAULT, "What did you call me?");
 				setPhase(9);
 				break;
 			case 3:
-				send(Type.PLAYER, Expression.DEFAULT, "No i'm fine thanks.");
+				send(DialogueType.PLAYER, Expression.DEFAULT, "No i'm fine thanks.");
 				setPhase(8);
 				break;
 			}
@@ -200,11 +200,11 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 			if (getPhase() == 4) {
 				switch (index) {
 				case 1:
-					send(Type.PLAYER, Expression.DEFAULT, "Are there any rules?");
+					send(DialogueType.PLAYER, Expression.DEFAULT, "Are there any rules?");
 					setPhase(5);
 					break;
 				case 2:
-					send(Type.PLAYER, Expression.DEFAULT, "Ok thanks.");
+					send(DialogueType.PLAYER, Expression.DEFAULT, "Ok thanks.");
 					setPhase(6);
 					break;
 				}
@@ -212,15 +212,15 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 				if (getPhase() == 11) {
 					switch (index) {
 					case 1:
-						send(Type.PLAYER, Expression.DEFAULT, "What's a 'JalYt-Mej?");
+						send(DialogueType.PLAYER, Expression.DEFAULT, "What's a 'JalYt-Mej?");
 						setPhase(12);
 						break;
 					case 2:
-						send(Type.PLAYER, Expression.DEFAULT, "I guess so...");
+						send(DialogueType.PLAYER, Expression.DEFAULT, "I guess so...");
 						setPhase(24);
 						break;
 					case 3:
-						send(Type.PLAYER, Expression.DEFAULT, "No I'm not!");
+						send(DialogueType.PLAYER, Expression.DEFAULT, "No I'm not!");
 						setPhase(25);
 						break;
 					}
@@ -228,11 +228,11 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 					if (getPhase() == 16) {
 						switch (index) {
 						case 1:
-							send(Type.PLAYER, Expression.DEFAULT, "What are you then?");
+							send(DialogueType.PLAYER, Expression.DEFAULT, "What are you then?");
 							setPhase(17);
 							break;
 						case 2:
-							send(Type.PLAYER, Expression.DEFAULT, "Thanks for explaining it.");
+							send(DialogueType.PLAYER, Expression.DEFAULT, "Thanks for explaining it.");
 							setPhase(18);
 							break;
 						}
@@ -240,11 +240,11 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 						if (getPhase() == 20) {
 							switch (index) {
 							case 1:
-								send(Type.PLAYER, Expression.DEFAULT, "What other types are there?");
+								send(DialogueType.PLAYER, Expression.DEFAULT, "What other types are there?");
 								setPhase(21);
 								break;
 							case 2:
-								send(Type.PLAYER, Expression.DEFAULT, "Ah ok then.");
+								send(DialogueType.PLAYER, Expression.DEFAULT, "Ah ok then.");
 								setPhase(22);
 								break;
 							}
@@ -252,11 +252,11 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 							if (getPhase() == 29) {
 								switch (index) {
 								case 1:
-									send(Type.PLAYER, Expression.DEFAULT, "Do I win anything?");
+									send(DialogueType.PLAYER, Expression.DEFAULT, "Do I win anything?");
 									setPhase(30);
 									break;
 								case 2:
-									send(Type.PLAYER, Expression.DEFAULT, "Sounds good.");
+									send(DialogueType.PLAYER, Expression.DEFAULT, "Sounds good.");
 									setPhase(31);
 									break;
 								}
@@ -269,11 +269,11 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 										player.getActionSender().removeAllInterfaces();
 										break;
 									case 2:
-										send(Type.PLAYER, Expression.DEFAULT, "No, I'd like to keep my cape");
+										send(DialogueType.PLAYER, Expression.DEFAULT, "No, I'd like to keep my cape");
 										setPhase(39);
 										break;
 									case 3:
-										send(Type.CHOICE, "Sacrifice your firecape for a chance at TzRek-Jad?", "Yes, I know I won't get my cape back.", "No, I like my cape!");
+										send(DialogueType.CHOICE, "Sacrifice your firecape for a chance at TzRek-Jad?", "Yes, I know I won't get my cape back.", "No, I like my cape!");
 										setPhase(38);
 										break;
 									}
@@ -298,7 +298,7 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 												if (player.alreadyHasPet(player, 13225) || player.getPet() == pets.getNpc()) {
 													return;
 												}
-												send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You lucky. Better train him good else TzTok-Jad find", "you JalYt.");
+												send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You lucky. Better train him good else TzTok-Jad find", "you JalYt.");
 												if (player.getPet() > -1) {
 													player.getInventory().addOrSentToBank(player, new Item(13225));
 													World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Tzrek Jad.", false);
@@ -310,12 +310,12 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 												}
 												setPhase(39);
 											} else {
-												send(Type.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You not lucky. Maybe next time, JalYt.");
+												send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.DEFAULT, "You not lucky. Maybe next time, JalYt.");
 												setPhase(39);
 											}
 											break;
 										case 2:
-											send(Type.PLAYER, Expression.DEFAULT, "No, I like my cape!");
+											send(DialogueType.PLAYER, Expression.DEFAULT, "No, I like my cape!");
 											setPhase(39);
 											break;
 										}

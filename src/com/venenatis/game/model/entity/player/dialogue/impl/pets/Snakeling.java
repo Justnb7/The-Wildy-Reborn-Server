@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Snakeling pet chat dialogue
@@ -16,7 +16,7 @@ public class Snakeling extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "Hey little snake!");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Hey little snake!");
 		setPhase(0);
 	}
 	
@@ -24,27 +24,27 @@ public class Snakeling extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Soon, Zulrah shall establish dominion over this plane.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Soon, Zulrah shall establish dominion over this plane.");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Wanna play fetch?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Wanna play fetch?");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "Submit to the almighty Zulrah.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Submit to the almighty Zulrah.");
 			setPhase(3);
 			break;
 		case 3:
-			send(Type.PLAYER, Expression.DEFAULT, "Walkies? Or slidies...?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Walkies? Or slidies...?");
 			setPhase(4);
 			break;
 		case 4:
-			send(Type.NPC, Expression.DEFAULT, PET, "Zulrah's wilderness as a God will soon be demonstrated.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Zulrah's wilderness as a God will soon be demonstrated.");
 			setPhase(5);
 			break;
 		case 5:
-			send(Type.PLAYER, Expression.DEFAULT, "I give up...");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "I give up...");
 			setPhase(6);
 			break;
 		case 6:

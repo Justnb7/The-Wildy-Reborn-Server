@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_cav
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 public class DiedInProcess extends Dialogue {
 
@@ -10,7 +10,7 @@ public class DiedInProcess extends Dialogue {
 	
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.NPC, TZHAAR_MEJ_JAL, Expression.CALM_TALK, "Well done in the cave,", "here, take TokKul as reward.");
+		send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.CALM_TALK, "Well done in the cave,", "here, take TokKul as reward.");
 		setPhase(0);
 	}
 	

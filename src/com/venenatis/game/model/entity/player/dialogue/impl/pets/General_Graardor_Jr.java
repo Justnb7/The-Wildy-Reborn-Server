@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The General Graardor Jr. pet chat dialogue
@@ -16,7 +16,7 @@ public class General_Graardor_Jr extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "Not sure this is going to be worth my time but... how are", "you?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Not sure this is going to be worth my time but... how are", "you?");
 		setPhase(0);
 	}
 	
@@ -24,11 +24,11 @@ public class General_Graardor_Jr extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "SFudghoigdfpDSOPGnbSOBNfdbdnopbdn", "opbddfnopdfpofhdARRRGGGGH");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "SFudghoigdfpDSOPGnbSOBNfdbdnopbdn", "opbddfnopdfpofhdARRRGGGGH");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Nope. Not worth it.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Nope. Not worth it.");
 			setPhase(2);
 			break;
 		case 2:

@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Scorpia's offspring pet chat dialogue
@@ -16,7 +16,7 @@ public class Scorpias_Offspring extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "At night time,", "if I were to hold ultraviolet light over you,", "would you glow?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "At night time,", "if I were to hold ultraviolet light over you,", "would you glow?");
 		setPhase(0);
 	}
 	
@@ -24,27 +24,27 @@ public class Scorpias_Offspring extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Two things wrong there, human.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Two things wrong there, human.");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Oh?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Oh?");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "One,", "When has it ever been night time here?");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "One,", "When has it ever been night time here?");
 			setPhase(3);
 			break;
 		case 3:
-			send(Type.NPC, Expression.DEFAULT, PET, "Two,", "When have you ever seen ultraviolet light around here?");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Two,", "When have you ever seen ultraviolet light around here?");
 			setPhase(4);
 			break;
 		case 4:
-			send(Type.PLAYER, Expression.DEFAULT, "Hm...");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Hm...");
 			setPhase(5);
 			break;
 		case 5:
-			send(Type.NPC, Expression.DEFAULT, PET, "In answer to your question though.", "Yes I, like every scorpion, would glow.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "In answer to your question though.", "Yes I, like every scorpion, would glow.");
 			setPhase(6);
 			break;
 		case 6:

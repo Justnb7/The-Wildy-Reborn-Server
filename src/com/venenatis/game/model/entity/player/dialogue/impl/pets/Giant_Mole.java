@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Giant mole pet chat dialogue
@@ -16,7 +16,7 @@ public class Giant_Mole extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "Hey, Mole. How is life above ground?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Hey, Mole. How is life above ground?");
 		setPhase(0);
 	}
 	
@@ -24,23 +24,23 @@ public class Giant_Mole extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Well, the last time I was above ground,", "I was having to contend with people throwing snow at ", "some weird yellow duck in my park.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Well, the last time I was above ground,", "I was having to contend with people throwing snow at ", "some weird yellow duck in my park.");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Why were they doing that?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Why were they doing that?");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "No idea,", "I didn't stop to ask as an angry mob", "was closing in on them pretty quickly.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "No idea,", "I didn't stop to ask as an angry mob", "was closing in on them pretty quickly.");
 			setPhase(3);
 			break;
 		case 3:
-			send(Type.PLAYER, Expression.DEFAULT, "Sounds awful.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Sounds awful.");
 			setPhase(4);
 			break;
 		case 4:
-			send(Type.NPC, Expression.DEFAULT, PET, "Anyway, keep Molin'!");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Anyway, keep Molin'!");
 			setPhase(5);
 			break;
 		case 5:

@@ -1,9 +1,9 @@
 package com.venenatis.game.model.combat.magic.spell.impl;
 
-import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.magic.MagicSpell;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -51,12 +51,13 @@ public class HighAlchemy implements MagicSpell {
 		player.getInventory().add(995, coins == 0 ? 1 : coins);
 
 		player.getInventory().refresh();
-
-		player.getActionSender().sendSidebarInterface(Constants.MAGIC_TAB, 1151);
+		
+		player.getActionSender().changeSidebar(6);
 
 		player.getMagic().setDelay(System.currentTimeMillis());
 		
 		AchievementHandler.activate(player, AchievementList.MONEY_MAKER, 1);
+		player.getSkills().addExperience(Skills.MAGIC, 65);
 
 		return false;
 	}

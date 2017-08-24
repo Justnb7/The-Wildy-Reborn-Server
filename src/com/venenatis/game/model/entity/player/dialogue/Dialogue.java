@@ -74,8 +74,8 @@ public abstract class Dialogue {
 	 * @param parameters
 	 *            The parameters for the dialogue
 	 */
-	protected void send(Type type, Object... parameters) {
-		if (type == Type.CHOICE) {
+	protected void send(DialogueType type, Object... parameters) {
+		if (type == DialogueType.CHOICE) {
 			if (parameters.length == 3) {
 				player.getActionSender().sendString(parameters[0] != null ? (String) parameters[0] : DEFAULT_OPTION_TITLE, 2460);
 				player.getActionSender().sendString((String) parameters[1], 2461);
@@ -105,7 +105,7 @@ public abstract class Dialogue {
 			} else {
 				throw new IllegalArgumentException("Invalid Arguements");
 			}
-		} else if (type == Type.ITEM) {
+		} else if (type == DialogueType.ITEM) {
 			if (parameters.length == 3) {
 				player.getActionSender().sendString((String) parameters[1], 4884);
 				player.getActionSender().sendString((String) parameters[2], 4885);
@@ -133,7 +133,7 @@ public abstract class Dialogue {
 				player.getActionSender().sendItemOnInterface(4901, 250, (Integer) parameters[0]);
 				player.getActionSender().sendChatBoxInterface(4900);
 			}
-		} else if (type == Type.NPC) {
+		} else if (type == DialogueType.NPC) {
 			if (parameters.length == 3) {
 				player.getActionSender().sendString(NPC.getName((Integer) parameters[0]), 4884);
 				player.getActionSender().sendString((String) parameters[2], 4885);
@@ -167,7 +167,7 @@ public abstract class Dialogue {
 			} else {
 				throw new InternalError();
 			}
-		} else if (type == Type.PLAYER) {
+		} else if (type == DialogueType.PLAYER) {
 			if (parameters.length == 2) {
 				player.getActionSender().sendString(player.getUsername(), 970);
 				player.getActionSender().sendString((String) parameters[1], 971);
@@ -201,7 +201,7 @@ public abstract class Dialogue {
 			} else {
 				throw new InternalError();
 			}
-		} else if (type == Type.STATEMENT) {
+		} else if (type == DialogueType.STATEMENT) {
 			if (parameters.length == 1) {
 				player.getActionSender().sendString("Click here to continue", 358);
 				player.getActionSender().sendString((String) parameters[0], 357);
@@ -221,11 +221,11 @@ public abstract class Dialogue {
 			} else {
 				throw new InternalError();
 			}
-		} else if (type == Type.STRING_INT) {
+		} else if (type == DialogueType.STRING_INT) {
 			player.getOutStream().writeFrame(219);
 			player.getOutStream().writeFrame(27);
 			player.flushOutStream();
-		} else if (type == Type.STRING_TEXT) {
+		} else if (type == DialogueType.STRING_TEXT) {
 			player.getOutStream().writeFrame(219);
 			player.getOutStream().writeFrame(187);
 			player.flushOutStream();

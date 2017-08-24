@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Dark core pet chat dialogue
@@ -14,7 +14,7 @@ public class Dark_Core extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "Got any sigils for me?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Got any sigils for me?");
 		setPhase(0);
 	}
 	
@@ -22,11 +22,11 @@ public class Dark_Core extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.PLAYER, Expression.DEFAULT, "Damnit Core-al!");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Damnit Core-al!");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "Let's bounce!");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Let's bounce!");
 			setPhase(2);
 			break;
 		case 2:

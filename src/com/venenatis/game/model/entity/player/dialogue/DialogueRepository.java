@@ -40,6 +40,11 @@ public class DialogueRepository {
 		dialogues.put("POTATO", RottenPotato.class);
 		
 		/**
+		 * Presets
+		 */
+		dialogues.put("PRESETS", Presets.class);
+		
+		/**
 		 * Pets
 		 */
 		dialogues.put("OLMLET", Olmlet.class);

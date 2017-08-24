@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The Kraken Jr pet chat dialogue
@@ -16,7 +16,7 @@ public class Kraken extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "What's Kraken?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "What's Kraken?");
 		setPhase(0);
 	}
 	
@@ -24,19 +24,19 @@ public class Kraken extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Not heard that one before.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Not heard that one before.");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "How are you actually walking on land?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "How are you actually walking on land?");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "We have another leg,", "just below the center of our body that", "we use to move across solid surfaces.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "We have another leg,", "just below the center of our body that", "we use to move across solid surfaces.");
 			setPhase(3);
 			break;
 		case 3:
-			send(Type.PLAYER, Expression.DEFAULT, "That's.... interesting.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "That's.... interesting.");
 			setPhase(4);
 			break;
 		case 4:

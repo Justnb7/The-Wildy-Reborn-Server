@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 import com.venenatis.game.util.Utility;
 
 /**
@@ -19,10 +19,10 @@ public class Tzrek_Jad extends Dialogue {
 	protected void start(Object... parameters) {
 		int randomDialogue = Utility.random(1);
 		if(randomDialogue == 0) {
-			send(Type.PLAYER, Expression.DEFAULT, "Do you miss your people?");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Do you miss your people?");
 			setPhase(0);
 		}
-		send(Type.PLAYER, Expression.DEFAULT, "Are you hungry?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Are you hungry?");
 		setPhase(5);
 	}
 	
@@ -30,30 +30,30 @@ public class Tzrek_Jad extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Mej-TzTok-Jad Kot-Kl! (TzTok-Jad will protect us!)");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Mej-TzTok-Jad Kot-Kl! (TzTok-Jad will protect us!)");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "I don't think so.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "I don't think so.");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "Jal-Zek Kl? (Foreigner hurt us?)");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Jal-Zek Kl? (Foreigner hurt us?)");
 			setPhase(3);
 			break;
 		case 3:
-			send(Type.PLAYER, Expression.DEFAULT, "No, no, I wouldn't hurt you.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "No, no, I wouldn't hurt you.");
 			setPhase(4);
 			break;
 		case 4:
 			stop();
 			break;
 		case 5:
-			send(Type.NPC, Expression.DEFAULT, PET, "Kl-Kra!");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Kl-Kra!");
 			setPhase(6);
 			break;
 		case 6:
-			send(Type.PLAYER, Expression.DEFAULT, "Ooookay...");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Ooookay...");
 			setPhase(4);
 			break;
 		}

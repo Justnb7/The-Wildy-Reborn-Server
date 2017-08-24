@@ -7,7 +7,7 @@ import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 public class ClearAccount extends Dialogue {
 	
@@ -18,13 +18,13 @@ public class ClearAccount extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.NPC, NPC_ID, Expression.CALM_TALK, "Are you sure you want to become an iron man?", "The process that has been made on your account will be lost.");
+		send(DialogueType.NPC, NPC_ID, Expression.CALM_TALK, "Are you sure you want to become an iron man?", "The process that has been made on your account will be lost.");
 	}
 
 	@Override
 	public void next() {
 		if (isPhase(0)) {
-			send(Type.CHOICE, DEFAULT_OPTION_TITLE, "Yes", "No");
+			send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, "Yes", "No");
 		}
 	}
 

@@ -3,7 +3,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.teleport;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The class which represents functionality for the agility teleports.
@@ -28,7 +28,7 @@ public class AgilityTeleports extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.CHOICE, DEFAULT_OPTION_TITLE, OPTION_1[0], OPTION_1[1], OPTION_1[2], OPTION_1[3]);
+		send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, OPTION_1[0], OPTION_1[1], OPTION_1[2], OPTION_1[3]);
 		phase = 0;
 	}
 

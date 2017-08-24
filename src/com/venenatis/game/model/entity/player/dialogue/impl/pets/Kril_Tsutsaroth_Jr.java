@@ -2,7 +2,7 @@ package com.venenatis.game.model.entity.player.dialogue.impl.pets;
 
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
-import com.venenatis.game.model.entity.player.dialogue.Type;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The K'ril Tsutsaroth Jr pet chat dialogue
@@ -16,7 +16,7 @@ public class Kril_Tsutsaroth_Jr extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
-		send(Type.PLAYER, Expression.DEFAULT, "How's life in the light?");
+		send(DialogueType.PLAYER, Expression.DEFAULT, "How's life in the light?");
 		setPhase(0);
 	}
 	
@@ -24,27 +24,27 @@ public class Kril_Tsutsaroth_Jr extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(Type.NPC, Expression.DEFAULT, PET, "Burns slightly.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "Burns slightly.");
 			setPhase(1);
 			break;
 		case 1:
-			send(Type.PLAYER, Expression.DEFAULT, "You seem much nicer than your father. He's mean.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "You seem much nicer than your father. He's mean.");
 			setPhase(2);
 			break;
 		case 2:
-			send(Type.NPC, Expression.DEFAULT, PET, "If you were stuck in a very dark cave for centuries", "you'd be pretty annoyed too.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "If you were stuck in a very dark cave for centuries", "you'd be pretty annoyed too.");
 			setPhase(3);
 			break;
 		case 3:
-			send(Type.PLAYER, Expression.DEFAULT, "I guess.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "I guess.");
 			setPhase(4);
 			break;
 		case 4:
-			send(Type.NPC, Expression.DEFAULT, PET, "He's actually quite mellow really.");
+			send(DialogueType.NPC, Expression.DEFAULT, PET, "He's actually quite mellow really.");
 			setPhase(5);
 			break;
 		case 5:
-			send(Type.PLAYER, Expression.DEFAULT, "Uh.... Yeah.");
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Uh.... Yeah.");
 			setPhase(6);
 			break;
 		case 6:

@@ -42,6 +42,16 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "setinfection":
+			int infection = parser.nextInt();
+			if (infection == 0)
+				player.debug("None");
+			else
+			player.debug(infection == 1 ? "Poison" : "Venom");
+			player.setInfection(infection);
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		return true;
+		
 		case "lolxd":
 			for (int i = 0; i < 20; i++) {
 				SlayerTaskManagement.vannakaTask(player);

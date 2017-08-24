@@ -3170,5 +3170,15 @@ public class Player extends Entity {
 	public void setMagic(Magic magic) {
 		this.magic = magic;
 	}
+
+	private int venomDamage;
+
+	public int getVenomDamage() {
+		return venomDamage;
+	}
+
+	public void setVenomDamage(int venomDamage) {
+		this.venomDamage = venomDamage;
+	}
 	
 }

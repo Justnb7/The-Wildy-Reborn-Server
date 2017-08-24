@@ -344,6 +344,9 @@ public class ConsumeItemAction extends Action {
 					player.setInfection(0);
 					player.setLastVenomCure(System.currentTimeMillis());
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+					if (player.hasAttribute("venom")) {
+						player.removeAttribute("venom");
+					}
 					break;
 				case ANTI_VENOM_PLUS:
 					player.getActionSender().sendMessage("You drink some of your " + item.getDefinition().getName()
@@ -352,6 +355,10 @@ public class ConsumeItemAction extends Action {
 					player.setInfection(0);
 					player.setLastVenomCure(System.currentTimeMillis());
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+					if (player.hasAttribute("venom")) {
+						player.removeAttribute("venom");
+					}
+					player.setAttribute("antiVenom+", System.currentTimeMillis());
 					break;
 				case ENERGY:
 					player.getActionSender().sendMessage("You drink some of your " + item.getDefinition().getName()

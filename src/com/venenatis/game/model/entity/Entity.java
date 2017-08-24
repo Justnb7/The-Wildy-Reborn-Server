@@ -30,6 +30,7 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.packet.ActionSender;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.PoisonCombatTask;
+import com.venenatis.game.task.impl.VenomDrainTick;
 import com.venenatis.game.util.MutableNumber;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -167,7 +168,6 @@ public abstract class Entity {
 	public int lastY;
 	public transient Object distanceEvent;
 	private boolean registered;
-	public boolean infected;
 	public int entityFaceIndex = -1;
 	public int faceTileX = -1, faceTileY = -1;
 	public Location lastTile;
@@ -1344,6 +1344,79 @@ public abstract class Entity {
     public void setCanBeDamaged(boolean b) {
         canDamaged = b;
     }
+    
+    public boolean canInflictVenom(Player player) {
+    	if(player.getEquipment().containsAny(12931, 13197, 13199)) {
+    		return false;
+    	}
+    	return true;
+    }
 
+    public enum VenomWeapons {
+		TOXIC_BLOW_PIPE(12926),
+
+		TOXIC_STAFF_OF_THE_DEAD(12904),
+
+		TRIDENT_OF_THE_SWAMP(12899),
+
+		/*SERPENTINE_HELMET(12931),
+
+		TANZANITE_HELMET(13197),
+
+		MAGMA_HELM(13199)*/;
+
+		private int id;
+
+		VenomWeapons(int id) {
+			this.id = id;
+		}
+
+		private static Map<Integer, VenomWeapons> venomItemsMap = new HashMap<>();
+
+		public static VenomWeapons of(int id) {
+			return venomItemsMap.get(id);
+		}
+
+		static {
+			for (VenomWeapons zulrahItem : VenomWeapons.values()) {
+				venomItemsMap.put(zulrahItem.getId(), zulrahItem);
+			}
+		}
+
+		public int getId() {
+			return id;
+		}
+	}
+    
+    private VenomDrainTick venomDrainTick;
+    
+    public VenomDrainTick getVenomDrainTick() {
+		return venomDrainTick;
+	}
+    
+    public void setVenomDrainTick(VenomDrainTick venomDrainTick) {
+		this.venomDrainTick = venomDrainTick;
+	}
+    
+    public int venomDamage = 6;
+
+	public Entity inflictVenom() {
+		setAttribute("venom", true);
+		setVenomDrainTick(new VenomDrainTick(this));
+		World.getWorld().schedule(getVenomDrainTick());
+		if (isPlayer()) {
+			Player player = (Player) this;
+			if (hasAttribute("venom")) {
+				getActionSender().sendMessage("You have been poisoned by venom!");
+			}
+			player.setInfection(2);
+			player.setVenomDamage(6);
+			player.take_hit_generic(this, venomDamage, HitType.VENOM).send();
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		} else if (isNPC()) {
+			venomDamage = 6;
+		}
+		return this;
+	}
 
 }

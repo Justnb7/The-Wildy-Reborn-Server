@@ -18,6 +18,7 @@ import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 
@@ -103,6 +104,8 @@ public class DeathTask extends Task {
 		victim.getCombatState().getDamageMap().resetDealtDamage();
 		victim.playAnimation(Animation.create(-1));
 		AchievementHandler.activate(victim, AchievementList.TIME_FOR_LESSON, 1);
+		victim.setInfection(0);
+		victim.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 	
 	/**

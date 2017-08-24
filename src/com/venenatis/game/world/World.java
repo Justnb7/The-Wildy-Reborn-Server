@@ -235,6 +235,10 @@ public class World implements Service {
 				return;
 			}
 
+			if (player.getVenomDrainTick() != null) {
+				player.getVenomDrainTick().stop();
+			}
+			
 			/*
 			 * Disconnect our player
 			 */
@@ -344,7 +348,6 @@ public class World implements Service {
 
 		//Reset poison and venom
 		player.setInfection(0);
-		player.infected = false;
 		player.getController().onLogout(player);
 	}
 

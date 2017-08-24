@@ -27,6 +27,7 @@ import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.Entity.VenomWeapons;
 import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.following.PlayerFollowing;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -848,6 +849,11 @@ public class Combat {
             if (player.getAttackStyle() == 2)
                 player.getCombatState().setAttackDelay(player.getCombatState().getAttackDelay() - 1);
         }
+        boolean immune = false;
+        
+        if (player.hasAttribute("antiVenom+")) {
+			immune = System.currentTimeMillis() - (long) player.getAttribute("antiVenom+", 0L) < 300000;
+		}
 
         // Add a skull if needed
         if (target.isPlayer()) {
@@ -858,20 +864,42 @@ public class Combat {
                     skull(player, SkullType.SKULL, 300);
                 }
             }
-            /*if (ptarg.infection != 2 && player.getEquipment().canInfect(player)) {
-                int inflictVenom = Utility.getRandom(5);
-                //System.out.println("Venom roll: "+inflictVenom);
-                if (inflictVenom == 0 && ptarg.isSusceptibleToVenom()) {
-                    new Venom(ptarg);
-                }
-            }*/
+            
+            if (!immune) {
+				boolean attackerVenomItems = false;
+				boolean venomItems = false;
+				for (Item equip : player.getEquipment().toArray()) {
+					if (equip == null) {
+						continue;
+					}
+					VenomWeapons venomWeapons = VenomWeapons.of(equip.getId());
+					if (venomWeapons != null) {
+						attackerVenomItems = true;
+					}
+				}
+				for (Item equip : ptarg.getEquipment().toArray()) {
+					if (equip == null) {
+						continue;
+					}
+					VenomWeapons venomWeapons = VenomWeapons.of(equip.getId());
+					if (venomWeapons != null) {
+						venomItems = true;
+					}
+				}
+				if (attackerVenomItems && !venomItems && player.canInflictVenom(ptarg)) {
+					if (Utility.random(5) == 0 && !ptarg.hasAttribute("venom")) {
+						ptarg.inflictVenom();
+					}
+				} else if (!attackerVenomItems && venomItems && player.canInflictVenom(ptarg)) {
+					if (Utility.random(5) == 0 && !ptarg.hasAttribute("venom")) {
+						ptarg.inflictVenom();
+					}
+				}
+			}
+            
         } else if (target.isNPC()) {
             NPC npc = (NPC) target;
-            /*if (!npc.infected && player.getEquipment().canInfect(player) && !Venom.venomImmune(npc)) {
-                if (Utility.getRandom(10) == 5) {
-                    new Venom(npc);
-                }
-            }*/
+            //TODO add immume npcs to venom
         }
 
         if (wep != null && player.getCombatType() != CombatStyle.MAGIC) {
@@ -1110,6 +1138,9 @@ public class Combat {
 		if (player.getCombatType() == CombatStyle.RANGE) {
 			Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 			if (weapon != null) {
+				if(weapon.getId() == 12926) {
+					distance = 6;
+				}
 				EquipmentDefinition weaponEquipDef = weapon.getEquipmentDefinition();
 				if (weaponEquipDef.getBowType() != null) {
 					distance = 7;

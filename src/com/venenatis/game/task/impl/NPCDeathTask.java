@@ -183,7 +183,6 @@ public class NPCDeathTask extends Task {
     }
     
     public static void reset(NPC npc) {
-    	npc.infected = false;
     	npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
         npc.freeze(0);
         npc.targetId = 0;

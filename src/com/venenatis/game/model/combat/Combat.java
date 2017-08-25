@@ -431,6 +431,7 @@ public class Combat {
 	}
 
 	private static void rangeAttack(Player player, Entity target) {
+		
 		if (!touches(player, target))
 			return;
 		if (!attackable(player, target))
@@ -1206,6 +1207,15 @@ public class Combat {
      */
 	public static boolean touches(Player player, Entity target) {
 
+		NPC npc = (NPC)target;
+		
+		boolean ignoreTouches = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Zulrah")
+				|| npc.getName().equalsIgnoreCase("Portal") || npc.getName().equalsIgnoreCase("Kraken")
+				|| npc.getName().equalsIgnoreCase("Spinolyp") || npc.getName().equalsIgnoreCase("Enormous Tentacle");
+		
+		if (ignoreTouches && player.getCombatType() != CombatStyle.MELEE)
+			return true;
+		
         //player.getPlayerFollowing().follow(true, target); // PI =)
 
         // HYPERION TIME XX

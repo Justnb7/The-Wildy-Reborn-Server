@@ -5,7 +5,6 @@ import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
@@ -24,8 +23,6 @@ public class Kraken extends AbstractBossCombat {
 		if (!attacker.isNPC()) {
 			return;
 		}
-
-		CombatStyle style = CombatStyle.MAGIC;
 
 		// The npc instance
 		NPC npc = (NPC) attacker;
@@ -58,9 +55,6 @@ public class Kraken extends AbstractBossCombat {
 
 		attacker.playAnimation(Animation.create(3992));
 		attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 162, 45, 50, clientSpeed, 70, 35, victim.getProjectileLockonIndex(), 10, 48));
-
-		// Create the hit instance
-		Hit hitInfo = victim.take_hit(attacker, hit, style).send(hitDelay);
 		
 		Server.getTaskScheduler().schedule(new Task(hitDelay) {
 			@Override
@@ -69,13 +63,13 @@ public class Kraken extends AbstractBossCombat {
 				this.stop();
 			}
 		});
-		
+		victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(hitDelay);
 		attacker.getCombatState().setAttackDelay(6);
 	}
 
 	@Override
 	public int distance(Entity attacker) {
-		return 10;
+		return 5;
 	}
 
 	@Override

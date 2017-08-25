@@ -44,12 +44,18 @@ public class NpcCombat {
 	}
 
 	/**
-	* Distanced required to attack
-	**/	
+	 * Distanced required to attack
+	 * 
+	 * @param npc
+	 *            The npc we're trying to attack
+	 * @return
+	 */
 	public static int distanceRequired(NPC npc) {
 		if (AbstractBossCombat.isBoss(npc.getId())) {
 			return AbstractBossCombat.get(npc.getId()).distance(null);
 		}
+		if(npc.getName().contains("Whirlpool"))
+			return 10;
 		return 1;
 	}
 
@@ -120,8 +126,9 @@ public class NpcCombat {
 	 * @return If the player can attack the npc
 	 */
 	public static boolean canTouch(Player player, NPC npc, boolean findpath) {
-		boolean ignoreClip = npc.getId() >= 1739 && npc.getId() <= 1742 || npc.getId() == 494 || npc.getId() == 492 || npc.getId() == 493 || npc.getId() == 496
-				|| npc.getId() == 5534 || npc.getId() == 5535 || npc.getId() == 2054 || npc.getId() == 5947;
+		boolean ignoreClip = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Zulrah")
+				|| npc.getName().equalsIgnoreCase("Portal") || npc.getName().equalsIgnoreCase("Kraken")
+				|| npc.getName().equalsIgnoreCase("Spinolyp") || npc.getName().equalsIgnoreCase("Enormous Tentacle");
 		if (ignoreClip)
 			return true;
 		boolean projectile = player.getCombatType() == CombatStyle.RANGE || player.getCombatType() == CombatStyle.MAGIC;
@@ -375,8 +382,9 @@ public class NpcCombat {
 			return true;
 		}
 
-		boolean ignoreClip = npc.getId() == 494 || npc.getId() == 492 || npc.getId() == 5862 || npc.getId() == 493
-				|| npc.getId() == 496 || npc.getId() == 2054 || npc.getId() == 5947;
+		boolean ignoreClip = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Zulrah")
+				|| npc.getName().equalsIgnoreCase("Portal") || npc.getName().equalsIgnoreCase("Kraken")
+				|| npc.getName().equalsIgnoreCase("Spinolyp") || npc.getName().equalsIgnoreCase("Enormous Tentacle");
 		if (ignoreClip) {
 			return true;
 		}

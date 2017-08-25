@@ -25,6 +25,7 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.object.impl.webs.SlashWebObject;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
+import com.venenatis.server.Server;
 
 /**
  * This class handles the object actions. So we don't have to add all object
@@ -50,7 +51,15 @@ public class ObjectInteraction {
 		
 		player.debug(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
 		System.out.println(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
-		final GameObject obj = RegionStoreManager.get().getGameObject(location, objectId);
+		final GameObject obj = Server.getGlobalObjects().customOrCache(objectId, location); // ye thats cache only we need to use a special
+		// method that gets cache AND custom spawns which is usually in an 'object manager' or somet like that named
+		
+		if (obj == null) {
+			player.debug("No valid object at "+location+" with id "+objectId);
+			return;
+		}
+		
+		//Like im using the regionStoreManager to get the object tho
 		
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
@@ -70,6 +79,7 @@ public class ObjectInteraction {
 		}
 		
 		if (tree != null) {
+			player.debug("wc "+tree);
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
 			action = new Mining(player, obj);
@@ -350,6 +360,7 @@ public class ObjectInteraction {
 		
 		}
 		if (action != null) {
+			player.message("added action");
 			player.getActionQueue().addAction(action);
 		}
 	}

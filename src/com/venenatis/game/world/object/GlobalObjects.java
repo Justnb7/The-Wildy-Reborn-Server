@@ -12,6 +12,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.GameEngine;
 
 
@@ -45,7 +46,7 @@ public class GlobalObjects {
 	 * Adds a new global object to the game world
 	 * @param object	the object being added
 	 */
-	public void add(GameObject object) {
+	public void add(GameObject object) { // call this im brb 5min k
 		updateObject(object, object.getId());
 		objects.add(object);
 		Region.addClipping(object);
@@ -141,6 +142,13 @@ public class GlobalObjects {
 				&& object.getY() == y && object.getZ() == height).findFirst();
 		return obj.orElse(null);
 		
+	}
+	
+	public GameObject customOrCache(int id, Location l) {
+		GameObject spawned = get(id, l.getX(), l.getY(), l.getZ());
+		if (spawned != null)
+			return spawned;
+		return RegionStoreManager.get().getGameObject(l, id);
 	}
 	
 	/**

@@ -46,8 +46,7 @@ public class Woodcutting extends HarvestingAction {
 	public Woodcutting(Entity entity, GameObject object) {
 		super(entity);
 		this.tree_cut = object;
-		if (object != null)
-			this.tree = Tree.forId(object.getId());
+		this.tree = Tree.forId(object.getId());
 	}
 	
 	/**
@@ -220,7 +219,7 @@ public class Woodcutting extends HarvestingAction {
 		/**
 		 * Magic tree.
 		 */
-		MAGIC(1513, 75, 250, 150, 18, new int[]{1761,}, 2500),
+		MAGIC(1513, 75, 250, 150, 18, new int[]{1761,}, 2500),//1761 aswell
 
 		/**
 		 * Dramen tree

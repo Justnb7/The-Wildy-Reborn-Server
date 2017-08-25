@@ -3,13 +3,10 @@ package com.venenatis.game.model.combat.impl;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import com.venenatis.game.constants.GameConstants;
 import com.venenatis.game.content.BrokenItem;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.bounty.BountyHunter;
-import com.venenatis.game.location.Area;
-import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Item.ItemComparator;
 import com.venenatis.game.model.combat.PrayerHandler.Prayers;
@@ -200,8 +197,6 @@ public class PlayerDrops {
 		} else {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(526), victim.getLocation().clone(), victim));
 		}
-		/*if (killer != null)
-			dropRandom(victim, killer);*/
 		
 		if(keep != null) {
 			for(Item it : keep) {
@@ -214,21 +209,6 @@ public class PlayerDrops {
 						// only give back if its a broken item
 					}
 				}
-			}
-		}
-	}
-
-	private static void dropRandom(Player victim, Player killer) {
-		if(Area.inWilderness(killer)) {
-			if (PlayerKilling.hostOnList(killer, victim.getHostAddress())) {
-				return;
-			}
-			
-			Location location = victim.getLocation().clone();
-			int random = 1;
-			for (int i = 0; i < random; i++) {
-				Item item = GameConstants.PVP_LOOTS.nextObject().get();
-				GroundItemHandler.createGroundItem(new GroundItem(item, location, killer));
 			}
 		}
 	}

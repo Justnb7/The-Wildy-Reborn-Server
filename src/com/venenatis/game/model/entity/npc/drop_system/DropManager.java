@@ -138,9 +138,15 @@ public class DropManager {
 			double modifier = getModifier(player);
 			List<Item> drops = g.access(player, modifier, repeats);
 			
+			boolean drop_below_player = npc.getId() == 492;
+			
 			for (Item item : drops) {
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location, player));
-				player.debug(String.format("drop %s on location %s%n", new Item(item.getId(), item.getAmount()), location));
+				if (drop_below_player) {
+					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getLocation(), player));
+				} else {
+					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location, player));
+				}
+				//player.debug(String.format("drop %s on location %s%n", new Item(item.getId(), item.getAmount()), location));
 			}
 			
 			/**

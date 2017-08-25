@@ -9,6 +9,7 @@ import com.venenatis.game.consumables.Consumables.Food;
 import com.venenatis.game.consumables.Consumables.PotionType;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Entity;
@@ -67,6 +68,10 @@ public class ConsumeItemAction extends Action {
 		 * Food
 		 */
 		if (food != null) {
+			if (player.getDuelArena().getRules().get(DuelRule.FOOD)) {
+				player.getActionSender().sendMessage("Consuming food has been disabled!");
+				return;
+			}
 			Food last = player.getCombatState().getLastAte();
 			if (food == Food.KARAMBWAN && last != Food.KARAMBWAN) {
 				player.getCombatState().setEatDelay(0);
@@ -134,6 +139,10 @@ public class ConsumeItemAction extends Action {
 				AchievementHandler.activate(player, AchievementList.THE_OBESITY_IS_REAL, 1);
 			}
 			} else if (drink != null && player.getCombatState().canDrink()) {
+				if (player.getDuelArena().getRules().get(DuelRule.DRINKS)) {
+					player.getActionSender().sendMessage("Consuming potions has been disabled!");
+					return;
+				}
 				/**
 				 * Drink
 				 */

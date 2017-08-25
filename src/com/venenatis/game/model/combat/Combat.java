@@ -866,17 +866,20 @@ public class Combat {
             }
             
             if (!immune) {
-				boolean attackerVenomItems = false;
-				boolean venomItems = false;
-				for (Item equip : player.getEquipment().toArray()) {
-					if (equip == null) {
-						continue;
-					}
-					VenomWeapons venomWeapons = VenomWeapons.of(equip.getId());
-					if (venomWeapons != null) {
-						attackerVenomItems = true;
-					}
-				}
+            	
+            	boolean attackerVenomItems = false;
+    			boolean venomItems = false;
+    			
+    			for (Item equip : player.getEquipment().toArray()) {
+    				if (equip == null) {
+    					continue;
+    				}
+    				VenomWeapons venomWeapons = VenomWeapons.of(equip.getId());
+    				if (venomWeapons != null) {
+    					attackerVenomItems = true;
+    				}
+    			}
+				
 				for (Item equip : ptarg.getEquipment().toArray()) {
 					if (equip == null) {
 						continue;
@@ -899,7 +902,28 @@ public class Combat {
             
         } else if (target.isNPC()) {
             NPC npc = (NPC) target;
-            //TODO add immume npcs to venom
+        	//TODO ask Jak why task for npcs is fucked?
+        	
+        	boolean attackerVenomItems = false;
+			boolean venomItems = false;
+			
+			for (Item equip : player.getEquipment().toArray()) {
+				if (equip == null) {
+					continue;
+				}
+				VenomWeapons venomWeapons = VenomWeapons.of(equip.getId());
+				if (venomWeapons != null) {
+					attackerVenomItems = true;
+				}
+			}
+			
+			if(!immune && canTakeVenom(npc)) {
+				if (attackerVenomItems && !venomItems) {
+					if (Utility.random(5) == 0) {
+						npc.inflictVenom();
+					}
+				}
+			}
         }
 
         if (wep != null && player.getCombatType() != CombatStyle.MAGIC) {
@@ -1212,6 +1236,33 @@ public class Combat {
         boolean d = player.touchDistance(target, calculateAttackDistance(player, target));
         player.debug("dist: "+d);
 		return d;
+	}
+	
+	/**
+	 * A list of npcs that cannot take venom damage
+	 * 
+	 * @param npc
+	 *            The npc that can't take venom damage
+	 * @return true if we can false otherwise
+	 */
+	private static boolean canTakeVenom(NPC npc) {
+		if (npc.getName().equalsIgnoreCase("Chaos Elemental") || npc.getName().equalsIgnoreCase("Dagannoth Prime")
+				|| npc.getName().equalsIgnoreCase("Dagannoth Rex")
+				|| npc.getName().equalsIgnoreCase("Dagannoth Supreme")
+				|| npc.getName().equalsIgnoreCase("Demonic gorilla") || npc.getName().equalsIgnoreCase("Giant Mole")
+				|| npc.getName().equalsIgnoreCase("Kalphite Queen") || npc.getName().equalsIgnoreCase("Kraken")
+				|| npc.getName().equalsIgnoreCase("Obor") || npc.getName().equalsIgnoreCase("TzTok-Jad")
+				|| npc.getName().equalsIgnoreCase("Abyssal Sire") || npc.getName().contains("Brutal")
+				|| npc.getName().equalsIgnoreCase("Cerberus") || npc.getName().equalsIgnoreCase("Commander Zilyana")
+				|| npc.getName().equalsIgnoreCase("Corporeal Beast")
+				|| npc.getName().equalsIgnoreCase("General Graardor")
+				|| npc.getName().equalsIgnoreCase("K'ril Tsutsaroth") || npc.getName().equalsIgnoreCase("Kree'arra")
+				|| npc.getName().equalsIgnoreCase("Mithril dragon") || npc.getName().contains("Lizardman")
+				|| npc.getName().contains("Snakeling") || npc.getName().equalsIgnoreCase("Smoke devil")
+				|| npc.getName().equalsIgnoreCase("Thermonuclear smoke devil")
+				|| npc.getName().equalsIgnoreCase("Venenatis") || npc.getName().equalsIgnoreCase("Zulrah"))
+			return false;
+		return true;
 	}
 	
 	/**

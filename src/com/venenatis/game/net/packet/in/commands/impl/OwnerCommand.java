@@ -62,16 +62,6 @@ public class OwnerCommand implements Command {
 			SlayerTaskManagement.vannakaTask(player);
 			return true;
 		
-		case "showdmg":
-			if (!player.showDamage()) {
-				player.setShowDamage(true);
-				player.debug("showing damage instead of exp : " + player.showDamage());
-			} else {
-				player.setShowDamage(false);
-				player.debug("showing damage instead of exp : " + player.showDamage());
-			}
-			return true;
-		
 		case "stamina":
 			int t = parser.nextInt();
 			if (t == 1) {

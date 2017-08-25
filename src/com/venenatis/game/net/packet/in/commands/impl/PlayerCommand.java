@@ -32,6 +32,16 @@ public class PlayerCommand implements Command {
 
 		switch (parser.getCommand()) {
 		
+		case "showdmg":
+			if (!player.showDamage()) {
+				player.setShowDamage(true);
+				player.message("Your exp counter will now show your hits instead of exp.");
+			} else {
+				player.setShowDamage(false);
+				player.message("Your exp counter will now show your received experience instead of hits.");
+			}
+			return true;
+		
 		case "rules":
 			player.getActionSender().sendString("www.venenatis.com/forum/index.php?topic=6.0", -1);
 			return true;

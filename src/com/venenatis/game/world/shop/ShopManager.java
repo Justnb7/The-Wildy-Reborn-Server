@@ -252,7 +252,7 @@ public class ShopManager {
 			player.getActionSender().sendMessage("You do not have enough " + currency.getUtility().getCurrencyName() + " to buy that.");
 		} else {
 			player.getInventory().add(id, item.getAmount(), true);
-			if (shop.getCurrency() != Currency.GEAR_POINTS) {
+			if (shop.getCurrency() != Currency.GEAR_POINTS && shop.getCurrency() != Currency.DONATOR_TICKETS) {
 				shop.remove(id, item.getAmount(), false);
 				shop.shift(false);
 				update(player.getShopId());

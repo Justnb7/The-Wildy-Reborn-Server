@@ -34,6 +34,10 @@ public class NpcInteraction {
 		case 317:
 			player.getDialogueManager().start("IRONMAN_PAUL", player);
 			break;
+			
+		case 8016:
+			ShopManager.open(player, 13);
+			break;
 		
 		/* General store */
 		case 506:
@@ -136,6 +140,10 @@ public class NpcInteraction {
 		}
 
 		switch (npc.getId()) {
+		
+		case 8016:
+			ShopManager.open(player, 13);
+			break;
 		
 		/* General store */
 		case 506:

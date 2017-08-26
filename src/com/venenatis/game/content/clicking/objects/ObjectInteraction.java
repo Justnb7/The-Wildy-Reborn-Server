@@ -51,13 +51,12 @@ public class ObjectInteraction {
 		
 		player.debug(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
 		System.out.println(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
-		final GameObject obj = Server.getGlobalObjects().customOrCache(objectId, location); // ye thats cache only we need to use a special
-		// method that gets cache AND custom spawns which is usually in an 'object manager' or somet like that named
+		final GameObject obj = Server.getGlobalObjects().customOrCache(objectId, location); 
 		
-		if (obj == null) {
+		/*if (obj == null) {
 			player.debug("No valid object at "+location+" with id "+objectId);
 			return;
-		}
+		}*/
 		
 		//Like im using the regionStoreManager to get the object tho
 		

@@ -1206,15 +1206,17 @@ public class Combat {
      * If you're able to move, it'll re-calculate a path to your target if you're not in range.
      */
 	public static boolean touches(Player player, Entity target) {
+		if (!target.isPlayer()) {
+			NPC npc = (NPC) target;
 
-		NPC npc = (NPC)target;
-		
-		boolean ignoreTouches = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Zulrah")
-				|| npc.getName().equalsIgnoreCase("Portal") || npc.getName().equalsIgnoreCase("Kraken")
-				|| npc.getName().equalsIgnoreCase("Spinolyp") || npc.getName().equalsIgnoreCase("Enormous Tentacle");
-		
-		if (ignoreTouches && player.getCombatType() != CombatStyle.MELEE)
-			return true;
+			boolean ignoreTouches = npc.getName().equalsIgnoreCase("Whirlpool")
+					|| npc.getName().equalsIgnoreCase("Zulrah") || npc.getName().equalsIgnoreCase("Portal")
+					|| npc.getName().equalsIgnoreCase("Kraken") || npc.getName().equalsIgnoreCase("Spinolyp")
+					|| npc.getName().equalsIgnoreCase("Enormous Tentacle");
+
+			if (ignoreTouches && player.getCombatType() != CombatStyle.MELEE)
+				return true;
+		}
 		
         //player.getPlayerFollowing().follow(true, target); // PI =)
 

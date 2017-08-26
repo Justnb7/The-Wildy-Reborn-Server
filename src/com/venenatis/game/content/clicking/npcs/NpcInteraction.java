@@ -31,6 +31,10 @@ public class NpcInteraction {
 
 		switch (npc.getId()) {
 		
+		case 7456:
+			player.getDialogueManager().start("PERDU", player);
+			break;
+		
 		case 317:
 			player.getDialogueManager().start("IRONMAN_PAUL", player);
 			break;

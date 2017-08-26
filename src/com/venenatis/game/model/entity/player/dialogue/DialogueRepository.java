@@ -91,6 +91,11 @@ public class DialogueRepository {
 		dialogues.put("CLEAR_ACCOUNT", ClearAccount.class);
 		
 		/**
+		 * Perdu
+		 */
+		dialogues.put("PERDU", Perdu.class);
+		
+		/**
 		 * Options
 		 */
 		dialogues.put("MAGIC_BOOK", MagicBook.class);

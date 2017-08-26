@@ -51,9 +51,14 @@ public enum CombatStyle {
 	 * Giant mole special move
 	 */
 	DIG,
+	
 	/**
 	 * Veng recoil self-damage (rock cake) 
 	 */
-	GENERIC
-	;
+	GENERIC,
+	
+	/**
+	 * Barrelchest's special move
+	 */
+	ZIP;
 }

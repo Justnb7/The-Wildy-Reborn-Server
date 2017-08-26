@@ -422,6 +422,7 @@ public abstract class Container {
 	 * @see #contains(Predicate)
 	 */
 	public boolean contains(int id) {
+		System.out.println("id: "+id);
 		return contains(e -> e.getId() == id);
 	}
 

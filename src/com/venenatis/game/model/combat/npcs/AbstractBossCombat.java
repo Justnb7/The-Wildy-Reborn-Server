@@ -7,6 +7,7 @@ import java.util.Objects;
 import com.venenatis.game.model.combat.npcs.impl.*;
 import com.venenatis.game.model.combat.npcs.impl.barrows.*;
 import com.venenatis.game.model.combat.npcs.impl.dagannoths.*;
+import com.venenatis.game.model.combat.npcs.impl.dragons.*;
 import com.venenatis.game.model.combat.npcs.impl.fight_caves.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.armadyl.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.bandos.*;
@@ -73,6 +74,48 @@ public abstract class AbstractBossCombat {
 		bosses.put(6361, mo);
 		bosses.put(6362, mo);
 		bosses.put(6365, mo);
+		
+		AbstractBossCombat bronze_dragon = new BronzeDragon();
+		bosses.put(7253, bronze_dragon);
+		bosses.put(270, bronze_dragon);
+		bosses.put(271, bronze_dragon);
+		
+		AbstractBossCombat iron_dragon = new IronDragon();
+		bosses.put(7254, iron_dragon);
+		bosses.put(272, iron_dragon);
+		bosses.put(273, iron_dragon);
+		
+		AbstractBossCombat steel_dragon = new SteelDragon();
+		bosses.put(7255, steel_dragon);
+		bosses.put(274, steel_dragon);
+		bosses.put(275, steel_dragon);
+		
+		AbstractBossCombat green_dragon = new GreenDragon();
+		bosses.put(260, green_dragon);
+		bosses.put(261, green_dragon);
+		bosses.put(262, green_dragon);
+		bosses.put(263, green_dragon);
+		bosses.put(264, green_dragon);
+		
+		AbstractBossCombat blue_dragon = new BlueDragon();
+		bosses.put(265, blue_dragon);
+		bosses.put(266, blue_dragon);
+		bosses.put(267, blue_dragon);
+		bosses.put(268, blue_dragon);
+		bosses.put(269, blue_dragon);
+		
+		AbstractBossCombat black_dragon = new BlackDragon();
+		bosses.put(252, black_dragon);
+		bosses.put(253, black_dragon);
+		bosses.put(254, black_dragon);
+		bosses.put(255, black_dragon);
+		bosses.put(256, black_dragon);
+		bosses.put(257, black_dragon);
+		bosses.put(258, black_dragon);
+		bosses.put(259, black_dragon);
+		
+		AbstractBossCombat lava_dragon = new LavaDragon();
+		bosses.put(6593, lava_dragon);
 		
 	}
 	

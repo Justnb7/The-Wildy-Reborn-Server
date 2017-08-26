@@ -11,7 +11,6 @@ import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -56,27 +55,16 @@ public class DarkBeast extends AbstractBossCombat {
                 hitDelay = 1;
                 victim.take_hit(attacker, damage, CombatStyle.MELEE).send(hitDelay);
                 break;
-            default:
+            case MAGIC:
             	attacker.playAnimation(Animation.create(npc.getAttackAnimation()));
-                attacker.playGraphics(Graphic.create(155, 0, 100));
-                attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 156, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
+                attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 130, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
                 damage = Utility.random(8);
+                victim.playGraphics(damage <= 0 ? Graphic.create(85, gfxDelay, 100) : Graphic.create(131, gfxDelay, 100));
+                victim.take_hit(attacker, damage, CombatStyle.MAGIC).send(hitDelay);
                 break;
+		default:
+			break;
         }
-        final CombatStyle endStyle = style;
-        final int delay = hitDelay;
-        World.getWorld().schedule(new Task(delay) {
-
-            @Override
-            public void execute() {
-                this.stop();
-                if (endStyle == CombatStyle.MAGIC) {
-                    victim.playGraphics(damage <= 0 ? Graphic.create(85, gfxDelay, 100) : Graphic.create(157, gfxDelay, 100));
-                }
-                victim.take_hit(attacker, damage, endStyle).send(delay);
-            }
-
-        });
   
         attacker.getCombatState().setAttackDelay(5);
 	}

@@ -28,8 +28,6 @@ public class SkeletalWyvern extends AbstractBossCombat {
 			return;
 		}
 
-		NPC npc = (NPC) attacker;
-
 		CombatStyle style = CombatStyle.MAGIC;
 
 		boolean projectile = attacker.getLocation().distance(victim.getLocation()) > 1;
@@ -47,7 +45,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 
 		// Calculate max hit first
 		int maxHit = style == CombatStyle.MAGIC ? 50 : 13;
-		Animation anim = Animation.create(npc.getAttackAnimation());
+		Animation anim = Animation.create(style == CombatStyle.MELEE ? 2986 : 2985);
 		switch (style) {
 		case MELEE:
 			attacker.playAnimation(anim);
@@ -113,7 +111,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 
 		}
 
-		attacker.getCombatState().setAttackDelay(6);
+		attacker.getCombatState().setAttackDelay(4);
 	}
 
 	@Override

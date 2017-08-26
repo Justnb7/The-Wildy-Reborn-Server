@@ -424,7 +424,7 @@ public class NPC extends Entity {
 				if (isPet && ownerId > 0) {
 					Player ownerPlr = World.getWorld().getPlayers().get(ownerId);
 					if (ownerPlr == null) {
-						System.out.println("owner disappeared!!!");
+						//System.out.println("owner disappeared!!!");
 						ownerId = -1;
 					} else {
 						//System.out.println("NPC Following player");

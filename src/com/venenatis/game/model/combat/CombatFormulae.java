@@ -412,7 +412,6 @@ public class CombatFormulae {
 			EquipmentContainer.calcBonuses((Player)mob, true);
 		}
 		int rangedStrength = player.getBonuses().length < 13 ? 0 : player.getBonuses()[11];
-		System.out.println("str used: "+rangedStrength);
 		
 		if (ignoreArrowStr && mob.isPlayer()) {
 			// reset to normal afterwards for any future attacks

@@ -37,12 +37,17 @@ public abstract class AbstractBossCombat {
 		bosses.put(2193, new TokXil());
 		
 		bosses.put(1672, new AhrimTheBlighted());
+		bosses.put(1673, new DharokTheWretched());
+		bosses.put(1674, new GuthanTheInfested());
+		bosses.put(1675, new KarilTheTainted());
+		bosses.put(1676, new ToragTheCorrupted());
+		bosses.put(1677, new VeracTheDefiled());
 		
 		bosses.put(465, new SkeletalWyvern());
 		
 		bosses.put(492, new CaveKraken());
 		bosses.put(494, new Kraken());
-		bosses.put(4005, new DarkBeast());
+		bosses.put(5535, new EnormousTentacle());
 		
 		bosses.put(2267, new DagannothRex());
 		bosses.put(2266, new DagannothPrime());
@@ -116,6 +121,17 @@ public abstract class AbstractBossCombat {
 		
 		AbstractBossCombat lava_dragon = new LavaDragon();
 		bosses.put(6593, lava_dragon);
+		
+		AbstractBossCombat skeletal_wyvern = new SkeletalWyvern();
+		bosses.put(465, skeletal_wyvern);
+		bosses.put(466, skeletal_wyvern);
+		bosses.put(467, skeletal_wyvern);
+		bosses.put(468, skeletal_wyvern);
+		
+		
+		AbstractBossCombat dark_beast = new DarkBeast();
+		bosses.put(4005, dark_beast);
+		bosses.put(7250, dark_beast);
 		
 	}
 	

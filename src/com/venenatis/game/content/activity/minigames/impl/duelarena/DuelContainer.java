@@ -78,7 +78,6 @@ public class DuelContainer extends Container {
 	 *            The items to offer.
 	 */
 	public void offerItems(Item[] items) {
-		System.out.println("offering item");
 		
 		if (!valid()){
 			return;
@@ -186,32 +185,27 @@ public class DuelContainer extends Container {
 	
 	private boolean valid() {
 		if (!player.getDuelArena().getOther().isPresent()) {
-			System.out.println("1");
 			PlayerLogging.write(LogType.DUEL_OFFER, player, "other player does not exist");
 			return false;
 		}
 		
 		if (player.getInterfaceState().getCurrentInterface() != InterfaceConstants.FIRST_DUEL_SCREEN) {
-			System.out.println("2");
 			PlayerLogging.write(LogType.DUEL_OFFER, player, "first duel screen does not exist");
 			return false;
 		}
 		
 		if (player.getDuelArena().getStage() != DuelStage.FIRST_SCREEN) {
-			System.out.println("3");
 			PlayerLogging.write(LogType.DUEL_OFFER, player, "player duel stage is not first_accept");
 			return false;
 		}
 		
 		if (other.isPresent()) {
-			System.out.println("9");
 			if (other.get().getDuelArena().getStage() != DuelStage.FIRST_SCREEN) {
 				PlayerLogging.write(LogType.DUEL_OFFER, player, "other player duel stage is not first_accept");
 				return false;
 			}
 			
 			if (other.get().getInterfaceState().getCurrentInterface() != InterfaceConstants.FIRST_DUEL_SCREEN) {
-				System.out.println("7");
 				PlayerLogging.write(LogType.DUEL_OFFER, player, "first duel screen does not exist");
 				return false;
 			}

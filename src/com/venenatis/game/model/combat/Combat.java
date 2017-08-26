@@ -110,10 +110,7 @@ public class Combat {
 			if (recoil < 1) {
 				return;
 			}
-			entity_attacker.take_hit(defender, recoil, null);//Should be correct order right?
-			//Here i'm now replacing all the dead code @deprecated from hit.damage :d well some are special like veng recoil won't trigger from itself erm
-			//Was confused maybe was using diff recoil or w/e but yeah should be good okay so what do we do then instead of the old
-			//hit.damage you deprecated it last time but like recoil dfs etc was using it
+			entity_attacker.take_hit(defender, recoil, null);
 		}
 	}
 	

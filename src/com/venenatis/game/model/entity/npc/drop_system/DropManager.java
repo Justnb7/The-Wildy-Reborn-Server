@@ -138,7 +138,7 @@ public class DropManager {
 			double modifier = getModifier(player);
 			List<Item> drops = g.access(player, modifier, repeats);
 			
-			boolean drop_below_player = npc.getId() == 492;
+			boolean drop_below_player = npc.getId() == 492 || npc.getId() == 494;
 			
 			for (Item item : drops) {
 				if (drop_below_player) {
@@ -251,7 +251,6 @@ public class DropManager {
 	public void select(Player player, int button) {
 		int listIndex = button - 166035;
 		if (listIndex < 0 || listIndex > ordered.size() - 1) {
-			System.out.println("index is below 0");
 			return;
 		}
 

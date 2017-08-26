@@ -55,7 +55,7 @@ public class NpcCombat {
 			return AbstractBossCombat.get(npc.getId()).distance(null);
 		}
 		if(npc.getName().contains("Whirlpool"))
-			return 10;
+			return 8;
 		return 1;
 	}
 

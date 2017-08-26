@@ -112,6 +112,16 @@ public class ObjectInteraction {
 			return;
 		}
 		
+		if (def.getName().toLowerCase().contains("crevice")) {
+			if (player.getY() == 9797) {
+				player.getKraken().start(player);
+			} else if (player.getY() == 5798) {
+				player.setTeleportTarget(new Location(2486, 9797, 0));
+			} else if (player.getX() == 2444) {
+				player.setTeleportTarget(new Location(2430, 3424, 0));
+			}
+		}
+		
 		if (Farming.harvest(player, location.getX(), location.getY())) {
 			return;
 		}

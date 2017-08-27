@@ -183,6 +183,15 @@ public class ObjectInteraction {
 		
 		switch(objectId) {
 		
+		case 26760:
+			Location resource_arena = player.getLocation();
+			if(resource_arena.getY() == 3945) {
+				player.setTeleportTarget(Location.create(resource_arena.getX(), resource_arena.getY() - 1, location.getZ()));
+			} else if(resource_arena.getY() == 3944) {
+				player.setTeleportTarget(Location.create(resource_arena.getX(), resource_arena.getY() + 1, location.getZ()));
+			}
+			break;
+		
 		case 26720:
 			Location root = player.getLocation();
 			if(root.getX() == 2356) {

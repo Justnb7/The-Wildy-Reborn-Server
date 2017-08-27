@@ -262,7 +262,7 @@ public class Magic {
 		for (Item i : runes) {
 			if (i == null)
 				continue; // safety
-			if (hasInfiniteRunes(player, i.getId(), i.getAmount(), weaponId, shieldId, false)) {
+			if (hasInfiniteRunes(player, i.getId(), i.getAmount(), weaponId, shieldId, true)) {
 				//Checks for rune pouch or staff.
 			}
 			else if (!player.getInventory().contains(i.getId(), i.getAmount())) {
@@ -306,8 +306,7 @@ public class Magic {
 		}
 		if(player.getRunePouch().contains(new Item(runeId, amount))) {
 			if(deleteFromRunePouch) {
-				player.getRunePouch().remove(new Item(runeId, amount));
-				player.getRunePouch().refresh();
+				player.getRunePouch().deleteFromPouch(runeId, amount);	
 			}
 			return true;
 		}

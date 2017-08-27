@@ -220,6 +220,28 @@ public final class RunePouchContainer extends Container {
 		refresh();
 	}
 	
+	/**
+	 * Checks if the rune is contained in the pouch and if so we delete it
+	 * @param runeId
+	 * @param amount
+	 * @return
+	 */
+	public void deleteFromPouch(int runeId, int amount) {
+		Item required = new Item(runeId, amount);
+		int slotOfRune = player.getRunePouch().getSlotById(required.getId());
+		if (slotOfRune == -1 || required == null) {
+			return;
+		}
+		if (!player.getRunePouch().contains(runeId)) {
+			return;
+		}
+		if (player.getRunePouch().contains(required.getId()) && (player.getRunePouch().get(slotOfRune).getAmount() < required.getAmount())) {
+			return;
+		}
+		player.getRunePouch().remove(required);
+		refresh();
+	}
+	
 	public enum RuneType {
 		NONE(-1),
 		AIR(556),

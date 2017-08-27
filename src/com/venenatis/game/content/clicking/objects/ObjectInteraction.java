@@ -183,6 +183,14 @@ public class ObjectInteraction {
 		
 		switch(objectId) {
 		
+		case 11833:
+			player.getFightCave().enter_cave(player);
+			break;
+			
+		case 11834:
+			player.getFightCave().stop(player);
+			break;
+		
 		case 26502:
 			Location gwdLoc = player.getLocation();
 			if (gwdLoc.getY() == 5294) {

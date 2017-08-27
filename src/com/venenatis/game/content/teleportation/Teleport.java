@@ -5,6 +5,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.magic.SpellBook;
+import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Task.BreakType;
@@ -203,6 +204,10 @@ public class Teleport {
 	public void teleport(final Location location, TeleportTypes teleportType, boolean override) {
 		if (!canTeleport(override)) {
 			return;
+		}
+		
+		if(Boundary.isIn(player, Boundary.FIGHT_CAVE)) {
+			player.getDialogueManager().start("LEAVE_FIGHT_CAVE", player);
 		}
 		
 		TeleportTypes type = teleportType;

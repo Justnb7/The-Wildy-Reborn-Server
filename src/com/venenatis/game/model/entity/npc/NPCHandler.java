@@ -89,7 +89,7 @@ public final class NPCHandler {
 		World.getWorld().register(npc);
 	}
 	
-	public static NPC spawnNpc(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
+	public static NPC spawn(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
 		npc.setLocation(spawn);
@@ -109,6 +109,7 @@ public final class NPCHandler {
 			player.getActionSender().drawHeadIcon(1, npc.getIndex(), 0, 0);
 		}
 		World.getWorld().register(npc);
+		System.out.println("spawning npc on location: "+spawn.toString());
 		return npc;
 	}
 	
@@ -156,12 +157,5 @@ public final class NPCHandler {
 				}
 			}
 		}
-	}
-
-	public static boolean isSpawnedBy(Player player, NPC npc) {
-		if (player != null && npc != null)
-			if (npc.spawnedBy == player.getIndex() || npc.targetId == player.getIndex())
-				return true;
-		return false;
 	}
 }

@@ -1,5 +1,6 @@
 package com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_caves;
 
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.model.entity.player.dialogue.DialogueType;
@@ -18,6 +19,8 @@ public class WonFightCave extends Dialogue {
 	protected void next() {
 		System.out.println("next : phase " + getPhase());
 		if (getPhase() == 0) {
+			player.getInventory().addOrCreateGroundItem(player, new Item(6570));
+			player.getInventory().addOrCreateGroundItem(player, new Item(6529, 8_032));
 			stop();
 		}
 	}

@@ -10,7 +10,7 @@ public class DiedInProcess extends Dialogue {
 	
 	@Override
 	protected void start(Object... parameters) {
-		send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.CALM_TALK, "Well done in the cave,", "here, take TokKul as reward.");
+		send(DialogueType.NPC, TZHAAR_MEJ_JAL, Expression.CALM_TALK, "Well done in the cave,", "no TokKul was given as reward.");
 		setPhase(0);
 	}
 	

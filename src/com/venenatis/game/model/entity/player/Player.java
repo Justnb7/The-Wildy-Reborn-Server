@@ -62,6 +62,7 @@ import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
+import com.venenatis.game.model.entity.player.instance.impl.FightCaveInstance;
 import com.venenatis.game.model.entity.player.instance.impl.KrakenInstance;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
@@ -2114,6 +2115,12 @@ public class Player extends Entity {
 				if (kraken.getInstance() != null)
 					InstancedAreaManager.getSingleton().disposeOf(kraken.getInstance());
 			}
+		} else if (fight_cave != null) {
+			if (!Boundary.isIn(this, Boundary.FIGHT_CAVE)) {
+				System.out.println("Resetting fight_cave instance for: " + this.getUsername());
+				if (fight_cave.getInstance() != null)
+					InstancedAreaManager.getSingleton().disposeOf(fight_cave.getInstance());
+			}
 		}
 	}
 	
@@ -2123,6 +2130,14 @@ public class Player extends Entity {
 		if (kraken == null)
 			kraken = new KrakenInstance();
 		return kraken;
+	}
+	
+    private FightCaveInstance fight_cave;
+	
+	public FightCaveInstance getFightCave() {
+		if (fight_cave == null)
+			fight_cave = new FightCaveInstance();
+		return fight_cave;
 	}
 
 	private long lastAltarPrayer = -3000;

@@ -161,6 +161,14 @@ public class NPCDeathTask extends Task {
         
         final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
         
+        //Sent the cheer animation when defeating Jad
+        if(killer != null || npc != null) {
+        	if(npc.getId() == 3127) {
+        		killer.playAnimation(Animation.create(862));
+        		killer.getFightCave().reward(killer);
+        	}
+        }
+        
 		if (killer != null) {
 			if (npc.getId() == killer.getSlayerTask() || NPC.getName(npc.getId()).toLowerCase().equalsIgnoreCase(NPC.getName(killer.getSlayerTask()).toLowerCase())) {
 				SlayerTaskManagement.decreaseTask(killer, npc);

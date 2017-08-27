@@ -131,7 +131,8 @@ public class GameConstants {
 	    new SquareArea("Fight arena", 2896, 3595, 2927, 3630),
 	    new SquareArea("Dagannoth lair", 2892, 4435, 2932, 4464),
 	    new SquareArea("Grand Exchange", 3178, 3502, 3190, 3514),
-	    new SquareArea("King Black Dragon lair", 2256, 4680, 2287, 4711));
+	    new SquareArea("King Black Dragon lair", 2256, 4680, 2287, 4711),
+	    new SquareArea("Scorpia pit", 3216, 10329, 3248, 10354));
 
 	public static Chance < Item > PVP_LOOTS = new Chance<> (Arrays.asList(
 		    new WeightedChance < Item > (10, new Item(4153, 1)), //Granite maul

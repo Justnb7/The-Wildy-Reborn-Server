@@ -244,17 +244,17 @@ public class Combat {
             return;
         if (!attackable(player, target))
             return;
-        /*if (!player.getCombatState().checkMagicReqs(player.getSpellId())) {
-            player.getMovementHandler().reset();
-            Combat.resetCombat(player);
-            return;
-        }*/
+
         int wepId = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
         if (player.getSpellBook() != SpellBook.MODERN_MAGICS && (wepId == 2415 || wepId == 2416 || wepId == 2417)) {
             player.message("You must be on the modern spellbook to cast this spell.");
             resetCombat(player);
             return;
         }
+        if(player.getAutocastId() > -1) {
+        	player.setSpellId(player.getAutocastId());
+        }
+        
         if (player.touchDistance(target, 7))
             player.getWalkingQueue().reset();
 
@@ -285,10 +285,6 @@ public class Combat {
         // Magic attack anim
         player.playAnimation(Animation.create(player.MAGIC_SPELLS[spell][2]));
 
-        if (!player.autoCast) {
-            // One time attack
-            player.getCombatState().setTarget(null);
-        }
         int hitDelay = wepId == -1 ? 4 : CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
 
         if (player.MAGIC_SPELLS[spell][3] > 0) {
@@ -360,17 +356,6 @@ public class Combat {
                         }
                     }
                     break;
-                case 12901:
-                case 12919: // blood spells
-                case 12911:
-                case 12929:
-                    int heal = dam1 / 4;
-                    if (player.getSkills().getLevel(Skills.HITPOINTS) + heal > player.getMaximumHealth()) {
-                        player.getSkills().setLevel(Skills.HITPOINTS, player.getMaximumHealth());
-                    } else {
-                        player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + heal);
-                    }
-                    break;
             }
         }
 
@@ -380,10 +365,6 @@ public class Combat {
         // MUST BE THE LAST PIECE OF CODE IN THIS METHOD. Spellid is used in other methods as a reference.
         player.setSpellId(-1);
 
-        // One time attack!
-        if (!player.autoCast) {
-            player.getCombatState().reset();
-        }
     }
     
 	private final static boolean canWeFire(Player attacker) {
@@ -1053,14 +1034,14 @@ public class Combat {
 		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
     	
         player.setCombatType(null); // reset
-
-        if (player.autoCast && (player.getSpellBook() == SpellBook.MODERN_MAGICS || player.getSpellBook() == SpellBook.ANCIENT_MAGICKS)) {
-            player.setSpellId(player.getAutocastId());
-            
-            player.setCombatType(CombatStyle.MAGIC);
-        }
         
         int wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+        
+        // Spell id set when packet: magic on player
+        if (player.getSpellId() > 0 || player.getAutocastId() > 0) {
+        	player.debug("setting combat magic");
+            player.setCombatType(CombatStyle.MAGIC);
+        }
         
         if (wep == 11907) {
             player.setSpellId(52);
@@ -1068,10 +1049,6 @@ public class Combat {
         }
         if (wep == 12899) {
         	player.setSpellId(53);
-            player.setCombatType(CombatStyle.MAGIC);
-        }
-        // Spell id set when packet: magic on player
-        if (player.getSpellId() > 0) {
             player.setCombatType(CombatStyle.MAGIC);
         }
 

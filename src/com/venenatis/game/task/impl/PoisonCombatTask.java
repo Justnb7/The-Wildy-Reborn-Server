@@ -46,7 +46,7 @@ public final class PoisonCombatTask extends Task {
 			return;
 		}
 			amount--;
-			if (source.isPlayer()) { // 
+			if (source.isPlayer()) {
 				Player src = (Player)source;
 				entity.getCombatState().getDamageMap().appendDamage(src.getUsername(), entity.getPoisonDamage().get());
 			}

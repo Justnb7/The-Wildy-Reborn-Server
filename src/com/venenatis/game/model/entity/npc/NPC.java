@@ -6,6 +6,7 @@ import java.util.List;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.NpcCombat;
+import com.venenatis.game.model.combat.npcs.impl.wilderness.Scorpia;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
@@ -34,6 +35,7 @@ public class NPC extends Entity {
 			setLocation(spawn);
 			makeX = spawn.getX(); // boundaries where combat is cancelled stops dragging npcs over the map
 			makeY = spawn.getY();
+			setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		}
 		npcId = id;
 		getCombatState().setDead(false);
@@ -409,6 +411,19 @@ public class NPC extends Entity {
 		}
 		return surrounding;
 	}
+	
+	public NPC spawnBossMinion(Player p, int id, Location location, int walkType, boolean attackPlayer) {
+		NPC npc = new NPC(id, location, walkType);
+		npc.walking_type = walkType;
+		if (attackPlayer) {
+			npc.underAttack = true;
+			if (p != null) {
+				npc.targetId = p.getIndex();
+			}
+		}
+		World.getWorld().register(npc);
+		return npc;
+	}
 
 	@Override
 	public void process() {
@@ -434,22 +449,23 @@ public class NPC extends Entity {
 					NPCFollowing.attemptFollowEntity(this, followTarget);
 				}
 
-				/*else if (npcId == 6615) {
-					if (this.getHitpoints() <= 100 && !spawnedScorpiaMinions) {
-						NPC min1 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, true, false, true);
-						NPC min2 = NPCHandler.spawnNpc(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, true, false, true);
+				if (npcId == 6615) {
+					if (this.getHitpoints() <= 100 && !hasAttribute("scorpia_minion")) {
+						System.out.println("here");
+						NPC min1 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, true);
+						NPC min2 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, true);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);
 						this.setAttribute("min2", min2);
 						min2.setAttribute("boss", this);
 						// flag spawned
-						spawnedScorpiaMinions = true;
+						this.setAttribute("scorpia_minion", true);
 						// start task
-						//Scorpia.heal_scorpia(this, min1);
-						//Scorpia.heal_scorpia(this, min2);
+						Scorpia.heal_scorpia(this, min1);
+						Scorpia.heal_scorpia(this, min2);
 					}
-				}*/
+				}
 			}
 
 			/*

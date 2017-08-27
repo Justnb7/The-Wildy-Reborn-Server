@@ -812,4 +812,16 @@ public class Location {
 	public Location getDelta(Location location) {
 		return transform(getX() - location.getX(), getY() - location.getY(), 0);
 	}
+
+	/**
+	 * Gets the Euclidean (straight-line) distance between two {@link Location}
+	 * s.
+	 *
+	 * @return The distance in tiles between the two locations.
+	 */
+	public static int getManhattanDistance(Location first, Location second) {
+		final int dx = Math.abs(second.getX() - first.getX());
+		final int dy = Math.abs(second.getY() - first.getY());
+		return dx + dy;
+	}
 }

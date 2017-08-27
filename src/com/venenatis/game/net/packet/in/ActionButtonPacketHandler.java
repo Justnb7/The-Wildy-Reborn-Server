@@ -1,6 +1,7 @@
 package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.content.EmotesManager.EmoteData;
+
 import com.venenatis.game.content.SetSkill;
 import com.venenatis.game.content.achievements.AchievementButtons;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -16,6 +17,7 @@ import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.content.teleportation.Teleport;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
+import com.venenatis.game.model.combat.magic.Autocast;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttackHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.model.entity.player.Player;
@@ -75,6 +77,13 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */
+		
+		/* Autocasting */
+		if (Autocast.isAutoButton(button)) {
+			Autocast.assignAutocast(player, button);
+			return;
+		}
+		Autocast.handleActionButtons(player, button);
 		
 		/* Smithing */
 		if (SmithingConstants.clickSmeltSelection(player, button)) {

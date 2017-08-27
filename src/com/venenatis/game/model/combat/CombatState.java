@@ -71,16 +71,6 @@ public class CombatState {
 		return player.getMagic().getStartDelay(entity.asPlayer());
 	}
 
-	public int getStaffNeeded() {
-		Player player = (Player)entity;
-		return player.getMagic().getStaffNeeded(entity.asPlayer());
-	}
-
-	public boolean godSpells() {
-		Player player = (Player)entity;
-		return player.getMagic().godSpells(entity.asPlayer());
-	}
-
 	public int getStartGfxHeight() {
 		Player player = (Player)entity;
 		return player.getMagic().getStartGfxHeight(entity.asPlayer());

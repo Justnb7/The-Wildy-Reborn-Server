@@ -3,6 +3,7 @@ package com.venenatis.game.model.container.impl.equipment;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
+import com.venenatis.game.model.combat.magic.Autocast;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
@@ -210,9 +211,8 @@ public class EquipmentContainer extends Container {
 	public void updateWeapon() {
 		updateWieldItemName();
         player.getWeaponInterface().restoreWeaponAttributes();
-        player.setSpellId(-1);
-        player.setAutocastId(-1);
-        player.autoCast = false;
+        if (player.getAutocastId() > -1)
+			Autocast.resetAutocasting(player);
 	}
 
 	/**
@@ -336,9 +336,6 @@ public class EquipmentContainer extends Container {
 				updateWeapon();
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
-			player.setSpellId(-1);
-			player.setAutocastId(-1);
-	        player.autoCast = false;
 			player.setUsingSpecial(false);
 		}
 
@@ -422,10 +419,6 @@ public class EquipmentContainer extends Container {
 				updateWeapon();
 				player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
-
-			player.setSpellId(-1);
-			player.setAutocastId(-1);
-	        player.autoCast = false;
 			player.setUsingSpecial(false);
 		}
 

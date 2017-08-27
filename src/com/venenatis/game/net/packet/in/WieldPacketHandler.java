@@ -3,6 +3,8 @@ package com.venenatis.game.net.packet.in;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.combat.Combat;
+import com.venenatis.game.model.combat.magic.Autocast;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.EquipmentDefinition.EquipmentType;
@@ -65,6 +67,12 @@ public class WieldPacketHandler implements PacketType {
 			}
 
 			player.getEquipment().wear(item, slot);
+		}
+		
+		if (player.getEquipment().get(3) == null) {
+			player.setAutocastId(-1);
+			Autocast.resetAutocasting(player);
+			Combat.resetCombat(player);
 		}
 	}
 

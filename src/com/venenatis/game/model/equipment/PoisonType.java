@@ -50,7 +50,9 @@ public enum PoisonType {
     /**
      * The strongest poison type for poisonous NPCs.
      */
-    SUPER_NPC(16);
+    SUPER_NPC(16),
+    
+    SCORPIA(20);
 
     /**
      * The starting damage for this poison type.

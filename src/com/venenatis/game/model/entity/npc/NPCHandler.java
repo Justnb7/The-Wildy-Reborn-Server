@@ -97,7 +97,6 @@ public final class NPCHandler {
 		npc.makeY = spawn.getY();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
-		npc.setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		npc.faceEntity(player);
 		if (attacksEnemy) {
 			npc.underAttack = true;

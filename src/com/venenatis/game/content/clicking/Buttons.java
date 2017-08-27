@@ -373,7 +373,7 @@ public class Buttons {
 			}
 			break;
 
-		case 89061:
+		case 94051:
 			// System.out.println("tick: " +player.isAutoRetaliating());
 			player.setAutoRetaliating(!player.isAutoRetaliating());
 			player.getCombatState().reset();

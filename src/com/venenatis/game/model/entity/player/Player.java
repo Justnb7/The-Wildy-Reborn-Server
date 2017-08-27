@@ -782,12 +782,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * The player is auto casting
-	 */
-	public boolean autoCast = false;
-	public boolean onAuto = false;
-	
-	/**
 	 * Constructs a new {@link RunePouchContainer}.
 	 */
 	public final RunePouchContainer runePouchContainer = new RunePouchContainer(this);
@@ -1197,33 +1191,6 @@ public class Player extends Entity {
 			// blast
 
 	};
-	
-	public boolean isAutoButton(int button) {
-		for (int j = 0; j < autocastIds.length; j += 2) {
-			if (autocastIds[j] == button) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public int[] autocastIds = { 51133, 32, 51185, 33, 51091, 34, 24018, 35, 51159, 36, 51211, 37, 51111, 38, 51069, 39,
-			51146, 40, 51198, 41, 51102, 42, 51058, 43, 51172, 44, 51224, 45, 51122, 46, 51080, 47, 7038, 0, 7039, 1,
-			7040, 2, 7041, 3, 7042, 4, 7043, 5, 7044, 6, 7045, 7, 7046, 8, 7047, 9, 7048, 10, 7049, 11, 7050, 12, 7051,
-			13, 7052, 14, 7053, 15, 47019, 27, 47020, 25, 47021, 12, 47022, 13, 47023, 14, 47024, 15 };
-
-	public void assignAutocast(int button) {
-		for (int j = 0; j < autocastIds.length; j++) {
-			if (autocastIds[j] == button) {
-				Player c = World.getWorld().getPlayers().get(this.getIndex());
-				autoCast = true;
-				autocastId = autocastIds[j + 1];
-				c.getActionSender().sendConfig(108, 1);
-				c.getActionSender().sendSidebarInterface(0, 328);
-				break;
-			}
-		}
-	}
 
 	public boolean withinDistance(Player otherPlr) {
 		if (getZ() != otherPlr.getZ()) {
@@ -1736,47 +1703,6 @@ public class Player extends Entity {
 	
 	public void setFirstBossSlayerTask(boolean firstTime) {
 		this.firstBossSlayerTask = firstTime;
-	}
-	
-	/**
-	 * Determines if the player is susceptible to venom by comparing
-	 * the duration of their immunity to the time of the last cure.
-	 * @return	true of they can be infected by venom.
-	 */
-	public boolean isSusceptibleToVenom() {
-		return System.currentTimeMillis() - lastVenomCure > venomImmunity && !getEquipment().contains(12931) && !getEquipment().contains(13197) && !getEquipment().contains(13199);
-	}
-	
-	/**
-	 * The time in milliseconds that the player healed themselves of venom
-	 * @return	the last time the player cured themself of poison
-	 */
-	public long getLastVenomCure() {
-		return lastVenomCure;
-	}
-
-	/**
-	 * Sets the time in milliseconds that the player cured themself of poison
-	 * @param lastPoisonCure	the last time the player cured themselves
-	 */
-	public void setLastVenomCure(long lastVenomCure) {
-		this.lastVenomCure = lastVenomCure;
-	}
-	
-	/**
-	 * The duration of time in milliseconds the player is immune to venom for
-	 * @return	the duration of time the player is immune to poison for
-	 */
-	public long getVenomImmunity() {
-		return venomImmunity;
-	}
-
-	/**
-	 * Modifies the current duration of venom immunity
-	 * @param duration	the new duration
-	 */
-	public void setVenomImmunity(long duration) {
-		this.venomImmunity = duration;
 	}
 	
 	private Herblore herblore = new Herblore(this);
@@ -2375,7 +2301,6 @@ public class Player extends Entity {
 		this.wildLevel = wildLevel;
 	}
 	
-	
     /**
      * Integers
      */
@@ -2405,9 +2330,6 @@ public class Player extends Entity {
      * Longs
      */
 	public long usernameHash;
-	private long lastVenomCure;
-	private long venomImmunity;
-	public long godSpellDelay;
 	public long lastDropTableSelected;
 	public long lastDropTableSearch;
 
@@ -2421,15 +2343,9 @@ public class Player extends Entity {
 	 * Timers
 	 */
 	private Stopwatch lastCombatAction = new Stopwatch();
-	public Stopwatch switchDelay = new Stopwatch();
 	public Stopwatch aggressionTolerance = new Stopwatch();
-	public Stopwatch ditchDelay = new Stopwatch();
-	public Stopwatch foodDelay = new Stopwatch();
-	public Stopwatch lastSpear = new Stopwatch();
-	public Stopwatch lastProtItem = new Stopwatch();
 	public Stopwatch logoutDelay = new Stopwatch();
 	public Stopwatch cannotUsePrayer = new Stopwatch();
-	public Stopwatch lastVeng = new Stopwatch();
 	
 	public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
 
@@ -2670,13 +2586,6 @@ public class Player extends Entity {
 	public String displayRatio(Player player) {
 		return format.format(getRatio(player));
 	}
-
-	public void resetAutoCast() {
-        autocastId = 0;
-        onAuto = false;
-        autoCast = false;
-        getActionSender().sendConfig(108, 0);
-    }
 
 	/**
      * Gets the formatted version of the username for this player.

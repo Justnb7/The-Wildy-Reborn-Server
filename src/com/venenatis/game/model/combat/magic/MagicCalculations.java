@@ -17,11 +17,6 @@ public class MagicCalculations {
 	public static int magicMaxHitModifier(Player player) {
         int maxhit = player.MAGIC_SPELLS[player.getSpellId()][6];
 
-        if (player.getCombatState().godSpells()) {
-            if (System.currentTimeMillis() - player.godSpellDelay < 300000) {
-                maxhit += 10;
-            }
-        }
         // Random
         double damage = Utility.getRandom(maxhit);
 

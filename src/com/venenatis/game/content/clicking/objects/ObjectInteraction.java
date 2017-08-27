@@ -50,7 +50,7 @@ public class ObjectInteraction {
 		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(objectId);
 		
 		player.debug(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
-		System.out.println(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
+		//System.out.println(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
 		final GameObject obj = Server.getGlobalObjects().customOrCache(objectId, location); 
 		
 		/*if (obj == null) {

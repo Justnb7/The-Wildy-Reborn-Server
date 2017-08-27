@@ -60,5 +60,7 @@ public enum CombatStyle {
 	/**
 	 * Barrelchest's special move
 	 */
-	ZIP;
+	ZIP, 
+	
+	;
 }

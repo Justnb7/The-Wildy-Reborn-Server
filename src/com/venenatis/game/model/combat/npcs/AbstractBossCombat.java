@@ -73,6 +73,7 @@ public abstract class AbstractBossCombat {
 		bosses.put(239,  new KingBlackDragon());
 		bosses.put(6619, new ChaosFanatic());
 		bosses.put(3359, new ZombiesChampion());
+		bosses.put(6615, new Scorpia());
 		
 		bosses.put(5779, new GiantMole());
 		AbstractBossCombat mo = new DagannothMother();

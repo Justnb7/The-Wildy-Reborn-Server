@@ -94,19 +94,12 @@ public class NpcInteractionPacketHandler implements PacketType {
 		if (!npc.getDefinition().isAttackable()) {
 			return;
 		}
-		if (player.getAutocastId() > 0) {
-			player.autoCast = true;
-		}
-		if (!player.autoCast && player.getSpellId() > 0) {
-			player.setSpellId(0);
-		}
 
 		player.faceEntity(npc);
 		player.setCombatType(null);
 
 
-		if ((player.getCombatType() != CombatStyle.MELEE || player.autoCast)
-				&& player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {
+		if ((player.getCombatType() != CombatStyle.MELEE) && player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {
 			player.getWalkingQueue().reset();
 		}
 
@@ -137,9 +130,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 			}
 		}
 
-		if (player.autoCast) {
-			player.autoCast = false;
-		}
 		if (player.getCombatType() == CombatStyle.MAGIC) {
 			if (player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 6)) {
 				player.getWalkingQueue().reset();

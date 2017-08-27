@@ -1,7 +1,5 @@
 package com.venenatis.game.action.impl.actions;
 
-import java.util.concurrent.TimeUnit;
-
 import com.venenatis.game.action.Action;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.consumables.Consumables.Drink;
@@ -349,9 +347,7 @@ public class ConsumeItemAction extends Action {
 				case ANTI_VENOM:
 					player.getActionSender().sendMessage("You drink some of your " + item.getDefinition().getName()
 							.toLowerCase().substring(0, item.getDefinition().getName().length() - 3) + ".");
-					player.setVenomImmunity(0);
 					player.setInfection(0);
-					player.setLastVenomCure(System.currentTimeMillis());
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 					if (player.hasAttribute("venom")) {
 						player.removeAttribute("venom");
@@ -360,9 +356,7 @@ public class ConsumeItemAction extends Action {
 				case ANTI_VENOM_PLUS:
 					player.getActionSender().sendMessage("You drink some of your " + item.getDefinition().getName()
 							.toLowerCase().substring(0, item.getDefinition().getName().length() - 3) + ".");
-					player.setVenomImmunity(TimeUnit.MINUTES.toMillis(5));
 					player.setInfection(0);
-					player.setLastVenomCure(System.currentTimeMillis());
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 					if (player.hasAttribute("venom")) {
 						player.removeAttribute("venom");

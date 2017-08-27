@@ -167,39 +167,6 @@ public class Magic {
 		}
 	}
 
-	public boolean godSpells(Player player) {
-		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
-		case 1190:
-			return true;
-
-		case 1191:
-			return true;
-
-		case 1192:
-			return true;
-
-		default:
-			return false;
-		}
-	}
-
-	public int getStaffNeeded(Player player) {
-		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
-		case 1539:
-			return 1409;
-		case 12037:
-			return 4170;
-		case 1190:
-			return 2415;
-		case 1191:
-			return 2416;
-		case 1192:
-			return 2417;
-		default:
-			return 0;
-		}
-	}
-
 	public int getStartDelay(Player player) {
 		switch (player.MAGIC_SPELLS[player.getSpellId()][0]) {
 		case 1539:

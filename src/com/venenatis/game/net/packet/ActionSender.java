@@ -13,6 +13,8 @@ import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.data.AttackStyle;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
+import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.Entity.EntityType;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
@@ -25,6 +27,7 @@ import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
@@ -647,6 +650,38 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
+	
+	public ActionSender shoot(int casterY, int casterX, int offsetY, int offsetX, int gfxMoving, int StartHeight, int endHeight, int speed, Entity e) {
+    	// interesting thing about projectile packet, if we're using the client's PLAYER index array, the id is short.MAX_VAL + id (32k + 2048 max players)
+    	// otherwise for npcs its just id (range 0-short.max)
+    	int attack_index = e.getEntityType() == EntityType.PLAYER ? -(e.getIndex() + 1) : e.getIndex() + 1;
+        for (int i = 1; i < World.getWorld().getPlayers().capacity(); i++) {
+            if (World.getWorld().getPlayers().get(i) == null) {
+            	continue;
+            }
+            Player player = World.getWorld().getPlayers().get(i);
+            if (!player.getLocation().isWithinDistance(player.getLocation(), 60)) {
+            	continue;
+            }
+    		int regionX = player.getLastKnownRegion().getRegionX(), regionY = player.getLastKnownRegion().getRegionY();
+            player.outStream.writeFrame(85); // set base packet
+            player.outStream.writeByteC((casterY - (regionY * 8)) - 2);
+            player.outStream.writeByteC((casterX - (regionX * 8)) - 3);
+            player.outStream.writeFrame(117); // actual projectile packet
+            player.outStream.writeByte(50);
+            player.outStream.writeByte(offsetY);
+            player.outStream.writeByte(offsetX);
+            player.outStream.writeShort(attack_index); // target index
+            player.outStream.writeShort(gfxMoving);
+            player.outStream.writeByte(StartHeight);
+            player.outStream.writeByte(endHeight);
+            player.outStream.writeShort(51);
+            player.outStream.writeShort(speed);
+            player.outStream.writeByte(16); // slope (?)
+            player.outStream.writeByte(64); // angle (?)
+        }
+        return this;
+    }
 
 	/**
 	 * Sends a projectile to a location.
@@ -973,6 +1008,8 @@ public class ActionSender {
 
 		// We can go ahead and finalize the game configs
 		updateConfigs();
+		
+		player.setInfection(0);
 
 		// Update the skills
 		sendSkills();
@@ -1019,8 +1056,7 @@ public class ActionSender {
 
 				if (!player.receivedStarter()) {
 					player.getDialogueManager().start("STARTER");
-					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername())
-							+ "</col> Has joined Venenatis for the first time.");
+					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername()) + "</col> Has joined Venenatis for the first time.");
 				}
 
 				// We can update our kills tracker after login

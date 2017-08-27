@@ -60,6 +60,10 @@ public class ItemOnItem {
 			return;
 		}
 		
+		if (usedItem.getId() == 4153 && withItem.getId() == 12849 || usedItem.getId() == 12849 && withItem.getId() == 4153) {
+			player.getDialogueManager().start("GRANITE_MAUL_UPGRADE", player);
+		}
+		
 		if (usedItem.getId() == 227 || withItem.getId() == 227) {
 			int primary = usedItem.getId() == 227 ? withItem.getId() : usedItem.getId();
 			player.getHerblore().mix(primary);

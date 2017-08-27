@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.venenatis.game.model.entity.player.dialogue.impl.*;
 import com.venenatis.game.model.entity.player.dialogue.impl.chat.*;
+import com.venenatis.game.model.entity.player.dialogue.impl.item_on_item.*;
 import com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_caves.*;
 import com.venenatis.game.model.entity.player.dialogue.impl.pets.*;
 import com.venenatis.game.model.entity.player.dialogue.impl.slayer.*;
@@ -24,6 +25,11 @@ public class DialogueRepository {
 	private static final Map<String, Class<? extends Dialogue>> dialogues = new HashMap<>();
 
 	static {
+		
+		/**
+		 * Granite maul
+		 */
+		dialogues.put("GRANITE_MAUL_UPGRADE", GraniteMaulUpgrade.class);
 		
 		/**
 		 * Fight caves

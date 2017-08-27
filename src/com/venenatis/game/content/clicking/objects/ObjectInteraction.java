@@ -183,6 +183,15 @@ public class ObjectInteraction {
 		
 		switch(objectId) {
 		
+		case 26720:
+			Location root = player.getLocation();
+			if(root.getX() == 2356) {
+				player.setTeleportTarget(Location.create(root.getX() + 2, root.getY(), location.getZ()));
+			} else if(root.getX() == 2358) {
+				player.setTeleportTarget(Location.create(root.getX() - 2, root.getY(), location.getZ()));
+			}
+			break;
+		
 		case 11833:
 			player.getFightCave().enter_cave(player);
 			break;

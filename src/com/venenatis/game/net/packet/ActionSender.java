@@ -35,21 +35,22 @@ import com.venenatis.server.Server;
  * @author Patrick van Elderen, credits to Graham Edgecombe
  */
 public class ActionSender {
-	
-	/**
-     * The player.
-     */
-    private Player player;
 
-    /**
-     * Creates an action sender for the specified player.
-     *
-     * @param player The player to create the action sender for.
-     */
-    public ActionSender(Player player) {
-        this.player = player;
-    }
-    
+	/**
+	 * The player.
+	 */
+	private Player player;
+
+	/**
+	 * Creates an action sender for the specified player.
+	 *
+	 * @param player
+	 *            The player to create the action sender for.
+	 */
+	public ActionSender(Player player) {
+		this.player = player;
+	}
+
 	/**
 	 * Sends the entity feed overlay
 	 * 
@@ -61,18 +62,16 @@ public class ActionSender {
 	 *            their max health
 	 * @return send the health overlay
 	 */
-    public ActionSender sendEntityFeed(String entity_name, int hp, int max_hp) {
-    	if (player.getOutStream() != null) {
-            player.getOutStream().putFrameVarByte(175);
-            int offset = player.getOutStream().offset;
-            player.getOutStream().putRS2String(entity_name == null ? "" : entity_name);
-            player.getOutStream().writeShort(hp);
-    		player.getOutStream().writeShort(max_hp);
-            player.getOutStream().putFrameSizeByte(offset);
-        }
-    	return this;
-    }
-    
+	public ActionSender sendEntityFeed(String entity_name, int hp, int max_hp) {
+		player.getOutStream().putFrameVarByte(175);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().putRS2String(entity_name == null ? "" : entity_name);
+		player.getOutStream().writeShort(hp);
+		player.getOutStream().writeShort(max_hp);
+		player.getOutStream().putFrameSizeByte(offset);
+		return this;
+	}
+
 	/**
 	 * This packet is used for sending timers such as veng timers, antifire,
 	 * barrage and teleblock.
@@ -81,20 +80,16 @@ public class ActionSender {
 	 *            The action type
 	 * @param seconds
 	 *            The display timer
-	 * @return 
-	 * 1 - Anti-fire 
-	 * 2 - venge 
-	 * 3 - barrage
-	 * 4 - teleblock
+	 * @return 1 - Anti-fire 2 - venge 3 - barrage 4 - teleblock
 	 */
-    public ActionSender sendWidget(int type, int seconds) {
-    	player.getOutStream().writeFrame(178);
-    	player.getOutStream().writeByte(type);
-    	player.getOutStream().writeShort(seconds * 50);
-    	player.flushOutStream();
-    	return this;
-    }
-    
+	public ActionSender sendWidget(int type, int seconds) {
+		player.getOutStream().writeFrame(178);
+		player.getOutStream().writeByte(type);
+		player.getOutStream().writeShort(seconds * 50);
+		player.flushOutStream();
+		return this;
+	}
+
 	public ActionSender sendMapRegionPacket() {
 		player.setLastKnownRegion(player.getLocation());
 		player.getOutStream().writeFrame(73);
@@ -104,8 +99,8 @@ public class ActionSender {
 		return this;
 	}
 
-    public ActionSender sendProgressInterface() {
-    	sendConfig(406, player.getProgressBar());
+	public ActionSender sendProgressInterface() {
+		sendConfig(406, player.getProgressBar());
 		sendInterfaceConfig(1, 12224);
 		sendInterfaceConfig(1, 12225);
 		sendInterfaceConfig(1, 12226);
@@ -122,77 +117,67 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-    
-    /**
-     * Sends the player's skills.
-     *
-     * @return The action sender instance, for chaining.
-     */
+
+	/**
+	 * Sends the player's skills.
+	 *
+	 * @return The action sender instance, for chaining.
+	 */
 	public ActionSender sendSkills() {
 		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
 			sendSkillLevel(i);
 		}
 		return this;
 	}
-	
+
 	public ActionSender addClanMember(String username) {
-		if (player.getOutStream() != null) {
-            player.getOutStream().putFrameVarByte(216);
-            int offset = player.getOutStream().offset;
-            player.getOutStream().putRS2String(username);
-            player.getOutStream().putFrameSizeByte(offset);
-        }
-        return this;
+		player.getOutStream().putFrameVarByte(216);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().putRS2String(username);
+		player.getOutStream().putFrameSizeByte(offset);
+		return this;
 	}
-	
+
 	public ActionSender sendClanDetails(String name, String message, String clan, ClanRank rank) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().putFrameVarShort(217);
-            int offset = player.getOutStream().offset;
-            player.getOutStream().putRS2String(name);
-            player.getOutStream().putRS2String(message);
-            player.getOutStream().putRS2String(clan);
-            player.getOutStream().writeShort(rank.getRankIndex());
-            player.getOutStream().putFrameSizeShort(offset);
-        }
+		player.getOutStream().putFrameVarShort(217);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().putRS2String(name);
+		player.getOutStream().putRS2String(message);
+		player.getOutStream().putRS2String(clan);
+		player.getOutStream().writeShort(rank.getRankIndex());
+		player.getOutStream().putFrameSizeShort(offset);
 		return this;
 	}
-	
+
 	public ActionSender sendClanDetails(String message, String clan) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().putFrameVarShort(217);
-            int offset = player.getOutStream().offset;
-            player.getOutStream().putRS2String("");
-            player.getOutStream().putRS2String(message);
-            player.getOutStream().putRS2String(clan);
-            player.getOutStream().writeShort(ClanRank.ANYONE.getRankIndex());
-            player.getOutStream().putFrameSizeShort(offset);
-        }
+		player.getOutStream().putFrameVarShort(217);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().putRS2String("");
+		player.getOutStream().putRS2String(message);
+		player.getOutStream().putRS2String(clan);
+		player.getOutStream().writeShort(ClanRank.ANYONE.getRankIndex());
+		player.getOutStream().putFrameSizeShort(offset);
 		return this;
 	}
-	
+
 	public ActionSender removeClanMember(String username) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().putFrameVarByte(213);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().putRS2String(username);
-			player.getOutStream().putFrameSizeByte(offset);
-		}
+		player.getOutStream().putFrameVarByte(213);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().putRS2String(username);
+		player.getOutStream().putFrameSizeByte(offset);
 		return this;
 	}
-	
+
 	public ActionSender sendString(String message, int interfaceId) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().putFrameVarShort(126);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().putRS2String(message == null ? "" : message);
-			player.getOutStream().writeWordA(interfaceId);
-			player.getOutStream().putFrameSizeShort(offset);
-		}
+		player.getOutStream().putFrameVarShort(126);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().putRS2String(message == null ? "" : message);
+		player.getOutStream().writeWordA(interfaceId);
+		player.getOutStream().putFrameSizeShort(offset);
 		player.flushOutStream();
 		return this;
 	}
-	
+
 	/**
 	 * Represents the state a minimap can be in.
 	 *
@@ -224,15 +209,13 @@ public class ActionSender {
 			return code;
 		}
 	}
-	
+
 	public ActionSender sendMinimapState(MinimapState state) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(99);
-			player.getOutStream().writeByte(state.getCode());
-		}
+		player.getOutStream().writeFrame(99);
+		player.getOutStream().writeByte(state.getCode());
 		return this;
 	}
-	
+
 	public ActionSender drawHeadIcon(int i, int j, int k, int l) {
 		player.outStream.writeFrame(254);
 		player.outStream.writeByte(i);
@@ -248,7 +231,7 @@ public class ActionSender {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Sends all the sidebar interfaces.
 	 * 
@@ -281,52 +264,44 @@ public class ActionSender {
 		sendSidebarInterface(Constants.LOGOUT_TAB, 2449);
 		return this;
 	}
-	
+
 	public ActionSender hideAllSideBars() {
 		for (int i = 0; i < 14; i++)
 			sendSidebarInterface(i, -1);
 		return this;
 	}
-	
+
 	public ActionSender createObjectHint(int x, int y, int height, int pos) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(254);
-			player.getOutStream().writeByte(pos);
-			player.getOutStream().writeShort(x);
-			player.getOutStream().writeShort(y);
-			player.getOutStream().writeByte(height);
-		}
+		player.getOutStream().writeFrame(254);
+		player.getOutStream().writeByte(pos);
+		player.getOutStream().writeShort(x);
+		player.getOutStream().writeShort(y);
+		player.getOutStream().writeByte(height);
 		return this;
 	}
-	
+
 	public ActionSender createPlayerHint(int type, int id) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(254);
-			player.getOutStream().writeByte(type);
-			player.getOutStream().writeShort(id);
-			player.getOutStream().write3Byte(0);
-		}
+		player.getOutStream().writeFrame(254);
+		player.getOutStream().writeByte(type);
+		player.getOutStream().writeShort(id);
+		player.getOutStream().write3Byte(0);
 		return this;
 	}
-	
+
 	public ActionSender sendInput(InputString inputString) {
-		if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(187);
-    		player.setInputString(inputString);
-            player.flushOutStream();
-        }
+		player.getOutStream().writeFrame(187);
+		player.setInputString(inputString);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendInput(InputAmount inputAmount) {
-		if (player.getOutStream() != null) {
-    		player.getOutStream().writeFrame(27);
-            player.setInputAmount(inputAmount);
-            player.flushOutStream();
-        }
+		player.getOutStream().writeFrame(27);
+		player.setInputAmount(inputAmount);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	/**
 	 * Sends the player an option.
 	 * 
@@ -337,49 +312,42 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendInteractionOption(String option, int slot, boolean top) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().putFrameVarByte(104);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeByte((byte) -slot);
-			player.getOutStream().putByteA(top ? (byte) 1 : (byte) 0);
-			player.getOutStream().putRS2String(option);
-			player.getOutStream().putFrameSizeByte(offset);
-			player.flushOutStream();
-		}
+		player.getOutStream().putFrameVarByte(104);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().writeByte((byte) -slot);
+		player.getOutStream().putByteA(top ? (byte) 1 : (byte) 0);
+		player.getOutStream().putRS2String(option);
+		player.getOutStream().putFrameSizeByte(offset);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendInterfaceConfig(int interfaceId, int state) {
-		if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(171);
-            player.getOutStream().writeByte(interfaceId);
-            player.getOutStream().writeShort(state);
-        }
+
+		player.getOutStream().writeFrame(171);
+		player.getOutStream().writeByte(interfaceId);
+		player.getOutStream().writeShort(state);
 		return this;
 	}
-	
+
 	/**
-     * zoom is usually 175
-     */
+	 * zoom is usually 175
+	 */
 	public ActionSender sendItemOnInterface(int id, int zoom, int model) {
-		if (player.getOutStream() != null && player != null) {
-            player.getOutStream().writeFrame(246);
-            player.getOutStream().writeWordBigEndian(id);
-            player.getOutStream().writeShort(zoom);
-            player.getOutStream().writeShort(model);
-        }
+		player.getOutStream().writeFrame(246);
+		player.getOutStream().writeWordBigEndian(id);
+		player.getOutStream().writeShort(zoom);
+		player.getOutStream().writeShort(model);
 		return this;
 	}
-	
+
 	public ActionSender sendChatInterface(int frame) {
 		player.stopSkillTask();
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(164);
-			player.getOutStream().writeWordBigEndian_dup(frame);
-		}
+		player.getOutStream().writeFrame(164);
+		player.getOutStream().writeWordBigEndian_dup(frame);
 		return this;
 	}
-	
+
 	public ActionSender sendItemOnInterfaceSlot(int interfaceId, Item item, int slot) {
 		player.outStream.putFrameVarShort(34);
 		int offset = player.getOutStream().offset;
@@ -397,57 +365,53 @@ public class ActionSender {
 		player.outStream.putFrameSizeShort(offset);
 		return this;
 	}
-	
+
 	public ActionSender sendUpdateItem(int frame, int item, int slot, int amount) {
 		player.outStream.putFrameVarShort(34);
-        int offset = player.getOutStream().offset;
-        player.outStream.writeShort(frame);
-        player.outStream.writeByte(slot);
-        player.outStream.writeShort(item + 1);
-        player.outStream.writeByte(255);
-        player.outStream.putInt(amount);
-        player.outStream.putFrameSizeShort(offset);
-		return this;
-	}
-	
-	public ActionSender clearItemOnInterface(int frame) {
-		player.outStream.putFrameVarShort(72);
-        int offset = player.getOutStream().offset;
-        player.outStream.writeShort(frame);
+		int offset = player.getOutStream().offset;
+		player.outStream.writeShort(frame);
+		player.outStream.writeByte(slot);
+		player.outStream.writeShort(item + 1);
+		player.outStream.writeByte(255);
+		player.outStream.putInt(amount);
 		player.outStream.putFrameSizeShort(offset);
 		return this;
 	}
-	
+
+	public ActionSender clearItemOnInterface(int frame) {
+		player.outStream.putFrameVarShort(72);
+		int offset = player.getOutStream().offset;
+		player.outStream.writeShort(frame);
+		player.outStream.putFrameSizeShort(offset);
+		return this;
+	}
+
 	public ActionSender sendMultiIcon(int icon) {
-		if (player != null) {
-            player.outStream.writeFrame(61);
-            player.outStream.writeByte(icon);
-            player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-        }
+		player.outStream.writeFrame(61);
+		player.outStream.writeByte(icon);
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		return this;
 	}
-	
+
 	public ActionSender sendPm(long name, int rights, byte[] chatMessage, int messageSize) {
-        if (player.getOutStream() != null) {
-            player.getOutStream().putFrameVarByte(196);
-            int offset = player.getOutStream().offset;
-            player.getOutStream().putLong(name);
-            player.getOutStream().putInt(player.lastChatId++);
-            player.getOutStream().writeByte(rights);
-            player.getOutStream().writeBytes(chatMessage, messageSize, 0);
-            player.getOutStream().putFrameSizeByte(offset);
-            Utility.textUnpack(chatMessage, messageSize);
-            Utility.longToPlayerName(name);
-        }
+		player.getOutStream().putFrameVarByte(196);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().putLong(name);
+		player.getOutStream().putInt(player.lastChatId++);
+		player.getOutStream().writeByte(rights);
+		player.getOutStream().writeBytes(chatMessage, messageSize, 0);
+		player.getOutStream().putFrameSizeByte(offset);
+		Utility.textUnpack(chatMessage, messageSize);
+		Utility.longToPlayerName(name);
 		return this;
 	}
-	
+
 	public ActionSender removeAllInterfaces() {
 		player.getInterfaceState().interfaceClosed();
 		player.getOutStream().writeFrame(219);
 		return this;
 	}
-	
+
 	public ActionSender sendStringColor(int id, int color) {
 		player.getOutStream().writeFrame(122);
 		player.getOutStream().writeShort(id);
@@ -455,50 +419,46 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender clearScreen() {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(107);
-		}
+		player.getOutStream().writeFrame(107);
 		return this;
 	}
-	
+
 	public ActionSender sendToggle(int id, int state) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(87);
-			player.getOutStream().writeWordBigEndian_dup(id);
-			player.getOutStream().writeDWord_v1(state);
-		}
+		player.getOutStream().writeFrame(87);
+		player.getOutStream().writeWordBigEndian_dup(id);
+		player.getOutStream().writeDWord_v1(state);
 		return this;
 	}
-	
+
 	public ActionSender sendExperienceCounter(int skill, int experience) {
 		GameBuffer stream = player.getOutStream();
-    	stream.writeFrame(127);
-    	stream.writeByte(skill);
-    	stream.putInt(experience);
-    	stream.putInt(player.getSkills().getExpCounter());
-    	//System.out.println("skill: "+skill+ " exp given "+experience);
-    	player.flushOutStream();
+		stream.writeFrame(127);
+		stream.writeByte(skill);
+		stream.putInt(experience);
+		stream.putInt(player.getSkills().getExpCounter());
+		// System.out.println("skill: "+skill+ " exp given "+experience);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender moveComponent(int x, int y, int componentId) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(70);
-			player.getOutStream().writeShort(x);
-			player.getOutStream().writeWordBigEndian(y);
-			player.getOutStream().writeWordBigEndian(componentId);
-		}
+		player.getOutStream().writeFrame(70);
+		player.getOutStream().writeShort(x);
+		player.getOutStream().writeWordBigEndian(y);
+		player.getOutStream().writeWordBigEndian(componentId);
 		return this;
 	}
-	
+
 	/**
 	 * Changes the main displaying sprite on an interface. The index represents
 	 * the location of the new sprite in the index of the sprite array.
 	 * 
-	 * @param componentId	the interface
-	 * @param index			the index in the array
+	 * @param componentId
+	 *            the interface
+	 * @param index
+	 *            the index in the array
 	 */
 	public ActionSender sendChangeSprite(int componentId, byte index) {
 		GameBuffer stream = player.getOutStream();
@@ -508,35 +468,38 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-	
+
 	/**
-     * The message that opens an interface and displays another interface over
-     * the inventory area.
-     *
-     * @param overlay
-     *            the interface to send on the inventory area.
-     * @return an instance of this encoder.
-     */
+	 * The message that opens an interface and displays another interface over
+	 * the inventory area.
+	 *
+	 * @param overlay
+	 *            the interface to send on the inventory area.
+	 * @return an instance of this encoder.
+	 */
 	public ActionSender sendInterfaceWithInventoryOverlay(int interfaceId, int overlay) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(248);
-			player.getOutStream().writeWordA(interfaceId);
-			player.getOutStream().writeShort(overlay);
-			player.getInterfaceState().interfaceOpened(interfaceId);
-		}
+		player.getOutStream().writeFrame(248);
+		player.getOutStream().writeWordA(interfaceId);
+		player.getOutStream().writeShort(overlay);
+		player.getInterfaceState().interfaceOpened(interfaceId);
 		return this;
 	}
-	
+
 	/**
-	 * Sends some information to the client about screen fading. 
-	 * @param text		the text that will be displayed in the center of the screen
-	 * @param state		the state should be either 0, -1, or 1. 
-	 * @param seconds	the amount of time in seconds it takes for the fade
-	 * to transition.
-	 * <p>
-	 * If the state is -1 then the screen fades from black to transparent.
-	 * When the state is +1 the screen fades from transparent to black. If 
-	 * the state is 0 all drawing is stopped.
+	 * Sends some information to the client about screen fading.
+	 * 
+	 * @param text
+	 *            the text that will be displayed in the center of the screen
+	 * @param state
+	 *            the state should be either 0, -1, or 1.
+	 * @param seconds
+	 *            the amount of time in seconds it takes for the fade to
+	 *            transition.
+	 *            <p>
+	 *            If the state is -1 then the screen fades from black to
+	 *            transparent. When the state is +1 the screen fades from
+	 *            transparent to black. If the state is 0 all drawing is
+	 *            stopped.
 	 */
 	public ActionSender sendScreenFade(String text, int state, int seconds) {
 		if (seconds < 1 && state != 0) {
@@ -550,87 +513,80 @@ public class ActionSender {
 		player.getOutStream().putFrameSizeShort(offset);
 		return this;
 	}
-	
+
 	public ActionSender sendScrollBar(int scrollbar, int size) {
-		if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(204);
-            player.getOutStream().putInt(scrollbar);
-            player.getOutStream().putInt(size);
-        }
+		player.getOutStream().writeFrame(204);
+		player.getOutStream().putInt(scrollbar);
+		player.getOutStream().putInt(size);
 		return this;
 	}
-	
-	public ActionSender sendShakeScreen(int verticleAmount, int verticleSpeed, int horizontalAmount, int horizontalSpeed) {
-		if (player != null && player.getOutStream() != null) {
-	    	player.outStream.writeFrame(35);
-	        player.outStream.writeByte(verticleAmount);
-	        player.outStream.writeByte(verticleSpeed);
-	        player.outStream.writeByte(horizontalAmount);
-	        player.outStream.writeByte(horizontalSpeed);
-        }
+
+	public ActionSender sendShakeScreen(int verticleAmount, int verticleSpeed, int horizontalAmount,
+			int horizontalSpeed) {
+		player.outStream.writeFrame(35);
+		player.outStream.writeByte(verticleAmount);
+		player.outStream.writeByte(verticleSpeed);
+		player.outStream.writeByte(horizontalAmount);
+		player.outStream.writeByte(horizontalSpeed);
 		return this;
 	}
-	
+
 	/**
 	 * Sends a packet to update a group of items.
 	 * 
 	 * @param id
-	 *             The interface id.
+	 *            The interface id.
 	 * @param items
-	 *             The items.
+	 *            The items.
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendItemOnInterface(int id, Item... items) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().putFrameVarShort(53);
-			int offset = player.getOutStream().offset;
-			player.getOutStream().writeShort(id);
-			player.getOutStream().writeShort(items.length);
-			for (Item item : items) {
-				if (item != null) {
-					int amount = item.getAmount();
-					if (amount > 254) {
-						player.getOutStream().writeByte(255);
-						player.getOutStream().writeDWord_v2(item.getAmount());
-					} else {
-						player.getOutStream().writeByte(item.getAmount());
-					}
-					player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+		player.getOutStream().putFrameVarShort(53);
+		int offset = player.getOutStream().offset;
+		player.getOutStream().writeShort(id);
+		player.getOutStream().writeShort(items.length);
+		for (Item item : items) {
+			if (item != null) {
+				int amount = item.getAmount();
+				if (amount > 254) {
+					player.getOutStream().writeByte(255);
+					player.getOutStream().writeDWord_v2(item.getAmount());
 				} else {
-					player.getOutStream().writeByte(0);
-					player.getOutStream().writeWordBigEndianA(0);
+					player.getOutStream().writeByte(item.getAmount());
 				}
+				player.getOutStream().writeWordBigEndianA(item.getId() + 1);
+			} else {
+				player.getOutStream().writeByte(0);
+				player.getOutStream().writeWordBigEndianA(0);
 			}
-			if (id == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
-				for (final int amount : player.getBank().getTabAmounts()) {
-					player.getOutStream().writeByte(amount >> 8);
-					player.getOutStream().writeShort(amount & 0xFF);
-				}
+		}
+		if (id == InterfaceConstants.WITHDRAW_BANK && player.getBank().getTabAmounts() != null) {
+			for (final int amount : player.getBank().getTabAmounts()) {
+				player.getOutStream().writeByte(amount >> 8);
+				player.getOutStream().writeShort(amount & 0xFF);
 			}
-			player.getOutStream().putFrameSizeShort(offset);
-			player.flushOutStream();
+		}
+		player.getOutStream().putFrameSizeShort(offset);
+		player.flushOutStream();
+		return this;
+	}
+
+	public ActionSender sendObject(int id, int x, int y, int h, int face, int objectType) {
+		sendCoordinates(Location.create(x, y, h));
+		// removing object
+		player.getOutStream().writeFrame(101);
+		player.getOutStream().writeByteC((objectType << 2) + (face & 3));
+		player.getOutStream().writeByte(0);
+
+		if (id != -1) { // adding object
+			player.getOutStream().writeFrame(151);
+			player.getOutStream().writeByteS(0);
+			player.getOutStream().writeWordBigEndian(id);
+			player.getOutStream().writeByteS((objectType << 2) + (face & 3));
 		}
 		return this;
 	}
-	
-	public ActionSender sendObject(int id, int x, int y, int h, int face, int objectType) {
-        if (player.getOutStream() != null) {
-        	sendCoordinates(Location.create(x, y, h));
-        	// removing object
-            player.getOutStream().writeFrame(101);
-            player.getOutStream().writeByteC((objectType << 2) + (face & 3));
-            player.getOutStream().writeByte(0);
 
-            if (id != -1) { // adding object
-                player.getOutStream().writeFrame(151);
-                player.getOutStream().writeByteS(0);
-                player.getOutStream().writeWordBigEndian(id);
-                player.getOutStream().writeByteS((objectType << 2) + (face & 3));
-            }
-        }
-        return this;
-    }
-	
 	public ActionSender sendCoordinates(Location location) {
 		player.getOutStream().writeFrame(85);
 		int y = location.getY() - player.getLastKnownRegion().getRegionY() * 8;
@@ -640,7 +596,7 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-	
+
 	/**
 	 * Sends a ground item
 	 * 
@@ -656,7 +612,7 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendRemoveGroundItem(GroundItem groundItem) {
 		sendCoordinates(groundItem.getLocation());
 		player.getOutStream().writeFrame(156);
@@ -665,91 +621,101 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-	
-	
+
 	public ActionSender stillGfx(int id, int x, int y, int height, int time) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().writeFrame(85);
-			player.getOutStream().writeByteC(y - (player.getLastKnownRegion().getRegionY() * 8));
-			player.getOutStream().writeByteC(x - (player.getLastKnownRegion().getRegionX() * 8));
-			player.getOutStream().writeFrame(4);
-			player.getOutStream().writeByte(0);
-			player.getOutStream().writeWord(id);
-			player.getOutStream().writeByte(height);
-			player.getOutStream().writeWord(time);
-			player.flushOutStream();
-		}
+		player.getOutStream().writeFrame(85);
+		player.getOutStream().writeByteC(y - (player.getLastKnownRegion().getRegionY() * 8));
+		player.getOutStream().writeByteC(x - (player.getLastKnownRegion().getRegionX() * 8));
+		player.getOutStream().writeFrame(4);
+		player.getOutStream().writeByte(0);
+		player.getOutStream().writeWord(id);
+		player.getOutStream().writeByte(height);
+		player.getOutStream().writeWord(time);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender stillGfx(int id, Location location) {
-		if (player.getOutStream() != null && player != null) {
-			player.getOutStream().writeFrame(85);
-			player.getOutStream().writeByteC(location.getY() - (player.getLastKnownRegion().getRegionY() * 8));
-			player.getOutStream().writeByteC(location.getX() - (player.getLastKnownRegion().getRegionX() * 8));
-			player.getOutStream().writeFrame(4);
-			player.getOutStream().writeByte(0);
-			player.getOutStream().writeWord(id);
-			player.getOutStream().writeByte(location.getZ());
-			player.getOutStream().writeWord(0);
-			player.flushOutStream();
-		}
+		player.getOutStream().writeFrame(85);
+		player.getOutStream().writeByteC(location.getY() - (player.getLastKnownRegion().getRegionY() * 8));
+		player.getOutStream().writeByteC(location.getX() - (player.getLastKnownRegion().getRegionX() * 8));
+		player.getOutStream().writeFrame(4);
+		player.getOutStream().writeByte(0);
+		player.getOutStream().writeWord(id);
+		player.getOutStream().writeByte(location.getZ());
+		player.getOutStream().writeWord(0);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	/**
-     * Sends a projectile to a location.
-     *
-     * @param start       The starting location.
-     * @param finish      The finishing location.
-     * @param id          The graphic id.
-     * @param delay       The delay before showing the projectile.
-     * @param angle       The angle the projectile is coming from.
-     * @param speed       The speed the projectile travels at.
-     * @param startHeight The starting height of the projectile.
-     * @param endHeight   The ending height of the projectile.
-     * @param lockon      The lockon index of the projectile, so it follows them if they
-     *                    move.
-     * @param slope       The slope at which the projectile moves.
-     * @param radius      The radius from the centre of the tile to display the
-     *                    projectile from.
-     * @return The action sender instance, for chaining.
-     */
-    public ActionSender sendProjectile(Location start, Location finish, int id, int delay, int angle, int speed, int startHeight, int endHeight, int slope, int radius, int lockon) {
-    	int offsetX = (start.getX() - finish.getX());
+	 * Sends a projectile to a location.
+	 *
+	 * @param start
+	 *            The starting location.
+	 * @param finish
+	 *            The finishing location.
+	 * @param id
+	 *            The graphic id.
+	 * @param delay
+	 *            The delay before showing the projectile.
+	 * @param angle
+	 *            The angle the projectile is coming from.
+	 * @param speed
+	 *            The speed the projectile travels at.
+	 * @param startHeight
+	 *            The starting height of the projectile.
+	 * @param endHeight
+	 *            The ending height of the projectile.
+	 * @param lockon
+	 *            The lockon index of the projectile, so it follows them if they
+	 *            move.
+	 * @param slope
+	 *            The slope at which the projectile moves.
+	 * @param radius
+	 *            The radius from the centre of the tile to display the
+	 *            projectile from.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendProjectile(Location start, Location finish, int id, int delay, int angle, int speed,
+			int startHeight, int endHeight, int slope, int radius, int lockon) {
+		int offsetX = (start.getX() - finish.getX());
 		int offsetY = (start.getY() - finish.getY());
 
-        //sendLocalCoordinates(start, -3, -2);
-        player.getOutStream().writeFrame(85);
-		
-        //player.getOutStream().writeByteC(start.getY() - player.getLastKnownRegion().getY() * 8 - 2);
-		//player.getOutStream().writeByteC(start.getX() - player.getLastKnownRegion().getX() * 8 - 3);
-        
-        int difx = start.getX(), dify = start.getY();
+		// sendLocalCoordinates(start, -3, -2);
+		player.getOutStream().writeFrame(85);
+
+		// player.getOutStream().writeByteC(start.getY() -
+		// player.getLastKnownRegion().getY() * 8 - 2);
+		// player.getOutStream().writeByteC(start.getX() -
+		// player.getLastKnownRegion().getX() * 8 - 3);
+
+		int difx = start.getX(), dify = start.getY();
 		int regionX = player.getLastKnownRegion().getRegionX(), regionY = player.getLastKnownRegion().getRegionY();
 		player.getOutStream().writeByteC((dify - regionY * 8 - 2));
 		player.getOutStream().writeByteC((difx - regionX * 8 - 3));
-        player.getOutStream().writeFrame(117);
-        player.getOutStream().writeByte(angle);
-        player.getOutStream().writeByte(offsetY);
-        player.getOutStream().writeByte(offsetX);
-        player.getOutStream().writeShort(lockon);
-        player.getOutStream().writeShort(id);
-        player.getOutStream().writeByte(startHeight);
-        player.getOutStream().writeByte(endHeight);
-        player.getOutStream().writeShort(delay);
-        player.getOutStream().writeShort(speed);
-        player.getOutStream().writeByte(slope);
-        player.getOutStream().writeByte(radius);
+		player.getOutStream().writeFrame(117);
+		player.getOutStream().writeByte(angle);
+		player.getOutStream().writeByte(offsetY);
+		player.getOutStream().writeByte(offsetX);
+		player.getOutStream().writeShort(lockon);
+		player.getOutStream().writeShort(id);
+		player.getOutStream().writeByte(startHeight);
+		player.getOutStream().writeByte(endHeight);
+		player.getOutStream().writeShort(delay);
+		player.getOutStream().writeShort(speed);
+		player.getOutStream().writeByte(slope);
+		player.getOutStream().writeByte(radius);
 
-        player.flushOutStream();
-        //player.sendMessage("dif "+offsetX+"|"+offsetY+" from "+start+" to "+finish+" dist "+start.distance(finish));
-        return this;
-    }
-	
+		player.flushOutStream();
+		// player.sendMessage("dif "+offsetX+"|"+offsetY+" from "+start+" to
+		// "+finish+" dist "+start.distance(finish));
+		return this;
+	}
+
 	public ActionSender sendLocalCoordinates(Location position, int xOffset, int yOffset) {
 		player.getOutStream().writeFrame(85);
-		
+
 		int difx = position.getX(), dify = position.getY();
 		int regionX = player.getLastKnownRegion().getRegionX(), regionY = player.getLastKnownRegion().getRegionY();
 		player.getOutStream().writeByteC((dify - (regionY * 8)) + yOffset);
@@ -758,18 +724,16 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-    
+
 	public ActionSender sendMessage(String message) {
-		if (player.getOutStream() != null) {
-			player.outStream.putFrameVarByte(253);
-			int offset = player.getOutStream().offset;
-			player.outStream.putRS2String(message);
-			player.outStream.writeByte(0);
-			player.outStream.putFrameSizeByte(offset);
-		}
+		player.outStream.putFrameVarByte(253);
+		int offset = player.getOutStream().offset;
+		player.outStream.putRS2String(message);
+		player.outStream.writeByte(0);
+		player.outStream.putFrameSizeByte(offset);
 		return this;
 	}
-	
+
 	/**
 	 * Sends a configuration button's state.
 	 * 
@@ -780,21 +744,20 @@ public class ActionSender {
 	 * @return The ActionSender instance.
 	 */
 	public ActionSender sendConfig(int id, int state) {
-		if (player.getOutStream() != null && player != null) {
-			//System.out.println("Varp update will be opcode "+(state<128 ? OPCODE:87)+" based on state:"+state);
-			if (state < 128) {
-				player.getOutStream().writeFrame(36);
-				player.getOutStream().writeWordBigEndian(id);
-				player.getOutStream().writeByte(state);
-			} else {
-				player.getOutStream().writeFrame(87);
-				player.getOutStream().writeWordBigEndian_dup(id);
-				player.getOutStream().writeDWord_v1(state);
-			}
+		// System.out.println("Varp update will be opcode "+(state<128 ?
+		// OPCODE:87)+" based on state:"+state);
+		if (state < 128) {
+			player.getOutStream().writeFrame(36);
+			player.getOutStream().writeWordBigEndian(id);
+			player.getOutStream().writeByte(state);
+		} else {
+			player.getOutStream().writeFrame(87);
+			player.getOutStream().writeWordBigEndian_dup(id);
+			player.getOutStream().writeDWord_v1(state);
 		}
 		return this;
 	}
-	
+
 	public ActionSender sendStrings(int startId, int endId, String[] strings) {
 		player.getOutStream().createFrameVarSizeWord(229);
 		player.getOutStream().writeWord(startId);
@@ -806,26 +769,24 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendFriendServerStatus(final int status) {
-		if (this.player.getOutStream() != null && this.player != null) {
-            this.player.getOutStream().writeFrame(221);
-            this.player.getOutStream().writeByte(status);
-        }
+		this.player.getOutStream().writeFrame(221);
+		this.player.getOutStream().writeByte(status);
 		return this;
 	}
 
 	public ActionSender sendSkillLevel(int skill) {
-		if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(134);
-            player.getOutStream().writeByte((byte) skill);
-            player.getOutStream().writeDWord_v1((int) player.getSkills().getExperience(skill));
-            player.getOutStream().writeByte((byte) player.getSkills().getLevel(skill));
-            //System.out.printf("skill - %s exp %s lvl %s %n", skill, player.getSkills().getExperience(skill), player.getSkills().getLevel(skill));
-        }
+		player.getOutStream().writeFrame(134);
+		player.getOutStream().writeByte((byte) skill);
+		player.getOutStream().writeDWord_v1((int) player.getSkills().getExperience(skill));
+		player.getOutStream().writeByte((byte) player.getSkills().getLevel(skill));
+		// System.out.printf("skill - %s exp %s lvl %s %n", skill,
+		// player.getSkills().getExperience(skill),
+		// player.getSkills().getLevel(skill));
 		return this;
 	}
-	
+
 	/**
 	 * Sends a packet to the client in order to open an interface
 	 * 
@@ -833,23 +794,19 @@ public class ActionSender {
 	 *            The interface
 	 */
 	public ActionSender sendInterface(int id) {
-		if (player != null) {
-        	player.stopSkillTask();
-            if (player.getOutStream() != null) {
-                player.getOutStream().writeFrame(97);
-                player.getOutStream().writeShort(id);
-                player.getInterfaceState().interfaceOpened(id);
-            }
-        }
+		player.stopSkillTask();
+		player.getOutStream().writeFrame(97);
+		player.getOutStream().writeShort(id);
+		player.getInterfaceState().interfaceOpened(id);
 		return this;
 	}
-	
+
 	public ActionSender sendSong(int songId) {
 		player.getOutStream().writeFrame(74);
 		player.getOutStream().writeWordBigEndian(songId);
 		return this;
 	}
-	
+
 	public ActionSender sendSound(int id, int type, int delay) {
 		player.getOutStream().writeFrame(174);
 		player.getOutStream().writeShort(id);
@@ -857,89 +814,73 @@ public class ActionSender {
 		player.getOutStream().writeShort(delay);
 		return this;
 	}
-	
+
 	public ActionSender sendTemporarySong(int songId, int songDelay) {
 		player.getOutStream().writeFrame(121);
 		player.getOutStream().writeWordBigEndian(songId);
 		player.getOutStream().writeWordBigEndian(songDelay);
 		return this;
 	}
-	
+
 	public ActionSender sendWalkableInterface(int id) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(208);
-			player.getOutStream().writeWordBigEndian_dup(id);
-		}
+		player.getOutStream().writeFrame(208);
+		player.getOutStream().writeWordBigEndian_dup(id);
 		return this;
 	}
-	
+
 	public ActionSender sendSidebarInterface(int menu, int id) {
-		if (player != null) {
-			player.stopSkillTask();
-			if (player.getOutStream() != null) {
-				player.outStream.writeFrame(71);
-				player.outStream.writeShort(id);
-				player.outStream.putByteA(menu);
-			}
-			player.flushOutStream();
-		}
+		player.stopSkillTask();
+		player.outStream.writeFrame(71);
+		player.outStream.writeShort(id);
+		player.outStream.putByteA(menu);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendPlayerHeadToInterface(int id) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(185);
-			player.getOutStream().writeWordBigEndianA(id);
-		}
+		player.getOutStream().writeFrame(185);
+		player.getOutStream().writeWordBigEndianA(id);
 		return this;
 	}
-	
+
 	public ActionSender sendNpcHeadToInterface(int id, int child) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(75);
-			player.getOutStream().writeWordBigEndianA(id);
-			player.getOutStream().writeWordBigEndianA(child);
-		}
+		player.getOutStream().writeFrame(75);
+		player.getOutStream().writeWordBigEndianA(id);
+		player.getOutStream().writeWordBigEndianA(child);
 		return this;
 	}
-	
+
 	public ActionSender sendInterfaceAnimation(int id, Animation animation) {
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(200);
-			player.getOutStream().writeShort(id);
-			player.getOutStream().writeShort(animation.getId());
-			player.flushOutStream();
-		}
+		player.getOutStream().writeFrame(200);
+		player.getOutStream().writeShort(id);
+		player.getOutStream().writeShort(animation.getId());
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendFriend(long username, int world) {
-		if (player.getOutStream() != null) {
-            player.getOutStream().writeFrame(50);
-            player.getOutStream().putLong(username);
-            player.getOutStream().writeByte(world);
-            player.flushOutStream();
-        }
+		player.getOutStream().writeFrame(50);
+		player.getOutStream().putLong(username);
+		player.getOutStream().writeByte(world);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendChatBoxInterface(int id) {
 		player.stopSkillTask();
-		if (player.getOutStream() != null) {
-			player.getOutStream().writeFrame(164);
-			player.getOutStream().writeWordBigEndian_dup(id);
-			player.flushOutStream();
-		}
+		player.getOutStream().writeFrame(164);
+		player.getOutStream().writeWordBigEndian_dup(id);
+		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendRunEnergy() {
 		player.getOutStream().writeFrame(110);
 		player.getOutStream().writeByte(player.getRunEnergy());
 		player.flushOutStream();
 		return this;
 	}
-	
+
 	public ActionSender sendBanner(String title, String message, int color) {
 		if (title != null) {
 			player.outStream.putFrameVarByte(202);
@@ -951,47 +892,48 @@ public class ActionSender {
 		}
 		return this;
 	}
-	
+
 	/**
-     * Animates an object.
-     *
-     * @param obj The object.
-     * @return The action sender instance, for chaining.
-     */
-    public ActionSender animateObject(GameObject obj, int animationId) {
-        sendLocalCoordinates(obj.getLocation(), 0, 0);
+	 * Animates an object.
+	 *
+	 * @param obj
+	 *            The object.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender animateObject(GameObject obj, int animationId) {
+		sendLocalCoordinates(obj.getLocation(), 0, 0);
 		player.getOutStream().writeFrame(160);
-        int ot = ((obj.getType() << 2) + (obj.getDirection() & 3));
-        
-        byte jew = (byte) (((obj.getX()&7) << 4) + (obj.getY()&7));
-        player.getOutStream().writeByteS(jew);
-        player.getOutStream().writeByteS((byte) ot);
-        player.getOutStream().writeWordA(animationId);
-        player.flushOutStream();
-        System.out.printf("jew btw %s %s anim:%s%n", jew, ot, animationId);
-        return this;
-    }
-	
+		int ot = ((obj.getType() << 2) + (obj.getDirection() & 3));
+
+		byte jew = (byte) (((obj.getX() & 7) << 4) + (obj.getY() & 7));
+		player.getOutStream().writeByteS(jew);
+		player.getOutStream().writeByteS((byte) ot);
+		player.getOutStream().writeWordA(animationId);
+		player.flushOutStream();
+		System.out.printf("jew btw %s %s anim:%s%n", jew, ot, animationId);
+		return this;
+	}
+
 	/**
 	 * Sends all the login packets.
 	 * 
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendLogin() {
-		
-		//Activate our players session
+
+		// Activate our players session
 		player.setActive(true);
-		
-		//Finalize our ignore and friends list
+
+		// Finalize our ignore and friends list
 		player.getFAI().handleLogin();
-		
-		//Update the map packet
+
+		// Update the map packet
 		sendMapRegionPacket();
-		
-		//We can go ahead and update out sidebars
+
+		// We can go ahead and update out sidebars
 		setSideBarInterfaces();
-		
-		//Update the magic book
+
+		// Update the magic book
 		if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
 			sendSidebarInterface(6, 12855);
 		} else if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
@@ -999,51 +941,51 @@ public class ActionSender {
 		} else if (player.getSpellBook() == SpellBook.LUNAR_MAGICS) {
 			sendSidebarInterface(6, 29999);
 		}
-		
-		//Update our attack style
+
+		// Update our attack style
 		AttackStyle.adjustAttackStyleOnLogin(player);
-		
-		//Reset the players location
+
+		// Reset the players location
 		resetLocation();
-		
+
 		player.getController().onStartup(player);
-		
-		//Reset prayers
+
+		// Reset prayers
 		PrayerHandler.resetAllPrayers(player);
-		
-		//unlock/lock special case prayers
+
+		// unlock/lock special case prayers
 		sendConfig(709, PrayerHandler.canActivate(player, Prayers.PRESERVE, false) ? 1 : 0);
 		sendConfig(711, PrayerHandler.canActivate(player, Prayers.RIGOUR, false) ? 1 : 0);
 		sendConfig(713, PrayerHandler.canActivate(player, Prayers.AUGURY, false) ? 1 : 0);
-		
-		//Update inventory
+
+		// Update inventory
 		player.getInventory().refresh();
-		
-		//Update equipment
+
+		// Update equipment
 		player.getEquipment().refresh();
-		
-		//Update the weapon attributes
+
+		// Update the weapon attributes
 		player.getWeaponInterface().restoreWeaponAttributes();
-		
-		//Send the interaction options
+
+		// Send the interaction options
 		sendInteractionOption("Follow", 4, false);
 		sendInteractionOption("Trade With", 5, false);
-		
-		//We can go ahead and finalize the game configs
+
+		// We can go ahead and finalize the game configs
 		updateConfigs();
-		
-		//Update the skills
+
+		// Update the skills
 		sendSkills();
 		player.setCombatLevel(player.getSkills().getCombatLevel());
-		
+
 		sendMessage("Welcome to " + Constants.SERVER_NAME + ".");
 		updateAfterLogin();
-		
-		//activate login delay
+
+		// activate login delay
 		player.setAttribute("login_delay", System.currentTimeMillis());
 		return this;
 	}
-	
+
 	public void updateConfigs() {
 		player.setScreenBrightness((byte) 4);
 		sendConfig(166, player.getScreenBrightness());
@@ -1054,7 +996,7 @@ public class ActionSender {
 		sendConfig(200, player.getAcceptAid() ? 1 : 0);
 		sendConfig(172, player.isAutoRetaliating() ? 1 : 0);
 		sendConfig(152, player.getWalkingQueue().isRunningToggled() ? 1 : 0);
-		sendString(player.getRunEnergy()+"%", 149);
+		sendString(player.getRunEnergy() + "%", 149);
 		sendRunEnergy();
 		sendConfig(16101, player.getDataOrbs() ? 1 : 0);
 		sendConfig(16103, player.getRoofsToggled() ? 1 : 0);
@@ -1064,7 +1006,7 @@ public class ActionSender {
 		sendConfig(16115, player.toggleGroundItems() ? 1 : 0);
 		sendConfig(16118, player.toggleShiftClick() ? 1 : 0);
 	}
-	
+
 	public void updateAfterLogin() {
 		Server.getTaskScheduler().schedule(new Task(2) {
 
@@ -1074,35 +1016,37 @@ public class ActionSender {
 					stop();
 					return;
 				}
-				
+
 				if (!player.receivedStarter()) {
 					player.getDialogueManager().start("STARTER");
-					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername()) + "</col> Has joined Venenatis for the first time.");
+					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername())
+							+ "</col> Has joined Venenatis for the first time.");
 				}
-				
-				//We can update our kills tracker after login
+
+				// We can update our kills tracker after login
 				KillTracker.loadDefault(player);
-				
-				//Update the quest tab info
+
+				// Update the quest tab info
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
-				
-				//If we had a pet spawned, we spawn it after the login protocol
+
+				// If we had a pet spawned, we spawn it after the login protocol
 				if (player.getPet() > -1)
 					Pet.drop(player, null, true);
-				
-				//If we're a Owner we choose to play in debug mode
+
+				// If we're a Owner we choose to play in debug mode
 				if (player.getRights().isOwner(player) && !player.getUsername().equalsIgnoreCase("Matthew")) {
 					player.setDebugMode(true);
 				}
-				
-				//If the player is not in a clan chat we'll add them in the server clan chat
+
+				// If the player is not in a clan chat we'll add them in the
+				// server clan chat
 				if (player.getClanChat() == null || player.getClanChat() == "") {
 					ClanManager.join(player, "help");
 				} else {
 					ClanManager.join(player, player.getClanChat());
 				}
-				
-				//Update farming
+
+				// Update farming
 				player.getFarming().doCalculations();
 				player.getFarming().getAllotment().updateAllotmentsStates();
 				player.getFarming().getHerbs().updateHerbsStates();
@@ -1121,11 +1065,12 @@ public class ActionSender {
 			}
 		}.attach(this));
 	}
-	
+
 	private final void resetLocation() {
-		if(DuelArena.inArena(player)) {
-			player.setTeleportTarget(DuelArena.RESPAWN_LOCATIONS.get(Utility.random(DuelArena.RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
+		if (DuelArena.inArena(player)) {
+			player.setTeleportTarget(DuelArena.RESPAWN_LOCATIONS
+					.get(Utility.random(DuelArena.RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
 		}
 	}
-	
+
 }

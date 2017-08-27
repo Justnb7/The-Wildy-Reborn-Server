@@ -1,7 +1,6 @@
 package com.venenatis.game.model.entity.player.dialogue.impl.chat;
 
 import com.venenatis.game.content.BrokenItem;
-import com.venenatis.game.model.Item;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;

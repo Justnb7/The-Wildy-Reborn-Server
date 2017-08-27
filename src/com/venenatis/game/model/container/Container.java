@@ -621,6 +621,25 @@ public abstract class Container {
             return -1;
         return stack[slot].getId();
     }
+    
+    /**
+	 * Gets a slot by id.
+	 * 
+	 * @param id
+	 *            The id.
+	 * @return The slot, or <code>-1</code> if it could not be found.
+	 */
+	public int getSlotById(int id) {
+		for (int i = 0; i < stack.length; i++) {
+			if (stack[i] == null) {
+				continue;
+			}
+			if (stack[i].getId() == id) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 	/**
 	 * Gets an item from the container.

@@ -835,9 +835,6 @@ public abstract class Entity {
 				((Player)attacker).getActionSender().sendMessage("The dagannoth is currently resistant to that attack!");
 				damage = 0;
 			}
-			if (combat_type == CombatStyle.MAGIC && victim_npc.getId() == 5535) {
-				damage = 0;
-			}
 		}
 		
 		// At this point damage accurately reduced by stuff like prots/ely. 

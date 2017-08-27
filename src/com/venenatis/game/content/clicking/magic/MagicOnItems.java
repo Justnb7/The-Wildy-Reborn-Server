@@ -54,12 +54,12 @@ public class MagicOnItems {
 
 		/* Low Alchemy */
 		case 1162:
-		    player.getMagic().cast(new LowAlchemy());
+		    player.getMagic().cast(new LowAlchemy(), true);
 		    break;
 
 		/* High Alchemy */
 		case 1178:
-		    player.getMagic().cast(new HighAlchemy());
+		    player.getMagic().cast(new HighAlchemy(), true);
 		    break;
 
 		}

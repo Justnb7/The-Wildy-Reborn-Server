@@ -50,7 +50,7 @@ public class Magic {
 	 * 
 	 * @param spell
 	 */
-	public void cast(MagicSpell spell) {
+	public void cast(MagicSpell spell, boolean deleteFromRunePouch) {
 
 		// Return if player does not meet the level required.
 		if (player.getSkills().getLevel(Skills.MAGIC) < spell.getLevel()) {
@@ -58,9 +58,20 @@ public class Magic {
 			return;
 		}
 
-		// Return if the player does not have the runes required.
 		if (spell.getRunes() != null) {
-			if (!player.getInventory().contains(spell.getRunes())) {
+			
+			boolean runes_in_pouch = player.getRunePouch().contains(spell.getRunes());
+			
+			//Check if we have the runes in our rune pouch
+			if(runes_in_pouch) {
+				//Do we delete the runes from the pouch?
+				if(deleteFromRunePouch) {
+					player.getRunePouch().remove(spell.getRunes());
+				}
+			}
+			
+			// Return if the player does not have the runes required.
+			if (!player.getInventory().contains(spell.getRunes()) && !runes_in_pouch) {
 				player.getActionSender().sendMessage("You do not have the required runes to do this!");
 				return;
 			}
@@ -79,17 +90,17 @@ public class Magic {
 		
 		/* Bones to Bananas */
 		case 1159:
-			player.getMagic().cast(new BonesToBananas());
+			player.getMagic().cast(new BonesToBananas(), true);
 			break;
 
 		/* Bones to Peaches */
 		case 15877:
-			player.getMagic().cast(new BonesToPeaches());
+			player.getMagic().cast(new BonesToPeaches(), true);
 			break;
 
 		/* Vengeance */
 		case 118098:
-			player.getMagic().cast(new Vengeance());
+			player.getMagic().cast(new Vengeance(), true);
 			break;
 		}
 		return false;

@@ -1,7 +1,6 @@
 package com.venenatis.game.model.combat.magic.spell.impl;
 
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.magic.MagicSpell;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -52,14 +51,13 @@ public class LowAlchemy implements MagicSpell {
 		player.getActionSender().changeSidebar(6);
 
 		player.getMagic().setDelay(System.currentTimeMillis());
-		player.getSkills().addExperience(Skills.MAGIC, 31);
 
-		return false;
+		return true;
 	}
 
 	@Override
 	public double getExperience() {
-		return 850.5D;
+		return 31;
 	}
 
 	@Override

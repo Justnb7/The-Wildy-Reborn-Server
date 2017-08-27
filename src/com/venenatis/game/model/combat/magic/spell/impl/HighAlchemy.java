@@ -3,7 +3,6 @@ package com.venenatis.game.model.combat.magic.spell.impl;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.magic.MagicSpell;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -57,29 +56,28 @@ public class HighAlchemy implements MagicSpell {
 		player.getMagic().setDelay(System.currentTimeMillis());
 		
 		AchievementHandler.activate(player, AchievementList.MONEY_MAKER, 1);
-		player.getSkills().addExperience(Skills.MAGIC, 65);
 
-		return false;
+		return true;
 	}
 
 	@Override
 	public double getExperience() {
-		return 850.5;
+		return 65;
 	}
 
 	@Override
 	public int getLevel() {
-		return 21;
+		return 55;
 	}
 
 	@Override
 	public String getName() {
-		return "Low alchemy";
+		return "High alchemy";
 	}
 
 	@Override
 	public Item[] getRunes() {
-		return new Item[] { new Item(554, 3), new Item(561, 1) };
+		return new Item[] { new Item(554, 5), new Item(561, 1) };
 	}
 
 }

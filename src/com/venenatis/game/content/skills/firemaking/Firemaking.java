@@ -36,7 +36,7 @@ public class Firemaking {
 	 *            The location of the fire
 	 */
 	public static boolean startFire(final Player player, Item itemUsed, Item usedWith, Location location) {
-		for (final LogData log : LogData.values()) {
+		for (final Logs log : Logs.values()) {
 			if (itemUsed.getId() == 590 && usedWith.getId() == log.getLog() || itemUsed.getId() == log.getLog() && usedWith.getId() == 590) {
 				
 				if (System.currentTimeMillis() - player.getLastFire() < 200) {
@@ -154,7 +154,7 @@ public class Firemaking {
 	 * @return The light delay.
 	 */
 	private static int lightDelay(Player player, int log) {
-		for(LogData wood : LogData.values()) {
+		for(Logs wood : Logs.values()) {
 			if (wood.getLog() == log)
 			   return random(4, (int) ((Math.sqrt(wood.getLevel() * 1) * (99 - player.getSkills().getLevel(Skills.FIREMAKING)))));
 		}

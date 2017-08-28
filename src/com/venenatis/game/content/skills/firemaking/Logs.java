@@ -8,7 +8,7 @@ import java.util.Optional;
  * @author Patrick van Elderen
  *
  */
-public enum LogData {
+public enum Logs {
 
 	LOG(1511, 1, 40, 26185),
 	Achey_LOG(2862, 1, 40, 26185),
@@ -33,7 +33,7 @@ public enum LogData {
 	private double exp;
 	private int fire;
 
-	private LogData(int log, int level, double exp, int fire) {
+	private Logs(int log, int level, double exp, int fire) {
 		this.log = log;
 		this.level = level;
 		this.exp = exp;
@@ -56,7 +56,7 @@ public enum LogData {
 		return fire;
 	}
 	
-	public static Optional<LogData> forId(int id) {
+	public static Optional<Logs> forId(int id) {
 		return Arrays.stream(values()).filter(a -> a.log == id).findAny();
 	}
 

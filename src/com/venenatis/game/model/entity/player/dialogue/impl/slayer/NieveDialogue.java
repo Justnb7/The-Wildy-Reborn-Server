@@ -3,10 +3,9 @@ package com.venenatis.game.model.entity.player.dialogue.impl.slayer;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.content.skills.slayer.SlayerMasters;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
-import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.model.entity.player.dialogue.DialogueType;
+import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.world.shop.ShopManager;
 
 /**

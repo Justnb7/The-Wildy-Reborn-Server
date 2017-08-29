@@ -134,7 +134,7 @@ public class NPCDeathTask extends Task {
         npc.removeFromTile();
         onDeath(npc);
         npc.setVisible(false);
-        npc.setLocation(Location.create(npc.makeX, npc.makeY, npc.getZ())); // No height level change assumed
+        npc.setLocation(Location.create(npc.makeX, npc.makeY, npc.getZ()));
         npc.setHitpoints(npc.getMaxHitpoints());
 		
         if (!npc.noDeathEmote) {

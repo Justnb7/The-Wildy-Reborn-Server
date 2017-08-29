@@ -79,6 +79,8 @@ public class Region {
 
     public static int getClippingMask(int absx, int absy, int z) {
         Region map = forCoords(absx, absy);
+        if (z > 3)
+        	z %= 4;
         if (map.clips[z] == null) {
             return -1;
         }

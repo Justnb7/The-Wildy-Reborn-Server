@@ -49,7 +49,7 @@ public final class NPCHandler {
 				token2_2 = token2_2.replaceAll("\t\t", "\t");
 				token3 = token2_2.split("\t");
 				if (token.equals("spawn")) {
-					spawn(Integer.parseInt(token3[0]), Integer.parseInt(token3[1]), Integer.parseInt(token3[2]), Integer.parseInt(token3[3]), Integer.parseInt(token3[4]));
+					spawn(Integer.parseInt(token3[0]), new Location(Integer.parseInt(token3[1]), Integer.parseInt(token3[2]), Integer.parseInt(token3[3])), Integer.parseInt(token3[4]));
 				}
 			} else {
 				if (line.equals("[ENDOFSPAWNLIST]")) {
@@ -73,15 +73,11 @@ public final class NPCHandler {
 		return false;
 	}
 	
-	public static void spawn(int npcType, int x, int y, int heightLevel, int WalkingType) {
+	public static void spawn(int id, Location location, int walkingType) {
 
-		NPC npc = new NPC(npcType);
-
-		npc.setLocation(Location.create(x, y, heightLevel));
-		npc.makeX = x;
-		npc.makeY = y;
-        npc.walking_type = WalkingType;
-		npc.setOnTile(x, y, heightLevel);
+		NPC npc = new NPC(id, location, walkingType);
+		
+        npc.walking_type = walkingType;
 		if (World.getWorld().register(npc)) {
 			// successfully added to game world
 			handleForGroup(npc);
@@ -92,9 +88,6 @@ public final class NPCHandler {
 	public static NPC spawn(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
-		npc.setLocation(spawn);
-		npc.makeX = spawn.getX();
-		npc.makeY = spawn.getY();
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
 		npc.faceEntity(player);
@@ -108,7 +101,6 @@ public final class NPCHandler {
 			player.getActionSender().drawHeadIcon(1, npc.getIndex(), 0, 0);
 		}
 		World.getWorld().register(npc);
-		System.out.println("spawning npc on location: "+spawn.toString());
 		return npc;
 	}
 	

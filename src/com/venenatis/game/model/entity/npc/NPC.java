@@ -36,6 +36,7 @@ public class NPC extends Entity {
 			makeX = spawn.getX(); // boundaries where combat is cancelled stops dragging npcs over the map
 			makeY = spawn.getY();
 			setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
+			System.out.println("spawning npc on location: "+spawn.toString());
 		}
 		npcId = id;
 		getCombatState().setDead(false);
@@ -467,7 +468,7 @@ public class NPC extends Entity {
 			 */
 			NpcCombat.handleCombatTimer(this);
 
-			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() || World.getWorld().getPlayers().get(spawnedBy).getCombatState().isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20))) {
+			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() || World.getWorld().getPlayers().get(spawnedBy).getCombatState().isDead() || !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20)) && getId() != 3127) {
 				World.getWorld().unregister(this);
 			}
 			updateCoverage(getLocation());
@@ -530,36 +531,13 @@ public class NPC extends Entity {
 		setLocation(getLocation().transform(moveX, moveY));
 		return dir;
 	}
+	
 	// The DIRECTION moved in x/y axis this cycle. used in updating.
 	public int moveX, moveY;
 
-	public int distanceTo(Player player) {
-		return distanceTo(player.getX(), player.getY());
-	}
-
-	public int distanceTo(NPC npc) {
-		return distanceTo(npc.getX(), npc.getY());
-	}
-
-	public int distanceTo(int otherX, int otherY) {
-		int minDistance = (int) Math.hypot(otherX - getX(), otherY - getY());
-		for (int x = getX(); x < getX() + getSize() - 1; x++) {
-			for (int y = getY(); y < getY() + getSize() - 1; y++) {
-				int distance = (int) Math.hypot(otherX - x, otherY - y);
-				if (distance < minDistance) {
-					minDistance = distance;
-				}
-			}
-		}
-		return minDistance;
-	}
-
-	public void remove() {
-		setVisible(false);
-	}
-
-	public boolean distance(int objectX, int objectY, int playerX, int playerY, int distance) {
-		return Math.sqrt(Math.pow(objectX - playerX, 2) + Math.pow(objectY - playerY, 2)) <= distance;
+	
+	public boolean distance(int npcX, int npcY, int playerX, int playerY, int distance) {
+		return Math.sqrt(Math.pow(npcX - playerX, 2) + Math.pow(npcY - playerY, 2)) <= distance;
 	}
 
 	public boolean isArmadylNpc() {

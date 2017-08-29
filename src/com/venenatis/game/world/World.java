@@ -208,14 +208,16 @@ public class World implements Service {
 			return true;
 		} else if (entity.getEntityType() == EntityType.NPC) {
 			NPC npc = (NPC) entity;
-			if (getNPCs().spaceLeft() == 0)
+			if (getNPCs().spaceLeft() == 0) {
+				System.err.println("Max NPCS reached, cannot spawn more!");
 				return false;
+			}
 			getNPCs().add(npc);
 			npc.setVisible(true);
 			npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
-			return true; // GO
+			System.out.println("Registered");
+			return true;
 		}
-
 		return false;
 	}
 
@@ -269,6 +271,7 @@ public class World implements Service {
 			npc.setVisible(false);
 			npcs.remove(npc.getIndex());
 			npc.removeFromTile();
+			System.out.println("remove npc");
 		}
 	}
 

@@ -49,11 +49,16 @@ public class CombatFormulae {
      * @return
      */
     public static boolean getAccuracy(Entity attacker, Entity target, int att_type, double additionalSpecMulti) {
+    	if (target == null || (target.isNPC() && target.toNPC().getDefinition() == null) || attacker == null) {
+    		System.err.println("npc "+target+" has no definition");
+    		return false;
+    	}
 
         int att_curr_attack = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.ATTACK);
         int att_curr_range = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.RANGE);
         int att_curr_magic = attacker != null && attacker.isNPC() ? attacker.toNPC().getDefinition().getAttackBonus() : attacker.toPlayer().getSkills().getLevel(Skills.MAGIC);
         
+        //This onee
         int tar_curr_magic = target != null && attacker != null && target.isNPC() ? target.toNPC().getDefinition().getMagicDefence() : target.toPlayer().getSkills().getLevel(Skills.MAGIC);
         int tar_curr_defence = target != null && target.isNPC() ? npcDef(target.toNPC(), att_type) : target.toPlayer().toPlayer().getSkills().getLevel(Skills.DEFENCE);
 
@@ -305,6 +310,10 @@ public class CombatFormulae {
 	 * Calculates a mob's melee max hit.
 	 */
 	public static int calculateMeleeMaxHit(Entity attacker, Entity target) {
+		if (target == null || attacker == null) {
+			System.err.println("null params given homie fuck off");
+			return 0;
+		}
 
 		Player player = (Player) attacker;
 		double specialMultiplier = 1;
@@ -334,6 +343,8 @@ public class CombatFormulae {
 					otherBonusMultiplier = 1.15;
 				}
 			}*/
+		
+		//Sec i can show the error line i was talking about
 		
 		// Apply black mask/slayer helm bonus if the victim is the player's
 		// slayer task

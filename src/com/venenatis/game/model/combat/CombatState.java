@@ -26,7 +26,7 @@ public class CombatState {
 	/**
 	 * The entity's target
 	 */
-	private Entity target;
+	private Entity target, lastTarget;
 	
 	/**
 	 * Gets the target of the attack action
@@ -321,5 +321,13 @@ public class CombatState {
 	
 	public void setInCombat(boolean inCombat) {
 		this.inCombat = inCombat;
+	}
+
+	public Entity getLastTarget() {
+		return lastTarget;
+	}
+
+	public void setLastTarget(Entity lastTarget) {
+		this.lastTarget = lastTarget;
 	}
 }

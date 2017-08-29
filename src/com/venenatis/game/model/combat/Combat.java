@@ -815,6 +815,7 @@ public class Combat {
      * Stuff done when an attack executes, regardless of combat style. SOUNDS, SKULLING, VENOM
      */
     private static void onAttackDone(Player player, Entity target) {
+    	player.getCombatState().setLastTarget(target);
         Item wep = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 
 		// Set our attack timer so we dont instantly hit again

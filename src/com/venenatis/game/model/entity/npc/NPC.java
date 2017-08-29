@@ -113,11 +113,6 @@ public class NPC extends Entity {
 	public boolean transforming;
 	
 	/**
-	 * Transformation identity
-	 */
-	public int transformId;
-	
-	/**
 	 * Checks the last location the npc was on
 	 */
 	private Location lastLocation = null;
@@ -127,7 +122,6 @@ public class NPC extends Entity {
 	 * @param Id
 	 */
 	public void requestTransform(int Id) {
-		transformId = Id;
 		npcId = Id;
 		getUpdateFlags().flag(UpdateFlag.TRANSFORM);
 	}

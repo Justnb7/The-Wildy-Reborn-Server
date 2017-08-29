@@ -100,9 +100,9 @@ public class SlayerInterface {
 	/**
 	 * Stores the blocked tasks
 	 */
-	private ArrayList<Integer> blockedTasks = new ArrayList<Integer>(6);
+	private ArrayList<String> blockedTasks = new ArrayList<String>(6);
 
-	public void setBlockedTasks(ArrayList<Integer> blockedTasks) {
+	public void setBlockedTasks(ArrayList<String> blockedTasks) {
 		this.blockedTasks = blockedTasks;
 	}
 
@@ -111,7 +111,7 @@ public class SlayerInterface {
 	 * 
 	 * @return
 	 */
-	public ArrayList<Integer> getBlockedTasks() {
+	public ArrayList<String> getBlockedTasks() {
 		return blockedTasks;
 	}
 
@@ -299,7 +299,7 @@ public class SlayerInterface {
 	 */
 	public static boolean block(Player player, int buttonId) {
 		player.setSlayerAction(1);
-		player.getActionSender().sendString("You are about to block: " + NPC.getName(player.getSlayerTask()), 23106); 
+		player.getActionSender().sendString("You are about to block: " + player.getSlayerTask(), 23106); 
 		player.getActionSender().sendString("This costs 100 Slayer Points", 23107);
 		player.getActionSender().sendString("<col=ff0000>Are you sure you want to pay?</col>", 23110);
 		player.getActionSender().sendInterface(23100);
@@ -367,11 +367,10 @@ public class SlayerInterface {
 				player.getActionSender().sendMessage("@red@You don't have enough points");
 				return false;
 			}
-			player.setSlayerTask(0);
+			player.setSlayerTask("none");
 			player.setSlayerTaskAmount(0);
 			player.getActionSender().sendMessage("@red@ Your task has been canceled.");
-			String currentTask = player.getSlayerTask() > 0
-					? "" + NPC.getName(player.getSlayerTask()) + " X " + player.getSlayerTaskAmount() : "Nothing";
+			String currentTask = player.getSlayerTask() != null ? "" + player.getSlayerTask() + " X " + player.getSlayerTaskAmount() : "Nothing";
 			player.getActionSender().sendString("" + currentTask, 23208);
 			return true;
 		case BLOCK:
@@ -472,6 +471,7 @@ public class SlayerInterface {
 						player.setSlayerAction(0);
 						return false;
 					}
+					
 					blockedTasks.add(player.getSlayerTask());
 					TaskInterface task1 = new TaskInterface();
 					task1.write(player);

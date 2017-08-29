@@ -60,7 +60,7 @@ public class NpcCombat {
 	}
 
 	public static void kraken(Player player, NPC npc, int damage) {
-		if (npc.getId() == 5534 && npc.transformId != 5535) {
+		if (npc.getId() == 5534 && npc.getId() != 5535) {
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(3860));
 			npc.requestTransform(5535);
@@ -77,7 +77,7 @@ public class NpcCombat {
 				}
 			});
 		}
-		if (npc.getId() == 496 && npc.transformId != 494) { // big whirlpools of Kraken
+		if (npc.getId() == 496 && npc.getId() != 494) { // big whirlpools of Kraken
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(7135));
 			npc.requestTransform(494);
@@ -96,7 +96,7 @@ public class NpcCombat {
 		}
 		
 		//Cave kraken - NPCID = 492 // whirlpool (lvl 127) -> 493
-		if (npc.getId() == 493 && npc.transformId != 492) { // small whirlpools of Cave_krakens
+		if (npc.getId() == 493 && npc.getId() != 492) { // small whirlpools of Cave_krakens
 			npc.transforming = true;
 			npc.playAnimation(Animation.create(7135));
 			npc.requestTransform(492);
@@ -172,7 +172,7 @@ public class NpcCombat {
 			return false;
 		}
 		
-		if (npc.getId() == 496 && npc.transformId != 494) {
+		if (npc.getId() == 496 && npc.getId() != 494) {
 			KrakenInstance i = player.getKraken();
 			if (i != null && i.npcs != null && i.npcs[0] == npc) {
 				for (NPC n : i.npcs) {

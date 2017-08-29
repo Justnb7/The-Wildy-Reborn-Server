@@ -65,7 +65,7 @@ public class CaveKraken extends AbstractBossCombat {
 
 	@Override
 	public int distance(Entity attacker) {
-		return 20;
+		return 8;
 	}
 	
 	@Override

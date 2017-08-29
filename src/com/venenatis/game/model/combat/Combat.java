@@ -1039,7 +1039,6 @@ public class Combat {
         
         // Spell id set when packet: magic on player
         if (player.getSpellId() > 0 || player.getAutocastId() > 0) {
-        	player.debug("setting combat magic");
             player.setCombatType(CombatStyle.MAGIC);
         }
         

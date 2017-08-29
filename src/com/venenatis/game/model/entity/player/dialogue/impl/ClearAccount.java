@@ -63,13 +63,13 @@ public class ClearAccount extends Dialogue {
 		player.setCurrentKillStreak(0);
 		player.setHighestKillStreak(0);
 		KillTracker.loadDefault(player);
-		player.setSlayerTask(0);
+		player.setSlayerTask("none");
 		player.setSlayerTaskAmount(0);
 		player.setSlayerTaskDifficulty(0);
 		player.setSlayerTasksCompleted(0);
 		player.setFirstSlayerTask(false);
 		player.setFirstBossSlayerTask(false);
-		player.setLastSlayerTask(0);
+		player.setLastSlayerTask("none");
 		player.setSlayerStreak(0);
         QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 	}

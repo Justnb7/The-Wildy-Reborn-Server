@@ -2,7 +2,6 @@ package com.venenatis.game.content.quest_tab;
 
 import java.util.concurrent.TimeUnit;
 
-import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
@@ -39,7 +38,7 @@ public class HomeQuestTabPage extends QuestTabPage {
 		if(player.getSlayerTaskAmount() <= 0) {
 			write(player, "<img=17><col=FFFFFF>Task: <col=00CC00>None", 11);
 		} else {
-			write(player, "<img=17><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+NPC.getName(player.getSlayerTask()), 11);
+			write(player, "<img=17><col=FFFFFF>Task: <col=00CC00>"+player.getSlayerTaskAmount()+ " "+player.getSlayerTask(), 11);
 		}
 		write(player, "<img=17><col=FFFFFF>tasks completed: <col=00CC00>"+ player.getSlayerTasksCompleted(), 12);
 		write(player, "<img=17><col=FFFFFF>Slayer Reward Points: <col=00CC00>"+ player.getSlayerPoints(), 13);

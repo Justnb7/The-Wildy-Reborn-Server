@@ -42,7 +42,7 @@ public class SlayerTaskManagement {
 			return false;
 		}
 		if (player.getSlayerPoints() >= 10) {
-			player.setSlayerTask(0);
+			player.setSlayerTask("none");
 			player.setSlayerTaskAmount(0);
 			player.setSlayerStreak(0);
 			player.setSlayerPoints(player.getSlayerPoints() - 10);
@@ -121,14 +121,14 @@ public class SlayerTaskManagement {
 			if (currentCount >= random && lowbound <= random) {
 
 				// Don't assign two in a row ..
-				if (t.getId() == player.getLastSlayerTask()) {
+				if (NPC.getName(t.getId()) == player.getLastSlayerTask()) {
 					// with bad rng u could re-roll the same task again (very small but yeah)
 					// task = Turael.values()[(int) (Math.random() * Turael.values().length)];
 
 					// Restart the loop, we landed on the same task as we had before.
 					continue main;
 				}
-				player.setSlayerTask(t.getId());
+				player.setSlayerTask(NPC.getName(t.getId()));
 				player.setSlayerTaskAmount(assignTaskAmount(player, t.getId(), 1));
 				player.setSlayerTaskDifficulty(1);
 				task = t;
@@ -200,14 +200,14 @@ public class SlayerTaskManagement {
 			if (currentCount >= random && lowbound <= random) {
 
 				// Don't assign two in a row ..
-				if (t.getId() == player.getLastSlayerTask()) {
+				if (NPC.getName(t.getId()) == player.getLastSlayerTask()) {
 					// with bad rng u could re-roll the same task again (very small but yeah)
 					// task = Mazchna.values()[(int) (Math.random() *  Mazchna.values().length)];
 
 					// Restart the loop, we landed on the same task as we had before.
 					continue main;
 				}
-				player.setSlayerTask(t.getId());
+				player.setSlayerTask(NPC.getName(t.getId()));
 				player.setSlayerTaskAmount(assignTaskAmount(player, t.getId(), 2));
 				player.setSlayerTaskDifficulty(2);
 				task = t;
@@ -271,14 +271,14 @@ public class SlayerTaskManagement {
 			if (currentCount >= random && lowbound <= random) {
 
 				// Don't assign two in a row ..
-				if (t.getId() == player.getLastSlayerTask()) {
+				if (NPC.getName(t.getId()) == player.getLastSlayerTask()) {
 					// with bad rng u could re-roll the same task again (very small but yeah)
 					// task = Vannaka.values()[(int) (Math.random() * Vannaka.values().length)];
 
 					// Restart the loop, we landed on the same task as we had before.
 					continue main;
 				}
-				player.setSlayerTask(t.getId());
+				player.setSlayerTask(NPC.getName(t.getId()));
 				player.setSlayerTaskAmount(assignTaskAmount(player, t.getId(), 2));
 				player.setSlayerTaskDifficulty(2);
 				task = t;
@@ -342,14 +342,14 @@ public class SlayerTaskManagement {
 			if (currentCount >= random && lowbound <= random) {
 
 				// Don't assign two in a row ..
-				if (t.getId() == player.getLastSlayerTask()) {
+				if (NPC.getName(t.getId()) == player.getLastSlayerTask()) {
 					// with bad rng u could re-roll the same task again (very small but yeah)
 					// task = Chaeldar.values()[(int) (Math.random() * Chaeldar.values().length)];
 
 					// Restart the loop, we landed on the same task as we had before.
 					continue main;
 				}
-				player.setSlayerTask(t.getId());
+				player.setSlayerTask(NPC.getName(t.getId()));
 				player.setSlayerTaskAmount(assignTaskAmount(player, t.getId(), 3));
 				player.setSlayerTaskDifficulty(3);
 				task = t;
@@ -380,8 +380,8 @@ public class SlayerTaskManagement {
 				.collect(Collectors.toList());
 		array.forEach(t -> {
 			if (player.getSlayerInterface().getBlockedTasks().contains(t.getId())
-					|| t.getId() == 2919 && !player.getSlayerInterface().getUnlocks().containsKey(91116)
-					|| t.getId() == 247 && !player.getSlayerInterface().getUnlocks().containsKey(91115)) {
+					|| t.getId() == 2919 && !player.getSlayerInterface().getUnlocks().containsKey(91118)
+					|| t.getId() == 247 && !player.getSlayerInterface().getUnlocks().containsKey(91117)) {
 				// System.out.println("Skipping: " + t.getId());
 				total[0] -= t.getWeight();
 			}
@@ -416,14 +416,14 @@ public class SlayerTaskManagement {
 			if (currentCount >= random && lowbound <= random) {
 
 				// Don't assign two in a row ..
-				if (t.getId() == player.getLastSlayerTask()) {
+				if (NPC.getName(t.getId()) == player.getLastSlayerTask()) {
 					// with bad rng u could re-roll the same task again (very small but yeah)
 					// task = Nieve.values()[(int) (Math.random() * Nieve.values().length)];
 
 					// Restart the loop, we landed on the same task as we had before.
 					continue main;
 				}
-				player.setSlayerTask(t.getId());
+				player.setSlayerTask(NPC.getName(t.getId()));
 				player.setSlayerTaskAmount(assignTaskAmount(player, t.getId(), 4));
 				player.setSlayerTaskDifficulty(4);
 				task = t;
@@ -512,7 +512,7 @@ public class SlayerTaskManagement {
 			if (currentCount >= random && lowbound <= random) {
 
 				// Don't assign two in a row ..
-				if (t.getId() == player.getLastSlayerTask()) {
+				if (NPC.getName(t.getId()) == player.getLastSlayerTask()) {
 					// with bad rng u could re-roll the same task again (very
 					// small but yeah)
 					// task = Duradel.values()[(int) (Math.random() *
@@ -522,7 +522,7 @@ public class SlayerTaskManagement {
 					// before.
 					continue main;
 				}
-				player.setSlayerTask(t.getId());
+				player.setSlayerTask(NPC.getName(t.getId()));
 				player.setSlayerTaskAmount(taskAmount);
 				player.setSlayerTaskDifficulty(5);
 				task = t;
@@ -552,15 +552,13 @@ public class SlayerTaskManagement {
 			player = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
 
 			// Decrease task
-			if (player.getSlayerTask() == npc.getId() || NPC.getName(npc.getId()).toLowerCase()
-					.equalsIgnoreCase(NPC.getName(player.getSlayerTask()).toLowerCase())) {
+			if (player.getSlayerTask().contains(player.getSlayerTask())) {
 				player.setSlayerTaskAmount(player.getSlayerTaskAmount() - 1);
 				player.getSkills().addExperience(Skills.SLAYER, npc.getMaxHitpoints());
 				// player.getActionSender().sendMessage("Slayertask:
 				// "+Npc.getName(npc.npcId)+ " left:
 				// "+player.getSlayerTaskAmount()));
-				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>"
-						+ player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 			}
 
 			// Kills left messages
@@ -574,7 +572,7 @@ public class SlayerTaskManagement {
 			// them.
 			if (player.getSlayerTaskAmount() <= 0) {
 
-				player.setSlayerTask(0);
+				player.setSlayerTask("none");
 				player.setSlayerTaskAmount(0);
 
 				player.setSlayerTasksCompleted(player.getSlayerTasksCompleted() + 1);
@@ -844,7 +842,7 @@ public class SlayerTaskManagement {
 
 			if (player != null) {
 				for (Teleports teleTo : Teleports.values()) {
-					if (player.getSlayerTask() == teleTo.getTask()) {
+					if (player.getSlayerTask() == NPC.getName(teleTo.getTask())) {
 						player.getTeleportAction().teleport(teleTo.getLocation());
 						player.getActionSender().sendMessage("You've teleported to the " + teleTo.getName()
 								+ ", you have yet to kill " + player.getSlayerTaskAmount() + " more.");

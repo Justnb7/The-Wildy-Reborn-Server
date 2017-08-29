@@ -166,6 +166,7 @@ public class PlayerSave {
 				player.setInfection(details.infectionType);
 				player.setStamina(details.staminaType);
 				player.setGearPoints(details.gearPoints);
+				player.setLastSlayerTask(details.lastSlayerTask);
 				player.setSlayerTask(details.slayertask);
 				player.setSlayerTaskAmount(details.slayerTaskAmount);
 				player.setSlayerTaskDifficulty(details.taskDifficulity);
@@ -280,7 +281,8 @@ public class PlayerSave {
 		private final int infectionType;
 		private final int staminaType;
 		private final int gearPoints;
-		private final int slayertask;
+		private final String lastSlayerTask;
+		private final String slayertask;
 		private final int slayerTaskAmount;
 		private final int taskDifficulity;
 		private final boolean completedFirstTask;
@@ -331,7 +333,7 @@ public class PlayerSave {
 		private final int gender;
 		private final double[] skillXP;
 		private final int[] dynamicLevels;
-		private final ArrayList<Integer> blockedSlayerTasks;//this saves fine
+		private final ArrayList<String> blockedSlayerTasks;//this saves fine
 		
 		private final HashMap<Integer, String> slayerUnlocks;//some reason this is saved in the extensions aswell what u mean check
 		
@@ -378,6 +380,7 @@ public class PlayerSave {
 			infectionType = player.getInfection();
 			staminaType = player.getStaminaConfig();
 			gearPoints = player.getGearPoints();
+			lastSlayerTask = player.getLastSlayerTask();
 			slayertask = player.getSlayerTask();
 			slayerTaskAmount = player.getSlayerTaskAmount();
 			taskDifficulity = player.getSlayerTaskDifficulty();

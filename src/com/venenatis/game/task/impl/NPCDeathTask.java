@@ -170,7 +170,8 @@ public class NPCDeathTask extends Task {
         }
         
 		if (killer != null) {
-			if (npc.getId() == killer.getSlayerTask() || NPC.getName(npc.getId()).toLowerCase().equalsIgnoreCase(NPC.getName(killer.getSlayerTask()).toLowerCase())) {
+			//killer.debug(String.format("we killed a %s and we have %s as slayer task.", npc.getName(), killer.getSlayerTask()));
+			if (npc.getName().contains(killer.getSlayerTask())) {
 				SlayerTaskManagement.decreaseTask(killer, npc);
 			}
 			Combat.resetCombat(killer);
@@ -230,7 +231,7 @@ public class NPCDeathTask extends Task {
 					KillTracker.submit(killer, new KillEntry(npc.getName(), 1), true);
 				}
 			}
-			if (npc.getId() == killer.getSlayerTask())
+			if (npc.getName().contains(killer.getSlayerTask()))
 				killer.getSlayerDeathTracker().add(npc);
 
 			AbstractBossCombat boss = AbstractBossCombat.get(npc.getId());

@@ -253,7 +253,13 @@ public class WithdrawActionsPacketHandler implements PacketType {
 			
 			switch(removeSlot) {
 			
-			case 3:
+			case 0:// Helmet
+				if (equipment.getId() == 11864 && equipment != null) {
+					player.getActionSender().sendMessage("You have to slay "+player.getSlayerTaskAmount()+" more "+player.getSlayerTask()+".");
+				}
+				break;
+			
+			case 3:// Weapon
 				if (equipment.getId() == 12926 && equipment != null) {
 					int charges = player.getToxicBlowpipeCharge();
 

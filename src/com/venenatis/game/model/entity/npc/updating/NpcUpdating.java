@@ -273,7 +273,7 @@ public class NpcUpdating {
 	}
 
 	private static void appendTransformUpdate(NPC npc, GameBuffer str) {
-		str.writeWordBigEndianA(npc.transformId);
+		str.writeWordBigEndianA(npc.getId());
 	}
 
 }

@@ -46,7 +46,7 @@ public class DuradelDialogue extends Dialogue {
 			setPhase(3);
 		} else if (getPhase() == 3) {
 			send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "The assignments I set are for boss-slayers.", "You will have to kill high-leveled monsters,", "in the aim to complete the task I set.");
-			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 			setPhase(4);
 		} else if (getPhase() == 4) {
 			if (Slayer.hasTask(player)) {
@@ -54,8 +54,8 @@ public class DuradelDialogue extends Dialogue {
 				setPhase(9);
 			} else {
 				SlayerTaskManagement.duradelTask(player);
-				send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getUsername() + ", you'll need it.");
-				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+				send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getSlayerTask() + "@bla@.", "Good luck " + player.getUsername() + ", you'll need it.");
+				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 				player.setFirstBossSlayerTask(false);
 				setPhase(9);
 			}
@@ -64,8 +64,8 @@ public class DuradelDialogue extends Dialogue {
 			setPhase(7);
 		} else if (getPhase() == 6) {
 			SlayerTaskManagement.duradelTask(player);
-			send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "@bla@.", "Good luck " + player.getUsername() + ", you'll need it.");
-			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+			send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "I didn't think you'd actually take the task.", "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getSlayerTask() + "@bla@.", "Good luck " + player.getUsername() + ", you'll need it.");
+			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 			player.setFirstBossSlayerTask(false);
 			setPhase(9);
 		} else if (getPhase() == 7) {
@@ -78,8 +78,8 @@ public class DuradelDialogue extends Dialogue {
 				send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "It seems you already have an assignment.", "You can reset it by talking to Nieve.");
 				setPhase(9);
 			} else {
-				send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
-				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+				send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getSlayerTask() + "s@bla@. Good luck " + player.getUsername() + ".");
+				player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 				setPhase(9);
 			}
 		}

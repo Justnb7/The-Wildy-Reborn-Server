@@ -5,6 +5,7 @@ import com.venenatis.game.content.rewards.CrystalChest;
 import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.firemaking.Firemaking;
 import com.venenatis.game.content.skills.fletching.Fletching;
+import com.venenatis.game.content.skills.slayer.SlayerHelmAction;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
@@ -73,6 +74,10 @@ public class ItemOnItem {
 		if (usedItem.getId() == 227 || withItem.getId() == 227) {
 			int primary = usedItem.getId() == 227 ? withItem.getId() : usedItem.getId();
 			player.getHerblore().mix(primary);
+			return;
+		}
+		
+		if (SlayerHelmAction.handleItemOnItem(player, usedItem, withItem)) {
 			return;
 		}
 		

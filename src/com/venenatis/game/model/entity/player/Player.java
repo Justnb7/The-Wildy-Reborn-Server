@@ -1645,23 +1645,23 @@ public class Player extends Entity {
 		return runningTasks;
 	}
 	
-	private int lastSlayerTask;
+	private String lastSlayerTask;
 
-	public int getLastSlayerTask() {
+	public String getLastSlayerTask() {
 		return lastSlayerTask;
 	}
 
-	public void setLastSlayerTask(int lastSlayerTask) {
+	public void setLastSlayerTask(String lastSlayerTask) {
 		this.lastSlayerTask = lastSlayerTask;
 	}
 	
-	private int slayerTask;
+	private String slayerTask;
 	
-	public int getSlayerTask() {
+	public String getSlayerTask() {
 		return slayerTask;
 	}
 	
-	public void setSlayerTask(int task) {
+	public void setSlayerTask(String task) {
 		this.slayerTask = task;
 	}
 	

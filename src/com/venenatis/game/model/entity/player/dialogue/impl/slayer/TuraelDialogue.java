@@ -89,8 +89,8 @@ public class TuraelDialogue extends Dialogue {
 										} else {
 											if (getPhase() == 10) {
 												SlayerTaskManagement.turaelTask(player);
-												send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "We'll start you off hunting @blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@,", "you'll need to kill 10 of them");
-												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+												send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "We'll start you off hunting @blu@" + player.getSlayerTask() + "s@bla@,", "you'll need to kill 10 of them");
+												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 												player.setFirstSlayerTask(true);
 												setPhase(11);
 											} else {
@@ -122,7 +122,7 @@ public class TuraelDialogue extends Dialogue {
 																		} else if (Slayer.suitableMaster(player) == SlayerMasters.TURAEL && !Slayer.hasTask(player)) {
 																			SlayerTaskManagement.turaelTask(player);
 																			send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getUsername() + ".");
-																			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+																			player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 																			setPhase(16);
 																		} else if (Slayer.suitableMaster(player) == SlayerMasters.MAZCHNA && !Slayer.hasTask(player)) {
 																			send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Someone of your strength should go and see Mazchna.", "Would you like to get an assignment from him?");
@@ -165,8 +165,8 @@ public class TuraelDialogue extends Dialogue {
 																			} else {
 																				if (getPhase() == 22) {
 																					SlayerTaskManagement.turaelTask(player);
-																					send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
-																					player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+																					send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getSlayerTask() + "s@bla@.");
+																					player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 																					setPhase(16);
 																				} else {
 																					if (getPhase() == 23) {
@@ -226,8 +226,8 @@ public class TuraelDialogue extends Dialogue {
 																										} else {
 																											if (getPhase() == 31) {
 																												SlayerTaskManagement.turaelTask(player);
-																												send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill ", player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@.");
-																												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+																												send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill ", player.getSlayerTaskAmount(), "@blu@" + player.getSlayerTask() + "s@bla@.");
+																												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 																												setPhase(16);
 																											}
 																										}

@@ -40,8 +40,8 @@ public class NieveDialogue extends Dialogue {
 					setPhase(3);
 				} else if (Slayer.suitableMaster(player) == SlayerMasters.NIEVE && !Slayer.hasTask(player)) {
 					SlayerTaskManagement.nieveTask(player);
-					send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, your new task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
-					player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+					send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, your new task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getSlayerTask() + "s@bla@. Good luck " + player.getUsername() + ".");
+					player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 					setPhase(9);
 				} else if (player.getCombatLevel() < 85) {
 					send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "You are not strong enough to handle my assignments.", "Come back to me when you are a bit more experienced.");
@@ -86,8 +86,8 @@ public class NieveDialogue extends Dialogue {
 										} else {
 											if (getPhase() == 13) {
 												SlayerTaskManagement.nieveTask(player);
-												send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + NPC.getName(player.getSlayerTask()) + "s@bla@. Good luck " + player.getUsername() + ".");
-												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + NPC.getName(player.getSlayerTask()), 29172);
+												send(DialogueType.NPC, NPC_ID, Expression.DEFAULT, "Okay, fine. Your task is to kill " + player.getSlayerTaskAmount(), "@blu@" + player.getSlayerTask() + "s@bla@. Good luck " + player.getUsername() + ".");
+												player.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + player.getSlayerTaskAmount() + " " + player.getSlayerTask(), 29172);
 												setPhase(9);
 											} else {
 												if (getPhase() == 14) {

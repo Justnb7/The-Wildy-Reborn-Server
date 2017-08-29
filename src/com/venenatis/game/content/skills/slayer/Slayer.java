@@ -40,7 +40,7 @@ public class Slayer {
 	 * @return taskAmount && slayerTask
 	 */
 	public static boolean hasTask(Player player) {
-		return player.getSlayerTaskAmount() > 0 || player.getSlayerTask() > 0;
+		return player.getSlayerTaskAmount() > 0 || player.getSlayerTask() != null;
 	}
 
 	/**
@@ -173,14 +173,8 @@ public class Slayer {
 			return false;
 		}
 		
-		if (npc.getId() == 5534 && player.getSlayerTask() != 494) {
+		if (npc.getId() == 5534 || npc.getId() >= 492 || npc.getId() <= 494 || npc.getId() == 496 && !player.getSlayerTask().contains("kraken")) {
 			player.getActionSender().sendMessage("You must have Kraken's as a slayer-task to disturb these whirlpools.");
-			Combat.resetCombat(player);
-			return false;
-		}
-		
-		if (npc.getId() == 493 && player.getSlayerTask() != 492 || npc.getId() == 496 && player.getSlayerTask() != 494) {
-			player.getActionSender().sendMessage("You must have cave krakens as a slayer-task to attack");
 			Combat.resetCombat(player);
 			return false;
 		}

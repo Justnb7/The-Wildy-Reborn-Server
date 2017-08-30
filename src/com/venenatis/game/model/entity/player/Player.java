@@ -18,6 +18,7 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
 import com.venenatis.game.content.presets.PreloadingGear;
+import com.venenatis.game.content.server_tasks.Tasks;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.farming.Farming;
 import com.venenatis.game.content.skills.fishing.Fishing;
@@ -2991,6 +2992,24 @@ public class Player extends Entity {
 				face(this, object.getLocation());
 			}
 		}
+	}
+	
+	private HashMap<Tasks, Integer> playerTask = new HashMap<Tasks, Integer>(Tasks.values().length) {
+		private static final long serialVersionUID = 1842952445111093360L;
+
+		{
+			for (final Tasks task : Tasks.values()) {
+				put(task, 0);
+			}
+		}
+	};
+	
+	public HashMap<Tasks, Integer> getPlayerTask() {
+		return playerTask;
+	}
+	
+	public void setPlayerTask(HashMap<Tasks, Integer> playerTask) {
+		this.playerTask = playerTask;
 	}
 	
 	private HashMap<AchievementList, Integer> playerAchievements = new HashMap<AchievementList, Integer>(AchievementList.values().length) {

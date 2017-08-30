@@ -215,7 +215,6 @@ public class World implements Service {
 			getNPCs().add(npc);
 			npc.setVisible(true);
 			npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
-			System.out.println("Registered");
 			return true;
 		}
 		return false;
@@ -471,7 +470,7 @@ public class World implements Service {
 	 * @param player The player being pre-updated
 	 */
 	private void handlePreUpdating(Player player) {
-		long startTime = System.currentTimeMillis();
+		//long startTime = System.currentTimeMillis();
 		try {
 			 // Use randomized iteration order for PID shuffling.
 	        for (Player p : World.getWorld().getUnorderedPlayers()) {

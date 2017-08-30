@@ -52,7 +52,7 @@ public class Scorpia extends AbstractBossCombat {
 	}
 	
 	public static void heal_scorpia(NPC boss, NPC minion) {
-		minion.face(boss, boss.getLocation());
+		minion.faceEntity(boss);
 		//minion.follow(boss);
 		minion.setFollowing(boss);
 		World.getWorld().schedule(new Task(2) {

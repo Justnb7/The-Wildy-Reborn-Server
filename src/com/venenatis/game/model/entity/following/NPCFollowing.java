@@ -50,7 +50,7 @@ public class NPCFollowing {
 		int targX = target.getX();
 		int targY = target.getY();
 
-		//npc.forceChat("delta "+(npc.getX()-targX)+" by "+(npc.getY()-targY));
+		//npc.sendForcedMessage("delta "+(npc.getX()-targX)+" by "+(npc.getY()-targY));
 
 		// At this point, the target is valid, don't start walking off randomly.
 		
@@ -98,7 +98,7 @@ public class NPCFollowing {
 			npc.faceEntity(target);
 			npc.setFollowing(null); // reset existing walking queue
 			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
-			//npc.forceChat("my nigga");
+			npc.sendForcedMessage("my nigga");
 			
 		} else {
 			// Reset following

@@ -5,6 +5,7 @@ import com.venenatis.game.content.KillTracker.KillEntry;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
@@ -173,6 +174,10 @@ public class NPCDeathTask extends Task {
 			//killer.debug(String.format("we killed a %s and we have %s as slayer task.", npc.getName(), killer.getSlayerTask()));
 			if (npc.getName().contains(killer.getSlayerTask())) {
 				SlayerTaskManagement.decreaseTask(killer, npc);
+			} else if(npc.getName().equalsIgnoreCase("whirlpool") && killer.getSlayerTask().equalsIgnoreCase("kraken")) {
+				killer.setSlayerTaskAmount(killer.getSlayerTaskAmount() - 1);
+				killer.getSkills().addExperience(Skills.SLAYER, npc.getMaxHitpoints());
+				killer.getActionSender().sendString("<img=17><col=FFFFFF>Task: <col=00CC00>" + killer.getSlayerTaskAmount() + " " + killer.getSlayerTask(), 29172);
 			}
 			Combat.resetCombat(killer);
 		}

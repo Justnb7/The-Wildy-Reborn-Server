@@ -173,11 +173,13 @@ public class Slayer {
 			return false;
 		}
 		
-		/*if (npc.getId() == 5534 || npc.getId() >= 492 || npc.getId() <= 494 || npc.getId() == 496 && !player.getSlayerTask().contains("kraken")) {
+		boolean kraken = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Kraken")
+				|| npc.getName().equalsIgnoreCase("Enormous Tentacle");
+		if (kraken && !player.getSlayerTask().equalsIgnoreCase("Kraken") || player.getSlayerTask().equalsIgnoreCase("Cave kraken")) {
 			player.getActionSender().sendMessage("You must have Kraken's as a slayer-task to disturb these whirlpools.");
 			Combat.resetCombat(player);
 			return false;
-		}*/
+		}
 		//player.debug(String.format("slayer level %s VS requirement %s%n", player.getSkills().getLevelForExperience(Skills.SLAYER), slayer_requirement));
 		return true;
 	}

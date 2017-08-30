@@ -336,26 +336,13 @@ public class CombatFormulae {
 		}
 
 		// Apply black mask/slayer helm bonus if the victim is the player's slayer task
-		/*if (target != null)
+		if (target != null)
 			if (attacker.isPlayer() && target.isNPC()) {
 				final NPC npc = (NPC) target;
-				if (player.getSlayerTask() != -1 && player.getSlayerTask() == npc.getId() && hasBlackMaskOrSlayerHelm(player)) {
+				if (player.getSlayerTask() != null && player.getSlayerTask().contains(npc.getDefinition().getName()) && hasBlackMaskOrSlayerHelm(player)) {
 					otherBonusMultiplier = 1.15;
 				}
-			}*/
-		
-		//Sec i can show the error line i was talking about
-		
-		// Apply black mask/slayer helm bonus if the victim is the player's
-		// slayer task
-		if (attacker.isPlayer() && target.isNPC()) {
-			final NPC npc = (NPC) target;
-			if (player.getSlayerTask() != null
-					&& player.getSlayerTask().contains(npc.getDefinition().getName())
-					&& hasBlackMaskOrSlayerHelm(player)) {
-				otherBonusMultiplier = 1.15;
 			}
-		}
 
 		if (fullDharok(player)) {
 			double dharokMultiplier = ((1 - ((float) player.getSkills().getLevel(Skills.HITPOINTS) / (float) player.getSkills().getLevelForExperience(Skills.HITPOINTS)) * 1.7)) + 1;

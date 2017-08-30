@@ -81,7 +81,6 @@ public class Tablet {
 				
 				//Set teleporting attributes
 				player.getTeleportAction().setTeleporting(true);
-				player.setCanBeDamaged(false);
 				
 				//Start the task
 				World.getWorld().schedule(new Task(player, 3, false, StackType.STACK, BreakType.ON_MOVE) {
@@ -92,7 +91,6 @@ public class Tablet {
 						player.playAnimation(Animation.create(65535));
 						//Reset the attributes
 						player.getTeleportAction().setTeleporting(false);
-						player.setCanBeDamaged(true);
 						this.stop();
 					}
 				});

@@ -176,28 +176,7 @@ public class NpcInteraction {
 			player.getBank().open();
 			break;
 			
-		case 401: // Turael
-			ShopManager.open(player, 12);
-			break;
-		case 402: // Mazchna
-			ShopManager.open(player, 12);
-			break;
-
-		case 403: // Vannaka
-			ShopManager.open(player, 12);
-			break;
-
-		case 404: // Chaeldar
-			ShopManager.open(player, 12);
-			break;
-
-		case 405: // Duradel
-			ShopManager.open(player, 12);
-			break;
-
-		case 490: // Nieve
-			ShopManager.open(player, 12);
-			break;
+		
 		
 		}
 	}
@@ -217,6 +196,29 @@ public class NpcInteraction {
 		}
 		
 		switch (npc.getId()) {
+		case 401: // Turael
+			ShopManager.open(player, 12);
+			break;
+			
+		case 402: // Mazchna
+			ShopManager.open(player, 12);
+			break;
+			
+		case 403: // Vannaka
+			ShopManager.open(player, 12);
+			break;
+
+		case 404: // Chaeldar
+			ShopManager.open(player, 12);
+			break;
+
+		case 405: // Duradel
+			ShopManager.open(player, 12);
+			break;
+
+		case 490: // Nieve
+			ShopManager.open(player, 12);
+			break;
 		
 		}
 	}
@@ -233,26 +235,26 @@ public class NpcInteraction {
 
 		switch (npc.getId()) {
 		case 401: // Turael
-			player.getSlayerInterface().controlPanel(player, 91005);
+			player.getSlayerInterface().open(player);
 			break;
 		case 402: // Mazchna
-			player.getSlayerInterface().controlPanel(player, 91005);
+			player.getSlayerInterface().open(player);
 			break;
 
 		case 403: // Vannaka
-			player.getSlayerInterface().controlPanel(player, 91005);
+			player.getSlayerInterface().open(player);
 			break;
 
 		case 404: // Chaeldar
-			player.getSlayerInterface().controlPanel(player, 91005);
+			player.getSlayerInterface().open(player);
 			break;
 
 		case 405: // Duradel
-			player.getSlayerInterface().controlPanel(player, 91005);
+			player.getSlayerInterface().open(player);
 			break;
 
 		case 490: // Nieve
-			player.getSlayerInterface().controlPanel(player, 91005);
+			player.getSlayerInterface().open(player);
 			break;
 		}
 	}

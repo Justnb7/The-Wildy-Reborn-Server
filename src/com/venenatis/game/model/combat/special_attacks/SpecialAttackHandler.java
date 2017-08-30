@@ -57,6 +57,10 @@ public class SpecialAttackHandler {
 		for (int i : ch.weapons()) {
 			specials.put(i, ch);
 		}
+		SpecialAttack gm = new GraniteMaul();
+		for (int i : gm.weapons()) {
+			specials.put(i, gm);
+		}
 		specials.put(3204, new DragonHalberd());
 		specials.put(13263, new AbyssalBludgeon());
 		specials.put(12006, new AbyssalTentacle());
@@ -71,7 +75,6 @@ public class SpecialAttackHandler {
 		specials.put(1305, new DragonLongsword());
 		specials.put(1434, new DragonMace());
 		specials.put(4587, new DragonScimitar());
-		specials.put(4153, new GraniteMaul());
 		specials.put(11785, new ArmadylCrossbow());
 		specials.put(19780, new KorasiSword());
 		specials.put(19481, new Ballista());
@@ -101,7 +104,7 @@ public class SpecialAttackHandler {
 				
 				Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 
-				if (weapon.getId() == 4153) {
+				if (weapon.getId() == 4153 || weapon.getId() == 12848) {
 					if(player.lastAttacker == null) { // nobody hit us
 						return false;
 					}

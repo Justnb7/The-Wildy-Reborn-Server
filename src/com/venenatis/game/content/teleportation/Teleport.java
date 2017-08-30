@@ -267,7 +267,6 @@ public class Teleport {
 		player.playAnimation(data.getStartAnimation());
 		player.playGraphics(data.getStartGraphic());
 		player.getActionSender().sendSound(data.getSound(), 0, 0);
-        player.setCanBeDamaged(false);
 		setTeleporting(true);
 
 		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, StackType.STACK, BreakType.ON_MOVE) {
@@ -282,7 +281,6 @@ public class Teleport {
 			@Override
 			public void onStop() {
 				setTeleporting(false);
-	            player.setCanBeDamaged(true);
 				player.getWalkingQueue().lock(0, false);
 			}
 		});

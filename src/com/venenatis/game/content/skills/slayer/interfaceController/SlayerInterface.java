@@ -210,7 +210,7 @@ public class SlayerInterface {
 		for (Entry<Integer, String> entrys : player.getSlayerInterface().getUnlocks().entrySet()) {
 			for (ButtonData buttonData : ButtonData.values()) {
 				if (entrys.getValue().equals(buttonData.name())) {
-					player.debug("We have found: " + entrys.getValue());
+					//player.debug("We have found: " + entrys.getValue());
 					if (buttonData.getAction() == Action.UNLOCK_BUTTON) {
 						player.getActionSender().sendConfig(580 + (buttonData.ordinal() - 10), 1);
 					}
@@ -222,7 +222,7 @@ public class SlayerInterface {
 			for (ButtonData buttonData : ButtonData.values()) {
 				for (int button : buttonData.getButton()) {
 					if (entrys.getKey().equals(button)) {
-						player.debug("We have found extend " + entrys.getValue());
+						//player.debug("We have found extend " + entrys.getValue());
 						if (buttonData.getAction() == Action.EXTEND_BUTTON) {
 							player.getActionSender().sendConfig(560 + (buttonData.ordinal() - 26), 1);
 						}
@@ -260,7 +260,7 @@ public class SlayerInterface {
 	public boolean unlock(Player player, int buttonId) {
 		UnlockButtons button = UnlockButtons.unlockButtons.get(buttonId);
 		if (button == null) {
-			player.debug("Null unlock button");
+			//player.debug("Null unlock button");
 			return false;
 		}
 		player.getActionSender().sendString("" + Utility.optimizeText(button.getName()), 23106); 
@@ -281,7 +281,7 @@ public class SlayerInterface {
 	public static boolean extend(Player player, int buttonId) {
 		ExtendButtons button = ExtendButtons.extendButtons.get(buttonId);
 		if (button == null) {
-			player.debug("Null extend button");
+			//player.debug("Null extend button");
 			return false;
 		}
 		player.getActionSender().sendString("" + Utility.optimizeText(button.getName()), 23106);
@@ -352,7 +352,7 @@ public class SlayerInterface {
 		}
 		switch (button.getAction()) {	
 		case INTERFACE:
-			player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
+			//player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
 			player.getActionSender().sendInterface(button.getInterface());
 			setPreviousInterface(button.getInterface());
 			player.getActionSender().sendMessage("Previous interface = " + getPreviousInterface());
@@ -418,17 +418,17 @@ public class SlayerInterface {
 			player.getActionSender().sendInterface(button.getInterface());
 			setPreviousInterface(button.getInterface());
 			player.getActionSender().sendString("Current Streak: " + player.getSlayerStreak() + " Record: " + player.getSlayerStreakRecord(), 23399);
-			player.debug("Previous interface = " + getPreviousInterface());
+			//player.debug("Previous interface = " + getPreviousInterface());
 			return true;
 		case UNLOCK_BUTTON:
 			unlock(player, buttonId);
 			player.setSlayerSelection(buttonId, button.getunlockId(), button.name(), button.ordinal() - 7, 0);
-			player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
+			//player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
 			return true;
 		case EXTEND_BUTTON:
 			extend(player, buttonId);
 			player.setSlayerSelection(buttonId, button.getunlockId(), button.name(), button.ordinal() - 23, 1);
-			player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
+			//player.debug("Button: " + buttonId + " trying to open interface " + button.getInterface());
 			return true;
 		case PURCHASE:
 			if (player.getSlayerAction() == 0) { /// what one is unlock? what do you mean

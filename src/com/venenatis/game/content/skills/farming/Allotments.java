@@ -56,7 +56,7 @@ public class Allotments {
 	public static final int DISEASED = 0x02;
 	public static final int DEAD = 0x03;
 
-	public static final int FALADOR_AND_CATHERBY_CONFIG = 504;
+	public static final int FALADOR_AND_CATHERBY_CONFIG = 529;
 	public static final int ARDOUGNE_AND_PHASMATYS_CONFIG = 505;
 
 	/* This is the enum holding the seeds info */
@@ -272,12 +272,10 @@ public class Allotments {
 
 		int configValue;
 		for (int i = 0; i < allotmentStages.length; i++) {
-			//configValue = (configValues[i] << 8) | configValues[i + 1] ;
 			configValues[i] = getConfigValue(allotmentStages[i], allotmentSeeds[i], allotmentState[i], i);
 		}
 
 		configValue = (configValues[0] << 16) + (configValues[1] << 8 << 16) + configValues[2] + (configValues[3] << 8);
-		System.out.println("Value: "+(configValues[0] << 16) + (configValues[1] << 8 << 16) + configValues[2] + (configValues[3] << 8));
 		player.getActionSender().sendConfig(FALADOR_AND_CATHERBY_CONFIG, configValue);
 
 		configValue = configValues[4] << 16 | configValues[5] << 8 << 16 | configValues[6] | configValues[7] << 8;

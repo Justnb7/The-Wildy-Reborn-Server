@@ -175,7 +175,7 @@ public class Slayer {
 		
 		boolean kraken = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Kraken")
 				|| npc.getName().equalsIgnoreCase("Enormous Tentacle");
-		if (kraken && !player.getSlayerTask().equalsIgnoreCase("Kraken") || player.getSlayerTask().equalsIgnoreCase("Cave kraken")) {
+		if (kraken && !player.getSlayerTask().equalsIgnoreCase("Kraken") || player.getSlayerTask().equalsIgnoreCase("Cave kraken") && player.getSlayerTask() != null) {
 			player.getActionSender().sendMessage("You must have Kraken's as a slayer-task to disturb these whirlpools.");
 			Combat.resetCombat(player);
 			return false;

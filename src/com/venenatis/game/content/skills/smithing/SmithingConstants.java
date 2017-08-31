@@ -1,5 +1,6 @@
 package com.venenatis.game.content.skills.smithing;
 
+import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -78,18 +79,21 @@ public class SmithingConstants {
 	};
 
 	public static boolean clickAnvil(Player p, int id) {
-		
-		for (Item i : p.getInventory().getItems()) {
-			if (i != null) {
-				for (int k = 0; k < BARS.length; k++) {
-					if (i.getId() == BARS[k]) {
-						sendSmithingInterface(p, k);
-						return true;
+		AnyRevObjectDefinition def = AnyRevObjectDefinition.get(id);
+		if (def.getName().equalsIgnoreCase("anvil")) {
+			for (Item i : p.getInventory().getItems()) {
+				if (i != null) {
+					for (int k = 0; k < BARS.length; k++) {
+						if (i.getId() == BARS[k]) {
+							sendSmithingInterface(p, k);
+							return true;
+						}
 					}
 				}
 			}
 		}
-		//p.getActionSender().sendMessage("You do not have any bars to smith.");
+		// p.getActionSender().sendMessage("You do not have any bars to
+		// smith.");
 		return false;
 	}
 

@@ -270,7 +270,6 @@ public class World implements Service {
 			npc.setVisible(false);
 			npcs.remove(npc.getIndex());
 			npc.removeFromTile();
-			System.out.println("remove npc");
 		}
 	}
 

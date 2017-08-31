@@ -37,6 +37,16 @@ public final class PoisonCombatTask extends Task {
 
 	@Override
 	public void execute() {
+		if(entity == null) {
+			System.out.println("entity is null, stop task");
+			stop();
+			return;
+		}
+		if(source == null) {
+			System.out.println("source is null, stop task");
+			stop();
+			return;
+		}
 		if (!entity.isRegistered()) {
 			stop();
 			return;
@@ -45,15 +55,15 @@ public final class PoisonCombatTask extends Task {
 			stop();
 			return;
 		}
-			amount--;
-			if (source.isPlayer()) {
-				Player src = (Player)source;
-				entity.getCombatState().getDamageMap().appendDamage(src.getUsername(), entity.getPoisonDamage().get());
-			}
-	        if (amount == 0) {
-	            amount = 4;
-	            entity.getPoisonDamage().decrementAndGet();
-	        }
+		amount--;
+		if (source.isPlayer()) {
+			Player src = (Player) source;
+			entity.getCombatState().getDamageMap().appendDamage(src.getUsername(), entity.getPoisonDamage().get());
+		}
+		if (amount == 0) {
+			amount = 4;
+			entity.getPoisonDamage().decrementAndGet();
+		}
 		if (entity.getPoisonDamage().get() <= 0) {
 			stop();
 		}

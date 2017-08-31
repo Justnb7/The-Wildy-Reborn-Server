@@ -22,7 +22,7 @@ public class ExtendInterface {
 		SUQ_A_NOTHER_ONE(new int[] { 91012 }, 9081, "Suq-a-nother one",
 				"Whenever you get a Suqah task, it will be" + "\\na bigger task" + " @red@100 points)"),
 
-		FIRE_AND_DARKNESS(new int[] { 91013 }, 12653, "Fire & Darkness",
+		FIRE_AND_DARKNESS(new int[] { 91013 }, 1648, "Fire & Darkness",
 				"Whenever you get a Black Dragon task, it " + "\\nwill be a bigger task" + " @red@50 points)"),
 
 		PEDAL_TO_THE_METALS(new int[] { 91014 }, 8142, "Pedal to the metals",

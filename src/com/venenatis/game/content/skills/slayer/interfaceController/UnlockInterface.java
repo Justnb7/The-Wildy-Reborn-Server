@@ -69,7 +69,7 @@ public class UnlockInterface {
 				"Hot stuff",
 				"Duradel, Nieve and Chaeldar will be able \\nto assign TzHaar as your task You may\\nalso be offered a chance to slay TzTok-Jad\\nor Tzkal-Zuk. @red@(100 points)"),
 		
-		REPTILE_GOT_RIPPED(new int[]{91121}, 13391, 
+		REPTILE_GOT_RIPPED(new int[]{91121}, 3260, 
 				"Reptile got ripped",
 				"Duradel, Nieve and Chaeldar will be able\\n to assign you Lizardmen. You need"
 				+ "\\nShayzien House favour to fight lizardmen."
@@ -87,11 +87,11 @@ public class UnlockInterface {
 				"Kalphite Khat",
 				"Learn how to combine a Kalphite Queen \\nhead with your slayer helm to colour it\\ngreen @red@(1000 points)"),
 		
-		UNHOLY_HELMET(new int[]{91125}, 19643, 
+		UNHOLY_HELMET(new int[]{91125}, 19647, 
 				"Unholy helmet",
 				"Learn how to combine a Abyssal Demon \\nhead with your slayer helm to colour it red \\n@red@(1000 points)"),
 		
-		BIGGER_AND_BADDER(new int[]{91126}, 4144, 
+		BIGGER_AND_BADDER(new int[]{91126}, 1451, 
 				"Bigger and Badder",
 				"Increase the risk against certain slayer"
 				+ "\\nmonsters with the chance of a superior "

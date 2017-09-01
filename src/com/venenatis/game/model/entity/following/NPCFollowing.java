@@ -98,7 +98,7 @@ public class NPCFollowing {
 			npc.faceEntity(target);
 			npc.setFollowing(null); // reset existing walking queue
 			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
-			npc.sendForcedMessage("my nigga");
+			//npc.sendForcedMessage("my nigga");
 			
 		} else {
 			// Reset following

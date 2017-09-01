@@ -3,6 +3,7 @@ package com.venenatis.game.task.impl;
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.KillTracker.KillEntry;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
+import com.venenatis.game.content.skills.slayer.SuperiorMonster;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
@@ -174,6 +175,7 @@ public class NPCDeathTask extends Task {
 			//killer.debug(String.format("we killed a %s and we have %s as slayer task.", npc.getName(), killer.getSlayerTask()));
 			if (npc.getName().contains(killer.getSlayerTask())) {
 				SlayerTaskManagement.decreaseTask(killer, npc);
+				SuperiorMonster.spawnSuperior(killer, npc);
 			} else if(npc.getName().equalsIgnoreCase("whirlpool") && killer.getSlayerTask().equalsIgnoreCase("kraken")) {
 				killer.setSlayerTaskAmount(killer.getSlayerTaskAmount() - 1);
 				killer.getSkills().addExperience(Skills.SLAYER, npc.getMaxHitpoints());

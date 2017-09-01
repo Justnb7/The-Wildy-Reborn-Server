@@ -445,9 +445,8 @@ public class NPC extends Entity {
 
 				if (npcId == 6615) {
 					if (this.getHitpoints() <= 100 && !hasAttribute("scorpia_minion")) {
-						System.out.println("here");
-						NPC min1 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, true);
-						NPC min2 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, true);
+						NPC min1 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
+						NPC min2 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
 						// attributes not used atm
 						this.setAttribute("min1", min1);
 						min1.setAttribute("boss", this);

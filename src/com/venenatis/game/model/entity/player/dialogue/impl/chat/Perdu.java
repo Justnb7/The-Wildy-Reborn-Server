@@ -25,6 +25,7 @@ public class Perdu extends Dialogue {
 				send(DialogueType.NPC, NPC_ID, Expression.CALM_TALK, "Hello. I'm afraid I haven't got anything for you today.");
 				setPhase(1);
 			}
+			break;
 		}
 	}
 	

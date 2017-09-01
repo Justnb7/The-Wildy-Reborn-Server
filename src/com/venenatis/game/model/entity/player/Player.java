@@ -1646,7 +1646,7 @@ public class Player extends Entity {
 		return runningTasks;
 	}
 	
-	private String lastSlayerTask;
+	private String lastSlayerTask = "";
 
 	public String getLastSlayerTask() {
 		return lastSlayerTask;
@@ -1656,7 +1656,7 @@ public class Player extends Entity {
 		this.lastSlayerTask = lastSlayerTask;
 	}
 	
-	private String slayerTask;
+	private String slayerTask = "";
 	
 	public String getSlayerTask() {
 		return slayerTask;

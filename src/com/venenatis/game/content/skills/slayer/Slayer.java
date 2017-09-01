@@ -40,7 +40,7 @@ public class Slayer {
 	 * @return taskAmount && slayerTask
 	 */
 	public static boolean hasTask(Player player) {
-		return player.getSlayerTaskAmount() > 0 || player.getSlayerTask() != null;
+		return player.getSlayerTaskAmount() > 0;
 	}
 
 	/**
@@ -175,11 +175,11 @@ public class Slayer {
 		
 		boolean kraken = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Kraken")
 				|| npc.getName().equalsIgnoreCase("Enormous Tentacle");
-		if (kraken && !player.getSlayerTask().equalsIgnoreCase("Kraken") || player.getSlayerTask().equalsIgnoreCase("Cave kraken") && player.getSlayerTask() != null) {
+		/*if (kraken && !player.getSlayerTask().equalsIgnoreCase("Kraken") || player.getSlayerTask().equalsIgnoreCase("Cave kraken") && player.getSlayerTask() != null) {
 			player.getActionSender().sendMessage("You must have Kraken's as a slayer-task to disturb these whirlpools.");
 			Combat.resetCombat(player);
 			return false;
-		}
+		}*/
 		//player.debug(String.format("slayer level %s VS requirement %s%n", player.getSkills().getLevelForExperience(Skills.SLAYER), slayer_requirement));
 		return true;
 	}

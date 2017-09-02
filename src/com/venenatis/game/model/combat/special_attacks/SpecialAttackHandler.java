@@ -78,6 +78,8 @@ public class SpecialAttackHandler {
 		specials.put(11785, new ArmadylCrossbow());
 		specials.put(19780, new KorasiSword());
 		specials.put(19481, new Ballista());
+		specials.put(13899, new VestaLongsword());
+		specials.put(13902, new StatiusWarhammer());
 	}
 
 	/**

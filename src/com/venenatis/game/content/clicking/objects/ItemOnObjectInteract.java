@@ -29,6 +29,8 @@ public class ItemOnObjectInteract {
 			return;
 		}*/
 		
+		player.farming().patchObjectInteraction(obj, item.getId(), loc.getX(), loc.getY());
+		
 		switch (def.getName().toLowerCase()) {
 		
 		case "anvil":

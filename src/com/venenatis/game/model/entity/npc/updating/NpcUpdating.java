@@ -198,10 +198,10 @@ public class NpcUpdating {
 			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());
 		}
 		if(flags.get(UpdateFlag.HIT_2)) {
-			buffer.writeByteC(npc.getUpdateFlags().secondary.getDamage());
+			buffer.writeShort(npc.getUpdateFlags().secondary.getDamage());
 			buffer.writeByteS(npc.getUpdateFlags().secondary.getType().getId());
-			buffer.writeByteS((byte) npc.getHitpoints());
-			buffer.writeByteC(npc.getMaxHitpoints());
+			buffer.writeShort(npc.getHitpoints());
+			buffer.writeShort(npc.getMaxHitpoints());
 		}
 		if (flags.get(UpdateFlag.TRANSFORM)) {
 			appendTransformUpdate(npc, buffer);
@@ -266,10 +266,10 @@ public class NpcUpdating {
 	}
 	
 	private static void appendHitUpdate1(NPC npc, GameBuffer str) {
-		str.putByteA(npc.getUpdateFlags().primary.getDamage());
+		str.writeShort(npc.getUpdateFlags().primary.getDamage());
 		str.writeByteC(npc.getUpdateFlags().primary.getType().getId());
-		str.putByteA(npc.getHitpoints());
-		str.writeByte((byte) npc.getMaxHitpoints());
+		str.writeShort(npc.getHitpoints());
+		str.writeShort(npc.getMaxHitpoints());
 	}
 
 	private static void appendTransformUpdate(NPC npc, GameBuffer str) {

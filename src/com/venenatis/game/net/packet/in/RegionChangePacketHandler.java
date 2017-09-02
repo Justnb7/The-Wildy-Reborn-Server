@@ -13,6 +13,7 @@ public class RegionChangePacketHandler implements PacketType {
 	@Override
 	public final void handle(Player player, int packetType, int packetSize) {
 		GroundItemHandler.reloadGroundItems(player);
+		player.getAllotment().updateAllotmentsStates();
 		Server.getGlobalObjects().updateRegionObjects(player);
 		if (player.isEnableMusic()) {
 			MusicData.playMusic(player);

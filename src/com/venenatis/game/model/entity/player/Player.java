@@ -21,6 +21,7 @@ import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.server_tasks.Tasks;
 import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.farm.Farming;
+import com.venenatis.game.content.skills.farming.Allotments;
 import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.fishing.Fishing;
 import com.venenatis.game.content.skills.herblore.Herblore;
@@ -1379,6 +1380,7 @@ public class Player extends Entity {
 
 	@Override
 	public void process() {
+		farming.farmingProcess();
 		//long startTime = System.currentTimeMillis();
 		if (this.getTimePlayed() < Integer.MAX_VALUE) {
 			this.setTimePlayed(this.getTimePlayed() + 1);
@@ -3120,6 +3122,12 @@ public class Player extends Entity {
 
 	public void setFarming(Farming farming) {
 		this.farming = farming;
+	}
+	
+	private Allotments allotments = new Allotments(this);
+	
+	public Allotments getAllotment() {
+		return allotments;
 	}
 	
 	private boolean showDamage;

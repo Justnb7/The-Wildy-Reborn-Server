@@ -73,14 +73,14 @@ public class Farming {
 		if (patch == null)
 			return;
 		final int id = patch.getId();
-		player.face(null, new Location(x, y));
+
 		if (objectId == FarmingConstants.GRASS_OBJECT || objectId == FarmingConstants.HERB_PATCH_DEPLETED) {
 			if (player.getFarmingState(id) < State.RAKED.getId()) {
 				if (!player.getInventory().contains(FarmingConstants.RAKE, 1))
 					player.getActionSender().sendMessage("You need to rake this patch to remove all the weeds.");
 				else if (itemId == FarmingConstants.RAKE || player.getInventory().contains(FarmingConstants.RAKE)) {
 					player.playAnimation(new Animation(FarmingConstants.RAKING_ANIM));
-					player.face(null, new Location(x, y));
+			
 					if (weeds <= 0)
 						weeds = 3;
 					World.getWorld().schedule(new Task(3) {
@@ -92,7 +92,7 @@ public class Farming {
 							}
 							if (weeds > 0) {
 								weeds--;
-								player.face(null, new Location(x, y));
+						
 								player.getInventory().add(6055, 1);
 								player.playAnimation(new Animation(FarmingConstants.RAKING_ANIM));
 							} else if (weeds == 0) {
@@ -109,7 +109,7 @@ public class Farming {
 				if (!player.getInventory().contains(FarmingConstants.COMPOST, 1))
 					player.getActionSender().sendMessage("You need to put compost on this to enrich the soil.");
 				else if (itemId == FarmingConstants.COMPOST || player.getInventory().contains(FarmingConstants.COMPOST) && itemId == -1) {
-					player.face(null, new Location(x, y));
+			
 					player.playAnimation(new Animation(FarmingConstants.PUTTING_COMPOST));
 					player.getInventory().remove(FarmingConstants.COMPOST, 1);
 					player.getInventory().add(1925, 1);
@@ -131,7 +131,7 @@ public class Farming {
 					return;
 				}
 				if (itemId == herb.getSeedId() && player.getInventory().contains(FarmingConstants.SEED_DIBBER)) {
-					player.face(null, new Location(x, y));
+			
 					player.playAnimation(new Animation(FarmingConstants.SEED_DIBBING));
 					/**
 					 * Calculate experience
@@ -168,11 +168,12 @@ public class Farming {
 					player.getActionSender().sendMessage("You need to water the herb before you can harvest it.");
 				else if (wateringCans || hasWateringCan && itemId == -1) {
 					int time = (int) Math.round(player.getFarmingTime(id) * .6);
-					player.face(null, new Location(x, y));
+			
 					player.playAnimation(new Animation(FarmingConstants.WATERING_CAN_ANIM));
 					player.setFarmingState(id, State.GROWTH.getId());
 					player.getInventory().replace(new Item(itemId), new Item(itemId == 5333 ? 5331 : itemId - 1));
 					player.getActionSender().sendMessage("You water the herb, wait " + Math.round(player.getFarmingTime(id) * .6) + " seconds for the herb to mature.");
+					player.getActionSender().sendWidget(2, time);
 					//player.getPA().sendGameTimer(ClientGameTimer.FARMING, TimeUnit.SECONDS, time);
 					return;
 				}
@@ -327,7 +328,8 @@ public class Farming {
 			if (player.getFarmingState(i) < State.RAKED.getId()) {
 				player.getActionSender().sendObject(FarmingConstants.GRASS_OBJECT, patch.getX(), patch.getY(), player.getZ(), 0, 10);
 			} else if (player.getFarmingState(i) >= State.RAKED.getId() && player.getFarmingState(i) < State.SEEDED.getId()) {
-				player.getActionSender().sendObject(FarmingConstants.HERB_PATCH_DEPLETED, patch.getX(), patch.getY(), player.getZ(), 0, 10);
+				player.getActionSender().sendConfig(529, 3);
+				//player.getActionSender().sendObject(FarmingConstants.HERB_PATCH_DEPLETED, patch.getX(), patch.getY(), player.getZ(), 0, 10);
 			} else if (player.getFarmingState(i) >= State.SEEDED.getId()) {
 				player.getActionSender().sendObject(FarmingConstants.HERB_OBJECT, patch.getX(), patch.getY(), player.getZ(), 0, 10);
 			}

@@ -130,6 +130,8 @@ public class ObjectInteraction {
 			return;
 		}*/
 		
+		player.farming().patchObjectInteraction(objectId, -1, location.getX(), location.getY());
+		
 		if (Runecrafting.handleObject(player, obj)) {
 			return;
 		}
@@ -419,6 +421,8 @@ public class ObjectInteraction {
 		//GameObject obj = new GameObject(objectId, location.getX(), location.getY(), location.getZ());
 		
 		MinigameHandler.execute(player, $it -> $it.onSecondClickObject(player, obj));
+		
+		player.farming().patchObjectInteraction(id, -1, location.getX(), location.getY());
 		
 		switch (objectDef.getName().toLowerCase()) {
 		

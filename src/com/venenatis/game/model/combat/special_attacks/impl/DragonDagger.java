@@ -25,7 +25,7 @@ public class DragonDagger implements SpecialAttack {
 		int secondHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		
 		player.playAnimation(Animation.create(1062));
-		player.playGraphics(Graphic.highGraphic(252));
+		player.playGraphic(Graphic.highGraphic(252));
 		
 		boolean missedFirstHit = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missedFirstHit)

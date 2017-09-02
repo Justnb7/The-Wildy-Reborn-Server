@@ -1,9 +1,13 @@
 package com.venenatis.game.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.skills.SkillData;
 import com.venenatis.game.content.skills.prayer.Prayer;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.util.Utility;
@@ -187,6 +191,7 @@ public class Skills {
 		int newLvl = getLevelForExperience(skill);
 		if (oldLvl != newLvl) {
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			player.checkForSkillcapes();
 		}
 	}
 
@@ -363,7 +368,7 @@ public class Skills {
         if (levelDiff > 0) {
             levels[skillId] += levelDiff;
             player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-			player.playGraphics(Graphic.highGraphic(199));
+			player.playGraphic(Graphic.highGraphic(199));
 			handleLevelUp(skillId);
         }
         if (player != null) {
@@ -535,5 +540,199 @@ public class Skills {
 			return;
 		}
 		setLevel(skill, curr - amount);
+	}
+	
+	/**
+	 * Represents a skill cape of achievement.
+	 * 
+	 * @author Michael
+	 *
+	 */
+	public enum SkillCape {
+
+		ATTACK_CAPE(Skills.ATTACK, new Item(9747), new Item(9748), new Item(9749), Animation.create(4959), Graphic.create(823), 6),
+
+		STRENGTH_CAPE(Skills.STRENGTH, new Item(9750), new Item(9751), new Item(9752), Animation.create(4981), Graphic.create(828), 17),
+
+		DEFENCE_CAPE(Skills.DEFENCE, new Item(9753), new Item(9754), new Item(9755), Animation.create(4961), Graphic.create(824), 10),
+
+		HITPOINTS_CAPE(Skills.HITPOINTS, new Item(9768), new Item(9769), new Item(9770), Animation.create(4971), Graphic.create(833), 7),
+
+		RANGE_CAPE(Skills.RANGE, new Item(9756), new Item(9757), new Item(9758), Animation.create(4973), Graphic.create(832), 9),
+
+		PRAYER_CAPE(Skills.PRAYER, new Item(9759), new Item(9760), new Item(9761), Animation.create(4979), Graphic.create(829), 10),
+
+		MAGIC_CAPE(Skills.MAGIC, new Item(9762), new Item(9763), new Item(9764), Animation.create(4939), Graphic.create(813), 6),
+
+		COOKING_CAPE(Skills.COOKING, new Item(9801), new Item(9802), new Item(9803), Animation.create(4955), Graphic.create(821), 25),
+
+		WOODCUTTING_CAPE(Skills.WOODCUTTING, new Item(9807), new Item(9808), new Item(9809), Animation.create(4957), Graphic.create(822), 21),
+
+		FLETCHING_CAPE(Skills.FLETCHING, new Item(9783), new Item(9784), new Item(9785), Animation.create(4937), Graphic.create(812), 13),
+
+		FISHING_CAPE(Skills.FISHING, new Item(9798), new Item(9799), new Item(9800), Animation.create(4951), Graphic.create(819), 12),
+
+		FIREMAKING_CAPE(Skills.FIREMAKING, new Item(9804), new Item(9805), new Item(9806), Animation.create(4975), Graphic.create(831), 8),
+
+		CRAFTING_CAPE(Skills.CRAFTING, new Item(9780), new Item(9781), new Item(9782), Animation.create(4949), Graphic.create(818), 14),
+
+		SMITHING_CAPE(Skills.SMITHING, new Item(9795), new Item(9796), new Item(9797), Animation.create(4943), Graphic.create(815), 19),
+
+		MINING_CAPE(Skills.MINING, new Item(9792), new Item(9793), new Item(9794), Animation.create(4941), Graphic.create(814), 8),
+
+		HERBLORE_CAPE(Skills.HERBLORE, new Item(9774), new Item(9775), new Item(9776), Animation.create(4969), Graphic.create(835), 15),
+
+		AGILITY_CAPE(Skills.AGILITY, new Item(9771), new Item(9772), new Item(9773), Animation.create(4977), Graphic.create(830), 7),
+
+		THIEVING_CAPE(Skills.THIEVING, new Item(9777), new Item(9778), new Item(9779), Animation.create(4965), Graphic.create(826), 6),
+
+		SLAYER_CAPE(Skills.SLAYER, new Item(9786), new Item(9787), new Item(9788), Animation.create(4967), Graphic.create(827), 5),
+
+		FARMING_CAPE(Skills.FARMING, new Item(9810), new Item(9811), new Item(9812), Animation.create(4963), Graphic.create(825), 12),
+
+		RUNECRAFTING_CAPE(Skills.RUNECRAFTING, new Item(9765), new Item(9766), new Item(9767), Animation.create(4947), Graphic.create(817), 11),
+
+		 HUNTER_CAPE(Skills.HUNTER, new Item(9948), new Item(9949), new Item(9950), Animation.create(5158), Graphic.create(907), 12),
+
+		 CONSTRUCTION_CAPE(Skills.CONSTRUCTION, new Item(9789), new Item(9790), new Item(9791), Animation.create(4953),  Graphic.create(820), 12),
+
+		QUEST_POINT_CAPE(-1, new Item(9813), null, new Item(9814), Animation.create(4945), Graphic.create(816), 15),
+		
+		;
+
+		public static List<SkillCape> skillCapes = new ArrayList<SkillCape>();
+
+		public static SkillCape forId(Item item) {
+			for (SkillCape skillCape : skillCapes) {
+				if ((skillCape.getCape() != null && skillCape.getCape().getId() == item.getId()) || (skillCape.getCapeTrim() != null && skillCape.getCapeTrim().getId() == item.getId())) {
+					return skillCape;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * Checks only untrimmed skillcapes.
+		 */
+		public static SkillCape forUntrimmedId(Item item) {
+			for (SkillCape skillCape : skillCapes) {
+				if (skillCape.getCape() != null && skillCape.getCape().getId() == item.getId()) {
+					return skillCape;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * Checks only trimmed skillcapes.
+		 */
+		public static SkillCape forTrimmedId(Item item) {
+			for (SkillCape skillCape : skillCapes) {
+				if (skillCape.getCapeTrim() != null && skillCape.getCapeTrim().getId() == item.getId()) {
+					return skillCape;
+				}
+			}
+			return null;
+		}
+
+		static {
+			for (SkillCape skillCape : SkillCape.values()) {
+				skillCapes.add(skillCape);
+			}
+		}
+
+		/**
+		 * The skill this cape uses.
+		 */
+		private int skill;
+
+		/**
+		 * The cape item.
+		 */
+		private Item cape;
+
+		/**
+		 * The cape item trimmed.
+		 */
+		private Item capeTrim;
+
+		/**
+		 * The hood item.
+		 */
+		private Item hood;
+
+		/**
+		 * The animation performed for the skillcape emote.
+		 */
+		private Animation animation;
+
+		/**
+		 * The graphic displayed for the skillcape emote.
+		 */
+		private Graphic graphic;
+
+		/**
+		 * The amount of cycles it takes to perform this animation.
+		 */
+		private int animateTimer;
+
+		SkillCape(int skill, Item cape, Item capeTrim, Item hood, Animation animation, Graphic graphic, int animateTimer) {
+			this.skill = skill;
+			this.cape = cape;
+			this.capeTrim = capeTrim;
+			this.hood = hood;
+			this.animation = animation;
+			this.graphic = graphic;
+			this.animateTimer = animateTimer;
+		}
+
+		/**
+		 * @return the skill
+		 */
+		public int getSkill() {
+			return skill;
+		}
+
+		/**
+		 * @return the hood
+		 */
+		public Item getHood() {
+			return hood;
+		}
+
+		/**
+		 * @return the cape
+		 */
+		public Item getCape() {
+			return cape;
+		}
+
+		/**
+		 * @return the capeTrim
+		 */
+		public Item getCapeTrim() {
+			return capeTrim;
+		}
+
+		/**
+		 * @return the animation
+		 */
+		public Animation getAnimation() {
+			return animation;
+		}
+
+		/**
+		 * @return the graphic
+		 */
+		public Graphic getGraphic() {
+			return graphic;
+		}
+
+		/**
+		 * @return the animateTimer
+		 */
+		public int getAnimateTimer() {
+			return animateTimer;
+		}
 	}
 }

@@ -28,7 +28,7 @@ public class MagicShortbow implements SpecialAttack {
 		
 		World.getWorld().schedule(new Task(1) {
 			public void execute() {
-				player.playGraphics(Graphic.create(256, 0, 100));
+				player.playGraphic(Graphic.create(256, 0, 100));
 				this.stop();
 			}
 		});

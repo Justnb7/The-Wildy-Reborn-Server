@@ -27,7 +27,7 @@ public class GuthanTheInfested extends AbstractBossCombat {
 		int damage = Utility.random(26);
 		
 		if (!PrayerHandler.isActivated(pVictim, PrayerHandler.PROTECT_FROM_MELEE) && Utility.random(7) == 3) {
-			victim.playGraphics(Graphic.create(398, 0, 0));
+			victim.playGraphic(Graphic.create(398, 0, 0));
 			victim.getActionSender().sendMessage("Guthans heals himself...");
 			npc.setHitpoints(npc.getHitpoints() + damage);
 		}

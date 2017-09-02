@@ -106,7 +106,7 @@ public class ShinyChest {
 			player.getInventory().addOrCreateGroundItem(player, new Item(itemReceived.getId(), itemReceived.getAmount()));
 		}
 		player.playAnimation(Animation.create(881));
-		player.playGraphics(Graphic.create(390));
+		player.playGraphic(Graphic.create(390));
 		return true;
 
 	}

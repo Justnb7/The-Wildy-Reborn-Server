@@ -21,7 +21,7 @@ public class DragonHalberd implements SpecialAttack {
 		int firstHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		int secondHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1203));
-		player.playGraphics(Graphic.create(1172, 0, 0));
+		player.playGraphic(Graphic.create(1172, 0, 0));
 		
 		boolean missedFirstHit = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missedFirstHit)

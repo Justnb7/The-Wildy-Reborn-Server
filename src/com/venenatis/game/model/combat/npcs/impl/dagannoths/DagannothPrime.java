@@ -71,7 +71,7 @@ public class DagannothPrime extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					victim.playGraphics(Graphic.create(163, 0, 100));
+					victim.playGraphic(Graphic.create(163, 0, 100));
 				}
 			});
 			break;

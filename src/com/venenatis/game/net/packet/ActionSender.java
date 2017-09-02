@@ -1007,6 +1007,8 @@ public class ActionSender {
 		resetLocation();
 
 		player.getController().onStartup(player);
+		
+		player.checkForSkillcapes();
 
 		// Reset prayers
 		PrayerHandler.resetAll(player);

@@ -32,7 +32,9 @@ import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTyp
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.InterfaceState;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.Skills.SkillCape;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.PrayerHandler;
@@ -3110,6 +3112,66 @@ public class Player extends Entity {
 	
 	public QuickPrayers getQuickPrayers() {
 		return quickPrayers;
+	}
+	
+	/**
+	 * Checks the players containers for untrimmed skillcapes.
+	 */
+	public void checkForSkillcapes() {
+		int has99 = 0;
+		for(int i = 0; i < Skills.SKILL_COUNT; i++) {
+			if(getSkills().getLevelForExperience(i) >= 99) {
+				has99++;
+				//getActionSender().sendConfig(313, 511); //Activates skillcape icon.
+				if(has99 >= 2) {
+					break;
+				}
+			}
+		}
+		if(has99 < 2) {
+			return;
+		}
+		for(Item item : getInventory().toArray()) {
+			if(item == null) {
+				continue;
+			}
+			SkillCape cape = SkillCape.forUntrimmedId(item);
+			if(cape != null && cape.getCapeTrim() != null) {//tells us that this item is an untrimmed cape.
+				getInventory().remove(item);
+				getInventory().add(new Item(cape.getCapeTrim().getId(), item.getAmount()));//make sure that we add the same amount of capes we deleted.
+			}
+		}
+		for(Item item : getBank().toArray()) {
+			if(item == null) {
+				continue;
+			}
+			SkillCape cape = SkillCape.forUntrimmedId(item);
+			if(cape != null) {//tells us that this item is an untrimmed cape.
+				getBank().remove(item);
+				getBank().add(new Item(cape.getCapeTrim().getId(), item.getAmount()));//make sure that we add the same amount of capes we deleted.
+			}
+		}
+	}
+
+	/**
+	 * The mob's emote flag.
+	 */
+	private boolean emote = true;
+	
+	/**
+	 * Gets the emote flag.
+	 * @return The emote flag.
+	 */
+	public boolean canEmote() {
+		return emote;
+	}
+
+	/**
+	 * Sets the emote flag.
+	 * @param animate The emote flag to set.
+	 */
+	public void setEmote(boolean emote) {
+		this.emote = emote;
 	}
 	
 }

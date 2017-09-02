@@ -20,7 +20,7 @@ public class KorasiSword implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		int damage = Utility.random(70);
 		player.playAnimation(Animation.create(1058));
-		target.playGraphics(Graphic.create(1213));
+		target.playGraphic(Graphic.create(1213));
 		
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

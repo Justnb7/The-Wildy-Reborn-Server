@@ -25,7 +25,7 @@ public enum SafeSpellCast {
 		
 		player.face(player, other.getLocation());
 		player.playAnimation(new Animation(4411));
-		other.playGraphics(Graphic.create(725, 100));
+		other.playGraphic(Graphic.create(725, 100));
 		other.setVengeance(true);
 		player.getMagic().setLastVengeance(System.currentTimeMillis());
 		player.getActionSender().sendWidget(2, 30);

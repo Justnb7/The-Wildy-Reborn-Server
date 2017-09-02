@@ -122,7 +122,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 			}
 			hitDelay = (gfxDelay / 20) - 1;
 			attacker.playAnimation(Animation.create(6950));
-			attacker.playGraphics(Graphic.create(1224, 0, 100));
+			attacker.playGraphic(Graphic.create(1224, 0, 100));
 			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1225, 45, 50, gfxSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
 			
 			randomHit = Utility.random(maxHit);
@@ -136,7 +136,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					victim.playGraphics(Graphic.create(1225));
+					victim.playGraphic(Graphic.create(1225));
 				}
 			});
 			

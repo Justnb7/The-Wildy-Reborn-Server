@@ -96,7 +96,7 @@ public class Kreearra extends AbstractBossCombat {
 						// Calculate max hit first
 						randomHit = Utility.random(maxHit);
 						
-						near.playGraphics(Graphic.create(1196, rGfxDelay, 100));
+						near.playGraphic(Graphic.create(1196, rGfxDelay, 100));
 						
 						// Create the hit instance
 						near.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(hitDelay);

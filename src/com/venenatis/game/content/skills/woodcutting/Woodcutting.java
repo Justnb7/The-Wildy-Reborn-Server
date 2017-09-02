@@ -444,7 +444,7 @@ public class Woodcutting extends HarvestingAction {
 	public Item getReward() {
 		if (hatchet == Hatchet.INFERNAL && Utility.random(8) == 0) {
 			getEntity().asPlayer().getSkills().addExperience(Skills.FIREMAKING, tree.getExperience() / 2);
-			getEntity().playGraphics(Graphic.create(86));
+			getEntity().playGraphic(Graphic.create(86));
 			return null;
 		}
 		return new Item(tree.getLogId(), 1);

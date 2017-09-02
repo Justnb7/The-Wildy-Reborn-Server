@@ -1,7 +1,6 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.content.EmotesManager.EmoteData;
-
+import com.venenatis.game.content.Emotes;
 import com.venenatis.game.content.SetSkill;
 import com.venenatis.game.content.achievements.AchievementButtons;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -147,9 +146,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		}
 
 		/* Emotes */
-		if (player != null) {
-			EmoteData.useBookEmote(player, button);
-		}
+		Emotes.execute(player, button);
 		
 		/* Teleporting */
 		if(Teleport.isTeleportButton(player, button)) {

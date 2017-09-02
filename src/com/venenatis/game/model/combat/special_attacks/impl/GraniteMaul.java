@@ -22,7 +22,7 @@ public class GraniteMaul implements SpecialAttack {
 		int damage = Utility.random(CombatFormulae.calculateMeleeMaxHit(player, target));
 		
 		player.playAnimation(Animation.create(1667));
-		player.playGraphics(Graphic.create(337, 0, 100));
+		player.playGraphic(Graphic.create(337, 0, 100));
 
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

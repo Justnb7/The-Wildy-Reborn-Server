@@ -47,7 +47,7 @@ public class Vengeance implements MagicSpell {
 			return false;
 		}
 		player.playAnimation(new Animation(4410));
-		player.playGraphics(new Graphic(726, 100));
+		player.playGraphic(new Graphic(726, 100));
 		player.setVengeance(true);
 		player.getMagic().setLastVengeance(System.currentTimeMillis());
 		AchievementHandler.activate(player, AchievementList.TASTE_ME, 1);

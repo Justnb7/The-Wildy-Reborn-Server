@@ -37,7 +37,7 @@ public class SergeantSteelwill extends AbstractBossCombat {
 		int hitDelay = (gfxDelay / 20) - 1;
 
 		attacker.playAnimation(Animation.create(6154));
-		attacker.playGraphics(Graphic.create(1216, 0, 100));
+		attacker.playGraphic(Graphic.create(1216, 0, 100));
 		attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1217, 45, 50, gfxSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
 		int randomHit = Utility.random(17);
 		

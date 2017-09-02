@@ -21,7 +21,7 @@ public class AbyssalBludgeon implements SpecialAttack {
 		
 		int damage = (int) ((player.getSkills().getLevelForExperience(Skills.PRAYER) - player.getSkills().getLevel(Skills.PRAYER)) * .5);
 		player.playAnimation(Animation.create(3299));
-        target.playGraphics(Graphic.create(1284, 0, 0));
+        target.playGraphic(Graphic.create(1284, 0, 0));
 		
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

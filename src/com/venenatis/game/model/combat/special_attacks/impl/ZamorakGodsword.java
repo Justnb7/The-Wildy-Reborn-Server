@@ -21,9 +21,9 @@ public class ZamorakGodsword implements SpecialAttack {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		
 		player.playAnimation(Animation.create(7057));
-		player.playGraphics(Graphic.create(1210, 0, 0));
+		player.playGraphic(Graphic.create(1210, 0, 0));
 			
-		target.playGraphics(Graphic.create(369, 0, 0));
+		target.playGraphic(Graphic.create(369, 0, 0));
 		
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

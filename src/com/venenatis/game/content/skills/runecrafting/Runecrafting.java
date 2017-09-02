@@ -112,7 +112,7 @@ public class Runecrafting extends SkillTask {
 				return false;
 			}
 			player.playAnimation(Animation.create(791));
-			player.playGraphics(Graphic.create(186));
+			player.playGraphic(Graphic.create(186));
 			return true;
 		}
 		return false;

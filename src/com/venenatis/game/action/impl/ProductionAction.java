@@ -161,7 +161,7 @@ public abstract class ProductionAction extends Action {
 				getEntity().playAnimation(getAnimation());
 			}
 			if(getGraphic() != null) {
-				getEntity().playGraphics(getGraphic());
+				getEntity().playGraphic(getGraphic());
 			}
 			productionCount = getProductionCount();
 			cycleCount = getCycleCount();
@@ -172,7 +172,7 @@ public abstract class ProductionAction extends Action {
 			getEntity().playAnimation(getAnimation());
 		}
 		if(getGraphic() != null) {
-			getEntity().playGraphics(getGraphic());
+			getEntity().playGraphic(getGraphic());
 		}
 		
 		if(cycleCount > 1) {

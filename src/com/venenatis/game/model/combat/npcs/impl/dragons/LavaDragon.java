@@ -60,7 +60,7 @@ public class LavaDragon extends AbstractBossCombat {
 		case MAGIC:
 			attacker.playAnimation(Animation.create(81));
 			attacker.playAnimation(Animation.create(81));
-			attacker.playGraphics(Graphic.create(1));
+			attacker.playGraphic(Graphic.create(1));
 			maxHit = Utility.random(65);
 			
 			double dragonfireReduction = CombatFormulae.dragonfireReduction(victim);

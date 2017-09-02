@@ -63,7 +63,7 @@ public class TzTokJad extends AbstractBossCombat {
 			break;
 		case RANGE:
 			npc.playAnimation(RANGE_ANIMATION);
-			victim.playGraphics(RANGE_GFX);
+			victim.playGraphic(RANGE_GFX);
 			
 			randomHit = Utility.getRandom(maxHit);
 			
@@ -80,7 +80,7 @@ public class TzTokJad extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					victim.playGraphics(RANGE_END_GFX);
+					victim.playGraphic(RANGE_END_GFX);
 				}
 			});
 			break;

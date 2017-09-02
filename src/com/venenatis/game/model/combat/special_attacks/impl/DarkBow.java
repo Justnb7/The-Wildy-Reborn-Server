@@ -45,7 +45,7 @@ public class DarkBow implements SpecialAttack {
 		clientSpeed += 30;
 		player.playProjectile(Projectile.create(player.getLocation(), target, player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1099 : 1101, showDelay, 50, clientSpeed - 10, 41, 31, 3, 36));
 		player.playProjectile(Projectile.create(player.getLocation(), target, player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1099 : 1101, showDelay, 50, clientSpeed + 10, 46, 36, slope + 6, 36));
-		target.playGraphics(Graphic.create(player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1100 : 1103, clientSpeed, 100));
+		target.playGraphic(Graphic.create(player.getEquipment().get(EquipmentConstants.AMMO_SLOT).getId() == 11212 ? 1100 : 1103, clientSpeed, 100));
 		
 		int first = Utility.random(player.getCombatState().calculateRangeMaxHit());
 		int second = Utility.random(player.getCombatState().calculateRangeMaxHit());
@@ -84,7 +84,7 @@ public class DarkBow implements SpecialAttack {
 		Server.getTaskScheduler().schedule(new Task(1) {
 			@Override
 			public void execute() {
-				target.playGraphics(Graphic.create(dragArrow ? 1100 : 1103, 0, 0));
+				target.playGraphic(Graphic.create(dragArrow ? 1100 : 1103, 0, 0));
 				this.stop();
 			}
 		});

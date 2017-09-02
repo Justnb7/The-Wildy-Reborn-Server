@@ -361,7 +361,7 @@ public class ObjectInteraction {
 			player.getSkills().setLevel(Skills.PRAYER, player.getSkills().getLevelForExperience(Skills.PRAYER));
 			player.setRunEnergy(100);
 			player.getActionSender().sendRunEnergy();
-			player.playGraphics(new Graphic(683));
+			player.playGraphic(new Graphic(683));
 			break;
 			
 		/* Deposit Box */

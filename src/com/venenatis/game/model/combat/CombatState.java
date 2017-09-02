@@ -67,7 +67,7 @@ public class CombatState {
 	 * @param killer
 	 */
 	public void handleRetribution(Player killed, Player killer) {
-		killed.playGraphics(new Graphic(437));
+		killed.playGraphic(new Graphic(437));
 		if (killer.getLocation().isWithinDistance(killer.getLocation(), 3)) {
 			killer.take_hit(killed, Utility.random(15));
 		}

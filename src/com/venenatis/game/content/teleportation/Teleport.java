@@ -233,7 +233,7 @@ public class Teleport {
 		player.getWalkingQueue().lock(10, false);
 		player.getActionSender().removeAllInterfaces();
 		player.playAnimation(data.getStartAnimation());
-		player.playGraphics(data.getStartGraphic());
+		player.playGraphic(data.getStartGraphic());
 		player.getActionSender().sendSound(data.getSound(), 0, 0);
 
 		setTeleporting(true);
@@ -243,7 +243,7 @@ public class Teleport {
 			public void execute() {
 				player.setTeleportTarget(location);
 				player.playAnimation(data.getEndAnimation());
-				player.playGraphics(data.getEndGraphic());
+				player.playGraphic(data.getEndGraphic());
 				stop();
 			}
 
@@ -265,7 +265,7 @@ public class Teleport {
 		player.getWalkingQueue().lock(10, false);
 		player.getActionSender().removeAllInterfaces();
 		player.playAnimation(data.getStartAnimation());
-		player.playGraphics(data.getStartGraphic());
+		player.playGraphic(data.getStartGraphic());
 		player.getActionSender().sendSound(data.getSound(), 0, 0);
 		setTeleporting(true);
 
@@ -274,7 +274,7 @@ public class Teleport {
 			public void execute() {
 				player.setTeleportTarget(location);
 				player.playAnimation(data.getEndAnimation());
-				player.playGraphics(data.getEndGraphic());
+				player.playGraphic(data.getEndGraphic());
 				stop();
 			}
 

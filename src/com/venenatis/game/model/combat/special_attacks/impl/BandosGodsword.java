@@ -23,7 +23,7 @@ public class BandosGodsword implements SpecialAttack {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		
 		player.playAnimation(Animation.create(7060));
-		player.playGraphics(Graphic.create(1212, 0, 0));
+		player.playGraphic(Graphic.create(1212, 0, 0));
 
 		int[] skills = new int[] { Skills.DEFENCE, Skills.STRENGTH, Skills.PRAYER, Skills.ATTACK, Skills.MAGIC, Skills.RANGE };
 

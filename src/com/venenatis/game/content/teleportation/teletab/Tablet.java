@@ -73,10 +73,10 @@ public class Tablet {
 				//If we're using the teleport scroll we have different animations and gfx
 				if (tablet.isScroll()) {
 					player.playAnimation(Animation.create(3864));
-					player.playGraphics(Graphic.create(1039));
+					player.playGraphic(Graphic.create(1039));
 				} else {
 					player.playAnimation(Animation.create(4731));
-					player.playGraphics(Graphic.create(678));
+					player.playGraphic(Graphic.create(678));
 				}
 				
 				//Set teleporting attributes
@@ -87,7 +87,7 @@ public class Tablet {
 					public void execute() {
 						//We arrived, set the new coordinates
 						player.setTeleportTarget(tablet.getLocation());
-						player.playGraphics(Graphic.create(-1));
+						player.playGraphic(Graphic.create(-1));
 						player.playAnimation(Animation.create(65535));
 						//Reset the attributes
 						player.getTeleportAction().setTeleporting(false);

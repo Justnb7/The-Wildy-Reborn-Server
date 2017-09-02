@@ -21,7 +21,7 @@ public class BarrelchestAnchor implements SpecialAttack {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(5870));
-		player.playGraphics(Graphic.highGraphic(1027));
+		player.playGraphic(Graphic.highGraphic(1027));
 
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

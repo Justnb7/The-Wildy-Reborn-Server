@@ -288,9 +288,9 @@ public class Combat {
 
         if (player.MAGIC_SPELLS[spell][3] > 0) {
             if (player.getCombatState().getStartGfxHeight() == 100) {
-                player.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][3], 0, 0));
+                player.playGraphic(Graphic.create(player.MAGIC_SPELLS[spell][3], 0, 0));
             } else {
-                player.playGraphics(Graphic.create(player.MAGIC_SPELLS[spell][3], 0, 0));
+                player.playGraphic(Graphic.create(player.MAGIC_SPELLS[spell][3], 0, 0));
             }
         }
 
@@ -330,9 +330,9 @@ public class Combat {
             @Override
             public void execute() {
                 if (splash)
-                    target.playGraphics(Graphic.create(85, 0, 100));
+                    target.playGraphic(Graphic.create(85, 0, 100));
                 else
-                    target.playGraphics(Graphic.create(endGfx, 0, endH));
+                    target.playGraphic(Graphic.create(endGfx, 0, endH));
                 this.stop();
             }
         });
@@ -514,7 +514,7 @@ public class Combat {
 		int slope;
 		if (!special || (bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW || bowType == BowType.STEEL_CBOW || bowType == BowType.MITH_CBOW || bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW)) {
 			if (pullback != null) {
-				player.playGraphics(pullback);
+				player.playGraphic(pullback);
 			}
 
 			if (rangeWeaponType != null) {
@@ -554,7 +554,7 @@ public class Combat {
 		} else { // spec attacks
 			if (bowType == BowType.DARK_BOW) {
 				if (pullback != null) {
-					player.playGraphics(pullback);
+					player.playGraphic(pullback);
 				}
 				if (ammunition != null && ammunition.getId() != 11212) {
 					if (player.getLocation().isWithinDistance(player, target, 1)) {
@@ -932,25 +932,25 @@ public class Combat {
         Item ammo = attacker.getEquipment().get(EquipmentConstants.AMMO_SLOT);
         switch (ammo.getId()) {
             case 9236: // Lucky Lightning
-                defender.playGraphics(Graphic.create(749, 0, 0));
+                defender.playGraphic(Graphic.create(749, 0, 0));
                 break;
             case 9237: // Earth's Fury
-                defender.playGraphics(Graphic.create(755, 0, 0));
+                defender.playGraphic(Graphic.create(755, 0, 0));
                 break;
             case 9238: // Sea Curse
-                defender.playGraphics(Graphic.create(750, 0, 0));
+                defender.playGraphic(Graphic.create(750, 0, 0));
                 break;
             case 9239: // Down to Earth
-                defender.playGraphics(Graphic.create(757, 0, 0));
+                defender.playGraphic(Graphic.create(757, 0, 0));
                 break;
             case 9240: // Clear Mind
-                defender.playGraphics(Graphic.create(751, 0, 0));
+                defender.playGraphic(Graphic.create(751, 0, 0));
                 break;
             case 9241: // Magical Posion
-                defender.playGraphics(Graphic.create(752, 0, 0));
+                defender.playGraphic(Graphic.create(752, 0, 0));
                 break;
             case 9242: // Blood Forfiet
-                defender.playGraphics(Graphic.create(754, 0, 0));
+                defender.playGraphic(Graphic.create(754, 0, 0));
                 int selfDamage = (int) (attacker.getSkills().getLevel(Skills.HITPOINTS) * 0.1);
                 if (selfDamage < attacker.getSkills().getLevel(Skills.HITPOINTS)) {
                     int opHP = defender.isPlayer() ? ((Player) defender).getSkills().getLevel(Skills.HITPOINTS) : ((NPC) defender).getHitpoints();
@@ -959,7 +959,7 @@ public class Combat {
                 }
                 break;
             case 9243: // Armour Piercing
-                defender.playGraphics(Graphic.create(758, 0, 100));
+                defender.playGraphic(Graphic.create(758, 0, 100));
                 attacker.setAttribute("ignore defence", true); // always hits
                 if (CombatFormulae.wearingFullVoid(attacker, 2)) {
                     dam1 = Utility.random(45, 57);
@@ -971,7 +971,7 @@ public class Combat {
                 }
                 break;
             case 9244: // Dragon's Breath
-                defender.playGraphics(Graphic.create(756, 0, 0));
+                defender.playGraphic(Graphic.create(756, 0, 0));
                 if (CombatFormulae.wearingFullVoid(attacker, 2)) {
                     dam1 = Utility.random(45, 57);
                 } else {
@@ -1006,7 +1006,7 @@ public class Combat {
                 }
                 break;
             case 9245: // Life Leech
-                defender.playGraphics(Graphic.create(753, 0, 0));
+                defender.playGraphic(Graphic.create(753, 0, 0));
                 if (CombatFormulae.wearingFullVoid(attacker, 2)) {
                     dam1 = Utility.random(45, 57);
                 } else {

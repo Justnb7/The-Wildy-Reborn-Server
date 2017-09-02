@@ -35,7 +35,7 @@ public class Growler  extends AbstractBossCombat {
 		}
 		int delay = (gfxDelay / 20) - 1;
 		attacker.playAnimation(Animation.create(7037));
-		attacker.playGraphics(Graphic.create(1182, 100));
+		attacker.playGraphic(Graphic.create(1182, 100));
 		attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1183, 0, 50, clientSpeed, 0, 35, victim.getProjectileLockonIndex(), 10, 48));
 		int randomHit = Utility.random(16);
 		victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);

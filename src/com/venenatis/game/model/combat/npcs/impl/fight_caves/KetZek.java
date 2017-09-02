@@ -63,7 +63,7 @@ public class KetZek extends AbstractBossCombat {
 				@Override
 				public void execute() {
 					this.stop();
-					victim.playGraphics(Graphic.create(446));
+					victim.playGraphic(Graphic.create(446));
 				}
 			});
 			break;

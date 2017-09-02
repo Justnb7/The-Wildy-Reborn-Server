@@ -59,7 +59,7 @@ public class DarkBeast extends AbstractBossCombat {
             	attacker.playAnimation(Animation.create(npc.getAttackAnimation()));
                 attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 130, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
                 damage = Utility.random(8);
-                victim.playGraphics(damage <= 0 ? Graphic.create(85, gfxDelay, 100) : Graphic.create(131, gfxDelay, 100));
+                victim.playGraphic(damage <= 0 ? Graphic.create(85, gfxDelay, 100) : Graphic.create(131, gfxDelay, 100));
                 victim.take_hit(attacker, damage, CombatStyle.MAGIC).send(hitDelay);
                 break;
 		default:

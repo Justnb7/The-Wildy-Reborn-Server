@@ -21,7 +21,7 @@ public class SaradominSword implements SpecialAttack {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(1132));
-		target.playGraphics(Graphic.highGraphic(1196));
+		target.playGraphic(Graphic.highGraphic(1196));
 		
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

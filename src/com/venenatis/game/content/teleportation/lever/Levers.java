@@ -61,7 +61,7 @@ public class Levers {
 			@Override
 			public void execute() {
 				player.playAnimation(Animation.create(714));
-				player.playGraphics(Graphic.create(308, 48, 100));
+				player.playGraphic(Graphic.create(308, 48, 100));
 				World.getWorld().schedule(new Task(3) {
 
 					@Override

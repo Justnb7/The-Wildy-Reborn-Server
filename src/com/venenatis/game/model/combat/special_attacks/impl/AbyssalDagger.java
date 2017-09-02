@@ -22,7 +22,7 @@ public class AbyssalDagger implements SpecialAttack {
 		int secondHit = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		
 		player.playAnimation(Animation.create(3300));
-		player.playGraphics(Graphic.highGraphic(1283));
+		player.playGraphic(Graphic.highGraphic(1283));
 		
 		if (firstHit > 40 || secondHit > 40) {
 			firstHit = 40;

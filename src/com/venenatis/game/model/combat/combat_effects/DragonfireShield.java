@@ -43,7 +43,7 @@ public class DragonfireShield {
 		player.getCombatState().setAttackDelay(6);
 		player.face(player, victim.getLocation());
 		player.playAnimation(Animation.create(6696));
-		player.playGraphics(Graphic.create(1165));
+		player.playGraphic(Graphic.create(1165));
 		World.getWorld().schedule(new Task(3) {
 			public void execute() {
 				int hitDelay;
@@ -66,7 +66,7 @@ public class DragonfireShield {
 				
 				player.playProjectile(Projectile.create(player.getCentreLocation(), victim.getCentreLocation(), 1166, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
 				
-				victim.playGraphics(Graphic.create(1167, 0, 100));
+				victim.playGraphic(Graphic.create(1167, 0, 100));
 				int hit = Utility.random(25);
 				victim.take_hit(player, hit, null).send(hitDelay);//2 or hitDelay?
 				stop();

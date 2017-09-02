@@ -159,7 +159,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 			@Override
 			public void execute() {
 				this.stop();
-				victim.playGraphics(breakGraphic(preStyle));
+				victim.playGraphic(breakGraphic(preStyle));
 				switch(preStyle) {
 				default:
 				case MAGIC:
@@ -254,7 +254,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 			} else {
 				return;
 			}
-			p.playGraphics(Graphic.create(557));
+			p.playGraphic(Graphic.create(557));
 			p.message("The Chaos Elemental has removed some of your worn equipment.");
 			break;
 		default:

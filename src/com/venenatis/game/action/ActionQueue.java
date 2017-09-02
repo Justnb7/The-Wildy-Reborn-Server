@@ -77,7 +77,7 @@ public class ActionQueue {
 	    	break;
 	    case RESET_ALL:
 			entity.playAnimation(Animation.create(-1));
-			entity.playGraphics(Graphic.create(-1));
+			entity.playGraphic(Graphic.create(-1));
 			break;			    	
 	    }
 		if(actions.size() > 0) {
@@ -170,7 +170,7 @@ public class ActionQueue {
 		}
 		if(resetAnimations) {
 			entity.playAnimation(Animation.create(-1));
-			entity.playGraphics(Graphic.create(-1));
+			entity.playGraphic(Graphic.create(-1));
 		}
 	}
 	
@@ -198,7 +198,7 @@ public class ActionQueue {
 		}
 		if(resetAnimations) {
 			entity.playAnimation(Animation.create(-1));
-			entity.playGraphics(Graphic.create(-1));
+			entity.playGraphic(Graphic.create(-1));
 		}
 	}
 

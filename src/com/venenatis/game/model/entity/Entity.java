@@ -798,7 +798,7 @@ public abstract class Entity {
 			if (shield == 12817) { //Elysian
 				if (Utility.getRandom(100) > 30 && damage > 0) {
 					damage *= .75;
-					player_me.playGraphics(Graphic.highGraphic(321));
+					player_me.playGraphic(Graphic.highGraphic(321));
 				}
 			}
 
@@ -993,7 +993,7 @@ public abstract class Entity {
 		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
 	}
 
-	public void playGraphics(Graphic graphic) {
+	public void playGraphic(Graphic graphic) {
 		currentGraphic = graphic;
 		this.getUpdateFlags().flag(UpdateFlag.GRAPHICS);
 	}

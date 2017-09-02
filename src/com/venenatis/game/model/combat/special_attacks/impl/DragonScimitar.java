@@ -22,7 +22,7 @@ public class DragonScimitar implements SpecialAttack {
 		
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1872));
-		player.playGraphics(Graphic.create(347, (100 << 16)));
+		player.playGraphic(Graphic.create(347, (100 << 16)));
 		
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

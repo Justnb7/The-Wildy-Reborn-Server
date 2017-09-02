@@ -55,7 +55,7 @@ public class EnormousTentacle  extends AbstractBossCombat {
 		Server.getTaskScheduler().schedule(new Task(hitDelay) {
 			@Override
 			public void execute() {
-				victim.playGraphics(Graphic.create(hit > 0 ? 163 : 85, 0, 100));
+				victim.playGraphic(Graphic.create(hit > 0 ? 163 : 85, 0, 100));
 				this.stop();
 			}
 		});

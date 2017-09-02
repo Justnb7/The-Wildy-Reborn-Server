@@ -542,7 +542,7 @@ public class OwnerCommand implements Command {
 		case "gfx":
 			if (parser.hasNext()) {
 				final int graphic = parser.nextInt();
-				player.playGraphics(Graphic.create(graphic));
+				player.playGraphic(Graphic.create(graphic));
 				player.getActionSender().sendMessage("Starting gfx: " + graphic);
 			}
 			return true;

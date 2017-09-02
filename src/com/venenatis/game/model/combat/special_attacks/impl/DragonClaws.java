@@ -41,7 +41,7 @@ public class DragonClaws implements SpecialAttack {
 		}
 
 		player.playAnimation(Animation.create(5283));
-		player.playGraphics(Graphic.highGraphic(1171));
+		player.playGraphic(Graphic.highGraphic(1171));
 		target.take_hit(player, first, CombatStyle.MELEE, false, true).send();
 		target.take_hit(player, second, CombatStyle.MELEE, false, true).send();
 		target.take_hit(player, third, CombatStyle.MELEE, false, true).send(2);

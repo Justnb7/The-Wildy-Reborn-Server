@@ -60,7 +60,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 			int clientSpeed;
 			int gfxDelay;
 			attacker.playAnimation(anim);
-			attacker.playGraphics(Graphic.create(499, 0, 100));
+			attacker.playGraphic(Graphic.create(499, 0, 100));
 			if (projectile) {
 				if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 					clientSpeed = 50;
@@ -97,7 +97,7 @@ public class SkeletalWyvern extends AbstractBossCombat {
 					@Override
 					public void execute() {
 						if (projectile) {
-							victim.playGraphics(Graphic.create(502, 0, 100));
+							victim.playGraphic(Graphic.create(502, 0, 100));
 							this.stop();
 						}
 					}

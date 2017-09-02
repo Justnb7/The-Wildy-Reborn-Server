@@ -25,7 +25,7 @@ public class DragonWarhammer implements SpecialAttack {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 
 		player.playAnimation(Animation.create(1378));
-		player.playGraphics(Graphic.highGraphic(1292));
+		player.playGraphic(Graphic.highGraphic(1292));
 		
 		if (target instanceof Player) {
 			Player targPlayer = (Player) target;

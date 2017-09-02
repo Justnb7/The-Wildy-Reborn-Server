@@ -20,7 +20,7 @@ public class DragonLongsword implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1058));
-		player.playGraphics(Graphic.highGraphic(248));
+		player.playGraphic(Graphic.highGraphic(248));
 
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

@@ -75,7 +75,7 @@ public class GeneralGraardor extends AbstractBossCombat {
 
 		case RANGE:
 			attacker.playAnimation(Animation.create(7021));
-			victim.playGraphics(Graphic.create(1203, 0, 0));
+			victim.playGraphic(Graphic.create(1203, 0, 0));
 			
 			final Collection<Player> localPlayers = RegionStoreManager.get().getLocalPlayers(attacker);
 			

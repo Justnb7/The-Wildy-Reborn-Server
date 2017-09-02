@@ -40,7 +40,7 @@ public class BonesToPeaches implements MagicSpell {
 		player.getInventory().add(6883, amount, true);
 
 		player.playAnimation(new Animation(722));
-		player.playGraphics(new Graphic(141, 100));
+		player.playGraphic(new Graphic(141, 100));
 
 		player.getActionSender().sendMessage("You have converted " + amount + " bones to peaches.");
 

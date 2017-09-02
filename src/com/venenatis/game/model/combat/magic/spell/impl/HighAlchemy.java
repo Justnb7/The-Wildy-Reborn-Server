@@ -42,7 +42,7 @@ public class HighAlchemy implements MagicSpell {
 		final int coins = item.getHighAlch();
 
 		player.playAnimation(new Animation(713));
-		player.playGraphics(new Graphic(113, 100));
+		player.playGraphic(new Graphic(113, 100));
 
 		player.getInventory().remove(item.getId(), 1);
 		

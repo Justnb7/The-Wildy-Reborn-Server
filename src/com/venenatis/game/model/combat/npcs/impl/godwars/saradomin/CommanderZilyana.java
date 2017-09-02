@@ -80,13 +80,13 @@ public class CommanderZilyana extends AbstractBossCombat {
 			
 		case MAGIC:
 			attacker.playAnimation(Animation.create(6970));
-			victim.playGraphics(Graphic.create(1221, 60));
+			victim.playGraphic(Graphic.create(1221, 60));
             final Collection<Player> localPlayers = RegionStoreManager.get().getLocalPlayers(attacker);
 			
 			for(final Player near : localPlayers) {
 				if(near != null && near != attacker && near.getSkills().getLevel(Skills.HITPOINTS) > 0) {
 					if (attacker.getCentreLocation().isWithinDistance(attacker, near, 10)) {
-						near.playGraphics(Graphic.create(1207));
+						near.playGraphic(Graphic.create(1207));
 						randomHit = Utility.random(32);
 						near.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(1);
 						int preDouble = (int) (randomHit / 2);

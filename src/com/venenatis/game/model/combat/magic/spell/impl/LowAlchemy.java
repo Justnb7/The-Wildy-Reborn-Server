@@ -40,7 +40,7 @@ public class LowAlchemy implements MagicSpell {
 		final int coins = item.getLowAlch();
 
 		player.playAnimation(new Animation(712));
-		player.playGraphics(new Graphic(112, 100));
+		player.playGraphic(new Graphic(112, 100));
 
 		player.getInventory().remove(item.getId(), 1);
 		

@@ -1,6 +1,5 @@
 package com.venenatis.game.constants;
 
-import com.venenatis.game.content.EmotesManager;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.account.Account;
@@ -129,9 +128,9 @@ public class ItemConstants {
         /**
          * Skill Capes
          */
-        if (EmotesManager.doesntHaveLevelReq(player, item.getId())) {
+        /*if (EmotesManager.doesntHaveLevelReq(player, item.getId())) {
 			return false;
-		}
+		}*/
         
 		return true;
 	}

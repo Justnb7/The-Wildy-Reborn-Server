@@ -38,7 +38,7 @@ public class BarrowsEffect {
 				damage = attacker.getSkills().getLevel(3);
 			} else if (randomEffect) {
 				attacker.getSkills().addLevel(3, damage);
-				victim.playGraphics(Graphic.create(398));
+				victim.playGraphic(Graphic.create(398));
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public class BarrowsEffect {
 		boolean randomEffect = Utility.getRandom(10) == 5;
 
 		if (isWearingGear && randomEffect) {
-			victim.playGraphics(Graphic.create(399));
+			victim.playGraphic(Graphic.create(399));
 			if (!victim.isNPC()) {
 				// TODO: Implement running energy then subtract energy from the
 				// victim (player).

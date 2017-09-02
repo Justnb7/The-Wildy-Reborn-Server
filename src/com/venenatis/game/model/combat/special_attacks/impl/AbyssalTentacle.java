@@ -21,7 +21,7 @@ public class AbyssalTentacle implements SpecialAttack {
 
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		player.playAnimation(Animation.create(1658));
-        target.playGraphics(Graphic.highGraphic(341));
+        target.playGraphic(Graphic.highGraphic(341));
 		
 		boolean missed = !CombatFormulae.getAccuracy(player, target, 0, getAccuracyMultiplier());
 		if (missed)

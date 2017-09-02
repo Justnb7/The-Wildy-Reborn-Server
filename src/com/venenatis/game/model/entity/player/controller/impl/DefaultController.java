@@ -7,7 +7,7 @@ import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
@@ -81,7 +81,7 @@ public class DefaultController extends Controller {
 	}
 
 	@Override
-	public boolean canPray(Prayers prayer) {
+	public boolean canPray(PrayerData prayer) {
 		return true;
 	}
 

@@ -1,14 +1,13 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
 import com.venenatis.game.model.combat.CombatFormulae;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.util.Utility;
 
 public class DragonScimitar implements SpecialAttack {
@@ -31,17 +30,16 @@ public class DragonScimitar implements SpecialAttack {
 		if(target instanceof Player) {
 			Player targPlayer = (Player) target;
 			boolean hasProtection = false;
-			if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+			if (PrayerHandler.isActivated(targPlayer, PrayerHandler.PROTECT_FROM_MAGIC)) {
 				hasProtection = true;
-			} else if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
+			} else if (PrayerHandler.isActivated(targPlayer, PrayerHandler.PROTECT_FROM_MISSILES)) {
 				hasProtection = true;
-			} else if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+			} else if (PrayerHandler.isActivated(targPlayer, PrayerHandler.PROTECT_FROM_MELEE)) {
 				hasProtection = true;
 			}
 
 			if (hasProtection && damage > 0) {
-				targPlayer.setPrayerIcon(-1);
-				targPlayer.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+				targPlayer.setHeadHint(-1);
 				player.message("You have cancelled the protection prayer of " + targPlayer.getUsername() + ".");
 				targPlayer.message("Your protection prayer has been cancelled by " + player.getUsername());
 				targPlayer.cannotUsePrayer.reset();

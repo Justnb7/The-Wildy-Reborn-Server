@@ -96,7 +96,7 @@ public class DeathTask extends Task {
 		victim.getCombatState().setDead(false);
 		victim.freeze(0);
 		victim.setCurrentKillStreak(0);
-		PrayerHandler.resetAllPrayers(victim);
+		PrayerHandler.resetAll(victim);
 		victim.setSpecialAmount(100);
 		victim.setUsingSpecial(false);
 		PlayerKilling.removeHostFromList(victim, victim.getHostAddress());

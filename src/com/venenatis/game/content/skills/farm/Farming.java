@@ -177,8 +177,7 @@ public class Farming {
 					player.setFarmingState(id, State.GROWTH.getId());
 					player.getInventory().replace(new Item(itemId), new Item(itemId == 5333 ? 5331 : itemId - 1));
 					player.getActionSender().sendMessage("You water the herb, wait " + Math.round(player.getFarmingTime(id) * .6) + " seconds for the herb to mature.");
-					player.getActionSender().sendWidget(2, time);
-					//player.getPA().sendGameTimer(ClientGameTimer.FARMING, TimeUnit.SECONDS, time);
+					player.getActionSender().sendWidget(5, time);
 					return;
 				}
 			}

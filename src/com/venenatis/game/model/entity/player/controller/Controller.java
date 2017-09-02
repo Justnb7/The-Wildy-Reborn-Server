@@ -1,6 +1,6 @@
 package com.venenatis.game.model.entity.player.controller;
 
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 
@@ -32,7 +32,7 @@ public abstract class Controller {
 
     public abstract boolean canPickup(int item);
 
-    public abstract boolean canPray(Prayers prayer);
+    public abstract boolean canPray(PrayerData prayer);
 
     public abstract boolean canSave();
 

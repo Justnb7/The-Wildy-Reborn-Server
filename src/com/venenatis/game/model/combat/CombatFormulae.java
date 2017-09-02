@@ -3,7 +3,6 @@ package com.venenatis.game.model.combat;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
@@ -94,23 +93,23 @@ public class CombatFormulae {
             switch (att_type) {
             
             case 0:
-            	if (p.isActivePrayer(Prayers.CLARITY_OF_THOUGHT)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.CLARITY_OF_THOUGHT)) {
                     att_prayer_bonus += 0.05;
                 }
 
-                if (p.isActivePrayer(Prayers.IMPROVED_REFLEXES)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.IMPROVED_REFLEXES)) {
                     att_prayer_bonus += 0.1;
                 }
 
-                if (p.isActivePrayer(Prayers.INCREDIBLE_REFLEXES)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.INCREDIBLE_REFLEXES)) {
                     att_prayer_bonus += 0.15;
                 }
 
-                if (p.isActivePrayer(Prayers.CHIVALRY)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.CHIVALRY)) {
                     att_prayer_bonus += 0.15;
                 }
 
-                if (p.isActivePrayer(Prayers.PIETY)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.PIETY)) {
                     att_prayer_bonus += 0.20;
                 }
 
@@ -118,19 +117,19 @@ public class CombatFormulae {
                 att_void_bonus = wearingFullVoid(p, att_type) ? 1.1 : 1;
                 break;
             case 1:
-            	 if (p.isActivePrayer(Prayers.SHARP_EYE)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.SHARP_EYE)) {
                      att_prayer_bonus += 0.05;
                  }
 
-                 if (p.isActivePrayer(Prayers.HAWK_EYE)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.HAWK_EYE)) {
                      att_prayer_bonus += 0.1;
                  }
 
-                 if (p.isActivePrayer(Prayers.EAGLE_EYE)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.EAGLE_EYE)) {
                      att_prayer_bonus += 0.15;
                  }
                  
-                 if (p.isActivePrayer(Prayers.RIGOUR)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.RIGOUR)) {
                      att_prayer_bonus += 0.20;
                  }
 
@@ -138,19 +137,19 @@ public class CombatFormulae {
                 att_void_bonus = wearingFullVoid(p, att_type) ? 1.1 : 1;
                 break;
             case 2:
-            	 if (p.isActivePrayer(Prayers.MYSTIC_WILL)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.MYSTIC_WILL)) {
                      att_prayer_bonus += 0.05;
                  }
 
-                 if (p.isActivePrayer(Prayers.MYSTIC_LORE)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.MYSTIC_LORE)) {
                      att_prayer_bonus += 0.1;
                  }
 
-                 if (p.isActivePrayer(Prayers.MYSTIC_MIGHT)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.MYSTIC_MIGHT)) {
                      att_prayer_bonus += 0.15;
                  }
                  
-                 if (p.isActivePrayer(Prayers.AUGURY)) {
+            	if (PrayerHandler.isActivated(p, PrayerHandler.AUGURY)) {
                      att_prayer_bonus += 0.25;
                  }
 
@@ -196,31 +195,31 @@ public class CombatFormulae {
 
             Player t = target.toPlayer();
 
-            if (t.isActivePrayer(Prayers.THICK_SKIN)) {
+            if (PrayerHandler.isActivated(t, PrayerHandler.THICK_SKIN)) {
                 tar_prayer_bonus += 0.05;
             }
 
-            if (t.isActivePrayer(Prayers.ROCK_SKIN)) {
+            if (PrayerHandler.isActivated(t, PrayerHandler.ROCK_SKIN)) {
                 tar_prayer_bonus += 0.1;
             }
 
-            if (t.isActivePrayer(Prayers.STEEL_SKIN)) {
+            if (PrayerHandler.isActivated(t, PrayerHandler.STEEL_SKIN)) {
                 tar_prayer_bonus += 0.15;
             }
 
-            if (t.isActivePrayer(Prayers.CHIVALRY)) {
+            if (PrayerHandler.isActivated(t, PrayerHandler.CHIVALRY)) {
                 tar_prayer_bonus += 0.2;
             }
 
-            if (t.isActivePrayer(Prayers.PIETY)) {
+            if (PrayerHandler.isActivated(t, PrayerHandler.PIETY)) {
                 tar_prayer_bonus += 0.25;
             }
             
-            if (t.isActivePrayer(Prayers.RIGOUR)) {
+            if (PrayerHandler.isActivated(t, PrayerHandler.RIGOUR)) {
                 tar_prayer_bonus += 0.25;
             }
             
-            if (t.isActivePrayer(Prayers.AUGURY)) {
+            if (PrayerHandler.isActivated(t, PrayerHandler.AUGURY)) {
                 tar_prayer_bonus += 0.25;
             }
 
@@ -270,7 +269,7 @@ public class CombatFormulae {
 
         switch (att_type) {
         case 0:
-            if (target.isPlayer() && target.toPlayer().isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+            if (target.isPlayer() && PrayerHandler.isActivated(target.toPlayer(), PrayerHandler.PROTECT_FROM_MELEE)) {
                 att_hit_chance = Math.floor((((hit_chance * att_spec_bonus) * att_void_bonus) * 0.6) * 100);
                 tar_block_chance = Math.floor(101 - ((((hit_chance * att_spec_bonus) * att_void_bonus) * 0.6) * 100));
             } else {
@@ -279,7 +278,7 @@ public class CombatFormulae {
             }
             break;
         case 1:
-            if (target.isPlayer() && target.toPlayer().isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
+            if (target.isPlayer() && PrayerHandler.isActivated(target.toPlayer(), PrayerHandler.PROTECT_FROM_MISSILES)) {
                 att_hit_chance = Math.floor((((hit_chance * att_spec_bonus) * att_void_bonus) * 0.6) * 100);
                 tar_block_chance = Math.floor(101 - ((((hit_chance * att_spec_bonus) * att_void_bonus) * 0.6) * 100));
             } else {
@@ -288,7 +287,7 @@ public class CombatFormulae {
             }
             break;
         case 2:
-            if (target.isPlayer() && target.toPlayer().isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+            if (target.isPlayer() && PrayerHandler.isActivated(target.toPlayer(), PrayerHandler.PROTECT_FROM_MAGIC)) {
                 att_hit_chance = Math.floor(((hit_chance * att_void_bonus) * 0.6) * 100);
                 tar_block_chance = Math.floor(101 - ((((hit_chance * att_spec_bonus) * att_void_bonus) * 0.6) * 100));
             } else {
@@ -323,15 +322,15 @@ public class CombatFormulae {
 		int strengthLevel = player.getSkills().getLevel(Skills.STRENGTH);
 		int combatStyleBonus = weaponBonus(player);
 
-		if (player.isActivePrayer(Prayers.BURST_OF_STRENGTH)) {
+		if (PrayerHandler.isActivated(player, PrayerHandler.BURST_OF_STRENGTH)) {
 			prayerMultiplier = 1.05;
-		} else if (player.isActivePrayer(Prayers.SUPERHUMAN_STRENGTH)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.SUPERHUMAN_STRENGTH)) {
 			prayerMultiplier = 1.1;
-		} else if (player.isActivePrayer(Prayers.ULTIMATE_STRENGTH)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.ULTIMATE_STRENGTH)) {
 			prayerMultiplier = 1.15;
-		} else if (player.isActivePrayer(Prayers.CHIVALRY)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.CHIVALRY)) {
 			prayerMultiplier = 1.18;
-		} else if (player.isActivePrayer(Prayers.PIETY)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.PIETY)) {
 			prayerMultiplier = 1.23;
 		}
 
@@ -434,13 +433,13 @@ public class CombatFormulae {
 		int rangeLevel = player.getSkills().getLevel(Skills.RANGE);
 		int combatStyleBonus = 0;
 		
-		if (player.isActivePrayer(Prayers.SHARP_EYE)) {
+		if (PrayerHandler.isActivated(player, PrayerHandler.SHARP_EYE)) {
 			prayerMultiplier = 1.05;
-		} else if (player.isActivePrayer(Prayers.HAWK_EYE)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.HAWK_EYE)) {
 			prayerMultiplier = 1.10;
-		} else if (player.isActivePrayer(Prayers.EAGLE_EYE)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.EAGLE_EYE)) {
 			prayerMultiplier = 1.15;
-		} else if (player.isActivePrayer(Prayers.RIGOUR)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.RIGOUR)) {
 			prayerMultiplier = 1.23;
 		}
 		
@@ -622,7 +621,8 @@ public class CombatFormulae {
 		} else if (entity.hasAttribute("extended_antiFire")) {
             dragonfirePotion = System.currentTimeMillis() - (long)entity.getAttribute("extended_antiFire", 0L) < 720000;
         }
-		boolean protectPrayer = player.isActivePrayer(Prayers.PROTECT_FROM_MAGIC);
+		
+		boolean protectPrayer = PrayerHandler.isActivated(player, PrayerHandler.PROTECT_FROM_MAGIC);
 		if (dragonfireShield && dragonfirePotion) {
 			player.message("You shield absorbs most of the dragon fire!");
 			player.message("Your potion protects you from the heat of the dragon's breath!");

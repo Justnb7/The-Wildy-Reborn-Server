@@ -8,7 +8,7 @@ import java.util.Queue;
 
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Item.ItemComparator;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -32,11 +32,11 @@ public class ItemsKeptOnDeath {
 		// Are we skulled if we are keep only 1 item when using the protect item
 		// otherwise keep 0
 		if (player.isSkulled()) {
-			kept = player.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0;
+			kept = PrayerHandler.isActivated(player, PrayerHandler.PROTECT_ITEM) ? 1 : 0;
 		} else {
 			// We're not skulled we keep 3 items unless we're using protect item
 			// then we keep 4
-			kept = player.isActivePrayer(Prayers.PROTECT_ITEM) ? 4 : 3;
+			kept = PrayerHandler.isActivated(player, PrayerHandler.PROTECT_ITEM) ? 4 : 3;
 		}
 
 		final Item[] keep = new Item[kept];

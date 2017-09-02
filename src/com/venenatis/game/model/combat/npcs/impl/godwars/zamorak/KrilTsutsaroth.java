@@ -3,7 +3,7 @@ package com.venenatis.game.model.combat.npcs.impl.godwars.zamorak;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
@@ -78,7 +78,7 @@ public class KrilTsutsaroth extends AbstractBossCombat {
 			attacker.playAnimation(Animation.create(npc.getAttackAnimation()));
 			hitDelay = 2;
 			boolean troughPrayer = false;
-			if(player.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+			if (PrayerHandler.isActivated(player, PrayerHandler.PROTECT_FROM_MELEE)) {
 				//Special attack, hits trough prayer
 				if(Utility.random(8) == 7) {
 					maxHit = 49;

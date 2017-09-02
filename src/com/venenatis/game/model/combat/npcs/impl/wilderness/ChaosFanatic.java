@@ -7,7 +7,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
@@ -91,7 +91,7 @@ public class ChaosFanatic extends AbstractBossCombat {
 			hitDelay = (gfxDelay / 20) - 1;
 			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), RED_GFX,
 					45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
-			if (pVictim.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+			if(PrayerHandler.isActivated(pVictim, PrayerHandler.PROTECT_FROM_MAGIC)) {
 				maxHit = 7;
 			}
 			randomHit = Utility.random(maxHit);

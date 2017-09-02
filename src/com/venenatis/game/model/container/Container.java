@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
@@ -1492,7 +1492,7 @@ public abstract class Container {
 		}
 
 		int finalamount = player.isSkulled() ? 0 : 3;
-		if (player.isActivePrayer(Prayers.PROTECT_ITEM))
+		if (PrayerHandler.isActivated(player, PrayerHandler.PROTECT_ITEM))
 			finalamount++;
 		int amount = finalamount;
 		if (amount > 0) {

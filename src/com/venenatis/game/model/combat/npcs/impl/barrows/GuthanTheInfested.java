@@ -1,6 +1,6 @@
 package com.venenatis.game.model.combat.npcs.impl.barrows;
 
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
@@ -26,8 +26,7 @@ public class GuthanTheInfested extends AbstractBossCombat {
 		
 		int damage = Utility.random(26);
 		
-		
-		if (!pVictim.isActivePrayer(Prayers.PROTECT_FROM_MELEE) && Utility.random(7) == 3) {
+		if (!PrayerHandler.isActivated(pVictim, PrayerHandler.PROTECT_FROM_MELEE) && Utility.random(7) == 3) {
 			victim.playGraphics(Graphic.create(398, 0, 0));
 			victim.getActionSender().sendMessage("Guthans heals himself...");
 			npc.setHitpoints(npc.getHitpoints() + damage);

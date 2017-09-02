@@ -9,7 +9,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.PrayerHandler;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
 import com.venenatis.game.model.combat.data.AttackStyle;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
@@ -53,7 +53,20 @@ public class ActionSender {
 	public ActionSender(Player player) {
 		this.player = player;
 	}
-
+	
+	/**
+	 * Sends the quick prayers to the client
+	 * 
+	 * @param activated
+	 *            Did we activate them?
+	 */
+	public ActionSender sendQuickPrayersState(boolean activated) {
+		player.getOutStream().writeFrame(111);
+		player.getOutStream().writeByte(activated ? 1 : 0);
+		player.flushOutStream();
+		return this;
+	}
+	
 	/**
 	 * Sends the entity feed overlay
 	 * 
@@ -114,7 +127,7 @@ public class ActionSender {
 		return this;
 	}
 
-	public ActionSender changeSidebar(int id) {
+	public ActionSender sendTab(int id) {
 		player.getOutStream().writeFrame(106);
 		player.getOutStream().writeByteC(id);
 		player.flushOutStream();
@@ -996,12 +1009,12 @@ public class ActionSender {
 		player.getController().onStartup(player);
 
 		// Reset prayers
-		PrayerHandler.resetAllPrayers(player);
+		PrayerHandler.resetAll(player);
 
 		// unlock/lock special case prayers
-		sendConfig(709, PrayerHandler.canActivate(player, Prayers.PRESERVE, false) ? 1 : 0);
-		sendConfig(711, PrayerHandler.canActivate(player, Prayers.RIGOUR, false) ? 1 : 0);
-		sendConfig(713, PrayerHandler.canActivate(player, Prayers.AUGURY, false) ? 1 : 0);
+		sendConfig(709, PrayerHandler.canUse(player, PrayerData.PRESERVE, false) ? 1 : 0);
+		sendConfig(711, PrayerHandler.canUse(player, PrayerData.RIGOUR, false) ? 1 : 0);
+		sendConfig(713, PrayerHandler.canUse(player, PrayerData.AUGURY, false) ? 1 : 0);
 
 		// Update inventory
 		player.getInventory().refresh();

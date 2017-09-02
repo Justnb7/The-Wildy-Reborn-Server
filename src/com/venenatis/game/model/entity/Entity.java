@@ -13,9 +13,10 @@ import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.CombatState;
 import com.venenatis.game.model.combat.NpcCombat;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.magic.spell.impl.Vengeance;
@@ -769,13 +770,13 @@ public abstract class Entity {
 			if (combat_type != null && !throughPrayer) {
 				// 40% Protection from player attacks, 100% protection from Npc attacks
 				double prayProtection = attacker.isPlayer() ? 0.6D : 0.0D;
-				if (combat_type == CombatStyle.MELEE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+				if (combat_type == CombatStyle.MELEE && PrayerHandler.isActivated(player_me, PrayerHandler.PROTECT_FROM_MELEE)) {
 					damage *= prayProtection;
 				}
-				if (combat_type == CombatStyle.RANGE && player_me.isActivePrayer(Prayers.PROTECT_FROM_MISSILE)) {
+				if (combat_type == CombatStyle.RANGE && PrayerHandler.isActivated(player_me, PrayerHandler.PROTECT_FROM_MISSILES)) {
 					damage *= prayProtection;
 				}
-				if (combat_type == CombatStyle.MAGIC && combat_type == CombatStyle.GREEN_BOMB && player_me.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+				if (combat_type == CombatStyle.MAGIC && combat_type == CombatStyle.GREEN_BOMB && PrayerHandler.isActivated(player_me, PrayerHandler.PROTECT_FROM_MAGIC)) {
 					damage *= prayProtection;
 				}
 			}
@@ -783,14 +784,14 @@ public abstract class Entity {
 			// TODO special reduction effects can go here, like Ely
 			
 			if (shield == 13740) { //Divine
-				if (player_me.getPrayerPoint() > 0) {
+				if (player_me.getSkills().getLevel(Skills.PRAYER) > 0) {
 					double damageRecieved = damage * 0.7;
 					int prayerLost = (int) (damage * 0.5);
-					if (player_me.getPrayerPoint() >= prayerLost) {
+					if (player_me.getSkills().getLevel(Skills.PRAYER) >= prayerLost) {
 						damage = (int) damageRecieved;
-						player_me.setPrayerPoint(player_me.getPrayerPoint() - prayerLost);
-						if (player_me.getPrayerPoint() < 0)
-							player_me.setPrayerPoint(0);
+						player_me.getSkills().setLevel(Skills.PRAYER, player_me.getSkills().getLevel(Skills.PRAYER) - prayerLost);
+						if (player_me.getSkills().getLevel(Skills.PRAYER) < 0)
+							player_me.getSkills().setLevel(Skills.PRAYER, 0);
 					}
 				}
 			}
@@ -855,7 +856,7 @@ public abstract class Entity {
 			if (attacker.isPlayer()) {
 				Player pAttacker = (Player)attacker;
 				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
-				pAttacker.getCombatState().applySmite(me, damage);
+				pAttacker.getCombatState().handleSmite(pAttacker, me, damage);
 				int wepId = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 				PoisonCombatTask.getPoisonType(wepId).ifPresent(pt -> me.poison(pt, attacker));
 			}
@@ -1413,6 +1414,36 @@ public abstract class Entity {
 		} else if (isNPC()) {
 			venomDamage = 6;
 		}
+		return this;
+	}
+	
+	private boolean[] prayerActive = new boolean[30], curseActive = new boolean[20];
+
+	public boolean[] getPrayerActive() {
+		return prayerActive;
+	}
+
+	public boolean[] getCurseActive() {
+		return curseActive;
+	}
+
+	public Entity setPrayerActive(boolean[] prayerActive) {
+		this.prayerActive = prayerActive;
+		return this;
+	}
+
+	public Entity setPrayerActive(int id, boolean prayerActive) {
+		this.prayerActive[id] = prayerActive;
+		return this;
+	}
+
+	public Entity setCurseActive(boolean[] curseActive) {
+		this.curseActive = curseActive;
+		return this;
+	}
+
+	public Entity setCurseActive(int id, boolean curseActive) {
+		this.curseActive[id] = curseActive;
 		return this;
 	}
 

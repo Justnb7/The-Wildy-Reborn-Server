@@ -51,7 +51,7 @@ public class HighAlchemy implements MagicSpell {
 
 		player.getInventory().refresh();
 		
-		player.getActionSender().changeSidebar(6);
+		player.getActionSender().sendTab(6);
 
 		player.getMagic().setDelay(System.currentTimeMillis());
 		

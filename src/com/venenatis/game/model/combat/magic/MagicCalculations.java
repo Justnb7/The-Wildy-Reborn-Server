@@ -3,7 +3,7 @@ package com.venenatis.game.model.combat.magic;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.CombatFormulae;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
 
@@ -66,13 +66,14 @@ public class MagicCalculations {
 		int attack = player.getSkills().getLevel(Skills.MAGIC);
 
 		int magicBonus = player.getBonuses()[3];
-		if (player.isActivePrayer(Prayers.MYSTIC_WILL)) {
+		if (PrayerHandler.isActivated(player, PrayerHandler.MYSTIC_WILL)) {
 			attack *= player.getSkills().getLevelForExperience(0) * 1.05;
-		} else if (player.isActivePrayer(Prayers.MYSTIC_LORE)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.MYSTIC_LORE)) {
 			attack *= player.getSkills().getLevelForExperience(0) * 1.10;
-		} else if (player.isActivePrayer(Prayers.MYSTIC_MIGHT)) {
+		} else if (PrayerHandler.isActivated(player, PrayerHandler.MYSTIC_MIGHT)) {
 			attack *= player.getSkills().getLevelForExperience(0) * 1.15;
 		}
+		//TODO augury
 		if (CombatFormulae.wearingFullVoid(player, 2)) {
 			attack *= 1.1;
 		}

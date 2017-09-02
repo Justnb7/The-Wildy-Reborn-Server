@@ -178,7 +178,11 @@ public class ActionButtonPacketHandler implements PacketType {
 		}
 		
 		/* Prayer */
-		if(!PrayerHandler.togglePrayer(player, button)) {
+		if(PrayerHandler.togglePrayer(player, button)) {
+			return;
+		}
+		/* Quick Prayers */
+		if(player.getQuickPrayers().handleButton(button)) {
 			return;
 		}
 		

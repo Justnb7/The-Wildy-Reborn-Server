@@ -9,7 +9,7 @@ import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Item.ItemComparator;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.account.Account;
@@ -129,7 +129,7 @@ public class PlayerDrops {
 			killer = victim;
 		}
 
-		final Item[] keep = victim.isSkulled() ? new Item[victim.isActivePrayer(Prayers.PROTECT_ITEM) ? 1 : 0] : new Item[victim.isActivePrayer(Prayers.PROTECT_ITEM) ? 4 : 3];
+		final Item[] keep = victim.isSkulled() ? new Item[PrayerHandler.isActivated(victim, PrayerHandler.PROTECT_ITEM) ? 1 : 0] : new Item[PrayerHandler.isActivated(victim, PrayerHandler.PROTECT_ITEM) ? 4 : 3];
 
 		final Queue<Item> items = new PriorityQueue<Item>(ItemComparator.SHOP_VALUE_COMPARATOR);
 

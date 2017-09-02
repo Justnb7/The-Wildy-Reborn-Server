@@ -20,6 +20,7 @@ import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
@@ -236,6 +237,9 @@ public class PlayerSave {
 				if (details.slayerExtensions != null) {
 					player.getSlayerInterface().setExtension(details.slayerExtensions);
 				}
+				if (details.quickPrayers != null) {
+					player.getQuickPrayers().setPrayers(details.quickPrayers);
+				}
 				return true;
 
 			} finally {
@@ -333,11 +337,11 @@ public class PlayerSave {
 		private final int gender;
 		private final double[] skillXP;
 		private final int[] dynamicLevels;
-		private final ArrayList<String> blockedSlayerTasks;//this saves fine
-		
-		private final HashMap<Integer, String> slayerUnlocks;//some reason this is saved in the extensions aswell what u mean check
-		
+		private final ArrayList<String> blockedSlayerTasks;
+		private final HashMap<Integer, String> slayerUnlocks;
 		private final HashMap<Integer, Integer> slayerExtensions;
+		private final PrayerData[] quickPrayers;
+
 		
 		public String user() {
 			return this.username;
@@ -434,6 +438,7 @@ public class PlayerSave {
 			blockedSlayerTasks = player.getSlayerInterface().getBlockedTasks();
 			slayerUnlocks = player.getSlayerInterface().getUnlocks();
 			slayerExtensions = player.getSlayerInterface().getExtensions();
+			quickPrayers = player.getQuickPrayers().getPrayers();
 		}
 
 		public void parseDetails() throws Exception {

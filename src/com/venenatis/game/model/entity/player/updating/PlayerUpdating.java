@@ -581,8 +581,8 @@ public class PlayerUpdating {
 		//Update the appearance gender, 0 = male, 1 = female
 		player.getPlayerProps().writeByte(app.getGender());
 		
-		//Update the head icon
-		player.getPlayerProps().writeByte(player.getPrayerIcon());
+		//Head icon, prayers
+		player.getPlayerProps().writeByte(player.getHeadHint());
 		
 		//Update the PK skull
 		player.getPlayerProps().writeByte(player.isSkulled() ? player.getSkullType().getId() : -1);

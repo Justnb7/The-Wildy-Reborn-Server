@@ -12,7 +12,6 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
 import com.venenatis.game.model.combat.RangeConstants.ArrowType;
 import com.venenatis.game.model.combat.RangeConstants.BowType;
 import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
@@ -136,7 +135,7 @@ public class Combat {
 		player.setSkullTimer(seconds);
 		if(type == SkullType.RED_SKULL) {
 			player.message("@bla@You have received a @red@red skull@bla@! You can no longer use the protect item prayer!");
-			PrayerHandler.deactivatePrayer(player, Prayers.PROTECT_ITEM);		
+			PrayerHandler.deactivatePrayer(player, PrayerHandler.PROTECT_ITEM);
 		} else if(type == SkullType.SKULL) {
 			player.message("You've been skulled!");
 		}
@@ -348,7 +347,7 @@ public class Combat {
                         if (!defender.getCombatState().isTeleblocked()) {
                             defender.getCombatState().getTeleblock().reset();
                             defender.putInCombat(1);
-                            if (defender.isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MAGIC)) {
+                            if (PrayerHandler.isActivated(defender, PrayerHandler.PROTECT_FROM_MAGIC)) {
                             	defender.getCombatState().teleblock(150);				
                 			} else {
                 				defender.getCombatState().teleblock(300);	
@@ -967,7 +966,7 @@ public class Combat {
                 } else {
                     dam1 = Utility.random(42, 51);
                 }
-                if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+                if (PrayerHandler.isActivated(attacker, PrayerHandler.EAGLE_EYE)) {
                     dam1 *= 1.15;
                 }
                 break;
@@ -978,7 +977,7 @@ public class Combat {
                 } else {
                     dam1 = Utility.random(42, 51);
                 }
-                if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+                if (PrayerHandler.isActivated(attacker, PrayerHandler.EAGLE_EYE)) {
                     dam1 *= 1.15;
                 }
                 boolean fire = true;
@@ -992,11 +991,11 @@ public class Combat {
                     } else {
                         dam1 = Utility.random(42, 51);
                     }
-                    if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+                    if (PrayerHandler.isActivated(attacker, PrayerHandler.EAGLE_EYE)) {
                         dam1 *= 1.15;
                     }
                     if (defender.isPlayer()) {
-                        double protectionPrayer = ((Player) defender).isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE) ? 0.40 : 1;
+                    	double protectionPrayer = PrayerHandler.isActivated((Player)defender, PrayerHandler.EAGLE_EYE) ? 0.40 : 1;
                         if (protectionPrayer != 1) {
                             double protectionHit = dam1 * protectionPrayer; // +1 as its exclusive
                             dam1 -= protectionHit;
@@ -1013,7 +1012,7 @@ public class Combat {
                 } else {
                     dam1 = Utility.random(42, 51);
                 }
-                if (attacker.isActivePrayer(PrayerHandler.Prayers.EAGLE_EYE)) {
+                if (PrayerHandler.isActivated(attacker, PrayerHandler.EAGLE_EYE)) {
                     dam1 *= 1.15;
                 }
                 break;

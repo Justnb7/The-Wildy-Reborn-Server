@@ -36,7 +36,7 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.PrayerHandler;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.QuickPrayers;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.data.WeaponInterface;
 import com.venenatis.game.model.combat.magic.Magic;
@@ -102,6 +102,28 @@ public class Player extends Entity {
 	 */
 	public DialogueManager getDialogueManager() {
 		return dialogueManager;
+	}
+	
+	/**
+	 * The player's head icon hint.
+	 */
+	private int headHint = -1;
+
+	/**
+	 * Gets the player's current head hint index.
+	 * @return	The player's head hint.
+	 */
+	public int getHeadHint() {
+		return headHint;
+	}
+
+	/**
+	 * Sets the player's head icon hint.
+	 * @param headHint	The hint index to use.
+	 * @return			The Appearance instance.
+	 */
+	public void setHeadHint(int headHint) {
+		this.headHint = headHint;
 	}
 	
 	/**
@@ -566,115 +588,24 @@ public class Player extends Entity {
 		this.totalVotes = totalVotes;
 	}
 	
-	/**
-	 * The players current prayer points
-	 */
-	private double prayerPoint = 1.0;
-
-	/**
-	 * The players current active prayers
-	 */
-	private boolean[] activePrayer = new boolean[29];
-
-	/**
-	 * The players current prayer icon
-	 */
-	private int prayerIcon = -1;
-
-	/**
-	 * The prayer drain rate
-	 */
-	private double prayerDrainRate;
+	private boolean drainingPrayer;
 	
-	/**
-	 * Gets the active prayer
-	 * 
-	 * @param prayer
-	 * @return
-	 */
-	public boolean isActivePrayer(Prayers prayer) {
-		int index = prayer.getPrayerIndex(prayer);
-		return activePrayer[index];
+	public boolean isDrainingPrayer() {
+		return drainingPrayer;
 	}
 
-	/**
-	 * Returns the players active prayers
-	 * 
-	 * @return
-	 */
-	public boolean[] getPrayers() {
-		return activePrayer;
+	public void setDrainingPrayer(boolean drainingPrayer) {
+		this.drainingPrayer = drainingPrayer;
+	}
+	
+	private double prayerPointDrain;
+
+	public double getPrayerPointDrain() {
+		return prayerPointDrain;
 	}
 
-	/**
-	 * Sets the active prayer
-	 * 
-	 * @param prayer
-	 * @param active
-	 * @return
-	 */
-	public Player setActivePrayer(Prayers prayer, boolean active) {
-		int index = prayer.getPrayerIndex(prayer);
-		this.activePrayer[index] = active;
-		return this;
-	}
-
-	/**
-	 * Gets the player icon
-	 * 
-	 * @return
-	 */
-	public int getPrayerIcon() {
-		return prayerIcon;
-	}
-
-	/**
-	 * Sets the prayer icon
-	 * 
-	 * @param icon
-	 * @return
-	 */
-	public Player setPrayerIcon(int icon) {
-		this.prayerIcon = icon;
-		return this;
-	}
-
-	/**
-	 * Gets the player drain rate
-	 * 
-	 * @return
-	 */
-	public double getPrayerDrainRate() {
-		return prayerDrainRate;
-	}
-
-	/**
-	 * Adds to the player drain rate
-	 * 
-	 * @param rate
-	 * @return
-	 */
-	public Player addPrayerDrainRate(double rate) {
-		this.prayerDrainRate += rate;
-		return this;
-	}
-
-	/**
-	 * Gets the players prayer points
-	 * 
-	 * @return
-	 */
-	public double getPrayerPoint() {
-		return prayerPoint;
-	}
-
-	/**
-	 * Sets the players prayer points
-	 * 
-	 * @param prayerPoint
-	 */
-	public void setPrayerPoint(double prayerPoint) {
-		this.prayerPoint = prayerPoint;
+	public void setPrayerPointDrain(double prayerPointDrain) {
+		this.prayerPointDrain = prayerPointDrain;
 	}
 	
 	/**
@@ -1385,8 +1316,6 @@ public class Player extends Entity {
 		if (this.getTimePlayed() < Integer.MAX_VALUE) {
 			this.setTimePlayed(this.getTimePlayed() + 1);
 		}
-
-		PrayerHandler.handlePrayerDraining(this);
 
 		// Follow player - not combat
 		process_following();
@@ -3175,6 +3104,12 @@ public class Player extends Entity {
 
 	public void setVenomDamage(int venomDamage) {
 		this.venomDamage = venomDamage;
+	}
+	
+	private final QuickPrayers quickPrayers = new QuickPrayers(this);
+	
+	public QuickPrayers getQuickPrayers() {
+		return quickPrayers;
 	}
 	
 }

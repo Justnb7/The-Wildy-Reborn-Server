@@ -1,6 +1,6 @@
 package com.venenatis.game.model.combat.npcs.impl.barrows;
 
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
@@ -23,9 +23,9 @@ public class VeracTheDefiled extends AbstractBossCombat {
 		
 		int randomHit = 0;
 		if (Utility.random(3) == 3) {
-			if (!pVictim.isActivePrayer(Prayers.PROTECT_FROM_MELEE) && Utility.random(10) > 6) {
+			if (!PrayerHandler.isActivated(pVictim, PrayerHandler.PROTECT_FROM_MELEE) && Utility.random(10) > 6) {
 				randomHit = Utility.random(25);
-			} else if (pVictim.isActivePrayer(Prayers.PROTECT_FROM_MELEE) && Utility.random(10) > 3) {
+			} else if (PrayerHandler.isActivated(pVictim, PrayerHandler.PROTECT_FROM_MELEE) && Utility.random(10) > 3) {
 				randomHit = Utility.random(25);
 			}
 		}

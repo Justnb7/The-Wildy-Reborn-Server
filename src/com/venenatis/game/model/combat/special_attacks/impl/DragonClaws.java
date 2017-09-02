@@ -1,7 +1,7 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
 import com.venenatis.game.model.combat.CombatFormulae;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatExperience;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
@@ -24,7 +24,7 @@ public class DragonClaws implements SpecialAttack {
 
 		if (target instanceof Player) {
 			Player targPlayer = (Player) target;
-			if (targPlayer.isActivePrayer(Prayers.PROTECT_FROM_MELEE)) {
+			if (PrayerHandler.isActivated(targPlayer, PrayerHandler.PROTECT_FROM_MELEE)) {
 				first = (int) (first * 0.6);
 			}
 		}

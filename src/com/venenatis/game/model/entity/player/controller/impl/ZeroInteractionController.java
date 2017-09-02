@@ -1,6 +1,6 @@
 package com.venenatis.game.model.entity.player.controller.impl;
 
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.controller.Controller;
@@ -81,7 +81,7 @@ public class ZeroInteractionController extends Controller {
 	}
 
 	@Override
-	public boolean canPray(Prayers prayer) {
+	public boolean canPray(PrayerData prayer) {
 		return false;
 	}
 

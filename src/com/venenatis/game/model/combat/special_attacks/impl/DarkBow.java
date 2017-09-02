@@ -57,7 +57,8 @@ public class DarkBow implements SpecialAttack {
 			second = 0;
 		}
 
-		if (target instanceof Player && (((Player) target).isActivePrayer(PrayerHandler.Prayers.PROTECT_FROM_MISSILE))) {
+		//if (PrayerHandler.isActivated(defender, PrayerHandler.PROTECT_FROM_MAGIC)) {
+		if (target instanceof Player && PrayerHandler.isActivated((Player) target, PrayerHandler.PROTECT_FROM_MISSILES)) {
 			first = (int) (first * 0.6);
 			second = (int) (second * 0.6);
 			

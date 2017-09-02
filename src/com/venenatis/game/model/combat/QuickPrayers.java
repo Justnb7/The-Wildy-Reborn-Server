@@ -2,6 +2,7 @@ package com.venenatis.game.model.combat;
 
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 
 /**
  * Handles quick prayers.
@@ -17,7 +18,7 @@ public class QuickPrayers extends PrayerHandler {
 	/**
 	 * The array holding the player's quick prayers.
 	 */
-	private Prayers[] prayers = new Prayers[Prayers.values().length];
+	private PrayerData[] prayers = new PrayerData[PrayerData.values().length];
 
 	/**
 	 * Is the player currently selecting quick prayers?
@@ -43,7 +44,7 @@ public class QuickPrayers extends PrayerHandler {
 	 * Sends the current quick-prayer toggle-state for each prayer.
 	 */
 	public void sendChecks() {
-		for(Prayers prayer : Prayers.values()) {
+		for(PrayerData prayer : PrayerData.values()) {
 			sendCheck(prayer);
 		}
 	}
@@ -52,19 +53,19 @@ public class QuickPrayers extends PrayerHandler {
 	 * Sends quick-prayer toggle-state for the specified prayer.
 	 * @param prayer
 	 */
-	private void sendCheck(Prayers prayer) {
+	private void sendCheck(PrayerData prayer) {
 		player.getActionSender().sendConfig(CONFIG_START + prayer.ordinal(), prayers[prayer.ordinal()] != null ? 0 : 1);
 	}
 
 	/**
 	 *Unchecks the specified prayers but the exception.
 	 */
-	private void uncheck(Prayers[] prayer, int exception) {
-		for(Prayers i : prayer) {
-			if(i.ordinal() == exception) {
+	private void uncheck(int[] toDeselect, int exception) {
+		for(int i : toDeselect) {
+			if(i == exception) {
 				continue;
 			}
-			uncheck(Prayers.values()[i.ordinal()]);
+			uncheck(PrayerData.values()[i]);
 		}
 	}
 
@@ -72,7 +73,7 @@ public class QuickPrayers extends PrayerHandler {
 	 * Unchecks the specified prayer.
 	 * @param prayer
 	 */
-	private void uncheck(Prayers prayer) {
+	private void uncheck(PrayerData prayer) {
 		if(prayers[prayer.ordinal()] != null) {
 			prayers[prayer.ordinal()] = null;
 			sendCheck(prayer);
@@ -85,7 +86,7 @@ public class QuickPrayers extends PrayerHandler {
 	 * @param index
 	 */
 	private void toggle(int index) {
-		Prayers prayer = Prayers.values()[index];
+		PrayerData prayer = PrayerData.values()[index];
 
 		//Has the player already selected this quick prayer?
 		//Then reset it.
@@ -94,7 +95,7 @@ public class QuickPrayers extends PrayerHandler {
 			return;
 		}
 		
-		if(!canActivate(player, prayer, true)) {
+		if(!canUse(player, prayer, true)) {
 			uncheck(prayer);
 			return;
 		}
@@ -102,7 +103,7 @@ public class QuickPrayers extends PrayerHandler {
 		prayers[prayer.ordinal()] = prayer;
 		sendCheck(prayer);
 		
-		switch (prayer) {
+		switch (index) {
 		case THICK_SKIN:
 		case ROCK_SKIN:
 		case STEEL_SKIN:
@@ -112,11 +113,15 @@ public class QuickPrayers extends PrayerHandler {
 		case SUPERHUMAN_STRENGTH:
 		case ULTIMATE_STRENGTH:
 			uncheck(STRENGTH_PRAYERS, index);
+			uncheck(RANGED_PRAYERS, index);
+			uncheck(MAGIC_PRAYERS, index);
 			break;
 		case CLARITY_OF_THOUGHT:
 		case IMPROVED_REFLEXES:
 		case INCREDIBLE_REFLEXES:
 			uncheck(ATTACK_PRAYERS, index);
+			uncheck(RANGED_PRAYERS, index);
+			uncheck(MAGIC_PRAYERS, index);
 			break;
 		case SHARP_EYE:
 		case HAWK_EYE:
@@ -126,6 +131,8 @@ public class QuickPrayers extends PrayerHandler {
 		case MYSTIC_MIGHT:
 			uncheck(STRENGTH_PRAYERS, index);
 			uncheck(ATTACK_PRAYERS, index);
+			uncheck(RANGED_PRAYERS, index);
+			uncheck(MAGIC_PRAYERS, index);
 			break;
 		case CHIVALRY:
 		case PIETY:
@@ -134,9 +141,11 @@ public class QuickPrayers extends PrayerHandler {
 			uncheck(DEFENCE_PRAYERS, index);
 			uncheck(STRENGTH_PRAYERS, index);
 			uncheck(ATTACK_PRAYERS, index);
+			uncheck(RANGED_PRAYERS, index);
+			uncheck(MAGIC_PRAYERS, index);
 			break;
 		case PROTECT_FROM_MAGIC:
-		case PROTECT_FROM_MISSILE:
+		case PROTECT_FROM_MISSILES:
 		case PROTECT_FROM_MELEE:
 			uncheck(OVERHEAD_PRAYERS, index);
 			break;
@@ -144,16 +153,6 @@ public class QuickPrayers extends PrayerHandler {
 		case REDEMPTION:
 		case SMITE:
 			uncheck(OVERHEAD_PRAYERS, index);
-			break;
-		case PRESERVE:
-			break;
-		case PROTECT_ITEM:
-			break;
-		case RAPID_HEAL:
-			break;
-		case RAPID_RESTORE:
-			break;
-		default:
 			break;
 		}
 	}
@@ -167,7 +166,7 @@ public class QuickPrayers extends PrayerHandler {
 	 */
 	public void checkActive() {
 		if(enabled) {
-			for(Prayers prayer : prayers) {
+			for(PrayerData prayer : prayers) {
 				if(prayer == null)
 					continue;
 				if(isActivated(player, prayer.ordinal())) {
@@ -175,6 +174,8 @@ public class QuickPrayers extends PrayerHandler {
 				}
 			}
 			enabled = false;
+			player.setHeadHint(-1);
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			//player.getActionSender().sendQuickPrayersState(false);
 		}
 	}
@@ -196,18 +197,18 @@ public class QuickPrayers extends PrayerHandler {
 			}
 
 			if(enabled) {
-				for(Prayers prayer : prayers) {
+				for(PrayerData prayer : prayers) {
 					if(prayer == null)
 						continue;
-					deactivatePrayer(player, prayer);
+					deactivatePrayer(player, prayer.ordinal());
 				}
 				enabled = false;
 			} else {
 				boolean found = false;
-				for(Prayers prayer : prayers) {
+				for(PrayerData prayer : prayers) {
 					if(prayer == null)
 						continue;
-					activatePrayer(player, prayer);
+					activatePrayer(player, prayer.ordinal());
 					found = true;
 				}
 				
@@ -223,11 +224,11 @@ public class QuickPrayers extends PrayerHandler {
 
 		case SETUP_BUTTON:
 			if(selectingPrayers) {
-				player.getActionSender().sendSidebarInterface(5, 5608);
+				player.getActionSender().sendSidebarInterface(5, 5608).sendTab(5);
 				selectingPrayers = false;
 			} else {
 				sendChecks();
-				player.getActionSender().sendSidebarInterface(5, QUICK_PRAYERS_TAB_INTERFACE_ID);
+				player.getActionSender().sendSidebarInterface(5, QUICK_PRAYERS_TAB_INTERFACE_ID).sendTab(5);
 				selectingPrayers = true;
 			}
 			break;
@@ -241,9 +242,9 @@ public class QuickPrayers extends PrayerHandler {
 		}
 
 		//Clicking prayers
-		if(button >= 17202 && button <= 17230) {
+		if(button >= 67050 && button <= 67078) {
 			if(selectingPrayers) {
-				final int index = button - 17202;
+				final int index = button - 67050;
 				toggle(index);
 			}
 			return true;
@@ -265,7 +266,7 @@ public class QuickPrayers extends PrayerHandler {
 	 * Gets the selected quick prayers
 	 * @return
 	 */
-	public Prayers[] getPrayers() {
+	public PrayerData[] getPrayers() {
 		return prayers;
 	}
 	
@@ -273,24 +274,24 @@ public class QuickPrayers extends PrayerHandler {
 	 * Sets the selected quick prayers
 	 * @param prayers
 	 */
-	public void setPrayers(Prayers[] prayers) {
+	public void setPrayers(PrayerData[] prayers) {
 		this.prayers = prayers;
 	}
 
 	/**
 	 * Toggle button
 	 */
-	private static final int TOGGLE_QUICK_PRAYERS = 1500;
+	private static final int TOGGLE_QUICK_PRAYERS = 19136;
 
 	/**
 	 * The button for starting to setup quick prayers.
 	 */
-	private static final int SETUP_BUTTON = 1506;
+	private static final int SETUP_BUTTON = 19137;
 
 	/**
 	 * The confirmation button in the interface.
 	 */
-	private static final int CONFIRM_BUTTON = 17232;
+	private static final int CONFIRM_BUTTON = 67080;
 
 	/**
 	 * The actual main interface id.

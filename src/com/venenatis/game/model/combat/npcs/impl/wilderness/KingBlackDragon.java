@@ -6,7 +6,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.CombatFormulae;
-import com.venenatis.game.model.combat.PrayerHandler.Prayers;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
@@ -145,7 +145,7 @@ public class KingBlackDragon extends AbstractBossCombat {
 							if(!victim.frozen()) {
 								int freezeTimer = 25;
 								int finalTimer = freezeTimer;
-								if(pVictim.isActivePrayer(Prayers.PROTECT_FROM_MAGIC)) {
+								if (PrayerHandler.isActivated(pVictim, PrayerHandler.PROTECT_FROM_MAGIC)) {
 									finalTimer = freezeTimer / 2;
 								}
 								

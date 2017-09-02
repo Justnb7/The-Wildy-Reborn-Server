@@ -4,9 +4,12 @@ package com.venenatis.game.model.combat;
 import java.util.concurrent.TimeUnit;
 
 import com.venenatis.game.consumables.Consumables.Food;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.util.Stopwatch;
+import com.venenatis.game.util.Utility;
 
 public class CombatState {
 	
@@ -48,8 +51,26 @@ public class CombatState {
 		return target == null;
 	}
 
-	public void applySmite(Player defender, int damage) {
-		PrayerHandler.handleSmite(entity.asPlayer(), defender, damage);
+	/**
+	 * Handles the smite prayer effect
+	 * @param attacker
+	 * @param victim
+	 * @param damage
+	 */
+	public void handleSmite(Entity attacker, Player victim, int damage) {
+		victim.getSkills().decreaseCurrentLevel(Skills.PRAYER, (damage / 4), 0);
+	}
+
+	/**
+	 * Handles the retribution prayer effect
+	 * @param killed
+	 * @param killer
+	 */
+	public void handleRetribution(Player killed, Player killer) {
+		killed.playGraphics(new Graphic(437));
+		if (killer.getLocation().isWithinDistance(killer.getLocation(), 3)) {
+			killer.take_hit(killed, Utility.random(15));
+		}
 	}
 	
 	public void recoil(Entity attacker, int damage) {

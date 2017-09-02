@@ -521,4 +521,19 @@ public class Skills {
 	public int getMaxLevel(int skill) {
 		return 99;
 	}
+
+	/**
+	 * Decrements this level by {@code amount} to {@code minimum}.
+	 *
+	 * @param amount
+	 *            the amount to decrease this level by.
+	 */
+	public void decreaseCurrentLevel(int skill, int amount, int minimum) {
+		final int curr = getLevel(skill);
+		if ((curr - amount) < minimum) {
+			setLevel(skill, minimum);
+			return;
+		}
+		setLevel(skill, curr - amount);
+	}
 }

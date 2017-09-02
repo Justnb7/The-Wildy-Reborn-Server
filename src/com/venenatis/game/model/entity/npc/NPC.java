@@ -666,4 +666,18 @@ public class NPC extends Entity {
 	public void setCombatCooldownDelay(int combatCooldownDelay) {
 		this.combatCooldownDelay = combatCooldownDelay;
 	}
+	
+	/**
+	 * The npc's head icon.
+	 */
+	private int headIcon = -1;
+	
+	public void setHeadIcon(int headIcon) {
+		this.headIcon = headIcon;
+		getUpdateFlags().flag(UpdateFlag.TRANSFORM);
+	}
+
+	public int getHeadIcon() {
+		return headIcon;
+	}
 }

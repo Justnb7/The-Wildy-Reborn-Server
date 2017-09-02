@@ -10,6 +10,8 @@ import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
@@ -260,7 +262,7 @@ public class Farming {
 							
 							}
 							 if (Utility.random(herb.getPetChance()) == 20 && player.getInventory().contains(20661) && player.getPet() != 20661) {
-								//TODO add pet
+								 pet(player);
 							 }
 							player.playAnimation(new Animation(FarmingConstants.PICKING_HERB_ANIM));
 							player.setFarmingHarvest(id, player.getFarmingHarvest(id) - 1);
@@ -271,6 +273,24 @@ public class Farming {
 					});
 				}
 			}
+		}
+	}
+	
+	private static void pet(Player player) {
+		Pets pets = Pets.TANGLEROOT;
+		Pet pet = new Pet(player, pets.getNpc());
+
+		if (player.alreadyHasPet(player, 20661) || player.getPet() == pets.getNpc()) {
+			return;
+		}
+		if (player.getPet() > -1) {
+			player.getInventory().addOrSentToBank(player, new Item(20661));
+			World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Tangleroot.", false);
+		} else {
+			player.setPet(pets.getNpc());
+			World.getWorld().register(pet);
+			World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Tangleroot.", false);
+			player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 		}
 	}
 

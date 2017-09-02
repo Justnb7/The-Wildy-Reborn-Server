@@ -37,6 +37,7 @@ public class InventoryContainer extends Container {
 	@Override
 	public void refresh(int... slots) {
 		for (final int slot : slots) {
+			if(slot != -1)
 			player.getActionSender().sendItemOnInterfaceSlot(InterfaceConstants.INVENTORY_INTERFACE, stack[slot], slot);
 			player.getEquipment().calculateWeight();
 		}

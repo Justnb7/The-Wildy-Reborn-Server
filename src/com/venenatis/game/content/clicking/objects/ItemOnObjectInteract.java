@@ -29,7 +29,7 @@ public class ItemOnObjectInteract {
 			return;
 		}*/
 		
-		player.farming().patchObjectInteraction(obj, item.getId(), loc.getX(), loc.getY());
+		player.farming().patchObjectInteraction(obj, item.getId(), loc);
 		
 		switch (def.getName().toLowerCase()) {
 		

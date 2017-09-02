@@ -14,6 +14,8 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.task.Task.BreakType;
+import com.venenatis.game.task.Task.StackType;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
@@ -43,21 +45,7 @@ public class Farming {
 		return player.getInventory().contains(7409) || player.getEquipment().contains(7409, 3);
 	}
 
-	/*public void fillCompostBucket() {
-		player.getSkilling().stop();
-		player.getSkilling().setSkill(Skill.FARMING);
-		if (!player.getInventory().contains(995, 250)) {
-			player.getDH().sendDialogues(662, 3257);
-			return;
-		}
-		if (!player.getInventory().contains(1925)) {
-			player.getDH().sendDialogues(663, 3257);
-			return;
-		}
-		Server.getEventHandler().submit(new FarmingCompostEvent(player, 3));
-	}*/
-
-	public void patchObjectInteraction(final int objectId, final int itemId, final int x, final int y) {
+	public void patchObjectInteraction(final int objectId, final int itemId, Location location) {
 		
 		/**
 		 * Skilling outfit pieces
@@ -69,7 +57,7 @@ public class Farming {
 			}
 		}
 		
-		Patch patch = Patch.get(x, y);
+		Patch patch = Patch.get(location.getX(), location.getY());
 		if (patch == null)
 			return;
 		final int id = patch.getId();
@@ -83,7 +71,7 @@ public class Farming {
 			
 					if (weeds <= 0)
 						weeds = 3;
-					World.getWorld().schedule(new Task(3) {
+					World.getWorld().schedule(new Task(player, 3, false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
 						
 						public void execute() {
 							if (player == null) {
@@ -95,6 +83,20 @@ public class Farming {
 						
 								player.getInventory().add(6055, 1);
 								player.playAnimation(new Animation(FarmingConstants.RAKING_ANIM));
+								switch(weeds) {
+								case 3:
+									player.getActionSender().sendConfig(529, 0);
+									break;
+								case 2:
+									player.getActionSender().sendConfig(529, 1);
+									break;
+								case 1:
+									player.getActionSender().sendConfig(529, 2);
+									break;
+								case 0:
+									player.getActionSender().sendConfig(529, 3);
+									break;
+								}
 							} else if (weeds == 0) {
 								player.setFarmingState(id, State.RAKED.getId());
 								player.getActionSender().sendMessage("You raked the patch of all it's weeds, now the patch is ready for compost.", 255);
@@ -137,7 +139,7 @@ public class Farming {
 					 * Calculate experience
 					 */
 					double osrsExperience = herb.getPlantingXp() + herb.getPlantingXp() / 20 * pieces;
-					World.getWorld().schedule(new Task(3) {
+					World.getWorld().schedule(new Task(player, 3, false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
 
 						public void execute() {
 							if (player == null || !player.isActive()) {
@@ -201,7 +203,7 @@ public class Farming {
 				 */
 				double osrsHarvestExperience = herb.getHarvestingXp() + herb.getHarvestingXp() / 5 * pieces;
 				if (herb != null) {
-					World.getWorld().schedule(new Task(3) {
+					World.getWorld().schedule(new Task(player, 3, false, StackType.NEVER_STACK, BreakType.ON_MOVE) {
 
 						public void execute() {
 							if (player == null || !player.isActive()) {
@@ -220,6 +222,7 @@ public class Farming {
 								player.playAnimation(new Animation(65535));
 								resetValues(id);
 								updateObjects();
+								player.getActionSender().sendConfig(529, 0);
 								stop();
 								return;
 							}
@@ -323,15 +326,14 @@ public class Farming {
 			Patch patch = Patch.get(i);
 			if (patch == null)
 				continue;
-			if (player.distanceToPoint(patch.getX(), patch.getY()) > 60)
+			if (player.distanceToPoint(patch.location.getX(), patch.location.getY()) > 60)
 				continue;
 			if (player.getFarmingState(i) < State.RAKED.getId()) {
-				player.getActionSender().sendObject(FarmingConstants.GRASS_OBJECT, patch.getX(), patch.getY(), player.getZ(), 0, 10);
+				player.getActionSender().sendObject(FarmingConstants.GRASS_OBJECT, patch.location.getX(), patch.location.getY(), player.getZ(), 0, 10);
 			} else if (player.getFarmingState(i) >= State.RAKED.getId() && player.getFarmingState(i) < State.SEEDED.getId()) {
 				player.getActionSender().sendConfig(529, 3);
-				//player.getActionSender().sendObject(FarmingConstants.HERB_PATCH_DEPLETED, patch.getX(), patch.getY(), player.getZ(), 0, 10);
 			} else if (player.getFarmingState(i) >= State.SEEDED.getId()) {
-				player.getActionSender().sendObject(FarmingConstants.HERB_OBJECT, patch.getX(), patch.getY(), player.getZ(), 0, 10);
+				player.getActionSender().sendObject(FarmingConstants.HERB_OBJECT, patch.location.getX(), patch.location.getY(), player.getZ(), 0, 10);
 			}
 		}
 	}
@@ -363,26 +365,24 @@ public class Farming {
 	}
 
 	static enum Patch {
-		FALADOR_PARK(0, 3003, 3372);
+		FALADOR_PARK(0, new Location(3003, 3372, 0)),
+		CATHERBY(1, new Location(2813, 3463, 0));
 
-		int id, x, y;
+		private int id;
+		
+		private Location location;
 
-		Patch(int id, int x, int y) {
+		Patch(int id, Location loc) {
 			this.id = id;
-			this.x = x;
-			this.y = y;
+			this.location = loc;
 		}
 
 		public int getId() {
 			return this.id;
 		}
-
-		public int getX() {
-			return this.x;
-		}
-
-		public int getY() {
-			return this.y;
+		
+		public Location getPatchLocation() {
+			return this.location;
 		}
 
 		static List<Patch> patches = new ArrayList<>();
@@ -394,7 +394,7 @@ public class Farming {
 
 		public static Patch get(int x, int y) {
 			for (Patch patch : patches)
-				if (patch.getX() == x && patch.getY() == y)
+				if (patch.location.getX() == x && patch.location.getY() == y)
 					return patch;
 			return null;
 		}

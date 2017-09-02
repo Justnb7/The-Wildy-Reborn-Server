@@ -4,7 +4,7 @@ import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.ArmourSets;
 import com.venenatis.game.content.skills.cooking.Cookables;
 import com.venenatis.game.content.skills.cooking.Cooking;
-import com.venenatis.game.content.skills.farming.Farming;
+import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -25,9 +25,9 @@ public class ItemOnObjectInteract {
 			return;
 		}
 		
-		if (Farming.prepareCrop(player, item.getId(), obj, loc.getX(), loc.getY())) {
+		/*if (FarmingVencillio.prepareCrop(player, item.getId(), obj, loc.getX(), loc.getY())) {
 			return;
-		}
+		}*/
 		
 		switch (def.getName().toLowerCase()) {
 		

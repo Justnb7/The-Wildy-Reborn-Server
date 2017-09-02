@@ -281,9 +281,9 @@ public class SpecialPlantTwo {
 
 	public void doCalculations() {
 		for (int i = 0; i < specialPlantSeeds.length; i++) {
-			if (specialPlantStages[i] > 0 && specialPlantStages[i] <= 3 && Farming.getMinutesCounter(player) - specialPlantTimer[i] >= 5) {
+			if (specialPlantStages[i] > 0 && specialPlantStages[i] <= 3 && FarmingVencillio.getMinutesCounter(player) - specialPlantTimer[i] >= 5) {
 				specialPlantStages[i]--;
-				specialPlantTimer[i] = Farming.getMinutesCounter(player);
+				specialPlantTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateSpecialPlants();
 				continue;
 			}
@@ -292,7 +292,7 @@ public class SpecialPlantTwo {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - specialPlantTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - specialPlantTimer[i];
 			long growth = specialPlantData.getGrowthTime();
 			int nbStates = specialPlantData.getEndingState() - specialPlantData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -317,7 +317,7 @@ public class SpecialPlantTwo {
 		SpecialPlantData specialPlantData = SpecialPlantData.forId(specialPlantSeeds[i]);
 		if (specialPlantData == null)
 			return;
-		long difference = Farming.getMinutesCounter(player) - specialPlantTimer[i];
+		long difference = FarmingVencillio.getMinutesCounter(player) - specialPlantTimer[i];
 		long growth = specialPlantData.getGrowthTime();
 		int nbStates = specialPlantData.getEndingState() - specialPlantData.getStartingState();
 		int state = (int) (difference * nbStates / growth);
@@ -401,7 +401,7 @@ public class SpecialPlantTwo {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				specialPlantTimer[hopsFieldsData.getSpecialPlantsIndex()] = Farming.getMinutesCounter(player);
+				specialPlantTimer[hopsFieldsData.getSpecialPlantsIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateSpecialPlants();
 				if (specialPlantStages[hopsFieldsData.getSpecialPlantsIndex()] == 3) {
 					stop();
@@ -456,7 +456,7 @@ public class SpecialPlantTwo {
 			public void execute() {
 				specialPlantState[specialPlantFieldsData.getSpecialPlantsIndex()] = 0;
 				specialPlantSeeds[specialPlantFieldsData.getSpecialPlantsIndex()] = seedId;
-				specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = Farming.getMinutesCounter(player);
+				specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, specialPlantData.getPlantingXp());
 				stop();
 			}
@@ -515,7 +515,7 @@ public class SpecialPlantTwo {
 					player.getSkills().addExperience(Skills.FARMING, specialPlantData.getCheckHealthXp());
 					specialPlantState[specialPlantFieldsData.getSpecialPlantsIndex()] = 0;
 					hasFullyGrown[specialPlantFieldsData.getSpecialPlantsIndex()] = false;
-					specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = Farming.getMinutesCounter(player) - specialPlantData.getGrowthTime();
+					specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = FarmingVencillio.getMinutesCounter(player) - specialPlantData.getGrowthTime();
 					modifyStage(specialPlantFieldsData.getSpecialPlantsIndex());
 					stop();
 					return;
@@ -528,7 +528,7 @@ public class SpecialPlantTwo {
 				case BELLADONNA:
 					resetSpecialPlants(specialPlantFieldsData.getSpecialPlantsIndex());
 					specialPlantStages[specialPlantFieldsData.getSpecialPlantsIndex()] = 3;
-					specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = Farming.getMinutesCounter(player);
+					specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = FarmingVencillio.getMinutesCounter(player);
 					break;
 				case CACTUS:
 					specialPlantStages[specialPlantFieldsData.getSpecialPlantsIndex()]--;
@@ -538,7 +538,7 @@ public class SpecialPlantTwo {
 					if (specialPlantStages[specialPlantFieldsData.getSpecialPlantsIndex()] == 16) {
 						resetSpecialPlants(specialPlantFieldsData.getSpecialPlantsIndex());
 						specialPlantStages[specialPlantFieldsData.getSpecialPlantsIndex()] = 3;
-						specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = Farming.getMinutesCounter(player);
+						specialPlantTimer[specialPlantFieldsData.getSpecialPlantsIndex()] = FarmingVencillio.getMinutesCounter(player);
 					}
 					break;
 				}

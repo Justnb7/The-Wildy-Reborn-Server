@@ -768,6 +768,16 @@ public class ActionSender {
 		player.outStream.putFrameSizeByte(offset);
 		return this;
 	}
+	
+	public ActionSender sendMessage(String message, int color) {
+		player.outStream.putFrameVarByte(253);
+		int offset = player.getOutStream().offset;
+		message = "<col=" + color + ">" + message + "</col>";
+		player.outStream.putRS2String(message);
+		player.outStream.writeByte(0);
+		player.outStream.putFrameSizeByte(offset);
+		return this;
+	}
 
 	/**
 	 * Sends a configuration button's state.

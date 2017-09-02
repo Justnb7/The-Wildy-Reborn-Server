@@ -11,7 +11,7 @@ import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.skills.crafting.impl.Gem;
 import com.venenatis.game.content.skills.crafting.impl.Hide;
-import com.venenatis.game.content.skills.farming.Farming;
+import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.fishing.FishableData;
 import com.venenatis.game.content.skills.fishing.FishingSpot;
 import com.venenatis.game.content.skills.fishing.ToolData;
@@ -138,7 +138,7 @@ public class Bootstrap {
 		LOGGER.info("Loading content...");
 		serviceLoader.execute(() -> {
 			ClanRepository.load();
-			Farming.declare();
+			//FarmingVencillio.declare();
 			Gem.declare();
 			Hide.declare();
 			Arrow.declare();

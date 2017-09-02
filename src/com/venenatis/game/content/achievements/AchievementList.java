@@ -26,6 +26,7 @@ public enum AchievementList {
 	LAPIDARIST("Lapidarist", "Cut mans 250 gems", 250, AchievementDifficulty.EASY),
 	CHEF("Chef", "Cook food 250 times", 250, AchievementDifficulty.EASY),
 	WHATS_IN_THE_BOX("What's in the box?", "Open the mystery box 1 time.", 1, AchievementDifficulty.EASY),
+	NOVICE_FARMER("Novice farmer", "Pick Herbs 100 Times", 100, AchievementDifficulty.EASY),
 
 	/* Medium Achievements */
 	LEARNING_CURVE("Learning Curve", "Kill 150 players in PvP.", 150, AchievementDifficulty.MEDIUM),

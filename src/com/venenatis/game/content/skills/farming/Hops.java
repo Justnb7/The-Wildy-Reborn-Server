@@ -300,9 +300,9 @@ public class Hops {
 
 	public void doCalculations() {
 		for (int i = 0; i < hopsSeeds.length; i++) {
-			if (hopsStages[i] > 0 && hopsStages[i] <= 3 && Farming.getMinutesCounter(player) - hopsTimer[i] >= 5) {
+			if (hopsStages[i] > 0 && hopsStages[i] <= 3 && FarmingVencillio.getMinutesCounter(player) - hopsTimer[i] >= 5) {
 				hopsStages[i]--;
-				hopsTimer[i] = Farming.getMinutesCounter(player);
+				hopsTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateHopsStates();
 				continue;
 			}
@@ -311,7 +311,7 @@ public class Hops {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - hopsTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - hopsTimer[i];
 			long growth = hopsData.getGrowthTime();
 			int nbStates = hopsData.getEndingState() - hopsData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -332,7 +332,7 @@ public class Hops {
 		HopsData hopsData = HopsData.forId(hopsSeeds[i]);
 		if (hopsData == null)
 			return;
-		long difference = Farming.getMinutesCounter(player) - hopsTimer[i];
+		long difference = FarmingVencillio.getMinutesCounter(player) - hopsTimer[i];
 		long growth = hopsData.getGrowthTime();
 		int nbStates = hopsData.getEndingState() - hopsData.getStartingState();
 		int state = (int) (difference * nbStates / growth);
@@ -477,7 +477,7 @@ public class Hops {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				hopsTimer[hopsFieldsData.getHopsIndex()] = Farming.getMinutesCounter(player);
+				hopsTimer[hopsFieldsData.getHopsIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateHopsStates();
 				if (hopsStages[hopsFieldsData.getHopsIndex()] == 3) {
 					stop();
@@ -532,7 +532,7 @@ public class Hops {
 			public void execute() {
 				hopsState[hopsFieldsData.getHopsIndex()] = 0;
 				hopsSeeds[hopsFieldsData.getHopsIndex()] = seedId;
-				hopsTimer[hopsFieldsData.getHopsIndex()] = Farming.getMinutesCounter(player);
+				hopsTimer[hopsFieldsData.getHopsIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, hopsData.getPlantingXp());
 				stop();
 			}
@@ -587,7 +587,7 @@ public class Hops {
 				if (hopsHarvest[hopsFieldsData.getHopsIndex()] == 1) {
 					resetHops(hopsFieldsData.getHopsIndex());
 					hopsStages[hopsFieldsData.getHopsIndex()] = 3;
-					hopsTimer[hopsFieldsData.getHopsIndex()] = Farming.getMinutesCounter(player);
+					hopsTimer[hopsFieldsData.getHopsIndex()] = FarmingVencillio.getMinutesCounter(player);
 					stop();
 					return;
 				}

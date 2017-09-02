@@ -265,12 +265,12 @@ public class Flowers {
 
 	public void doCalculations() {
 		for (int i = 0; i < flowerSeeds.length; i++) {
-			if (flowerStages[i] > 0 && flowerStages[i] <= 3 && Farming.getMinutesCounter(player) - flowerTimer[i] >= 5) {
+			if (flowerStages[i] > 0 && flowerStages[i] <= 3 && FarmingVencillio.getMinutesCounter(player) - flowerTimer[i] >= 5) {
 				flowerStages[i]--;
-				flowerTimer[i] = Farming.getMinutesCounter(player);
+				flowerTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateFlowerStates();
 			}
-			if (Farming.getMinutesCounter(player) - flowerTimer[i] >= 5 && flowerSeeds[i] > 0x21 && flowerSeeds[i] <= 0x24) {
+			if (FarmingVencillio.getMinutesCounter(player) - flowerTimer[i] >= 5 && flowerSeeds[i] > 0x21 && flowerSeeds[i] <= 0x24) {
 				flowerSeeds[i]--;
 				updateFlowerStates();
 				return;
@@ -280,7 +280,7 @@ public class Flowers {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - flowerTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - flowerTimer[i];
 			long growth = flowerData.getGrowthTime();
 			int nbStates = flowerData.getEndingState() - flowerData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -416,7 +416,7 @@ public class Flowers {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				flowerTimer[flowerFieldsData.getFlowerIndex()] = Farming.getMinutesCounter(player);
+				flowerTimer[flowerFieldsData.getFlowerIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateFlowerStates();
 				if (flowerStages[flowerFieldsData.getFlowerIndex()] == 3) {
 					stop();
@@ -468,7 +468,7 @@ public class Flowers {
 			public void execute() {
 				flowerState[flowerFieldsData.getFlowerIndex()] = 0;
 				flowerSeeds[flowerFieldsData.getFlowerIndex()] = seedId;
-				flowerTimer[flowerFieldsData.getFlowerIndex()] = Farming.getMinutesCounter(player);
+				flowerTimer[flowerFieldsData.getFlowerIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, flowerData.getPlantingXp());
 				stop();
 			}
@@ -519,7 +519,7 @@ public class Flowers {
 			public void execute() {
 				resetFlowers(flowerFieldsData.getFlowerIndex());
 				flowerStages[flowerFieldsData.getFlowerIndex()] = 3;
-				flowerTimer[flowerFieldsData.getFlowerIndex()] = Farming.getMinutesCounter(player);
+				flowerTimer[flowerFieldsData.getFlowerIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.playAnimation(new Animation(FarmingConstants.SPADE_ANIM));
 				player.getActionSender().sendMessage("You harvest the crop, and get some vegetables.");
 				player.getInventory().add(flowerData.getHarvestId(), flowerData.getHarvestId() == 5099 || flowerData.getHarvestId() == 5100 ? 3 : 1);
@@ -685,7 +685,7 @@ public class Flowers {
 				player.getActionSender().sendMessage("You put a scarecrow on the flower patch, and some weeds start to grow around it.");
 				flowerSeeds[flowerFieldsData.getFlowerIndex()] = 0x24;
 				flowerStages[flowerFieldsData.getFlowerIndex()] = 4;
-				flowerTimer[flowerFieldsData.getFlowerIndex()] = Farming.getMinutesCounter(player);
+				flowerTimer[flowerFieldsData.getFlowerIndex()] = FarmingVencillio.getMinutesCounter(player);
 				stop();
 			}
 

@@ -306,9 +306,9 @@ public class WoodTrees {
 
 	public void doCalculations() {
 		for (int i = 0; i < treeSaplings.length; i++) {
-			if (treeStages[i] > 0 && treeStages[i] <= 3 && Farming.getMinutesCounter(player) - treeTimer[i] >= 5) {
+			if (treeStages[i] > 0 && treeStages[i] <= 3 && FarmingVencillio.getMinutesCounter(player) - treeTimer[i] >= 5) {
 				treeStages[i]--;
-				treeTimer[i] = Farming.getMinutesCounter(player);
+				treeTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateTreeStates();
 				continue;
 			}
@@ -317,7 +317,7 @@ public class WoodTrees {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - treeTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - treeTimer[i];
 			long growth = treeData.getGrowthTime();
 			int nbStates = treeData.getEndingState() - treeData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -338,7 +338,7 @@ public class WoodTrees {
 		TreeData bushesData = TreeData.forId(treeSaplings[i]);
 		if (bushesData == null)
 			return;
-		long difference = Farming.getMinutesCounter(player) - treeTimer[i];
+		long difference = FarmingVencillio.getMinutesCounter(player) - treeTimer[i];
 		long growth = bushesData.getGrowthTime();
 		int nbStates = bushesData.getEndingState() - bushesData.getStartingState();
 		int state = (int) (difference * nbStates / growth);
@@ -434,7 +434,7 @@ public class WoodTrees {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				treeTimer[hopsFieldsData.getTreeIndex()] = Farming.getMinutesCounter(player);
+				treeTimer[hopsFieldsData.getTreeIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateTreeStates();
 				if (treeStages[hopsFieldsData.getTreeIndex()] == 3) {
 					stop();
@@ -487,7 +487,7 @@ public class WoodTrees {
 			public void execute() {
 				treeState[treeFieldsData.getTreeIndex()] = 0;
 				treeSaplings[treeFieldsData.getTreeIndex()] = saplingId;
-				treeTimer[treeFieldsData.getTreeIndex()] = Farming.getMinutesCounter(player);
+				treeTimer[treeFieldsData.getTreeIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, treeData.getPlantingXp());
 				stop();
 			}

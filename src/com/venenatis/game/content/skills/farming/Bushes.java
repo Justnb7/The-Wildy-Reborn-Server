@@ -319,9 +319,9 @@ public class Bushes {
 
 	public void doCalculations() {
 		for (int i = 0; i < bushesSeeds.length; i++) {
-			if (bushesStages[i] > 0 && bushesStages[i] <= 3 && Farming.getMinutesCounter(player) - bushesTimer[i] >= 5) {
+			if (bushesStages[i] > 0 && bushesStages[i] <= 3 && FarmingVencillio.getMinutesCounter(player) - bushesTimer[i] >= 5) {
 				bushesStages[i]--;
-				bushesTimer[i] = Farming.getMinutesCounter(player);
+				bushesTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateBushesStates();
 				continue;
 			}
@@ -330,7 +330,7 @@ public class Bushes {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - bushesTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - bushesTimer[i];
 			long growth = bushesData.getGrowthTime();
 			int nbStates = bushesData.getEndingState() - bushesData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -357,7 +357,7 @@ public class Bushes {
 		BushesData bushesData = BushesData.forId(bushesSeeds[i]);
 		if (bushesData == null)
 			return;
-		long difference = Farming.getMinutesCounter(player) - bushesTimer[i];
+		long difference = FarmingVencillio.getMinutesCounter(player) - bushesTimer[i];
 		long growth = bushesData.getGrowthTime();
 		int nbStates = bushesData.getEndingState() - bushesData.getStartingState();
 		int state = (int) (difference * nbStates / growth);
@@ -453,7 +453,7 @@ public class Bushes {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				bushesTimer[bushesFieldsData.getBushesIndex()] = Farming.getMinutesCounter(player);
+				bushesTimer[bushesFieldsData.getBushesIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateBushesStates();
 				if (bushesStages[bushesFieldsData.getBushesIndex()] == 3) {
 					stop();
@@ -509,7 +509,7 @@ public class Bushes {
 			public void execute() {
 				bushesState[bushesFieldsData.getBushesIndex()] = 0;
 				bushesSeeds[bushesFieldsData.getBushesIndex()] = seedId;
-				bushesTimer[bushesFieldsData.getBushesIndex()] = Farming.getMinutesCounter(player);
+				bushesTimer[bushesFieldsData.getBushesIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, bushesData.getPlantingXp());
 				stop();
 			}
@@ -568,7 +568,7 @@ public class Bushes {
 					player.getSkills().addExperience(Skills.FARMING, bushesData.getCheckHealthXp());
 					bushesState[bushesFieldsData.getBushesIndex()] = 0;
 					hasFullyGrown[bushesFieldsData.getBushesIndex()] = false;
-					bushesTimer[bushesFieldsData.getBushesIndex()] = Farming.getMinutesCounter(player) - bushesData.getGrowthTime();
+					bushesTimer[bushesFieldsData.getBushesIndex()] = FarmingVencillio.getMinutesCounter(player) - bushesData.getGrowthTime();
 					// bushesStages[bushesFieldsData.getBushesIndex()] -= 2;
 					modifyStage(bushesFieldsData.getBushesIndex());
 					stop();
@@ -577,7 +577,7 @@ public class Bushes {
 				player.getActionSender().sendMessage("You harvest the crop, and pick some berries.");
 				player.getInventory().add(bushesData.getHarvestId(), 1);
 				player.getSkills().addExperience(Skills.FARMING, bushesData.getHarvestXp());
-				bushesTimer[bushesFieldsData.getBushesIndex()] = Farming.getMinutesCounter(player);
+				bushesTimer[bushesFieldsData.getBushesIndex()] = FarmingVencillio.getMinutesCounter(player);
 				int difference = bushesData.getEndingState() - bushesData.getStartingState();
 				int growth = bushesData.getGrowthTime();
 				lowerStage(bushesFieldsData.getBushesIndex(), growth - (growth / difference) * (difference + 5 - bushesStages[bushesFieldsData.getBushesIndex()]));

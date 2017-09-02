@@ -328,9 +328,9 @@ public class FruitTree {
 
 	public void doCalculations() {
 		for (int i = 0; i < fruitTreeSaplings.length; i++) {
-			if (fruitTreeStages[i] > 0 && fruitTreeStages[i] <= 3 && Farming.getMinutesCounter(player) - fruitTreeTimer[i] >= 5) {
+			if (fruitTreeStages[i] > 0 && fruitTreeStages[i] <= 3 && FarmingVencillio.getMinutesCounter(player) - fruitTreeTimer[i] >= 5) {
 				fruitTreeStages[i]--;
-				fruitTreeTimer[i] = Farming.getMinutesCounter(player);
+				fruitTreeTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateFruitTreeStates();
 				continue;
 			}
@@ -339,7 +339,7 @@ public class FruitTree {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - fruitTreeTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - fruitTreeTimer[i];
 			long growth = fruitTreeData.getGrowthTime();
 			int nbStates = fruitTreeData.getEndingState() - fruitTreeData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -417,7 +417,7 @@ public class FruitTree {
 		FruitTreeData fruitTreeData = FruitTreeData.forId(fruitTreeSaplings[i]);
 		if (fruitTreeData == null)
 			return;
-		long difference = Farming.getMinutesCounter(player) - fruitTreeTimer[i];
+		long difference = FarmingVencillio.getMinutesCounter(player) - fruitTreeTimer[i];
 		long growth = fruitTreeData.getGrowthTime();
 		int nbStates = fruitTreeData.getEndingState() - fruitTreeData.getStartingState();
 		int state = (int) (difference * nbStates / growth);
@@ -514,7 +514,7 @@ public class FruitTree {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = Farming.getMinutesCounter(player);
+				fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateFruitTreeStates();
 				if (fruitTreeStages[fruitTreeFieldsData.getFruitTreeIndex()] == 3) {
 					stop();
@@ -566,7 +566,7 @@ public class FruitTree {
 			public void execute() {
 				fruitTreeState[fruitTreeFieldsData.getFruitTreeIndex()] = 0;
 				fruitTreeSaplings[fruitTreeFieldsData.getFruitTreeIndex()] = saplingId;
-				fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = Farming.getMinutesCounter(player);
+				fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, fruitTreeData.getPlantingXp());
 				stop();
 			}
@@ -629,7 +629,7 @@ public class FruitTree {
 					player.getSkills().addExperience(Skills.FARMING, fruitTreeData.getCheckHealthXp());
 					fruitTreeState[fruitTreeFieldsData.getFruitTreeIndex()] = 0;
 					hasFullyGrown[fruitTreeFieldsData.getFruitTreeIndex()] = false;
-					fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = Farming.getMinutesCounter(player) - fruitTreeData.getGrowthTime();
+					fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = FarmingVencillio.getMinutesCounter(player) - fruitTreeData.getGrowthTime();
 					modifyStage(fruitTreeFieldsData.getFruitTreeIndex());
 					stop();
 					return;
@@ -637,7 +637,7 @@ public class FruitTree {
 				player.getActionSender().sendMessage("You harvest the crop, and pick a fruit.");
 				player.getInventory().add(fruitTreeData.getHarvestId(), 1);
 				player.getSkills().addExperience(Skills.FARMING, fruitTreeData.getCheckHealthXp());
-				fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = Farming.getMinutesCounter(player);
+				fruitTreeTimer[fruitTreeFieldsData.getFruitTreeIndex()] = FarmingVencillio.getMinutesCounter(player);
 				int difference = fruitTreeData.getEndingState() - fruitTreeData.getStartingState();
 				int growth = fruitTreeData.getGrowthTime();
 				lowerStage(fruitTreeFieldsData.getFruitTreeIndex(), growth - (growth / difference) * (difference + 5 - fruitTreeStages[fruitTreeFieldsData.getFruitTreeIndex()]));

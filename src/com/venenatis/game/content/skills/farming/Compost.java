@@ -290,7 +290,7 @@ public class Compost {
 	/* handle what happens when the player close the compost bin */
 	public void closeCompostBin(final int index) {
 		compostBins[index] = tempCompostState * 100;
-		compostBinsTimer[index] = Farming.getMinutesCounter(player);
+		compostBinsTimer[index] = FarmingVencillio.getMinutesCounter(player);
 
 		player.playAnimation(new Animation(835));
 		Controller controller = player.getController();
@@ -315,7 +315,7 @@ public class Compost {
 		// check if the time elapsed is enough to rot the compost
 		int timerRequired;
 		timerRequired = compostBins[index] == 200 ? 90 : 45;
-		if (Farming.getMinutesCounter(player) - compostBinsTimer[index] >= timerRequired) {
+		if (FarmingVencillio.getMinutesCounter(player) - compostBinsTimer[index] >= timerRequired) {
 			compostBins[index] += 50;
 			player.playAnimation(new Animation(834));
 

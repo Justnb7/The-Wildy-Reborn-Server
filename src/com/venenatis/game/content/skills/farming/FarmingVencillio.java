@@ -5,7 +5,7 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 
-public class Farming {
+public class FarmingVencillio {
 	/**
 	 * Special plant one constructor & getter
 	 */
@@ -159,7 +159,7 @@ public class Farming {
 		this.farmingTimer = farmingTimer;
 	}
 	
-	public Farming(Player player) {
+	public FarmingVencillio(Player player) {
 		allotment = new Allotments(player);
 		fruitTrees = new FruitTree(player);
 		trees = new WoodTrees(player);

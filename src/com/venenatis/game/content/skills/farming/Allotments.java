@@ -327,9 +327,9 @@ public class Allotments {
 
 	public void doCalculations() {
 		for (int i = 0; i < allotmentSeeds.length; i++) {
-			if (allotmentStages[i] > 0 && allotmentStages[i] <= 3 && Farming.getMinutesCounter(player) - allotmentTimer[i] >= 5) {
+			if (allotmentStages[i] > 0 && allotmentStages[i] <= 3 && FarmingVencillio.getMinutesCounter(player) - allotmentTimer[i] >= 5) {
 				allotmentStages[i]--;
-				allotmentTimer[i] = Farming.getMinutesCounter(player);
+				allotmentTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateAllotmentsStates();
 			}
 			AllotmentData allotmentData = AllotmentData.forId(allotmentSeeds[i]);
@@ -337,7 +337,7 @@ public class Allotments {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - allotmentTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - allotmentTimer[i];
 			long growth = allotmentData.getGrowthTime();
 			int nbStates = allotmentData.getEndingState() - allotmentData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -358,7 +358,7 @@ public class Allotments {
 		AllotmentData bushesData = AllotmentData.forId(allotmentSeeds[i]);
 		if (bushesData == null)
 			return;
-		long difference = Farming.getMinutesCounter(player) - allotmentTimer[i];
+		long difference = FarmingVencillio.getMinutesCounter(player) - allotmentTimer[i];
 		long growth = bushesData.getGrowthTime();
 		int nbStates = bushesData.getEndingState() - bushesData.getStartingState();
 		int state = (int) (difference * nbStates / growth);
@@ -496,7 +496,7 @@ public class Allotments {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				allotmentTimer[allotmentFieldsData.getAllotmentIndex()] = Farming.getMinutesCounter(player);
+				allotmentTimer[allotmentFieldsData.getAllotmentIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateAllotmentsStates();
 				if (allotmentStages[allotmentFieldsData.getAllotmentIndex()] == 3) {
 					stop();
@@ -552,7 +552,7 @@ public class Allotments {
 			public void execute() {
 				allotmentState[allotmentFieldsData.getAllotmentIndex()] = 0;
 				allotmentSeeds[allotmentFieldsData.getAllotmentIndex()] = seedId;
-				allotmentTimer[allotmentFieldsData.getAllotmentIndex()] = Farming.getMinutesCounter(player);
+				allotmentTimer[allotmentFieldsData.getAllotmentIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, allotmentData.getPlantingXp());
 				stop();
 			}
@@ -614,7 +614,7 @@ public class Allotments {
 				if (allotmentHarvest[allotmentFieldsData.getAllotmentIndex()] == 1) {
 					resetAllotments(allotmentFieldsData.getAllotmentIndex());
 					allotmentStages[allotmentFieldsData.getAllotmentIndex()] = 3;
-					allotmentTimer[allotmentFieldsData.getAllotmentIndex()] = Farming.getMinutesCounter(player);
+					allotmentTimer[allotmentFieldsData.getAllotmentIndex()] = FarmingVencillio.getMinutesCounter(player);
 					stop();
 					return;
 				}

@@ -279,9 +279,9 @@ public class Herbs {
 	public void doCalculations() {
 		// displayAll();
 		for (int i = 0; i < herbSeeds.length; i++) {
-			if (herbStages[i] > 0 && herbStages[i] <= 3 && (Farming.getMinutesCounter(player) - herbTimer[i]) >= 5) {
+			if (herbStages[i] > 0 && herbStages[i] <= 3 && (FarmingVencillio.getMinutesCounter(player) - herbTimer[i]) >= 5) {
 				herbStages[i] -= 2;
-				herbTimer[i] = Farming.getMinutesCounter(player);
+				herbTimer[i] = FarmingVencillio.getMinutesCounter(player);
 				updateHerbsStates();
 			}
 			HerbData herbData = HerbData.forId(herbSeeds[i]);
@@ -289,7 +289,7 @@ public class Herbs {
 				continue;
 			}
 
-			long difference = Farming.getMinutesCounter(player) - herbTimer[i];
+			long difference = FarmingVencillio.getMinutesCounter(player) - herbTimer[i];
 			long growth = herbData.getGrowthTime();
 			int nbStates = herbData.getEndingState() - herbData.getStartingState();
 			int state = (int) (difference * nbStates / growth);
@@ -377,7 +377,7 @@ public class Herbs {
 					stop();
 				}
 				player.getSkills().addExperience(Skills.FARMING, CLEARING_EXPERIENCE);
-				herbTimer[herbFieldsData.getHerbIndex()] = Farming.getMinutesCounter(player);
+				herbTimer[herbFieldsData.getHerbIndex()] = FarmingVencillio.getMinutesCounter(player);
 				updateHerbsStates();
 				if (herbStages[herbFieldsData.getHerbIndex()] == 3) {
 					stop();
@@ -427,7 +427,7 @@ public class Herbs {
 				herbState[herbFieldsData.getHerbIndex()] = 0;
 				herbStages[herbFieldsData.getHerbIndex()] = 4;
 				herbSeeds[herbFieldsData.getHerbIndex()] = seedId;
-				herbTimer[herbFieldsData.getHerbIndex()] = Farming.getMinutesCounter(player);
+				herbTimer[herbFieldsData.getHerbIndex()] = FarmingVencillio.getMinutesCounter(player);
 				player.getSkills().addExperience(Skills.FARMING, herbData.getPlantingXp());
 				stop();
 			}
@@ -447,7 +447,7 @@ public class Herbs {
 			if (herbSeeds[i] == 0) {
 				continue;
 			}
-			System.out.println("minutes : " + Farming.getMinutesCounter(player));
+			System.out.println("minutes : " + FarmingVencillio.getMinutesCounter(player));
 			System.out.println("index : " + i);
 			System.out.println("state : " + herbState[i]);
 			System.out.println("harvest : " + herbHarvest[i]);
@@ -488,7 +488,7 @@ public class Herbs {
 				if (herbHarvest[herbFieldsData.getHerbIndex()] == 1) {
 					resetHerbs(herbFieldsData.getHerbIndex());
 					herbStages[herbFieldsData.getHerbIndex()] = 3;
-					herbTimer[herbFieldsData.getHerbIndex()] = Farming.getMinutesCounter(player);
+					herbTimer[herbFieldsData.getHerbIndex()] = FarmingVencillio.getMinutesCounter(player);
 					stop();
 					return;
 				}

@@ -7,7 +7,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
 import com.venenatis.game.content.skills.agility.Shortcut;
-import com.venenatis.game.content.skills.farming.Farming;
+import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
@@ -122,13 +122,13 @@ public class ObjectInteraction {
 			}
 		}
 		
-		if (Farming.harvest(player, location.getX(), location.getY())) {
+		/*if (FarmingVencillio.harvest(player, location.getX(), location.getY())) {
 			return;
 		}
 		
-		if (Farming.inspectObject(player, location.getX(), location.getY())) {
+		if (FarmingVencillio.inspectObject(player, location.getX(), location.getY())) {
 			return;
-		}
+		}*/
 		
 		if (Runecrafting.handleObject(player, obj)) {
 			return;

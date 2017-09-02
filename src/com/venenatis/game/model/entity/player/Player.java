@@ -20,7 +20,8 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContaine
 import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.server_tasks.Tasks;
 import com.venenatis.game.content.skills.SkillTask;
-import com.venenatis.game.content.skills.farming.Farming;
+import com.venenatis.game.content.skills.farm.Farming;
+import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.fishing.Fishing;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
@@ -3067,10 +3068,54 @@ public class Player extends Entity {
 		return fishing;
 	}
 	
+	private int[] farmingSeedId = new int[Farming.MAX_PATCHES], farmingTime = new int[Farming.MAX_PATCHES],
+			farmingState = new int[Farming.MAX_PATCHES], farmingHarvest = new int[Farming.MAX_PATCHES];
+	
+	public int getFarmingSeedId(int index) {
+		return farmingSeedId[index];
+	}
+
+	public void setFarmingSeedId(int index, int farmingSeedId) {
+		this.farmingSeedId[index] = farmingSeedId;
+	}
+
+	public int getFarmingTime(int index) {
+		return this.farmingTime[index];
+	}
+
+	public void setFarmingTime(int index, int farmingTime) {
+		this.farmingTime[index] = farmingTime;
+	}
+
+	public int getFarmingState(int index) {
+		return farmingState[index];
+	}
+
+	public void setFarmingState(int index, int farmingState) {
+		this.farmingState[index] = farmingState;
+	}
+
+	public int getFarmingHarvest(int index) {
+		return farmingHarvest[index];
+	}
+
+	public void setFarmingHarvest(int index, int farmingHarvest) {
+		this.farmingHarvest[index] = farmingHarvest;
+	}
+	
 	private Farming farming = new Farming(this);
 
-	public Farming getFarming() {
+	public Farming farming() {
+		if (farming == null) {
+			farming = new Farming(this);
+		}
 		return farming;
+	}
+	
+	private FarmingVencillio farmingVencillio = new FarmingVencillio(this);
+
+	public FarmingVencillio getFarming() {
+		return farmingVencillio;
 	}
 
 	public void setFarming(Farming farming) {

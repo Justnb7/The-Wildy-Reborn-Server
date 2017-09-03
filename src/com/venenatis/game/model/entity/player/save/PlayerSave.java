@@ -241,6 +241,7 @@ public class PlayerSave {
 				if (details.quickPrayers != null) {
 					player.getQuickPrayers().setPrayers(details.quickPrayers);
 				}
+				player.setBestZulrahTime(details.bestZulrahTime);
 				return true;
 
 			} finally {
@@ -342,6 +343,7 @@ public class PlayerSave {
 		private final HashMap<Integer, String> slayerUnlocks;
 		private final HashMap<Integer, Integer> slayerExtensions;
 		private final PrayerData[] quickPrayers;
+		private final long bestZulrahTime;
 
 		
 		public String user() {
@@ -440,6 +442,7 @@ public class PlayerSave {
 			slayerUnlocks = player.getSlayerInterface().getUnlocks();
 			slayerExtensions = player.getSlayerInterface().getExtensions();
 			quickPrayers = player.getQuickPrayers().getPrayers();
+			bestZulrahTime = player.getBestZulrahTime();
 		}
 
 		public void parseDetails() throws Exception {

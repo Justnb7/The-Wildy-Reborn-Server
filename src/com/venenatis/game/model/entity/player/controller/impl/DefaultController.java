@@ -8,10 +8,14 @@ import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
+import com.venenatis.game.model.combat.npcs.impl.zulrah.Zulrah;
+import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
+import com.venenatis.game.util.Utility;
 
 public class DefaultController extends Controller {
 
@@ -222,6 +226,10 @@ public class DefaultController extends Controller {
 				player.getActionSender().sendRunEnergy();
 				player.getActionSender().sendString(player.getRunEnergy()+"%", 149);
 			}
+		}
+		if (Boundary.isIn(player, Zulrah.BOUNDARY) && player.getZulrahEvent().isInToxicLocation()) {
+			//Self damage
+			player.take_hit_generic(player, Utility.random(3), HitType.VENOM).send();
 		}
 	}
 

@@ -3,7 +3,6 @@ package com.venenatis.game.model.entity.player.instance.impl;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.instance.SingleInstancedArea;
@@ -40,11 +39,11 @@ public class KrakenInstance {
 	public void startUp(Player player) {
 		if (player != null && instance != null) {
 			npcs = new NPC[5];
-			npcs[0] = NPCHandler.spawn(player, 496, new Location(3694, 5810, instance.getHeight()), 0, false, false);
-			npcs[1] = NPCHandler.spawn(player, 5534, new Location(3691, 5810, instance.getHeight()), 0, false, false);
-			npcs[2] = NPCHandler.spawn(player, 5534, new Location(3691, 5814, instance.getHeight()), 0, false, false);
-			npcs[3] = NPCHandler.spawn(player, 5534, new Location(3700, 5814, instance.getHeight()), 0, false, false);
-			npcs[4] = NPCHandler.spawn(player, 5534, new Location(3700, 5810, instance.getHeight()), 0, false, false);
+			npcs[0] = Server.npcHandler.spawn(player, 496, new Location(3694, 5810, instance.getHeight()), 0, false, false);
+			npcs[1] = Server.npcHandler.spawn(player, 5534, new Location(3691, 5810, instance.getHeight()), 0, false, false);
+			npcs[2] = Server.npcHandler.spawn(player, 5534, new Location(3691, 5814, instance.getHeight()), 0, false, false);
+			npcs[3] = Server.npcHandler.spawn(player, 5534, new Location(3700, 5814, instance.getHeight()), 0, false, false);
+			npcs[4] = Server.npcHandler.spawn(player, 5534, new Location(3700, 5810, instance.getHeight()), 0, false, false);
 		}
 	}
 	
@@ -53,11 +52,11 @@ public class KrakenInstance {
 	 * @param player
 	 */
 	public void spawnNextWave(Player player) { 
-		npcs[0] = NPCHandler.spawn(player, 496, new Location(3694, 5810, instance.getHeight()), 0, false, false);
-		npcs[1] = NPCHandler.spawn(player, 5534, new Location(3691, 5810, instance.getHeight()), 0, false, false);
-		npcs[2] = NPCHandler.spawn(player, 5534, new Location(3691, 5814, instance.getHeight()), 0, false, false);
-		npcs[3] = NPCHandler.spawn(player, 5534, new Location(3700, 5814, instance.getHeight()), 0, false, false);
-		npcs[4] = NPCHandler.spawn(player, 5534, new Location(3700, 5810, instance.getHeight()), 0, false, false);
+		npcs[0] = Server.npcHandler.spawn(player, 496, new Location(3694, 5810, instance.getHeight()), 0, false, false);
+		npcs[1] = Server.npcHandler.spawn(player, 5534, new Location(3691, 5810, instance.getHeight()), 0, false, false);
+		npcs[2] = Server.npcHandler.spawn(player, 5534, new Location(3691, 5814, instance.getHeight()), 0, false, false);
+		npcs[3] = Server.npcHandler.spawn(player, 5534, new Location(3700, 5814, instance.getHeight()), 0, false, false);
+		npcs[4] = Server.npcHandler.spawn(player, 5534, new Location(3700, 5810, instance.getHeight()), 0, false, false);
 		for (NPC n : npcs) {
 			n.setVisible(false);
 		}

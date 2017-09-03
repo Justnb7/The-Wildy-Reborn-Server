@@ -140,7 +140,13 @@ public class DropManager {
 			
 			boolean drop_below_player = npc.getId() == 492 || npc.getId() == 494;
 			
+			
+			
 			for (Item item : drops) {
+				if (npc.getId() == 2042 || npc.getId() == 2043 || npc.getId() == 2044) {
+					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), new Location(2268, 3069), player));
+					player.getZulrahEvent().stop();
+				}
 				if (drop_below_player) {
 					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getLocation(), player));
 				} else {

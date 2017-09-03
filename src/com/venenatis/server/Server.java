@@ -19,6 +19,7 @@ import com.venenatis.game.util.SystemLogger;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GlobalObjects;
+import com.venenatis.server.data.ServerData;
 
 
 /**
@@ -81,6 +82,11 @@ public class Server {
 	 * The GlobalObjects that represents an gameobject
 	 */
 	private static GlobalObjects globalObjects = new GlobalObjects();
+	
+	/**
+	 * Contains data which is saved between sessions.
+	 */
+	public static ServerData serverData = new ServerData();
 	
 	/**
 	 * Creates the Venenatis server.
@@ -171,6 +177,10 @@ public class Server {
 	
 	public static DropManager getDropManager() {
 		return dropManager;
+	}
+	
+	public static ServerData getServerData() {
+		return serverData;
 	}
 	
 }

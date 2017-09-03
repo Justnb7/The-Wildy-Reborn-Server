@@ -159,7 +159,7 @@ public class NpcCombat {
 			player.getCombatState().reset();
 			return false;
 		}
-		if (npc.transforming)
+		if (npc.transforming || player.getZulrahEvent().isTransforming())
 			return false;
 
 		if (!Slayer.canAttack(player, npc)) {
@@ -326,6 +326,7 @@ public class NpcCombat {
 			// Actually damage our target
 			if(!isBoss)
 			player.take_hit(npc, damage, npc.getCombatType()).send(0);
+			npc.totalAttacks++;
 		}
 	}
 

@@ -44,6 +44,7 @@ import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.data.WeaponInterface;
 import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.SpellBook;
+import com.venenatis.game.model.combat.npcs.impl.zulrah.Zulrah;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
@@ -1305,6 +1306,10 @@ public class Player extends Entity {
 		if (isDueling() || getDuelArena().isInSession()) {
 			getActionSender().sendMessage("You cannot logout while in duel arena.");
 			return;
+		}
+		
+		if (zulrah.getInstancedZulrah() != null) {
+			InstancedAreaManager.getSingleton().disposeOf(zulrah.getInstancedZulrah());
 		}
 		
 		//If we're no longer in combat we can goahead and logout
@@ -3181,4 +3186,24 @@ public class Player extends Entity {
 		this.emote = emote;
 	}
 	
+	private long bestZulrahTime;
+
+	public long setBestZulrahTime(long bestZulrahTime) {
+		return this.bestZulrahTime = bestZulrahTime;
+	}
+
+	public long getBestZulrahTime() {
+		return bestZulrahTime;
+	}
+	
+	private Zulrah zulrah = new Zulrah(this);
+	
+	/**
+	 * The zulrah event
+	 * 
+	 * @return event
+	 */
+	public Zulrah getZulrahEvent() {
+		return zulrah;
+	}
 }

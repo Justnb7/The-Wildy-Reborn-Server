@@ -42,6 +42,10 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "zulrah":
+			player.getZulrahEvent().initialize();
+			return true;
+		
 		case "setinfection":
 			int infection = parser.nextInt();
 			if (infection == 0)

@@ -1,9 +1,9 @@
 package com.venenatis.game.content.skills.slayer;
 
 import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
+import com.venenatis.server.Server;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class SuperiorMonster {
 					random_spawn = 25;
 				if(random_spawn == 25) {
 					player.getActionSender().sendMessage("@red@A superior foe has appeared...");
-					NPCHandler.spawn(player, ssm.superiorId, npc.getLocation(), 1, true, false);
+					Server.npcHandler.spawn(player, ssm.superiorId, npc.getLocation(), 1, true, false);
 				}
 			}
 		}

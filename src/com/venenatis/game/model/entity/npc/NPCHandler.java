@@ -85,7 +85,7 @@ public final class NPCHandler {
 		World.getWorld().register(npc);
 	}
 	
-	public static NPC spawn(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
+	public NPC spawn(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
 		npc.walking_type = walkingType;

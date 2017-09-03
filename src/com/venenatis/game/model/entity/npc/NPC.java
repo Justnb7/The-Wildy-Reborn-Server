@@ -1,7 +1,9 @@
 package com.venenatis.game.model.entity.npc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
@@ -57,6 +59,10 @@ public class NPC extends Entity {
 			range_defence = definition.getRangedDefence();
 			setCombatCooldownDelay(definition.getAttackSpeed());
 		}
+	}
+	
+	public void kill(int id, int height) {
+		Arrays.asList( World.getWorld().getNPCs().get(getIndex())).stream().filter(Objects::nonNull).filter(n -> n.getId() == id && n.getZ() == height).forEach(npc -> npc.getCombatState().isDead());
 	}
 
 	/**
@@ -127,6 +133,8 @@ public class NPC extends Entity {
 	}
 	
 	private String npcName;
+	
+	public int totalAttacks;
 
 	/**
 	 * Npc direction
@@ -418,6 +426,15 @@ public class NPC extends Entity {
 		World.getWorld().register(npc);
 		return npc;
 	}
+	
+	public static NPC getNpc(int id, int x, int y, int height) {
+		for (NPC npc : World.getWorld().getNPCs()) {
+			if (npc != null && npc.getId() == id && npc.getX() == x && npc.getY() == y && npc.getZ() == height) {
+				return npc;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public void process() {
@@ -442,24 +459,41 @@ public class NPC extends Entity {
 				} else if (this.followTarget != null) {
 					NPCFollowing.attemptFollowEntity(this, followTarget);
 				}
-
-				if (npcId == 6615) {
-					if (this.getHitpoints() <= 100 && !hasAttribute("scorpia_minion")) {
-						NPC min1 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
-						NPC min2 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
-						// attributes not used atm
-						this.setAttribute("min1", min1);
-						min1.setAttribute("boss", this);
-						this.setAttribute("min2", min2);
-						min2.setAttribute("boss", this);
-						// flag spawned
-						this.setAttribute("scorpia_minion", true);
-						// start task
-						Scorpia.heal_scorpia(this, min1);
-						Scorpia.heal_scorpia(this, min2);
-					}
+			}
+			
+			if (npcId == 6615) {
+				if (this.getHitpoints() <= 100 && !hasAttribute("scorpia_minion")) {
+					NPC min1 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
+					NPC min2 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
+					// attributes not used atm
+					this.setAttribute("min1", min1);
+					min1.setAttribute("boss", this);
+					this.setAttribute("min2", min2);
+					min2.setAttribute("boss", this);
+					// flag spawned
+					this.setAttribute("scorpia_minion", true);
+					// start task
+					Scorpia.heal_scorpia(this, min1);
+					Scorpia.heal_scorpia(this, min2);
 				}
 			}
+			
+			/*if (this.getId() >= 2042 && this.getId() <= 2044 && this.getHitpoints() > 0) {
+				Player player = spawnedByPlr;
+				if (player != null && player.getZulrahEvent().getNpc() != null && this.equals(player.getZulrahEvent().getNpc())) {
+					int stage = player.getZulrahEvent().getStage();
+					if (this.getId() == 2042) {
+						if (stage == 0 || stage == 1 || stage == 4 || stage == 9 && this.totalAttacks >= 20 || stage == 11 && this.totalAttacks >= 5) {
+							//continue;
+						}
+					}
+					if (this.getId() == 2044) {
+						if ((stage == 5 || stage == 8) && this.totalAttacks >= 5) {
+							//continue;
+						}
+					}
+				}
+			}*/
 
 			/*
 			 * Handle our combat timers

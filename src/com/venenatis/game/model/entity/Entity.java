@@ -975,11 +975,39 @@ public abstract class Entity {
 			this.resetFace();
 			return;
 		}
-		// If WE are an npc, faceIndex is 'raw' - not +32k. 
-		// If we're a player, facing players = 32k+pid.. facing npcs= raw index
-		entityFaceIndex = e.clientIndex();
+		
+		if (!canFacePlayer()) {
+			if (entityFaceIndex == -1) {
+				return;
+			}
+			entityFaceIndex = -1;
+		} else {
+			// If WE are an npc, faceIndex is 'raw' - not +32k. 
+			// If we're a player, facing players = 32k+pid.. facing npcs= raw index
+			entityFaceIndex = e.clientIndex();
+		}
 		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
+	}
+	
+    private boolean facePlayer = true;
+	
+	/**
+	 * Determines if the npc can face another player
+	 * 
+	 * @return {@code true} if the npc can face players
+	 */
+	public boolean canFacePlayer() {
+		return facePlayer;
+	}
+
+	/**
+	 * Makes the npcs either able or unable to face other players
+	 * 
+	 * @param facePlayer {@code true} if the npc can face players
+	 */
+	public void setFacePlayer(boolean facePlayer) {
+		this.facePlayer = facePlayer;
 	}
 	
 	public abstract int clientIndex();

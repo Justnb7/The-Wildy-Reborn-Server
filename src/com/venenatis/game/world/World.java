@@ -280,6 +280,10 @@ public class World implements Service {
 	 */
 	public void disconnect(Player player) {
 		
+		if (player.getZulrahEvent().getInstancedZulrah() != null) {
+			InstancedAreaManager.getSingleton().disposeOf(player.getZulrahEvent().getInstancedZulrah());
+		}
+		
 		/*
 		 * Remove from trade
 		 */

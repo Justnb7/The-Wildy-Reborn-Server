@@ -17,6 +17,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.packet.ActionSender;
 import com.venenatis.game.task.impl.NPCDeathTask;
+import com.venenatis.game.util.Location3D;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -112,6 +113,8 @@ public class NPC extends Entity {
 	public void setDelay(Stopwatch delay) {
 		this.delay = delay;
 	}
+	
+	public Location3D targetedLocation;
 
 	/**
 	 * Cannot attack npcs while transforming

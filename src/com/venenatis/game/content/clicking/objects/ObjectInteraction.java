@@ -19,8 +19,10 @@ import com.venenatis.game.content.teleportation.lever.Levers;
 import com.venenatis.game.content.teleportation.obelisk.Obelisks;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.object.impl.webs.SlashWebObject;
@@ -184,6 +186,84 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+			
+		case 29171:// fire max cape rack
+			if (!player.getInventory().hasItemAmount(13280, 1) && !player.getInventory().hasItemAmount(13281, 1)
+					&& !player.getInventory().hasItemAmount(6570, 1)) {
+				SimpleDialogues.sendStatement(player, "You do not have the right materials");
+			}
+			if (player.getInventory().hasItemAmount(13280, 1) && player.getInventory().hasItemAmount(13281, 1)
+					&& player.getInventory().hasItemAmount(6570, 1)) {
+				player.getInventory().remove(13280, 1);
+				player.getInventory().remove(13281, 1);
+				player.getInventory().remove(6570, 1);
+				player.getInventory().add(new Item(13330, 1));
+				player.getInventory().add(new Item(13329, 1));
+			}
+			break;
+
+		case 29175:// avas max cape rack
+			if (!player.getInventory().hasItemAmount(13280, 1) && !player.getInventory().hasItemAmount(13281, 1)
+					&& !player.getInventory().hasItemAmount(10499, 1)) {
+				SimpleDialogues.sendStatement(player, "You do not have the right materials");
+
+			}
+			if (player.getInventory().hasItemAmount(13280, 1) && player.getInventory().hasItemAmount(13281, 1)
+					&& player.getInventory().hasItemAmount(10499, 1)) {
+				player.getInventory().remove(13280, 1);
+				player.getInventory().remove(13281, 1);
+				player.getInventory().remove(10499, 1);
+				player.getInventory().add(new Item(13338, 1));
+				player.getInventory().add(new Item(13337, 1));
+			}
+			break;
+
+		case 29174:// guthix max cape rack
+			if (!player.getInventory().hasItemAmount(13280, 1) && !player.getInventory().hasItemAmount(13281, 1)
+					&& !player.getInventory().hasItemAmount(2413, 1)) {
+				SimpleDialogues.sendStatement(player, "You do not have the right materials");
+
+			}
+			if (player.getInventory().hasItemAmount(13280, 1) && player.getInventory().hasItemAmount(13281, 1)
+					&& player.getInventory().hasItemAmount(2413, 1)) {
+				player.getInventory().remove(13280, 1);
+				player.getInventory().remove(13281, 1);
+				player.getInventory().remove(10499, 1);
+				player.getInventory().add(new Item(13336, 1));
+				player.getInventory().add(new Item(13335, 1));
+			}
+			break;
+
+		case 29173:// Zamorak max cape rack
+			if (!player.getInventory().hasItemAmount(13280, 1) && !player.getInventory().hasItemAmount(13281, 1)
+					&& !player.getInventory().hasItemAmount(2414, 1)) {
+				SimpleDialogues.sendStatement(player, "You do not have the right materials");
+
+			}
+			if (player.getInventory().hasItemAmount(13280, 1) && player.getInventory().hasItemAmount(13281, 1)
+					&& player.getInventory().hasItemAmount(2414, 1)) {
+				player.getInventory().remove(13280, 1);
+				player.getInventory().remove(13281, 1);
+				player.getInventory().remove(10499, 1);
+				player.getInventory().add(new Item(13334, 1));
+				player.getInventory().add(new Item(13333, 1));
+			}
+			break;
+		case 29172:// Saradomin max cape rack
+			if (!player.getInventory().hasItemAmount(13280, 1) && !player.getInventory().hasItemAmount(13281, 1)
+					&& !player.getInventory().hasItemAmount(2412, 1)) {
+				SimpleDialogues.sendStatement(player, "You do not have the right materials");
+
+			}
+			if (player.getInventory().hasItemAmount(13280, 1) && player.getInventory().hasItemAmount(13281, 1)
+					&& player.getInventory().hasItemAmount(2412, 1)) {
+				player.getInventory().remove(13280, 1);
+				player.getInventory().remove(13281, 1);
+				player.getInventory().remove(10499, 1);
+				player.getInventory().add(new Item(13332, 1));
+				player.getInventory().add(new Item(13331, 1));
+			}
+			break;
 		
 		case 26760:
 			Location resource_arena = player.getLocation();

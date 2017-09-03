@@ -208,6 +208,13 @@ public class ItemOptionPacket implements PacketType {
 		
 		player.debug(String.format("drop_or_destroy option: %s dropped: from slot: %d%n", item.getId(), slot));
 		
+		//Special case for destroying items.
+		if(item.isDestroyable()) {
+			destroyItem(player, item);
+			player.setDestroyItem(slot);
+			return;
+		}
+		
 		//During teleport we cannot drop any items.
 		if(player.isTeleporting()) {
 			return;
@@ -226,13 +233,6 @@ public class ItemOptionPacket implements PacketType {
 		
 		// We are dropping an pet item.
 		if (!Pet.drop(player, item, false)) {
-			return;
-		}
-
-		//Special case for destroying items.
-		if(item.isDestroyable()) {
-			destroyItem(player, item);
-			player.setDestroyItem(item.getId());
 			return;
 		}
 		

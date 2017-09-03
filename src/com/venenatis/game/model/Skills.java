@@ -611,13 +611,25 @@ public class Skills {
 
 		RUNECRAFTING_CAPE(Skills.RUNECRAFTING, new Item(9765), new Item(9766), new Item(9767), Animation.create(4947), Graphic.create(817), 11),
 
-		 HUNTER_CAPE(Skills.HUNTER, new Item(9948), new Item(9949), new Item(9950), Animation.create(5158), Graphic.create(907), 12),
+		HUNTER_CAPE(Skills.HUNTER, new Item(9948), new Item(9949), new Item(9950), Animation.create(5158), Graphic.create(907), 12),
 
-		 CONSTRUCTION_CAPE(Skills.CONSTRUCTION, new Item(9789), new Item(9790), new Item(9791), Animation.create(4953),  Graphic.create(820), 12),
+		CONSTRUCTION_CAPE(Skills.CONSTRUCTION, new Item(9789), new Item(9790), new Item(9791), Animation.create(4953),  Graphic.create(820), 12),
 
 		QUEST_POINT_CAPE(-1, new Item(9813), null, new Item(9814), Animation.create(4945), Graphic.create(816), 15),
 		
-		;
+		MAX_CAPE(-1, new Item(13280), new Item(13280), new Item(13280), Animation.create(7121), Graphic.create(1286), 9),
+		
+		FIRE_MAX_CAPE(-1, new Item(13329), new Item(13329), new Item(13329), Animation.create(7121), Graphic.create(1286), 9),
+		
+		SARA_MAX_CAPE(-1, new Item(13331), new Item(13331), new Item(13331), Animation.create(7121), Graphic.create(1286), 9),
+		
+		ZAMMY_MAX_CAPE(-1, new Item(13333), new Item(13333), new Item(13333), Animation.create(7121), Graphic.create(1286), 9),
+		
+		GUTHIX_MAX_CAPE(-1, new Item(13335), new Item(13335), new Item(13335), Animation.create(7121), Graphic.create(1286), 9),
+		
+		AVA_MAX_CAPE(-1, new Item(13337), new Item(13337), new Item(13337), Animation.create(7121), Graphic.create(1286), 9),
+		
+		INFERNAL_MAX_CAPE(-1, new Item(21285), new Item(21285), new Item(21285), Animation.create(7121), Graphic.create(1286), 9);
 
 		public static List<SkillCape> skillCapes = new ArrayList<SkillCape>();
 

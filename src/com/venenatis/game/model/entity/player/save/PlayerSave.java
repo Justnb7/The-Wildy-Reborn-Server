@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.collect.Multiset;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.venenatis.game.content.KillTracker.KillEntry;
@@ -591,10 +592,13 @@ public class PlayerSave {
 				
 				if (details.runePouch != null) {
 					for(int i = 0; i < details.runePouch.length; i++) {
-						
 						player.runePouchContainer.setSlot(i, details.runePouch[i]);
 					}
 				}
+				
+				/*if (details.herbSack != null) {
+					player.getHerbSack().setContents(details.herbSack);
+				}*/
 				
 			} finally {
 				if (reader != null) {
@@ -610,6 +614,7 @@ public class PlayerSave {
 		private final int[] tabAmounts;
 		private final Item[] bank;
 		private final Item[] runePouch;
+		//private final Multiset<Integer> herbSack;
 
 		public PlayerContainer(Player player) {
 			inventory = player.getInventory().toTrimmedArray();
@@ -617,6 +622,7 @@ public class PlayerSave {
 			tabAmounts = player.getBank().getTabAmounts();
 			bank = player.getBank().toNonNullArray();
 			runePouch = player.runePouchContainer.toTrimmedArray();
+			//herbSack = player.getHerbSack().getContents();
 		}
 
 		public void parseDetails(Player player) throws IOException {

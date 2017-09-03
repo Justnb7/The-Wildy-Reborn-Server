@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
+import com.venenatis.game.content.HerbSack;
 import com.venenatis.game.content.KillTracker.KillEntry;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -92,6 +93,12 @@ import com.venenatis.server.Server;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+    private HerbSack herbSack = new HerbSack(this);
+	
+	public HerbSack getHerbSack() {
+		return herbSack;	
+	}
 	
 	/**
 	 * The dialogue manager instance

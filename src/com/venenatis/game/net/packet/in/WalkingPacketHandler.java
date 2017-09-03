@@ -40,6 +40,10 @@ public class WalkingPacketHandler implements PacketType {
 			return;
 		}
 		
+		if(!player.canEmote()) {
+			return; //stops walking during skillcape animations.
+		}
+		
 		//Set our controller
 		player.getController().onWalk(player);
 		

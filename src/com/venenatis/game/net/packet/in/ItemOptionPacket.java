@@ -302,6 +302,10 @@ public class ItemOptionPacket implements PacketType {
 		
 		switch (item.getId()) {
 		
+		case 13226:
+			player.getHerbSack().handleFillSack();
+			break;
+		
 		case 12791: // Rune Pouch
 			player.getRunePouch().display();
 			break;
@@ -373,6 +377,10 @@ public class ItemOptionPacket implements PacketType {
 		player.lastClickedItem = item.getId();
 		
 		switch (item.getId()) {
+		
+		case 13226:
+			player.getHerbSack().handleEmptySack();
+			break;
 			
 		case 4155:
 			Teleports.teleport(player);
@@ -413,7 +421,9 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		switch (item.getId()) {
-
+		case 13226:
+			player.getHerbSack().handleCheckSack();
+			break;
 		}
 	}
 	

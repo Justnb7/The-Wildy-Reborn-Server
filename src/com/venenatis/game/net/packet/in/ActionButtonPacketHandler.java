@@ -146,7 +146,10 @@ public class ActionButtonPacketHandler implements PacketType {
 		}
 
 		/* Emotes */
-		Emotes.execute(player, button);
+		if (Emotes.isEmoteButton(player, button)) {
+			Emotes.execute(player, button);
+			return;
+		}
 		
 		/* Teleporting */
 		if(Teleport.isTeleportButton(player, button)) {

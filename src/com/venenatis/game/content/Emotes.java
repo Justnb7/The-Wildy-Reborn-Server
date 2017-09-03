@@ -14,6 +14,33 @@ import com.venenatis.game.world.World;
  *
  */
 public class Emotes {
+	
+	/**
+	 * The buttons stored in an array
+	 */
+	public static final int[] emote_button_ids = new int[] {
+			168, 169, 164, 167, 162, 163, 52058, 171, 165, 170, 52054, 52056, 166,
+			52051, 52052, 52053, 161, 43092, 52050, 52055, 172, 52057, 52071, 52072,
+			2155, 25103, 25106, 2154, 88063, 88061, 88062, 88060, 72032, 72033, 59062,
+			72254, 88065, 74108
+	};
+
+	/**
+	 * Are we clicking on an actual emote button
+	 * 
+	 * @param player
+	 *            The player trying to perform an emote
+	 * @param button
+	 *            The button being pressed
+	 */
+	public static boolean isEmoteButton(Player player, int button) {
+		for (int btn : emote_button_ids) {
+			if (button == btn) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Checks if the player can use an emote
@@ -162,7 +189,7 @@ public class Emotes {
 
 		GLASS_WALL(2154, Animation.create(1128), null),
 
-		SLAP_HEAD(31, Animation.create(4275), null),
+		SLAP_HEAD(88063, Animation.create(4275), null),
 
 		STOMP(88061, Animation.create(4278), null),
 

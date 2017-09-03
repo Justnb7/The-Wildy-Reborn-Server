@@ -270,6 +270,10 @@ public class EquipmentContainer extends Container {
 		if (def == null || def.getType() == EquipmentType.NOT_WIELDABLE) {
 			return false;
 		}
+		
+		if(!player.canEmote()) {
+			return false ;
+		}
 
 		if (!EquipmentRequirement.canEquip(player, item.getId())) {
 			return false;
@@ -355,6 +359,10 @@ public class EquipmentContainer extends Container {
 			return false;
 		}
 
+		if(!player.canEmote()) {
+			return false ;
+		}
+		
 		if (!EquipmentRequirement.canEquip(player, item.getId())) {
 			return false;
 		}

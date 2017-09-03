@@ -82,6 +82,7 @@ public class SetSkill {
 
 			player.getSkills().setMaxLevel(skill.getSkill(), input);
 			player.setCombatLevel(player.getSkills().getCombatLevel());
+			player.getSkills().update();
 			player.getActionSender().sendMessage("<col=255>Your " + skill.getName() + " level is now " + input + ". Combat level: " + player.getCombatLevel());
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		});

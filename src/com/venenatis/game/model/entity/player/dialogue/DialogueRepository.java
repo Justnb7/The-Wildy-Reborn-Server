@@ -86,9 +86,14 @@ public class DialogueRepository {
 		dialogues.put("ENCHANTED_GEM", EnchantedGem.class);
 		
 		/**
+		 * Mac
+		 */
+		dialogues.put("MAC", Mac.class);
+		
+		/**
 		 * Bounty hunter
 		 */
-		dialogues.put("EMBLEM_TRADER", EmblemTraderDialogue.class);
+		dialogues.put("EMBLEM_TRADER", EmblemTrader.class);
 		
 		/**
 		 * Ironman

@@ -31,6 +31,10 @@ public class NpcInteraction {
 
 		switch (npc.getId()) {
 		
+		case 6481:
+			player.getDialogueManager().start("MAC", player);
+			break;
+		
 		case 7456:
 			player.getDialogueManager().start("PERDU", player);
 			break;

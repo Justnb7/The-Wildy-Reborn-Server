@@ -14,7 +14,7 @@ import com.venenatis.game.world.shop.ShopManager;
  * @author Mobster
  *
  */
-public class EmblemTraderDialogue extends Dialogue {
+public class EmblemTrader extends Dialogue {
 
 	/**
 	 * The total amount of points you'll gain from this swap

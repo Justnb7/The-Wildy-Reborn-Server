@@ -197,6 +197,8 @@ public class PreloadingGear {
 		}
 		
 		player.setCombatLevel(player.getSkills().getCombatLevel());
+		player.getSkills().setTotalLevel(player.getSkills().getTotalLevel());
+		player.getSkills().update();
 		player.getInventory().refresh();
 		player.getEquipment().refresh();
 		player.setSpellBook(presetSpellbook[preset]);

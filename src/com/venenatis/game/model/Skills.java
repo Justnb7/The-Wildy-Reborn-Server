@@ -23,7 +23,7 @@ public class Skills {
 	/**
 	 * The number of skills.
 	 */
-	public static final int SKILL_COUNT = 25;
+	public static final int SKILL_COUNT = 22;
 
 	/**
 	 * The largest allowed experience.
@@ -94,24 +94,43 @@ public class Skills {
 		if(getLevel(skillData.getId()) == 99) {
 			player.getActionSender().sendMessage("<col=8b0000>Well done! You've achieved the highest possible level in this skill!</col>");
 		}
-		if (skillData.getId() < 7 || skillData.getId() == 21) {
+		if (skillData.getId() < 7) {
 			player.setCombatLevel(getCombatLevel());
 			getCombatLevel();
 			player.getActionSender().sendString("Combat Level: " + player.getSkills().getCombatLevel(), 3983);
 		}
+		updateTotalLevel();
+		player.getSkills().update();
+	}
+	
+	private int totalLevel = 0;
+
+	public void setTotalLevel(int totalLevel) {
+		this.totalLevel = totalLevel;
 	}
 	
 	/**
-	 * Gets the total level.
+	 * Gets the players total level
 	 * 
-	 * @return The total level.
+	 * @return
 	 */
 	public int getTotalLevel() {
-		int total = 0;
-		for (int i = 0; i < levels.length; i++) {
-			total += getLevelForExperience(i);
+		return totalLevel;
+	}
+	
+	/**
+	 * Updates the total level
+	 */
+	public void updateTotalLevel() {
+		totalLevel = 0;
+
+		for (int i = 0; i < Skills.SKILL_COUNT; i++) {
+			if (i == Skills.CONSTRUCTION || i == Skills.HUNTER) {
+				continue;
+			}
+			totalLevel += getLevelForExperience(i);
+			System.out.println(totalLevel);
 		}
-		return total;
 	}
 	
 	/**
@@ -734,5 +753,10 @@ public class Skills {
 		public int getAnimateTimer() {
 			return animateTimer;
 		}
+	}
+
+	public void update() {
+		getTotalLevel();
+		getCombatLevel();
 	}
 }

@@ -43,6 +43,7 @@ public class RottenPotato extends Dialogue {
 					player.getActionSender().sendSkillLevel(i);
 				}
 				player.setCombatLevel(player.getSkills().getCombatLevel());
+				player.getSkills().update();
 	    		stop();
 				break;
 			case 2:

@@ -183,7 +183,13 @@ public class OwnerCommand implements Command {
 
 			}
     		player.setCombatLevel(player.getSkills().getCombatLevel());
+    		player.getSkills().update();
     		break;
+    		
+		case "tl":
+			player.getSkills().updateTotalLevel();
+			player.debug(""+player.getSkills().getTotalLevel());
+			return true;
 			
 		case "item":
 			if (parser.hasNext()) {

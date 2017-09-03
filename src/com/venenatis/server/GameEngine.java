@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.TimesCx;
+import com.venenatis.game.event.CycleEventHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.LoginManager;
 import com.venenatis.game.util.Stopwatch;
@@ -50,14 +51,14 @@ public final class GameEngine implements Runnable {
      * A queue of {@link Player}s who are waiting to be added to the Game Engine. This is NOT a list of people
      * requesting to be logged in. That is done in {@link LoginManager}
      */
-    private static final Queue<Player> loginQueue = new ConcurrentLinkedQueue<>(); // we'll steal this in a sec
+    private static final Queue<Player> loginQueue = new ConcurrentLinkedQueue<>();
 
     /**
      * The stopwatch which will time how long server cycles take.
      */
     private static final Stopwatch benchmark = new Stopwatch();
     
-    public static GameEngine engine; // probs a reference to it already but temp one for now
+    public static GameEngine engine;
 
     /**
      * Private constructor to restrict external instantiation.
@@ -67,8 +68,6 @@ public final class GameEngine implements Runnable {
     }
     
     public static LoginManager loginMgr;
-    
-    //Am i even doing it right?
 
     /**
      * Initializes and starts this {@link GameLogicService}.
@@ -123,9 +122,9 @@ public final class GameEngine implements Runnable {
         }
         profile.login = System.currentTimeMillis() - start;
         
-        //So all this is triggered when clicking the buttons lol
         Server.getGlobalObjects().pulse();
         Server.getTaskScheduler().pulse();
+        CycleEventHandler.getSingleton().process();
         World.getWorld().pulse();
         GroundItemHandler.pulse();
         

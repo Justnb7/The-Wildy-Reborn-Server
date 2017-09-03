@@ -11,7 +11,6 @@ import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.skills.crafting.impl.Gem;
 import com.venenatis.game.content.skills.crafting.impl.Hide;
-import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.fishing.FishableData;
 import com.venenatis.game.content.skills.fishing.FishingSpot;
 import com.venenatis.game.content.skills.fishing.ToolData;

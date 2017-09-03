@@ -1,11 +1,7 @@
 package com.venenatis.game.model.combat.npcs.impl.zulrah.impl;
 
 import com.venenatis.game.event.CycleEventContainer;
-import com.venenatis.game.event.CycleEventHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.DangerousEntity;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.DangerousLocation;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.SpawnDangerousEntity;
 import com.venenatis.game.model.combat.npcs.impl.zulrah.Zulrah;
 import com.venenatis.game.model.combat.npcs.impl.zulrah.ZulrahLocation;
 import com.venenatis.game.model.combat.npcs.impl.zulrah.ZulrahStage;

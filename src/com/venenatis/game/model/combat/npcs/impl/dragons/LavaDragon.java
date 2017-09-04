@@ -59,7 +59,6 @@ public class LavaDragon extends AbstractBossCombat {
 		default:
 		case MAGIC:
 			attacker.playAnimation(Animation.create(81));
-			attacker.playAnimation(Animation.create(81));
 			attacker.playGraphic(Graphic.create(1));
 			maxHit = Utility.random(65);
 			

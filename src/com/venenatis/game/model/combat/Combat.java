@@ -803,7 +803,7 @@ public class Combat {
         if (target.isNPC()) {
             NPC npc = (NPC) target;
             if (npc.getMaxHitpoints() > 0 && npc.getCombatState().getAttackDelay() > 3) {
-                if (npc.getId() != 2042 && npc.getId() != 2043 && npc.getId() != 2044 && npc.getId() != 3127 || npc.getId() != 1739 || npc.getId() != 1740 || npc.getId() != 1741 || npc.getId() != 1742) {
+                if (npc.getId() != 1739 || npc.getId() != 1740 || npc.getId() != 1741 || npc.getId() != 1742) {
                     npc.playAnimation(Animation.create(npc.getDefendAnimation()));
                 }
             }

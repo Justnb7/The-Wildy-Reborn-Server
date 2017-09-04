@@ -976,17 +976,16 @@ public abstract class Entity {
 			return;
 		}
 		
-		/*if (!canFacePlayer()) {
-			System.out.println("we cant face the player");
+		if (!canFacePlayer()) {
 			if (entityFaceIndex == -1) {
 				return;
 			}
 			entityFaceIndex = -1;
-		} else {*/
+		} else {
 			// If WE are an npc, faceIndex is 'raw' - not +32k. 
 			// If we're a player, facing players = 32k+pid.. facing npcs= raw index
 			entityFaceIndex = e.clientIndex();
-		//}
+		}
 		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
 	}

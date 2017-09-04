@@ -56,8 +56,6 @@ public class NpcCombat {
 		}
 		if(npc.getName().contains("Whirlpool"))
 			return 8;
-		if(npc.getName().equalsIgnoreCase("Zulrah"))
-			return 8;
 		return 1;
 	}
 
@@ -325,17 +323,6 @@ public class NpcCombat {
 			}
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
-			
-			/**
-			 * Zulrah
-			 */
-			if (npc.getId() == 2043 && player.getZulrahEvent().getNpc() != null && player.getZulrahEvent().getNpc().equals(npc)) {
-				Boundary boundary = new Boundary(npc.targetedLocation.getX(), npc.targetedLocation.getY(), npc.targetedLocation.getX(), npc.targetedLocation.getY());
-				if (!Boundary.isIn(player, boundary)) {
-					return;
-				}
-				damage = 20 + Utility.random(25);
-			}
 			
 			// Actually damage our target
 			if(!isBoss)

@@ -27,8 +27,6 @@ public class MageAndRangeZulrah extends AbstractBossCombat {
 		// The npc instance
 		NPC npc = (NPC) attacker;
 		
-		Player pVictim = (Player)victim;
-		
 		npc.setFacePlayer(true);
 		
 		Animation anim = Animation.create(npc.getAttackAnimation());
@@ -48,21 +46,57 @@ public class MageAndRangeZulrah extends AbstractBossCombat {
 			break;
 		}
 		
+		int gfxSpeed;
+		int gfxDelay;
+		
 		switch (style) {
-		case RANGE:
-			//Projectile 1044
+        case RANGE:
 			
-			//attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 162, 45, 48, clientSpeed, 25, 35, victim.getProjectileLockonIndex(), 10, 48));
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1044, 30, 50, 100, 60, 25, pVictim.getProjectileLockonIndex(), 10, 48));
-			victim.take_hit(attacker, randomHit, style).send(3);
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
+				gfxSpeed = 70;
+				gfxDelay = 80;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
+				gfxSpeed = 90;
+				gfxDelay = 100;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
+				gfxSpeed = 110;
+				gfxDelay = 120;
+			} else {
+				gfxSpeed = 130;
+				gfxDelay = 140;
+			}
+			int hitDelay = (gfxDelay / 20) - 1;
+			
+			// Send the projectile
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1044, 45, 50, gfxSpeed, 60, 31, victim.getProjectileLockonIndex(), 10, 48));
+			
+			victim.take_hit(attacker, randomHit, style).send(hitDelay);
 			break;
-		default:
 		case MAGIC:
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1046, 30, 50, 100, 60, 25, pVictim.getProjectileLockonIndex(), 10, 48));
-			victim.take_hit(attacker, randomHit, style).send(3);
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
+				gfxSpeed = 70;
+				gfxDelay = 80;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
+				gfxSpeed = 90;
+				gfxDelay = 100;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
+				gfxSpeed = 110;
+				gfxDelay = 120;
+			} else {
+				gfxSpeed = 130;
+				gfxDelay = 140;
+			}
+			hitDelay = (gfxDelay / 20) - 1;
+			
+			// Send the projectile
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1046, 45, 50, gfxSpeed, 60, 31, victim.getProjectileLockonIndex(), 10, 48));
+			
+			victim.take_hit(attacker, randomHit, style).send(hitDelay);
+			
 			attacker.getCombatState().setSpellDelay(4);
-			//Projectile 1046
 			break;
+			
+		default:
 		}
 		attacker.getCombatState().setAttackDelay(7);
 	}

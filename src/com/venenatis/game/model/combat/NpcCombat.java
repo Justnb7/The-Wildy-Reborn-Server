@@ -312,6 +312,8 @@ public class NpcCombat {
 			boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
 			AbstractBossCombat boss_cb = AbstractBossCombat.get(npc.getId());
 			if (isBoss) {
+				npc.totalAttacks++;
+				npc.sendForcedMessage(""+npc.totalAttacks);
 				boss_cb.execute(npc, player);
 				// don't do any code below this, boss script handles all.
 			} else {
@@ -343,7 +345,6 @@ public class NpcCombat {
 			// Actually damage our target
 			if(!isBoss)
 			player.take_hit(npc, damage, npc.getCombatType()).send(0);
-			npc.totalAttacks++;
 		}
 	}
 

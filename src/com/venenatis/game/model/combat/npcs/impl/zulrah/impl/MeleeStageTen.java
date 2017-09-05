@@ -20,7 +20,7 @@ public class MeleeStageTen extends ZulrahStage {
 			container.stop();
 			return;
 		}
-		if (zulrah.getNpc().totalAttacks > 1 && zulrah.getNpc().getCombatState().getAttackDelay() == 9) {
+		if (zulrah.getNpc().totalAttacks > 1 && zulrah.getNpc().getCombatState().getAttackDelay() == 7) {
 			player.getZulrahEvent().changeStage(11, CombatStyle.RANGE, ZulrahLocation.NORTH);
 			zulrah.getNpc().totalAttacks = 0;
 			zulrah.getNpc().setFacePlayer(true);

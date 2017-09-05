@@ -870,7 +870,6 @@ public abstract class Entity {
 			if(attacker_player.getEquipment().contains(4151) && attacker_player.inDebugMode()) {
 				damage = victim_npc.getHitpoints();
 			}
-			
 			victim_npc.retaliate(attacker);
 			victim_npc.getCombatState().getDamageMap().appendDamage(attacker_player.getUsername(), damage);
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid

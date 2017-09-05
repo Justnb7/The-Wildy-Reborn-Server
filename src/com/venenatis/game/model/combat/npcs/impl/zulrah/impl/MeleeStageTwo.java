@@ -20,7 +20,7 @@ public class MeleeStageTwo extends ZulrahStage {
 			container.stop();
 			return;
 		}
-		if (zulrah.getNpc().totalAttacks > 1 && zulrah.getNpc().getCombatState().getAttackDelay() == 9 && zulrah.getStage() == 2) {
+		if (zulrah.getNpc().totalAttacks > 1 && zulrah.getNpc().getCombatState().getAttackDelay() == 7 && zulrah.getStage() == 2) {
 			player.getZulrahEvent().changeStage(3, CombatStyle.MAGIC, ZulrahLocation.NORTH);
 			zulrah.getNpc().totalAttacks = 0;
 			zulrah.getNpc().setFacePlayer(true);

@@ -280,10 +280,6 @@ public class World implements Service {
 	 */
 	public void disconnect(Player player) {
 		
-		if (player.getZulrahEvent().getInstancedZulrah() != null) {
-			InstancedAreaManager.getSingleton().disposeOf(player.getZulrahEvent().getInstancedZulrah());
-		}
-		
 		/*
 		 * Remove from trade
 		 */
@@ -315,9 +311,15 @@ public class World implements Service {
 		}
 		
 		/*
+		 * Remove from zulrah instance
+		 */
+		if (player.getZulrahEvent().getInstancedZulrah() != null) {
+			InstancedAreaManager.getSingleton().disposeOf(player.getZulrahEvent().getInstancedZulrah());
+		}
+		
+		/*
 		 * Remove from kraken instance
 		 */
-		
 		if (player.getKraken() != null && player.getKraken().getInstance() != null)
 			InstancedAreaManager.getSingleton().disposeOf(player.getKraken().getInstance());
 

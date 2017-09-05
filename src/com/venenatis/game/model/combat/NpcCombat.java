@@ -273,6 +273,22 @@ public class NpcCombat {
 		if (npc == null || npc.getCombatState().isDead())
 			return;
 		
+		boolean rejectsFaceUpdate = false;
+		if (npc.getId() >= 2042 && npc.getId() <= 2044) {
+			if (player.getZulrahEvent().getNpc() != null && player.getZulrahEvent().getNpc().equals(npc)) {
+				if (player.getZulrahEvent().getStage() == 1) {
+					rejectsFaceUpdate = true;
+				}
+			}
+			if (player.getZulrahEvent().isTransforming()) {
+				return;
+			}
+		}
+		if (!rejectsFaceUpdate) {
+			npc.faceEntity(player);
+		}
+		
+		
 		// Check validty of rooms
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {

@@ -7,6 +7,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Task.BreakType;
 import com.venenatis.game.task.Task.StackType;
@@ -208,6 +209,14 @@ public class Teleport {
 		
 		if(Boundary.isIn(player, Boundary.FIGHT_CAVE)) {
 			player.getDialogueManager().start("LEAVE_FIGHT_CAVE", player);
+		}
+		
+		if (player.getZulrahEvent().getInstancedZulrah() != null) {
+			InstancedAreaManager.getSingleton().disposeOf(player.getZulrahEvent().getInstancedZulrah());
+		}
+		
+		if (player.getKraken() != null && player.getKraken().getInstance() != null) {
+			InstancedAreaManager.getSingleton().disposeOf(player.getKraken().getInstance());
 		}
 		
 		TeleportTypes type = teleportType;

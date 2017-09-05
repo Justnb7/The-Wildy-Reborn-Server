@@ -1308,9 +1308,18 @@ public class Player extends Entity {
 			return;
 		}
 		
+		/*
+		 * Remove from zulrah instance
+		 */
 		if (zulrah.getInstancedZulrah() != null) {
 			InstancedAreaManager.getSingleton().disposeOf(zulrah.getInstancedZulrah());
 		}
+		
+		/*
+		 * Remove from kraken instance
+		 */
+		if (kraken != null && kraken.getInstance() != null)
+			InstancedAreaManager.getSingleton().disposeOf(kraken.getInstance());
 		
 		//If we're no longer in combat we can goahead and logout
 		if (logoutDelay.elapsed(10000) && getLastCombatAction().elapsed(600)) {

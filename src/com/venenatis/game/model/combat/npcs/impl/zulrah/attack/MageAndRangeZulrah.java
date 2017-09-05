@@ -1,7 +1,5 @@
 package com.venenatis.game.model.combat.npcs.impl.zulrah.attack;
 
-import java.util.Random;
-
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
@@ -12,11 +10,6 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Utility;
 
 public class MageAndRangeZulrah extends AbstractBossCombat {
-	
-	/**
-	 * The random number generator.
-	 */
-	private final Random random = new Random();
 
 	@Override
 	public void execute(Entity attacker, Entity victim) {
@@ -36,14 +29,10 @@ public class MageAndRangeZulrah extends AbstractBossCombat {
 		
 		CombatStyle style = CombatStyle.MAGIC;
 		
-		switch(random.nextInt(3)) {
-		case 0:
-		case 1:
+		if (Utility.random(3) > 0) {
 			style = CombatStyle.MAGIC;	
-			break;
-		case 2:
+		} else {
 			style = CombatStyle.RANGE;
-			break;
 		}
 		
 		int gfxSpeed;

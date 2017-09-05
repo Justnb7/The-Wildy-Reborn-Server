@@ -971,7 +971,7 @@ public abstract class Entity {
 	public void faceEntity(Entity e) {
 		sendForcedMessage("face: "+e);
 		if (e == null || e == this) {
-			System.out.println("wtf");
+			System.out.println("resetting face, e is null");
 			this.resetFace();
 			return;
 		}

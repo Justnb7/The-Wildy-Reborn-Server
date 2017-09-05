@@ -122,10 +122,10 @@ public class NPCDeathTask extends Task {
      * @param player
      *            The {@link Player} who has killed this npc
      */
-    private void removeMobFromWorld(Player player, NPC npc) {
-        if (player != null && !player.getCombatState().isDead()) {}
-        World.getWorld().unregister(npc);
-    }
+	private void removeMobFromWorld(Player player, NPC npc) {
+		if (player != null && !player.getCombatState().isDead())
+			World.getWorld().unregister(npc);
+	}
 
     /**
      * We set the npc to invisible and restore its values

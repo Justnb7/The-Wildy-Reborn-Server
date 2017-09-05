@@ -15,6 +15,7 @@ import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Entity.EntityType;
+import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
@@ -695,6 +696,23 @@ public class ActionSender {
         }
         return this;
     }
+	
+	public ActionSender sendProjectile(Location start, Location finish, int projectileId, int speed, int delay) {
+		sendProjectile(start, finish, projectileId, delay, 50, speed, 83, 33, 0, 36, -player.getId() - 1);
+		return this;
+	}
+	
+	
+	public ActionSender createSplatterProjectile(int projectileId, int locationX, int locationY, int startTime, int endTime) {
+		int nX = player.getX();
+		int nY = player.getY();
+		int pX = locationX;
+		int pY = locationY;
+		int offX = (nY - pY) * -1;
+		int offY = (nX - pX) * -1;
+		sendProjectile(new Location(nX, nY), new Location(offX, offY), projectileId, endTime, 50, startTime, 33, 0, 0, 36, -1);
+		return this;
+	}
 
 	/**
 	 * Sends a projectile to a location.

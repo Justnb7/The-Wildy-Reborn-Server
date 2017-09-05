@@ -62,5 +62,8 @@ public enum CombatStyle {
 	 */
 	ZIP, 
 	
+	
+	CORP_SPECIAL, 
+	
 	;
 }

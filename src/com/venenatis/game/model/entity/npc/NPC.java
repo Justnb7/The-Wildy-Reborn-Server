@@ -65,6 +65,11 @@ public class NPC extends Entity {
 	public void kill(int id, int height) {
 		Arrays.asList( World.getWorld().getNPCs().get(getIndex())).stream().filter(Objects::nonNull).filter(n -> n.getId() == id && n.getZ() == height).forEach(npc -> npc.getCombatState().isDead());
 	}
+	
+	public void remove(Player player, NPC npc) {
+		if (player != null && !player.getCombatState().isDead())
+			World.getWorld().unregister(npc);
+	}
 
 	/**
 	 * gets the npc ID
@@ -716,5 +721,19 @@ public class NPC extends Entity {
 
 	public int getHeadIcon() {
 		return headIcon;
+	}
+
+	public NPC[] getNpcsById(int id) {
+		List<NPC> npcList = new ArrayList<>();
+		for (NPC npc : World.getWorld().getNPCs()) {
+			if (npc == null) {
+				continue;
+			}
+			if (npc.getId() != id) {
+				continue;
+			}
+			npcList.add(npc);
+		}
+		return npcList.toArray(new NPC[npcList.size()]);
 	}
 }

@@ -141,6 +141,8 @@ public abstract class AbstractBossCombat {
 		bosses.put(2043, new ZulrahMelee());
 		bosses.put(2044, new MageAndRangeZulrah());
 		
+		bosses.put(319, new CorporealBeast());
+		
 	}
 	
 	public static AbstractBossCombat get(int npcId) {

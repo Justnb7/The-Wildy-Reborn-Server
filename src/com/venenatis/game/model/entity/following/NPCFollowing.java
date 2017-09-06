@@ -106,6 +106,7 @@ public class NPCFollowing {
 			npc.resetFace();
 			npc.walkingHome = true;
 			npc.underAttack = false;
+			// try debugging this im not sure
 		}
 	}
 	

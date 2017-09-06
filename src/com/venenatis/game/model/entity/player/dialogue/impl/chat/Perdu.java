@@ -15,17 +15,17 @@ public class Perdu extends Dialogue {
 
 	@Override
 	protected void start(Object... parameters) {
+		boolean hasBrokenItem = false;
 		for (BrokenItem item : BrokenItem.values()) {
-			boolean hasBrokenItem = player.getInventory().containsAny(item.getBrokenItem());
-			if (hasBrokenItem) {
-				send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, "Repair", "Nevermind");
-				setPhase(0);
-				break;
-			} else {
-				send(DialogueType.NPC, NPC_ID, Expression.CALM_TALK, "Hello. I'm afraid I haven't got anything for you today.");
-				setPhase(1);
-			}
-			break;
+			if(player.getInventory().containsAny(item.getBrokenItem()))
+				hasBrokenItem = true;
+		}
+		if (hasBrokenItem) {
+			send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, "Repair", "Nevermind");
+			setPhase(0);
+		} else {
+			send(DialogueType.NPC, NPC_ID, Expression.CALM_TALK, "Hello. I'm afraid I haven't got anything for you today.");
+			setPhase(1);
 		}
 	}
 	

@@ -70,7 +70,7 @@ public class CorporealBeast extends AbstractBossCombat {
 				});
 			}
 		} else {
-			removeDarkCore(player, npc);
+			removeDarkCore(npc);
 		}
 		
         CombatStyle style = attacker.getLocation().distance(victim.getLocation()) <= 2 ? CombatStyle.MELEE : CombatStyle.MAGIC;
@@ -167,9 +167,9 @@ public class CorporealBeast extends AbstractBossCombat {
 		});
 	}
 	
-	private void removeDarkCore(Player player, NPC npc) {
+	private void removeDarkCore(NPC npc) {
 		for (NPC darkCore : npc.getNpcsById(DARK_CORE_ID)) {
-			darkCore.remove(player, npc);
+			darkCore.remove(npc);
 		}
 	}
 

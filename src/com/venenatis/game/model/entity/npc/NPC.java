@@ -66,9 +66,14 @@ public class NPC extends Entity {
 		Arrays.asList( World.getWorld().getNPCs().get(getIndex())).stream().filter(Objects::nonNull).filter(n -> n.getId() == id && n.getZ() == height).forEach(npc -> npc.getCombatState().isDead());
 	}
 	
-	public void remove(Player player, NPC npc) {
-		if (player != null && !player.getCombatState().isDead())
-			World.getWorld().unregister(npc);
+	public void remove(NPC n) {
+		if (!n.isVisible()) {
+			// already despawned
+			return;
+		}
+		NPCDeathTask.reset(n);
+        n.removeFromTile();
+        NPCDeathTask.setNpcToInvisible(n);
 	}
 
 	/**

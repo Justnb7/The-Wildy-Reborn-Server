@@ -653,4 +653,13 @@ public class World implements Service {
 		return r;
 	}
 
+	public void sendMessage(String message, List<Player> players) {
+		for (Player player : players) {
+			if (Objects.isNull(player)) {
+				continue;
+			}
+			player.getActionSender().sendMessage(message);
+		}
+	}
+
 }

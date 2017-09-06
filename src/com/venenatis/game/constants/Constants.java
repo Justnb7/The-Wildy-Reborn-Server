@@ -64,7 +64,7 @@ public class Constants {
 	 * The current version of the client. Used to notify player to update
 	 * client.
 	 */
-	public static final int CLIENT_VERSION = 9;
+	public static final int CLIENT_VERSION = 10;
 
 	/**
 	 * The name of the server
@@ -233,5 +233,7 @@ public class Constants {
 	public static final int EMOTE_TAB = 12;
 	public static final int MUSIC_TAB = 13;
 	public static final int LOGOUT_TAB = 10;
+	
+	public static String SPAWNABLES[] = { "Super strength", "Super attack", "Super defence", "Ranging potion", "Magic potion", "Super restore", "Saradomin brew", "Prayer potion", "Superantipoison", "Shark", "Manta ray", "Super combat", "Dark crabs", "Anglerfish" };
 
 }

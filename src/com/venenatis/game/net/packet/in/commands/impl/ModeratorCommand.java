@@ -1,6 +1,7 @@
 package com.venenatis.game.net.packet.in.commands.impl;
 
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.content.help.HelpDatabase;
 import com.venenatis.game.content.teleportation.Teleport.TeleportTypes;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
@@ -23,6 +24,10 @@ public class ModeratorCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
+		
+		case "helpdb":
+			HelpDatabase.getDatabase().openDatabase(player);
+			return true;
 		
 		case "jail":
 			if (parser.hasNext()) {

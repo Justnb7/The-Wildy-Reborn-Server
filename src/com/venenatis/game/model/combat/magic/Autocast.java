@@ -102,6 +102,8 @@ public class Autocast {
 		player.getActionSender().sendConfig(43, 0);
 		player.getActionSender().sendSidebarInterface(0, 328);
 	}
+	
+	
 
 	/**
 	 * Handles the action buttons for magic related content
@@ -111,7 +113,7 @@ public class Autocast {
 	 * @param buttonId
 	 *            The id of the button being pressed
 	 */
-	public static void handleActionButtons(Player player, int buttonId) {
+	public static boolean handleActionButtons(Player player, int buttonId) {
 		switch (buttonId) {
 
 		case 1093:
@@ -126,13 +128,13 @@ public class Autocast {
 				if (player.getEquipment().get(3) != null && player.getEquipment().get(3).getId() == 4675) {
 					if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
 						player.getActionSender().sendMessage("You cannot autocast using a modern spell book.");
-						return;
+						return false;
 					}
 					player.getActionSender().sendSidebarInterface(0, 1689);
 				} else {
 					if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
 						player.getActionSender().sendMessage("You cannot autocast using a ancient spell book.");
-						return;
+						return false;
 					}
 					if (player.getEquipment().get(3) != null && player.getEquipment().get(3).getId() == 4170) {
 						player.getActionSender().sendSidebarInterface(0, 12050);
@@ -141,12 +143,13 @@ public class Autocast {
 					}
 				}
 			}
-			break;
+			return true;
 		case 7212:
 		case 47069:
 		case 24017:
 			resetAutocasting(player);
-			break;
+			return true;
 		}
+		return false;
 	}
 }

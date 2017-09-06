@@ -1,6 +1,7 @@
 package com.venenatis.server;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import com.venenatis.game.task.TaskQueue;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.SystemLogger;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.util.time.GameCalendar;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GlobalObjects;
 import com.venenatis.server.data.ServerData;
@@ -87,6 +89,11 @@ public class Server {
 	 * Contains data which is saved between sessions.
 	 */
 	public static ServerData serverData = new ServerData();
+	
+	/**
+	 * Represents our calendar with a given delay using the TimeUnit class
+	 */
+	private static GameCalendar calendar = new com.venenatis.game.util.time.GameCalendar(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"), "GMT-3:00");
 	
 	/**
 	 * Creates the Venenatis server.
@@ -181,6 +188,10 @@ public class Server {
 	
 	public static ServerData getServerData() {
 		return serverData;
+	}
+
+	public static GameCalendar getCalendar() {
+		return calendar;
 	}
 	
 }

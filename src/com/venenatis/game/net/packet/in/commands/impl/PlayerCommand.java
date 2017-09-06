@@ -32,13 +32,18 @@ public class PlayerCommand implements Command {
 
 		switch (parser.getCommand()) {
 		
+		case "help":
+			player.getActionSender().removeAllInterfaces();
+			player.getActionSender().sendInterface(59525);
+			return true;
+		
 		case "showdmg":
 			if (!player.showDamage()) {
 				player.setShowDamage(true);
-				player.message("Your exp counter will now show your hits instead of exp.");
+				player.getActionSender().sendMessage("Your exp counter will now show your hits instead of exp.");
 			} else {
 				player.setShowDamage(false);
-				player.message("Your exp counter will now show your received experience instead of hits.");
+				player.getActionSender().sendMessage("Your exp counter will now show your received experience instead of hits.");
 			}
 			return true;
 		

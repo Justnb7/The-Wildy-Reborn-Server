@@ -6,6 +6,7 @@ import com.venenatis.game.content.achievements.AchievementButtons;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.clicking.Buttons;
+import com.venenatis.game.content.help.HelpDatabase;
 import com.venenatis.game.content.quest_tab.QuestTabPage;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
@@ -76,13 +77,21 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */
+		if (button >= 232182 && button <= 233022) {
+			HelpDatabase.getDatabase().view(player, button);
+			HelpDatabase.getDatabase().delete(player, button);
+			return;
+		}
 		
 		/* Autocasting */
 		if (Autocast.isAutoButton(button)) {
 			Autocast.assignAutocast(player, button);
 			return;
 		}
-		Autocast.handleActionButtons(player, button);
+		
+		if (Autocast.handleActionButtons(player, button)) {
+			return;
+		}
 		
 		/* Smithing */
 		if (SmithingConstants.clickSmeltSelection(player, button)) {

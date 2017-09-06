@@ -1,5 +1,6 @@
 package com.venenatis.game.world.shop;
 
+import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
@@ -320,6 +321,13 @@ public class ShopManager {
 
 		if (shop == null || item == null || item.getId() != id) {
 			return;
+		}
+		
+		for (String s : Constants.SPAWNABLES) {
+			if(item.getName().contains(s)) {
+				player.getActionSender().sendMessage("You can't sell spawnable items.");
+				return;
+			}
 		}
 
 		if (!shop.canSell()) {

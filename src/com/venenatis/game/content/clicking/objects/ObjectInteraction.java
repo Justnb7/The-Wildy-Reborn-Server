@@ -23,6 +23,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
+import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.object.impl.webs.SlashWebObject;
@@ -186,6 +187,12 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+		
+		case 677:
+			player.faceObject(obj);
+			int[] movement = { 0, 0, player.getX() <= 2970 ? 4 : -4, 0, 20, 60, 1, 2 };
+			Agility.forceMovement(player, Animation.create(844), movement, 1, true);
+			break;
 			
 		case 29171:// fire max cape rack
 			if (!player.getInventory().hasItemAmount(13280, 1) && !player.getInventory().hasItemAmount(13281, 1)

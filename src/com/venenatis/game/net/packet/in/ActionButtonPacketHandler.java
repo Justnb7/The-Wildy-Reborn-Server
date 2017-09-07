@@ -77,9 +77,15 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */
+		/* Help database */
 		if (button >= 232182 && button <= 233022) {
 			HelpDatabase.getDatabase().view(player, button);
 			HelpDatabase.getDatabase().delete(player, button);
+			return;
+		}
+		
+		/* Titles */
+		if (player.getTitles().click(button)) {
 			return;
 		}
 		

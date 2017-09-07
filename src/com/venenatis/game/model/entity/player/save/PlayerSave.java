@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.venenatis.game.content.KillTracker.KillEntry;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
+import com.venenatis.game.content.titles.Title;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
@@ -52,7 +53,8 @@ public class PlayerSave {
 		PLAYER_INFORMATION,
 		PRESETS,
 		CONTAINER,
-		FARMING;
+		FARMING,
+		TITLES;
 	}
 
 	/**
@@ -75,6 +77,9 @@ public class PlayerSave {
 		if (!PlayerFarming.loadDetails(player)) {
 			return false;
 		}
+		if (!PlayerTitles.loadDetails(player)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -90,6 +95,7 @@ public class PlayerSave {
 			new PlayerContainer(player).parseDetails(player);
 			new PlayerPresets(player).parseDetails(player);
 			new PlayerFarming(player).parseDetails(player);
+			new PlayerTitles(player).parseDetails(player);
 			return true;
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -107,6 +113,8 @@ public class PlayerSave {
 				new PlayerPresets(player).parseDetails(player);
 			} else if (type == Type.FARMING) {
 				new PlayerFarming(player).parseDetails(player);
+			} else if (type == Type.TITLES) {
+				new PlayerTitles(player).parseDetails(player);
 			}
 			return true;
 		} catch (final Exception e) {
@@ -893,6 +901,66 @@ public class PlayerSave {
 				writer.flush();
 			} finally {
 				writer.close();
+			}
+		}
+	}
+	
+	/**
+	 * Saves player titles
+	 *
+	 */
+	public static final class PlayerTitles {
+
+		public static boolean loadDetails(Player player) throws Exception {
+			BufferedReader reader = null;
+			try {
+				final File file = new File("./data/characters/titles/" + player.getUsername() + ".json");
+
+				if (!file.exists()) {
+					return false;
+				}
+
+				reader = new BufferedReader(new FileReader(file));
+
+				final PlayerTitles details = PlayerSave.SERIALIZE.fromJson(reader, PlayerTitles.class);
+
+				player.getTitles().setCurrentTitle(details.currentTitle);
+				
+				if (details.title != null) {
+					player.getTitles().setPurchasedList(details.title);
+				}
+
+				return true;
+
+			} finally {
+				if (reader != null) {
+					try {
+						reader.close();
+					} catch (final IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		private final String currentTitle;
+		private final List<Title> title;
+
+		public PlayerTitles(Player player) {
+			currentTitle = player.getTitles().getCurrentTitle();
+			title = player.getTitles().getPurchasedList();
+		}
+
+		public void parseDetails(Player player) throws Exception {
+			BufferedWriter writer = null;
+			try {
+				writer = new BufferedWriter(new FileWriter("./data/characters/titles/" + player.getUsername() + ".json", false));
+				writer.write(PlayerSave.SERIALIZE.toJson(this));
+				writer.flush();
+			} finally {
+				if (writer != null) {
+					writer.close();
+				}
 			}
 		}
 	}

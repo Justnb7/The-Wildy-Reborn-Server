@@ -30,6 +30,7 @@ import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterf
 import com.venenatis.game.content.skills.thieving.Thieving;
 import com.venenatis.game.content.teleportation.Teleport;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
+import com.venenatis.game.content.titles.Titles;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.InterfaceState;
@@ -1700,51 +1701,6 @@ public class Player extends Entity {
 	public Stopwatch getLastCombatAction() {
 		return lastCombatAction;
 	}
-	
-	/**
-	 * The current title the player has
-	 */
-	private String currentTitle = "";
-	
-	/**
-	 * The color of the current title
-	 */
-	private String currentTitleColor = "";
-	
-	/**
-	 * The current title 
-	 * @return	custom title
-	 */
-	public String getCurrentTitle() {
-		if (currentTitle == null) {
-			return "";
-		}
-		return currentTitle;
-	}
-	
-	/**
-	 * Modifies the current title to that of the one we pass in the parameter
-	 * @param currentTitle	the title
-	 */
-	public void setCurrentTitle(String currentTitle) {
-		this.currentTitle = currentTitle;
-	}
-	
-	/**
-	 * The string of characters that makeup the color of the title
-	 * @return	the title color
-	 */
-	public String getCurrentTitleColor() {
-		return currentTitleColor;
-	}
-	
-	/**
-	 * Modifies the color of the displayable color
-	 * @param color	the color of the title
-	 */
-	public void setCurrentTitleColor(String color) {
-		this.currentTitleColor = color;
-	}
 
 	public int getSessionExperience() {
 		return sessionExperience;
@@ -3214,5 +3170,19 @@ public class Player extends Entity {
 	 */
 	public Zulrah getZulrahEvent() {
 		return zulrah;
+	}
+
+	private Titles titles = new Titles(this);
+	
+	/**
+	 * Returns a single instance of the Titles class for this player
+	 * 
+	 * @return the titles class
+	 */
+	public Titles getTitles() {
+		if (titles == null) {
+			titles = new Titles(this);
+		}
+		return titles;
 	}
 }

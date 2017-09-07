@@ -708,15 +708,15 @@ public class PlayerUpdating {
 		player.getPlayerProps().putLong(Utility.playerNameToInt64(player.getUsername()));
 		
 		//Custom title
-		StringBuilder sb = new StringBuilder(player.getCurrentTitle());
-		if (player.getCurrentTitle().equalsIgnoreCase("None")) {
+		StringBuilder sb = new StringBuilder(player.getTitles().getCurrentTitle());
+		if (player.getTitles().getCurrentTitle().equalsIgnoreCase("None")) {
 			sb.delete(0, sb.length());
 		}
 		player.getPlayerProps().putRS2String(sb.toString());
 		
 		//Custom title color
-		sb = new StringBuilder(player.getCurrentTitleColor());
-		if (player.getCurrentTitle().equalsIgnoreCase("None")) {
+		sb = new StringBuilder(player.getRights().getColor());
+		if (player.getTitles().getCurrentTitle().equalsIgnoreCase("None")) {
 			sb.delete(0, sb.length());
 		}
 		player.getPlayerProps().putRS2String(sb.toString());

@@ -141,6 +141,22 @@ public enum Rights {
 		}
 		return "<img=" + (player.getRights().getCrown()) + ">";
 	}
+	
+	public boolean isRegularDonator(Player player) {
+		return player.getRights() == Rights.DONATOR;
+	}
+	
+	public boolean isSuperDonator(Player player) {
+		return player.getRights() == Rights.SUPER_DONATOR;
+	}
+	
+	public boolean isEliteDonator(Player player) {
+		return player.getRights() == Rights.ELITE_DONATOR;
+	}
+	
+	public boolean isExtremeDonator(Player player) {
+		return player.getRights() == Rights.EXTREME_DONATOR;
+	}
 
 	public boolean isDonator(Player player) {
 		return player.getRights().getOrder() == Order.DONATOR;
@@ -154,10 +170,15 @@ public enum Rights {
 	}
 	
 	public boolean isOwner(Player player) {
-		if (player.getRights() == Rights.OWNER) {
-			return true;
-		}
-		return false;
+		return player.getRights() == Rights.OWNER;
+	}
+	
+	public boolean isModerator(Player player) {
+		return player.getRights() == Rights.MODERATOR;
+	}
+	
+	public boolean isHelper(Player player) {
+		return player.getRights() == Rights.HELPER;
 	}
 
 	public boolean isIron(Player player) {
@@ -165,6 +186,18 @@ public enum Rights {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean isIronman(Player player) {
+		return player.getRights() == Rights.IRON_MAN;
+	}
+	
+	public boolean isUltimateIronman(Player player) {
+		return player.getRights() == Rights.ULTIMATE_IRON_MAN;
+	}
+	
+	public boolean isHardcoreIronman(Player player) {
+		return player.getRights() == Rights.HARDCORE_IRON_MAN;
 	}
 	
 	public void upgrade(Player player) {

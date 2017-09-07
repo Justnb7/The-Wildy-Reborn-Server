@@ -756,7 +756,7 @@ public abstract class Entity {
 	}
 
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean throughPrayer, HitType type) {
-        if(!this.canBeDamaged()) {
+		if(!this.canBeDamaged() || this.isTeleporting()) {
 			damage = 0;
 		}
 		
@@ -968,7 +968,7 @@ public abstract class Entity {
 	 *   The entity
 	 */
 	public void faceEntity(Entity e) {
-		sendForcedMessage("face: "+e);
+		//sendForcedMessage("face: "+e);
 		if (e == null || e == this) {
 			System.out.println("resetting face, e is null");
 			this.resetFace();

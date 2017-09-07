@@ -15,7 +15,9 @@ public class ItemDefinition {
 	public static final ItemDefinition[] DEFINITIONS = new ItemDefinition[ITEM_LIMIT];
 
 	public static ItemDefinition get(int id) {
-		return DEFINITIONS[id];
+		if (id < 0 || id > ItemDefinition.DEFINITIONS.length || DEFINITIONS[id] == null)
+            return new ItemDefinition(id, "", "", false, false, -1, -1, false, false, false, false, false, -1, -1, -1, false, false, 0.0, id, false, false, false);
+        return DEFINITIONS[id];
 	}
 
 	/**
@@ -24,7 +26,7 @@ public class ItemDefinition {
 	public static ItemDefinition[] getDefinitions() {
 		return DEFINITIONS;
 	}
-
+	
 	private final int id;
 
 	private final String name;

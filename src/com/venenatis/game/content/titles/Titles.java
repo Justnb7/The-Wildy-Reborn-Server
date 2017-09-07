@@ -77,7 +77,7 @@ public class Titles {
 		List<Title> undisplayable = populateMenu(bought.size(), (byte) 3, t -> isPurchased(t) && !t.getRequirement().meetsStandard(player));
 		populateMenu(bought.size() + undisplayable.size(), (byte) 1, t -> !isPurchased(t));
 		view(Title.NONE);
-		player.getActionSender().sendInterface(33000);
+		player.getActionSender().sendInterface(37000);
 	}
 
 	/**
@@ -115,13 +115,13 @@ public class Titles {
 			display();
 			return true;
 		}
-		if (buttonId == 128248) {
+		if (buttonId == 144152) {
 			player.getActionSender().sendMessage("<col=1B6607>Green</col> titles are purchased and displayable.");
 			player.getActionSender().sendMessage("<col=ff6600>Orange</col> titles are purchased but undisplayable at this time.");
 			player.getActionSender().sendMessage("<col=C10915>Red</col> titles haven't been bought yet, but may be if you meet requirements.");
 			return true;
 		}
-		if (buttonId == 128240) {
+		if (buttonId == 144144) {
 			if (!selected.isPresent()) {
 				player.getActionSender().sendMessage("You have not selected a title.");
 				return true;
@@ -155,19 +155,19 @@ public class Titles {
 	private void view(Title title) {
 		String description = WordUtils.wrap(title.getDescription(), 32);
 		description = description.replaceAll("\\n", "\\\\n");
-		player.getActionSender().sendString(description, 33011);
+		player.getActionSender().sendString(description, 37011);
 		if (title.equals(Title.CUSTOM)) {
-			player.getActionSender().sendString(currentTitle, 33036);
-			player.getActionSender().sendInterfaceConfig(1, 33030);
-			player.getActionSender().sendInterfaceConfig(0, 33035);
+			player.getActionSender().sendString(currentTitle, 37036);
+			player.getActionSender().sendInterfaceConfig(1, 37030);
+			player.getActionSender().sendInterfaceConfig(0, 37035);
 		} else {
-			player.getActionSender().sendString(title.getName(), 33031);
-			player.getActionSender().sendInterfaceConfig(0, 33030);
-			player.getActionSender().sendInterfaceConfig(1, 33035);
+			player.getActionSender().sendString(title.getName(), 37031);
+			player.getActionSender().sendInterfaceConfig(0, 37030);
+			player.getActionSender().sendInterfaceConfig(1, 37035);
 		}
-		player.getActionSender().sendString(isPurchased(title) ? "Select" : "Purchase", 33012);
-		player.getActionSender().sendString(title.getCost() == 0 ? "FREE" : Utility.getValueRepresentation(title.getCost()), 33015);
-		player.getActionSender().sendChangeSprite(33017, title.getCurrency().getSpriteIndex());
+		player.getActionSender().sendString(isPurchased(title) ? "Select" : "Purchase", 37012);
+		player.getActionSender().sendString(title.getCost() == 0 ? "FREE" : Utility.getValueRepresentation(title.getCost()), 37015);
+		player.getActionSender().sendChangeSprite(37017, title.getCurrency().getSpriteIndex());
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class Titles {
 	private void purchase(Title title) {
 		int item = title.getCurrency().getItemId();
 		int cost = title.getCost();
-		if (!player.getInventory().contains(item, cost)) {
+		if (!player.getInventory().contains(item, cost) && item > 0) {
 			ItemDefinition definition = ItemDefinition.get(item);
 			if (definition == null) {
 				return;

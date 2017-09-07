@@ -238,6 +238,7 @@ public class Buttons {
 		case 66207:
 		case 210242:
 		case 226146:
+		case 144141:
 			player.getActionSender().removeAllInterfaces();
 			break;
 			

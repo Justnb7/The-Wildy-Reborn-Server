@@ -57,6 +57,8 @@ public enum AchievementList {
 	KING("King", "Kill King Black Dragon 1,000 times.", 1000, AchievementDifficulty.HARD),
 	MYSTERY("Mystery", "Open the mystery box 500 times.", 500, AchievementDifficulty.HARD),
 	MASTER_CHEF("Master chef", "Cook food 1000 times.", 1000, AchievementDifficulty.HARD),
+	FISHERMAN("Master fisherman", "Catch a thousand fishes", 1000, AchievementDifficulty.HARD),
+	LUMBERJACK("Lumberjack", "Cut a thousand logs", 1000, AchievementDifficulty.HARD),
 	;
 
 	public static List<AchievementList> asList(AchievementDifficulty difficulty) {

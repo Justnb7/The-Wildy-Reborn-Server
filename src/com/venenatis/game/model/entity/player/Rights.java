@@ -21,22 +21,22 @@ public enum Rights {
 	MODERATOR("Moderator", Order.MODERATOR, 1, "4A7AA7"),
 
 	/* Administrator */
-	ADMINISTRATOR("Administrator", Order.STAFF, 2, "D17417"),
+	ADMINISTRATOR("Administrator", Order.STAFF, 2, "D17417", MODERATOR),
 
 	/* Owner */
-	OWNER("Owner", Order.STAFF, 2, "ED2624"),
+	OWNER("Owner", Order.STAFF, 2, "ED2624", MODERATOR, ADMINISTRATOR),
 
 	/* Donator */
 	DONATOR("Donator", Order.DONATOR, 3, "9C5B31"),
 
 	/* Super donator */
-	SUPER_DONATOR("Super Donator", Order.DONATOR, 4, "31383B"),
+	SUPER_DONATOR("Super Donator", Order.DONATOR, 4, "31383B", DONATOR),
 
 	/* Elite donator */
-	ELITE_DONATOR("Elite Donator", Order.DONATOR, 5, "FFC55B"),
+	ELITE_DONATOR("Elite Donator", Order.DONATOR, 5, "FFC55B", SUPER_DONATOR, DONATOR),
 
 	/* Extreme donator */
-	EXTREME_DONATOR("Extreme Donator", Order.DONATOR, 6, "00BF3F"),
+	EXTREME_DONATOR("Extreme Donator", Order.DONATOR, 6, "00BF3F", ELITE_DONATOR, SUPER_DONATOR, DONATOR),
 
 	/* Helper */
 	HELPER("Helper", Order.STAFF, 7, "3AB3D9"),
@@ -83,12 +83,18 @@ public enum Rights {
 	private final Order order;
 	
 	private final String color;
+	
+	/**
+	 * The right or rights inherited by this right
+	 */
+	private final Rights[] inherited;
 
-	private Rights(String name, Order order, int crown, String color) {
+	private Rights(String name, Order order, int crown, String color, Rights... inherited) {
 		this.name = name;
 		this.crown = crown;
 		this.order = order;
 		this.color = color;
+		this.inherited = inherited;
 	}
 	
 	public Optional<Rights> forValue(int id) {
@@ -117,6 +123,15 @@ public enum Rights {
 
 	public final String getColor() {
 		return color;
+	}
+	
+	/**
+	 * Determines if this level of rights inherited another level of rights
+	 * @param rights	the level of rights we're looking to determine is inherited
+	 * @return			{@code true} if the rights are inherited, otherwise {@code false}
+	 */
+	public boolean inherits(Rights rights) {
+		return equals(rights) || Arrays.asList(inherited).contains(rights);
 	}
 
 	public final boolean greater(Rights other) {

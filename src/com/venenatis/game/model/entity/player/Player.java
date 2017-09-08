@@ -60,7 +60,6 @@ import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.following.PlayerFollowing;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.NPCAggression;
-import com.venenatis.game.model.entity.npc.SlayerDeathTracker;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.widget.Selection;
 import com.venenatis.game.model.entity.player.clan.Clan;
@@ -2039,15 +2038,6 @@ public class Player extends Entity {
 
 	public void setKillTracker(CopyOnWriteArrayList<KillEntry> entry) {
 		this.killTracker = entry;
-	}
-	
-
-	private SlayerDeathTracker slayerTracker;
-	
-	public SlayerDeathTracker getSlayerDeathTracker() {
-		if (slayerTracker == null)
-			slayerTracker = new SlayerDeathTracker(this);
-		return slayerTracker;
 	}
 	
 	/**

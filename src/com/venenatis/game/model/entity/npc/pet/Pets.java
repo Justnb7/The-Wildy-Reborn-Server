@@ -3,6 +3,9 @@ package com.venenatis.game.model.entity.npc.pet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableSet;
+import com.venenatis.game.model.entity.player.Player;
+
 //Enum data credits to Stan Jansen.
 	public enum Pets {
       //item id, npc id
@@ -156,5 +159,22 @@ import java.util.Map;
       public int getNpc() {
           return npc;
       }
+      
+	private static final ImmutableSet<Integer> PET_IDS = ImmutableSet.of(12650, 12649, 12651, 12652, 12644, 12645,
+			12643, 11995, 15568, 12653, 12655, 13178, 12646, 13179, 13177, 12921, 13181, 12816, 12647);
+      
+	public static boolean ownsAll(Player player) {
+		int amount = 0;
+		for (int pets : PET_IDS) {
+
+			if (player.getInventory().contains(pets) || player.getBank().contains(pets) || player.getPet() == pets) {
+				amount++;
+			}
+			if (amount == PET_IDS.size()) {
+				return true;
+			}
+		}
+		return false;
+	}
       
   }

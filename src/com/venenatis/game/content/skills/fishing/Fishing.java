@@ -1,5 +1,7 @@
 package com.venenatis.game.content.skills.fishing;
 
+import com.venenatis.game.content.achievements.AchievementHandler;
+import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -164,6 +166,7 @@ public class Fishing {
 			player.getSkills().addExperience(Skills.FISHING, f.getExperience());
 			heronPet(player);
 			player.getActionSender().sendMessage("You manage to catch " + getFishStringMod(name) + name+".");
+			AchievementHandler.activate(player, AchievementList.FISHERMAN, 1);
 
 		}
 

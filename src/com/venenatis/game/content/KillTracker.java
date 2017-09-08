@@ -37,6 +37,7 @@ public class KillTracker {
 		} else {
 			player.getKillTracker().add(entry);
 		}
+		
 		if (message) {
 			player.getActionSender().sendMessage("Your " + entry.getName() + " kill count is: <col=ff0000>" + Utility.formatDigits(entry.getAmount()) + "</col>.");			
 		}
@@ -88,5 +89,7 @@ public class KillTracker {
 			}
 		}
 	}
+	
+	
 
 }

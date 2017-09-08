@@ -5,7 +5,10 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Set;
 
+import com.venenatis.game.content.achievements.*;
+import com.venenatis.game.model.entity.npc.pet.*;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 
 /**
  * Each element of the enum represents a singular title with an array of qualities.
@@ -29,28 +32,28 @@ public enum Title implements Comparator<Title> {
 	DONATOR("Donator", 0, TitleCurrency.NONE, new TitleRequirement() {
 		@Override
 		public boolean meetsStandard(Player player) {
-			return player.getRights().isRegularDonator(player);
+			return player.getRights().inherits(Rights.DONATOR);
 		}
 	}, "This title is for Donators. You must be a Donator to purchase and display this title."),
 
 	SUPER_DONATOR("Super Donator", 0, TitleCurrency.NONE, new TitleRequirement() {
 		@Override
 		public boolean meetsStandard(Player player) {
-			return player.getRights().isSuperDonator(player);
+			return player.getRights().inherits(Rights.SUPER_DONATOR);
 		}
 	}, "This title is for Super Donators. You must be a Super Donator to purchase and display this title."),
 
 	ELITE_DONATOR("Elite Donator", 0, TitleCurrency.NONE, new TitleRequirement() {
 		@Override
 		public boolean meetsStandard(Player player) {
-			return player.getRights().isEliteDonator(player);
+			return player.getRights().inherits(Rights.ELITE_DONATOR);
 		}
 	}, "This title is for Elite Donators. You must be a Elite Donator to purchase and display this title."),
 
 	EXTREME_DONATOR("Extreme Donator", 0, TitleCurrency.NONE, new TitleRequirement() {
 		@Override
 		public boolean meetsStandard(Player player) {
-			return player.getRights().isExtremeDonator(player);
+			return player.getRights().inherits(Rights.EXTREME_DONATOR);
 		}
 	}, "This title is for Extreme Donators. You must be a Extreme Donator to purchase and display this title."),
 
@@ -145,6 +148,46 @@ public enum Title implements Comparator<Title> {
 			return player.getKillCount() >= 500;
 		}
 	}, "A War-chief is a player that has achieved at least five hundred player kills."),
+	
+	FISHERMAN("Fisherman", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return AchievementHandler.isCompleted(player, AchievementList.FISHERMAN);
+		}
+	}, "A Fisherman is a player that has fished at least 1,000 fish."),
+	
+	LUMBERJACK("Lumberjack", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return AchievementHandler.isCompleted(player, AchievementList.LUMBERJACK);
+		}
+	}, "A Lumberjack is a player that has cut down trees and has accumulated at least 1,000 logs."),
+	
+	SKILLER("#Skiller", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.getSkills().maxedSkiller();
+		}
+	}, "To receive access to this title, a player must have maxed out all skills while having combat stats at 1."),
+
+	DO_YOU_LIFT("#DOuEvenLift", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.getSkills().maxedCertain(0, 6);
+		}
+	}, "To receive access to this title, a player must have maxed out all combat skills."),
+	
+	MORPH("#CanUSeeMe", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.getInventory().contains(20005) && player.getInventory().contains(20017);
+		}
+	}, "To receive access to this title, a player must have the ring of coins and ring of nature in their inventory."),
 
 	IRON_MAN("Ironman", 0, TitleCurrency.NONE, new TitleRequirement() {
 
@@ -161,6 +204,22 @@ public enum Title implements Comparator<Title> {
 			return player.getRights().isUltimateIronman(player);
 		}
 	}, "To receive access to this title, a player must be on the ultimate ironman game-mode."),
+	
+	HARDCORE_IRON_MAN("Hardcore. Ironman", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.getRights().isHardcoreIronman(player);
+		}
+	}, "To receive access to this title, a player must be on the ultimate ironman game-mode."),
+	
+	COLLECTOR("MR Collector", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return Pets.ownsAll(player);
+		}
+	}, "To receive access to this title, a player must have collected ALL boss pets."),
 
 	MILLIONAIRE("#Millionaire", 100_000_000, TitleCurrency.COINS, Titles.NO_REQUIREMENT, "To receive access to this title, a player must be a millionaire. Simple.");
 

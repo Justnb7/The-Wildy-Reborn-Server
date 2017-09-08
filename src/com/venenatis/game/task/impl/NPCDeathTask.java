@@ -238,8 +238,6 @@ public class NPCDeathTask extends Task {
 					KillTracker.submit(killer, new KillEntry(npc.getName(), 1), true);
 				}
 			}
-			if (npc.getName().contains(killer.getSlayerTask()))
-				killer.getSlayerDeathTracker().add(npc);
 
 			AbstractBossCombat boss = AbstractBossCombat.get(npc.getId());
 

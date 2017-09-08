@@ -78,6 +78,38 @@ public class Skills {
 		exps[3] = 1184;
 	}
 	
+	public boolean maxedCertain(int min, int max) {
+		int amount = 0;
+		int total = min + max;
+		for (int skillId = min; skillId <= max; skillId++) {
+			if (getLevelForExperience(skillId) >= 99) {
+				amount++;
+			}
+			if (amount == total) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean maxedSkiller() {
+		int amount = 0;
+		for (int id = 0; id <= 6; id++) {
+			if (getLevel(id) <= 1 && id != 3) {
+				amount++;
+			}
+		}
+		for (int skill = 7; skill <= Skills.SKILL_COUNT; skill++) {
+			if (getLevel(skill) >= 99) {
+				amount++;
+			}
+		}
+		if (amount == 22) {
+			return false;
+		}
+		return false;
+	}
+	
 	public void handleLevelUp(int skillId) {
 		final SkillData skillData = SkillData.values()[skillId];
 		if (skillData == null)

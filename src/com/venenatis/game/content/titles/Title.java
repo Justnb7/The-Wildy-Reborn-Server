@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import com.venenatis.game.content.achievements.*;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.npc.pet.*;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
@@ -220,6 +221,54 @@ public enum Title implements Comparator<Title> {
 			return Pets.ownsAll(player);
 		}
 	}, "To receive access to this title, a player must have collected ALL boss pets."),
+	
+	SLAYER_MASTER("Slayer Master", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.getSkills().isCertainSkillMaxed(Skills.SLAYER);
+		}
+	}, "To receive access to this title, a player must be have reached 99 slayer."),
+	
+	SLAYER_FANATIC("Slayer Fanatic", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.getSlayerTasksCompleted() >= 100;
+		}
+	}, "To receive access to this title, a player must be have completed atleast 100 slayer tasks."),
+	
+	TOP_VOTER("#Top Voter", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.getTotalVotes() >= 500;
+		}
+	}, "To receive access to this title, a player must have voted atleast 500 times."),
+	
+	RNG_GOD("#RNG God", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.unlockedRngGod();
+		}
+	}, "To receive access to this title, a player must have speced over 75 with an AGS!"),
+	
+	COMPLETIONIST("#BAH Exp Waste", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.unlockedRngGod();
+		}
+	}, "To receive access to this title, a player must have unlocked the max cape!"),
+	
+	LUCKY("#Lucky", 0, TitleCurrency.NONE, new TitleRequirement() {
+
+		@Override
+		public boolean meetsStandard(Player player) {
+			return player.lucky();
+		}
+	}, "To receive access to this title, a player must have received a rare item from a mystery box."),
 
 	MILLIONAIRE("#Millionaire", 100_000_000, TitleCurrency.COINS, Titles.NO_REQUIREMENT, "To receive access to this title, a player must be a millionaire. Simple.");
 

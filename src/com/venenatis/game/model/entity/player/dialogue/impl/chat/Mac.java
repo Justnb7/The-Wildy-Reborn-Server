@@ -103,6 +103,8 @@ public class Mac extends Dialogue {
 				player.getInventory().add(MAX_CAPE_ID, 1);
 				player.getInventory().add(MAX_HOOD_ID, 1);
 				send(DialogueType.ITEM, MAX_CAPE_ID, "", "Mac grunts and hands over his cape, pocketing your", "money swiftly.");
+				if (!player.Completionist())
+					player.setCompletionist(true);
 				setPhase(5);
 				break;
 			case 2:

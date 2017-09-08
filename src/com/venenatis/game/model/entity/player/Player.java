@@ -95,6 +95,36 @@ import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
 	
+    private boolean completionist;
+	
+	public boolean Completionist() {
+		return completionist;
+	}
+	
+	public void setCompletionist(boolean completionist) {
+		this.completionist = completionist;
+	}
+	
+	private boolean rng_god;
+	
+	public boolean unlockedRngGod() {
+		return rng_god;
+	}
+	
+	public void unlockRngGod(boolean unlocked) {
+		this.rng_god = unlocked;
+	}
+	
+   private boolean lucky;
+	
+	public boolean lucky() {
+		return lucky;
+	}
+	
+	public void setLucky(boolean lucky) {
+		this.lucky = lucky;
+	}
+	
     private HerbSack herbSack = new HerbSack(this);
 	
 	public HerbSack getHerbSack() {

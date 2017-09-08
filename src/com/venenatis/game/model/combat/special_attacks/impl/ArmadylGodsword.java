@@ -31,6 +31,7 @@ public class ArmadylGodsword implements SpecialAttack {
 		// Set up a Hit instance
         target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player).send();
         if (damage >= 75 && target.isPlayer()) {
+        	player.unlockRngGod(true);
 			AchievementHandler.activate(player, AchievementList.TOO_OP, 1);
 		}
 	}

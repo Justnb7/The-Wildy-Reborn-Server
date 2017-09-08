@@ -163,7 +163,10 @@ public class PlayerSave {
 				player.setSpellBook(details.spellbook);
 				player.getSkills().setExpCounter(details.expCounter);
 				player.getCombatState().setRingOfRecoil(details.recoil);
-				
+				player.setCompletionist(details.completionist);
+				player.unlockRngGod(details.rng_god);
+				player.setLucky(details.lucky);
+				player.setVotePoints(details.votePoints);
 				player.setVotePoints(details.votePoints);
 				player.setTotalVotes(details.totalVotes);
 				player.setPkPoints(details.pkPoints);
@@ -283,6 +286,9 @@ public class PlayerSave {
 		private final SpellBook spellbook;
 		private final int expCounter;
 		private final int recoil;
+		private boolean completionist;
+		private boolean rng_god;
+		private boolean lucky;
 		private final int votePoints;
 		private final int totalVotes;
 		private final int pkPoints;
@@ -383,6 +389,9 @@ public class PlayerSave {
 			spellbook = player.getSpellBook();
 			expCounter = player.getSkills().getExpCounter();
 			recoil = player.getCombatState().getRingOfRecoil();
+			completionist = player.Completionist();
+			lucky = player.lucky();
+			rng_god = player.unlockedRngGod();
 			votePoints = player.getVotePoints();
 			totalVotes = player.getTotalVotes();
 			pkPoints = player.getPkPoints();

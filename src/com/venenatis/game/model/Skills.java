@@ -577,6 +577,10 @@ public class Skills {
 	public int getMaxLevel(int skill) {
 		return 99;
 	}
+	
+	public boolean isCertainSkillMaxed(int skill) {
+		return player.getSkills().getLevelForExperience(skill) == 99;
+	}
 
 	/**
 	 * Decrements this level by {@code amount} to {@code minimum}.

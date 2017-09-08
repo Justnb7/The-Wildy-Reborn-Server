@@ -5,6 +5,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
@@ -207,6 +208,8 @@ public class Teleport {
 		if (!canTeleport(override)) {
 			return;
 		}
+		
+		Combat.resetCombat(player);
 		
 		if(Boundary.isIn(player, Boundary.FIGHT_CAVE)) {
 			player.getDialogueManager().start("LEAVE_FIGHT_CAVE", player);

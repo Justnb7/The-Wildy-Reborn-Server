@@ -4,6 +4,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
@@ -177,7 +178,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 
 	@Override
 	public int distance(Entity attacker) {
-		return 15;
+		return 7;
 	}
 
 	@Override
@@ -237,6 +238,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 					victim.setTeleportTarget(generateLocation());	
 				}
 			});
+			Combat.resetCombat(p);
 			break;
 		case DISARM:
 			if(victim.getActionSender() != null) {

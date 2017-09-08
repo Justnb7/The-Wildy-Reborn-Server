@@ -110,6 +110,7 @@ public class DeathTask extends Task {
 		victim.playAnimation(Animation.create(-1));
 		AchievementHandler.activate(victim, AchievementList.TIME_FOR_LESSON, 1);
 		victim.setInfection(0);
+		victim.setDefaultAnimations();
 		victim.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 	

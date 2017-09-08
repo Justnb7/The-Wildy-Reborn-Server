@@ -880,7 +880,7 @@ public class Combat {
 				}
 			}
             
-        } else if (target.isNPC()) {
+        }/* else if (target.isNPC()) {
             NPC npc = (NPC) target;
         	//TODO ask Jak why task for npcs is fucked?
         	
@@ -904,7 +904,7 @@ public class Combat {
 					}
 				}
 			}
-        }
+        }*/
 
         if (wep != null && player.getCombatType() != CombatStyle.MAGIC) {
             PlayerSounds.SendSoundPacketForId(player, player.isUsingSpecial(), wep.getId());

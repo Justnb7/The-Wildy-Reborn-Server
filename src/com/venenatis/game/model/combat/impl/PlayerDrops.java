@@ -193,12 +193,14 @@ public class PlayerDrops {
 			}
 			
 			// If killer is null, drop is for victim
-			if (killer != null) {
-				if(item.isTradeable()) {
-					GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), (Player) killer));
-				}
-			} else {
+			if (killer == null) {
 				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), victim));
+			// If killer is an NPC, drop is for victim	
+			} else if (killer.isNPC()) {
+				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), victim));
+			// Drop all items for killer
+			} else {
+				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), killer.asPlayer()));
 			}
 		}
 

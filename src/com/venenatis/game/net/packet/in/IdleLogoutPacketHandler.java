@@ -9,11 +9,11 @@ public class IdleLogoutPacketHandler implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {
-		if (Combat.incombat(player) || player.getRights().isOwner(player)) {
+		/*if (Combat.incombat(player) || player.getRights().isOwner(player)) {
 			return;
 		} else {
 			player.logout();
 			Utility.println(player.getUsername() + " is idle, kicked.");
-		}
+		}*/
 	}
 }

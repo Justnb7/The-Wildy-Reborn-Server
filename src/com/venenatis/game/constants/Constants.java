@@ -64,7 +64,7 @@ public class Constants {
 	 * The current version of the client. Used to notify player to update
 	 * client.
 	 */
-	public static final int CLIENT_VERSION = 10;
+	public static final int CLIENT_VERSION = 11;
 
 	/**
 	 * The name of the server

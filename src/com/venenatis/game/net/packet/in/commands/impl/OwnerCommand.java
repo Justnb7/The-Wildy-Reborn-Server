@@ -42,6 +42,14 @@ public class OwnerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
 		
+		case "msg":
+			String shout = "[Server]: "+parser.nextString();
+			if (parser.hasNext()) {
+				shout = parser.nextString();
+			}
+			World.getWorld().sendWorldMessage(shout, false);
+			return true;
+		
 		case "zulrah":
 			player.getZulrahEvent().initialize();
 			return true;

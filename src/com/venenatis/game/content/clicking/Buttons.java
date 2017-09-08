@@ -34,6 +34,16 @@ public class Buttons {
 		System.out.println("btn "+button);
 		switch (button) {
 		
+		case 1220:
+			if (!player.showDamage()) {
+				player.setShowDamage(true);
+				player.getActionSender().sendMessage("Your exp counter will now show your hits instead of exp.");
+			} else {
+				player.setShowDamage(false);
+				player.getActionSender().sendMessage("Your exp counter will now show your received experience instead of hits.");
+			}
+			break;
+		
 		case 53150:
 			
 			break;
@@ -300,14 +310,6 @@ public class Buttons {
 			player.getActionSender().sendExperienceCounter(0, 0);
 			player.getActionSender().sendMessage(
 					"You have reset your experience counter to zero.");
-			break;
-			
-		case 1220:
-			if (!player.showDamage()) {
-				player.setShowDamage(true);
-			} else {
-				player.setShowDamage(false);
-			}
 			break;
 
 		/**

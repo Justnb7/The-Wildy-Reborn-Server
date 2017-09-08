@@ -36,15 +36,13 @@ public class PlayerCommand implements Command {
 			player.getActionSender().removeAllInterfaces();
 			player.getActionSender().sendInterface(59525);
 			return true;
-		
-		case "showdmg":
-			if (!player.showDamage()) {
-				player.setShowDamage(true);
-				player.getActionSender().sendMessage("Your exp counter will now show your hits instead of exp.");
-			} else {
-				player.setShowDamage(false);
-				player.getActionSender().sendMessage("Your exp counter will now show your received experience instead of hits.");
-			}
+			
+		case "vote":
+			player.getActionSender().sendString("https://venenatis.motivoters.com/motivote/", -1);
+			return true;
+			
+		case "forums":
+			player.getActionSender().sendString("www.venenatis.com/forum/", -1);
 			return true;
 		
 		case "rules":

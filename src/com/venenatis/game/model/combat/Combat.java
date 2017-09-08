@@ -705,16 +705,17 @@ public class Combat {
 			player.getWalkingQueue().reset();
 			return false;
 		}
-		if (!player.receivedStarter()) {
+		
+		if (!Area.inWilderness(player) || !Area.inWilderness(target)) {
 			Combat.resetCombat(player);
 			player.getWalkingQueue().reset();
-			player.debug("target in tut");
 			return false;
 		}
-		if (!player.receivedStarter()) {
+		
+		if (!player.receivedStarter() || !player.receivedStarter()) {
 			player.message("You cannot attack this player.");
-			player.getWalkingQueue().reset();
 			Combat.resetCombat(player);
+			player.getWalkingQueue().reset();
 			return false;
 		}
 

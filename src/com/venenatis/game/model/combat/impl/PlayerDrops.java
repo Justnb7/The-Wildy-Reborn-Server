@@ -183,7 +183,7 @@ public class PlayerDrops {
 			// If killer is null, drop is for victim
 			if (killer == null || killer.isNPC()) {
 				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), victim));
-				// Drop all items for killer no random
+				// Drop all items for killer
 			} else {
 				if(item.isTradeable()) {
 					GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), (Player) killer));

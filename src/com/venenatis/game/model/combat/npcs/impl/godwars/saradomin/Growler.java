@@ -17,6 +17,8 @@ public class Growler  extends AbstractBossCombat {
 		if(!attacker.isNPC()) {
 			return; //this should be an NPC!
 		}
+		
+		NPC npc = (NPC) attacker;
 
 		int clientSpeed;
 		int gfxDelay;
@@ -39,6 +41,8 @@ public class Growler  extends AbstractBossCombat {
 		attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 1183, 0, 50, clientSpeed, 0, 35, victim.getProjectileLockonIndex(), 10, 48));
 		int randomHit = Utility.random(16);
 		victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
+		
+		attacker.getCombatState().setAttackDelay(npc.getDefinition().getAttackSpeed());
 	}
 
 	@Override

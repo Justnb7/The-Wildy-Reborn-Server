@@ -235,7 +235,7 @@ public final class GroundItemHandler {
 			if (item.isTradeable() || groundItem.getOwnerHash() == player.usernameHash) {
 				
 				if (groundItem.getState() == State.PUBLIC || groundItem.getOwnerHash() == player.usernameHash) {
-					//System.out.println(player.getPosition() + " : " + groundItem.getPosition());
+					System.out.println(player.getLocation() + " : " + groundItem.getLocation());
 					player.getActionSender().sendRemoveGroundItem(groundItem);
 					player.getActionSender().sendGroundItem(groundItem);
 				}

@@ -428,7 +428,7 @@ public class PrayerHandler {
 		}
 		if(e.isPlayer()) {
 			e.asPlayer().getQuickPrayers().setEnabled(false);
-			//e.asPlayer().getActionSender().sendQuickPrayersState(false);
+			e.asPlayer().getActionSender().sendQuickPrayersState(false);
 		} else if(e.isNPC()) {
 			if(e.asNpc().getHeadIcon() != -1) {
 				e.asNpc().setHeadIcon(-1);
@@ -451,7 +451,7 @@ public class PrayerHandler {
 		}
 		player.getQuickPrayers().setEnabled(false);
 		//TODO ask Jak why the packet size is incorrect
-		//player.getActionSender().sendQuickPrayersState(false);
+		player.getActionSender().sendQuickPrayersState(false);
 	}
 
 	/**

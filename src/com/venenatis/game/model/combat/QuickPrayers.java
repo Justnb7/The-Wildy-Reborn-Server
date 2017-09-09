@@ -176,7 +176,7 @@ public class QuickPrayers extends PrayerHandler {
 			enabled = false;
 			player.setHeadHint(-1);
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-			//player.getActionSender().sendQuickPrayersState(false);
+			player.getActionSender().sendQuickPrayersState(false);
 		}
 	}
 
@@ -219,7 +219,7 @@ public class QuickPrayers extends PrayerHandler {
 				enabled = found;
 			}
 
-			//player.getActionSender().sendQuickPrayersState(enabled);
+			player.getActionSender().sendQuickPrayersState(enabled);
 			break;
 
 		case SETUP_BUTTON:

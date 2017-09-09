@@ -189,6 +189,7 @@ public class ObjectInteraction {
 		switch(objectId) {
 		
 		case 677:
+			player.getWalkingQueue().reset();
 			player.faceObject(obj);
 			int[] movement = { 0, 0, player.getX() <= 2970 ? 4 : -4, 0, 20, 60, 1, 2 };
 			Agility.forceMovement(player, Animation.create(844), movement, 1, true);

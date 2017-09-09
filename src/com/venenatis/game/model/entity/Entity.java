@@ -1212,11 +1212,11 @@ public abstract class Entity {
 	public void setForceWalk(final int[] forceWalk, final boolean removeAttribute) {
 		this.forceWalk = forceWalk;
 		if(forceWalk.length > 0) {
-			
+
+			setForcedMovement(true);
 			Server.getTaskScheduler().submit(new Task(forceWalk[7]) {
 				@Override
 				public void execute() {
-					setForcedMovement(true);
 					//System.out.println("force movement: "+isForcedMovement());
 					setTeleportTarget(getLocation().transform(forceWalk[2], forceWalk[3], 0));
 					if(removeAttribute) {

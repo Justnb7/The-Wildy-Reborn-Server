@@ -14,15 +14,9 @@ import com.venenatis.game.model.entity.player.Player;
 public final class GroundItem {
 
 	public enum State {
-		/**
-		 * A private item can be viewed by only the owner
-		 */
-		PRIVATE,
-
-		/**
-		 * Everyone can view this item
-		 */
-		PUBLIC;
+		SEEN_BY_OWNER,
+		SEEN_BY_EVERYONE, 
+		HIDDEN;
 	}
 
 	/**
@@ -38,7 +32,7 @@ public final class GroundItem {
 	/**
 	 * The owner of the ground item
 	 */
-	private final Player owner;
+	private final Player player;
 
 	/**
 	 * Checks if the ground item was already removed
@@ -53,7 +47,7 @@ public final class GroundItem {
 	/**
 	 * The current state of the ground item
 	 */
-	private State state = State.PRIVATE;
+	private State state = State.SEEN_BY_OWNER;
 
 	/**
 	 * Constructs a new ground item object
@@ -68,7 +62,7 @@ public final class GroundItem {
 	public GroundItem(Item item, Location location, Player owner) {
 		this.item = item;
 		this.setLocation(location);
-		this.owner = owner;
+		this.player = owner;
 	}
 
 	/**
@@ -108,7 +102,7 @@ public final class GroundItem {
 	}
 
 	public long getOwnerHash() {
-		return owner == null ? -1 : owner.usernameHash;
+		return player == null ? -1 : player.usernameHash;
 	}
 
 	/**
@@ -168,13 +162,13 @@ public final class GroundItem {
 	 * 
 	 * @return the droppers username
 	 */
-	public Player getOwner() {
-		return owner;
+	public Player getPlayer() {
+		return player;
 	}
 
 	@Override
 	public String toString() {
-		return "GroundItem [item=" + item + ", owner=" + owner + ", removed=" + removed + ", timer=" + timer
+		return "GroundItem [item=" + item + ", owner=" + player + ", removed=" + removed + ", timer=" + timer
 				+ ", state=" + state + ", location="+getLocation()+"]";
 	}
 

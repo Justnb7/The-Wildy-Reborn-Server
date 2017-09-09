@@ -28,7 +28,7 @@ public final class GroundItemHandler {
 	/**
 	 * A list containing all of the ground items
 	 */
-	private static final List<GroundItem> groundItems = new ArrayList<GroundItem>();
+	private static final List<GroundItem> ITEMS = new ArrayList<GroundItem>();
 	
 	/**
 	 * Registers a new ground item.
@@ -44,7 +44,7 @@ public final class GroundItemHandler {
 				return false;
 			}
 		}
-		groundItems.add(groundItem);
+		ITEMS.add(groundItem);
 		return true;
 	}
 	
@@ -58,7 +58,7 @@ public final class GroundItemHandler {
 	 *            the item index
 	 */
 	public static GroundItem find(Location position, int itemIndex) {
-		for (GroundItem groundItem : groundItems) {
+		for (GroundItem groundItem : ITEMS) {
 			if (groundItem == null) {
 				continue;
 			}
@@ -78,7 +78,7 @@ public final class GroundItemHandler {
 	 *            The location of the ground item
 	 */
 	public static Optional<GroundItem> get(int id, Location location) {
-		return groundItems.stream().filter(item -> item.getItem().getId() == id && item.getLocation().getX() == location.getX() && item.getLocation().getY() == location.getY() && item.getLocation().getZ() == location.getZ()).findFirst();
+		return ITEMS.stream().filter(item -> item.getItem().getId() == id && item.getLocation().getX() == location.getX() && item.getLocation().getY() == location.getY() && item.getLocation().getZ() == location.getZ()).findFirst();
 	}
 
 	/**
@@ -88,7 +88,7 @@ public final class GroundItemHandler {
 	 *            the ground item
 	 */
 	public static boolean sendRemoveGroundItem(GroundItem groundItem) {
-		for (GroundItem other : groundItems) {
+		for (GroundItem other : ITEMS) {
 			if (groundItem.getItem().getId() == other.getItem().getId()
 					&& groundItem.getLocation().getX() == other.getLocation().getX()
 					&& groundItem.getLocation().getY() == other.getLocation().getY()
@@ -132,15 +132,15 @@ public final class GroundItemHandler {
 			}
 
 			//Skip iron man game modes, we can't pick up items anyways.
-			/*if (player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
+			if (player.getRights().isIron(player)) {
 				continue;
-			}*/
+			}
 
 			// If we are globalizing an item, don't re-add it for the owner
 			if (player.usernameHash != groundItem.getOwnerHash()) {
 
 				//Don't add private items to the region yet, we only add public items
-				if (groundItem.getState() == State.PRIVATE) {
+				if (groundItem.getState() == State.SEEN_BY_OWNER) {
 					continue;
 				}
 
@@ -164,7 +164,7 @@ public final class GroundItemHandler {
 	 */
 	public static void pulse() {
 		long start = System.currentTimeMillis();
-		Iterator<GroundItem> iterator = groundItems.iterator();
+		Iterator<GroundItem> iterator = ITEMS.iterator();
 		while (iterator.hasNext()) {
 			GroundItem item = iterator.next();
 
@@ -174,14 +174,14 @@ public final class GroundItemHandler {
 			}
 			
 			if (item.decreaseTimer() < 1) {
-				if (item.getState() == State.PUBLIC) {
+				if (item.getState() == State.SEEN_BY_EVERYONE) {
 					item.setRemoved(true);
 					iterator.remove();
 					removeRegionalItem(item);
 				}
 
-				if (item.getState() == State.PRIVATE) {
-					item.setState(State.PUBLIC);
+				if (item.getState() == State.SEEN_BY_OWNER) {
+					item.setState(State.SEEN_BY_EVERYONE);
 					item.setTimer(200);
 					addRegionalItem(item);
 				}
@@ -193,13 +193,13 @@ public final class GroundItemHandler {
 	}
 
 	public static boolean add(GroundItem groundItem) {
-		return groundItems.add(groundItem);
+		return ITEMS.add(groundItem);
 	}
 
 	public static int getItemAmount(GroundItem groundItem) {
 		Item item = groundItem.getItem();
-		for (GroundItem other : groundItems) {
-			if (groundItem.getOwnerHash() == other.getOwnerHash() || other.getState() == (State.PUBLIC)) {
+		for (GroundItem other : ITEMS) {
+			if (groundItem.getOwnerHash() == other.getOwnerHash() || other.getState() == (State.SEEN_BY_EVERYONE)) {
 				if (groundItem.getItem().getId() == other.getItem().getId()
 						&& groundItem.getLocation().getX() == other.getLocation().getX()
 						&& groundItem.getLocation().getY() == other.getLocation().getY()
@@ -218,14 +218,20 @@ public final class GroundItemHandler {
 		return 0;
 	}
 
-	public static void reloadGroundItems(Player player) {
-		for (GroundItem groundItem : groundItems) {
+	/**
+     * The method that updates all items in the region for {@code player}.
+     *
+     * @param player
+     *            the player to update items for.
+     */
+	public static void updateRegionItems(Player player) {
+		for (GroundItem groundItem : ITEMS) {
 			if (player.getLocation().getZ() != groundItem.getLocation().getZ() || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
 				continue;
 			}
 			
 			if (groundItem.getOwnerHash() != player.usernameHash) {
-				if (!player.getAccount().getType().unownedDropsVisible() || (groundItem.getState() == State.PRIVATE)) {
+				if (!player.getAccount().getType().unownedDropsVisible() || (groundItem.getState() == State.SEEN_BY_OWNER)) {
 					continue;
 				}
 			}
@@ -234,8 +240,8 @@ public final class GroundItemHandler {
 			
 			if (item.isTradeable() || groundItem.getOwnerHash() == player.usernameHash) {
 				
-				if (groundItem.getState() == State.PUBLIC || groundItem.getOwnerHash() == player.usernameHash) {
-					//System.out.println(player.getPosition() + " : " + groundItem.getPosition());
+				if (groundItem.getState() == State.SEEN_BY_EVERYONE || groundItem.getOwnerHash() == player.usernameHash) {
+					System.out.println(String.format("spawned: %s%n", groundItem));
 					player.getActionSender().sendRemoveGroundItem(groundItem);
 					player.getActionSender().sendGroundItem(groundItem);
 				}
@@ -244,30 +250,30 @@ public final class GroundItemHandler {
 	}
 
 	public static boolean createGroundItem(GroundItem groundItem) {
-		Player player = groundItem.getOwner();
+		Player player = groundItem.getPlayer();
 		if (groundItem.getItem().getId() < 0) {
 			return false;
 		}
 		if (player == null) {
-			groundItem.setState(State.PUBLIC);
+			groundItem.setState(State.SEEN_BY_EVERYONE);
 		}
 
 		//PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
-		/*if (player != null && player.getAccount().getType().alias().equals(Account.IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.ULTIMATE_IRON_MAN_TYPE.alias()) || player.getAccount().getType().alias().equals(Account.HARDCORE_IRON_MAN_TYPE.alias())) {
-			groundItem.setState(State.PRIVATE);
-		}*/
+		if (player != null && player.getRights().isIron(player)) {
+			groundItem.setState(State.SEEN_BY_OWNER);
+		}
 		
 		if (groundItem.getItem().getId() >= 2412 && groundItem.getItem().getId() <= 2414) {
 			player.getActionSender().sendMessage("The cape vanishes as it touches the ground.");
 			return false;
 		}
 
-		for (GroundItem other : groundItems) {
+		for (GroundItem other : ITEMS) {
 			if (groundItem.getItem().getId() == other.getItem().getId()
 					&& groundItem.getLocation().getX() == other.getLocation().getX()
 					&& groundItem.getLocation().getY() == other.getLocation().getY()
 					&& groundItem.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
-				if (other.getState() == State.PUBLIC || other.getOwnerHash() == player.usernameHash) {
+				if (other.getState() == State.SEEN_BY_EVERYONE || other.getOwnerHash() == player.usernameHash) {
 					int existing = getItemAmount(groundItem);
 
 					if (existing == -1) {
@@ -279,7 +285,7 @@ public final class GroundItemHandler {
 
 					if (existing > 0) {
 						other.getItem().setAmount(existing);
-						other.setTimer(groundItem.getState() == State.PUBLIC ? 200 : 100);
+						other.setTimer(groundItem.getState() == State.SEEN_BY_EVERYONE ? 200 : 100);
 						return true;
 					}
 				}
@@ -287,11 +293,11 @@ public final class GroundItemHandler {
 		}
 
 		if (add(groundItem)) {
-			groundItem.setTimer(groundItem.getState() == State.PUBLIC ? 200 : 100);
+			groundItem.setTimer(groundItem.getState() == State.SEEN_BY_EVERYONE ? 200 : 100);
 			if (player != null) {
 				player.getActionSender().sendGroundItem(groundItem);
 			}
-			if (groundItem.getState() == State.PUBLIC) {
+			if (groundItem.getState() == State.SEEN_BY_EVERYONE) {
 				addRegionalItem(groundItem);
 			}
 		}
@@ -314,7 +320,7 @@ public final class GroundItemHandler {
 					stop();
 					return;
 				}
-				if (groundItem.getState() != State.PUBLIC && groundItem.getOwnerHash() != player.usernameHash) {
+				if (groundItem.getState() != State.SEEN_BY_EVERYONE && groundItem.getOwnerHash() != player.usernameHash) {
 					stop();
 					return;
 				}
@@ -335,7 +341,7 @@ public final class GroundItemHandler {
 					sendRemoveGroundItem(groundItem);
 					player.getInventory().add(item);
 					player.getInventory().refresh();
-					PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Item Dropped: " + groundItem.getItem().getId() + " Items picked up by : " + player.getUsername() + " Amount:  " + groundItem.getItem().getAmount() );
+					PlayerLogging.write(LogType.DEATH_LOG, groundItem.getPlayer(), "Item Dropped: " + groundItem.getItem().getId() + " Items picked up by : " + player.getUsername() + " Amount:  " + groundItem.getItem().getAmount() );
 					stop();
 				}
 			}

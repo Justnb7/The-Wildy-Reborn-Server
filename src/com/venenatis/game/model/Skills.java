@@ -161,7 +161,6 @@ public class Skills {
 				continue;
 			}
 			totalLevel += getLevelForExperience(i);
-			System.out.println(totalLevel);
 		}
 	}
 	

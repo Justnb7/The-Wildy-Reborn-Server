@@ -87,7 +87,6 @@ import com.venenatis.game.util.MutableNumber;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
-import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
 
@@ -912,20 +911,6 @@ public class Player extends Entity {
 	 */
 	public void setDebugMode(boolean on) {
 		this.debugMode = on;
-	}
-	
-	/**
-	 * Reload ground items.
-	 * @param player
-	 */
-	public void reloadItems(Player player) {
-		Server.getTaskScheduler().schedule(new Task(4) {
-			@Override
-			public void execute() {
-				GroundItemHandler.reloadGroundItems(player);
-				this.stop();
-			}
-		});
 	}
 	
 	public boolean isInMinigame() {

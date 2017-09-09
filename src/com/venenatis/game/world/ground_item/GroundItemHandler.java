@@ -131,7 +131,6 @@ public final class GroundItemHandler {
 				continue;
 			}
 
-			//Skip iron man game modes, we can't pick up items anyways.
 			if (player.getRights().isIron(player)) {
 				continue;
 			}
@@ -225,25 +224,28 @@ public final class GroundItemHandler {
      *            the player to update items for.
      */
 	public static void updateRegionItems(Player player) {
-		for (GroundItem groundItem : ITEMS) {
-			if (player.getLocation().getZ() != groundItem.getLocation().getZ() || player.distanceToPoint(groundItem.getLocation().getX(), groundItem.getLocation().getY()) > 60) {
+		for (GroundItem item : ITEMS) {
+			player.getActionSender().sendRemoveGroundItem(item);
+		}
+		for (GroundItem item : ITEMS) {
+			
+			if (player.getLocation().getZ() != item.getLocation().getZ() || player.distanceToPoint(item.getLocation().getX(), item.getLocation().getY()) > 60) {
 				continue;
 			}
 			
-			if (groundItem.getOwnerHash() != player.usernameHash) {
-				if (!player.getAccount().getType().unownedDropsVisible() || (groundItem.getState() == State.SEEN_BY_OWNER)) {
+			if (item.getOwnerHash() != player.usernameHash) {
+				if (!player.getAccount().getType().unownedDropsVisible() || (item.getState() == State.SEEN_BY_OWNER)) {
 					continue;
 				}
 			}
 			
-			Item item = new Item(groundItem.getItem().getId());
+			Item items = new Item(item.getItem().getId());
 			
-			if (item.isTradeable() || groundItem.getOwnerHash() == player.usernameHash) {
+			if (items.isTradeable() || item.getOwnerHash() == player.usernameHash) {
 				
-				if (groundItem.getState() == State.SEEN_BY_EVERYONE || groundItem.getOwnerHash() == player.usernameHash) {
-					System.out.println(String.format("spawned: %s%n", groundItem));
-					player.getActionSender().sendRemoveGroundItem(groundItem);
-					player.getActionSender().sendGroundItem(groundItem);
+				if (item.getState() == State.SEEN_BY_EVERYONE || item.getOwnerHash() == player.usernameHash) {
+					System.out.println(String.format("spawned: %s%n", item));
+					player.getActionSender().sendGroundItem(item);
 				}
 			}
 		}
@@ -286,7 +288,6 @@ public final class GroundItemHandler {
 					if (existing > 0) {
 						other.getItem().setAmount(existing);
 						other.setTimer(groundItem.getState() == State.SEEN_BY_EVERYONE ? 200 : 100);
-						return true;
 					}
 				}
 			}

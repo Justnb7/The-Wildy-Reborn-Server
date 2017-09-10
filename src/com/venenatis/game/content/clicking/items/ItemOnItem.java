@@ -65,6 +65,50 @@ public class ItemOnItem {
 			player.getDialogueManager().start("GRANITE_MAUL_UPGRADE", player);
 		}
 		
+		if (usedItem.getId() == 11235 && withItem.getId() == 12763 || usedItem.getId() == 12763 && withItem.getId() == 11235) {
+			player.getDialogueManager().start("WHITE_DARK_BOW", player);
+		}
+		
+		if (usedItem.getId() == 11235 && withItem.getId() == 12761 || usedItem.getId() == 12761 && withItem.getId() == 11235) {
+			player.getDialogueManager().start("YELLOW_DARK_BOW", player);
+		}
+		
+		if (usedItem.getId() == 11235 && withItem.getId() == 12759 || usedItem.getId() == 12759 && withItem.getId() == 11235) {
+			player.getDialogueManager().start("GREEN_DARK_BOW", player);
+		}
+		
+		if (usedItem.getId() == 11235 && withItem.getId() == 12757 || usedItem.getId() == 12757 && withItem.getId() == 11235) {
+			player.getDialogueManager().start("BLUE_DARK_BOW", player);
+		}
+		
+		if (usedItem.getId() == 4151 && withItem.getId() == 12769 || usedItem.getId() == 12769 && withItem.getId() == 4151) {
+			player.getDialogueManager().start("FROZEN_WHIP", player);
+		}
+		
+		if (usedItem.getId() == 4151 && withItem.getId() == 12771 || usedItem.getId() == 12771 && withItem.getId() == 4151) {
+			player.getDialogueManager().start("LAVA_WHIP", player);
+		}
+		
+		if (usedItem.getId() == 4151 && withItem.getId() == 12004 || usedItem.getId() == 12004 && withItem.getId() == 4151) {
+			player.getDialogueManager().start("ABYSSAL_TENTACLE", player);
+		}
+		
+		if (usedItem.getId() == 11838 && withItem.getId() == 12804 || usedItem.getId() == 12804 && withItem.getId() == 11838) {
+			player.getDialogueManager().start("BLESSED_SARADOMIN_SWORD", player);
+		}
+		
+		if (usedItem.getId() == 2572 && withItem.getId() == 12783 || usedItem.getId() == 12783 && withItem.getId() == 2572) {
+			player.getDialogueManager().start("RING_OF_WEALTH", player);
+			player.getInventory().remove(new Item(2572), new Item(12783));
+			player.getInventory().add(new Item(12785));
+		}
+		
+		if (usedItem.getId() == 861 && withItem.getId() == 12786 || usedItem.getId() == 12786 && withItem.getId() == 861) {
+			player.getDialogueManager().start("MAGIC_SHORTBOW", player);
+			player.getInventory().remove(new Item(861), new Item(12786));
+			player.getInventory().add(new Item(12788));
+		}
+		
 		if (usedItem.getId() == 227 || withItem.getId() == 227) {
 			int primary = usedItem.getId() == 227 ? withItem.getId() : usedItem.getId();
 			player.getHerblore().mix(primary);

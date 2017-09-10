@@ -32,6 +32,56 @@ public class DialogueRepository {
 		dialogues.put("GRANITE_MAUL_UPGRADE", GraniteMaulUpgrade.class);
 		
 		/**
+		 * Ring of Wealth
+		 */
+		dialogues.put("RING_OF_WEALTH", RingofWealth.class);
+		
+		/**
+		 * Magic Shortbow
+		 */
+		dialogues.put("MAGIC_SHORTBOW", MagicShortbow.class);
+		
+		/**
+		 * White dark bow
+		 */
+		dialogues.put("WHITE_DARK_BOW", WhiteDarkBow.class);
+		
+		/**
+		 * Yellow dark bow
+		 */
+		dialogues.put("YELLOW_DARK_BOW", YellowDarkBow.class);
+		
+		/**
+		 * Green dark bow
+		 */
+		dialogues.put("GREEN_DARK_BOW", GreenDarkBow.class);
+		
+		/**
+		 * Blue dark bow
+		 */
+		dialogues.put("BLUE_DARK_BOW", BlueDarkBow.class);
+		
+		/**
+		 * Frozen whip
+		 */
+		dialogues.put("FROZEN_WHIP", FrozenWhip.class);
+		
+		/**
+		 * Lava whip
+		 */
+		dialogues.put("LAVA_WHIP", LavaWhip.class);
+		
+		/**
+		 * Abyssal tentacle
+		 */
+		dialogues.put("ABYSSAL_TENTACLE", AbyssalTentacle.class);
+		
+		/**
+		 * Lava whip
+		 */
+		dialogues.put("BLESSED_SARADOMIN_SWORD", BlessedSaradominSword.class);
+		
+		/**
 		 * Fight caves
 		 */
 		dialogues.put("ENTER_FIGHT_CAVE", EnterCave.class);

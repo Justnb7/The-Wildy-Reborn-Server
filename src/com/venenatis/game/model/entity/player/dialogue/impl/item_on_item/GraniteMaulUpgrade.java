@@ -16,8 +16,6 @@ public class GraniteMaulUpgrade extends Dialogue {
 	public void next() {
 		if (isPhase(0)) {
 			send(DialogueType.CHOICE, "Select an Option", "Apply the upgrade.", "Cancel.");
-		} else if (isPhase(1)) {
-			player.getActionSender().removeAllInterfaces();
 		}
 	}
 
@@ -31,9 +29,6 @@ public class GraniteMaulUpgrade extends Dialogue {
 					player.getInventory().remove(new Item(4153), new Item(12849));
 					player.getInventory().add(12848, 1);
 					setPhase(1);
-				} else {
-					player.getActionSender().sendMessage("You do not have the required materials to upgrade.");
-					player.getActionSender().removeAllInterfaces();
 				}
 				break;
 			case 2: // No
@@ -42,5 +37,4 @@ public class GraniteMaulUpgrade extends Dialogue {
 			}
 		}
 	}
-
 }

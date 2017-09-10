@@ -867,9 +867,6 @@ public abstract class Entity {
 			Player attacker_player = (Player)attacker;
 			NPC victim_npc = (NPC) this;
 			
-			if(attacker_player.getUsername().equalsIgnoreCase("patrick") && attacker_player.inDebugMode()) {
-				damage = victim_npc.getHitpoints();
-			}
 			victim_npc.retaliate(attacker);
 			victim_npc.getCombatState().getDamageMap().appendDamage(attacker_player.getUsername(), damage);
 			MobAttackSounds.sendBlockSound(attacker_player, victim_npc.getId()); // TODO use npc not npcid

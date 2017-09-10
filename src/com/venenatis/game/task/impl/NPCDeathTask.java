@@ -50,15 +50,19 @@ public class NPCDeathTask extends Task {
         NPC npc = (NPC) getAttachment();
 
         if (npc == null || World.getWorld().getNPCs().get(npc.getIndex()) == null) {
-            stop();
+            System.out.println("Something went wrong the npc is null");
+        	stop();
             return;
         }
         if (counter == 0) {
             initialDeath(npc);
+            System.out.println("We passed the initial death");
         } else if (counter == 5) {
             npc.removeFromTile();
             Player killer = World.getWorld().getPlayers().get(npc.spawnedBy);
             setNpcToInvisible(npc);
+            System.out.println("Remove the npc");
+            
             if (killer != null && killer.getKraken() != null && killer.getKraken().npcs != null && killer.getKraken().npcs[0] != null) {
             	if (npc == killer.getKraken().npcs[0]) {
             		for (NPC n : killer.getKraken().npcs) {
@@ -73,6 +77,7 @@ public class NPCDeathTask extends Task {
             	}
 			}
             if (killer != null || isUnspawnableNpc(npc)) {
+            	System.out.println("Checks if the npc is unspawnable, or the killer is null");
             	handleUnspawnableNpc(npc);
 				removeMobFromWorld(killer, npc);
 				stop();
@@ -138,10 +143,6 @@ public class NPCDeathTask extends Task {
         npc.setVisible(false);
         npc.setLocation(Location.create(npc.makeX, npc.makeY, npc.getZ()));
         npc.setHitpoints(npc.getMaxHitpoints());
-		
-        if (!npc.noDeathEmote) {
-            npc.playAnimation(Animation.create(808));
-        }
         
         npc.getCombatState().getDamageMap().resetDealtDamage();
 
@@ -161,6 +162,8 @@ public class NPCDeathTask extends Task {
         npc.resetFace();
 
         final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
+        
+        npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead emote
         
         //Sent the cheer animation when defeating Jad
         if(killer != null || npc != null) {
@@ -182,13 +185,6 @@ public class NPCDeathTask extends Task {
 			}
 			Combat.resetCombat(killer);
 		}
-		
-        if (npc.getId() != 6611) // vetion or somet
-			npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead emote
-       
-        if (!npc.noDeathEmote) {
-            npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead
-        }
         
         if (killer != null) {
             MobAttackSounds.sendDeathSound((Player) killer, npc.getId());

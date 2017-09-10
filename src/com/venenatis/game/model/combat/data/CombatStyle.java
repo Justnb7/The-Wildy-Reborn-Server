@@ -62,8 +62,10 @@ public enum CombatStyle {
 	 */
 	ZIP, 
 	
-	
-	CORP_SPECIAL, 
+	/**
+	 * Venenatis prayer drain attack
+	 */ 
+	DRAIN_PRAYER,
 	
 	;
 }

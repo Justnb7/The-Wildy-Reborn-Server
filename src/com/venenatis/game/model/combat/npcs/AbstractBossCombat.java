@@ -143,6 +143,11 @@ public abstract class AbstractBossCombat {
 		
 		bosses.put(319, new CorporealBeast());
 		
+		AbstractBossCombat venenatis = new Venenatis();
+		bosses.put(6504, venenatis);
+		bosses.put(6610, venenatis);
+		bosses.put(8017, venenatis);
+		
 	}
 	
 	public static AbstractBossCombat get(int npcId) {

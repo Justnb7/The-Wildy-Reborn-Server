@@ -30,8 +30,7 @@ public class Kreearra extends AbstractBossCombat {
 		}
 
 		NPC npc = (NPC) attacker;
-		Player pVcitim = (Player)victim;
-		final Collection<Player> localPlayers = RegionStoreManager.get().getLocalPlayers(attacker);
+
 		CombatStyle style = CombatStyle.MELEE;
 
 		int maxHit;
@@ -50,7 +49,6 @@ public class Kreearra extends AbstractBossCombat {
 			style = CombatStyle.RANGE;
 			break;
 		}
-		pVcitim.debug("attack style: "+style);
 		/*if ((style == CombatStyle.MAGIC || style == CombatStyle.RANGE) && !ProjectilePathFinder.clippedProjectile(attacker, victim)) {
 			Following.combatFollow(attacker, victim);
 			return;
@@ -68,6 +66,7 @@ public class Kreearra extends AbstractBossCombat {
 		case MAGIC:
 			maxHit = 21;
 			attacker.playAnimation(Animation.create(6978));
+			final Collection<Player> localPlayers = RegionStoreManager.get().getLocalPlayers(attacker);
 			
 			for(final Player near : localPlayers) {
 				if(near != null && near != attacker && near.getSkills().getLevel(Skills.HITPOINTS) > 0) {
@@ -116,7 +115,9 @@ public class Kreearra extends AbstractBossCombat {
 			maxHit = 71;
 			attacker.playAnimation(Animation.create(6978));
 			
-			for(final Player near : localPlayers) {
+			final Collection<Player> targets = RegionStoreManager.get().getLocalPlayers(attacker);
+			
+			for(final Player near : targets) {
 				if(near != null && near != attacker && near.getSkills().getLevel(Skills.HITPOINTS) > 0) {
 					if (attacker.getCentreLocation().isWithinDistance(attacker, near, 10)) {
 						// Set the projectile speed based on distance
@@ -151,8 +152,7 @@ public class Kreearra extends AbstractBossCombat {
 		}		
 
 		attacker.getCombatState().setAttackDelay(7);
-		pVcitim.debug("attk delay: "+attacker.getCombatState().getAttackDelay());
-		//attacker.getCombatState().setSpellDelay(4);
+		attacker.getCombatState().setSpellDelay(4);
 	}
 	
 	private static final void pushBack(Player p, NPC kreeArra) {

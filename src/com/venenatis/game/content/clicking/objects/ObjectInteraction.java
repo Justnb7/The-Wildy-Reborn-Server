@@ -3,11 +3,11 @@ package com.venenatis.game.content.clicking.objects;
 import com.venenatis.game.action.Action;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.BrimhavenVines;
+import com.venenatis.game.content.MageArenaGodPrayer;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
 import com.venenatis.game.content.skills.agility.Shortcut;
-import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
@@ -138,6 +138,8 @@ public class ObjectInteraction {
 		player.farming().patchObjectInteraction(objectId, -1, location);
 		
 		if (Runecrafting.handleObject(player, obj)) {
+			return;
+		} else if (MageArenaGodPrayer.godPrayer(player, obj)) {
 			return;
 		}
 		

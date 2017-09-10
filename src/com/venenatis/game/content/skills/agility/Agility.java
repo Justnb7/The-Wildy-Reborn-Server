@@ -452,7 +452,6 @@ public class Agility {
 		}
 	}
 	
-	//here is the ditch code
 	public static void jumpDitch(final Player player, final int animation, final int[] forceMovement, int ticks, final boolean removeAttribute) {
 		final int atY = forceMovement[3] == 3 ? 3520 : 3523;
 		final int atX = forceMovement[3] == 3 ? 2995 : 2998;

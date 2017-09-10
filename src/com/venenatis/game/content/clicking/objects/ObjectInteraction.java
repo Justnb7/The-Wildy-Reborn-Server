@@ -194,7 +194,7 @@ public class ObjectInteraction {
 		
 		case 677:
 			int x = player.getX() <= 2970 ? + 4 : -4;
-			int dir = 1;
+			int dir = player.getX() <= 2970 ? 1 : 3;
 			int[] forceMovement = { 0, 0, x, 0, 33, 60, dir, 2 };
 			Agility.forceMovement(player, new Animation(844), forceMovement, 1, true);
 			break;

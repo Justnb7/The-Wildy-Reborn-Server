@@ -77,12 +77,12 @@ public class NPCFollowing {
 			boolean magic = npc.getCombatType() == CombatStyle.MAGIC;
 			boolean ranged = !magic && npc.getCombatType() == CombatStyle.RANGE;
 			boolean melee = !magic && !ranged;
-			if (melee || npc.isPet) {
+			if (melee || npc.isPet || npc.getId() == 6616) {
 				if (distance <= 1) { // Stop following when close
 					return;
 				}
 			} else {
-				if (distance <= (ranged ? 7 : 10)) {
+				if (distance <= (ranged ? 7 : 10)) { // so its 10 by default, checks melee range then asssumes anything else instead of magic
 					return;
 				}
 			}
@@ -96,9 +96,9 @@ public class NPCFollowing {
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
 			npc.faceEntity(target);
-			npc.setFollowing(null); // reset existing walking queue
+			//npc.setFollowing(null); // reset existing walking queue
 			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
-			//npc.sendForcedMessage("my nigga");
+			//npc.sendForcedMessage("followin "+target);
 			
 		} else {
 			// Reset following
@@ -106,7 +106,7 @@ public class NPCFollowing {
 			npc.resetFace();
 			npc.walkingHome = true;
 			npc.underAttack = false;
-			// try debugging this im not sure
+			//npc.sendForcedMessage("reset "+locked_to_plr+" or "+in_spawn_area);
 		}
 	}
 	

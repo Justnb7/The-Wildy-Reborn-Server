@@ -53,7 +53,6 @@ public class Scorpia extends AbstractBossCombat {
 	
 	public static void heal_scorpia(NPC boss, NPC minion) {
 		minion.faceEntity(boss);
-		//minion.follow(boss);
 		minion.setFollowing(boss);
 		World.getWorld().schedule(new Task(2) {
 			@Override
@@ -64,11 +63,16 @@ public class Scorpia extends AbstractBossCombat {
 					this.stop();
 					return;
 				}
-				if (minion.distanceToPoint(boss.getX(), boss.getY()) > 10) {
+				if(minion.frozenForTicks > 15) {
 					despawn(minion);
 					this.stop();
 					return;
 				}
+				/*if (minion.distanceToPoint(boss.getX(), boss.getY()) > 10) {
+					despawn(minion);
+					this.stop();
+					return;
+				}*/
 				//security, then heal
 				if (minion.getId() == 6617 && !minion.getCombatState().isDead()) {
 					for (Player player : World.getWorld().getPlayers()) {

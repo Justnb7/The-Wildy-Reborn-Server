@@ -1096,6 +1096,13 @@ public class ActionSender {
 					stop();
 					return;
 				}
+				
+				int pk_points = player.getPkPoints();
+				if(pk_points > 0) {
+					player.getActionSender().sendMessage("[Server]: Your PK points where replaced by our new blood money currency.");
+					player.setPkPoints(0);
+					player.getInventory().addOrSentToBank(player, new Item(13307, pk_points));
+				}
 
 				if (!player.receivedStarter()) {
 					player.getDialogueManager().start("STARTER");

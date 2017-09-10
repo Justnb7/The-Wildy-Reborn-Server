@@ -845,7 +845,7 @@ public class Player extends Entity {
 	/**
 	 * A custom yell color
 	 */
-	private String yellColor = "ff0000";
+	private String yellColor = "";
 	
 	/**
 	 * Get the custom yell colot
@@ -3167,5 +3167,25 @@ public class Player extends Entity {
 			titles = new Titles(this);
 		}
 		return titles;
+	}
+	
+	private boolean yellMuted;
+
+	public boolean isYellMuted() {
+		return yellMuted;
+	}
+	
+	public void setYellMuted(boolean muted) {
+		this.yellMuted = muted;
+	}
+	
+	private String yellTag = "";
+	
+	public String getYellTag() {
+		return yellTag;
+	}
+	
+	public void setYellTag(String tag) {
+		this.yellTag = tag;
 	}
 }

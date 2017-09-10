@@ -115,6 +115,33 @@ public enum Currency {
 			return "PK points";
 		}
 	}),
+	
+	/**
+	 * Blood money
+	 */
+	BLOOD_MONEY(new CurrencyUtility() {
+
+		@Override
+		public int addCurrency(Player player, int amount) {
+			if (!player.getInventory().hasSpaceFor(new Item(13307, amount))) {
+				return 0;
+			}
+			return player.getInventory().add(13307, amount);
+		}
+
+		@Override
+		public int removeCurrency(Player player, int amount, int minimum) {
+			if (player.getInventory().getAmount(13307) < minimum) {
+				return 0;
+			}
+			return player.getInventory().remove(13307, amount);
+		}
+
+		@Override
+		public String getCurrencyName() {
+			return "blood money";
+		}
+	}),
 
 	/**
 	 * Voting
@@ -321,6 +348,7 @@ public enum Currency {
 			
 		case PK_POINTS:
 		case BOUNTIES:
+		case BLOOD_MONEY:
 			return 3;
 
 		case GEAR_POINTS:

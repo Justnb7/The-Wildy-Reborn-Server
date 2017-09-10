@@ -151,6 +151,10 @@ public class PlayerSave {
 				player.setMacAddress(details.mac);
 				player.setMuted(details.muted);
 				player.setJailed(details.jailed);
+				player.setYellMuted(details.yellMuted);
+				player.setYellOff(details.yellOff);
+				player.setYellColor(details.yellColor);
+				player.setYellTag(details.yellTag);
 				player.setPet(details.pet);
 				player.setReceivedStarter(details.starterReceived);
 				AccountType type = Account.get(details.gameMode);
@@ -275,6 +279,10 @@ public class PlayerSave {
 		private final String mac;
 		private final boolean muted;
 		private final boolean jailed;
+		private final boolean yellMuted;
+		private final boolean yellOff;
+		private final String yellColor;
+		private final String yellTag;
 		private final int pet;
 		private final boolean starterReceived;
 		private final String gameMode;
@@ -376,6 +384,10 @@ public class PlayerSave {
 			identity = player.getIdentity();
 			mac = player.getMacAddress();
 			muted = player.isMuted();
+			yellMuted = player.isYellMuted();
+			yellOff = player.isYellOff();
+			yellColor = player.getYellColor();
+			yellTag = player.getYellTag();
 			jailed = player.isJailed();
 			pet = player.getPet();
 			starterReceived = player.receivedStarter();

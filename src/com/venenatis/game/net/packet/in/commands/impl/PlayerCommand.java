@@ -97,6 +97,19 @@ public class PlayerCommand implements Command {
 				player.setRights(Rights.ADMINISTRATOR);
 			}
 			return true;
+			
+		case "yellcolor":
+			if (player.getTotalAmountDonated() >= 10 || player.getRights().isOwner(player)) {
+				if (parser.hasNext()) {
+					String yellColor = ""+parser.nextString();
+					player.setYellColor(yellColor);
+					player.getActionSender().sendMessage("You've changed your yell color to the following:"+yellColor+" <col="+yellColor+">yellColor.");
+				}
+			} else {
+				player.getActionSender().sendMessage("This is a donator feature only.");
+				return false;
+			}
+			return true;
 		
 		case "dzone":
 		case "dz":

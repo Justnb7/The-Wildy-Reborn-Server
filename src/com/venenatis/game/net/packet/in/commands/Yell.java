@@ -16,13 +16,22 @@ public class Yell {
 
 		String color = "";
 
-		color = rights.getColor();
+		if (player.getYellColor() == "" || player.getYellColor() == null) {
+			color = rights.getColor();
+		} else {
+			color = player.getYellColor();
+		}
 
-		return "[<col=" + color + ">" + rights.getName() + "</col>]<col=" + color + "> " + player.getRights().getStringForRights(player) + " " + name + "</col>:";
+		return "[<col=" + color + ">" + rights.getName() + "</col>]<col=" + color + "> " + player.getRights().getStringForRights(player) + " " + name + ":"/*"</col>:"*/;
 	}
 	
 	public static void yell(Player player, String message) {
 
+		if(player.isYellMuted()) {
+			player.getActionSender().sendMessage("You cannot yell because you're yell muted.");
+			return;
+		}
+		
 		if (player.getRights().equal(Rights.PLAYER) && player.getKillCount() < 100 && !player.getUsername().equalsIgnoreCase("killa") && !player.getUsername().equalsIgnoreCase("julio") && !player.getUsername().equalsIgnoreCase("impossible")) {
 			player.getActionSender().sendMessage("You need atleast a killcount of 100 to yell.");
 			return;

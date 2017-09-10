@@ -15,6 +15,49 @@ public class HelperCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
+		
+		case "yellmute":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					final Player target = World.getWorld().getPlayerByName(name).get();
+					player.getActionSender().sendMessage("You've yell muted "+name+".");
+					target.getActionSender().sendMessage("You have been yell muted by "+player.getUsername()+".");
+					target.setYellMuted(true);
+					return true;
+				} else {
+					player.getActionSender().sendMessage("The player '" + name + "' either doesn't exist, or is offline.");
+					return false;
+				}
+			}
+			return true;
+			
+		case "unyellmute":
+			if (parser.hasNext()) {
+				String name = parser.nextString();
+
+				while (parser.hasNext()) {
+					name += " " + parser.nextString();
+				}
+
+				if (World.getWorld().getPlayerByName(name).isPresent()) {
+					final Player target = World.getWorld().getPlayerByName(name).get();
+					player.getActionSender().sendMessage("You've lifted "+name+"'s yell ban.");
+					target.getActionSender().sendMessage("You're yell punishment has been lifted by "+player.getUsername()+".");
+					target.setYellMuted(false);
+					return true;
+				} else {
+					player.getActionSender().sendMessage("The player '" + name + "' either doesn't exist, or is offline.");
+					return false;
+				}
+			}
+			return true;
+		
 		case "helpdb":
 			HelpDatabase.getDatabase().openDatabase(player);
 			return true;

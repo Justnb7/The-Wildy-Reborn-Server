@@ -42,7 +42,7 @@ public class PlayerDrops {
 			return;
 		}
 		
-		int totalPoints = 5;
+		int blood_money = 5;
 
 		killer.getActionSender().sendMessage(Utility.randomElement(DEATH_MESSAGES).replaceAll("-victim-", Utility.formatName(victim.getUsername())));
 
@@ -70,10 +70,10 @@ public class PlayerDrops {
 			}
 			if (killer.getCurrentKillStreak() < 6) {
 				killer.getActionSender().sendMessage("@bla@You gain @red@" + killer.getCurrentKillStreak() + " @bla@extra PK Points because of your @red@" + killer.getCurrentKillStreak() + " @bla@killstreak.");
-				totalPoints += killer.getCurrentKillStreak();
+				blood_money += killer.getCurrentKillStreak();
 			} else {
 				killer.getActionSender().sendMessage("@bla@You gain @red@ 1 @bla@extra PK Points because of your @red@" + killer.getCurrentKillStreak() + " @bla@killstreak.");
-				totalPoints += 1;
+				blood_money += 1;
 			}
 		}
 		
@@ -83,20 +83,22 @@ public class PlayerDrops {
 		
 		//Apply member bonus
 		if(killer.getTotalAmountDonated() >= 10) {
-			totalPoints += Utility.isWeekend() ? 10 : 20;
+			blood_money += Utility.isWeekend() ? 10 : 20;
 		} else if(killer.getTotalAmountDonated() >= 30) {
-			totalPoints += Utility.isWeekend() ? 15 : 30;
+			blood_money += Utility.isWeekend() ? 15 : 30;
 		} else if(killer.getTotalAmountDonated() >= 100) {
-			totalPoints += Utility.isWeekend() ? 20 : 40;
+			blood_money += Utility.isWeekend() ? 20 : 40;
 		}
 		
 		if(killer.getAccount().equals(Account.IRON_MAN_TYPE)) {
-			totalPoints += Utility.isWeekend() ? 1 : 2;
+			blood_money += Utility.isWeekend() ? 1 : 2;
 		}
 		
 		//Apply the pkp reward
-		killer.setPkPoints(killer.getPkPoints() + totalPoints);
-		killer.getActionSender().sendMessage("You now have @blu@" + killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" + totalPoints + "@bla@)");
+		//killer.setPkPoints(killer.getPkPoints() + blood_money);
+		killer.getInventory().addOrCreateGroundItem(killer, new Item(13307, blood_money));
+		killer.getActionSender().sendMessage("You have received @red@"+blood_money+"@bla@ blood money for that kill.");
+		//killer.getActionSender().sendMessage("You now have @blu@" + killer.getPkPoints() + " @red@PK Points@bla@. (@blu@+" + blood_money + "@bla@)");
 		
 		if (killer.getCurrentKillStreak() > killer.getHighestKillStreak()) {
 			killer.getActionSender().sendMessage("Congratulations, your highest kill streak has increased!");

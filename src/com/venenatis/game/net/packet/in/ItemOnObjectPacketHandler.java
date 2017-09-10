@@ -2,6 +2,7 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.clicking.objects.ItemOnObjectInteract;
+import com.venenatis.game.content.rewards.BossRewardChest;
 import com.venenatis.game.content.rewards.CrystalChest;
 import com.venenatis.game.content.rewards.ShinyChest;
 import com.venenatis.game.location.Location;
@@ -60,6 +61,12 @@ public class ItemOnObjectPacketHandler implements PacketType {
 		if(def.getName().toLowerCase().contains("open chest") && def.getActions()[0].toLowerCase().contains("search")) {
 			CrystalChest.searchChest(player, loc);
 			return;
+		}
+		
+		switch (item.getId()) {
+		case 2944:
+			BossRewardChest.open(player, loc);
+			break;
 		}
 		
 		ItemOnObjectInteract.handle(player, id, loc, item);

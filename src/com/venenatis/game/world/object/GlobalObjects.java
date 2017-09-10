@@ -30,7 +30,7 @@ public class GlobalObjects {
 	 */
 	private void loadCustomObjects(Player player) {
 		player.farming().updateObjects();
-		//player.getActionSender().sendObject(13291, 3087, 3504, 0, 0, 10);
+		player.getActionSender().sendObject(27282, 3087, 3504, 0, 0, 10);
 	}
 	
 	/**

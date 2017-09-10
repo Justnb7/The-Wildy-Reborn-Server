@@ -17,6 +17,8 @@ public class MageArenaGodPrayer {
 	
 	
 	public static boolean godPrayer(Player player, GameObject obj) {
+		if(obj == null)
+           return false;
 		if (!contains.containsKey(obj.getId())) {
 			return false;
 		}

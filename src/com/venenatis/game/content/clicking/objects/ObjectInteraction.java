@@ -5,6 +5,7 @@ import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.BrimhavenVines;
 import com.venenatis.game.content.MageArenaGodPrayer;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.rewards.BossRewardChest;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
 import com.venenatis.game.content.skills.agility.Shortcut;
@@ -191,6 +192,10 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+		
+		case 27282:
+			BossRewardChest.open(player, location);
+			break;
 		
 		case 677:
 			int x = player.getX() <= 2970 ? + 4 : -4;

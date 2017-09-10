@@ -160,7 +160,6 @@ public class NPCDeathTask extends Task {
     private void initialDeath(NPC npc) {
         npc.resetFace();
 
-        
         final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
         
         //Sent the cheer animation when defeating Jad
@@ -245,7 +244,7 @@ public class NPCDeathTask extends Task {
 				boss.dropLoot(killer, npc);
 			}
 			// get the drop table
-			int amountOfDrops = 1;//Here
+			int amountOfDrops = 1;
 			Server.getDropManager().create(killer, npc, npc.getLocation(), amountOfDrops);
 		}
 	}

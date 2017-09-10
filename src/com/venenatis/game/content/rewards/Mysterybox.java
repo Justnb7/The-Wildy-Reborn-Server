@@ -149,9 +149,8 @@ public class Mysterybox {
 			default:
 				itemReceived = Utility.randomElement(COMMON_REWARDS);
 			}
-			player.getInventory().add(itemReceived);
+			player.getInventory().replace(MYSTERY_BOX, itemReceived);
 			player.getActionSender().sendMessage("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getName()) + " " + itemReceived.getName() + ".");
-			player.getInventory().remove(MYSTERY_BOX);
 			AchievementHandler.activate(player, AchievementList.WHATS_IN_THE_BOX, 1);
 		    AchievementHandler.activate(player, AchievementList.BOX_LOVE, 1);
 		    AchievementHandler.activate(player, AchievementList.MYSTERY, 1);

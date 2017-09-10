@@ -31,6 +31,10 @@ public class WieldPacketHandler implements PacketType {
 			return;
 		}
 		
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
+		
 		switch (interfaceId) {
 
 		case InterfaceConstants.INVENTORY_INTERFACE:

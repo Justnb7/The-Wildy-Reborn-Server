@@ -44,6 +44,10 @@ public class ActionButtonPacketHandler implements PacketType {
 			return;
 		}
 		
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
+		
 		/**
 		 * How are we going to click buttons when we're dead!
 		 */

@@ -71,6 +71,9 @@ public class ItemOptionPacket implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
 		switch (id) {
 		case OPTION_1:
 			handleItemOption1(player, id);

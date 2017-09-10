@@ -373,29 +373,6 @@ public class Player extends Entity {
     }
 	
 	/**
-	 * The player is still in the tutorial
-	 */
-    private boolean tutorial;
-	
-    /**
-	 * Gets if the player is in the tutorial
-	 * 
-	 * @return
-	 */
-	public boolean inTutorial() {
-		return tutorial;
-	}
-	
-	/**
-	 * Sets if the player is in the tutorial
-	 * 
-	 * @param tutorial
-	 */
-	public void setTutorial(boolean tutorial) { 
-		this.tutorial = tutorial;
-	}
-	
-	/**
 	 * The player has received a starter pack
 	 */
 	private boolean receivedStarter;

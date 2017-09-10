@@ -152,7 +152,6 @@ public class PlayerSave {
 				player.setMuted(details.muted);
 				player.setJailed(details.jailed);
 				player.setPet(details.pet);
-				player.setTutorial(details.inTutorial);
 				player.setReceivedStarter(details.starterReceived);
 				AccountType type = Account.get(details.gameMode);
 				if (type != null)
@@ -277,7 +276,6 @@ public class PlayerSave {
 		private final boolean muted;
 		private final boolean jailed;
 		private final int pet;
-		private final boolean inTutorial;
 		private final boolean starterReceived;
 		private final String gameMode;
 		private final boolean didYouKnowActivated;
@@ -380,7 +378,6 @@ public class PlayerSave {
 			muted = player.isMuted();
 			jailed = player.isJailed();
 			pet = player.getPet();
-			inTutorial = player.inTutorial();
 			starterReceived = player.receivedStarter();
 			gameMode = player.getAccount().getType().alias();
 			didYouKnowActivated = player.is_did_you_know_activated();

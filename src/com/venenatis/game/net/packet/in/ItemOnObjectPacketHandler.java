@@ -48,6 +48,10 @@ public class ItemOnObjectPacketHandler implements PacketType {
 			return;
 		}
 		
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
+		
 		if(def.getName().toLowerCase().contains("magic chest") && def.getActions()[0].toLowerCase().contains("open")) {
 			ShinyChest.searchChest(player, item, slot);
 			return;

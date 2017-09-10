@@ -1181,16 +1181,6 @@ public abstract class Entity {
 	 */
 	public abstract void setDefaultAnimations();
 	
-	private boolean forcedMovement;
-	
-	public void setForcedMovement(boolean active) {
-		this.forcedMovement = active;
-	}
-	
-	public boolean isForcedMovement() {
-		return forcedMovement;
-	}
-	
 	/**
 	 * The force walk variables.
 	 */

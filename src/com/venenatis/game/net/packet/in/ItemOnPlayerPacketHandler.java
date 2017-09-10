@@ -7,6 +7,9 @@ import com.venenatis.game.net.packet.PacketType;
 public class ItemOnPlayerPacketHandler implements PacketType {
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
 		
 	}
 

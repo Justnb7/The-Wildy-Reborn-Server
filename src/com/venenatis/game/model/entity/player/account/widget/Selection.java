@@ -217,7 +217,7 @@ public class Selection {
 		//Set default spellbook
 		player.setSpellBook(SpellBook.LUNAR_MAGICS);
 		//Remove tutorial flag, and remove starter flag.
-		player.setTutorial(false);
+		player.removeAttribute("busy");
 		player.setReceivedStarter(true);
 		//Update players gear bonusses
 		player.getEquipment().calculateWeight();

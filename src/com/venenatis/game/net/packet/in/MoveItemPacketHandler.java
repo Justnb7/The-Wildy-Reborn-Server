@@ -9,7 +9,7 @@ import com.venenatis.game.net.packet.PacketType;
  * @author Patrick van Elderen
  *
  */
-public class SwitchItemPacketHandler implements PacketType {
+public class MoveItemPacketHandler implements PacketType {
 
 	@Override
 	public void handle(Player player, int id, int size) {
@@ -22,6 +22,10 @@ public class SwitchItemPacketHandler implements PacketType {
 		
 		if (interfaceId < 0 || fromSlot < 0 || toSlot < 0)
             return;
+		
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
 		
 		switch(interfaceId) {
 			

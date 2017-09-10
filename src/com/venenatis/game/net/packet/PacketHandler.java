@@ -96,7 +96,7 @@ public class PacketHandler {
 		packetId[185] = new ActionButtonPacketHandler();
 		packetId[130] = new CloseInterfacePacketHandler();
 		packetId[103] = new CommandPacketHandler();
-		packetId[214] = new SwitchItemPacketHandler();
+		packetId[214] = new MoveItemPacketHandler();
 		packetId[140] = new WithdrawAllButOneAction();
 		packetId[141] = new WithdrawModifiableX();
 		packetId[101] = new SetAppearancePacketHandler();

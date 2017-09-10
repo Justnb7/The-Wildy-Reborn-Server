@@ -14,9 +14,23 @@ public class WalkingPacketHandler implements PacketType {
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {
 		
-		//We can't walk because of the following reasons
-		if (player.getCombatState().isDead() || !player.getController().canMove() || !player.receivedStarter()
-				|| player.isTeleporting() || player.isForcedMovement() || player.hasAttribute("busy")) {
+		//Were busy we can't walk
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
+		
+		//We can't walk if were dead
+		if (player.getCombatState().isDead()) {
+			return;
+		}
+		
+		//The controller blocks us from walking
+		if(!player.getController().canMove()) {
+			
+		}
+		
+		//We can't walk whislt teleporting
+		if(player.isTeleporting()) {
 			return;
 		}
 		

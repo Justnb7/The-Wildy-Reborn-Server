@@ -31,6 +31,9 @@ public class ObjectOptionPacketHandler implements PacketType {
 
 	@Override
 	public void handle(final Player player, int packet, int size) {
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
 		switch (packet) {
 		case OPTION_1:
 			handleOption1(player, packet);

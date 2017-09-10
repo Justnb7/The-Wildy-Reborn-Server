@@ -338,7 +338,7 @@ public class LoginManager {
 			
 			if (!succesfulProfileLoad) {
 				player.setNewPlayer(true);
-				player.setTutorial(true);
+				player.setAttribute("busy", true);
 				player.setRunEnergy(100);
 				player.getActionSender().sendRunEnergy();
 			} else {

@@ -61,6 +61,10 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 		
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
+		
 		player.debug(String.format("[PlayerInteractionPacket] Opcode: ", packet));
 		
 		if (player.getCombatState().inCombat()) {

@@ -26,6 +26,10 @@ public class CommandPacketHandler implements PacketType {
 			return;
 		}
 		
+		if (player.getAttribute("busy") != null) {
+			return;
+		}
+		
 		if (!player.getController().canCommand()) {
 			return;
 		}

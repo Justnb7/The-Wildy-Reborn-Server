@@ -33,7 +33,7 @@ public class NpcCombat {
 	/**
 	 * A list of unspawnable npcs on death
 	 */
-	private static List<Integer> unspawnableNpcs = Arrays.asList(5054, 6617);
+	private static List<Integer> unspawnableNpcs = Arrays.asList(5054, 6617, 8017, 8018);
 
 	/**
 	 * Gets the list of unspawnwable npcs

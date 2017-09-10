@@ -151,6 +151,7 @@ public class Bootstrap {
 			ToolData.Tools.declare();
 			//TriviaBot.declare();
 			World.getWorld().init();
+			World.getWorld().getEventManager().appendTimer();
 			ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
 		});
 	}

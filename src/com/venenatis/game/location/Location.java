@@ -824,4 +824,15 @@ public class Location {
 		final int dy = Math.abs(second.getY() - first.getY());
 		return dx + dy;
 	}
+
+	/**
+	 * The player is in the king black dragon area
+	 * 
+	 * @return
+	 */
+	public boolean inBossEvent() {
+		return x >= 3108 && x <= 3118 && y >= 3955 && y <= 3962 ||
+			   x >= 3030 && x <= 3051 && y >= 3529 && y <= 3546 ||
+			   x >= 3348 && x <= 3385 && y >= 3634 && y <= 3663;
+	}
 }

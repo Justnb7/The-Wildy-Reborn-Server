@@ -25,6 +25,8 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
+import com.venenatis.game.task.Task;
+import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.object.impl.webs.SlashWebObject;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
@@ -189,10 +191,16 @@ public class ObjectInteraction {
 		switch(objectId) {
 		
 		case 677:
-			player.getWalkingQueue().reset();
-			player.faceObject(obj);
-			int[] movement = { 0, 0, player.getX() <= 2970 ? 4 : -4, 0, 20, 60, 1, 2 };
-			Agility.forceMovement(player, Animation.create(844), movement, 1, true);
+			player.playAnimation(new Animation(844));
+			World.getWorld().schedule(new Task(2) {
+
+				@Override
+				public void execute() {
+					player.setTeleportTarget(new Location(player.getX() <= 2970 ? player.getX()+ 4 : player.getX() -4, 4383, 2));
+					stop();
+				}
+				
+			});
 			break;
 			
 		case 29171:// fire max cape rack

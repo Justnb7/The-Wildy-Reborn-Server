@@ -234,6 +234,8 @@ public class Constants {
 	public static final int MUSIC_TAB = 13;
 	public static final int LOGOUT_TAB = 10;
 	
-	public static String SPAWNABLES[] = { "Super strength", "Super attack", "Super defence", "Ranging potion", "Magic potion", "Super restore", "Saradomin brew", "Prayer potion", "Superantipoison", "Shark", "Manta ray", "Super combat", "Dark crabs", "Anglerfish" };
+	public static String SPAWNABLES[] = { "Super strength", "Super attack", "Super defence", "Ranging potion",
+			"Magic potion", "Super restore", "Saradomin brew", "Prayer potion", "Superantipoison", "Shark", "Manta ray",
+			"Super combat", "Dark crabs", "Anglerfish" };
 
 }

@@ -136,7 +136,7 @@ public abstract class Area {
 	 *         {@code false} otherwise.
 	 */
 	public static boolean inMultiCombatZone(Entity entity) {
-		return GameConstants.MULTI_COMBAT_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity) || inDaganothMotherCave(entity));
+		return GameConstants.MULTI_COMBAT_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity) || inDaganothMotherCave(entity) || entity.getLocation().inBossEvent());
 	}
 
 	/**

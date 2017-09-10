@@ -7,6 +7,7 @@ import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.combat.npcs.impl.randomEvent.RandomBossEvent;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.NPCHandler;
@@ -41,6 +42,13 @@ public class OwnerCommand implements Command {
 	@Override
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 		switch (parser.getCommand()) {
+		
+		/**
+		 * Starts an event by class name.
+		 */
+		case "eventboss":
+			World.getWorld().getEventManager().setEvent(new RandomBossEvent());
+			return true;
 		
 		case "msg":
 			String shout = "[Server]: "+parser.nextString();

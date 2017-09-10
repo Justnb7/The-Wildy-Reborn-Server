@@ -6,6 +6,7 @@ import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.location.Area;
+import com.venenatis.game.model.combat.npcs.impl.randomEvent.EventManager;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Entity.EntityType;
 import com.venenatis.game.model.entity.MobileCharacterList;
@@ -660,6 +661,12 @@ public class World implements Service {
 			}
 			player.getActionSender().sendMessage(message);
 		}
+	}
+
+	private EventManager eventManager = new EventManager();
+	
+	public EventManager getEventManager() {
+		return eventManager;
 	}
 
 }

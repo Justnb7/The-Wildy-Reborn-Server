@@ -1350,6 +1350,7 @@ public class Player extends Entity {
 	@Override
 	public void process() {
 		farming.farmingProcess();
+		World.getWorld().getEventManager().process();
 		//long startTime = System.currentTimeMillis();
 		if (this.getTimePlayed() < Integer.MAX_VALUE) {
 			this.setTimePlayed(this.getTimePlayed() + 1);

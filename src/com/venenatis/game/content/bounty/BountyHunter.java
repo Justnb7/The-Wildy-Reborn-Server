@@ -120,7 +120,12 @@ public class BountyHunter extends Task {
 		Player target = World.getWorld().getPlayers().get(player.getAttribute(BountyHunterConstants.BOUNTY_TARGET, 0));
 
 		if (target == null || !target.isActive()) {
-			player.getActionSender().sendMessage("@red@Your target has logged out, searching for new target.");
+			player.getActionSender().sendMessage("@red@Your target is no longer available, so you shall be assigned a new target.");
+			return false;
+		}
+		
+		if(target.getCombatState().isDead()) {
+			player.getActionSender().sendMessage("@red@You're target has died. You'll get a new one presently.");
 			return false;
 		}
 		
@@ -149,7 +154,6 @@ public class BountyHunter extends Task {
 				player.getActionSender().sendMessage("@red@The target has left the wilderness, searching for new target.");
 				return false;
 			}
-
 		}
 		return true;
 	}
@@ -212,10 +216,12 @@ public class BountyHunter extends Task {
 			player.setAttribute(BountyHunterConstants.BOUNTY_TARGET, target.getIndex());
 			player.getActionSender().createPlayerHint(10, target.getIndex());
 			determineWealth(player);
+			player.getActionSender().sendMessage("@red@You've been assigned a target: "+target.getUsername());
 
 			target.setAttribute(BountyHunterConstants.BOUNTY_TARGET, player.getIndex());
 			target.getActionSender().createPlayerHint(10, player.getIndex());
 			determineWealth(target);
+			target.getActionSender().sendMessage("@red@You've been assigned a target: "+player.getUsername());
 			return;
 		}
 	}

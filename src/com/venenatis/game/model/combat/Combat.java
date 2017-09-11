@@ -740,14 +740,14 @@ public class Combat {
 		}
 		if (!Area.inMultiCombatZone(target)) { // single combat zones
 			if (target.lastAttacker != player && Combat.hitRecently(target, 4000)) {
-				player.message("That player is already in combat.");
+				player.message("Someone else is already fighting your opponent.");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
 			}
 
 			if (target != player.lastAttacker && Combat.hitRecently(player, 4000)) {
-				player.message("You are already in combat.");
+				player.message("I'm already under attack.");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;

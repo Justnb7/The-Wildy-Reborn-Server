@@ -27,10 +27,13 @@ public class Pet extends NPC {
 	
 	/**
 	 * Drop the pet item, making the pet appear
+	 * 
 	 * @param player
-	 *         The player dropping the item
+	 *            The player dropping the item
 	 * @param item
-	 *         The pet item being dropped
+	 *            The pet item being dropped
+	 * @param onLogin
+	 *            Spawns the pet upon login
 	 * @return Spawn the pet
 	 */
 	public static boolean drop(Player player, Item item, boolean onLogin) {

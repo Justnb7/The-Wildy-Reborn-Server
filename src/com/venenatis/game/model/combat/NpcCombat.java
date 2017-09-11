@@ -192,13 +192,13 @@ public class NpcCombat {
 		}
 		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !Area.inMultiCombatZone(npc)) {
 			player.getCombatState().reset();
-			player.message("This monster is already in combat.");
+			player.message("Someone else is fighting that.");
 			return false;
 		}
 
 		if (Combat.incombat(player) && player.lastAttacker != npc && !Area.inMultiCombatZone(player) && !Boundary.isIn(player, Boundary.KRAKEN)) {
 			Combat.resetCombat(player);
-			player.message("I am already under attack.");
+			player.message("I'm already under attack.");
 			return false;
 		}
 

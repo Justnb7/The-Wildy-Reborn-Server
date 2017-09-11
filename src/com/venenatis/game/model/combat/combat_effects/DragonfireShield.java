@@ -13,6 +13,10 @@ import com.venenatis.game.world.World;
 
 public class DragonfireShield {
 	
+	public static void charge(final Player player) {
+		//Your dragonfire shield is already fulled charged.
+	}
+	
 	public static void dfsSpec(final Player player, final Entity victim) {
 		
 		if(player == null || victim == null) {
@@ -36,7 +40,7 @@ public class DragonfireShield {
 		}
 		
 		if(player.getDfsTimer() > 0) {
-			player.getActionSender().sendMessage("You must let your dragonfire shield cool down before using it again.");
+			player.getActionSender().sendMessage("You must let the shield cool down before using it again.");
 			return;
 		}
 		player.setDfsTimer(50);

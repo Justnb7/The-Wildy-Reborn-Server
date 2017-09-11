@@ -277,7 +277,11 @@ public class PriceChecker extends Container {
 	public boolean buttonAction(int button) {
 		switch(button) {
 		case 108003:
-			open();
+			if (!player.getCombatState().inCombat()) {
+				open();
+			} else {
+				player.getActionSender().sendMessage("You cannot open the price checker screen while in combat.");
+			}
 			return true;
 		case 189118:
 			close();

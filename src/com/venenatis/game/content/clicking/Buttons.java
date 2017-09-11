@@ -11,6 +11,7 @@ import com.venenatis.game.content.sounds_and_music.MusicData;
 import com.venenatis.game.content.teleportation.TeleportHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -381,26 +382,44 @@ public class Buttons {
 			player.setAutoRetaliating(!player.isAutoRetaliating());
 			player.getCombatState().reset();
 			break;
+			
 		case 114226:
 			QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
 			player.getActionSender().sendMessage(
 					"You refresh your information tab.");
 			break;
+			
 		/** Equipment screen */
 		case 108005:
-			player.getActionSender().sendInterface(15106);
+			if (!player.getCombatState().inCombat()) {
+				player.getEquipment().setBonus();
+				player.getActionSender().sendInterface(15106);
+			} else {
+				player.getActionSender().sendMessage("You cannot open the equip screen while in combat!");
+			}
 			break;
+			
+		/** Items kept on death  */	
+		case 108006:
+			if (!player.getCombatState().inCombat()) {
+				ItemsKeptOnDeath.open(player);
+			} else {
+				player.getActionSender().sendMessage("You cannot view items kept on death while in combat!");
+			}
+			break;
+			
+		/** Call follower  */		
+		case 108020:
+			if (player.getPet() > -1) {
+				//TODO ask Jak how to call the pet here
+			} else {
+				player.getActionSender().sendMessage("You do not have a follower.");
+			}
+			break;
+			
 		/* Logout */
 		case 9154:
 			player.logout();
-			break;
-		case 108006:
-			if (player.getLastCombatAction().elapsed(0)) {
-				ItemsKeptOnDeath.open(player);
-			} else {
-				player.getActionSender().sendMessage(
-						"You cannot view items kept on death while in combat!");
-			}
 			break;
 		}
 	}

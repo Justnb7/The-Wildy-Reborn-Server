@@ -9,29 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/collisionmap.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/commons-compress-1.0.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/commons-io-2.4.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/commons-lang3-3.3.2.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/json-lib-2.4-jdk15.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/json-simple-1.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/mchange-commons-java-0.2.8.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/mina-core-2.0.0-M6.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/motiservice-api-1-0-2.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/mvgate2.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/mysql.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/netty-all-4.0.27.Final.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/spark-pebble-plugin-1.0.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/gson-2.3.1.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$MODULE_DIR$/lib/guava-18.0-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="pat libs" level="project" />
+    <orderEntry type="library" name="joda-time-2.4" level="project" />
   </component>
 </module>

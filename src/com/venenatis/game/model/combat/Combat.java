@@ -1,7 +1,5 @@
 package com.venenatis.game.model.combat;
 
-import java.util.Random;
-
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.activity.minigames.Minigame;
@@ -42,6 +40,8 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
+
+import java.util.Random;
 
 public class Combat {
 	
@@ -982,7 +982,7 @@ public class Combat {
                     dam1 *= 1.15;
                 }
                 boolean fire = true;
-                int shield = defender != null && defender.isPlayer() ? ((Player) defender).getEquipment().get(EquipmentConstants.SHIELD_SLOT).getId() : -1;
+                int shield = defender.isPlayer() ? defender.asPlayer().getEquipment().getId(EquipmentConstants.SHIELD_SLOT) : -1;
                 if (shield == 11283 || shield == 1540) {
                     fire = false;
                 }

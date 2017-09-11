@@ -46,6 +46,7 @@ import com.venenatis.game.model.combat.data.WeaponInterface;
 import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.combat.npcs.impl.zulrah.Zulrah;
+import com.venenatis.game.model.combat.npcs.impl.zulrah.ZulrahLostItems;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
@@ -3187,5 +3188,14 @@ public class Player extends Entity {
 	
 	public void setYellTag(String tag) {
 		this.yellTag = tag;
+	}
+	
+	private ZulrahLostItems lostItemsZulrah;
+
+	public ZulrahLostItems getZulrahLostItems() {
+		if (lostItemsZulrah == null) {
+			lostItemsZulrah = new ZulrahLostItems(this);
+		}
+		return lostItemsZulrah;
 	}
 }

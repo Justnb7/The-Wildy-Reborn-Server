@@ -512,7 +512,7 @@ public class Combat {
 		int clientSpeed;
 		int showDelay;
 		int slope;
-		if (!special || (bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW || bowType == BowType.STEEL_CBOW || bowType == BowType.MITH_CBOW || bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW)) {
+		if (!special || (isCrossBow(bowType))) {
 			if (pullback != null) {
 				player.playGraphic(pullback);
 			}
@@ -528,7 +528,7 @@ public class Combat {
 					slope = 5;
 				}
 			} else {
-				if (bowType == BowType.KARILS_XBOW || bowType == BowType.BRONZE_CBOW || bowType == BowType.IRON_CBOW || bowType == BowType.STEEL_CBOW || bowType == BowType.MITH_CBOW || bowType == BowType.ADAMANT_CBOW || bowType == BowType.RUNE_CBOW || bowType == BowType.ARMADYL_CBOW) {
+				if (isCrossBow(bowType)) {
 					clientSpeed = 55;
 					showDelay = 45;
 					slope = 5;

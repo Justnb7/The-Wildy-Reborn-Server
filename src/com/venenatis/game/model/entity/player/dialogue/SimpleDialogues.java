@@ -12,6 +12,15 @@ import com.venenatis.game.model.entity.player.Player;
  */
 public final class SimpleDialogues {
 
+	public static void sendItemStatement(Player player, int id, Object... strings) {
+		player.getDialogueManager().start(new Dialogue() {
+			@Override
+			protected void start(Object... parameters) {
+				send(DialogueType.ITEM, id, strings);
+			}
+		});
+	}
+	
 	public static void sendStatement(Player player, Object... strings) {
 		player.getDialogueManager().start(new Dialogue() {
 			@Override
@@ -27,7 +36,7 @@ public final class SimpleDialogues {
 			protected void start(Object... parameters) {
 				// XXX: Solution to ClassCastException with multiple params
 				Deque<Object> objs = new LinkedList<>(Arrays.asList(strings));
-				objs.addFirst(Expression.ANGRY);
+				objs.addFirst(Expression.CALM_TALK);
 				objs.addFirst(id);
 				send(DialogueType.NPC, Iterables.toArray(objs, Object.class));
 			}

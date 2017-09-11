@@ -65,7 +65,12 @@ public enum CombatStyle {
 	/**
 	 * Venenatis prayer drain attack
 	 */ 
-	DRAIN_PRAYER,
+	DRAIN_PRAYER, 
+	
+	/**
+	 * Venenatis special attack
+	 */
+	WEB,
 	
 	;
 }

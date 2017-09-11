@@ -20,6 +20,7 @@ import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.model.entity.player.controller.ControllerManager;
+import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.entity.player.instance.InstancedArea;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.masks.Animation;
@@ -128,10 +129,8 @@ public class DeathTask extends Task {
 			if (instance != null) {
 				InstancedAreaManager.getSingleton().disposeOf(instance);
 			}
-			//TODO
-			//victim.getZulrahLostItems().store();
-			//victim.talkingNpc = 2040;
-			//victim.getDH().sendNpcChat("It looks like Zulrah beat you.", "I'll give you back your items for 500,000GP.", "Talk to me when you're ready.");
+			victim.getZulrahLostItems().store();
+			SimpleDialogues.sendMobStatement(victim, 2040, "It looks like Zulrah beat you.", "I'll give you back your items for 500,000GP.", "Talk to me when you're ready.");
 		}
 		
 		/**

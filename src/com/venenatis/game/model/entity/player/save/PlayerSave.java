@@ -629,6 +629,11 @@ public class PlayerSave {
 					player.getHerbSack().setContents(details.herbSack);
 				}*/
 				
+				if (details.lostItemsZulrah != null) {
+					player.getZulrahLostItems().add(new Item(details.lostItemsZulrah.id, details.lostItemsZulrah.amount));
+				}
+				
+				
 			} finally {
 				if (reader != null) {
 					reader.close();
@@ -644,6 +649,7 @@ public class PlayerSave {
 		private final Item[] bank;
 		private final Item[] runePouch;
 		//private final Multiset<Integer> herbSack;
+		private Item lostItemsZulrah;
 
 		public PlayerContainer(Player player) {
 			inventory = player.getInventory().toTrimmedArray();
@@ -652,6 +658,12 @@ public class PlayerSave {
 			bank = player.getBank().toNonNullArray();
 			runePouch = player.runePouchContainer.toTrimmedArray();
 			//herbSack = player.getHerbSack().getContents();
+			for (Item item : player.getZulrahLostItems()) {
+				if (item == null) {
+					continue;
+				}
+				lostItemsZulrah = new Item(item.getId(), item.getAmount());
+			}
 		}
 
 		public void parseDetails(Player player) throws IOException {

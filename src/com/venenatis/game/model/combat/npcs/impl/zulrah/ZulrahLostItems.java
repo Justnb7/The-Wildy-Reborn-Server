@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 
 
 public class ZulrahLostItems extends ArrayList<Item> {
@@ -28,20 +29,18 @@ public class ZulrahLostItems extends ArrayList<Item> {
 	 * Stores the players items into a list and deletes their items
 	 */
 	public void store() {
-		//TODO store items
-		/*for (int i = 0; i < player.playerItems.length; i++) {
-			if (player.playerItems[i] < 1) {
+		for (Item inventory : player.getInventory().toArray()) {
+			if (inventory == null)
 				continue;
-			}
-			add(new GameItem(player.playerItems[i] - 1, player.playerItemsN[i]));
+			add(new Item(inventory.id, inventory.amount));
 		}
-		for (int i = 0; i < player.playerEquipment.length; i++) {
-			if (player.playerEquipment[i] < 1) {
+
+		for (Item equipment : player.getEquipment().toArray()) {
+			if (equipment == null)
 				continue;
-			}
-			add(new GameItem(player.playerEquipment[i], player.playerEquipmentN[i]));
-		}*/
-		
+			add(new Item(equipment.id, equipment.amount));
+		}
+
 		player.getEquipment().clear(true);
 		player.getInventory().clear(true);
 	}
@@ -49,8 +48,7 @@ public class ZulrahLostItems extends ArrayList<Item> {
 	public void retain() {
 		int price = 500_000;
 		if (!player.getInventory().contains(995, price)) {
-			//player.talkingNpc = 2040;
-			//player.getDH().sendNpcChat("You need at least 500,000GP to claim your items.");
+			SimpleDialogues.sendMobStatement(player, 2040, "You need at least 500,000GP to claim your items.");
 			return;
 		}
 		for (Item item : this) {
@@ -58,8 +56,7 @@ public class ZulrahLostItems extends ArrayList<Item> {
 		}
 		clear();
 		player.getInventory().remove(995, price);
-		//player.talkingNpc = 2040;
-		//player.getDH().sendNpcChat("You have retained all of your lost items for 500,000GP.", "Your items are in your bank.");
+		SimpleDialogues.sendMobStatement(player, 2040, "You have retained all of your lost items for 500,000GP.", "Your items are in your bank.");
 	}
 
 }

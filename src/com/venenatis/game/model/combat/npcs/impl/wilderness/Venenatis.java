@@ -29,6 +29,8 @@ public class Venenatis extends AbstractBossCombat {
 
 	private static final int EARTH_BLAST_PROJECTILE = 165;
 	
+	private static final int SPIDER_WEB_PROJECTILE = 1254;
+	
 	/**
 	 * The random number generator.
 	 */
@@ -55,12 +57,14 @@ public class Venenatis extends AbstractBossCombat {
 			case 0:
 			case 1:
 			case 2:
-			case 3:
-			case 4:
 				style = CombatStyle.MAGIC;
 				break;
 			case 5:
 				style = CombatStyle.DRAIN_PRAYER;
+				break;
+			case 3:
+			case 4:
+				style = CombatStyle.WEB;
 				break;
 			}
 		}
@@ -112,8 +116,6 @@ public class Venenatis extends AbstractBossCombat {
 					}
 				}
 			}
-				
-			
 			break;
 		case DRAIN_PRAYER:
 			attacker.playAnimation(MAGIC_ANIMATION);
@@ -135,6 +137,39 @@ public class Venenatis extends AbstractBossCombat {
 					near.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(1);
 				}
 			}
+			break;
+			
+		case WEB:
+			attacker.playAnimation(MAGIC_ANIMATION);
+			randomHit = Utility.random(maxHit);
+			int rClientSpeed;
+			int rGfxDelay;
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
+				rClientSpeed = 70;
+				rGfxDelay = 80;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
+				rClientSpeed = 90;
+				rGfxDelay = 100;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
+				rClientSpeed = 110;
+				rGfxDelay = 120;
+			} else {
+				rClientSpeed = 130;
+				rGfxDelay = 140;
+			}
+			hitDelay = (rGfxDelay / 20) - 1;
+			
+			// Send the projectile
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), SPIDER_WEB_PROJECTILE, 45, 50, rClientSpeed, 35, 35, victim.getProjectileLockonIndex(), 10, 48));
+			
+			int sentTwice = random.nextInt(10);
+			if(sentTwice > 5) {
+				//Sometimes venenatis does his special move simultaneously
+				victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, true).send(hitDelay);
+			}
+			
+			// Create the hit instance
+			victim.take_hit(attacker, randomHit, CombatStyle.MAGIC, false, true).send(hitDelay);
 			break;
 		default:
 			break;

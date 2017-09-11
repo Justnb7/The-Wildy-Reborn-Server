@@ -140,7 +140,7 @@ public class DeathTask extends Task {
 		boolean admin_keeps_items = victim.getUsername().equalsIgnoreCase("patrick") && victim.inDebugMode() || victim.getUsername().equalsIgnoreCase("matthew") ? true : false;
 		
 		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
-		if (!controller.isSafe() && !admin_keeps_items) {
+		if (!controller.isSafe() && !admin_keeps_items && !Boundary.isIn(victim, Boundary.FIGHT_CAVE)) {
 			PlayerDrops.dropItems(victim, attacker);
 		}
 	}

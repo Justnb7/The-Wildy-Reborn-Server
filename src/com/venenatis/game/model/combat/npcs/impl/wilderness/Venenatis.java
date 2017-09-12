@@ -50,10 +50,7 @@ public class Venenatis extends AbstractBossCombat {
 		int attackDelay = 6;
 		int spellDelay = 7;
 
-		if (attacker.getLocation().isWithinDistance(attacker, victim, 2)) {
-			style = CombatStyle.MELEE;
-		} else {
-			switch (Utility.random(5)) {
+		switch (Utility.random(7)) {
 			case 0:
 			case 1:
 			case 2:
@@ -66,7 +63,9 @@ public class Venenatis extends AbstractBossCombat {
 			case 4:
 				style = CombatStyle.WEB;
 				break;
-			}
+			case 6:
+			case 7:
+				style = CombatStyle.MELEE;
 		}
 
 		switch (style) {

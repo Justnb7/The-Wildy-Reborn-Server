@@ -728,7 +728,7 @@ public class Combat {
 		int target_CB = target.getCombatLevel();
 		if (Area.inWilderness(player)) {
 			if (!bypassCosImTheBest && ((myCB > target_CB + target.getWildLevel()) || (myCB < target_CB - target.getWildLevel()))) {
-				player.message("You can only fight players in your combat range!");
+				player.message("You can't attack "+target.getUsername()+" - your level difference is too great.");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;
@@ -736,7 +736,7 @@ public class Combat {
 		} else {
 			// All other places not in wildy: range is +/- 12 combat levels
 			if (!bypassCosImTheBest && ((myCB > target_CB + 12) || (myCB < target_CB - 12))) {
-				player.message("You can only fight players in your combat range!");
+				player.message("You can't attack "+target.getUsername()+" - your level difference is too great.");
 				player.getWalkingQueue().reset();
 				Combat.resetCombat(player);
 				return false;

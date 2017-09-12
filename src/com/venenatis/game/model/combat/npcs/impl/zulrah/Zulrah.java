@@ -21,6 +21,7 @@ import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.instance.SingleInstancedArea;
 import com.venenatis.game.model.entity.player.instance.impl.SingleInstancedZulrah;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
@@ -151,9 +152,9 @@ public class Zulrah {
 		}
 		SerializablePair<String, Long> globalBest = Server.getServerData().getZulrahTime();
 		if (globalBest.getFirst() == null || globalBest.getSecond() == null || time < globalBest.getSecond() && globalBest.getSecond() != 0) {
-			World.getWorld().sendWorldMessage("<img=10></img>[<col=255>News</col>] <col=CC0000>" + Utility.capitalize(player.getUsername()) + "</col> set the record for best time against zulrah with " + duration + ".", false);
+			World.getWorld().sendWorldMessage("<img=24></img>[<col=255>News</col>] <col=CC0000>" + Utility.capitalize(player.getUsername()) + "</col> set the record for best time against zulrah with " + duration + ".", false);
 			if (globalBest.getFirst() != null && globalBest.getSecond() != null) {
-				World.getWorld().sendWorldMessage("<img=10></img>[<col=255>News</col>] The old record was set by <col=CC0000>" + globalBest.getFirst() + "</col> with a time of <col=CC0000>" + Utility.toFormattedMS(globalBest.getSecond()) + "</col>.", false);
+				World.getWorld().sendWorldMessage("<img=24></img>[<col=255>News</col>] The old record was set by <col=CC0000>" + globalBest.getFirst() + "</col> with a time of <col=CC0000>" + Utility.toFormattedMS(globalBest.getSecond()) + "</col>.", false);
 			}
 			Server.getServerData().setSerializablePair(new SerializablePair<>(player.getUsername(), time));
 		}
@@ -182,7 +183,8 @@ public class Zulrah {
 				if (container.getTotalTicks() == 2) {
 					npc.requestTransform(6709);
 				} else if (container.getTotalTicks() == 3) {
-					npc.setLocation(new Location(location.getLocation().x, location.getLocation().y));
+					//npc.setLocation(new Location(location.getLocation().x, location.getLocation().y));
+					npc.teleport(new Location(location.getLocation().x, location.getLocation().y));
 					//TODO ask Jak what this is?
 					//player.rebuildNPCList = true;
 				} else if (container.getTotalTicks() == 5) {

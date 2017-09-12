@@ -294,7 +294,6 @@ public class NpcCombat {
 			return;
 		}
 		
-		
 		// Check validty of rooms
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {

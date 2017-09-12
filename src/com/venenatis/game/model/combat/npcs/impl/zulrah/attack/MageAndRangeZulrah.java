@@ -29,6 +29,8 @@ public class MageAndRangeZulrah extends AbstractBossCombat {
 		
 		CombatStyle style = CombatStyle.MAGIC;
 		
+		npc.setFacePlayer(true);
+		
 		if (Utility.random(3) > 0) {
 			style = CombatStyle.MAGIC;	
 		} else {

@@ -8,6 +8,8 @@ package com.venenatis.game.model.masks;
  */
 public class Graphic {
 
+	public static final Graphic STUNNED_GRAPHIC = Graphic.create(80, 100 << 16);
+
 	/**
 	 * Creates an graphic with no delay.
 	 * 

@@ -10,7 +10,7 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Location3D;
 import com.venenatis.game.util.Utility;
 
-public class ZulrahMelee extends AbstractBossCombat {
+public class ZulrahMeleeState extends AbstractBossCombat {
 
 	@Override
 	public void execute(Entity attacker, Entity victim) {
@@ -23,7 +23,8 @@ public class ZulrahMelee extends AbstractBossCombat {
 		
 		Player pVictim = (Player)victim;
 		
-		npc.setFacePlayer(true);
+		npc.setFacePlayer(false);
+		npc.face(pVictim, pVictim.getLocation());
 		
 		Animation anim = Animation.create(npc.getAttackAnimation());
 		attacker.playAnimation(anim);
@@ -35,16 +36,18 @@ public class ZulrahMelee extends AbstractBossCombat {
 		/**
 		 * Zulrah
 		 */
-		if (npc.getId() == 2043 && pVictim.getZulrahEvent().getNpc() != null && pVictim.getZulrahEvent().getNpc().equals(npc)) {
+		if (pVictim.getZulrahEvent().getNpc() != null && pVictim.getZulrahEvent().getNpc().equals(npc)) {
 			Boundary boundary = new Boundary(npc.targetedLocation.getX(), npc.targetedLocation.getY(), npc.targetedLocation.getX(), npc.targetedLocation.getY());
 			if (!Boundary.isIn(pVictim, boundary)) {
 				return;
 			}
-			randomHit = 20 + Utility.random(25);
+			randomHit = Utility.random(41);
 		}
 		
-		victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send(12);
-		attacker.getCombatState().setAttackDelay(7);
+		pVictim.stun(6, "You have been stunned.", true);
+		
+		victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send(6);
+		attacker.getCombatState().setAttackDelay(9);
 	}
 
 	@Override

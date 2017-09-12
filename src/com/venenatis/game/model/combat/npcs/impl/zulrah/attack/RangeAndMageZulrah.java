@@ -39,6 +39,8 @@ public class RangeAndMageZulrah extends AbstractBossCombat {
 			}
 		}
 		
+		npc.setFacePlayer(true);
+		
 		chance = Utility.random(chance);
 		
 		if (chance < 2) {

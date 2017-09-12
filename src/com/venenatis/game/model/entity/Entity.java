@@ -975,7 +975,7 @@ public abstract class Entity {
 			return;
 		}
 		
-		if (!canFacePlayer()) {
+		if (!facePlayer) {
 			if (entityFaceIndex == -1) {
 				return;
 			}

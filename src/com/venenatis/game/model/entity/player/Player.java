@@ -73,6 +73,7 @@ import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.instance.impl.FightCaveInstance;
 import com.venenatis.game.model.entity.player.instance.impl.KrakenInstance;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.model.masks.WalkingQueue;
 import com.venenatis.game.model.req.RequestManager;
@@ -94,6 +95,33 @@ import com.venenatis.server.Server;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	public void stun(int stunTime, String string, boolean gfx) {
+
+		if (gfx) {
+			playGraphic(Graphic.STUNNED_GRAPHIC);
+		}
+		getActionSender().sendMessage(string);
+		setAttribute("stunned", true);
+		World.getWorld().schedule(new Task(stunTime) {
+
+			@Override
+			public void execute() {
+				removeAttribute("stunned");
+				this.stop();
+			}
+
+		});
+
+	}
+
+	public void stunInstantly(int stunTime, String string, boolean gfx) {
+		if (gfx) {
+			playGraphic(Graphic.STUNNED_GRAPHIC);
+		}
+		getActionSender().sendMessage(string);
+		setAttribute("stunned", true);
+	}
 	
     private boolean completionist;
 	

@@ -35,7 +35,10 @@ import com.venenatis.game.task.impl.VenomDrainTick;
 import com.venenatis.game.util.MutableNumber;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.pathfinder.BasicPoint;
 import com.venenatis.game.world.pathfinder.Directions;
+import com.venenatis.game.world.pathfinder.PathFinder;
+import com.venenatis.game.world.pathfinder.PathState;
 import com.venenatis.game.world.pathfinder.TileControl;
 import com.venenatis.game.world.pathfinder.region.Coverage;
 import com.venenatis.game.world.pathfinder.region.RegionStore;
@@ -1454,6 +1457,60 @@ public abstract class Entity {
 	public Entity setCurseActive(int id, boolean curseActive) {
 		this.curseActive[id] = curseActive;
 		return this;
+	}
+
+	/**
+	 * 
+	 * @param pathFinder
+	 * @param entity
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public PathState doPath(PathFinder pathFinder, Entity entity, int x, int y) {
+		return doPath(pathFinder, entity, null, x, y, false, true);
+	}
+	
+	/**
+	 * 
+	 * @param pathFinder
+	 * @param entity
+	 * @param target
+	 * @param x
+	 * @param y
+	 * @param ignoreLastStep
+	 * @param addToWalking
+	 * @return
+	 */
+	public PathState doPath(final PathFinder pathFinder, final Entity entity, final Entity target, final int x, final int y, final boolean ignoreLastStep, boolean addToWalking) {
+		if (entity.getCombatState().isDead()) {
+			PathState state = new PathState();
+			state.routeFailed();
+			return state;
+		}
+		Location destination = Location.create(x, y, entity.getLocation().getZ());
+		Location base = entity.getLocation();
+		int srcX = base.getLocalX();
+		int srcY = base.getLocalY();
+		int destX = destination.getLocalX(base);
+		int destY = destination.getLocalY(base);
+		PathState state = pathFinder.findPath(entity, target, entity.getLocation(), srcX, srcY, destX, destY, 1, entity.isPlayer() && ((Player)entity).getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
+		if (state != null && addToWalking) {
+			if (entity.isPlayer()) {
+				Player p = (Player)entity;
+				p.getWalkingQueue().reset();
+				for (BasicPoint step : state.getPoints()) {
+					//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
+					//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
+					p.getWalkingQueue().addStep(step.getX(), step.getY());
+				}
+				p.getWalkingQueue().finish();
+				//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
+			} else {
+				System.err.println("HELP WHO");
+			}
+		}
+		return state;
 	}
 
 }

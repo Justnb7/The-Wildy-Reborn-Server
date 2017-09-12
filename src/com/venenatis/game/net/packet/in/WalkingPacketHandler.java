@@ -29,7 +29,13 @@ public class WalkingPacketHandler implements PacketType {
 			
 		}
 		
-		//We can't walk whislt teleporting
+		//We can't walk whilst being stunned
+		if (player.hasAttribute("stunned")) {
+			player.getActionSender().sendMessage("You're stunned!");
+			return;
+		}
+		
+		//We can't walk whilst teleporting
 		if(player.isTeleporting()) {
 			return;
 		}

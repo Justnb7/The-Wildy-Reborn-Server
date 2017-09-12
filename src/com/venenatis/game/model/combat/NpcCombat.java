@@ -161,6 +161,10 @@ public class NpcCombat {
 		}
 		if (npc.transforming || player.getZulrahEvent().isTransforming())
 			return false;
+		
+		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned")) {
+			return false;
+		}
 
 		if (!Slayer.canAttack(player, npc)) {
 			return false;

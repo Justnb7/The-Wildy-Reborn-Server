@@ -67,6 +67,9 @@ public class ConsumeItemAction extends Action {
 		 * Food
 		 */
 		if (food != null) {
+			if(player.hasAttribute("stunned")) {
+				return;
+			}
 			if (player.getDuelArena().getRules().get(DuelRule.FOOD)) {
 				player.getActionSender().sendMessage("Consuming food has been disabled!");
 				return;
@@ -138,6 +141,9 @@ public class ConsumeItemAction extends Action {
 				AchievementHandler.activate(player, AchievementList.THE_OBESITY_IS_REAL, 1);
 			}
 			} else if (drink != null && player.getCombatState().canDrink()) {
+				if(player.hasAttribute("stunned")) {
+					return;
+				}
 				if (player.getDuelArena().getRules().get(DuelRule.DRINKS)) {
 					player.getActionSender().sendMessage("Consuming potions has been disabled!");
 					return;

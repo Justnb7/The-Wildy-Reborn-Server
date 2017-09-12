@@ -57,10 +57,17 @@ public class SpecialAttackHandler {
 		for (int i : ch.weapons()) {
 			specials.put(i, ch);
 		}
+		
 		SpecialAttack gm = new GraniteMaul();
 		for (int i : gm.weapons()) {
 			specials.put(i, gm);
 		}
+		
+		SpecialAttack ds = new DragonSpear();
+		for (int i : ds.weapons()) {
+			specials.put(i, ds);
+		}
+		
 		specials.put(3204, new DragonHalberd());
 		specials.put(13263, new AbyssalBludgeon());
 		specials.put(12006, new AbyssalTentacle());

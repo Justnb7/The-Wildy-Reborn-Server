@@ -710,16 +710,20 @@ public class Combat {
 			return false;
 		}
 		
+		if (!player.receivedStarter() || !player.receivedStarter()) {
+			player.message("You cannot attack this player.");
+			Combat.resetCombat(player);
+			player.getWalkingQueue().reset();
+			return false;
+		}
+		
 		if (!Area.inWilderness(player) || !Area.inWilderness(target)) {
 			Combat.resetCombat(player);
 			player.getWalkingQueue().reset();
 			return false;
 		}
 		
-		if (!player.receivedStarter() || !player.receivedStarter()) {
-			player.message("You cannot attack this player.");
-			Combat.resetCombat(player);
-			player.getWalkingQueue().reset();
+		if (target.hasAttribute("busy") || target.hasAttribute("stunned")) {
 			return false;
 		}
 

@@ -115,6 +115,10 @@ public class Teleport {
 		if (!player.getController().canTeleport()) {
 			return false;
 		}
+		
+		if (player.hasAttribute("stunned")) {
+            return false;
+        }
 
 		if (isTeleporting()) {
 			return false;

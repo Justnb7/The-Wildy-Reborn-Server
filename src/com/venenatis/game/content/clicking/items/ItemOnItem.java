@@ -1,6 +1,7 @@
 package com.venenatis.game.content.clicking.items;
 
 import com.venenatis.game.content.PotionCombinating;
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.rewards.CrystalChest;
 import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.firemaking.Firemaking;
@@ -194,7 +195,36 @@ public class ItemOnItem {
 			player.getInventory().add(new Item(11800, 1));
 			return;
 		}
-		
-	}
 
+		switch (withItem.getId()) {
+
+		case 13280:
+			switch (usedItem.getId()) {
+			case 13124:
+				SkillCapePerks.mixCape(player, "ARDOUGNE");
+				break;
+
+			case 6570:
+				SkillCapePerks.mixCape(player, "FIRE");
+				break;
+
+			case 10499:
+				SkillCapePerks.mixCape(player, "AVAS");
+				break;
+
+			case 2412:
+				SkillCapePerks.mixCape(player, "SARADOMIN");
+				break;
+
+			case 2413:
+				SkillCapePerks.mixCape(player, "GUTHIX");
+				break;
+
+			case 2414:
+				SkillCapePerks.mixCape(player, "ZAMORAK");
+				break;
+			}
+			break;
+		}
+	}
 }

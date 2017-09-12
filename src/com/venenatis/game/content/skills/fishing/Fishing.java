@@ -1,9 +1,11 @@
 package com.venenatis.game.content.skills.fishing;
 
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
@@ -160,10 +162,26 @@ public class Fishing {
 
 			player.getActionSender().sendSound(378, 0, 0);
 
-			Item id = new Item(f.getRawFishId());
+			Item id = new Item(f.getRawFishId(), SkillCapePerks.FISHING.isWearing(player) && Utility.random(2) == 1 ? 2 : 1);
 			String name = id.getName();
 			player.getInventory().add(id);
 			player.getSkills().addExperience(Skills.FISHING, f.getExperience());
+			clueBottles(player);
+			
+			if (Boundary.isIn(player, Boundary.RESOURCE_AREA)) {
+				if (Utility.random(15) == 5) {
+					int randomAmount = Utility.random(5) + 1;
+					player.getActionSender().sendMessage("You received x" + randomAmount + " blood money while fishing!");
+					player.getInventory().add(13307, randomAmount);
+				}
+			}
+
+			if (Utility.random(12000) == 5555) {
+				int[] anglerOuftit = { 13258, 13259, 13260, 13261 };
+				player.getInventory().addOrCreateGroundItem(player, new Item(anglerOuftit[Utility.random(anglerOuftit.length - 1)]));
+				player.getActionSender().sendMessage("You notice a angler piece floating in the water and pick it up.");
+			}
+			
 			heronPet(player);
 			player.getActionSender().sendMessage("You manage to catch " + getFishStringMod(name) + name+".");
 			AchievementHandler.activate(player, AchievementList.FISHERMAN, 1);
@@ -171,6 +189,21 @@ public class Fishing {
 		}
 
 		return true;
+	}
+
+	private void clueBottles(Player player) {
+		int chance = 20000 / 40;
+		int bottleRoll = Utility.random(10);
+		if (Utility.random(chance) == 1) {
+			player.getActionSender().sendMessage("You catch a clue bottle!");
+			if (bottleRoll < 6) {
+				player.getInventory().add(13648, 1);
+			} else if (bottleRoll > 5 && bottleRoll < 9) {
+				player.getInventory().addOrCreateGroundItem(player, new Item(13649));
+			} else {
+				player.getInventory().addOrCreateGroundItem(player, new Item(13650));
+			}
+		}
 	}
 
 	private String getFishStringMod(String name) {

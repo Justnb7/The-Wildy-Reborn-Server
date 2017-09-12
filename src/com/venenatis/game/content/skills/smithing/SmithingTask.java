@@ -1,5 +1,6 @@
 package com.venenatis.game.content.skills.smithing;
 
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -85,8 +86,18 @@ public class SmithingTask extends Task {
 		}
 
 		player.getSkills().addExperience(Skills.SMITHING, getExperience() * SMITHING_MODIFIER);
-
-		player.getInventory().remove(new Item(bar), false);
+		/**
+		 * Chance of saving a bar while wearing herblore or max cape
+		 */
+		if (SkillCapePerks.SMITHING.isWearing(player) || SkillCapePerks.isWearingMaxCape(player)) {
+			if (Utility.random(4) == 2) {
+				player.getActionSender().sendMessage("You manage to save a bar.");
+			} else {
+				player.getInventory().remove(new Item(bar), false);
+			}
+		} else {
+			player.getInventory().remove(new Item(bar), false);
+		}
 		player.getInventory().add(new Item(smith), true);
 
 		player.playAnimation(Animation.create(898));

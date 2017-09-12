@@ -5,6 +5,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.consumables.Consumables.Drink;
 import com.venenatis.game.consumables.Consumables.Food;
 import com.venenatis.game.consumables.Consumables.PotionType;
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
@@ -186,6 +187,8 @@ public class ConsumeItemAction extends Action {
 				case PRAYER_POTION:
 					player.getActionSender().sendMessage("You drink some of your restore prayer potion.");
 					player.getSkills().setLevel(5, (int) (player.getSkills().getLevel(5) + (player.getSkills().getLevelForExperience(5) * .33)));
+					if (SkillCapePerks.PRAYER.isWearing(player) || SkillCapePerks.isWearingMaxCape(player))
+						player.getSkills().setLevel(5, (int) (player.getSkills().getLevel(5) + (player.getSkills().getLevelForExperience(5) + 5)));
 					if (player.getSkills().getLevel(5) > player.getSkills().getLevelForExperience(5))
 						player.getSkills().setLevel(5, player.getSkills().getLevelForExperience(5));
 					player.getActionSender().sendSkillLevel(Skills.PRAYER);
@@ -198,6 +201,8 @@ public class ConsumeItemAction extends Action {
 						int modification = (int) (player.getSkills().getLevelForExperience(skill) / 3);
 						if (skill == Skills.PRAYER) {
 							player.getSkills().setLevel(5, (int) (player.getSkills().getLevel(5) + 1 + (player.getSkills().getLevelForExperience(5) * .33)));
+							if (SkillCapePerks.PRAYER.isWearing(player) || SkillCapePerks.isWearingMaxCape(player))
+								player.getSkills().setLevel(5, (int) (player.getSkills().getLevel(5) + (player.getSkills().getLevelForExperience(5) + 5)));
 							if (player.getSkills().getLevel(5) > player.getSkills().getLevelForExperience(5))
 								player.getSkills().setLevel(5, player.getSkills().getLevelForExperience(5));
 							player.getActionSender().sendSkillLevel(Skills.PRAYER);

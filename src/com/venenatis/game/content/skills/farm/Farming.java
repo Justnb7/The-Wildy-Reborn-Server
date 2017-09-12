@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.location.Location;
@@ -44,7 +45,7 @@ public class Farming {
 	}
 	
 	private boolean hasMagicSecateurs() {
-		return player.getInventory().contains(7409) || player.getEquipment().contains(7409, 3);
+		return player.getInventory().contains(7409) || player.getEquipment().contains(7409, 3) || SkillCapePerks.FARMING.isWearing(player) || SkillCapePerks.isWearingMaxCape(player);
 	}
 
 	public void patchObjectInteraction(final int objectId, final int itemId, Location location) {

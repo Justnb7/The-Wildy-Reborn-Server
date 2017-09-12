@@ -7,10 +7,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.util.Utility;
 
 /**
  * The herblore skill.
@@ -79,7 +81,18 @@ public class Herblore {
 			}
 			Arrays.asList(p.getIngredients()).stream().forEach(ing -> player.getInventory().remove(new Item(ing.getId(), ing.getAmount())));
 			player.getInventory().remove(new Item(227, 1));
-			player.getInventory().remove(new Item(p.getPrimary().getId(), p.getPrimary().getAmount()));
+			/**
+			 * Chance of saving a herb while wearing herblore or max cape
+			 */
+			if (SkillCapePerks.HERBLORE.isWearing(player) || SkillCapePerks.isWearingMaxCape(player)) {
+				if (Utility.random(4) == 2) {
+					player.getActionSender().sendMessage("You manage to save an ingredient.");
+				} else {
+					player.getInventory().remove(new Item(p.getPrimary().getId(), p.getPrimary().getAmount()));
+				}
+			} else {
+				player.getInventory().remove(new Item(p.getPrimary().getId(), p.getPrimary().getAmount()));
+			}
 			player.getInventory().add(new Item(p.getResult().getId(), p.getResult().getAmount()));
 			player.getSkills().addExperience(Skills.HERBLORE, p.getExperience() * Constants.SKILL_MODIFIER);
 			player.getActionSender().sendMessage("You combine all of the ingredients and make a " + definition.getName() + ".");

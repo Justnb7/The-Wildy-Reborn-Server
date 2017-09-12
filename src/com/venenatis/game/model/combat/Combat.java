@@ -1,7 +1,10 @@
 package com.venenatis.game.model.combat;
 
+import java.util.Random;
+
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.activity.minigames.Minigame;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
@@ -40,8 +43,6 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
-
-import java.util.Random;
 
 public class Combat {
 	
@@ -656,7 +657,7 @@ public class Combat {
 		
 		RangeWeaponType rangeWeaponType = weaponEquipDef.getRangeWeaponType();
 		
-		boolean avas = Combat.avas(player);
+		boolean avas = Combat.avas(player) || SkillCapePerks.RANGING.isWearing(player) || SkillCapePerks.isWearingMaxCape(player);
 		boolean bow = player.getEquipment().contains(BLOWPIPE) || player.getEquipment().contains(4222) || player.getEquipment().contains(19481)
 				|| isCrossBow(bowType) || isBow(bowType);
 		boolean hand = isHandWeapon(rangeWeaponType);

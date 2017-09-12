@@ -1,6 +1,7 @@
 package com.venenatis.game.content.skills.cooking;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
@@ -209,7 +210,7 @@ public class Cooking extends Task {
 	 */
 	private boolean burned(Cookables cook, Player player) {
 		int level = player.getSkills().getLevel(Skills.COOKING);
-		if (player.getEquipment().contains(775)) {
+		if (player.getEquipment().contains(775) || SkillCapePerks.COOKING.isWearing(player) || SkillCapePerks.isWearingMaxCape(player)) {
 			if (level >= (cook.getBurningLvl() - (cook.getProduct() == 391 ? 0 : 6)))
 				return false;
 		}

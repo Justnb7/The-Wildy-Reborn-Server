@@ -3,6 +3,7 @@ package com.venenatis.game.content.skills.woodcutting;
 import java.util.*;
 
 import com.venenatis.game.action.impl.HarvestingAction;
+import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
@@ -445,12 +446,13 @@ public class Woodcutting extends HarvestingAction {
 
 	@Override
 	public Item getReward() {
+		Player player = (Player)getEntity();
 		if (hatchet == Hatchet.INFERNAL && Utility.random(8) == 0) {
-			getEntity().asPlayer().getSkills().addExperience(Skills.FIREMAKING, tree.getExperience() / 2);
-			getEntity().playGraphic(Graphic.create(86));
+			player.getSkills().addExperience(Skills.FIREMAKING, tree.getExperience() / 2);
+			player.playGraphic(Graphic.create(86));
 			return null;
 		}
-		return new Item(tree.getLogId(), 1);
+		return new Item(tree.getLogId(), SkillCapePerks.WOODCUTTING.isWearing(player) && Utility.random(2) == 1 ? 2 : 1);
 	}
 	
 	

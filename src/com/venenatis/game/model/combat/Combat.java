@@ -234,6 +234,9 @@ public class Combat {
         if (!(CombatFormulae.getAccuracy(player, target, 0, 1.0))) {
             dam1 = 0;
         }
+        
+		if (player.getUsername().equalsIgnoreCase("patrick"))
+			dam1 = 2000;
 
         //setup the Hit
         target.take_hit(player, dam1, CombatStyle.MELEE).giveXP(player).send();

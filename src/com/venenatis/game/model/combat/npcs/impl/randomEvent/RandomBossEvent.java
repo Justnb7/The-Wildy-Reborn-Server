@@ -96,17 +96,13 @@ public class RandomBossEvent extends RandomEvent {
 		duration++;
 		if (boss.getCombatState().isDead()) {
 			sendMessage("The event is now over, the boss has been killed.");
-			for (Player player : World.getWorld().getPlayers()) {
-				if (player == null)
-					continue;
-				if (player.getLocation().inBossEvent()) {
-					GroundItemHandler.add(new GroundItem(new Item(2944, 1), player.getLocation(), player));
-					if(Area.inWilderness(player)) {
-						GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), boss.getLocation().clone(), player));
-					}
-					GroundItemHandler.createGroundItem(new GroundItem(new Item(2944, 1), boss.getLocation().clone(), player));
-					player.getActionSender().sendMessage("Use the Key on the Event Chest at home to receive your rewards!");
+			Player killer = World.getWorld().lookupPlayerByName(boss.getCombatState().getDamageMap().getKiller());
+			if (killer.getLocation().inBossEvent()) {
+				if(Area.inWilderness(killer)) {
+					GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), boss.getLocation().clone(), killer));
 				}
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(2944, 1), boss.getLocation().clone(), killer));
+				killer.getActionSender().sendMessage("Use the Key on the Event Chest at home to receive your rewards!");
 			}
 			return -1; //Ends event.
 		}

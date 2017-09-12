@@ -198,10 +198,11 @@ public class ObjectInteraction {
 			break;
 		
 		case 677:
-			int x = player.getX() <= 2970 ? + 4 : -4;
+			player.setTeleportTarget(new Location(player.getX() <= 2970 ? 2970 + 4 : 2970 -4, player.getY(), player.getZ()));
+			/*int x = player.getX() <= 2970 ? + 4 : -4;
 			int dir = player.getX() <= 2970 ? 1 : 3;
 			int[] forceMovement = { 0, 0, x, 0, 33, 60, dir, 2 };
-			Agility.forceMovement(player, new Animation(844), forceMovement, 1, true);
+			Agility.forceMovement(player, new Animation(844), forceMovement, 1, true);*/
 			break;
 			
 		case 29171:// fire max cape rack

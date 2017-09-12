@@ -587,10 +587,6 @@ public class NPC extends Entity {
 		return Math.sqrt(Math.pow(npcX - playerX, 2) + Math.pow(npcY - playerY, 2)) <= distance;
 	}
 
-	public boolean isArmadylNpc() {
-		return npcId >= 3162 && npcId <= 3165;
-	}
-
 	@Override
 	public ActionSender getActionSender() {
 		return null;

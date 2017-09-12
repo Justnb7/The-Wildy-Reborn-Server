@@ -4,6 +4,7 @@ import com.venenatis.game.content.PotionCombinating;
 import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.rewards.CrystalChest;
 import com.venenatis.game.content.skills.crafting.Crafting;
+import com.venenatis.game.content.skills.crafting.impl.ZulrahCrafting;
 import com.venenatis.game.content.skills.firemaking.Firemaking;
 import com.venenatis.game.content.skills.fletching.Fletching;
 import com.venenatis.game.content.skills.slayer.SlayerHelmAction;
@@ -60,6 +61,19 @@ public class ItemOnItem {
 		
 		if (CrystalChest.createKey(player)) {
 			return;
+		}
+		
+		if (usedItem.getId() == 5605 || withItem.getId() == 5605) {
+			Item other = null;
+			if (usedItem.getId() == 5605) {
+				other = withItem;
+			} else {
+				other = usedItem;
+			}
+			ZulrahCrafting.ZulrahItems zulrahItems = ZulrahCrafting.ZulrahItems.of(other.getId());
+			if (zulrahItems != null && zulrahItems.getRequiredItem() == 5605) {
+				player.getActionQueue().addAction(new ZulrahCrafting(player, zulrahItems));
+			}
 		}
 		
 		if (usedItem.getId() == 4153 && withItem.getId() == 12849 || usedItem.getId() == 12849 && withItem.getId() == 4153) {

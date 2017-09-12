@@ -166,9 +166,10 @@ public class NpcCombat {
 			return false;
 		}
 		
-		if (npc.isArmadylNpc() && player.getCombatType() == CombatStyle.MELEE) {
-			player.message("You can only use range or magic against this npc.");
-			Combat.resetCombat(player);
+		if (npc.getId() == 3162 || npc.getId() == 3163 || npc.getId() == 3164 || npc.getId() == 3165 && player.getCombatType() == CombatStyle.MELEE) {
+			if (player.getActionSender() != null) {
+				player.getActionSender().sendMessage("That NPC is flying too high to be attaked!");
+			}
 			return false;
 		}
 		

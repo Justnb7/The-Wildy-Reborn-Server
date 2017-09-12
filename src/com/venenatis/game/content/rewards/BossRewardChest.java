@@ -19,10 +19,10 @@ public class BossRewardChest {
 	 */
 	public static Chance<Item> BOSSCHEST = new Chance<Item>(Arrays.asList( 
 			
-			new WeightedChance<Item>(WeightedChance.COMMON, new Item(995, Utility.randomNumber(2500000))),//coins
-			new WeightedChance<Item>(WeightedChance.UNCOMMON, new Item(995, Utility.randomNumber(5000000))),//coins
-			new WeightedChance<Item>(WeightedChance.RARE, new Item(995, Utility.randomNumber(7500000))),//coins
-			new WeightedChance<Item>(WeightedChance.VERY_RARE, new Item(995, Utility.randomNumber(10000000))),//coins
+			new WeightedChance<Item>(WeightedChance.COMMON, new Item(995, Utility.randomNumber(25_000_000))),//coins
+			new WeightedChance<Item>(WeightedChance.UNCOMMON, new Item(995, Utility.randomNumber(50_000_000))),//coins
+			new WeightedChance<Item>(WeightedChance.RARE, new Item(995, Utility.randomNumber(75_000_000))),//coins
+			new WeightedChance<Item>(WeightedChance.VERY_RARE, new Item(995, Utility.randomNumber(100_000_000))),//coins
 			new WeightedChance<Item>(WeightedChance.COMMON, new Item(13307, Utility.randomNumber(25))),//bloodmoney
 			new WeightedChance<Item>(WeightedChance.UNCOMMON, new Item(13307, Utility.randomNumber(50))),//bloodmoney
 			new WeightedChance<Item>(WeightedChance.RARE, new Item(13307, Utility.randomNumber(75))),//bloodmoney

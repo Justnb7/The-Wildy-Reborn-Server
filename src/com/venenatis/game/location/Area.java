@@ -3,6 +3,8 @@ package com.venenatis.game.location;
 import java.util.Arrays;
 
 import com.venenatis.game.constants.GameConstants;
+import com.venenatis.game.model.combat.npcs.impl.zulrah.Zulrah;
+import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 
@@ -136,7 +138,7 @@ public abstract class Area {
 	 *         {@code false} otherwise.
 	 */
 	public static boolean inMultiCombatZone(Entity entity) {
-		return GameConstants.MULTI_COMBAT_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || inGodwars(entity) || inDaganothMotherCave(entity) || entity.getLocation().inBossEvent());
+		return GameConstants.MULTI_COMBAT_ZONES.stream().anyMatch($it -> $it.inArea(entity.getLocation()) || Boundary.isIn(entity, Zulrah.BOUNDARY) || inGodwars(entity) || inDaganothMotherCave(entity) || entity.getLocation().inBossEvent());
 	}
 
 	/**

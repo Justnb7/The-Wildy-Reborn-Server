@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
 
 
@@ -95,18 +93,18 @@ public class Boundary {
 	
 	/**
 	 * 
-	 * @param player The player object
+	 * @param entity The entity object
 	 * @param boundaries The array of Boundary objects
 	 * @return
 	 */
-	public static boolean isIn(Entity player, Boundary[] boundaries) {
+	public static boolean isIn(Entity entity, Boundary[] boundaries) {
 		for(Boundary b : boundaries) {
 			if (b.height > 0) {
-				if (player.getZ() != b.height) {
+				if (entity.getZ() != b.height) {
 					return false;
 				}
 			}
-			if (player.getX() >= b.minX && player.getX() <= b.highX && player.getY() >= b.minY && player.getY() <= b.highY) {
+			if (entity.getX() >= b.minX && entity.getX() <= b.highX && entity.getY() >= b.minY && entity.getY() <= b.highY) {
 				return true;
 			}
 		}
@@ -115,52 +113,21 @@ public class Boundary {
 	
 	/**
 	 * 
-	 * @param player The player object
+	 * @param entity The player object
 	 * @param boundaries The boundary object
 	 * @return
 	 */
-	public static boolean isIn(Player player, Boundary boundaries) {
+	public static boolean isIn(Entity entity, Boundary boundaries) {
 		if (boundaries.height > 0) {
-			if (player.getZ() != boundaries.height) {
+			if (entity.getZ() != boundaries.height) {
 				return false;
 			}
 		}
-		return player.getX() >= boundaries.minX && player.getX() <= boundaries.highX 
-				&& player.getY() >= boundaries.minY && player.getY() <= boundaries.highY;
+		return entity.getX() >= boundaries.minX && entity.getX() <= boundaries.highX 
+				&& entity.getY() >= boundaries.minY && entity.getY() <= boundaries.highY;
 	}
 	
-	/**
-	 * 
-	 * @param npc The npc object
-	 * @param boundaries The boundary object
-	 * @return
-	 */
-	public static boolean isIn(NPC npc, Boundary boundaries) {
-		if (boundaries.height > 0) {
-			if (npc.getZ() != boundaries.height) {
-				return false;
-			}
-		}
-		return npc.getX() >= boundaries.minX && npc.getX() <= boundaries.highX 
-				&& npc.getY() >= boundaries.minY && npc.getY() <= boundaries.highY;
-	}
-	
-	public static boolean isIn(NPC npc, Boundary[] boundaries) {
-		for (Boundary boundary : boundaries) {
-			if (boundary.height > 0) {
-				if (npc.getZ() != boundary.height) {
-					return false;
-				}
-			}
-			if (npc.getX() >= boundary.minX && npc.getX() <= boundary.highX 
-					&& npc.getY() >= boundary.minY && npc.getY() <= boundary.highY) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static boolean isInSameBoundary(Player player1, Player player2, Boundary[] boundaries) {
+	public static boolean isInSameBoundary(Entity player1, Entity player2, Boundary[] boundaries) {
 		Optional<Boundary> boundary1 = Arrays.asList(boundaries).stream().filter(b -> isIn(player1, b)).findFirst();
 		Optional<Boundary> boundary2 = Arrays.asList(boundaries).stream().filter(b -> isIn(player2, b)).findFirst();
 		if (!boundary1.isPresent() || !boundary2.isPresent()) {
@@ -171,7 +138,7 @@ public class Boundary {
 	
 	public static int entitiesInArea(Boundary boundary) {
 		int i = 0;
-		for(Player player : World.getWorld().players)
+		for(Entity player : World.getWorld().players)
 			if(player != null)
 				if(isIn(player, boundary))
 					i++;

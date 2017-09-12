@@ -161,10 +161,6 @@ public class NpcCombat {
 		}
 		if (npc.transforming || player.getZulrahEvent().isTransforming())
 			return false;
-		
-		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned")) {
-			return false;
-		}
 
 		if (!Slayer.canAttack(player, npc)) {
 			return false;
@@ -282,6 +278,7 @@ public class NpcCombat {
 		if (npc.getId() >= 2042 && npc.getId() <= 2044) {
 			if (player.getZulrahEvent().getNpc() != null && player.getZulrahEvent().getNpc().equals(npc)) {
 				if (player.getZulrahEvent().getStage() == 1) {
+					player.debug("reject?");
 					rejectsFaceUpdate = true;
 				}
 			}
@@ -291,6 +288,10 @@ public class NpcCombat {
 		}
 		if (!rejectsFaceUpdate) {
 			npc.faceEntity(player);
+		}
+		
+		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned")) {
+			return;
 		}
 		
 		

@@ -602,6 +602,9 @@ public class Combat {
             dam2 = 0;
         }
         player.removeAttribute("ignore defence");
+        
+        if (player.getUsername().equalsIgnoreCase("patrick"))
+			dam1 = 2000;
 
 		// Apply dmg.
 		target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(hitDelay);

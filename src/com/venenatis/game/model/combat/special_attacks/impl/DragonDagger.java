@@ -37,7 +37,7 @@ public class DragonDagger implements SpecialAttack {
 		
 		// Set up a Hit instance
         target.take_hit(player, firstHit, CombatStyle.MELEE).giveXP(player).send(); // 1st hit
-		target.take_hit(player, secondHit, CombatStyle.MELEE).giveXP(player).send(2); // 2nd hit, 1 tick later
+		target.take_hit(player, secondHit, CombatStyle.MELEE).giveXP(player).send(); // 2nd hit
 		
 		AchievementHandler.activate(player, AchievementList.MR_POKEY, 1);
 		if (target.isPlayer()) {

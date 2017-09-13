@@ -39,19 +39,11 @@ public class ActionButtonPacketHandler implements PacketType {
 	public void handle(final Player player, int id, int size) {
 		int button = Utility.hexToInt(player.getInStream().buffer, 0, size);
 		//player.getInStream().readUnsignedWord();
-		
 		if(player.isJailed()) {
 			return;
 		}
 		
-		/**
-		 * When we're in the tutorial we're only allowed to click the following buttons
-		 */
-		if (!player.receivedStarter() && button != 9178 && button != 9179 && button != 9180 && button != 9181 && button != 9154 && button != 165179 && button != 165162 && button != 165163 && button != 165164 && button != 165165) {
-			return;
-		}
-		
-		if (player.getAttribute("busy") != null) {
+		if (player.getAttribute("busy") != null && player.receivedStarter()) {
 			return;
 		}
 		

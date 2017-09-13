@@ -1288,7 +1288,7 @@ public class Player extends Entity {
 		}
 		
 		//System.out.println("you're defo using the right method btw "+damage+" vs "+this.getSkills().getLevel(3));
-		if (!this.hasAttribute("infhp"))
+		if (!this.getAttribute("infhp", false))
 			this.getSkills().setLevel(3, this.getSkills().getLevel(3) - damage);
 
 		/*

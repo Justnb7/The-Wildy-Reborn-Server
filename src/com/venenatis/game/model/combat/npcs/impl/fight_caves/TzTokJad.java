@@ -1,6 +1,7 @@
 package com.venenatis.game.model.combat.npcs.impl.fight_caves;
 
 import com.venenatis.game.model.Projectile;
+import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
@@ -67,12 +68,42 @@ public class TzTokJad extends AbstractBossCombat {
 			
 			randomHit = Utility.getRandom(maxHit);
 			
+			if(PrayerHandler.isActivated(victim, PrayerHandler.PROTECT_FROM_MISSILES)) {
+				randomHit = 0;
+			}
+			
+			int clientSpeed;
+			int gfxDelay;
+			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
+				clientSpeed = 70;
+				gfxDelay = 80;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
+				clientSpeed = 90;
+				gfxDelay = 100;
+			} else if(attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
+				clientSpeed = 110;
+				gfxDelay = 120;
+			} else {
+				clientSpeed = 130;
+				gfxDelay = 140;
+			}
+			int delay = Math.max(0, (gfxDelay / 20) - 1);
+			
+			final int dmg = randomHit;
+			
 			// Special case: the player actually has 2 ticks where they can change pray before getting smacked
-			Server.getTaskScheduler().schedule(new Task(2) {
+			Server.getTaskScheduler().schedule(new Task(1) {
+				int dmg1 = dmg;
+				int loops = delay;
 				@Override
 				public void execute() {
-					this.stop();
-					victim.take_hit(attacker, randomHit, CombatStyle.RANGE).send();
+					if (--loops == 0) {
+						this.stop();
+						victim.take_hit(attacker, dmg1, CombatStyle.RANGE, false).send();
+					}
+					if(PrayerHandler.isActivated(victim, PrayerHandler.PROTECT_FROM_MISSILES)) {
+						dmg1 = 0;
+					}
 				}
 			});
 			
@@ -90,8 +121,10 @@ public class TzTokJad extends AbstractBossCombat {
 			
 			randomHit = Utility.getRandom(maxHit);
 			
-			int clientSpeed;
-			int gfxDelay;
+			if(PrayerHandler.isActivated(victim, PrayerHandler.PROTECT_FROM_MAGIC)) {
+				randomHit = 0;
+			}
+			
 			if(attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
 				clientSpeed = 70;
 				gfxDelay = 80;
@@ -105,15 +138,25 @@ public class TzTokJad extends AbstractBossCombat {
 				clientSpeed = 130;
 				gfxDelay = 140;
 			}
-			int delay = (gfxDelay / 20) - 1;
+			delay = Math.max(0,  (gfxDelay / 20) - 1);
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, MAGIC_GFX.getId(), 25, 50, clientSpeed, 110, 36, 10, 48));
 			
+			final int damage = randomHit;
+			
 			// Special case: the player actually has 2 ticks where they can change pray before getting smacked
-			Server.getTaskScheduler().schedule(new Task(2) {
+			Server.getTaskScheduler().schedule(new Task(1) {
+				int dmg1 = damage;
+				int loops = delay;
 				@Override
 				public void execute() {
-					this.stop();
-					victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay-2);
+
+					if (--loops == 0) {
+						this.stop();
+						victim.take_hit(attacker, dmg1, CombatStyle.MAGIC, false).send();
+					}
+					if(PrayerHandler.isActivated(victim, PrayerHandler.PROTECT_FROM_MAGIC)) {
+						dmg1 = 0;
+					}
 				}
 			});
 

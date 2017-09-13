@@ -90,7 +90,7 @@ public class Thieving {
 		player.getSkills().addExperience(Skills.THIEVING, stall.getExperience() *EXP_MODIFIER);
 		
 		//After the experience drop we add the random pet chance
-				pet(player);
+		pet(player);
 		lastInteraction = System.currentTimeMillis();
 		
 	}

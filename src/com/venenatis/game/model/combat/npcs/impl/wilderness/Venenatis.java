@@ -187,13 +187,17 @@ public class Venenatis extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
+		if (player == null) {
+			System.err.println("who the fuck killed me? "+npc);
+			return;
+		}
 		/**
 		 * Players have a one in 1000 chance of dropping the pet table.
 		 */
 		int random = Utility.random(1000);
 
 		Pets pets = Pets.VENENATIS_SPIDERLING;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pet = new Pet(player, pets.getNpc()); // one of those is null
 		if (player.alreadyHasPet(player, 13177) || player.getPet() == pets.getNpc()) {
 			return;
 		}

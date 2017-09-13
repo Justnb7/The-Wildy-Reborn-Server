@@ -375,8 +375,8 @@ public class OwnerCommand implements Command {
 		case "h":
 			if (parser.hasNext()) {
 				int h = parser.nextInt();
-				player.setLocation(new Location(player.getLocation().getX(), player.getLocation().getY(), h));
-				player.setTeleporting(true);
+				player.setLocation(new Location(player.getLocation().getX(), player.getLocation().getY(), h)); // should really use set tele target
+				player.setTeleporting(true); // tells client you've tped
 				return true;
 			}
 			return false;

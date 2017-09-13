@@ -54,12 +54,15 @@ public class NPCDeathTask extends Task {
         	stop();
             return;
         }
+        
+        final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
+        
         if (counter == 0) {
             initialDeath(npc);
             System.out.println("We passed the initial death");
         } else if (counter == 5) {
             npc.removeFromTile();
-            Player killer = World.getWorld().getPlayers().get(npc.spawnedBy);
+            onDeath(npc);
             setNpcToInvisible(npc);
             System.out.println("Remove the npc");
             
@@ -139,7 +142,6 @@ public class NPCDeathTask extends Task {
      */
     public static void setNpcToInvisible(NPC npc) {
         npc.removeFromTile();
-        onDeath(npc);
         npc.setVisible(false);
         npc.setLocation(Location.create(npc.makeX, npc.makeY, npc.getZ()));
         npc.setHitpoints(npc.getMaxHitpoints());
@@ -163,12 +165,12 @@ public class NPCDeathTask extends Task {
 
         final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
         
-        npc.playAnimation(Animation.create(npc.getDeathAnimation())); // dead emote
+        npc.playAnimation(new Animation(npc.getDeathAnimation())); // death emote
         
         //Sent the cheer animation when defeating Jad
         if(killer != null || npc != null) {
         	if(npc.getId() == 3127) {
-        		killer.playAnimation(Animation.create(862));
+        		killer.playAnimation(new Animation(862));
         		killer.getFightCave().reward(killer);
         	}
         }
@@ -222,9 +224,7 @@ public class NPCDeathTask extends Task {
     	
     	Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
 		
-		if(killer == null) {
-			return;
-		}
+    	//killer.debug(String.format("killer: %s", npc.getCombatState().getDamageMap().getKiller()));
 
 		if (npc != null) {
 			/* Add kills to tracker */

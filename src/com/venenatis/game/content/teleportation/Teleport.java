@@ -167,7 +167,7 @@ public class Teleport {
 			
 		/* Minigames */
 		case 117112:
-		case 52035:
+		case 50235:
 		case 4140:
 			TeleportHandler.open(player, TeleportationTypes.MINIGAME);
 			break;
@@ -252,8 +252,7 @@ public class Teleport {
 		player.playAnimation(data.getStartAnimation());
 		player.playGraphic(data.getStartGraphic());
 		player.getActionSender().sendSound(data.getSound(), 0, 0);
-
-		setTeleporting(true);
+		player.setAttribute("tping", true);
 
 		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, StackType.NEVER_STACK, BreakType.NEVER) {
 			@Override
@@ -266,7 +265,7 @@ public class Teleport {
 
 			@Override
 			public void onStop() {
-				setTeleporting(false);
+				player.removeAttribute("tping");
 				player.getWalkingQueue().lock(0, false);
 			}
 		});

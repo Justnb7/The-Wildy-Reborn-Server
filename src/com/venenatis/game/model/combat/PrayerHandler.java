@@ -403,6 +403,7 @@ public class PrayerHandler {
 			if (pd.hint != -1) {
 				int hintId = getHeadHint(e);
 				p.setHeadHint(hintId);
+				p.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			}
 
 			p.getQuickPrayers().checkActive();

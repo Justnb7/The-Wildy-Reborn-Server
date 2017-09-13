@@ -330,8 +330,7 @@ public abstract class Entity {
 	private boolean teleporting = false;
 	
 	/**
-	 * Checks if this player is teleporting.
-	 * @return <code>true</code> if so, <code>false</code> if not.
+	 * The PLAYER UPDATE FLAG for if position is changing this tick. NOT generic teleporting. You need a NEW BOOLEAN
 	 */
 	public boolean isTeleporting() {
 		return teleporting;
@@ -507,7 +506,7 @@ public abstract class Entity {
 	 * Makes it show in Player Updating and also reduces your HITPOINTS (can kill you).
 	 * This should only be called by take_hit. Take_hit deals with veng, recoil, protection prayers, auto retal etc, all bundled into one for simplicity.
 	 */
-	public void damage(Hit... hits) {
+	public void renderDamage(Hit... hits) {
 		Preconditions.checkArgument(hits.length >= 1 && hits.length <= 4);
 
 		switch (hits.length) {
@@ -758,10 +757,12 @@ public abstract class Entity {
 		return take_hit(attacker, damage, combat_type, applyInstantly, throughPrayer, null);
 	}
 
+	/**
+	 * Has damage adjustments in one place so save you writing the same code over and over
+	 * Also includes rrayer reduction, ely effect (damage reduction)
+	 * Should not have damage-dealing recoil such as reing of recoil/veng cos if you're teleporting you want to ignore that damage
+	 */
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean throughPrayer, HitType type) {
-		if(!this.canBeDamaged() || this.isTeleporting()) {
-			damage = 0;
-		}
 		
 		// ALWAYS: FIRST APPLY DAMAGE REDUCTIONS, ABSORBS ETC. Protection pray/ely.
 		// The entity taking damage is a player. 
@@ -805,10 +806,6 @@ public abstract class Entity {
 				}
 			}
 
-			if (player_me.isTeleporting()) {
-				damage = 0;
-			}
-
 		} else if (this.isNPC()) {
 			NPC victim_npc = (NPC) this;
 			
@@ -847,21 +844,9 @@ public abstract class Entity {
 		if (isPlayer()) {
 			Player me = (Player)this;
 
-			if (damage > 0) {
-				// Trigger veng and recoil once the damage has been reduced by effects/protection prayers
-				if (me.hasVengeance()) {
-					Vengeance.handle(me, attacker, damage);
-				}
-
-				me.getCombatState().recoil(attacker, damage);
-			}
-
 			if (attacker.isPlayer()) {
 				Player pAttacker = (Player)attacker;
 				BarrowsEffect.applyRandomEffect(pAttacker, me, damage);
-				pAttacker.getCombatState().handleSmite(pAttacker, me, damage);
-				int wepId = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
-				PoisonCombatTask.getPoisonType(wepId).ifPresent(pt -> me.poison(pt, attacker));
 			}
 		}
 
@@ -884,7 +869,7 @@ public abstract class Entity {
 		// NOTE: If not instantly applied, use hit.delay(ticks) to make it appear after X ticks
 		if (applyInstantly) {
 			// The only place the damage() method should be called from, this method.
-			this.damage(hit);
+			this.takeDamage(hit);
 			if (this.isPlayer())
 				PlayerSounds.sendBlockOrHitSound((Player)this, damage > 0);
 			if (attacker.isPlayer())
@@ -1351,7 +1336,7 @@ public abstract class Entity {
         return canDamaged;
     }
     
-    public void setCanBeDamaged(boolean b) {
+    public void setCanBeDamaged(boolean b) { // alternatively put this in all teleporting
         canDamaged = b;
     }
     
@@ -1511,6 +1496,41 @@ public abstract class Entity {
 			}
 		}
 		return state;
+	}
+
+	public void takeDamage(Hit hit) {
+
+        // TODO put any code /checks that STOP DAMAGE being delt such as teleporting here
+        
+        if(!hit.victim.canBeDamaged() || hit.victim.getAttribute("tping", false)) {
+        	return;//iscool not really familiar with what osrs does :D ye sec
+		}
+        Entity attacker = hit.source;
+
+        // Worth knowing that veng only triggers if the hit actually shows up
+        // Same with smite, poison
+        // So if you're teleporting and the hit nulls out, your veng won't break
+		if (isPlayer()) {
+			Player me = (Player)this;
+
+			if (hit.getDamage() > 0) {
+				// Trigger veng and recoil once the damage has been reduced by effects/protection prayers
+				if (me.hasVengeance()) {
+					Vengeance.handle(me, attacker, hit.getDamage());
+				}
+
+				me.getCombatState().recoil(attacker, hit.getDamage());
+			}
+
+			if (attacker.isPlayer()) {
+				Player pAttacker = (Player)attacker;
+				BarrowsEffect.applyRandomEffect(pAttacker, me, hit.getDamage());
+				pAttacker.getCombatState().handleSmite(pAttacker, me, hit.getDamage());
+				int wepId = pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : pAttacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+				PoisonCombatTask.getPoisonType(wepId).ifPresent(pt -> me.poison(pt, attacker));
+			}
+		}
+        this.renderDamage(hit);
 	}
 
 }

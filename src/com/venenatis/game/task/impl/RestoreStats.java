@@ -19,7 +19,8 @@ public class RestoreStats extends Task {
 				if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
 					return;
 				}
-				//player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + player.getSkills().getLevel(Skills.HITPOINTS) + SkillCapePerks.HITPOINTS.isWearing(player) || SkillCapePerks.isWearingMaxCape(player) ? 2 : 1);
+				int health = SkillCapePerks.HITPOINTS.isWearing(player) || SkillCapePerks.isWearingMaxCape(player) ? 2 : 1;
+				player.getSkills().setLevel(Skills.HITPOINTS, player.getSkills().getLevel(Skills.HITPOINTS) + health);
 				for (int level = 0; level < player.getSkills().getLevels().length; level++) {
 					if (player.getSkills().getLevel(level) < player.getSkills().getLevelForExperience(level)) {
 						if (level != 5) { // prayer doesn't restore

@@ -235,8 +235,8 @@ public class Combat {
             dam1 = 0;
         }
         
-		if (player.getUsername().equalsIgnoreCase("patrick"))
-			dam1 = 2000;
+		/*if (player.getUsername().equalsIgnoreCase("patrick"))
+			dam1 = 2000;*/
 
         //setup the Hit
         target.take_hit(player, dam1, CombatStyle.MELEE).giveXP(player).send();
@@ -361,6 +361,9 @@ public class Combat {
                     break;
             }
         }
+        
+        if(player.getUsername().equalsIgnoreCase("patrick"))
+        	dam1 = 2000;
 
         target.take_hit(player, dam1, CombatStyle.MAGIC).giveXP(player).send(hitDelay);
         onAttackDone(player, target);
@@ -610,8 +613,8 @@ public class Combat {
 		target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(hitDelay);
 
 		// Apply second dmg.
-		if(player.getEquipment().contains(11235))
-		target.take_hit(player, dam2, CombatStyle.RANGE).giveXP(player).send(hitDelay);
+		if (player.getEquipment().contains(11235))
+			target.take_hit(player, dam2, CombatStyle.RANGE).giveXP(player).send(hitDelay);
 	}
 	
 	public static boolean isCrossBow(BowType bowType) {
@@ -1096,20 +1099,22 @@ public class Combat {
     	if (attacker.isPlayer() && hit != null)
     		PlayerSounds.sendBlockOrHitSound((Player)attacker, hit.getDamage() > 0);
     	
-    	// Apply the damage inside Hit
-        if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC && attacker != null && attacker.isPlayer())) {// dont show 0 for splash
-        	// Show damage on player. Take_hit has already been used at this point.
-            target.damage(hit);
-        }
-
         if (attacker.isPlayer()) {
             // Range attack invoke block emote when hit appears.
             if (hit.cbType == CombatStyle.RANGE && target.getCombatState().getAttackDelay() < 5) {
                 final int blockAnim = target.isPlayer() ? WeaponDefinition.sendBlockAnimation(target.asPlayer()) : target.asNpc().getDefendAnimation();
                 final Animation a = Animation.create(blockAnim);
                 target.playAnimation(a);
+                
             }
         }
+        
+    	// Apply the damage inside Hit
+        if (!(hit.getDamage() == 0 && combatType == CombatStyle.MAGIC && attacker != null && attacker.isPlayer())) {// dont show 0 for splash
+        	// Show damage on player. Take_hit has already been used at this point.
+            target.takeDamage(hit);
+        }
+
 	}
 
 	public static boolean hitRecently(Entity target, int timeframe) {

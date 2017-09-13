@@ -252,7 +252,7 @@ public class Teleport {
 		player.playAnimation(data.getStartAnimation());
 		player.playGraphic(data.getStartGraphic());
 		player.getActionSender().sendSound(data.getSound(), 0, 0);
-		player.setAttribute("tping", true);
+		player.setCanBeDamaged(false);
 
 		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, StackType.NEVER_STACK, BreakType.NEVER) {
 			@Override
@@ -265,7 +265,7 @@ public class Teleport {
 
 			@Override
 			public void onStop() {
-				player.removeAttribute("tping");
+				player.setCanBeDamaged(true);
 				player.getWalkingQueue().lock(0, false);
 			}
 		});

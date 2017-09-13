@@ -1336,7 +1336,7 @@ public abstract class Entity {
         return canDamaged;
     }
     
-    public void setCanBeDamaged(boolean b) { // alternatively put this in all teleporting
+    public void setCanBeDamaged(boolean b) {
         canDamaged = b;
     }
     
@@ -1502,8 +1502,8 @@ public abstract class Entity {
 
         // TODO put any code /checks that STOP DAMAGE being delt such as teleporting here
         
-        if(!hit.victim.canBeDamaged() || hit.victim.getAttribute("tping", false)) {
-        	return;//iscool not really familiar with what osrs does :D ye sec
+        if(!hit.victim.canBeDamaged()) {
+        	return;
 		}
         Entity attacker = hit.source;
 

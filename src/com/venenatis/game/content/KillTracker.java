@@ -52,11 +52,12 @@ public class KillTracker {
 	}
 
 	public static int getIndex(Player player, KillEntry entry) {
-		for (int index = 0; index < player.getKillTracker().size(); index++) {
-			if (player.getKillTracker().get(index).name.equals(entry.name)) {
-				return index;
+		if (player != null && entry != null)
+			for (int index = 0; index < player.getKillTracker().size(); index++) {
+				if (player.getKillTracker().get(index).name.equals(entry.name)) {
+					return index;
+				}
 			}
-		}
 		return -1;
 	}
 

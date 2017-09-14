@@ -167,9 +167,9 @@ public class DropManager {
 
 	private double getModifier(Player player) {
 		double modifier = 1.0;
-		if (player.getEquipment().contains(2572)) {
+		if (player.getEquipment().contains(2572) && player.getEquipment() != null) {
 			modifier -= .03;
-		} else if (player.getEquipment().contains(12785)) {
+		} else if (player.getEquipment().contains(12785) && player.getEquipment() != null) {
 			modifier -= .05;
 		}
 		if (player.getRights().isDonator(player)) {

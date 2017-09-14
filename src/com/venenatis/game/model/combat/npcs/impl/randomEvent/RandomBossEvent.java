@@ -97,7 +97,7 @@ public class RandomBossEvent extends RandomEvent {
 		if (boss.getCombatState().isDead()) {
 			sendMessage("The event is now over, the boss has been killed.");
 			Player killer = World.getWorld().lookupPlayerByName(boss.getCombatState().getDamageMap().getKiller());
-			if (killer.getLocation().inBossEvent()) {
+			if (killer.getLocation().inBossEvent() && killer != null) {
 				if(Area.inWilderness(killer)) {
 					GroundItemHandler.createGroundItem(new GroundItem(new Item(12746, 1), boss.getLocation().clone(), killer));
 				}

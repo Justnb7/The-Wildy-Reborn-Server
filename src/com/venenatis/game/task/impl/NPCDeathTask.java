@@ -8,7 +8,6 @@ import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
-import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.npc.GroupRespawn;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -50,7 +49,7 @@ public class NPCDeathTask extends Task {
         NPC npc = (NPC) getAttachment();
 
         if (npc == null || World.getWorld().getNPCs().get(npc.getIndex()) == null) {
-            System.out.println("Something went wrong the npc is null");
+            //System.out.println("Something went wrong the npc is null");
         	stop();
             return;
         }
@@ -59,12 +58,12 @@ public class NPCDeathTask extends Task {
         
         if (counter == 0) {
             initialDeath(npc);
-            System.out.println("We passed the initial death");
+            //System.out.println("We passed the initial death");
         } else if (counter == 5) {
             npc.removeFromTile();
             onDeath(npc);
             setNpcToInvisible(npc);
-            System.out.println("Remove the npc");
+            //System.out.println("Remove the npc from the game world");
             
             if (killer != null && killer.getKraken() != null && killer.getKraken().npcs != null && killer.getKraken().npcs[0] != null) {
             	if (npc == killer.getKraken().npcs[0]) {
@@ -79,61 +78,26 @@ public class NPCDeathTask extends Task {
     				killer.getKraken().spawnNextWave(killer);
             	}
 			}
-            if (killer != null || isUnspawnableNpc(npc)) {
-            	System.out.println("Checks if the npc is unspawnable, or the killer is null");
-            	handleUnspawnableNpc(npc);
-				removeMobFromWorld(killer, npc);
-				stop();
-				return;
-			}
         } else if (counter == 6) {
         	if (GroupRespawn.is_my_boss_dead(npc)) {
+        		//System.out.println("Boss dead yet?");
         		stop();
         		return;
         	}
         	if (npc.getDefinition().getRespawnTime() == -1) {// this npc does not respawn
+        		//System.out.println("NPC can't respawn");
         		stop();
         	}
-        } else if (counter == (6 + npc.getDefinition().getRespawnTime())) { //60s later
+        } else if (counter == (6 + npc.getDefinition().getRespawnTime())) { //regular respawn timer
         	respawn(npc);
             GroupRespawn.on_boss_spawned(npc);
             stop();
+            //System.out.println("Respawned");
             return;
         }
+        //System.out.println("Counter running "+counter+" ticks sent.");
         counter++;
     }
-
-    /**
-     * Handles the unspawnable npcs upon death
-     * 
-     * @param npc
-     *            The {@link NPC} that has died
-     */
-    private void handleUnspawnableNpc(NPC npc) {
-
-    }
-
-    /**
-     * Checks if the npc is unspawnable
-     * 
-     * @param npc
-     *            The {@link NPC} to check if its unspawnable
-     * @return If the npc is unspawnable
-     */
-    private boolean isUnspawnableNpc(NPC npc) {
-        return NpcCombat.getUnspawnableNpcs().contains(npc.getId());
-    }
-
-    /**
-     * Removes custom spawned npc & minigame npc so they do not respawn
-     * 
-     * @param player
-     *            The {@link Player} who has killed this npc
-     */
-	private void removeMobFromWorld(Player player, NPC npc) {
-		if (player != null && !player.getCombatState().isDead())
-			World.getWorld().unregister(npc);
-	}
 
     /**
      * We set the npc to invisible and restore its values
@@ -143,6 +107,7 @@ public class NPCDeathTask extends Task {
     public static void setNpcToInvisible(NPC npc) {
         npc.removeFromTile();
         npc.setVisible(false);
+        World.getWorld().unregister(npc);
         npc.setLocation(Location.create(npc.makeX, npc.makeY, npc.getZ()));
         npc.setHitpoints(npc.getMaxHitpoints());
         
@@ -196,11 +161,11 @@ public class NPCDeathTask extends Task {
     }
     
     public static void reset(NPC npc) {
-    	npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
         npc.freeze(0);
         npc.targetId = 0;
         npc.underAttack = false;
         npc.resetFace();
+        npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
     }
 
     /**
@@ -208,6 +173,7 @@ public class NPCDeathTask extends Task {
      *
      */
     public static void respawn(NPC npc) {
+    	System.out.println("Enter");
         npc.setVisible(true);
         npc.getCombatState().setDead(false);
         if(npc.getId() == 5779) {
@@ -226,6 +192,10 @@ public class NPCDeathTask extends Task {
 		
     	//killer.debug(String.format("killer: %s", npc.getCombatState().getDamageMap().getKiller()));
 
+    	if(killer == null) {
+    		System.err.printf("Killer %s is null, killed %s%n", killer, npc.getName());
+    	}
+    	
 		if (npc != null) {
 			/* Add kills to tracker */
 			for (int id : NPC.BOSSES) {

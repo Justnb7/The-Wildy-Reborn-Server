@@ -1,8 +1,5 @@
 package com.venenatis.game.model.combat;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
@@ -29,19 +26,6 @@ import com.venenatis.server.Server;
  * @author Patrick van Elderen
  */
 public class NpcCombat {
-	
-	/**
-	 * A list of unspawnable npcs on death
-	 */
-	private static List<Integer> unspawnableNpcs = Arrays.asList(5054, 6617, 8017, 8018);
-
-	/**
-	 * Gets the list of unspawnwable npcs
-	 * @return The list of unspawnable npcs
-	 */
-	public static List<Integer> getUnspawnableNpcs() {
-		return unspawnableNpcs;
-	}
 
 	/**
 	 * Distanced required to attack

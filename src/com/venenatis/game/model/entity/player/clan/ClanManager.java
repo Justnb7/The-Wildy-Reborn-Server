@@ -227,7 +227,8 @@ public class ClanManager {
 
 		Clan clan = player.getClan();
 
-		clan.setMemberLimit(amount);
+		if (clan != null)
+			clan.setMemberLimit(amount);
 
 		systemMessage(clan, Utility.formatName(player.getUsername()) + " has changed the clan member limit.");
 

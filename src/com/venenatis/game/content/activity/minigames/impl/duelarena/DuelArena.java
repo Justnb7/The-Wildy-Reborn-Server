@@ -800,6 +800,10 @@ public final class DuelArena extends Minigame {
 	}
 
 	public void onFirstClickObject(GameObject object) {
+		if(object == null) {
+			return;
+		}
+		
 		switch (object.getId()) {
 			case 3203:
 				if (rules.get(DuelRule.FORFEIT)) {

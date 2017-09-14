@@ -1297,6 +1297,7 @@ public class Player extends Entity {
 		 */
 		if (getSkills().getLevel(3) < 1 && !getCombatState().isDead()) {
 			getCombatState().setDead(true);
+			this.setAttribute("killer", hit.source); // who killed us (did the final blow) - NOT who did most damage. These are 2 distinct things.
 			World.getWorld().schedule(new Task(3) {
 				@Override
 				public void execute() {

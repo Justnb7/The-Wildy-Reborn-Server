@@ -48,11 +48,14 @@ public class NPCDeathTask extends Task {
     public void execute() {
         NPC npc = (NPC) getAttachment();
 
-        if (npc == null || World.getWorld().getNPCs().get(npc.getIndex()) == null) {
-            //System.out.println("Something went wrong the npc is null");
+        NPC index = World.getWorld().getNPCs().get(npc.getIndex());
+        
+        if (index == null) {
+            //System.out.println("Something went wrong the npc is null "+npc.getName()+" with an index "+npc.getIndex()+" of "+index);
         	stop();
             return;
         }
+        
         
         final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
         
@@ -86,6 +89,7 @@ public class NPCDeathTask extends Task {
         	}
         	if (npc.getDefinition().getRespawnTime() == -1) {// this npc does not respawn
         		//System.out.println("NPC can't respawn");
+                World.getWorld().unregister(npc);
         		stop();
         	}
         } else if (counter == (6 + npc.getDefinition().getRespawnTime())) { //regular respawn timer
@@ -107,7 +111,6 @@ public class NPCDeathTask extends Task {
     public static void setNpcToInvisible(NPC npc) {
         npc.removeFromTile();
         npc.setVisible(false);
-        World.getWorld().unregister(npc);
         npc.setLocation(Location.create(npc.makeX, npc.makeY, npc.getZ()));
         npc.setHitpoints(npc.getMaxHitpoints());
         
@@ -173,7 +176,7 @@ public class NPCDeathTask extends Task {
      *
      */
     public static void respawn(NPC npc) {
-    	System.out.println("Enter");
+    	//System.out.println("respawn");
         npc.setVisible(true);
         npc.getCombatState().setDead(false);
         if(npc.getId() == 5779) {

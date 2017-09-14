@@ -124,9 +124,12 @@ public class PlayerDrops {
 	 * @param victim
 	 *            The player losing their items
 	 */
-	public static void dropItems(Player victim, Entity killer) {
-		killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
+	public static void dropItems(Player victim, Entity killer) { // note killer is always a player
+		
+		Entity finalBlow = victim.getAttribute("killer", null);
+		boolean npcDeath = finalBlow != null && finalBlow.isNPC();
 
+		// A null killer means players did no damage. Self death or Npc death
 		if (killer == null) {
 			killer = victim;
 		}
@@ -196,13 +199,13 @@ public class PlayerDrops {
 			
 			// If killer is null, drop is for victim
 			if (killer == null) {
-				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), victim));
+				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation(), victim));
 			// If killer is an NPC, drop is for victim	
-			} else if (killer.isNPC()) {
-				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), victim));
+			} else if (npcDeath) {
+				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation(), victim));
 			// Drop all items for killer
-			} else {
-				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation().clone(), killer.asPlayer()));
+			} else if (killer != null) {
+				GroundItemHandler.createGroundItem(new GroundItem(item, victim.getLocation(), killer.asPlayer()));
 			}
 		}
 
@@ -210,6 +213,7 @@ public class PlayerDrops {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(526), victim.getLocation().clone(), killer.asPlayer()));
 			handleSpecial(victim, killer.asPlayer());
 		} else {
+			// self or npc death
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(526), victim.getLocation().clone(), victim));
 		}
 	}

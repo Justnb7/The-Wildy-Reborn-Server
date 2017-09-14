@@ -527,6 +527,7 @@ public abstract class Entity {
 	}
 
 	private void primaryDamage(Hit hit) {
+		// Set the player update mask and decrease HP
 		getUpdateFlags().primary = decrementHP(hit);
 		this.getUpdateFlags().flag(UpdateFlag.HIT);
 	}
@@ -1498,6 +1499,10 @@ public abstract class Entity {
 		return state;
 	}
 
+	/**
+	 * Actually take hitpoints from the victim. If teleporting, damage is nulled.
+	 * @param hit
+	 */
 	public void takeDamage(Hit hit) {
 
         // TODO put any code /checks that STOP DAMAGE being delt such as teleporting here
@@ -1530,6 +1535,7 @@ public abstract class Entity {
 				PoisonCombatTask.getPoisonType(wepId).ifPresent(pt -> me.poison(pt, attacker));
 			}
 		}
+		// Make the hit show on the victim, and reduce their HP
         this.renderDamage(hit);
 	}
 

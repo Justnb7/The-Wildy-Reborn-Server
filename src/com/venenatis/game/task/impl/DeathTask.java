@@ -66,7 +66,9 @@ public class DeathTask extends Task {
 		stop();
 		if (victim.getCombatState().isDead()) {
 
+			// Look up most damage.
 			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
+			
 			if (killer != null && Area.inWilderness(killer)) {
 				dropPlayerItems(victim, killer);
 				reset(victim);

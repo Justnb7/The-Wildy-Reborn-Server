@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Calculates the amount of damage done to the entity
+ * Records damager as a String (player username) no support for Npcs
  * 
  * @author Arithium
  * 

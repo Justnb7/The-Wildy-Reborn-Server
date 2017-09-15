@@ -1,6 +1,5 @@
 package com.venenatis.game.task.impl;
 
-import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.KillTracker.KillEntry;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
 import com.venenatis.game.content.skills.slayer.SuperiorMonster;
@@ -201,9 +200,10 @@ public class NPCDeathTask extends Task {
     	
 		if (npc != null) {
 			/* Add kills to tracker */
-			for (int id : NPC.BOSSES) {
+			for (int id : killer.getKillTracker().BOSSES) {
+				//If the npc has the same id as the boss, we can track him
 				if (npc.getId() == id) {
-					KillTracker.submit(killer, new KillEntry(npc.getName(), 1), true);
+					killer.getKillTracker().submit(new KillEntry(npc.getName(), 1), true);
 				}
 			}
 

@@ -2,7 +2,6 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.action.Action;
 import com.venenatis.game.action.impl.actions.ConsumeItemAction;
-import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.clicking.items.ItemOnItem;
 import com.venenatis.game.content.clicking.magic.MagicOnItems;
@@ -395,7 +394,7 @@ public class ItemOptionPacket implements PacketType {
 			break;
 
 		case 2572:
-			KillTracker.open(player);
+			player.getKillTracker().open();
 			break;
 		}
 		

@@ -1,7 +1,6 @@
 package com.venenatis.game.net.packet;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
@@ -1110,7 +1109,7 @@ public class ActionSender {
 				}
 
 				// We can update our kills tracker after login
-				KillTracker.loadDefault(player);
+				player.getKillTracker().loadDefault();
 
 				// Update the quest tab info
 				QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);

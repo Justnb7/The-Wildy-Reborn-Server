@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.collect.Multiset;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.venenatis.game.content.KillTracker.KillEntry;
@@ -226,7 +225,7 @@ public class PlayerSave {
 				player.setGroundItems(details.groundItems);
 				player.setShiftDrops(details.shiftDrop);
 				if (details.killTracker != null) {
-					player.setKillTracker(details.killTracker);
+					player.getKillTracker().setKillTracker(details.killTracker);
 				}
 				if (details.playerAchievements != null) {
 					player.getPlayerAchievements().putAll(details.playerAchievements);
@@ -454,7 +453,7 @@ public class PlayerSave {
 			targetTracking = player.toggleTargetTracking();
 			groundItems = player.toggleGroundItems();
 			shiftDrop = player.toggleShiftClick();
-			killTracker = player.getKillTracker();
+			killTracker = player.getKillTracker().getKillTracker();
 			playerAchievements = player.getPlayerAchievements();
 			achievementsPoints = player.getAchievementsPoints();
 			friendList = player.getFAI().getFriendsList();

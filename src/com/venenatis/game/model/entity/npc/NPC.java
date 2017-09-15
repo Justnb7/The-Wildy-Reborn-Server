@@ -671,28 +671,6 @@ public class NPC extends Entity {
 	}
 	
 	/**
-	 * Array of all bosses.
-	 */
-	public static final int[] BOSSES = { 
-		6609, //Callisto
-		2054, //Chaos Elemental
-		6619, //Chaos Fanatic
-		2205, //Commander Zilyana
-		319, //Corporeal Beast
-		239, //King Black Dragon
-		3129, //K'ril Tsutsaroth
-		2215, //General Graardor
-		5779, //Giant mole
-		6361, //Dagannoth mother
-		6362, //Dagannoth mother
-		6365, //Dagannoth mother
-		3359, //Zombies champion
-		2267, //Dagannoth rex
-		2266, //Dagannoth prime
-		2265, //Dagannoth supreme
-	};
-	
-	/**
 	 * The combat cooldown delay.
 	 */
 	private int combatCooldownDelay = 4;

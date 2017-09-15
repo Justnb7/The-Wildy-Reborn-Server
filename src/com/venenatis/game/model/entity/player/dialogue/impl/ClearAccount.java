@@ -1,13 +1,12 @@
 package com.venenatis.game.model.entity.player.dialogue.impl;
 
-import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
-import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.model.entity.player.dialogue.DialogueType;
+import com.venenatis.game.model.entity.player.dialogue.Expression;
 
 public class ClearAccount extends Dialogue {
 	
@@ -62,7 +61,7 @@ public class ClearAccount extends Dialogue {
 		player.setVotePoints(0);
 		player.setCurrentKillStreak(0);
 		player.setHighestKillStreak(0);
-		KillTracker.loadDefault(player);
+		player.getKillTracker().loadDefault();
 		player.setSlayerTask("none");
 		player.setSlayerTaskAmount(0);
 		player.setSlayerTaskDifficulty(0);

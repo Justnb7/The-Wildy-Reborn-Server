@@ -7,12 +7,10 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.HerbSack;
-import com.venenatis.game.content.KillTracker.KillEntry;
+import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
@@ -95,6 +93,18 @@ import com.venenatis.server.Server;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	private KillTracker killTracker = new KillTracker(this);
+	
+	/**
+	 * Returns the single instance of the {@link KillTracker} class for this player.
+	 * 
+	 * @return the tracker clas
+	 */
+	public KillTracker getKillTracker() {
+		return killTracker;
+	}
+	
 	
 	public void stun(int stunTime, String string, boolean gfx) {
 
@@ -2051,16 +2061,6 @@ public class Player extends Entity {
 	 */
 	public void setPnpc(int pnpc) {
 		this.pnpc = pnpc;
-	}
-	
-	public CopyOnWriteArrayList<KillEntry> getKillTracker() {
-		return killTracker;
-	}
-	
-	private CopyOnWriteArrayList<KillEntry> killTracker = new CopyOnWriteArrayList<KillEntry>();
-
-	public void setKillTracker(CopyOnWriteArrayList<KillEntry> entry) {
-		this.killTracker = entry;
 	}
 	
 	/**

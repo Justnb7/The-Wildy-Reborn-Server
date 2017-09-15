@@ -59,12 +59,7 @@ public class Scorpia extends AbstractBossCombat {
 			public void execute() {
 				// stop the task when it's no longer valid
 				if (!minion.isVisible() || minion.getCombatState().isDead() || boss.getCombatState().isDead() || !boss.hasAttribute("scorpia_minion")) {
-					despawn(minion);
-					this.stop();
-					return;
-				}
-				if(minion.frozenForTicks > 15) {
-					despawn(minion);
+					minion.despawn();
 					this.stop();
 					return;
 				}
@@ -95,16 +90,6 @@ public class Scorpia extends AbstractBossCombat {
 				}
 			}
 		});
-	}
-	
-	public static void despawn(NPC n) {
-		if (!n.isVisible()) {
-			// already despawned
-			return;
-		}
-		NPCDeathTask.reset(n);
-        n.removeFromTile();
-        NPCDeathTask.setNpcToInvisible(n);
 	}
 
 }

@@ -329,6 +329,11 @@ public class ShopManager {
 				return;
 			}
 		}
+		
+		if(item.getValue() > 5_000_000) {
+			player.getActionSender().sendMessage("The shop can't afford that.");
+			return;
+		}
 
 		if (!shop.canSell()) {
 			player.getActionSender().sendMessage("You can't sell items to this shop.");

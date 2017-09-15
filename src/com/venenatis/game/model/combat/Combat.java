@@ -362,8 +362,8 @@ public class Combat {
             }
         }
         
-        if(player.getUsername().equalsIgnoreCase("patrick"))
-        	dam1 = 2000;
+        /*if(player.getUsername().equalsIgnoreCase("patrick"))
+        	dam1 = 2000;*/
 
         target.take_hit(player, dam1, CombatStyle.MAGIC).giveXP(player).send(hitDelay);
         onAttackDone(player, target);
@@ -606,8 +606,8 @@ public class Combat {
         }
         player.removeAttribute("ignore defence");
         
-        if (player.getUsername().equalsIgnoreCase("patrick"))
-			dam1 = 2000;
+        /*if (player.getUsername().equalsIgnoreCase("patrick"))
+			dam1 = 2000;*/
 
 		// Apply dmg.
 		target.take_hit(player, dam1, CombatStyle.RANGE).giveXP(player).send(hitDelay);

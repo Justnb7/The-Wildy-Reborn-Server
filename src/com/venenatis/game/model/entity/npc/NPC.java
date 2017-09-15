@@ -715,4 +715,14 @@ public class NPC extends Entity {
 		}
 		return npcList.toArray(new NPC[npcList.size()]);
 	}
+	
+	public void despawn() {
+		if (!this.isVisible()) {
+			// already despawned
+			return;
+		}
+		NPCDeathTask.reset(this);
+        this.removeFromTile();
+        NPCDeathTask.setNpcToInvisible(this);
+	}
 }

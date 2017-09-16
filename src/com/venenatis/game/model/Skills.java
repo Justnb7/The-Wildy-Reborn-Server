@@ -6,6 +6,7 @@ import java.util.List;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.skills.SkillData;
 import com.venenatis.game.content.skills.prayer.Prayer;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -402,9 +403,15 @@ public class Skills {
         int multi = combatSkill ? Constants.EXP_MODIFIER : Constants.SKILL_MODIFIER;
         int oldLevel = getLevelForExperience(skillId);
         
+        //Whilst training in the wilderness you'll gain double experience.
+        if(Area.inWilderness(player)) {
+        	multi *= 2;
+        }
+        
         exps[skillId] += experience * multi;
-        expCounter += experience*multi;
-		if (!player.showDamage()) {
+        expCounter += experience * multi;
+		
+        if (!player.showDamage()) {
 			player.getActionSender().sendExperienceCounter(skillId, (int) (experience * multi));
 		}
         //player.getActionSender().sendMessage("Exp received: "+experience+ " times "+multi+" so "+(experience*multi));

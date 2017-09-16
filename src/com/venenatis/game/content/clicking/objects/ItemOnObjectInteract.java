@@ -1,10 +1,10 @@
 package com.venenatis.game.content.clicking.objects;
 
+import com.venenatis.game.action.impl.actions.WaterSourceAction;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.ArmourSets;
 import com.venenatis.game.content.skills.cooking.Cookables;
 import com.venenatis.game.content.skills.cooking.Cooking;
-import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.smithing.SmithingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -88,6 +88,16 @@ public class ItemOnObjectInteract {
 		}
 		
 		switch (obj) {
+		
+		case 24004:
+		case 874:
+		case 27707:
+		case 27708:
+			WaterSourceAction.Fillables fill = WaterSourceAction.Fillables.forId(item.getId());
+			if (fill != null) {
+				player.getActionQueue().addAction(new WaterSourceAction(player, fill));
+			}
+			break;
 			
 		default:
 			player.debug(String.format("Player At Object id: %d with Item id: %s%n",obj, item));

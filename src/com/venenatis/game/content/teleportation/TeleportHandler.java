@@ -42,6 +42,7 @@ public class TeleportHandler {
 		GODWARS(TeleportationTypes.PVM, 226227, 58086, "Godwars dungeon", new Location(-1, -1, 0), 0, "High combat", "20+ Wild", true),
 		CORPOREAL_BEAST(TeleportationTypes.PVM, 226231, 58090, "Corporeal beast", new Location(2967, 4383, 2), 0, "High combat", "---", false),
 		LIZARDMAN_SHAMAN(TeleportationTypes.PVM, 226235, 58094, "Lizardman shaman", new Location(1464, 3684, 0), 0, "High combat", "---", false),
+		ZULRAH(TeleportationTypes.PVM, 226239, 58098, "Zulrah", new Location(-1, -1, 0), 0, "High combat", "---", true),
 
 		/* Minigame */
 		DUEL_ARENA(TeleportationTypes.MINIGAME, 226195, 58054, "Duel Arena", new Location(3365, 3265, 0), 0, "---", "---", false),
@@ -306,6 +307,9 @@ public class TeleportHandler {
 			break;
 		case GODWARS:
 			player.getDialogueManager().start("GODWARS_TELEPORTS");
+			break;
+		case ZULRAH:
+			player.getActionSender().sendMessage("@red@[Server]: Zulrah is work in progress, and shall be released shortly.");
 			break;
 		default:
 			break;

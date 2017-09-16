@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.Sanctions;
 import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.save.PlayerSave.PlayerSaveDetail;
@@ -313,7 +314,12 @@ public class LoginManager {
 		// set again incase json loaded null field (because our profile is older than when we implemented saving this specific field)
 		player.setHostAddress(hostAddress);
 
-		LoginResponse response = new LoginResponse(returnCode, player.getRights().getCrown(), 0);
+		Rights rights = player.getRights();
+		if (player.getRights() == null) {
+			System.err.println("player rights were null, default to player");
+			rights = Rights.PLAYER;
+		}
+		LoginResponse response = new LoginResponse(returnCode, rights.getCrown(), 0);
 
 		ChannelFuture future = ctx.writeAndFlush(response);
 

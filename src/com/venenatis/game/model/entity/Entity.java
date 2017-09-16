@@ -327,6 +327,8 @@ public abstract class Entity {
 			asPlayer().getWalkingQueue().reset();
 		this.teleportTarget = teleportTarget;
 	}
+	// when teleporting you HAVE to use this variable, its what makes the 
+	// npc change position client side via npc updating, this didn't work before i tried this
 	
 	/**
 	 * Resets the teleport target.

@@ -15,7 +15,6 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.StoppingTick;
 import com.venenatis.game.util.Utility;
@@ -48,9 +47,9 @@ public class LizardmanShaman extends AbstractBossCombat {
 		}
 
 		NPC npc = (NPC) attacker;
-		CombatStyle style = CombatStyle.JUMP_ATTACK;
+		CombatStyle style = CombatStyle.MELEE;
 
-		/*if (npc.getLocation().distance(victim.getLocation()) <= 3) {
+		if (npc.getLocation().distance(victim.getLocation()) <= 3) {
 			switch (random.nextInt(10)) {
 			case 1:
 			case 2:
@@ -89,7 +88,7 @@ public class LizardmanShaman extends AbstractBossCombat {
 				style = CombatStyle.ACID_ATTACK;
 				break;
 			}
-		}*/
+		}
 
 		switch (style) {
 		case MELEE:
@@ -154,62 +153,60 @@ public class LizardmanShaman extends AbstractBossCombat {
 			}
 		}
 		minions.forEach(World.getWorld()::register);
-		minions.forEach(n -> World.getWorld().schedule(new Task(1) {
-			private int ticks = 10;
-			private int curTicks;
-
-			@Override
-			public void execute() {
-				if (curTicks >= ticks) {
-					this.stop();
-					n.playAnimation(Animation.create(7159));
-					n.playGraphic(Graphic.create(1295, 10, 0));
-					World.getWorld().schedule(new Task(1) {
-
-						@Override
-						public void execute() {
-							this.stop();
-							if (n.getLocation().distance(victim.getLocation()) <= 3) {
-								victim.take_hit(n, Utility.random(4, 9), CombatStyle.MAGIC, true);
+		minions.forEach(n -> {
+			n.setFollowing(victim);
+			World.getWorld().schedule(new Task(1) {
+				private int ticks = 10;
+				private int curTicks;
+	
+				@Override
+				public void execute() {
+					if (curTicks >= ticks) {
+						this.stop();
+						n.playAnimation(Animation.create(7159));
+						n.playGraphic(Graphic.create(1295, 10, 0));
+						World.getWorld().schedule(new Task(1) {
+	
+							@Override
+							public void execute() {
+								this.stop();
+								if (n.getLocation().distance(victim.getLocation()) <= 3) {
+									victim.take_hit(n, Utility.random(4, 9), CombatStyle.MAGIC, true);
+								}
+								World.getWorld().unregister(n);
 							}
-							World.getWorld().unregister(n);
-						}
-					});
+						});
+					}
+					curTicks++;
 				}
-				n.setFollowing(victim);
-				//following isn't entity based so we can't use this method :(
-				//Location to = Following.getDestination(n, victim);
-				//n.doPath(new SizedPathFinder(true), n, to.getX(), to.getY());
-				curTicks++;
-			}
-		}));
+			});
+		});
 		minions.clear();
-		//TODO ask Jak if he can help with this or pay him to do this attack
 	}
 	
 	private void handleLizardJumpAttack(NPC npc, Entity victim) {
 		Location toJump = victim.getLocation();
 		npc.setAttribute("attack", false);
 		npc.playAnimation(JUMP_HIDE);
+		World.getWorld().schedule(new StoppingTick(2) {
+			@Override
+			public void executeAndStop() {
+				npc.setVisible(false); // removes from client view
+			}
+		});
 		World.getWorld().schedule(new StoppingTick(6) {
 			@Override
 			public void executeAndStop() {
 				npc.removeAttribute("attack");
-				npc.teleport(new Location(3422, 5795, 0));
-				//npc.teleport(toJump);
-				//npc.teleport(toJump.closestFreeTileOrSelf(toJump, npc.getWidth(), npc.getZ()));
+				npc.setVisible(true);
+				Location destination = toJump.closestFreeTileOrSelf(toJump, npc.getWidth(), npc.getZ());
+				npc.teleport(destination); // just sets new location, doesn't do any npc updating changes (npc doesn't support TELEPORT like players do)
 				npc.playAnimation(JUMP_DOWN);
-				System.out.println(String.format("Jumping to location %s%n", toJump.toString()));
-				if(victim.getLocation().distance(toJump) <= 2) {
-					victim.take_hit(npc, Utility.random(20, 25), CombatStyle.JUMP_ATTACK, true);
-				}
-				/*npc.getRegion().getPlayers().stream().filter(Objects::nonNull).
-						filter(i -> i.getLocation().distance(toJump) <= 2).forEach(i -> i.take_hit(npc, Utility.random(20, 25), CombatStyle.MELEE, true));*/
+				npc.faceEntity(victim);
+				npc.getRegion().getPlayers().stream().filter(Objects::nonNull).filter(i -> i.getLocation().distance(toJump) <= 2).forEach(i -> i.take_hit(npc, Utility.random(20, 25), CombatStyle.JUMP_ATTACK, true));
 				
 			}
 		});
-		//TODO ask Jak how to do the jump attack
-		
 	}
 	
 	private void handleLizardRange(NPC npc, Entity victim) {

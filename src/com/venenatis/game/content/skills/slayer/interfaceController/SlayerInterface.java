@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.content.skills.slayer.interfaceController.ExtendInterface.ExtendButtons;
 import com.venenatis.game.content.skills.slayer.interfaceController.UnlockInterface.UnlockButtons;
-import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;

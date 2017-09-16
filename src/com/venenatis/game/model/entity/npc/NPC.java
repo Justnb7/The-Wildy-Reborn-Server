@@ -456,7 +456,11 @@ public class NPC extends Entity {
 			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);
 			// none yet again duplicate INTs by PI
 
-			if ((this.getHitpoints() > 0 && !getCombatState().isDead()) || isPet) {
+			if(this.followTarget != null || this.getHitpoints() < 1) {
+				System.out.println("We need atleast one hitpoint!");
+			}
+			
+			if ((this.getHitpoints() > 0 && !getCombatState().isDead()) || isPet || getId() == 6768) {
 
 				super.frozen_process();
 

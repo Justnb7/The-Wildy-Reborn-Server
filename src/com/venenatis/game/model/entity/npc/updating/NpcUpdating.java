@@ -59,14 +59,12 @@ public class NpcUpdating {
 			/*
 			 * If the NPC should still be in our list.
 			 */
-			if (World.getWorld().getNPCs().get(npc.getIndex()) != null && !npc.isTeleporting() && npc.isVisible() && npc.getLocation().isWithinDistance(player.getLocation())) {
+			if (World.getWorld().getNPCs().get(npc.getIndex()) != null && !npc.isTeleporting() && !npc.hasAttribute("teleporting") && npc.isVisible() && npc.getLocation().isWithinDistance(player.getLocation())) {
 				/*
 				 * Update the movement.
 				 */
 				updateNPCMovement(npc, buffer);
-				/*
-				 * Check if an update is required, and if so, send the update.
-				 */
+
 				/*
 				 * Check if an update is required, and if so, send the update.
 				 */
@@ -265,6 +263,10 @@ public class NpcUpdating {
 			}
 		}
 	}
+	// theres no teleporting flag like there is player updating min
+	// what did we test yesterday with npc teleporting? or  what twahs that playe ronly player only,
+	//before you made a custom var "teleporting" for npcs, cuz walking and following etc is not entity based
+	//the variable works for mole etc updates fine just shaman doesn't update
 
 	/**
 	 * Adds a new npc to the map

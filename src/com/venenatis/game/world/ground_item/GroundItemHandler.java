@@ -302,6 +302,19 @@ public final class GroundItemHandler {
 				addRegionalItem(groundItem);
 			}
 		}
+		
+		/**
+		 * A flag to check if the ground item is stackable.
+		 */
+		boolean stackable = groundItem.getItem().getDefinition().isStackable();
+		
+		/**
+		 * If there is a stackable item on the tile we are dropping the new item on, and it matches our new item being dropped, we calculate the needed information
+		 * to respectively replace the existing match.
+		 */
+		if (stackable) {
+			//TODO add support for stackable ground items.
+		}
 
 		return true;
 	}

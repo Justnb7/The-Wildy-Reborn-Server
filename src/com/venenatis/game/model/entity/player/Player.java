@@ -2175,7 +2175,7 @@ public class Player extends Entity {
 	 * We can't perform actions while the other person is busy.
 	 */
 	public boolean isBusy() {
-		if(isTeleporting() || isShopping() || isTrading()) {
+		if(getTeleportAction().isTeleporting() || isShopping() || isTrading()) {
 			return true;
 		}
 		return false;

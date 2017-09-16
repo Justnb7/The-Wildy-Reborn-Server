@@ -835,4 +835,20 @@ public class Location {
 			   x >= 3030 && x <= 3051 && y >= 3529 && y <= 3546 ||
 			   x >= 3348 && x <= 3385 && y >= 3634 && y <= 3663;
 	}
+
+	/**
+	 * Gets the closest unblocked tile from a position, or if there is none it just returns the original position.
+	 */
+	public Location closestFreeTileOrSelf(Location from, int width, int height) {
+		for (int x = -width; x <= width; x++) {
+			for (int y = -height; y <= height; y++) {
+				Location loc = Location.create(this.x + x, this.y + y, this.z);
+				if (!Region.isPassable(loc.getX(), loc.getY(), loc.getZ())) {
+					continue;
+				}
+				return loc;
+			}
+		}
+		return from;
+	}
 }

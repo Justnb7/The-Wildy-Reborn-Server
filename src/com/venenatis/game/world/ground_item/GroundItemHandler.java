@@ -244,7 +244,7 @@ public final class GroundItemHandler {
 			if (items.isTradeable() || item.getOwnerHash() == player.usernameHash) {
 				
 				if (item.getState() == State.SEEN_BY_EVERYONE || item.getOwnerHash() == player.usernameHash) {
-					System.out.println(String.format("spawned: %s%n", item));
+					//System.out.println(String.format("spawned: %s%n", item));
 					player.getActionSender().sendGroundItem(item);
 				}
 			}

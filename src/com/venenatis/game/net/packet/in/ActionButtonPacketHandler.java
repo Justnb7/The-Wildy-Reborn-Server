@@ -64,7 +64,7 @@ public class ActionButtonPacketHandler implements PacketType {
 		/**
 		 * We can't click buttons during teleporting
 		 */
-		if(player.isTeleporting()) {
+		if(player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 		

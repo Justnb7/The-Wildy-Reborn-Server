@@ -401,6 +401,7 @@ public class NPC extends Entity {
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();
+		this.setTeleporting(false);
 	}
 
 	/**

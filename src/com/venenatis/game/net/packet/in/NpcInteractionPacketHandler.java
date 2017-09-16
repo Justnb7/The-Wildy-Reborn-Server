@@ -50,7 +50,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 	public void handle(final Player player, int packet, int size) {
 		player.getCombatState().reset();
 		player.setFollowing(null);
-		if (player.isPlayerTransformed() || player.isTeleporting()) {
+		if (player.isPlayerTransformed() || player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 

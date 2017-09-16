@@ -727,4 +727,31 @@ public class Region {
 		return y;
 	}
 
+	public static boolean isPassable(Location l) {
+        int clippingMask = getClippingMask(l.getX(), l.getY(), l.getZ());
+
+        if (clippingMask == -1) {
+            return true; //?
+        }
+        return clippingMask < 1; /*(clippingMask & 0x1280180) == 0 && (clippingMask & 0x1280108) == 0
+        && (clippingMask & 0x1280120) == 0 && (clippingMask & 0x1280102) == 0;*/
+    }
+
+	 public static boolean passable(int x, int y, int z) {
+        int clippingMask = getClippingMask(x, y, z);
+        if (clippingMask == -1) {
+            return true; //?
+        }
+        return (clippingMask & 0x1280180) == 0 && (clippingMask & 0x1280108) == 0
+        && (clippingMask & 0x1280120) == 0 && (clippingMask & 0x1280102) == 0;
+    }
+
+    public static boolean isPassable(int x, int y, int z) {
+        int clippingMask = getClippingMask(x, y, z);
+        if (clippingMask == -1) {
+            return true; //?
+        }
+        return clippingMask < 1;
+    }
+
 }

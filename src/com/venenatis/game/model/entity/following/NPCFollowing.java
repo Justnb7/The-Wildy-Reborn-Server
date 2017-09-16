@@ -77,13 +77,16 @@ public class NPCFollowing {
 			boolean magic = npc.getCombatType() == CombatStyle.MAGIC;
 			boolean ranged = !magic && npc.getCombatType() == CombatStyle.RANGE;
 			boolean melee = !magic && !ranged;
-			if (melee || npc.isPet || npc.getId() == 6616) {
-				if (distance <= 1) { // Stop following when close
-					return;
-				}
-			} else {
-				if (distance <= (ranged ? 7 : 10)) { // so its 10 by default, checks melee range then asssumes anything else instead of magic
-					return;
+			boolean dont_check = npc.getId() == 6616 || npc.getId() == 6768;
+			if(!dont_check) {
+				if (melee || npc.isPet) {
+					if (distance <= 1) { // Stop following when close
+						return;
+					}
+				} else {
+					if (distance <= (ranged ? 7 : 10)) { // so its 10 by default, checks melee range then asssumes anything else instead of magic
+						return;
+					}
 				}
 			}
 		}

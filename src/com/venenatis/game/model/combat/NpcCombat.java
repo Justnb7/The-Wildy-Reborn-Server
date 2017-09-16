@@ -274,7 +274,7 @@ public class NpcCombat {
 			npc.faceEntity(player);
 		}
 		
-		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned")) {
+		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned") || npc.hasAttribute("attack")) {
 			return;
 		}
 		

@@ -148,6 +148,15 @@ public abstract class AbstractBossCombat {
 		bosses.put(6610, venenatis);
 		bosses.put(8017, venenatis);
 		
+		
+		AbstractBossCombat lizardman_shaman = new LizardmanShaman();
+		bosses.put(6766, lizardman_shaman);
+		bosses.put(6767, lizardman_shaman);
+		bosses.put(7573, lizardman_shaman);
+		bosses.put(7574, lizardman_shaman);
+		bosses.put(7744, lizardman_shaman);
+		bosses.put(7745, lizardman_shaman);
+		
 	}
 	
 	public static AbstractBossCombat get(int npcId) {

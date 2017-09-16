@@ -163,7 +163,7 @@ public class ItemOptionPacket implements PacketType {
 			return;
 		}
 		
-		if (player.isTeleporting()) {
+		if (player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 		
@@ -219,7 +219,7 @@ public class ItemOptionPacket implements PacketType {
 		}
 		
 		//During teleport we cannot drop any items.
-		if(player.isTeleporting()) {
+		if(player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 		
@@ -281,7 +281,7 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(id);
 
 		//Safety checks
-		if (player.getCombatState().isDead() || interfaceIndex != 3214 || player.isTeleporting()) {
+		if (player.getCombatState().isDead() || interfaceIndex != 3214 || player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 		
@@ -373,7 +373,7 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(itemId);
 		
 		// Safety checks
-		if (player.getCombatState().isDead() || player.isTeleporting()) {
+		if (player.getCombatState().isDead() || player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 
@@ -413,7 +413,7 @@ public class ItemOptionPacket implements PacketType {
 		Item item = new Item(itemId);
 		
 		// Safety checks
-		if (player.getCombatState().isDead() || interfaceId != 3214 || player.isTeleporting()) {
+		if (player.getCombatState().isDead() || interfaceId != 3214 || player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 

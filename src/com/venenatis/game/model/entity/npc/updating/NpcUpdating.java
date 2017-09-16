@@ -46,16 +46,44 @@ public class NpcUpdating {
 		 */
 		buffer.writeBits(8, player.getLocalNPCs().size());
 
-		Iterator<NPC> $it = player.getLocalNPCs().iterator();
-		while ($it.hasNext()) {
-			NPC npc = $it.next();
-			if (World.getWorld().getNPCs().get(npc.getIndex()) != null && npc.isVisible() && player.withinDistance(npc) && !npc.getAttribute("teleporting", false)) {
+		
+		/*
+		 * Iterate through the local npc list.
+		 */
+		for (Iterator<NPC> it$ = player.getLocalNPCs().iterator(); it$.hasNext();) {
+			/*
+			 * Get the next NPC.
+			 */
+			NPC npc = it$.next();
+			
+			/*
+			 * If the NPC should still be in our list.
+			 */
+			if (World.getWorld().getNPCs().get(npc.getIndex()) != null && !npc.isTeleporting() && npc.isVisible() && npc.getLocation().isWithinDistance(player.getLocation())) {
+				/*
+				 * Update the movement.
+				 */
 				updateNPCMovement(npc, buffer);
-				appendNPCUpdateBlock(npc, updateBlock);
+				/*
+				 * Check if an update is required, and if so, send the update.
+				 */
+				/*
+				 * Check if an update is required, and if so, send the update.
+				 */
+				if (npc.getUpdateFlags().isUpdateRequired()) {
+					updateNPC(npc, updateBlock);
+				}
 			} else {
+				/*
+				 * Otherwise, remove the NPC from the list.
+				 */
+				it$.remove();
+				
+				/*
+				 * Tell the client to remove the NPC from the list.
+				 */
 				buffer.writeBits(1, 1);
 				buffer.writeBits(2, 3);
-				$it.remove();
 			}
 		}
 
@@ -94,7 +122,7 @@ public class NpcUpdating {
 				player.getLocalNPCs().add(npc);
 				npc.handleFacing();
 				addNewNPC(player, npc, buffer);
-				appendNPCUpdateBlock(npc, updateBlock);
+				updateNPC(npc, updateBlock);
 				added++;
 			}
 
@@ -139,10 +167,10 @@ public class NpcUpdating {
 	 * @param buffer
 	 *            The {@link GameBuffer} to write the data on
 	 */
-	private static void appendNPCUpdateBlock(NPC npc, GameBuffer buffer) {
+	private static void updateNPC(NPC npc, GameBuffer buffer) {
 		
-		if (!npc.getUpdateFlags().isUpdateRequired())
-			return;
+		/*if (!npc.getUpdateFlags().isUpdateRequired())
+			return;*/
 		
 		/*
 		 * Calculate the mask.

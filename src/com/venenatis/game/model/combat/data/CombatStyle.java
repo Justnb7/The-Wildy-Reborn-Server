@@ -70,7 +70,17 @@ public enum CombatStyle {
 	/**
 	 * Venenatis special attack
 	 */
-	WEB,
+	WEB, 
+	
+	/**
+	 * Lizardman Shamans
+	 */
+	ACID_ATTACK,
+	
+	/**
+	 * Lizardman Shamans
+	 */
+	JUMP_ATTACK,
 	
 	;
 }

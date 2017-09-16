@@ -51,6 +51,27 @@ import com.venenatis.server.Server;
  */
 public abstract class Entity {
 	
+	/**
+	 * The current region.
+	 */
+	private RegionStore currentRegion;
+	
+	/**
+	 * Gets the current region.
+	 * @return The current region.
+	 */
+	public RegionStore getRegion() {
+		return currentRegion;
+	}
+
+	/**
+	 * Sets the current region.
+	 * @param region The region to set.
+	 */
+	public void setRegion(RegionStore region) {
+		this.currentRegion = region;
+	}
+	
     private int combatLevel;
 	
 	public int getCombatLevel() {
@@ -192,21 +213,24 @@ public abstract class Entity {
 	 *            The current location.
 	 */
 	public void setLocation(Location location) {
-		// While location is currently the older one, remove from previous regions
-		if (this.isPlayer())
-			World.getWorld().regions.getRegionByLocation(location).removePlayer((Player)this);
-		else 
-			World.getWorld().regions.getRegionByLocation(location).removeNpc((NPC)this);		
-		
-		// Set new position
 		this.location = location;
 		
-		// TODO update tilecontrol system position? and region
-		TileControl.getSingleton().setOccupiedLocation(this, this.getTiles());
-		if (this.isPlayer())
-			World.getWorld().regions.getRegionByLocation(location).addPlayer((Player)this);
-		else 
-			World.getWorld().regions.getRegionByLocation(location).addNpc((NPC)this);
+		RegionStore newRegion = World.getWorld().regions.getRegionByLocation(location);
+		if(newRegion != getRegion()) {
+			if(getRegion() != null) {
+				// While location is currently the older one, remove from previous regions
+				if (this.isPlayer())
+					World.getWorld().regions.getRegionByLocation(location).removePlayer((Player)this);
+				else 
+					World.getWorld().regions.getRegionByLocation(location).removeNpc((NPC)this);	
+			}
+			setRegion(newRegion);
+			TileControl.getSingleton().setOccupiedLocation(this, this.getTiles());
+			if (this.isPlayer())
+				World.getWorld().regions.getRegionByLocation(location).addPlayer((Player)this);
+			else 
+				World.getWorld().regions.getRegionByLocation(location).addNpc((NPC)this);
+		}
 	}
 
 	public int getX() {
@@ -330,7 +354,7 @@ public abstract class Entity {
 	private boolean teleporting = false;
 	
 	/**
-	 * The PLAYER UPDATE FLAG for if position is changing this tick. NOT generic teleporting. You need a NEW BOOLEAN
+	 * The PLAYER UPDATE FLAG for if position is changing this tick. NOT generic teleporting.
 	 */
 	public boolean isTeleporting() {
 		return teleporting;

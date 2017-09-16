@@ -62,7 +62,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		Location position = Location.create(x, y, player.getLocation().getZ());
 		
 		//Safety check
-		if (player.isTeleporting()) {
+		if (player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 		
@@ -84,7 +84,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		Location position = Location.create(x, y, player.getLocation().getZ());
 		
 		// Safety check
-		if (player.isTeleporting()) {
+		if (player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 
@@ -105,7 +105,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 		Location position = Location.create(x, y, player.getLocation().getZ());
 		
 		//Safety check
-		if (player.isTeleporting()) {
+		if (player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 		

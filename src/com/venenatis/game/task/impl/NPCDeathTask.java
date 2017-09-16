@@ -195,7 +195,8 @@ public class NPCDeathTask extends Task {
     	//killer.debug(String.format("killer: %s", npc.getCombatState().getDamageMap().getKiller()));
 
     	if(killer == null) {
-    		System.err.printf("Killer %s is null, killed %s%n", killer, npc.getName());
+    		System.out.printf("Killer is null, killed %s%n", npc.getName());
+    		return;
     	}
     	
 		if (npc != null) {

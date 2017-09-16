@@ -36,7 +36,7 @@ public class MagicOnItems {
 			return;
 		}
 
-		if (player.isTeleporting()) {
+		if (player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 

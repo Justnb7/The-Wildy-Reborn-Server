@@ -116,7 +116,7 @@ public class Server {
 		try {
 			Server server = new Server();
 
-			System.setErr(new SystemLogger(System.err, new File("./data/logs/err")));
+			System.setErr(new SystemLogger(System.err, new File("./err")));
 			server.getBootstrap().build().bind();
 			GameEngine.start();
 			MOTIVOTE.checkUnredeemedPeriodically((result) -> {

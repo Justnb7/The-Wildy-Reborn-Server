@@ -27,7 +27,7 @@ public class WieldPacketHandler implements PacketType {
 		
 		player.debug(String.format("[WieldPacketHandler] [id= %d] [slot= %d] [interface %d]", id, slot, interfaceId));
 		
-		if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.isTeleporting()) {
+		if (player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0 || player.getTeleportAction().isTeleporting()) {
 			return;
 		}
 		

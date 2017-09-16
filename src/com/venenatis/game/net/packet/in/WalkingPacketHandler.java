@@ -37,7 +37,6 @@ public class WalkingPacketHandler implements PacketType {
 		
 		//We can't walk whilst teleporting
 		if(player.isTeleporting()) {
-			player.debug("ur tping homie");
 			return;
 		}
 		

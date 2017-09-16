@@ -276,7 +276,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 		Player other = World.getWorld().getPlayers().search(otherPlayerTradeIndex).get();
 
-		if (!other.isRegistered() || other.isTeleporting() || other.getCombatState().isDead()) {
+		if (!other.isRegistered() || other.getTeleportAction().isTeleporting() || other.getCombatState().isDead()) {
 			return;
 		}
 		

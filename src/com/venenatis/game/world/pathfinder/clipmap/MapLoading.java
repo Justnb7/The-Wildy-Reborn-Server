@@ -19,6 +19,7 @@ import com.venenatis.game.cache.OpenRsUnpacker;
 import com.venenatis.game.cache.definitions.osrs.CachedObjectDefinition;
 import com.venenatis.game.cache.fs.CacheManager;
 import com.venenatis.game.cache.io.r317.ByteStream;
+import com.venenatis.game.constants.Constants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -38,7 +39,7 @@ public class MapLoading {
 	}
 
 	public static Map<Integer, int[]> textKeys() throws Exception {
-		File path = new File("./data/osrs124xtea/");
+		File path = new File(Constants.OSRS_XTEA_LOCATION);
 		if (!path.exists())
 			throw new Exception("No xtea folder found for release ");
 		File[] xteas = path.listFiles();
@@ -84,10 +85,10 @@ public class MapLoading {
 	public static void main(String[] bla) {
 		// dump map_index
 
-		CacheManager hyperionCache = new CacheManager("./data/osrs124/");
+		CacheManager hyperionCache = new CacheManager(Constants.OSRS_CACHE_LOCATION);
 
 		try {
-			RandomAccessFile raf = new RandomAccessFile("./map_index_osrs124", "rw");
+			RandomAccessFile raf = new RandomAccessFile(Constants.OSRS_MAP_INDEX_LOCATION, "rw");
 			for (int regionId = 0; regionId < 16384; regionId++) {
 				int regionX = (regionId >> 8) * 64;
 				int regionY = (regionId & 0xff) * 64;
@@ -114,7 +115,7 @@ public class MapLoading {
 
 	public static void load() {
 		try {
-			File f = new File("./map_index_osrs124"); // ./data/map/map_index
+			File f = new File(Constants.OSRS_MAP_INDEX_LOCATION); // ./data/map/map_index
 			byte[] buffer = new byte[(int) f.length()];
 			DataInputStream dis = new DataInputStream(new FileInputStream(f));
 			dis.readFully(buffer);

@@ -108,6 +108,13 @@ public class Teleport {
 	 * @return
 	 */
 	public boolean canTeleport(boolean override) {
+		/*
+		 * Prevents mass clicking teleports.
+		 */
+		if (player.getTeleportAction().getLastTeleport() < 2000) {
+			return false;
+		}
+		
 		if(player.isJailed()) {
 			player.getActionSender().sendMessage("You cannot teleport while you are jailed.");
 			return false;
@@ -197,6 +204,7 @@ public class Teleport {
 		case 117162:
 		case 51013:
 		case 6004:
+			player.getTeleportAction().teleport(new Location(2758, 3501, 0), TeleportTypes.SPELL_BOOK, false);
 			break;
 		}
 		return false;
@@ -253,6 +261,7 @@ public class Teleport {
 		player.playGraphic(data.getStartGraphic());
 		player.getActionSender().sendSound(data.getSound(), 0, 0);
 		player.setCanBeDamaged(false);
+		player.getTeleportAction().setLastTeleport(System.currentTimeMillis());
 
 		Server.getTaskScheduler().submit(new Task(player, data.getDelay(), false, StackType.NEVER_STACK, BreakType.NEVER) {
 			@Override

@@ -8,6 +8,7 @@ import com.venenatis.game.cache.definitions.osrs.CachedObjectDefinition;
 import com.venenatis.game.cache.definitions.r317.ObjectDefinition317;
 import com.venenatis.game.cache.fs.CacheArchive;
 import com.venenatis.game.cache.fs.CacheManager;
+import com.venenatis.game.constants.Constants;
 
 import java.io.IOException;
 
@@ -24,7 +25,7 @@ public class OpenRsUnpacker {
 
     public static void unpack() {
         if (!openRS) {
-            hyperionCache = new CacheManager("./data/osrs124/");
+            hyperionCache = new CacheManager(Constants.OSRS_CACHE_LOCATION);
             int count = hyperionCache.getReferenceTables()[2].getArchiveInfomation()[6].getArchiveEntryInfomation().length;
             CachedObjectDefinition.objectDefinitions = new CachedObjectDefinition[count];
             System.out.println("Objects in cache: "+count);
@@ -33,7 +34,7 @@ public class OpenRsUnpacker {
 
         // open RS not in use
         /*try {
-            cache = new Cache(FileStore.open("./data/osrscache/"));
+            cache = new Cache(FileStore.open(Constants.OSRS_CACHE_LOCATION));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

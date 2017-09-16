@@ -80,7 +80,6 @@ public class NPCFollowing {
 			boolean dont_check = npc.getId() == 6616 || npc.getId() == 6768;//6768 is the spawn
 			if (melee || npc.isPet || dont_check) {
 				if (distance <= 1) { // Stop following when close
-					npc.sendForcedMessage("close enough?");//this print is being printed by the boss only so minions dont follow @ all
 					return;
 				}
 			} else {

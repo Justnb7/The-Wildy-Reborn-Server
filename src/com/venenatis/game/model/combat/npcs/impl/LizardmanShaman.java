@@ -234,7 +234,7 @@ public class LizardmanShaman extends AbstractBossCombat {
 	}
 
 	private void handleLizardMelee(NPC npc, Entity victim) {
-		npc.playAnimation(random.nextInt(1) == 0 ? Animation.create(7192) : Animation.create(7158));
+		npc.playAnimation(random.nextInt(1) == 0 ? JUMP_ATTACK : Animation.create(7158));
 		hitDelay = 1;
 		randomHit = Utility.random(npc.getDefinition().getMaxHit());
 

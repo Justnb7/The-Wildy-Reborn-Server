@@ -82,7 +82,6 @@ public class NpcInteractionPacketHandler implements PacketType {
 
 	private void handleAttackNpcPacket(Player player, int packet) {
 		int pid = player.getInStream().readUnsignedWordA();
-		player.debug("null npc");
 		NPC npc = World.getWorld().getNPCs().get(pid);
 		if (npc == null) {	
 			return;

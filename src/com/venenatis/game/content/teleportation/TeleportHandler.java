@@ -41,6 +41,7 @@ public class TeleportHandler {
 		GIANT_MOLE(TeleportationTypes.PVM, 226223, 58082, "Giant mole", new Location(1761, 5186, 0), 0, "High combat", "20+ Wild", false),
 		GODWARS(TeleportationTypes.PVM, 226227, 58086, "Godwars dungeon", new Location(-1, -1, 0), 0, "High combat", "20+ Wild", true),
 		CORPOREAL_BEAST(TeleportationTypes.PVM, 226231, 58090, "Corporeal beast", new Location(2967, 4383, 2), 0, "High combat", "---", false),
+		LIZARDMAN_SHAMAN(TeleportationTypes.PVM, 226235, 58094, "Lizardman shaman", new Location(1464, 3684, 0), 0, "High combat", "---", false),
 
 		/* Minigame */
 		DUEL_ARENA(TeleportationTypes.MINIGAME, 226195, 58054, "Duel Arena", new Location(3365, 3265, 0), 0, "---", "---", false),
@@ -149,7 +150,7 @@ public class TeleportHandler {
 			player.getActionSender().sendConfig(678, 0);
 			player.getActionSender().sendConfig(679, 1);
 			player.getActionSender().sendConfig(680, 0);
-			player.getActionSender().sendScrollBar(58050, 325);
+			player.getActionSender().sendScrollBar(58050, 375);
 			break;
 
 		case MINIGAME:

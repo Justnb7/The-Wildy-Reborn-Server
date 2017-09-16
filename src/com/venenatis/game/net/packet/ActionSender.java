@@ -636,6 +636,17 @@ public class ActionSender {
 		player.flushOutStream();
 		return this;
 	}
+	
+	public ActionSender sendStillGFX(final int id, final int height, final Location loc) {
+        sendLocalCoordinates(loc, 0, 0);
+		player.getOutStream().writeFrame(4);
+		player.getOutStream().writeByte((byte) 0);
+		player.getOutStream().writeWord(id);
+		player.getOutStream().writeByte((byte) height);
+		player.getOutStream().writeWord(0);
+		player.flushOutStream();
+        return this;
+    }
 
 	public ActionSender stillGfx(int id, int x, int y, int height, int time) {
 		player.getOutStream().writeFrame(85);

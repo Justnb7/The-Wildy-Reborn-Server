@@ -3,11 +3,10 @@ package com.venenatis.game.model.combat.npcs.impl.wilderness;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
-import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
@@ -19,10 +18,9 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
-import com.venenatis.game.world.pathfinder.ProjectilePathFinder.Direction;
 
 public class ChaosFanatic extends AbstractBossCombat {
-	
+
 	/**
 	 * The random number generator.
 	 */
@@ -38,118 +36,112 @@ public class ChaosFanatic extends AbstractBossCombat {
 
 	@Override
 	public void execute(final Entity attacker, final Entity victim) {
+
 		if (!attacker.isNPC()) {
 			return; // this should be an NPC!
 		}
 
-		Player pVictim = (Player) victim;
-		
-		NPC npc = (NPC) attacker;
-
-		CombatStyle style = CombatStyle.MAGIC;
-
-		int maxHit;
+		int maxHit = 31;
 		int randomHit;
-		int hitDelay;
+		final int hit;
 		int clientSpeed;
 		int gfxDelay;
 		int preHit = 0;
+		((NPC) attacker).sendForcedMessage(MESSAGES[random.nextInt(MESSAGES.length)]);
+		CombatStyle style = CombatStyle.MAGIC;
 
-		/*switch (Utility.random(3)) {
-		default:
-			style = CombatStyle.MAGIC;
-			break;
+		switch (Utility.random(3)) {
 		case 3:
 			style = CombatStyle.GREEN_BOMB;
 			break;
-		}*/
-		style = CombatStyle.GREEN_BOMB;
-		
-		Location firstLocation = pVictim.getLocation().clone();
-		Location secondLocation = pVictim.getLocation().clone().add(Direction.SOUTH_EAST);
-		Location thirdLocation = pVictim.getLocation().clone().add(Direction.SOUTH_WEST);
-
-		attacker.sendForcedMessage(MESSAGES[random.nextInt(MESSAGES.length)]);
-
+		}
+		Location firstLocation = victim.getLocation();
+		Location secondLocation = victim.getLocation().transform(1, 1, 0);
+		Location thirdLocation = victim.getLocation().transform(-1, -1, 0);
 		switch (style) {
 		case MAGIC:
-			maxHit = 31;
 			attacker.playAnimation(ATTACK_ANIMATION);
 			if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
+				clientSpeed = 50;
+				gfxDelay = 60;
+			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
 				clientSpeed = 70;
 				gfxDelay = 80;
-			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
+			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
 				clientSpeed = 90;
 				gfxDelay = 100;
-			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
+			} else {
 				clientSpeed = 110;
 				gfxDelay = 120;
-			} else {
-				clientSpeed = 130;
-				gfxDelay = 140;
 			}
-			hitDelay = (gfxDelay / 20) - 1;
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), RED_GFX,
-					45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
-			if(PrayerHandler.isActivated(pVictim, PrayerHandler.PROTECT_FROM_MAGIC)) {
-				maxHit = 7;
-			}
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), RED_GFX, 45, 50, clientSpeed, 43, 35, victim.getProjectileLockonIndex(), 10, 48));
 			randomHit = Utility.random(maxHit);
-			if (randomHit > pVictim.getSkills().getLevel(Skills.HITPOINTS)) {
-				randomHit = pVictim.getSkills().getLevel(Skills.HITPOINTS);
-			}
 			preHit = randomHit;
-			break;
-		case GREEN_BOMB:
-			maxHit = 31;
-			attacker.playAnimation(ATTACK_ANIMATION);
-			if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
-				clientSpeed = 70;
-				gfxDelay = 80;
-			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
-				clientSpeed = 90;
-				gfxDelay = 100;
-			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
-				clientSpeed = 110;
-				gfxDelay = 120;
-			} else {
-				clientSpeed = 130;
-				gfxDelay = 140;
+			
+			
+			int remove_armour = Utility.random(10);
+			
+			if (remove_armour == 1) {
+				Player p = (Player) victim;
+				if (victim.getActionSender() != null) {
+					victim.message("The fiend attempts to disarm you.");
+				}
+				int slot = 0;
+				if (p.getEquipment().getTakenSlots() == 0) {
+					return;
+				}
+				while (p.getEquipment().get(slot) == null) {
+					slot++;
+				}
+				if (p.getInventory().getFreeSlots() != 0) {
+					p.getEquipment().unequip(slot);
+				} else {
+					return;
+				}
+				p.message("The Chaos fanatic has removed some of your worn equipment.");
 			}
-			hitDelay = (gfxDelay / 20) - 1;
-			//TODO fix projectile sending, projectile sending for this particular MOB is off, there a couple of more mobs that use a simliar attack
-			//We need to fix this in order to write those scripts aswell!!!!!
-			npc.playProjectile(Projectile.create(npc.getCentreLocation(), firstLocation, 551, 45, 50, 70, 43, 35, 0, 10, 10));
-			npc.playProjectile(Projectile.create(npc.getCentreLocation(), secondLocation, 551, 45, 50, clientSpeed, 43, 35, 0, 10, 48));
-			npc.playProjectile(Projectile.create(npc.getCentreLocation(), thirdLocation, 551, 45, 50, clientSpeed, 43, 35, 0, 10, 48));
 			
 			break;
-		default:
-			preHit = 0;
-			hitDelay = 1;
+		case GREEN_BOMB:
+			attacker.playAnimation(ATTACK_ANIMATION);
+			if (attacker.getLocation().isWithinDistance(attacker, victim, 1)) {
+				clientSpeed = 70;
+				gfxDelay = 80;
+			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 5)) {
+				clientSpeed = 90;
+				gfxDelay = 100;
+			} else if (attacker.getLocation().isWithinDistance(attacker, victim, 8)) {
+				clientSpeed = 110;
+				gfxDelay = 120;
+			} else {
+				clientSpeed = 130;
+				gfxDelay = 140;
+			}
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), firstLocation, 551, 45, 50,
+					clientSpeed, 43, 35, 0, 10, 48));
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), secondLocation, 551, 45, 50,
+					clientSpeed, 43, 35, 0, 10, 48));
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), thirdLocation, 551, 45, 50,
+					clientSpeed, 43, 35, 0, 10, 48));
 			break;
-
+		default:
+			gfxDelay = 0;
+			break;
 		}
+		attacker.getCombatState().setAttackDelay(6);
 
-		attacker.getCombatState().setAttackDelay(5);
-		final int dmg = preHit;
-		CombatStyle preStyle = style;
-		World.getWorld().schedule(new Task(hitDelay) {
+		final CombatStyle preStyle = style;
+		hit = preHit;
+		World.getWorld().schedule(new Task((gfxDelay / 20) - 1) {
+
 			@Override
 			public void execute() {
 				this.stop();
-				boolean doDamage = true;
+				List<Player> enemies = new ArrayList<>();
 				switch (preStyle) {
-				default:
-					
-				case MAGIC:
-					victim.take_hit(attacker, dmg, preStyle).send();
-					break;
-
 				case GREEN_BOMB:
-					List<Player> enemies = new ArrayList<>();
 					for (Player p : victim.getLocalPlayers()) {
-						if (p.getLocation().equals(p.getLocation()) || p.getLocation().equals(secondLocation)
+						if (p.getLocation().equals(firstLocation) || p.getLocation().equals(secondLocation)
 								|| p.getLocation().equals(thirdLocation)) {
 							if (p == victim) {
 								continue;
@@ -157,23 +149,32 @@ public class ChaosFanatic extends AbstractBossCombat {
 							enemies.add(p);
 						}
 					}
-					pVictim.getActionSender().stillGfx(157, firstLocation.getX(), firstLocation.getY(), pVictim.getZ(), 5);
-					pVictim.getActionSender().stillGfx(157, secondLocation.getX(), secondLocation.getY(), pVictim.getZ(), 5);
-					pVictim.getActionSender().stillGfx(157, thirdLocation.getX(), thirdLocation.getY(), pVictim.getZ(), 5);
-
-					if (!victim.getLocation().equals(firstLocation) && !victim.getLocation().equals(secondLocation) && !victim.getLocation().equals(thirdLocation)) {
-						doDamage = false;
-					}
-					if (doDamage) {
-						victim.take_hit(attacker, dmg, preStyle).send();
-					}
-					for (Player p : enemies) {
-						if(doDamage)
-						p.take_hit(attacker, dmg, preStyle).send();
-					}
-					enemies.clear();
+					victim.getActionSender().sendStillGFX(157, 100, firstLocation);
+					victim.getActionSender().sendStillGFX(157, 100, secondLocation);
+					victim.getActionSender().sendStillGFX(157, 100, thirdLocation);
+					break;
+				default:
 					break;
 				}
+				int finalHit = preStyle == CombatStyle.GREEN_BOMB ? Utility.random(maxHit) : hit;
+				boolean doDamage = true;
+				switch (preStyle) {
+				case GREEN_BOMB:
+					if (!victim.getLocation().equals(firstLocation) && !victim.getLocation().equals(secondLocation)
+							&& !victim.getLocation().equals(thirdLocation)) {
+						doDamage = false;
+					}
+					break;
+				default:
+					break;
+				}
+				if (doDamage) {
+					victim.take_hit(attacker, finalHit, CombatStyle.GREEN_BOMB).send();
+				}
+				for (Player p : enemies) {
+					victim.take_hit(p, finalHit, CombatStyle.GREEN_BOMB).send();
+				}
+				enemies.clear();
 			}
 		});
 	}
@@ -195,15 +196,17 @@ public class ChaosFanatic extends AbstractBossCombat {
 		if (player.alreadyHasPet(player, 11995) || player.getPet() == pets.getNpc()) {
 			return;
 		}
-		
+
 		if (random == 1) {
 			if (player.getPet() > -1) {
 				player.getInventory().addOrSentToBank(player, new Item(11995));
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Chaos elemental pet.", false);
+				World.getWorld().sendWorldMessage(
+						"<col=7f00ff>" + player.getUsername() + " has just received the Chaos elemental pet.", false);
 			} else {
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
-				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received the Chaos elemental pet.", false);
+				World.getWorld().sendWorldMessage(
+						"<col=7f00ff>" + player.getUsername() + " has just received the Chaos elemental pet.", false);
 				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}

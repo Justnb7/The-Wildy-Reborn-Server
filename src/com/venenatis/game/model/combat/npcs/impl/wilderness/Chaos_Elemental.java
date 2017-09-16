@@ -257,7 +257,7 @@ public class Chaos_Elemental extends AbstractBossCombat {
 				return;
 			}
 			p.playGraphic(Graphic.create(557));
-			p.message("The Chaos Elemental has removed some of your worn equipment.");
+			p.message("The Chaos elemental has removed some of your worn equipment.");
 			break;
 		default:
 			break;

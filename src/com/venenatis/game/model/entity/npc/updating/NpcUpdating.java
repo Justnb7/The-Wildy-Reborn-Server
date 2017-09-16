@@ -68,9 +68,7 @@ public class NpcUpdating {
 				/*
 				 * Check if an update is required, and if so, send the update.
 				 */
-				if (npc.getUpdateFlags().isUpdateRequired()) {
-					updateNPC(npc, updateBlock);
-				}
+				updateNPC(npc, updateBlock);
 			} else {
 				/*
 				 * Otherwise, remove the NPC from the list.
@@ -167,8 +165,8 @@ public class NpcUpdating {
 	 */
 	private static void updateNPC(NPC npc, GameBuffer buffer) {
 		
-		/*if (!npc.getUpdateFlags().isUpdateRequired())
-			return;*/
+		if (!npc.getUpdateFlags().isUpdateRequired())
+			return;
 		
 		/*
 		 * Calculate the mask.

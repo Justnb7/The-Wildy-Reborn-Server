@@ -1,5 +1,6 @@
 package com.venenatis.game.content.skills.firemaking;
 
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -8,6 +9,7 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.Task.BreakType;
 import com.venenatis.game.task.Task.StackType;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.object.GameObject;
@@ -22,6 +24,11 @@ import java.util.Random;
  *
  */
 public class Firemaking {
+	
+	/**
+	 * The random number generator
+	 */
+	private static Random random = new Random();
 	
 	/**
 	 * Attempts to light a fire
@@ -101,6 +108,11 @@ public class Firemaking {
 						player.face(player, face);
 						player.setLastFire(System.currentTimeMillis());
 						player.getAttributes().remove("firemaking");
+						
+						if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+							player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
+						}
+						
 						stop();
 						
 						Server.getTaskScheduler().schedule(new Task(100) {

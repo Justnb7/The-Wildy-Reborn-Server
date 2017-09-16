@@ -6,6 +6,7 @@ import com.venenatis.game.action.impl.HarvestingAction;
 import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Entity;
@@ -405,6 +406,11 @@ public class Woodcutting extends HarvestingAction {
 	public double getExperience() {
 		Player player = (Player) getEntity();
 		pet(player);
+		
+		if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+			player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
+		}
+		
 		AchievementHandler.activate(player, AchievementList.LUMBERJACK, 1);
 		return tree.getExperience();
 	}

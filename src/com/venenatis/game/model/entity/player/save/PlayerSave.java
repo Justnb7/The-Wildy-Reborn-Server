@@ -148,6 +148,7 @@ public class PlayerSave {
 				player.setHostAddress(details.hostAddress);
 				player.setIdentity(details.identity);
 				player.setMacAddress(details.mac);
+				player.setTimePlayed(details.time);
 				player.setMuted(details.muted);
 				player.setJailed(details.jailed);
 				player.setYellMuted(details.yellMuted);
@@ -276,6 +277,7 @@ public class PlayerSave {
 		private final String hostAddress;
 		private final String identity;
 		private final String mac;
+		private final long time;
 		private final boolean muted;
 		private final boolean jailed;
 		private final boolean yellMuted;
@@ -381,6 +383,7 @@ public class PlayerSave {
 			newPlayer = player.isNewPlayer();
 			hostAddress = player.getHostAddress();
 			identity = player.getIdentity();
+			time = player.getTimePlayed();
 			mac = player.getMacAddress();
 			muted = player.isMuted();
 			yellMuted = player.isYellMuted();

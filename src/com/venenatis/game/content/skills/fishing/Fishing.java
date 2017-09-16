@@ -1,8 +1,11 @@
 package com.venenatis.game.content.skills.fishing;
 
+import java.util.Random;
+
 import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.AchievementHandler;
 import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Boundary;
@@ -19,6 +22,11 @@ import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
 public class Fishing {
+	
+	/**
+	 * The random number generator
+	 */
+	private Random random = new Random();
 
 	private boolean canFish(Player p, FishableData.Fishable fish, boolean message) {
 		if (p.getSkills().getLevel(Skills.FISHING) < fish.getRequiredLevel()) {
@@ -180,6 +188,10 @@ public class Fishing {
 				int[] anglerOuftit = { 13258, 13259, 13260, 13261 };
 				player.getInventory().addOrCreateGroundItem(player, new Item(anglerOuftit[Utility.random(anglerOuftit.length - 1)]));
 				player.getActionSender().sendMessage("You notice a angler piece floating in the water and pick it up.");
+			}
+			
+			if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+				player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
 			}
 			
 			heronPet(player);

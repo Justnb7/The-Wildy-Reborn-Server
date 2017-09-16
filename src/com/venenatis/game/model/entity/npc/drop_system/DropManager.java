@@ -21,6 +21,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.definitions.ItemDefinition;
@@ -138,9 +139,12 @@ public class DropManager {
 			double modifier = getModifier(player);
 			List<Item> drops = g.access(player, modifier, repeats);
 			
+			if(Area.inWilderness(player) && Utility.random(100) == 1) {
+				player.getActionSender().sendMessage("@pur@You've received a goodie bag for risking your life in the wilderness.");
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(22017, 1), location, player));
+			}
+			
 			boolean drop_below_player = npc.getId() == 492 || npc.getId() == 494;
-			
-			
 			
 			for (Item item : drops) {
 				if (npc.getId() == 2042 || npc.getId() == 2043 || npc.getId() == 2044) {

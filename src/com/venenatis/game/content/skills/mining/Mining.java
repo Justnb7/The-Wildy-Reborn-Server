@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import com.venenatis.game.action.impl.HarvestingAction;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.container.Container;
@@ -20,6 +22,11 @@ import com.venenatis.game.world.object.GameObject;
 
 
 public class Mining extends HarvestingAction {
+	
+	/**
+	 * The random number generator
+	 */
+	private Random random = new Random();
 
 	/**
 	 * The rock we are mining.
@@ -400,6 +407,9 @@ public class Mining extends HarvestingAction {
 	public double getExperience() {
 		Player player = (Player)getEntity().asPlayer();
 		pet(player);
+		if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+			player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
+		}
 		return rock.getExperience() * (getEntity().isPlayer() ? getProspectorKitExperienceModifier((Player) getEntity()) : 1f) * 2;
 	}
 

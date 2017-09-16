@@ -28,7 +28,6 @@ public class HomeQuestTabPage extends QuestTabPage {
 		write(player, "<col=FFFFFF>Played: <col=00CC00>"+time, 2);
 		write(player, "<col=FFFFFF>Did you know: "+(player.is_did_you_know_activated() ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 3);
 		write(player, "<col=FFFFFF>Trivia: <col=00CC00>"+(player.is_trivia_activated() ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 4);
-		write(player, "<img=22><col=FFFFFF>PK points: <col=00CC00>"+ player.getPkPoints(), 5);
 		
 		write(player, "<img=22><col=FFFFFF>Kills: <col=00CC00>"+ player.getKillCount(), 6);
 		write(player, "<img=22><col=FFFFFF>Deaths: <col=00CC00>"+ player.getDeathCount(), 7);

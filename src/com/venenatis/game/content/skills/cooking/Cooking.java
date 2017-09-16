@@ -1,7 +1,10 @@
 package com.venenatis.game.content.skills.cooking;
 
+import java.util.Random;
+
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.SkillCapePerks;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
@@ -20,6 +23,11 @@ import com.venenatis.game.world.object.GameObject;
  * @version 2.0 @date 06-03-2017, updated on 18-8-2017
  */
 public class Cooking extends Task {
+	
+	/**
+	 * The random number generator
+	 */
+	private Random random = new Random();
 	
 	/**
 	 * Action buttons
@@ -238,6 +246,10 @@ public class Cooking extends Task {
 			player.getInventory().add(new Item(cookables.getProduct(), 1));
 			player.getActionSender().sendMessage("You successfully cook the " + ItemDefinition.get(cookables.getRawItem()).getName().toLowerCase() + ".");
 			player.getSkills().addExperience(Skills.COOKING, cookables.getXp());
+			
+			if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+				player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
+			}
 		}
 		amountToCook -= 1;
 		if (amountToCook == 0)

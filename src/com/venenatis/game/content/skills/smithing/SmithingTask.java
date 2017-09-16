@@ -1,6 +1,9 @@
 package com.venenatis.game.content.skills.smithing;
 
+import java.util.Random;
+
 import com.venenatis.game.content.SkillCapePerks;
+import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -10,6 +13,11 @@ import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
 public class SmithingTask extends Task {
+	
+	/**
+	 * The random number generator
+	 */
+	private Random random = new Random();
 	
 	private static int SMITHING_MODIFIER = 5;
 	
@@ -99,6 +107,10 @@ public class SmithingTask extends Task {
 			player.getInventory().remove(new Item(bar), false);
 		}
 		player.getInventory().add(new Item(smith), true);
+		
+		if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+			player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
+		}
 
 		player.playAnimation(Animation.create(898));
 		player.getActionSender().sendSound(468, 10, 10);

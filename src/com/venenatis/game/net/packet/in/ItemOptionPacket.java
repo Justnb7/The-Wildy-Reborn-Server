@@ -6,6 +6,7 @@ import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.clicking.items.ItemOnItem;
 import com.venenatis.game.content.clicking.magic.MagicOnItems;
 import com.venenatis.game.content.gambling.DiceBag;
+import com.venenatis.game.content.rewards.GoodieBag;
 import com.venenatis.game.content.rewards.Mysterybox;
 import com.venenatis.game.content.rewards.RewardCasket;
 import com.venenatis.game.content.skills.prayer.Prayer.Bone;
@@ -304,6 +305,10 @@ public class ItemOptionPacket implements PacketType {
 		player.getHerblore().clean(item.getId());
 		
 		switch (item.getId()) {
+		
+		case 22017:
+			GoodieBag.open(player);
+			break;
 		
 		case 22016:
 			DiceBag.rollDice(player);

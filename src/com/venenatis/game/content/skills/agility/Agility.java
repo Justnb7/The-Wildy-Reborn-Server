@@ -360,11 +360,19 @@ public class Agility {
 			}
 		});
 	}
+	
+	public static void delayedAnimation(final Player player, Animation anim, int ticks) {
+        World.getWorld().schedule(new Task(ticks) {
+
+            @Override
+            public void execute() {
+                this.stop();
+                player.playAnimation(anim);
+            }
+        });
+    }
 
 	public static void forceWalkingQueue(final Player player, final Animation animation, final int x, final int y, int delayBeforeMovement, final int ticks, final boolean removeAttribute) {
-		final int originalWalkAnimation = player.getWalkAnimation();
-		final int originalRunAnimation = player.getRunAnimation();
-		final int originalStandAnimation = player.getStandAnimation();
 		final int originalStandTurn = player.getStandTurnAnimation();
 		final int originalTurn90cw = player.getTurn90ClockwiseAnimation();
 		final int originalTurn90ccw = player.getTurn90CounterClockwiseAnimation();

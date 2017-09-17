@@ -4,6 +4,8 @@ import com.venenatis.game.content.clicking.objects.ObjectInteraction;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
 /**
  * This task handles walking towards objects.
@@ -62,7 +64,14 @@ public class WalkToObjectTask extends Task {
 			return;
 		}
 		
-		if (player.getLocation().isWithinInteractionDistance(loc) || object == 23131) {//This distance, should it be like that :o ye
+		final GameObject obj = RegionStoreManager.get().getGameObject(loc, object);
+		
+		//Safety
+		if (obj == null) {
+			return;
+		}
+		
+		if (player.getLocation().isWithinInteractionDistance(loc) || object == 23131) {
 			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:
@@ -77,8 +86,8 @@ public class WalkToObjectTask extends Task {
 			}
 			stop();
 			// reached target. face coords.
+			player.faceObject(obj);
 			player.setFollowing(null);
-			player.face(player, loc);
 		} else {
 			// do nothing this cycle. try again next time this Task is executed.
 		}

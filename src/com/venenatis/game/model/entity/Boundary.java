@@ -166,7 +166,7 @@ public class Boundary {
 	public static final Boundary ZULRAH = new Boundary(2251, 3058, 2281, 3088);
 	public static final Boundary SCORPIA_PIT = new Boundary(3219, 10331, 3247, 10352);
 	public static final Boundary DARK_FORTRESS = new  Boundary(3020, 3623, 3038, 3641);
-	public static final Boundary LIZARDMAN_CANYON = new Boundary(1468, 3674, 1567, 3709);
+	public static final Boundary LIZARDMAN_CANYON = new Boundary(1419, 3623, 1567, 3723);
 	private static final Boundary VARROCK_BANK = new  Boundary(3180, 3433, 3186, 3448);
 	private static final Boundary CAMELOT = new  Boundary(2731, 3486, 2781, 3498);
 	private static final Boundary MAGE_BANK = new  Boundary(2540, 3433, 3186, 3447);

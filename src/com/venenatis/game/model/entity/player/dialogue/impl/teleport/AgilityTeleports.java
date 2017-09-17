@@ -14,8 +14,13 @@ public class AgilityTeleports extends Dialogue {
 	/**
 	 * An array for all the dialogue strings.
 	 */
-	private static final String[] OPTION_1 = { "Gnome agility course", "Barbarian agility course", "Wilderness agility course (50+ wild)", "Nevermind" };
-
+	private static final String[] OPTION_1 = { "Gnome agility course", "Barbarian agility course", "Rooftop", "Nevermind" };
+	
+	/**
+	 * An array for all the dialogue strings.
+	 */
+	private static final String[] ROOFTOP = { "Draynor", "", "", "" };
+	
 	/**
 	 * An array for all corresponding dialogue strings which holds all the
 	 * teleport locations.
@@ -23,7 +28,15 @@ public class AgilityTeleports extends Dialogue {
 	private static final int[][] OPTION_1_TELEPORT = {
 			{ 2480, 3437, 0 }, //Gnome course
 			{ 2546, 3551, 0 }, // Barbarian course
-			{ 2998, 3915, 0 } // Wilderness course
+			{ -1, -1, 0 } // Rooftop
+	};
+	
+	/**
+	 * An array for all corresponding dialogue strings which holds all the
+	 * teleport locations.
+	 */
+	private static final int[][] ROOFTOP_TELEPORT = {
+			{ 3104, 3272, 0 }, //Draynor
 	};
 
 	@Override
@@ -39,10 +52,13 @@ public class AgilityTeleports extends Dialogue {
 			if(index == 4) {
 				player.getActionSender().removeAllInterfaces();
 			} else if(index == 3) {
-				player.getActionSender().sendMessage("We currently do not have support yet for this agility course.");
+				send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, ROOFTOP[0], ROOFTOP[1], ROOFTOP[2], ROOFTOP[3]);
+				phase = 1;
 			} else {
 				player.getTeleportAction().teleport(new Location(OPTION_1_TELEPORT[index - 1][0], OPTION_1_TELEPORT[index - 1][1], OPTION_1_TELEPORT[index - 1][2]), TeleportTypes.SPELL_BOOK, false);
 			}
+		} else {
+			player.getTeleportAction().teleport(new Location(ROOFTOP_TELEPORT[index - 1][0], ROOFTOP_TELEPORT[index - 1][1], ROOFTOP_TELEPORT[index - 1][2]), TeleportTypes.SPELL_BOOK, false);
 		}
 	}
 }

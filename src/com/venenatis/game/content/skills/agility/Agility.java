@@ -140,19 +140,25 @@ public class Agility {
 		ARDY_STEP_ROOF(11633, Location.create(2654, 3300, 3), 90, 65, "ardyStepRoof", false),
 
 		ARDY_GAP_JUMP_4(11630, Location.create(2656, 3296, 3), 90, 55, "ardyGapJump4", false),
-//
-//		/**
-//		 * Al Kharid rooftop course
-//		 */
-//		ALKHARID_ROOF_WALL(10093, Location.create(3273, 3195, 0), 1, 5, "kharidWall", false),
-//
-//		ALKHARID_TIGHT_ROPE(10284, Location.create(3272, 3181, 3), 1, 5, "kharidRope", false),
-//
-//        ALKHARID_CABLE(10355, Location.create(3269, 3166, 3), 1, 5, "kharidCable", false),
-//
-//        ALKHARID_ZIPLINE(10356, Location.create(3302, 3163, 3), 1, 5, "kharidZipline", false),
-//
-//        ALKHARID_TREE(10357, Location.create(3318, 3166, 1), 1, 5, "kharidTree", false);
+
+		/**
+		 * Al Kharid rooftop course
+		 */
+		ALKHARID_ROOF_WALL(10093, Location.create(3273, 3195, 0), 1, 5, "kharidWall", false),
+
+		ALKHARID_TIGHT_ROPE(10284, Location.create(3272, 3181, 3), 1, 5, "kharidRope", false),
+
+        ALKHARID_CABLE(10355, Location.create(3269, 3166, 3), 1, 5, "kharidCable", false),
+
+        ALKHARID_ZIPLINE(10356, Location.create(3302, 3163, 3), 1, 5, "kharidZipline", false),
+
+        ALKHARID_TREE(10357, Location.create(3318, 3166, 1), 1, 5, "kharidTree", false),
+        
+        ALKHARID_ROOF_TOP_BEAMS(10094, Location.create(3316, 3179, 2), 1, 5, "kharidRoofTopBeams", false),
+        
+        ALKHARID_TIGHT_ROPE2(10583, Location.create(3313, 3186, 3), 1, 5, "kharidRope2", false),
+        
+        ALKHARID_TIGHT_GAP(10352, Location.create(3300, 3193, 3), 1, 5, "kharidGap", false),
 		
 		/**
 		 * Barbarian agility course
@@ -319,6 +325,7 @@ public class Agility {
 		player.getAttributes().put("busy", true);
 		if(ScriptManager.getScriptManager().invokeWithFailTest(obstacle.getScriptString(), player, obstacle, object)) {
 			pet(player);
+			player.debug("Activating obstacle");
 		} else {
 			player.getAttributes().remove("busy");
 			player.getActionSender().sendMessage("Nothing interesting happens.");
@@ -329,6 +336,7 @@ public class Agility {
 		World.getWorld().schedule(new Task(ticks) {
 			@Override
 			public void execute() {
+				player.debug("Start forcemovement");
 				player.playAnimation(animation);
 				player.setForceWalk(forceMovement, removeAttribute);
 				player.getUpdateFlags().flag(UpdateFlag.FORCE_MOVEMENT);

@@ -7,6 +7,7 @@ import com.venenatis.game.model.entity.player.dialogue.DialogueType;
 
 /**
  * The class which represents functionality for the agility teleports.
+ * 
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">_Patrick_</a>
  */
 public class AgilityTeleports extends Dialogue {
@@ -14,29 +15,29 @@ public class AgilityTeleports extends Dialogue {
 	/**
 	 * An array for all the dialogue strings.
 	 */
-	private static final String[] OPTION_1 = { "Gnome agility course", "Barbarian agility course", "Rooftop", "Nevermind" };
-	
+	private static final String[] OPTION_1 = { "Gnome agility course", "Barbarian agility course", "Rooftop",
+			"Nevermind" };
+
 	/**
 	 * An array for all the dialogue strings.
 	 */
-	private static final String[] ROOFTOP = { "Draynor", "", "", "" };
-	
+	private static final String[] ROOFTOP = { "Draynor", "Al-Karid", "", "" };
+
 	/**
 	 * An array for all corresponding dialogue strings which holds all the
 	 * teleport locations.
 	 */
-	private static final int[][] OPTION_1_TELEPORT = {
-			{ 2480, 3437, 0 }, //Gnome course
+	private static final int[][] OPTION_1_TELEPORT = { { 2480, 3437, 0 }, // Gnome course
 			{ 2546, 3551, 0 }, // Barbarian course
 			{ -1, -1, 0 } // Rooftop
 	};
-	
+
 	/**
 	 * An array for all corresponding dialogue strings which holds all the
 	 * teleport locations.
 	 */
-	private static final int[][] ROOFTOP_TELEPORT = {
-			{ 3104, 3272, 0 }, //Draynor
+	private static final int[][] ROOFTOP_TELEPORT = { { 3104, 3272, 0 }, // Draynor
+			{ 3272, 3197, 0 }, // Al-karid
 	};
 
 	@Override
@@ -49,9 +50,9 @@ public class AgilityTeleports extends Dialogue {
 	public void select(int index) {
 		System.out.println("Phase: " + phase + " index : " + index);
 		if (phase == 0) {
-			if(index == 4) {
+			if (index == 4) {
 				player.getActionSender().removeAllInterfaces();
-			} else if(index == 3) {
+			} else if (index == 3) {
 				send(DialogueType.CHOICE, DEFAULT_OPTION_TITLE, ROOFTOP[0], ROOFTOP[1], ROOFTOP[2], ROOFTOP[3]);
 				phase = 1;
 			} else {

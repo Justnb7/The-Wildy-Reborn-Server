@@ -1,4 +1,4 @@
-package com.venenatis.game.model.container.impl.trade;
+package com.venenatis.game.content.activity.trade;
 
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.impl.InterfaceConstants;

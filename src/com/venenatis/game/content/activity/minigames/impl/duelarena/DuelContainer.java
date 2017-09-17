@@ -3,10 +3,10 @@ package com.venenatis.game.content.activity.minigames.impl.duelarena;
 import java.util.Optional;
 
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
+import com.venenatis.game.content.activity.trade.TradeContainer;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
-import com.venenatis.game.model.container.impl.trade.TradeContainer;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.impl.DuelNotificationTask;
 import com.venenatis.game.util.logging.PlayerLogging;

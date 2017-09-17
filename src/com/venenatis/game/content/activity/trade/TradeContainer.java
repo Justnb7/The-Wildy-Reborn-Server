@@ -1,11 +1,11 @@
-package com.venenatis.game.model.container.impl.trade;
+package com.venenatis.game.content.activity.trade;
 
 import java.util.Optional;
 
+import com.venenatis.game.content.activity.trade.TradeSession.TradeStage;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
-import com.venenatis.game.model.container.impl.trade.TradeSession.TradeStage;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.impl.TradeNotificationTask;
 import com.venenatis.game.util.Utility;

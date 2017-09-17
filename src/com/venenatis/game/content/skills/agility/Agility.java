@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.venenatis.ScriptManager;
+import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
@@ -18,7 +20,6 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.region.RegionStore;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
-import com.venenatis.server.Server;
 
 public class Agility {
 
@@ -325,7 +326,7 @@ public class Agility {
 	}
 	
 	public static void forceMovement(final Player player, final Animation animation, final int[] forceMovement, int ticks, final boolean removeAttribute) {
-		Server.getTaskScheduler().submit(new Task(ticks) {
+		World.getWorld().schedule(new Task(ticks) {
 			@Override
 			public void execute() {
 				player.playAnimation(animation);
@@ -341,7 +342,7 @@ public class Agility {
 			if(ticksBeforeAnim < 1) {
 				player.playAnimation(animation);
 			} else {
-				Server.getTaskScheduler().submit(new Task(ticksBeforeAnim) {
+				World.getWorld().schedule(new Task(ticksBeforeAnim) {
 					@Override
 					public void execute() {
 						player.playAnimation(animation);
@@ -350,7 +351,7 @@ public class Agility {
 				});			
 			}
 		}
-		Server.getTaskScheduler().submit(new Task(ticks) {
+		World.getWorld().schedule(new Task(ticks) {
 			@Override
 			public void execute() {
 				player.setTeleportTarget(newLocation);
@@ -388,16 +389,22 @@ public class Agility {
 				player.getWalkingQueue().reset();
 				player.getWalkingQueue().addStep(x, y);
 				player.getWalkingQueue().finish();
-				Server.getTaskScheduler().submit(new Task(ticks) {
+				World.getWorld().schedule(new Task(ticks) {
 					@Override
 					public void execute() {
-						player.setWalkAnimation(originalWalkAnimation);
-						player.setRunAnimation(originalRunAnimation);
-						player.setStandAnimation(originalStandAnimation);
-						player.setTurn90ClockwiseAnimation(originalTurn90cw);
-						player.setTurn90CounterClockwiseAnimation(originalTurn90ccw);
-						player.setTurn180Animation(originalTurn180);
-						player.setStandTurnAnimation(originalStandTurn);
+						Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+						final WeaponDefinition weaponDef = WeaponDefinition.get(weapon.getId());
+						if (weapon != null && weapon.getEquipmentDefinition() != null) {
+                            player.setStandAnimation(weaponDef.getStandAnimation());
+                            player.setRunAnimation(weaponDef.getRunAnimation());
+                            player.setWalkAnimation(weaponDef.getWalkAnimation());
+    						player.setTurn90ClockwiseAnimation(originalTurn90cw);
+    						player.setTurn90CounterClockwiseAnimation(originalTurn90ccw);
+    						player.setTurn180Animation(originalTurn180);
+    						player.setStandTurnAnimation(originalStandTurn);
+                        } else {
+                            player.setDefaultAnimations();
+                        }
 						player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 						if(removeAttribute) {
 							player.getAttributes().remove("busy");
@@ -411,7 +418,7 @@ public class Agility {
 		if(delayBeforeMovement < 1) {
 			task.execute();
 		} else {
-			Server.getTaskScheduler().submit(task);
+			World.getWorld().schedule(task);
 		}
 	}
 	
@@ -426,7 +433,6 @@ public class Agility {
 			}
 		};
 		if(task.getTickDelay() >= 1) {
-			//Server.getTaskScheduler().submit(task);
 			World.getWorld().schedule(task);
 		} else {
 			task.execute();

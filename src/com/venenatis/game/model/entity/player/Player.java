@@ -1192,8 +1192,6 @@ public class Player extends Entity {
 		this.reset();
 		setTeleporting(false);
 		setMapRegionChanging(false);
-		faceTileX = -1;
-		faceTileY = -1;
 		entityFaceIndex = 65535;
 		setUpdateBlock(null);
 		this.getUpdateFlags().primary = null;
@@ -2882,13 +2880,13 @@ public class Player extends Entity {
 	public void faceObject(GameObject object) {
 		if (object != null) {
 			if (object.getId() == 11374) {
-				face(this, Location.create(2713, 3494));
+				face(Location.create(2713, 3494));
 				return;
 			} else if (object.getId() == 11375) {
-				face(this, object.getLocation());
+				face(object.getLocation());
 				return;
 			} else if (object.getId() == 11377) {
-				face(this, Location.create(2704, 3464));
+				face(Location.create(2704, 3464));
 				return;
 			}
 			if (getLocation().equals(object.getLocation())) {
@@ -2908,13 +2906,13 @@ public class Player extends Entity {
 					offY = -1;
 					break;
 				}
-				face(this, object.getLocation().transform(offX, offY, 0));
+				face(object.getLocation().transform(offX, offY, 0));
 			} else if (object.getType() >= 9 && object.getType() <= 11
 					&& (object.getDefinition().xLength() > 1 || object.getDefinition().yLength() > 1)) {
-				face(this, object.getLocation().transform(object.getDefinition().xLength() >> 1,
+				face(object.getLocation().transform(object.getDefinition().xLength() >> 1,
 						object.getDefinition().yLength() >> 1, 0));
 			} else {
-				face(this, object.getLocation());
+				face(object.getLocation());
 			}
 		}
 	}

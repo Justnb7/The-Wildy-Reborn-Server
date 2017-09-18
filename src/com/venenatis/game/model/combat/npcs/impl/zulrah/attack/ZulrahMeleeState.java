@@ -24,7 +24,7 @@ public class ZulrahMeleeState extends AbstractBossCombat {
 		Player pVictim = (Player)victim;
 		
 		npc.setFacePlayer(false);
-		npc.face(pVictim, pVictim.getLocation());
+		npc.face(pVictim.getLocation());
 		
 		Animation anim = Animation.create(npc.getAttackAnimation());
 		attacker.playAnimation(anim);

@@ -344,13 +344,20 @@ public class PlayerUpdating {
 			appendPlayerChatText(player, updateBlock);
 		}
 		if(flags.get(UpdateFlag.FACE_ENTITY)) {
-			appendFaceUpdate(player, updateBlock);
+			updateBlock.writeWordBigEndian(player.entityFaceIndex);
 		}
 		if (flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			appendPlayerAppearanceUpdate(player, updateBlock);
 		}
 		if (flags.get(UpdateFlag.FACE_COORDINATE)) {
-			appendSetFocusDestination(player, updateBlock);
+			Location loc = player.getFaceLocation();
+			if (loc == null) {
+				updateBlock.writeWordBigEndianA(0);
+				updateBlock.writeWordBigEndian(0);
+			} else {
+				updateBlock.writeWordBigEndianA(loc.getX() * 2 + 1);
+				updateBlock.writeWordBigEndian(loc.getY() * 2 + 1);
+			}
 		}
 		if (flags.get(UpdateFlag.HIT)) {
 			appendHitUpdate(player, updateBlock);
@@ -733,18 +740,6 @@ public class PlayerUpdating {
 	}
 
 	/**
-	 * Updates the face entity mask
-	 * 
-	 * @param player
-	 *            The {@link Player} to update the mask for
-	 * @param str
-	 *            The {@link GameBuffer} to write data on
-	 */
-	private static void appendFaceUpdate(Player player, GameBuffer str) {
-		str.writeWordBigEndian(player.entityFaceIndex);
-	}
-
-	/**
 	 * Updates the animation mask
 	 * 
 	 * @param player
@@ -755,19 +750,6 @@ public class PlayerUpdating {
 	private static void appendAnimationUpdate(Player player, GameBuffer str) {
         str.writeWordBigEndian((player.getCurrentAnimation().getId() == -1) ? 65535 : player.getCurrentAnimation().getId());
         str.writeByteC(player.getCurrentAnimation().getDelay());
-	}
-
-	/**
-	 * Updates the face position mask
-	 * 
-	 * @param player
-	 *            The {@link Player} to update the mask for
-	 * @param str
-	 *            The {@link GameBuffer} to write data on
-	 */
-	private static void appendSetFocusDestination(Player player, GameBuffer str) {
-		str.writeWordBigEndianA(player.faceTileX);
-		str.writeWordBigEndian(player.faceTileY);
 	}
 
 	/**

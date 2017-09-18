@@ -23,7 +23,7 @@ public enum SafeSpellCast {
 			return false;
 		}
 		
-		player.face(player, other.getLocation());
+		player.face(other.getLocation());
 		player.playAnimation(new Animation(4411));
 		other.playGraphic(Graphic.create(725, 100));
 		other.setVengeance(true);

@@ -45,7 +45,7 @@ public class DragonfireShield {
 		}
 		player.setDfsTimer(50);
 		player.getCombatState().setAttackDelay(6);
-		player.face(player, victim.getLocation());
+		player.face(victim.getLocation());
 		player.playAnimation(Animation.create(6696));
 		player.playGraphic(Graphic.create(1165));
 		World.getWorld().schedule(new Task(3) {

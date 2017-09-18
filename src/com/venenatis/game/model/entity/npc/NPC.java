@@ -396,7 +396,6 @@ public class NPC extends Entity {
 		moveY = 0;
 		direction = -1;
 		this.entityFaceIndex = -1;
-		faceTileY = -1;
 		this.removeAttribute("teleporting");
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
@@ -531,16 +530,16 @@ public class NPC extends Entity {
 
 	public void handleFacing() {
 		if (walking_type == 2) {
-			face(this, new Location(getX() + 1, getY()));
+			face(new Location(getX() + 1, getY()));
 			// face east
 		} else if (walking_type == 3) {
-			face(this, new Location(getX(), getY() - 1));
+			face(new Location(getX(), getY() - 1));
 			// face south
 		} else if (walking_type == 4) {
-			face(this, new Location(getX() - 1, getY()));
+			face(new Location(getX() - 1, getY()));
 			// face west
 		} else if (walking_type == 5) {
-			face(this, new Location(getX(), getY() + 1));
+			face(new Location(getX(), getY() + 1));
 			// face north
 		}
 	}

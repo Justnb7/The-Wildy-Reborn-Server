@@ -106,7 +106,7 @@ public final class TradeSession {
 			// bring up the trade interface
 			execute(TradeStage.OFFER);
 			other.getTradeSession().execute(TradeStage.OFFER);
-			other.face(other, player.getLocation());
+			other.face(player.getLocation());
 			player.getActionSender().sendMinimapState(MinimapState.UNCLICKABLE);
 			other.getActionSender().sendMinimapState(MinimapState.UNCLICKABLE);
 			return;

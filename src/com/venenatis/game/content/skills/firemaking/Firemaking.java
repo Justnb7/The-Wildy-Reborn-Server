@@ -105,7 +105,7 @@ public class Firemaking {
 						walk(player, location);
 						player.getSkills().addExperience(Skills.FIREMAKING, log.getExperience());
 						Location face = new Location(fire.getX(), fire.getY());
-						player.face(player, face);
+						player.face(face);
 						player.setLastFire(System.currentTimeMillis());
 						player.getAttributes().remove("firemaking");
 						

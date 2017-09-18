@@ -2,6 +2,7 @@ package com.venenatis.game.model.entity.npc.updating;
 
 import java.util.Iterator;
 
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags;
@@ -216,7 +217,7 @@ public class NpcUpdating {
 			buffer.putInt(npc.getCurrentGraphic().getDelay() + (65536 * npc.getCurrentGraphic().getHeight()));
 		}
 		if(flags.get(UpdateFlag.FACE_ENTITY)) {
-			appendFaceEntity(npc, buffer);
+			buffer.writeShort(npc.entityFaceIndex);
 		}
 		if(flags.get(UpdateFlag.FORCED_CHAT)) {
 			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());
@@ -231,7 +232,14 @@ public class NpcUpdating {
 			appendTransformUpdate(npc, buffer);
 		}
 		if (flags.get(UpdateFlag.FACE_COORDINATE)) {
-			appendSetFocusDestination(npc, buffer);
+			Location loc = npc.getFaceLocation();
+			if(loc == null) {
+				buffer.writeWordBigEndian(0);
+				buffer.writeWordBigEndian(0);
+			} else {
+				buffer.writeWordBigEndian(loc.getX() * 2 + 1);
+				buffer.writeWordBigEndian(loc.getY() * 2 + 1);
+			}
 		}
 
 	}
@@ -261,10 +269,6 @@ public class NpcUpdating {
 			}
 		}
 	}
-	// theres no teleporting flag like there is player updating min
-	// what did we test yesterday with npc teleporting? or  what twahs that playe ronly player only,
-	//before you made a custom var "teleporting" for npcs, cuz walking and following etc is not entity based
-	//the variable works for mole etc updates fine just shaman doesn't update
 
 	/**
 	 * Adds a new npc to the map
@@ -282,15 +286,6 @@ public class NpcUpdating {
 		buffer.writeBits(1, 0);
 		buffer.writeBits(14, npc.getId());
 		buffer.writeBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
-	}
-
-	private static void appendFaceEntity(NPC npc, GameBuffer str) {
-		str.writeShort(npc.entityFaceIndex);
-	}
-
-	private static void appendSetFocusDestination(NPC npc, GameBuffer str) {
-		str.writeWordBigEndian(npc.faceTileX * 2 + 1);
-		str.writeWordBigEndian(npc.faceTileY * 2 + 1);
 	}
 	
 	private static void appendHitUpdate1(NPC npc, GameBuffer str) {

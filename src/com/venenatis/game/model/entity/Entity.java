@@ -194,7 +194,6 @@ public abstract class Entity {
 	public transient Object distanceEvent;
 	private boolean registered;
 	public int entityFaceIndex = -1;
-	public int faceTileX = -1, faceTileY = -1;
 	public Location lastTile;
 
 	/**
@@ -327,8 +326,6 @@ public abstract class Entity {
 			asPlayer().getWalkingQueue().reset();
 		this.teleportTarget = teleportTarget;
 	}
-	// when teleporting you HAVE to use this variable, its what makes the 
-	// npc change position client side via npc updating, this didn't work before i tried this
 	
 	/**
 	 * Resets the teleport target.
@@ -961,7 +958,7 @@ public abstract class Entity {
 	 * @param position
 	 *            The position to face.
 	 */
-	public void face(Entity entity, Location position) {
+	/*public void face(Entity entity, Location position) {
 		//Faces the player
 		if(entity.getEntityType() == EntityType.PLAYER) {
 			faceTileX = 2 * position.getX() + 1;
@@ -972,7 +969,7 @@ public abstract class Entity {
 			faceTileY = position.getY();
 		}
 		this.getUpdateFlags().flag(UpdateFlag.FACE_COORDINATE);
-	}
+	}*/
 	
 	/**
 	 * Sets the entity facing index
@@ -1001,6 +998,58 @@ public abstract class Entity {
 		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
 	}
 	
+	/**
+	 * The face location.
+	 */
+	private Location face;
+	
+	/**
+	 * Makes this entity face a location.
+	 * 
+	 * @param location
+	 *            The location to face.
+	 */
+	public void face(Location location) {
+		this.face = location;
+		this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
+	}
+
+	/**
+	 * Checks if this entity is facing a location.
+	 * 
+	 * @return The entity face flag.
+	 */
+	public boolean isFacing() {
+		return face != null;
+	}
+
+	/**
+	 * Resets the facing location.
+	 */
+	public void resetFace() {
+		this.face = null;
+		this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
+	}
+	
+	/**
+	 * Resets the facing position.
+	 */
+	/*public void resetFace() {
+		this.entityFaceIndex = -1;
+		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
+		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
+	}*/
+
+	/**
+	 * Gets the face location.
+	 * 
+	 * @return The face location, or <code>null</code> if the entity is not
+	 *         facing.
+	 */
+	public Location getFaceLocation() {
+		return face;
+	}
+	
     private boolean facePlayer = true;
 	
 	/**
@@ -1022,15 +1071,6 @@ public abstract class Entity {
 	}
 	
 	public abstract int clientIndex();
-
-	/**
-	 * Resets the facing position.
-	 */
-	public void resetFace() {
-		this.entityFaceIndex = -1;
-		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
-		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
-	}
 
 	public void playGraphic(Graphic graphic) {
 		currentGraphic = graphic;

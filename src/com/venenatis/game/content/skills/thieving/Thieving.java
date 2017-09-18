@@ -104,7 +104,7 @@ public class Thieving {
 	 */
 	public void pickpocket(Pickpocket pickpocket, NPC npc) {
 		//face the npc
-		player.face(player, new Location(npc.getX(), npc.getY()));
+		player.face(new Location(npc.getX(), npc.getY()));
 		
 		//We can only pickpocket once per 2 seconds
 		if (System.currentTimeMillis() - lastInteraction < INTERACTION_DELAY) {

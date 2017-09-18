@@ -62,7 +62,7 @@ public class SpawnDangerousEntity extends CycleEvent {
 			locations.remove();
 		}
 		if (ticks == 2 || ticks == 6 || ticks == 10 || ticks == 14) {
-			zulrah.getNpc().face(player, new Location(location.getPoints()[0].x, location.getPoints()[0].y));
+			zulrah.getNpc().face(new Location(location.getPoints()[0].x, location.getPoints()[0].y));
 			int npcX = zulrah.getNpc().getX();
 			int npcY = zulrah.getNpc().getY();
 			for (Point point : location.getPoints()) {

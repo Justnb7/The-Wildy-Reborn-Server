@@ -73,8 +73,8 @@ public class WalkToNpcTask extends Task {
 			stop();
 			// reached target. face coords.
 			player.setFollowing(null);
-			player.face(player, npc.getLocation());
-			npc.face(npc, player.getLocation());
+			player.face(npc.getLocation());
+			npc.face(player.getLocation());
 		} else {
 			// do nothing this cycle. try again next time this Task is executed.
 		}

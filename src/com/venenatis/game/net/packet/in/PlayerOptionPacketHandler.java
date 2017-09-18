@@ -124,7 +124,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 			@Override
 			public boolean reached() {
-				player.face(player, other.getLocation());
+				player.face(other.getLocation());
 				return player.distanceToPoint(other.getX(), other.getY()) < 2;
 			}
 
@@ -290,7 +290,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 			@Override
 			public boolean reached() {
-				player.face(player, other.getLocation());
+				player.face(other.getLocation());
 				return player.distanceToPoint(other.getX(), other.getY()) < 2;
 			}
 

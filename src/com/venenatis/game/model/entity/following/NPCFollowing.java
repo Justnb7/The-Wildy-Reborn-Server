@@ -97,7 +97,7 @@ public class NPCFollowing {
 		
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
-			npc.faceEntity(target);
+			npc.face(target.getLocation());
 			//npc.setFollowing(null); // reset existing walking queue
 			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
 			//npc.sendForcedMessage("followin "+target);

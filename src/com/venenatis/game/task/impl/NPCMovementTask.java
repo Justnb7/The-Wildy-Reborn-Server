@@ -17,7 +17,7 @@ public final class NPCMovementTask extends Task {
 		super(1);
 	}
 	
-	public int GetMove(int Place1, int Place2) {
+	public int getMove(int Place1, int Place2) {
 		if ((Place1 - Place2) == 0) {
 			return 0;
 		} else if ((Place1 - Place2) < 0) {
@@ -56,10 +56,10 @@ public final class NPCMovementTask extends Task {
 				} else if (npc.walkingHome) {
 					NPCFollowing.walkToNextTile(npc, npc.makeX, npc.makeY);
 				}
-			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.walking_type == 1)) {
+			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.walking_type == 1) && !npc.isInteracting()) {
 				if (npc.walking_type == 1337 && ((npc.getX() != npc.walkX) || (npc.getY() != npc.walkY))) {
-					npc.moveX = GetMove(npc.getX(), npc.walkX);
-					npc.moveY = GetMove(npc.getY(), npc.walkY);
+					npc.moveX = getMove(npc.getX(), npc.walkX);
+					npc.moveY = getMove(npc.getY(), npc.walkY);
 					npc.getNextNPCMovement(npc);
 				}
 				int random = Utility.getRandom(3);

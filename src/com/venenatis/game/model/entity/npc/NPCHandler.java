@@ -90,7 +90,7 @@ public final class NPCHandler {
 		
 		npc.walking_type = walkingType;
 		npc.spawnedBy = player.getIndex();
-		npc.faceEntity(player);
+		npc.face(player.getLocation());
 		if (attacksEnemy) {
 			npc.underAttack = true;
 			if (player != null) {

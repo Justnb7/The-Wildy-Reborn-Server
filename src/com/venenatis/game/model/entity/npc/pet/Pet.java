@@ -22,7 +22,7 @@ public class Pet extends NPC {
 		this.isPet = true;
 		this.spawnedBy = owner.getIndex();
 		this.ownerId = owner.getIndex();
-		this.faceEntity(owner);
+		this.face(owner.getLocation());
 	}
 	
 	/**

@@ -1,3 +1,4 @@
+
 package com.venenatis.game.model.combat;
 
 import java.util.Random;
@@ -156,12 +157,12 @@ public class Combat {
 	 */
     public static void resetCombat(Entity entity) {
 		entity.getCombatState().setInCombat(false);
-		
+		entity.setInteractingEntity(null);
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
             player.setSpellId(-1);
 			player.setCombatType(null);
-			player.faceEntity(null);
+			player.face(null);
 	        player.getCombatState().reset();
 	        player.setFollowing(null);
 		}
@@ -174,7 +175,7 @@ public class Combat {
         // Establish what style we'd be using this cycle
         Combat.setCombatStyle(player);
         Entity target = player.getCombatState().getTarget();
-        player.faceEntity(target);
+        player.face(target.getLocation());
         player.debug("style: "+player.getCombatType()+" vs "+target);
         
         if (target.isPlayer()) {
@@ -935,6 +936,7 @@ public class Combat {
         }
         player.updateLastCombatAction();
         player.getCombatState().setInCombat(true);
+        target.setInteractingEntity(player);
         target.lastAttacker = player;
         target.lastWasHitTime = System.currentTimeMillis();
 		/*if (player.petBonus) {

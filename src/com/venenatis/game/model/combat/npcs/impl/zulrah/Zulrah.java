@@ -190,7 +190,7 @@ public class Zulrah {
 				} else if (container.getTotalTicks() == 5) {
 					npc.requestTransform(type);
 					npc.playAnimation(new Animation(5071));
-					npc.faceEntity(player);
+					npc.face(player.getLocation());
 					transforming = false;
 					container.stop();
 				}

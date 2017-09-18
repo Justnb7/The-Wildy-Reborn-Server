@@ -202,7 +202,7 @@ public class LizardmanShaman extends AbstractBossCombat {
 				Location destination = toJump.closestFreeTileOrSelf(toJump, npc.getWidth(), npc.getZ());
 				npc.teleport(destination); // just sets new location, doesn't do any npc updating changes (npc doesn't support TELEPORT like players do)
 				npc.playAnimation(JUMP_DOWN);
-				npc.faceEntity(victim);
+				npc.face(victim.getLocation());
 				npc.getRegion().getPlayers().stream().filter(Objects::nonNull).filter(i -> i.getLocation().distance(toJump) <= 2).forEach(i -> i.take_hit(npc, Utility.random(20, 25), CombatStyle.JUMP_ATTACK, true));
 				
 			}

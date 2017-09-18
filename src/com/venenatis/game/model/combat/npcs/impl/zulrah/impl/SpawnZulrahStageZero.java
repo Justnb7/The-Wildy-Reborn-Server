@@ -38,7 +38,7 @@ public class SpawnZulrahStageZero extends ZulrahStage {
 			}
 			zulrah.setNpc(npc);
 			npc.setFacePlayer(false);
-			npc.faceEntity(player);
+			npc.face(player.getLocation());
 			npc.playAnimation(new Animation(5073));
 		}
 		if (cycle == 18) {

@@ -45,6 +45,7 @@ public class WalkToNpcTask extends Task {
 		this.npc = npc;
 		this.player = player;
 		this.clickType = clickType;
+		player.setInteractingEntity(npc);
 	}
 	
 	@Override

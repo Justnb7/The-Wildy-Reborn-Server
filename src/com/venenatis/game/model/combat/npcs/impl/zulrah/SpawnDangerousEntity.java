@@ -48,7 +48,7 @@ public class SpawnDangerousEntity extends CycleEvent {
 		DangerousLocation location = locations.peek();
 		if (location == null) {
 			container.stop();
-			zulrah.getNpc().faceEntity(player);
+			zulrah.getNpc().face(player.getLocation());
 			return;
 		}
 		if (ticks == 4 || ticks == 8 || ticks == 12 || ticks == 16) {

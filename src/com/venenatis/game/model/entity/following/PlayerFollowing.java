@@ -127,7 +127,7 @@ public class PlayerFollowing {
             return;
 
         //Start facing the player you want to follow
-        player.faceEntity(following);
+        player.face(following.getLocation());
 
         if (!forCombat) {
             Location last = following.lastTile == null ? following.getLocation().transform(1, 0) : following.lastTile;

@@ -271,7 +271,7 @@ public class NpcCombat {
 			}
 		}
 		if (!rejectsFaceUpdate) {
-			npc.faceEntity(player);
+			npc.face(player.getLocation());
 		}
 		
 		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned") || npc.hasAttribute("attack")) {
@@ -292,7 +292,7 @@ public class NpcCombat {
 			return;
 		}
 		
-		npc.faceEntity(player);
+		npc.face(player.getLocation());
 		
 		// Execute our attack if we're in range.
 		if (goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distanceRequired(npc))) {
@@ -318,7 +318,7 @@ public class NpcCombat {
 			player.updateLastCombatAction();
 			player.getCombatState().setInCombat(true);
 			player.getActionSender().removeAllInterfaces();
-
+			npc.setInteractingEntity(player);
 			// Make the target Autoretal
 			if (player.getCombatState().noTarget()) {
 				if (player.isAutoRetaliating()) {

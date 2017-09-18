@@ -1192,7 +1192,6 @@ public class Player extends Entity {
 		this.reset();
 		setTeleporting(false);
 		setMapRegionChanging(false);
-		entityFaceIndex = 65535;
 		setUpdateBlock(null);
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;

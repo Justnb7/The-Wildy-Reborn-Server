@@ -395,7 +395,6 @@ public class NPC extends Entity {
 		moveX = 0;
 		moveY = 0;
 		direction = -1;
-		this.entityFaceIndex = -1;
 		this.removeAttribute("teleporting");
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
@@ -653,7 +652,7 @@ public class NPC extends Entity {
 	public void retaliate(Entity attacker) {
 		// Set npc's target to the person that attacked us
 		this.targetId = attacker.getIndex();
-		faceEntity(attacker);
+		face(attacker.getLocation());
 	}
 
 	public int getAttackAnimation() {

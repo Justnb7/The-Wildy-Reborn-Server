@@ -193,7 +193,6 @@ public abstract class Entity {
 	public int lastY;
 	public transient Object distanceEvent;
 	private boolean registered;
-	public int entityFaceIndex = -1;
 	public Location lastTile;
 
 	/**
@@ -976,7 +975,7 @@ public abstract class Entity {
 	 * @param e
 	 *   The entity
 	 */
-	public void faceEntity(Entity e) {
+	/*public void faceEntity(Entity e) {
 		//sendForcedMessage("face: "+e);
 		if (e == null || e == this) {
 			//System.out.println("resetting face, e is null");
@@ -996,6 +995,48 @@ public abstract class Entity {
 		}
 		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
+	}*/
+	
+	/**
+	 * The interacting entity.
+	 */
+	private Entity interactingEntity;
+	
+	/**
+	 * Checks if this entity is interacting with another entity.
+	 * 
+	 * @return The entity interaction flag.
+	 */
+	public boolean isInteracting() {
+		return interactingEntity != null;
+	}
+
+	/**
+	 * Sets the interacting entity.
+	 * 
+	 * @param entity
+	 *            The new entity to interact with.
+	 */
+	public void setInteractingEntity(Entity entity) {
+		this.interactingEntity = entity;
+		this.updateFlags.flag(UpdateFlag.FACE_ENTITY);
+	}
+
+	/**
+	 * Resets the interacting entity.
+	 */
+	public void resetInteractingEntity() {
+		this.interactingEntity = null;
+		this.updateFlags.flag(UpdateFlag.FACE_ENTITY);
+	}
+
+	/**
+	 * Gets the interacting entity.
+	 * 
+	 * @return The entity to interact with.
+	 */
+	public Entity getInteractingEntity() {
+		return interactingEntity;
 	}
 	
 	/**

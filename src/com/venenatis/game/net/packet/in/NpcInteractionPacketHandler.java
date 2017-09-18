@@ -94,8 +94,9 @@ public class NpcInteractionPacketHandler implements PacketType {
 			return;
 		}
 
-		player.faceEntity(npc);
+		player.face(npc.getLocation());
 		player.setCombatType(null);
+		player.setInteractingEntity(npc);
 
 
 		if ((player.getCombatType() != CombatStyle.MELEE) && player.goodDistance(player.getX(), player.getY(), npc.getX(), npc.getY(), 7)) {
@@ -135,6 +136,9 @@ public class NpcInteractionPacketHandler implements PacketType {
 			}
 			player.getCombatState().setTarget(npc);
 		}
+		
+		player.setInteractingEntity(npc);
+		player.getWalkingQueue().reset();
 	}
 
 	private void handleFirstClickPacket(Player player, int packet) {

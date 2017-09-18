@@ -113,6 +113,8 @@ public class PlayerOptionPacketHandler implements PacketType {
 			player.getActionSender().sendMessage("The other player is currently busy.");
 			return;
 		}
+		
+		player.setInteractingEntity(other);
 
 		player.setDistancedTask(new DistancedActionTask() {
 			@Override
@@ -146,6 +148,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 		follower.getCombatState().reset();
 		follower.setFollowing(leader);
+		follower.setInteractingEntity(leader);
 	}
 	
 	/**
@@ -189,6 +192,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 
+		player.setInteractingEntity(other);
 		player.getCombatState().setTarget(other);
 	}
 	
@@ -241,7 +245,6 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 		for (int spellId = 0; spellId < player.MAGIC_SPELLS.length; spellId++) {
 			if (spell == player.MAGIC_SPELLS[spellId][0]) {
-				player.debug("using spell: "+spellId);
 				player.setSpellId(spellId);
 				player.setCombatType(CombatStyle.MAGIC);
 				break;
@@ -259,6 +262,9 @@ public class PlayerOptionPacketHandler implements PacketType {
 		} else {
 			System.err.println("Unsupported combat situation, is the spell you're using supported?");
 		}
+		
+		player.setInteractingEntity(other);
+		player.getWalkingQueue().reset();
 	}
 	
 	private void handleTradeRequest(Player player, int packet) {

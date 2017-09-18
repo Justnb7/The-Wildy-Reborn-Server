@@ -100,10 +100,11 @@ public class WalkingPacketHandler implements PacketType {
 		
 		//When walking reset the following variables
 		if (packetType == 248 || packetType == 164) {
-			player.faceEntity(null);
+			player.face(null);
 			player.getCombatState().reset();
 			Combat.resetCombat(player);
 			player.setFollowing(null);
+			player.resetInteractingEntity();
 		}
 		
 		// Packet 248 is either clicking on the minimap or a npc/object/player

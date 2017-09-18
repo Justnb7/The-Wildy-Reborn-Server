@@ -3,6 +3,7 @@ package com.venenatis.game.model.entity.npc.updating;
 import java.util.Iterator;
 
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags;
@@ -217,7 +218,8 @@ public class NpcUpdating {
 			buffer.putInt(npc.getCurrentGraphic().getDelay() + (65536 * npc.getCurrentGraphic().getHeight()));
 		}
 		if(flags.get(UpdateFlag.FACE_ENTITY)) {
-			buffer.writeShort(npc.entityFaceIndex);
+			Entity entity = npc.getInteractingEntity();
+			buffer.writeShort(entity == null ? -1 : entity.clientIndex());
 		}
 		if(flags.get(UpdateFlag.FORCED_CHAT)) {
 			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());

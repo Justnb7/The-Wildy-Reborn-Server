@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.definitions.ItemDefinition;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Appearance;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags;
@@ -344,7 +345,8 @@ public class PlayerUpdating {
 			appendPlayerChatText(player, updateBlock);
 		}
 		if(flags.get(UpdateFlag.FACE_ENTITY)) {
-			updateBlock.writeWordBigEndian(player.entityFaceIndex);
+			Entity entity = player.getInteractingEntity();
+			updateBlock.writeWordBigEndian(entity == null ? -1 : entity.clientIndex());
 		}
 		if (flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			appendPlayerAppearanceUpdate(player, updateBlock);

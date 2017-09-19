@@ -209,7 +209,7 @@ public class NPC extends Entity {
 	 */
 	public int targetId;
 	
-	public boolean noDeathEmote, walkingHome, underAttack, randomWalk;
+	public boolean walkingHome, underAttack, randomWalk;
 
 	public boolean aggressive;
 	
@@ -400,30 +400,6 @@ public class NPC extends Entity {
 		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();
 		this.setTeleporting(false);
-	}
-
-	/**
-	 * Gets a list of surrounding players near the mob
-	 *
-	 * @param mob
-	 *            the mob
-	 * @return the list of players surrounding the mob
-	 */
-	public static final List<Player> getSurroundingPlayers(final NPC mob, int distance) {
-		final List<Player> surrounding = new ArrayList<>();
-		for (Player player : World.getWorld().getPlayers()) {
-			if (player != null) {
-				if (player.getCombatState().isDead() || (player.getZ() != mob.getZ())) {
-					continue;
-				}
-
-				if (player.distanceToPoint(mob.getX(), mob.getY()) < distance) {
-					surrounding.add(player);
-				}
-
-			}
-		}
-		return surrounding;
 	}
 	
 	public NPC spawnBossMinion(Player p, int id, Location location, int walkType, boolean attackPlayer) {

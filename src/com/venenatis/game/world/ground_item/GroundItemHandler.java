@@ -1,10 +1,5 @@
 package com.venenatis.game.world.ground_item;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
@@ -17,6 +12,11 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem.State;
 import com.venenatis.server.GameEngine;
 import com.venenatis.server.Server;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A handler for a collection of {@link GroundItem}s
@@ -195,22 +195,16 @@ public final class GroundItemHandler {
 		return ITEMS.add(groundItem);
 	}
 
-	public static int getItemAmount(GroundItem groundItem) {
-		Item item = groundItem.getItem();
+	public static long getItemAmount(GroundItem match) {
+		Item item = match.getItem();
 		for (GroundItem other : ITEMS) {
-			if (groundItem.getOwnerHash() == other.getOwnerHash() || other.getState() == (State.SEEN_BY_EVERYONE)) {
-				if (groundItem.getItem().getId() == other.getItem().getId()
-						&& groundItem.getLocation().getX() == other.getLocation().getX()
-						&& groundItem.getLocation().getY() == other.getLocation().getY()
-						&& groundItem.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
-					if (item.isStackable()) {
-						int existingCount = other.getItem().getAmount();
-						long newCount = (long) existingCount + item.getAmount();
-						if (newCount > Integer.MAX_VALUE) {
-							return -1;
-						}
-						return (int) newCount;
-					}
+			if (match.getOwnerHash() == other.getOwnerHash() || other.getState() == (State.SEEN_BY_EVERYONE)) {
+				if (match.getItem().getId() == other.getItem().getId()
+						&& match.getLocation().getX() == other.getLocation().getX()
+						&& match.getLocation().getY() == other.getLocation().getY()
+						&& match.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
+						long existingCount = other.getItem().getAmount();
+						return existingCount + item.getAmount();
 				}
 			}
 		}
@@ -251,69 +245,73 @@ public final class GroundItemHandler {
 		}
 	}
 
-	public static boolean createGroundItem(GroundItem groundItem) {
-		Player player = groundItem.getPlayer();
-		if (groundItem.getItem().getId() < 0) {
+	public static boolean createGroundItem(GroundItem toAdd) {
+		Player player = toAdd.getPlayer();
+		if (toAdd.getItem().getId() < 0) {
 			return false;
 		}
 		if (player == null) {
-			groundItem.setState(State.SEEN_BY_EVERYONE);
+			toAdd.setState(State.SEEN_BY_EVERYONE);
 		}
 
-		//PlayerLogging.write(LogType.DEATH_LOG, groundItem.getOwner(), "Items added to floor : " + groundItem.getItem().getId() + " Amount : "  + groundItem.getItem().getAmount());
+		//PlayerLogging.write(LogType.DEATH_LOG, toAdd.getOwner(), "Items added to floor : " + toAdd.getItem().getId() + " Amount : "  + toAdd.getItem().getAmount());
 		if (player != null && player.getRights().isIron(player)) {
-			groundItem.setState(State.SEEN_BY_OWNER);
+			toAdd.setState(State.SEEN_BY_OWNER);
 		}
 		
-		if (groundItem.getItem().getId() >= 2412 && groundItem.getItem().getId() <= 2414) {
+		if (toAdd.getItem().getId() >= 2412 && toAdd.getItem().getId() <= 2414) {
 			player.getActionSender().sendMessage("The cape vanishes as it touches the ground.");
 			return false;
 		}
 
-		for (GroundItem other : ITEMS) {
-			if (groundItem.getItem().getId() == other.getItem().getId()
-					&& groundItem.getLocation().getX() == other.getLocation().getX()
-					&& groundItem.getLocation().getY() == other.getLocation().getY()
-					&& groundItem.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
-				if (other.getState() == State.SEEN_BY_EVERYONE || other.getOwnerHash() == player.usernameHash) {
-					int existing = getItemAmount(groundItem);
+		// Stackable? Can group with existing of the same item on that tile
+		if (toAdd.getItem().isStackable()) {
+			for (GroundItem other : ITEMS) {
+				// Same id, location, still valid
+				if (toAdd.getItem().getId() == other.getItem().getId()
+						&& toAdd.getLocation().getX() == other.getLocation().getX()
+						&& toAdd.getLocation().getY() == other.getLocation().getY()
+						&& toAdd.getLocation().getZ() == other.getLocation().getZ() && !other.isRemoved()) {
 
-					if (existing == -1) {
-						if (player != null) {
-							player.getActionSender().sendMessage("There is not enough room for your item on this tile.");
+					// Global or seen by all
+					if (other.getState() == State.SEEN_BY_EVERYONE || other.getOwnerHash() == player.usernameHash) {
+
+
+						// Amount of that item.
+						long existing = other.getItem().amount;
+
+						// If added together total is less than int overload.
+						if (existing + toAdd.getItem().amount <= Integer.MAX_VALUE) {
+
+							// Remove the item TEMPORARILY - arrows have difference Sprites depending on the Stack size.
+							removeRegionalItem(other); // For ALL players
+
+							// Update amount
+							other.getItem().setAmount((int) (existing + toAdd.getItem().amount));
+
+							// Reset expiry timer, same as dropping a new item.
+							other.setTimer(toAdd.getState() == State.SEEN_BY_EVERYONE ? 200 : 100);
+
+							// Re-send with updated amount, new sprite picture on floor (client detects)
+							player.getActionSender().sendGroundItem(other); // Manual for owner
+							addRegionalItem(other); // For all other players
+
+							// Return true for entire method. No need to re-send items.
+							return true;
 						}
-						return false;
-					}
-
-					if (existing > 0) {
-						other.getItem().setAmount(existing);
-						other.setTimer(groundItem.getState() == State.SEEN_BY_EVERYONE ? 200 : 100);
 					}
 				}
 			}
 		}
 
-		if (add(groundItem)) {
-			groundItem.setTimer(groundItem.getState() == State.SEEN_BY_EVERYONE ? 200 : 100);
+		if (add(toAdd)) {
+			toAdd.setTimer(toAdd.getState() == State.SEEN_BY_EVERYONE ? 200 : 100);
 			if (player != null) {
-				player.getActionSender().sendGroundItem(groundItem);
+				player.getActionSender().sendGroundItem(toAdd);
 			}
-			if (groundItem.getState() == State.SEEN_BY_EVERYONE) {
-				addRegionalItem(groundItem);
+			if (toAdd.getState() == State.SEEN_BY_EVERYONE) {
+				addRegionalItem(toAdd);
 			}
-		}
-		
-		/**
-		 * A flag to check if the ground item is stackable.
-		 */
-		boolean stackable = groundItem.getItem().getDefinition().isStackable();
-		
-		/**
-		 * If there is a stackable item on the tile we are dropping the new item on, and it matches our new item being dropped, we calculate the needed information
-		 * to respectively replace the existing match.
-		 */
-		if (stackable) {
-			//TODO add support for stackable ground items.
 		}
 
 		return true;

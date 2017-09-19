@@ -191,20 +191,24 @@ public class OwnerCommand implements Command {
 			return true;
 			
 		case "setstat":
-    		try {
-    			final int stat = parser.nextInt();
-    			final int level = parser.nextInt();
+			if (parser.hasNext()) {
+				final int stat = parser.nextInt();
+				int level = 1;
+
+				if (parser.hasNext()) {
+					level = parser.nextInt();
+				}
+
 				player.getSkills().setExperience(stat, player.getSkills().getXPForLevel(level) + 1);
 				player.getSkills().setLevel(stat, level);
-				player.getActionSender().sendMessage(Skills.SKILL_NAME[stat] + " level is now " +level+ ".");	
-    		} catch(Exception e) {
-				e.printStackTrace();
-				player.getActionSender().sendMessage("Syntax is ::lvl [skill] [lvl].");				
-
+				player.getActionSender().sendMessage(Skills.SKILL_NAME[stat] + " level is now " +level+ ".");
+				player.setCombatLevel(player.getSkills().getCombatLevel());
+	    		player.getSkills().update();
+				return true;
+			} else {
+				player.getActionSender().sendMessage("Syntax is ::lvl [skill] [lvl].");
 			}
-    		player.setCombatLevel(player.getSkills().getCombatLevel());
-    		player.getSkills().update();
-    		break;
+			return true;
     		
 		case "tl":
 			player.getSkills().updateTotalLevel();

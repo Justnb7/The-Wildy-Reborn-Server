@@ -102,7 +102,7 @@ public enum SkillCapePerks {
 			player.getInventory().remove(6570, 1);
 			player.getInventory().add(13329, 1);
 			player.getInventory().add(13330, 1);
-			SimpleDialogues.sendItemStatement(player, 13329, "", "You've combined the fire cape and max cape.", 13329);
+			SimpleDialogues.sendItemStatement(player, 13329, "", "You've combined the fire cape and max cape.");
 			break;
 			
 		case "SARADOMIN":
@@ -124,7 +124,7 @@ public enum SkillCapePerks {
 			player.getInventory().remove(2414, 1);
 			player.getInventory().add(13333, 1);
 			player.getInventory().add(13334, 1);
-			SimpleDialogues.sendItemStatement(player, 13333, "", "You've combined the zamorak cape and max cape.", 13333);
+			SimpleDialogues.sendItemStatement(player, 13333, "", "You've combined the zamorak cape and max cape.");
 			break;
 			
 		case "GUTHIX":
@@ -135,7 +135,7 @@ public enum SkillCapePerks {
 			player.getInventory().remove(2413, 1);
 			player.getInventory().add(13335, 1);
 			player.getInventory().add(13336, 1);
-			SimpleDialogues.sendItemStatement(player, 13335, "", "You've combined the guthix cape and max cape.", 13335);
+			SimpleDialogues.sendItemStatement(player, 13335, "", "You've combined the guthix cape and max cape.");
 			break;
 			
 		case "AVAS":
@@ -146,7 +146,7 @@ public enum SkillCapePerks {
 			player.getInventory().remove(10499, 1);
 			player.getInventory().add(13337, 1);
 			player.getInventory().add(13338, 1);
-			SimpleDialogues.sendItemStatement(player, 13337, "", "You've combined the accumulator and max cape.", 13337);
+			SimpleDialogues.sendItemStatement(player, 13337, "", "You've combined the accumulator and max cape.");
 			break;
 			
 		case "ARDOUGNE":
@@ -157,7 +157,7 @@ public enum SkillCapePerks {
 			player.getInventory().remove(13124, 1);
 			player.getInventory().add(20760, 1);
 			player.getInventory().add(20764, 1);
-			SimpleDialogues.sendItemStatement(player, 20760, "", "You've combined the cloak and max cape.", 20760);
+			SimpleDialogues.sendItemStatement(player, 20760, "", "You've combined the cloak and max cape.");
 			break;
 		}
 	}

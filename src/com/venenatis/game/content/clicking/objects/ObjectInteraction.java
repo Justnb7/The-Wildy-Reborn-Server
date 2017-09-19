@@ -8,6 +8,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.rewards.BossRewardChest;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
+import com.venenatis.game.content.skills.agility.rooftops.AlKharidRooftop;
 import com.venenatis.game.content.skills.agility.Shortcut;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
@@ -56,14 +57,14 @@ public class ObjectInteraction {
 		//System.out.println(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, objectId));
 		final GameObject obj = Server.getGlobalObjects().customOrCache(objectId, location); 
 		
-		/*if (obj == null) {
+		if (obj == null) {
 			player.debug("No valid object at "+location+" with id "+objectId);
 			return;
-		}*/
+		}
 		
-		//Like im using the regionStoreManager to get the object tho
-		
-		
+		if(AlKharidRooftop.start(player, obj)) {
+			return;
+		}
 		
 		Action action = null;
 		Tree tree = Tree.forId(objectId);

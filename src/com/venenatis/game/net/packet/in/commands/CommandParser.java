@@ -159,7 +159,6 @@ public class CommandParser {
 		if (argumentIndex + 1 >= arguments.length) {
 			throw new ArrayIndexOutOfBoundsException("The next argument does not exist. [Size: " + arguments.length + ", Attempted: " + (argumentIndex + 1) + "]");
 		}
-
 		return arguments[++argumentIndex];
 	}
 

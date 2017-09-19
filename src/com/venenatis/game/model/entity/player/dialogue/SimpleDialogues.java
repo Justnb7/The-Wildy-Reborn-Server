@@ -12,11 +12,13 @@ import com.venenatis.game.model.entity.player.Player;
  */
 public final class SimpleDialogues {
 
-	public static void sendItemStatement(Player player, int id, Object... strings) {
+	public static void sendItemStatement(Player player, int id, String... strings) {
 		player.getDialogueManager().start(new Dialogue() {
 			@Override
 			protected void start(Object... parameters) {
-				send(DialogueType.ITEM, id, strings);
+				Deque<Object> objs = new LinkedList<>(Arrays.asList(strings));
+				objs.addFirst(id);
+				send(DialogueType.ITEM, Iterables.toArray(objs, Object.class));
 			}
 		});
 	}

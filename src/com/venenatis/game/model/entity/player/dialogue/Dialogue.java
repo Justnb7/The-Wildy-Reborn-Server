@@ -109,20 +109,20 @@ public abstract class Dialogue {
 			if (parameters.length == 3) {
 				player.getActionSender().sendString((String) parameters[1], 4884);
 				player.getActionSender().sendString((String) parameters[2], 4885);
-				player.getActionSender().sendItemOnInterface(4883, 250, (Integer) parameters[0]);
+				player.getActionSender().sendItemOnInterface(4883, 175, (Integer) parameters[0]);
 				player.getActionSender().sendChatBoxInterface(4882);
 			} else if (parameters.length == 4) {
 				player.getActionSender().sendString((String) parameters[1], 4889);
 				player.getActionSender().sendString((String) parameters[2], 4890);
 				player.getActionSender().sendString((String) parameters[3], 4891);
-				player.getActionSender().sendItemOnInterface(4888, 250, (Integer) parameters[0]);
+				player.getActionSender().sendItemOnInterface(4888, 175, (Integer) parameters[0]);
 				player.getActionSender().sendChatBoxInterface(4887);
 			} else if (parameters.length == 5) {
 				player.getActionSender().sendString((String) parameters[1], 4895);
 				player.getActionSender().sendString((String) parameters[2], 4896);
 				player.getActionSender().sendString((String) parameters[3], 4897);
 				player.getActionSender().sendString((String) parameters[4], 4898);
-				player.getActionSender().sendItemOnInterface(4894, 250, (Integer) parameters[0]);
+				player.getActionSender().sendItemOnInterface(4894, 175, (Integer) parameters[0]);
 				player.getActionSender().sendChatBoxInterface(4893);
 			} else if (parameters.length == 6) {
 				player.getActionSender().sendString((String) parameters[1], 4902);
@@ -130,7 +130,7 @@ public abstract class Dialogue {
 				player.getActionSender().sendString((String) parameters[3], 4904);
 				player.getActionSender().sendString((String) parameters[4], 4905);
 				player.getActionSender().sendString((String) parameters[5], 4906);
-				player.getActionSender().sendItemOnInterface(4901, 250, (Integer) parameters[0]);
+				player.getActionSender().sendItemOnInterface(4901, 175, (Integer) parameters[0]);
 				player.getActionSender().sendChatBoxInterface(4900);
 			}
 		} else if (type == DialogueType.NPC) {

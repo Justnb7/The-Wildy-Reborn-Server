@@ -144,9 +144,6 @@ public class Agility {
 		/**
 		 * Al Kharid rooftop course
 		 */
-		ALKHARID_ROOF_WALL(10093, Location.create(3273, 3195, 0), 1, 5, "kharidWall", false),
-
-		ALKHARID_TIGHT_ROPE(10284, Location.create(3272, 3181, 3), 1, 5, "kharidRope", false),
 
         ALKHARID_CABLE(10355, Location.create(3269, 3166, 3), 1, 5, "kharidCable", false),
 

@@ -36,7 +36,7 @@ public final class NPCMovementTask extends Task {
 				continue;
 			}
 			if (!npc.getCombatState().isDead() && npc.walkingHome) {
-				npc.resetFace();
+				npc.resetFaceTile();
 				//System.out.println(npc.getDefinition().getName());
 				npc.targetId = 0;
 				int walkingDistance = 18;

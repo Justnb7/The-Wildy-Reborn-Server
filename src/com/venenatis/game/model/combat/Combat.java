@@ -157,7 +157,7 @@ public class Combat {
 	 */
     public static void resetCombat(Entity entity) {
 		entity.getCombatState().setInCombat(false);
-		entity.setInteractingEntity(null);
+		entity.faceEntity(null);
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
             player.setSpellId(-1);
@@ -936,7 +936,7 @@ public class Combat {
         }
         player.updateLastCombatAction();
         player.getCombatState().setInCombat(true);
-        target.setInteractingEntity(player);
+        target.faceEntity(player);
         target.lastAttacker = player;
         target.lastWasHitTime = System.currentTimeMillis();
 		/*if (player.petBonus) {

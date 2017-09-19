@@ -104,7 +104,7 @@ public class WalkingPacketHandler implements PacketType {
 			player.getCombatState().reset();
 			Combat.resetCombat(player);
 			player.setFollowing(null);
-			player.resetInteractingEntity();
+			player.resetFaceEntity();
 		}
 		
 		// Packet 248 is either clicking on the minimap or a npc/object/player

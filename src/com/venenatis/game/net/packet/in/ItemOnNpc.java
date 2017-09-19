@@ -21,8 +21,8 @@ public class ItemOnNpc implements PacketType {
 		if (!player.getInventory().contains(itemId)) {
 			return;
 		}
-		player.setInteractingEntity(npc);
-		npc.setInteractingEntity(player);
+		player.faceEntity(npc);
+		npc.faceEntity(player);
 		@SuppressWarnings("unused")
 		int npcId = npc.getId();
 		switch (itemId) {

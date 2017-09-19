@@ -46,7 +46,7 @@ public final class NPCAggression {
             if (validate(npc, player)) {
             	//System.out.println("npc "+npc.getName()+" will agro "+player.getName());
                 npc.targetId = player.getIndex();
-                npc.setInteractingEntity(player);
+                npc.faceEntity(player);
             }
         }
     }

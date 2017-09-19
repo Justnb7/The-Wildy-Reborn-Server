@@ -128,7 +128,7 @@ public class NPCDeathTask extends Task {
      *            The {@link NPC} which as just died
      */
     private void initialDeath(NPC npc) {
-        npc.resetFace();
+        npc.resetFaceTile();
 
         final Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
         
@@ -166,7 +166,7 @@ public class NPCDeathTask extends Task {
         npc.freeze(0);
         npc.targetId = 0;
         npc.underAttack = false;
-        npc.resetFace();
+        npc.resetFaceTile();
         npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
     }
 

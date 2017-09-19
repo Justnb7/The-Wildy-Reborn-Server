@@ -128,7 +128,7 @@ public class ShopManager {
 			return;
 		}
 		
-		player.setInteractingEntity(null);
+		player.faceEntity(null);
 		
 		//Set attributes
 		player.getAttributes().put("shopping", true);
@@ -157,7 +157,7 @@ public class ShopManager {
 			return;
 		}
 		
-		player.setInteractingEntity(null);
+		player.faceEntity(null);
 
 		player.getActionSender().sendString(shop.getName(), 40002);
 

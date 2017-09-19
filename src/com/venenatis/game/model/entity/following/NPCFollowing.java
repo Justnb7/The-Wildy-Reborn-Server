@@ -21,7 +21,7 @@ public class NPCFollowing {
 	public static void attemptFollowEntity(NPC npc, Entity target) {
 		if (target == null || npc == null) {
 			npc.setFollowing(null);
-			npc.resetFace();
+			npc.resetFaceTile();
 			return;
 		}
 		
@@ -32,7 +32,7 @@ public class NPCFollowing {
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 				if (!Boundary.isIn(target, Boundary.GODWARS_BOSSROOMS)) {
 					npc.setFollowing(null);
-					npc.resetFace();
+					npc.resetFaceTile();
 					npc.targetId = 0; // reset cb as well.. not valid
 					return;
 				}
@@ -41,7 +41,7 @@ public class NPCFollowing {
 
 		if (target.getCombatState().isDead() || !target.isVisible() || npc.getZ() != target.getZ()) {
 			npc.setFollowing(null);
-			npc.resetFace();
+			npc.resetFaceTile();
 			npc.walkingHome = true;
 			npc.underAttack = false;
 			return;
@@ -105,7 +105,7 @@ public class NPCFollowing {
 		} else {
 			// Reset following
 			npc.setFollowing(null);
-			npc.resetFace();
+			npc.resetFaceTile();
 			npc.walkingHome = true;
 			npc.underAttack = false;
 			//npc.sendForcedMessage("reset "+locked_to_plr+" or "+in_spawn_area);

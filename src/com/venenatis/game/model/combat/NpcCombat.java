@@ -236,7 +236,7 @@ public class NpcCombat {
 				// out of range
 				npc.targetId = 0;
 				npc.underAttack = false;
-				npc.resetFace();
+				npc.resetFaceTile();
 			} else {
 				if (npc.getCombatState().getAttackDelay() == 0) {
 					attackPlayer(player, npc);
@@ -318,7 +318,7 @@ public class NpcCombat {
 			player.updateLastCombatAction();
 			player.getCombatState().setInCombat(true);
 			player.getActionSender().removeAllInterfaces();
-			npc.setInteractingEntity(player);
+			npc.faceEntity(player);
 			// Make the target Autoretal
 			if (player.getCombatState().noTarget()) {
 				if (player.isAutoRetaliating()) {

@@ -952,52 +952,6 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * Makes this entity face a position.
-	 * 
-	 * @param position
-	 *            The position to face.
-	 */
-	/*public void face(Entity entity, Location position) {
-		//Faces the player
-		if(entity.getEntityType() == EntityType.PLAYER) {
-			faceTileX = 2 * position.getX() + 1;
-			faceTileY = 2 * position.getY() + 1;
-		//Faces the npc
-		} else if(entity.getEntityType() == EntityType.NPC) {
-			faceTileX = position.getX();
-			faceTileY = position.getY();
-		}
-		this.getUpdateFlags().flag(UpdateFlag.FACE_COORDINATE);
-	}*/
-	
-	/**
-	 * Sets the entity facing index
-	 * @param e
-	 *   The entity
-	 */
-	/*public void faceEntity(Entity e) {
-		//sendForcedMessage("face: "+e);
-		if (e == null || e == this) {
-			//System.out.println("resetting face, e is null");
-			this.resetFace();
-			return;
-		}
-		
-		if (!facePlayer) {
-			if (entityFaceIndex == -1) {
-				return;
-			}
-			entityFaceIndex = -1;
-		} else {
-			// If WE are an npc, faceIndex is 'raw' - not +32k. 
-			// If we're a player, facing players = 32k+pid.. facing npcs= raw index
-			entityFaceIndex = e.clientIndex();
-		}
-		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
-		//System.out.println((this.isNPC() ? "npc" : "player")+" FACING "+e.isNPC()+" facd req to -> "+entityFaceIndex);
-	}*/
-	
-	/**
 	 * The interacting entity.
 	 */
 	private Entity interactingEntity;
@@ -1017,7 +971,7 @@ public abstract class Entity {
 	 * @param entity
 	 *            The new entity to interact with.
 	 */
-	public void setInteractingEntity(Entity entity) {
+	public void faceEntity(Entity entity) {
 		this.interactingEntity = entity;
 		this.updateFlags.flag(UpdateFlag.FACE_ENTITY);
 	}
@@ -1025,9 +979,8 @@ public abstract class Entity {
 	/**
 	 * Resets the interacting entity.
 	 */
-	public void resetInteractingEntity() {
-		this.interactingEntity = null;
-		this.updateFlags.flag(UpdateFlag.FACE_ENTITY);
+	public void resetFaceEntity() {
+		faceEntity(null);
 	}
 
 	/**
@@ -1042,7 +995,7 @@ public abstract class Entity {
 	/**
 	 * The face location.
 	 */
-	private Location face;
+	private Location faceTile;
 	
 	/**
 	 * Makes this entity face a location.
@@ -1051,7 +1004,7 @@ public abstract class Entity {
 	 *            The location to face.
 	 */
 	public void face(Location location) {
-		this.face = location;
+		this.faceTile = location;
 		this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
 	}
 
@@ -1061,25 +1014,15 @@ public abstract class Entity {
 	 * @return The entity face flag.
 	 */
 	public boolean isFacing() {
-		return face != null;
+		return faceTile != null;
 	}
 
 	/**
 	 * Resets the facing location.
 	 */
-	public void resetFace() {
-		this.face = null;
-		this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
+	public void resetFaceTile() {
+		face(null);
 	}
-	
-	/**
-	 * Resets the facing position.
-	 */
-	/*public void resetFace() {
-		this.entityFaceIndex = -1;
-		this.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
-		//System.out.println(this.isNPC()+ " why "+System.currentTimeMillis() / 1000);
-	}*/
 
 	/**
 	 * Gets the face location.
@@ -1088,7 +1031,7 @@ public abstract class Entity {
 	 *         facing.
 	 */
 	public Location getFaceLocation() {
-		return face;
+		return faceTile;
 	}
 	
     private boolean facePlayer = true;

@@ -65,7 +65,7 @@ public class Special {
 						targPlayer.logoutDelay.reset();
 						attacker.updateLastCombatAction();
 						attacker.getCombatState().setInCombat(true);
-						target.setInteractingEntity(attacker);
+						target.faceEntity(attacker);
 					}
 				}
 			} else {

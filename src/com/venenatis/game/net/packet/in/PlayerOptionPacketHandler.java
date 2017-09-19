@@ -114,7 +114,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 		
-		player.setInteractingEntity(other);
+		player.faceEntity(other);
 
 		player.setDistancedTask(new DistancedActionTask() {
 			@Override
@@ -148,7 +148,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 
 		follower.getCombatState().reset();
 		follower.setFollowing(leader);
-		follower.setInteractingEntity(leader);
+		follower.faceEntity(leader);
 	}
 	
 	/**
@@ -192,7 +192,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			return;
 		}
 
-		player.setInteractingEntity(other);
+		player.faceEntity(other);
 		player.getCombatState().setTarget(other);
 	}
 	
@@ -263,7 +263,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 			System.err.println("Unsupported combat situation, is the spell you're using supported?");
 		}
 		
-		player.setInteractingEntity(other);
+		player.faceEntity(other);
 		player.getWalkingQueue().reset();
 	}
 	

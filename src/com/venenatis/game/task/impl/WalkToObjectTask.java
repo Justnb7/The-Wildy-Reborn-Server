@@ -87,7 +87,7 @@ public class WalkToObjectTask extends Task {
 			stop();
 			// reached target. face coords.
 			player.faceObject(obj);
-			player.setFollowing(null);
+			player.following().setFollowing(null);
 		} else {
 			// do nothing this cycle. try again next time this Task is executed.
 		}

@@ -20,7 +20,7 @@ public class NPCFollowing {
 	 */
 	public static void attemptFollowEntity(NPC npc, Entity target) {
 		if (target == null || npc == null) {
-			npc.setFollowing(null);
+			npc.following().setFollowing(null);
 			npc.resetFaceTile();
 			return;
 		}
@@ -31,7 +31,7 @@ public class NPCFollowing {
 		if (isBoss) {
 			if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 				if (!Boundary.isIn(target, Boundary.GODWARS_BOSSROOMS)) {
-					npc.setFollowing(null);
+					npc.following().setFollowing(null);
 					npc.resetFaceTile();
 					npc.targetId = 0; // reset cb as well.. not valid
 					return;
@@ -40,7 +40,7 @@ public class NPCFollowing {
 		}
 
 		if (target.getCombatState().isDead() || !target.isVisible() || npc.getZ() != target.getZ()) {
-			npc.setFollowing(null);
+			npc.following().setFollowing(null);
 			npc.resetFaceTile();
 			npc.walkingHome = true;
 			npc.underAttack = false;
@@ -98,13 +98,13 @@ public class NPCFollowing {
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
 			npc.face(target.getLocation());
-			//npc.setFollowing(null); // reset existing walking queue
+			//npc.following().setFollowing(null); // reset existing walking queue
 			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
 			//npc.sendForcedMessage("followin "+target);
 			
 		} else {
 			// Reset following
-			npc.setFollowing(null);
+			npc.following().setFollowing(null);
 			npc.resetFaceTile();
 			npc.walkingHome = true;
 			npc.underAttack = false;

@@ -1,10 +1,5 @@
 package com.venenatis.game.model.combat.npcs.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.data.CombatStyle;
@@ -19,6 +14,11 @@ import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.StoppingTick;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 public class LizardmanShaman extends AbstractBossCombat {
 
@@ -154,7 +154,7 @@ public class LizardmanShaman extends AbstractBossCombat {
 		}
 		minions.forEach(World.getWorld()::register);
 		minions.forEach(n -> {
-			n.setFollowing(victim);
+			n.following().setFollowing(victim);
 			World.getWorld().schedule(new Task(1) {
 				private int ticks = 10;
 				private int curTicks;

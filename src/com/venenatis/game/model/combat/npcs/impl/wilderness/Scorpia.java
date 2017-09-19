@@ -1,18 +1,16 @@
 package com.venenatis.game.model.combat.npcs.impl.wilderness;
 
-import java.util.Random;
-
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.equipment.PoisonType;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.task.impl.NPCDeathTask;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+
+import java.util.Random;
 
 public class Scorpia extends AbstractBossCombat {
 	
@@ -53,7 +51,7 @@ public class Scorpia extends AbstractBossCombat {
 	
 	public static void heal_scorpia(NPC boss, NPC minion) {
 		minion.face(boss.getLocation());
-		minion.setFollowing(boss);
+		minion.following().setFollowing(boss);
 		World.getWorld().schedule(new Task(2) {
 			@Override
 			public void execute() {

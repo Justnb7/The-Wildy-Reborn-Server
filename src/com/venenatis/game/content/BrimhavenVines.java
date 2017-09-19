@@ -1,11 +1,5 @@
 package com.venenatis.game.content;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -17,6 +11,8 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.object.impl.vines.Vine;
 import com.venenatis.server.Server;
+
+import java.util.*;
 
 /**
  * 
@@ -110,17 +106,17 @@ public class BrimhavenVines {
 
 	public static void moveThroughVinesX(Player player, int originX, int x1, int y1, int x2, int y2) {
 		if (player.getX() <= originX) {
-			player.getPlayerFollowing().walkTo(x1, y1);
+			player.walkTo(x1, y1);
 		} else {
-			player.getPlayerFollowing().walkTo(x2, y2);
+			player.walkTo(x2, y2);
 		}
 	}
 
 	public static void moveThroughVinesY(Player player, int originY, int x1, int y1, int x2, int y2) {
 		if (player.getY() <= originY) {
-			player.getPlayerFollowing().walkTo(x1, y1);
+			player.walkTo(x1, y1);
 		} else {
-			player.getPlayerFollowing().walkTo(x2, y2);
+			player.walkTo(x2, y2);
 		}
 	}
 

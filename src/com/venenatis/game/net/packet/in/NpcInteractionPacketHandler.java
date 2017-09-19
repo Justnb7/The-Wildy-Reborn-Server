@@ -49,7 +49,7 @@ public class NpcInteractionPacketHandler implements PacketType {
 	@Override
 	public void handle(final Player player, int packet, int size) {
 		player.getCombatState().reset();
-		player.setFollowing(null);
+		player.following().setFollowing(null);
 		if (player.isPlayerTransformed() || player.getTeleportAction().isTeleporting()) {
 			return;
 		}

@@ -1,11 +1,5 @@
 package com.venenatis.game.model.entity;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import com.google.common.base.Preconditions;
 import com.venenatis.game.action.ActionQueue;
 import com.venenatis.game.constants.EquipmentConstants;
@@ -20,6 +14,7 @@ import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.magic.spell.impl.Vengeance;
+import com.venenatis.game.model.entity.following.Following;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
@@ -35,15 +30,13 @@ import com.venenatis.game.task.impl.VenomDrainTick;
 import com.venenatis.game.util.MutableNumber;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
-import com.venenatis.game.world.pathfinder.BasicPoint;
-import com.venenatis.game.world.pathfinder.Directions;
-import com.venenatis.game.world.pathfinder.PathFinder;
-import com.venenatis.game.world.pathfinder.PathState;
-import com.venenatis.game.world.pathfinder.TileControl;
+import com.venenatis.game.world.pathfinder.*;
 import com.venenatis.game.world.pathfinder.region.Coverage;
 import com.venenatis.game.world.pathfinder.region.RegionStore;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
+
+import java.util.*;
 
 /**
  * @author Patrick van Elderen
@@ -128,11 +121,11 @@ public abstract class Entity {
 		return random;
 	}
 
-	public Entity followTarget;
+    private Following followHandler = new Following(this);
 
-    public void setFollowing(Entity following) {
-        this.followTarget = following;
-    }
+    public Following following() {
+    	return followHandler;
+	}
 
     public void run(Task o) {
     	Server.getTaskScheduler().schedule(o);

@@ -1,10 +1,5 @@
 package com.venenatis.game.model.entity.npc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.NpcCombat;
@@ -24,6 +19,11 @@ import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.server.Server;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class NPC extends Entity {
 	
@@ -453,12 +453,12 @@ public class NPC extends Entity {
 		try {
 			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);
 			// none yet again duplicate INTs by PI
-			
+
+			if (following().hasFollowTarget() && this.getHitpoints() < 1 && !getCombatState().isDead()) {
+				System.out.println(getName()+" id "+getId()+" cannot follow because HP < 1. Set HP in definitions.");
+			}
 			if ((this.getHitpoints() > 0 && !getCombatState().isDead()) || isPet || getId() == 6768) {
 
-				if(this.followTarget != null || this.getHitpoints() < 1 && !getCombatState().isDead()) {
-					System.out.println("We need atleast one hitpoint!");
-				}
 
 				super.frozen_process();
 
@@ -472,9 +472,8 @@ public class NPC extends Entity {
 						//System.out.println("NPC Following player");
 						NPCFollowing.attemptFollowEntity(this, ownerPlr);
 					}
-				} else if (this.followTarget != null) {
-					NPCFollowing.attemptFollowEntity(this, followTarget);
 				}
+				following().execute();
 			}
 			
 			if (npcId == 6615) {

@@ -7,26 +7,14 @@ import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
-import com.venenatis.game.world.pathfinder.RouteFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 
 import java.util.stream.Stream;
 
-public class PlayerFollowing {
-	
-	/**
-     * The player.
-     */
-	private final Player player;
-
-	/**
-     * Creates an follow action for the specified player.
-     *
-     * @param player The player to create the follow action for.
-     */
-	public PlayerFollowing(Player player) {
-		this.player = player;
-	}
+/**
+ * Abstract because methods are static only
+ */
+public abstract class PlayerFollowing {
 
     public static void moveOutFromUnderLargeNpc(Player player, Entity other) {
 
@@ -88,7 +76,7 @@ public class PlayerFollowing {
             }
 
             if (lowX > 0 && lowY > 0) {
-                player.getPlayerFollowing().playerWalk(lowX, lowY);
+                player.playerWalk(lowX, lowY);
             }
         }
     }
@@ -100,11 +88,11 @@ public class PlayerFollowing {
 	 * @param following
 	 *        The entity we're following
 	 */
-    public void follow(boolean forCombat, Entity following) {
-        
+    public static void follow(Player player, boolean forCombat, Entity following) {
+
         //Whenever out target is null or death stop the following task
         if (following == null || following.getCombatState().isDead() || player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
-            player.setFollowing(null);
+            player.following().setFollowing(null);
             return;
         }
         if (player.frozen()) {
@@ -117,7 +105,7 @@ public class PlayerFollowing {
 
         //When out of distance stop the task
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
-            player.setFollowing(null);
+            player.following().setFollowing(null);
             player.debug("out of range");
             return;
         }
@@ -140,7 +128,7 @@ public class PlayerFollowing {
             if (remainder == 1) {
                 int x = fx - player.getX();
                 int y = fy - player.getY();
-                playerWalk(player.getX() + x, player.getY() + y);
+                player.playerWalk(player.getX() + x, player.getY() + y);
             }
         } else {
             /*
@@ -171,7 +159,7 @@ public class PlayerFollowing {
                         closestTileOf(Location.create(player.getX(), player.getY(), player.getZ()), following.size(), following.size());
             }
             if (followLoc != null) {
-                playerWalk(followLoc.getX(), followLoc.getY());
+                player.playerWalk(followLoc.getX(), followLoc.getY());
             }
         }
     }
@@ -215,7 +203,7 @@ public class PlayerFollowing {
 
     /**
 	 * Stops diagonal movements
-	 * 
+	 *
 	 * @param player
 	 *            The player
 	 * @param targetX
@@ -238,32 +226,10 @@ public class PlayerFollowing {
         player.getWalkingQueue().addStep(player.getX() + xMove, player.getY() + yMove);
     }
 
-	/**
-	 * Walk the player to the given X and Y position
-	 * 
-	 * @param moveX
-	 *            The x position
-	 * @param moveY
-	 *            The y position
-	 */
-    public void walkTo(int moveX, int moveY) {
-        walkTo(player, moveX, moveY);
-    }
-
     public static void walkTo(Player player, int moveX, int moveY) {
         player.getWalkingQueue().reset();
         player.getWalkingQueue().addStep(player.getX() + moveX, player.getY() + moveY);
         player.getWalkingQueue().finish();
     }
 
-	/**
-	 * 
-	 * @param x
-	 *            The x position
-	 * @param y
-	 *            The y position
-	 */
-    public void playerWalk(int x, int y) {
-        RouteFinder.getPathFinder().findRoute(player, x, y, true, 1, 1);
-    }
 }

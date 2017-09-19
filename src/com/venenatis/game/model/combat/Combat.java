@@ -1,8 +1,6 @@
 
 package com.venenatis.game.model.combat;
 
-import java.util.Random;
-
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.SkillCapePerks;
@@ -44,6 +42,8 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
+
+import java.util.Random;
 
 public class Combat {
 	
@@ -164,7 +164,7 @@ public class Combat {
 			player.setCombatType(null);
 			player.face(null);
 	        player.getCombatState().reset();
-	        player.setFollowing(null);
+	        player.following().setFollowing(null);
 		}
     }
 
@@ -1185,9 +1185,9 @@ public class Combat {
 	}
 
 	private static int extraMovingTilesDistance(Player player) {
-		if (player.followTarget != null && player.frozen() && !player.getWalkingQueue().isMoving())
+		if (player.following().hasFollowTarget() && player.frozen() && !player.getWalkingQueue().isMoving())
 			return 2;
-		else if (player.followTarget != null && player.frozen() && player.getWalkingQueue().isMoving()) {
+		else if (player.following().hasFollowTarget() && player.frozen() && player.getWalkingQueue().isMoving()) {
 			return 3;
 		} else {
 			return 1;

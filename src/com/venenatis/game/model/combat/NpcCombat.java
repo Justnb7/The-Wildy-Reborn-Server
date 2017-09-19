@@ -229,8 +229,7 @@ public class NpcCombat {
 		if (!npc.getCombatState().isDead() && !npc.walkingHome && npc.targetId > 0) {
 			Player player = World.getWorld().getPlayers().get(npc.targetId);
 
-			if (npc.followTarget != player)
-				npc.followTarget = player;
+			npc.following().setFollowing(player);
 
 			if (player == null) {
 				// out of range

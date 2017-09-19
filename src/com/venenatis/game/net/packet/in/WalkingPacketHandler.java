@@ -103,7 +103,7 @@ public class WalkingPacketHandler implements PacketType {
 			player.face(null);
 			player.getCombatState().reset();
 			Combat.resetCombat(player);
-			player.setFollowing(null);
+			player.following().setFollowing(null);
 			player.resetFaceEntity();
 		}
 		

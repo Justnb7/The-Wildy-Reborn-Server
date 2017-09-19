@@ -88,6 +88,7 @@ import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.RouteFinder;
 import com.venenatis.server.Server;
 
 import io.netty.buffer.Unpooled;
@@ -1372,7 +1373,7 @@ public class Player extends Entity {
 		}
 
 		// Follow player - not combat
-		process_following();
+		following().execute();
 
 		combatProcessing();
 
@@ -1405,20 +1406,6 @@ public class Player extends Entity {
 
 	public GameBuffer getOutStream() {
 		return outStream;
-	}
-
-	private PlayerFollowing player_following = new PlayerFollowing(this);
-	
-	public PlayerFollowing getPlayerFollowing() {
-		return player_following;
-	}
-	
-	public void process_following() {
-		if (followTarget != null) {
-			// Following complete, reset
-			if (!goodDistance(followTarget.getX(), followTarget.getY(), getX(), getY(), 1))
-				getPlayerFollowing().follow(!asPlayer().getCombatState().noTarget(), followTarget);
-		}
 	}
 
 	public void combatProcessing() {
@@ -3225,4 +3212,23 @@ public class Player extends Entity {
 		}
 		return lostItemsZulrah;
 	}
+
+	/**
+	 * Walk the player to the given X and Y position
+	 *  @param moveX
+	 *            The x position
+	 * @param moveY
+	 */
+    public void walkTo(int moveX, int moveY) {
+        PlayerFollowing.walkTo(this, moveX, moveY);
+    }
+
+	/**
+	 *  @param x
+	 *            The x position
+	 * @param y
+	 */
+    public void playerWalk(int x, int y) {
+        RouteFinder.getPathFinder().findRoute(this, x, y, true, 1, 1);
+    }
 }

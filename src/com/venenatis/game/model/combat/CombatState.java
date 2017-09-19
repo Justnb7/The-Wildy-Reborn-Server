@@ -116,7 +116,7 @@ public class CombatState {
 		target = null;
 		// Reset all styles
 		entity.asPlayer().setCombatType(null);
-		entity.asPlayer().setFollowing(null);
+		entity.following().setFollowing(null);
 		entity.faceEntity(null);
 	}
 	

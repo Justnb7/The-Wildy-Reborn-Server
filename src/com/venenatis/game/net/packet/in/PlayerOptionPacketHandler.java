@@ -1,7 +1,5 @@
 package com.venenatis.game.net.packet.in;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.location.Area;
@@ -13,6 +11,8 @@ import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+
+import static com.google.common.base.Preconditions.checkState;
 
 public class PlayerOptionPacketHandler implements PacketType {
 	
@@ -147,7 +147,7 @@ public class PlayerOptionPacketHandler implements PacketType {
 		final Player leader = World.getWorld().getPlayers().search(otherPlayerIndex).get();
 
 		follower.getCombatState().reset();
-		follower.setFollowing(leader);
+		follower.following().setFollowing(leader);
 		follower.faceEntity(leader);
 	}
 	

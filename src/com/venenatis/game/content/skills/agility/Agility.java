@@ -409,8 +409,8 @@ public class Agility {
 					@Override
 					public void execute() {
 						Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-						final WeaponDefinition weaponDef = WeaponDefinition.get(weapon.getId());
-						if (weapon != null && weapon.getEquipmentDefinition() != null) {
+						WeaponDefinition weaponDef = WeaponDefinition.get(weapon.getId());
+						if (weapon != null && weaponDef != null && weapon.getEquipmentDefinition() != null) {
                             player.setStandAnimation(weaponDef.getStandAnimation());
                             player.setRunAnimation(weaponDef.getRunAnimation());
                             player.setWalkAnimation(weaponDef.getWalkAnimation());

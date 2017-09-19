@@ -63,6 +63,8 @@ public class ObjectInteraction {
 		
 		//Like im using the regionStoreManager to get the object tho
 		
+		
+		
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
 		Rock rock = Rock.forId(objectId);

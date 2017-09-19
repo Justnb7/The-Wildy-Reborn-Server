@@ -80,7 +80,12 @@ public enum CombatStyle {
 	/**
 	 * Lizardman Shamans
 	 */
-	JUMP_ATTACK,
+	JUMP_ATTACK, 
+	
+	/**
+	 * Crazy archaeologist
+	 */
+	RAIN_OF_KNOWLEDGE,
 	
 	;
 }

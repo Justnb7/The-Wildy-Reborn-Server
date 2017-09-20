@@ -60,10 +60,10 @@ public class Rooftop {
 		}
 		
 		//We have a 20% chance of receiving a mark of grace
-		//if(random.nextInt(10) <= 2) {
+		if(random.nextInt(10) <= 2) {
 			GroundItemHandler.createGroundItem(new GroundItem(MARK_OF_GRACE, location, player));
 			player.debug("spawned marks of grace @"+location.toString());
-		//}
+		}
 	}
 	
 	private final static boolean can_receive_marks(Player player) {

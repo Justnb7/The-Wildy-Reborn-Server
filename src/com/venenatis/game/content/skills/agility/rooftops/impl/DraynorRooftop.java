@@ -6,10 +6,12 @@ import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.impl.StoppingTick;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
 
@@ -43,13 +45,7 @@ public class DraynorRooftop {
 		
 		Object draynor_village_rooftop = player.getAttribute("draynor_rooftop");
 		
-        boolean fail = false;
-		
-		if(random.nextInt(10) < 3) {
-			fail = true;
-		}
-		
-		//TODO It's possible to fail the Cross Tightrope 1 and Balance Narrow Wall obstacles during the course.
+		boolean fail = false;
 		
 		switch(object.getId()) {
 		/* Climb Rough Wall */
@@ -82,8 +78,26 @@ public class DraynorRooftop {
 				player.setAttribute("draynor_rooftop", (Integer)draynor_village_rooftop + 1);
 			}
 			
+			if (random.nextInt(10) < 3) {
+				fail = true;
+			}
+			
 			Agility.setRunningToggled(player, false, 12);
-			Agility.forceWalkingQueue(player, Animation.create(762), 3090, 3277, 0, 10, false);
+			Agility.forceWalkingQueue(player, Animation.create(762), 3090, 3277, 0, fail ? 4 : 10, fail ? true : false);
+			
+			if(fail) {
+				World.getWorld().schedule(new StoppingTick(3) {
+
+					@Override
+					public void executeAndStop() {
+						Agility.forceTeleport(player, new Animation(1332), new Location(3095, 3277, 0), 1, 1);
+						player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
+					}
+					
+				});
+				return false;
+			}
+			
 			Agility.forceWalkingQueue(player, Animation.create(762), 3090, 3276, 10, 2, true);
 			player.getSkills().addExperience(Skills.AGILITY, 8);
 			
@@ -134,8 +148,19 @@ public class DraynorRooftop {
 				player.setAttribute("draynorAgilityCourse", (Integer)draynor_village_rooftop + 1);
 			}
 			
+			if (random.nextInt(10) < 3) {
+				fail = true;
+			}
+			
 			Agility.setRunningToggled(player, false, 4);
-			Agility.forceWalkingQueue(player, Animation.create(756), 3089, 3262, 0, 3, false);
+			Agility.forceWalkingQueue(player, Animation.create(756), 3089, 3262, 0, 3, fail ? true : false);
+			
+			if(fail) {
+				Agility.forceTeleport(player, new Animation(1332), new Location(3089, 3264, 0), 1, 1);
+				player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
+				return false;
+			}
+			
 			Agility.forceWalkingQueue(player, Animation.create(756), 3088, 3261, 3, 1, true);
 			Agility.delayedAnimation(player, Animation.create(759), 4);
 			player.getSkills().addExperience(Skills.AGILITY, 7);

@@ -362,7 +362,7 @@ public class Agility {
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
 				
-				player.getWalkingQueue().setRunningToggled(false);
+				//player.getWalkingQueue().setRunningToggled(false);
 				
 				player.getWalkingQueue().reset();
 				player.getWalkingQueue().addStep(x, y);
@@ -389,7 +389,7 @@ public class Agility {
 						if(removeAttribute) {
 							player.getAttributes().remove("busy");
 						}
-						player.getWalkingQueue().setRunningToggled(player.getWalkingQueue().isRunning() ? true : false);
+						//player.getWalkingQueue().setRunningToggled(player.getWalkingQueue().isRunning() ? true : false);
 						this.stop();
 					}
 				});

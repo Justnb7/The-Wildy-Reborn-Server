@@ -6,11 +6,13 @@ import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.StoppingTick;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
 
@@ -46,12 +48,6 @@ public class AlKharidRooftop {
 		
 		boolean fail = false;
 		
-		if(random.nextInt(10) < 3) {
-			fail = true;
-		}
-		
-		//TODO It is possible to fail the Cross Tightrope 1 and Teeth-grip Zip Line obstacles during the course, taking 1-2 damage each time.
-		
 		switch (object.getId()) {
 		
 		/* Climb Rough Wall */
@@ -84,16 +80,34 @@ public class AlKharidRooftop {
 			if (alKharidRooftop == null) {
 				player.setAttribute("al_kharid_rooftop", 1);
 			}
+			
+			if (random.nextInt(10) < 3) {
+				fail = true;
+			}
 
 			Agility.setRunningToggled(player, false, 10);
-			Agility.forceWalkingQueue(player, Animation.create(762), 3272, 3172, 0, 10, true);
+			Agility.forceWalkingQueue(player, Animation.create(762), 3272, 3172, 0, fail ? 5 : 10, fail ? true : false);
+			
+			if(fail) {
+				World.getWorld().schedule(new StoppingTick(4) {
+
+					@Override
+					public void executeAndStop() {
+						Agility.forceTeleport(player, new Animation(1332), new Location(3272, 3177, 0), 1, 1);
+						player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
+					}
+					
+				});
+				return false;
+			}
+			
 			player.getSkills().addExperience(Skills.AGILITY, 30);
 			
 			World.getWorld().schedule(new StoppingTick(1) {
 
 				@Override
 				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
+					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 				}
 				
 			});
@@ -113,6 +127,22 @@ public class AlKharidRooftop {
 			Agility.forceMovement(player, new Animation(player.getWalkAnimation()), forceMovementVars2, 2, false);
 			Agility.forceWalkingQueue(player, Animation.create(1995), player.getX() + 2, player.getY(), 4, 5, true);
 			Agility.forceMovement(player, Animation.create(751), forceMovementVars, 7, false);
+			
+			World.getWorld().schedule(new Task(1) {
+				public int tick;
+	            @Override
+	            public void execute() {
+	            	if (tick == 3) {
+	            		player.getActionSender().sendMessage("You begin an almighty run-up...");
+					}
+
+					if (tick == 6) {
+						player.getActionSender().sendMessage("You gained enough momentum to swing to the other side!");
+						this.stop();
+					}
+		            tick++;
+	            }
+	        });
 			
 			World.getWorld().schedule(new StoppingTick(14) {
 
@@ -135,6 +165,11 @@ public class AlKharidRooftop {
 				player.setAttribute("kharidAgilityCourse", 3);
 			}
 			
+			if (random.nextInt(10) < 3) {
+				fail = true;
+			}
+			
+			final boolean fall_down = fail;
 			World.getWorld().schedule(new Task(1) { // <-- here
 				public int tick; // now 'tick' is a variable that belongs to the Task instance
 	            @Override
@@ -149,7 +184,20 @@ public class AlKharidRooftop {
 					}
 
 					if (tick == 3) {
-						Agility.forceWalkingQueue(player, Animation.create(1602), player.getX() + 14, player.getY(), 2, 12, true);
+						Agility.forceWalkingQueue(player, Animation.create(1602), player.getX() + 14, player.getY(), 2, fall_down ? 5 : 12, true);
+						
+						if(fall_down) {
+							World.getWorld().schedule(new StoppingTick(4) {
+
+								@Override
+								public void executeAndStop() {
+									Agility.forceTeleport(player, new Animation(1332), new Location(3307, 3163, 0), 1, 1);
+									player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
+								}
+								
+							});
+							this.stop();
+						}
 					}
 
 					if (tick == 14) {
@@ -291,8 +339,6 @@ public class AlKharidRooftop {
 		
 		return false;
 	}
-	
-	
 	
 	private final static Location mark_of_grace_locations(Player player) {
 		Location mark_of_grace_locations[] = { Location.create(3273, 3189, 3),

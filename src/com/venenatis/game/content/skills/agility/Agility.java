@@ -91,24 +91,6 @@ public class Agility {
 
         SLAYER_CAVE_ROCK_CLIMB_2(26724, Location.create(2427, 9766, 0), 67, 5, "slayerRockClimb", true),
 
-
-        /**
-         * Draynor Village Rooftop Course
-         */
-        DRAYNOR_VILLAGE_ROCK_CLIMB(10073, Location.create(3103, 3279, 0), 10, 20, "draynorRockClimb", false),
-
-        DRAYNOR_VILLAGE_TIGHT_ROPE_1(10074, Location.create(3098, 3277, 3), 10, 32, "draynorTightRope1", false),
-
-        DRAYNOR_VILLAGE_TIGHT_ROPE_2(10075, Location.create(3092, 3276, 3), 10, 28, "draynorTightRope2", false),
-
-        DRAYNOR_VILLAGE_NARROW_WALL(10077, Location.create(3089, 3264, 3), 10, 28, "draynorNarrowWall", false),
-
-        DRAYNOR_VILLAGE_JUMP_WALL(10084, Location.create(3088, 3256, 3), 10, 40, "draynorJumpWall", false),
-
-        DRAYNOR_VILLAGE_JUMP_GAP(10085, Location.create(3095, 3255, 3), 10, 16, "draynorJumpGap", false),
-
-        DRAYNOR_VILLAGE_CRATE_JUMP(10086, Location.create(3102, 3261, 3), 10, 24, "draynorCrateJump", false),
-
         /**
          * Seers Village Rooftop Course
          */

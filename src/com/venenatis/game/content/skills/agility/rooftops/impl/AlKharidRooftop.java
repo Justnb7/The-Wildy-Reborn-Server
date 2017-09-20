@@ -1,6 +1,9 @@
 package com.venenatis.game.content.skills.agility.rooftops.impl;
 
+import java.util.Random;
+
 import com.venenatis.game.content.skills.agility.Agility;
+import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -19,6 +22,11 @@ import com.venenatis.game.world.object.GameObject;
  *
  */
 public class AlKharidRooftop {
+	
+	/**
+	 * The random number generator
+	 */
+	private final static Random random = new Random();
 
 	/**
 	 * The initialize method
@@ -35,8 +43,17 @@ public class AlKharidRooftop {
 		}
 
 		Object alKharidRooftop = player.getAttribute("al_kharid_rooftop");
-
+		
+		boolean fail = false;
+		
+		if(random.nextInt(10) < 3) {
+			fail = true;
+		}
+		
+		//TODO It is possible to fail the Cross Tightrope 1 and Teeth-grip Zip Line obstacles during the course, taking 1-2 damage each time.
+		
 		switch (object.getId()) {
+		
 		/* Climb Rough Wall */
 		case 10093:
 			if (player.getLocation().getX() != 3273) {
@@ -45,6 +62,15 @@ public class AlKharidRooftop {
 			}
 			Agility.forceTeleport(player, Animation.create(828), Location.create(3273, 3192, 3), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 10);
+			
+			World.getWorld().schedule(new StoppingTick(1) {
+
+				@Override
+				public void executeAndStop() {
+					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
+				}
+				
+			});
 			return true;
 
 		/* Cross Tightrope 1 */
@@ -62,6 +88,15 @@ public class AlKharidRooftop {
 			Agility.setRunningToggled(player, false, 10);
 			Agility.forceWalkingQueue(player, Animation.create(762), 3272, 3172, 0, 10, true);
 			player.getSkills().addExperience(Skills.AGILITY, 30);
+			
+			World.getWorld().schedule(new StoppingTick(1) {
+
+				@Override
+				public void executeAndStop() {
+					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
+				}
+				
+			});
 			return true;
 
 		/* Swing-across Cable */
@@ -84,6 +119,7 @@ public class AlKharidRooftop {
 				@Override
 				public void executeAndStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 40);
+					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 				}
 				
 			});
@@ -98,6 +134,7 @@ public class AlKharidRooftop {
 			if (alKharidRooftop == null) {
 				player.setAttribute("kharidAgilityCourse", 3);
 			}
+			
 			World.getWorld().schedule(new Task(1) { // <-- here
 				public int tick; // now 'tick' is a variable that belongs to the Task instance
 	            @Override
@@ -118,6 +155,7 @@ public class AlKharidRooftop {
 					if (tick == 14) {
 						player.face(new Location(3316, 3163));
 						player.getSkills().addExperience(Skills.AGILITY, 40);
+						Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 						this.stop();
 					}
 		            tick++;
@@ -132,6 +170,7 @@ public class AlKharidRooftop {
 			if (alKharidRooftop == null) {
 				player.setAttribute("kharidAgilityCourse", 4);
 			}
+			
 			World.getWorld().schedule(new Task(1) { // <-- but inside the { } of Task
 				public int tick; // goes outside override.
 				
@@ -170,6 +209,7 @@ public class AlKharidRooftop {
 				@Override
 				public void onStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 10);
+					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 				}
 			});
 			return true;
@@ -185,6 +225,16 @@ public class AlKharidRooftop {
 			}
 			Agility.forceTeleport(player, Animation.create(828), Location.create(3316, 3180, 3), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
+			
+			World.getWorld().schedule(new StoppingTick(1) {
+
+				@Override
+				public void executeAndStop() {
+					player.getSkills().addExperience(Skills.AGILITY, 40);
+					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
+				}
+				
+			});
 			return true;
 
 		/* Cross Tightrope 2 */
@@ -199,6 +249,16 @@ public class AlKharidRooftop {
 			Agility.setRunningToggled(player, false, 10);
 			Agility.forceWalkingQueue(player, Animation.create(762), 3302, 3186, 0, 13, true);
 			player.getSkills().addExperience(Skills.AGILITY, 15);
+			
+			World.getWorld().schedule(new StoppingTick(1) {
+
+				@Override
+				public void executeAndStop() {
+					player.getSkills().addExperience(Skills.AGILITY, 40);
+					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
+				}
+				
+			});
 			return true;
 
 		/* Jump Gap */
@@ -216,9 +276,32 @@ public class AlKharidRooftop {
 			Agility.forceTeleport(player, Animation.create(2586), Location.create(3299, 3194, 0), 0, 2);
 			Agility.delayedAnimation(player, Animation.create(-1), 2);
 			player.getSkills().addExperience(Skills.AGILITY, 30);
+			
+			World.getWorld().schedule(new StoppingTick(1) {
+
+				@Override
+				public void executeAndStop() {
+					player.getSkills().addExperience(Skills.AGILITY, 40);
+					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
+				}
+				
+			});
 			return true;
 		}
+		
 		return false;
+	}
+	
+	
+	
+	private final static Location mark_of_grace_locations(Player player) {
+		Location mark_of_grace_locations[] = { Location.create(3273, 3189, 3),
+				Location.create(3267, 3170, 3), Location.create(3286, 3163, 3),
+				Location.create(3318, 3163, 1), Location.create(3315, 3176, 2),
+				Location.create(3314, 3182, 3), Location.create(3303, 3190, 3),
+				Location.create(3301, 3197, 0) };
+		
+		return mark_of_grace_locations[(int) (Math.random() * mark_of_grace_locations.length)];
 	}
 
 }

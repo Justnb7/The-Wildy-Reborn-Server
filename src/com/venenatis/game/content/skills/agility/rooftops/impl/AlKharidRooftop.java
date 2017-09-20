@@ -1,4 +1,4 @@
-package com.venenatis.game.content.skills.agility.rooftops;
+package com.venenatis.game.content.skills.agility.rooftops.impl;
 
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.location.Location;
@@ -18,9 +18,7 @@ import com.venenatis.game.world.object.GameObject;
  *         Elderen</a>
  *
  */
-public class AlKharidRooftop {//Next questuion then should we make agility courses non static then?
-	// the METHODS can be static, so you can do AlKahrid.objectacleA(player) 
-	// but VARIABLES cannot be static, they must be local - in this case 'tick'
+public class AlKharidRooftop {
 
 	/**
 	 * The initialize method
@@ -101,7 +99,7 @@ public class AlKharidRooftop {//Next questuion then should we make agility cours
 				player.setAttribute("kharidAgilityCourse", 3);
 			}
 			World.getWorld().schedule(new Task(1) { // <-- here
-				public int tick; // now 'tick' is a variable that belonds to the Task instance
+				public int tick; // now 'tick' is a variable that belongs to the Task instance
 	            @Override
 	            public void execute() {
 	            	if (tick == 1) {
@@ -174,8 +172,6 @@ public class AlKharidRooftop {//Next questuion then should we make agility cours
 					player.getSkills().addExperience(Skills.AGILITY, 10);
 				}
 			});
-
-			// TODO bugged
 			return true;
 
 		/* Climb Roof Top Beams */

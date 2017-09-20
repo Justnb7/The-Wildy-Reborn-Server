@@ -77,7 +77,7 @@ public class ObjectOptionPacketHandler implements PacketType {
 			return;
 		}
 		
-		// Client isnt very happy with this shit so we ahve to hard call it
+		// Client isnt very happy with this shit so we have to hard call it
 		if (id == 10357 && x == 3318 && y == 3166) {
 			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(x, y, player.getZ()), id);
 			ObjectPathFinder.find(player, obj);

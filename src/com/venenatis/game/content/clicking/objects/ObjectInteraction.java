@@ -8,8 +8,8 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.rewards.BossRewardChest;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
-import com.venenatis.game.content.skills.agility.rooftops.AlKharidRooftop;
 import com.venenatis.game.content.skills.agility.Shortcut;
+import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
@@ -62,7 +62,7 @@ public class ObjectInteraction {
 			return;
 		}
 		
-		if(AlKharidRooftop.start(player, obj)) {
+		if(Rooftop.execute(player, obj)) {
 			return;
 		}
 		

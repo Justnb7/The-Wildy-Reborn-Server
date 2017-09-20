@@ -18,12 +18,9 @@ import com.venenatis.game.world.object.GameObject;
  *         Elderen</a>
  *
  */
-public class AlKharidRooftop {
-	
-	/**
-	 * The time to tick while waiting for the player to complete a obstalce
-	 */
-    private static int tick;
+public class AlKharidRooftop {//Next questuion then should we make agility courses non static then?
+	// the METHODS can be static, so you can do AlKahrid.objectacleA(player) 
+	// but VARIABLES cannot be static, they must be local - in this case 'tick'
 
 	/**
 	 * The initialize method
@@ -103,7 +100,8 @@ public class AlKharidRooftop {
 			if (alKharidRooftop == null) {
 				player.setAttribute("kharidAgilityCourse", 3);
 			}
-			World.getWorld().schedule(new Task(1) {
+			World.getWorld().schedule(new Task(1) { // <-- here
+				public int tick; // now 'tick' is a variable that belonds to the Task instance
 	            @Override
 	            public void execute() {
 	            	if (tick == 1) {
@@ -131,13 +129,17 @@ public class AlKharidRooftop {
 
 		/* Swing-across Tropical Tree */
 		case 10357:
+			//There is none
 			player.debug("click");
 			if (alKharidRooftop == null) {
 				player.setAttribute("kharidAgilityCourse", 4);
 			}
-			World.getWorld().schedule(new Task(1) {
-				@Override
+			World.getWorld().schedule(new Task(1) { // <-- but inside the { } of Task
+				public int tick; // goes outside override.
+				
+				@Override// <-- outside of this
 				public void execute() {
+					player.message("balls "+tick);
 					if (tick == 1) {
 						player.setTeleportTarget(new Location(3317, 3169, 1));
 						player.face(new Location(3320, 3169));
@@ -168,7 +170,7 @@ public class AlKharidRooftop {
 				}
 
 				@Override
-				public void stop() {
+				public void onStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 10);
 				}
 			});

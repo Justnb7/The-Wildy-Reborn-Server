@@ -68,6 +68,8 @@ public class WalkToObjectTask extends Task {
 		
 		//Safety
 		if (obj == null) {
+			System.err.println("Non existant obj "+object+"@"+loc+" (tree despawned or cheat client)");
+			stop();
 			return;
 		}
 		

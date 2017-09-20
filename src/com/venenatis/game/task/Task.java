@@ -220,7 +220,7 @@ public abstract class Task {
 			/*
 			 * If the player is moving and its a non walkable task, stop it.
 			 */
-			if (player.getWalkingQueue().isMoving() && breakType == BreakType.ON_MOVE) {
+			if (player.getWalkingQueue().isMoving() && breakType == BreakType.ON_MOVE || player.getIndex() < 1) { // or this instance has logged out.
 				if (running) {
 					stop();
 					return;

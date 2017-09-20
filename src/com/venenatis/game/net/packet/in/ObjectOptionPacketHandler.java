@@ -4,6 +4,9 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.PacketType;
 import com.venenatis.game.task.impl.WalkToObjectTask;
+import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.impl.ObjectPathFinder;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
 /**
@@ -72,6 +75,12 @@ public class ObjectOptionPacketHandler implements PacketType {
 		//Safety check
 		if (player.getTeleportAction().isTeleporting()) {
 			return;
+		}
+		
+		// Client isnt very happy with this shit so we ahve to hard call it
+		if (id == 10357 && x == 3318 && y == 3166) {
+			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(x, y, player.getZ()), id);
+			ObjectPathFinder.find(player, obj);
 		}
 		
 		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, position, id, 1));

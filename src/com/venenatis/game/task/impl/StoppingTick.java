@@ -2,9 +2,7 @@ package com.venenatis.game.task.impl;
 
 import com.venenatis.game.task.Task;
 
-/**
- * @author twelve
- */
+
 public abstract  class StoppingTick extends Task {
 
 	/**

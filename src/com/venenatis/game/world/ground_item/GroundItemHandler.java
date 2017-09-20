@@ -297,6 +297,7 @@ public final class GroundItemHandler {
 							addRegionalItem(other); // For all other players
 
 							// Return true for entire method. No need to re-send items.
+							System.err.println("INFO: item "+toAdd.getItem().id+" stacks with existing "+other.getItem().id);
 							return true;
 						}
 					}

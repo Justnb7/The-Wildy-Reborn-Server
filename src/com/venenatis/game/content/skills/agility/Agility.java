@@ -388,8 +388,10 @@ public class Agility {
 				World.getWorld().schedule(new Task(ticks) {
 					@Override
 					public void execute() {
+						int wepId = player.getEquipment().getId(EquipmentConstants.WEAPON_SLOT);
 						Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-						WeaponDefinition weaponDef = WeaponDefinition.get(weapon.getId());
+						WeaponDefinition weaponDef = WeaponDefinition.get(wepId);
+						
 						if (weapon != null && weaponDef != null && weapon.getEquipmentDefinition() != null) {
                             player.setStandAnimation(weaponDef.getStandAnimation());
                             player.setRunAnimation(weaponDef.getRunAnimation());

@@ -584,6 +584,7 @@ public class Combat {
 			}
 		}
    
+		// Drop arrows to ground or just delete
         loseAmmo(player, target);
         
         boolean ignoreArrows = rangeWeaponType != null && Combat.isHandWeapon(rangeWeaponType);
@@ -696,7 +697,8 @@ public class Combat {
 		} else {
 			System.err.println("UNKNOWN RANGE AMMO SITUATION"); // what wep u using?
 		}
-		if (drop != null && RandomGenerator.nextInt(3) == 1) {
+		// 30% chance the arrow goes to ground, otherwise its just lost forever deleted
+		if (drop != null /*&& RandomGenerator.nextInt(3) == 1*/) { // fuck rng yo
 			GroundItemHandler.createGroundItem(new GroundItem(drop, target.getLocation(), player));
 		}
 	}

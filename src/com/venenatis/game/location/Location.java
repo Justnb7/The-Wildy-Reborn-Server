@@ -465,6 +465,11 @@ public class Location {
 		if (z != other.z) {
 			return false;
 		}
+		//was originally the below one yh its still iffy erm doesnbt matter that much
+		// rooftops is odd though can u sho wme again
+		
+		// this is just inaccurate alltogether i cant remember the proper solution, probably should be checking if NESW instead of distance
+		
 		int deltaX = other.x - x, deltaY = other.y - y;
           return deltaX <= 2 && deltaX >= -3 && deltaY <= 2 && deltaY >= -3;
           //When i was using the below it works but then it opens banks like 3 tiles away
@@ -653,16 +658,36 @@ public class Location {
 	public static boolean isDiagonal(Entity source, Entity target) {
 		Location l = source.getLocation();
 		Location l2 = target.getLocation();
-		if (l.getSouthEast().equals(l2)) {
+		return l.isDiagonal(l2);
+	}
+
+	public boolean isDiagonal(Location l2) {
+		if (getSouthEast().equals(l2)) {
 			return true;
 		}
-		if (l.getSouthWest().equals(l2)) {
+		if (getSouthWest().equals(l2)) {
 			return true;
 		}
-		if (l.getNorthEast().equals(l2)) {
+		if (getNorthEast().equals(l2)) {
 			return true;
 		}
-		if (l.getNorthWest().equals(l2)) {
+		if (getNorthWest().equals(l2)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isNextTo(Location l2) {
+		if (this.getSouth().equals(l2)) {
+			return true;
+		}
+		if (this.getNorth().equals(l2)) {
+			return true;
+		}
+		if (this.getWest().equals(l2)) {
+			return true;
+		}
+		if (this.getEast().equals(l2)) {
 			return true;
 		}
 		return false;
@@ -737,16 +762,7 @@ public class Location {
 		return this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ();
 	}
 
-	public boolean isNextTo(Location other) {
-		if(getZ() != other.getZ()) {
-			return false;
-		}
-		/*int deltagetX() = Math.abs(other.getX() - x), deltaY = Math.abs(other.y - y);
-		return deltagetX() <= 1 && deltaY <= 1;*/
-		return (getX() == other.getX() && getY() != other.getY()
-				|| getX() != other.getX() && getY() == other.getY()
-				|| getX() == other.getX() && getY() == other.getY());
-	}
+	
 	public Directions.NormalDirection direction(Location next) {
 		return Directions.directionFor(this, next);
 	}

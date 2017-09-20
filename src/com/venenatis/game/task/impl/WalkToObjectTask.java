@@ -71,7 +71,7 @@ public class WalkToObjectTask extends Task {
 			return;
 		}
 		
-		if (player.getLocation().isWithinInteractionDistance(loc) || object == 23131) {
+		if (player.getLocation().isNextTo(loc) || loc.equals(player.getLocation()) || object == 23131) {
 			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:
@@ -90,6 +90,7 @@ public class WalkToObjectTask extends Task {
 			player.following().setFollowing(null);
 		} else {
 			// do nothing this cycle. try again next time this Task is executed.
+			player.message("sleep on task "+this);
 		}
 	}
 

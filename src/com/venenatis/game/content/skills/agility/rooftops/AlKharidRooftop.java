@@ -4,14 +4,12 @@ import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.dialogue.DialogueManager;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.task.impl.StoppingTick;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
-import com.venenatis.game.world.pathfinder.region.RegionStore;
-import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
 /**
  * The class which represents functionality for the Al-kharid rooftop course.
@@ -58,6 +56,7 @@ public class AlKharidRooftop {
 		case 10284:
 			if (player.getLocation().getX() != 3272) {
 				player.removeAttribute("busy");
+				player.message("bad poss: "+player.getLocation());
 				return false;
 			}
 
@@ -84,18 +83,11 @@ public class AlKharidRooftop {
 			Agility.forceMovement(player, new Animation(player.getWalkAnimation()), forceMovementVars2, 2, false);
 			Agility.forceWalkingQueue(player, Animation.create(1995), player.getX() + 2, player.getY(), 4, 5, true);
 			Agility.forceMovement(player, Animation.create(751), forceMovementVars, 7, false);
-			World.getWorld().schedule(new Task(1) {
+			
+			World.getWorld().schedule(new StoppingTick(14) {
 
 				@Override
-				public void execute() {
-					if(tick == 14) {
-						stop();
-					}
-					tick++;
-				}
-				
-				@Override
-				public void stop() {
+				public void executeAndStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 40);
 				}
 				

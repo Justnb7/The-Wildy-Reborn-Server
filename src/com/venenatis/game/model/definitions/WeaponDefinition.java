@@ -135,6 +135,8 @@ public class WeaponDefinition {
 	private static final Map<Integer, WeaponDefinition> DEFINITIONS = new HashMap<>();
 
 	public static WeaponDefinition get(int id) {
+		if (id < 0 || id > DEFINITIONS.size())
+			return null;
 		return DEFINITIONS.get(id);
 	}
 

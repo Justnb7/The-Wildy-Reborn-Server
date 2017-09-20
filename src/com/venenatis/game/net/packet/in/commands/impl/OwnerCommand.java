@@ -28,6 +28,7 @@ import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
+import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.game.world.shop.ShopManager;
 import com.venenatis.server.Server;
@@ -660,7 +661,7 @@ public class OwnerCommand implements Command {
 		case "object":
 			if (parser.hasNext()) {
 				final int object = parser.nextInt();
-				player.getActionSender().sendObject(object, player.getX(), player.getY(), player.getZ(), 0, 10);
+				Server.getGlobalObjects().add(new GameObject(object, player.getX(), player.getY(), player.getZ(), 0, 10));
 				player.getActionSender().sendMessage("Spawned object: " + object);
 			}
 			return true;

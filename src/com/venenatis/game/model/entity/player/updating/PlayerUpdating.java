@@ -787,14 +787,14 @@ public class PlayerUpdating {
 	private static void appendForceMovement(Player player, final GameBuffer packet) {
 		Location myLocation = player.getLastKnownRegion();
 		Location location = player.getLocation();
-		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[0]));
-		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[1]));
-		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[2]));
-		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[3]));
+		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[0]));//startX
+		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[1]));//startY
+		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[2]));//endX
+		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[3]));//endY
 																				
-		packet.writeWordBigEndianA(player.getForceWalk()[4]);
-		packet.writeWordA(player.getForceWalk()[5]);
-		packet.writeByteS((byte) player.getForceWalk()[6]);
+		packet.writeWordBigEndianA(player.getForceWalk()[4]);//durationX
+		packet.writeWordA(player.getForceWalk()[5]);//durationY
+		packet.writeByteS((byte) player.getForceWalk()[6]);//direction
 		
 	}
 

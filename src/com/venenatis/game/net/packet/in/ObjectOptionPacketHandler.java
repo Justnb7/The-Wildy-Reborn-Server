@@ -70,7 +70,9 @@ public class ObjectOptionPacketHandler implements PacketType {
 		int x = player.getInStream().readSignedWordBigEndianA();
 		int id = player.getInStream().readUnsignedWord();
 		int y = player.getInStream().readUnsignedWordA();
-		Location position = Location.create(x, y, player.getLocation().getZ());
+		Location location = Location.create(x, y, player.getLocation().getZ());
+		
+		System.out.println(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, id));
 		
 		//Safety check
 		if (player.getTeleportAction().isTeleporting()) {
@@ -83,7 +85,12 @@ public class ObjectOptionPacketHandler implements PacketType {
 			ObjectPathFinder.find(player, obj);
 		}
 		
-		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, position, id, 1));
+		if (id == 10777 && x == 3191 && y == 3415) {
+			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(x, y, player.getZ()), id);
+			ObjectPathFinder.find(player, obj);
+		}
+		
+		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, location, id, 1));
 
 	}
 	

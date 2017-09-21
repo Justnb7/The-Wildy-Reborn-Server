@@ -45,6 +45,9 @@ public class Rooftop {
 		if(AlKharidRooftop.start(player, object)) {
 			return true;
 		}
+		if(VarrockRooftop.start(player, object)) {
+			return true;
+		}
 		return false;
 	}
 	

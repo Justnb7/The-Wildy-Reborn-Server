@@ -1231,7 +1231,7 @@ public abstract class Entity {
 	public void setForceWalk(final int[] forceWalk, final boolean removeAttribute) {
 		this.forceWalk = forceWalk;
 		if (forceWalk.length > 0) {
-			World.getWorld().schedule(new Task(forceWalk[7]) {
+			World.getWorld().schedule(new Task(forceWalk[6]) {
 				@Override
 				public void execute() {
 					setTeleportTarget(getLocation().transform(forceWalk[2], forceWalk[3], 0));

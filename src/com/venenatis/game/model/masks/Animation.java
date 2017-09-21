@@ -74,7 +74,7 @@ public class Animation {
 	 * @param id The id.
 	 * @param delay The delay.
 	 */
-	private Animation(int id, int delay) {
+	public Animation(int id, int delay) {
 		this.id = id;
 		this.delay = delay;
 	}

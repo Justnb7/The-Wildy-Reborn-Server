@@ -95,6 +95,35 @@ import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
 	
+	/**
+	 * A method used to render multiple animations at once
+	 * 
+	 * @param standAnimation
+	 *            The standing animation
+	 * @param walkSidewaysAnimation
+	 *            The walking sideways animation
+	 * @param walkAnimation
+	 *            The walk animation
+	 * @param turn180
+	 *            The turn 180 degrees animation
+	 * @param turn90cw
+	 *            The turn 90 degrees clockwise animation
+	 * @param turn90ccw
+	 *            The turn 90 degrees counter clockwise animation
+	 * @param runAnimation
+	 *            The running animation
+	 */
+	public void renderAnimations(int standAnimation, int walkSidewaysAnimation, int walkAnimation, int turn180,
+			int turn90cw, int turn90ccw, int runAnimation) {
+		this.setStandAnimation(standAnimation);
+		this.setStandTurnAnimation(walkSidewaysAnimation);
+		this.setWalkAnimation(walkAnimation);
+		this.setTurn180Animation(turn180);
+		this.setTurn90ClockwiseAnimation(turn90cw);
+		this.setTurn90CounterClockwiseAnimation(turn90ccw);
+		this.setRunAnimation(runAnimation);
+	}
+	
 	private KillTracker killTracker = new KillTracker(this);
 	
 	/**

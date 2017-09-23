@@ -124,40 +124,31 @@ public class AlKharidRooftop {
 			if (alKharidRooftop == null) {
 				player.setAttribute("kharidAgilityCourse", 2);
 			}
-			int[] forceMovementVars = { 0, 0, 14, 0, 30, 50, 1, 2 };
-			int[] forceMovementVars2 = { 0, 0, -2, 0, 30, 50, 1, 1 };
-			
-			//Walk two steps back
-			player.forceMove(new ForceMovement(0, 0, -2, 0, 30, 50, 0, Direction.NORTH), true);
-			
-			//Run towards sling
-			player.forceWalk(Animation.create(1995), player.getX() + 2, player.getY(), 0, 2, false);
-			
-			//Swing
-			player.playAnimation(new Animation(751));
-			
-			//Sent player to correct tile with forcemovement
-			player.forceMove(new ForceMovement(0, 0, 14, 0, 30, 50, 7, Direction.NORTH), false);
-			
-			//player.playAnimation(new Animation(player.getWalkAnimation()));
-			//player.forceMove(new ForceMovement(0, 0, -2, 0, 30, 50, 12, Direction.NORTH), true);
-			//Agility.forceMovement(player, new Animation(player.getWalkAnimation()), forceMovementVars2, 2, false);
-			
-			//Agility.forceMovement(player, Animation.create(751), forceMovementVars, 7, false);
 			
 			World.getWorld().schedule(new Task(1) {
 				public int tick;
 	            @Override
 	            public void execute() {
-	            	if (tick == 1) {
+	            	
+	            	if(tick == 1) {
 	            		player.getActionSender().sendMessage("You begin an almighty run-up...");
-					}
+	            		//Run towards sling
+	        			player.forceWalk(Animation.create(1995), player.getX() + 2, player.getY(), 0, 2, false);
+	            	}
 
-					if (tick == 3) {
+					if (tick == 5) {
 						player.getActionSender().sendMessage("You gained enough momentum to swing to the other side!");
 					}
 					
-					if(tick == 5) {
+					if(tick == 6) {
+						//Swing
+						player.playAnimation(new Animation(751));
+						
+						//Sent player to correct tile with forcemovement
+						player.forceMove(new ForceMovement(0, 0, 14, 0, 30, 50, 7, Direction.NORTH), false);
+					}
+					
+					if(tick == 10) {
 						player.getSkills().addExperience(Skills.AGILITY, 40);
 						Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 						this.stop();
@@ -165,16 +156,6 @@ public class AlKharidRooftop {
 		            tick++;
 	            }
 	        });
-			
-			/*World.getWorld().schedule(new StoppingTick(7) {
-
-				@Override
-				public void executeAndStop() {
-					player.getSkills().addExperience(Skills.AGILITY, 40);
-					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
-				}
-				
-			});*/
 			return true;
 
 		/* Teeth-grip Zip Line */

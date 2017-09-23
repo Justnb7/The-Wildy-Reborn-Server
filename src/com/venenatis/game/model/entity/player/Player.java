@@ -23,6 +23,7 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContaine
 import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.server_tasks.Tasks;
 import com.venenatis.game.content.skills.SkillTask;
+import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.content.skills.farm.Farming;
 import com.venenatis.game.content.skills.farming.Allotments;
 import com.venenatis.game.content.skills.farming.FarmingVencillio;

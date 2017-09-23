@@ -83,7 +83,7 @@ public class DraynorRooftop {
 			}
 			
 			Agility.setRunningToggled(player, false, 12);
-			Agility.forceWalkingQueue(player, Animation.create(762), 3090, 3277, 0, fail ? 4 : 10, fail ? true : false);
+			player.forceWalk(Animation.create(762), 3090, 3277, 0, fail ? 4 : 10, fail ? true : false);
 			
 			if(fail) {
 				World.getWorld().schedule(new StoppingTick(3) {
@@ -98,7 +98,7 @@ public class DraynorRooftop {
 				return false;
 			}
 			
-			Agility.forceWalkingQueue(player, Animation.create(762), 3090, 3276, 10, 2, true);
+			player.forceWalk(Animation.create(762), 3090, 3276, 10, 2, true);
 			player.getSkills().addExperience(Skills.AGILITY, 8);
 			
 			World.getWorld().schedule(new StoppingTick(1) {
@@ -123,8 +123,8 @@ public class DraynorRooftop {
 			}
 			
 			Agility.setRunningToggled(player, false, 12);
-			Agility.forceWalkingQueue(player, Animation.create(762), 3092, 3276, 0, 2, false);
-			Agility.forceWalkingQueue(player, Animation.create(762), 3092, 3267, 2, 10, true);
+			player.forceWalk(Animation.create(762), 3092, 3276, 0, 2, false);
+			player.forceWalk(Animation.create(762), 3092, 3267, 2, 10, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7);
 			
 			World.getWorld().schedule(new StoppingTick(1) {
@@ -153,7 +153,7 @@ public class DraynorRooftop {
 			}
 			
 			Agility.setRunningToggled(player, false, 4);
-			Agility.forceWalkingQueue(player, Animation.create(756), 3089, 3262, 0, 3, fail ? true : false);
+			player.forceWalk(Animation.create(756), 3089, 3262, 0, 3, fail ? true : false);
 			
 			if(fail) {
 				Agility.forceTeleport(player, new Animation(1332), new Location(3089, 3264, 0), 1, 1);
@@ -161,7 +161,7 @@ public class DraynorRooftop {
 				return false;
 			}
 			
-			Agility.forceWalkingQueue(player, Animation.create(756), 3088, 3261, 3, 1, true);
+			player.forceWalk(Animation.create(756), 3088, 3261, 3, 1, true);
 			Agility.delayedAnimation(player, Animation.create(759), 4);
 			player.getSkills().addExperience(Skills.AGILITY, 7);
 			
@@ -187,8 +187,8 @@ public class DraynorRooftop {
 			}
 			
 			Agility.setRunningToggled(player, false, 4);
-			Agility.forceWalkingQueue(player, Animation.create(2585), 3088, 3256, 0, 2, false);
-			Agility.forceWalkingQueue(player, Animation.create(2585), 3088, 3255, 2, 1, true);
+			player.forceWalk(Animation.create(2585), 3088, 3256, 0, 2, false);
+			player.forceWalk(Animation.create(2585), 3088, 3255, 2, 1, true);
 			player.getSkills().addExperience(Skills.AGILITY, 10);
 			
 			World.getWorld().schedule(new StoppingTick(1) {

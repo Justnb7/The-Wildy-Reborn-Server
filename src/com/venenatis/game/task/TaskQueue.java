@@ -38,7 +38,8 @@ public final class TaskQueue implements Service {
 		if (task.isImmediate()) {
 			task.execute();
 		}
-		pendingTasks.add(task);
+		if (!task.isStopped()) // executing immediatedly called stop.
+				pendingTasks.add(task);
 	}
 
 	public boolean running(Object key) {

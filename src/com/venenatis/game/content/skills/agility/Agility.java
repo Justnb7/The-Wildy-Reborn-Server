@@ -14,6 +14,7 @@ import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -295,18 +296,6 @@ public class Agility {
 		}
 	}
 	
-	public static void forceMovement(final Player player, final Animation animation, final int[] forceMovement, int ticks, final boolean removeAttribute) {
-		World.getWorld().schedule(new Task(ticks) {
-			@Override
-			public void execute() {
-				player.playAnimation(animation);
-				player.setForceWalk(forceMovement, removeAttribute);
-				player.getUpdateFlags().flag(UpdateFlag.FORCE_MOVEMENT);
-				this.stop();
-			}
-		});
-	}
-	
 	public static void forceTeleport(final Player player, final Animation animation, final Location newLocation, int ticksBeforeAnim, int ticks) {
 		if(animation != null) {
 			if(ticksBeforeAnim < 1) {
@@ -341,67 +330,6 @@ public class Agility {
             }
         });
     }
-
-	public static void forceWalkingQueue(final Player player, final Animation animation, final int x, final int y, int delayBeforeMovement, final int ticks, final boolean removeAttribute) {
-		final int originalStandTurn = player.getStandTurnAnimation();
-		final int originalTurn90cw = player.getTurn90ClockwiseAnimation();
-		final int originalTurn90ccw = player.getTurn90CounterClockwiseAnimation();
-		final int originalTurn180 = player.getTurn90CounterClockwiseAnimation();
-
-		Task task = new Task(delayBeforeMovement) {
-			@Override
-			public void execute() {
-				if(animation != null) {
-					player.setWalkAnimation(animation.getId());
-					player.setRunAnimation(animation.getId());
-					player.setStandAnimation(animation.getId());
-					player.setStandTurnAnimation(animation.getId());
-					player.setTurn90ClockwiseAnimation(animation.getId());
-					player.setTurn90CounterClockwiseAnimation(animation.getId());
-					player.setTurn180Animation(animation.getId());
-					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-				}
-				
-				//player.getWalkingQueue().setRunningToggled(false);
-				
-				player.getWalkingQueue().reset();
-				player.getWalkingQueue().addStep(x, y);
-				player.getWalkingQueue().finish();
-				World.getWorld().schedule(new Task(ticks) {
-					@Override
-					public void execute() {
-						int wepId = player.getEquipment().getId(EquipmentConstants.WEAPON_SLOT);
-						Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
-						WeaponDefinition weaponDef = WeaponDefinition.get(wepId);
-						
-						if (weapon != null && weaponDef != null && weapon.getEquipmentDefinition() != null) {
-                            player.setStandAnimation(weaponDef.getStandAnimation());
-                            player.setRunAnimation(weaponDef.getRunAnimation());
-                            player.setWalkAnimation(weaponDef.getWalkAnimation());
-    						player.setTurn90ClockwiseAnimation(originalTurn90cw);
-    						player.setTurn90CounterClockwiseAnimation(originalTurn90ccw);
-    						player.setTurn180Animation(originalTurn180);
-    						player.setStandTurnAnimation(originalStandTurn);
-                        } else {
-                            player.setDefaultAnimations();
-                        }
-						player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-						if(removeAttribute) {
-							player.getAttributes().remove("busy");
-						}
-						//player.getWalkingQueue().setRunningToggled(player.getWalkingQueue().isRunning() ? true : false);
-						this.stop();
-					}
-				});
-				this.stop();
-			}
-		};
-		if(delayBeforeMovement < 1) {
-			task.execute();
-		} else {
-			World.getWorld().schedule(task);
-		}
-	}
 	
 	public static void setRunningToggled(final Player player, boolean toggled, int ticks) {
 		final boolean originalToggledState = player.getWalkingQueue().isRunningToggled();
@@ -439,9 +367,9 @@ public class Agility {
 		}
 	}
 	
-	public static void jumpDitch(final Player player, final int animation, final int[] forceMovement, int ticks, final boolean removeAttribute) {
-		final int atY = forceMovement[3] == 3 ? 3520 : 3523;
-		final int atX = forceMovement[3] == 3 ? 2995 : 2998;
+	/*public static void jumpDitch(final Player player, final int animation, ForceMovement forceMovement, int ticks, final boolean removeAttribute) {
+		final int atY = forceMovement.getEndX() == 3 ? 3520 : 3523;
+		final int atX = forceMovement.getEndX() == 3 ? 2995 : 2998;
 		Task task = new Task(1) {
 			@Override
 			public void execute() {
@@ -476,7 +404,8 @@ public class Agility {
 				}
 				this.stop();
 				player.getWalkingQueue().reset();
-				player.setForceWalk(forceMovement, removeAttribute);
+				//final Player player, final Animation animation, ForceMovement forceMovement, int ticks, final boolean removeAttribute
+				player.forceMove(player, animation, forceMovement, 0, removeAttribute);
 				player.getUpdateFlags().flag(UpdateFlag.FORCE_MOVEMENT);
 			}
 		};
@@ -485,5 +414,5 @@ public class Agility {
 		} else {
 			task.execute();
 		}
-	}
+	}*/
 }

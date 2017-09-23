@@ -11,6 +11,7 @@ import com.venenatis.game.model.entity.player.Appearance;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -785,17 +786,19 @@ public class PlayerUpdating {
 	}
 	
 	private static void appendForceMovement(Player player, final GameBuffer packet) {
+		ForceMovement movement = player.getForceMovement();
+
 		Location myLocation = player.getLastKnownRegion();
 		Location location = player.getLocation();
-		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[0]));//startX
-		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[1]));//startY
-		packet.writeByteS((byte) (location.getLocalX(myLocation) + player.getForceWalk()[2]));//endX
-		packet.writeByteS((byte) (location.getLocalY(myLocation) + player.getForceWalk()[3]));//endY
+		packet.writeByteS((byte) (location.getLocalX(myLocation) + movement.getStartX()));//startX
+		packet.writeByteS((byte) (location.getLocalY(myLocation) + movement.getStartY()));//startY
+		packet.writeByteS((byte) (location.getLocalX(myLocation) + movement.getEndX()));//endX
+		packet.writeByteS((byte) (location.getLocalY(myLocation) + movement.getEndY()));//endY
 																				
-		packet.writeWordBigEndianA(player.getForceWalk()[4]);//durationX
-		packet.writeWordA(player.getForceWalk()[5]);//durationY
-		packet.writeByteS((byte) player.getForceWalk()[6]);//direction
-		
+		packet.writeWordBigEndianA(movement.getDurationX());//durationX
+		packet.writeWordA(movement.getDurationY());//durationY
+		packet.writeByteS((byte) movement.getDirection().getId());//direction
+
 	}
 
 	/**

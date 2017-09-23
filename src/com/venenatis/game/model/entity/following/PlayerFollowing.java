@@ -226,9 +226,9 @@ public abstract class PlayerFollowing {
         player.getWalkingQueue().addStep(player.getX() + xMove, player.getY() + yMove);
     }
 
-    public static void walkTo(Player player, int moveX, int moveY) {
+    public static void walkTo(Player player, int changeX, int changeY) {
         player.getWalkingQueue().reset();
-        player.getWalkingQueue().addStep(player.getX() + moveX, player.getY() + moveY);
+        player.getWalkingQueue().addStep(player.getX() + changeX, player.getY() + changeY);
         player.getWalkingQueue().finish();
     }
 

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.HerbSack;
 import com.venenatis.game.content.KillTracker;
@@ -53,6 +54,7 @@ import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
 import com.venenatis.game.model.container.impl.price_checker.PriceChecker;
 import com.venenatis.game.model.container.impl.rune_pouch.RunePouchContainer;
+import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
@@ -74,6 +76,7 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.model.masks.WalkingQueue;
+import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.model.req.RequestManager;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.net.network.rsa.ISAACRandomGen;
@@ -94,6 +97,71 @@ import com.venenatis.server.Server;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	public void forceMove(ForceMovement forceMovement, boolean removeAttribute) {
+		this.setForceMovement(forceMovement, removeAttribute);
+	}
+	
+	public void forceWalk(final Animation animation, final int x, final int y, int delayBeforeMovement, final int ticks, final boolean removeAttribute) {
+		final int originalStandTurn = getStandTurnAnimation();
+		final int originalTurn90cw = getTurn90ClockwiseAnimation();
+		final int originalTurn90ccw = getTurn90CounterClockwiseAnimation();
+		final int originalTurn180 = getTurn90CounterClockwiseAnimation();
+
+		Task task = new Task(delayBeforeMovement) {
+			@Override
+			public void execute() {
+				if(animation != null) {
+					setWalkAnimation(animation.getId());
+					setRunAnimation(animation.getId());
+					setStandAnimation(animation.getId());
+					setStandTurnAnimation(animation.getId());
+					setTurn90ClockwiseAnimation(animation.getId());
+					setTurn90CounterClockwiseAnimation(animation.getId());
+					setTurn180Animation(animation.getId());
+					getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+				}
+				
+				//getWalkingQueue().setRunningToggled(false);
+				
+				getWalkingQueue().reset();
+				getWalkingQueue().addStep(x, y);
+				getWalkingQueue().finish();
+				World.getWorld().schedule(new Task(ticks) {
+					@Override
+					public void execute() {
+						int wepId = getEquipment().getId(EquipmentConstants.WEAPON_SLOT);
+						Item weapon = getEquipment().get(EquipmentConstants.WEAPON_SLOT);
+						WeaponDefinition weaponDef = WeaponDefinition.get(wepId);
+						
+						if (weapon != null && weaponDef != null && weapon.getEquipmentDefinition() != null) {
+                            setStandAnimation(weaponDef.getStandAnimation());
+                            setRunAnimation(weaponDef.getRunAnimation());
+                            setWalkAnimation(weaponDef.getWalkAnimation());
+    						setTurn90ClockwiseAnimation(originalTurn90cw);
+    						setTurn90CounterClockwiseAnimation(originalTurn90ccw);
+    						setTurn180Animation(originalTurn180);
+    						setStandTurnAnimation(originalStandTurn);
+                        } else {
+                            setDefaultAnimations();
+                        }
+						getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+						if(removeAttribute) {
+							getAttributes().remove("busy");
+						}
+						//getWalkingQueue().setRunningToggled(getWalkingQueue().isRunning() ? true : false);
+						this.stop();
+					}
+				});
+				this.stop();
+			}
+		};
+		if(delayBeforeMovement < 1) {
+			task.execute();
+		} else {
+			World.getWorld().schedule(task);
+		}
+	}
 	
 	/**
 	 * A method used to render multiple animations at once
@@ -1226,7 +1294,6 @@ public class Player extends Entity {
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
 		this.getUpdateFlags().reset();
-		this.setForceWalk(new int[0], false);
 	}
 	
 	private WalkingQueue walkingQueue = new WalkingQueue(this);

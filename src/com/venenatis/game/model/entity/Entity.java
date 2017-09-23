@@ -6,6 +6,7 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.CombatState;
@@ -14,6 +15,7 @@ import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.combat_effects.BarrowsEffect;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.magic.spell.impl.Vengeance;
+import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.following.Following;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
@@ -23,6 +25,7 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.Sprites;
 import com.venenatis.game.model.masks.UpdateFlags;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.net.packet.ActionSender;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.PoisonCombatTask;
@@ -1076,6 +1079,10 @@ public abstract class Entity {
 		}
 	}
 	
+	public void anim(int id) {
+		this.playAnimation(new Animation(id));
+	}
+	
 	/**
 	 * Gets the current animation.
 	 * 
@@ -1211,37 +1218,35 @@ public abstract class Entity {
 	public abstract void setDefaultAnimations();
 	
 	/**
-	 * The force walk variables.
+	 * The force walk variable.
 	 */
-	private int[] forceWalk;
+	private ForceMovement forceMovement;
 	
 	/**
 	 * Gets the force movements values
 	 * @return
 	 */
-	public int[] getForceWalk() {
-		return forceWalk;
+	public ForceMovement getForceMovement() {
+		return forceMovement;
 	}
 
 	/**
 	 * Sets the force walk data
-	 * @param forceWalk
-	 * @param removeAttribute
+	 * @param forceMovement
 	 */
-	public void setForceWalk(final int[] forceWalk, final boolean removeAttribute) {
-		this.forceWalk = forceWalk;
-		if (forceWalk.length > 0) {
-			World.getWorld().schedule(new Task(forceWalk[6]) {
-				@Override
-				public void execute() {
-					setTeleportTarget(getLocation().transform(forceWalk[2], forceWalk[3], 0));
-					if (removeAttribute) {
-						removeAttribute("busy");
-					}
-					this.stop();
+	public void setForceMovement(ForceMovement forceMovement, boolean removeAttribute) {
+		this.forceMovement = forceMovement;
+		this.getUpdateFlags().flag(UpdateFlag.FORCE_MOVEMENT);
+		World.getWorld().schedule(new Task(forceMovement.getTicks(), forceMovement.getTicks() == 0 ? true : false) {
+			@Override
+			public void execute() {
+				setTeleportTarget(getLocation().transform(forceMovement.getEndX(), forceMovement.getEndY(), 0));
+				if (removeAttribute) {
+					removeAttribute("busy");
 				}
-			});
-		}
+				this.stop();
+			}
+		});
 	}
 	
 	/**

@@ -490,7 +490,7 @@ public class ObjectInteraction {
 					direction = 0;
 				}
 				int[] forceMovementVars = { 0, 0, 0, yPos, 33, 60, direction, 2 };
-				Agility.jumpDitch(player, 6132, forceMovementVars, 0, true);
+				//Agility.jumpDitch(player, 6132, forceMovementVars, 0, true);
 			break;
 		
 		}

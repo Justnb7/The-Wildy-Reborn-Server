@@ -16,6 +16,8 @@ import com.venenatis.game.task.impl.StoppingTick;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.PathFinder;
+import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
 
 /**
  * The class which represents functionality for the Draynor village rooftop course.
@@ -154,6 +156,7 @@ public class VarrockRooftop {
 	        //durationX
 			//durationY
 			//direction
+			player.face(player.getLocation().transform(-1, 0));
 			
 			final boolean fall = fail;
 			World.getWorld().schedule(new Task(1) {
@@ -166,53 +169,55 @@ public class VarrockRooftop {
 	            public void execute() {
 	            	
 	            	if (tick == 0) {
-	        			Agility.forceMovement(player, new Animation(1995, 15), forceMovementVars_1, 0, true);
+	        			//Agility.forceMovement(player, new Animation(1995, 15), forceMovementVars_1, 0, true);
 					}
 	            	
-	            	if (tick == 3) {
-						Agility.forceMovement(player, new Animation(2583, 20), forceMovementVars_2, 0, true);
+	            	if (tick == 1) {
+						//Agility.forceMovement(player, new Animation(2583, 20), forceMovementVars_2, 0, true);
 					}
 
 	            	//handlebars one
-					if (tick == 5) {
-						Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 2, true);
+					if (tick == 2) {
+						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
 					}
 					
 					//handlebars two
-					if (tick == 7) {
-						Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 1, true);
+					if (tick == 4) {
+						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
 					}
 					
 					//handlebars three
-					if (tick == 9) {
-						Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 1, true);
+					if (tick == 5) {
+						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
 					}
 					
 					//handlebars four
-					if (tick == 11) {
-						Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 1, true);
+					if (tick == 8) {
+						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
 					}
 					
 					//handlebars five
+					if (tick == 10) {
+						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
+						// suspecting 0 value for ticks might break this
+					}
+					
+					if(tick == 12) {
+						player.renderAnimations(757, 757, 757, 756, 756, 756, -1);
+						player.playAnimation(new Animation(753));
+						player.face(player.getLocation().transform(0,  -1));
+					}
+					
 					if (tick == 13) {
-						Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 2, true);
+						player.doPath(new DefaultPathFinder(), player, 3190, 3407);
+					}
+					if (tick == 15) {
+						player.setDefaultAnimations(); // TODO send weapon again to make 2h anims work etc
+						//Agility.forceMovement(player, new Animation(-1), forceMovementVars_4, 4, true);
+						player.anim(741);
 					}
 					
 					if(tick == 16) {
-						player.renderAnimations(757, 757, 757, 756, 756, 756, -1);
-						//TODO the delay of the movement? How do we even set the correct delay we must of do something wrong!@!!!!
-						Agility.forceMovement(player, new Animation(756), forceMovementVars_4, 1, true);
-					}
-					
-					//TODO sideways forcemovement 756
-					/*if(tick == 17) {
-						Agility.forceMovement(player, new Animation(756), forceMovementVars_4, 4, true);
-					}*/
-					
-					//Same here, must of been wrong usage of code!
-					//TODO final jump ontop of the roof 741
-					if(tick == 21) {
-						player.playAnimation(new Animation(741));
 						player.setTeleportTarget(new Location(3192, 3406, 3));
 						player.getSkills().addExperience(Skills.AGILITY, 21);
 						Rooftop.marks_of_grace(player, new Location(3205, 3414, player.getZ()));

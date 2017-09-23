@@ -175,6 +175,10 @@ public class OwnerCommand implements Command {
     		player.getWeaponInterface().sendSpecialBar(player.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
     		player.getWeaponInterface().refreshSpecialAttack();
 			return true;
+
+		case "cx":
+			player.setTeleportTarget(new Location(3194, 3416, 1));
+			return true;
 		
 		case "npc":
 			final int npc = parser.nextInt();

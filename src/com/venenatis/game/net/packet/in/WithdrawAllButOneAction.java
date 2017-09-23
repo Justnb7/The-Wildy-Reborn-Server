@@ -3,9 +3,9 @@ package com.venenatis.game.net.packet.in;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
-public class WithdrawAllButOneAction implements PacketType {
+public class WithdrawAllButOneAction implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {	

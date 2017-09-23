@@ -2,14 +2,14 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
 /**
  * Switch item packet handler.
  * @author Patrick van Elderen
  *
  */
-public class MoveItemPacketHandler implements PacketType {
+public class MoveItemPacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int id, int size) {

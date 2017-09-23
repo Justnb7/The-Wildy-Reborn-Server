@@ -1,13 +1,13 @@
 package com.venenatis.game.content;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.util.logging.PlayerLogging;
 import com.venenatis.game.util.logging.PlayerLogging.LogType;
 import com.venenatis.game.world.World;
 
-public class PrivateMessaging implements PacketType {
+public class PrivateMessaging implements IncomingPacketListener {
 
 	public final int ADD_FRIEND = 188, SEND_PM = 126, REMOVE_FRIEND = 215, CHANGE_PM_STATUS = 95, REMOVE_IGNORE = 74, ADD_IGNORE = 133;
 

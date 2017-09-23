@@ -8,7 +8,7 @@ import com.venenatis.game.world.World;
 
 public class PacketHandler {
 
-	private static PacketType packetId[] = new PacketType[256];
+	private static IncomingPacketListener packetId[] = new IncomingPacketListener[256];
 
 	static {
 
@@ -127,7 +127,7 @@ public class PacketHandler {
 			return;
 		}
 		
-		PacketType p = packetId[packetType];
+		IncomingPacketListener p = packetId[packetType];
 
 		if (p != null) {
 			try {

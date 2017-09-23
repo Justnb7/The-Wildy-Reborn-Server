@@ -2,7 +2,7 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.task.impl.WalkToObjectTask;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.impl.ObjectPathFinder;
@@ -15,7 +15,7 @@ import com.venenatis.server.Server;
  * @author Patrick van Elderen
  * 
  */
-public class ObjectOptionPacketHandler implements PacketType {
+public class ObjectOptionPacketHandler implements IncomingPacketListener {
 	
 	/**
 	 * Option 1 opcode.

@@ -22,7 +22,7 @@ import com.venenatis.game.model.combat.special_attacks.SpecialAttackHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanButtons;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.net.packet.in.button.ActionButtonEventListener;
 import com.venenatis.game.util.Utility;
 import com.venenatis.server.Server;
@@ -33,7 +33,7 @@ import com.venenatis.server.Server;
  * @author Patrick van Elderen
  * 
  */
-public class ActionButtonPacketHandler implements PacketType {
+public class ActionButtonPacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(final Player player, int id, int size) {

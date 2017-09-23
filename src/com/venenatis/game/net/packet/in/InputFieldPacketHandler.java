@@ -10,11 +10,11 @@ import com.venenatis.game.content.help.HelpDatabase;
 import com.venenatis.game.content.help.HelpRequest;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
 
-public class InputFieldPacketHandler implements PacketType {
+public class InputFieldPacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {

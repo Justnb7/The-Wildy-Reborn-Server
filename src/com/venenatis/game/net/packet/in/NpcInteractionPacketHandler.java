@@ -3,7 +3,7 @@ package com.venenatis.game.net.packet.in;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.task.impl.WalkToNpcTask;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
@@ -14,7 +14,7 @@ import com.venenatis.server.Server;
  * @author Patrick van Elderen
  * 
  */
-public class NpcInteractionPacketHandler implements PacketType {
+public class NpcInteractionPacketHandler implements IncomingPacketListener {
 
 	/**
 	 * Attacking npc opcode.

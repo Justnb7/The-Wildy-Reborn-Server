@@ -2,14 +2,14 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
 /**
  * The packet responsible for changing a players appearance.
  * 
  * @author Patrick van Elderen
  */
-public class SetAppearancePacketHandler implements PacketType {
+public class SetAppearancePacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(final Player player, final int packetId, final int packetSize) {

@@ -4,12 +4,12 @@ import com.venenatis.game.content.activity.minigames.impl.duelarena.*;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
 /**
  * Walking packet
  **/
-public class WalkingPacketHandler implements PacketType {
+public class WalkingPacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {

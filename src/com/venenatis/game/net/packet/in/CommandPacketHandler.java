@@ -4,7 +4,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.net.packet.in.commands.Command;
 import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.net.packet.in.commands.impl.*;
@@ -12,7 +12,7 @@ import com.venenatis.game.net.packet.in.commands.impl.*;
 /**
  * Commands
  */
-public class CommandPacketHandler implements PacketType {
+public class CommandPacketHandler implements IncomingPacketListener {
 	
 	private static final Command[] COMMANDS = new Command[] { new PlayerCommand(), new HelperCommand(), new ModeratorCommand(), new OwnerCommand() };
 

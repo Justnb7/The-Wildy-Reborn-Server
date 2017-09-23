@@ -8,11 +8,11 @@ import com.venenatis.game.content.rewards.ShinyChest;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 
-public class ItemOnObjectPacketHandler implements PacketType {
+public class ItemOnObjectPacketHandler implements IncomingPacketListener {
 	
 
 	@Override@SuppressWarnings("unused")

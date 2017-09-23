@@ -3,14 +3,14 @@ package com.venenatis.game.net.packet.in;
 import java.util.logging.Logger;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
 /**
  * Reports information about unhandled packets.
  * @author Patrick van Elderen
  *
  */
-public class DefaultPacketHandler implements PacketType {
+public class DefaultPacketHandler implements IncomingPacketListener {
 	
 	/**
 	 * The logger instance.

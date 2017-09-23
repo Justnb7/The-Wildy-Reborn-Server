@@ -2,7 +2,7 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.util.logging.PlayerLogging;
 import com.venenatis.game.util.logging.PlayerLogging.LogType;
@@ -12,7 +12,7 @@ import com.venenatis.game.util.logging.PlayerLogging.LogType;
  * @author Patrick van Elderen
  *
  */
-public class ChatPacketHandler implements PacketType {
+public class ChatPacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {

@@ -7,14 +7,14 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
 import static com.google.common.base.Preconditions.checkState;
 
-public class PlayerOptionPacketHandler implements PacketType {
+public class PlayerOptionPacketHandler implements IncomingPacketListener {
 	
 	 /**
      * Send when a player uses the attack right-click option on another player.

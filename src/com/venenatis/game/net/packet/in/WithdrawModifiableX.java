@@ -3,12 +3,12 @@ package com.venenatis.game.net.packet.in;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
 /**
  * Custom bank packet desgined by, @author <a href="https://www.rune-server.ee/members/jason/">Jason</a> i believe.
  */
-public class WithdrawModifiableX implements PacketType {
+public class WithdrawModifiableX implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int id, int size) {

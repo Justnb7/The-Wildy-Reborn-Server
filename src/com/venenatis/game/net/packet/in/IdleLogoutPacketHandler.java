@@ -2,10 +2,10 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.util.Utility;
 
-public class IdleLogoutPacketHandler implements PacketType {
+public class IdleLogoutPacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int id, int size) {

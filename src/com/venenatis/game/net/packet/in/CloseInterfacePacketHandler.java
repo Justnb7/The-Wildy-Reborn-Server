@@ -1,7 +1,7 @@
 package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
 /**
  * A packet handler that is called when an interface is closed.
@@ -9,7 +9,7 @@ import com.venenatis.game.net.packet.PacketType;
  * @author Patrick van Elderen
  * 
  */
-public class CloseInterfacePacketHandler implements PacketType {
+public class CloseInterfacePacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int id, int size) {

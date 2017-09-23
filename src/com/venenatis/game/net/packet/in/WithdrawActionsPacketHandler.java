@@ -7,11 +7,11 @@ import com.venenatis.game.model.combat.combat_effects.DragonfireShield;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.container.impl.rune_pouch.RunePouchContainer;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.world.shop.ShopManager;
 
 
-public class WithdrawActionsPacketHandler implements PacketType {
+public class WithdrawActionsPacketHandler implements IncomingPacketListener {
 
 	/**
 	 * The first option opcode of an item inside a container interface.

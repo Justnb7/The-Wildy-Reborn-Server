@@ -21,14 +21,14 @@ import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.server.Server;
 
-public class ItemOptionPacket implements PacketType {
+public class ItemOptionPacket implements IncomingPacketListener {
 	
 	/**
 	 * Option 1 opcode.

@@ -9,7 +9,7 @@ import com.venenatis.game.model.container.impl.InterfaceConstants;
 import com.venenatis.game.model.definitions.EquipmentDefinition;
 import com.venenatis.game.model.definitions.EquipmentDefinition.EquipmentType;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.net.packet.PacketType;
+import com.venenatis.game.net.packet.IncomingPacketListener;
 
 /**
  * Handles the 'wield' option on items.
@@ -17,7 +17,7 @@ import com.venenatis.game.net.packet.PacketType;
  * @author Patrick van Elderen
  * 
  */
-public class WieldPacketHandler implements PacketType {
+public class WieldPacketHandler implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int packetType, int packetSize) {

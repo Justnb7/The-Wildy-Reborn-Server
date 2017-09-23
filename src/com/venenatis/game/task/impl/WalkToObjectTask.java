@@ -60,9 +60,12 @@ public class WalkToObjectTask extends Task {
 	@Override
 	public void execute() {
 		if (!player.isActive()) {
-			stop();
+			this.stop();
 			return;
 		}
+		
+		//The distance that is required to activate to object
+		int distance_required = 1;
 		
 		final GameObject obj = RegionStoreManager.get().getGameObject(loc, object);
 		
@@ -73,8 +76,25 @@ public class WalkToObjectTask extends Task {
 			return;
 		}
 		
-		if (player.getLocation().isNextTo(loc) || loc.equals(player.getLocation()) || object == 23131
-				|| (object == 10777 && player.getLocation().equals(new Location(3194, 3416, 1)))) {
+		switch (obj.getId()) {
+		case 10355:
+		case 23131:
+			distance_required = 3;//I set 3 tiles
+			break;
+		case 10777:
+		case 23134://Two tiles
+			distance_required = 2;
+			break;
+		}
+		
+		//Exactly some objects have different activation tiles like 3+ i tried to work a better way as you can see above but for some reason it doesnt work
+		//Any idea if im doing it right?
+
+		//We added the check here its an AND statement i tried || aswell
+		if (loc.isWithinDistance(loc, distance_required) || player.getLocation().isNextTo(loc) || loc.equals(player.getLocation())/*
+				|| (object == 10777 && player.getLocation().equals(new Location(3194, 3416, 1)))
+				|| (object == 10355 && player.getLocation().equals(new Location(3265, 3166, 3)))*/) {
+			// yeah so like did above with al kharid hardcode u need to hardcode that too
 			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:
@@ -93,7 +113,7 @@ public class WalkToObjectTask extends Task {
 			player.following().setFollowing(null);
 		} else {
 			// do nothing this cycle. try again next time this Task is executed.
-			player.message("sleep on task "+this);
+			player.message("sleep on task");
 		}
 	}
 

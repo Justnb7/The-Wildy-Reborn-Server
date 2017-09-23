@@ -7,6 +7,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.FriendAndIgnoreList;
@@ -16,14 +17,13 @@ import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
+import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
 import com.venenatis.game.content.activity.trade.TradeContainer;
 import com.venenatis.game.content.activity.trade.TradeSession;
 import com.venenatis.game.content.activity.trade.TradeSession.TradeStage;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
 import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.server_tasks.Tasks;
 import com.venenatis.game.content.skills.SkillTask;
-import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.content.skills.farm.Farming;
 import com.venenatis.game.content.skills.farming.Allotments;
 import com.venenatis.game.content.skills.farming.FarmingVencillio;
@@ -104,6 +104,7 @@ public class Player extends Entity {
 	}
 	
 	public void forceWalk(final Animation animation, final int x, final int y, int delayBeforeMovement, final int ticks, final boolean removeAttribute) {
+		
 		final int originalStandTurn = getStandTurnAnimation();
 		final int originalTurn90cw = getTurn90ClockwiseAnimation();
 		final int originalTurn90ccw = getTurn90CounterClockwiseAnimation();

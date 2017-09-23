@@ -60,34 +60,6 @@ public class Agility {
         ARDOUGNE_LOG_BALANCE_2(16546, Location.create(2599, 3336, 0), 33, 7, "ardougneLogBalance", true),
         ARDOUGNE_LOG_BALANCE_3(16547, Location.create(2600, 3336, 0), 33, 7, "ardougneLogBalance", true),
 
-        /**
-         * Gnome obstacle course
-         */
-
-        GNOME_COURSE_LOG_BALANCE(23145, Location.create(2474, 3435, 0), 1, 7, "gnomeLogBalance", false),
-
-        GNOME_COURSE_OBSTACLE_NET_1(23144, Location.create(2471, 3425, 0), 1, 8, "gnomeObstacleNet", false),
-
-        GNOME_COURSE_OBSTACLE_NET_2(2285, Location.create(2473, 3425, 0), 1, 8, "gnomeObstacleNet", false),
-
-        GNOME_COURSE_OBSTACLE_NET_3(2285, Location.create(2475, 3425, 0), 1, 8, "gnomeObstacleNet", false),
-
-        GNOME_COURSE_TREE_BRANCH(2313, Location.create(2473, 3422, 1), 1, 5, "gnomeTreeBranch", false),
-
-        GNOME_COURSE_BALANCE_ROPE(2312, Location.create(2478, 3420, 2), 1, 7, "gnomeBalanceRope", false),
-
-        GNOME_COURSE_TREE_BRANCH_2(2314, Location.create(2486, 3419, 2), 1, 5, "gnomeTreeBranch2", false),
-
-        GNOME_COURSE_OBSTACLE_NET_4(2286, Location.create(2483, 3426, 0), 1, 8, "gnomeObstacleNet2", false),
-
-        GNOME_COURSE_OBSTACLE_NET_5(2286, Location.create(2485, 3426, 0), 1, 8, "gnomeObstacleNet2", false),
-
-        GNOME_COURSE_OBSTACLE_NET_6(2286, Location.create(2487, 3426, 0), 1, 8, "gnomeObstacleNet2", false),
-
-        GNOME_COURSE_OBSTACLE_PIPE_1(154, Location.create(2484, 3431, 0), 1, 8, "gnomeObstaclePipe", false),
-
-        GNOME_COURSE_OBSTACLE_PIPE_2(154, Location.create(2487, 3431, 0), 1, 8, "gnomeObstaclePipe", false),
-
         SLAYER_CAVE_ROCK_CLIMB(26724, Location.create(2427, 9763, 0), 67, 5, "slayerRockClimb", true),
 
         SLAYER_CAVE_ROCK_CLIMB_2(26724, Location.create(2427, 9766, 0), 67, 5, "slayerRockClimb", true),

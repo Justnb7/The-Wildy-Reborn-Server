@@ -10,13 +10,13 @@ import com.venenatis.game.model.entity.HitType;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+import com.venenatis.game.model.masks.forceMovement.Direction;
+import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.task.impl.StoppingTick;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
-import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
 
 /**
@@ -161,63 +161,67 @@ public class VarrockRooftop {
 			final boolean fall = fail;
 			World.getWorld().schedule(new Task(1) {
 				public int tick = 0;
-				int[] forceMovementVars_1 = { 0, 0, -1, 0, 15, 45, 3 };
-				int[] forceMovementVars_2 = { 0, 0, -3, -2, 25, 30, 3 };
-				int[] forceMovementVars_3 = { 0, 0, 0, -1, 34, 52, 3 };
-				int[] forceMovementVars_4 = { 0, 0, 2, -1, 5, 30, 2 };
 	            @Override
 	            public void execute() {
 	            	
-	            	if (tick == 0) {
-	        			//Agility.forceMovement(player, new Animation(1995, 15), forceMovementVars_1, 0, true);
+	            	if (tick == 1) {
+	            		player.playAnimation(new Animation(1995, 15));
+	            		player.forceMove(new ForceMovement(0, 0, -1, 0, 15, 45, 0, Direction.WEST), true);
 					}
 	            	
-	            	if (tick == 1) {
-						//Agility.forceMovement(player, new Animation(2583, 20), forceMovementVars_2, 0, true);
+	            	if (tick == 2) {
+	            		player.playAnimation(new Animation(2583, 20));
+	            		player.forceMove(new ForceMovement(0, 0, -3, -2, 25, 30, 1, Direction.WEST), true);
 					}
 
 	            	//handlebars one
-					if (tick == 2) {
-						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
+					if (tick == 3) {
+						player.playAnimation(new Animation(1122));
+	            		player.forceMove(new ForceMovement(0, 0, 0, -1, 34, 52, 1, Direction.WEST), true);
 					}
 					
 					//handlebars two
-					if (tick == 4) {
-						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
+					if (tick == 5) {
+						player.playAnimation(new Animation(1122));
+	            		player.forceMove(new ForceMovement(0, 0, 0, -1, 34, 52, 1, Direction.WEST), true);
 					}
 					
 					//handlebars three
-					if (tick == 5) {
-						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
+					if (tick == 7) {
+						player.playAnimation(new Animation(1122));
+	            		player.forceMove(new ForceMovement(0, 0, 0, -1, 34, 52, 1, Direction.WEST), true);
 					}
 					
 					//handlebars four
-					if (tick == 8) {
-						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
+					if (tick == 9) {
+						player.playAnimation(new Animation(1122));
+	            		player.forceMove(new ForceMovement(0, 0, 0, -1, 34, 52, 1, Direction.WEST), true);
 					}
 					
 					//handlebars five
-					if (tick == 10) {
-						//Agility.forceMovement(player, new Animation(1122), forceMovementVars_3, 0, true);
+					if (tick == 11) {
+						player.playAnimation(new Animation(1122));
+	            		player.forceMove(new ForceMovement(0, 0, 0, -1, 34, 52, 1, Direction.WEST), true);
 						// suspecting 0 value for ticks might break this
 					}
 					
 					if(tick == 12) {
 						player.renderAnimations(757, 757, 757, 756, 756, 756, -1);
 						player.playAnimation(new Animation(753));
-						player.face(player.getLocation().transform(0,  -1));
+						player.face(player.getLocation().transform(0, -1));
 					}
 					
 					if (tick == 13) {
 						player.doPath(new DefaultPathFinder(), player, 3190, 3407);
 					}
+					
 					if (tick == 15) {
 						player.setDefaultAnimations(); // TODO send weapon again to make 2h anims work etc
-						//Agility.forceMovement(player, new Animation(-1), forceMovementVars_4, 4, true);
+						player.forceMove(new ForceMovement(0, 0, 2, -1, 5, 30, 3, Direction.EAST), true);
 						player.anim(741);
 					}
 					
-					if(tick == 16) {
+					if(tick == 19) {
 						player.setTeleportTarget(new Location(3192, 3406, 3));
 						player.getSkills().addExperience(Skills.AGILITY, 21);
 						Rooftop.marks_of_grace(player, new Location(3205, 3414, player.getZ()));

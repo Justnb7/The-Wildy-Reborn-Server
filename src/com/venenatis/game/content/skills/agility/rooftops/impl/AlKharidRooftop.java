@@ -130,17 +130,15 @@ public class AlKharidRooftop {
 	            @Override
 	            public void execute() {
 	            	
-	            	if(tick == 1) {
+	            	if(tick == 1) {//First tick
 	            		player.getActionSender().sendMessage("You begin an almighty run-up...");
 	            		//Run towards sling
 	        			player.forceWalk(Animation.create(1995), player.getX() + 2, player.getY(), 0, 2, false);
 	            	}
-
-					if (tick == 5) {
-						player.getActionSender().sendMessage("You gained enough momentum to swing to the other side!");
-					}
 					
-					if(tick == 6) {
+					if(tick == 4) {
+						player.getActionSender().sendMessage("You gained enough momentum to swing to the other side!");
+						
 						//Swing
 						player.playAnimation(new Animation(751));
 						
@@ -148,7 +146,7 @@ public class AlKharidRooftop {
 						player.forceMove(new ForceMovement(0, 0, 14, 0, 30, 50, 7, Direction.NORTH), false);
 					}
 					
-					if(tick == 10) {
+					if(tick == 6) {
 						player.getSkills().addExperience(Skills.AGILITY, 40);
 						Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 						this.stop();

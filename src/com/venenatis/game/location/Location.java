@@ -661,33 +661,33 @@ public class Location {
 		return l.isDiagonal(l2);
 	}
 
-	public boolean isDiagonal(Location l2) {
-		if (getSouthEast().equals(l2)) {
+	public boolean isDiagonal(Location location) {
+		if (getSouthEast().equals(location)) {
 			return true;
 		}
-		if (getSouthWest().equals(l2)) {
+		if (getSouthWest().equals(location)) {
 			return true;
 		}
-		if (getNorthEast().equals(l2)) {
+		if (getNorthEast().equals(location)) {
 			return true;
 		}
-		if (getNorthWest().equals(l2)) {
+		if (getNorthWest().equals(location)) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean isNextTo(Location l2) {
-		if (this.getSouth().equals(l2)) {
+	public boolean isNextTo(Location location) {
+		if (this.getSouth().equals(location)) {
 			return true;
 		}
-		if (this.getNorth().equals(l2)) {
+		if (this.getNorth().equals(location)) {
 			return true;
 		}
-		if (this.getWest().equals(l2)) {
+		if (this.getWest().equals(location)) {
 			return true;
 		}
-		if (this.getEast().equals(l2)) {
+		if (this.getEast().equals(location)) {
 			return true;
 		}
 		return false;

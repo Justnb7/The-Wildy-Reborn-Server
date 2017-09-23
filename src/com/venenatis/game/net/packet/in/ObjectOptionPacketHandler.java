@@ -18,6 +18,16 @@ import com.venenatis.server.Server;
 public class ObjectOptionPacketHandler implements IncomingPacketListener {
 	
 	/**
+	 * The last interaction that player made that is recorded in milliseconds
+	 */
+	private long lastInteraction;
+	
+	/**
+	 * The constant delay that is required inbetween interactions
+	 */
+	private static final long INTERACTION_DELAY = 2_000L;
+	
+	/**
 	 * Option 1 opcode.
 	 */
 	private final int OPTION_1 = 132; 
@@ -35,7 +45,9 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 	@Override
 	public void handle(final Player player, int packet, int size) {
 		
-		if (player.getAttribute("busy") != null) {
+		//Safety check
+		if (player.getTeleportAction().isTeleporting() || player.hasAttribute("busy") || System.currentTimeMillis() - lastInteraction < INTERACTION_DELAY) {
+			player.debug("stop, cuz of random circumstances");
 			return;
 		}
 		
@@ -56,7 +68,9 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 			handleOption3(player, packet);
 			break;
 		}
-
+		//Setting here is correct right? ye i delayed clicks by 2 secs
+		player.debug("Click");
+		lastInteraction = System.currentTimeMillis();
 	}
 
 	/**
@@ -72,12 +86,7 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 		int y = player.getInStream().readUnsignedWordA();
 		Location location = Location.create(x, y, player.getLocation().getZ());
 		
-		System.out.println(String.format("[ObjectInteraction first option] - position: %s object: %d ", location, id));
-		
-		//Safety check
-		if (player.getTeleportAction().isTeleporting()) {
-			return;
-		}
+		System.out.println(String.format("[ObjectInteraction first option] - location: %s object: %d ", location, id));
 		
 		// Client isnt very happy with this shit so we have to hard call it
 		if (id == 10357 && x == 3318 && y == 3166) {
@@ -91,7 +100,6 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 		}
 		
 		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, location, id, 1));
-
 	}
 	
 	/**
@@ -106,11 +114,6 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 		int y = player.getInStream().readSignedWordBigEndian();
 		int x = player.getInStream().readUnsignedWordA();
 		Location position = Location.create(x, y, player.getLocation().getZ());
-		
-		// Safety check
-		if (player.getTeleportAction().isTeleporting()) {
-			return;
-		}
 
 		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, position, id, 2));
 	}
@@ -127,11 +130,6 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 		int y = player.getInStream().readUnsignedWord();
 		int id = player.getInStream().readUnsignedWordBigEndianA();
 		Location position = Location.create(x, y, player.getLocation().getZ());
-		
-		//Safety check
-		if (player.getTeleportAction().isTeleporting()) {
-			return;
-		}
 		
 		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, position, id, 3));
 	}

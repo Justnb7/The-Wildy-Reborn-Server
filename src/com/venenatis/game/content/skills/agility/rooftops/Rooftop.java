@@ -31,6 +31,44 @@ public class Rooftop {
 	private final static Item MARK_OF_GRACE = new Item(11849);
 	
 	/**
+	 * The locations of the marks of grace, in Seers village
+	 */
+	private static int[][] SEERS_COORDINATES = { 
+			{ 2728, 3495, 3 }, 
+			{ 2707, 3492, 2 }, 
+			{ 2713, 3479, 2 },
+			{ 2698, 3463, 2 } 
+	};
+	
+	/**
+	 * The locations of the marks of grace, in Varrock
+	 */
+	private static int[][] VARROCK_COORDINATES = { 
+			{ 3219, 3418, 3 }, 
+			{ 3202, 3417, 3 }, 
+			{ 3195, 3416, 1 },
+			{ 3196, 3404, 3 }, 
+			{ 3193, 3393, 3 }, 
+			{ 3205, 3403, 3 }, 
+			{ 3218, 3395, 3 }, 
+			{ 3240, 3411, 3 } 
+	};
+	
+	/**
+	 * The locations of the marks of grace, in Ardougne
+	 */
+	private static int[][] ARDOUGNE_COORDINATES = { 
+			{ 2671, 3303, 3 }, 
+			{ 2663, 3318, 3 }, 
+			{ 2655, 3318, 3 },
+			{ 2653, 3312, 3 }, 
+			{ 2651, 3307, 3 }, 
+			{ 2653, 3302, 3 }, 
+			{ 2656, 3297, 3 }, 
+			{ 2668, 3297, 0 } 
+	};
+	
+	/**
 	 * Execute a single rooftop course based on object clicks.
 	 * 
 	 * @param player

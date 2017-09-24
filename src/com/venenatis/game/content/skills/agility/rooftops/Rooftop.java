@@ -3,6 +3,7 @@ package com.venenatis.game.content.skills.agility.rooftops;
 import com.venenatis.game.content.skills.agility.rooftops.impl.AlKharidRooftop;
 import com.venenatis.game.content.skills.agility.rooftops.impl.ArdougneRooftop;
 import com.venenatis.game.content.skills.agility.rooftops.impl.DraynorRooftop;
+import com.venenatis.game.content.skills.agility.rooftops.impl.SeersRooftop;
 import com.venenatis.game.content.skills.agility.rooftops.impl.VarrockRooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
@@ -88,6 +89,9 @@ public class Rooftop {
 			return true;
 		}
 		if(VarrockRooftop.start(player, object)) {
+			return true;
+		}
+		if(SeersRooftop.start(player, object)) {
 			return true;
 		}
 		if(ArdougneRooftop.start(player, object)) {

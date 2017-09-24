@@ -95,25 +95,6 @@ public class Agility {
 		ARDY_STEP_ROOF(11633, Location.create(2654, 3300, 3), 90, 65, "ardyStepRoof", false),
 
 		ARDY_GAP_JUMP_4(11630, Location.create(2656, 3296, 3), 90, 55, "ardyGapJump4", false),
-		
-		/**
-		 * Barbarian agility course
-		 */
-		BARBARIAN_COURSE_OBSTACLE_PIPE(20210, Location.create(2552, 3559, 0), 35, 0, "barbarianObstaclePipe", false),
-
-		BARBARIAN_COURSE_ROPE_SWING(23131, Location.create(2551, 3550, 0), 35, 22, "barbarianRopeSwing", false),
-
-		BARBARIAN_COURSE_LOG_BALANCE(23144, Location.create(2550, 3546, 0), 35, 13.7, "barbarianLogBalance", false),
-
-		BARBARIAN_COURSE_OBSTACLE_NET(20211, Location.create(2538, 3545, 0), 35, 8.2, "barbarianObstacleNet", false),
-
-		BARBARIAN_COURSE_LEDGE(23547, Location.create(2535, 3547, 1), 35, 22, "barbarianLedge", false),
-
-		BARBARIAN_COURSE_CRUMBLING_WALL_1(1948, Location.create(2536, 3553, 0), 35, 13.7, "barbarianCrumblingWall1", false),
-
-		BARBARIAN_COURSE_CRUMBLING_WALL_2(1948, Location.create(2539, 3553, 0), 35, 13.7, "barbarianCrumblingWall2", false),
-
-		BARBARIAN_COURSE_CRUMBLING_WALL_3(1948, Location.create(2542, 3553, 0), 35, 13.7, "barbarianCrumblingWall3", false),	
         ;
 
         /**

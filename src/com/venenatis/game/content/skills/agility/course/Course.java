@@ -1,6 +1,6 @@
 package com.venenatis.game.content.skills.agility.course;
 
-import com.venenatis.game.content.skills.agility.course.impl.GnomeCourse;
+import com.venenatis.game.content.skills.agility.course.impl.*;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.object.GameObject;
 
@@ -16,6 +16,9 @@ public class Course {
 	 */
 	public static boolean execute(Player player, GameObject object) {
 		if(GnomeCourse.start(player, object)) {
+			return true;
+		}
+		if(BarbarianCourse.start(player, object)) {
 			return true;
 		}
 		return false;

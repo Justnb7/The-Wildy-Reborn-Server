@@ -3,7 +3,6 @@ package com.venenatis.game.content.skills.agility.rooftops.impl;
 import java.util.Random;
 
 import com.venenatis.game.content.skills.agility.Agility;
-import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.HitType;

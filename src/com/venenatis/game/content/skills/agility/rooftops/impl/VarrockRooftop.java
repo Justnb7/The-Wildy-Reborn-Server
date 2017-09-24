@@ -148,13 +148,6 @@ public class VarrockRooftop {
 				player.setAttribute("varrock_rooftop", 2);
 			}
 			
-			//startX
-			//startY
-			//endX
-			//endY
-	        //durationX
-			//durationY
-			//direction
 			player.face(player.getLocation().transform(-1, 0));
 			
 			final boolean fall = fail;

@@ -1206,6 +1206,14 @@ public abstract class Container {
 		setSlot(slot, second);
 	}
 
+	public boolean replace(int original, int newItem) {
+		int slot = getSlotById(original);
+		if(slot == -1) {
+			return false;
+		}
+		stack[slot] = newItem == -1 ? null : new Item(newItem);
+		return true;		
+	}
 
 	/**
 	 * Sets an item in the specified slot.

@@ -12,6 +12,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.HerbSack;
+import com.venenatis.game.content.Jewellery;
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
@@ -3301,6 +3302,11 @@ public class Player extends Entity {
 			}
 			
 		});
-		
+	}
+
+	Jewellery jewellery = new Jewellery();
+
+	public Jewellery getJewellery() {
+		return jewellery;
 	}
 }

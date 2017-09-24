@@ -2,6 +2,7 @@ package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.action.Action;
 import com.venenatis.game.action.impl.actions.ConsumeItemAction;
+import com.venenatis.game.content.Jewellery;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.clicking.items.ItemOnItem;
 import com.venenatis.game.content.clicking.magic.MagicOnItems;
@@ -293,6 +294,10 @@ public class ItemOptionPacket implements IncomingPacketListener {
 		player.lastClickedItem = id;
 		
 		if(Tablet.breakTablet(player, item.getId())) {
+			return;
+		}
+		
+		if (Jewellery.rubItem(player, slot, item.getId(), false)) {
 			return;
 		}
 

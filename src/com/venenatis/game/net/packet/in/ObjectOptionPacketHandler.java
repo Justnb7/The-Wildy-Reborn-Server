@@ -19,16 +19,6 @@ import com.venenatis.server.Server;
 public class ObjectOptionPacketHandler implements IncomingPacketListener {
 	
 	/**
-	 * The last interaction that player made that is recorded in milliseconds
-	 */
-	private long lastInteraction;
-	
-	/**
-	 * The constant delay that is required inbetween interactions
-	 */
-	private static final long INTERACTION_DELAY = 2_000L;
-	
-	/**
 	 * Option 1 opcode.
 	 */
 	private final int OPTION_1 = 132; 
@@ -69,9 +59,6 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 			handleOption3(player, packet);
 			break;
 		}
-		//Setting here is correct right? ye i delayed clicks by 2 secs
-		player.debug("Click");
-		lastInteraction = System.currentTimeMillis();
 	}
 
 	/**

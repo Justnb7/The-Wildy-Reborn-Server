@@ -32,10 +32,9 @@ public class GnomeCourse {
 				player.setAttribute("gnome_course", 1);
 			}
 			player.setAttribute("busy", true);
-			player.debug("set busy");
 			
 			player.getActionSender().sendMessage("You walk carefully across the slippery log...");
-			player.sendDelayedMessage(8, "... and make it safely to the other side.");
+			player.sendDelayedMessage(8, "... You make it safely to the other side.");
 			Agility.setRunningToggled(player, false, 7);
 			player.forceWalk(Animation.create(762), 2474, 3429, 1, 7, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
@@ -45,6 +44,8 @@ public class GnomeCourse {
 			if (gnome_agility_course == null) {
 				player.setAttribute("gnome_course", 2);
 			}
+			player.setAttribute("busy", true);
+			player.getActionSender().sendMessage("You climb the netting...");
 			Agility.forceTeleport(player, Animation.create(828), Location.create(player.getLocation().getX(), 3424, 1), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
 			return true;
@@ -53,6 +54,9 @@ public class GnomeCourse {
 			if (gnome_agility_course == null) {
 				player.setAttribute("gnome_course", 3);
 			}
+			player.setAttribute("busy", true);
+			player.getActionSender().sendMessage("You climb the tree...");
+			player.sendDelayedMessage(1, "... To the platform above.");
 			Agility.forceTeleport(player, Animation.create(828), Location.create(2473, 3420, 2), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
 			return true;
@@ -61,6 +65,8 @@ public class GnomeCourse {
 			if (gnome_agility_course == null) {
 				player.setAttribute("gnome_course", 4);
 			}
+			player.setAttribute("busy", true);
+			player.getActionSender().sendMessage("You carefully cross the tightrope.");
 			Agility.setRunningToggled(player, false, 7);
 			player.forceWalk(Animation.create(762), 2483, 3420, 1, 7, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
@@ -70,6 +76,9 @@ public class GnomeCourse {
 			if (gnome_agility_course == null) {
 				player.setAttribute("gnome_course", 5);
 			}
+			player.setAttribute("busy", true);
+			player.getActionSender().sendMessage("You climb down the tree...");
+			player.sendDelayedMessage(1, "You land on the ground.");
 			Agility.forceTeleport(player, Animation.create(828), Location.create(2485, 3419, 0), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
 			return true;
@@ -80,7 +89,8 @@ public class GnomeCourse {
 				player.getActionSender().sendMessage("You can't go over the net from here.");
 				return false;
 			}
-
+			player.setAttribute("busy", true);
+			player.getActionSender().sendMessage("You climb the netting...");
 			if (gnome_agility_course == null) {
 				player.setAttribute("gnome_course", 6);
 			}
@@ -97,12 +107,14 @@ public class GnomeCourse {
 				}
 				player.removeAttribute("gnome_course");
 			}
+			
+			player.setAttribute("busy", true);
 
 			player.playAnimation(new Animation(746));
-			player.forceMove(new ForceMovement(0, 2, 0, 5, 45, 100, 1, Direction.NORTH), false);//3
+			player.forceMove(new ForceMovement(0, 2, 0, 5, 45, 100, 1, Direction.NORTH), false);
 
 			player.playAnimation(new Animation(748));
-			player.forceMove(new ForceMovement(0, 0, 0, 2, 0, 15, 5, Direction.NORTH), true);//1
+			player.forceMove(new ForceMovement(0, 0, 0, 2, 0, 15, 5, Direction.NORTH), true);
 			
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
 			return true;

@@ -21,7 +21,7 @@ public class AgilityTeleports extends Dialogue {
 	/**
 	 * An array for all the dialogue strings.
 	 */
-	private static final String[] ROOFTOP = { "Draynor", "Al-Karid", "", "" };
+	private static final String[] ROOFTOP = { "Draynor", "Al-Karid", "Seers", "Ardougne" };
 
 	/**
 	 * An array for all corresponding dialogue strings which holds all the
@@ -38,6 +38,8 @@ public class AgilityTeleports extends Dialogue {
 	 */
 	private static final int[][] ROOFTOP_TELEPORT = { { 3104, 3272, 0 }, // Draynor
 			{ 3272, 3197, 0 }, // Al-karid
+			{ 2728, 3485, 0 }, // Seers
+			{ 2672, 3296, 0 }, // Ardougne
 	};
 
 	@Override

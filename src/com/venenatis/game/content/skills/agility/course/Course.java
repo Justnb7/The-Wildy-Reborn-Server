@@ -1,6 +1,6 @@
-package com.venenatis.game.content.skills.agility.course.impl;
+package com.venenatis.game.content.skills.agility.course;
 
-import com.venenatis.game.content.skills.agility.course.GnomeCourse;
+import com.venenatis.game.content.skills.agility.course.impl.GnomeCourse;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.object.GameObject;
 

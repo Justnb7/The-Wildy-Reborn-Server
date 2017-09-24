@@ -5,6 +5,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.task.impl.WalkToObjectTask;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
 import com.venenatis.game.world.pathfinder.impl.ObjectPathFinder;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
@@ -46,7 +47,7 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 	public void handle(final Player player, int packet, int size) {
 		
 		//Safety check
-		if (player.getTeleportAction().isTeleporting() || player.hasAttribute("busy") || System.currentTimeMillis() - lastInteraction < INTERACTION_DELAY) {
+		if (player.getTeleportAction().isTeleporting() || player.hasAttribute("busy")) {
 			player.debug("stop, cuz of random circumstances");
 			return;
 		}
@@ -97,6 +98,10 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 		if (id == 10777 && x == 3191 && y == 3415) {
 			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(x, y, player.getZ()), id);
 			ObjectPathFinder.find(player, obj);
+		}
+		
+		if (id == 10355 && x == 3269 && y == 3166 && player.getZ() == 3) {
+			player.doPath(new DefaultPathFinder(), player, null, 3265, 3166, false, true);
 		}
 		
 		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, location, id, 1));

@@ -119,6 +119,7 @@ public class AlKharidRooftop {
 		case 10355:
 			if (player.getLocation().getY() != 3166) {
 				player.removeAttribute("busy");
+				player.debug("nope");
 				return false;
 			}
 			if (alKharidRooftop == null) {
@@ -130,7 +131,7 @@ public class AlKharidRooftop {
 	            @Override
 	            public void execute() {
 	            	
-	            	if(tick == 1) {//First tick
+	            	if(tick == 1) {
 	            		player.getActionSender().sendMessage("You begin an almighty run-up...");
 	            		//Run towards sling
 	        			player.forceWalk(Animation.create(1995), player.getX() + 2, player.getY(), 0, 2, false);
@@ -143,7 +144,7 @@ public class AlKharidRooftop {
 						player.playAnimation(new Animation(751));
 						
 						//Sent player to correct tile with forcemovement
-						player.forceMove(new ForceMovement(0, 0, 14, 0, 30, 50, 7, Direction.NORTH), false);
+						player.forceMove(new ForceMovement(0, 0, 17, 0, 30, 50, 7, Direction.NORTH), false);
 					}
 					
 					if(tick == 6) {

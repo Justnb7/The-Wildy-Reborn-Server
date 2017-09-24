@@ -520,7 +520,7 @@ public class PrayerHandler {
 
 			}
 			@Override
-			public void stop() {
+			public void onStop() {
 				player.setDrainingPrayer(false);
 			}
 		});

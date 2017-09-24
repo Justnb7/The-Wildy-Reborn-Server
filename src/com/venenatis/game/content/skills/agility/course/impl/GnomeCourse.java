@@ -1,4 +1,4 @@
-package com.venenatis.game.content.skills.agility.course;
+package com.venenatis.game.content.skills.agility.course.impl;
 
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.location.Location;
@@ -25,14 +25,17 @@ public class GnomeCourse {
 		
 		switch (object.getId()) {
 		case 23145:
-			
-			/*if(gnome_agility_course != nul&& (Integer)gnome_agility_course == 1) {
+			if (player.getX() != 2474 && player.getY() != 3436)
 				return false;
-			}*/
 			
 			if (gnome_agility_course == null) {
 				player.setAttribute("gnome_course", 1);
 			}
+			player.setAttribute("busy", true);
+			player.debug("set busy");
+			
+			player.getActionSender().sendMessage("You walk carefully across the slippery log...");
+			player.sendDelayedMessage(8, "... and make it safely to the other side.");
 			Agility.setRunningToggled(player, false, 7);
 			player.forceWalk(Animation.create(762), 2474, 3429, 1, 7, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);

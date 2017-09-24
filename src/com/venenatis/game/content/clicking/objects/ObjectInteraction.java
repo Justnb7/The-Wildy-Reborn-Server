@@ -8,7 +8,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.rewards.BossRewardChest;
 import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.Agility.Obstacle;
-import com.venenatis.game.content.skills.agility.course.impl.Course;
+import com.venenatis.game.content.skills.agility.course.Course;
 import com.venenatis.game.content.skills.agility.Shortcut;
 import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.content.skills.mining.Mining;

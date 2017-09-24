@@ -3329,4 +3329,17 @@ public class Player extends Entity {
     public void playerWalk(int x, int y) {
         RouteFinder.getPathFinder().findRoute(this, x, y, true, 1, 1);
     }
+
+	public void sendDelayedMessage(int ticks, String message) {
+		World.getWorld().schedule(new Task(ticks) {
+
+			@Override
+			public void execute() {
+				message(message);
+				this.stop();
+			}
+			
+		});
+		
+	}
 }

@@ -179,6 +179,10 @@ public class OwnerCommand implements Command {
 		case "cx":
 			player.setTeleportTarget(new Location(3194, 3416, 1));
 			return true;
+			
+		case "cp":
+			player.setTeleportTarget(new Location(3266, 3166, 3));
+			return true;
 		
 		case "npc":
 			final int npc = parser.nextInt();

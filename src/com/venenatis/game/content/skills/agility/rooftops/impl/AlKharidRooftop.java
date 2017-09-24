@@ -46,7 +46,7 @@ public class AlKharidRooftop {
 			return false;
 		}
 
-		Object alKharidRooftop = player.getAttribute("al_kharid_rooftop");
+		Integer alKharidRooftop = player.getAttribute("al_kharid_rooftop");
 		
 		boolean fail = false;
 		
@@ -60,15 +60,6 @@ public class AlKharidRooftop {
 			}
 			Agility.forceTeleport(player, Animation.create(828), Location.create(3273, 3192, 3), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 10);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
-				}
-				
-			});
 			return true;
 
 		/* Cross Tightrope 1 */
@@ -104,15 +95,6 @@ public class AlKharidRooftop {
 			}
 			
 			player.getSkills().addExperience(Skills.AGILITY, 30);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
-				}
-				
-			});
 			return true;
 
 		/* Swing-across Cable */
@@ -149,7 +131,6 @@ public class AlKharidRooftop {
 					
 					if(tick == 6) {
 						player.getSkills().addExperience(Skills.AGILITY, 40);
-						Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 						this.stop();
 					}
 		            tick++;
@@ -205,7 +186,6 @@ public class AlKharidRooftop {
 					if (tick == 14) {
 						player.face(new Location(3316, 3163));
 						player.getSkills().addExperience(Skills.AGILITY, 40);
-						Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 						this.stop();
 					}
 		            tick++;
@@ -259,7 +239,6 @@ public class AlKharidRooftop {
 				@Override
 				public void onStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 10);
-					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 				}
 			});
 			return true;
@@ -281,7 +260,6 @@ public class AlKharidRooftop {
 				@Override
 				public void executeAndStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 40);
-					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 				}
 				
 			});
@@ -305,7 +283,6 @@ public class AlKharidRooftop {
 				@Override
 				public void executeAndStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 40);
-					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 				}
 				
 			});
@@ -332,7 +309,6 @@ public class AlKharidRooftop {
 				@Override
 				public void executeAndStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 40);
-					Rooftop.marks_of_grace(player, mark_of_grace_locations(player));
 				}
 				
 			});

@@ -78,23 +78,7 @@ public class Agility {
         SEERS_GAP_JUMP_3(11376, Location.create(2700, 3469, 3), 60, 35, "seersGapJump3", false),
 
         SEERS_GAP_JUMP_4(11377, Location.create(2703, 3461, 2), 60, 40, "seersGapJump4", false),
-
-		/**
-		 * Ardougne Rooftop Course
-		 */
-		ARDY_WOOD_CLIMB(11405, Location.create(2673, 3298, 0), 90, 65, "ardyWoodClimb", false),
-
-		ARDY_GAP_JUMP(11406, Location.create(2670, 3310, 3), 90, 75, "ardyGapJump", false),
-
-		ARDY_PLANK_WALK(11631, Location.create(2661, 3318, 3), 90, 65, "ardyPlankWalk", false),
-
-		ARDY_GAP_JUMP_2(11429, Location.create(2653, 3317, 3), 90, 55, "ardyGapJump2", false),
-
-		ARDY_GAP_JUMP_3(11430, Location.create(2653, 3308, 3), 90, 60, "ardyGapJump3", false),
-
-		ARDY_STEP_ROOF(11633, Location.create(2654, 3300, 3), 90, 65, "ardyStepRoof", false),
-
-		ARDY_GAP_JUMP_4(11630, Location.create(2656, 3296, 3), 90, 55, "ardyGapJump4", false),
+	
         ;
 
         /**

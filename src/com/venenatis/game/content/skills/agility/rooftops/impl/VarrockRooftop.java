@@ -47,11 +47,13 @@ public class VarrockRooftop {
 			return false;
 		}
 		
-		Object varrock_rooftop_course = player.getAttribute("varrock_rooftop");
+		Integer varrock_rooftop_course = player.getAttribute("varrock_rooftop");
 		
 		//TODO It's possible to fail during Cross Clothes Line and Balance Wall and get inflicted with 5-7 and 3-4 damage respectively.
 		
 		boolean fail = false;
+		
+		Rooftop.marks_of_grace(player, "VARROCK");
 		
 		switch(object.getId()) {
 		/* Climb Rough Wall */
@@ -69,7 +71,6 @@ public class VarrockRooftop {
 				@Override
 				public void executeAndStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 12);
-					Rooftop.marks_of_grace(player, new Location(3219, 3412, 3));
 				}
 				
 			});
@@ -117,7 +118,6 @@ public class VarrockRooftop {
 					//Reward
 					if(tick == 6) {
 						player.getSkills().addExperience(Skills.AGILITY, 21);
-						Rooftop.marks_of_grace(player, new Location(3205, 3414, player.getZ()));
 						this.stop();
 					}
 		            tick++;
@@ -138,7 +138,6 @@ public class VarrockRooftop {
 				@Override
 				public void executeAndStop() {
 					player.getSkills().addExperience(Skills.AGILITY, 17);
-					Rooftop.marks_of_grace(player, new Location(3195, 3416, 1));
 				}
 				
 			});
@@ -224,7 +223,6 @@ public class VarrockRooftop {
 					if(tick == 19) {
 						player.setTeleportTarget(new Location(3192, 3406, 3));
 						player.getSkills().addExperience(Skills.AGILITY, 21);
-						Rooftop.marks_of_grace(player, new Location(3205, 3414, player.getZ()));
 						this.stop();
 					}
 		            tick++;
@@ -232,7 +230,6 @@ public class VarrockRooftop {
 	        });
 			return true;
 		}
-		
 		return false;
 	}
 

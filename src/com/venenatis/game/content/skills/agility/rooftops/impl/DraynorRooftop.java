@@ -3,7 +3,6 @@ package com.venenatis.game.content.skills.agility.rooftops.impl;
 import java.util.Random;
 
 import com.venenatis.game.content.skills.agility.Agility;
-import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.HitType;
@@ -43,7 +42,7 @@ public class DraynorRooftop {
 			return false;
 		}
 		
-		Object draynor_village_rooftop = player.getAttribute("draynor_rooftop");
+		Integer draynor_village_rooftop = player.getAttribute("draynor_rooftop");
 		
 		boolean fail = false;
 		
@@ -56,15 +55,6 @@ public class DraynorRooftop {
 			
 			Agility.forceTeleport(player, Animation.create(828), Location.create(3102, 3279, 3), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
-				}
-				
-			});
 			return true;
 			
 		/* Cross Tightrope 1 */
@@ -100,15 +90,6 @@ public class DraynorRooftop {
 			
 			player.forceWalk(Animation.create(762), 3090, 3276, 10, 2, true);
 			player.getSkills().addExperience(Skills.AGILITY, 8);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3089, 3274, player.getZ()));
-				}
-				
-			});
 			return true;
 			
 		/* Cross Tightrope 2 */
@@ -126,15 +107,6 @@ public class DraynorRooftop {
 			player.forceWalk(Animation.create(762), 3092, 3276, 0, 2, false);
 			player.forceWalk(Animation.create(762), 3092, 3267, 2, 10, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3094, 3267, player.getZ()));
-				}
-				
-			});
 			return true;
 			
 		/* Balance Narrow Wall */
@@ -164,15 +136,6 @@ public class DraynorRooftop {
 			player.forceWalk(Animation.create(756), 3088, 3261, 3, 1, true);
 			Agility.delayedAnimation(player, Animation.create(759), 4);
 			player.getSkills().addExperience(Skills.AGILITY, 7);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3094, 3267, player.getZ()));
-				}
-				
-			});
 			return true;
 			
 		/* Jump-up Wall */
@@ -190,15 +153,6 @@ public class DraynorRooftop {
 			player.forceWalk(Animation.create(2585), 3088, 3256, 0, 2, false);
 			player.forceWalk(Animation.create(2585), 3088, 3255, 2, 1, true);
 			player.getSkills().addExperience(Skills.AGILITY, 10);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
-				}
-				
-			});
 			return true;
 			
 		/* Jump Gap */
@@ -215,15 +169,6 @@ public class DraynorRooftop {
 			Agility.delayedAnimation(player, Animation.create(2588), 0);
 			Agility.forceTeleport(player, Animation.create(-1), Location.create(3096, 3256, 3), 0, 0);
 			player.getSkills().addExperience(Skills.AGILITY, 4);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
-				}
-				
-			});
 			return true;
 			
 		/* Climb-down Crate */
@@ -245,15 +190,6 @@ public class DraynorRooftop {
 			Agility.forceTeleport(player, Animation.create(2586), Location.create(3103, 3261, 0), 4, 5);
 			Agility.delayedAnimation(player, Animation.create(2588), 5);
 			player.getSkills().addExperience(Skills.AGILITY, 79);
-			
-			World.getWorld().schedule(new StoppingTick(1) {
-
-				@Override
-				public void executeAndStop() {
-					Rooftop.marks_of_grace(player, new Location(3101, 3280, player.getZ()));
-				}
-				
-			});
 			return true;
 		}
 		

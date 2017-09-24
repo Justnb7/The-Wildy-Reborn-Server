@@ -64,7 +64,6 @@ public class WalkToObjectTask extends Task {
 			return;
 		}
 		
-		
 		final GameObject obj = RegionStoreManager.get().getGameObject(loc, object);
 		
 		//Safety
@@ -80,7 +79,10 @@ public class WalkToObjectTask extends Task {
 				|| (object == 23134 && player.getLocation().equals(new Location(2474, 3426, 0)))
 				|| (object == 20210 && player.getLocation().equals(new Location(2552, 3561, 0)))
 				|| (object == 23131 && player.getLocation().equals(new Location(2551, 3554, 0)))
-				|| (object == 20211 && player.getLocation().equals(new Location(2539, 3546, 0)))) {
+				|| (object == 20211 && player.getLocation().equals(new Location(2539, 3546, 0)))
+				|| (object == 11406 && player.getLocation().equals(new Location(2671, 3309, 3)))
+			    || (object == 11429 && player.getLocation().equals(new Location(2654, 3318, 3)))
+			    || (object == 11430 && player.getLocation().equals(new Location(2653, 3310, 3)))) {
 			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:

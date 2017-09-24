@@ -1,11 +1,14 @@
 package com.venenatis.game.content.skills.agility.rooftops;
 
-import java.util.Random;
-
-import com.venenatis.game.content.skills.agility.rooftops.impl.*;
+import com.venenatis.game.content.skills.agility.rooftops.impl.AlKharidRooftop;
+import com.venenatis.game.content.skills.agility.rooftops.impl.ArdougneRooftop;
+import com.venenatis.game.content.skills.agility.rooftops.impl.DraynorRooftop;
+import com.venenatis.game.content.skills.agility.rooftops.impl.VarrockRooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.object.GameObject;
@@ -19,11 +22,15 @@ import com.venenatis.game.world.object.GameObject;
  */
 public class Rooftop {
 	
+	/**
+	 * The last interaction that player made that is recorded in milliseconds
+	 */
+	private static long last_mark_of_grace_drop;
 	
 	/**
-	 * The random number generator
+	 * The constant delay that is required inbetween mark of grace drops
 	 */
-	private final static Random random = new Random();
+	private static final long DROP_DELAY = 3_000L;
 	
 	/**
 	 * Mark of grace
@@ -54,9 +61,6 @@ public class Rooftop {
 			{ 3240, 3411, 3 } 
 	};
 	
-	/**
-	 * The locations of the marks of grace, in Ardougne
-	 */
 	private static int[][] ARDOUGNE_COORDINATES = { 
 			{ 2671, 3303, 3 }, 
 			{ 2663, 3318, 3 }, 
@@ -86,10 +90,13 @@ public class Rooftop {
 		if(VarrockRooftop.start(player, object)) {
 			return true;
 		}
+		if(ArdougneRooftop.start(player, object)) {
+			return true;
+		}
 		return false;
 	}
 	
-	public static void marks_of_grace(Player player, Location location) {
+	public static void marks_of_grace(Player player, String location) {
 		//Safety check
 		if(player == null) {
 			return;
@@ -100,10 +107,33 @@ public class Rooftop {
 			return;
 		}
 		
-		//We have a 20% chance of receiving a mark of grace
-		if(random.nextInt(10) <= 2) {
-			GroundItemHandler.createGroundItem(new GroundItem(MARK_OF_GRACE, location, player));
-			player.debug("spawned marks of grace @"+location.toString());
+        int chance = 0;
+		
+		switch (location) {
+		case "ARDOUGNE":
+			chance = player.getSkills().getLevel(Skills.AGILITY) / 17;
+			break;
+			
+		case "SEERS":
+			chance = player.getSkills().getLevel(Skills.AGILITY) / 17;
+			break;
+			
+		case "VARROCK":
+			chance = player.getSkills().getLevel(Skills.AGILITY) / 17;
+			break;
+		}
+		
+		int index = Utility.random(location == "SEERS" ? SEERS_COORDINATES.length - 1 : location == "ARDOUGNE" ? ARDOUGNE_COORDINATES.length - 1 : VARROCK_COORDINATES.length - 1);
+		int x = location == "SEERS" ? SEERS_COORDINATES[index][0] : location == "ARDOUGNE" ? ARDOUGNE_COORDINATES[index][0] : VARROCK_COORDINATES[index][0];
+		int y = location == "SEERS" ? SEERS_COORDINATES[index][1] : location == "ARDOUGNE" ? ARDOUGNE_COORDINATES[index][1] : VARROCK_COORDINATES[index][1];
+		int z = location == "SEERS" ? SEERS_COORDINATES[index][2] : location == "ARDOUGNE" ? ARDOUGNE_COORDINATES[index][2] : VARROCK_COORDINATES[index][2];
+		
+		if (Utility.random(chance) == 0) {
+			if (System.currentTimeMillis() - last_mark_of_grace_drop < DROP_DELAY) {
+				return;
+			}
+			GroundItemHandler.createGroundItem(new GroundItem(MARK_OF_GRACE, new Location(x, y, z), player));
+			last_mark_of_grace_drop = System.currentTimeMillis();
 		}
 	}
 	

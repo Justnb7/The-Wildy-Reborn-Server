@@ -63,22 +63,6 @@ public class Agility {
         SLAYER_CAVE_ROCK_CLIMB(26724, Location.create(2427, 9763, 0), 67, 5, "slayerRockClimb", true),
 
         SLAYER_CAVE_ROCK_CLIMB_2(26724, Location.create(2427, 9766, 0), 67, 5, "slayerRockClimb", true),
-
-        /**
-         * Seers Village Rooftop Course
-         */
-        SEERS_WALL_CLIMB(11373, Location.create(2729, 3489, 0), 60, 65, "seersWallClimb", false),
-
-        SEERS_GAP_JUMP(11374, Location.create(2720, 3492, 3), 60, 40, "seersGapJump", false),
-
-        SEERS_TIGHT_ROPE(11378, Location.create(2710, 3489, 2), 60, 40, "seersTightRope", false),
-
-        SEERS_GAP_JUMP_2(11375, Location.create(2710, 3476, 2), 60, 55, "seersGapJump2", false),
-
-        SEERS_GAP_JUMP_3(11376, Location.create(2700, 3469, 3), 60, 35, "seersGapJump3", false),
-
-        SEERS_GAP_JUMP_4(11377, Location.create(2703, 3461, 2), 60, 40, "seersGapJump4", false),
-	
         ;
 
         /**

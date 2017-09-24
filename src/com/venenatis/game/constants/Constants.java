@@ -5,7 +5,7 @@ import com.venenatis.game.model.entity.player.Player;
 
 public class Constants {
 	
-	public static int OSRS_REVISION_LOADING = 154;
+	public static int OSRS_REVISION_LOADING = 156;
 	
 	public static String OSRS_MAP_INDEX_LOCATION = "./map_index_osrs"+OSRS_REVISION_LOADING;
 	

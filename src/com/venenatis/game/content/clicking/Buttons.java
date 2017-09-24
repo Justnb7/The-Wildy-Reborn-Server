@@ -11,7 +11,6 @@ import com.venenatis.game.content.sounds_and_music.MusicData;
 import com.venenatis.game.content.teleportation.TeleportHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.model.Item;
-import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 
 /**

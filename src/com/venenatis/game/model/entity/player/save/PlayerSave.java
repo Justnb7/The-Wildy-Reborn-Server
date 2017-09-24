@@ -255,7 +255,6 @@ public class PlayerSave {
 				if (details.quickPrayers != null) {
 					player.getQuickPrayers().setPrayers(details.quickPrayers);
 				}
-				player.setBestZulrahTime(details.bestZulrahTime);
 				return true;
 
 			} finally {
@@ -364,7 +363,6 @@ public class PlayerSave {
 		private final HashMap<Integer, String> slayerUnlocks;
 		private final HashMap<Integer, Integer> slayerExtensions;
 		private final PrayerData[] quickPrayers;
-		private final long bestZulrahTime;
 
 		
 		public String user() {
@@ -470,7 +468,6 @@ public class PlayerSave {
 			slayerUnlocks = player.getSlayerInterface().getUnlocks();
 			slayerExtensions = player.getSlayerInterface().getExtensions();
 			quickPrayers = player.getQuickPrayers().getPrayers();
-			bestZulrahTime = player.getBestZulrahTime();
 		}
 
 		public void parseDetails() throws Exception {
@@ -631,10 +628,6 @@ public class PlayerSave {
 					player.getHerbSack().setContents(details.herbSack);
 				}*/
 				
-				if (details.lostItemsZulrah != null) {
-					player.getZulrahLostItems().add(new Item(details.lostItemsZulrah.id, details.lostItemsZulrah.amount));
-				}
-				
 				
 			} finally {
 				if (reader != null) {
@@ -651,7 +644,6 @@ public class PlayerSave {
 		private final Item[] bank;
 		private final Item[] runePouch;
 		//private final Multiset<Integer> herbSack;
-		private Item lostItemsZulrah;
 
 		public PlayerContainer(Player player) {
 			inventory = player.getInventory().toTrimmedArray();
@@ -660,12 +652,6 @@ public class PlayerSave {
 			bank = player.getBank().toNonNullArray();
 			runePouch = player.runePouchContainer.toTrimmedArray();
 			//herbSack = player.getHerbSack().getContents();
-			for (Item item : player.getZulrahLostItems()) {
-				if (item == null) {
-					continue;
-				}
-				lostItemsZulrah = new Item(item.getId(), item.getAmount());
-			}
 		}
 
 		public void parseDetails(Player player) throws IOException {

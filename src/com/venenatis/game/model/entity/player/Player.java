@@ -48,8 +48,6 @@ import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.data.WeaponInterface;
 import com.venenatis.game.model.combat.magic.Magic;
 import com.venenatis.game.model.combat.magic.SpellBook;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.Zulrah;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.ZulrahLostItems;
 import com.venenatis.game.model.container.impl.bank.BankContainer;
 import com.venenatis.game.model.container.impl.equipment.EquipmentContainer;
 import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
@@ -1434,13 +1432,6 @@ public class Player extends Entity {
 		if (isDueling() || getDuelArena().isInSession()) {
 			getActionSender().sendMessage("You cannot logout while in duel arena.");
 			return;
-		}
-		
-		/*
-		 * Remove from zulrah instance
-		 */
-		if (zulrah.getInstancedZulrah() != null) {
-			InstancedAreaManager.getSingleton().disposeOf(zulrah.getInstancedZulrah());
 		}
 		
 		/*
@@ -3246,27 +3237,6 @@ public class Player extends Entity {
 	public void setEmote(boolean emote) {
 		this.emote = emote;
 	}
-	
-	private long bestZulrahTime;
-
-	public long setBestZulrahTime(long bestZulrahTime) {
-		return this.bestZulrahTime = bestZulrahTime;
-	}
-
-	public long getBestZulrahTime() {
-		return bestZulrahTime;
-	}
-	
-	private Zulrah zulrah = new Zulrah(this);
-	
-	/**
-	 * The zulrah event
-	 * 
-	 * @return event
-	 */
-	public Zulrah getZulrahEvent() {
-		return zulrah;
-	}
 
 	private Titles titles = new Titles(this);
 	
@@ -3300,15 +3270,6 @@ public class Player extends Entity {
 	
 	public void setYellTag(String tag) {
 		this.yellTag = tag;
-	}
-	
-	private ZulrahLostItems lostItemsZulrah;
-
-	public ZulrahLostItems getZulrahLostItems() {
-		if (lostItemsZulrah == null) {
-			lostItemsZulrah = new ZulrahLostItems(this);
-		}
-		return lostItemsZulrah;
 	}
 
 	/**

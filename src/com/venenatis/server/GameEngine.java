@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.TimesCx;
-import com.venenatis.game.event.CycleEventHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.LoginManager;
 import com.venenatis.game.util.Stopwatch;
@@ -23,7 +22,7 @@ import com.venenatis.game.world.ground_item.GroundItemHandler;
 
 /**
  * A service dedicated to handling all game logic. This service executes packets
- * every {@code 300}ms instead of every {@code 600}ms to improve the speed of
+ * every <str>{@code 300}</str>ms instead of every {@code 600}ms to improve the speed of
  * packet processing.
  *
  * @author Mobster
@@ -124,7 +123,6 @@ public final class GameEngine implements Runnable {
         
         Server.getGlobalObjects().pulse();
         Server.getTaskScheduler().pulse();
-        CycleEventHandler.getSingleton().process();
         World.getWorld().pulse();
         GroundItemHandler.pulse();
         

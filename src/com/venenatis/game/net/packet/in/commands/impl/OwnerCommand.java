@@ -59,10 +59,6 @@ public class OwnerCommand implements Command {
 			World.getWorld().sendWorldMessage(shout, false);
 			return true;
 		
-		case "zulrah":
-			player.getZulrahEvent().initialize();
-			return true;
-		
 		case "setinfection":
 			int infection = parser.nextInt();
 			if (infection == 0)

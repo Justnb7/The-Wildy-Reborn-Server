@@ -4,17 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.venenatis.ScriptManager;
-import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
-import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;

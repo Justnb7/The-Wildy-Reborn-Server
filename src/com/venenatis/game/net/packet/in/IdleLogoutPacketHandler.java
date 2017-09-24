@@ -1,9 +1,7 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.IncomingPacketListener;
-import com.venenatis.game.util.Utility;
 
 public class IdleLogoutPacketHandler implements IncomingPacketListener {
 

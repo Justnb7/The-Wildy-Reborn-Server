@@ -15,9 +15,6 @@ import com.venenatis.game.model.combat.npcs.impl.godwars.saradomin.*;
 import com.venenatis.game.model.combat.npcs.impl.godwars.zamorak.*;
 import com.venenatis.game.model.combat.npcs.impl.slayer.*;
 import com.venenatis.game.model.combat.npcs.impl.wilderness.*;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.attack.MageAndRangeZulrah;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.attack.RangeAndMageZulrah;
-import com.venenatis.game.model.combat.npcs.impl.zulrah.attack.ZulrahMeleeState;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
@@ -137,10 +134,6 @@ public abstract class AbstractBossCombat {
 		AbstractBossCombat dark_beast = new DarkBeast();
 		bosses.put(4005, dark_beast);
 		bosses.put(7250, dark_beast);
-		
-		bosses.put(2042, new RangeAndMageZulrah());
-		bosses.put(2043, new ZulrahMeleeState());
-		bosses.put(2044, new MageAndRangeZulrah());
 		
 		bosses.put(319, new CorporealBeast());
 		

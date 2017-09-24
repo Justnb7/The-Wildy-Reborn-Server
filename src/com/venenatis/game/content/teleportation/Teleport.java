@@ -227,10 +227,6 @@ public class Teleport {
 			player.getDialogueManager().start("LEAVE_FIGHT_CAVE", player);
 		}
 		
-		if (player.getZulrahEvent().getInstancedZulrah() != null) {
-			InstancedAreaManager.getSingleton().disposeOf(player.getZulrahEvent().getInstancedZulrah());
-		}
-		
 		if (player.getKraken() != null && player.getKraken().getInstance() != null) {
 			InstancedAreaManager.getSingleton().disposeOf(player.getKraken().getInstance());
 		}

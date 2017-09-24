@@ -143,7 +143,7 @@ public class NpcCombat {
 			player.getCombatState().reset();
 			return false;
 		}
-		if (npc.transforming || player.getZulrahEvent().isTransforming())
+		if (npc.transforming)
 			return false;
 
 		if (!Slayer.canAttack(player, npc)) {
@@ -256,22 +256,6 @@ public class NpcCombat {
 	public static void attackPlayer(Player player, NPC npc) {
 		if (npc == null || npc.getCombatState().isDead())
 			return;
-		
-		boolean rejectsFaceUpdate = false;
-		if (npc.getId() >= 2042 && npc.getId() <= 2044) {
-			if (player.getZulrahEvent().getNpc() != null && player.getZulrahEvent().getNpc().equals(npc)) {
-				if (player.getZulrahEvent().getStage() == 1) {
-					player.debug("reject?");
-					rejectsFaceUpdate = true;
-				}
-			}
-			if (player.getZulrahEvent().isTransforming()) {
-				return;
-			}
-		}
-		if (!rejectsFaceUpdate) {
-			npc.face(player.getLocation());
-		}
 		
 		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned") || npc.hasAttribute("attack")) {
 			return;

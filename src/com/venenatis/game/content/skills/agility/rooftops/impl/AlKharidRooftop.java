@@ -2,7 +2,6 @@ package com.venenatis.game.content.skills.agility.rooftops.impl;
 
 import java.util.Random;
 
-import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.HitType;
@@ -57,7 +56,7 @@ public class AlKharidRooftop {
 				player.removeAttribute("busy");
 				return false;
 			}
-			Agility.forceTeleport(player, Animation.create(828), Location.create(3273, 3192, 3), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(3273, 3192, 3), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 10);
 			return true;
 
@@ -77,7 +76,7 @@ public class AlKharidRooftop {
 				fail = true;
 			}
 
-			Agility.setRunningToggled(player, false, 10);
+			player.setRunningToggled(false, 10);
 			player.forceWalk(Animation.create(762), 3272, 3172, 0, fail ? 5 : 10, fail ? true : false);
 			
 			if(fail) {
@@ -85,7 +84,7 @@ public class AlKharidRooftop {
 
 					@Override
 					public void executeAndStop() {
-						Agility.forceTeleport(player, new Animation(1332), new Location(3272, 3177, 0), 1, 1);
+						player.forceTeleport(new Animation(1332), new Location(3272, 3177, 0), 1, 1);
 						player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
 					}
 					
@@ -173,7 +172,7 @@ public class AlKharidRooftop {
 
 								@Override
 								public void executeAndStop() {
-									Agility.forceTeleport(player, new Animation(1332), new Location(3307, 3163, 0), 1, 1);
+									player.forceTeleport(new Animation(1332), new Location(3307, 3163, 0), 1, 1);
 									player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
 								}
 								
@@ -251,7 +250,7 @@ public class AlKharidRooftop {
 			if (alKharidRooftop == null) {
 				player.setAttribute("kharidAgilityCourse", 5);
 			}
-			Agility.forceTeleport(player, Animation.create(828), Location.create(3316, 3180, 3), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(3316, 3180, 3), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
 			
 			World.getWorld().schedule(new StoppingTick(1) {
@@ -273,7 +272,7 @@ public class AlKharidRooftop {
 			if (alKharidRooftop == null) {
 				player.setAttribute("kharidAgilityCourse", 6);
 			}
-			Agility.setRunningToggled(player, false, 10);
+			player.setRunningToggled(false, 10);
 			player.forceWalk(Animation.create(762), 3302, 3186, 0, 13, true);
 			player.getSkills().addExperience(Skills.AGILITY, 15);
 			
@@ -299,8 +298,8 @@ public class AlKharidRooftop {
 				}
 				player.removeAttribute("kharidAgilityCourseLvl");
 			}
-			Agility.forceTeleport(player, Animation.create(2586), Location.create(3299, 3194, 0), 0, 2);
-			Agility.delayedAnimation(player, Animation.create(-1), 2);
+			player.forceTeleport(Animation.create(2586), Location.create(3299, 3194, 0), 0, 2);
+			player.delayedAnimation(Animation.create(-1), 2);
 			player.getSkills().addExperience(Skills.AGILITY, 30);
 			
 			World.getWorld().schedule(new StoppingTick(1) {

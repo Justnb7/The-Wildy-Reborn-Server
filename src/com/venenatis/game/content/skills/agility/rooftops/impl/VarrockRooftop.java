@@ -2,7 +2,6 @@ package com.venenatis.game.content.skills.agility.rooftops.impl;
 
 import java.util.Random;
 
-import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
@@ -62,9 +61,9 @@ public class VarrockRooftop {
 				player.setAttribute("varrock_rooftop", 1);
 			}
 			
-			Agility.forceTeleport(player, Animation.create(828), Location.create(3220, 3414, 3), 0, 2);
-			Agility.forceTeleport(player, Animation.create(2585), Location.create(3219, 3414, 3), 4, 5);
-			Agility.delayedAnimation(player, Animation.create(-1), 1);
+			player.forceTeleport(Animation.create(828), Location.create(3220, 3414, 3), 0, 2);
+			player.forceTeleport(Animation.create(2585), Location.create(3219, 3414, 3), 4, 5);
+			player.delayedAnimation(Animation.create(-1), 1);
 			
 			World.getWorld().schedule(new StoppingTick(1) {
 
@@ -93,26 +92,26 @@ public class VarrockRooftop {
 	            public void execute() {
 	            	//Start instantly
 	            	if (tick == 0) {
-	            		Agility.forceTeleport(player, Animation.create(741), Location.create(3212, 3414, 3), 0, 0);
+	            		player.forceTeleport(Animation.create(741), Location.create(3212, 3414, 3), 0, 0);
 					}
 	            	
 	            	//1 second later
 					if (tick == 3) {
 						//When we fail we take 5 to 7 damage
 						if(fall_down) {
-							Agility.forceTeleport(player, new Animation(1332), new Location(3210, 3414, 0), 0, 0);
+							player.forceTeleport(new Animation(1332), new Location(3210, 3414, 0), 0, 0);
 							player.take_hit_generic(player, Utility.random(5, 7), HitType.NORMAL).send();
 							this.stop();
 						}
 						
 						//We only continue to move forward if we did not fail
 						if (!fall_down)
-							Agility.forceTeleport(player, Animation.create(741), Location.create(3210, 3414, 3), 0, 1);
+							player.forceTeleport(Animation.create(741), Location.create(3210, 3414, 3), 0, 1);
 					}
 
 					//1 second later
 					if (tick == 5) {
-						Agility.forceTeleport(player, Animation.create(741), Location.create(3208, 3414, 3), 0, 1);
+						player.forceTeleport(Animation.create(741), Location.create(3208, 3414, 3), 0, 1);
 					}
 					
 					//Reward
@@ -130,8 +129,8 @@ public class VarrockRooftop {
 			if (varrock_rooftop_course == null) {
 				player.setAttribute("varrock_rooftop", 2);
 			}
-			Agility.forceTeleport(player, Animation.create(2586), Location.create(3197, 3416, 1), 0, 1);
-			Agility.delayedAnimation(player, Animation.create(-1), 1);
+			player.forceTeleport(Animation.create(2586), Location.create(3197, 3416, 1), 0, 1);
+			player.delayedAnimation(Animation.create(-1), 1);
 			
 			World.getWorld().schedule(new StoppingTick(2) {
 

@@ -92,6 +92,8 @@ import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.game.world.pathfinder.RouteFinder;
+import com.venenatis.game.world.pathfinder.region.RegionStore;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
 import io.netty.buffer.Unpooled;
@@ -161,6 +163,77 @@ public class Player extends Entity {
 			task.execute();
 		} else {
 			World.getWorld().schedule(task);
+		}
+	}
+	
+	public void animateObject(final GameObject gameObject, final Animation animation, int ticks) {
+    	Task tick = new Task(ticks) {
+            @Override
+            public void execute() {
+                for (RegionStore r : RegionStoreManager.get().getSurroundingRegions(gameObject.getLocation())) {
+                    for (Player player : r.getPlayers()) {
+                        player.getActionSender().animateObject(gameObject, animation.getId());
+                    }
+                }
+                this.stop();
+            }
+        };
+        if (tick.getTickDelay() >= 1) {
+            World.getWorld().schedule(tick);
+        } else {
+            tick.execute();
+        }
+    }
+	
+	public void forceTeleport(final Animation animation, final Location newLocation, int ticksBeforeAnim, int ticks) {
+		if(animation != null) {
+			if(ticksBeforeAnim < 1) {
+				playAnimation(animation);
+			} else {
+				World.getWorld().schedule(new Task(ticksBeforeAnim) {
+					@Override
+					public void execute() {
+						playAnimation(animation);
+						this.stop();
+					}
+				});			
+			}
+		}
+		World.getWorld().schedule(new Task(ticks) {
+			@Override
+			public void execute() {
+				setTeleportTarget(newLocation);
+				getAttributes().remove("busy");
+				this.stop();
+			}
+		});
+	}
+	
+	public void delayedAnimation(Animation anim, int ticks) {
+        World.getWorld().schedule(new Task(ticks) {
+
+            @Override
+            public void execute() {
+                this.stop();
+                playAnimation(anim);
+            }
+        });
+    }
+	
+	public void setRunningToggled(boolean toggled, int ticks) {
+		final boolean originalToggledState = getWalkingQueue().isRunningToggled();
+		getWalkingQueue().setRunningToggled(toggled);
+		Task task = new Task(ticks) {
+			@Override
+			public void execute() {
+				getWalkingQueue().setRunningToggled(originalToggledState);
+				this.stop();
+			}
+		};
+		if(task.getTickDelay() >= 1) {
+			World.getWorld().schedule(task);
+		} else {
+			task.execute();
 		}
 	}
 	

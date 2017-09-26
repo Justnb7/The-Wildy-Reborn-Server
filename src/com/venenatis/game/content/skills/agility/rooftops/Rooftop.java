@@ -8,8 +8,11 @@ import com.venenatis.game.content.skills.agility.rooftops.impl.VarrockRooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.object.GameObject;
@@ -22,6 +25,28 @@ import com.venenatis.game.world.object.GameObject;
  *
  */
 public class Rooftop {
+	
+	private static void pet(Player player) {
+		Pets pets = Pets.GIANT_SQUIRREL;
+		Pet pet = new Pet(player, pets.getNpc());
+		
+		if(player.alreadyHasPet(player, 20659) || player.getPet() == pets.getNpc()) {
+			return;
+		}
+		
+		int random = Utility.random(1500);
+		if (random == 0) {
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(20659));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Giant squirrel.", false);
+			} else {
+				player.setPet(pets.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Giant squirrel.", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
+			}
+		}
+	}
 	
 	/**
 	 * The last interaction that player made that is recorded in milliseconds
@@ -83,18 +108,23 @@ public class Rooftop {
 	 */
 	public static boolean execute(Player player, GameObject object) {
 		if(DraynorRooftop.start(player, object)) {
+			pet(player);
 			return true;
 		}
 		if(AlKharidRooftop.start(player, object)) {
+			pet(player);
 			return true;
 		}
 		if(VarrockRooftop.start(player, object)) {
+			pet(player);
 			return true;
 		}
 		if(SeersRooftop.start(player, object)) {
+			pet(player);
 			return true;
 		}
 		if(ArdougneRooftop.start(player, object)) {
+			pet(player);
 			return true;
 		}
 		return false;

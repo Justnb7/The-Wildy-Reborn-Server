@@ -1,6 +1,5 @@
 package com.venenatis.game.content.skills.agility.course.impl;
 
-import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -35,7 +34,7 @@ public class GnomeCourse {
 			
 			player.getActionSender().sendMessage("You walk carefully across the slippery log...");
 			player.sendDelayedMessage(8, "... You make it safely to the other side.");
-			Agility.setRunningToggled(player, false, 7);
+			player.setRunningToggled(false, 7);
 			player.forceWalk(Animation.create(762), 2474, 3429, 1, 7, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
 			return true;
@@ -46,7 +45,7 @@ public class GnomeCourse {
 			}
 			player.setAttribute("busy", true);
 			player.getActionSender().sendMessage("You climb the netting...");
-			Agility.forceTeleport(player, Animation.create(828), Location.create(player.getLocation().getX(), 3424, 1), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(player.getLocation().getX(), 3424, 1), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
 			return true;
 			
@@ -57,7 +56,7 @@ public class GnomeCourse {
 			player.setAttribute("busy", true);
 			player.getActionSender().sendMessage("You climb the tree...");
 			player.sendDelayedMessage(1, "... To the platform above.");
-			Agility.forceTeleport(player, Animation.create(828), Location.create(2473, 3420, 2), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(2473, 3420, 2), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
 			return true;
 			
@@ -67,7 +66,7 @@ public class GnomeCourse {
 			}
 			player.setAttribute("busy", true);
 			player.getActionSender().sendMessage("You carefully cross the tightrope.");
-			Agility.setRunningToggled(player, false, 7);
+			player.setRunningToggled(false, 7);
 			player.forceWalk(Animation.create(762), 2483, 3420, 1, 7, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
 			return true;
@@ -79,7 +78,7 @@ public class GnomeCourse {
 			player.setAttribute("busy", true);
 			player.getActionSender().sendMessage("You climb down the tree...");
 			player.sendDelayedMessage(1, "You land on the ground.");
-			Agility.forceTeleport(player, Animation.create(828), Location.create(2485, 3419, 0), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(2485, 3419, 0), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
 			return true;
 			
@@ -94,7 +93,7 @@ public class GnomeCourse {
 			if (gnome_agility_course == null) {
 				player.setAttribute("gnome_course", 6);
 			}
-			Agility.forceTeleport(player, Animation.create(828), Location.create(player.getLocation().getX(), 3427, 0), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(player.getLocation().getX(), 3427, 0), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 7.5);
 			return true;
 			

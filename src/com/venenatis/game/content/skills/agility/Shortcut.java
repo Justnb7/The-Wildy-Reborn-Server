@@ -5,11 +5,15 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.forceMovement.Direction;
+import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.object.GameObject;
 import com.venenatis.server.Server;
 
 public class Shortcut {
+	
+	
 	
 	private static final int PIPES_EMOTE = 844;
 	private static final int WALK = 1, MOVE = 2, AGILITY = 3;
@@ -48,7 +52,123 @@ public class Shortcut {
 		if(object == null) {
 			return;
 		}
+		
+		int x;
+		int y;
+		int y2 = 0;
 		switch (object.getId()) {
+		/* taverlyObstaclePipe */
+		case 16509:
+			if (!player.getLocation().equals(Location.create(2886, 9799, 0)) && !player.getLocation().equals(Location.create(2892, 9799, 0))) {
+				player.removeAttribute("busy");
+				return;
+			}
+			if (player.getLocation().getX() == 2886) {
+				y = 4;
+				y2 = 2;
+				x = 1;
+			} else {
+				y = -4;
+				y2 = -2;
+				x = -1;
+			}
+			player.playAnimation(new Animation(746));
+			player.forceMove(new ForceMovement(x, 0, y2, 0, 45, 100, 3, Direction.NORTH), false);
+			player.playAnimation(new Animation(748));
+			player.forceMove(new ForceMovement(0, 0, y, 0, 0, 15, 1, Direction.NORTH), true);
+			break;
+			
+		/* shamanRockClimb1 */
+		/* shamanRockClimb2 */
+		/* shamanRockClimb3 */
+		/* shamanRockClimb4 */
+		case 27362:
+
+			break;
+
+		/* faladorCrumblingWall */
+		case 11844:
+			x = 2;
+			if (player.getLocation().getX() >= 2936) {
+				x = -2;
+			}
+			player.playAnimation(new Animation(839));
+			player.forceMove(new ForceMovement(0, 0, x, 0, 20, 60, 2, Direction.NORTH), true);
+			player.getSkills().addExperience(Skills.AGILITY, 5);
+			break;
+
+		/* edgeDungeonPipe */
+		case 16511:
+			break;
+
+		/* taverlySpikeJump */
+		case 16510:
+			if (!player.getLocation().equals(Location.create(2880, 9813, 0))
+					&& !player.getLocation().equals(Location.create(2878, 9813))) {
+				player.removeAttribute("busy");
+				return;
+			}
+			x = -2;
+			if (player.getLocation().equals(Location.create(2878, 9813, 0))) {
+				x = 2;
+			}
+			player.forceTeleport(Animation.create(2586), Location.create(player.getX() + x, 9813, 0), 0, 2);
+			break;
+
+		/* fremmySpikeJump */
+		/* fremmySpikeJump2 */
+		case 16544:
+			if (object.getLocation().equals(Location.create(2774, 10003, 0))) {
+				if (!player.getLocation().equals(Location.create(2775, 10003, 0)) && !player.getLocation().equals(Location.create(2773, 10003))) {
+					player.removeAttribute("busy");
+					return;
+				}
+				x = -2;
+				if (player.getLocation().equals(Location.create(2773, 10003, 0))) {
+					x = 2;
+				}
+				player.forceTeleport(Animation.create(2586), Location.create(player.getX() + x, 10003, 0), 0, 2);
+			} else {
+				if (!player.getLocation().equals(Location.create(2770, 10002, 0)) && !player.getLocation().equals(Location.create(2768, 10002))) {
+					player.removeAttribute("busy");
+					return;
+				}
+				x = -2;
+				if (player.getLocation().equals(Location.create(2768, 10002, 0))) {
+					x = 2;
+				}
+				player.forceTeleport(Animation.create(2586), Location.create(player.getX() + x, 10002, 0), 0, 2);
+			}
+			break;
+
+		/* motherlodeDarkTunnel */
+		/* motherlodeDarkTunnel2 */
+		case 10047:
+
+			break;
+
+		/* ardougneLogBalance */
+		case 16548:
+		case 16546:
+		case 16547:
+			if (player.getLocation().getY() != 3336) {
+				player.removeAttribute("busy");
+				return;
+			}
+			x = -4;
+			if (player.getLocation().getX() == 2598) {
+				x = 4;
+			}
+			player.setRunningToggled(false, 4);
+			player.forceWalk(Animation.create(762), player.getX() + x, player.getY(), 0, 4, true);
+			player.getSkills().addExperience(Skills.AGILITY, 33);
+			break;
+
+		/* slayerRockClimb */
+		case 26724:
+
+			break;
+		
 		case 993:
 			if (player.getY() == 3435) {
 				handleAgility(player, 2761, 3438, 1, 3067, MOVE, "You jump over the stile.");
@@ -62,7 +182,8 @@ public class Shortcut {
 		case 51:
 			handleAgility(player, 1, 0, 66, 2240, WALK, "You squeeze through the railings");
 			break;
-		case 16544:
+			//TODO duplicate
+		/*case 16544:
 			if (player.getX() == 2773) {
 				handleAgility(player, 2, 0, 81, 3067, WALK, "You jump over the strange floor.");
 			} else if (player.getX() == 2775) {
@@ -70,7 +191,7 @@ public class Shortcut {
 			} else if (player.getX() == 2770) {
 				handleAgility(player, -2, 0, 81, 3067, WALK, "You jump over the strange floor.");
 			}
-			break;
+			break;*/
 		case 16539:
 			if (player.getX() == 2735) {
 				handleAgility(player, -5, 0, 62, 2240, WALK, "You squeeze through the crevice.");
@@ -104,13 +225,14 @@ public class Shortcut {
 				handleAgility(player, 2595, player.getY(), 1, 3067, MOVE, "You pass through the agility shortcut.");
 			}
 			break;
-		case 11844:
+			//TODO duplicate
+		/*case 11844:
 			if (player.getX() == 2936) {
 				handleAgility(player, -2, 0, 5, -1, WALK, "You pass through the agility shortcut.");
 			} else if (player.getX() == 2934) {
 				handleAgility(player, 2, 0, 5, -1, WALK, "You pass through the agility shortcut.");
 			}
-			break;
+			break;*/
 		case 20884:
 			if (player.getX() == 2687) {// 2682, 9506
 				handleAgility(player, -5, 0, 5, 762, WALK, "You walk across the log balance.");
@@ -145,21 +267,22 @@ public class Shortcut {
 			}
 			break;
 
-		case 16509:
+			//TODO duplicate
+/*		case 16509:
 			if (player.getX() < object.getX()) {
 				handleAgility(player, 2892, 9799, 70, getAnimation(PIPES_EMOTE), MOVE, "You pass through the agility shortcut.");
 			} else {
 				handleAgility(player, 2886, 9799, 70, getAnimation(PIPES_EMOTE), MOVE, "You pass through the agility shortcut.");
 			}
-			break;
-
-		case 16510:
+			break;*/
+			//TODO duplicate
+		/*case 16510:
 			if (player.getX() == 2880) {
 				handleAgility(player, -2, 0, 81, 3067, WALK, "You jump over the strange floor.");
 			} else {
 				handleAgility(player, -2, 0, 81, 3067, WALK, "You jump over the strange floor.");
 			}
-			break;
+			break;*/
 
 		case 9302:
 			if (player.getY() == 3112) {

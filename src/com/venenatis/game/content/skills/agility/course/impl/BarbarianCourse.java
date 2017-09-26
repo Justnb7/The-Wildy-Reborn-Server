@@ -1,6 +1,5 @@
 package com.venenatis.game.content.skills.agility.course.impl;
 
-import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -53,8 +52,8 @@ public class BarbarianCourse {
 				player.setAttribute("barbarian_course", 1);
 			}
 			player.setAttribute("busy", true);
-			Agility.animateObject(object, Animation.create(54), 1);
-			Agility.animateObject(object, Animation.create(55), 2);
+			player.animateObject(object, Animation.create(54), 1);
+			player.animateObject(object, Animation.create(55), 2);
 			player.playAnimation(new Animation(751));
 			player.forceMove(new ForceMovement(0, 0, 0, -5, 30, 50, 2, Direction.NORTH), true);
 			player.getSkills().addExperience(Skills.AGILITY, 22);
@@ -69,7 +68,7 @@ public class BarbarianCourse {
 			if (barbarian_agility_course == null) {
 				player.setAttribute("barbarian_course", 2);
 			}
-			Agility.setRunningToggled(player, false, 12);
+			player.setRunningToggled(false, 12);
 			player.forceWalk(Animation.create(762), 2541, 3546, 1, 11, true);
 			player.getSkills().addExperience(Skills.AGILITY, 13.7);
 			return true;
@@ -87,7 +86,7 @@ public class BarbarianCourse {
 			if (barbarian_agility_course == null) {
 				player.setAttribute("barbarian_course", 3);
 			}
-			Agility.forceTeleport(player, Animation.create(828), Location.create(player.getLocation().getX() - 2, 3546, 1), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(player.getLocation().getX() - 2, 3546, 1), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 8.2);
 			return true;
 			
@@ -102,10 +101,10 @@ public class BarbarianCourse {
 			}
 			
 			player.playAnimation(Animation.create(753));
-			Agility.setRunningToggled(player, false, 8);
+			player.setRunningToggled(false, 8);
 			player.forceWalk(null, 2532, 3546, 4, 2, false);
 			player.forceWalk(Animation.create(756), 2532, 3547, 0, 4, false);
-			Agility.forceTeleport(player, Animation.create(828), Location.create(2532, 3546, 0), 7, 8);
+			player.forceTeleport(Animation.create(828), Location.create(2532, 3546, 0), 7, 8);
 			player.getSkills().addExperience(Skills.AGILITY, 22);
 			return true;
 			

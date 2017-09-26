@@ -6,8 +6,6 @@ import com.venenatis.game.content.BrimhavenVines;
 import com.venenatis.game.content.MageArenaGodPrayer;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.rewards.BossRewardChest;
-import com.venenatis.game.content.skills.agility.Agility;
-import com.venenatis.game.content.skills.agility.Agility.Obstacle;
 import com.venenatis.game.content.skills.agility.course.Course;
 import com.venenatis.game.content.skills.agility.Shortcut;
 import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
@@ -74,7 +72,6 @@ public class ObjectInteraction {
 		Action action = null;
 		Tree tree = Tree.forId(objectId);
 		Rock rock = Rock.forId(objectId);
-		final Obstacle obstacle = Obstacle.forLocation(location);
 		
 		if(BrimhavenVines.handleBrimhavenVines(player, objectId)) {
 			return;
@@ -93,29 +90,6 @@ public class ObjectInteraction {
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
 			action = new Mining(player, obj);
-		} else if (obstacle != null) {
-			action = new Action(player, 0) {
-				@Override
-				public CancelPolicy getCancelPolicy() {
-					return CancelPolicy.ALWAYS;
-				}
-
-				@Override
-				public StackPolicy getStackPolicy() {
-					return StackPolicy.NEVER;
-				}
-
-				@Override
-				public AnimationPolicy getAnimationPolicy() {
-					return AnimationPolicy.RESET_ALL;
-				}
-
-				@Override
-				public void execute() {
-					this.stop();
-					Agility.tackleObstacle(player, obstacle, obj);
-				}
-			};
 		}
 		
 		if (def.getName().toLowerCase().contains("altar") && def.getActions()[0].toLowerCase().contains("pray")) {
@@ -479,23 +453,6 @@ public class ObjectInteraction {
 		case 26642: //clan wars portal
 		case 26644:
 			player.getActionSender().sendMessage("Coming soon...");
-			break;
-		case 23271:
-				if (location.getX() == 2996) {
-					return;
-				}
-				player.getAttributes().put("busy", true);
-				int yPos = 0;
-				int direction = 0;
-				if (player.getLocation().getY() == 3523) {
-					yPos = -3;
-					direction = 2;
-				} else if (player.getLocation().getY() == 3520) {
-					yPos = 3;
-					direction = 0;
-				}
-				int[] forceMovementVars = { 0, 0, 0, yPos, 33, 60, direction, 2 };
-				//Agility.jumpDitch(player, 6132, forceMovementVars, 0, true);
 			break;
 		
 		}

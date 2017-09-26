@@ -2,7 +2,6 @@ package com.venenatis.game.content.skills.agility.rooftops.impl;
 
 import java.util.Random;
 
-import com.venenatis.game.content.skills.agility.Agility;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.HitType;
@@ -53,7 +52,7 @@ public class DraynorRooftop {
 				player.setAttribute("draynor_rooftop", 1);
 			}
 			
-			Agility.forceTeleport(player, Animation.create(828), Location.create(3102, 3279, 3), 0, 2);
+			player.forceTeleport(Animation.create(828), Location.create(3102, 3279, 3), 0, 2);
 			player.getSkills().addExperience(Skills.AGILITY, 5);
 			return true;
 			
@@ -72,7 +71,7 @@ public class DraynorRooftop {
 				fail = true;
 			}
 			
-			Agility.setRunningToggled(player, false, 12);
+			player.setRunningToggled(false, 12);
 			player.forceWalk(Animation.create(762), 3090, 3277, 0, fail ? 4 : 10, fail ? true : false);
 			
 			if(fail) {
@@ -80,7 +79,7 @@ public class DraynorRooftop {
 
 					@Override
 					public void executeAndStop() {
-						Agility.forceTeleport(player, new Animation(1332), new Location(3095, 3277, 0), 1, 1);
+						player.forceTeleport(new Animation(1332), new Location(3095, 3277, 0), 1, 1);
 						player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
 					}
 					
@@ -103,7 +102,7 @@ public class DraynorRooftop {
 				player.setAttribute("draynorAgilityCourse", (Integer)draynor_village_rooftop + 1);
 			}
 			
-			Agility.setRunningToggled(player, false, 12);
+			player.setRunningToggled(false, 12);
 			player.forceWalk(Animation.create(762), 3092, 3276, 0, 2, false);
 			player.forceWalk(Animation.create(762), 3092, 3267, 2, 10, true);
 			player.getSkills().addExperience(Skills.AGILITY, 7);
@@ -124,17 +123,17 @@ public class DraynorRooftop {
 				fail = true;
 			}
 			
-			Agility.setRunningToggled(player, false, 4);
+			player.setRunningToggled(false, 4);
 			player.forceWalk(Animation.create(756), 3089, 3262, 0, 3, fail ? true : false);
 			
 			if(fail) {
-				Agility.forceTeleport(player, new Animation(1332), new Location(3089, 3264, 0), 1, 1);
+				player.forceTeleport(new Animation(1332), new Location(3089, 3264, 0), 1, 1);
 				player.take_hit_generic(player, Utility.random(2), HitType.NORMAL).send();
 				return false;
 			}
 			
 			player.forceWalk(Animation.create(756), 3088, 3261, 3, 1, true);
-			Agility.delayedAnimation(player, Animation.create(759), 4);
+			player.delayedAnimation(Animation.create(759), 4);
 			player.getSkills().addExperience(Skills.AGILITY, 7);
 			return true;
 			
@@ -149,7 +148,7 @@ public class DraynorRooftop {
 				player.setAttribute("draynorAgilityCourse", (Integer)draynor_village_rooftop + 1);
 			}
 			
-			Agility.setRunningToggled(player, false, 4);
+			player.setRunningToggled(false, 4);
 			player.forceWalk(Animation.create(2585), 3088, 3256, 0, 2, false);
 			player.forceWalk(Animation.create(2585), 3088, 3255, 2, 1, true);
 			player.getSkills().addExperience(Skills.AGILITY, 10);
@@ -166,8 +165,8 @@ public class DraynorRooftop {
 				player.setAttribute("draynorAgilityCourse", (Integer)draynor_village_rooftop + 1);
 			}
 			
-			Agility.delayedAnimation(player, Animation.create(2588), 0);
-			Agility.forceTeleport(player, Animation.create(-1), Location.create(3096, 3256, 3), 0, 0);
+			player.delayedAnimation(Animation.create(2588), 0);
+			player.forceTeleport(Animation.create(-1), Location.create(3096, 3256, 3), 0, 0);
 			player.getSkills().addExperience(Skills.AGILITY, 4);
 			return true;
 			
@@ -185,10 +184,10 @@ public class DraynorRooftop {
 				player.removeAttribute("draynorAgilityCourse");
 			}
 			
-			Agility.forceTeleport(player, Animation.create(2586), Location.create(3102, 3261, 1), 0, 2);
-			Agility.delayedAnimation(player, Animation.create(2588), 2);
-			Agility.forceTeleport(player, Animation.create(2586), Location.create(3103, 3261, 0), 4, 5);
-			Agility.delayedAnimation(player, Animation.create(2588), 5);
+			player.forceTeleport(Animation.create(2586), Location.create(3102, 3261, 1), 0, 2);
+			player.delayedAnimation(Animation.create(2588), 2);
+			player.forceTeleport(Animation.create(2586), Location.create(3103, 3261, 0), 4, 5);
+			player.delayedAnimation(Animation.create(2588), 5);
 			player.getSkills().addExperience(Skills.AGILITY, 79);
 			return true;
 		}

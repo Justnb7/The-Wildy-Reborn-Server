@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.TimesCx;
+import com.venenatis.game.event.CycleEventHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.LoginManager;
 import com.venenatis.game.util.Stopwatch;
@@ -123,6 +124,7 @@ public final class GameEngine implements Runnable {
         
         Server.getGlobalObjects().pulse();
         Server.getTaskScheduler().pulse();
+        CycleEventHandler.getSingleton().process();
         World.getWorld().pulse();
         GroundItemHandler.pulse();
         

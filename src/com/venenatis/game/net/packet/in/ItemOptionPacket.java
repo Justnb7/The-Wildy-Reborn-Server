@@ -11,6 +11,8 @@ import com.venenatis.game.content.rewards.GoodieBag;
 import com.venenatis.game.content.rewards.Mysterybox;
 import com.venenatis.game.content.rewards.RewardCasket;
 import com.venenatis.game.content.skills.prayer.Prayer.Bone;
+import com.venenatis.game.content.skills.runecrafting.Pouches;
+import com.venenatis.game.content.skills.runecrafting.Pouches.Pouch;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement.Teleports;
 import com.venenatis.game.content.teleportation.teletab.Tablet;
@@ -311,6 +313,18 @@ public class ItemOptionPacket implements IncomingPacketListener {
 		
 		switch (item.getId()) {
 		
+		case 5509:
+			Pouches.fill(player, Pouch.forId(id), id, 0);
+			break;
+			
+		case 5510:
+			Pouches.fill(player, Pouch.forId(id), id, 1);
+			break;
+			
+		case 5512:
+			Pouches.fill(player, Pouch.forId(id), id, 2);
+			break;
+		
 		case 22017:
 			GoodieBag.open(player);
 			break;
@@ -394,6 +408,18 @@ public class ItemOptionPacket implements IncomingPacketListener {
 		player.lastClickedItem = item.getId();
 		
 		switch (item.getId()) {
+		
+		case 5509:
+			Pouches.check(player, Pouch.forId(itemId), itemId, 0);
+			break;
+			
+		case 5510:
+			Pouches.check(player, Pouch.forId(itemId), itemId, 1);
+			break;
+			
+		case 5512:
+			Pouches.check(player, Pouch.forId(itemId), itemId, 2);
+			break;
 		
 		case 13226:
 			player.getHerbSack().handleEmptySack();

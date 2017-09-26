@@ -185,5 +185,13 @@ public class Boundary {
 		new Boundary(3332, 3244, 3359, 3259),
 		new Boundary(3364, 3244, 3389, 3259)
 	};
+	
+	/**
+	 * Hunter
+	 */
+	public static final Boundary HUNTER_JUNGLE = new Boundary(2497, 2881, 2619, 2948);
+	public static final Boundary HUNTER_WILDERNESS = new Boundary(3114, 3751, 3174, 3798);
+	public static final Boundary PURO_PURO = new Boundary(2561, 4289, 2623, 4351);
+	public static final Boundary[] HUNTER_BOUNDARIES = { HUNTER_JUNGLE, HUNTER_WILDERNESS };
 
 }

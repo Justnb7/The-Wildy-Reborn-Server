@@ -1,6 +1,8 @@
 package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
+import com.venenatis.game.content.skills.runecrafting.Pouches;
+import com.venenatis.game.content.skills.runecrafting.Pouches.Pouch;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
@@ -71,6 +73,20 @@ public class WieldPacketHandler implements IncomingPacketListener {
 			}
 
 			player.getEquipment().wear(item, slot);
+			
+			//FIXME Ask Jak is this how OSRS does this too? Why not within the itemOption packets
+			switch (item.getId()) {
+			case 5509:
+				Pouches.empty(player, Pouch.forId(id), id, 0);
+				break;
+			case 5510:
+				Pouches.empty(player, Pouch.forId(id), id, 1);
+				break;
+			case 5512:
+				Pouches.empty(player, Pouch.forId(id), id, 2);
+				break;
+			}
+			
 		}
 		
 		if (player.getEquipment().get(3) == null) {

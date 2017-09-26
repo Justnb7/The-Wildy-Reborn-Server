@@ -2346,6 +2346,7 @@ public class Player extends Entity {
 	public Stopwatch aggressionTolerance = new Stopwatch();
 	public Stopwatch logoutDelay = new Stopwatch();
 	public Stopwatch cannotUsePrayer = new Stopwatch();
+	public final Stopwatch last_trap_layed = new Stopwatch();
 	
 	public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
 
@@ -3309,4 +3310,27 @@ public class Player extends Entity {
 	public Jewellery getJewellery() {
 		return jewellery;
 	}
+	
+	private int[] runeEssencePouch = new int[3];
+
+	public int getRuneEssencePouch(int index) {
+		return runeEssencePouch[index];
+	}
+
+	public void setRuneEssencePouch(int index, int runeEssencePouch) {
+		this.runeEssencePouch[index] = runeEssencePouch;
+	}
+	
+	private int[] pureEssencePouch = new int[3];
+	
+	public int getPureEssencePouch(int index) {
+		return pureEssencePouch[index];
+	}
+
+	public void setPureEssencePouch(int index, int pureEssencePouch) {
+		this.pureEssencePouch[index] = pureEssencePouch;
+	}
+	
+	//FIXME
+	public long lastPickup;
 }

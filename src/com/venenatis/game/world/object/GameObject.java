@@ -56,9 +56,9 @@ public class GameObject {
 		this.direction = direction;
 	}
 	
-	public GameObject(int id, int x, int y, int height) {
+	public GameObject(int id, Location location) {
 		this.id = id;
-		this.location = Location.create(x, y, height);
+		this.location = location;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face) {

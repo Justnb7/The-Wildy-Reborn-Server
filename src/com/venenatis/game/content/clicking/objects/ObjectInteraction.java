@@ -1,5 +1,7 @@
 package com.venenatis.game.content.clicking.objects;
 
+import java.util.stream.IntStream;
+
 import com.venenatis.game.action.Action;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.BrimhavenVines;
@@ -9,6 +11,7 @@ import com.venenatis.game.content.rewards.BossRewardChest;
 import com.venenatis.game.content.skills.agility.course.Course;
 import com.venenatis.game.content.skills.agility.Shortcut;
 import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
+import com.venenatis.game.content.skills.hunter.Hunter;
 import com.venenatis.game.content.skills.mining.Mining;
 import com.venenatis.game.content.skills.mining.Mining.Rock;
 import com.venenatis.game.content.skills.runecrafting.Runecrafting;
@@ -67,6 +70,16 @@ public class ObjectInteraction {
 		
 		if(Rooftop.execute(player, obj)) {
 			return;
+		}
+		
+		final int[] HUNTER_OBJECTS = new int[]{9373, 9377, 9379, 9375, 9348, 9380, 9385, 9344, 9345, 9383, 721}; 
+		if(IntStream.of(HUNTER_OBJECTS).anyMatch(id -> objectId == id)) {
+			if(Hunter.pickup(player, obj)){
+				return;
+			}
+			if(Hunter.claim(player, obj)) {
+				return;
+			}
 		}
 		
 		Action action = null;

@@ -114,6 +114,8 @@ public final class BirdSnare extends Trap {
 			@Override
 			public void execute(CycleEventContainer container) {
 				
+				//npc.doPath(new DefaultPathFinder(), null, getObject().getX(), getObject().getY());
+				
 				//TODO ask Jak how to do this part since our doPath is only PLAYER supported
 				//NPCDumbPathFinder.walkTowards(npc, getObject().getX(), getObject().getY());
 				

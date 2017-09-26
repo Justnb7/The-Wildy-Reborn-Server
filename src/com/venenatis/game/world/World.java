@@ -5,6 +5,7 @@ import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.bounty.BountyHunter;
+import com.venenatis.game.content.skills.hunter.Hunter;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.combat.npcs.impl.randomEvent.EventManager;
 import com.venenatis.game.model.entity.Entity;
@@ -346,6 +347,11 @@ public class World implements Service {
 		ClanManager.leave(player, true);
 
 		MinigameHandler.execute(player, $it -> $it.onLogout(player));
+		
+		/*
+		 * Reset hunter traps
+		 */
+		Hunter.abandon(player, null, true);
 
 		//Reset poison and venom
 		player.setInfection(0);

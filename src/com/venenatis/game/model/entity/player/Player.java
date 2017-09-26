@@ -30,6 +30,7 @@ import com.venenatis.game.content.skills.farming.Allotments;
 import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.fishing.Fishing;
 import com.venenatis.game.content.skills.herblore.Herblore;
+import com.venenatis.game.content.skills.hunter.Hunter;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
 import com.venenatis.game.content.skills.thieving.Thieving;
 import com.venenatis.game.content.teleportation.Teleport;
@@ -1516,6 +1517,7 @@ public class Player extends Entity {
 		
 		//If we're no longer in combat we can goahead and logout
 		if (logoutDelay.elapsed(10000) && getLastCombatAction().elapsed(600)) {
+			Hunter.abandon(this, null, true);
 			outStream.writeFrame(109);
 			flushOutStream();
 			properLogout = true;

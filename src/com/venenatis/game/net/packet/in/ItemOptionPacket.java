@@ -10,6 +10,9 @@ import com.venenatis.game.content.gambling.DiceBag;
 import com.venenatis.game.content.rewards.GoodieBag;
 import com.venenatis.game.content.rewards.Mysterybox;
 import com.venenatis.game.content.rewards.RewardCasket;
+import com.venenatis.game.content.skills.hunter.Hunter;
+import com.venenatis.game.content.skills.hunter.trap.impl.BirdSnare;
+import com.venenatis.game.content.skills.hunter.trap.impl.BoxTrap;
 import com.venenatis.game.content.skills.prayer.Prayer.Bone;
 import com.venenatis.game.content.skills.runecrafting.Pouches;
 import com.venenatis.game.content.skills.runecrafting.Pouches.Pouch;
@@ -312,6 +315,14 @@ public class ItemOptionPacket implements IncomingPacketListener {
 		player.getHerblore().clean(item.getId());
 		
 		switch (item.getId()) {
+		
+		case 10006:
+			Hunter.lay(player, new BirdSnare(player));
+			break;
+			
+		case 10008:
+			Hunter.lay(player, new BoxTrap(player));
+			break;
 		
 		case 5509:
 			Pouches.fill(player, Pouch.forId(id), id, 0);

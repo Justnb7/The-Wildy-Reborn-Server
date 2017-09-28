@@ -3408,4 +3408,16 @@ public class Player extends Entity {
 	
 	//FIXME
 	public long lastPickup;
+	
+	private final Stopwatch lastSql = new Stopwatch();
+
+	public Stopwatch getLastSql() {
+        return lastSql;
+    }
+	
+	private final Stopwatch sqlTimer = new Stopwatch();
+	
+	public Stopwatch getSqlTimer() {
+        return sqlTimer;
+    }
 }

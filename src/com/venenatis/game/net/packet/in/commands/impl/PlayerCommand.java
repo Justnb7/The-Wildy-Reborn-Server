@@ -20,6 +20,9 @@ import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
 
+import mysql.donations.AutoDonations;
+import mysql.voting.Voting;
+
 /**
  * A list of commands accessible to all players disregarding rank.
  * 
@@ -31,6 +34,39 @@ public class PlayerCommand implements Command {
 	public boolean handleCommand(Player player, CommandParser parser) throws Exception {
 
 		switch (parser.getCommand()) {
+		
+		case "claim":
+			if (!Constants.MYSQL_ENABLED) {
+				player.getActionSender().sendMessage("Unable to claim because donating is toggled off by Ajw");
+				return false;
+			}
+			if (player.getLastSql().elapsed(7000)) {
+				new Thread(new AutoDonations(player)).start();
+			} else {
+				player.getActionSender().sendMessage("Please wait 7 seconds in between claiming!");
+			}
+			player.getSqlTimer().reset();
+			return true;
+		
+		case "auth":
+			if(!Constants.MYSQL_ENABLED) {
+				player.getActionSender().sendMessage("Unable to claim because voting is toggled off by Ajw");
+				return false;
+			}
+			if (player.getLastSql().elapsed(7000)) {
+				if (parser.hasNext()) {
+					String auth = ""+parser.nextString();
+					if (player.getInventory().getFreeSlots() < 4) {
+						player.getActionSender().sendMessage("You need atleast 4 free slots to open your reward!");
+						return false;
+					}
+					new Thread(new Voting(auth, player)).start();
+				} else {
+					player.getActionSender().sendMessage("Causing dcs, will be back soon");
+				}
+				player.getLastSql().reset();
+			}
+			return true;
 		
 		case "help":
 			player.getActionSender().removeAllInterfaces();

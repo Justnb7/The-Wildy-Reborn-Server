@@ -14,6 +14,7 @@ import com.venenatis.game.model.entity.MobileCharacterList;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.updating.NpcUpdating;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.Rights.Order;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
@@ -660,6 +661,10 @@ public class World implements Service {
 			}
 			player.getActionSender().sendMessage(message);
 		}
+	}
+	
+	public void sendAdminMessage(String message) {
+		players.stream().filter(p -> p != null && (p.getRights() == Rights.OWNER ||  p.getRights() == Rights.ADMINISTRATOR)).forEach(p -> p.getActionSender().sendMessage(message));
 	}
 
 	private EventManager eventManager = new EventManager();

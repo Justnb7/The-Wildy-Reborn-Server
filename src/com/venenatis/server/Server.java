@@ -6,20 +6,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.motiservice.Motivote;
-import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
-import com.venenatis.game.content.quest_tab.QuestTabPages;
-import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
-import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
 import com.venenatis.game.task.TaskQueue;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.SystemLogger;
-import com.venenatis.game.util.Utility;
 import com.venenatis.game.util.time.GameCalendar;
-import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GlobalObjects;
 import com.venenatis.server.data.ServerData;
 
@@ -102,8 +94,6 @@ public class Server {
 		LOGGER.info("Starting Venenatis...");
 	}
 	
-	public static final Motivote MOTIVOTE = new Motivote("venenatis", "0d3dd0d69abbe4a8dd03a15f24ceb1cb");
-	
 	/**
 	 * Starts up the server
 	 * 
@@ -119,30 +109,6 @@ public class Server {
 			System.setErr(new SystemLogger(System.err, new File("./err")));
 			server.getBootstrap().build().bind();
 			GameEngine.start();
-			MOTIVOTE.checkUnredeemedPeriodically((result) -> {
-			result.votes().forEach((vote) -> {
-				boolean online = vote.username() != null && PlayerUpdating.isPlayerOn(vote.username());
-				
-				if (online) {
-					Player player = World.getWorld().lookupPlayerByName(vote.username());
-					
-					if (player != null && player.isActive() == true) {
-						MOTIVOTE.redeemFuture(vote).thenAccept((r2) -> {
-							if (r2.success()) {
-								int mystery_box_roll = Utility.random(10);
-								if(mystery_box_roll == 8) {
-									player.getInventory().addOrCreateGroundItem(player, new Item(6199));
-								}
-								player.getActionSender().sendMessage("You've received your vote reward! Congratulations!");
-								player.setTotalVotes(player.getTotalVotes() + 1);
-								player.setVotePoints(player.getVotePoints() + 1);
-								QuestTabPageHandler.write(player, QuestTabPages.HOME_PAGE);
-							}
-						});
-					}
-				}
-			});
-		});
 		} catch (Throwable t) {
 			LOGGER.log(Level.SEVERE, "A problem has been encountered while starting the server.", t);
 			System.exit(0);

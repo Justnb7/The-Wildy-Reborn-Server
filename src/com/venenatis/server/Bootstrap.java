@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import com.couchbase.CouchbaseManager;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.venenatis.ScriptManager;
 import com.venenatis.game.cache.OpenRsUnpacker;
@@ -116,7 +117,9 @@ public class Bootstrap {
 
 		LOGGER.info("Loading startup files..");
 		serviceLoader.execute(() -> {
-
+			
+			//CouchbaseManager.initialize();
+			
 			OpenRsUnpacker.unpack();
 
 			MapLoading.load();

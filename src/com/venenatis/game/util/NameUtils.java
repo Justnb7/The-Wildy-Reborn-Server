@@ -87,13 +87,11 @@ public class NameUtils {
 
 	/**
 	 * Formats a name for use in the protocol.
-	 * 
-	 * @param s
-	 *            The name.
-	 * @return The formatted name.
+	 * @param name 	The name to format.
+	 * @return 		The formatted name.
 	 */
-	public static String formatNameForProtocol(String s) {
-		return s.toLowerCase().replace(" ", "_");
+	public static String formatNameForProtocol(String name) {
+		return name.toLowerCase().replace(" ", "_");
 	}
 
 	/**

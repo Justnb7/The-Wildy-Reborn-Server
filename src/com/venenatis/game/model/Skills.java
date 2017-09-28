@@ -166,6 +166,17 @@ public class Skills {
 	}
 	
 	/**
+	 * Gets the player's total experience.
+	 * @return	The experience value from the player's every skill summed up.
+	 */
+	public long getTotalExp() {
+		long xp = 0;
+		for (int skill = 0; skill < Skills.SKILL_COUNT; skill++)
+			xp += player.getSkills().getExperience(skill);
+		return xp;
+	}
+	
+	/**
 	 * Gets the combat level.
 	 * 
 	 * @return The combat level.

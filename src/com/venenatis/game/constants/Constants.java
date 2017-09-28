@@ -4,25 +4,33 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 
 public class Constants {
+
+	/**
+	 * Are the MYSQL services enabled?
+	 */
+	public static boolean MYSQL_ENABLED = true;
 	
 	public static int OSRS_REVISION_LOADING = 156;
-	
-	public static String OSRS_MAP_INDEX_LOCATION = "./map_index_osrs"+OSRS_REVISION_LOADING;
-	
-	public static String OSRS_CACHE_LOCATION = "./data/osrs"+OSRS_REVISION_LOADING+"/";
-	
-	public static String OSRS_XTEA_LOCATION = "./data/osrs"+OSRS_REVISION_LOADING+"xtea/";
-	
+
+	public static String OSRS_MAP_INDEX_LOCATION = "./map_index_osrs"
+			+ OSRS_REVISION_LOADING;
+
+	public static String OSRS_CACHE_LOCATION = "./data/osrs"
+			+ OSRS_REVISION_LOADING + "/";
+
+	public static String OSRS_XTEA_LOCATION = "./data/osrs"
+			+ OSRS_REVISION_LOADING + "xtea/";
+
 	/**
 	 * Magic attack delay
 	 */
 	public static int MAGIC_ATTACK_DELAY = 5;
-	
+
 	/**
 	 * Decides max incoming packets per cycle
 	 */
 	public static final int MAX_INCOMING_PACKETS_PER_CYCLE = 20;
-	
+
 	/**
 	 * Bonus weekends
 	 */
@@ -30,44 +38,51 @@ public class Constants {
 	public static final boolean SLAYER_REWARDS = false;
 	public static final boolean DOUBLE_EXPERIENCE = false;
 	public static final boolean DOUBLE_DROPS = false;
-	
+
 	/**
 	 * Prayer exp modifier
 	 */
 	public static final int PRAYER_EXP_MODIFIER = 10;
-	
+
 	/**
 	 * Slayer exp modifier
 	 */
 	public static final int SLAYER_EXP_MODIFIER = 10;
-	
+
 	/**
 	 * The exp modifier
 	 */
 	public static final int EXP_MODIFIER = 50;
-	
+
 	/**
 	 * The experience multiplier given to non-combat stats
 	 */
 	public static final int SKILL_MODIFIER = 10;
-	
+
 	/**
 	 * Strings that can not be used in a username
 	 */
-	public static final String BAD_USERNAMES[] = { "m o d", "a d m i n", "mod", "admin", "moderator", "administrator", "owner", "m0d", "adm1n", "0wner", "retard", "Nigga", "nigger", "n1gger", "n1gg3r", "nigg3r", "n1gga", "cock", "faggot", "fag", "anus", "arse", "fuck", "bastard", "bitch", "cunt", "chode", "damn", "dick", "faggit", "gay", "homo", "jizz", "lesbian", "negro", "pussy", "penis", "queef", "twat", "titty", "whore", "b1tch" };
+	public static final String BAD_USERNAMES[] = { "m o d", "a d m i n", "mod",
+			"admin", "moderator", "administrator", "owner", "m0d", "adm1n",
+			"0wner", "retard", "Nigga", "nigger", "n1gger", "n1gg3r", "nigg3r",
+			"n1gga", "cock", "faggot", "fag", "anus", "arse", "fuck",
+			"bastard", "bitch", "cunt", "chode", "damn", "dick", "faggit",
+			"gay", "homo", "jizz", "lesbian", "negro", "pussy", "penis",
+			"queef", "twat", "titty", "whore", "b1tch" };
 
 	/**
 	 * Strings that are classified as bad
 	 */
-	public static final String[] BAD_STRINGS = { "fag", "f4g", "faggot", "nigger", "fuck", "bitch", "whore", "slut", "gay", "lesbian", "scape", ".net", ".com", ".org", "vagina", "dick", "cock", "penis", "hoe", "soulsplit", "ikov", "retard", "cunt", };
-	
+	public static final String[] BAD_STRINGS = { "fag", "f4g", "faggot",
+			"nigger", "fuck", "bitch", "whore", "slut", "gay", "lesbian",
+			"scape", ".net", ".com", ".org", "vagina", "dick", "cock", "penis",
+			"hoe", "soulsplit", "ikov", "retard", "cunt", };
+
 	/**
 	 * Players that can overwrite those username block.
 	 */
-	public static final String USERNAME_EXCEPTIONS[] = { 
-		"patrick", "matthew"
-	};
-	
+	public static final String USERNAME_EXCEPTIONS[] = { "patrick", "matthew" };
+
 	/**
 	 * The current version of the client. Used to notify player to update
 	 * client.
@@ -78,47 +93,49 @@ public class Constants {
 	 * The name of the server
 	 */
 	public static final String SERVER_NAME = "Venenatis";
-	
+
 	/**
 	 * The port in which this server is bound upon
 	 */
 	public static final int SERVER_PORT = 5555;
-	
+
 	/**
 	 * the speed of world in ms
 	 */
 	public static final int WORLD_CYCLE_TIME = 600;
-	
+
 	/**
 	 * The maximum amount of items the client can sent.
 	 */
 	public static final int ITEM_LIMIT = 25000;
-	
+
 	/**
 	 * The maximum amount of items in a stack.
 	 */
 	public static final int MAX_ITEMS = Integer.MAX_VALUE;
-	
+
 	/**
 	 * Maximum amount a player can hold
 	 */
 	public static final int MAXITEM_AMOUNT = Integer.MAX_VALUE;
-	
+
 	/**
 	 * Starting location
 	 */
-	public static final Location START_PLAYER_LOCATION = new Location(3087, 3499, 0);
-	
+	public static final Location START_PLAYER_LOCATION = new Location(3087,
+			3499, 0);
+
 	/**
 	 * Donator zone location
 	 */
 	public static final Location START_DZ_LOCATION = new Location(2721, 4912, 0);
-	
+
 	/**
 	 * Respawn location
 	 */
-	public static final Location RESPAWN_PLAYER_LOCATION = new Location(3099, 3503, 0);
-	
+	public static final Location RESPAWN_PLAYER_LOCATION = new Location(3099,
+			3503, 0);
+
 	/**
 	 * The maximum time for a player skull with an extension in the length.
 	 */
@@ -128,7 +145,7 @@ public class Constants {
 	 * The amount of wealth the player must have in order to receive pk points
 	 */
 	public static final int PK_POINTS_WEALTH = 250_000;
-	
+
 	/**
 	 * Determines the buffering size (10000)
 	 */
@@ -138,12 +155,12 @@ public class Constants {
 	 * The npc max cap.
 	 */
 	public static final int MAX_NPCS = 32000;
-	
+
 	/**
 	 * Maximum players allowed in a single world.
 	 */
 	public static final int MAX_PLAYERS = 2000;
-	
+
 	/**
 	 * Valid chacters that can be used in the friends chat
 	 */
@@ -155,25 +172,27 @@ public class Constants {
 			']', '|', '?', '/', '`' };
 
 	/**
-     * Messages chosen a random to be sent to a player that has killed another
-     * player. {@code -victim-} is replaced with the player's name that was
-     * killed, while {@code -killer-} is replaced with the killer's name.
-     */
-    public static final String[] DEATH_MESSAGES = { "You have just killed -victim-!", "You have completely slaughtered -victim-!",
-            "I bet -victim- will think twice before messing with you again!",
-            "Your killing style is impeccable, -victim- didn't stand a chance!" };
+	 * Messages chosen a random to be sent to a player that has killed another
+	 * player. {@code -victim-} is replaced with the player's name that was
+	 * killed, while {@code -killer-} is replaced with the killer's name.
+	 */
+	public static final String[] DEATH_MESSAGES = {
+			"You have just killed -victim-!",
+			"You have completely slaughtered -victim-!",
+			"I bet -victim- will think twice before messing with you again!",
+			"Your killing style is impeccable, -victim- didn't stand a chance!" };
 
 	/**
 	 * The directory for the engine scripts.
 	 */
 	public static final String SCRIPTS_DIRECTORY = "./data/scripts/";
-	
+
 	/**
 	 * Location of the data
 	 */
 	public static final String DATA_DIR = "./data/";
 
-	public static final int TOTAL_MOBS = 7750+1000;//+1000 for custom npcs
+	public static final int TOTAL_MOBS = 7750 + 1000;// +1000 for custom npcs
 
 	/**
 	 * The rate in milliseconds in which the game thread processes logic.
@@ -224,9 +243,12 @@ public class Constants {
 	}
 
 	public static boolean hasSerpHelm(Player player) {
-		return player.getEquipment() != null && (player.getEquipment().contains(12931) || player.getEquipment().contains(13197) || player.getEquipment().contains(13199));
+		return player.getEquipment() != null
+				&& (player.getEquipment().contains(12931)
+						|| player.getEquipment().contains(13197) || player
+						.getEquipment().contains(13199));
 	}
-	
+
 	public static final int ATTACK_TAB = 0;
 	public static final int SKILL_TAB = 1;
 	public static final int QUEST_TAB = 2;
@@ -241,9 +263,9 @@ public class Constants {
 	public static final int EMOTE_TAB = 12;
 	public static final int MUSIC_TAB = 13;
 	public static final int LOGOUT_TAB = 10;
-	
-	public static String SPAWNABLES[] = { "Super strength", "Super attack", "Super defence", "Ranging potion",
-			"Magic potion", "Super restore", "Saradomin brew", "Prayer potion", "Superantipoison", "Shark", "Manta ray",
-			"Super combat", "Dark crabs", "Anglerfish" };
 
+	public static String SPAWNABLES[] = { "Super strength", "Super attack",
+			"Super defence", "Ranging potion", "Magic potion", "Super restore",
+			"Saradomin brew", "Prayer potion", "Superantipoison", "Shark",
+			"Manta ray", "Super combat", "Dark crabs", "Anglerfish" };
 }

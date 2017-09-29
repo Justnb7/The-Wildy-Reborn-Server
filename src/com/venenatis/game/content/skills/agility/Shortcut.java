@@ -83,7 +83,20 @@ public class Shortcut {
 		/* shamanRockClimb3 */
 		/* shamanRockClimb4 */
 		case 27362:
-
+			/*if(player.getLocation().getX() != 1454) {
+		        player.removeAttribute("busy");
+		        return;
+		    }
+		    player.setRunningToggled(false, 6);
+		    player.forceWalk(Animation.create(737), player.getX() + 6, player.getY(), 0, 6, true);*/
+		    
+		    if(player.getLocation().getX() != 1460) {
+		        player.removeAttribute("busy");
+		        return;
+		    }
+		    player.setRunningToggled(false, 6);
+		    player.face(Location.create(1480, 3690, 0));
+		    player.forceWalk(Animation.create(737), player.getX() - 6, player.getY(), 0, 6, true);
 			break;
 
 		/* faladorCrumblingWall */

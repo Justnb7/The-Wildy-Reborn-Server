@@ -41,7 +41,7 @@ public class TeleportHandler {
 		GIANT_MOLE(TeleportationTypes.PVM, 226223, 58082, "Giant mole", new Location(1761, 5186, 0), 0, "High combat", "20+ Wild", false),
 		GODWARS(TeleportationTypes.PVM, 226227, 58086, "Godwars dungeon", new Location(-1, -1, 0), 0, "High combat", "20+ Wild", true),
 		CORPOREAL_BEAST(TeleportationTypes.PVM, 226231, 58090, "Corporeal beast", new Location(2967, 4383, 2), 0, "High combat", "---", false),
-		LIZARDMAN_SHAMAN(TeleportationTypes.PVM, 226235, 58094, "Lizardman shaman", new Location(1464, 3684, 0), 0, "High combat", "---", false),
+		LIZARDMAN_SHAMAN(TeleportationTypes.PVM, 226235, 58094, "Lizardman shaman", new Location(1442, 3695, 0), 0, "High combat", "---", false),
 		ZULRAH(TeleportationTypes.PVM, 226239, 58098, "Zulrah", new Location(-1, -1, 0), 0, "High combat", "---", true),
 
 		/* Minigame */

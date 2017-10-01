@@ -85,13 +85,13 @@ public abstract class PlayerFollowing {
 	 * The player following another player.
 	 * @param forCombat
 	 *        Checks if the player is in combat
-	 * @param following
+	 * @param target
 	 *        The entity we're following
 	 */
-    public static void follow(Player player, boolean forCombat, Entity following) {
+    public static void follow(Player player, boolean forCombat, Entity target) {
 
         //Whenever out target is null or death stop the following task
-        if (following == null || following.getCombatState().isDead() || player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
+        if (target == null || target.getCombatState().isDead() || player.getCombatState().isDead() || player.getSkills().getLevel(Skills.HITPOINTS) <= 0) {
             player.following().setFollowing(null);
             return;
         }
@@ -100,8 +100,8 @@ public abstract class PlayerFollowing {
         }
 
         //Calculate the x and y offsets
-        int otherX = following.getX();
-        int otherY = following.getY();
+        int otherX = target.getX();
+        int otherY = target.getY();
 
         //When out of distance stop the task
         if (!player.goodDistance(otherX, otherY, player.getX(), player.getY(), 25)) {
@@ -110,19 +110,19 @@ public abstract class PlayerFollowing {
             return;
         }
 
-        boolean inside = manoveringFromUnderTarg(player, following);
+        boolean inside = manoveringFromUnderTarg(player, target);
         if (inside)
             return;
 
         //Start facing the player you want to follow
-        player.face(following.getLocation());
+        player.faceEntity(target);
 
         if (!forCombat) {
-            Location last = following.lastTile == null ? following.getLocation().transform(1, 0) : following.lastTile;
+            Location last = target.lastTile == null ? target.getLocation().transform(1, 0) : target.lastTile;
             int fx = last.getX();
             int fy = last.getY();
 
-            int delay = (player.getWalkingQueue().isMoving() || ((Player)following).getWalkingQueue().isMoving()) ? 1
+            int delay = (player.getWalkingQueue().isMoving() || ((Player)target).getWalkingQueue().isMoving()) ? 1
                 : (player.walkTutorial + 1 >= Integer.MAX_VALUE ? player.walkTutorial = 0 : player.walkTutorial++);
             int remainder = delay % 2;
             if (remainder == 1) {
@@ -146,7 +146,7 @@ public abstract class PlayerFollowing {
             }
             Location followLoc = null;
 
-            if (following.size() == 1) {
+            if (target.size() == 1) {
                 Location[] locs = {new Location(otherX + 1, otherY, player.getZ()), new Location(otherX - 1, otherY, player.getZ()), new Location(otherX, otherY + 1, player.getZ()),
                         new Location(otherX, otherY - 1, player.getZ()),};
                 for (Location i : locs) {
@@ -155,8 +155,8 @@ public abstract class PlayerFollowing {
                     }
                 }
             } else {
-                followLoc = Location.create(following.getX(), following.getY(), following.getZ()).
-                        closestTileOf(Location.create(player.getX(), player.getY(), player.getZ()), following.size(), following.size());
+                followLoc = Location.create(target.getX(), target.getY(), target.getZ()).
+                        closestTileOf(Location.create(player.getX(), player.getY(), player.getZ()), target.size(), target.size());
             }
             if (followLoc != null) {
                 player.playerWalk(followLoc.getX(), followLoc.getY());

@@ -22,9 +22,9 @@ public class Following {
     public void execute() {
         if (!hasFollowTarget())
             return;
+        // We've got a target. Call the bulk of following code.
         if (src.isPlayer()) {
-            if (!src.goodDistance(target.getX(), target.getY(), src.getX(), src.getY(), 1))
-                PlayerFollowing.follow(src.asPlayer(), !src.asPlayer().getCombatState().noTarget(), target);
+            PlayerFollowing.follow(src.asPlayer(), !src.asPlayer().getCombatState().noTarget(), target);
         } else {
             NPCFollowing.attemptFollowEntity(src.asNpc(), target);
         }

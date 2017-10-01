@@ -21,7 +21,6 @@ public class Pet extends NPC {
 		System.out.printf("%s v %s%n", owner.getLocation(), owner.getLocation().transform(-1,  0));
 		this.isPet = true;
 		this.spawnedBy = owner;
-		this.ownerId = owner.getIndex();
 		this.face(owner.getLocation());
 	}
 	

@@ -98,11 +98,6 @@ public class NPC extends Entity {
 	public boolean isPet;
 	
 	/**
-	 * Checks if the player owns the pet
-	 */
-	public int ownerId;
-	
-	/**
 	 * Stopwatch delay
 	 */
 	private Stopwatch delay = new Stopwatch();
@@ -457,15 +452,9 @@ public class NPC extends Entity {
 				super.frozen_process();
 
 				// Only ever call following from here.
-				if (isPet && ownerId > 0) {
-					Player ownerPlr = World.getWorld().getPlayers().get(ownerId);
-					if (ownerPlr == null) {
-						//System.out.println("owner disappeared!!!");
-						ownerId = -1;
-					} else {
-						//System.out.println("NPC Following player");
-						NPCFollowing.attemptFollowEntity(this, ownerPlr);
-					}
+				if (isPet && spawnedBy != null) {
+					//System.out.println("NPC Following player");
+					NPCFollowing.attemptFollowEntity(this, spawnedBy);
 				}
 				following().execute();
 			}

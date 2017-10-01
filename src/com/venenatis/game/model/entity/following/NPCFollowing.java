@@ -90,7 +90,7 @@ public class NPCFollowing {
 		}
 		
 		// Spawned by a player.. we're (1) a pet (2) a warrior guild armour.. we follow forever
-		boolean locked_to_plr = npc.spawnedBy != null || npc.ownerId > 0; // pets have spawnBy set
+		boolean locked_to_plr = npc.spawnedBy != null; // pets have spawnBy set
 
 		// Within +/- 15 tiles from where our spawn pos is.
 		boolean in_spawn_area = npc.getCentreLocation().withinDistance(npc.spawnTile, 15);

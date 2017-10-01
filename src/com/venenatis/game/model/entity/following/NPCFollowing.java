@@ -1,12 +1,11 @@
 package com.venenatis.game.model.entity.following;
 
-import com.venenatis.game.constants.WalkingConstants;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
+import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
 
 public class NPCFollowing {
 	
@@ -63,7 +62,7 @@ public class NPCFollowing {
 		}
 		boolean sameSpot = npc.getX() == target.getX() && npc.getY() == target.getY() && npc.getSize() == 1;
 		if (sameSpot) {
-			walkToNextTile(npc, targX, targY-1);
+			npc.doPath(new DefaultPathFinder(), npc, targX, targY-1);
 			return;
 		}
 
@@ -98,7 +97,7 @@ public class NPCFollowing {
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
 			npc.face(target.getLocation());
-			walkToNextTile(npc, targX, targY); // update walking queue to new target pos
+			npc.doPath(new DefaultPathFinder(), npc, targX, targY); // update walking queue to new target pos
 			
 		} else {
 			// Reset following
@@ -107,76 +106,6 @@ public class NPCFollowing {
 			npc.walkingHome = true;
 			//npc.sendForcedMessage("reset "+locked_to_plr+" or "+in_spawn_area);
 		}
-	}
-	
-	/**
-	 * Sets the direction we're moving this cycle. This is sent to the client in Updating.
-	 */
-	public static void walkToNextTile(NPC mob, int destinationX, int destinationY) {
-		if (mob.getX() == destinationX && mob.getY() == destinationY)
-			return;
-
-		int direction = -1;
-
-		final int x = mob.getX();
-		final int y = mob.getY();
-		final int xDifference = destinationX - x;
-		final int yDifference = destinationY - y;
-
-		int toX = 0;
-		int toY = 0;
-
-		if (xDifference > 0) {
-			toX = 1;
-		} else if (xDifference < 0) {
-			toX = -1;
-		}
-
-		if (yDifference > 0) {
-			toY = 1;
-		} else if (yDifference < 0) {
-			toY = -1;
-		}
-
-		int toDir = ProjectilePathFinder.getDirection(x, y, x + toX, y + toY);
-
-		if (mob.canMoveTo(mob.getLocation(), toDir)) {
-			direction = toDir;
-		} else {
-			if (toDir == 0) {
-				if (mob.canMoveTo(mob.getLocation(), 3)) {
-					direction = 3;
-				} else if (mob.canMoveTo(mob.getLocation(), 1)) {
-					direction = 1;
-				}
-			} else if (toDir == 2) {
-				if (mob.canMoveTo(mob.getLocation(), 1)) {
-					direction = 1;
-				} else if (mob.canMoveTo(mob.getLocation(), 4)) {
-					direction = 4;
-				}
-			} else if (toDir == 5) {
-				if (mob.canMoveTo(mob.getLocation(), 3)) {
-					direction = 3;
-				} else if (mob.canMoveTo(mob.getLocation(), 6)) {
-					direction = 6;
-				}
-			} else if (toDir == 7) {
-				if (mob.canMoveTo(mob.getLocation(), 4)) {
-					direction = 4;
-				} else if (mob.canMoveTo(mob.getLocation(), 6)) {
-					direction = 6;
-				}
-			}
-		}
-
-		if (direction == -1) {
-			return;
-		}
-
-		mob.setLocation(mob.getLocation().transform(WalkingConstants.DIRECTION_DELTA_X[direction], WalkingConstants.DIRECTION_DELTA_Y[direction]));
-		mob.direction = direction;
-		mob.setOnTile(mob.getX(), mob.getY(), mob.getZ());
 	}
 
 }

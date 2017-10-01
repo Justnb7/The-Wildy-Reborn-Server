@@ -252,7 +252,7 @@ public class NpcUpdating {
 	 *            The {@link GameBuffer} to write data on
 	 */
 	private static void updateNPCMovement(NPC npc, GameBuffer str) {
-		if (npc.direction == -1) {
+		if (npc.getSprites().getPrimarySprite() == -1) {
 			if(npc.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
 				str.writeBits(2, 0);
@@ -262,7 +262,7 @@ public class NpcUpdating {
 		} else {
 			str.writeBits(1, 1);
 			str.writeBits(2, 1);
-			str.writeBits(3, npc.direction);
+			str.writeBits(3, npc.getSprites().getPrimarySprite());
 			if(npc.getUpdateFlags().isUpdateRequired()) {
 				str.writeBits(1, 1);
 			} else {

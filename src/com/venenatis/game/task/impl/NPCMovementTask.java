@@ -1,10 +1,11 @@
 package com.venenatis.game.task.impl;
 
-import com.venenatis.game.model.entity.following.NPCFollowing;
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
 
 /**
  *
@@ -60,7 +61,7 @@ public final class NPCMovementTask extends Task {
 				npc.walkingHome = false;
 				npc.randomWalk = true;
 			} else if (npc.walkingHome) {
-				NPCFollowing.walkToNextTile(npc, npc.spawnTile.getX(), npc.spawnTile.getY());
+				npc.doPath(new DefaultPathFinder(), npc, npc.spawnTile.getX(), npc.spawnTile.getY());
 			}
 		} else if (npc.randomWalk && (npc.getDefinition() == null || npc.strollRange == 1) && !npc.isInteracting()) {
 
@@ -68,76 +69,13 @@ public final class NPCMovementTask extends Task {
 
 			// 30% chance to random walk
 			if (random == 1) {
-				int MoveX = 0;
-				int MoveY = 0;
-				int Rnd = Utility.getRandom(9);
 				int strollRange = npc.getDefinition() == null ? 1 : npc.strollRange;
-				// choose a random direction to walk.. this is dumb as fuck but whatever. Better to do random(direction) equivalent
-				switch (Rnd) {
-					case 1:
-						MoveX = strollRange;
-						MoveY = strollRange;
-						break;
-					case 2:
-						MoveX = -strollRange;
-						break;
-					case 3:
-						MoveY = -strollRange;
-						break;
-					case 4:
-						MoveX = strollRange;
-						break;
-					case 5:
-						MoveY = strollRange;
-						break;
-					case 6:
-						MoveX = -strollRange;
-						MoveY = -strollRange;
-						break;
-					case 7:
-						MoveX = -strollRange;
-						MoveY = strollRange;
-						break;
-					case 8:
-						MoveX = strollRange;
-						MoveY = -strollRange;
-						break;
-				}
 
-				// check if the destination exceeds the maximum walk area
-				if (MoveX == strollRange) {
-					if (npc.getX() + MoveX < npc.spawnTile.getX() + 1) {
-						npc.moveX = MoveX;
-					} else {
-						npc.moveX = 0;
-					}
+				Location toTile = null;
+				while (toTile == null || npc.spawnTile.distance(toTile) > npc.strollRange)
+					toTile = npc.getLocation().transform(-strollRange + (2 * strollRange), -strollRange + (2*strollRange));
 
-				}
-				if (MoveX == -strollRange) {
-					if (npc.getX() - MoveX > npc.spawnTile.getX() - 1) {
-						npc.moveX = MoveX;
-					} else {
-						npc.moveX = 0;
-					}
-
-				}
-				if (MoveY == strollRange) {
-					if (npc.getY() + MoveY < npc.spawnTile.getY() + 1) {
-						npc.moveY = MoveY;
-					} else {
-						npc.moveY = 0;
-					}
-
-				}
-				if (MoveY == -strollRange) {
-					if (npc.getY() - MoveY > npc.spawnTile.getY() - 1) {
-						npc.moveY = MoveY;
-					} else {
-						npc.moveY = 0;
-					}
-
-				}
-				NPCFollowing.walkToNextTile(npc, npc.getX() + npc.moveX, npc.getY() + npc.moveY);
+				npc.doPath(new DefaultPathFinder(), npc, toTile.getX(), toTile.getY());
 			}
 		}
 	}

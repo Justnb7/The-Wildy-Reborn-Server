@@ -2,7 +2,7 @@ package com.venenatis.game.model.masks;
 
 import com.venenatis.game.constants.WalkingConstants;
 import com.venenatis.game.location.Location;
-import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.controller.Controller;
 import com.venenatis.game.task.impl.EnergyRestoreTick;
 import com.venenatis.game.util.DirectionUtils;
@@ -33,7 +33,7 @@ public class WalkingQueue {
 	/**
 	 * The player.
 	 */
-	private final Player player;
+	protected final Entity entity;
 
 	/**
 	 * Creates the <code>WalkingQueue</code> for the specified
@@ -42,14 +42,10 @@ public class WalkingQueue {
 	 * @param player
 	 *            The player whose walking queue this is.
 	 */
-	public WalkingQueue(Player player) {
-		this.player = player;
+	public WalkingQueue(Entity player) {
+		this.entity = player;
 	}
 
-	/**
-	 * The queue of waypoints.
-	 */
-	private LinkedList<Point> waypoints = new LinkedList<Point>();
 
 	/**
 	 * Is the next path an automatic run path
@@ -58,7 +54,7 @@ public class WalkingQueue {
 
 	/**
 	 * Sets the run queue flag.
-	 * 
+	 *
 	 * @param runQueue
 	 *            The run queue flag.
 	 */
@@ -68,7 +64,7 @@ public class WalkingQueue {
 
 	/**
 	 * Gets the running queue flag.
-	 * 
+	 *
 	 * @return The running queue flag.
 	 */
 	public boolean isRunningQueue() {
@@ -82,7 +78,7 @@ public class WalkingQueue {
 
 	/**
 	 * Sets the run toggled flag.
-	 * 
+	 *
 	 * @param runToggled
 	 *            The run toggled flag.
 	 */
@@ -92,7 +88,7 @@ public class WalkingQueue {
 
 	/**
 	 * Gets the run toggled flag.
-	 * 
+	 *
 	 * @return The run toggled flag.
 	 */
 	public boolean isRunningToggled() {
@@ -101,7 +97,7 @@ public class WalkingQueue {
 
 	/**
 	 * Checks if any running flag is set.
-	 * 
+	 *
 	 * @return <code>true</code. if so, <code>false</code> if not.
 	 */
 	public boolean isRunning() {
@@ -115,22 +111,22 @@ public class WalkingQueue {
 
 	/**
 	 * A method that increases our run energy.
-	 * 
+	 *
 	 * @param energy
 	 *            The energy to set.
 	 */
 	public void setEnergy(double energy) {
 		this.energy = energy;
 		if (this.energy < 100) {
-			if (player.getEnergyRestoreTick() == null) {
-				EnergyRestoreTick energyRestoreTick = new EnergyRestoreTick(player);
-				player.setEnergyRestoreTick(energyRestoreTick);
+			if (entity.getEnergyRestoreTick() == null) {
+				EnergyRestoreTick energyRestoreTick = new EnergyRestoreTick(entity.asPlayer());
+				entity.setEnergyRestoreTick(energyRestoreTick);
 				World.getWorld().schedule(energyRestoreTick);
 			}
 		} else {
-			if (player.getEnergyRestoreTick() != null) {
-				player.getEnergyRestoreTick().stop();
-				player.setEnergyRestoreTick(null);
+			if (entity.getEnergyRestoreTick() != null) {
+				entity.getEnergyRestoreTick().stop();
+				entity.setEnergyRestoreTick(null);
 			}
 		}
 	}
@@ -141,6 +137,12 @@ public class WalkingQueue {
 	public double getEnergy() {
 		return energy;
 	}
+
+	/**
+	 * The queue of waypoints.
+	 */
+	private LinkedList<Point> waypoints = new LinkedList<Point>();
+
 	
 	private final Stopwatch lock = new Stopwatch();
 
@@ -154,8 +156,8 @@ public class WalkingQueue {
 		unlock = seconds;
 		lock.reset();
 
-		if (player.isPlayer() && display) {
-			player.getActionSender().sendWidget(3, seconds);
+		if (entity.isPlayer() && display) {
+			entity.getActionSender().sendWidget(3, seconds);
 		}
 
 		reset();
@@ -226,7 +228,7 @@ public class WalkingQueue {
 		runQueue = false;
 		waypoints.clear();
 		// Set the base point as this Location.
-		waypoints.add(new Point(player.getX(), player.getY(), -1));
+		waypoints.add(new Point(entity.getX(), entity.getY(), -1));
 	}
 
 	/**
@@ -383,7 +385,7 @@ public class WalkingQueue {
 		/*
 		 * Store the teleporting flag.
 		 */
-		boolean teleporting = player.hasTeleportTarget();
+		boolean teleporting = entity.hasTeleportTarget();
 
 		/*
 		 * The points which we are walking to.
@@ -404,31 +406,33 @@ public class WalkingQueue {
 			 * Set the 'teleporting' flag which indicates the player is
 			 * teleporting.
 			 */
-			player.setTeleporting(true);
+			entity.setTeleporting(true);
 
 			/*
 			 * Sets the player's new location to be their target.
 			 */
-			player.setLocation(player.getTeleportTarget());
+			entity.setLocation(entity.getTeleportTarget());
 
 			/*
 			 * Resets the teleport target.
 			 */
-			player.resetTeleportTarget();
+			entity.resetTeleportTarget();
 			
 			/*
 			 * Update the controller after teleporting
 			 */
-			Controller controller = player.getController();
-			if (controller != null) {
-				controller.onStep(player);
+			if (entity.isPlayer()) {
+				Controller controller = entity.asPlayer().getController();
+				if (controller != null) {
+					controller.onStep(entity.asPlayer());
+				}
 			}
 		} else {
 			/*
 			 * If the player isn't teleporting, they are walking (or standing
 			 * still). We get the next direction of movement here.
 			 */
-			Location before = player.getLocation();
+			Location before = entity.getLocation();
 			walkPoint = getNextPoint();
 
 			if (runToggled || runQueue) {
@@ -440,15 +444,18 @@ public class WalkingQueue {
 			 */
 			int walkDir = walkPoint == null ? -1 : walkPoint.dir;
 			int runDir = runPoint == null ? -1 : runPoint.dir;
-			player.getSprites().setSprites(walkDir, runDir);
+			entity.getSprites().setSprites(walkDir, runDir);
 			if (walkPoint != null)
-				player.lastTile = before;
+				entity.lastTile = before;
 		}
-		// Check for region changes.
-		int deltaX = player.getX() - player.getLastKnownRegion().getRegionX() * 8;
-		int deltaY = player.getY() - player.getLastKnownRegion().getRegionY() * 8;
-		if (deltaX < 16 || deltaX >= 88 || deltaY < 16 || deltaY >= 88) {
-			player.setMapRegionChanging(true);
+
+		if (entity.isPlayer()) {
+			// Check for region changes -- player updating only
+			int deltaX = entity.getX() - entity.getLastKnownRegion().getRegionX() * 8;
+			int deltaY = entity.getY() - entity.getLastKnownRegion().getRegionY() * 8;
+			if (deltaX < 16 || deltaX >= 88 || deltaY < 16 || deltaY >= 88) {
+				entity.asPlayer().setMapRegionChanging(true);
+			}
 		}
 		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[processNextMovement] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
@@ -478,10 +485,10 @@ public class WalkingQueue {
 			 */
 			int diffX = WalkingConstants.DIRECTION_DELTA_X[p.dir];
 			int diffY = WalkingConstants.DIRECTION_DELTA_Y[p.dir];
-			player.setLocation(player.getLocation().transform(diffX, diffY, 0));
-			player.updateCoverage(player.getLocation().transform(diffX, diffY, 0)); // TODO coverage 3rd duplicate of region entities :D
-			if (player.getController() != null) {
-				player.getController().onStep(player);
+			entity.setLocation(entity.getLocation().transform(diffX, diffY, 0));
+			entity.updateCoverage(entity.getLocation().transform(diffX, diffY, 0));
+			if (entity.isPlayer() && entity.asPlayer().getController() != null) {
+				entity.asPlayer().getController().onStep(entity.asPlayer());
 			}
 			/*
 			 * And return the direction.
@@ -491,7 +498,7 @@ public class WalkingQueue {
 	}
 
 	public boolean isMoving() {
-		if (player.getSprites().getPrimarySprite() != -1 || player.getSprites().getSecondarySprite() != -1) {
+		if (entity.getSprites().getPrimarySprite() != -1 || entity.getSprites().getSecondarySprite() != -1) {
 			return true;
 		}
 		return false;
@@ -499,8 +506,9 @@ public class WalkingQueue {
 
 	public void walkTo(int x, int y) {
 		reset();
-		addStep(player.getX() + x, player.getY() + y);
+		addStep(entity.getX() + x, entity.getY() + y);
 		finish();
 	}
+
 
 }

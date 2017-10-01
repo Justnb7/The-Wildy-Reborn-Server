@@ -1,7 +1,6 @@
 package com.venenatis.game.model.entity;
 
 import com.google.common.base.Preconditions;
-import com.sun.istack.internal.NotNull;
 import com.venenatis.game.action.ActionQueue;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
@@ -19,10 +18,7 @@ import com.venenatis.game.model.entity.following.Following;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.equipment.PoisonType;
-import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.model.masks.Sprites;
-import com.venenatis.game.model.masks.UpdateFlags;
+import com.venenatis.game.model.masks.*;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.model.masks.forceMovement.ForceMovement;
 import com.venenatis.game.net.packet.ActionSender;
@@ -45,6 +41,12 @@ import java.util.*;
  * @author Jak
  */
 public abstract class Entity {
+
+	protected WalkingQueue walkingQueue = new WalkingQueue(this);
+
+	public WalkingQueue getWalkingQueue() {
+		return walkingQueue;
+	}
 	
 	/**
 	 * The current region.
@@ -255,11 +257,6 @@ public abstract class Entity {
 	 * The last known map region.
 	 */
 	private Location lastKnownRegion = this.getLocation();
-	
-	/**
-	 * Map region changing flag.
-	 */
-	private boolean mapRegionChanging = false;
 
 	/**
 	 * The current animation.
@@ -270,25 +267,6 @@ public abstract class Entity {
 	 * The current graphic.
 	 */
 	private Graphic currentGraphic;
-	
-	/**
-	 * Checks if the map region has changed in this cycle.
-	 * 
-	 * @return The map region changed flag.
-	 */
-	public boolean isMapRegionChanging() {
-		return mapRegionChanging;
-	}
-
-	/**
-	 * Sets the map region changing flag.
-	 * 
-	 * @param mapRegionChanging
-	 *            The map region changing flag.
-	 */
-	public void setMapRegionChanging(boolean mapRegionChanging) {
-		this.mapRegionChanging = mapRegionChanging;
-	}
 	
 	/**
 	 * The teleportation target.

@@ -2,7 +2,6 @@ package com.venenatis.game.world.pathfinder;
 
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.player.Player;
 
 public interface PathFinder {
 	
@@ -43,21 +42,16 @@ public interface PathFinder {
 		int srcY = base.localY_hyperion();
 		int destX = destination.localX_formatted_hyperion(base);
 		int destY = destination.localY_formatted_hyperion(base);
-		PathState state = pathFinder.findPath(mob, target, mob.getLocation(), srcX, srcY, destX, destY, 1, mob.isPlayer() && ((Player)mob).getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
+		PathState state = pathFinder.findPath(mob, target, mob.getLocation(), srcX, srcY, destX, destY, 1, mob.isPlayer() && mob.getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
 		if (state != null && addToWalking) {
-			if (mob.isPlayer()) {
-				Player p = (Player)mob;
-				p.getWalkingQueue().reset();
-				for (BasicPoint step : state.getPoints()) {
-					//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
-					//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
-					p.getWalkingQueue().addStep(step.getX(), step.getY());
-				}
-				p.getWalkingQueue().finish();
-				//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
-			} else {
-				System.err.println("NPCs cannot use PathFinder. Why do you need it? ");
+			mob.getWalkingQueue().reset();
+			for (BasicPoint step : state.getPoints()) {
+				//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
+				//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
+				mob.getWalkingQueue().addStep(step.getX(), step.getY());
 			}
+			mob.getWalkingQueue().finish();
+			//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
 		}
 		return state;
 	}

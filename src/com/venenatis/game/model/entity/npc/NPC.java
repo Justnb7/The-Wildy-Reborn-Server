@@ -14,7 +14,6 @@ import com.venenatis.game.net.packet.ActionSender;
 import com.venenatis.game.task.impl.NPCDeathTask;
 import com.venenatis.game.util.Location3D;
 import com.venenatis.game.util.Stopwatch;
-import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
@@ -33,7 +32,6 @@ public class NPC extends Entity {
 	
 	public NPC(int id, Location spawn, int dir) {
 		super(EntityType.NPC);
-		direction = dir;
 		if (spawn != null) {
 			setLocation(spawn);
 			asNpc().spawnTile = spawn;
@@ -140,11 +138,6 @@ public class NPC extends Entity {
 	}
 	
 	private String npcName;
-
-	/**
-	 * Npc direction of movement -- used in Updating
-	 */
-	public int direction;
 	
 	/**
 	 * Representing the npc id
@@ -293,7 +286,7 @@ public class NPC extends Entity {
 
 	@Override
 	public boolean moving() {
-		return moveX != 0 || moveY != 0;
+		return walkingQueue.isMoving();
 	}
 
 	@Override
@@ -405,9 +398,6 @@ public class NPC extends Entity {
 
 	public void clearUpdateFlags() {
 		this.reset();
-		moveX = 0;
-		moveY = 0;
-		direction = -1;
 		this.removeAttribute("teleporting");
 		this.getUpdateFlags().primary = null;
 		this.getUpdateFlags().secondary = null;
@@ -502,6 +492,8 @@ public class NPC extends Entity {
 			if (spawnedByNoLongerAvailable && getId() != 3127) {
 				World.getWorld().unregister(this);
 			}
+
+			getWalkingQueue().processNextMovement();
 			updateCoverage(getLocation());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -528,30 +520,6 @@ public class NPC extends Entity {
 		return (int) Math.sqrt(Math.pow(getX() - pointX, 2) + Math.pow(getY() - pointY, 2));
 	}
 
-	public int walkX, walkY;
-
-	public void getNextNPCMovement(NPC npc) {
-		if (direction != -1) {
-			return;
-		}
-		direction = getNextWalkingDirection();
-	}
-
-	public int getNextWalkingDirection() {
-		int dir = Utility.direction(getX(), getY(), (getX() + moveX), (getY() + moveY));
-		if (dir == -1)
-			return -1;
-		dir >>= 1;
-		setLocation(getLocation().transform(moveX, moveY));
-		return dir;
-	}
-
-	/**
-	 * 1 or -1 for the change in xy axis used in UPDATING -- cannot be removed
-	 */
-	public int moveX, moveY;
-
-	
 	public boolean distance(int npcX, int npcY, int playerX, int playerY, int distance) {
 		return Math.sqrt(Math.pow(npcX - playerX, 2) + Math.pow(npcY - playerY, 2)) <= distance;
 	}

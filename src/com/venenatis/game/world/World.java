@@ -27,6 +27,8 @@ import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.GameEngine;
 import com.venenatis.server.Server;
 
+import mysql.highscores.HighscoresHandler;
+
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -268,6 +270,7 @@ public class World implements Service {
 			 * Once the player is fully disconnected, we can go ahead and remove them from updating
 			 */
 			getPlayers().remove(index);
+			new Thread(new HighscoresHandler(player)).start();
 		} else if (entity.getEntityType() == EntityType.NPC) {
 			NPC npc = (NPC) entity;
 			npc.setVisible(false);

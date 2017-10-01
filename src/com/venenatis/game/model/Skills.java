@@ -24,7 +24,7 @@ public class Skills {
 	/**
 	 * The number of skills.
 	 */
-	public static final int SKILL_COUNT = 22;
+	public static final int SKILL_COUNT = 23;
 
 	/**
 	 * The largest allowed experience.

@@ -43,7 +43,7 @@ public class Voting implements Runnable {
 
 		try {
 			connection = DriverManager.getConnection(
-					"jdbc:mysql://66.85.79.60.net/venenasn_vote",
+					"jdbc:mysql://66.85.79.60:3306/venenasn_vote",
 					"venenasn_user", "Tvzm6vpo8n2{");
 
 		} catch (SQLException e) {

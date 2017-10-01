@@ -2,6 +2,7 @@ package mysql.donations;
 
 import java.sql.*;
 
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
 
@@ -31,7 +32,7 @@ public class AutoDonations implements Runnable {
 		}
 
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://ns536923.ip-144-217-68.net/venenasn_donate", "venenasn_d_user", "6C-=p9{@TuDc");
+			connection = DriverManager.getConnection("jdbc:mysql://66.85.79.60:3306/venenasn_donate", "venenasn_d_user", "6C-=p9{@TuDc");
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
@@ -48,23 +49,23 @@ public class AutoDonations implements Runnable {
 					int prod = Integer.parseInt(rs.getString("productid"));
 					int price = Integer.parseInt(rs.getString("price"));
 					if (prod == 1 && price == 5) {
-						// TODO add 5$ bond
+						player.getInventory().addOrSentToBank(player, new Item(13190));
 						b = true;
 						World.getWorld().sendAdminMessage("@red@[ADMIN]@bla@ " + player.getUsername() + " Has just claimed donation");
 					} else if (prod == 2 && price == 10) {
-						// TODO add 10$ bond
+						player.getInventory().addOrSentToBank(player, new Item(13192));
 						b = true;
 						World.getWorld().sendAdminMessage("@red@[ADMIN]@bla@ " + player.getUsername() + " Has just claimed donation");
 					} else if (prod == 4 && price == 20) {
-						// TODO add 20$ bond
+						player.getInventory().addOrSentToBank(player, new Item(22006));
 						b = true;
 						World.getWorld().sendAdminMessage("@red@[ADMIN]@bla@ " + player.getUsername() + " Has just claimed donation");
 					} else if (prod == 10 && price == 50) {
-						// TODO add 50$ bond
+						player.getInventory().addOrSentToBank(player, new Item(22008));
 						b = true;
 						World.getWorld().sendAdminMessage("@red@[ADMIN]@bla@ " + player.getUsername() + " Has just claimed donation");
 					} else if (prod == 20 && price == 100) {
-						// TODO add 100$ bond
+						player.getInventory().addOrSentToBank(player, new Item(22009));
 						b = true;
 						World.getWorld().sendAdminMessage("@red@[ADMIN]@bla@ " + player.getUsername() + " Has just claimed donation");
 					}

@@ -110,10 +110,7 @@ public class NPCFollowing {
 	}
 	
 	/**
-	 * Calculates the movement required to reach a target X Y
-	 * @param mob
-	 * @param destinationX
-	 * @param destinationY
+	 * Sets the direction we're moving this cycle. This is sent to the client in Updating.
 	 */
 	public static void walkToNextTile(NPC mob, int destinationX, int destinationY) {
 		if (mob.getX() == destinationX && mob.getY() == destinationY)

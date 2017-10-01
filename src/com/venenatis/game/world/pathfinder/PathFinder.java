@@ -56,7 +56,7 @@ public interface PathFinder {
 				p.getWalkingQueue().finish();
 				//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
 			} else {
-				System.err.println("HELP WHO");
+				System.err.println("NPCs cannot use PathFinder. Why do you need it? ");
 			}
 		}
 		return state;

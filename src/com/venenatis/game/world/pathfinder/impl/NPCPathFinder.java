@@ -3,7 +3,6 @@ package com.venenatis.game.world.pathfinder.impl;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.Entity;
-import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.pathfinder.Directions;
 import com.venenatis.game.world.pathfinder.region.Coverage;
@@ -54,12 +53,12 @@ public class NPCPathFinder {
 					successful = true;
 					mob.updateCoverage(next.tile);
 					if (mob.isPlayer()) {
-						((Player)mob).getWalkingQueue().addStep(next.tile.getX(), next.tile.getY());
-						((Player)mob).getWalkingQueue().finish();
-					} else {
-						((NPC)mob).moveX = next.tile.getX();
-						((NPC)mob).moveY = next.tile.getY();
-						((NPC)mob).getNextNPCMovement(((NPC)mob));
+						mob.asPlayer().getWalkingQueue().addStep(next.tile.getX(), next.tile.getY());
+						mob.asPlayer().getWalkingQueue().finish();
+					} else if (mob.isNPC()) {
+						mob.asNpc().moveX = next.tile.getX();
+						mob.asNpc().moveY = next.tile.getY();
+						mob.asNpc().getNextNPCMovement(mob.asNpc());
 					}
 					// hyperion
 					//mob.getWalkingQueue().addStep(next.tile.getX(), next.tile.getY());

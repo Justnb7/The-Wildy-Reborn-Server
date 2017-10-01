@@ -144,7 +144,7 @@ public class NPC extends Entity {
 	public int totalAttacks;
 
 	/**
-	 * Npc direction
+	 * Npc direction of movement -- used in Updating
 	 */
 	public int direction;
 	
@@ -540,8 +540,7 @@ public class NPC extends Entity {
 	}
 
 	public int getNextWalkingDirection() {
-		int dir;
-		dir = Utility.direction(getX(), getY(), (getX() + moveX), (getY() + moveY));
+		int dir = Utility.direction(getX(), getY(), (getX() + moveX), (getY() + moveY));
 		if (dir == -1)
 			return -1;
 		dir >>= 1;

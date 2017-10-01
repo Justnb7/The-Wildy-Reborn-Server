@@ -140,8 +140,6 @@ public class NPC extends Entity {
 	}
 	
 	private String npcName;
-	
-	public int totalAttacks;
 
 	/**
 	 * Npc direction of movement -- used in Updating

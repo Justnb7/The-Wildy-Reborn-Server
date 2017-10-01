@@ -291,10 +291,6 @@ public class NpcCombat {
 			boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
 			AbstractBossCombat boss_cb = AbstractBossCombat.get(npc.getId());
 			if (isBoss) {
-				if (npc.getId() >= 2042 && npc.getId() <= 2044) {
-					npc.totalAttacks++;
-					npc.sendForcedMessage(""+npc.totalAttacks);
-				}
 				boss_cb.execute(npc, player);
 				// don't do any code below this, boss script handles all.
 			} else {

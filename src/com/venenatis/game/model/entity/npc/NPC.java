@@ -140,8 +140,6 @@ public class NPC extends Entity {
 	}
 	
 	private String npcName;
-	
-	public int totalAttacks;
 
 	/**
 	 * Npc direction of movement -- used in Updating
@@ -163,7 +161,7 @@ public class NPC extends Entity {
 	 */
 	public int spawnDirection;
 	
-	public int oldIndex, underAttackBy;
+	public int underAttackBy;
 
 	public Entity spawnedBy;
 

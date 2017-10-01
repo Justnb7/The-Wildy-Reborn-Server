@@ -163,7 +163,7 @@ public class NPC extends Entity {
 	 */
 	public int spawnDirection;
 	
-	public int oldIndex, underAttackBy;
+	public int underAttackBy;
 
 	public Entity spawnedBy;
 

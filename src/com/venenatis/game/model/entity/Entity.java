@@ -1,6 +1,7 @@
 package com.venenatis.game.model.entity;
 
 import com.google.common.base.Preconditions;
+import com.sun.istack.internal.NotNull;
 import com.venenatis.game.action.ActionQueue;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;

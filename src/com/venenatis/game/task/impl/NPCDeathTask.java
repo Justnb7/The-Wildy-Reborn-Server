@@ -113,7 +113,7 @@ public class NPCDeathTask extends Task {
     public static void setNpcToInvisible(NPC npc) {
         npc.removeFromTile();
         npc.setVisible(false);
-        npc.setLocation(Location.create(npc.makeX, npc.makeY, npc.getZ()));
+        npc.setLocation(npc.spawnTile);
         npc.setHitpoints(npc.getMaxHitpoints());
         
         npc.getCombatState().getDamageMap().resetDealtDamage();
@@ -182,9 +182,8 @@ public class NPCDeathTask extends Task {
         npc.getCombatState().setDead(false);
         if(npc.getId() == 5779) {
         	 npc.setOnTile(1762, 5184, 0);
-        	 npc.makeX = 1762;
-        	 npc.makeY = 5184;
         	 npc.setLocation(new Location(1762, 5184, 0));
+        	 npc.spawnTile = npc.getLocation();
         } else {
         	npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
         }

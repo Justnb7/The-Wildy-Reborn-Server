@@ -162,6 +162,11 @@ public class NPC extends Entity {
 	 The tile we spawn on
 	 */
 	public Location spawnTile;
+
+	/**
+	 * Direct the Npc faces when spawned.
+	 */
+	public int spawnDirection;
 	
 	public int spawnedBy, oldIndex, underAttackBy;
 
@@ -503,22 +508,6 @@ public class NPC extends Entity {
 			updateCoverage(getLocation());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void handleFacing() {
-		if (strollRange == 2) {
-			face(new Location(getX() + 1, getY()));
-			// face east
-		} else if (strollRange == 3) {
-			face(new Location(getX(), getY() - 1));
-			// face south
-		} else if (strollRange == 4) {
-			face(new Location(getX() - 1, getY()));
-			// face west
-		} else if (strollRange == 5) {
-			face(new Location(getX(), getY() + 1));
-			// face north
 		}
 	}
 

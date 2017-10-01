@@ -1,7 +1,5 @@
 package com.venenatis.game.model.entity.npc.updating;
 
-import java.util.Iterator;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
@@ -10,6 +8,8 @@ import com.venenatis.game.model.masks.UpdateFlags;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.world.World;
+
+import java.util.Iterator;
 
 /**
  * Handles updating all of the npcs for a single {@link Player}
@@ -118,7 +118,6 @@ public class NpcUpdating {
 				 * Add the npc in the packet.
 				 */
 				player.getLocalNPCs().add(npc);
-				npc.handleFacing();
 				addNewNPC(player, npc, buffer);
 				updateNPC(npc, updateBlock);
 				added++;
@@ -285,7 +284,7 @@ public class NpcUpdating {
 		int xPos = npc.getX() - player.getX();
 		buffer.writeBits(5, yPos);
 		buffer.writeBits(5, xPos);
-		buffer.writeBits(1, 0);
+		buffer.writeBits(1, npc.spawnDirection);
 		buffer.writeBits(14, npc.getId());
 		buffer.writeBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 	}

@@ -1,10 +1,10 @@
 package com.venenatis.game.world.pathfinder;
 
-import java.awt.*;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.world.pathfinder.impl.PrimitivePathFinder;
+
+import java.awt.*;
 
 public class Directions {
 	
@@ -30,7 +30,7 @@ public class Directions {
 	        }
 	    }
 
-	    public static enum NormalDirection {
+	    public enum NormalDirection {
 	        EAST(4, 2), NORTH(6, 0), NORTH_EAST(7, 1), NORTH_WEST(5, 7), SOUTH(1, 4), SOUTH_EAST(2, 3), SOUTH_WEST(0, 5), WEST(3, 6);
 
 	        public static NormalDirection forIntValue(int value) {

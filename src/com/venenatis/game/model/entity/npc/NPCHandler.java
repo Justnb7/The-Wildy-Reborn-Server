@@ -89,7 +89,7 @@ public final class NPCHandler {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
 		npc.strollRange = walkingType;
-		npc.spawnedBy = player.getIndex();
+		npc.spawnedBy = player;
 		npc.face(player.getLocation());
 		if (attacksEnemy) {
 			if (player != null) {

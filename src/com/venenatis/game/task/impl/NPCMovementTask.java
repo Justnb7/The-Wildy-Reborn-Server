@@ -7,7 +7,7 @@ import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
 /**
- * An {@link EventListener} implementation that will update an walking npc.
+ *
  * 
  * @author Patrick van Elderen
  */
@@ -43,8 +43,9 @@ public final class NPCMovementTask extends Task {
 				if (npc.getDefinition() != null && npc.strollRange > 5) {
 					walkingDistance = npc.strollRange;
 				}
-				
-				if (npc.spawnedBy == 0) {
+
+				// Npcs who are linked to a player don't walk home when out of distance. They follow forever.
+				if (npc.spawnedBy == null) {
 					if (!npc.getLocation().withinDistance(npc.spawnTile, walkingDistance)) {
 						npc.walkingHome = true;
 					}

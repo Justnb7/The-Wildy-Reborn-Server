@@ -168,7 +168,17 @@ public class NPC extends Entity {
 	 */
 	public int spawnDirection;
 	
-	public int spawnedBy, oldIndex, underAttackBy;
+	public int oldIndex, underAttackBy;
+
+	public Entity spawnedBy;
+
+	public boolean spawnedByMatches(Entity other) {
+		return spawnedBy == other;
+	}
+
+	public boolean spawnedByPresentAndWrong(Entity other) {
+		return spawnedBy != null && spawnedBy != other;
+	}
 
 	/**
 	 * From what I can tell, each cycle npcs have a 30% chance to random walk.
@@ -436,7 +446,6 @@ public class NPC extends Entity {
 	@Override
 	public void process() {
 		try {
-			Player spawnedByPlr = World.getWorld().getPlayers().get(spawnedBy);
 			// none yet again duplicate INTs by PI
 
 			if (following().hasFollowTarget() && this.getHitpoints() < 1 && !getCombatState().isDead()) {
@@ -463,8 +472,8 @@ public class NPC extends Entity {
 			
 			if (npcId == 6615) {
 				if (this.getHitpoints() <= 100 && !hasAttribute("scorpia_minion")) {
-					NPC min1 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
-					NPC min2 = spawnBossMinion(spawnedByPlr, 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
+					NPC min1 = spawnBossMinion(spawnedBy.asPlayer(), 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
+					NPC min2 = spawnBossMinion(spawnedBy.asPlayer(), 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
 					// attributes not used atm
 					this.setAttribute("min1", min1);
 					min1.setAttribute("boss", this);
@@ -500,9 +509,10 @@ public class NPC extends Entity {
 			 */
 			NpcCombat.handleCombatTimer(this);
 
-			if (spawnedBy > 0 && (World.getWorld().getPlayers().get(spawnedBy) == null || World.getWorld().getPlayers().get(spawnedBy).getZ() != getZ() 
-					|| World.getWorld().getPlayers().get(spawnedBy).getCombatState().isDead() 
-					|| !spawnedByPlr.goodDistance(getX(), getY(), World.getWorld().getPlayers().get(spawnedBy).getX(), World.getWorld().getPlayers().get(spawnedBy).getY(), 20)) && getId() != 3127) {
+			boolean spawnedByNoLongerAvailable = spawnedBy != null && (spawnedBy.getIndex() < 1 || spawnedBy.getZ() != getZ() || spawnedBy.getCombatState().isDead()
+			|| spawnedBy.getLocation().distance(getLocation()) > 20);
+
+			if (spawnedByNoLongerAvailable && getId() != 3127) {
 				World.getWorld().unregister(this);
 			}
 			updateCoverage(getLocation());

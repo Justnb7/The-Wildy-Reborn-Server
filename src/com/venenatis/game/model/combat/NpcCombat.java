@@ -196,7 +196,7 @@ public class NpcCombat {
 			return false;
 		}
 
-		if (npc.spawnedBy != player.getIndex() && npc.spawnedBy > 0) {
+		if (npc.spawnedByPresentAndWrong(player)) {
 			Combat.resetCombat(player);
 			player.message("This monster was not spawned for you.");
 			return false;

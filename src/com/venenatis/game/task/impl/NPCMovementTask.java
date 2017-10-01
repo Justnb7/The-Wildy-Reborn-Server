@@ -5,7 +5,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
-import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
+import com.venenatis.game.world.pathfinder.impl.SizedPathFinder;
 
 /**
  *
@@ -61,7 +61,7 @@ public final class NPCMovementTask extends Task {
 				npc.walkingHome = false;
 				npc.randomWalk = true;
 			} else if (npc.walkingHome) {
-				npc.doPath(new DefaultPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());
+				npc.doPath(new SizedPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());
 			}
 		} else if (npc.randomWalk && (npc.getDefinition() == null || npc.strollRange == 1) && !npc.isInteracting()) {
 
@@ -75,7 +75,7 @@ public final class NPCMovementTask extends Task {
 				while (toTile == null || npc.spawnTile.distance(toTile) > npc.strollRange)
 					toTile = npc.getLocation().transform(-strollRange + (2 * strollRange), -strollRange + (2*strollRange));
 
-				npc.doPath(new DefaultPathFinder(), toTile.getX(), toTile.getY());
+				npc.doPath(new SizedPathFinder(), toTile.getX(), toTile.getY());
 			}
 		}
 	}

@@ -5,7 +5,7 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
+import com.venenatis.game.world.pathfinder.impl.SizedPathFinder;
 
 public class NPCFollowing {
 	
@@ -62,7 +62,7 @@ public class NPCFollowing {
 		}
 		boolean sameSpot = npc.getX() == target.getX() && npc.getY() == target.getY() && npc.getSize() == 1;
 		if (sameSpot) {
-			npc.doPath(new DefaultPathFinder(), targX, targY-1);
+			npc.doPath(new SizedPathFinder(), targX, targY-1);
 			return;
 		}
 
@@ -97,7 +97,7 @@ public class NPCFollowing {
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
 			npc.face(target.getLocation());
-			npc.doPath(new DefaultPathFinder(), targX, targY); // update walking queue to new target pos
+			npc.doPath(new SizedPathFinder(), targX, targY); // update walking queue to new target pos
 			
 		} else {
 			// Reset following

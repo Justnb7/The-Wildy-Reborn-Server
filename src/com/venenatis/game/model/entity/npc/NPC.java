@@ -163,7 +163,14 @@ public class NPC extends Entity {
 	 */
 	public Location spawnTile;
 	
-	public int spawnedBy, oldIndex, underAttackBy, walking_type;
+	public int spawnedBy, oldIndex, underAttackBy;
+
+	/**
+	 * From what I can tell, each cycle npcs have a 30% chance to random walk.
+	 * This 'random walking' -- which I call 'strolling' -- simply sets the target tile to myPosition.getX + strollRange
+	 * which the npc will walk towards.
+	 */
+	public int strollRange;
 	
 	/**
 	 * The hitpoints of the npc
@@ -402,7 +409,7 @@ public class NPC extends Entity {
 	
 	public NPC spawnBossMinion(Player p, int id, Location location, int walkType, boolean attackPlayer) {
 		NPC npc = new NPC(id, location, walkType);
-		npc.walking_type = walkType;
+		npc.strollRange = walkType;
 		if (attackPlayer) {
 			if (p != null) {
 				npc.targetId = p.getIndex();
@@ -500,16 +507,16 @@ public class NPC extends Entity {
 	}
 
 	public void handleFacing() {
-		if (walking_type == 2) {
+		if (strollRange == 2) {
 			face(new Location(getX() + 1, getY()));
 			// face east
-		} else if (walking_type == 3) {
+		} else if (strollRange == 3) {
 			face(new Location(getX(), getY() - 1));
 			// face south
-		} else if (walking_type == 4) {
+		} else if (strollRange == 4) {
 			face(new Location(getX() - 1, getY()));
 			// face west
-		} else if (walking_type == 5) {
+		} else if (strollRange == 5) {
 			face(new Location(getX(), getY() + 1));
 			// face north
 		}
@@ -553,8 +560,10 @@ public class NPC extends Entity {
 		setLocation(getLocation().transform(moveX, moveY));
 		return dir;
 	}
-	
-	// The DIRECTION moved in x/y axis this cycle. used in updating.
+
+	/**
+	 * 1 or -1 for the change in xy axis used in UPDATING
+	 */
 	public int moveX, moveY;
 
 	

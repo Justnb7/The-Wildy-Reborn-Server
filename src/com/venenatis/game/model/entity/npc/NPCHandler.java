@@ -77,7 +77,7 @@ public final class NPCHandler {
 
 		NPC npc = new NPC(id, location, walkingType);
 		
-        npc.walking_type = walkingType;
+        npc.strollRange = walkingType;
 		if (World.getWorld().register(npc)) {
 			// successfully added to game world
 			handleForGroup(npc);
@@ -88,7 +88,7 @@ public final class NPCHandler {
 	public NPC spawn(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
 		NPC npc = new NPC(id, spawn, walkingType);
 		
-		npc.walking_type = walkingType;
+		npc.strollRange = walkingType;
 		npc.spawnedBy = player.getIndex();
 		npc.face(player.getLocation());
 		if (attacksEnemy) {

@@ -40,8 +40,8 @@ public final class NPCMovementTask extends Task {
 				//System.out.println(npc.getDefinition().getName());
 				npc.targetId = 0;
 				int walkingDistance = 18;
-				if (npc.getDefinition() != null && npc.walking_type > 5) {
-					walkingDistance = npc.walking_type;
+				if (npc.getDefinition() != null && npc.strollRange > 5) {
+					walkingDistance = npc.strollRange;
 				}
 				
 				if (npc.spawnedBy == 0) {
@@ -55,8 +55,8 @@ public final class NPCMovementTask extends Task {
 				} else if (npc.walkingHome) {
 					NPCFollowing.walkToNextTile(npc, npc.spawnTile.getX(), npc.spawnTile.getY());
 				}
-			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.walking_type == 1) && !npc.isInteracting()) {
-				if (npc.walking_type == 1337 && ((npc.getX() != npc.walkX) || (npc.getY() != npc.walkY))) {
+			} else if (npc.randomWalk && (npc.getDefinition() == null || npc.strollRange == 1) && !npc.isInteracting()) {
+				if (npc.strollRange == 1337 && ((npc.getX() != npc.walkX) || (npc.getY() != npc.walkY))) {
 					npc.moveX = getMove(npc.getX(), npc.walkX);
 					npc.moveY = getMove(npc.getY(), npc.walkY);
 					npc.getNextNPCMovement(npc);
@@ -67,39 +67,39 @@ public final class NPCMovementTask extends Task {
 					int MoveX = 0;
 					int MoveY = 0;
 					int Rnd = Utility.getRandom(9);
-					int walking_type = npc.getDefinition() == null ? 1 : npc.walking_type;
+					int strollRange = npc.getDefinition() == null ? 1 : npc.strollRange;
 					switch (Rnd) {
 					case 1:
-						MoveX = walking_type;
-						MoveY = walking_type;
+						MoveX = strollRange;
+						MoveY = strollRange;
 						break;
 					case 2:
-						MoveX = -walking_type;
+						MoveX = -strollRange;
 						break;
 					case 3:
-						MoveY = -walking_type;
+						MoveY = -strollRange;
 						break;
 					case 4:
-						MoveX = walking_type;
+						MoveX = strollRange;
 						break;
 					case 5:
-						MoveY = walking_type;
+						MoveY = strollRange;
 						break;
 					case 6:
-						MoveX = -walking_type;
-						MoveY = -walking_type;
+						MoveX = -strollRange;
+						MoveY = -strollRange;
 						break;
 					case 7:
-						MoveX = -walking_type;
-						MoveY = walking_type;
+						MoveX = -strollRange;
+						MoveY = strollRange;
 						break;
 					case 8:
-						MoveX = walking_type;
-						MoveY = -walking_type;
+						MoveX = strollRange;
+						MoveY = -strollRange;
 						break;
 					}
 
-					if (MoveX == walking_type) {
+					if (MoveX == strollRange) {
 						if (npc.getX() + MoveX < npc.spawnTile.getX() + 1) {
 							npc.moveX = MoveX;
 						} else {
@@ -107,7 +107,7 @@ public final class NPCMovementTask extends Task {
 						}
 
 					}
-					if (MoveX == -walking_type) {
+					if (MoveX == -strollRange) {
 						if (npc.getX() - MoveX > npc.spawnTile.getX() - 1) {
 							npc.moveX = MoveX;
 						} else {
@@ -115,7 +115,7 @@ public final class NPCMovementTask extends Task {
 						}
 
 					}
-					if (MoveY == walking_type) {
+					if (MoveY == strollRange) {
 						if (npc.getY() + MoveY < npc.spawnTile.getY() + 1) {
 							npc.moveY = MoveY;
 						} else {
@@ -123,7 +123,7 @@ public final class NPCMovementTask extends Task {
 						}
 
 					}
-					if (MoveY == -walking_type) {
+					if (MoveY == -strollRange) {
 						if (npc.getY() - MoveY > npc.spawnTile.getY() - 1) {
 							npc.moveY = MoveY;
 						} else {

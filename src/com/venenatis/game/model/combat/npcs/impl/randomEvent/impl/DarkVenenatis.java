@@ -8,7 +8,7 @@ public class DarkVenenatis extends NPC {
 	
 	public DarkVenenatis(Location spawn) {
 		super(8017, spawn, 1);
-		this.walking_type = 1;
+		this.strollRange = 1;
 		World.getWorld().register(this);
 	}
 	

@@ -19,6 +19,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
+import com.venenatis.game.content.activity.minigames.impl.warriors_guild.WarriorsGuild;
 import com.venenatis.game.content.activity.trade.TradeContainer;
 import com.venenatis.game.content.activity.trade.TradeSession;
 import com.venenatis.game.content.activity.trade.TradeSession.TradeStage;
@@ -3420,4 +3421,15 @@ public class Player extends Entity {
 	public Stopwatch getSqlTimer() {
         return sqlTimer;
     }
+	
+	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);
+
+	/**
+	 * The single {@link WarriorsGuild} instance for this player
+	 * 
+	 * @return warriors guild
+	 */
+	public WarriorsGuild getWarriorsGuild() {
+		return warriorsGuild;
+	}
 }

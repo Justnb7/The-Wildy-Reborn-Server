@@ -31,6 +31,10 @@ public class NpcInteraction {
 
 		switch (npc.getId()) {
 		
+		case 2461:
+			player.getWarriorsGuild().handleDoor();
+			break;
+		
 		case 6481:
 			player.getDialogueManager().start("MAC", player);
 			break;

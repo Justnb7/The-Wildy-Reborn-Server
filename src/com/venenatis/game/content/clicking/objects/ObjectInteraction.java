@@ -185,6 +185,26 @@ public class ObjectInteraction {
 		
 		switch(objectId) {
 		
+		case 16671:
+			player.setTeleportTarget(new Location(2840, 3539, 2));
+			break;
+
+		case 24306:
+		case 24309:
+			if (player.getZ() == 2) {
+				player.getWarriorsGuild().handleDoor();
+				return;
+			}
+			if (player.getZ() == 0) {
+				if (player.getX() == 2855 || player.getX() == 2854) {
+					if (player.getY() == 3546)
+						player.setTeleportTarget(new Location(player.getX(), player.getY() - 1, 0));
+					else if (player.getY() == 3545)
+						player.setTeleportTarget(new Location(player.getX(), player.getY() + 1, 0));
+				}
+			}
+			break;
+		
 		case 27282:
 			BossRewardChest.open(player, location);
 			break;

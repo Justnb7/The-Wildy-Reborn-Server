@@ -28,6 +28,7 @@ import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.util.Location3D;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.ground_item.GroundItem;
 import com.venenatis.game.world.ground_item.GroundItemHandler;
@@ -131,7 +132,7 @@ public class DropManager {
 	 * @param npc
 	 *            the npc dropping the items
 	 */
-	public void create(Player player, NPC npc, Location location, int repeats) {
+	public void create(Player player, NPC npc, Location3D location, int repeats) {
 		
 		Optional<TableGroup> group = groups.values().stream().filter(g -> g.getNpcIds().contains(npc.getId())).findFirst();
 		
@@ -141,7 +142,7 @@ public class DropManager {
 			
 			if(Area.inWilderness(player) && Utility.random(100) == 1) {
 				player.getActionSender().sendMessage("@pur@You've received a goodie bag for risking your life in the wilderness.");
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(22017, 1), location, player));
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(22017, 1), new Location(location.getX(), location.getY(), player.getZ()), player));
 			}
 			
 			boolean drop_below_player = npc.getId() == 492 || npc.getId() == 494;
@@ -153,7 +154,7 @@ public class DropManager {
 				if (drop_below_player) {
 					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), player.getLocation(), player));
 				} else {
-					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), location, player));
+					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), new Location(location.getX(), location.getY(), player.getZ()), player));
 				}
 				//player.debug(String.format("drop %s on location %s%n", new Item(item.getId(), item.getAmount()), location));
 			}
@@ -163,7 +164,7 @@ public class DropManager {
 			 */
 			if (Utility.random(115) == 1) {
 				player.getActionSender().sendMessage("@pur@You sense a crystal key being dropped to the ground.");
-				GroundItemHandler.createGroundItem(new GroundItem(new Item(989, 1), location, player));
+				GroundItemHandler.createGroundItem(new GroundItem(new Item(989, 1), new Location(location.getX(), location.getY(), player.getZ()), player));
 			}
 		});
 	}

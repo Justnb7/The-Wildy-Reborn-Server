@@ -1,6 +1,8 @@
 package com.venenatis.game.task.impl;
 
+import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.KillTracker.KillEntry;
+import com.venenatis.game.content.activity.minigames.impl.warriors_guild.AnimatedArmour;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
 import com.venenatis.game.content.skills.slayer.SuperiorMonster;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
@@ -14,6 +16,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.util.Location3D;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
 
@@ -199,7 +202,31 @@ public class NPCDeathTask extends Task {
     		return;
     	}
     	
+    	int x = npc.getX();
+    	int y = npc.getY();
+    	int z = npc.getZ();
+    	
 		if (npc != null) {
+			
+			/**
+			 * Warriors guild
+			 */
+			killer.getWarriorsGuild().dropDefender(npc.getLocation());
+			if (AnimatedArmour.isAnimatedArmourNpc(npc.getId())) {
+
+				if (npc.getX() == 2851 && npc.getY() == 3536) {
+					x = 2851;
+					y = 3537;
+					AnimatedArmour.dropTokens(killer, npc.getId(), new Location(npc.getX(), npc.getY() + 1, 0));
+				} else if (npc.getX() == 2857 && npc.getY() == 3536) {
+					x = 2857;
+					y = 3537;
+					AnimatedArmour.dropTokens(killer, npc.getId(), new Location(npc.getX(), npc.getY() + 1, 0));
+				} else {
+					AnimatedArmour.dropTokens(killer, npc.getId(),new Location(npc.getX(), npc.getY(), 0));
+				}
+			}
+			
 			/* Add kills to tracker */
 			for (int id : killer.getKillTracker().BOSSES) {
 				//If the npc has the same id as the boss, we can track him
@@ -213,9 +240,14 @@ public class NPCDeathTask extends Task {
 			if (boss != null) {
 				boss.dropLoot(killer, npc);
 			}
+			
+			Location3D location = new Location3D(x, y, z);
 			// get the drop table
 			int amountOfDrops = 1;
-			Server.getDropManager().create(killer, npc, npc.getLocation(), amountOfDrops);
+			if (Constants.DOUBLE_DROPS) {
+				amountOfDrops++;
+			}
+			Server.getDropManager().create(killer, npc, location, amountOfDrops);
 		}
 	}
 

@@ -1,0 +1,138 @@
+package com.venenatis.game.content.activity.minigames.impl.warriors_guild;
+
+import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Item;
+import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.task.Task;
+import com.venenatis.game.world.World;
+import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.ground_item.GroundItemHandler;
+import com.venenatis.server.Server;
+
+/**
+ * 
+ * @author Jason http://www.rune-server.org/members/jason
+ * @date Oct 20, 2013
+ */
+public class AnimatedArmour {
+	
+	public static boolean animator_west = false;
+
+	public enum Armour {
+
+		BRONZE(2450, 1155, 1117, 1075, 5), 
+		IRON(2451, 1153, 1115, 1067, 10), 
+		STEEL(2452, 1157, 1119, 1069, 15), 
+		MITHRIL(2454, 1159, 1121, 1071, 50), 
+		ADAMANT(2455, 1161, 1123, 1073, 60), 
+		RUNE(2456, 1163, 1127, 1079, 80);
+
+		int npcId, helm, platebody, platelegs, tokens;
+
+		Armour(int npcId, int helm, int platebody, int platelegs, int tokens) {
+			this.npcId = npcId;
+			this.helm = helm;
+			this.platebody = platebody;
+			this.platelegs = platelegs;
+			this.tokens = tokens;
+		}
+
+		public int getNpcId() {
+			return npcId;
+		}
+
+		public int getHelmId() {
+			return helm;
+		}
+
+		public int getPlatebodyId() {
+			return platebody;
+		}
+
+		public int getPlatelegsId() {
+			return platelegs;
+		}
+
+		public int getAmountOfTokens() {
+			return tokens;
+		}
+	}
+
+	private static Armour getArmourForItemId(int itemId) {
+		for (Armour a : Armour.values())
+			if (a.getHelmId() == itemId || a.getPlatebodyId() == itemId || a.getPlatelegsId() == itemId)
+				return a;
+		return null;
+	}
+
+	private static Armour getArmourForNpcId(int npcId) {
+		for (Armour a : Armour.values())
+			if (a.getNpcId() == npcId)
+				return a;
+		return null;
+	}
+
+	public static boolean isAnimatedArmourNpc(int npcId) {
+		for (Armour armour : Armour.values()) {
+			if (armour.npcId == npcId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static void itemOnAnimator(final Player player, int itemId) {
+		int x = player.getX(), y = player.getY();
+		
+		if (y != 3537) {
+			player.getActionSender().sendMessage("You need to move closer.");
+			return;
+		}
+		
+		if (x == 2851) {
+			animator_west = true;
+		} else {
+			animator_west = false;
+		}
+		
+		if (player.hasAttribute("animation_armour_spawned")) {
+			player.getActionSender().sendMessage("An Animated Armour npc is already spawned.");
+			return;
+		}
+		
+		final Armour armour = getArmourForItemId(itemId);
+		if (armour == null) {
+			player.getActionSender().sendMessage("This is not a feasable animated armour item.");
+			return;
+		}
+		
+		if (!player.getInventory().contains(armour.getPlatebodyId(), 1) || !player.getInventory().contains(armour.getPlatelegsId(), 1) || !player.getInventory().contains(armour.getHelmId(), 1)) {
+			player.getActionSender().sendMessage("You need the helm, platebody, and platelegs to spawn the animated armour.");
+			return;
+		}
+		
+		player.setAttribute("animation_armour_spawned", true);
+		player.getInventory().remove(armour.getPlatebodyId(), 1);
+		player.getInventory().remove(armour.getPlatelegsId(), 1);
+		player.getInventory().remove(armour.getHelmId(), 1);
+		player.getWalkingQueue().walkTo(0, +3);
+	    World.getWorld().schedule(new Task(6) {
+
+			@Override
+			public void execute() {
+				Server.npcHandler.spawn(player, armour.getNpcId(), new Location(animator_west ? 2851 : 2857, 3536, 0), 1, true, true);
+				player.getActionSender().sendMessage("An animated armour has spawned...", 255);
+				this.stop();
+			}
+		});
+	}
+
+	public static void dropTokens(Player player, int npcType, Location location) {
+		Armour npc = getArmourForNpcId(npcType);
+		if (npc != null) {
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(8851, npc.getAmountOfTokens()), location, player));
+			player.setAttribute("animation_armour_spawned", false);
+		}
+	}
+
+}

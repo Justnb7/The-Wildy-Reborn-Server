@@ -1,5 +1,6 @@
 package com.venenatis.game.model.combat;
 
+import com.venenatis.game.content.activity.minigames.impl.warriors_guild.WarriorsGuild;
 import com.venenatis.game.content.skills.slayer.Slayer;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
@@ -166,6 +167,14 @@ public class NpcCombat {
 						Combat.resetCombat(player);
 						return false;
 					}
+				}
+			}
+		}
+		
+		if (npc.getId() == 2463 || npc.getId() == 2464) {
+			if (Boundary.isIn(player, WarriorsGuild.CYCLOPS_BOUNDARY)) {
+				if (!player.getWarriorsGuild().isActive()) {
+					player.getActionSender().sendMessage("I should talk with Kamfreena before killing cyclops.");
 				}
 			}
 		}

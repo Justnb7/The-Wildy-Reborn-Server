@@ -160,6 +160,7 @@ public class DialogueRepository {
 		 * Options
 		 */
 		dialogues.put("MAGIC_BOOK", MagicBook.class);
+		dialogues.put("YES_OR_NO", YesOrNo.class);
 	}
 
 	/**

@@ -209,7 +209,7 @@ public class NPC extends Entity {
 	 */
 	public int targetId;
 	
-	public boolean walkingHome, underAttack, randomWalk;
+	public boolean walkingHome, randomWalk;
 
 	public boolean aggressive;
 	
@@ -406,7 +406,6 @@ public class NPC extends Entity {
 		NPC npc = new NPC(id, location, walkType);
 		npc.walking_type = walkType;
 		if (attackPlayer) {
-			npc.underAttack = true;
 			if (p != null) {
 				npc.targetId = p.getIndex();
 			}

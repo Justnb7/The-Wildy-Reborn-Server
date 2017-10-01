@@ -168,7 +168,6 @@ public class NPCDeathTask extends Task {
     public static void reset(NPC npc) {
         npc.freeze(0);
         npc.targetId = 0;
-        npc.underAttack = false;
         npc.resetFaceTile();
         npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
     }

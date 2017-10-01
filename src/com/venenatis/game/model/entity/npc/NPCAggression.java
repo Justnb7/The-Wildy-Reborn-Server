@@ -1,14 +1,14 @@
 package com.venenatis.game.model.entity.npc;
  
+import com.venenatis.game.location.Area;
+import com.venenatis.game.model.combat.Combat;
+import com.venenatis.game.model.entity.player.Player;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import com.venenatis.game.location.Area;
-import com.venenatis.game.model.combat.Combat;
-import com.venenatis.game.model.entity.player.Player;
  
 /**
  * The static utility class that handles the behavior of aggressive NPCs within
@@ -66,7 +66,7 @@ public final class NPCAggression {
     private static boolean validate(NPC npc, Player p) {
     	// We're already attacking something or under attack.
     	// When we get it, retalition handles changing target, not this agro code.
-    	if (npc.targetId > 0 || npc.getCombatState().isDead() || npc.underAttack || Combat.incombat(p)) {
+    	if (npc.targetId > 0 || npc.getCombatState().isDead() || Combat.incombat(p)) {
     		return false;
     	}
     	if (!npc.getDefinition().isAggressive()) {

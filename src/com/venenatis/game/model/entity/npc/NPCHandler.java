@@ -1,14 +1,14 @@
 package com.venenatis.game.model.entity.npc;
 
+import com.venenatis.game.location.Location;
+import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.world.World;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import com.venenatis.game.location.Location;
-import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.world.World;
 
 public final class NPCHandler {
 
@@ -92,7 +92,6 @@ public final class NPCHandler {
 		npc.spawnedBy = player.getIndex();
 		npc.face(player.getLocation());
 		if (attacksEnemy) {
-			npc.underAttack = true;
 			if (player != null) {
 				npc.targetId = player.getIndex();
 			}

@@ -243,7 +243,6 @@ public class NpcCombat {
 			if (player == null) {
 				// out of range
 				npc.targetId = 0;
-				npc.underAttack = false;
 				npc.resetFaceTile();
 			} else {
 				if (npc.getCombatState().getAttackDelay() == 0) {
@@ -274,7 +273,6 @@ public class NpcCombat {
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
 			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
 				npc.targetId = 0;
-				npc.underAttack = false;
 				return;
 			}
 		}

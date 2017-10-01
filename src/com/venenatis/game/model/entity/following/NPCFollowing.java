@@ -43,7 +43,6 @@ public class NPCFollowing {
 			npc.following().setFollowing(null);
 			npc.resetFaceTile();
 			npc.walkingHome = true;
-			npc.underAttack = false;
 			return;
 		}
 
@@ -107,7 +106,6 @@ public class NPCFollowing {
 			npc.following().setFollowing(null);
 			npc.resetFaceTile();
 			npc.walkingHome = true;
-			npc.underAttack = false;
 			//npc.sendForcedMessage("reset "+locked_to_plr+" or "+in_spawn_area);
 		}
 	}

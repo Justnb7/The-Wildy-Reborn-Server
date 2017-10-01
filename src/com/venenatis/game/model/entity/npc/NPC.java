@@ -417,9 +417,9 @@ public class NPC extends Entity {
 		this.setTeleporting(false);
 	}
 	
-	public NPC spawnBossMinion(Player p, int id, Location location, int walkType, boolean attackPlayer) {
-		NPC npc = new NPC(id, location, walkType);
-		npc.strollRange = walkType;
+	public NPC spawnBossMinion(Player p, int id, Location location, int direction, boolean attackPlayer) {
+		NPC npc = new NPC(id, location, direction);
+		npc.spawnDirection = direction;
 		if (attackPlayer) {
 			if (p != null) {
 				npc.targetId = p.getIndex();
@@ -549,7 +549,7 @@ public class NPC extends Entity {
 	}
 
 	/**
-	 * 1 or -1 for the change in xy axis used in UPDATING
+	 * 1 or -1 for the change in xy axis used in UPDATING -- cannot be removed
 	 */
 	public int moveX, moveY;
 

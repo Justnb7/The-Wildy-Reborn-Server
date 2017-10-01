@@ -73,11 +73,10 @@ public final class NPCHandler {
 		return false;
 	}
 	
-	public static void spawn(int id, Location location, int walkingType) {
+	public static void spawn(int id, Location location, int direction) {
 
-		NPC npc = new NPC(id, location, walkingType);
-		
-        npc.strollRange = walkingType;
+		NPC npc = new NPC(id, location, direction);
+		npc.spawnDirection = direction;
 		if (World.getWorld().register(npc)) {
 			// successfully added to game world
 			handleForGroup(npc);
@@ -85,10 +84,10 @@ public final class NPCHandler {
 		World.getWorld().register(npc);
 	}
 	
-	public NPC spawn(Player player, int id, Location spawn, int walkingType, boolean attacksEnemy, boolean hasHeadIcon) {
-		NPC npc = new NPC(id, spawn, walkingType);
+	public NPC spawn(Player player, int id, Location spawn, int direction, boolean attacksEnemy, boolean hasHeadIcon) {
+		NPC npc = new NPC(id, spawn, direction);
 		
-		npc.strollRange = walkingType;
+		npc.spawnDirection = direction;
 		npc.spawnedBy = player;
 		npc.face(player.getLocation());
 		if (attacksEnemy) {

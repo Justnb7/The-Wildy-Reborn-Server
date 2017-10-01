@@ -62,7 +62,7 @@ public class NPCFollowing {
 		}
 		boolean sameSpot = npc.getX() == target.getX() && npc.getY() == target.getY() && npc.getSize() == 1;
 		if (sameSpot) {
-			npc.doPath(new DefaultPathFinder(), npc, targX, targY-1);
+			npc.doPath(new DefaultPathFinder(), targX, targY-1);
 			return;
 		}
 
@@ -97,7 +97,7 @@ public class NPCFollowing {
 		// Let's calculate a path to the target now.
 		if (locked_to_plr || in_spawn_area) {
 			npc.face(target.getLocation());
-			npc.doPath(new DefaultPathFinder(), npc, targX, targY); // update walking queue to new target pos
+			npc.doPath(new DefaultPathFinder(), targX, targY); // update walking queue to new target pos
 			
 		} else {
 			// Reset following

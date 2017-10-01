@@ -72,7 +72,7 @@ public class DragonSpear implements SpecialAttack {
 				targX += 1;
 			}
 		}
-		target.doPath(new SizedPathFinder(), target, targX, targY);
+		target.doPath(new SizedPathFinder(), targX, targY);
 		
 		//Unstunning our victim
 		World.getWorld().schedule(new Task(7) {

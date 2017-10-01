@@ -203,7 +203,7 @@ public class VarrockRooftop {
 					}
 					
 					if (tick == 13) {
-						player.doPath(new DefaultPathFinder(), player, 3190, 3407);
+						player.doPath(new DefaultPathFinder(), 3190, 3407);
 					}
 					
 					if (tick == 15) {

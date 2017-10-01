@@ -88,7 +88,7 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 		}
 		
 		if (id == 10355 && x == 3269 && y == 3166 && player.getZ() == 3) {
-			player.doPath(new DefaultPathFinder(), player, null, 3265, 3166, false, true);
+			player.doPath(new DefaultPathFinder(), null, 3265, 3166, false, true);
 		}
 		
 		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, location, id, 1));

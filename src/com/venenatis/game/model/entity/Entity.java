@@ -1473,19 +1473,17 @@ public abstract class Entity {
 	/**
 	 * 
 	 * @param pathFinder
-	 * @param entity
 	 * @param x
 	 * @param y
 	 * @return
 	 */
-	public PathState doPath(PathFinder pathFinder, Entity entity, int x, int y) {
-		return doPath(pathFinder, entity, null, x, y, false, true);
+	public PathState doPath(PathFinder pathFinder, int x, int y) {
+		return doPath(pathFinder, null, x, y, false, true);
 	}
 	
 	/**
 	 * 
 	 * @param pathFinder
-	 * @param entity
 	 * @param target
 	 * @param x
 	 * @param y
@@ -1493,33 +1491,28 @@ public abstract class Entity {
 	 * @param addToWalking
 	 * @return
 	 */
-	public PathState doPath(final PathFinder pathFinder, final Entity entity, final Entity target, final int x, final int y, final boolean ignoreLastStep, boolean addToWalking) {
-		if (entity.getCombatState().isDead()) {
+	public PathState doPath(final PathFinder pathFinder, final Entity target, final int x, final int y, final boolean ignoreLastStep, boolean addToWalking) {
+		if (getCombatState().isDead()) {
 			PathState state = new PathState();
 			state.routeFailed();
 			return state;
 		}
-		Location destination = Location.create(x, y, entity.getLocation().getZ());
-		Location base = entity.getLocation();
+		Location destination = Location.create(x, y, getLocation().getZ());
+		Location base = getLocation();
 		int srcX = base.getLocalX();
 		int srcY = base.getLocalY();
 		int destX = destination.getLocalX(base);
 		int destY = destination.getLocalY(base);
-		PathState state = pathFinder.findPath(entity, target, entity.getLocation(), srcX, srcY, destX, destY, 1, entity.isPlayer() && ((Player)entity).getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
+		PathState state = pathFinder.findPath(this, target, getLocation(), srcX, srcY, destX, destY, 1, isPlayer() && getWalkingQueue().isRunningQueue(), ignoreLastStep, true);
 		if (state != null && addToWalking) {
-			if (entity.isPlayer()) {
-				Player p = (Player)entity;
-				p.getWalkingQueue().reset();
+				getWalkingQueue().reset();
 				for (BasicPoint step : state.getPoints()) {
 					//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
 					//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
-					p.getWalkingQueue().addStep(step.getX(), step.getY());
+					getWalkingQueue().addStep(step.getX(), step.getY());
 				}
-				p.getWalkingQueue().finish();
+				getWalkingQueue().finish();
 				//p.debug("Calc'd "+state.getPoints().size()+" moves for goal dist "+base.distance(destination));
-			} else {
-				System.err.println("HELP WHO");
-			}
 		}
 		return state;
 	}

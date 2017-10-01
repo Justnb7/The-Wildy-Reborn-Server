@@ -121,15 +121,9 @@ public abstract class PlayerFollowing {
             Location last = target.lastTile == null ? target.getLocation().transform(1, 0) : target.lastTile;
             int fx = last.getX();
             int fy = last.getY();
-
-            int delay = (player.getWalkingQueue().isMoving() || ((Player)target).getWalkingQueue().isMoving()) ? 1
-                : (player.walkTutorial + 1 >= Integer.MAX_VALUE ? player.walkTutorial = 0 : player.walkTutorial++);
-            int remainder = delay % 2;
-            if (remainder == 1) {
-                int x = fx - player.getX();
-                int y = fy - player.getY();
-                player.playerWalk(player.getX() + x, player.getY() + y);
-            }
+            int x = fx - player.getX();
+            int y = fy - player.getY();
+            player.playerWalk(player.getX() + x, player.getY() + y);
         } else {
             /*
              * Check our regular combat styles for distance

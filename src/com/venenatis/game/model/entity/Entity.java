@@ -1522,8 +1522,6 @@ public abstract class Entity {
 	 * @param hit
 	 */
 	public void takeDamage(Hit hit) {
-
-        // TODO put any code /checks that STOP DAMAGE being delt such as teleporting here
         
         if(!hit.victim.canBeDamaged()) {
         	return;

@@ -10,7 +10,6 @@ import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.npcs.impl.randomEvent.RandomBossEvent;
 import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
@@ -23,6 +22,7 @@ import com.venenatis.game.net.packet.in.commands.CommandParser;
 import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
 import com.venenatis.game.util.parser.impl.NPCDefinitionParser;
+import com.venenatis.game.util.parser.impl.NpcSpawnDefinitionParser;
 import com.venenatis.game.util.parser.impl.ShopParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
@@ -682,7 +682,8 @@ public class OwnerCommand implements Command {
 							World.getWorld().unregister(n);
 						}
 					}
-					NPCHandler.loadAutoSpawn("./data/text_files/npc_spawns.txt");
+					new NpcSpawnDefinitionParser().run();
+					//NPCHandler.loadAutoSpawn("./data/text_files/npc_spawns.txt");
 					player.getActionSender().sendMessage("Succesfully reloaded the spawns");
 					return true;
 					

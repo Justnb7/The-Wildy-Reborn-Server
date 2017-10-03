@@ -1,5 +1,10 @@
 package com.venenatis.game.model.entity.npc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.NpcCombat;
@@ -10,6 +15,7 @@ import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.following.NPCFollowing;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
+import com.venenatis.game.model.masks.forceMovement.Direction.FacingDirection;
 import com.venenatis.game.net.packet.ActionSender;
 import com.venenatis.game.task.impl.NPCDeathTask;
 import com.venenatis.game.util.Location3D;
@@ -19,24 +25,24 @@ import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.server.Server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 public class NPC extends Entity {
 	
 	public NPC(int _npcType) {
 		this(_npcType, null, -1);
 	}
 	
-	public NPC(int id, Location spawn, int dir) {
+	public NPC(int id, Location spawn, int direction) {
 		super(EntityType.NPC);
 		if (spawn != null) {
 			setLocation(spawn);
 			asNpc().spawnTile = spawn;
 			setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		}
+		
+		//TODO Jak did you forget to add them here too?
+		spawnDirection = direction;
+		getWalkingQueue().lastDirectionFaced = direction;
+		
 		npcId = id;
 		getCombatState().setDead(false);
 		randomWalk = true;
@@ -153,6 +159,19 @@ public class NPC extends Entity {
 	 * Direct the Npc faces when spawned.
 	 */
 	public int spawnDirection;
+	
+	/**
+	 * The npc's facing.
+	 */
+	private FacingDirection face = FacingDirection.NORTH;
+	
+	public FacingDirection getFace() {
+		return face;
+	}
+
+	public void setFace(FacingDirection face) {
+		this.face = face;
+	}
 	
 	public int underAttackBy;
 
@@ -662,5 +681,51 @@ public class NPC extends Entity {
 		NPCDeathTask.reset(this);
         this.removeFromTile();
         NPCDeathTask.setNpcToInvisible(this);
+	}
+
+	private static GroupRespawn tempGroup = null;
+	private static NPC tempboss = null;
+	
+	/**
+	 * This method links instances of NPCs to each other by using their Attribute system.
+	 */
+	public void handleForGroup() {
+		GroupRespawn gr = null;
+		//System.out.println("group check for "+n+" using "+tempGroup +" | "+tempboss); //go
+		if (tempGroup == null) {
+			gr = GroupRespawn.getGroup(this.getId());
+			if (gr != null) {
+				// We're a boss. Npc ID should be the first in the int[] array on this group.
+				//System.out.println("Checking group [0] -> "+gr.getNpcs()[0] +" vs "+ n.getId());
+				if (gr.getNpcs()[0] == this.getId()) {
+					// Only set it to temp when we've identified the boss.
+					tempGroup = gr;
+					this.setAttribute("group_spawn_map", new ArrayList<NPC>());
+					//System.out.println("boss "+n+" map set.");
+					tempboss = this;
+				}
+			}
+		} else {
+			// Temp attrib is set. We've located a boss already in spawn.txt
+			GroupRespawn bossgroup = GroupRespawn.getGroup(this.getId());
+			if (bossgroup != null) {
+				// We're a minion
+				ArrayList<NPC> minion_list = tempboss.getAttribute("group_spawn_map", new ArrayList<NPC>());
+				// Add the minion NPC instance to the bosses attributes
+				minion_list.add(this);
+				
+				// Add a reference from the minion instance to the boss instance.
+				this.setAttribute("boss_owner", tempboss);
+				//System.out.println("minion "+n+" now has boss reference "+tempboss);
+				
+				// The list of minions is full with the correct minions (3 in the case of bandos)
+				// (not including the boss npc)
+				if (bossgroup.getNpcs().length - 1 == minion_list.size()) {
+					//System.out.println("finished map for "+tempboss);
+					tempGroup = null; // Start again!
+					tempboss = null;
+				}
+			}
+		}
 	}
 }

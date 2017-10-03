@@ -18,8 +18,19 @@ public class NpcSpawnDefinitionParser extends GsonParser {
 		int id = data.get("id").getAsInt();
 		int radius = data.get("radius").getAsInt();
 		FacingDirection dir = builder.fromJson(data.get("direction"), FacingDirection.class);
-		Location loc = builder.fromJson(data.get("position"), Location.class);
-		NPC npc = new NPC(id, loc, radius);
+		//TODO add support for facingDirection
+		//int dir = 0;
+		Location location = builder.fromJson(data.get("position"), Location.class);
+		
+		//TODO Jak add support for the enum rather then an int
+		NPC npc = new NPC(id, location, 0);
+		//npc.spawnDirection = dir;
+		//npc.getWalkingQueue().lastDirectionFaced = dir;
+		npc.setFace(dir);
+		if (World.getWorld().register(npc)) {
+			// successfully added to game world
+			npc.handleForGroup();
+		}
 		World.getWorld().register(npc);
 	}
 	

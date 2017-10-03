@@ -178,6 +178,7 @@ public class NPCDeathTask extends Task {
      */
     public static void respawn(NPC npc) {
     	//System.out.println("respawn");
+		npc.getWalkingQueue().lastDirectionFaced = npc.spawnDirection;
         npc.setVisible(true);
         npc.getCombatState().setDead(false);
         if(npc.getId() == 5779) {

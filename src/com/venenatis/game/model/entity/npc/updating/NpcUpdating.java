@@ -28,7 +28,7 @@ public class NpcUpdating {
 	 *            The {@link GameBuffer} to write data too
 	 */
 	public static void updateNPC(Player player, GameBuffer buffer) {
-		
+		player.npcIsNewlyAdded.clear();
 		/*
 		 * The update block holds the update masks and data, and is written
 		 * after the main block.
@@ -119,7 +119,11 @@ public class NpcUpdating {
 				 */
 				player.getLocalNPCs().add(npc);
 				addNewNPC(player, npc, buffer);
+				player.npcIsNewlyAdded.add(npc.getIndex());
+				boolean faceForced = makeNewNpcFace(npc);
 				updateNPC(npc, updateBlock);
+				if (faceForced)
+					npc.getUpdateFlags().set(UpdateFlag.FACE_COORDINATE, false);
 				added++;
 			}
 
@@ -154,6 +158,26 @@ public class NpcUpdating {
 		 */
 		buffer.putFrameSizeShort(start);
 		player.flushOutStream();
+	}
+
+	private static boolean makeNewNpcFace(NPC npc) {
+		// already set. default dir will be overwritten anyway.
+		if (npc.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE))
+			return false;
+		Location dir = npc.getLocation();
+		// face depending on where we last walked (direction)
+		switch (npc.getWalkingQueue().lastDirectionFaced) {
+			case 0: dir = npc.getLocation().transform(0, 1); break; // n
+			case 1: dir = npc.getLocation().transform(0, -1); break; // s
+			case 2: dir = npc.getLocation().transform(1, 0); break; // e
+			case 3: dir = npc.getLocation().transform(-1, 0); break; // w
+			case 4: dir = npc.getLocation().transform(-1, 1); break; // nw
+			case 5: dir = npc.getLocation().transform(1, 1); break; // ne
+			case 6: dir = npc.getLocation().transform(-1, -1); break; // sw
+			case 7: dir = npc.getLocation().transform(-1, 1); break; // se
+		}
+		npc.face(dir);
+		return true;
 	}
 
 	/**
@@ -284,7 +308,7 @@ public class NpcUpdating {
 		int xPos = npc.getX() - player.getX();
 		buffer.writeBits(5, yPos);
 		buffer.writeBits(5, xPos);
-		buffer.writeBits(1, npc.spawnDirection);
+		buffer.writeBits(1, 0);
 		buffer.writeBits(14, npc.getId());
 		buffer.writeBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 	}

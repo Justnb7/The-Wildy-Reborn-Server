@@ -408,6 +408,7 @@ public class NPC extends Entity {
 	public NPC spawnBossMinion(Player p, int id, Location location, int direction, boolean attackPlayer) {
 		NPC npc = new NPC(id, location, direction);
 		npc.spawnDirection = direction;
+		npc.getWalkingQueue().lastDirectionFaced = direction;
 		if (attackPlayer) {
 			if (p != null) {
 				npc.targetId = p.getIndex();

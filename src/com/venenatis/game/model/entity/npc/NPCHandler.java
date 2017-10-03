@@ -77,6 +77,7 @@ public final class NPCHandler {
 
 		NPC npc = new NPC(id, location, direction);
 		npc.spawnDirection = direction;
+		npc.getWalkingQueue().lastDirectionFaced = direction;
 		if (World.getWorld().register(npc)) {
 			// successfully added to game world
 			handleForGroup(npc);
@@ -88,6 +89,7 @@ public final class NPCHandler {
 		NPC npc = new NPC(id, spawn, direction);
 		
 		npc.spawnDirection = direction;
+		npc.getWalkingQueue().lastDirectionFaced = direction;
 		npc.spawnedBy = player;
 		npc.face(player.getLocation());
 		if (attacksEnemy) {

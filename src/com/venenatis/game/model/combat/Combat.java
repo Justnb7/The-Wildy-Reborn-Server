@@ -320,7 +320,7 @@ public class Combat {
         	//After the damage was taken we activate our spell effects.
 			SpellHandler.handleSpellEffect(player, target);
             if (target.isPlayer() && target.frozen()) {
-                ((Player) target).getWalkingQueue().reset();
+                target.getWalkingQueue().reset();
                 target.message("You have been frozen.");
                 ((Player) target).frozenBy = player.getIndex();
             }

@@ -3,8 +3,6 @@ package com.venenatis.game.content;
 import java.util.Arrays;
 import java.util.Optional;
 
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
@@ -80,7 +78,6 @@ public enum ArmourSets {
 
 		player.getActionSender().sendMessage("You successfully open the " + Utility.formatEnumName(data.name()) + " set.");
 
-		AchievementHandler.activate(player, AchievementList.BOX_MAN, 1);
 		return;
 	}
 	

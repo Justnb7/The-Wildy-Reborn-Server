@@ -3,7 +3,7 @@ package com.venenatis.game.content.achievements;
 import java.util.Arrays;
 import java.util.List;
 
-import com.venenatis.game.content.achievements.AchievementHandler.AchievementDifficulty;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.interfaces.InterfaceWriter;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.StringUtils;
@@ -23,7 +23,7 @@ public class AchievementInterface extends InterfaceWriter {
 	 * @param player
 	 * @param achievement
 	 */
-	public static void sendCompleteInterface(final Player player, final AchievementList achievement) {
+	public static void sendCompleteInterface(final Player player, final Achievement achievement) {
 		int color = 0;
 
 		switch (achievement.getDifficulty()) {
@@ -48,7 +48,7 @@ public class AchievementInterface extends InterfaceWriter {
 	 * @param player
 	 * @param achievement
 	 */
-	public static void sendInterfaceForAchievement(final Player player, AchievementList achievement) {
+	public static void sendInterfaceForAchievement(final Player player, Achievement achievement) {
 		final String difficulty = StringUtils.capitalize(achievement.getDifficulty().name().toLowerCase());
 		final int completed = player.getPlayerAchievements().get(achievement);
 		final int progress = (int) (completed * 100 / (double) achievement.getCompleteAmount());
@@ -67,7 +67,7 @@ public class AchievementInterface extends InterfaceWriter {
 		super(player);
 		int shift = 0;
 
-		final int total = AchievementList.values().length;
+		final int total = Achievement.values().length;
 		
 		switch (difficulty) {
 		case EASY:
@@ -84,13 +84,13 @@ public class AchievementInterface extends InterfaceWriter {
 		player.getActionSender().sendString("</col>Completed: <col=65280>" + player.achievementsCompleted() + "</col>/" + total, 35015);
 		player.getActionSender().sendString("</col>Points: <col=65280>" + player.getAchievementsPoints(), 35016);
 
-		final List<AchievementList> list = AchievementList.asList(difficulty);
+		final List<Achievement> list = Achievement.asList(difficulty);
 
 		text = new String[total];
 
 		Arrays.fill(text, "");
 
-		for (final AchievementList achievement : list) {
+		for (final Achievement achievement : list) {
 			int completed = player.getPlayerAchievements().get(achievement);
 			if (completed > achievement.getCompleteAmount()) {
 				completed = achievement.getCompleteAmount();

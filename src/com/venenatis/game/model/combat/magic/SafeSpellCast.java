@@ -2,7 +2,6 @@ package com.venenatis.game.model.combat.magic;
 
 import java.util.function.BiFunction;
 
-import com.venenatis.game.content.achievements.*;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -31,7 +30,6 @@ public enum SafeSpellCast {
 		player.getActionSender().sendWidget(2, 30);
 		player.getActionSender().sendMessage("You have given vengeance to " + Utility.formatName(other.getUsername()) + ".");
 		other.getActionSender().sendMessage("You have been given vengeance by " + Utility.formatName(player.getUsername()) + ".");
-		AchievementHandler.activate(player, AchievementList.THE_GIVER, 1);
 		return true;
 	}),
 	

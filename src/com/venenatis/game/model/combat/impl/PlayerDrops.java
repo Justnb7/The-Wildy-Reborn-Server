@@ -4,8 +4,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import com.venenatis.game.content.BrokenItem;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Item.ItemComparator;
@@ -53,10 +53,6 @@ public class PlayerDrops {
 
 		PlayerKilling.addHostToList(killer, victim.getHostAddress());
 		
-		AchievementHandler.activate(killer, AchievementList.FIRST_KILL, 1);
-		AchievementHandler.activate(killer, AchievementList.LEARNING_CURVE, 1);
-		AchievementHandler.activate(killer, AchievementList.MASTER, 1);
-		
 		BountyHunter.handleBountyHunterKill(victim, killer);
 		
 		killer.setCurrentKillStreak(killer.getCurrentKillStreak() + 1);
@@ -78,7 +74,7 @@ public class PlayerDrops {
 		}
 		
 		if (killer.getHighestKillStreak() == 30) {
-			AchievementHandler.activate(killer, AchievementList.SETTING_THE_RECORD, 1);
+			Achievements.activate(killer, Achievement.SETTING_THE_RECORD, 1);
 		}
 		
 		//Apply member bonus
@@ -106,7 +102,7 @@ public class PlayerDrops {
 		}
 		
 		if (victim.getCurrentKillStreak() >= 30) {
-			AchievementHandler.activate(killer, AchievementList.RECORD_BREAKER, 1);
+			Achievements.activate(killer, Achievement.RECORD_BREAKER, 1);
 		}
 		
 		//Increase death and kill count

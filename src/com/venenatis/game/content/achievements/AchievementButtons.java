@@ -2,7 +2,7 @@ package com.venenatis.game.content.achievements;
 
 import java.util.HashMap;
 
-import com.venenatis.game.content.achievements.AchievementHandler.AchievementDifficulty;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -13,22 +13,22 @@ import com.venenatis.game.model.entity.player.Player;
  */
 public class AchievementButtons {
 
-	private static final HashMap<Integer, AchievementList> BUTTONS_1 = new HashMap<Integer, AchievementList>();
-	private static final HashMap<Integer, AchievementList> BUTTONS_2 = new HashMap<Integer, AchievementList>();
-	private static final HashMap<Integer, AchievementList> BUTTONS_3 = new HashMap<Integer, AchievementList>();
+	private static final HashMap<Integer, Achievement> BUTTONS_1 = new HashMap<Integer, Achievement>();
+	private static final HashMap<Integer, Achievement> BUTTONS_2 = new HashMap<Integer, Achievement>();
+	private static final HashMap<Integer, Achievement> BUTTONS_3 = new HashMap<Integer, Achievement>();
 
 	static {
 		int button = 136215;
 		button = 136215;
-		for (final AchievementList achievement : AchievementList.asList(AchievementDifficulty.EASY)) {
+		for (final Achievement achievement : Achievement.asList(AchievementDifficulty.EASY)) {
 			BUTTONS_1.put(button++, achievement);
 		}
 		button = 136215;
-		for (final AchievementList achievement : AchievementList.asList(AchievementDifficulty.MEDIUM)) {
+		for (final Achievement achievement : Achievement.asList(AchievementDifficulty.MEDIUM)) {
 			BUTTONS_2.put(button++, achievement);
 		}
 		button = 136215;
-		for (final AchievementList achievement : AchievementList.asList(AchievementDifficulty.HARD)) {
+		for (final Achievement achievement : Achievement.asList(AchievementDifficulty.HARD)) {
 			BUTTONS_3.put(button++, achievement);
 		}
 	}

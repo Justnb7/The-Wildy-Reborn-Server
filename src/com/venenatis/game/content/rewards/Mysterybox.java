@@ -1,7 +1,7 @@
 package com.venenatis.game.content.rewards;
 
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
@@ -151,9 +151,9 @@ public class Mysterybox {
 			}
 			player.getInventory().replace(MYSTERY_BOX, itemReceived);
 			player.getActionSender().sendMessage("You unwrap your mystery box and found yourself " + Utility.determineIndefiniteArticle(itemReceived.getName()) + " " + itemReceived.getName() + ".");
-			AchievementHandler.activate(player, AchievementList.WHATS_IN_THE_BOX, 1);
-		    AchievementHandler.activate(player, AchievementList.BOX_LOVE, 1);
-		    AchievementHandler.activate(player, AchievementList.MYSTERY, 1);
+			Achievements.activate(player, Achievement.WHATS_IN_THE_BOX, 1);
+		    Achievements.activate(player, Achievement.BOX_LOVE, 1);
+		    Achievements.activate(player, Achievement.MYSTERY, 1);
 		}
 	}
 

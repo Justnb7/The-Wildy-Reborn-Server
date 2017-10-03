@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.venenatis.game.content.KillTracker.KillEntry;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.content.titles.Title;
 import com.venenatis.game.location.Location;
@@ -350,7 +350,7 @@ public class PlayerSave {
 		private final boolean groundItems;
 		private final boolean shiftDrop;
 		private CopyOnWriteArrayList<KillEntry> killTracker = new CopyOnWriteArrayList<KillEntry>();
-		private final HashMap<AchievementList, Integer> playerAchievements;
+		private final HashMap<Achievement, Integer> playerAchievements;
 		private final int achievementsPoints;
 		private final List<Long> friendList;
 		private final List<Long> ignoreList;

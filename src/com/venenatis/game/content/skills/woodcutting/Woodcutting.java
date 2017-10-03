@@ -1,11 +1,15 @@
 package com.venenatis.game.content.skills.woodcutting;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import com.venenatis.game.action.impl.HarvestingAction;
 import com.venenatis.game.content.SkillCapePerks;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -411,7 +415,7 @@ public class Woodcutting extends HarvestingAction {
 			player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
 		}
 		
-		AchievementHandler.activate(player, AchievementList.LUMBERJACK, 1);
+		Achievements.activate(player, Achievement.LUMBERJACK, 1);
 		return tree.getExperience();
 	}
 

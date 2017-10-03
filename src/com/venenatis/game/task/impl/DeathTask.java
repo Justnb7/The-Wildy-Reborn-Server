@@ -1,8 +1,6 @@
 package com.venenatis.game.task.impl;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Skills;
@@ -106,7 +104,6 @@ public class DeathTask extends Task {
 		Combat.skull(victim, SkullType.NONE, 0);
 		victim.getCombatState().getDamageMap().resetDealtDamage();
 		victim.playAnimation(Animation.create(-1));
-		AchievementHandler.activate(victim, AchievementList.TIME_FOR_LESSON, 1);
 		victim.setInfection(0);
 		victim.setDefaultAnimations();
 		victim.getUpdateFlags().flag(UpdateFlag.APPEARANCE);

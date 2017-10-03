@@ -6,8 +6,8 @@ import com.venenatis.game.consumables.Consumables.Drink;
 import com.venenatis.game.consumables.Consumables.Food;
 import com.venenatis.game.consumables.Consumables.PotionType;
 import com.venenatis.game.content.SkillCapePerks;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -137,8 +137,7 @@ public class ConsumeItemAction extends Action {
 				if (food.getNewId() != -1) {
 					player.getInventory().add(new Item(food.getNewId(), 1));
 				}
-				AchievementHandler.activate(player, AchievementList.YUM, 1);
-				AchievementHandler.activate(player, AchievementList.THE_OBESITY_IS_REAL, 1);
+				Achievements.activate(player, Achievement.YUM, 1);
 			}
 			} else if (drink != null && player.getCombatState().canDrink()) {
 				if(player.hasAttribute("stunned")) {
@@ -423,7 +422,6 @@ public class ConsumeItemAction extends Action {
 					newPotion = drink.getId(currentPotionDose - 2);
 				}
 				player.getInventory().setSlot(slot, new Item(newPotion, player.getInventory().get(slot).getAmount()));
-				AchievementHandler.activate(player, AchievementList.OFFICIALLY_AN_ALCHOLIC, 1);
 		}
 	}
 }

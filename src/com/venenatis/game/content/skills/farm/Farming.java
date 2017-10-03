@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import com.venenatis.game.content.SkillCapePerks;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -220,7 +220,7 @@ public class Farming {
 							}
 							if (player.getFarmingHarvest(id) <= 0) {
 								player.getActionSender().sendMessage("The herb patch has completely depleted...", 600000);
-								AchievementHandler.activate(player, AchievementList.NOVICE_FARMER, 1);
+								Achievements.activate(player, Achievement.NOVICE_FARMER, 1);
 								player.playAnimation(new Animation(65535));
 								resetValues(id);
 								updateObjects();

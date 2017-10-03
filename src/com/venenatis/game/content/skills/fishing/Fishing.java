@@ -3,8 +3,8 @@ package com.venenatis.game.content.skills.fishing;
 import java.util.Random;
 
 import com.venenatis.game.content.SkillCapePerks;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -196,7 +196,7 @@ public class Fishing {
 			
 			heronPet(player);
 			player.getActionSender().sendMessage("You manage to catch " + getFishStringMod(name) + name+".");
-			AchievementHandler.activate(player, AchievementList.FISHERMAN, 1);
+			Achievements.activate(player, Achievement.FISHERMAN, 1);
 
 		}
 

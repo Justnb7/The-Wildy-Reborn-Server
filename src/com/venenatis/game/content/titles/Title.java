@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import com.venenatis.game.content.achievements.*;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.npc.pet.*;
 import com.venenatis.game.model.entity.player.Player;
@@ -154,7 +155,7 @@ public enum Title implements Comparator<Title> {
 
 		@Override
 		public boolean meetsStandard(Player player) {
-			return AchievementHandler.isCompleted(player, AchievementList.FISHERMAN);
+			return Achievements.isCompleted(player, Achievement.FISHERMAN);
 		}
 	}, "A Fisherman is a player that has fished at least 1,000 fish."),
 	
@@ -162,7 +163,7 @@ public enum Title implements Comparator<Title> {
 
 		@Override
 		public boolean meetsStandard(Player player) {
-			return AchievementHandler.isCompleted(player, AchievementList.LUMBERJACK);
+			return Achievements.isCompleted(player, Achievement.LUMBERJACK);
 		}
 	}, "A Lumberjack is a player that has cut down trees and has accumulated at least 1,000 logs."),
 	

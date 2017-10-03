@@ -1,9 +1,9 @@
 package com.venenatis.game.content.clicking;
 
 import com.venenatis.game.content.ItemsKeptOnDeath;
-import com.venenatis.game.content.achievements.AchievementHandler.AchievementDifficulty;
+import com.venenatis.game.content.achievements.AchievementDifficulty;
 import com.venenatis.game.content.achievements.AchievementInterface;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.interfaces.InterfaceWriter;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
@@ -161,7 +161,7 @@ public class Buttons {
 		
 		case 113230:
 			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.EASY));
-			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.FIRST_KILL);
+			AchievementInterface.sendInterfaceForAchievement(player, Achievement.FIRST_KILL);
 			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.EASY);
 			player.getActionSender().sendInterface(35_000);
 			break;
@@ -169,21 +169,21 @@ public class Buttons {
 		/* Achievement */
 		case 136201:
 			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.EASY));
-			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.FIRST_KILL);
+			AchievementInterface.sendInterfaceForAchievement(player, Achievement.FIRST_KILL);
 			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.EASY);
 			player.getActionSender().sendInterface(35_000);
 			break;
 			
 		case 136204:
 			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.MEDIUM));
-			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.LEARNING_CURVE);
+			AchievementInterface.sendInterfaceForAchievement(player, Achievement.LEARNING_CURVE);
 			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.MEDIUM);
 			player.getActionSender().sendInterface(35_000);
 			break;
 			
 		case 136207:
 			InterfaceWriter.write(new AchievementInterface(player, AchievementDifficulty.HARD));
-			AchievementInterface.sendInterfaceForAchievement(player, AchievementList.MASTER);
+			AchievementInterface.sendInterfaceForAchievement(player, Achievement.MASTER);
 			player.getAttributes().put("ACHIEVEMENT_PAGE", AchievementDifficulty.HARD);
 			player.getActionSender().sendInterface(35_000);
 			break;

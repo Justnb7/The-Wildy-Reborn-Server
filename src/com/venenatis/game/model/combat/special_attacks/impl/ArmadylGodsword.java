@@ -1,7 +1,7 @@
 package com.venenatis.game.model.combat.special_attacks.impl;
 
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttack;
@@ -32,7 +32,7 @@ public class ArmadylGodsword implements SpecialAttack {
         target.take_hit(player, damage, CombatStyle.MELEE).giveXP(player).send();
         if (damage >= 75 && target.isPlayer()) {
         	player.unlockRngGod(true);
-			AchievementHandler.activate(player, AchievementList.TOO_OP, 1);
+			Achievements.activate(player, Achievement.TOO_OP, 1);
 		}
 	}
 

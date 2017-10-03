@@ -14,7 +14,7 @@ import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.HerbSack;
 import com.venenatis.game.content.Jewellery;
 import com.venenatis.game.content.KillTracker;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
@@ -3105,27 +3105,27 @@ public class Player extends Entity {
 		this.playerTask = playerTask;
 	}
 	
-	private HashMap<AchievementList, Integer> playerAchievements = new HashMap<AchievementList, Integer>(AchievementList.values().length) {
+	private HashMap<Achievement, Integer> playerAchievements = new HashMap<Achievement, Integer>(Achievement.values().length) {
 		private static final long serialVersionUID = 1842952445111093360L;
 
 		{
-			for (final AchievementList achievement : AchievementList.values()) {
+			for (final Achievement achievement : Achievement.values()) {
 				put(achievement, 0);
 			}
 		}
 	};
 
-	public HashMap<AchievementList, Integer> getPlayerAchievements() {
+	public HashMap<Achievement, Integer> getPlayerAchievements() {
 		return playerAchievements;
 	}
 	
-	public void setPlayerAchievements(HashMap<AchievementList, Integer> playerAchievements) {
+	public void setPlayerAchievements(HashMap<Achievement, Integer> playerAchievements) {
 		this.playerAchievements = playerAchievements;
 	}
 	
 	public int achievementsCompleted() {
 		int completed = 0;
-		for (final AchievementList achievement : this.getPlayerAchievements().keySet()) {
+		for (final Achievement achievement : this.getPlayerAchievements().keySet()) {
 			if (achievement != null && this.getPlayerAchievements().get(achievement) == achievement.getCompleteAmount()) {
 				completed++;
 			}
@@ -3134,7 +3134,7 @@ public class Player extends Entity {
 	}
 
 	public boolean completedAchievements() {
-		return achievementsCompleted() >= AchievementList.getTotal() ? true : false;
+		return achievementsCompleted() >= Achievement.getTotal() ? true : false;
 	}
 	
 	private Deque<String> lastKilledPlayers = new ArrayDeque<>(3);

@@ -1,7 +1,7 @@
 package com.venenatis.game.model.combat.magic.spell.impl;
 
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.magic.MagicSpell;
 import com.venenatis.game.model.entity.player.Player;
@@ -55,7 +55,7 @@ public class HighAlchemy implements MagicSpell {
 
 		player.getMagic().setDelay(System.currentTimeMillis());
 		
-		AchievementHandler.activate(player, AchievementList.MONEY_MAKER, 1);
+		Achievements.activate(player, Achievement.NOVICE_THIEF, 1);
 
 		return true;
 	}

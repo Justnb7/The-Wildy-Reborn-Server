@@ -1,11 +1,11 @@
 package com.venenatis.game.model.entity.player.dialogue.impl;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.DialogueType;
-import com.venenatis.game.model.entity.player.save.*;
+import com.venenatis.game.model.entity.player.save.PlayerSave;
 import com.venenatis.game.model.entity.player.save.PlayerSave.Type;
 
 public class Presets extends Dialogue {
@@ -54,7 +54,7 @@ public class Presets extends Dialogue {
 			player.getPresets().getPresetSkill()[preset][index] = player.getSkills().getMaxLevel(index);
 		}
 		player.getPresets().open(preset);
-		AchievementHandler.activate(player, AchievementList.OOH_FANCY, 1);
+		Achievements.activate(player, Achievement.OOH_FANCY, 1);
 		PlayerSave.save(player, Type.PRESETS);
 	}
 }

@@ -1,7 +1,7 @@
 package com.venenatis.game.model.combat.magic.spell.impl;
 
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.magic.MagicSpell;
@@ -50,7 +50,7 @@ public class Vengeance implements MagicSpell {
 		player.playGraphic(new Graphic(726, 100));
 		player.setVengeance(true);
 		player.getMagic().setLastVengeance(System.currentTimeMillis());
-		AchievementHandler.activate(player, AchievementList.TASTE_ME, 1);
+		Achievements.activate(player, Achievement.TASTE_VENGEANCE, 1);
 		player.getActionSender().sendWidget(2, 30);
 		
 		return true;

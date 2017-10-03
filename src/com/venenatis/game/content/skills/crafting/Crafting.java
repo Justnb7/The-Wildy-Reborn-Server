@@ -2,8 +2,8 @@ package com.venenatis.game.content.skills.crafting;
 
 import java.util.HashMap;
 
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
@@ -328,7 +328,7 @@ public enum Crafting {
 				}
 				
 				if (craftable.getName() == "Gem") {
-					AchievementHandler.activate(player, AchievementList.LAPIDARIST, 1);
+					Achievements.activate(player, Achievement.LAPIDARIST, 1);
 				}
 
 				if (++iterations == amount) {

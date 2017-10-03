@@ -1,8 +1,8 @@
 package com.venenatis.game.world.shop;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.achievements.AchievementHandler;
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
@@ -264,8 +264,7 @@ public class ShopManager {
 			}
 			player.getActionSender().sendMessage("You bought " + item.getAmount() + " " + item.getName() + " for " + Utility.formatDigits(price) + " " + currency.getUtility().getCurrencyName() + ".");
 			player.getActionSender().sendItemOnInterface(3823, player.getInventory().toArray());
-			AchievementHandler.activate(player, AchievementList.SPENDER, price);
-			AchievementHandler.activate(player, AchievementList.RICHIE, price);
+			Achievements.activate(player, Achievement.SPENDER, price);
 		}
 	}
 

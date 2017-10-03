@@ -1,6 +1,6 @@
 package com.venenatis.game.model.entity.player.dialogue.impl;
 
-import com.venenatis.game.content.achievements.AchievementList;
+import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
 import com.venenatis.game.model.Skills;
@@ -50,7 +50,7 @@ public class ClearAccount extends Dialogue {
 			player.getSkills().setMaxLevel(skill, 1);
 			player.getSkills().setMaxLevel(Skills.HITPOINTS, 10);
 		}
-		for (AchievementList data : AchievementList.values()) {
+		for (Achievement data : Achievement.values()) {
 			player.getPlayerAchievements().put(data, 0);
 		}
 		player.setAchievementPoints(0);

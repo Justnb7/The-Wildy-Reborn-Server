@@ -30,6 +30,7 @@ import com.venenatis.game.net.network.handshake.HandshakeDecoder;
 import com.venenatis.game.util.parser.impl.EquipmentDefinitionParser;
 import com.venenatis.game.util.parser.impl.ItemDefinitionParser;
 import com.venenatis.game.util.parser.impl.NPCDefinitionParser;
+import com.venenatis.game.util.parser.impl.NpcSpawnDefinitionParser;
 import com.venenatis.game.util.parser.impl.ShopParser;
 import com.venenatis.game.util.parser.impl.WeaponDefinitionParser;
 import com.venenatis.game.world.World;
@@ -126,7 +127,8 @@ public class Bootstrap {
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();
 			new NPCDefinitionParser().run();
-			Server.npcHandler.declare();
+			new NpcSpawnDefinitionParser().run();
+			//Server.npcHandler.declare();
 	        Server.getDropManager().read();
 			new ShopParser().run();
 			MobAttackSounds.declare();

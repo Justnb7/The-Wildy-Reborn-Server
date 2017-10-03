@@ -445,8 +445,13 @@ public class WalkingQueue {
 			int walkDir = walkPoint == null ? -1 : walkPoint.dir;
 			int runDir = runPoint == null ? -1 : runPoint.dir;
 			entity.getSprites().setSprites(walkDir, runDir);
-			if (walkPoint != null)
+
+			if (walkPoint != null) {
 				entity.lastTile = before;
+				lastDirectionFaced = walkDir;
+				if (entity.isPlayer())
+					entity.asPlayer().debug("dir now "+lastDirectionFaced);
+			}
 		}
 
 		if (entity.isPlayer()) {
@@ -459,6 +464,8 @@ public class WalkingQueue {
 		}
 		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[processNextMovement] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
+
+	public int lastDirectionFaced;
 
 	/**
 	 * Gets the next point of movement.

@@ -100,6 +100,8 @@ import com.venenatis.server.Server;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+
+	public List<Integer> npcIsNewlyAdded = new ArrayList<>(0);
 	
 	public void forceMove(ForceMovement forceMovement, boolean removeAttribute) {
 		this.setForceMovement(forceMovement, removeAttribute);

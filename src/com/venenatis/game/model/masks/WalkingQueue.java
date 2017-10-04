@@ -449,8 +449,9 @@ public class WalkingQueue {
 			if (walkPoint != null) {
 				entity.lastTile = before;
 				lastDirectionFaced = walkDir;
-				if (entity.isPlayer())
-					entity.asPlayer().debug("dir now "+lastDirectionFaced);
+				if (entity.isPlayer()) {
+					//entity.asPlayer().debug("dir now " + lastDirectionFaced);
+				}
 			}
 		}
 

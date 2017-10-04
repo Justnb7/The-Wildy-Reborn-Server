@@ -49,6 +49,7 @@ W 3
 
 		NPC npc = new NPC(id, location, dirInt);
 		npc.setFace(dir);
+		npc.strollRange = radius;
 		//if (id == 395)
 		//	System.out.println("banker at "+location+" facing "+dir+" "+dirInt);
 		if (World.getWorld().register(npc)) {

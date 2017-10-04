@@ -46,15 +46,16 @@ public final class NPCMovementTask extends Task {
 			return;
 
 		// Returning to Spawn Position?
-		if (npc.walkingHome) {
-			npc.resetFaceTile();
+		if (!npc.walkingHome) {
 			//System.out.println(npc.getDefinition().getName());
-			npc.targetId = 0;
 
 			// Npcs who are linked to a player don't walk home when out of distance. They follow forever.
 			if (npc.spawnedBy == null) {
 				if (!npc.getLocation().withinDistance(npc.spawnTile, npc.strollRange)) {
 					npc.walkingHome = true;
+					npc.targetId = 0;
+					npc.resetFaceTile();
+					npc.sendForcedMessage("home time");
 				}
 			}
 			if (npc.walkingHome && npc.getLocation().equals(npc.spawnTile)) {
@@ -63,17 +64,22 @@ public final class NPCMovementTask extends Task {
 			} else if (npc.walkingHome) {
 				npc.doPath(new SizedPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());
 			}
-		} else if (npc.randomWalk && (npc.getDefinition() == null || npc.strollRange == 1) && !npc.isInteracting()) {
+		}
+		if (!npc.walkingHome && npc.randomWalk && (npc.getDefinition() == null || npc.strollRange > 0) && !npc.isInteracting()) {
 
-			int random = Utility.getRandom(3);
+			int random = Utility.getRandom(8);
 
 			// 30% chance to random walk
 			if (random == 1) {
 				int strollRange = npc.getDefinition() == null ? 1 : npc.strollRange;
 
+				// Randomize a target tile to walk to.
 				Location toTile = null;
-				while (toTile == null || npc.spawnTile.distance(toTile) > npc.strollRange)
-					toTile = npc.getLocation().transform(-strollRange + (2 * strollRange), -strollRange + (2*strollRange));
+				int attempts = 3;
+				// Will be null the first time, then randomly repeat until we find one within the stroll range from
+				// the spawn tile
+				while ((toTile == null || npc.spawnTile.distance(toTile) > npc.strollRange+1) && --attempts > 0)
+					toTile = npc.getLocation().transform(Utility.random(2) == 1 ? 1 : -1 * Utility.random(1, strollRange), Utility.random(2) == 1 ? 1 : -1 * Utility.random(1, strollRange));
 
 				npc.doPath(new SizedPathFinder(), toTile.getX(), toTile.getY());
 			}

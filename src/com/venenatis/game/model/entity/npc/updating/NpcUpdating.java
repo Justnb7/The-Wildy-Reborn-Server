@@ -117,10 +117,11 @@ public class NpcUpdating {
 				/*
 				 * Add the npc in the packet.
 				 */
+				player.npcIsNewlyAdded.add(npc.getIndex());
+				boolean faceForced = makeNewNpcFace(npc); // must be first
+
 				player.getLocalNPCs().add(npc);
 				addNewNPC(player, npc, buffer);
-				player.npcIsNewlyAdded.add(npc.getIndex());
-				boolean faceForced = makeNewNpcFace(npc);
 				updateNPC(npc, updateBlock);
 				if (faceForced)
 					npc.getUpdateFlags().set(UpdateFlag.FACE_COORDINATE, false);
@@ -167,16 +168,17 @@ public class NpcUpdating {
 		Location dir = npc.getLocation();
 		// face depending on where we last walked (direction)
 		switch (npc.getWalkingQueue().lastDirectionFaced) {
-			case 0: dir = npc.getLocation().transform(0, 1); break; // n
-			case 1: dir = npc.getLocation().transform(0, -1); break; // s
-			case 2: dir = npc.getLocation().transform(1, 0); break; // e
+			case 1: dir = npc.getLocation().transform(0, 1); break; // n
+			case 6: dir = npc.getLocation().transform(0, -1); break; // s
+			case 4: dir = npc.getLocation().transform(1, 0); break; // e
 			case 3: dir = npc.getLocation().transform(-1, 0); break; // w
-			case 4: dir = npc.getLocation().transform(-1, 1); break; // nw
-			case 5: dir = npc.getLocation().transform(1, 1); break; // ne
-			case 6: dir = npc.getLocation().transform(-1, -1); break; // sw
+			case 0: dir = npc.getLocation().transform(-1, 1); break; // nw
+			case 2: dir = npc.getLocation().transform(1, 1); break; // ne
+			case 5: dir = npc.getLocation().transform(-1, -1); break; // sw
 			case 7: dir = npc.getLocation().transform(-1, 1); break; // se
 		}
 		npc.face(dir);
+		//System.out.println("new viewport npc will face "+npc.getWalkingQueue().lastDirectionFaced);
 		return true;
 	}
 

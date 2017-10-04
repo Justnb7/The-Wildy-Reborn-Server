@@ -433,6 +433,14 @@ public class WalkingQueue {
 			 * still). We get the next direction of movement here.
 			 */
 			Location before = entity.getLocation();
+			Point walkStep = waypoints.peek();
+			Location walkStepped = null;
+			if (walkStep != null && walkStep.dir > -1) {
+				int diffX = WalkingConstants.DIRECTION_DELTA_X[walkStep.dir];
+				int diffY = WalkingConstants.DIRECTION_DELTA_Y[walkStep.dir];
+				walkStepped = entity.getLocation().transform(diffX, diffY, 0);
+			}
+
 			walkPoint = getNextPoint();
 
 			if (runToggled || runQueue) {
@@ -447,7 +455,7 @@ public class WalkingQueue {
 			entity.getSprites().setSprites(walkDir, runDir);
 
 			if (walkPoint != null) {
-				entity.lastTile = before;
+				entity.lastTile = runPoint != null && walkStepped != null ? walkStepped : before;
 				lastDirectionFaced = walkDir;
 				if (entity.isPlayer()) {
 					//entity.asPlayer().debug("dir now " + lastDirectionFaced);

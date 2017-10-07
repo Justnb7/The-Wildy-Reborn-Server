@@ -156,7 +156,7 @@ public class DropManager {
 				} else {
 					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), new Location(location.getX(), location.getY(), player.getZ()), player));
 				}
-				//player.debug(String.format("drop %s on location %s%n", new Item(item.getId(), item.getAmount()), location));
+				player.debug(String.format("drop %s on location %s%n", new Item(item.getId(), item.getAmount()), location));
 			}
 			
 			/**

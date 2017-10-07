@@ -2,7 +2,9 @@ package com.venenatis.game.content.activity.minigames.impl.warriors_guild;
 
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.ground_item.GroundItem;
@@ -65,16 +67,16 @@ public class AnimatedArmour {
 		return null;
 	}
 
-	private static Armour getArmourForNpcId(int npcId) {
+	private static Armour getArmourForNpcId(NPC npc) {
 		for (Armour a : Armour.values())
-			if (a.getNpcId() == npcId)
+			if (a.getNpcId() == npc.getId())
 				return a;
 		return null;
 	}
 
-	public static boolean isAnimatedArmourNpc(int npcId) {
+	public static boolean isAnimatedArmourNpc(NPC npc) {
 		for (Armour armour : Armour.values()) {
-			if (armour.npcId == npcId) {
+			if (armour.npcId == npc.getId()) {
 				return true;
 			}
 		}
@@ -120,17 +122,21 @@ public class AnimatedArmour {
 
 			@Override
 			public void execute() {
-				Server.npcHandler.spawn(player, armour.getNpcId(), new Location(animator_west ? 2851 : 2857, 3536, 0), 1, true, true);
+				NPC npc = new NPC(armour.getNpcId(), null, 1);
+				
+				npc.spawn(player, armour.getNpcId(), new Location(animator_west ? 2851 : 2857, 3536, 0), 1, true);
+				npc.setHeadIcon(1);
+				npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				player.getActionSender().sendMessage("An animated armour has spawned...", 255);
 				this.stop();
 			}
 		});
 	}
 
-	public static void dropTokens(Player player, int npcType, Location location) {
-		Armour npc = getArmourForNpcId(npcType);
-		if (npc != null) {
-			GroundItemHandler.createGroundItem(new GroundItem(new Item(8851, npc.getAmountOfTokens()), location, player));
+	public static void dropTokens(Player player, NPC npc, Location location) {
+		Armour armour = getArmourForNpcId(npc);
+		if (armour != null) {
+			GroundItemHandler.createGroundItem(new GroundItem(new Item(8851, armour.getAmountOfTokens()), location, player));
 			player.setAttribute("animation_armour_spawned", false);
 		}
 	}

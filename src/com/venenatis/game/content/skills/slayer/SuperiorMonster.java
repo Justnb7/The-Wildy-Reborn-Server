@@ -69,7 +69,7 @@ public class SuperiorMonster {
 					random_spawn = 25;
 				if(random_spawn == 25) {
 					player.getActionSender().sendMessage("@red@A superior foe has appeared...");
-					Server.npcHandler.spawn(player, ssm.superiorId, npc.getLocation(), 1, true, false);
+					npc.spawn(player, ssm.superiorId, npc.getLocation(), 1, true);
 				}
 			}
 		}

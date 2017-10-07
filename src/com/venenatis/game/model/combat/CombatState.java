@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import com.venenatis.game.consumables.Consumables.Food;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.util.Stopwatch;
@@ -49,6 +50,10 @@ public class CombatState {
 
 	public boolean noTarget() {
 		return target == null;
+	}
+	
+	public void attack(NPC attacker, Player defender) {
+		attacker.targetId = defender.getIndex();
 	}
 
 	/**

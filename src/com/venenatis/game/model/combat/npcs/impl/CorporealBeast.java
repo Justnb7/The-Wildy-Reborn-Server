@@ -16,7 +16,6 @@ import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
-import com.venenatis.server.Server;
 
 public class CorporealBeast extends AbstractBossCombat {
 	
@@ -64,7 +63,7 @@ public class CorporealBeast extends AbstractBossCombat {
 				World.getWorld().schedule(new Task(4) {
 					@Override
 					public void execute() {
-						Server.npcHandler.spawn(player, DARK_CORE_ID, new Location(player.getX() + 1, player.getY(), player.getZ()), 1, true, false);
+						npc.spawn(player, DARK_CORE_ID, new Location(player.getX() + 1, player.getY(), player.getZ()), 1, true);
 						stop();
 					}
 				});

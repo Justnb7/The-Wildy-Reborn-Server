@@ -66,6 +66,26 @@ public class ForceMovement {
 	 */
 	private final Direction direction;
 	
+	/**
+	 * The forcemovement mask
+	 * 
+	 * @param startX
+	 *            The current player x position
+	 * @param startY
+	 *            The current player Y position
+	 * @param endX
+	 *            The final x position
+	 * @param endY
+	 *            The final Y position
+	 * @param durationX
+	 *            The duration of the x position movement
+	 * @param durationY
+	 *            The duration of the y position movement
+	 * @param ticks
+	 *            The duration of the task
+	 * @param direction
+	 *            The direction of the movement
+	 */
 	public ForceMovement(int startX, int startY, int endX, int endY, int durationX, int durationY, int ticks, Direction direction) {
 		this.startX = startX;
 		this.startY = startY;

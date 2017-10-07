@@ -38,7 +38,7 @@ public class SlayerTeleports extends Dialogue {
 	 * teleport locations.
 	 */
 	private static final int[][] OPTION_2_TELEPORT = {
-			{ 2439, 9812, 0 }, //Stronhold slayer cave
+			{ 2439, 9807, 0 }, //Stronhold slayer cave
 			{ 2884, 9798, 0}, // Taverly Dungeon
 			{ 2712, 9564, 0 }, //Brimhaven dungeon
 			{ 0, 0, 0 },

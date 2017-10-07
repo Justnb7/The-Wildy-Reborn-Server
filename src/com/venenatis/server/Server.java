@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.venenatis.game.model.entity.npc.NPCHandler;
 import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.task.TaskQueue;
 import com.venenatis.game.util.Stopwatch;
@@ -61,11 +60,6 @@ public class Server {
 	 * The task scheduler.
 	 */
 	private static final TaskQueue scheduler = new TaskQueue();
-
-	/**
-	 * The caller for the NPCHandler class
-	 */
-	public static NPCHandler npcHandler = new NPCHandler();
 	
 	/**
 	 * The drop system

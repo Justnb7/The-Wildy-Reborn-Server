@@ -46,7 +46,8 @@ public class TeleportHandler {
 
 		/* Minigame */
 		DUEL_ARENA(TeleportationTypes.MINIGAME, 226195, 58054, "Duel Arena", new Location(3365, 3265, 0), 0, "---", "---", false),
-		FIGHT_CAVES(TeleportationTypes.MINIGAME, 226199, 58058, "Fight Caves", new Location(2439, 5171, 0), 0, "---", "---", false);
+		FIGHT_CAVES(TeleportationTypes.MINIGAME, 226199, 58058, "Fight Caves", new Location(2439, 5171, 0), 0, "---", "---", false),
+		WARRIORS_GUILD(TeleportationTypes.MINIGAME, 226203, 58062, "Warriors Guild", new Location(2882, 3546, 0), 0, "Combined level of\\n@or2@130 in attack and strength.", "---", false);
 
 		private final TeleportationTypes teleportType;
 		private final int buttonId;

@@ -424,7 +424,7 @@ public class NPC extends Entity {
 		this.setTeleporting(false);
 	}
 	
-	public NPC spawnBossMinion(Player p, int id, Location location, int direction, boolean attackPlayer) {
+	public NPC spawn(Player p, int id, Location location, int direction, boolean attackPlayer) {
 		NPC npc = new NPC(id, location, direction);
 		npc.spawnDirection = direction;
 		npc.getWalkingQueue().lastDirectionFaced = direction;
@@ -469,8 +469,8 @@ public class NPC extends Entity {
 			
 			if (npcId == 6615) {
 				if (this.getHitpoints() <= 100 && !hasAttribute("scorpia_minion")) {
-					NPC min1 = spawnBossMinion(spawnedBy.asPlayer(), 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
-					NPC min2 = spawnBossMinion(spawnedBy.asPlayer(), 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
+					NPC min1 = spawn(spawnedBy.asPlayer(), 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
+					NPC min2 = spawn(spawnedBy.asPlayer(), 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
 					// attributes not used atm
 					this.setAttribute("min1", min1);
 					min1.setAttribute("boss", this);

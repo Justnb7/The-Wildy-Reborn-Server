@@ -6,7 +6,6 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.instance.InstancedAreaManager;
 import com.venenatis.game.model.entity.player.instance.SingleInstancedArea;
-import com.venenatis.server.Server;
 
 /**
  * The jad combat instance, only one player can fight TzTok-Jad.
@@ -35,7 +34,7 @@ public class FightCaveInstance {
 			player.getDialogueManager().start("ENTER_FIGHT_CAVE", player);
 			// tp player to jad pls
 			//player.setTeleportTarget(new Location(2401, 5085, instance.getHeight()));
-			jad = Server.npcHandler.spawn(player, 3127, new Location(2401, 5085, instance.getHeight()), 1, true, false);
+			jad.spawn(player, 3127, new Location(2401, 5085, instance.getHeight()), 1, true);
 		}
 	}
 	

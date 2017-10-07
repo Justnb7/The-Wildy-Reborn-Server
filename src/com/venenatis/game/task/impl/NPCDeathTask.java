@@ -211,18 +211,18 @@ public class NPCDeathTask extends Task {
 			 * Warriors guild
 			 */
 			killer.getWarriorsGuild().dropDefender(npc.getLocation());
-			if (AnimatedArmour.isAnimatedArmourNpc(npc.getId())) {
+			if (AnimatedArmour.isAnimatedArmourNpc(npc)) {
 
 				if (npc.getX() == 2851 && npc.getY() == 3536) {
 					x = 2851;
 					y = 3537;
-					AnimatedArmour.dropTokens(killer, npc.getId(), new Location(npc.getX(), npc.getY() + 1, 0));
+					AnimatedArmour.dropTokens(killer, npc, new Location(npc.getX(), npc.getY() + 1, 0));
 				} else if (npc.getX() == 2857 && npc.getY() == 3536) {
 					x = 2857;
 					y = 3537;
-					AnimatedArmour.dropTokens(killer, npc.getId(), new Location(npc.getX(), npc.getY() + 1, 0));
+					AnimatedArmour.dropTokens(killer, npc, new Location(npc.getX(), npc.getY() + 1, 0));
 				} else {
-					AnimatedArmour.dropTokens(killer, npc.getId(),new Location(npc.getX(), npc.getY(), 0));
+					AnimatedArmour.dropTokens(killer, npc,new Location(npc.getX(), npc.getY(), 0));
 				}
 			}
 			

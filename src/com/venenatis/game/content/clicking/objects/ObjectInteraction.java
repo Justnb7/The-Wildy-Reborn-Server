@@ -68,9 +68,13 @@ public class ObjectInteraction {
 			return;
 		}
 		
-		if(Rooftop.execute(player, obj)) {
+		if(Shortcut.processAgilityShortcut(player, obj)) {
 			return;
 		}
+		
+		/*if(Rooftop.execute(player, obj)) {
+			return;
+		}*/
 		
 		final int[] HUNTER_OBJECTS = new int[]{9373, 9377, 9379, 9375, 9348, 9380, 9385, 9344, 9345, 9383, 721}; 
 		if(IntStream.of(HUNTER_OBJECTS).anyMatch(id -> objectId == id)) {
@@ -184,6 +188,10 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+		
+		case 24318:
+			player.setTeleportTarget(new Location(player.getX() == 2876 ? 2877 : 2876, 3546, 0));
+			break;
 		
 		case 16671:
 			player.setTeleportTarget(new Location(2840, 3539, 2));
@@ -397,37 +405,6 @@ public class ObjectInteraction {
 			if (player.getZ() == 1) {
 				player.setTeleportTarget(new Location(3417, 3540, 2));
 			}
-			break;
-		
-		/**
-		 * Shortcuts
-		 */
-		case 9328:
-		case 9301:
-		case 9302:
-		case 2322:
-		case 2323:
-		case 2296:
-		case 5100:
-		case 21738:
-		case 21739:
-		case 14922:
-		case 3067:
-		case 9309:
-		case 9310:
-		case 2618:
-		case 2332:
-		case 20882:
-		case 20884:
-		case 4615:
-		case 4616:
-		case 3933:
-		case 12127:
-		case 16539:
-		case 993:
-		case 51:
-		case 8739:
-			Shortcut.processAgilityShortcut(player, obj);
 			break;
 		
 		case 1727:

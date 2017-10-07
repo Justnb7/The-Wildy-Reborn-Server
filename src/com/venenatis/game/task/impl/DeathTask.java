@@ -90,10 +90,14 @@ public class DeathTask extends Task {
 		victim.getActionQueue().clearRemovableActions();
 		victim.getSkills().setLevel(Skills.HITPOINTS, victim.getSkills().getLevelForExperience(Skills.HITPOINTS));
 		victim.getActionSender().sendMessage("Oh dear, you are dead!");
-		if(victim.getAccount().getType().loseStatusOnDeath()) {
-			victim.getAccount().setType(Account.HARDCORE_IRON_MAN_TYPE);
-			victim.setRights(Rights.HARDCORE_IRON_MAN);
+		
+		
+		if(victim.getAccount().getType().loseStatusOnDeath() && victim.getRights().isHardcoreIronman(victim)) {//Double check if the victim is a Hardcore ironman for extra safety
+			victim.getAccount().setType(Account.IRON_MAN_TYPE);
+			victim.setRights(Rights.IRON_MAN);
+			victim.message("You have fallen as a Hardcore Iron Man, your Hardcore status has been revoked.");
 		}
+		
 		victim.getCombatState().setDead(false);
 		victim.freeze(0);
 		victim.setCurrentKillStreak(0);

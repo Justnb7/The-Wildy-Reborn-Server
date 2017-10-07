@@ -1,6 +1,5 @@
 package com.venenatis.game.model.entity.player.account;
 
-import java.util.List;
 
 /**
  * Represents the type of account a singular player has. By default, the element
@@ -25,7 +24,7 @@ public abstract class AccountType {
 	 * 
 	 * @return the player rights associated with the account.
 	 */
-	public abstract int getPrivilege();
+	public abstract int gameMode();
 
 	/**
 	 * Determines if the account is permitted to see the item drops if they are
@@ -33,7 +32,7 @@ public abstract class AccountType {
 	 * 
 	 * @return true if the type can drop items, otherwise false
 	 */
-	public abstract boolean unownedDropsVisible();
+	public abstract boolean canScavageItems();
 
 	/**
 	 * Determins if the account is permitted to trade other players.
@@ -50,44 +49,24 @@ public abstract class AccountType {
 	public abstract boolean stakingPermitted();
 	
 	/**
-	 * Returns the Collection of Strings that represents each AccountType.
-	 * 
-	 * @return a collection of account types
+	 * Determines if a any shop is accessible
+	 * @return {@code true} if the shop can be accessed, otherwise {@code false}
 	 */
-	public abstract List<String> attackableTypes();
-
-	/**
-	 * Determines if the shop is accessible to the player. This includes access,
-	 * price checking, selling, and buying.
-	 * 
-	 * @param shop
-	 *            the shop we're trying to determine the access of
-	 * @return true if we have access, false if we do not.
-	 */
-	public abstract boolean shopAccessible(String shop);
-
-	/**
-	 * Determines if the account mode can be reversed to the default type which
-	 * in turn will be a type known as Regular.
-	 * 
-	 * @return true if it's reversable, false if not.
-	 */
-	public abstract boolean changable();
-
-	/**
-	 * Determines if the drop announcements from certain monsters is visible to
-	 * this mode
-	 * 
-	 * @return true if the drops are visible, false if not.
-	 */
-	public abstract boolean dropAnnouncementVisible();
+	public abstract boolean isShopAccessible();
 	
 	/**
-	 * Player's game mode type associated with the account type.
+	 * Determines if the player gains combat experience whilst in PVP
 	 * 
-	 * @return the player's game mode associated with the account.
+	 * @return {@code true} if the player can gain combat experience, otherwise {@code false}
 	 */
-	public abstract int modeType();
+	public abstract boolean isPVPCombatExperienceGained();
+
+	/**
+	 * Determines if the player is permitted to claim items or other rewards from donating.
+	 * 
+	 * @return {@code true} if the player can claim donated items or rewards, otherwise {@code false}
+	 */
+	public abstract boolean isDonatingPermitted();
 	
 	/**
 	 * Hardcore ironmen lose their status on death.

@@ -131,9 +131,9 @@ public final class GroundItemHandler {
 				continue;
 			}
 
-			if (player.getRights().isIron(player)) {
+			/*if (player.getRights().isIron(player)) {
 				continue;
-			}
+			}*/
 
 			// If we are globalizing an item, don't re-add it for the owner
 			if (player.usernameHash != groundItem.getOwnerHash()) {
@@ -228,7 +228,7 @@ public final class GroundItemHandler {
 			}
 			
 			if (item.getOwnerHash() != player.usernameHash) {
-				if (!player.getAccount().getType().unownedDropsVisible() || (item.getState() == State.SEEN_BY_OWNER)) {
+				if (!player.getAccount().getType().canScavageItems() || (item.getState() == State.SEEN_BY_OWNER)) {
 					continue;
 				}
 			}
@@ -325,6 +325,14 @@ public final class GroundItemHandler {
 		}
 
 		GroundItem groundItem = optionalGroundItem.get();
+		
+		if (!player.getAccount().getType().canScavageItems()) {
+			Player owner = groundItem.getPlayer();
+			if (owner == null || !player.getUsername().equalsIgnoreCase(groundItem.getPlayer().getUsername())) {
+				player.message("Your mode restricts you from picking up items that are not yours.");
+				return;
+			}
+		}
 
 		Server.getTaskScheduler().schedule(new Task(player, 1, true, StackType.STACK, BreakType.NEVER) {
 			@Override

@@ -1,9 +1,5 @@
 package com.venenatis.game.model.entity.player.account.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.AccountType;
 
 /**
@@ -22,12 +18,12 @@ public class RegularAccount extends AccountType {
 	}
 
 	@Override
-	public int getPrivilege() {
+	public int gameMode() {
 		return 0;
 	}
 
 	@Override
-	public boolean unownedDropsVisible() {
+	public boolean canScavageItems() {
 		return true;
 	}
 
@@ -42,28 +38,18 @@ public class RegularAccount extends AccountType {
 	}
 	
 	@Override
-	public List<String> attackableTypes() {
-		return Arrays.asList(Account.REGULAR_TYPE.alias(), Account.IRON_MAN_TYPE.alias(), Account.ULTIMATE_IRON_MAN_TYPE.alias(), Account.HARDCORE_IRON_MAN_TYPE.alias());
-	}
-
-	@Override
-	public boolean shopAccessible(String shop) {
-		return true;
-	}
-
-	@Override
-	public boolean changable() {
-		return true;
-	}
-
-	@Override
-	public boolean dropAnnouncementVisible() {
+	public boolean isShopAccessible() {
 		return true;
 	}
 	
 	@Override
-	public int modeType() {
-		return 0;
+	public boolean isPVPCombatExperienceGained() {
+		return true;
+	}
+
+	@Override
+	public boolean isDonatingPermitted() {
+		return true;
 	}
 
 	@Override

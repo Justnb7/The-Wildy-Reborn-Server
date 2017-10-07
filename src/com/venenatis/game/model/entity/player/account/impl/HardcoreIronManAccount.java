@@ -1,9 +1,5 @@
 package com.venenatis.game.model.entity.player.account.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.AccountType;
 
 /**
@@ -19,12 +15,12 @@ public class HardcoreIronManAccount extends AccountType {
 	}
 
 	@Override
-	public int getPrivilege() {
-		return 24;
+	public int gameMode() {
+		return 3;
 	}
 
 	@Override
-	public boolean unownedDropsVisible() {
+	public boolean canScavageItems() {
 		return false;
 	}
 
@@ -37,30 +33,20 @@ public class HardcoreIronManAccount extends AccountType {
 	public boolean stakingPermitted() {
 		return true;
 	}
-
+	
 	@Override
-    public List<String> attackableTypes() {
-        return Arrays.asList(Account.IRON_MAN_TYPE.alias(), Account.ULTIMATE_IRON_MAN_TYPE.alias(), Account.HARDCORE_IRON_MAN_TYPE.alias());
-    }
-
+	public boolean isShopAccessible() {
+		return false;
+	}
+	
 	@Override
-	public boolean shopAccessible(String shop) {
+	public boolean isPVPCombatExperienceGained() {
 		return false;
 	}
 
 	@Override
-	public boolean changable() {
+	public boolean isDonatingPermitted() {
 		return false;
-	}
-
-	@Override
-	public boolean dropAnnouncementVisible() {
-		return false;
-	}
-
-	@Override
-	public int modeType() {
-		return 3;
 	}
 
 	@Override

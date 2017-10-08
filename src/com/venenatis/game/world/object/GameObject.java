@@ -59,6 +59,7 @@ public class GameObject {
 	public GameObject(int id, Location location) {
 		this.id = id;
 		this.location = location;
+		this.type = 10;
 	}
 	
 	public GameObject(int id, int x, int y, int height, int face) {

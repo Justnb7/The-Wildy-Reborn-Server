@@ -90,7 +90,7 @@ public class NPCDeathTask extends Task {
         		return;
         	}
         	if (npc.getDefinition().getRespawnTime() == -1) {// this npc does not respawn
-        		//System.out.println("NPC can't respawn");
+        		System.out.println("NPC can't respawn");
                 World.getWorld().unregister(npc);
         		stop();
         	}
@@ -212,18 +212,7 @@ public class NPCDeathTask extends Task {
 			 */
 			killer.getWarriorsGuild().dropDefender(npc.getLocation());
 			if (AnimatedArmour.isAnimatedArmourNpc(npc)) {
-
-				if (npc.getX() == 2851 && npc.getY() == 3536) {
-					x = 2851;
-					y = 3537;
-					AnimatedArmour.dropTokens(killer, npc, new Location(npc.getX(), npc.getY() + 1, 0));
-				} else if (npc.getX() == 2857 && npc.getY() == 3536) {
-					x = 2857;
-					y = 3537;
-					AnimatedArmour.dropTokens(killer, npc, new Location(npc.getX(), npc.getY() + 1, 0));
-				} else {
-					AnimatedArmour.dropTokens(killer, npc,new Location(npc.getX(), npc.getY(), 0));
-				}
+                AnimatedArmour.dropTokens(killer, npc, new Location(npc.getX(), npc.getY(), 0));
 			}
 			
 			/* Add kills to tracker */

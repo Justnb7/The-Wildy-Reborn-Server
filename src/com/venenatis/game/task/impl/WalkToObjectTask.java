@@ -5,7 +5,7 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.object.GameObject;
-import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
+import com.venenatis.server.Server;
 
 /**
  * This task handles walking towards objects.
@@ -64,7 +64,7 @@ public class WalkToObjectTask extends Task {
 			return;
 		}
 		
-		final GameObject obj = RegionStoreManager.get().getGameObject(loc, object);
+		final GameObject obj = Server.getGlobalObjects().customOrCache(object, loc);
 		
 		//Safety
 		if (obj == null) {
@@ -88,7 +88,8 @@ public class WalkToObjectTask extends Task {
 			    || (object == 11377 && player.getLocation().equals(new Location(2702, 3464, 2)))
 			    || (object == 677 && player.getLocation().equals(new Location(2970, 4384, 2)))
 			    || (object == 16671 && player.getLocation().equals(new Location(2840, 3539, 0)))
-			    || (object == 16509 && player.getLocation().equals(new Location(2892, 9799, 0)))) {
+			    || (object == 16509 && player.getLocation().equals(new Location(2892, 9799, 0)))
+			    || (object == 16511 && player.getLocation().equals(new Location(3155, 9906, 0)))) {
 			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:

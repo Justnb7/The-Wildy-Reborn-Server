@@ -231,18 +231,33 @@ public class ActionSender {
 		return this;
 	}
 
-	public ActionSender drawHeadIcon(int i, int j, int k, int l) {
+	/**
+	 * Sends a hint above an entity's head.
+	 * @param entity	The target entity to draw hint for.
+	 * @return			The PacketSender instance.
+	 */
+	public ActionSender sendEntityHint(Entity entity) {
+		int type = entity instanceof Player ? 10 : 1;
+		player.outStream.writeFrame(254);
+		player.outStream.writeByte(type);
+		player.outStream.writeShort(entity.getIndex());
+		player.getOutStream().write3Byte(0);
+		player.flushOutStream();
+		return this;
+	}
+
+	public ActionSender drawHeadIcon(int i, int index, int k, int l) {
 		player.outStream.writeFrame(254);
 		player.outStream.writeByte(i);
 
 		if (i == 1 || i == 10) {
-			player.outStream.writeShort(j);
+			player.outStream.writeShort(index);
 			player.outStream.writeShort(k);
 			player.outStream.writeByte(l);
 		} else {
 			player.outStream.writeShort(k);
 			player.outStream.writeShort(l);
-			player.outStream.writeByte(j);
+			player.outStream.writeByte(index);
 		}
 		return this;
 	}

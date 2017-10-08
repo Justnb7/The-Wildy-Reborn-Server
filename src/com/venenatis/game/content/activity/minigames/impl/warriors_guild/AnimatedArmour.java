@@ -4,6 +4,8 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
+import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
@@ -117,18 +119,34 @@ public class AnimatedArmour {
 		player.getInventory().remove(armour.getPlatebodyId(), 1);
 		player.getInventory().remove(armour.getPlatelegsId(), 1);
 		player.getInventory().remove(armour.getHelmId(), 1);
-		player.getWalkingQueue().walkTo(0, +3);
-	    World.getWorld().schedule(new Task(6) {
-
+		
+	    World.getWorld().schedule(new Task(1) {
+	    	public int tick = 0;
 			@Override
 			public void execute() {
-				NPC npc = new NPC(armour.getNpcId(), null, 1);
+				if(tick == 0) {
+					SimpleDialogues.sendStatement(player, "You place your armour on the platform where it dissapears...");
+				}
 				
-				npc.spawn(player, armour.getNpcId(), new Location(animator_west ? 2851 : 2857, 3536, 0), 1, true);
-				npc.setHeadIcon(1);
-				npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-				player.getActionSender().sendMessage("An animated armour has spawned...", 255);
-				this.stop();
+				if(tick == 3) {
+					SimpleDialogues.sendStatement(player, "The animator hims, something appears to be working. You stand", "back...");
+				}
+				
+				if(tick == 5) {
+					player.forceWalk(new Animation(820), player.getX(), player.getY()+3, 0, 0, true);
+					player.getActionSender().removeAllInterfaces();
+					player.face(player.getLocation().transform(-1, 0));
+				}
+				
+				if (tick == 7) {
+					NPC npc = new NPC(armour.getNpcId());
+					// TODO ask Jak how to perform the anim and forced text
+					npc.spawn(player, armour.getNpcId(), new Location(animator_west ? 2851 : 2857, 3536, 0), 1, true);
+					npc.playAnimation(new Animation(4166));
+					npc.sendForcedMessage("I'M ALIVE!");
+					// npc.getActionSender().sendEntityHint(npc);
+				}
+				tick++;
 			}
 		});
 	}
@@ -137,7 +155,7 @@ public class AnimatedArmour {
 		Armour armour = getArmourForNpcId(npc);
 		if (armour != null) {
 			GroundItemHandler.createGroundItem(new GroundItem(new Item(8851, armour.getAmountOfTokens()), location, player));
-			player.setAttribute("animation_armour_spawned", false);
+			player.removeAttribute("animation_armour_spawned");
 		}
 	}
 

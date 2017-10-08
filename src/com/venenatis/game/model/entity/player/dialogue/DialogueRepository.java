@@ -157,6 +157,11 @@ public class DialogueRepository {
 		dialogues.put("PERDU", Perdu.class);
 		
 		/**
+		 * Ghommal
+		 */
+		dialogues.put("GHOMMAL", Ghommal.class);
+		
+		/**
 		 * Options
 		 */
 		dialogues.put("MAGIC_BOOK", MagicBook.class);

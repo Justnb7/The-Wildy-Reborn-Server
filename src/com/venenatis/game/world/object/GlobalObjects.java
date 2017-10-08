@@ -87,7 +87,7 @@ public class GlobalObjects {
 	 * Adds a new global object to the game world
 	 * @param object	the object being added
 	 */
-	public void add(GameObject object) { // call this im brb 5min k
+	public void add(GameObject object) {
 		updateObject(object, object.getId());
 		objects.add(object);
 		Region.addClipping(object);

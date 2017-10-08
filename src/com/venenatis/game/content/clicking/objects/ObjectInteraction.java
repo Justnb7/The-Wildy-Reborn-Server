@@ -72,13 +72,14 @@ public class ObjectInteraction {
 			return;
 		}
 		
-		/*if(Rooftop.execute(player, obj)) {
+		if(Rooftop.execute(player, obj)) {//this
 			return;
-		}*/
+		}
 		
 		final int[] HUNTER_OBJECTS = new int[]{9373, 9377, 9379, 9375, 9348, 9380, 9385, 9344, 9345, 9383, 721}; 
 		if(IntStream.of(HUNTER_OBJECTS).anyMatch(id -> objectId == id)) {
-			if(Hunter.pickup(player, obj)){
+			if(Hunter.pickup(player, obj)) {
+				player.debug("click");
 				return;
 			}
 			if(Hunter.claim(player, obj)) {
@@ -190,7 +191,17 @@ public class ObjectInteraction {
 		switch(objectId) {
 		
 		case 24318:
-			player.setTeleportTarget(new Location(player.getX() == 2876 ? 2877 : 2876, 3546, 0));
+			int strength_level = player.getSkills().getLevel(Skills.STRENGTH);
+			int attack_level = player.getSkills().getLevel(Skills.ATTACK);
+			
+			int total_level = strength_level += attack_level;
+			
+			if (total_level >= 130) {//This line crashes server... //TODO
+				player.setTeleportTarget(new Location(player.getX() == 2876 ? 2877 : 2876, 3546, 0));
+			} else {
+				SimpleDialogues.sendStatement(player, "You are not a high enough level to enter the guild. Work on your", "combat skills some more. You need to have a combined attack and", "strength level of at least 130.");
+				return;
+			}
 			break;
 		
 		case 16671:

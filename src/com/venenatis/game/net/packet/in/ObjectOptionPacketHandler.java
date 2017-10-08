@@ -74,8 +74,6 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 		int y = player.getInStream().readUnsignedWordA();
 		Location location = Location.create(x, y, player.getLocation().getZ());
 		
-		System.out.println(String.format("[ObjectInteraction first option] - location: %s object: %d ", location, id));
-		
 		// Client isnt very happy with this shit so we have to hard call it
 		if (id == 10357 && x == 3318 && y == 3166) {
 			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(x, y, player.getZ()), id);

@@ -15,6 +15,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.impl.SizedPathFinder;
 import com.venenatis.server.Server;
 
 /**
@@ -67,7 +68,7 @@ public final class BoxTrap extends Trap {
 	 * @param npc	the npc to kill.
 	 */
 	private void kill(NPC npc) {
-		npc.getCombatState().setDead(true);
+		npc.remove(npc);
 		trapped = Optional.of(npc);
 	}
 	
@@ -114,8 +115,7 @@ public final class BoxTrap extends Trap {
 
 			@Override
 			public void execute(CycleEventContainer container) {
-				//TODO ask Jak how to do this part since our doPath is only PLAYER supported
-				//NPCDumbPathFinder.walkTowards(npc, getObject().getX(), getObject().getY());
+				npc.doPath(new SizedPathFinder(), getObject().getX(), getObject().getY());
 				if(isAbandoned()) {
 					container.stop();
 					return;
@@ -131,6 +131,7 @@ public final class BoxTrap extends Trap {
 					int count = random.inclusive(180);
 					int formula = successFormula(npc);
 					if(count > formula) {
+						System.out.println("got here");
 						setState(TrapState.FALLEN);
 						container.stop();
 						return;

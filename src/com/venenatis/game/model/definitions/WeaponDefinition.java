@@ -284,7 +284,7 @@ public class WeaponDefinition {
 		}
 
 		if (weapon.getId() == 12926) {
-			return player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombatState().getTarget().isPlayer() ? 3 : 2 : player.getCombatState().getTarget().isPlayer() ? 4 : 3;
+			return player != null && player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombatState().getTarget().isPlayer() ? 3 : 2 : player.getCombatState().getTarget().isPlayer() ? 4 : 3;
 		} else {
 			return WeaponDefinition.get(weapon.getId()).getAttackSpeed();
 		}
@@ -298,6 +298,7 @@ public class WeaponDefinition {
 	 * @return the block animation
 	 */
 	public static int sendBlockAnimation(Player player) {
+		//TODO ask Jak why weapon is null
 		//weapon instance
 		int weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
 		

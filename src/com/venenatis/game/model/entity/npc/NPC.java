@@ -39,7 +39,6 @@ public class NPC extends Entity {
 			setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
 		}
 		
-		//TODO Jak did you forget to add them here too?
 		spawnDirection = direction;
 		getWalkingQueue().lastDirectionFaced = direction;
 		

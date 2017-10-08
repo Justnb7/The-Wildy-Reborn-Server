@@ -76,10 +76,9 @@ public class BossRewardChest {
 		player.getActionSender().sendMessage("You unlock the chest with your key.");
 		Item reward = BOSSCHEST.nextObject().get(); 
 		String name = reward.getDefinition().getName();
-		String formatted_name = Utility.getAOrAn(name) + " " + name;
 		player.getInventory().remove(new Item(2944));
 		player.getInventory().addOrCreateGroundItem(player, reward);
-		World.getWorld().sendWorldMessage("<img=20><col=8A2BE2>[Chest of drops]:</col> <col=7171C6>"+player.getUsername()+"</col> just received <col=3D9140>"+formatted_name+"</col>.", false);
+		World.getWorld().sendWorldMessage("<img=20><col=8A2BE2>[Chest of drops]:</col> <col=7171C6>"+player.getUsername()+"</col> just received <col=3D9140>"+name+"</col>.", false);
 		player.playAnimation(Animation.create(881));
 	}
 

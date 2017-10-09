@@ -128,7 +128,6 @@ public class Bootstrap {
 			new EquipmentDefinitionParser().run();
 			new NPCDefinitionParser().run();
 			new NpcSpawnDefinitionParser().run();
-			//Server.npcHandler.declare();
 	        Server.getDropManager().read();
 			new ShopParser().run();
 			MobAttackSounds.declare();

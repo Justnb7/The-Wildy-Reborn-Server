@@ -298,9 +298,8 @@ public class WeaponDefinition {
 	 * @return the block animation
 	 */
 	public static int sendBlockAnimation(Player player) {
-		//TODO ask Jak why weapon is null
 		//weapon instance
-		int weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT) == null ? -1 : player.getEquipment().get(EquipmentConstants.WEAPON_SLOT).getId();
+		Item weapon = player.getEquipment().get(EquipmentConstants.WEAPON_SLOT);
 		
 		//shield instance
 		Item shield = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
@@ -320,9 +319,9 @@ public class WeaponDefinition {
 				return 1156;
 			}
 		}
-		if (weapon == -1) // empty hands
+		if (weapon.getId() == -1) // empty hands
 			return 424;
 		else
-			return WeaponDefinition.get(weapon).getBlockAnimation(); // wep anim
+			return WeaponDefinition.get(weapon.getId()).getBlockAnimation(); // wep anim
 	}
 }

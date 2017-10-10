@@ -162,12 +162,6 @@ public class DefaultController extends Controller {
 		/* Minigame */
 		if (MinigameHandler.search(player).isPresent()) {
 			MinigameHandler.search(player).ifPresent(m -> m.onDisplay(player));
-		} else if (Boundary.isIn(player, PestControl.LOBBY_BOUNDARY)) {
-			player.getActionSender().sendWalkableInterface(21119);
-			PestControl.drawInterface(player, "lobby");
-		} else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
-			player.getActionSender().sendWalkableInterface(21100);
-			PestControl.drawInterface(player, "game");
 		/* Wilderness */
 		} else if (Area.inWilderness(player)) {
 			if (Area.inDaganothMotherCave(player)) {
@@ -205,6 +199,13 @@ public class DefaultController extends Controller {
 
 	@Override
 	public void process(Player player) {
+		if (Boundary.isIn(player, PestControl.LOBBY_BOUNDARY)) {
+			player.getActionSender().sendWalkableInterface(21119);
+			PestControl.drawInterface(player, "lobby");
+		} else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
+			player.getActionSender().sendWalkableInterface(21100);
+			PestControl.drawInterface(player, "game");
+		}
 		if (!(player.getWalkingQueue().isMoving() && player.getWalkingQueue().isRunning()) && player.getRunEnergy() != 100) {
 			player.setRunRestore(player.getRunRestore() + 1);
 

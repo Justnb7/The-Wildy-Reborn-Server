@@ -40,18 +40,25 @@ public final class NPCMovementTask extends Task {
 		}
 	}
 
+	/**
+	 * Method to manage if NPCs should return (walk home) to their origin spawn tile if they're further
+	 * than X tiles -- where x is defined as the strollRange in NPC spawns json
+	 * @param npc
+	 */
 	private void handle_npc_walking(NPC npc) {
 
 		if (npc.getCombatState().isDead())
 			return;
 
-		// Returning to Spawn Position?
+		// Firstly, rreturning to Spawn Position? if too far away.
 		if (!npc.walkingHome) {
 			//System.out.println(npc.getDefinition().getName());
 
 			// Npcs who are linked to a player don't walk home when out of distance. They follow forever.
 			if (npc.spawnedBy == null) {
-				if (!npc.getLocation().withinDistance(npc.spawnTile, npc.strollRange)) {
+				// If stroll range is >0 it will have been loaded in npcSpawns. If not (default 0) default to value 10 instead.
+				final int maxDistance = npc.strollRange > 0 ? npc.strollRange : 10;
+				if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance)) {
 					npc.walkingHome = true;
 					npc.targetId = 0;
 					npc.resetFaceTile();
@@ -65,8 +72,11 @@ public final class NPCMovementTask extends Task {
 				npc.doPath(new SizedPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());
 			}
 		}
+		
+		// Secondly do random walking if we're inside our spawn diameter. 
+		//npc.sendForcedMessage(npc.walkingHome+" "+npc.randomWalk+" "+npc.strollRange); // debug
 		if (!npc.walkingHome && npc.randomWalk && (npc.getDefinition() == null || npc.strollRange > 0) && !npc.isInteracting()) {
-
+			
 			int random = Utility.getRandom(8);
 
 			// 30% chance to random walk

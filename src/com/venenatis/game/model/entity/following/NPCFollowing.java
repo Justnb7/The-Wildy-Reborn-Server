@@ -18,6 +18,12 @@ public class NPCFollowing {
 	 *            The id of the player being followed
 	 */
 	public static void attemptFollowEntity(NPC npc, Entity target) {
+		// When an NPC is returning to their spawn tile, they still face their old target but it is reset. 
+		if (npc.walkingHome) {
+			npc.getCombatState().setTarget(null);
+			npc.following().setFollowing(null);
+			return;
+		}
 		if (target == null || npc == null) {
 			npc.following().setFollowing(null);
 			npc.resetFaceTile();

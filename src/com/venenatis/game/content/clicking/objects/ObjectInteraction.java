@@ -205,11 +205,11 @@ public class ObjectInteraction {
 			
 			int total_level = strength_level += attack_level;
 			
-			if (total_level >= 130) {//This line crashes server... //TODO
+			if (total_level >= 130) {//This line crashes server... //TODO demo please
 				player.setTeleportTarget(new Location(player.getX() == 2876 ? 2877 : 2876, 3546, 0));
 			} else {
 				SimpleDialogues.sendStatement(player, "You are not a high enough level to enter the guild. Work on your", "combat skills some more. You need to have a combined attack and", "strength level of at least 130.");
-				return;
+				// guessing the return statement crashed it not exactly sure why
 			}
 			break;
 		

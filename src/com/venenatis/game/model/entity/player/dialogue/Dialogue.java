@@ -199,7 +199,7 @@ public abstract class Dialogue {
 				player.getActionSender().sendPlayerHeadToInterface(987);
 				player.getActionSender().sendChatBoxInterface(986);
 			} else {
-				throw new InternalError();
+				throw new InternalError("retard didnt give it a err message");
 			}
 		} else if (type == DialogueType.STATEMENT) {
 			if (parameters.length == 1) {
@@ -219,7 +219,8 @@ public abstract class Dialogue {
 				player.getActionSender().sendString((String) parameters[4], 6184);
 				player.getActionSender().sendChatBoxInterface(6179);
 			} else {
-				throw new InternalError();
+				// missing param length 3 and 4
+				System.err.println("shit");
 			}
 		} else if (type == DialogueType.STRING_INT) {
 			player.getOutStream().writeFrame(219);

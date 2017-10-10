@@ -6,6 +6,7 @@ import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.World;
@@ -122,6 +123,7 @@ public class AnimatedArmour {
 		
 	    World.getWorld().schedule(new Task(1) {
 	    	public int tick = 0;
+	    	private NPC ref;
 			@Override
 			public void execute() {
 				if(tick == 0) {
@@ -139,14 +141,29 @@ public class AnimatedArmour {
 				}
 				
 				if (tick == 7) {
-					NPC npc = new NPC(armour.getNpcId());
+					NPC npc = ref = new NPC(armour.getNpcId());
 					// TODO ask Jak how to perform the anim and forced text
 					npc.spawn(player, armour.getNpcId(), new Location(animator_west ? 2851 : 2857, 3536, 0), 1, true);
+					//Some reason those two arent done by the npc demo?
 					npc.playAnimation(new Animation(4166));
 					npc.sendForcedMessage("I'M ALIVE!");
 					// npc.getActionSender().sendEntityHint(npc);
+					System.err.println("kys");
+				}
+				if (tick == 8) {
+					ref.anim(4166);
+					//stop();
+					System.err.println("anytime");
+				}
+				if (ref != null) {
+					ref.anim(7061);
+					ref.sendForcedMessage("ola "+tick);
+					ref.playGraphic(new Graphic(369));
+					System.err.println("........anytime? "+ref+" "+ref.getUpdateFlags().isUpdateRequired());
 				}
 				tick++;
+				if (tick > 15)
+					stop();
 			}
 		});
 	}

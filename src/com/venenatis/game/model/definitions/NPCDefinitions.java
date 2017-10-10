@@ -303,7 +303,7 @@ public final class NPCDefinitions {
      * @return the respawn time.
      */
     public int getRespawnTime() {
-        return respawnTime <= 0 ? 60 : respawnTime;
+        return respawnTime;//used to be <= 0 ? 60 : respawnTime --- but we used values under zero (aka -1) to identify npcs which do not respawn
     }
 
     /**

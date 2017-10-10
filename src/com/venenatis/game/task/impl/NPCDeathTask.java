@@ -89,6 +89,7 @@ public class NPCDeathTask extends Task {
         		stop();
         		return;
         	}
+        	//Specified when in defs -1 wont respawn right? Well they still respawn :d
         	if (npc.getDefinition().getRespawnTime() == -1) {// this npc does not respawn
         		System.out.println("NPC can't respawn");
                 World.getWorld().unregister(npc);
@@ -192,12 +193,13 @@ public class NPCDeathTask extends Task {
     
     private final static void onDeath(NPC npc) {
     	
-    	Player killer = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
+    	String killerName = npc.getCombatState().getDamageMap().getKiller();
+    	Player killer = World.getWorld().lookupPlayerByName(killerName);
 		
     	//killer.debug(String.format("killer: %s", npc.getCombatState().getDamageMap().getKiller()));
 
     	if(killer == null) {
-    		System.out.printf("Killer is null, killed %s%n", npc.getName());
+    		System.out.printf("Killer is null (tried '"+killerName+"'), killed %s%n", npc.getName());
     		return;
     	}
     	

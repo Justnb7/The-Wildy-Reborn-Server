@@ -70,7 +70,7 @@ public class NpcUpdating {
 				/*
 				 * Check if an update is required, and if so, send the update.
 				 */
-				updateNPC(npc, updateBlock);
+				updateNPC(npc, updateBlock, player);
 			} else {
 				/*
 				 * Otherwise, remove the NPC from the list.
@@ -122,7 +122,7 @@ public class NpcUpdating {
 
 				player.getLocalNPCs().add(npc);
 				addNewNPC(player, npc, buffer);
-				updateNPC(npc, updateBlock);
+				updateNPC(npc, updateBlock, player);
 				if (faceForced)
 					npc.getUpdateFlags().set(UpdateFlag.FACE_COORDINATE, false);
 				added++;
@@ -190,7 +190,7 @@ public class NpcUpdating {
 	 * @param buffer
 	 *            The {@link GameBuffer} to write the data on
 	 */
-	private static void updateNPC(NPC npc, GameBuffer buffer) {
+	private static void updateNPC(NPC npc, GameBuffer buffer, Player p) {
 		
 		if (!npc.getUpdateFlags().isUpdateRequired())
 			return;
@@ -225,7 +225,10 @@ public class NpcUpdating {
 		if (flags.get(UpdateFlag.FACE_COORDINATE)) {
 			updateMask |= 4;
 		}
-
+		
+		//if (p.npcIsNewlyAdded.contains(npc.getIndex()))
+			System.err.println("new npc "+npc.getName()+" for p "+p.getUsername()+" flags: "+updateMask+" "+flags.get(UpdateFlag.ANIMATION));
+		
 		buffer.writeByte(updateMask);
 
 		if(flags.get(UpdateFlag.ANIMATION)) {
@@ -248,6 +251,7 @@ public class NpcUpdating {
 		}
 		if(flags.get(UpdateFlag.FORCED_CHAT)) {
 			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());
+			System.out.println("push "+npc.getUpdateFlags().getForcedMessage());
 		}
 		if(flags.get(UpdateFlag.HIT_2)) {
 			buffer.writeShort(npc.getUpdateFlags().secondary.getDamage());
@@ -313,6 +317,8 @@ public class NpcUpdating {
 		buffer.writeBits(1, 0);
 		buffer.writeBits(14, npc.getId());
 		buffer.writeBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
+		System.err.println("npc "+npc.getName()+" added to viewport. update:"+npc.getUpdateFlags().isUpdateRequired());
+		// cant see the issue 
 	}
 	
 	private static void appendHitUpdate1(NPC npc, GameBuffer str) {

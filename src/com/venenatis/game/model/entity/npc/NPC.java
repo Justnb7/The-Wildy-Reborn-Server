@@ -345,8 +345,10 @@ public class NPC extends Entity {
 
 	public NPCDefinitions getDefinition() {
         NPCDefinitions def = NPCDefinitions.get(npcId);
-        if (def == null)
+        if (def == null) {
+        	System.err.println("no def for npc "+this.npcId+"!");
             return NPCDefinitions.get(1);
+        }
         return def;
 	}
 

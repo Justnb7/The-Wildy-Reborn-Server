@@ -31,6 +31,10 @@ public class NpcInteraction {
 
 		switch (npc.getId()) {
 		
+		case 2949:
+			player.getPestControlRewards().showInterface();
+			break;
+		
 		case 2461:
 			player.getWarriorsGuild().handleDoor();
 			break;

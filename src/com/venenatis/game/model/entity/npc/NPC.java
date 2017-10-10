@@ -436,6 +436,24 @@ public class NPC extends Entity {
 		return npc;
 	}
 	
+	public static NPC spawn(int id, Location location, int direction) {
+		NPC npc = new NPC(id, location, direction);
+		npc.spawnDirection = direction;
+		npc.getWalkingQueue().lastDirectionFaced = direction;
+		World.getWorld().register(npc);
+		return npc;
+	}
+	
+	/**
+	 * Resets players in combat
+	 */
+	public static NPC getNpc(int id) {
+		for (NPC npc : World.getWorld().getNPCs())
+			if (npc != null && npc.getId() == id)
+				return npc;
+		return null;
+	}
+	
 	public static NPC getNpc(int id, int x, int y, int height) {
 		for (NPC npc : World.getWorld().getNPCs()) {
 			if (npc != null && npc.getId() == id && npc.getX() == x && npc.getY() == y && npc.getZ() == height) {

@@ -1,5 +1,7 @@
 package com.venenatis.game.model.entity.player.account;
 
+import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControlRewards.RewardButton;
+
 
 /**
  * Represents the type of account a singular player has. By default, the element
@@ -60,6 +62,14 @@ public abstract class AccountType {
 	 * @return {@code true} if the player can gain combat experience, otherwise {@code false}
 	 */
 	public abstract boolean isPVPCombatExperienceGained();
+	
+	/**
+	 * Determines if the particular reward from the pest control mini-game is selectable and ultimately purchasable.
+	 * 
+	 * @param reward the reward we're trying to select
+	 * @return {@code true} if the reward can be selected.
+	 */
+	public abstract boolean isRewardSelectable(RewardButton reward);
 
 	/**
 	 * Determines if the player is permitted to claim items or other rewards from donating.

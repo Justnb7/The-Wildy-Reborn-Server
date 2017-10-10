@@ -4,10 +4,12 @@ import com.google.common.collect.Sets;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControl;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.skills.hunter.Hunter;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.model.combat.npcs.impl.randomEvent.EventManager;
+import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Entity.EntityType;
 import com.venenatis.game.model.entity.MobileCharacterList;
@@ -298,6 +300,14 @@ public class World implements Service {
 		 */
 		if (player.getDuelArena().isInSession()) {
 			player.getDuelArena().declineDuel(true);
+		}
+		
+		if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
+			PestControl.removeGameMember(player);
+		}
+		
+		if (Boundary.isIn(player, PestControl.LOBBY_BOUNDARY)) {
+			PestControl.removeFromLobby(player);
 		}
 
 		/*

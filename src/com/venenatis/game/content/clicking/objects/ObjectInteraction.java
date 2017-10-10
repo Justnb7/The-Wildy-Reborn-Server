@@ -7,6 +7,7 @@ import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.BrimhavenVines;
 import com.venenatis.game.content.MageArenaGodPrayer;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControl;
 import com.venenatis.game.content.rewards.BossRewardChest;
 import com.venenatis.game.content.skills.agility.course.Course;
 import com.venenatis.game.content.skills.agility.Shortcut;
@@ -189,6 +190,14 @@ public class ObjectInteraction {
 		}
 		
 		switch(objectId) {
+		
+		case 14315:
+			PestControl.addToLobby(player);
+			break;
+
+		case 14314:
+			PestControl.removeFromLobby(player);
+			break;
 		
 		case 24318:
 			int strength_level = player.getSkills().getLevel(Skills.STRENGTH);

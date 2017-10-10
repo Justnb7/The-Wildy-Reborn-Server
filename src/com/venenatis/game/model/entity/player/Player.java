@@ -19,6 +19,7 @@ import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
+import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControlRewards;
 import com.venenatis.game.content.activity.minigames.impl.warriors_guild.WarriorsGuild;
 import com.venenatis.game.content.activity.trade.TradeContainer;
 import com.venenatis.game.content.activity.trade.TradeSession;
@@ -3427,7 +3428,9 @@ public class Player extends Entity {
 	}
 	
 	//FIXME
+	public long buyPestControlTimer;
 	public long lastPickup;
+	public int pestControlDamage;
 	
 	private final Stopwatch lastSql = new Stopwatch();
 
@@ -3450,5 +3453,16 @@ public class Player extends Entity {
 	 */
 	public WarriorsGuild getWarriorsGuild() {
 		return warriorsGuild;
+	}
+	
+	private PestControlRewards pestControlRewards = new PestControlRewards(this);
+
+	/**
+	 * The single instance of the {@link PestControlRewards} class for this player
+	 * 
+	 * @return the reward class
+	 */
+	public PestControlRewards getPestControlRewards() {
+		return pestControlRewards;
 	}
 }

@@ -3,11 +3,13 @@ package com.venenatis.game.model.entity.player.controller.impl;
 import com.venenatis.game.constants.StringConstants;
 import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
+import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControl;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
+import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanManager;
@@ -160,6 +162,12 @@ public class DefaultController extends Controller {
 		/* Minigame */
 		if (MinigameHandler.search(player).isPresent()) {
 			MinigameHandler.search(player).ifPresent(m -> m.onDisplay(player));
+		} else if (Boundary.isIn(player, PestControl.LOBBY_BOUNDARY)) {
+			player.getActionSender().sendWalkableInterface(21119);
+			PestControl.drawInterface(player, "lobby");
+		} else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
+			player.getActionSender().sendWalkableInterface(21100);
+			PestControl.drawInterface(player, "game");
 		/* Wilderness */
 		} else if (Area.inWilderness(player)) {
 			if (Area.inDaganothMotherCave(player)) {

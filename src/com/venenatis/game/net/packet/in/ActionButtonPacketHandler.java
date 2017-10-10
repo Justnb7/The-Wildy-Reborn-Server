@@ -202,6 +202,11 @@ public class ActionButtonPacketHandler implements IncomingPacketListener {
 			return;
 		}
 		
+		/* The pest control reward interface */
+		if(player.getPestControlRewards().click(button)) {
+			return;
+		}
+		
 		/* Other Clicking Buttons */
 		Buttons.handleButton(player, button);
 		

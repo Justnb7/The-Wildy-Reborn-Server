@@ -3,6 +3,7 @@ package com.venenatis.game.model.entity;
 import com.google.common.base.Preconditions;
 import com.venenatis.game.action.ActionQueue;
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControl;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
@@ -814,6 +815,12 @@ public abstract class Entity {
 			}
 			if (victim_npc.getId() == 5535) {
 				damage = 0;
+			}
+			
+			if (Boundary.isIn(attacker, PestControl.GAME_BOUNDARY)) {
+				if (damage > 0) {
+					((Player)attacker).pestControlDamage += damage;
+				}
 			}
 			
 			//Rex and Prime do not take melee damage

@@ -68,13 +68,13 @@ public class Spinolyp extends AbstractBossCombat {
 			hit = randomHit;
 			// Create the hit instance
 			victim.take_hit(attacker, hit, style).send(hitDelay);
-			Server.getTaskScheduler().schedule(new Task(hitDelay) {
+			/*Server.getTaskScheduler().schedule(new Task(hitDelay) {
 				@Override
 				public void execute() {
 					this.stop();
-					victim.playGraphic(Graphic.create(163, 0, 100));
+				//	victim.playGraphic(Graphic.create(163, 0, 100));
 				}
-			});
+			});*/
 			break;
 		}
 		attacker.getCombatState().setAttackDelay(6);
@@ -82,7 +82,7 @@ public class Spinolyp extends AbstractBossCombat {
 
 	@Override
 	public int distance(Entity attacker) {
-		return 25;
+		return 10;
 	}
 
 	@Override

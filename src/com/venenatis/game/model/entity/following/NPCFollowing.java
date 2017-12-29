@@ -7,6 +7,7 @@ import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.pathfinder.RouteFinder;
 import com.venenatis.game.world.pathfinder.impl.SizedPathFinder;
 import com.venenatis.server.Server;
@@ -29,6 +30,15 @@ public class NPCFollowing {
 			npc.sendForcedMessage("Failed attempt to follow i am walking home.");
 			return;
 		}
+		if (!npc.getLocation().withinDistance(npc.spawnTile, npc.strollRange) && !target.getLocation().isWithinDistance(npc.spawnTile, npc.strollRange))  {
+			npc.getCombatState().setTarget(null);
+			npc.following().setFollowing(null);
+			npc.sendForcedMessage("Max distance achieved stopping following.");
+			//if(!npc.getCombatState().inCombat())
+				//npc.walkingHome = true;
+			return;
+		}
+		
 		if (target == null || npc == null) {
 			npc.following().setFollowing(null);
 			npc.sendForcedMessage("Resetting follow");
@@ -69,7 +79,7 @@ public class NPCFollowing {
 		if (target.getCombatState().isDead() || !target.isVisible() || npc.getZ() != target.getZ()) {
 			npc.following().setFollowing(null);
 			npc.resetFaceTile();
-			npc.walkingHome = true;
+			//npc.walkingHome = true;
 			return;
 		}
 
@@ -80,7 +90,7 @@ public class NPCFollowing {
 		// At this point, the target is valid, don't start walking off randomly.
 		// Stop the npc from walking home and from random walking
 		npc.walkingHome = npc.randomWalk = false;
-		
+		npc.sendForcedMessage("Distance to tile: "+npc.getLocation().distanceToPoint(npc.spawnTile));
 
 		if (npc.frozen()) {
 			return;
@@ -91,53 +101,25 @@ public class NPCFollowing {
 			return;
 		}
 
-		/*
-		 * If close enough, stop following
-		 */
-		
-		/*System.out.println("COMBAT STYLE  "+npc.getCombatType()+" Distance: "+NpcCombat.distanceRequired(npc));
-		npc.sendForcedMessage(" "+npc.getLocation().distanceToPoint(target.getLocation()));
-		for (Location pos : npc.getTiles()) {
-			
-			double distance = pos.distance(target.getLocation());
-			boolean magic = npc.getCombatType() == CombatStyle.MAGIC;
-			boolean ranged = !magic && npc.getCombatType() == CombatStyle.RANGE;
-			boolean melee = !magic && !ranged;
-			boolean dont_check = npc.getId() == 6616 || npc.getId() == 6768;//6768 is the spawn
-			if (melee || npc.isPet || dont_check) {
-				if (distance <= 1) { // Stop following when close
-					npc.faceEntity(target);
-					System.out.println("probs");
-					return;
-				}
-			} else {
-				if (distance <= (ranged ? 6 : magic ? 6 : 1)) {
-					// so its 10 by default, checks melee range then asssumes anything else instead of magic
-					System.out.println("Stopping the follow we are close enough");
-					npc.following().setFollowing(null);
-					npc.pathStop = true;
-					npc.resetFaceTile();
-					return;
-				} else {
-					npc.pathStop = false;
-				}
-			} 
-		}*/
-		
-		/*Location last = target.lastTile == null ? target.getLocation().transform(1, 0) : target.lastTile;
-        int fx = last.getX();
-        int fy = last.getY();
-        int x = fx - npc.getX();
-        int y = fy - npc.getY();
-        npc.npcWalk(npc.getX() + x, npc.getY() + y);*/
+	
 		 int otherX = target.getX();
 	        int otherY = target.getY();
 	        Location followLoc = null;
 		boolean locked_to_plr = npc.spawnedBy != null; // pets have spawnBy set
 		boolean in_spawn_area = npc.getCentreLocation().withinDistance(npc.spawnTile, 15);
 		if (locked_to_plr || in_spawn_area) {
-			npc.face(target.getLocation());
-			//npc.npcWalk(targX, targY); 
+			//npc.face(target.getLocation());
+			//npc will not walk all the way up if its distance required is > 2
+			if (NpcCombat.distanceRequired(npc) > 1) {
+				int distance = NpcCombat.distanceRequired(npc)-Utility.random(3);
+                Location[] locs = {new Location(otherX + distance, otherY, npc.getZ()), new Location(otherX - distance, otherY, npc.getZ()), new Location(otherX, otherY + distance, npc.getZ()),
+                        new Location(otherX, otherY - distance, npc.getZ()),};
+                for (Location i : locs) {
+                    if (followLoc == null || npc.getLocation().getDistance(i) < npc.getLocation().getDistance(followLoc)) {
+                        followLoc = i;
+                    }
+                }
+            } else
 			if (target.size() == 1) {
                 Location[] locs = {new Location(otherX + 1, otherY, npc.getZ()), new Location(otherX - 1, otherY, npc.getZ()), new Location(otherX, otherY + 1, npc.getZ()),
                         new Location(otherX, otherY - 1, npc.getZ()),};
@@ -152,10 +134,7 @@ public class NPCFollowing {
             }
 			if (followLoc != null) {
                 npc.npcWalk(followLoc.getX(), followLoc.getY());
-            }
-	        
-			// npc.doPath(new SizedPathFinder(), targX, targY); // update walking queue to new target pos
-			
+			}
 		} else {
 			// Reset following
 			npc.following().setFollowing(null);
@@ -165,4 +144,4 @@ public class NPCFollowing {
 		}
 	}
 
-}
+	}

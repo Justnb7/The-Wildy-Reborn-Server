@@ -300,8 +300,7 @@ public class NpcCombat {
 			return;
 		}
 		
-		npc.face(entity.getLocation());
-		
+		//npc.face(entity.getLocation());
 		// Execute our attack if we're in range.
 		if (goodDistance(npc.getX(), npc.getY(), entity.getX(), entity.getY(), distanceRequired(npc))) {
 			npc.randomWalk = false;
@@ -384,6 +383,7 @@ public class NpcCombat {
 			if (!BoundaryManager.isWithinBoundaryNoZ(npc.getLocation(), "multi_combat")) {
 				if ((npc.lastAttacker != entity && Combat.hitRecently(npc, 4000)) || npc != entity.lastAttacker && Combat.hitRecently(entity, 4000)) {
 					npc.getCombatState().setTarget(null);
+					npc.sendForcedMessage("I am not in combat anymore.");
 					return false;
 				}
 			}

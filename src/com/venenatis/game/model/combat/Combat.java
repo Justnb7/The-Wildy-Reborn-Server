@@ -926,7 +926,7 @@ public class Combat {
         }
         player.updateLastCombatAction();
         player.getCombatState().setInCombat(true);
-        target.faceEntity(player);
+        //target.faceEntity(player);
         target.lastAttacker = player;
         target.lastWasHitTime = System.currentTimeMillis();
 		/*if (player.petBonus) {

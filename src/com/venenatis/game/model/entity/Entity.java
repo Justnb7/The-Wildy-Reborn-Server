@@ -1221,6 +1221,10 @@ public abstract class Entity {
 		}
 	}
 
+	public boolean stopWalking = false;
+	
+
+	
 	public boolean frozen() {
 		return this.frozenForTicks > 0;
 	}

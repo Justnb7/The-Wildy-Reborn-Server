@@ -164,7 +164,7 @@ public class NpcUpdating {
 	private static boolean makeNewNpcFace(NPC npc) {
 		// already set. default dir will be overwritten anyway.
 		if (npc.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE)) {
-			System.out.println("force coord req already set - that takes priority over default spawn facing "+npc.getFaceLocation());
+		//	System.out.println("force coord req already set - that takes priority over default spawn facing "+npc.getFaceLocation());
 			return false;
 		}
 		Location dir = npc.getLocation();

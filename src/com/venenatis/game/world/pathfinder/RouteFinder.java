@@ -252,6 +252,8 @@ public class RouteFinder {
 		int pathLength = 4000;
 
 		while (tail != tileQueueX.size() && tileQueueX.size() < pathLength) {
+			
+			
 
 			curX = tileQueueX.get(tail);
 			curY = tileQueueY.get(tail);
@@ -513,7 +515,7 @@ public class RouteFinder {
 			}
 		}
 
-		if (!foundPath) {
+		//if (!foundPath) {
 			if (moveNear) {
 				int i_223_ = 1000;
 				int thisCost = 100 + 1;
@@ -552,7 +554,7 @@ public class RouteFinder {
 			} else {
 				return false;
 			}
-		}
+		//}
 
 		tail = 0;
 		tileQueueX.set(tail, curX);

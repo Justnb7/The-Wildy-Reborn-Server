@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.combat.Combat;
+import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
  
@@ -52,9 +53,8 @@ public final class NPCAggression {
             	npc.getCombatState().setTarget(player);
                 npc.faceEntity(player);
             } else {
-            	//added this so the npc's return to randomwalking..
-            	
-            	/*npc.resetFaceEntity();
+          /*  	//added this so the npc's return to randomwalking..
+            	npc.resetFaceEntity();
             	npc.getCombatState().reset();
             	npc.randomWalk = true;*/
             }
@@ -90,10 +90,15 @@ public final class NPCAggression {
         	return false;
         }
         // Bad distance
+        
+        //if the npc has a greater target distance then agro range will vary.
+       /* if(npc.getCombatLevel() < 150) {
+        if(NpcCombat.distanceRequired(npc) <= TARGET_DISTANCE) {*/
         if (!npc.distance(p.getX(), p.getY(), npc.getX(), npc.getY(), AGGRESSION.getOrDefault(npc.getId(), TARGET_DISTANCE))) {
         	//p.getActionSender().sendMessage("Agro 4");
         	return false;
-        }
+       // }}
+       } 
         // At a most basic level, if you get to here, the npc is alive, in distance etc
     	if (npc.aggressive || alwaysAggressive(npc) || npc.getDefinition().isAggressive()) {
     		//p.getActionSender().sendMessage("Agro 5");

@@ -333,9 +333,11 @@ public class NpcCombat {
 				//tried to make a instance didnt work ether
 				entity.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
 			}
-
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
 			
+		/*	if (!(CombatFormulae.getAccuracy(npc, player, 0, 1.0))) {
+				damage = 0;
+			}*/
 			// Actually damage our target
 			if(!isBoss)
 			entity.take_hit(npc, damage, npc.getCombatType()).send(0);

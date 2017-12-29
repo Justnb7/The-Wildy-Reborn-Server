@@ -103,7 +103,44 @@ public class DialogueRepository {
 		/**
 		 * Pets
 		 */
-		dialogues.put("OLMLET", Olmlet.class);
+		dialogues.put("OLMLET_DIALOGUE", Olmlet.class);
+		dialogues.put("ABYSSAL_ORPHAN_DIALOGUE", AbyssalOrphan.class);
+		dialogues.put("BABY_MOLE_DIALOGUE", BabyMole.class);
+		dialogues.put("CALLISTO_CUB_DIALOGUE", CallistoCub.class);
+		dialogues.put("HELLPUPPY_DIALOGUE", HellPuppy.class);
+		dialogues.put("CHAOS_ELEMENTAL_DIALOGUE", ChaosElementalJr.class);
+		dialogues.put("DAGANNOTH_PRIME_DIALOGUE", DagannothPrime.class);
+		dialogues.put("DAGANNOTH_REX_DIALOGUE", DagannothRex.class);
+		dialogues.put("DAGANNOTH_SUPREME_DIALOGUE", DagannothSupreme.class);
+		dialogues.put("DARK_CORE_DIALOGUE", PetDarkCore.class);
+		dialogues.put("GENERAL_GRAARDOR_DIALOGUE", GeneralGraardorJr.class);
+		dialogues.put("KRIL_TSUTSAROTH_DIALOGUE", KrilTsutsarothJr.class);
+		dialogues.put("KREE_ARRA_DIALOGUE", KreeArraJr.class);
+		dialogues.put("PENANCE_PET_DIALOGUE", PetPenanceQueen.class);
+		dialogues.put("SMOKE_DEVIL_DIALOGUE", PetSmokeDevil.class);
+		dialogues.put("ZILYANA_DIALOGUE", ZilyanaJr.class);
+		dialogues.put("SNAKELING_DIALOGUE", Snakeling.class);
+		dialogues.put("PRINCE_BLACK_DRAGON_DIALOGUE", PrinceBlackDragon.class);
+		dialogues.put("SCORPIAS_OFFSPRING_DIALOGUE", ScorpiasOffspring.class);
+		dialogues.put("TZREK_JAD_DIALOGUE", TzrekJad.class);
+		dialogues.put("VENENATIS_SPIDERLING_DIALOGUE", VenenatisSpiderling.class);
+		dialogues.put("VETION_DIALOGUE", VetionJr.class);
+		dialogues.put("KALPHITE_PRINCESS_DIALOGUE", KalphitePrincess.class);
+		dialogues.put("HERON_DIALOGUE", Heron.class);
+		dialogues.put("ROCK_GOLEM_DIALOGUE", RockGolem.class);
+		dialogues.put("BEAVER_DIALOGUE", Beaver.class);
+		dialogues.put("GIANT_SQUIRREL_DIALOGUE", GiantSquirrel.class);
+		dialogues.put("ROCKY_DIALOGUE", Rocky.class);
+		dialogues.put("TANGLEROOT_DIALOGUE", Tangleroot.class);
+		dialogues.put("RIFT_GUARDIAN_DIALOGUE", RiftGuardian.class);
+		dialogues.put("BABY_CHINCHOMPA_DIALOGUE", BabyChinchompa.class);
+		dialogues.put("CHOMPY_CHICK_DIALOGUE", ChompyChick.class);
+		dialogues.put("BLOODHOUND_DIALOGUE", BloodHound.class);
+		dialogues.put("PHOENIX_DIALOGUE", Phoenix.class);
+		dialogues.put("SKOTOS_DIALOGUE", Skotos.class);
+		dialogues.put("HERBI_DIALOGUE", Herbi.class);
+		dialogues.put("JAL_NIB_REK_DIALOGUE", JalNibRek.class);
+		dialogues.put("NOON_AND_MIDNIGHT_DIALOGUE", NoonAndMidnight.class);
 		
 		/**
 		 * Teleports
@@ -136,6 +173,11 @@ public class DialogueRepository {
 		dialogues.put("ENCHANTED_GEM", EnchantedGem.class);
 		
 		/**
+		 * Barrows tunnel
+		 */
+		dialogues.put("BARROWS_TUNNEL", EmblemTrader.class);
+		
+		/**
 		 * Mac
 		 */
 		dialogues.put("MAC", Mac.class);
@@ -160,6 +202,11 @@ public class DialogueRepository {
 		 * Ghommal
 		 */
 		dialogues.put("GHOMMAL", Ghommal.class);
+		
+		/**
+		 * Probita
+		 */
+		dialogues.put("PET_INSURANCE", PetInsurance.class);
 		
 		/**
 		 * Options

@@ -609,6 +609,18 @@ public abstract class Container {
 	}
 	
 	/**
+	 * Checks if a slot is used.
+	 * 
+	 * @param slot
+	 *            The slot.
+	 * @return <code>true</code> if an item is present, <code>false</code>
+	 *         otherwise.
+	 */
+	public boolean isSlotUsed(int slot) {
+		return stack[slot].getId() > 0;
+	}
+	
+	/**
      * Retrieves the identifier for the item located on {@code slot}.
      *
      * @param slot
@@ -1147,6 +1159,16 @@ public abstract class Container {
 
 		if (refresh) {
 			refresh();
+		}
+	}
+	
+	public void removeAll(Item item) {
+		for (int index = 0; index < stack.length; index++) {
+			if (stack[index] != null) {
+				if (stack[index].getId() == item.getId()) {
+					stack[index] = null;
+				}
+			}
 		}
 	}
 	

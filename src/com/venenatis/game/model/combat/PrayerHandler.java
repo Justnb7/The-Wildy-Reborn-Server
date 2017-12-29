@@ -2,7 +2,7 @@ package com.venenatis.game.model.combat;
 
 import java.util.HashMap;
 
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelOptions;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.data.SkullType;
@@ -372,15 +372,10 @@ public class PrayerHandler {
 			return false;
 		}
 
-		//Duel, disabled prayer?
-		if (player.getDuelArena().isDueling()) {
-			if (player.getDuelArena().getRules().get(DuelRule.PRAYER)) {
-				if(msg) {
-					SimpleDialogues.sendStatement(player, "Prayer has been disabled in this duel!");
-					player.getActionSender().sendConfig(prayer.configId, 0);
-				}
-				return false;
-			}
+		if (player.getDuelArena().getOptionActive()[DuelOptions.NO_PRAYER.getId()]) {
+			player.getActionSender().sendMessage("The right to use prayer has been revoked during this duel.");
+			player.getActionSender().sendConfig(prayer.configId, 0);
+			return false;
 		}
 
 		return true;
@@ -451,7 +446,6 @@ public class PrayerHandler {
 			}
 		}
 		player.getQuickPrayers().setEnabled(false);
-		//TODO ask Jak why the packet size is incorrect
 		player.getActionSender().sendQuickPrayersState(false);
 	}
 
@@ -484,7 +478,7 @@ public class PrayerHandler {
 	 * @param player	The player to start prayer drain for.
 	 */
 	private static void startDrain(final Player player) {
-		if (getDrain(player) <= 0 && !player.isDrainingPrayer())
+		if (getDrain(player) <= 0 && !player.isDrainingPrayer() && !player.getAttribute("infpray", false))
 			return;
 		player.setDrainingPrayer(true);
 		World.getWorld().schedule(new Task(1, false) {
@@ -543,6 +537,19 @@ public class PrayerHandler {
 			toRemove /= (1 + (0.05 * player.getBonuses()[11]));		
 		}
 		return toRemove;
+	}
+	
+	public void drainPrayer(Player player, double toRemove) {
+		if(player.getSkills().getLevel(Skills.PRAYER) < 0) {
+			return;
+		}
+		toRemove = (int) (player.getSkills().getLevel(Skills.PRAYER) - 1);
+		player.getSkills().setLevel(Skills.PRAYER, (int) toRemove);
+
+		if (player.getSkills().getLevel(Skills.PRAYER) < 1) {
+			player.getSkills().setLevel(Skills.PRAYER, 0);
+			deactivatePrayers(player);
+		}
 	}
 
 	/**

@@ -430,6 +430,9 @@ public class Utility {
         return (int) ((java.lang.Math.random() * range));
     }
     
+    public static int randomRange(int min, int max) {
+		return (int) new Random().nextInt((max + 1) - min) + min;
+	}
 
     public static int randomNoZero(int range) {
         int val = getRandom(range);
@@ -1171,6 +1174,12 @@ public class Utility {
 			return str.toUpperCase();
 		}
 		return str;
+	}
+	
+	private static DecimalFormat formatter = new DecimalFormat("#,###.##");
+
+	public static String formatNumbers(int amount) {
+		return formatter.format(amount).toString();
 	}
 
 }

@@ -116,6 +116,16 @@ public class TeleportHandler {
 		}
 	}
 
+	/**
+	 * Sents all the display data to the interface
+	 * 
+	 * @param player
+	 *            The player
+	 * @param type
+	 *            The teleportation type
+	 * @param selected
+	 *            The selected teleport
+	 */
 	public static void display(Player player, TeleportationTypes type, int selected) {
 		for (TeleportData data : TeleportData.values()) {
 			if (data != null) {
@@ -127,6 +137,16 @@ public class TeleportHandler {
 		}
 	}
 
+	/**
+	 * Opens the teleporting interface
+	 * 
+	 * @param player
+	 *            The player opening the interface
+	 * @param type
+	 *            The type a.k.a PvP
+	 * The scrollbar sents the amount of buttons, 0 will add the default buttons.
+	 * Just extend the scrollbar for more buttons.           
+	 */
 	public static void open(Player player, TeleportationTypes type) {
 		switch (type) {
 
@@ -140,7 +160,6 @@ public class TeleportHandler {
 			player.getActionSender().sendConfig(679, 0);
 			player.getActionSender().sendConfig(680, 0);
 			player.getActionSender().sendScrollBar(58050, 0);
-
 			break;
 
 		case PVM:
@@ -187,6 +206,15 @@ public class TeleportHandler {
 		player.getActionSender().sendInterface(58000);
 	}
 
+	/**
+	 * Selects an teleport based on button
+	 * 
+	 * @param player
+	 *            The player selecting a teleport
+	 * @param button
+	 *            The telport buttonId
+	 * @return
+	 */
 	public static boolean select(Player player, int button) {
 
 		TeleportData teleportation = TeleportData.teleportation.get(player.getTeleportationType());
@@ -218,6 +246,12 @@ public class TeleportHandler {
 		return true;
 	}
 
+	/**
+	 * Pretty self explanatory, we teleport the player
+	 * 
+	 * @param player
+	 *            The player being teleported
+	 */
 	public static void teleport(Player player) {
 
 		if (player.getTeleportButton() == 0) {
@@ -275,6 +309,9 @@ public class TeleportHandler {
 		}
 	}
 
+	/**
+	 * Clear all the interface information
+	 */
 	public static void clear(Player player) {
 		player.getActionSender().sendString("---", 58054);
 		player.getActionSender().sendString("---", 58058);
@@ -292,6 +329,9 @@ public class TeleportHandler {
 		player.getActionSender().sendString("</col>Other: <col=ff7000>---", 58026);
 	}
 
+	/**
+	 * Handles special teleport cases such as dialogues.
+	 */
 	private static void handleSpecial(Player player, TeleportData data) {
 		switch (data) {
 		case SLAYER_LOCATIONS:

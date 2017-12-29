@@ -1,7 +1,7 @@
 package com.venenatis.game.model.combat.special_attacks;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelOptions;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
@@ -24,6 +24,10 @@ public class Special {
 			return;
 		}
 		
+		if(attacker.getDuelArena().getOptionActive()[DuelOptions.NO_SPECIAL_ATTACK.getId()]) {
+			return;
+		}
+		
 		attacker.getWeaponInterface().sendSpecialBar(attacker.getEquipment().get(EquipmentConstants.WEAPON_SLOT));
 		attacker.getWeaponInterface().refreshSpecialAttack();
 		attacker.setUsingSpecial(true);
@@ -37,13 +41,6 @@ public class Special {
 				System.out.println("Invalid special attack: " + weapon);
 				resetSpecial(attacker);
 				return;
-			}
-			
-			if (attacker.getDuelArena().isDueling()) {
-				if (attacker.getDuelArena().getRules().get(DuelRule.SPECIAL_ATTACKS)) {
-					attacker.message("Special attacks are disabled in this duel.");
-					return;
-				}
 			}
 			
 			if (!attacker.getController().canUseSpecial(attacker)) {

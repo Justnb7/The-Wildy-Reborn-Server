@@ -1,304 +1,197 @@
 package com.venenatis.game.model.entity.npc.pet;
 
-import com.venenatis.game.model.Item;
-import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.masks.Animation;
-import com.venenatis.game.task.Task;
-import com.venenatis.game.world.World;
-import com.venenatis.server.Server;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * The class which represents functionality for the pet system.
- * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
+ * 
+ * The enum with all the pet data.
+ * 
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van
+ *         Elderen</a>
+ *
  */
-public class Pet extends NPC {
+// Enum data credits to Stan Jansen.
+public enum Pet {
+	// item id, npc id, dialogue
+	ABYSSAL_ORPHAN(13262, 5883, "ABYSSAL_ORPHAN_DIALOGUE"),
+	BABY_MOLE(12646, 6635, "BABY_MOLE_DIALOGUE"),
+	CALLISTO_CUB(13178, 497, "CALLISTO_CUB_DIALOGUE"),
+	HELLPUPPY(13247, 964, "HELLPUPPY_DIALOGUE"),
+	CHAOS_ELEMENTAL(11995, 5907, "CHAOS_ELEMENTAL_DIALOGUE"),
+	DAGANNOTH_PRIME(12644, 6627, "DAGANNOTH_PRIME_DIALOGUE"),
+	DAGANNOTH_REX(12645, 6630, "DAGANNOTH_REX_DIALOGUE"),
+	DAGANNOTH_SUPREME(12643, 6626, "DAGANNOTH_SUPREME_DIALOGUE"),
+	DARK_CORE(12816, 388, "DARK_CORE_DIALOGUE"),
+	GENERAL_GRAARDOR(12650, 6632, "GENERAL_GRAARDOR_DIALOGUE"),
+	KRIL_TSUTSAROTH(12652, 6634, "KRIL_TSUTSAROTH_DIALOGUE"),
+	KRAKEN(12655, 6640, "KRAKEN_DIALOGUE"),
+	KREE_ARRA(12649, 6631, "KREE_ARRA_DIALOGUE"),
+	PENANCE_PET(12703, 6642, "PENANCE_PET_DIALOGUE"),
+	SMOKE_DEVIL(12648, 6639, "SMOKE_DEVIL_DIALOGUE"),
+	ZILYANA(12651, 6633, "ZILYANA_DIALOGUE"),
+	SNAKELING(12921, 2130, "SNAKELING_DIALOGUE"),
+	SNAKELING_RED(12939, 2131, "SNAKELING_DIALOGUE"),
+	SNAKELING_BLUE(12940, 2132, "SNAKELING_DIALOGUE"),
+	PRINCE_BLACK_DRAGON(12653, 6636, "PRINCE_BLACK_DRAGON_DIALOGUE"),
+	SCORPIAS_OFFSPRING(13181, 5547, "SCORPIAS_OFFSPRING_DIALOGUE"),
+	TZREK_JAD(13225, 5892, "TZREK_JAD_DIALOGUE"),
+	VENENATIS_SPIDERLING(13177, 5557, "VENENATIS_SPIDERLING_DIALOGUE"),
+	VETION_PURPLE(13179, 5559, "VETION_DIALOGUE"),
+	VETION_ORANGE(13180, 5560, "VETION_DIALOGUE"),
+	KALPHITE_PRINCESS_BUG(12647, 6638, "KALPHITE_PRINCESS_DIALOGUE"),
+	KALPHITE_PRINCESS_FLY(12654, 6637, "KALPHITE_PRINCESS_DIALOGUE"),
+	HERON(13320, 6715, "HERON_DIALOGUE"),
+	ROCK_GOLEM(13321, 7439, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_TIN(21187, 7440, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_COPPER(21188, 7441, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_IRON(21189, 7442, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_BLURITE(21190, 7443, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_SILVER(21191, 7444, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_DAEYALT(21360, 7748, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_COAL(21192, 7445, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_ELEMENTAL(21359, 7737, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_GOLD(21193, 7446, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_GRANITE(21195, 7448, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_MITHRIL(21194, 7447, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_LOVAKITE(21358, 7736, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_ADAMANTITE(21196, 7449, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_RUNITE(21197, 7450, "ROCK_GOLEM_DIALOGUE"),
+	ROCK_GOLEM_AMETHYST(21340, 7711, "ROCK_GOLEM_DIALOGUE"),
+	BEAVER(13322, 6717, "BEAVER_DIALOGUE"),
+	GIANT_SQUIRREL(20659, 7334, "GIANT_SQUIRREL_DIALOGUE"),
+	ROCKY(20663, 7336, "ROCKY_DIALOGUE"),
+	TANGLEROOT(20661, 7335, "TANGLEROOT_DIALOGUE"),
+	RIFT_GUARDIAN_FIRE(20665, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_AIR(20667, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_MIND(20669, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_WATER(20671, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_EARTH(20673, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_CHAOS(20675, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_BODY(20677, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_COSMIC(20679, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_NATURE(20681, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_LAW(20683, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_DEATH(20685, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_ASTRAL(20689, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_BLOOD(20691, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	RIFT_GUARDIAN_SOUL(20687, 7337, "RIFT_GUARDIAN_DIALOGUE"),
+	BABY_CHINCHOMPA(13323, 6756, "BABY_CHINCHOMPA_DIALOGUE"),
+	BABY_CHINCHOMPA_GREY(13324, 6757, "BABY_CHINCHOMPA_DIALOGUE"),
+	BABY_CHINCHOMPA_BLACK(13325, 6758, "BABY_CHINCHOMPA_DIALOGUE"),
+	BABY_CHINCHOMPA_GOLD(13326, 6759, "BABY_CHINCHOMPA_DIALOGUE"),
+	CHOMPY_CHICK(13071, 4001, "CHOMPY_CHICK_DIALOGUE"),
+	BLOODHOUND(19730, 7232, "BLOODHOUND_DIALOGUE"),
+	PHOENIX(20693, 7368, "PHOENIX_DIALOGUE"),
+	OLMLET(20851, 7519, "OLMLET_DIALOGUE"),
+	ZOMBIES_CHAMPION(22010, 8000, "ZOMBIES_CHAMPION_DIALOGUE"),
+	DAGANNOTH_MOTHER_MELEE(22011, 8001, "DAGANNOTH_MOTHER_DIALOGUE"),
+	DAGANNOTH_MOTHER_RANGE(22011, 8002, "DAGANNOTH_MOTHER_DIALOGUE"),
+	DAGANNOTH_MOTHER_MAGIC(22011, 8003, "DAGANNOTH_MOTHER_DIALOGUE"),
+	DARK_BEAST(22013, 8004, "DARK_BEAST_DIALOGUE"),
+	FLAMBEED(22014, 8005, "FLAMBEED_DIALOGUE"),
+	DEATH_JR(22015, 8006, "DEATH_JR_DIALOGUE"),
+	SKOTOS(21273, 425, "SKOTOS_DIALOGUE"),
+	HERBI(21509, 7759, "HERBI_DIALOGUE"),
+	JAL_NIB_REK(21291, 7674, "JAL_NIB_REK_DIALOGUE"),
+	NOON(21748, 7892, "NOON_AND_MIDNIGHT_DIALOGUE"),
+	MIDNIGHT(21750, 7893, "NOON_AND_MIDNIGHT_DIALOGUE");
 
-	//Create pet instance
-	public Pet(Player owner, int id) {
-		super(id, owner.getLocation(), 0);
-		this.setLocation(owner.getLocation().transform(-1, 0));
-		System.out.printf("%s v %s%n", owner.getLocation(), owner.getLocation().transform(-1,  0));
-		this.isPet = true;
-		this.spawnedBy = owner;
-		this.face(owner.getLocation());
-	}
+	/**
+	 * The pet item
+	 */
+	private final int item;
+
+	/**
+	 * The pet
+	 */
+	private final int npc;
 	
 	/**
-	 * Drop the pet item, making the pet appear
+	 * The pet chat dialogue
+	 */
+	private final String dialogue;
+
+	/**
+	 * Constructs an pet
 	 * 
-	 * @param player
-	 *            The player dropping the item
 	 * @param item
-	 *            The pet item being dropped
-	 * @param onLogin
-	 *            Spawns the pet upon login
-	 * @return Spawn the pet
+	 *            The itemId
+	 * @param npc
+	 *            The npcId
 	 */
-	public static boolean drop(Player player, Item item, boolean onLogin) {
-		if(onLogin) {
-			if (player.getPet() > -1) {
-	            Pet pet = new Pet(player, player.getPet());
-	            player.setPet(player.getPet());
-	            World.getWorld().register(pet);
-	            Server.getTaskScheduler().schedule(new Task(4) {
-
-					@Override
-					public void execute() {
-						// Pet despawned or owner offline
-						if (player.getIndex() < 1 || pet.getIndex() < 1) {
-							stop();
-							return;
-						}
-						int delta = player.getLocation().distance(pet.getLocation());
-						if (delta >= 13 || delta <= -13) {
-							pet.teleport(player.getLocation().transform(-1, 0)); 
-						}
-					}
-				});
-	        }
-			return false;
-		}
-		Pets petIds = Pets.from(item.getId());
-		if (petIds != null) {
-			if (player.getPet() > -1) {
-				player.getActionSender().sendMessage("You already have a pet roaming.");
-				return false;
-			} else {
-				Pet pet = new Pet(player, petIds.getNpc());
-				player.setPet(petIds.getNpc());
-				World.getWorld().register(pet);
-				player.getInventory().remove(item);
-				
-				Server.getTaskScheduler().schedule(new Task(4) {
-
-					@Override
-					public void execute() {
-						// Pet despawned or owner offline
-						if (player.getIndex() < 1 || pet.getIndex() < 1) {
-							stop();
-							return;
-						}
-						int delta = player.getLocation().distance(pet.getLocation());
-						if (delta >= 13 || delta <= -13) {
-							pet.teleport(player.getLocation().transform(-1, 0)); 
-						}
-					}
-				});
-				return false;
-			}
-		}
-		return true;
+	Pet(int item, int npc, String dialogue) {
+		this.item = item;
+		this.npc = npc;
+		this.dialogue = dialogue;
 	}
 
 	/**
-	 * Picks up the pet npc
+	 * We store all our pet items in a map so we can access them later.
+	 */
+	private static Map<Integer, Pet> petItems = new HashMap<Integer, Pet>();
+
+	/**
+	 * We're also storing our pet npcs in a map so we can access these later
+	 * too.
+	 */
+	private static Map<Integer, Pet> petNpcs = new HashMap<Integer, Pet>();
+
+	/**
+	 * Get the pet by itemId
 	 * 
-	 * @param player
-	 *            The player picking up the pet
-	 * @param pet
-	 *            The pet being picked up
-	 * @return despawn the pet, and respawn the pet item in the players
-	 *         inventory.
+	 * @param item
+	 *            The itemId
+	 * @return The pet item
 	 */
-	public static boolean pickup(Player player, NPC pet) {
-		Pets data = Pets.fromNpc(pet.getId());
-		if(data == null) {
-			return false;
+	public static Pet from(int item) {
+		return petItems.get(item);
+	}
+
+	/**
+	 * Grabs the pet by npcId
+	 * 
+	 * @param npc
+	 *            The npc Id
+	 * @return The pet npc
+	 */
+	public static Pet fromNpc(int npc) {
+		return petNpcs.get(npc);
+	}
+
+	static {
+		for (Pet pet : Pet.values()) {
+			petItems.put(pet.item, pet);
 		}
-		
-		if(player.getInventory().hasSpaceFor(new Item(data.getItem()))) {
-			if (player.getPet() > -1) {
-				player.playAnimation(Animation.create(827));
-				player.setPet(-1);
-				player.getInventory().add(new Item(data.getItem()));
-				World.getWorld().unregister(pet);
-			}
-			return true;
-		} else {
-			player.getActionSender().sendMessage("You have no space in your inventory.");
-			return false;
+		for (Pet pet : Pet.values()) {
+			petNpcs.put(pet.npc, pet);
 		}
 	}
-	
+
 	/**
-	 * Right click option to start talking to your pet.
-	 * @param player
-	 *        The player who owns the pet
-	 * @param pet
-	 *        The pet
+	 * An public getter for the pet item
+	 * 
 	 * @return
 	 */
-	public static boolean talktoPet(Player player, NPC pet) {
-		Pets pets = Pets.fromNpc(pet.getId());
-		if (pets != null && player.getPet() > -1) {
-			switch(pets) {
-			case ABYSSAL_ORPHAN:
-				break;
-			case BABY_CHINCHOMPA:
-				break;
-			case BABY_CHINCHOMPA_BLACK:
-				break;
-			case BABY_CHINCHOMPA_GOLD:
-				break;
-			case BABY_CHINCHOMPA_GREY:
-				break;
-			case BABY_MOLE:
-				break;
-			case BEAVER:
-				break;
-			case BLOODHOUND:
-				break;
-			case CALLISTO_CUB:
-				break;
-			case CHAOS_ELEMENTAL:
-				break;
-			case CHOMPY_CHICK:
-				break;
-			case DAGANNOTH_PRIME:
-				break;
-			case DAGANNOTH_REX:
-				break;
-			case DAGANNOTH_SUPREME:
-				break;
-			case DARK_CORE:
-				break;
-			case GENERAL_GRAARDOR:
-				break;
-			case GIANT_SQUIRREL:
-				break;
-			case HELLPUPPY:
-				break;
-			case HERON:
-				break;
-			case KALPHITE_PRINCESS_BUG:
-				break;
-			case KALPHITE_PRINCESS_FLY:
-				break;
-			case KRAKEN:
-				break;
-			case KREEARRA:
-				break;
-			case KRIL_TSUTSAROTH:
-				break;
-			case OLMLET:
-				break;
-			case PENANCE_PET:
-				break;
-			case PHOENIX:
-				break;
-			case PRINCE_BLACK_DRAGON:
-				break;
-			case RIFT_GUARDIAN_AIR:
-				break;
-			case RIFT_GUARDIAN_ASTRAL:
-				break;
-			case RIFT_GUARDIAN_BLOOD:
-				break;
-			case RIFT_GUARDIAN_BODY:
-				break;
-			case RIFT_GUARDIAN_CHAOS:
-				break;
-			case RIFT_GUARDIAN_COSMIC:
-				break;
-			case RIFT_GUARDIAN_DEATH:
-				break;
-			case RIFT_GUARDIAN_EARTH:
-				break;
-			case RIFT_GUARDIAN_FIRE:
-				break;
-			case RIFT_GUARDIAN_LAW:
-				break;
-			case RIFT_GUARDIAN_MIND:
-				break;
-			case RIFT_GUARDIAN_NATURE:
-				break;
-			case RIFT_GUARDIAN_SOUL:
-				break;
-			case RIFT_GUARDIAN_WATER:
-				break;
-			case ROCKY:
-				break;
-			case ROCK_GOLEM:
-				break;
-			case ROCK_GOLEM_ADAMANTITE:
-				break;
-			case ROCK_GOLEM_BLURITE:
-				break;
-			case ROCK_GOLEM_COAL:
-				break;
-			case ROCK_GOLEM_COPPER:
-				break;
-			case ROCK_GOLEM_GOLD:
-				break;
-			case ROCK_GOLEM_GRANITE:
-				break;
-			case ROCK_GOLEM_IRON:
-				break;
-			case ROCK_GOLEM_MITHRIL:
-				break;
-			case ROCK_GOLEM_RUNITE:
-				break;
-			case ROCK_GOLEM_SILVER:
-				break;
-			case ROCK_GOLEM_TIN:
-				break;
-			case SCORPIAS_OFFSPRING:
-				break;
-			case SMOKE_DEVIL:
-				break;
-			case SNAKELING:
-				break;
-			case SNAKELING_BLUE:
-				break;
-			case SNAKELING_RED:
-				break;
-			case TANGLEROOT:
-				break;
-			case TZREK_JAD:
-				break;
-			case VENENATIS_SPIDERLING:
-				break;
-			case VETION_ORANGE:
-				break;
-			case VETION_PURPLE:
-				break;
-			case ZILYANA:
-				break;
-			default:
-				break;
-			
-			}
-			return true;
-		}
-		return false;
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * A public getter for the pet npc
+	 * 
+	 * @return
+	 */
+	public int getNpc() {
+		return npc;
 	}
 	
 	/**
-	 * Sends the pet transform mask.
+	 * A public getter for the pet dialogue
 	 * 
-	 * @param player
-	 *            The player owning the pet.
-	 * @param pet
-	 *            The pet being transformed.
+	 * @return
 	 */
-	public static boolean transformPet(Player player, NPC pet) {
-		Pets pets = Pets.fromNpc(pet.getId());
-		int morphId = -1;
-		if (pets != null && player.getPet() > -1) {
-			switch(pets) {
-			case SNAKELING:
-				morphId = 2131;
-				break;
-			default:
-				break;
-			
-			}
-			pet.requestTransform(morphId);
-			player.setPet(morphId);
-			return true;
-		}
-		return false;
+	public String getPetDialogue() {
+		return dialogue;
 	}
-
 }

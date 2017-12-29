@@ -24,7 +24,7 @@ public class Snakeling extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(DialogueType.NPC, Expression.DEFAULT, PET, "Soon, Zulrah shall establish dominion over this plane.");
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "Soon, Zulrah shall establish dominion over this plane.");
 			setPhase(1);
 			break;
 		case 1:
@@ -32,7 +32,7 @@ public class Snakeling extends Dialogue {
 			setPhase(2);
 			break;
 		case 2:
-			send(DialogueType.NPC, Expression.DEFAULT, PET, "Submit to the almighty Zulrah.");
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "Submit to the almighty Zulrah.");
 			setPhase(3);
 			break;
 		case 3:
@@ -40,7 +40,7 @@ public class Snakeling extends Dialogue {
 			setPhase(4);
 			break;
 		case 4:
-			send(DialogueType.NPC, Expression.DEFAULT, PET, "Zulrah's wilderness as a God will soon be demonstrated.");
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "Zulrah's wilderness as a God will soon be demonstrated.");
 			setPhase(5);
 			break;
 		case 5:

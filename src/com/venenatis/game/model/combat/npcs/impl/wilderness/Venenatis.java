@@ -10,8 +10,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -196,8 +196,8 @@ public class Venenatis extends AbstractBossCombat {
 		 */
 		int random = Utility.random(1000);
 
-		Pets pets = Pets.VENENATIS_SPIDERLING;
-		Pet pet = new Pet(player, pets.getNpc()); // one of those is null
+		Pet pets = Pet.VENENATIS_SPIDERLING;
+		Follower pet = new Follower(player, pets.getNpc()); // one of those is null
 		if (player.alreadyHasPet(player, 13177) || player.getPet() == pets.getNpc()) {
 			return;
 		}

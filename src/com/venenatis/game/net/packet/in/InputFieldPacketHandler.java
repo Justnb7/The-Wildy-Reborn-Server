@@ -9,10 +9,8 @@ import org.apache.commons.lang3.text.WordUtils;
 import com.venenatis.game.content.help.HelpDatabase;
 import com.venenatis.game.content.help.HelpRequest;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.world.World;
-import com.venenatis.server.Server;
 
 public class InputFieldPacketHandler implements IncomingPacketListener {
 
@@ -29,6 +27,14 @@ public class InputFieldPacketHandler implements IncomingPacketListener {
 		player.debug(String.format("[InputFieldPacketListener] Component: %d | Text: %s%n",component, text));
 		
 		switch (component) {
+		
+		case 42306:
+			player.getStaffControlPanel().handleInputField(text);
+			break;
+		
+		case 42152:
+			player.getTeleportMenuHandler().handleTeleportInput(text);
+			break;
 		
 		case 59527:
 			if (text.length() < 25) {
@@ -52,31 +58,6 @@ public class InputFieldPacketHandler implements IncomingPacketListener {
 		case 57034:
 			player.getPresets().setTitle(player.getPresets().getViewing(), text);
 		break;
-		
-		/* Clan Chat */
-		case 47828:
-			ClanManager.kickMember(player, text);
-			break;
-			
-		case 47830:
-			if (World.getWorld().getPlayerByName(text).isPresent()) {
-				Player other = World.getWorld().getPlayerByName(text).get();
-				player.setClanPromote(other.getUsername());
-			}
-			break;
-			
-		case 47843:
-			ClanManager.changeSlogan(player, text);
-			break;
-			
-		case 47845:
-			int amount = Integer.parseInt(text);
-			ClanManager.setMemberLimit(player, amount);
-			break;
-		
-		case 42521:
-			Server.getDropManager().search(player, text);
-			break;
 	
 			default:
 				break;

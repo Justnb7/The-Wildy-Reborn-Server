@@ -2,7 +2,6 @@ package com.venenatis.game.content.clicking.items;
 
 import com.venenatis.game.content.PotionCombinating;
 import com.venenatis.game.content.SkillCapePerks;
-import com.venenatis.game.content.rewards.CrystalChest;
 import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.crafting.impl.ZulrahCrafting;
 import com.venenatis.game.content.skills.firemaking.Firemaking;
@@ -56,10 +55,6 @@ public class ItemOnItem {
 			} else {
 				player.getActionSender().sendMessage("You cannot combine two potions of different types.");
 			}
-			return;
-		}
-		
-		if (CrystalChest.createKey(player)) {
 			return;
 		}
 		

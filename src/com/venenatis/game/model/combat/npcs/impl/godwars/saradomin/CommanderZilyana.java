@@ -9,8 +9,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -115,8 +115,8 @@ public class CommanderZilyana extends AbstractBossCombat {
 		 */
 		int random = Utility.random(1000);
 		
-		Pets pets = Pets.ZILYANA;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.ZILYANA;
+		Follower pet = new Follower(player, pets.getNpc());
 		if (player.alreadyHasPet(player, 12651) || player.getPet() == pets.getNpc()) {
 			return;
 		}

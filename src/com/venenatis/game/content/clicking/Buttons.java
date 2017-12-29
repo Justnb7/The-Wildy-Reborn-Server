@@ -4,13 +4,18 @@ import com.venenatis.game.content.ItemsKeptOnDeath;
 import com.venenatis.game.content.achievements.AchievementDifficulty;
 import com.venenatis.game.content.achievements.AchievementInterface;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
+import com.venenatis.game.content.gamble.Gamble.GambleStage;
+import com.venenatis.game.content.gamble.Gamble.GambleType;
 import com.venenatis.game.content.interfaces.InterfaceWriter;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.content.skill_guides.SkillGuide;
 import com.venenatis.game.content.sounds_and_music.MusicData;
 import com.venenatis.game.content.teleportation.TeleportHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -33,6 +38,139 @@ public class Buttons {
 	public static void handleButton(Player player, int button) {
 		System.out.println("btn "+button);
 		switch (button) {
+		
+		case 17198:
+		case 17199:
+		case 17200:
+			BarrowsHandler.getSingleton().answerPuzzle(player, button - 17198);
+			break;
+		
+		case 218202:
+			player.getGamble().accept();
+			break;
+
+		case 218205:
+			player.getGamble().decline();
+			break;
+
+		case 218213:
+			if (player.getGamble().getStage() == GambleStage.OFFERING_STAGE) {
+				player.getGamble().setType(GambleType.DICING);
+				player.getGamble().getRequestee().getGamble().setType(GambleType.DICING);
+				player.getActionSender().sendString("Gamble game type: " + GambleType.DICING, 56005);
+				player.getGamble().getRequestee().getActionSender().sendString("Gamble game type: " + GambleType.DICING, 56005);
+			}
+			break;
+
+		case 218215:
+			if (player.getGamble().getStage() == GambleStage.OFFERING_STAGE) {
+				player.getGamble().setType(GambleType.FLOWER_POKER);
+				player.getGamble().getRequestee().getGamble().setType(GambleType.FLOWER_POKER);
+				player.getActionSender().sendString("Gamble game type: " + GambleType.FLOWER_POKER, 56005);
+				player.getGamble().getRequestee().getActionSender().sendString("Gamble game type: " + GambleType.FLOWER_POKER, 56005);
+			}
+			break;
+		
+		// Teleports tab favorite button
+		case 164170:
+			player.getActionSender().sendSidebarInterface(13, 42200);
+			break;
+
+		case 164219:
+			player.getActionSender().sendSidebarInterface(13, 42150);
+			break;
+		
+		case 33206:
+			SkillGuide.openInterface(player, Skills.ATTACK);
+			break;
+			
+		case 33207:
+			SkillGuide.openInterface(player, Skills.HITPOINTS);
+			break;
+			
+		case 33208:
+			SkillGuide.openInterface(player, Skills.MINING);
+			break;
+			
+		case 33209:
+			SkillGuide.openInterface(player, Skills.STRENGTH);
+			break;
+			
+		case 33210:
+			SkillGuide.openInterface(player, Skills.AGILITY);
+			break;
+			
+		case 33211:
+			SkillGuide.openInterface(player, Skills.SMITHING);
+			break;
+			
+		case 33212:
+			SkillGuide.openInterface(player, Skills.DEFENCE);
+			break;
+			
+		case 33213:
+			SkillGuide.openInterface(player, Skills.HERBLORE);
+			break;
+			
+		case 33214:
+			SkillGuide.openInterface(player, Skills.FISHING);
+			break;
+			
+		case 33215:
+			SkillGuide.openInterface(player, Skills.RANGE);
+			break;
+			
+		case 33216:
+			SkillGuide.openInterface(player, Skills.THIEVING);
+			break;
+			
+		case 33217:
+			SkillGuide.openInterface(player, Skills.COOKING);
+			break;
+			
+		case 33218:
+			SkillGuide.openInterface(player, Skills.PRAYER);
+			break;
+			
+		case 33219:
+			SkillGuide.openInterface(player, Skills.CRAFTING);
+			break;
+			
+		case 33220:
+			SkillGuide.openInterface(player, Skills.FIREMAKING);
+			break;
+			
+		case 33221:
+			SkillGuide.openInterface(player, Skills.MAGIC);
+			break;
+			
+		case 33222:
+			SkillGuide.openInterface(player, Skills.FLETCHING);
+			break;
+			
+		case 33223:
+			SkillGuide.openInterface(player, Skills.WOODCUTTING);
+			break;
+			
+		case 33224:
+			SkillGuide.openInterface(player, Skills.RUNECRAFTING);
+			break;
+			
+		case 47130:
+			SkillGuide.openInterface(player, Skills.SLAYER);
+			break;
+			
+		case 54104:
+			SkillGuide.openInterface(player, Skills.FARMING);
+			break;
+			
+		case 73113:
+			SkillGuide.openInterface(player, Skills.CONSTRUCTION);
+			break;
+			
+		case 73141:
+			SkillGuide.openInterface(player, Skills.HUNTER);
+			break;
 		
 		case 1220:
 			if (!player.showDamage()) {
@@ -249,6 +387,7 @@ public class Buttons {
 		case 210242:
 		case 226146:
 		case 144141:
+		case 105122:
 			player.getActionSender().removeAllInterfaces();
 			break;
 			
@@ -333,29 +472,10 @@ public class Buttons {
 			player.getWalkingQueue().setRunningToggled(!player.getWalkingQueue().isRunningToggled());
 			player.getActionSender().sendConfig(152, player.getWalkingQueue().isRunning() ? 1 : 0);
 			break;
-
-		case 3138:
-			player.setScreenBrightness((byte) 1);
-			break;
-		case 3140:
-			player.setScreenBrightness((byte) 2);
-			break;
-		case 3142:
-			player.setScreenBrightness((byte) 3);
-			break;
-		case 3144:
-			player.setScreenBrightness((byte) 4);
-			break;
-
+			
 		case 48167:
 			player.setAcceptAid(!player.getAcceptAid());
 			player.getActionSender().sendConfig(200, player.getAcceptAid() ? 1 : 0);
-			break;
-
-		case 62237:
-			player.setSplitPrivateChat(!player.getSplitPrivateChat());
-			player.getActionSender().sendConfig(287, player.getSplitPrivateChat() ? 1 : 0);
-			player.getActionSender().sendConfig(205, player.getSplitPrivateChat() ? 1 : 0);
 			break;
 
 		case 140186:

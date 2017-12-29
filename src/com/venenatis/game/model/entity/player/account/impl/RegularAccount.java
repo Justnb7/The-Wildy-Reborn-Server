@@ -1,6 +1,5 @@
 package com.venenatis.game.model.entity.player.account.impl;
 
-import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControlRewards.RewardButton;
 import com.venenatis.game.model.entity.player.account.AccountType;
 
 /**
@@ -45,11 +44,6 @@ public class RegularAccount extends AccountType {
 	
 	@Override
 	public boolean isPVPCombatExperienceGained() {
-		return true;
-	}
-
-	@Override
-	public boolean isRewardSelectable(RewardButton reward) {
 		return true;
 	}
 	

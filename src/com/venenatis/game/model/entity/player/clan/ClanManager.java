@@ -1,354 +1,213 @@
 package com.venenatis.game.model.entity.player.clan;
 
-import java.util.Arrays;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 
-import com.venenatis.game.constants.Constants;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
-/**
- * Class handles the management of clans.
- * 
- * @author Daniel
- * @author Michael
- * 
- */
 public class ClanManager {
+	
+	private long lastUpdate = System.currentTimeMillis();
 
-	public static Clan getClan(Player player) {
-		String name = player.getUsername().toLowerCase().trim();
-		
-		Clan clan = ClanRepository.get(name);
+	public LinkedList<Clan> clans;
 
-		if (clan != null) {
-			return ClanRepository.get(name);
-		}
-
-		clan = new Clan(name);
-		
-		clan.init();
-
-		if (World.getWorld().getPlayerByName(name).isPresent()) {
-			clan.add(new ClanMember(World.getWorld().getPlayerByName(name).get(), ClanRank.LEADER));
-		}
-
-		ClanRepository.add(clan);
-		ClanRepository.save();
-		
-		player.getActionSender().sendMessage("You have successfully created your clan.");
-
-		return clan;
+	public ClanManager() {
+		clans = new LinkedList<Clan>();
 	}
 
-	public static void join(Player player, String name) {
-		if (name == null || name.length() == 0 || player.getClan() != null) {
-			return;
-		}
-		
-		player.getActionSender().sendMessage("Attempting to join channel...");
-
-		Clan clan = ClanRepository.get(name);
-
-		if (clan == null) {
-			player.getActionSender().sendMessage("This channel does not exist.");
-			return;
-		}
-		
-		ClanMember member = new ClanMember(player, ClanRank.ANYONE);
-		
-		clan.setRank(member);
-
-		if (!clan.canJoin(member)) {
-			player.getActionSender().sendMessage("You do not have sufficient permisson to join this channel!");
-			return;
-		}
-
-		if (!clan.add(member)) {
-			player.getActionSender().sendMessage("This channel is currently full!");
-			return;
-		}
-		
-		player.setClan(clan);
-		player.setClanChat(clan.getOwner());
-
-		player.getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()), 33802);
-		player.getActionSender().sendString("</col>Owner: <col=ffffff>" + Utility.formatName(clan.getOwner()), 33803);
-		player.getActionSender().sendString("</col>Slogan: <col=ffffff>" + Utility.capitalizeSentence(clan.getSlogan()), 33816);
-
-		player.getActionSender().sendMessage("Now talking in clan chat <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()) + "</shad></col>.");
-		player.getActionSender().sendMessage("To talk, start each line of chat with the / symbol.");
-
-		update(clan);
+	public int getActiveClans() {
+		return this.clans.size();
 	}
 
-	public static void leave(Player player, boolean save) {
-		Clan clan = player.getClan();
-
-		if (clan == null) {
-			player.getActionSender().sendMessage("You are not currently in a clan chat channel.");
-			return;
-		}
-
-		player.getActionSender().sendString("</col>Talking in: <col=ffffff>None", 33802);
-		player.getActionSender().sendString("</col>Owner: <col=ffffff>None", 33803);
-		player.getActionSender().sendString("</col>Slogan: <col=ffffff>None", 33816);
-		player.getActionSender().sendString("", 33815);
-
-		player.getActionSender().sendMessage("You have left the clan chat channel.");
-
-		for (int i = 0; i < 50; i++) {
-			player.getActionSender().sendString("", 33821 + i);
-		}
-
-		if (save) {
-			player.setSavedClan(player.getClan().getOwner());
-		}
-
-		clan.remove(clan.get(player.getUsername()));
-		player.setClan(null);
-		update(clan);
+	public int getTotalClans() {
+		File localFile = new File("/Data/clan/");
+		return localFile.listFiles().length;
 	}
 
-	public static void message(Player player, String message) {
-		Clan clan = player.getClan();
-
-		if (clan == null) {
-			player.getActionSender().sendMessage("You are not currently in a clan chat channel.");
+	public void create(Player paramClient) {
+		if (paramClient.getClan() != null) {
+			paramClient.message("@or2@You must leave your current clan-chat before making your own.");
 			return;
 		}
+		Clan localClan = new Clan(paramClient);
+		this.clans.add(localClan);
+		localClan.addMember(paramClient);
+		localClan.save();
+		localClan.updateInterface(paramClient);
+		paramClient.message("@or2@You may change your clan settings by clicking the 'Clan Setup' button.");
+	}
 
-		ClanMember member = clan.get(player.getUsername());
-		ClanRank rank = member.getRank();
-
-		if (!clan.canTalk(member)) {
-			player.getActionSender().sendMessage("You do not have sufficient permisson to talk in this channel!");
-			return;
+	public Clan getClan(String paramString) {
+		for (int i = 0; i < this.clans.size(); i++) {
+			if (this.clans.get(i).getFounder().equalsIgnoreCase(paramString)) {
+				return this.clans.get(i);
+			}
 		}
 
-		for (ClanMember other : clan.members()) {
-			other.getPlayer().getActionSender().sendClanDetails(Utility.formatName(player.getUsername()), Utility.capitalizeSentence(message), Utility.formatName(clan.getName()), rank);
+		Clan localClan = read(paramString);
+		if (localClan != null) {
+			this.clans.add(localClan);
+			return localClan;
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the Help clan or creates it if it doesn't exist yet.
+	 * 
+	 * @return The Help clan.
+	 */
+	public Clan getHelpClan() {
+		for (int i = 0; i < this.clans.size(); i++) {
+			if (clans.get(i).getFounder().equalsIgnoreCase("Help")) {
+				return clans.get(i);
+			}
+		}
+
+		Clan localClan = read("Help");
+		if (localClan != null) {
+			clans.add(localClan);
+			return localClan;
+		}
+		localClan = new Clan("Help", "Help");
+		clans.add(localClan);
+		localClan.save();
+		return localClan;
+	}
+
+	public void delete(Clan paramClan) {
+		if (paramClan == null) {
+			return;
+		}
+		File localFile = new File("Data/clan/" + paramClan.getFounder() + ".cla");
+		if (localFile.delete()) {
+			Player localClient = World.getWorld().lookupPlayerByName(paramClan.getFounder());
+			if (localClient != null) {
+				localClient.message("Your clan has been deleted.");
+			}
+			this.clans.remove(paramClan);
 		}
 	}
 
-	public static void systemMessage(Clan clan, String message) {
-		for (ClanMember member : clan.members()) {
-			member.getPlayer().getActionSender().sendClanDetails(Utility.capitalizeSentence(message), Utility.formatName(clan.getName()));
+	public void save(Clan paramClan) {
+		if (paramClan == null) {
+			return;
 		}
-	}
+		File localFile = new File("Data/clan/" + paramClan.getFounder() + ".cla");
+		try {
+			RandomAccessFile localRandomAccessFile = new RandomAccessFile(localFile, "rwd");
 
-	private static void update(Clan clan) {
-		for (ClanMember member : clan.members()) {
-			Player player = member.getPlayer();
-
-			player.getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()), 33802);
-			player.getActionSender().sendString(clan.members().size() + "/" + clan.getMemberLimit(), 33815);
-			
-			int index = 0;
-			for (int i = 0; i < 50 - index; i++) {
-				player.getActionSender().sendString("", 33821 + i);
+			localRandomAccessFile.writeUTF(paramClan.getTitle());
+			localRandomAccessFile.writeByte(paramClan.joinable);
+			localRandomAccessFile.writeByte(paramClan.talkable);
+			localRandomAccessFile.writeByte(paramClan.kickable);
+			localRandomAccessFile.writeByte(paramClan.managable);
+			localRandomAccessFile.writeBoolean(paramClan.isLootShare());
+			if ((paramClan.rankedMembers != null) && (paramClan.rankedMembers.size() > 0)) {
+				localRandomAccessFile.writeShort(paramClan.rankedMembers.size());
+				for (int i = 0; i < paramClan.rankedMembers.size(); i++) {
+					localRandomAccessFile.writeUTF(paramClan.rankedMembers.get(i));
+					localRandomAccessFile.writeShort(paramClan.ranks.get(i).intValue());
+				}
+			} else {
+				localRandomAccessFile.writeShort(0);
+			}
+			if ((paramClan.bannedMembers != null) && (paramClan.bannedMembers.size() > 0)) {
+				localRandomAccessFile.writeShort(paramClan.bannedMembers.size());
+				for (int i = 0; i < paramClan.bannedMembers.size(); i++) {
+					localRandomAccessFile.writeUTF(paramClan.bannedMembers.get(i));
+				}
+			} else {
+				localRandomAccessFile.writeShort(0);
+			}
+			if ((paramClan.lootSharePoints != null) && (paramClan.lootSharePoints.size() > 0)) {
+				localRandomAccessFile.writeShort(paramClan.lootSharePoints.size());
+				for (Entry<String, Integer> entry : paramClan.lootSharePoints.entrySet()) {
+					localRandomAccessFile.writeUTF(entry.getKey());
+					localRandomAccessFile.writeInt(entry.getValue());
+				}
+			} else {
+				localRandomAccessFile.writeShort(0);
 			}
 
-			for (ClanMember other : clan.members()) {
-				String name = Utility.formatName(other.getName());
+			localRandomAccessFile.close();
+		} catch (IOException localIOException) {
+			localIOException.printStackTrace();
+		}
+	}
 
-				if (other.getRank() != ClanRank.ANYONE) {
-					String rank = "<clan=" + other.getRank().getRankIndex() + "> ";
-					player.getActionSender().sendString(rank.concat(name), 33821 + index++);
-				} else {
-					player.getActionSender().sendString(name, 33821 + index++);
+	private Clan read(String paramString) {
+		File localFile = new File("Data/clan/" + paramString + ".cla");
+		if (!localFile.exists()) {
+			return null;
+		}
+		try {
+			RandomAccessFile localRandomAccessFile = new RandomAccessFile(localFile, "rwd");
+
+			Clan localClan = new Clan(localRandomAccessFile.readUTF(), paramString);
+			localClan.joinable = localRandomAccessFile.readByte();
+			localClan.talkable = localRandomAccessFile.readByte();
+			localClan.kickable = localRandomAccessFile.readByte();
+			localClan.managable = localRandomAccessFile.readByte();
+			localClan.setLootShare(localRandomAccessFile.readBoolean());
+			int i = localRandomAccessFile.readShort();
+			if (i != 0) {
+				for (int j = 0; j < i; j++) {
+					localClan.rankedMembers.add(localRandomAccessFile.readUTF());
+					localClan.ranks.add(Integer.valueOf(localRandomAccessFile.readShort()));
 				}
 			}
+			int j = localRandomAccessFile.readShort();
+			if (j != 0) {
+				for (int k = 0; k < j; k++) {
+					localClan.bannedMembers.add(localRandomAccessFile.readUTF());
+				}
+			}
+			int k = localRandomAccessFile.readShort();
+			if (k != 0) {
+				for (int l = 0; l < j; l++) {
+					localClan.lootSharePoints.put(localRandomAccessFile.readUTF(), localRandomAccessFile.readInt());
+				}
+			}
+			localRandomAccessFile.close();
 
+			return localClan;
+		} catch (IOException localIOException) {
+			localIOException.printStackTrace();
 		}
+		return null;
 	}
 
-	public static void changeName(Player player, String input) {
-		if (Arrays.stream(Constants.BAD_STRINGS).anyMatch($it -> input.contains($it))) {
-			player.getActionSender().sendMessage("That name is not permitted!");
-			return;
-		}
-
-		Clan clan = player.getClan();
-		
-		if (clan == null) {
-			return;
-		}
-
-		clan.setName(input);
-
-		systemMessage(clan, Utility.formatName(player.getUsername()) + " has changed the clan name.");
-
-		for (ClanMember member : clan.members()) {
-			member.getPlayer().getActionSender().sendString("</col>Talking in: <col=FFFF64><shad=0>" + Utility.formatName(clan.getName()), 33802);
-		}
-		
-		player.getActionSender().sendString(Utility.formatName(clan.getName()), 47814);
-
-		ClanRepository.save();
+	public boolean clanExists(String paramString) {
+		File localFile = new File("Data/clan/" + paramString + ".cla");
+		return localFile.exists();
 	}
 
-	public static void changeSlogan(Player player, String input) {
-		boolean allowed = true;
+	public LinkedList<Clan> getClans() {
+		return this.clans;
+	}
 
-		for (String bad : Constants.BAD_STRINGS) {
-			if (input.contains(bad)) {
-				allowed = false;
+	public void process() {
+		if (lastUpdate + 60000 * 15 < System.currentTimeMillis()) {
+			lastUpdate = System.currentTimeMillis();
+			for (Clan clan : clans) {
+				Iterator<Entry<String, Integer>> it = clan.lootSharePoints.entrySet().iterator();
+				while (it.hasNext()) {
+					Entry<String, Integer> entry = it.next();
+					int newValue = (int) (entry.getValue() * 0.90);
+					if (newValue < 100_000 && newValue > -100_000) {
+						clan.lootSharePoints.remove(entry.getKey());
+					} else {
+						clan.lootSharePoints.put(entry.getKey(), newValue);
+					}
+				}
 			}
 		}
-
-		if (!allowed) {
-			player.getActionSender().sendMessage("Your slogan consisted of some words that were inappropriate!");
-			return;
-		}
-
-		Clan clan = player.getClan();
-
-		if (clan == null) {
-			return;
-		}
-
-		clan.setSlogan(Utility.capitalizeSentence(input));
-
-		systemMessage(clan, Utility.formatName(player.getUsername()) + " has changed the clan slogan.");
-
-		for (ClanMember member : clan.members()) {
-			member.getPlayer().getActionSender().sendString("</col>Slogan: <col=ffffff>" + Utility.capitalizeSentence(clan.getSlogan()), 33816);
-		}
-
-		ClanRepository.save();
-	}
-
-	public static void setMemberLimit(Player player, int amount) {
-		if (amount > 99) {
-			player.getActionSender().sendMessage("You can only have a maximum of 99 clan members.");
-			return;
-		}
-
-		Clan clan = player.getClan();
-
-		if (clan != null)
-			clan.setMemberLimit(amount);
-
-		systemMessage(clan, Utility.formatName(player.getUsername()) + " has changed the clan member limit.");
-
-		for (ClanMember member : clan.members()) {
-			member.getPlayer().getActionSender().sendString(clan.members().size() + "/" + clan.getMemberLimit(), 33815);
-		}
-
-	}
-
-	public static void manage(Player player) {
-		if (player.getClan() == null) {
-			getClan(player);
-			return;
-		}
-		
-		String name = player.getUsername().toLowerCase().trim();
-		
-		Clan clan = ClanRepository.get(name);
-		if (clan == null) {
-			player.getActionSender().sendMessage("fucking cant find this clan for user "+name);
-			return;
-		}
-		
-		ClanMember member = clan.get(player.getUsername());
-		if (member == null) {
-			player.getActionSender().sendMessage("member in clan not there? wtf "+player.getUsername());
-			return;
-		}
-
-		if (!clan.getOwner().equalsIgnoreCase(player.getUsername())) {
-			if (!clan.canManage(member)) {
-				player.getActionSender().sendMessage("You do not have sufficient permisson to manage this channel!");
-				return;
-			}
-		}
-
-		int index = 0;
-		for (int i = index; i < 50; i++) {
-			player.getActionSender().sendString("", 44001 + index);
-			player.getActionSender().sendString("", 44801 + index);
-		}
-
-		for (ClanMember other : clan.members()) {
-			player.getActionSender().sendString(Utility.formatName(other.getName()), 44001 + index);
-			player.getActionSender().sendString(
-					"<clan=" + other.getRank().getRankIndex() + ">" + other.getRank().getName(), 44801 + index);
-			index++;
-		}
-
-		player.getActionSender().sendString(Utility.formatName(clan.getName()), 47814);
-
-		player.getActionSender().sendInterface(40172);
-	}
-
-	public static void kickMember(Player player, String name) {
-		Clan clan = player.getClan();
-
-		if (clan == null) {
-			player.getActionSender().sendMessage("You are not in a clan channel.");
-			return;
-		}
-
-		if (World.getWorld().getPlayerByName(name).isPresent()) {
-			Player victim = World.getWorld().getPlayerByName(name).get();
-
-			ClanMember member = clan.get(player.getUsername());
-
-			if (!clan.canKick(member)) {
-				player.getActionSender().sendMessage("You do not have sufficient permisson to kick in this channel!");
-				return;
-			}
-
-			if (!clan.contains(victim.getUsername())) {
-				player.getActionSender().sendMessage(Utility.formatName(name) + " is not in this channel.");
-				return;
-			}
-
-			leave(victim, false);
-			victim.getActionSender().sendMessage(Utility.formatName(player.getUsername()) + " has kicked you from the clan channel.");
-			player.getActionSender().sendMessage("You have successfully kicked " + Utility.formatName(name) + " from the clan channel.");
-		}
-
-	}
-
-	public static void promote(Player player, ClanRank rank) {
-		player.getActionSender().sendString(rank.getName(), 47841);
-
-		Clan clan = player.getClan();
-
-		if (clan == null) {
-			clan = ClanRepository.get(player.getUsername());
-
-			if (clan == null) {
-				player.getActionSender().sendMessage("You are not in a clan channel.");
-				return;
-			}
-		}
-
-		if (player.getClanPromote() == null) {
-			player.getActionSender().sendMessage("You have not chosen a member to promote!");
-			return;
-		}
-
-		ClanMember other = clan.get(player.getClanPromote());
-
-		if (other == null) {
-			player.getActionSender().sendMessage("This player is not in this channel.");
-			return;
-		}
-
-		if (!clan.contains(other.getName())) {
-			player.getActionSender().sendMessage(Utility.formatName(other.getName()) + " is not in your clan channel.");
-			return;
-		}
-
-		other.setRank(rank);
-		clan.add(other);
-		update(clan);
-		manage(player);
-		ClanRepository.save();
 	}
 
 }

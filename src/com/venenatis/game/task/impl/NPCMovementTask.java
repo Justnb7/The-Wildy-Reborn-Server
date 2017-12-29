@@ -1,6 +1,7 @@
 package com.venenatis.game.task.impl;
 
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
@@ -50,7 +51,7 @@ public final class NPCMovementTask extends Task {
 		if (npc.getCombatState().isDead())
 			return;
 
-		// Firstly, rreturning to Spawn Position? if too far away.
+		// Firstly, returning to Spawn Position? if too far away.
 		if (!npc.walkingHome) {
 			//System.out.println(npc.getDefinition().getName());
 
@@ -60,18 +61,53 @@ public final class NPCMovementTask extends Task {
 				final int maxDistance = npc.strollRange > 0 ? npc.strollRange : 10;
 				if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance)) {
 					npc.walkingHome = true;
-					npc.targetId = 0;
+					npc.getCombatState().setTarget(null);
 					npc.resetFaceTile();
 					npc.sendForcedMessage("home time");
+					npc.doPath(new SizedPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());
 				}
 			}
-			if (npc.walkingHome && npc.getLocation().equals(npc.spawnTile)) {
-				npc.walkingHome = false;
-				npc.randomWalk = true;
-			} else if (npc.walkingHome) {
+		
+			if (npc.spawnedBy == null) {
+				// If stroll range is >0 it will have been loaded in npcSpawns. If not (default 0) default to value 10 instead.
+				 int maxDistance = npc.strollRange > 0 ? npc.strollRange : 10;
+				 //npc.sendForcedMessage("Max distance: "+maxDistance+" Within Distance from Spawn to player: "+maxDistance - );
+				if(npc.hasAttribute("attack")) {
+					 maxDistance = maxDistance + NpcCombat.distanceRequired(npc);
+					//if player is max distance stop following
+					if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance)) {
+						npc.following().setFollowing(null);
+						
+					}
+				}
+				
+				
+				
+				
+				
+				
+				/*if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance) && !npc.hasAttribute("attack")) {
+					npc.walkingHome = true;
+					npc.resetFaceEntity();
+					npc.getCombatState().setTarget(null);
+					npc.following().setFollowing(null);
+					npc.sendForcedMessage("home time");
+					
+				}*/
+			}
+			
+		}
+		if (npc.walkingHome && npc.getLocation().equals(npc.spawnTile)) {
+			npc.walkingHome = false;
+			npc.randomWalk = true;
+		}
+		/*if (npc.walkingHome && npc.getWalkingQueue().isEmpty()) {
+			// npc was interrupted, continue walking back only if we're STILL out of range
+			final int maxDistance = npc.strollRange > 0 ? npc.strollRange : 10;
+			if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance)) {
 				npc.doPath(new SizedPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());
 			}
-		}
+		}*/
 		
 		// Secondly do random walking if we're inside our spawn diameter. 
 		//npc.sendForcedMessage(npc.walkingHome+" "+npc.randomWalk+" "+npc.strollRange); // debug

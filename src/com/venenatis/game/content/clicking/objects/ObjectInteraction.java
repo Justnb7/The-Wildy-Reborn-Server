@@ -6,11 +6,11 @@ import com.venenatis.game.action.Action;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.BrimhavenVines;
 import com.venenatis.game.content.MageArenaGodPrayer;
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControl;
-import com.venenatis.game.content.rewards.BossRewardChest;
-import com.venenatis.game.content.skills.agility.course.Course;
+import com.venenatis.game.content.WaterBirth;
+import com.venenatis.game.content.chest.impl.crystal_chest.CrystalKeyReward;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsHandler;
 import com.venenatis.game.content.skills.agility.Shortcut;
+import com.venenatis.game.content.skills.agility.course.Course;
 import com.venenatis.game.content.skills.agility.rooftops.Rooftop;
 import com.venenatis.game.content.skills.hunter.Hunter;
 import com.venenatis.game.content.skills.mining.Mining;
@@ -22,10 +22,10 @@ import com.venenatis.game.content.skills.woodcutting.Woodcutting;
 import com.venenatis.game.content.skills.woodcutting.Woodcutting.Tree;
 import com.venenatis.game.content.teleportation.lever.Levers;
 import com.venenatis.game.content.teleportation.obelisk.Obelisks;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Graphic;
@@ -64,6 +64,8 @@ public class ObjectInteraction {
 			player.debug("No valid object at "+location+" with id "+objectId);
 			return;
 		}
+		if(player.getRift().obstical(player, obj))
+			return;
 		
 		if(Course.execute(player, obj)) {
 			return;
@@ -73,10 +75,16 @@ public class ObjectInteraction {
 			return;
 		}
 		
-		if(Rooftop.execute(player, obj)) {//this
+		if(Rooftop.execute(player, obj)) {
 			return;
 		}
 		
+		if (BarrowsHandler.getSingleton().handleObjectClick(player, obj)) {
+			return;
+		}
+		if(WaterBirth.action(player, obj)) {
+			return;
+		}
 		final int[] HUNTER_OBJECTS = new int[]{9373, 9377, 9379, 9375, 9348, 9380, 9385, 9344, 9345, 9383, 721}; 
 		if(IntStream.of(HUNTER_OBJECTS).anyMatch(id -> objectId == id)) {
 			if(Hunter.pickup(player, obj)) {
@@ -102,10 +110,11 @@ public class ObjectInteraction {
 		
 		if (SmithingConstants.clickAnvil(player, objectId)) {
 			return;
+		} else if (Runecrafting.startAction(player, obj)) {
+			return;
 		}
 		
 		if (tree != null) {
-			player.debug("wc "+tree);
 			action = new Woodcutting(player, obj);
 		} else if (rock != null) {
 			action = new Mining(player, obj);
@@ -136,15 +145,7 @@ public class ObjectInteraction {
 		
 		player.farming().patchObjectInteraction(objectId, -1, location);
 		
-		if (Runecrafting.handleObject(player, obj)) {
-			return;
-		} else if (MageArenaGodPrayer.godPrayer(player, obj)) {
-			return;
-		}
-		
-		/** Duel Arena */
-		if (player.getDuelArena().isDueling()) {
-			player.getDuelArena().onFirstClickObject(obj);
+		if (MageArenaGodPrayer.godPrayer(player, obj)) {
 			return;
 		}
 		
@@ -157,9 +158,6 @@ public class ObjectInteraction {
 		if (SlashWebObject.slash(player, obj) && obj != null) {
 			return;
 		}
-		
-		/** Minigame */
-		MinigameHandler.execute(player, $it -> $it.onFirstClickObject(player, obj));
 		
 		/** Obelisk teleportation */
 		if (obj != null)
@@ -182,7 +180,7 @@ public class ObjectInteraction {
 		case "bank booth":
 		case "booth":
 		case "bank chest":
-			if(Area.inWilderness(player))
+			if(BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone"))
 				return;
 			player.getBank().open();
 			break;
@@ -191,13 +189,30 @@ public class ObjectInteraction {
 		
 		switch(objectId) {
 		
-		case 14315:
-			PestControl.addToLobby(player);
+		case 3203:
+			SimpleDialogues.sendStatement(player, "Would you like to forfeit the duel?");
+			player.setAttribute("yes_no_action", 1);
 			break;
 
-		case 14314:
-			PestControl.removeFromLobby(player);
-			break;
+		//Barrows stairs
+			case 20667:
+				player.setTeleportTarget((new Location(3565, 3289, 0)));
+				break;
+			case 20668:
+				player.setTeleportTarget((new Location(3575, 3298, 0)));
+				break;
+			case 20669:
+				player.setTeleportTarget((new Location(3577, 3282, 0)));
+				break;
+			case 20670:
+				player.setTeleportTarget((new Location(3565, 3275, 0)));
+				break;
+			case 20671:
+				player.setTeleportTarget((new Location(3553, 3282, 0)));
+				break;
+			case 20672:
+				player.setTeleportTarget(new Location(3557, 3297, 0));
+				break;
 		
 		case 24318:
 			int strength_level = player.getSkills().getLevel(Skills.STRENGTH);
@@ -205,7 +220,7 @@ public class ObjectInteraction {
 			
 			int total_level = strength_level += attack_level;
 			
-			if (total_level >= 130) {//This line crashes server... //TODO demo please
+			if (total_level >= 130) {
 				player.setTeleportTarget(new Location(player.getX() == 2876 ? 2877 : 2876, 3546, 0));
 			} else {
 				SimpleDialogues.sendStatement(player, "You are not a high enough level to enter the guild. Work on your", "combat skills some more. You need to have a combined attack and", "strength level of at least 130.");
@@ -216,25 +231,14 @@ public class ObjectInteraction {
 		case 16671:
 			player.setTeleportTarget(new Location(2840, 3539, 2));
 			break;
-
-		case 24306:
-		case 24309:
-			if (player.getZ() == 2) {
-				player.getWarriorsGuild().handleDoor();
-				return;
+			
+		case 172:
+			if (player.getInventory().contains(989)) {
+				player.getInventory().remove(new Item(989, 1));
+				new CrystalKeyReward(player).giveReward();
+			} else {
+				player.message("You need a Crystal Key to open this chest.");
 			}
-			if (player.getZ() == 0) {
-				if (player.getX() == 2855 || player.getX() == 2854) {
-					if (player.getY() == 3546)
-						player.setTeleportTarget(new Location(player.getX(), player.getY() - 1, 0));
-					else if (player.getY() == 3545)
-						player.setTeleportTarget(new Location(player.getX(), player.getY() + 1, 0));
-				}
-			}
-			break;
-		
-		case 27282:
-			BossRewardChest.open(player, location);
 			break;
 		
 		case 677:
@@ -476,7 +480,7 @@ public class ObjectInteraction {
 		case 9398:
 		case 11747:
 		case 25937:
-			player.getActionSender().sendString("The Bank of Venenatis - Deposit Box", 7421);
+			player.getActionSender().sendString("The Bank of The Wildy - Deposit Box", 7421);
 			player.getActionSender().sendInterfaceWithInventoryOverlay(4465, 197);
 			player.getActionSender().sendItemOnInterface(7423, player.getInventory().toArray());
 			break;
@@ -508,9 +512,6 @@ public class ObjectInteraction {
 		AnyRevObjectDefinition objectDef = AnyRevObjectDefinition.get(id);
 		
 		final GameObject obj = RegionStoreManager.get().getGameObject(location, id);
-		//GameObject obj = new GameObject(objectId, location.getX(), location.getY(), location.getZ());
-		
-		MinigameHandler.execute(player, $it -> $it.onSecondClickObject(player, obj));
 		
 		player.farming().patchObjectInteraction(id, -1, location);
 		
@@ -531,6 +532,7 @@ public class ObjectInteraction {
 		case "bank booth":
 		case "booth":
 		case "bank chest":
+		case "Bank counter":
 			player.getBank().open();
 			break;
 			

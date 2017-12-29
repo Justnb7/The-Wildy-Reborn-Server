@@ -4,10 +4,6 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.task.impl.WalkToObjectTask;
-import com.venenatis.game.world.object.GameObject;
-import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
-import com.venenatis.game.world.pathfinder.impl.ObjectPathFinder;
-import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
 /**
@@ -70,24 +66,9 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 	 */
 	private void handleOption1(Player player, int packet) {
 		int x = player.getInStream().readSignedWordBigEndianA();
-		int id = player.getInStream().readUnsignedWord();
+		int id = player.getInStream().readUnsignedShort();
 		int y = player.getInStream().readUnsignedWordA();
 		Location location = Location.create(x, y, player.getLocation().getZ());
-		
-		// Client isnt very happy with this shit so we have to hard call it
-		if (id == 10357 && x == 3318 && y == 3166) {
-			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(x, y, player.getZ()), id);
-			ObjectPathFinder.find(player, obj);
-		}
-		
-		if (id == 10777 && x == 3191 && y == 3415) {
-			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(x, y, player.getZ()), id);
-			ObjectPathFinder.find(player, obj);
-		}
-		
-		if (id == 10355 && x == 3269 && y == 3166 && player.getZ() == 3) {
-			player.doPath(new DefaultPathFinder(), null, 3265, 3166, false, true);
-		}
 		
 		Server.getTaskScheduler().schedule(new WalkToObjectTask(player, location, id, 1));
 	}
@@ -117,7 +98,7 @@ public class ObjectOptionPacketHandler implements IncomingPacketListener {
 	 */
 	private void handleOption3(Player player, int packet) {
 		int x = player.getInStream().readSignedWordBigEndian();
-		int y = player.getInStream().readUnsignedWord();
+		int y = player.getInStream().readUnsignedShort();
 		int id = player.getInStream().readUnsignedWordBigEndianA();
 		Location position = Location.create(x, y, player.getLocation().getZ());
 		

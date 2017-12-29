@@ -2,9 +2,9 @@ package com.venenatis.game.content.skills.smithing;
 
 import java.util.Random;
 
-import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
@@ -82,7 +82,7 @@ public class Smelting extends Task {
 
 		player.getInventory().refresh();
 		
-		if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+		if(BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && random.nextInt(10) < 7) {
 			player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
 		}
 

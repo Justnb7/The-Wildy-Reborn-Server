@@ -1,8 +1,8 @@
 package com.venenatis.game.content;
 
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.player.Player;
@@ -179,7 +179,7 @@ public class Jewellery {
 			 * Player is using a glory.
 			 */
 			case GLORY:
-				if (Area.inWilderness(player) && player.getWildLevel() > 30) {
+				if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && player.getWildLevel() > 30) {
 					player.getActionSender().sendMessage("You cannot teleport above level 30 wilderness.");
 					return;
 				}
@@ -193,7 +193,7 @@ public class Jewellery {
 			 * Player is using a Ring of Dueling.
 			 */
 			case RING_OF_DUELING:
-				if (Area.inWilderness(player) && player.getWildLevel() > 20) {
+				if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && player.getWildLevel() > 20) {
 					player.getActionSender().sendMessage("You cannot teleport above level 20 wilderness.");
 					return;
 				}
@@ -207,7 +207,7 @@ public class Jewellery {
 			 * Player is using a Games Necklace.
 			 */
 			case GAMES_NECKLACE:
-				if (Area.inWilderness(player) && player.getWildLevel() > 20) {
+				if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && player.getWildLevel() > 20) {
 					player.getActionSender().sendMessage("You cannot teleport above level 20 wilderness.");
 					return;
 				}
@@ -221,7 +221,7 @@ public class Jewellery {
 			 * Player is using a Slayer ring
 			 */
 			case SLAYER_RING:
-				if (Area.inWilderness(player) && player.getWildLevel() > 20) {
+				if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && player.getWildLevel() > 20) {
 					player.getActionSender().sendMessage("You cannot teleport above level 20 wilderness.");
 					return;
 				}

@@ -7,8 +7,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -39,6 +39,7 @@ public class DagannothPrime extends AbstractBossCombat {
 		switch(style) {
 		default:
 		case MAGIC:
+			attacker.setCombatType(CombatStyle.MAGIC);
 			maxHit = npc.getDefinition().getMaxHit();
 			int clientSpeed;
 			int gfxDelay;
@@ -58,13 +59,14 @@ public class DagannothPrime extends AbstractBossCombat {
 			hitDelay = (gfxDelay / 20) - 1;
 			
 			attacker.playAnimation(Animation.create(npc.getDefinition().getAttackAnimation()));
-			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 162, 45, 50, clientSpeed, 70, 35, victim.getProjectileLockonIndex(), 10, 48));
+			attacker.playProjectile(Projectile.create(attacker.getCentreLocation(), victim.getCentreLocation(), 162, 20, 50, clientSpeed, 60, 35, victim.getProjectileLockonIndex(), 10, 48));
 
 			randomHit = Utility.random(maxHit);
 			if(randomHit > player.getSkills().getLevel(Skills.HITPOINTS)) {
 				randomHit = player.getSkills().getLevel(Skills.HITPOINTS);
 			}
 			hit = randomHit;
+			
 			// Create the hit instance
 			victim.take_hit(attacker, hit, style).send(hitDelay);
 			Server.getTaskScheduler().schedule(new Task(hitDelay) {
@@ -82,13 +84,13 @@ public class DagannothPrime extends AbstractBossCombat {
 
 	@Override
 	public int distance(Entity attacker) {
-		return 5;
+		return 8;
 	}
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		Pets pets = Pets.DAGANNOTH_PRIME;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.DAGANNOTH_PRIME;
+		Follower pet = new Follower(player, pets.getNpc());
 		if (player.alreadyHasPet(player, 12644) || player.getPet() == pets.getNpc()) {
 			return;
 		}

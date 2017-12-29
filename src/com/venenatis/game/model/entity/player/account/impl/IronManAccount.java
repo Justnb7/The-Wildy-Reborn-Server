@@ -1,6 +1,5 @@
 package com.venenatis.game.model.entity.player.account.impl;
 
-import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControlRewards.RewardButton;
 import com.venenatis.game.model.entity.player.account.AccountType;
 
 /**
@@ -37,11 +36,6 @@ public class IronManAccount extends AccountType {
 	
 	@Override
 	public boolean isShopAccessible() {
-		return false;
-	}
-	
-	@Override
-	public boolean isRewardSelectable(RewardButton reward) {
 		return false;
 	}
 	

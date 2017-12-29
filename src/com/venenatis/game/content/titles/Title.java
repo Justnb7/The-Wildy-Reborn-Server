@@ -8,7 +8,6 @@ import java.util.Set;
 import com.venenatis.game.content.achievements.*;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.model.Skills;
-import com.venenatis.game.model.entity.npc.pet.*;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 
@@ -214,14 +213,6 @@ public enum Title implements Comparator<Title> {
 			return player.getRights().isHardcoreIronman(player);
 		}
 	}, "To receive access to this title, a player must be on the ultimate ironman game-mode."),
-	
-	COLLECTOR("MR Collector", 0, TitleCurrency.NONE, new TitleRequirement() {
-
-		@Override
-		public boolean meetsStandard(Player player) {
-			return Pets.ownsAll(player);
-		}
-	}, "To receive access to this title, a player must have collected ALL boss pets."),
 	
 	SLAYER_MASTER("Slayer Master", 0, TitleCurrency.NONE, new TitleRequirement() {
 

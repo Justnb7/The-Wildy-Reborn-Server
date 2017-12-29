@@ -1,5 +1,6 @@
 package com.venenatis.game.model.combat;
 
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelOptions;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
@@ -54,7 +55,7 @@ public class QuickPrayers extends PrayerHandler {
 	 * @param prayer
 	 */
 	private void sendCheck(PrayerData prayer) {
-		player.getActionSender().sendConfig(CONFIG_START + prayer.ordinal(), prayers[prayer.ordinal()] != null ? 0 : 1);
+		player.getActionSender().sendConfig(CONFIG_START + prayer.ordinal(), prayers[prayer.ordinal()] != null ? 1 : 0);
 	}
 
 	/**
@@ -190,6 +191,11 @@ public class QuickPrayers extends PrayerHandler {
 	public boolean handleButton(int button) {
 		switch(button) {
 		case TOGGLE_QUICK_PRAYERS:
+			
+			if (player.getDuelArena().getOptionActive()[DuelOptions.NO_PRAYER.getId()]) {
+				player.getActionSender().sendMessage("The right to use prayer has been revoked during this duel.");
+				return false;
+			}
 
 			if(player.getSkills().getLevel(Skills.PRAYER) <= 0) {
 				player.getActionSender().sendMessage("You don't have enough Prayer points.");

@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.Connection;
@@ -41,7 +41,7 @@ public class BountyHunter extends Task {
 		/*
 		 * Write the interface since we are in the wilderness
 		 */
-		if (Area.inWilderness(player)) {
+		if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
 			writeInterface(player);
 
 			/*
@@ -87,7 +87,7 @@ public class BountyHunter extends Task {
 		String wealth = "---";
 		if (target != null) {
 			targetName = target.getUsername();
-			level = Area.inWilderness(target) ? target.getWildLevel() : 0;
+			level = BoundaryManager.isWithinBoundary(target.getLocation(), "PvP Zone") ? target.getWildLevel() : 0;
 			minLevel = level - 2 <= 0 ? 1 : level - 2;
 			maxLevel = level + 2;
 			combat = target.getCombatLevel();
@@ -133,7 +133,7 @@ public class BountyHunter extends Task {
 			return false;
 		}
 
-		if (!Area.inWilderness(player)) {
+		if (!BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
 
 			long delay = player.getAttribute("left_wild_delay", 0L);
 			long elapsed = System.currentTimeMillis() - delay;
@@ -148,7 +148,7 @@ public class BountyHunter extends Task {
 			}
 		}
 
-		if (!Area.inWilderness(target)) {
+		if (!BoundaryManager.isWithinBoundary(target.getLocation(), "PvP Zone")) {
 			long delay = target.getAttribute("left_wild_delay", 0L);
 			if (System.currentTimeMillis() - delay >= 120_000) {
 				player.getActionSender().sendMessage("@red@The target has left the wilderness, searching for new target.");
@@ -166,7 +166,7 @@ public class BountyHunter extends Task {
 	 */
 	public static void findTarget(Player player) {
 		for (Player target : World.getWorld().getPlayers()) {
-			if (target == null || !Area.inWilderness(target) || target.equals(player)) {
+			if (target == null || !BoundaryManager.isWithinBoundary(target.getLocation(), "PvP Zone") || target.equals(player)) {
 				continue;
 			}
 			

@@ -5,13 +5,13 @@ import java.util.Random;
 import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.Achievements;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
@@ -190,7 +190,7 @@ public class Fishing {
 				player.getActionSender().sendMessage("You notice a angler piece floating in the water and pick it up.");
 			}
 			
-			if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+			if(BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && random.nextInt(10) < 7) {
 				player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
 			}
 			
@@ -273,8 +273,8 @@ public class Fishing {
 	 *        The player receiving the Heron pet.
 	 */
 	private void heronPet(Player player) {
-		Pets pets = Pets.HERON;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.HERON;
+		Follower pet = new Follower(player, pets.getNpc());
 		
 		if(player.alreadyHasPet(player, 13320) || player.getPet() == pets.getNpc()) {
 			return;

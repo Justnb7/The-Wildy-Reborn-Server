@@ -125,6 +125,13 @@ public enum Rights {
 		return color;
 	}
 	
+	public static boolean isWithin(Rights a, Rights b) {
+		if (a.getCrown() >= b.getCrown()) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Determines if this level of rights inherited another level of rights
 	 * @param rights	the level of rights we're looking to determine is inherited

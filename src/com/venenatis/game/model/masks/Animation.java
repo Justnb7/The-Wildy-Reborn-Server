@@ -39,6 +39,7 @@ public class Animation {
 	public final static Animation GOBLIN_BOW = create(2127);
 	public final static Animation GOBLIN_DANCE = create(2128);
 	public final static Animation DEATH = create(7185);
+	public final static Animation RESET_ANIMATION = create(65535);
 	
 	/**
 	 * Creates an animation with no delay.

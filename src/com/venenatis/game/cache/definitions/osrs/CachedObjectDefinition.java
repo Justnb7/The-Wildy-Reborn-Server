@@ -15,8 +15,8 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 	public String aString1549 = "null";
 	int[] anIntArray1548;
 	int[] anIntArray1588;
-	public int anInt1554 = 1;
-	public int anInt1555 = 1;
+	public int sizeX = 1;
+	public int sizeY = 1;
 	public int anInt1556 = 2;
 	public boolean aBool1573 = true;
 	public int anInt1550 = -1;
@@ -131,9 +131,9 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 				}
 			}
 		} else if(var2 == 14) {
-			this.anInt1554 = var1.readUnsignedByte();
+			this.sizeX = var1.readUnsignedByte();
 		} else if(var2 == 15) {
-			this.anInt1555 = var1.readUnsignedByte();
+			this.sizeY = var1.readUnsignedByte();
 		} else if(var2 == 17) {
 			this.anInt1556 = 0;
 			this.aBool1573 = false;
@@ -308,12 +308,12 @@ public final class CachedObjectDefinition extends AnyRevObjectDefinition {
 
 	@Override
 	public int xLength() {
-		return anInt1554;
+		return sizeX;
 	}
 
 	@Override
 	public int yLength() {
-		return anInt1555;
+		return sizeY;
 	}
 
 	@Override

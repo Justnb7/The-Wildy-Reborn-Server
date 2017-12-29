@@ -1,20 +1,22 @@
 package com.venenatis.game.model.combat;
 
-import com.venenatis.game.content.activity.minigames.impl.warriors_guild.WarriorsGuild;
+import java.util.Objects;
+
 import com.venenatis.game.content.skills.slayer.Slayer;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.definitions.WeaponDefinition;
 import com.venenatis.game.model.entity.Boundary;
+import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.instance.impl.KrakenInstance;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.util.Utility;
-import com.venenatis.game.world.World;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
 import com.venenatis.game.world.pathfinder.RouteFinder;
 import com.venenatis.server.Server;
@@ -104,28 +106,28 @@ public class NpcCombat {
 	/**
 	 * Validates if the {@link Player} can attack the {@link NPC}
 	 * 
-	 * @param player
+	 * @param entity
 	 *            The {@link Player} attacking the npc
 	 * @param npc
 	 *            The {@link NPC} which is being attacked
 	 * @return If the player can attack the npc
 	 */
-	public static boolean canTouch(Player player, NPC npc, boolean findpath) {
+	public static boolean canTouch(Entity entity, NPC npc, boolean findpath) {
 		boolean ignoreClip = npc.getName().equalsIgnoreCase("Whirlpool") || npc.getName().equalsIgnoreCase("Zulrah")
 				|| npc.getName().equalsIgnoreCase("Portal") || npc.getName().equalsIgnoreCase("Kraken")
 				|| npc.getName().equalsIgnoreCase("Spinolyp") || npc.getName().equalsIgnoreCase("Enormous Tentacle");
 		if (ignoreClip)
 			return true;
-		boolean projectile = player.getCombatType() == CombatStyle.RANGE || player.getCombatType() == CombatStyle.MAGIC;
+		boolean projectile = entity.getCombatType() == CombatStyle.RANGE || entity.getCombatType() == CombatStyle.MAGIC;
 		if (projectile) {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), pos)) {
+				if (ProjectilePathFinder.isProjectilePathClear(entity.getLocation(), pos)) {
 					return true;
 				}
 			}
 		} else {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), pos)) {
+				if (ProjectilePathFinder.isInteractionPathClear(entity.getLocation(), pos)) {
 					//player.write(new SendGameMessage("debug");
 					return true;
 				}
@@ -133,7 +135,7 @@ public class NpcCombat {
 		}
 
 		if (findpath) {
-			RouteFinder.getPathFinder().findRoute(player, npc.getX(), npc.getY(), true, 1, 1);
+			RouteFinder.getPathFinder().findRoute(entity, npc.getX(), npc.getY(), true, 1, 1);
 		}
 		//player.write(new SendGameMessage("debug");
 		return false;
@@ -141,13 +143,18 @@ public class NpcCombat {
 
 	public static boolean canAttackNpc(Player player, NPC npc) {
 		if (npc.getCombatState().isDead() || npc.getMaxHitpoints() <= 0 || player.getCombatState().isDead()) {
+			System.out.println("Npc is dead, we can't attack him anymore.");
 			player.getCombatState().reset();
 			return false;
 		}
-		if (npc.transforming)
+		
+		if (npc.transforming) {
+			System.out.println("Transforming mask.");
 			return false;
+		}
 
 		if (!Slayer.canAttack(player, npc)) {
+			System.out.println("Slayer level says no.");
 			return false;
 		}
 		
@@ -170,27 +177,22 @@ public class NpcCombat {
 				}
 			}
 		}
-		
-		if (npc.getId() == 2463 || npc.getId() == 2464) {
-			if (Boundary.isIn(player, WarriorsGuild.CYCLOPS_BOUNDARY)) {
-				if (!player.getWarriorsGuild().isActive()) {
-					player.getActionSender().sendMessage("I should talk with Kamfreena before killing cyclops.");
-				}
-			}
-		}
 
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS) && !Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
 			Combat.resetCombat(player);
 			player.message("You cannot attack that npc from outside the room.");
 			return false;
 		}
-		if (npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex() && !Area.inMultiCombatZone(npc)) {
-			player.getCombatState().reset();
-			player.message("Someone else is fighting that.");
-			return false;
+		
+		if (!BoundaryManager.isWithinBoundaryNoZ(npc.getLocation(), "multi_combat")) {
+			if (npc.getCombatState().getUnderAttackBy() != null && !Objects.equals(player, npc.getCombatState().getUnderAttackBy())) {
+				player.message("Someone else is fighting that.");
+				player.getCombatState().reset();
+				return false;
+			}
 		}
 
-		if (Combat.incombat(player) && player.lastAttacker != npc && !Area.inMultiCombatZone(player) && !Boundary.isIn(player, Boundary.KRAKEN)) {
+		if (Combat.incombat(player) && player.lastAttacker != npc && !BoundaryManager.isWithinBoundaryNoZ(player.getLocation(), "multi_combat") && !Boundary.isIn(player, Boundary.KRAKEN)) {
 			Combat.resetCombat(player);
 			player.message("I'm already under attack.");
 			return false;
@@ -203,7 +205,7 @@ public class NpcCombat {
 		}
 
 		if (!player.getController().canAttackNPC()) {
-			//System.out.println("blocked");
+			System.out.println("We're not allowed to fight npcs in this controller.");
 			return false;
 		}
 		// Otherwise, we're good to go!
@@ -217,111 +219,127 @@ public class NpcCombat {
 	 *            The {@link NPC} to handle combat timers for
 	 */
 	public static void handleCombatTimer(NPC npc) {
-		//npc.forceChat("attacktimer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.targetId);
+		Entity player = npc.getCombatState().getTarget();
 
-		// Delay before we can attack again
-		if (npc.getCombatState().getAttackDelay() > 0) {
-			npc.getCombatState().decreaseAttackDelay(1);
-			//npc.forceChat("atk timer: "+npc.attackTimer+" "+npc.walkingHome+" "+npc.randomWalk);
-		}
-		
-		if (npc.getCombatState().getSpellDelay() > 0) {
-			npc.getCombatState().decreaseSpellDelay(1);
-		}
+		if (player != null) {
+			
+			// Delay before we can attack again
+			if (npc.getCombatState().getAttackDelay() > 0) {
+				npc.getCombatState().decreaseAttackDelay(1);
+				//npc.sendForcedMessage("atk timer: "+npc.getCombatState().getAttackDelay()+" "+npc.walkingHome+" " +npc.randomWalk);
+			}
+			
+			if (npc.getCombatState().getSpellDelay() > 0) {
+				npc.getCombatState().decreaseSpellDelay(1);
+			}
 
-		// If we havent been attacked within last 5 secs reset who last attack us
-		if (System.currentTimeMillis() - npc.lastDamageTaken > 5000) {
-			npc.underAttackBy = 0;
-		}
+			// If we havent been attacked within last 5 secs reset who last
+			// attack us
+			if (System.currentTimeMillis() - npc.getCombatState().getLastHit() > 5000) {
+				npc.getCombatState().setUnderAttackBy(null);
+				
+				//We shouldn't reset the target because the npc stops attacking.
+				//npc.getCombatState().setTarget(null);
+			}
 
-		// Call code to attack our target if we're alive
-		if (!npc.getCombatState().isDead() && !npc.walkingHome && npc.targetId > 0) {
-			Player player = World.getWorld().getPlayers().get(npc.targetId);
-
-			npc.following().setFollowing(player);
-
-			if (player == null) {
-				// out of range
-				npc.targetId = 0;
-				npc.resetFaceTile();
-			} else {
+			if (!npc.getCombatState().isDead() && !npc.walkingHome && npc.getCombatState().getTarget() != null) {
+				//stop following once good distance
+				if (!goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distanceRequired(npc))) {
+				npc.following().setFollowing(player);
+				} else {
+					npc.following().setFollowing(null);
+					npc.resetFaceTile();
+				}
 				if (npc.getCombatState().getAttackDelay() == 0) {
 					attackPlayer(player, npc);
 				}
-				// Following called in process()
 			}
+		} else {
+			// System.out.println("Im null");
+			// System.out.println("player index nulled "+player.getIndex());
+			npc.getCombatState().setTarget(null);
+			npc.resetFaceTile();
+			npc.getCombatState().setUnderAttackBy(null);
+			npc.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 		}
 	}
 
 	/**
 	 * Handles an npc attacking a player
 	 * 
-	 * @param player
+	 * @param entity
 	 *            The {@link Player} being attacked
 	 * @param npc
 	 *            The {@link NPC} attacking the player
 	 */
-	public static void attackPlayer(Player player, NPC npc) {
-		if (npc == null || npc.getCombatState().isDead())
+	public static void attackPlayer(Entity entity, NPC npc) {
+		Player player = (Player) entity;
+		
+		if (npc == null || npc.getCombatState().isDead()) {
+			System.out.println("Unable to attack because the player is death");
 			return;
+		}
 		
 		if (npc.hasAttribute("busy") || npc.hasAttribute("stunned") || npc.hasAttribute("attack")) {
+			System.out.println("We can't attack the player because of the following reasons (busy, stunned or under attack by Shaman)");
 			return;
 		}
 		
 		// Check validty of rooms
 		if (Boundary.isIn(npc, Boundary.GODWARS_BOSSROOMS)) {
-			if (!Boundary.isIn(player, Boundary.GODWARS_BOSSROOMS)) {
-				npc.targetId = 0;
+			if (!Boundary.isIn(entity, Boundary.GODWARS_BOSSROOMS)) {
+				npc.getCombatState().setTarget(null);
+				System.out.println("Invalid attack");
 				return;
 			}
 		}
 		
 		// Attacks allowed? Height, dead, in tutorial. NOT distance (.. yet)
-		if (!validateAttack(player, npc)) {
+		if (!validateAttack(entity, npc)) {
+			System.out.println("Stop");
 			return;
 		}
 		
-		npc.face(player.getLocation());
+		npc.face(entity.getLocation());
 		
 		// Execute our attack if we're in range.
-		if (goodDistance(npc.getX(), npc.getY(), player.getX(), player.getY(), distanceRequired(npc))) {
+		if (goodDistance(npc.getX(), npc.getY(), entity.getX(), entity.getY(), distanceRequired(npc))) {
 			npc.randomWalk = false;
 			
 			boolean isBoss = AbstractBossCombat.isBoss(npc.getId());
 			AbstractBossCombat boss_cb = AbstractBossCombat.get(npc.getId());
 			if (isBoss) {
-				boss_cb.execute(npc, player);
+				boss_cb.execute(npc, entity);
 				// don't do any code below this, boss script handles all.
 			} else {
 				// Default npcs use defition anim & delay
 				npc.getCombatState().setAttackDelay(npc.getDefinition().getAttackSpeed());
 				npc.playAnimation(Animation.create(npc.getAttackAnimation()));
 			}
-			player.lastAttacker = npc;
-			player.lastWasHitTime = System.currentTimeMillis();
+			entity.lastAttacker = npc;
+			entity.lastWasHitTime = System.currentTimeMillis();
 			player.updateLastCombatAction();
-			player.getCombatState().setInCombat(true);
-			player.getActionSender().removeAllInterfaces();
-			npc.faceEntity(player);
+			entity.getCombatState().setInCombat(true);
+			entity.getActionSender().removeAllInterfaces();
+			npc.faceEntity(entity);
 			// Make the target Autoretal
-			if (player.getCombatState().noTarget()) {
+			if (entity.getCombatState().noTarget()) {
 				if (player.isAutoRetaliating()) {
-					player.getCombatState().setTarget(npc);
+					entity.getCombatState().setTarget(npc);
 				}
 			}
 			// Make our target do their block anim
-			if (player.getCombatState().getAttackDelay() <= 3 || player.getCombatState().getAttackDelay() == 0) {
+			if (entity.getCombatState().getAttackDelay() <= 3 || entity.getCombatState().getAttackDelay() == 0) {
 				//tried to make a instance didnt work ether
-				player.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
+				entity.playAnimation(Animation.create(WeaponDefinition.sendBlockAnimation(player)));
 			}
 
 			int damage = Utility.getRandom(npc.getDefinition().getMaxHit());
 			
 			// Actually damage our target
 			if(!isBoss)
-			player.take_hit(npc, damage, npc.getCombatType()).send(0);
-		}
+			entity.take_hit(npc, damage, npc.getCombatType()).send(0);
+		} 
 	}
 
 	public static boolean goodDistance(int objectX, int objectY, int playerX, int playerY, int distance) {
@@ -332,31 +350,38 @@ public class NpcCombat {
 	/**
 	 * Checks if the attack is okay on the player
 	 * 
-	 * @param player
+	 * @param entity
 	 *            The {@link Player} being attacked
 	 * @param npc
 	 *            The {@link NPC} attacking the player
 	 * @return If the npc can attack the player
 	 */
-	private static boolean validateAttack(Player player, NPC npc) {
-		if (npc.getCombatState().isDead() || player.getCombatState().isDead()) {
+	private static boolean validateAttack(Entity entity, NPC npc) {
+		if (npc.getCombatState().isDead() || entity.getCombatState().isDead()) {
+			System.out.println("Unable to attack because the entity is dead.");
 			return false;
 		}
 		
 		if (npc.getId() == 6617) {
+			//Silence no message cuz this npc doesn't attack players just follows boss!
 			return false;
 		}
-		if (!player.isVisible()) {
+		
+		if (!entity.isVisible()) {
+			System.out.println("Unable to attack because the entity is invisible.");
 			return false;
 		}
+		
 		if (npc.getId() != 5535 && npc.getId() != 494) { // small tent and kraken can attack in single
-			if (!Area.inMultiCombatZone(npc) && npc.underAttackBy > 0 && npc.underAttackBy != player.getIndex()) {
-				npc.targetId = 0;
+			
+			if (!BoundaryManager.isWithinBoundaryNoZ(npc.getLocation(), "multi_combat") && npc.getCombatState().getUnderAttackBy() != null && !Objects.equals(entity, npc.getCombatState().getUnderAttackBy())) {
+				npc.getCombatState().setTarget(null);
+				System.out.println("Unable to attack because the entity is already under attack?");
 				return false;
 			}
-			if (!Area.inMultiCombatZone(npc)) {
-				if ((npc.lastAttacker != player && Combat.hitRecently(npc, 4000)) || npc != player.lastAttacker && Combat.hitRecently(player, 4000)) {
-					npc.targetId = 0;
+			if (!BoundaryManager.isWithinBoundaryNoZ(npc.getLocation(), "multi_combat")) {
+				if ((npc.lastAttacker != entity && Combat.hitRecently(npc, 4000)) || npc != entity.lastAttacker && Combat.hitRecently(entity, 4000)) {
+					npc.getCombatState().setTarget(null);
 					return false;
 				}
 			}
@@ -364,16 +389,12 @@ public class NpcCombat {
 		/*
 		 * This doesn't work.
 		 */
-		if (npc.getZ() != player.getZ()) {
-			npc.targetId = 0;
+		if (npc.getZ() != entity.getZ()) {
+			npc.getCombatState().setTarget(null);
 			return false;
 		}
 
-		if (!player.receivedStarter()) {
-			npc.targetId = 0;
-			return false;
-		}
-		if (NpcCombat.canTouch(player, npc, false)) {
+		if (NpcCombat.canTouch(entity, npc, false)) {
 			return true;
 		}
 
@@ -387,13 +408,13 @@ public class NpcCombat {
 		// Always last
 		if (npc.getCombatType() != CombatStyle.MELEE) {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isProjectilePathClear(player.getLocation(), pos)) {
+				if (ProjectilePathFinder.isProjectilePathClear(entity.getLocation(), pos)) {
 					return true;
 				}
 			}
 		} else {
 			for (Location pos : npc.getBorder()) {
-				if (ProjectilePathFinder.isInteractionPathClear(player.getLocation(), pos)) {
+				if (ProjectilePathFinder.isInteractionPathClear(entity.getLocation(), pos)) {
 					return true;
 				}
 			}

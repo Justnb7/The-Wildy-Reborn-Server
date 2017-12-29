@@ -13,7 +13,7 @@ public class WithdrawModifiableX implements IncomingPacketListener {
 	@Override
 	public void handle(Player player, int id, int size) {
 		final int slot = player.getInStream().readUnsignedWordA();
-		final int interfaceId = player.getInStream().readUnsignedWord();
+		final int interfaceId = player.getInStream().readUnsignedShort();
 		final int itemId = player.getInStream().readUnsignedWordA();
 		final int amount = player.getInStream().readDWord();
 		

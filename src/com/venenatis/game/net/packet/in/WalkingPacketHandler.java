@@ -1,6 +1,8 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.content.activity.minigames.impl.duelarena.*;
+import com.venenatis.game.content.gamble.Gamble.GambleStage;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelOptions;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelStage;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
@@ -40,7 +42,21 @@ public class WalkingPacketHandler implements IncomingPacketListener {
 			return;
 		}
 		
-		if (player.getInterfaceState().getCurrentInterface() > 0 && !player.getDuelArena().isInSession() && !player.getTradeSession().isTrading()) {
+		if (player.getAttributes().get("duel_stage") != null && player.getAttributes().get("duel_stage") != DuelStage.FIGHTING_STAGE) {
+			player.getDuelArena().decline();
+			return;
+		}
+		
+		if (player.getDuelArena().getOptionActive()[DuelOptions.NO_MOVEMENT.getId()]) {
+			player.getActionSender().sendMessage("The right to move has been revoked during this stake.");
+			return;
+		}
+
+		if (player.getGamble().getStage() != null && player.getGamble().getStage() != GambleStage.GAMBLE_STAGE) {
+			player.getGamble().decline();
+		}
+		
+		if (player.getInterfaceState().getCurrentInterface() > 0 && !player.getTradeSession().isTrading()) {
 			player.getActionSender().removeAllInterfaces();
 		}
 		
@@ -75,23 +91,6 @@ public class WalkingPacketHandler implements IncomingPacketListener {
 		
 		//Stop active skilling tasks
 		player.removeAttribute("fishing");
-		player.stopSkillTask();
-		
-		if (player.isDueling()) {
-			if (player.getDuelArena().getRules().get(DuelRule.MOVEMENT)) {
-				player.getActionSender().sendMessage("Movement is disabled in this duel.");
-				return;
-			}
-		}
-
-		if (player.getDuelArena().isInSession()) {
-			player.getActionSender().sendMessage("Please close what you're doing before trying to move.");
-			return;
-		}
-
-		if (player.getDuelArena().getStage() == DuelArena.DuelStage.REWARD) {
-			player.getDuelArena().claimReward(player.getDuelArena().isWon());
-		}
 
 		if (player.getTradeSession().isTrading()) {
 			player.getActionSender().sendMessage("Please close what you're doing before trying to move.");

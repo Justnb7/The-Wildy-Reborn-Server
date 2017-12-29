@@ -14,7 +14,6 @@ public class ClickOnGameScreen implements IncomingPacketListener {
 		if(player.hasAttribute("firemaking")) {
 			player.getAttributes().remove("firemaking");
 		}
-		player.stopSkillTask();
 	}
 
 }

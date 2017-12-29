@@ -20,6 +20,16 @@ public class CloseInterfacePacketHandler implements IncomingPacketListener {
 			player.getAttributes().put("banking", false);
 		}*/
 		
+		//Decline gambling when closing an interface
+		if (player.getGamble().getStage() != null) {
+			player.getGamble().decline();
+		}
+		
+		//Decline dueling when closing an interface
+		if (player.getAttributes().get("duel_stage") != null) {
+			player.getDuelArena().decline();
+		}
+		
 		//Decline trade when closing an interface
 		if (player.isTrading()) {
 			player.getTradeSession().declineTrade(true);

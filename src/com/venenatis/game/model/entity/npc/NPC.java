@@ -2,10 +2,12 @@ package com.venenatis.game.model.entity.npc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.combat.npcs.impl.wilderness.Scorpia;
@@ -13,6 +15,8 @@ import com.venenatis.game.model.definitions.NPCDefinitions;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.following.NPCFollowing;
+import com.venenatis.game.model.entity.npc.drops.NPCDropManager;
+import com.venenatis.game.model.entity.npc.pet.Pet;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.model.masks.forceMovement.Direction.FacingDirection;
@@ -21,7 +25,10 @@ import com.venenatis.game.task.impl.NPCDeathTask;
 import com.venenatis.game.util.Location3D;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.world.World;
+import com.venenatis.game.world.ground_item.GroundItem;
+import com.venenatis.game.world.ground_item.GroundItemHandler;
 import com.venenatis.game.world.pathfinder.ProjectilePathFinder;
+import com.venenatis.game.world.pathfinder.RouteFinder;
 import com.venenatis.game.world.pathfinder.clipmap.Region;
 import com.venenatis.server.Server;
 
@@ -31,6 +38,12 @@ public class NPC extends Entity {
 		this(_npcType, null, -1);
 	}
 	
+	public boolean pathStop = false;
+	
+	 public void npcWalk(int x, int y) {
+	        RouteFinder.getPathFinder().findRouteNpc(this, x, y, true, 2, 2);
+	    }
+	 
 	public NPC(int id, Location spawn, int direction) {
 		super(EntityType.NPC);
 		if (spawn != null) {
@@ -68,6 +81,12 @@ public class NPC extends Entity {
 		Arrays.asList( World.getWorld().getNPCs().get(getIndex())).stream().filter(Objects::nonNull).filter(n -> n.getId() == id && n.getZ() == height).forEach(npc -> npc.getCombatState().isDead());
 	}
 	
+	/**
+	 * Remove an NPC by the identifier
+	 * 
+	 * @param n
+	 *            The NPC we want to rmeove
+	 */
 	public void remove(NPC n) {
 		if (!n.isVisible()) {
 			// already despawned
@@ -76,6 +95,19 @@ public class NPC extends Entity {
 		NPCDeathTask.reset(n);
         n.removeFromTile();
         NPCDeathTask.setNpcToInvisible(n);
+	}
+	
+	/**
+	 * Remove an already excisting npc from the map
+	 */
+	public void remove() {
+		if (!this.isVisible()) {
+			// already despawned
+			return;
+		}
+		NPCDeathTask.reset(this);
+		this.removeFromTile();
+        NPCDeathTask.setNpcToInvisible(this);
 	}
 
 	/**
@@ -171,8 +203,6 @@ public class NPC extends Entity {
 	public void setFace(FacingDirection face) {
 		this.face = face;
 	}
-	
-	public int underAttackBy;
 
 	public Entity spawnedBy;
 
@@ -229,16 +259,10 @@ public class NPC extends Entity {
 		return maxHitpoints;
 	}
 	
-	/**
-	 * The Index of our Target - the Player we're attacking. PLAYER ONLY. TODO make this Entity instead of Int
-	 */
-	public int targetId;
-	
 	public boolean walkingHome, randomWalk;
 
 	public boolean aggressive;
-	
-	public long lastDamageTaken;
+
 	
 	/**
 	 * Our enemys maximum hit
@@ -295,11 +319,6 @@ public class NPC extends Entity {
 		setLocation(position);
 		spawnTile = position;
 		getAttributes().put("teleporting", true);
-	}
-	
-	@Override
-	public void onDeath() {
-		
 	}
 
 	@Override
@@ -425,25 +444,30 @@ public class NPC extends Entity {
 		this.setTeleporting(false);
 	}
 	
-	public NPC spawn(Player p, int id, Location location, int direction, boolean attackPlayer) {
+	public static NPC spawnNpc(Player p, int id, Location location, int direction, boolean attackPlayer, boolean head_icon) {
 		NPC npc = new NPC(id, location, direction);
+		
 		npc.spawnDirection = direction;
 		npc.getWalkingQueue().lastDirectionFaced = direction;
+		npc.spawnedBy = p;
+		
+		World.getWorld().register(npc);
+		
+		if (head_icon) {
+			p.getActionSender().sendEntityHint(npc, true);
+		}
+		
 		if (attackPlayer) {
 			if (p != null) {
-				npc.targetId = p.getIndex();
+				npc.getCombatState().setTarget(p);
+				npc.getCombatState().setAttackDelay(1);
 			}
 		}
-		World.getWorld().register(npc);
 		return npc;
 	}
 	
-	public static NPC spawn(int id, Location location, int direction) {
-		NPC npc = new NPC(id, location, direction);
-		npc.spawnDirection = direction;
-		npc.getWalkingQueue().lastDirectionFaced = direction;
-		World.getWorld().register(npc);
-		return npc;
+	public NPC spawn(Player p, int id, Location location, int direction, boolean attackPlayer, boolean head_icon) {
+		return NPC.spawnNpc(p, id, location, direction, attackPlayer, head_icon);
 	}
 	
 	/**
@@ -473,6 +497,7 @@ public class NPC extends Entity {
 			if (following().hasFollowTarget() && this.getHitpoints() < 1 && !getCombatState().isDead()) {
 				System.out.println(getName()+" id "+getId()+" cannot follow because HP < 1. Set HP in definitions.");
 			}
+			
 			if ((this.getHitpoints() > 0 && !getCombatState().isDead()) || isPet || getId() == 6768) {
 
 
@@ -488,8 +513,8 @@ public class NPC extends Entity {
 			
 			if (npcId == 6615) {
 				if (this.getHitpoints() <= 100 && !hasAttribute("scorpia_minion")) {
-					NPC min1 = spawn(spawnedBy.asPlayer(), 6617, new Location(getX()- 1, getY(), getZ()), 1, false);
-					NPC min2 = spawn(spawnedBy.asPlayer(), 6617, new Location(getX() + 1, getY(), getZ()), 1, false);
+					NPC min1 = spawn(spawnedBy.asPlayer(), 6617, new Location(getX()- 1, getY(), getZ()), 1, false, false);
+					NPC min2 = spawn(spawnedBy.asPlayer(), 6617, new Location(getX() + 1, getY(), getZ()), 1, false, false);
 					// attributes not used atm
 					this.setAttribute("min1", min1);
 					min1.setAttribute("boss", this);
@@ -502,23 +527,6 @@ public class NPC extends Entity {
 					Scorpia.heal_scorpia(this, min2);
 				}
 			}
-			
-			/*if (this.getId() >= 2042 && this.getId() <= 2044 && this.getHitpoints() > 0) {
-				Player player = spawnedByPlr;
-				if (player != null && player.getZulrahEvent().getNpc() != null && this.equals(player.getZulrahEvent().getNpc())) {
-					int stage = player.getZulrahEvent().getStage();
-					if (this.getId() == 2042) {
-						if (stage == 0 || stage == 1 || stage == 4 || stage == 9 && this.totalAttacks >= 20 || stage == 11 && this.totalAttacks >= 5) {
-							//continue;
-						}
-					}
-					if (this.getId() == 2044) {
-						if ((stage == 5 || stage == 8) && this.totalAttacks >= 5) {
-							//continue;
-						}
-					}
-				}
-			}*/
 
 			/*
 			 * Handle our combat timers
@@ -624,7 +632,7 @@ public class NPC extends Entity {
 
 	public void retaliate(Entity attacker) {
 		// Set npc's target to the person that attacked us
-		this.targetId = attacker.getIndex();
+		this.getCombatState().setTarget(attacker);
 		face(attacker.getLocation());
 	}
 
@@ -743,6 +751,49 @@ public class NPC extends Entity {
 					//System.out.println("finished map for "+tempboss);
 					tempGroup = null; // Start again!
 					tempboss = null;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Handles the NPC dropping items (loot).
+	 **/
+	public void processNPCDrop() {
+		if (getDefinition() == null) {
+			return;
+		}
+		
+		String killerName = this.getCombatState().getDamageMap().getKiller();
+    	Player player = World.getWorld().lookupPlayerByName(killerName);
+		
+		if (Objects.isNull(player)) {
+			return;
+		}
+		
+		if (player.getMinigame() != null) {
+			player.getMinigame().onDropItems(player, this);
+		}
+
+		final Collection<Item> droppedItems = NPCDropManager.getDrops(player, this);
+
+		if (droppedItems == null || droppedItems.isEmpty()) {
+			return;
+		}
+
+		for (Item item : droppedItems) {
+			if (item == null) {
+				continue;
+			}
+			Player receiver = player;
+			
+			if (Pet.from(item.getId()) == null) {
+				if (item.getDefinition().isStackable()) {
+					GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), item.getAmount()), getLocation(), receiver));
+				} else {
+					for (int i = 0; i < item.getAmount(); i++) {
+						GroundItemHandler.createGroundItem(new GroundItem(new Item(item.getId(), 1), getLocation(), receiver));
+					}
 				}
 			}
 		}

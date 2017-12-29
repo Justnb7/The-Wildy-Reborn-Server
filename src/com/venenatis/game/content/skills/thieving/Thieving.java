@@ -4,8 +4,8 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Utility;
@@ -140,8 +140,8 @@ public class Thieving {
 	
 	private void pet(Player player) {
 		int roll = Utility.random(1000);
-		Pets rocky = Pets.ROCKY;
-		Pet pet = new Pet(player, rocky.getNpc());
+		Pet rocky = Pet.ROCKY;
+		Follower pet = new Follower(player, rocky.getNpc());
 		if (player.alreadyHasPet(player, 20663) || player.getPet() == rocky.getNpc()) {
 			return;
 		}

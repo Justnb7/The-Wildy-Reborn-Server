@@ -1,0 +1,57 @@
+package com.venenatis.game.model.entity.player.dialogue.impl.pets;
+
+import com.venenatis.game.model.entity.player.dialogue.Dialogue;
+import com.venenatis.game.model.entity.player.dialogue.Expression;
+import com.venenatis.game.model.entity.player.dialogue.DialogueType;
+
+/**
+ * The Vet'ion jr pet chat dialogue
+ * 
+ * @author Patrick van Elderen
+ *
+ */
+public class VetionJr extends Dialogue {
+	
+	private final int PET = player.getPet() == 5536 ? 5536 : player.getPet() == 5537 ? 5537 : -1;
+
+	@Override
+	protected void start(Object... parameters) {
+		send(DialogueType.PLAYER, Expression.DEFAULT, "Who is the true lord and king of the lands?");
+		setPhase(0);
+	}
+	
+	@Override
+	protected void next() {
+		switch (getPhase()) {
+		case 0:
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "The mighty heir and lord of the Wilderness.");
+			setPhase(1);
+			break;
+		case 1:
+			send(DialogueType.PLAYER, Expression.DEFAULT, "Where is he? Why hasn't he lifted your burden?");
+			setPhase(2);
+			break;
+		case 2:
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "I have not fulfilled my purpose.");
+			setPhase(3);
+			break;
+		case 3:
+			send(DialogueType.PLAYER, Expression.DEFAULT, "What is your purpose?");
+			setPhase(4);
+			break;
+		case 4:
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "Not what is,", "what was. A great war tore this land apart and,", "for my failings in protecting this ", "land, I carry the burden of its waste.");
+			setPhase(5);
+			break;
+		case 5:
+			stop();
+			break;
+		}
+	}
+	
+	@Override
+	protected void select(int index) {
+		
+	}
+
+}

@@ -2,6 +2,7 @@ package com.venenatis.game.model.combat.magic.spell.impl;
 
 import com.venenatis.game.model.combat.magic.spell.SpellEffect;
 import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -14,7 +15,9 @@ public class IceBarrageSpellEffect implements SpellEffect {
 
 	@Override
 	public void handle(Player attacker, Entity victim) {
-		victim.freeze(33);
+		if(victim.isNPC()) {
+			victim.freeze(33);	
+		}		
 	}
 
 	@Override

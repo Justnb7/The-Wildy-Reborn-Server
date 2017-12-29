@@ -26,9 +26,14 @@ public class ArdougneRooftop {
 	 *            The object being clicked
 	 */
 	public static boolean start(Player player, GameObject object) {
+		if (!object.getLocation().equals(Location.create(2673, 3298, 0))) {
+			player.removeAttribute("busy");
+			return false;
+		}
+		
 		if (player.getSkills().getLevel(Skills.AGILITY) < 90) {
 			SimpleDialogues.sendItemStatement(player, 6517, "", "You need an Agility level of 90 to use this course.");
-			return false;
+			return true;
 		}
 
 		Integer ardyAgilityCourseLvl = player.getAttribute("ardyAgilityCourse");

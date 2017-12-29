@@ -1,6 +1,7 @@
 package com.venenatis.game.content.presets;
-import com.venenatis.game.location.Area;
+
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.NameUtils;
@@ -42,22 +43,18 @@ public class PreloadingGear {
 
 	public void open(int preset) {
 
-		if (!Area.inSafezone(player)) {
+		//TODO add edgevile parameter only
+		/*if (!BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
 			player.getActionSender().sendMessage("You can only do this in a safe-zone.");
 			return;
-		}
+		}*/
 		
 		if (player.getCombatState().inCombat()) {
 			player.getActionSender().sendMessage("You can not do this while in combat.");
 			return;
 		}
 		
-		if (Area.inDuelArena(player)) {
-			player.getActionSender().sendMessage("You can not do this here.");
-			return;
-		}
-		
-		if (Area.inF2P(player)) {
+		if (BoundaryManager.isWithinBoundary(player.getLocation(), "DuelArenaFight") || BoundaryManager.isWithinBoundary(player.getLocation(), "DuelArena")) {
 			player.getActionSender().sendMessage("You can not do this here.");
 			return;
 		}
@@ -116,22 +113,20 @@ public class PreloadingGear {
 			return;
 		}
 		
-		if (!Area.inSafezone(player)) {
-			player.getActionSender().sendMessage("You can only do this in a safe-zone.");
-			return;
-		}
+		// TODO add edgevile parameter only
+		/*
+		 * if (!BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) { 
+		 * player.getActionSender().sendMessage("You can only do this in a safe-zone."); 
+		 * return; 
+		 * }
+		 */
 		
 		if (player.getCombatState().inCombat()) {
 			player.getActionSender().sendMessage("You can not do this while in combat.");
 			return;
 		}
 		
-		if (Area.inF2P(player)) {
-			player.getActionSender().sendMessage("You can not do this here.");
-			return;
-		}
-		
-		if (Area.inDuelArena(player)) {
+		if (BoundaryManager.isWithinBoundary(player.getLocation(), "DuelArenaFight") || BoundaryManager.isWithinBoundary(player.getLocation(), "DuelArena")) {
 			player.getActionSender().sendMessage("You can not do this here.");
 			return;
 		}

@@ -46,7 +46,7 @@ public class ZombiesChampion extends AbstractBossCombat {
 			}
 			int delay = (gfxDelay / 20) - 1;
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 856, 25, 50, clientSpeed, 43, 36, 10, 48));
-			victim.getActionSender().stillGfx(755, victim.getLocation());
+			victim.getActionSender().stillGfx(755, victim.getLocation(), 0);
 			victim.take_hit(attacker, randomHit, CombatStyle.RANGE).send(delay);
 			break;
 		case MAGIC:
@@ -66,7 +66,7 @@ public class ZombiesChampion extends AbstractBossCombat {
 			}
 			delay = (gfxDelay / 20) - 1;
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 782, 25, 50, clientSpeed, 43, 36, 10, 48));
-			victim.getActionSender().stillGfx(783, victim.getLocation());
+			victim.getActionSender().stillGfx(783, victim.getLocation(), 0);
 			victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
 			break;
 		default:

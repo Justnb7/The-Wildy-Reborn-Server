@@ -1,16 +1,29 @@
 package com.venenatis.game.content.skills.slayer;
 
+import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
-import com.venenatis.server.Server;
+import com.venenatis.game.world.World;
 
 /**
- * 
- * @author Patrick van Elderen
+ * The class which represents functionality for the superior slayer monster.
+ * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  *
  */
 public class SuperiorMonster {
+	
+	/**
+	 * The player object.
+	 */
+	private Player player;
+	
+	/**
+	 * Creates the superior monster.
+	 */
+	public SuperiorMonster(Player player) {
+		this.player = player;
+	}
 	
 	private enum SuperiorSlayerMonster {
 		
@@ -55,22 +68,62 @@ public class SuperiorMonster {
 			this.superiorId = spawn;
 			this.expReward = reward;
 		}
+
+		public String getTask() {
+			return slayerTask;
+		}
+		
+		public int superiorMonster() {
+			return superiorId;
+		}
+		
+		public int getExpReward() {
+			return expReward;
+		}
 		
 	}
 	
-	public static void spawnSuperior(final Player player, NPC npc) {
+	/**
+	 * Spawns a supperior monster
+	 * @param npc
+	 * The monster to spawn
+	 */
+	public void spawnSuperior(final NPC npc) {
 		if(!player.getSlayerInterface().getUnlocks().containsKey(91126)) {
 			return;
 		}
 		for(SuperiorSlayerMonster ssm : SuperiorSlayerMonster.values()) {
-			if(player.getSlayerTask().contains(ssm.slayerTask)) {
+			if(player.getSlayerTask().contains(ssm.getTask())) {
 				int random_spawn = Utility.random(50);
 				if(player.getUsername().equalsIgnoreCase("patrick"))
 					random_spawn = 25;
 				if(random_spawn == 25) {
 					player.getActionSender().sendMessage("@red@A superior foe has appeared...");
-					npc.spawn(player, ssm.superiorId, npc.getLocation(), 1, true);
+					npc.spawn(player, ssm.superiorMonster(), npc.getLocation(), 1, true, false);
+					player.setAttribute("superior_monster", ssm.superiorMonster());
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Grant the player extra experience for slaying the superior foe.
+	 * 
+	 * @param npc
+	 *            The superior monster being slayed.
+	 */
+	public void grantExperience(final NPC npc) {
+		// Safety check
+		if (player != null) {
+			player = World.getWorld().lookupPlayerByName(npc.getCombatState().getDamageMap().getKiller());
+			for(SuperiorSlayerMonster superior_monster : SuperiorSlayerMonster.values()) {
+				if (player.getAttribute("superior_monster") != null) {
+					if ((Integer) player.getAttribute("superior_monster") == superior_monster.superiorMonster()) {
+						player.removeAttribute("superior_monster");
+						player.getSkills().addExperience(Skills.SLAYER, superior_monster.getExpReward() * 2.5);
+					}
+				}
+				break;
 			}
 		}
 	}

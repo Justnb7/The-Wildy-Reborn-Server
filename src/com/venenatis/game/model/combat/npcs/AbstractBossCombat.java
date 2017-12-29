@@ -135,6 +135,22 @@ public abstract class AbstractBossCombat {
 		bosses.put(4005, dark_beast);
 		bosses.put(7250, dark_beast);
 		
+		AbstractBossCombat giant_rock_crab = new Large_Rock_Crab();
+		bosses.put(2261, giant_rock_crab);
+		
+		AbstractBossCombat dagg = new Melee_Dagganoth();
+		bosses.put(5942, dagg);
+		
+		AbstractBossCombat dagg2 = new Ranged_Dagganoth();
+		bosses.put(5943, dagg2);
+		
+		AbstractBossCombat spin = new Spinolyp();
+		bosses.put(5947, spin);
+		
+		AbstractBossCombat wallaski = new Wallaski();
+		bosses.put(5938, wallaski);
+		bosses.put(5939, wallaski);
+		
 		bosses.put(319, new CorporealBeast());
 		
 		AbstractBossCombat venenatis = new Venenatis();

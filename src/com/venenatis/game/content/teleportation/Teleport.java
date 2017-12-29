@@ -1,10 +1,9 @@
 package com.venenatis.game.content.teleportation;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.entity.Boundary;
@@ -108,6 +107,7 @@ public class Teleport {
 	 * @return
 	 */
 	public boolean canTeleport(boolean override) {
+		
 		/*
 		 * Prevents mass clicking teleports.
 		 */
@@ -130,18 +130,11 @@ public class Teleport {
 		if (isTeleporting()) {
 			return false;
 		}
-
-		if (!MinigameHandler.execute(player, true, $it -> $it.canTeleport(player))) {
-			return false;
-		}
-
-		if (player.getDuelArena().isDueling()) {
-			player.getActionSender().sendMessage("You cannot teleport while you are dueling.");
-			return false;
-		}
+		
+		player.getWalkingQueue().reset();
 
 		if (!override) {
-			if (player.getWildLevel() > 30 && Area.inWilderness(player) && !player.getRights().isOwner(player)) {
+			if (player.getWildLevel() > 30 && BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && !player.getRights().isOwner(player)) {
 				player.getActionSender().sendMessage("You can not teleport past 30 wilderness!");
 				return false;
 			}
@@ -217,6 +210,11 @@ public class Teleport {
 	 * @param teleportType
 	 */
 	public void teleport(final Location location, TeleportTypes teleportType, boolean override) {
+		if (player.getAttributes().get("duel_stage") != null) {
+			player.getActionSender().sendMessage("You can't teleport during a duel.");
+			return;
+		}
+		
 		if (!canTeleport(override)) {
 			return;
 		}
@@ -277,6 +275,11 @@ public class Teleport {
 	}
 
 	public void teleport(final Location location) {
+		if (player.getAttributes().get("duel_stage") != null) {
+			player.getActionSender().sendMessage("You can't teleport during a duel.");
+			return;
+		}
+		
 		final Teleportation data = Teleportation.forTeleport(TeleportTypes.MODERN);
 
 		if (data == null) {

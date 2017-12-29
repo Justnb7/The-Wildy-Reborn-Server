@@ -54,11 +54,6 @@ public class SetSkill {
 			return false;
 		}
 
-		if (player.getDuelArena().isDueling()) {
-			player.getActionSender().sendMessage("You cannot use this in the duel arena.");
-			return false;
-		}
-
 		if (!SkillData.forId(button).isPresent()) {
 			return false;
 		}

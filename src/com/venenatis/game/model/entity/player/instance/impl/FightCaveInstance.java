@@ -33,8 +33,8 @@ public class FightCaveInstance {
 		if (player != null && instance != null) {
 			player.getDialogueManager().start("ENTER_FIGHT_CAVE", player);
 			// tp player to jad pls
-			//player.setTeleportTarget(new Location(2401, 5085, instance.getHeight()));
-			jad.spawn(player, 3127, new Location(2401, 5085, instance.getHeight()), 1, true);
+			player.setTeleportTarget(new Location(2401, 5085, instance.getHeight()));
+			jad.spawn(player, 3127, new Location(2401, 5085, instance.getHeight()), 1, true, false);
 		}
 	}
 	

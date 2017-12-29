@@ -96,11 +96,14 @@ public class ProjectilePathFinder {
     	while (currentTile != end_loc) {
     		Directions.NormalDirection globalDirection = Directions.directionFor(currentTile, end_loc);
     		if (globalDirection == null) {
+    			// same spot
     			return true;
     		}
+    		// one closer
 			Location nextTile = currentTile.transform(Directions.DIRECTION_DELTA_X[globalDirection.intValue()], Directions.DIRECTION_DELTA_Y[globalDirection.intValue()], 0);
-    		localDirection = Directions.directionFor(currentTile, nextTile);	
-    		localDirectionInverse = Directions.directionFor(nextTile, currentTile);
+    		localDirection = Directions.directionFor(currentTile, nextTile); // entity to target
+    		localDirectionInverse = Directions.directionFor(nextTile, currentTile);//target to entity
+    		
     		GameObject currentObject = RegionStoreManager.get().getWallObject(currentTile);
     		GameObject nextObject = RegionStoreManager.get().getWallObject(nextTile);
     		if (projectileCheck) {
@@ -118,6 +121,10 @@ public class ProjectilePathFinder {
         		}
         		if (currentTile.canMove(localDirection, 1, false) && currentTile.canMove(localDirectionInverse, 1, false)) {
         			currentTile = nextTile;
+        	    	if (entity.isPlayer()) {
+        	    		entity.asPlayer().debug("adv "+end_loc);
+        	    	}
+        			// advance 
         			continue;
         		} else {
         			boolean solid = (Region.getClippingMask(nextTile.getX(), nextTile.getY(), nextTile.getZ()) & 0x20000) != 0;
@@ -147,6 +154,9 @@ public class ProjectilePathFinder {
         			}
         		}
     		}
+    	}
+    	if (entity.isPlayer()) {
+    		entity.asPlayer().debug(currentTile+" v "+end_loc);
     	}
     	return currentTile == end_loc;
     }

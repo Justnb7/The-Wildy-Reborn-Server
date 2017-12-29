@@ -4,9 +4,9 @@ import java.util.Random;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.SkillCapePerks;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.definitions.ItemDefinition;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
@@ -247,7 +247,7 @@ public class Cooking extends Task {
 			player.getActionSender().sendMessage("You successfully cook the " + ItemDefinition.get(cookables.getRawItem()).getName().toLowerCase() + ".");
 			player.getSkills().addExperience(Skills.COOKING, cookables.getXp());
 			
-			if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+			if(BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && random.nextInt(10) < 7) {
 				player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
 			}
 		}

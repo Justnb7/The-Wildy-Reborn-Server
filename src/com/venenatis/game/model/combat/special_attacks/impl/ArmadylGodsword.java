@@ -22,7 +22,7 @@ public class ArmadylGodsword implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 
-		player.playAnimation(Animation.create(7061));
+		player.playAnimation(Animation.create(7644));
 		player.playGraphic(Graphic.highGraphic(1211));
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());
 		if (missed)

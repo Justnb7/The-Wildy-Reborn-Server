@@ -54,8 +54,5 @@ public class MoveItemPacketHandler implements IncomingPacketListener {
 			
 		}
 		
-		//Stop active skilling tasks
-		player.stopSkillTask();
-		
 	}
 }

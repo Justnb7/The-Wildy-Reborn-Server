@@ -24,7 +24,7 @@ public class Kraken extends Dialogue {
 	protected void next() {
 		switch (getPhase()) {
 		case 0:
-			send(DialogueType.NPC, Expression.DEFAULT, PET, "Not heard that one before.");
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "Not heard that one before.");
 			setPhase(1);
 			break;
 		case 1:
@@ -32,7 +32,7 @@ public class Kraken extends Dialogue {
 			setPhase(2);
 			break;
 		case 2:
-			send(DialogueType.NPC, Expression.DEFAULT, PET, "We have another leg,", "just below the center of our body that", "we use to move across solid surfaces.");
+			send(DialogueType.NPC, PET, Expression.DEFAULT, "We have another leg,", "just below the center of our body that", "we use to move across solid surfaces.");
 			setPhase(3);
 			break;
 		case 3:

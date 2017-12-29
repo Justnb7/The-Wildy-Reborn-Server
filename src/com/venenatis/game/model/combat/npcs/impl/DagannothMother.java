@@ -93,7 +93,7 @@ public class DagannothMother extends AbstractBossCombat {
 			}
 			int delay = (gfxDelay / 20) - 1;
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 856, 25, 50, clientSpeed, 43, 36, 10, 48));
-			victim.getActionSender().stillGfx(755, victim.getLocation());
+			victim.getActionSender().stillGfx(755, victim.getLocation(), 0);
 			victim.take_hit(attacker, randomHit, CombatStyle.RANGE).send(delay);
 			break;
 		case MAGE_FORM:
@@ -113,7 +113,7 @@ public class DagannothMother extends AbstractBossCombat {
 			}
 			delay = (gfxDelay / 20) - 1;
 			npc.playProjectile(Projectile.create(npc.getCentreLocation(), victim, 986, 25, 50, clientSpeed, 43, 36, 10, 48));
-			victim.getActionSender().stillGfx(775, victim.getLocation());
+			victim.getActionSender().stillGfx(775, victim.getLocation(), 0);
 			victim.take_hit(attacker, randomHit, CombatStyle.MAGIC).send(delay);
 			break;
 		default:

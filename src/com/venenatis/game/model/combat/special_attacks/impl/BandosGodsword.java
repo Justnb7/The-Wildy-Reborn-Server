@@ -22,7 +22,7 @@ public class BandosGodsword implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		
-		player.playAnimation(Animation.create(7060));
+		player.playAnimation(Animation.create(7642));
 		player.playGraphic(Graphic.create(1212, 0, 0));
 
 		int[] skills = new int[] { Skills.DEFENCE, Skills.STRENGTH, Skills.PRAYER, Skills.ATTACK, Skills.MAGIC, Skills.RANGE };

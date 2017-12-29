@@ -1,15 +1,18 @@
 package com.venenatis.game.net.packet.in;
 
+import java.util.Optional;
+
 import com.venenatis.game.action.Action;
 import com.venenatis.game.action.impl.actions.ConsumeItemAction;
+import com.venenatis.game.content.GoodieBag;
 import com.venenatis.game.content.Jewellery;
 import com.venenatis.game.content.bounty.BountyHunter;
+import com.venenatis.game.content.chest.impl.reward.RewardCasket;
 import com.venenatis.game.content.clicking.items.ItemOnItem;
 import com.venenatis.game.content.clicking.magic.MagicOnItems;
 import com.venenatis.game.content.gambling.DiceBag;
-import com.venenatis.game.content.rewards.GoodieBag;
-import com.venenatis.game.content.rewards.Mysterybox;
-import com.venenatis.game.content.rewards.RewardCasket;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelStage;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsInformation;
 import com.venenatis.game.content.skills.hunter.Hunter;
 import com.venenatis.game.content.skills.hunter.trap.impl.BirdSnare;
 import com.venenatis.game.content.skills.hunter.trap.impl.BoxTrap;
@@ -24,7 +27,7 @@ import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.definitions.ItemDefinition;
-import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.net.packet.IncomingPacketListener;
@@ -78,9 +81,10 @@ public class ItemOptionPacket implements IncomingPacketListener {
 
 	@Override
 	public void handle(Player player, int id, int size) {
-		if (player.getAttribute("busy") != null) {
+		if (player.getAttribute("busy") != null || player.getGamble().getStage() != null || (player.getAttributes().get("duel_stage") != null && player.getAttributes().get("duel_stage") != DuelStage.FIGHTING_STAGE)) {
 			return;
 		}
+		
 		switch (id) {
 		case OPTION_1:
 			handleItemOption1(player, id);
@@ -110,7 +114,7 @@ public class ItemOptionPacket implements IncomingPacketListener {
 	}
 	
 	private void handleItemOptionItem(Player player, int id) {
-		final int usedWithSlot = player.getInStream().readUnsignedWord();
+		final int usedWithSlot = player.getInStream().readUnsignedShort();
 		final int itemUsedSlot = player.getInStream().readUnsignedWordA();
 
 		final Item used = player.getInventory().get(usedWithSlot);
@@ -139,10 +143,10 @@ public class ItemOptionPacket implements IncomingPacketListener {
 	private void handleItemOnGround(Player player, int id) {
 		final int a1 = player.getInStream().readSignedWord();
 		final int itemUsed = player.getInStream().readSignedWordA();
-		final int groundItem = player.getInStream().readUnsignedWord();
+		final int groundItem = player.getInStream().readUnsignedShort();
 		final int gItemY = player.getInStream().readSignedWordA();
 		final int itemUsedSlot = player.getInStream().readSignedWordBigEndianA();
-		final int gItemX = player.getInStream().readUnsignedWord();
+		final int gItemX = player.getInStream().readUnsignedShort();
 
 		Location position = new Location(gItemX, gItemY, player.getLocation().getZ());
 		
@@ -156,7 +160,7 @@ public class ItemOptionPacket implements IncomingPacketListener {
 
 	private void handlePickup(Player player, int packetId) {
 		final int y = player.getInStream().readSignedWordBigEndian();
-		final int id = player.getInStream().readUnsignedWord();
+		final int id = player.getInStream().readUnsignedShort();
 		final int x = player.getInStream().readSignedWordBigEndian();
 		
 		Item item = new Item(id);
@@ -242,7 +246,7 @@ public class ItemOptionPacket implements IncomingPacketListener {
 		}
 		
 		// We are dropping an pet item.
-		if (!Pet.drop(player, item, false)) {
+		if (!Follower.drop(player, item, false)) {
 			return;
 		}
 		
@@ -311,6 +315,11 @@ public class ItemOptionPacket implements IncomingPacketListener {
 			player.getSkills().getPrayer().bury(item, slot);
 			return;
 		}
+		
+		if (item.getId() == 6199) {
+			player.getMysteryBox().open(item, slot);
+			return;
+		}
 
 		player.getHerblore().clean(item.getId());
 		
@@ -374,10 +383,6 @@ public class ItemOptionPacket implements IncomingPacketListener {
 
 		case 22005:
 			RewardCasket.advancedItemsCasket(player);
-			break;
-
-		case 6199:
-			Mysterybox.open(player);
 			break;
 			
 		case 4155: // Enchanted Gem
@@ -470,9 +475,9 @@ public class ItemOptionPacket implements IncomingPacketListener {
 		// Last clicked item
 		player.lastClickedItem = item.getId();
 		
-		if(Runecrafting.locateTalisman(player, item)) {
+/*		if(Runecrafting.locateTalisman(player)) {
 			return;
-		}
+		}*/
 		
 		switch (item.getId()) {
 		case 13226:
@@ -498,6 +503,12 @@ public class ItemOptionPacket implements IncomingPacketListener {
 	}
 
 	private void doShovelActions(Player player) {
+		final Optional<Location> info = BarrowsInformation.getCryptLocation(player.getLocation());
+		if (info.isPresent()) {
+			player.message("You have broken into a crypt!");
+			player.setTeleportTarget(info.get());
+			return;
+		}
 		player.getActionSender().sendMessage("Nothing interesting happens.");
 	}
 	

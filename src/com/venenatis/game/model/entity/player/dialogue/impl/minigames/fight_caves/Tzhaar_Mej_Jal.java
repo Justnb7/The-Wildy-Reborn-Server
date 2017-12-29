@@ -1,8 +1,8 @@
 package com.venenatis.game.model.entity.player.dialogue.impl.minigames.fight_caves;
 
 import com.venenatis.game.model.Item;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.dialogue.Dialogue;
 import com.venenatis.game.model.entity.player.dialogue.Expression;
 import com.venenatis.game.model.entity.player.dialogue.DialogueType;
@@ -293,8 +293,8 @@ public class Tzhaar_Mej_Jal extends Dialogue {
 											}
 											
 											if (receivedPet) {
-												Pets pets = Pets.TZREK_JAD;
-												Pet pet = new Pet(player, pets.getNpc());
+												Pet pets = Pet.TZREK_JAD;
+												Follower pet = new Follower(player, pets.getNpc());
 												if (player.alreadyHasPet(player, 13225) || player.getPet() == pets.getNpc()) {
 													return;
 												}

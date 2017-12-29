@@ -7,6 +7,7 @@ import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.data.AttackStyle;
 import com.venenatis.game.model.combat.data.CombatStyle;
+import com.venenatis.game.model.combat.data.AttackStyle.FightType;
 import com.venenatis.game.model.entity.player.Player;
 
 /**
@@ -282,12 +283,16 @@ public class WeaponDefinition {
 				return 5;
 			}
 		}
-
-		if (weapon.getId() == 12926) {
+		if (weapon.getId() == 12926 || weapon.getId() == 6155) {
 			return player != null && player.getAttackStyle() == AttackStyle.AGGRESSIVE ? player.getCombatState().getTarget().isPlayer() ? 3 : 2 : player.getCombatState().getTarget().isPlayer() ? 4 : 3;
-		} else {
-			return WeaponDefinition.get(weapon.getId()).getAttackSpeed();
+		
+		} 
+		if (player.getCombatType() == CombatStyle.RANGE) {
+			if(player.getAttackStyle() != AttackStyle.AGGRESSIVE) {
+				return WeaponDefinition.get(weapon.getId()).getAttackSpeed() + 1;
+			}
 		}
+			return WeaponDefinition.get(weapon.getId()).getAttackSpeed();
 	}
 
 	/**
@@ -303,6 +308,9 @@ public class WeaponDefinition {
 		
 		//shield instance
 		Item shield = player.getEquipment().get(EquipmentConstants.SHIELD_SLOT);
+		
+		if(weapon == null || shield == null)
+			return 424;
 
 		//grab by name
 

@@ -189,6 +189,8 @@ public final class MobileCharacterList<E extends Entity> implements Iterable<E> 
 	 *         the spot.
 	 */
 	public E get(int slot) {
+		if (slot < 0)
+			return null;
 		return characters[slot];
 	}
 

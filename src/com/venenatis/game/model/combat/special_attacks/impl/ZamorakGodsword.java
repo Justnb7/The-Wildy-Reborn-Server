@@ -20,7 +20,7 @@ public class ZamorakGodsword implements SpecialAttack {
 	public void handleAttack(Player player, Entity target) {
 		int damage = Utility.random(player.getCombatState().calculateMeleeMaxHit());
 		
-		player.playAnimation(Animation.create(7057));
+		player.playAnimation(Animation.create(7638));
 		player.playGraphic(Graphic.create(1210, 0, 0));
 			
 		target.playGraphic(Graphic.create(369, 0, 0));

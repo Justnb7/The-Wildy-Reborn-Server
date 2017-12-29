@@ -2,7 +2,7 @@ package com.venenatis.game.content.clicking.npcs;
 
 import com.venenatis.game.content.skills.thieving.Pickpocket;
 import com.venenatis.game.model.entity.npc.NPC;
-import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.shop.ShopManager;
 
@@ -21,23 +21,18 @@ public class NpcInteraction {
 
 		player.debug(String.format("[NpcInteraction #1] - NpcId: %d", npc.getId()));
 		
-		if (Pet.talktoPet(player, npc)) {
+		if (Follower.talktoPet(player, npc)) {
 			return;
 		}
 		
 		if (player.getFishing().clickNpc(player, npc, 1)) {
 			return;
 		}
-
+		npc.faceEntity(player);
+		npc.resetInteractingEntity();
+		//npc.resetFaceEntity();
 		switch (npc.getId()) {
-		
-		case 2949:
-			player.getPestControlRewards().showInterface();
-			break;
-		
-		case 2461:
-			player.getWarriorsGuild().handleDoor();
-			break;
+
 		
 		case 6481:
 			player.getDialogueManager().start("MAC", player);
@@ -107,6 +102,10 @@ public class NpcInteraction {
 			player.getDialogueManager().start("EMBLEM_TRADER", player);
 			break;
 			
+		case 5906:
+			player.getDialogueManager().start("PET_INSURANCE", player);
+			break;
+			
 			/**
 			 * Slayer masters
 			 */
@@ -147,7 +146,7 @@ public class NpcInteraction {
 		
 		player.debug(String.format("[NpcInteraction #2] - NpcId: %d", npc.getId()));
 		
-		if (Pet.pickup(player, npc)) {
+		if (Follower.pickup(player, npc)) {
 			return;
 		}
 		
@@ -156,6 +155,10 @@ public class NpcInteraction {
 		}
 
 		switch (npc.getId()) {
+		
+		case 5906:
+			player.getPetInsurance().openInsuranceInterface();
+			break;
 		
 		case 8016:
 			ShopManager.open(player, 13);
@@ -202,12 +205,18 @@ public class NpcInteraction {
 	 *            The npc
 	 */
 	public static void thirdOption(Player player, NPC npc) {
-
-		if (Pet.transformPet(player, npc)) {
+		player.debug(String.format("[NpcInteraction #3] - NpcId: %d", npc.getId()));
+		
+		/*if (!Follower.transformPet(player, npc)) {
 			return;
-		}
+		}*/
 		
 		switch (npc.getId()) {
+		case 2581:
+			npc.faceEntity(player);
+			npc.sendForcedMessage("by bye..");
+			player.getRift().enterRift(player);
+			break;
 		case 401: // Turael
 			ShopManager.open(player, 12);
 			break;
@@ -266,6 +275,10 @@ public class NpcInteraction {
 			break;
 
 		case 490: // Nieve
+			player.getSlayerInterface().open(player);
+			break;
+			
+		case 7663: // Krystilia
 			player.getSlayerInterface().open(player);
 			break;
 		}

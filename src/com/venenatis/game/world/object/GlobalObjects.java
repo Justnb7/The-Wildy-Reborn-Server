@@ -30,47 +30,21 @@ public class GlobalObjects {
 	 */
 	private void loadCustomObjects(Player player) {
 		player.farming().updateObjects();
-		player.getActionSender().sendObject(27282, 3087, 3504, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2751, 3512, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2750, 3512, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2751, 3512, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2755, 3503, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2754, 3503, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2753, 3503, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2760, 3503, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2761, 3503, 0, 0, 10);
-		player.getActionSender().sendObject(11338, 2762, 3503, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2543, 10143, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2545, 10145, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2545, 10141, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2750, 3509, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2759, 3513, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2750, 3510, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2756, 3508, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2759, 3507, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2761, 3509, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2761, 3511, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2758, 3513, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2757, 3513, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2755, 3511, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2755, 3509, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2757, 3507, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2757, 3499, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2758, 3499, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2758, 3498, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2757, 3498, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2763, 3498, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2763, 3500, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2762, 3499, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2753, 3498, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2753, 3499, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2753, 3500, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2757, 3504, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2758, 3504, 0, 0, 10);
-		player.getActionSender().sendObject(-1, 2757, 3503, 0, 0, 0);
-		player.getActionSender().sendObject(-1, 2758, 3503, 0, 0, 0);
-		player.getActionSender().sendObject(-1, 3253, 3267, 0, 0, 0);
-		player.getActionSender().sendObject(-1, 3253, 3266, 0, 0, 0);
+		add(new GameObject(new Location(2491, 10130),8960, 10,1));//waterbirth door
+		add(new GameObject(new Location(2491, 10146),8959, 10,1));//waterbirth door
+		add(new GameObject(new Location(2491, 10162),8958, 10,1));//waterbirth door
+		add(new GameObject(new Location(2546, 10143),10177, 10,1));//waterbirth door
+		
+		add(new GameObject(11338, new Location(2893, 4809)));
+		add(new GameObject(new Location(3018, 4833),25428, 10,1));//squeez rift
+		add(new GameObject(new Location(3021, 4842),25422, 10,1));//rock
+		add(new GameObject(new Location(3028, 4849),26146, 10,2));//eyes
+		add(new GameObject(new Location(3038, 4853),25422, 10,2));//rock
+		add(new GameObject(new Location(3049, 4849),25428, 10,2));//squeez rift
+		add(new GameObject(new Location(3058, 4839),26146, 10,-1));//eyes
+		remove(new GameObject(8967, new Location(2545, 10141)));
+		remove(new GameObject(8967, new Location(2543, 10143)));
+		remove(new GameObject(8967, new Location(2545, 10145)));
 	}
 	
 	/**
@@ -137,7 +111,10 @@ public class GlobalObjects {
 	public void replaceObject(final GameObject original, final GameObject replacement, int cycles) {
 		remove(original);
 		if (replacement != null) {
-			add(replacement);
+			GameObject replacementConfig = new GameObject(replacement.getLocation(), replacement.getId(), replacement.getType(),
+					original.getDirection());
+			System.out.println("replacement config "+original.getDirection());
+			add(replacementConfig);
 		}
 		if (cycles < 0)
 			return;
@@ -147,6 +124,7 @@ public class GlobalObjects {
 				if (replacement != null) {
 					remove(replacement);
 				}
+				System.out.println("direction: "+original.getDirection());
 				GameObject addOrig = new GameObject(original.getLocation(), original.getId(), original.getType(),
 						original.getDirection());
 				add(addOrig);

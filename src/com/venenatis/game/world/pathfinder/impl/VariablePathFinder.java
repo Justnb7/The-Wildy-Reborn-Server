@@ -31,6 +31,7 @@ public class VariablePathFinder implements PathFinder {
         this.direction = direction;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
+        state.walkToData = walkToData;
     }
 
     public void check(Entity mob, int x, int y, int viaDir, int thisCost) {

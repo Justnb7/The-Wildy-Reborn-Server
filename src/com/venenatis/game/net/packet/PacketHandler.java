@@ -1,14 +1,14 @@
 package com.venenatis.game.net.packet;
 
-
 import com.venenatis.game.content.PrivateMessaging;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.net.packet.in.*;
+import com.venenatis.game.net.packet.in.commands.CommandPacketHandler;
 import com.venenatis.game.world.World;
 
 public class PacketHandler {
 
-	private static IncomingPacketListener packetId[] = new IncomingPacketListener[256];
+	private static IncomingPacketListener PACKET_MAP[] = new IncomingPacketListener[256];
 
 	static {
 
@@ -16,109 +16,113 @@ public class PacketHandler {
 		
 		//Player options
 		PlayerOptionPacketHandler pop = new PlayerOptionPacketHandler();
-		packetId[128] = pop;
-		packetId[39] = pop;
-		packetId[139] = pop;
-		packetId[73] = pop;
-		packetId[249] = pop;
+		PACKET_MAP[153] = pop;
+		PACKET_MAP[39] = pop;
+		PACKET_MAP[139] = pop;
+		PACKET_MAP[73] = pop;
+		PACKET_MAP[249] = pop;
 		
 		//Item options
 		ItemOptionPacket iop = new ItemOptionPacket();
-		packetId[122] = iop;
-		packetId[16] = iop;
-		packetId[75] = iop;
-		packetId[87] = iop;
-		packetId[236] = iop;
-		packetId[53] = iop;
-		packetId[237] = iop;
-		packetId[25] = iop;
+		PACKET_MAP[122] = iop;
+		PACKET_MAP[16] = iop;
+		PACKET_MAP[75] = iop;
+		PACKET_MAP[87] = iop;
+		PACKET_MAP[236] = iop;
+		PACKET_MAP[53] = iop;
+		PACKET_MAP[237] = iop;
+		PACKET_MAP[25] = iop;
 		
 		//Object interactions
 		ObjectOptionPacketHandler co = new ObjectOptionPacketHandler();
-		packetId[132] = co;
-		packetId[252] = co;
-		packetId[70] = co;
+		PACKET_MAP[132] = co;
+		PACKET_MAP[252] = co;
+		PACKET_MAP[70] = co;
 		
 		//Npc interactions
 		NpcInteractionPacketHandler cn = new NpcInteractionPacketHandler();
-		packetId[72] = cn;
-		packetId[131] = cn;
-		packetId[155] = cn;
-		packetId[17] = cn;
-		packetId[18] = cn;
-		packetId[21] = cn;
+		PACKET_MAP[72] = cn;
+		PACKET_MAP[131] = cn;
+		PACKET_MAP[155] = cn;
+		PACKET_MAP[17] = cn;
+		PACKET_MAP[18] = cn;
+		PACKET_MAP[21] = cn;
 		
 		//Withdraw actions
 		WithdrawActionsPacketHandler wap = new WithdrawActionsPacketHandler();
-		packetId[145] = wap;
-		packetId[117] = wap;
-		packetId[43] = wap;
-		packetId[129] = wap;
-		packetId[135] = wap;
-		packetId[135] = wap;
-		packetId[208] = wap;
+		PACKET_MAP[145] = wap;
+		PACKET_MAP[117] = wap;
+		PACKET_MAP[43] = wap;
+		PACKET_MAP[129] = wap;
+		PACKET_MAP[135] = wap;
+		PACKET_MAP[135] = wap;
+		PACKET_MAP[208] = wap;
 		
-		packetId[41] = new WieldPacketHandler();
-		packetId[241] = new ClickOnGameScreen();
+		PACKET_MAP[41] = new WieldPacketHandler();
+		PACKET_MAP[241] = new ClickOnGameScreen();
+		
+		PACKET_MAP[171] = new ExamineOptionHandler();
+		PACKET_MAP[172] = new OptionMenuPacketHandler();
 		
 		//PI
 		DefaultPacketHandler u = new DefaultPacketHandler();
 		
-		packetId[3] = u;
-		packetId[202] = u;
-		packetId[77] = u;
-		packetId[86] = u;
-		packetId[78] = u;
-		packetId[36] = u;
-		packetId[228] = u;
-		packetId[226] = u;
-		packetId[246] = u;
-		packetId[218] = u;
-		packetId[148] = u;
-		packetId[183] = u;
-		packetId[230] = u;
-		packetId[136] = u;
-		packetId[189] = u;
-		packetId[152] = u;
-		packetId[200] = u;
-		packetId[85] = u;
-		packetId[165] = u;
-		packetId[238] = u;
-		packetId[234] = u;
-		packetId[150] = u;
-		packetId[142] = new InputFieldPacketHandler();
-		packetId[202] = new IdleLogoutPacketHandler();
-		packetId[253] = new SecondGroundOption();
-		packetId[14] = new ItemOnPlayerPacketHandler();
-		packetId[40] = new DialoguePacketHandler();
-		packetId[57] = new ItemOnNpc();
-		packetId[4] = new ChatPacketHandler();
-		packetId[185] = new ActionButtonPacketHandler();
-		packetId[130] = new CloseInterfacePacketHandler();
-		packetId[103] = new CommandPacketHandler();
-		packetId[214] = new MoveItemPacketHandler();
-		packetId[140] = new WithdrawAllButOneAction();
-		packetId[141] = new WithdrawModifiableX();
-		packetId[101] = new SetAppearancePacketHandler();
+		PACKET_MAP[3] = u;
+		PACKET_MAP[202] = u;
+		PACKET_MAP[77] = u;
+		PACKET_MAP[86] = u;
+		PACKET_MAP[78] = u;
+		PACKET_MAP[36] = u;
+		PACKET_MAP[228] = u;
+		PACKET_MAP[226] = u;
+		PACKET_MAP[246] = u;
+		PACKET_MAP[218] = u;
+		PACKET_MAP[148] = u;
+		PACKET_MAP[183] = u;
+		PACKET_MAP[230] = u;
+		PACKET_MAP[136] = u;
+		PACKET_MAP[189] = u;
+		PACKET_MAP[152] = u;
+		PACKET_MAP[200] = u;
+		PACKET_MAP[85] = u;
+		PACKET_MAP[165] = u;
+		PACKET_MAP[238] = u;
+		PACKET_MAP[234] = u;
+		PACKET_MAP[150] = u;
+		PACKET_MAP[142] = new InputFieldPacketHandler();
+		PACKET_MAP[202] = new IdleLogoutPacketHandler();
+		PACKET_MAP[253] = new SecondGroundOption();
+		PACKET_MAP[14] = new ItemOnPlayerPacketHandler();
+		PACKET_MAP[40] = new DialoguePacketHandler();
+		PACKET_MAP[57] = new ItemOnNpc();
+		PACKET_MAP[4] = new ChatPacketHandler();
+		PACKET_MAP[185] = new ActionButtonPacketHandler();
+		PACKET_MAP[130] = new CloseInterfacePacketHandler();
+		PACKET_MAP[103] = new CommandPacketHandler();
+		PACKET_MAP[214] = new MoveItemPacketHandler();
+		PACKET_MAP[140] = new WithdrawAllButOneAction();
+		PACKET_MAP[141] = new WithdrawModifiableX();
+		PACKET_MAP[101] = new SetAppearancePacketHandler();
 		final PrivateMessaging pm = new PrivateMessaging();
-		packetId[188] = pm;
-		packetId[126] = pm;
-		packetId[215] = pm;
-		packetId[59] = pm;
-		packetId[95] = pm;
-		packetId[133] = pm;
-		packetId[74] = pm;
+		PACKET_MAP[188] = pm;
+		PACKET_MAP[126] = pm;
+		PACKET_MAP[215] = pm;
+		PACKET_MAP[59] = pm;
+		PACKET_MAP[95] = pm;
+		PACKET_MAP[133] = pm;
+		PACKET_MAP[74] = pm;
 		WalkingPacketHandler w = new WalkingPacketHandler();
-		packetId[98] = w;
-		packetId[164] = w;
-		packetId[248] = w;
-		packetId[192] = new ItemOnObjectPacketHandler();
+		PACKET_MAP[98] = w;
+		PACKET_MAP[164] = w;
+		PACKET_MAP[248] = w;
+		PACKET_MAP[192] = new ItemOnObjectPacketHandler();
 		RegionChangePacketHandler cr = new RegionChangePacketHandler();
-		packetId[121] = cr;
-		packetId[210] = cr;
-		packetId[60] = new InputDialogueStringPacketHandler();
-		packetId[213] = u;
-		// packetId[127] = cr;
+		PACKET_MAP[121] = cr;
+		PACKET_MAP[210] = cr;
+		PACKET_MAP[213] = new ActionButtonWithMultipleActionsPacketHandler();
+		PACKET_MAP[60] = new InputDialogueStringPacketHandler();
+		PACKET_MAP[60] = new InputDialogueStringPacketHandler();
+		PACKET_MAP[127] = new StringInputClanPacketHandler();
 	}
 
 	public static void processPacket(Player player, int packetType, int packetSize) {
@@ -127,7 +131,7 @@ public class PacketHandler {
 			return;
 		}
 		
-		IncomingPacketListener p = packetId[packetType];
+		IncomingPacketListener p = PACKET_MAP[packetType];
 
 		if (p != null) {
 			try {

@@ -1,6 +1,7 @@
 package com.venenatis.game.model.container.impl.equipment;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.emotes.Emotes;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.magic.Autocast;
@@ -21,6 +22,11 @@ import java.util.Arrays;
  * @author Michael | Chex
  */
 public class EquipmentContainer extends Container {
+	
+	/**
+	 * The size of our container
+	 */
+	public static final int SIZE = 14;
 
 	private final Player player;
 
@@ -205,6 +211,7 @@ public class EquipmentContainer extends Container {
 			player.getCombatState().reset();
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 			setBonus();
+			Emotes.update(player);
 		}
 	}
 
@@ -314,6 +321,7 @@ public class EquipmentContainer extends Container {
 				}
 				calculateWeight();
 				setBonus();
+				Emotes.update(player);
 				player.getCombatState().reset();
 				player.setUsingSpecial(false);
 				
@@ -400,7 +408,7 @@ public class EquipmentContainer extends Container {
 					WeaponDefinition.execute(player, weapon);
 					player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 				}
-				
+				Emotes.update(player);
 				setBonus();
 				player.getCombatState().reset();
 				player.setUsingSpecial(false);

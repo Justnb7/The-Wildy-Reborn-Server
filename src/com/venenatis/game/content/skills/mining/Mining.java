@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Random;
 
 import com.venenatis.game.action.impl.HarvestingAction;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.container.Container;
 import com.venenatis.game.model.entity.Entity;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Utility;
@@ -46,8 +46,7 @@ public class Mining extends HarvestingAction {
 	public Mining(Entity entity, GameObject object) {
 		super(entity);
 		this.object = object;
-		if (object != null)
-			this.rock = Rock.forId(object.getId());
+		this.rock = Rock.forId(object.getId());
 	}
 	
 	/**
@@ -383,7 +382,7 @@ public class Mining extends HarvestingAction {
 	}
 	
 	private final void pet(Player player) {
-		Pets pets = Pets.ROCK_GOLEM;
+		Pet pets = Pet.ROCK_GOLEM;
 		if (player.alreadyHasPet(player, 13321) || player.getPet() == pets.getNpc()) {
 			return;
 		}
@@ -394,7 +393,7 @@ public class Mining extends HarvestingAction {
 				player.getInventory().addOrSentToBank(player, new Item(13321));
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rock Golem.", false);
 			} else {
-				Pet pet = new Pet(player, pets.getNpc());
+				Follower pet = new Follower(player, pets.getNpc());
 				player.setPet(pets.getNpc());
 				World.getWorld().register(pet);
 				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rock Golem.", false);
@@ -407,7 +406,7 @@ public class Mining extends HarvestingAction {
 	public double getExperience() {
 		Player player = (Player)getEntity().asPlayer();
 		pet(player);
-		if(Area.inWilderness(player) && random.nextInt(10) < 7) {
+		if(BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") && random.nextInt(10) < 7) {
 			player.getInventory().addOrCreateGroundItem(player, new Item(13307, Utility.random(1, 5)));
 		}
 		return rock.getExperience() * (getEntity().isPlayer() ? getProspectorKitExperienceModifier((Player) getEntity()) : 1f) * 2;

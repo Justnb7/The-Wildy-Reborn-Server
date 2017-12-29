@@ -23,7 +23,7 @@ public class SaradominGodsword implements SpecialAttack {
 		int hitpointsHeal = damage / 2;
 		int prayerHeal = damage / 4;
 		
-		player.playAnimation(Animation.create(7058));
+		player.playAnimation(Animation.create(7640));
 		player.playGraphic(Graphic.create(1209, 0, 0));
 		
 		boolean missed = !CombatFormulae.getAccuracy((Entity)player, (Entity)target, 0, getAccuracyMultiplier());

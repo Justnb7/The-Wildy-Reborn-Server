@@ -6,13 +6,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.venenatis.game.model.entity.npc.drop_system.DropManager;
+import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.task.TaskQueue;
 import com.venenatis.game.util.Stopwatch;
 import com.venenatis.game.util.SystemLogger;
+import com.venenatis.game.util.XMLController;
 import com.venenatis.game.util.time.GameCalendar;
 import com.venenatis.game.world.object.GlobalObjects;
-import com.venenatis.server.data.ServerData;
 
 
 /**
@@ -62,19 +62,9 @@ public class Server {
 	private static final TaskQueue scheduler = new TaskQueue();
 	
 	/**
-	 * The drop system
-	 */
-	private static final DropManager dropManager = new DropManager();
-	
-	/**
 	 * The GlobalObjects that represents an gameobject
 	 */
-	private static GlobalObjects globalObjects = new GlobalObjects();
-	
-	/**
-	 * Contains data which is saved between sessions.
-	 */
-	public static ServerData serverData = new ServerData();
+	private static GlobalObjects globalObjects = new GlobalObjects();	
 	
 	/**
 	 * Represents our calendar with a given delay using the TimeUnit class
@@ -103,6 +93,7 @@ public class Server {
 			System.setErr(new SystemLogger(System.err, new File("./err")));
 			server.getBootstrap().build().bind();
 			GameEngine.start();
+			XMLController.loadAllFiles();
 		} catch (Throwable t) {
 			LOGGER.log(Level.SEVERE, "A problem has been encountered while starting the server.", t);
 			System.exit(0);
@@ -141,17 +132,15 @@ public class Server {
 	public static GlobalObjects getGlobalObjects() {
 		return globalObjects;
 	}
-	
-	public static DropManager getDropManager() {
-		return dropManager;
-	}
-	
-	public static ServerData getServerData() {
-		return serverData;
-	}
 
 	public static GameCalendar getCalendar() {
 		return calendar;
+	}
+	
+	private static ClanManager clanManager = new ClanManager();
+
+	public static ClanManager getClanManager() {
+		return clanManager;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.venenatis.game.model.combat.special_attacks;
 
 import com.venenatis.game.constants.EquipmentConstants;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelOptions;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.special_attacks.impl.*;
 import com.venenatis.game.model.entity.Entity;
@@ -104,6 +105,12 @@ public class SpecialAttackHandler {
 	 * @return If a button has been pressed
 	 */
 	public static boolean handleButtons(Player player, int buttonId) {
+		
+		if(player.getDuelArena().getOptionActive()[DuelOptions.NO_SPECIAL_ATTACK.getId()]) {
+			player.message("The rights to use special attacks has been revoked during this duel.");
+			return false;
+		}
+		
 		for (int i : BUTTONS) {
 			if (buttonId == i) {
 				if (player.getSpecialAmount() <= 0) {

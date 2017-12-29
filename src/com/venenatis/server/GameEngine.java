@@ -39,7 +39,7 @@ public final class GameEngine implements Runnable {
     /**
      * The rate in which to pulse the server.
      */
-    private static final int PULSE_RATE = 600;
+    public static final int PULSE_RATE = 600;
     
 
     /**
@@ -127,6 +127,7 @@ public final class GameEngine implements Runnable {
         CycleEventHandler.getSingleton().process();
         World.getWorld().pulse();
         GroundItemHandler.pulse();
+        Server.getClanManager().process();
         
         profile.total = (System.currentTimeMillis() - start);
         profile.print();

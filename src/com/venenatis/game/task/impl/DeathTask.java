@@ -1,24 +1,23 @@
 package com.venenatis.game.task.impl;
 
-import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.location.Area;
+import java.util.Random;
+
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelStage;
+import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.SkullType;
 import com.venenatis.game.model.combat.impl.PlayerDrops;
 import com.venenatis.game.model.combat.impl.PlayerKilling;
-import com.venenatis.game.model.entity.Boundary;
-import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
-import com.venenatis.game.model.entity.player.controller.Controller;
-import com.venenatis.game.model.entity.player.controller.ControllerManager;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
+import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 
 
@@ -31,6 +30,11 @@ import com.venenatis.game.world.World;
  * 
  */
 public class DeathTask extends Task {
+	
+	/**
+	 * The death animation
+	 */
+	private static final Animation DEATH_ANIMATION = Animation.create(836);
 
 	/**
 	 * The player who has died.
@@ -38,9 +42,9 @@ public class DeathTask extends Task {
 	private Player victim;
 	
 	/**
-	 * The controller for this event.
+	 * The state for this event.
 	 */
-	private Controller controller;
+	private int state;
 
 	/**
 	 * Creates the death event for the specified entity.
@@ -53,82 +57,142 @@ public class DeathTask extends Task {
 		this.victim = victim;
 		Combat.resetCombat(victim);
 	}
+	
+	private static final String getKillMessage(Player player) {
+		String username = Utility.formatName(player.getUsername());
+		switch (new Random().nextInt(10)) {
+
+		case 0:
+			return "What an embarrasing performance by " + username + ".";
+
+		case 1:
+			return "A humiliating defeat for " + username + ".";
+
+		case 2:
+			return "You have defeated " + username + ".";
+
+		case 3:
+			return "The struggle for " + username + " is real.";
+
+		case 4:
+			return username + " was no match for you.";
+
+		case 5:
+			return username + " falls before your might.";
+
+		case 6:
+			return "You were clearly a better fighter than " + username + ".";
+
+		case 7:
+			return "RIP " + username + ".";
+
+		case 8:
+			return username + " didn't stand a chance against you.";
+
+		case 9:
+			return "Can anyone defeat you? Certainly not " + username + ".";
+
+		case 10:
+			return "A certain, crouching-over-face animation would be suitable for " + username + " right now.";
+
+		}
+		return null;
+	}
 
 	@Override
 	public void execute() {
-		stop();
-		if (victim.getCombatState().isDead()) {
+		if (victim == null) {
+			stop();
+			return;
+		}
+		
+		// Look up most damage.
+		Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
+		
+		victim.getWalkingQueue().reset();
+		
+		switch (state) {
+		case 0:
+			if (PrayerHandler.isActivated(victim, PrayerHandler.RETRIBUTION) && killer != null) {
+				int damage = new Random().nextInt((int) (victim.getSkills().getLevelForExperience(Skills.PRAYER) * .25));
+				victim.playGraphic(Graphic.create(437, 0, 0));
+				victim.take_hit(killer, damage);
+			}
+			victim.getCombatState().reset();
+			victim.getActionSender().sendMessage("State "+state);
+			break;
 
-			// Look up most damage.
-			Player killer = World.getWorld().lookupPlayerByName(victim.getCombatState().getDamageMap().getKiller());
-			
-			if (killer != null && Area.inWilderness(killer)) {
-				dropPlayerItems(victim, killer);
-				reset(victim);
-				victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
+		case 1:
+			victim.playAnimation(DEATH_ANIMATION);
+			victim.getActionSender().sendMessage("State "+state);
+			break;
+
+		case 2:
+			if (victim.getMinigame() != null) {
+				victim.getMinigame().onDeath(victim);
+				stop();
+				return;
+			}
+			victim.getActionSender().sendMessage("State "+state);
+			final boolean inDuel = victim.getAttributes().get("duel_stage") != null && victim.getAttributes().get("duel_stage") == DuelStage.FIGHTING_STAGE;
+			if (inDuel) {
+				victim.getActionSender().sendMessage("You have lost the duel!");
+				killer.getActionSender().sendMessage("You have won the duel!");
 			} else {
-				/*Here we add support for none wilderness related activities*/
-				if (victim.isDueling()) {
-					victim.getDuelArena().onDeath();
-				} else if (MinigameHandler.search(victim).isPresent()) {
-					MinigameHandler.search(victim).ifPresent($it -> $it.onDeath(victim));
-				} else {
-					// this is non wilderness death
-					if (!victim.canKeepItems()) {
-						dropPlayerItems(victim, killer);
-					}
-					victim.setTeleportTarget(Constants.RESPAWN_PLAYER_LOCATION);
-					reset(victim);
+				victim.getActionSender().sendMessage("Oh dear, you are dead!");
+				
+				if(victim.getAccount().getType().loseStatusOnDeath() && victim.getRights().isHardcoreIronman(victim)) {//Double check if the victim is a Hardcore ironman for extra safety
+					victim.getAccount().setType(Account.IRON_MAN_TYPE);
+					victim.setRights(Rights.IRON_MAN);
+					victim.message("You have fallen as a Hardcore Iron Man, your Hardcore status has been revoked.");
+				}
+				
+				// ken if statement
+				// player = victim, probably add losing items for player in this
+				// if else block
+				if (victim.isSkulled()) {
+					Combat.skull(victim, SkullType.NONE, 0);
 				}
 			}
+			if (killer != null && killer.isPlayer() && !inDuel) {
+				killer.getActionSender().sendMessage(getKillMessage(victim));
+			}
+			PlayerDrops.dropItems(victim, killer);
+			PrayerHandler.resetAll(victim);
+			for (int index = 0; index < Skills.SKILL_COUNT; index++) {
+				victim.getSkills().setLevel(index, victim.getSkills().getLevelForExperience(index));
+				victim.getActionSender().sendSkills();
+			}
+			if (inDuel) {
+				victim.setDuelsLost(victim.getDuelsLost() + 1);
+				killer.setDuelsWon(killer.getDuelsWon() + 1);
+				victim.getActionSender().sendMessage("You now have won " + victim.getDuelsWon() + " duels and lost " + victim.getDuelsLost() + " duels.");
+				killer.getActionSender().sendMessage("You now have won " + killer.getDuelsWon() + " duels and lost " + killer.getDuelsLost() + " duels.");
+				victim.getDuelArena().finishDuelMatch();
+				killer.getDuelArena().invokeDuelVictory();
+			} else {
+				victim.setTeleportTarget(new Location(3087, 3500, 0));
+			}
+			victim.getCombatState().getDamageMap().resetDealtDamage();
+			break;
+
+		case 3:
+			victim.getActionSender().sendMessage("State "+state);
+			victim.getCombatState().setDead(false);
+			
+			//Reset misc actions
+			PlayerKilling.removeHostFromList(victim, victim.getHostAddress());
+			victim.setUsingSpecial(false);
+			victim.setCurrentKillStreak(0);
+			victim.getActionSender().sendWidget(2, 0);
+			victim.getActionSender().sendWidget(3, 0);
+			victim.setInfection(0);
+			victim.setDefaultAnimations();
+			victim.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+			stop();
+			break;
 		}
-	}
-	
-	public static void reset(Player victim) {
-		victim.getActionSender().sendWidget(2, 0);
-		victim.getActionSender().sendWidget(3, 0);
-		victim.getActionQueue().clearRemovableActions();
-		victim.getSkills().setLevel(Skills.HITPOINTS, victim.getSkills().getLevelForExperience(Skills.HITPOINTS));
-		victim.getActionSender().sendMessage("Oh dear, you are dead!");
-		
-		
-		if(victim.getAccount().getType().loseStatusOnDeath() && victim.getRights().isHardcoreIronman(victim)) {//Double check if the victim is a Hardcore ironman for extra safety
-			victim.getAccount().setType(Account.IRON_MAN_TYPE);
-			victim.setRights(Rights.IRON_MAN);
-			victim.message("You have fallen as a Hardcore Iron Man, your Hardcore status has been revoked.");
-		}
-		
-		victim.getCombatState().setDead(false);
-		victim.freeze(0);
-		victim.setCurrentKillStreak(0);
-		PrayerHandler.resetAll(victim);
-		victim.setSpecialAmount(100);
-		victim.setUsingSpecial(false);
-		PlayerKilling.removeHostFromList(victim, victim.getHostAddress());
-		Combat.skull(victim, SkullType.NONE, 0);
-		victim.getCombatState().getDamageMap().resetDealtDamage();
-		victim.playAnimation(Animation.create(-1));
-		victim.setInfection(0);
-		victim.setDefaultAnimations();
-		victim.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-	}
-	
-	/**
-	 * Are we allowed to drop the victims items?
-	 * 
-	 * @param victim
-	 *            The player losing his items
-	 */
-	public void dropPlayerItems(Player victim, Entity attacker) {
-		
-		/**
-		 * Are admins allowed to keep their items upon death?
-		 */
-		boolean admin_keeps_items = victim.getUsername().equalsIgnoreCase("patrick") && victim.inDebugMode() || victim.getUsername().equalsIgnoreCase("matthew") ? true : false;
-		
-		controller = victim.getController() == null ? ControllerManager.DEFAULT_CONTROLLER : victim.getController();
-		if (!controller.isSafe() && !admin_keeps_items && !Boundary.isIn(victim, Boundary.FIGHT_CAVE)) {
-			PlayerDrops.dropItems(victim, attacker);
-		}
+
+		state++;
 	}
 }

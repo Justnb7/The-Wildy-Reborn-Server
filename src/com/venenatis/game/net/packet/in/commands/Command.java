@@ -1,27 +1,36 @@
 package com.venenatis.game.net.packet.in.commands;
 
+import java.util.Optional;
+
 import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
 
 /**
- * Command
+ * Abstract Command.
  * 
- * @author Michael | Chex
+ * @author Lennard
+ *
  */
-public abstract interface Command {
+public abstract class Command {
 
-    /**
-     * Handles the commands
-     * 
-     * @param player
-     * @param parser
-     */
-    public abstract boolean handleCommand(Player player, CommandParser parser) throws Exception;
+	/**
+	 * Hook holding all the actions performed when executing the command.
+	 * 
+	 * @param player
+	 *            The {@link Player} executing this command.
+	 * @param command
+	 *            The full command string  that's being sent.
+	 */
+	protected abstract void executeCommand(Player player, String command);
 
-    /**
-     * Checks if player meets requirement(s)
-     * 
-     * @param player
-     * @return
-     */
-    public abstract boolean meetsRequirements(Player player);
+	/**
+	 * Optional array of {@link Rights}s that determine the ranks that can execute
+	 * this command. The command will not be executed if the player does not
+	 * have one of the given ranks.
+	 * 
+	 * @return Optional array of Rights that determine the ranks that can execute
+	 *         this command.
+	 */
+	protected abstract Optional<Rights[]> allowedRanks();
+
 }

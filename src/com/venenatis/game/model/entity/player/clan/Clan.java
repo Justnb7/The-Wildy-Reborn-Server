@@ -1,170 +1,672 @@
 package com.venenatis.game.model.entity.player.clan;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Objects;
+
+import com.venenatis.game.model.entity.player.Player;
+import com.venenatis.game.model.entity.player.Rights;
+import com.venenatis.game.util.Utility;
+import com.venenatis.game.world.World;
+import com.venenatis.server.Server;
 
 public class Clan {
 
-	private String name;
-	private final String owner;
-	private String slogan = "None";
+	public Player player;
+	
+	/**
+	 * The ranks privileges require (joining, talking, kicking, banning).
+	 */
+	public int joinable = ClanRank.ANYONE.getRankIndex();
+	public int talkable = ClanRank.ANYONE.getRankIndex();
+	public int kickable = ClanRank.GENERAL.getRankIndex();
+	public int managable = ClanRank.LEADER.getRankIndex();
+	
 
-	private ClanRank joinable = ClanRank.ANYONE;
-	private ClanRank talkable = ClanRank.ANYONE;
-	private ClanRank kickable = ClanRank.LEADER;
-	private ClanRank managable = ClanRank.LEADER;
-
-	private boolean lootshare = false;
-	private boolean lock = false;
-
-	private int memberLimit = 50;
-
-	private Map<String, ClanRank> ranked = new HashMap<>();
-	private transient Queue<ClanMember> members;
-
-	public Clan(String name) {
-		this.name = name;
-		this.owner = name;
-	}
-
-	public void init() {
-		members = new LinkedList<>();
-	}
-
-	public boolean add(ClanMember member) {
-		if (members.size() >= getMemberLimit()) {
-			return false;
+	/**
+	 * Adds a member to the clan.
+	 * 
+	 * @param player
+	 */
+	public void addMember(Player player) {
+		player.message("Attempting to join channel...");
+		if (activeMembers.size() >= 100) {
+			player.setClan(null);
+			resetInterface(player);
+			player.message("This clan chat is full.");
+			return;
 		}
-
-		if (member.getRank() != ClanRank.ANYONE) {
-			ranked.put(member.getName(), member.getRank());
+		if (isBanned(player.getUsername())) {
+			player.setClan(null);
+			resetInterface(player);
+			player.message("@or2@You are currently banned from this clan.");
+			return;
 		}
-
-		remove(member);
-		
-		if (members.contains(member)) {
-			members.remove(member);
-		}
-		
-		return members.add(member);
-	}
-
-	public ClanMember get(String name) {
-		for (Iterator<ClanMember> it = members.iterator(); it.hasNext();) {
-			ClanMember next = it.next();
-			if (next.getName().equalsIgnoreCase(name)) {
-				return next;
+		if (joinable > ClanRank.ANYONE.getRankIndex() && !isFounder(player.getUsername()) && !isGeneral(player.getUsername())) {
+			if (getRank(player.getUsername()) < joinable || 
+					(joinable == ClanRank.FRIEND.getRankIndex() && World.getWorld().getPlayerByName(getFounder()) != null && !World.getWorld().lookupPlayerByName(getFounder()).isFriend(player))) {
+				if (joinable == ClanRank.FRIEND.getRankIndex()) {
+					if (World.getWorld().getPlayerByName(getFounder()) == null || !World.getWorld().lookupPlayerByName(getFounder()).isFriend(player)) {
+						player.setClan(null);
+						resetInterface(player);
+						if (World.getWorld().getPlayerByName(getFounder()) == null) {
+							player.message("You can't join this chat while the owner is offline.");
+						} else {
+							player.message("Only friends of " + getFounder() + " may join this chat.");
+						}
+						return;
+					}
+				} else {
+					player.setClan(null);
+					resetInterface(player);
+					player.message("Only " + getRankTitle(joinable) + "s+ may join this chat.");
+					return;
+				}
 			}
 		}
-
-		return null;
+		player.setClan(this);
+		player.lastClanChat = getFounder();
+		activeMembers.add(player.getUsername());
+		player.getActionSender().sendString("Talking in: <col=FFFF75>" + getTitle() + "</col>", 28139);
+		player.getActionSender().sendString("Owner: <col=FFFFFF>" + Utility.formatName(getFounder()) + "</col>", 28140);
+		player.message("Now talking in clan channel @or2@" + getTitle() + "@bla@");
+		player.message("To talk, start each line of chat with the / symbol.");
+		updateMembers();
 	}
 
-	public void setRank(ClanMember member) {
-		ClanRank rank = ranked.get(member.getName());
+	/**
+	 * Removes the player from the clan.
+	 * 
+	 * @param player
+	 */
+	public void removeMember(Player player) {
+		List<String> remove = new ArrayList<>(1);
+		for (String member : activeMembers) {
+			if (Objects.isNull(member)) {
+				continue;
+			}
+			if (member.equalsIgnoreCase(player.getUsername())) {
+				player.setClan(null);
+				resetInterface(player);
+				remove.add(member);
+			}
+		}
+		activeMembers.removeAll(remove);
+		updateMembers();
+	}
+
+	/**
+	 * Removes the player from the clan.
+	 * 
+	 * @param player
+	 */
+	private void removeMember(String name) {
+		List<String> remove = new ArrayList<>(1);
+		for (String member : activeMembers) {
+			if (Objects.isNull(member)) {
+				continue;
+			}
+			if (member.equalsIgnoreCase(name)) {
+				Player player = World.getWorld().lookupPlayerByName(name);
+				player.setClan(null);
+				resetInterface(player);
+				remove.add(member);
+			}
+		}
+		activeMembers.removeAll(remove);
+		updateMembers();
+	}
+
+	/**
+	 * Updates the members on the interface for the player.
+	 * 
+	 * @param player
+	 */
+	public void updateInterface(Player player) {
+		player.getActionSender().sendString(isFounder(player.getUsername()) ? "Delete Clan" : "Leave Chat", 28129);
+		player.getActionSender().sendString(isFounder(player.getUsername()) ? "Delete Clan" : "Leave Chat", 28135);
+		player.getActionSender().sendString("Talking in: @or2@" + getTitle(), 28139);
+		player.getActionSender().sendString(getTitle(), 28306);
+		player.getActionSender().sendString("Owner: @or2@" + Utility.formatName(getFounder()), 28140);
+		player.getActionSender().sendString(getRankTitle(joinable), 28309);
+		player.getActionSender().sendString(getRankTitle(talkable), 28312);
+		player.getActionSender().sendString(getRankTitle(kickable), 28315);
+		player.getActionSender().sendString(getRankTitle(managable), 28318);
+		player.getActionSender().sendString(isLootShare() ? "Lootshare enabled" : "Lootshare disabled", 28529);
+		player.getActionSender().sendConfig(28528, isLootShare() ? 1 : 0);
 		
-		if (rank == null) {
-			member.setRank(ClanRank.ANYONE);
+		Collections.sort(activeMembers);
+		String[] aMembers = new String[activeMembers.size()];
+		for (int index = 0; index < activeMembers.size(); index++) {
+			aMembers[index] = "<clan=" + getRank(activeMembers.get(index)) + ">" + Utility.formatName(activeMembers.get(index));
+		}
+		player.getActionSender().sendStrings(28144, 28244, aMembers);
+		
+		Collections.sort(rankedMembers);
+		String[] rMembers = new String[rankedMembers.size()];
+		for (int index = 0; index < rankedMembers.size(); index++) {
+			rMembers[index] = "<clan=" + getRank(rankedMembers.get(index)) + ">" + Utility.formatName(rankedMembers.get(index));
+		}
+		player.getActionSender().sendStrings(28323, 28423, rMembers);
+		
+		Collections.sort(bannedMembers);
+		player.getActionSender().sendStrings(28425, 28525, bannedMembers);
+	}
+
+	/**
+	 * Updates the interface for all members.
+	 */
+	public void updateMembers() {
+		for (Player player : World.getWorld().getPlayers()) {
+			if (Objects.nonNull(activeMembers) && Objects.nonNull(player)) {
+				if (activeMembers.contains(player.getUsername())) {
+					updateInterface(player);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Resets the clan interface.
+	 * 
+	 * @param player
+	 */
+	public static void resetInterface(Player player) {
+		player.getActionSender().sendString("Join Chat", 28135);
+		player.getActionSender().sendString("Talking in: Not in chat", 28139);
+		player.getActionSender().sendString("Owner: None", 28140);
+		player.getActionSender().sendString("Chat Disabled", 28306);
+		player.getActionSender().emptyStrings(28144, 28244);
+	}
+
+	/**
+	 * Sends a message to the clan.
+	 * 
+	 * @param player
+	 * @param message
+	 */
+	public void sendChat(Player paramClient, String paramString) {
+		if (System.currentTimeMillis() - paramClient.lastClanTalk < 600) {
+			paramClient.message("You can only send one message per game tick.");
+			return;
+		}
+		if (getRank(paramClient.getUsername()) < this.talkable) {
+			paramClient.message("Only " + getRankTitle(this.talkable) + "s+ may talk in this chat.");
+			return;
+		}
+		if (paramClient.isMuted()) {
+			paramClient.message("You are muted and cannot talk in this chat.");
 			return;
 		}
 
-		member.setRank(rank);
+		for (String member : activeMembers) {
+			Player player = World.getWorld().lookupPlayerByName(member);
+			if (player == null) {
+				continue;
+			}
+			player.message("@bla@[@blu@" + getTitle() + "@bla@] <clan=" + getRank(paramClient.getUsername()) + ">" + "@bla@" + Utility.optimizeText(paramClient.getUsername()) + ": @dre@" + Character.toUpperCase(paramString.charAt(0)) + paramString.substring(1) + ":clan:");
+		}
+		paramClient.lastClanTalk = System.currentTimeMillis();
 	}
 
-	public void remove(ClanMember member) {
-		members.removeIf(other -> other != null && other.getPlayer() != null && other.getPlayer().isRegistered() && other.getName().equalsIgnoreCase(member.getName()));
+	/**
+	 * Sets the rank for the specified name.
+	 * 
+	 * @param name
+	 * @param rank
+	 */
+	public void setRank(String name, int rank) {
+		if (rank > ClanRank.GENERAL.getRankIndex()) {
+			rank = ClanRank.GENERAL.getRankIndex();
+		}
+		if (rankedMembers.contains(name)) {
+			ranks.set(rankedMembers.indexOf(name), rank);
+		} else if (!isGeneral(name)) {
+			rankedMembers.add(name);
+			ranks.add(rank);
+		}
+		save();
 	}
 
-	public boolean contains(String username) {
-		return members.stream().anyMatch(member -> member != null && member.getPlayer() != null && member.getPlayer().isRegistered() && member.getName().equalsIgnoreCase(name));
+	/**
+	 * Demotes the specified name.
+	 * 
+	 * @param name
+	 */
+	public void demote(String name) {
+		if (!rankedMembers.contains(name)) {
+			return;
+		}
+		int index = rankedMembers.indexOf(name);
+		rankedMembers.remove(index);
+		ranks.remove(index);
+		save();
 	}
 
-	public boolean canJoin(ClanMember member) {
-		return !member.getRank().lessThan(joinable);
+	/**
+	 * Gets the rank of the specified name.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public int getRank(String name) {
+		name = Utility.formatName(name);
+		if (isGeneral(name)) {
+			return ClanRank.GENERAL.getRankIndex();
+		}
+		if (isFounder(name)) {
+			return ClanRank.LEADER.getRankIndex();
+		}
+		if (rankedMembers.contains(name)) {
+			return ranks.get(rankedMembers.indexOf(name));
+		}
+		return -1;
 	}
 
-	public boolean canTalk(ClanMember member) {
-		return !member.getRank().lessThan(talkable);
+	/**
+	 * Can they kick?
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean canKick(String name) {
+		if (isFounder(name)) {
+			return true;
+		}
+		if (getRank(name) == ClanRank.GENERAL.getRankIndex()) {
+			return true;
+		}
+		if (getRank(name) >= kickable) {
+			return true;
+		}
+		return false;
 	}
 
-	public boolean canKick(ClanMember member) {
-		return !member.getRank().lessThan(kickable);
+	/**
+	 * Can they ban?
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean canBan(String name) {
+		if (isFounder(name)) {
+			return true;
+		}
+		if (isGeneral(name)) {
+			return true;
+		}
+		if (getRank(name) >= managable) {
+			return true;
+		}
+		return false;
 	}
 
-	public boolean canManage(ClanMember member) {
-		return !member.getRank().lessThan(managable);
+	/**
+	 * Returns whether or not the specified name is the founder.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean isFounder(String name) {
+		if (getFounder().equalsIgnoreCase(name)) {
+			return true;
+		}
+		return false;
 	}
 
-	public String getName() {
-		return name;
+	/**
+	 * Returns whether the specified name is an General.
+	 * 
+	 * @param name
+	 *            the player
+	 * @return true if they are a mod+
+	 */
+	public boolean isGeneral(String name) {
+		if (World.getWorld().getPlayerByName(name) == null) {
+			return false;
+		}
+		return Rights.isWithin(World.getWorld().lookupPlayerByName(name).getRights(), Rights.MODERATOR);
 	}
 
-	public String getOwner() {
-		return owner;
+	/**
+	 * Returns whether or not the specified name is a ranked user.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean isRanked(String name) {
+		name = Utility.formatName(name);
+		if (isGeneral(name)) {
+			return true;
+		}
+		if (rankedMembers.contains(name)) {
+			return true;
+		}
+		return false;
 	}
 
-	public String getSlogan() {
-		return slogan;
+	/**
+	 * Returns whether or not the specified name is banned.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean isBanned(String name) {
+		name = Utility.formatName(name);
+		if (bannedMembers.contains(name)) {
+			return true;
+		}
+		return false;
 	}
 
-	public boolean isLootshare() {
-		return lootshare;
+	/**
+	 * Kicks the name from the clan chat.
+	 * 
+	 * @param name
+	 */
+	public void kickMember(String name) {
+		if (!activeMembers.contains(name)) {
+			return;
+		}
+		if (name.equalsIgnoreCase(getFounder())) {
+			return;
+		}
+		if (isGeneral(name)) {
+			return;
+		}
+		Player otherPlayer = World.getWorld().lookupPlayerByName(name);
+		removeMember(name);
+		if (otherPlayer != null) {
+			otherPlayer.message("You have been kicked from the clan chat.");
+		}
 	}
 
-	public boolean getLocked() {
-		return lock;
+	/**
+	 * Bans the name from entering the clan chat.
+	 * 
+	 * @param name
+	 */
+	public void banMember(String name) {
+		name = Utility.formatName(name);
+		if (bannedMembers.contains(name)) {
+			return;
+		}
+		if (name.equalsIgnoreCase(getFounder())) {
+			return;
+		}
+		if (isGeneral(name)) {
+			return;
+		}
+		if (isRanked(name)) {
+			int index = rankedMembers.indexOf(name);
+			rankedMembers.remove(index);
+			ranks.remove(index);
+		}
+		removeMember(name);
+		bannedMembers.add(name);
+		save();
+		Player otherPlayer = World.getWorld().lookupPlayerByName(name);
+		if (otherPlayer != null) {
+			otherPlayer.message("You have been banned from the clan chat.");
+		}
 	}
 
-	public int getMemberLimit() {
-		return memberLimit;
+	/**
+	 * Unbans the name from the clan chat.
+	 * 
+	 * @param name
+	 */
+	public void unbanMember(String name) {
+		name = Utility.formatName(name);
+		if (bannedMembers.contains(name)) {
+			bannedMembers.remove(name);
+			save();
+		}
+	}
+	
+	public void unbanMember(int id) {
+		Collections.sort(bannedMembers);
+		bannedMembers.remove(id);
+		save();
+	}
+	
+	/**
+	 * Gets the ranked player at the given index
+	 * 
+	 * @param index
+	 */
+	
+	public String getRankedMemberAtIndex(int index) {
+		Collections.sort(rankedMembers);
+		return rankedMembers.get(index);
+	}
+	
+	/**
+	 * Gets the active player at the given index
+	 * 
+	 * @param index
+	 */
+	
+	public String getActiveMemberAtIndex(int index) {
+		Collections.sort(activeMembers);
+		return activeMembers.get(index);
 	}
 
-	public Queue<ClanMember> members() {
-		return members;
+	/**
+	 * Saves the clan.
+	 */
+	public void save() {
+		Server.getClanManager().save(this);
+		updateMembers();
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	/**
+	 * Deletes the clan.
+	 */
+	public void delete() {
+
+		activeMembers.forEach((username) -> {
+			final Player player = World.getWorld().lookupPlayerByName(username);
+			if (player != null) {
+				player.setClan(null);
+				resetInterface(player);
+				if (!isFounder(player.getUsername())) {
+					player.message("The clan you were in has been deleted.");
+				}
+			}
+		});
+		Server.getClanManager().delete(this);
 	}
 
-	public void setSlogan(String slogan) {
-		this.slogan = slogan;
+	/**
+	 * Creates a new clan for the specified player.
+	 * 
+	 * @param player
+	 */
+	public Clan(Player player) {
+		setTitle(player.getUsername() + "");
+		setFounder(player.getUsername().toLowerCase());
 	}
 
-	public void setJoinable(ClanRank joinable) {
-		this.joinable = joinable;
+	/**
+	 * Creates a new clan for the specified title and founder.
+	 * 
+	 * @param title
+	 * @param founder
+	 */
+	public Clan(String title, String founder) {
+		setTitle(title);
+		setFounder(founder);
 	}
 
-	public void setTalkable(ClanRank talkable) {
-		this.talkable = talkable;
+	/**
+	 * Gets the founder of the clan.
+	 * 
+	 * @return
+	 */
+	public String getFounder() {
+		return founder;
 	}
 
-	public void setKickable(ClanRank kickable) {
-		this.kickable = kickable;
+	/**
+	 * Sets the founder.
+	 * 
+	 * @param founder
+	 */
+	public void setFounder(String founder) {
+		this.founder = founder;
 	}
 
-	public void setManagable(ClanRank managable) {
-		this.managable = managable;
+	/**
+	 * Gets the title of the clan.
+	 * 
+	 * @return
+	 */
+	public String getTitle() {
+		return title;
 	}
 
-	public void setLootshare(boolean lootshare) {
-		this.lootshare = lootshare;
+	/**
+	 * Sets the title.
+	 * 
+	 * @param title
+	 * @return
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public void setLocked(boolean lock) {
-		this.lock = lock;
+	/**
+	 * The title of the clan.
+	 */
+	public String title;
+
+	/**
+	 * The founder of the clan.
+	 */
+	public String founder;
+
+	/**
+	 * The active clan members.
+	 */
+	public LinkedList<String> activeMembers = new LinkedList<String>();
+
+	/**
+	 * The banned members.
+	 */
+	public LinkedList<String> bannedMembers = new LinkedList<String>();
+
+	/**
+	 * The ranked clan members.
+	 */
+	public LinkedList<String> rankedMembers = new LinkedList<String>();
+
+	/**
+	 * The clan member ranks.
+	 */
+	public LinkedList<Integer> ranks = new LinkedList<Integer>();
+
+	/**
+	 * Gets the rank title as a string.
+	 * 
+	 * @param rank
+	 * @return
+	 */
+	public String getRankTitle(int rank) {
+		switch (rank) {
+		case -1:
+			return "Anyone";
+		case 0:
+			return "Friend";
+		case 1:
+			return "Recruit";
+		case 2:
+			return "Corporal";
+		case 3:
+			return "Sergeant";
+		case 4:
+			return "Lieutenant";
+		case 5:
+			return "Captain";
+		case 6:
+			return "General";
+		case 7:
+			return "Owner";
+		}
+		return "";
 	}
 
-	public void setMemberLimit(int memberLimit) {
-		this.memberLimit = memberLimit;
+	/**
+	 * Sets the minimum rank that can join.
+	 * 
+	 * @param rank
+	 */
+	public void setRankCanJoin(int rank) {
+		joinable = rank;
+		save();
 	}
 
-	@Override
-	public String toString() {
-		return String.format("CLAN[name=%s, owner=%s, ranked=%s, members=%s]", name, owner, ranked, members);
+	/**
+	 * Sets the minimum rank that can talk.
+	 * 
+	 * @param rank
+	 */
+	public void setRankCanTalk(int rank) {
+		talkable = rank;
+		save();
 	}
+
+	/**
+	 * Sets the minimum rank that can kick.
+	 * 
+	 * @param rank
+	 */
+	public void setRankCanKick(int rank) {
+		kickable = rank;
+		save();
+	}
+
+	/**
+	 * Sets the minimum rank that can ban.
+	 * 
+	 * @param rank
+	 */
+	public void setRankCanBan(int rank) {
+		managable = rank;
+		save();
+	}
+
+	public void handleLootShare(Player player, int item, int amount) {
+	}
+
+	public boolean isLootShare() {
+		return lootShare;
+	}
+
+	public void setLootShare(boolean lootShare) {
+		this.lootShare = lootShare;
+		save();
+	}
+
+	public Integer getLootSharePoints(Player player) {
+		if (lootSharePoints.get(player.getUsername().toLowerCase()) != null) {
+			return lootSharePoints.get(player.getUsername().toLowerCase());
+		}
+		return 0;
+	}
+
+	public void setLootSharePoints(Player player, int amount) {
+		lootSharePoints.put(player.getUsername().toLowerCase(), amount);
+	}
+	
+	/**
+	 * Lootshare variables
+	 */
+	public boolean lootShare;
+	public Map<String, Integer> lootSharePoints = new HashMap<String, Integer>();
 
 }

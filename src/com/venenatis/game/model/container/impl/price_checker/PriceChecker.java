@@ -10,28 +10,53 @@ import com.venenatis.game.util.Utility;
 
 public class PriceChecker extends Container {
 
-	private int[] STRINGS = { 48550, 48551, 48552, 48553, 48554, 48555, 48556, 48557, 48558, 48559, 48560, 48561, 48562, 48563, 48564, 48565, 48566, 48567, 48568, 48569, 48570, 48571, 48572, 48573, 48574, 48575, 48576, 48577, };
+	/**
+	 * All the strings for the price checker data
+	 */
+	private int[] STRINGS = { 49550, 49551, 49552, 49553, 49554, 49555, 49556, 49557, 49558, 49559, 49560, 49561, 49562, 49563, 49564, 49565, 49566, 49567, 49568, 49569, 49570, 49571, 49572, 49573, 49574, 49575, 49576, 49577, };
 
+	/**
+	 * The types of data
+	 *
+	 */
 	public enum PriceType {
+		//Checks based on shop value
 		VALUE(),
+		
+		//Checks based on high alch value
 		HIGH_ALCH_VALUE();
 	}
 
+	/**
+	 * The local player
+	 */
 	public Player player;
 
+	/**
+	 * The price type, Example, HIGH_ALCH_VALUE
+	 */
 	private PriceType priceType;
-
-	private boolean priceGuide;
 	
+	/**
+	 * Item searching feature
+	 */
 	private Item itemSearching;
 
+	/**
+	 * The price checker constructor
+	 * 
+	 * @param player
+	 *            The player opening the price checker
+	 */
 	public PriceChecker(Player player) {
 		super(28, ContainerType.DEFAULT);
 		this.player = player;
 		setPriceType(PriceType.VALUE);
-		setPriceGuide(false);
 	}
 
+	/**
+	 * Opens the price checker and sents all data
+	 */
 	public void open() {
 		
 		if (player.getCombatState().inCombat()) {
@@ -43,14 +68,17 @@ public class PriceChecker extends Container {
 			player.getActionSender().sendString("", id);
 		}
 		player.getActionSender().sendConfig(237, getPriceType() == PriceType.VALUE ? 1 : 0);
-		player.getActionSender().sendItemOnInterface(48581, new Item[] { null });
-		player.getActionSender().sendString("", 48582);
-		player.getActionSender().sendString("", 48583);
+		player.getActionSender().sendItemOnInterface(49581, new Item[] { null });
+		player.getActionSender().sendString("", 49582);
+		player.getActionSender().sendString("", 49583);
 		refresh();
 		player.getAttributes().put("price_checker", Boolean.TRUE);
-		player.getActionSender().sendInterfaceWithInventoryOverlay(48500, 5063);
+		player.getActionSender().sendInterfaceWithInventoryOverlay(49500, 5063);
 	}
 
+	/**
+	 * Closes the price checker removes all data
+	 */
 	public void close() {
 		player.getActionSender().removeAllInterfaces();
 		withdrawAll();
@@ -59,21 +87,49 @@ public class PriceChecker extends Container {
 		setItemSearching(null);
 	}
 	
+	/**
+	 * Allows us to search an item, function WIP never finished.
+	 * 
+	 * @param item
+	 *            The item we're trying to search
+	 */
 	public void searchItem(Item item) {
 		setItemSearching(item);
 		Item[] itemSearch = { getItemSearching() };
-		player.getActionSender().sendItemOnInterface(48581, itemSearch);
-		player.getActionSender().sendString("<col=ffb000>" + getItemSearching().getName() + ":", 48582);
-		player.getActionSender().sendString(Utility.formatDigits((player.getPriceChecker().getPriceType() == PriceType.VALUE ? getItemSearching().getValue() : getItemSearching().getHighAlch())) + "", 48583);
+		player.getActionSender().sendItemOnInterface(49581, itemSearch);
+		player.getActionSender().sendString("<col=ffb000>" + getItemSearching().getName() + ":", 49582);
+		player.getActionSender().sendString(Utility.formatDigits((player.getPriceChecker().getPriceType() == PriceType.VALUE ? getItemSearching().getValue() : getItemSearching().getHighAlch())) + "", 49583);
 		player.getActionSender().sendMessage("Now displaying <col=ff0000>" + (player.getPriceChecker().getPriceType() == PriceType.VALUE ? "item value" : "item high alch") + "</col> price information for " + getItemSearching().getName() + ".");
 	}
 
+	/**
+	 * The deposit action we call in our packets
+	 * 
+	 * @param id
+	 *            The item id
+	 * @param slot
+	 *            The slot of the item
+	 * @param amount
+	 *            The item amount
+	 */
 	public int deposit(int id, int slot, int amount) {
 		return deposit(id, slot, amount, true);
 	}
 
+	/**
+	 * The main deposit action
+	 * 
+	 * @param id
+	 *            The item id
+	 * @param slot
+	 *            The slot of the item
+	 * @param amount
+	 *            The item amount
+	 * @param refresh
+	 *            Are we refreshing the container?
+	 */
 	public int deposit(int id, int slot, int amount, boolean refresh) {
-		if (player.getInterfaceState().getCurrentInterface() != 48500) {
+		if (player.getInterfaceState().getCurrentInterface() != 49500) {
 			return 0;
 		}
 		
@@ -150,8 +206,11 @@ public class PriceChecker extends Container {
 		return added;
 	}
 
+	/**
+	 * Deposits all the items into the price checker
+	 */
 	public void depositAll() {
-		if (player.getInterfaceState().getCurrentInterface() != 48500) {
+		if (player.getInterfaceState().getCurrentInterface() != 49500) {
 			return;
 		}
 		
@@ -173,7 +232,7 @@ public class PriceChecker extends Container {
 	}
 
 	public int withdraw(int id, int slot, int amount, boolean refresh) {
-		if (player.getInterfaceState().getCurrentInterface() != 48500) {
+		if (player.getInterfaceState().getCurrentInterface() != 49500) {
 			return 0;
 		}
 		
@@ -283,13 +342,13 @@ public class PriceChecker extends Container {
 				player.getActionSender().sendMessage("You cannot open the price checker screen while in combat.");
 			}
 			return true;
-		case 189118:
+		case 193094:
 			close();
 			return true;
 		case 189194:
 			withdrawAll();
 			return true;
-		case 189121:
+		case 193097:
 			depositAll();
 			return true;
 		case 189124:
@@ -318,14 +377,14 @@ public class PriceChecker extends Container {
 	public void refresh() {
 		player.getInventory().refresh();
 		player.getActionSender().sendItemOnInterface(InterfaceConstants.INVENTORY_STORE, player.getInventory().toArray());
-		player.getActionSender().sendItemOnInterface(48542, toArray());
-		player.getActionSender().sendString("" + (getPriceType() == PriceType.VALUE ? NumberFormat.getInstance().format(containerValue()) : NumberFormat.getInstance().format(containerHighAlchValue())), 48513);
+		player.getActionSender().sendItemOnInterface(49542, toArray());
+		player.getActionSender().sendString("" + (getPriceType() == PriceType.VALUE ? NumberFormat.getInstance().format(containerValue()) : NumberFormat.getInstance().format(containerHighAlchValue())), 49513);
 	}
 
 	@Override
 	public void refresh(int... slots) {
 		for (final int slot : slots) {
-			player.getActionSender().sendItemOnInterfaceSlot(48542, stack[slot], slot);
+			player.getActionSender().sendItemOnInterfaceSlot(49542, stack[slot], slot);
 		}
 	}
 
@@ -335,14 +394,6 @@ public class PriceChecker extends Container {
 
 	public void setPriceType(PriceType priceType) {
 		this.priceType = priceType;
-	}
-
-	public boolean isPriceGuide() {
-		return priceGuide;
-	}
-
-	public void setPriceGuide(boolean priceGuide) {
-		this.priceGuide = priceGuide;
 	}
 	
 	public Item getItemSearching() {

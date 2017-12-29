@@ -15,10 +15,6 @@ public class DuelNotificationTask extends Task {
 
 	@Override
 	public void execute() {
-		if (!player.getDuelArena().isInSession()) {
-			stop();
-			return;
-		}
 
 		if (time <= 0) {
 			stop();

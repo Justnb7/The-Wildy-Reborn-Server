@@ -5,6 +5,11 @@ import com.venenatis.game.location.Location;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.task.Task;
 import com.venenatis.game.world.object.GameObject;
+import com.venenatis.game.world.pathfinder.PathState;
+import com.venenatis.game.world.pathfinder.impl.DefaultPathFinder;
+import com.venenatis.game.world.pathfinder.impl.ObjectPathFinder;
+import com.venenatis.game.world.pathfinder.region.RegionStore;
+import com.venenatis.game.world.pathfinder.region.RegionStoreManager;
 import com.venenatis.server.Server;
 
 /**
@@ -36,6 +41,8 @@ public class WalkToObjectTask extends Task {
 	 * The object click action
 	 */
 	private final int clickAction;
+	private PathState path = null;
+	private int finalX, finalY;
 	
 	/**
 	 * Create a new {@link WalkToObjectTask}.
@@ -55,6 +62,44 @@ public class WalkToObjectTask extends Task {
 		this.object = object;
 		this.player = player;
 		this.clickAction = action;
+
+		// do the path
+		// Client isnt very happy with this shit so we have to hard call it
+		if (object == 10357 && location.getX() == 3318 && location.getY() == 3166) {
+			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(location.getX(), location.getY(), player.getZ()), object);
+			path = ObjectPathFinder.find(player, obj);
+		}
+
+		if (object == 10777 && location.getX() == 3191 && location.getY() == 3415) {
+			final GameObject obj = RegionStoreManager.get().getGameObject(new Location(location.getX(), location.getY(), player.getZ()), object);
+			path = ObjectPathFinder.find(player, obj);
+		}
+
+		if (object == 10355 && location.getX() == 3269 && location.getY() == 3166 && player.getZ() == 3) {
+			path = player.doPath(new DefaultPathFinder(), null, 3265, 3166, false, true);
+		}
+		if (path == null) {
+			final GameObject obj = Server.getGlobalObjects().customOrCache(object, loc);
+			if (obj == null) {
+				this.stop();
+				return;
+			}
+			path = ObjectPathFinder.find(player, obj);
+			// NOTE: you might have to add exceptions to a couple object ids here like agility obstacles
+			if (!path.isRouteFound()) {
+				player.getWalkingQueue().reset();
+				player.getActionSender().sendMessage("I can't reach that!");
+				this.stop();
+			}
+			// here is the path to method
+		}
+		if (path != null && path.getPoints().peekLast() != null) {
+			finalX = path.getPoints().getLast().getX();
+			finalY = path.getPoints().getLast().getY();
+		} else {
+			finalX = player.getLocation().getX();
+			finalY = player.getLocation().getY();
+		}
 	}
 
 	@Override
@@ -63,33 +108,17 @@ public class WalkToObjectTask extends Task {
 			this.stop();
 			return;
 		}
-		
+
 		final GameObject obj = Server.getGlobalObjects().customOrCache(object, loc);
 		
 		//Safety
 		if (obj == null) {
-			System.err.println("Non existant obj "+object+"@"+loc+" (tree despawned or cheat client)");
+			System.err.println("Non existant obj "+object+" @ "+loc+" (tree despawned or cheat client)");
 			stop();
 			return;
 		}
 		
-		if (player.getLocation().isNextTo(loc) || loc.equals(player.getLocation())
-				|| (object == 10777 && player.getLocation().equals(new Location(3194, 3416, 1)))
-				|| (object == 10355 && player.getLocation().equals(new Location(3265, 3166, 3)))
-				|| (object == 23134 && player.getLocation().equals(new Location(2474, 3426, 0)))
-				|| (object == 20210 && player.getLocation().equals(new Location(2552, 3561, 0)))
-				|| (object == 23131 && player.getLocation().equals(new Location(2551, 3554, 0)))
-				|| (object == 20211 && player.getLocation().equals(new Location(2539, 3546, 0)))
-				|| (object == 11406 && player.getLocation().equals(new Location(2671, 3309, 3)))
-			    || (object == 11429 && player.getLocation().equals(new Location(2654, 3318, 3)))
-			    || (object == 11430 && player.getLocation().equals(new Location(2653, 3310, 3)))
-			    || (object == 11374 && player.getLocation().equals(new Location(2721, 3494, 3)))
-			    || (object == 11376 && player.getLocation().equals(new Location(2702, 3470, 3)))
-			    || (object == 11377 && player.getLocation().equals(new Location(2702, 3464, 2)))
-			    || (object == 677 && player.getLocation().equals(new Location(2970, 4384, 2)))
-			    || (object == 16671 && player.getLocation().equals(new Location(2840, 3539, 0)))
-			    || (object == 16509 && player.getLocation().equals(new Location(2892, 9799, 0)))
-			    || (object == 16511 && player.getLocation().equals(new Location(3155, 9906, 0)))) {
+		if (RegionStore.reached(player.getLocation(), finalX, finalY, finalX, finalY, path.walkToData)) {
 			// in distance. interact and stop cycle.
 			switch (clickAction) {
 			case 1:
@@ -108,7 +137,7 @@ public class WalkToObjectTask extends Task {
 			player.following().setFollowing(null);
 		} else {
 			// do nothing this cycle. try again next time this Task is executed.
-			player.message("sleep on task");
+			//player.message("sleep on task");
 		}
 	}
 

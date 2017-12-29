@@ -8,8 +8,8 @@ import com.venenatis.game.content.skills.agility.rooftops.impl.VarrockRooftop;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
@@ -27,8 +27,8 @@ import com.venenatis.game.world.object.GameObject;
 public class Rooftop {
 	
 	private static void pet(Player player) {
-		Pets pets = Pets.GIANT_SQUIRREL;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.GIANT_SQUIRREL;
+		Follower pet = new Follower(player, pets.getNpc());
 		
 		if(player.alreadyHasPet(player, 20659) || player.getPet() == pets.getNpc()) {
 			return;

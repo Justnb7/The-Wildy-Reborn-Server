@@ -8,8 +8,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -63,7 +63,7 @@ public class CorporealBeast extends AbstractBossCombat {
 				World.getWorld().schedule(new Task(4) {
 					@Override
 					public void execute() {
-						npc.spawn(player, DARK_CORE_ID, new Location(player.getX() + 1, player.getY(), player.getZ()), 1, true);
+						npc.spawn(player, DARK_CORE_ID, new Location(player.getX() + 1, player.getY(), player.getZ()), 1, true, false);
 						stop();
 					}
 				});
@@ -124,8 +124,8 @@ public class CorporealBeast extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		Pets pets = Pets.DARK_CORE;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.DARK_CORE;
+		Follower pet = new Follower(player, pets.getNpc());
 		if (player.alreadyHasPet(player, 12816) || player.getPet() == pets.getNpc()) {
 			return;
 		}
@@ -160,7 +160,7 @@ public class CorporealBeast extends AbstractBossCombat {
 			@Override
 			public void execute() {
 				player.getActionSender().createSplatterProjectile(REGULAR_MAGIC_PROJECTILE_ID, player.getX() + offsetX, player.getY() + offsetY, 0, 21);
-				player.getActionSender().stillGfx(SPLATTER_GFX_ID, player.getX() + offsetX, player.getY() + offsetY, 0, 21);
+				player.getActionSender().stillGfx(SPLATTER_GFX_ID, new Location(player.getX() + offsetX, player.getY() + offsetY, 0), 21);
 				stop();
 			}
 		});

@@ -63,7 +63,7 @@ public class InterfaceConstants {
     public static final int PLAYER_STAKE_CONTAINER = 31012;
     
     public static final int OTHER_STAKE_CONTAINER = 31014;
-    
-    public static final int PRICE_CHECKER = 48542;
+
+	public static final int PRICE_CHECKER = 49500;
 
 }

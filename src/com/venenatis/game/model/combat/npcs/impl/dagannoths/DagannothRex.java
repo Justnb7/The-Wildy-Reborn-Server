@@ -6,8 +6,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.util.Utility;
@@ -72,8 +72,8 @@ public class DagannothRex extends AbstractBossCombat {
 		 */
 		int random = Utility.random(1000);
 		
-		Pets pets = Pets.DAGANNOTH_REX;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.DAGANNOTH_REX;
+		Follower pet = new Follower(player, pets.getNpc());
 		if (player.alreadyHasPet(player, 12645) || player.getPet() == pets.getNpc()) {
 			return;
 		}

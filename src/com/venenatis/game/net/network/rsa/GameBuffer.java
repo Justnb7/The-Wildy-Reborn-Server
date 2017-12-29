@@ -6,6 +6,19 @@ public final class GameBuffer {
 		buffer = abyte0;
 		offset = 0;
 	}
+	
+	public long readLong() {
+		long value = 0;
+		value |= (long) readUnsignedByte() << 56L;
+		value |= (long) readUnsignedByte() << 48L;
+		value |= (long) readUnsignedByte() << 40L;
+		value |= (long) readUnsignedByte() << 32L;
+		value |= (long) readUnsignedByte() << 24L;
+		value |= (long) readUnsignedByte() << 16L;
+		value |= (long) readUnsignedByte() << 8L;
+		value |= (long) readUnsignedByte();
+		return value;
+	}
 
 	public byte readSignedByteC() {
 		return (byte) (-buffer[offset++]);
@@ -154,20 +167,16 @@ public final class GameBuffer {
 			frameStack[++frameStackPtr] = offset;
 	}
 	
-	public void writeWord(int i) {
-		ensureCapacity(2);
-		buffer[offset++] = (byte) (i >> 8);
-		buffer[offset++] = (byte) i;
-	}
-	
 	public void writeFrameSize(int i) {
 		buffer[offset - i - 1] = (byte) i;
 	}
 
 	public void createFrameVarSizeWord(int id) {
+		if (packetEncryption == null || buffer == null)
+			return;
 		ensureCapacity(2);
 		buffer[offset++] = (byte) (id + packetEncryption.getNextKey());
-		writeWord(0);
+		writeShort(0);
 		if (frameStackPtr >= frameStackSize - 1) {
 			throw new RuntimeException("Stack overflow");
 		} else
@@ -187,6 +196,8 @@ public final class GameBuffer {
 	}
 
 	public void endFrameVarSizeWord() {
+		if (packetEncryption == null || buffer == null)
+			return;
 		if (frameStackPtr < 0)
 			throw new RuntimeException("Stack empty");
 		else
@@ -264,7 +275,7 @@ public final class GameBuffer {
 		return buffer[offset++];
 	}
 
-	public int readUnsignedWord() {
+	public int readUnsignedShort() {
 		offset += 2;
 		return ((buffer[offset - 2] & 0xff) << 8) + (buffer[offset - 1] & 0xff);
 	}

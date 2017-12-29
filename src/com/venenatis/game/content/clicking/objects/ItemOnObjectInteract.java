@@ -3,7 +3,6 @@ package com.venenatis.game.content.clicking.objects;
 import com.venenatis.game.action.impl.actions.WaterSourceAction;
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
 import com.venenatis.game.content.ArmourSets;
-import com.venenatis.game.content.activity.minigames.impl.warriors_guild.AnimatedArmour;
 import com.venenatis.game.content.skills.cooking.Cookables;
 import com.venenatis.game.content.skills.cooking.Cooking;
 import com.venenatis.game.content.skills.smithing.SmithingConstants;
@@ -98,10 +97,6 @@ public class ItemOnObjectInteract {
 			if (fill != null) {
 				player.getActionQueue().addAction(new WaterSourceAction(player, fill));
 			}
-			break;
-			
-		case 23955:
-			AnimatedArmour.itemOnAnimator(player, item.getId());
 			break;
 			
 		default:

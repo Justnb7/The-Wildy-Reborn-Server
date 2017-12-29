@@ -175,15 +175,11 @@ public class Selection {
 			player.getEquipment().setSlot(7, new Item(12815));
 			break;
 		case 3: //Regular account
-			if (player.getBank().isEmpty()) {
-				player.getBank().clear(false);
-				player.getBank().add(STARTER);
-			}
+			player.getInventory().add(STARTER);
 			break;
 		}
 		
 		if (PlayerSaveUtility.setStarter(player)) {
-			player.getInventory().add(new Item(995, 250_000));
 			player.getInventory().add(new Item(6199, 1));
 		}
 		

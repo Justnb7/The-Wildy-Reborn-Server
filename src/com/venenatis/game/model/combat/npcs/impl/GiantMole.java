@@ -6,8 +6,8 @@ import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
@@ -100,8 +100,8 @@ public class GiantMole extends AbstractBossCombat {
 
 	@Override
 	public void dropLoot(Player player, NPC npc) {
-		Pets pets = Pets.BABY_MOLE;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.BABY_MOLE;
+		Follower pet = new Follower(player, pets.getNpc());
 		if (player.alreadyHasPet(player, 12646) || player.getPet() == pets.getNpc()) {
 			return;
 		}

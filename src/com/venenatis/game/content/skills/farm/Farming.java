@@ -11,8 +11,8 @@ import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
@@ -277,8 +277,8 @@ public class Farming {
 	}
 	
 	private static void pet(Player player) {
-		Pets pets = Pets.TANGLEROOT;
-		Pet pet = new Pet(player, pets.getNpc());
+		Pet pets = Pet.TANGLEROOT;
+		Follower pet = new Follower(player, pets.getNpc());
 
 		if (player.alreadyHasPet(player, 20661) || player.getPet() == pets.getNpc()) {
 			return;

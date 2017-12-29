@@ -3,6 +3,7 @@ package com.venenatis.game.constants;
 public class StringConstants {
 	
 	public static final String ATTACK_ACTION = "Attack";
+	public static final String DUEL_FIGHT = "Fight";
 	public static final String DUEL_ACTION = "Challenge";
 	public static final String TRADE_ACTION = "Trade";
 	public static final String ENTER_AMOUNT = "Enter Amount:";

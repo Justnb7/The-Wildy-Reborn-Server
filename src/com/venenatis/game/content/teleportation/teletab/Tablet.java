@@ -1,6 +1,5 @@
 package com.venenatis.game.content.teleportation.teletab;
 
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
@@ -42,21 +41,10 @@ public class Tablet {
 				if (player.getTeleportAction().isTeleporting()) {
 					return false;
 				}
-
-				//Check if the minigame allows us to teleport
-				if (!MinigameHandler.execute(player, true, $it -> $it.canTeleport(player))) {
-					return false;
-				}
 				
 				//No teleporting above level 20 wilderness
 				if(player.getWildLevel() > 20) {
 					player.getActionSender().sendMessage("You can not teleport past 20 wilderness!");
-					return false;
-				}
-
-				//We cannot teleport out of the dueling arena
-				if (player.getDuelArena().isDueling()) {
-					player.getActionSender().sendMessage("You cannot teleport while you are dueling.");
 					return false;
 				}
 				

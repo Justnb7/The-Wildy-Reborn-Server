@@ -15,30 +15,33 @@ import com.venenatis.game.content.HerbSack;
 import com.venenatis.game.content.Jewellery;
 import com.venenatis.game.content.KillTracker;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelContainer;
-import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControlRewards;
-import com.venenatis.game.content.activity.minigames.impl.warriors_guild.WarriorsGuild;
-import com.venenatis.game.content.activity.trade.TradeContainer;
-import com.venenatis.game.content.activity.trade.TradeSession;
-import com.venenatis.game.content.activity.trade.TradeSession.TradeStage;
+import com.venenatis.game.content.gamble.Gamble;
+import com.venenatis.game.content.minigames.multiplayer.MultiplayerMinigame;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelStage;
+import com.venenatis.game.content.minigames.singleplayer.Minigame;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsDetails;
+import com.venenatis.game.content.mystery_box.MysteryBox;
+import com.venenatis.game.content.option_menu.TeleportMenuHandler;
 import com.venenatis.game.content.presets.PreloadingGear;
 import com.venenatis.game.content.server_tasks.Tasks;
-import com.venenatis.game.content.skills.SkillTask;
 import com.venenatis.game.content.skills.farm.Farming;
 import com.venenatis.game.content.skills.farming.Allotments;
 import com.venenatis.game.content.skills.farming.FarmingVencillio;
 import com.venenatis.game.content.skills.fishing.Fishing;
 import com.venenatis.game.content.skills.herblore.Herblore;
 import com.venenatis.game.content.skills.hunter.Hunter;
+import com.venenatis.game.content.skills.runecrafting.AbyssalRift;
+import com.venenatis.game.content.skills.slayer.SuperiorMonster;
 import com.venenatis.game.content.skills.slayer.interfaceController.SlayerInterface;
 import com.venenatis.game.content.skills.thieving.Thieving;
+import com.venenatis.game.content.staff_control_panel.StaffControlPanel;
 import com.venenatis.game.content.teleportation.Teleport;
 import com.venenatis.game.content.teleportation.TeleportHandler.TeleportationTypes;
 import com.venenatis.game.content.titles.Titles;
-import com.venenatis.game.location.Area;
+import com.venenatis.game.content.trade.TradeContainer;
+import com.venenatis.game.content.trade.TradeSession;
+import com.venenatis.game.content.trade.TradeSession.TradeStage;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.InterfaceState;
 import com.venenatis.game.model.Item;
@@ -64,6 +67,7 @@ import com.venenatis.game.model.entity.Hit;
 import com.venenatis.game.model.entity.following.PlayerFollowing;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.NPCAggression;
+import com.venenatis.game.model.entity.npc.pet.PetInsurance;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.widget.Selection;
 import com.venenatis.game.model.entity.player.clan.Clan;
@@ -79,7 +83,6 @@ import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.model.masks.forceMovement.ForceMovement;
-import com.venenatis.game.model.req.RequestManager;
 import com.venenatis.game.net.network.rsa.GameBuffer;
 import com.venenatis.game.net.network.rsa.ISAACRandomGen;
 import com.venenatis.game.net.network.session.GameSession;
@@ -101,6 +104,57 @@ import com.venenatis.server.Server;
 import io.netty.buffer.Unpooled;
 
 public class Player extends Entity {
+	
+	
+	private AbyssalRift rift = new AbyssalRift();
+	
+	public AbyssalRift getRift() {
+		return rift;
+	}
+	/**
+	 * Barrows puzzle information
+	 */
+	
+	private int puzzleAnswer = -1;
+	private Location puzzleLocation;
+	
+	public Location getPuzzleLocation() {
+		return puzzleLocation;
+	}
+
+	public void setPuzzleLocation(Location puzzleLocation) {
+		this.puzzleLocation = puzzleLocation;
+	}
+
+	public int getPuzzleAnswer() {
+		return puzzleAnswer;
+	}
+
+	public void setPuzzleAnswer(int puzzleAnswer) {
+		this.puzzleAnswer = puzzleAnswer;
+	}
+	
+	private BarrowsDetails barrowsDetails = new BarrowsDetails();
+	
+	public BarrowsDetails getBarrowsDetails() {
+		return barrowsDetails;
+	}
+
+	public void setBarrowsDetails(BarrowsDetails barrowsDetails) {
+		this.barrowsDetails = barrowsDetails;
+	}
+	
+	private final StaffControlPanel staffControlPanel = new StaffControlPanel(this);
+	
+	public StaffControlPanel getStaffControlPanel() {
+		return staffControlPanel;
+	}
+	
+	private final Gamble gamble = new Gamble(this);
+	
+	public Gamble getGamble() {
+		return this.gamble;
+	}
 
 	public List<Integer> npcIsNewlyAdded = new ArrayList<>(0);
 	
@@ -444,36 +498,6 @@ public class Player extends Entity {
      */
 	public InventoryContainer getInventory() {
 		return inventory;
-	}
-	
-	private int otherPlayerDuelIndex = -1;
-	
-	public int getOtherPlayerDuelIndex() {
-		return otherPlayerDuelIndex;
-	}
-
-	public void setOtherPlayerDuelIndex(int otherPlayerDuelIndex) {
-		this.otherPlayerDuelIndex = otherPlayerDuelIndex;
-	}
-	
-	private DuelArena duelArena = new DuelArena(this);
-
-	public DuelArena getDuelArena() {
-		return duelArena;
-	}
-
-	public void setDuelArena(DuelArena duelArena) {
-		this.duelArena = duelArena;
-	}
-	
-	private final DuelContainer duelContainer = new DuelContainer(this);
-
-	public DuelContainer getDuelContainer() {
-		return duelContainer;
-	}
-	
-	public boolean isDueling() {
-		return getDuelArena().isDueling();
 	}
     
     private int otherPlayerTradeIndex = -1;
@@ -1104,10 +1128,6 @@ public class Player extends Entity {
 	public void setDebugMode(boolean on) {
 		this.debugMode = on;
 	}
-	
-	public boolean isInMinigame() {
-		return Area.inDuelArena(this) || this.getDuelArena().isDueling() || Area.inBarrows(this) || DuelArena.inArena(this) || DuelArena.inObstacleArena(this) || MinigameHandler.search(this).isPresent();
-	}
 
 	private long xlogDelay;
 	
@@ -1130,18 +1150,8 @@ public class Player extends Entity {
 	}
 	
 	@Override
-	public boolean canDuel() {
-		return getDuelArena().getStage() == DuelStage.REQUEST;
-	}
-	
-	@Override
 	public int getCombatCooldownDelay() {
 		return CombatFormulae.getCombatCooldownDelay(this);
-	}
-	
-	@Override
-	public void onDeath() {
-		MinigameHandler.execute(this, $it -> $it.onDeath(this));
 	}
 	
 	@Override
@@ -1505,7 +1515,7 @@ public class Player extends Entity {
 					this.stop();
 				}
 			});
-			World.getWorld().schedule(new DeathTask(this, 8));
+			World.getWorld().schedule(new DeathTask(this, 2));
 		}
 		return new Hit(damage, hit.getType());
 	}
@@ -1525,16 +1535,21 @@ public class Player extends Entity {
 	 */
 	public void logout() {
 		
-		if (isDueling() || getDuelArena().isInSession()) {
-			getActionSender().sendMessage("You cannot logout while in duel arena.");
-			return;
-		}
-		
 		/*
 		 * Remove from kraken instance
 		 */
 		if (kraken != null && kraken.getInstance() != null)
 			InstancedAreaManager.getSingleton().disposeOf(kraken.getInstance());
+		
+		if (getAttributes().get("duel_stage") == DuelStage.FIGHTING_STAGE) {
+			Player opponent = this.getDuelArena().getOtherPlayer();
+			this.getDuelArena().finishDuelMatch();
+			opponent.getDuelArena().invokeDuelVictory();
+		}
+		
+		if (getAttributes().get("duel_stage") != null) {
+			getDuelArena().decline();
+		}
 		
 		//If we're no longer in combat we can goahead and logout
 		if (logoutDelay.elapsed(10000) && getLastCombatAction().elapsed(600)) {
@@ -1551,11 +1566,14 @@ public class Player extends Entity {
 	@Override
 	public void process() {
 		farming.farmingProcess();
-		World.getWorld().getEventManager().process();
 		//long startTime = System.currentTimeMillis();
 		
 		if (this.getTimePlayed() < Integer.MAX_VALUE) {
 			this.setTimePlayed(this.getTimePlayed() + 1);
+		}
+		
+		if (this.getMinigame() != null) {
+			this.getMinigame().tick(this);
 		}
 
 		// Follow player - not combat
@@ -1583,6 +1601,17 @@ public class Player extends Entity {
 		if (getCombatState().getEatDelay() > 0) {
 			getCombatState().decreaseEatDelay(1);
 		}
+		
+		if (getTimedAttribute("duel_count") != null && getTimedAttribute("duel_count").intValue() >= 0) {
+			if (getTimedAttribute("duel_count").intValue() > 0) {
+				sendForcedMessage("" + getTimedAttribute("duel_count").intValue());
+				getDuelArena().getOtherPlayer().sendForcedMessage("" + getTimedAttribute("duel_count").intValue());
+			} else if (getTimedAttribute("duel_count").intValue() == 0) {
+				sendForcedMessage("Go!");
+				getDuelArena().getOtherPlayer().sendForcedMessage("Go!");
+			}
+		}
+		
 		//long endTime = System.currentTimeMillis() - startTime; System.out.println("[process] end time: "+endTime + " : players online: " + World.getWorld().getPlayers().size());
 	}
 
@@ -1701,11 +1730,8 @@ public class Player extends Entity {
 
 	@Override
 	public String toString() {
-		return "Player [username=" + getUsername() + ", index: " + getIndex() + "]";
-	}
-
-	public RequestManager getRequestManager() {
-		return requestManager;
+		return username;
+		//return "Player [username=" + getUsername() + ", index: " + getIndex() + "]";
 	}
 
 	/**
@@ -1783,22 +1809,6 @@ public class Player extends Entity {
 			setController(ControllerManager.DEFAULT_CONTROLLER);
 		}
 		return controller;
-	}
-
-	public void setSkillTask(SkillTask task) {
-		stopSkillTask();
-		this.skillTask = task;
-		if (task != null) {
-			Server.getTaskScheduler().schedule(task);
-		}
-	}
-
-	public void stopSkillTask() {
-		if (skillTask != null) {
-			if (skillTask.isRunning())
-				skillTask.stop();
-		}
-		skillTask = null;
 	}
 
 	public List<Task> getTasks() {
@@ -1917,9 +1927,7 @@ public class Player extends Entity {
 	 * Instances
 	 */
 	private FriendAndIgnoreList friendAndIgnores = new FriendAndIgnoreList(this);
-	private RequestManager requestManager = new RequestManager(this);
 	private Task distancedTask;
-	private SkillTask skillTask;
 	private int sessionExperience;
 	
 	/**
@@ -1993,26 +2001,6 @@ public class Player extends Entity {
 	public PrayerHandler getPrayerHandler() {
 		return prayerHandler;
 	}
-
-	private byte screenBrightness = 3;
-	
-	public byte getScreenBrightness() {
-		return screenBrightness;
-	}
-	
-	public void setScreenBrightness(byte screenBrightness) {
-		this.screenBrightness = screenBrightness;
-	}
-	
-	private boolean splitPrivateChat;
-	
-	public void setSplitPrivateChat(boolean splitPrivateChat) {
-		this.splitPrivateChat = splitPrivateChat;
-	}
-	
-	public boolean getSplitPrivateChat() {
-		return splitPrivateChat;
-	}
 	
 	/**
 	 * Auto-retaliation setting.
@@ -2068,76 +2056,6 @@ public class Player extends Entity {
 
 	public boolean getAcceptAid() {
 		return acceptAid;
-	}
-	
-	private boolean dataOrbs;
-
-	public void setDataOrbs(boolean dataOrbs) {
-		this.dataOrbs = dataOrbs;
-	}
-
-	public boolean getDataOrbs() {
-		return dataOrbs;
-	}
-	
-	private boolean roofs;
-
-	public void setRoofsToggled(boolean roofs) {
-		this.roofs = roofs;
-	}
-
-	public boolean getRoofsToggled() {
-		return roofs;
-	}
-	
-	private boolean leftClickAttack;
-
-	public void setLeftClickAttack(boolean leftClickAttack) {
-		this.leftClickAttack = leftClickAttack;
-	}
-
-	public boolean getLeftClickAttack() {
-		return leftClickAttack;
-	}
-	
-	private boolean gameTimers;
-
-	public void setGameTimers(boolean gameTimers) {
-		this.gameTimers = acceptAid;
-	}
-
-	public boolean getGameTimers() {
-		return gameTimers;
-	}
-
-	private boolean targetTracking;
-
-	public void setTargetTracking(boolean targetTracking) {
-		this.targetTracking = targetTracking;
-	}
-
-	public boolean toggleTargetTracking() {
-		return targetTracking;
-	}
-	
-	private boolean groundItems;
-
-	public void setGroundItems(boolean groundItems) {
-		this.groundItems = groundItems;
-	}
-
-	public boolean toggleGroundItems() {
-		return groundItems;
-	}
-	
-	private boolean shiftDrop;
-
-	public void setShiftDrops(boolean shiftDrop) {
-		this.shiftDrop = shiftDrop;
-	}
-
-	public boolean toggleShiftClick() {
-		return shiftDrop;
 	}
 	
     private final WeaponInterface weaponInterface = new WeaponInterface(this);
@@ -2252,6 +2170,9 @@ public class Player extends Entity {
         }
     }
     
+    /**
+     * The custom teleport system button
+     */
     private int teleportButton;
 
 	public int getTeleportButton() {
@@ -2262,6 +2183,9 @@ public class Player extends Entity {
 		this.teleportButton = teleportButton;
 	}
 	
+	/**
+	 * The telportation type in the custom teleport system
+	 */
 	private TeleportationTypes teleportationType;
 
 	public TeleportationTypes getTeleportationType() {
@@ -2405,7 +2329,7 @@ public class Player extends Entity {
 	public int lastClickedItem;
 
 	public int lastChatId = 1, privateChat, specBarId,
-			xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, walkTutorial = 15, bountyPoints;
+			enterXInterfaceId, xInterfaceId, xRemoveId, xRemoveSlot, frozenBy, walkTutorial = 15, bountyPoints;
 	
 	/**
 	 * Booleans
@@ -2892,46 +2816,6 @@ public class Player extends Entity {
 		this.newPlayer = newPlayer;
 	}
 	
-	private Clan clan;
-
-	public Clan getClan() {
-		return clan;
-	}
-
-	public void setClan(Clan clan) {
-		this.clan = clan;
-	}
-	
-	private String clanChat;
-	
-	public String getClanChat() {
-		return clanChat;
-	}
-
-	public void setClanChat(String clanChat) {
-		this.clanChat = clanChat;
-	}
-	
-	private String savedClan;
-
-	public String getSavedClan() {
-		return savedClan;
-	}
-
-	public void setSavedClan(String savedClan) {
-		this.savedClan = savedClan;
-	}
-	
-	private String clanPromote;
-
-	public String getClanPromote() {
-		return clanPromote;
-	}
-
-	public void setClanPromote(String clanPromote) {
-		this.clanPromote = clanPromote;
-	}
-	
 	private InputString inputString;
 
 	public void setInputAmount(InputAmount inputAmount) {
@@ -2980,20 +2864,6 @@ public class Player extends Entity {
 
 	public void setDfsTimer(int time) {
 		this.dfsWaitTimer = time;
-	}
-
-	/**
-	 * Determines if this player can keep their items upon death.
-	 *
-	 * @return {@code true} If they can keep their items on death. {@code false}
-	 *         If they can not.
-	 */
-	public boolean canKeepItems() {
-		if (MinigameHandler.execute(this, false, $it -> $it.canKeepItems())) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	private PreloadingGear presets = new PreloadingGear(this);
@@ -3246,8 +3116,7 @@ public class Player extends Entity {
 	public boolean alreadyHasPet(Player player, int item) {
 		final boolean inventory = player.getInventory().containsAny(item);
 		final boolean bank = player.getBank().containsAny(item);
-		final boolean equipment = player.getEquipment().containsAny(item);
-		return inventory || bank || equipment;
+		return inventory || bank;
 	}
 	
 	private Magic magic = new Magic(this);
@@ -3428,9 +3297,7 @@ public class Player extends Entity {
 	}
 	
 	//FIXME
-	public long buyPestControlTimer;
 	public long lastPickup;
-	public int pestControlDamage;
 	
 	private final Stopwatch lastSql = new Stopwatch();
 
@@ -3443,26 +3310,167 @@ public class Player extends Entity {
 	public Stopwatch getSqlTimer() {
         return sqlTimer;
     }
-	
-	private WarriorsGuild warriorsGuild = new WarriorsGuild(this);
 
-	/**
-	 * The single {@link WarriorsGuild} instance for this player
-	 * 
-	 * @return warriors guild
-	 */
-	public WarriorsGuild getWarriorsGuild() {
-		return warriorsGuild;
+	public int skillGuide = 0;
+	
+	private final TeleportMenuHandler teleportMenuHandler = new TeleportMenuHandler(this);
+	
+	public TeleportMenuHandler getTeleportMenuHandler() {
+		return teleportMenuHandler;
 	}
 	
-	private PestControlRewards pestControlRewards = new PestControlRewards(this);
+	private ArrayList<Integer> favoriteTeleports = new ArrayList<Integer>();
+
+	public ArrayList<Integer> getFavoriteTeleports() {
+		return favoriteTeleports;
+	}
+
+	public void setFavoriteTeleports(ArrayList<Integer> favoriteTeleports) {
+		this.favoriteTeleports = favoriteTeleports;
+	}
+	
+	private PetInsurance petInsurance = new PetInsurance(this);
+
+	public PetInsurance getPetInsurance() {
+		return this.petInsurance;
+	}
+	
+	private MultiplayerMinigame multiplayerMinigame = null;
+	
+	public MultiplayerMinigame getMultiplayerMinigame() {
+		return multiplayerMinigame;
+	}
+
+	public void enterMultiplayerMinigame(MultiplayerMinigame multiplayerMinigame) {
+		exitMultiplayerMinigame();
+		this.multiplayerMinigame = multiplayerMinigame;
+		getMultiplayerMinigame().join(this);
+	}
+	
+	public void resetMultiplayerMinigame(MultiplayerMinigame multiplayerMinigame) {
+		this.multiplayerMinigame = multiplayerMinigame;
+		getMultiplayerMinigame().join(this);
+	}
+
+	public void exitMultiplayerMinigame() {
+		if (getMultiplayerMinigame() != null) {
+			getMultiplayerMinigame().leave(this);
+			this.minigame = null;
+		}
+	}
+	
+	private Minigame minigame = null;
+
+	public Minigame getMinigame() {
+		return minigame;
+	}
+
+	public void enterMinigame(Minigame minigame) {
+		exitMinigame();
+		this.minigame = minigame;
+		getMinigame().enter(this);
+	}
+
+	public void exitMinigame() {
+		if (getMinigame() != null) {
+			getMinigame().exit(this);
+			this.minigame = null;
+		}
+	}
+	
+	private final DuelArena duelArena = new DuelArena(this);
+
+	public final DuelArena getDuelArena() {
+		return this.duelArena;
+	}
+	
+	/**
+	 * Saved duel options
+	 */
+	private boolean[] duelOptions = new boolean[DuelArena.DUEL_OPTION_COUNT];
+	
+	public boolean[] getDuelOptions() {
+		return duelOptions;
+	}
 
 	/**
-	 * The single instance of the {@link PestControlRewards} class for this player
-	 * 
-	 * @return the reward class
+	 * Saved duel equipment restrictions
 	 */
-	public PestControlRewards getPestControlRewards() {
-		return pestControlRewards;
+	private boolean[] duelEquipmentRestrictions = new boolean[DuelArena.EQUIPMENT_RESTRICTION_COUNT];
+	
+	public boolean[] getDuelEquipmentRestrictions() {
+		return this.duelEquipmentRestrictions;
+	}
+	
+	private int duelsWon;
+	
+	public int getDuelsWon() {
+		return duelsWon;
+	}
+	
+	public void  setDuelsWon(int value) {
+		duelsWon = value;
+	}
+	
+	private int duelsLost;
+	
+	public int getDuelsLost() {
+		return duelsLost;
+	}
+
+	public void setDuelsLost(int value) {
+		duelsLost = value;
+	}
+
+	public double getKillDeathRatio() {
+		double kdr = 0.0D;
+		if (getKillCount() > 0 && getDeathCount() > 0)
+			kdr = getKillCount() / getDeathCount();
+		return Math.floor(kdr);
+	}
+	
+	private final MysteryBox mysteryBox = new MysteryBox(this);
+
+	public MysteryBox getMysteryBox() {
+		return this.mysteryBox;
+	}
+	
+	private Clan clan;
+	
+	public Clan getClan() {
+		return clan;
+	}
+
+	public void setClan(Clan clan) {
+		this.clan = clan;
+	}
+	
+	public long lastClanTalk;
+	public long lastClanMessage;
+	public String lastClanChat = "";
+
+	public String getLastClanChat() {
+		return lastClanChat;
+	}
+	
+	public long friends[] = new long[200];
+	public long ignores[] = new long[200];
+	
+	public boolean isFriend(Player player) {
+		long nameToLong = Utility.playerNameToInt64(player.getUsername());
+		for (long friend : friends)
+			if (friend == nameToLong)
+				return true;
+		return false;
+	}
+	
+	/**
+	 * The player's supperior monster spawn
+	 */
+	public SuperiorMonster superior_monster = new SuperiorMonster(this);
+	public boolean usingMultiSpell;
+	
+	public SuperiorMonster getSuperiorMonster() {
+		return superior_monster;
 	}
 }

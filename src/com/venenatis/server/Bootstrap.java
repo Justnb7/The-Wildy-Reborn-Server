@@ -22,8 +22,8 @@ import com.venenatis.game.content.skills.fletching.fletchable.impl.Featherable;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Stringable;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
+import com.venenatis.game.model.entity.npc.drops.NPCDropDefinitions;
 import com.venenatis.game.model.entity.player.Sanctions;
-import com.venenatis.game.model.entity.player.clan.ClanRepository;
 import com.venenatis.game.net.network.NettyChannelHandler;
 import com.venenatis.game.net.network.codec.RS2Encoder;
 import com.venenatis.game.net.network.handshake.HandshakeDecoder;
@@ -106,7 +106,7 @@ public class Bootstrap {
 		bootstrap.group(new NioEventLoopGroup());
 		bootstrap.bind(Constants.SERVER_PORT).syncUninterruptibly();
 		Server.SERVER_STARTED = true;
-		LOGGER.info("Network has been bound");
+		LOGGER.info("Network has been bound on Port: "+Constants.SERVER_PORT);
 		return this;
 	}
 
@@ -128,7 +128,7 @@ public class Bootstrap {
 			new EquipmentDefinitionParser().run();
 			new NPCDefinitionParser().run();
 			new NpcSpawnDefinitionParser().run();
-	        Server.getDropManager().read();
+	        NPCDropDefinitions.loadNPCDropDefs();
 			new ShopParser().run();
 			MobAttackSounds.declare();
 			PlayerSounds.declare();
@@ -137,7 +137,6 @@ public class Bootstrap {
 
 		LOGGER.info("Loading content...");
 		serviceLoader.execute(() -> {
-			ClanRepository.load();
 			//FarmingVencillio.declare();
 			Gem.declare();
 			Hide.declare();
@@ -152,7 +151,6 @@ public class Bootstrap {
 			ToolData.Tools.declare();
 			//TriviaBot.declare();
 			World.getWorld().init();
-			World.getWorld().getEventManager().appendTimer();
 			ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
 		});
 	}

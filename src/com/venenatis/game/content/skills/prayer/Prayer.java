@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.task.Task;
@@ -39,7 +39,7 @@ public class Prayer {
 	 */
 	public void prayAltar(Location loc) {
 		
-		if (Area.inWilderness(player)) {
+		if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
 			return;
 		}
 		if (player.getSkills().getLevel(Skills.PRAYER) < player.getSkills().getLevelForExperience(Skills.PRAYER)) {

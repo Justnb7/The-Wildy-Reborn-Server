@@ -18,7 +18,6 @@ public class NpcSpawnDefinitionParser extends GsonParser {
 		int id = data.get("id").getAsInt();
 		int radius = data.get("radius").getAsInt();
 		FacingDirection dir = builder.fromJson(data.get("facing"), FacingDirection.class);
-		//TODO add support for facingDirection
 		Location location = builder.fromJson(data.get("position"), Location.class);
 
 		int dirInt = 6;

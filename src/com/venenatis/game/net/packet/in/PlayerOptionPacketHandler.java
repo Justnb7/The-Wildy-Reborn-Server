@@ -1,9 +1,12 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
-import com.venenatis.game.location.Area;
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.Objects;
+
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelOptions;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.combat.Combat;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.entity.player.Player;
@@ -11,8 +14,6 @@ import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.task.impl.DistancedActionTask;
 import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
-
-import static com.google.common.base.Preconditions.checkState;
 
 public class PlayerOptionPacketHandler implements IncomingPacketListener {
 	
@@ -26,13 +27,11 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
      */
     public static final int TRADE_REQUEST = 139;
     
-    public static final int DUEL_REQUEST = 153;
-    
     /**
      * Sent when a player uses the right-click challenge option to challenge
      * another player.
      */
-    public static final int ACCEPT_CHALLENGE = 128;
+    public static final int DUEL_REQUEST = 153;
 	
 	/**
      * Sent when a player attempts to cast magic on another player.
@@ -46,8 +45,8 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 	private static final int FOLLOW_PLAYER = 39;
     
     /**
-     * OP 1 = dueling (128)
-     * OP 2 = UNK (153)
+     * OP 1 = Unknown
+     * OP 2 = Dueling send request (153)
      * OP 3 = Attack packet (73)
      * OP 4 = Follow packet (39)
      * OP 5 = Trade with packet (139)
@@ -65,7 +64,7 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 			return;
 		}
 		
-		player.debug(String.format("[PlayerInteractionPacket] Opcode: ", packet));
+		player.debug(String.format("[PlayerInteractionPacket] Opcode: %d%n", packet));
 		
 		if (player.getCombatState().inCombat()) {
 			if (packet != ATTACK_PLAYER && packet != MAGIC_ON_PLAYER) {
@@ -82,7 +81,7 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 			handleMagicOnPlayer(player, packet);
 			break;
 
-		case ACCEPT_CHALLENGE:
+		case DUEL_REQUEST:
 			handleDuelRequest(player, packet);
 			break;
 
@@ -98,29 +97,29 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 	}
 	
 	private void handleDuelRequest(Player player, int packet) {
-		final int otherPlayerIndex = player.getInStream().readUnsignedWord();
+		final int otherPlayerIndex = player.getInStream().readSignedWordBigEndian();
+		player.getDuelArena().setOtherPlayer(World.getWorld().getPlayers().get(otherPlayerIndex));
 		
-		checkState(World.getWorld().getPlayers().search(otherPlayerIndex).isPresent(), "%s tried dueling a player that doesn't exist. [index= %s]", player.getUsername(), otherPlayerIndex);
-
-		if (!player.canDuel()) {
-			player.getActionSender().sendMessage("You are currently already in a session.");
-			return;
-		}
-
-		Player other = World.getWorld().getPlayers().search(otherPlayerIndex).get();
+		final Player other = player.getDuelArena().getOtherPlayer();
 		
-		if (!other.canDuel()) {
-			player.getActionSender().sendMessage("The other player is currently busy.");
+		if (other == null || Objects.equals(player, other)) {
+			player.message("Either the requester or the requestee is null, notify an Administrator.");
 			return;
 		}
 		
 		player.faceEntity(other);
-
+		
 		player.setDistancedTask(new DistancedActionTask() {
 			@Override
 			public void onReach() {
-				player.setOtherPlayerDuelIndex(otherPlayerIndex);
-				player.getDuelArena().requestDuel(other);
+				if (!BoundaryManager.isWithinBoundary(other.getLocation(), "DuelArena")) {
+					player.getActionSender().sendMessage("Unable to find the requestee.");
+					return;
+				}
+				if (!player.getDuelArena().canChallenge()) {
+					return;
+				}
+				player.getDuelArena().sendChallenge();
 				stop();
 			}
 
@@ -129,9 +128,7 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 				player.face(other.getLocation());
 				return player.distanceToPoint(other.getX(), other.getY()) < 2;
 			}
-
-		});	
-
+		});
 	}
 
 	private void handleFollowPlayer(Player follower, int packet) {
@@ -167,28 +164,25 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 				
 		Player other = World.getWorld().getPlayers().search(otherPlayerIndex).get();
 
-		if (player.getDuelArena().isDueling()) {
-			if (player.getDuelArena().getWaitTime() > 0) {
-				player.getActionSender().sendMessage("The duel has not started yet.");
-				return;
-			}
-		}
-
 		if (!player.getController().canAttackPlayer(player, other)) {
 			return;
 		}
 		
-		if (!Area.inWilderness(player) && !player.getDuelArena().isDueling()) {
-			player.getActionSender().sendMessage("You're not in the wilderness.");
-			player.getWalkingQueue().reset();
-			Combat.resetCombat(player);
+		if (player.getTimedAttribute("duel_count") != null || other.getTimedAttribute("duel_count") != null) {
+			player.getCombatState().reset();
+			player.getActionSender().sendMessage("The duel has not started yet!");
 			return;
 		}
 		
-		if (!Area.inWilderness(other) && !player.getDuelArena().isDueling()) {
-			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is not in the wilderness.");
-			player.getWalkingQueue().reset();
-			Combat.resetCombat(player);
+		if (player.getDuelArena().getOptionActive()[DuelOptions.NO_MELEE.getId()] && player.getCombatType() == CombatStyle.MELEE) {
+			player.getActionSender().sendMessage("You can't use melee during this stake.");
+			player.getCombatState().reset();
+			return;
+		}
+		
+		if (player.getDuelArena().getOptionActive()[DuelOptions.NO_RANGED.getId()] && player.getCombatType() == CombatStyle.RANGE) {
+			player.getActionSender().sendMessage("You can't use range during this stake.");
+			player.getCombatState().reset();
 			return;
 		}
 
@@ -214,32 +208,24 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 		Player other = World.getWorld().getPlayers().search(otherPlayerIndex).get();	
 		
 		final int spell = player.getInStream().readSignedWordBigEndian();
-		
-		if (player.getDuelArena().isDueling()) {
-			if (player.getDuelArena().getWaitTime() > 0) {
-				player.getActionSender().sendMessage("The duel has not started yet.");
-				return;
-			}
-		}
-		
-		if (player.getDuelArena().isDueling()) {
-			if (player.getDuelArena().getRules().get(DuelRule.MAGIC)) {
-				player.getActionSender().sendMessage("Magic is disabled in this duel.");
-				return;
-			}
-		}
 
-		if (!Area.inWilderness(other) && !MinigameHandler.execute(other, true, $it -> $it.canAttack(other))) {
+		if (!BoundaryManager.isWithinBoundary(other.getLocation(), "PvP Zone")) {
 			player.getActionSender().sendMessage(Utility.formatName(other.getUsername()) + " is currently in a safe zone and can not be attacked.");
 			return;
 		}
 
-		if (!Area.inWilderness(player) && !MinigameHandler.execute(player, true, $it -> $it.canAttack(player))) {
+		if (!BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
 			player.getActionSender().sendMessage("You can not attack players while in a safe zone!");
 			return;
 		}
 
 		if (!player.getController().canAttackPlayer(player, other)) {
+			return;
+		}
+		
+		if (player.getDuelArena().getOptionActive()[DuelOptions.NO_MAGIC.getId()]) {
+			player.getActionSender().sendMessage("You can't use magic during this stake.");
+			player.getCombatState().reset();
 			return;
 		}
 
@@ -271,10 +257,6 @@ public class PlayerOptionPacketHandler implements IncomingPacketListener {
 		final int otherPlayerTradeIndex = player.getInStream().readSignedWordBigEndian();
 		
 		checkState(World.getWorld().getPlayers().search(otherPlayerTradeIndex).isPresent(), "%s tried trading a player that doesn't exist. [index= %s]", player.getUsername(), otherPlayerTradeIndex);
-
-		/*if ((Boolean) player.getAttributes().get(PlayerAttributes.TRADING)) {
-			return;
-		}*/
 
 		if (otherPlayerTradeIndex == player.getIndex()) {
 			return;

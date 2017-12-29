@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.world.World;
-import com.venenatis.server.Server;
 
 
 /**
@@ -64,11 +63,6 @@ public class HomeQuestTabPage extends QuestTabPage {
 				player.setTrivia(true);
 			}
 			write(player, "<col=FFFFFF>Trivia: <col=00CC00>"+(player.is_trivia_activated() ? "<col=00CC00>Enabled" : "<col=ff0000>Disabled"), 4);
-			break;
-			
-			
-		case 114092:
-			Server.getDropManager().open(player);
 			break;
 		}
 	}

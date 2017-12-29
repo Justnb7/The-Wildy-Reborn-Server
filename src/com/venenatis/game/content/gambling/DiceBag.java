@@ -62,7 +62,8 @@ public class DiceBag {
 				return;
 			}
 			//Sent the message to the clan chat
-			ClanManager.message(player, message);
+			//TODO
+			//ClanManager.message(player, message);
 			
 			//Set the delay
 			lastInteraction = System.currentTimeMillis();

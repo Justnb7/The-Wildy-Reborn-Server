@@ -163,8 +163,10 @@ public class NpcUpdating {
 
 	private static boolean makeNewNpcFace(NPC npc) {
 		// already set. default dir will be overwritten anyway.
-		if (npc.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE))
+		if (npc.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE)) {
+			System.out.println("force coord req already set - that takes priority over default spawn facing "+npc.getFaceLocation());
 			return false;
+		}
 		Location dir = npc.getLocation();
 		// face depending on where we last walked (direction)
 		switch (npc.getWalkingQueue().lastDirectionFaced) {
@@ -227,7 +229,7 @@ public class NpcUpdating {
 		}
 		
 		//if (p.npcIsNewlyAdded.contains(npc.getIndex()))
-			System.err.println("new npc "+npc.getName()+" for p "+p.getUsername()+" flags: "+updateMask+" "+flags.get(UpdateFlag.ANIMATION));
+			//System.err.println("new npc "+npc.getName()+" for p "+p.getUsername()+" flags: "+updateMask+" "+flags.get(UpdateFlag.ANIMATION));
 		
 		buffer.writeByte(updateMask);
 
@@ -251,7 +253,7 @@ public class NpcUpdating {
 		}
 		if(flags.get(UpdateFlag.FORCED_CHAT)) {
 			buffer.putRS2String(npc.getUpdateFlags().getForcedMessage());
-			System.out.println("push "+npc.getUpdateFlags().getForcedMessage());
+			//System.out.println("push "+npc.getUpdateFlags().getForcedMessage());
 		}
 		if(flags.get(UpdateFlag.HIT_2)) {
 			buffer.writeShort(npc.getUpdateFlags().secondary.getDamage());
@@ -317,7 +319,7 @@ public class NpcUpdating {
 		buffer.writeBits(1, 0);
 		buffer.writeBits(14, npc.getId());
 		buffer.writeBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
-		System.err.println("npc "+npc.getName()+" added to viewport. update:"+npc.getUpdateFlags().isUpdateRequired());
+		//System.err.println("npc "+npc.getName()+" added to viewport. update:"+npc.getUpdateFlags().isUpdateRequired());
 		// cant see the issue 
 	}
 	

@@ -1,48 +1,52 @@
 package com.venenatis.game.content.skills.runecrafting;
 
-import com.venenatis.game.content.skills.SkillTask;
-import com.venenatis.game.location.Location;
+import com.venenatis.game.action.impl.Skill;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.definitions.ItemDefinition;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.npc.pet.Pet;
-import com.venenatis.game.model.entity.npc.pet.Pets;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.dialogue.SimpleDialogues;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
-import com.venenatis.game.util.Utility;
 import com.venenatis.game.world.World;
 import com.venenatis.game.world.object.GameObject;
 
 /**
- * The runecrafting skill
+ * This class represents the runecrafting skill and its functionality.
+ * 
  * @author <a href="http://www.rune-server.org/members/_Patrick_/">Patrick van Elderen</a>
  *
  */
-public class Runecrafting extends SkillTask {
+public class Runecrafting extends Skill {
 	
 	/**
-	 * The altar object
+	 * The talisman
 	 */
-	private GameObject object;
+	private Item talisman;
 
 	/**
-	 * @return The altar objectId
+	 * The altar.
 	 */
+	private GameObject object;
+	
 	public GameObject getObject() {
 		return object;
 	}
 
 	/**
-	 * Send the task
-	 * @param player
-	 *        The player crafting runes
-	 * @param object
-	 *        The altar
+	 * The runecrafting animation
 	 */
+	private Animation RUNECRAFTING_ANIMATION = Animation.create(791);
+
+	/**
+	 * The runecrafting graphic
+	 */
+	private Graphic RUNECRAFTING_GRAPHIC = Graphic.create(186);
+
 	public Runecrafting(Player player, GameObject object) {
-		super(player, 2, BreakType.ON_MOVE, StackType.NEVER_STACK, false);
+		super(player);
 		this.object = object;
 	}
 	
@@ -50,442 +54,150 @@ public class Runecrafting extends SkillTask {
 	 * Teleports the player to the altar using the locate option on the talisman
 	 * @param player
 	 *        The player teleporting
-	 * @param item
-	 *        The talisman
 	 * @return
 	 */
-	public static boolean locateTalisman(Player player, Item item) {
+	private boolean locateTalisman(Player player) {
+		Talisman t = Talisman.forId(talisman.getId());
+		
+		player.getTeleportAction().teleport(t.getOutsideLocation());
+		return true;
+	}
+
+	@Override
+	public boolean start(Player player) {
+		//Safety check, player should never be null
 		if (player == null) {
 			return false;
 		}
-		if (item != null) {
-			if(item.getId() == 1438) {//Air talisman
-				player.getTeleportAction().teleport(new Location(2841, 4829, 0));
-			} else if(item.getId() == 1448) {//Mind talisman
-				player.getTeleportAction().teleport(new Location(2792, 4827, 0));
-			} else if(item.getId() == 1444) {//Water talisman
-				player.getTeleportAction().teleport(new Location(3482, 4838, 0));
-			} else if(item.getId() == 1440) {//Earth talisman
-				player.getTeleportAction().teleport(new Location(2655, 4830, 0));
-			} else if(item.getId() == 1442) {//Fire talisman
-				player.getTeleportAction().teleport(new Location(2574, 4848, 0));
-			} else if(item.getId() == 1446) {//Body talisman
-				player.getTeleportAction().teleport(new Location(2522, 4825, 0));
-			} else if(item.getId() == 1454) {//Cosmic talisman
-				player.getTeleportAction().teleport(new Location(2122, 4833, 0));
-			} else if(item.getId() == 1452) {//Chaos talisman
-				player.getTeleportAction().teleport(new Location(2281, 4837, 0));
-			} else if(item.getId() == 1462) {//Nature talisman
-				player.getTeleportAction().teleport(new Location(2400, 4835, 0));
-			} else if(item.getId() == 1458) {//Law talisman
-				player.getTeleportAction().teleport(new Location(2464, 4818, 0));
-			} else if(item.getId() == 1456) {//Death talisman
-				player.getTeleportAction().teleport(new Location(2208, 4830, 0));
+
+		//Safety check
+		if (talisman != null) {
+			Talisman t = Talisman.forId(talisman.getId());
+			
+			//Check if we have an talisman if we do we can use the locate option
+			if (t != null) {
+				return locateTalisman(player);
 			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Do we meet the requirements to continue crafting runes
-	 * @param player
-	 *        The player
-	 * @param id
-	 *        The altar
-	 */
-	public static boolean meetsRequirements(Player player, GameObject id) {
-		if(id == null) {
-			return false;
-		}
-		Talisman talisman = Talisman.getTalismanByAltar(id.getId());
-		if(talisman != null) {
-			if(player.getSkills().getLevel(Skills.RUNECRAFTING) < Talisman.getTalismanByAltar(talisman.getAlterId()).getLevel()) {
-				player.getActionSender().sendMessage("You do not have the required level to craft these runes.");
-				return false;
-			}
-			if(!player.getInventory().contains(7936) && !player.getInventory().contains(1436)) {
-				SimpleDialogues.sendStatement(player, "You do not have any rune essence to bind.");
-				return false;
-			}
-			if(Talisman.getTalismanByAltar(talisman.getAlterId()).pureEssOnly() && !player.getInventory().contains(7936)) {
-				SimpleDialogues.sendStatement(player, "You do not have any pure essence to bind.");
-				return false;
-			}
-			player.playAnimation(Animation.create(791));
-			player.playGraphic(Graphic.create(186));
+			//If we're not locating the alter we are trying to craft runes
+		} else {
 			return true;
 		}
+
 		return false;
 	}
 	
 	@Override
-	public void execute() {
-		Player player = (Player) getPlayer();
-		if (player == null || !player.isActive()) {
+	public boolean execute(Player player) {
+		//First check if we have the required level
+		if (player.getSkills().getLevel(Skills.RUNECRAFTING) < Altar.getAltar(getObject().getId()).getLevelRequired()) {
+			SimpleDialogues.sendStatement(player, "You need a " + Skills.RUNECRAFTING + " level of " + Altar.getAltar(getObject().getId()).getLevelRequired() + " to craft this rune.");
 			stop();
-			return;
+			return false;
+		}
+
+		//Then we can check if we have any essence
+		if (!player.getInventory().contains(7936) && !player.getInventory().contains(1436)) {
+			SimpleDialogues.sendStatement(player, "You do not have any rune essence to bind.");
+			stop();
+			return false;
+		}
+
+		//And lastly check if we can only use pure essence
+		if (Altar.getAltar(getObject().getId()).isPureEssenceOnly() && !player.getInventory().contains(7936)) {
+			SimpleDialogues.sendStatement(player, "You do not have any pure essence to bind.");
+			stop();
+			return false;
 		}
 		
-		Talisman talisman = Talisman.getTalismanByAltar(getObject().getId());
-		int amount = getAmount(player, talisman);
-		int essCount = player.getInventory().getAmount(getEssType(player, talisman));
+		//Start animation and play the graphic
+		player.playAnimation(RUNECRAFTING_ANIMATION);
+		player.playGraphic(RUNECRAFTING_GRAPHIC);
+		return true;
+	}
+	
+	@Override
+	public boolean finish(Player player) {
+		Altar altar = Altar.getAltar(getObject().getId());
 		
-		//Grant experience
-		player.getActionSender().sendMessage("You bind the temple's power into "+ItemDefinition.get(talisman.getRuneReward()).getName()+"s");
-		player.getSkills().addExperience(Skills.RUNECRAFTING, talisman.getExperience()*essCount);
+		//The essence multiplier based on runecrafting level
+		int multiplier = (int) Math.floor(player.getSkills().getLevel(Skills.RUNECRAFTING) / altar.getDoubleRunesLevel());
+        multiplier += 1;
 		
-		//A random chance of receiving a runecrafting pet
-		int random = Utility.random(1500);
-		if (random == 0) {
-			switch (talisman.getId()) {
-			case 1438:
-				Pets pets = Pets.RIFT_GUARDIAN_AIR;
-				Pet pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20667) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20667));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1448:
-				pets = Pets.RIFT_GUARDIAN_MIND;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20669) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20669));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1444:
-				pets = Pets.RIFT_GUARDIAN_WATER;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20671) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20671));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1440:
-				pets = Pets.RIFT_GUARDIAN_EARTH;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20673) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20673));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1442:
-				pets = Pets.RIFT_GUARDIAN_WATER;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20665) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20665));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1446:
-				pets = Pets.RIFT_GUARDIAN_BODY;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20677) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20677));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1454:
-				pets = Pets.RIFT_GUARDIAN_COSMIC;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20679) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20679));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1452:
-				pets = Pets.RIFT_GUARDIAN_CHAOS;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20675) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20675));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1462:
-				pets = Pets.RIFT_GUARDIAN_NATURE;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20681) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20681));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1458:
-				pets = Pets.RIFT_GUARDIAN_LAW;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20683) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20683));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1456:
-				pets = Pets.RIFT_GUARDIAN_DEATH;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20685) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20685));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
-			case 1450:
-				pets = Pets.RIFT_GUARDIAN_BLOOD;
-				pet = new Pet(player, pets.getNpc());
-				if (player.alreadyHasPet(player, 20691) || player.getPet() == pets.getNpc()) {
-					return;
-				}
-				if (player.getPet() > -1) {
-					player.getInventory().addOrSentToBank(player, new Item(20691));
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-				} else {
-					player.setPet(pets.getNpc());
-					World.getWorld().register(pet);
-					World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received Rift guardian.", false);
-					player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
-				}
-				break;
+		//The amount off essence we have in our inventory
+		int essenceAmount = player.getInventory().getAmount(getEssType(player, altar));
+		
+		player.message("You bind the temple's power into " + ItemDefinition.get(altar.getRune()).getName() + "s");
+		
+		//Add experience based on the amount of runes we are crafting
+		player.getSkills().addExperience(Skills.RUNECRAFTING, altar.getExperience() * essenceAmount);
+		
+		if (RANDOM.nextInt(altar.getBaseChance() - (player.getSkills().getLevel(Skills.RUNECRAFTING) * 25)) == 1) {
+			Pet p = altar.petDrop();
+
+			//First check if we already have this pet
+			if (player.alreadyHasPet(player, altar.petDrop().getItem()) || player.getPet() == p.getNpc()) {
+				return false;
+			}
+			
+			//spawn the pet if we passed all checks
+			if (player.getPet() > -1) {
+				player.getInventory().addOrSentToBank(player, new Item(altar.petDrop().getItem()));
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received "+ItemDefinition.get(altar.petDrop().getItem()).getName()+".", false);
+			} else {
+				Follower pet = new Follower(player, p.getNpc());
+				player.setPet(p.getNpc());
+				World.getWorld().register(pet);
+				World.getWorld().sendWorldMessage("<col=7f00ff>" + player.getUsername() + " has just received "+ItemDefinition.get(altar.petDrop().getItem()).getName()+".", false);
+				player.getActionSender().sendMessage("You have a funny feeling like you're being followed.");
 			}
 		}
 		
-		//Delete essence and reward runes
-		player.getInventory().remove(new Item(getEssType(player, talisman), amount));
-		player.getInventory().add(new Item(talisman.getRuneReward(), amount));
+		//Remove all essence
+		player.getInventory().removeAll(new Item(getEssType(player, altar)));
 		
-		//Stop task
-		stop();
+		//Replace with the rune we just crafted
+		player.getInventory().add(new Item(altar.getRune(), essenceAmount * multiplier));
+		return true;
 	}
 
 	/**
-	 * The altar were crafting runes on
+	 * Starts the runecrafting task
+	 * 
 	 * @param player
-	 *        The player
-	 * @param altarId
-	 *        The altar
+	 *            The player trying to activate the altar
+	 * @param object
+	 *            The actual altar we're trying to craft runes from
+	 * @return
 	 */
-	public static boolean handleObject(Player player, GameObject gameObject) {
-		if (!meetsRequirements(player, gameObject)) {
-			return false;
-		}
-		if(Talisman.altar(gameObject.getId())){
-			Runecrafting runecrafting = new Runecrafting(player, gameObject);
+	public static boolean startAction(Player player, GameObject object) {
+		if(Altar.alterIds(object.getId())) {
+			Runecrafting runecrafting = new Runecrafting(player, object);
+			
+			//Activate the SkillAction task
 			runecrafting.execute();
-			player.setSkillTask(runecrafting);
+			
+			//And sent the task to the World aswell
+			World.getWorld().schedule(runecrafting);
 			return true;
 		}
 		return false;
 	}
-	
-	/**
-	 * The amount of runes we can craft
-	 * @param player
-	 *        The player crafting
-	 * @param talisman
-	 *        The talisman or tiara required
-	 */
-	private int getAmount(Player player, Talisman talisman) {
-		int rcLevel = player.getSkills().getLevel(Skills.RUNECRAFTING);
-		int essCount = player.getInventory().getAmount(getEssType(player, talisman));
-		if (talisman.equals(Talisman.AIR_TALISMAN)) {
-			if (rcLevel < 11) {
-				return essCount;
-			} else if (rcLevel >= 11 && rcLevel < 22) {
-				return essCount * 2;
-			} else if (rcLevel >= 22 && rcLevel < 33) {
-				return essCount * 3;
-			} else if (rcLevel >= 33 && rcLevel < 44) {
-				return essCount * 4;
-			} else if (rcLevel >= 44 && rcLevel < 55) {
-				return essCount * 5;
-			} else if (rcLevel >= 55 && rcLevel < 66) {
-				return essCount * 6;
-			} else if (rcLevel >= 66 && rcLevel < 77) {
-				return essCount * 7;
-			} else if (rcLevel >= 77 && rcLevel < 88) {
-				return essCount * 8;
-			} else if (rcLevel >= 88 && rcLevel < 99) {
-				return essCount * 9;
-			} else if (rcLevel >= 99) {
-				return essCount * 10;
-			}
-		} else if (talisman.equals(Talisman.MIND_TALISMAN)) {
-			if (rcLevel < 14) {
-				return essCount;
-			} else if (rcLevel >= 14 && rcLevel < 28) {
-				return essCount * 2;
-			} else if (rcLevel >= 28 && rcLevel < 42) {
-				return essCount * 3;
-			} else if (rcLevel >= 42 && rcLevel < 56) {
-				return essCount * 4;
-			} else if (rcLevel >= 56 && rcLevel < 70) {
-				return essCount * 5;
-			} else if (rcLevel >= 70 && rcLevel < 84) {
-				return essCount * 6;
-			} else if (rcLevel >= 84) {
-				return essCount * 7;
-			}
-		} else if (talisman.equals(Talisman.WATER_TALISMAN)) {
-			if (rcLevel < 19) {
-				return essCount;
-			} else if (rcLevel >= 19 && rcLevel < 38) {
-				return essCount * 2;
-			} else if (rcLevel >= 38 && rcLevel < 57) {
-				return essCount * 3;
-			} else if (rcLevel >= 57 && rcLevel < 76) {
-				return essCount * 4;
-			} else if (rcLevel >= 76 && rcLevel < 95) {
-				return essCount * 5;
-			} else if (rcLevel >= 95) {
-				return essCount * 6;
-			}
-		} else if (talisman.equals(Talisman.EARTH_TALISMAN)) {
-			if (rcLevel < 26) {
-				return essCount;
-			} else if (rcLevel >= 26 && rcLevel < 52) {
-				return essCount * 2;
-			} else if (rcLevel >= 52 && rcLevel < 78) {
-				return essCount * 3;
-			} else if (rcLevel >= 78) {
-				return essCount * 4;
-			}
-		} else if (talisman.equals(Talisman.FIRE_TALISMAN)) {
-			if (rcLevel < 35) {
-				return essCount;
-			} else if (rcLevel >= 35 && rcLevel < 70) {
-				return essCount * 2;
-			} else if (rcLevel >= 70) {
-				return essCount * 3;
-			}
-		} else if (talisman.equals(Talisman.BODY_TALISMAN)) {
-			if (rcLevel < 46) {
-				return essCount;
-			} else if (rcLevel >= 46 && rcLevel < 92) {
-				return essCount * 2;
-			} else if (rcLevel >= 92) {
-				return essCount * 3;
-			}
-		} else if (talisman.equals(Talisman.COSMIC_TALISMAN)) {
-			if (rcLevel < 59) {
-				return essCount;
-			} else if (rcLevel >= 59) {
-				return essCount * 2;
-			}
-		} else if (talisman.equals(Talisman.CHAOS_TALISMAN)) {
-			if (rcLevel < 74) {
-				return essCount;
-			} else if (rcLevel >= 74) {
-				return essCount * 2;
-			}
-		} else if (talisman.equals(Talisman.NATURE_TALISMAN)) {
-			if (rcLevel < 91) {
-				return essCount;
-			} else if (rcLevel >= 91) {
-				return essCount * 2;
-			}
-		}
-		return essCount;
-	}
 
 	/**
-	 * Gets the essence type required
+	 * Checks which type off essence we should be using
+	 * 
 	 * @param player
-	 *        The player
-	 * @param talisman
-	 *        The talisman/tiara
+	 *            The player to check
+	 * @param altar
+	 *            The altar to check
+	 * @return The essence type required
 	 */
-	private int getEssType(Player player, Talisman talisman) {
+	private int getEssType(Player player, Altar altar) {
 		if (player.getInventory().contains(7936)) {
 			return 7936;
-		} else if (player.getInventory().contains(1436) && !talisman.pureEssOnly()) {
+		} else if (player.getInventory().contains(1436) && !altar.isPureEssenceOnly()) {
 			return 1436;
 		}
 		return -1;
 	}
-
 }

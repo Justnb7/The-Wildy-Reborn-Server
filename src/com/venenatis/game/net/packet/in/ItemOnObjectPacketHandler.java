@@ -1,10 +1,9 @@
 package com.venenatis.game.net.packet.in;
 
 import com.venenatis.game.cache.definitions.AnyRevObjectDefinition;
+import com.venenatis.game.content.chest.impl.crystal_chest.CrystalKeyReward;
+import com.venenatis.game.content.chest.impl.shiny_chest.ShinyChest;
 import com.venenatis.game.content.clicking.objects.ItemOnObjectInteract;
-import com.venenatis.game.content.rewards.BossRewardChest;
-import com.venenatis.game.content.rewards.CrystalChest;
-import com.venenatis.game.content.rewards.ShinyChest;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.entity.player.Player;
@@ -18,12 +17,12 @@ public class ItemOnObjectPacketHandler implements IncomingPacketListener {
 	@Override@SuppressWarnings("unused")
 	public void handle(final Player player, int packetType, int packetSize) {
 		
-		int interfaceType = player.getInStream().readUnsignedWord();
+		int interfaceType = player.getInStream().readUnsignedShort();
 		final int id = player.getInStream().readSignedWordBigEndian();
 		final int y = player.getInStream().readSignedWordBigEndianA();
 		final int slot = player.getInStream().readSignedWordBigEndian();
 		final int x = player.getInStream().readSignedWordBigEndianA();
-		final int itemId = player.getInStream().readUnsignedWord();
+		final int itemId = player.getInStream().readUnsignedShort();
 		
 		player.debug(String.format("Item on obj %d x:%d z:%d id:%d item: %d on slot:%d%n", packetType, x, y, id, itemId, slot));
 
@@ -59,14 +58,16 @@ public class ItemOnObjectPacketHandler implements IncomingPacketListener {
 		}
 		
 		if(def.getName().toLowerCase().contains("open chest") && def.getActions()[0].toLowerCase().contains("search")) {
-			CrystalChest.searchChest(player, loc);
-			return;
+			if (player.getInventory().contains(989)) {
+				player.getInventory().remove(new Item(989, 1));
+				new CrystalKeyReward(player).giveReward();
+			} else {
+				player.message("You need a Crystal Key to open this chest.");
+				return;
+			}
 		}
 		
 		switch (item.getId()) {
-		case 2944:
-			BossRewardChest.open(player, loc);
-			break;
 		}
 		
 		ItemOnObjectInteract.handle(player, id, loc, item);

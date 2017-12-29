@@ -1,9 +1,17 @@
 package com.venenatis.game.net.packet;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.venenatis.game.constants.Constants;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena;
+import com.venenatis.game.content.emotes.Emotes;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsHandler;
+import com.venenatis.game.content.option_menu.ClientOptionMenu;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.content.skill_guides.SkillGuideContent;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
@@ -12,12 +20,12 @@ import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
 import com.venenatis.game.model.combat.data.AttackStyle;
 import com.venenatis.game.model.combat.magic.SpellBook;
 import com.venenatis.game.model.container.impl.InterfaceConstants;
+import com.venenatis.game.model.container.impl.inventory.InventoryContainer;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.Entity.EntityType;
-import com.venenatis.game.model.entity.npc.pet.Pet;
+import com.venenatis.game.model.entity.npc.pet.Follower;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.clan.ClanManager;
-import com.venenatis.game.model.entity.player.clan.ClanRank;
+import com.venenatis.game.model.entity.player.clan.Clan;
 import com.venenatis.game.model.entity.player.dialogue.input.InputAmount;
 import com.venenatis.game.model.entity.player.dialogue.input.InputString;
 import com.venenatis.game.model.entity.player.updating.PlayerUpdating;
@@ -145,44 +153,6 @@ public class ActionSender {
 		return this;
 	}
 
-	public ActionSender addClanMember(String username) {
-		player.getOutStream().putFrameVarByte(216);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().putRS2String(username);
-		player.getOutStream().putFrameSizeByte(offset);
-		return this;
-	}
-
-	public ActionSender sendClanDetails(String name, String message, String clan, ClanRank rank) {
-		player.getOutStream().putFrameVarShort(217);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().putRS2String(name);
-		player.getOutStream().putRS2String(message);
-		player.getOutStream().putRS2String(clan);
-		player.getOutStream().writeShort(rank.getRankIndex());
-		player.getOutStream().putFrameSizeShort(offset);
-		return this;
-	}
-
-	public ActionSender sendClanDetails(String message, String clan) {
-		player.getOutStream().putFrameVarShort(217);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().putRS2String("");
-		player.getOutStream().putRS2String(message);
-		player.getOutStream().putRS2String(clan);
-		player.getOutStream().writeShort(ClanRank.ANYONE.getRankIndex());
-		player.getOutStream().putFrameSizeShort(offset);
-		return this;
-	}
-
-	public ActionSender removeClanMember(String username) {
-		player.getOutStream().putFrameVarByte(213);
-		int offset = player.getOutStream().offset;
-		player.getOutStream().putRS2String(username);
-		player.getOutStream().putFrameSizeByte(offset);
-		return this;
-	}
-
 	public ActionSender sendString(String message, int interfaceId) {
 		player.getOutStream().putFrameVarShort(126);
 		int offset = player.getOutStream().offset;
@@ -236,29 +206,14 @@ public class ActionSender {
 	 * @param entity	The target entity to draw hint for.
 	 * @return			The PacketSender instance.
 	 */
-	public ActionSender sendEntityHint(Entity entity) {
+	public ActionSender sendEntityHint(Entity entity, boolean active) {
 		int type = entity instanceof Player ? 10 : 1;
 		player.outStream.writeFrame(254);
-		player.outStream.writeByte(type);
+		player.outStream.writeByte(active ? type : -1);
 		player.outStream.writeShort(entity.getIndex());
-		player.getOutStream().write3Byte(0);
+		player.outStream.writeShort(0); // dummy data packet size must be 6
+		player.outStream.writeByte(0); // dummy data packet size must be 6
 		player.flushOutStream();
-		return this;
-	}
-
-	public ActionSender drawHeadIcon(int i, int index, int k, int l) {
-		player.outStream.writeFrame(254);
-		player.outStream.writeByte(i);
-
-		if (i == 1 || i == 10) {
-			player.outStream.writeShort(index);
-			player.outStream.writeShort(k);
-			player.outStream.writeByte(l);
-		} else {
-			player.outStream.writeShort(k);
-			player.outStream.writeShort(l);
-			player.outStream.writeByte(index);
-		}
 		return this;
 	}
 
@@ -284,12 +239,12 @@ public class ActionSender {
 		} else {
 			sendSidebarInterface(Constants.MAGIC_TAB, 29999);
 		}
-		sendSidebarInterface(Constants.CLAN_TAB, 33800);
+		sendSidebarInterface(Constants.CLAN_TAB, 28128/*33800*/);
 		sendSidebarInterface(Constants.FRIENDS_TAB, 5065);
 		sendSidebarInterface(Constants.IGNORE_TAB, 5715);
-		sendSidebarInterface(Constants.WRENCH_TAB, 16000);
+		sendSidebarInterface(Constants.WRENCH_TAB, 45580);
 		sendSidebarInterface(Constants.EMOTE_TAB, 147);
-		sendSidebarInterface(Constants.MUSIC_TAB, -1);
+		sendSidebarInterface(Constants.MUSIC_TAB, 42150);
 		sendSidebarInterface(Constants.ATTACK_TAB, 2423);
 		sendSidebarInterface(Constants.LOGOUT_TAB, 2449);
 		return this;
@@ -372,7 +327,6 @@ public class ActionSender {
 	}
 
 	public ActionSender sendChatInterface(int frame) {
-		player.stopSkillTask();
 		player.getOutStream().writeFrame(164);
 		player.getOutStream().writeWordBigEndian_dup(frame);
 		return this;
@@ -405,6 +359,17 @@ public class ActionSender {
 		player.outStream.writeByte(255);
 		player.outStream.putInt(amount);
 		player.outStream.putFrameSizeShort(offset);
+		return this;
+	}
+	
+	public ActionSender sendItemOnInterface(final int frame, final int slot, final int id, final int amount) {
+		player.outStream.createFrameVarSizeWord(34);
+		player.outStream.writeShort(frame);
+		player.outStream.writeByte(slot);
+		player.outStream.writeShort(id + 1);
+		player.outStream.writeByte(255);
+		player.outStream.putInt(amount);
+		player.outStream.endFrameVarSizeWord();
 		return this;
 	}
 
@@ -514,6 +479,38 @@ public class ActionSender {
 		player.getInterfaceState().interfaceOpened(interfaceId);
 		return this;
 	}
+	
+	/**
+	 * Sends a new Option menu packet.
+	 * 
+	 * @param childId
+	 *            The childId of the option menu interface.
+	 * @param optionMenus
+	 *            A {@link Collection} of {@link ClientOptionMenu}s containing
+	 *            the updates.
+	 */
+	public void sendOptionMenuInterface(final int childId, final Collection<ClientOptionMenu> optionMenus) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
+		player.getOutStream().createFrameVarSizeWord(223);
+		player.getOutStream().writeShort(childId);
+		if (optionMenus.isEmpty()) {
+			player.getOutStream().writeByte(0);
+		} else {
+			player.getOutStream().writeByte(optionMenus.size());
+			for (ClientOptionMenu menu : optionMenus) {
+				if (menu == null) {
+					continue;
+				}
+				player.getOutStream().writeByte(menu.getIdentifier());
+				player.getOutStream().putRS2String(menu.getOptionName());
+				player.getOutStream().putRS2String(menu.getOptionTooltip());
+			}
+		}
+		player.getOutStream().endFrameVarSizeWord();
+		player.flushOutStream();
+	}
 
 	/**
 	 * Sends some information to the client about screen fading.
@@ -561,6 +558,105 @@ public class ActionSender {
 		return this;
 	}
 
+	public void clientConfigs(Map<Integer, Integer> values) {
+		if (values.isEmpty()) {
+			return;
+		}
+		player.getOutStream().createFrameVarSizeWord(233);
+		player.getOutStream().writeByte(values.size());
+		for (Entry<Integer, Integer> value : values.entrySet()) {
+			player.getOutStream().writeShort(value.getKey());
+			player.getOutStream().writeByte(value.getValue());
+		}
+		player.getOutStream().endFrameVarSizeWord();
+		player.flushOutStream();
+	}
+	
+	/**
+	 * Sends a new skill guide packet
+	 * 
+	 * @param skillGuide
+	 *            {@link SkillGuideContent} for the guide
+	 */
+	public void sendSkillGuideInterface(final SkillGuideContent skillGuide, int optionLength) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
+
+		if (skillGuide.getLevels().length == 0) {
+			return;
+		}
+		player.getOutStream().createFrameVarSizeWord(227);
+		player.getOutStream().writeByte(optionLength);
+		player.getOutStream().writeByte(skillGuide.getLevels().length);
+		for (int i = 0; i < skillGuide.getLevels().length; i++) {
+			player.getOutStream().writeByte(skillGuide.getLevels()[i]);
+			player.getOutStream().putRS2String(i < skillGuide.getDescriptions1().length ? skillGuide.getDescriptions1()[i] : "");
+			player.getOutStream().putRS2String(i < skillGuide.getDescriptions2().length ? skillGuide.getDescriptions2()[i] : "");
+		}
+		player.getOutStream().endFrameVarSizeWord();
+		player.flushOutStream();
+	}
+	
+	/**
+	 * Sends packet 79 to set an interface's scroll position.
+	 * 
+	 * @param childId
+	 *            The childId of the interface.
+	 * @param scrollPosition
+	 *            The value of the scroll position.
+	 */
+	public void setScrollPosition(final int childId, final int scrollPosition, final int scrollMax) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
+		player.getOutStream().writeFrame(79);
+		player.getOutStream().writeShort(childId);
+		player.getOutStream().writeShort(scrollPosition);
+		player.getOutStream().writeShort(scrollMax);
+	}
+	
+	/**
+	 * Sends the given collection of items on the specified frameId.
+	 * 
+	 * @param frameId
+	 *            The client interface frame id that the items are being sent
+	 *            to.
+	 * @param items
+	 *            The collection of items that is being sent.
+	 */
+	public void sendItemsOnInterface(final int frameId, final Collection<Item> items) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
+		if (items == null) {
+			return;
+		}
+		player.getOutStream().putFrameVarShort(53);
+		int offset = player.getOutStream().offset;
+
+		player.getOutStream().writeShort(frameId);
+		player.getOutStream().writeShort(items.size());
+
+		for (Item item : items) {
+			if (item != null) {
+				int amount = item.getAmount();
+				if (amount > 254) {
+					player.getOutStream().writeByte(255);
+					player.getOutStream().writeDWord_v2(item.getAmount());
+				} else {
+					player.getOutStream().writeByte(item.getAmount());
+				}
+				player.getOutStream().writeWordBigEndianA(item.getId() < 1 ? 0 : item.getId() + 1);
+			} else {
+				player.getOutStream().writeByte(0);
+				player.getOutStream().writeWordBigEndianA(0);
+			}
+		}
+		player.getOutStream().putFrameSizeShort(offset);
+		player.flushOutStream();
+	}
+
 	/**
 	 * Sends a packet to update a group of items.
 	 * 
@@ -603,6 +699,7 @@ public class ActionSender {
 
 	public ActionSender sendObject(int id, int x, int y, int h, int face, int objectType) {
 		sendCoordinates(Location.create(x, y, h));
+		System.out.println("Object");
 		// removing object
 		player.getOutStream().writeFrame(101);
 		player.getOutStream().writeByteC((objectType << 2) + (face & 3));
@@ -656,36 +753,25 @@ public class ActionSender {
         sendLocalCoordinates(loc, 0, 0);
 		player.getOutStream().writeFrame(4);
 		player.getOutStream().writeByte((byte) 0);
-		player.getOutStream().writeWord(id);
+		player.getOutStream().writeShort(id);
 		player.getOutStream().writeByte((byte) height);
-		player.getOutStream().writeWord(0);
+		player.getOutStream().writeShort(0);
 		player.flushOutStream();
         return this;
     }
-
-	public ActionSender stillGfx(int id, int x, int y, int height, int time) {
-		player.getOutStream().writeFrame(85);
-		player.getOutStream().writeByteC(y - (player.getLastKnownRegion().getRegionY() * 8));
-		player.getOutStream().writeByteC(x - (player.getLastKnownRegion().getRegionX() * 8));
-		player.getOutStream().writeFrame(4);
-		player.getOutStream().writeByte(0);
-		player.getOutStream().writeWord(id);
-		player.getOutStream().writeByte(height);
-		player.getOutStream().writeWord(time);
-		player.flushOutStream();
-		return this;
-	}
-
-	public ActionSender stillGfx(int id, Location location) {
-		player.getOutStream().writeFrame(85);
-		player.getOutStream().writeByteC(location.getY() - (player.getLastKnownRegion().getRegionY() * 8));
-		player.getOutStream().writeByteC(location.getX() - (player.getLastKnownRegion().getRegionX() * 8));
-		player.getOutStream().writeFrame(4);
-		player.getOutStream().writeByte(0);
-		player.getOutStream().writeWord(id);
-		player.getOutStream().writeByte(location.getZ());
-		player.getOutStream().writeWord(0);
-		player.flushOutStream();
+	
+	public ActionSender stillGfx(int id, Location location, int time) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().writeFrame(85);
+			player.getOutStream().writeByteC(location.getY() - (player.getLastKnownRegion().getRegionY() * 8));
+			player.getOutStream().writeByteC(location.getX() - (player.getLastKnownRegion().getRegionX() * 8));
+			player.getOutStream().writeFrame(4);
+			player.getOutStream().writeByte(0);
+			player.getOutStream().writeShort(id);
+			player.getOutStream().writeByte(location.getZ());
+			player.getOutStream().writeShort(time);
+			player.flushOutStream();
+		}
 		return this;
 	}
 	
@@ -857,17 +943,67 @@ public class ActionSender {
 		}
 		return this;
 	}
-
-	public ActionSender sendStrings(int startId, int endId, String[] strings) {
+	
+	/**
+	 * Sends a massive string update
+	 * 
+	 * @param startId
+	 *            the interface id the strings start at
+	 *            
+	 * @param endId
+	 *            the interface id the strings ends at
+	 *            
+	 * @param strings
+	 *            the strings array
+	 */
+	public void sendStrings(int startId, int endId, String[] strings) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
 		player.getOutStream().createFrameVarSizeWord(229);
-		player.getOutStream().writeWord(startId);
-		player.getOutStream().writeWord(endId);
+		player.getOutStream().writeShort(startId);
+		player.getOutStream().writeShort(startId + strings.length);
 		player.getOutStream().writeByte(strings.length);
 		for (String s : strings)
 			player.getOutStream().putRS2String(s);
 		player.getOutStream().endFrameVarSizeWord();
 		player.flushOutStream();
-		return this;
+	}
+	
+	public void sendStrings(int startId, int endId, List<String> strings) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
+		player.getOutStream().createFrameVarSizeWord(229);
+		player.getOutStream().writeShort(startId);
+		player.getOutStream().writeShort(endId);
+		player.getOutStream().writeByte(strings.size());
+		for (String s : strings) {
+			player.getOutStream().putRS2String(s);
+		}
+		player.getOutStream().endFrameVarSizeWord();
+		player.flushOutStream();
+	}
+	
+	/**
+	 * Sends a massive string emptier
+	 * 
+	 * @param startId
+	 *            the interface id the strings start at
+	 *            
+	 * @param endId
+	 *            the interface id the strings ends at
+	 *            
+	 */
+	public void emptyStrings(int startId, int endId) {
+		if (player == null || player.getOutStream() == null) {
+			return;
+		}
+		player.getOutStream().createFrameVarSizeWord(231);
+		player.getOutStream().writeShort(startId);
+		player.getOutStream().writeShort(endId);
+		player.getOutStream().endFrameVarSizeWord();
+		player.flushOutStream();
 	}
 
 	public ActionSender sendFriendServerStatus(final int status) {
@@ -894,7 +1030,6 @@ public class ActionSender {
 	 *            The interface
 	 */
 	public ActionSender sendInterface(int id) {
-		player.stopSkillTask();
 		player.getOutStream().writeFrame(97);
 		player.getOutStream().writeShort(id);
 		player.getInterfaceState().interfaceOpened(id);
@@ -929,7 +1064,6 @@ public class ActionSender {
 	}
 
 	public ActionSender sendSidebarInterface(int menu, int id) {
-		player.stopSkillTask();
 		player.outStream.writeFrame(71);
 		player.outStream.writeShort(id);
 		player.outStream.putByteA(menu);
@@ -967,7 +1101,6 @@ public class ActionSender {
 	}
 
 	public ActionSender sendChatBoxInterface(int id) {
-		player.stopSkillTask();
 		player.getOutStream().writeFrame(164);
 		player.getOutStream().writeWordBigEndian_dup(id);
 		player.flushOutStream();
@@ -1045,9 +1178,6 @@ public class ActionSender {
 		// Update our attack style
 		AttackStyle.adjustAttackStyleOnLogin(player);
 
-		// Reset the players location
-		resetLocation();
-
 		player.getController().onStartup(player);
 		
 		player.checkForSkillcapes();
@@ -1083,7 +1213,7 @@ public class ActionSender {
 		player.setCombatLevel(player.getSkills().getCombatLevel());
 		player.getSkills().updateTotalLevel();
 
-		sendMessage("Welcome to " + Constants.SERVER_NAME + ".");
+		sendMessage("Welcome to " + Constants.SERVER_NAME + " Alpha.");
 		updateAfterLogin();
 
 		// activate login delay
@@ -1092,24 +1222,14 @@ public class ActionSender {
 	}
 
 	public void updateConfigs() {
-		player.setScreenBrightness((byte) 4);
-		sendConfig(166, player.getScreenBrightness());
 		sendConfig(207, player.isEnableMusic() ? 1 : 0);
 		sendConfig(206, player.isEnableSound() ? 1 : 0);
-		sendConfig(16109, player.getSplitPrivateChat() ? 1 : 0);
-		sendConfig(205, player.getSplitPrivateChat() ? 1 : 0);
-		sendConfig(200, player.getAcceptAid() ? 1 : 0);
 		sendConfig(172, player.isAutoRetaliating() ? 1 : 0);
 		sendConfig(152, player.getWalkingQueue().isRunningToggled() ? 1 : 0);
 		sendString(player.getRunEnergy() + "%", 149);
 		sendRunEnergy();
-		sendConfig(16101, player.getDataOrbs() ? 1 : 0);
-		sendConfig(16103, player.getRoofsToggled() ? 1 : 0);
-		sendConfig(16105, player.getLeftClickAttack() ? 1 : 0);
-		sendConfig(16111, player.getGameTimers() ? 1 : 0);
-		sendConfig(16113, player.toggleTargetTracking() ? 1 : 0);
-		sendConfig(16115, player.toggleGroundItems() ? 1 : 0);
-		sendConfig(16118, player.toggleShiftClick() ? 1 : 0);
+		Emotes.update(player);
+		BarrowsHandler.getSingleton().updateOverlayInterface(player);
 	}
 
 	public void updateAfterLogin() {
@@ -1131,7 +1251,7 @@ public class ActionSender {
 
 				if (!player.receivedStarter()) {
 					player.getDialogueManager().start("STARTER");
-					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername()) + "</col> Has joined Venenatis for the first time.");
+					PlayerUpdating.executeGlobalMessage("<col=255>" + Utility.capitalize(player.getUsername()) + "</col> Has joined The Wildy for the first time.");
 				}
 
 				// We can update our kills tracker after login
@@ -1142,19 +1262,22 @@ public class ActionSender {
 
 				// If we had a pet spawned, we spawn it after the login protocol
 				if (player.getPet() > -1)
-					Pet.drop(player, null, true);
+					Follower.drop(player, null, true);
 
 				// If we're a Owner we choose to play in debug mode
 				if (player.getRights().isOwner(player) && !player.getUsername().equalsIgnoreCase("Matthew")) {
 					player.setDebugMode(true);
 				}
+				
+				//Update favorite teleports
+				player.getTeleportMenuHandler().updateFavorites();
 
 				// If the player is not in a clan chat we'll add them in the
 				// server clan chat
-				if (player.getClanChat() == null || player.getClanChat() == "") {
-					ClanManager.join(player, "help");
+				if (player.getClan() != null && Server.getClanManager().clanExists(player.getClan().getFounder())) {
+					player.getClan().addMember(player);
 				} else {
-					ClanManager.join(player, player.getClanChat());
+					Clan.resetInterface(player);
 				}
 
 				// Update farming
@@ -1177,11 +1300,45 @@ public class ActionSender {
 		}.attach(this));
 	}
 
-	private final void resetLocation() {
-		if (DuelArena.inArena(player)) {
-			player.setTeleportTarget(DuelArena.RESPAWN_LOCATIONS
-					.get(Utility.random(DuelArena.RESPAWN_LOCATIONS.size(), false)).getRandomLocation());
+	//This one packet 8
+	public ActionSender sendMediaInterface(int mediaType, int mediaId) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().writeFrame(8); // not sure why it needs a custom size
+			player.getOutStream().writeWordBigEndianA(mediaType);
+			player.getOutStream().writeShort(mediaId);
+			player.flushOutStream();
 		}
+		return this;
+	}
+	
+	public ActionSender setModelOSVEOS(int interfaceId, int modelId) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().writeFrame(8);
+			player.getOutStream().writeWordBigEndianA(interfaceId);
+			player.getOutStream().writeShort(modelId);
+			player.flushOutStream();
+		}
+		return this;
+	}
+	
+	public ActionSender refreshContainer(int frameId) {
+		if (player.getOutStream() != null && player != null) {
+			player.getOutStream().createFrameVarSizeWord(53);
+			player.getOutStream().writeShort(frameId);
+			player.getOutStream().writeShort(InventoryContainer.SIZE);
+			for (int i = 0; i < InventoryContainer.SIZE; i++) {
+				if (player.getInventory().get(i).getAmount() > 254) {
+					player.getOutStream().writeByte(255);
+					player.getOutStream().writeDWord_v2(player.getInventory().get(i).getAmount());
+				} else {
+					player.getOutStream().writeByte(player.getInventory().get(i).getAmount());
+				}
+				player.getOutStream().writeWordBigEndianA(player.getInventory().get(i).getId() < 1 ? 0 : player.getInventory().get(i).getId() + 1);
+			}
+			player.getOutStream().endFrameVarSizeWord();
+			player.flushOutStream();
+		}
+		return this;
 	}
 
 }

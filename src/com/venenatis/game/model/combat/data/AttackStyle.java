@@ -158,6 +158,8 @@ public class AttackStyle {
                     player.setAttackStyleConfig(type.getChild());
                     player.setAttackStyle(type.getStyle());
                     player.getActionSender().sendConfig(type.getParent(), type.getChild());
+                    if(player.getUsername().equalsIgnoreCase("mopar"))
+                    player.getActionSender().sendMessage("Attack Style: "+player.getAttackStyle());
                     //player.write(new SendMessagePacket("Setting config ID: "+type.getParent()+" to child id: "+type.getChild()+" attack style: "+type.getStyle()));
                     return true;
                 }

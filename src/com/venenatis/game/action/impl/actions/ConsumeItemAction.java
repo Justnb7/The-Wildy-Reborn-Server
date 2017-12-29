@@ -8,7 +8,8 @@ import com.venenatis.game.consumables.Consumables.PotionType;
 import com.venenatis.game.content.SkillCapePerks;
 import com.venenatis.game.content.achievements.Achievements;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelRule;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelOptions;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelStage;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Skills;
 import com.venenatis.game.model.entity.Entity;
@@ -67,19 +68,28 @@ public class ConsumeItemAction extends Action {
 		 * Food
 		 */
 		if (food != null) {
+			if (player.getAttributes().get("duel_stage") != null && player.getAttributes().get("duel_stage") != DuelStage.FIGHTING_STAGE) {
+				return;
+			}
+			
 			if(player.hasAttribute("stunned")) {
 				return;
 			}
-			if (player.getDuelArena().getRules().get(DuelRule.FOOD)) {
-				player.getActionSender().sendMessage("Consuming food has been disabled!");
-				return;
-			}
+			
 			Food last = player.getCombatState().getLastAte();
+			
 			if (food == Food.KARAMBWAN && last != Food.KARAMBWAN) {
 				player.getCombatState().setEatDelay(0);
 			}
+			
 			//System.out.println(food + ", " + last + ", " + player.getCombatState().getEatDelay());
 			if (player.getCombatState().getEatDelay() == 0) {
+				
+				if (player.getDuelArena().getOptionActive()[DuelOptions.NO_FOOD.getId()]) {
+					player.getActionSender().sendMessage("The rights to eat consumables has been revoked during this stake.");
+					return;
+				}
+				
 				player.getCombatState().setCanEat(true);
 				player.playAnimation(Animation.create(829));
 				if (food != Food.PURPLE_SWEETS)
@@ -140,13 +150,19 @@ public class ConsumeItemAction extends Action {
 				Achievements.activate(player, Achievement.YUM, 1);
 			}
 			} else if (drink != null && player.getCombatState().canDrink()) {
+				if (player.getAttributes().get("duel_stage") != null && player.getAttributes().get("duel_stage") != DuelStage.FIGHTING_STAGE) {
+					return;
+				}
+				
 				if(player.hasAttribute("stunned")) {
 					return;
 				}
-				if (player.getDuelArena().getRules().get(DuelRule.DRINKS)) {
-					player.getActionSender().sendMessage("Consuming potions has been disabled!");
+				
+				if (player.getDuelArena().getOptionActive()[DuelOptions.NO_DRINKS.getId()]) {
+					player.getActionSender().sendMessage("The rights to drink consumables has been revoked during this stake.");
 					return;
 				}
+				
 				/**
 				 * Drink
 				 */
@@ -162,6 +178,7 @@ public class ConsumeItemAction extends Action {
 						this.stop();
 					}
 				});
+				
 				if (item.getDefinition() == null) {
 					return;
 				}

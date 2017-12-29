@@ -28,6 +28,9 @@ public class SpellHandler {
 	public static void handleSpellEffect(Player player, Entity victim) {
 		int spellId = player.getSpellId() > -1 ? player.getSpellId() : player.getAutocastId() > -1 ? player.getAutocastId() : -1;
 		SpellEffect effect = forId(spellId);
+		if(effect.spellId() == 47) {
+			player.usingMultiSpell = true;
+		} else player.usingMultiSpell = false;
 		if (effect == null) {
 			return;
 		}

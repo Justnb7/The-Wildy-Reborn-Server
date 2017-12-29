@@ -1,17 +1,15 @@
-
 package com.venenatis.game.model.combat;
 
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.constants.EquipmentConstants;
 import com.venenatis.game.content.SkillCapePerks;
-import com.venenatis.game.content.activity.minigames.Minigame;
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelStage;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
-import com.venenatis.game.location.Area;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.combat.RangeConstants.ArrowType;
 import com.venenatis.game.model.combat.RangeConstants.BowType;
 import com.venenatis.game.model.combat.RangeConstants.RangeWeaponType;
@@ -43,6 +41,7 @@ import com.venenatis.game.world.pathfinder.PathFinder;
 import com.venenatis.game.world.pathfinder.impl.VariablePathFinder;
 import com.venenatis.server.Server;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Combat {
@@ -122,16 +121,6 @@ public class Combat {
 	 * @param seconds
 	 */
 	public static void skull(Player player, SkullType type, int seconds) {
-		//Certain minigames allows skulling
-		if (!MinigameHandler.execute(player, true, Minigame::canSkull)) {
-			return;
-		}
-		
-		//We can't skull in the duel arena
-		if (player.getDuelArena().isDueling()) {
-			return;
-		}
-		
 		//Apply the skull and timer
 		player.setSkullType(type);
 		player.setSkullTimer(seconds);
@@ -171,21 +160,10 @@ public class Combat {
     public static void playerVsEntity(Player player) {
         if (player.getCombatState().noTarget())
             return;
-
-        // Establish what style we'd be using this cycle
         Combat.setCombatStyle(player);
         Entity target = player.getCombatState().getTarget();
         player.face(target.getLocation());
         player.debug("style: "+player.getCombatType()+" vs "+target);
-        
-        if (target.isPlayer()) {
-			if (player.getDuelArena().isDueling()) {
-				if (!player.getDuelArena().canAttack()) {
-					return;
-				}
-			}
-		}
-
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
             player.getActionSender().sendEntityFeed(Utility.formatName(ptarg.getUsername()), ptarg.getSkills().getLevel(Skills.HITPOINTS), ptarg.getSkills().getLevelForExperience(Skills.HITPOINTS));
@@ -194,24 +172,34 @@ public class Combat {
             if (npc.getId() != 493 || npc.getId() != 496 || npc.getId() != 5534) {
                 String name = target.isNPC() ? npc.asNpc().getName() : "null";
                 player.getActionSender().sendEntityFeed(name, npc.getHitpoints(), npc.getMaxHitpoints());
-                //System.out.println("name: "+name+" current health: "+npc.getHitpoints()+" max health: "+npc.getMaxHitpoints());
             }
         }
-
         if (player.getCombatType() == CombatStyle.RANGE) {
             rangeAttack(player, target);
         } else if (player.getCombatType() == CombatStyle.MAGIC) {
             magicAttack(player, target);
-        } else {
+        }   else if (player.getCombatType() == CombatStyle.MELEE) {
             meleeAttack(player, target);
         }
     }
-
+	/*if(target.isNPC() && (BoundaryManager.isWithinBoundaryNoZ(target.getLocation(), "multi_combat")) && player.usingMultiSpell) {
+	for (NPC p : player.getLocalNPCs()) {
+		if(p.getLocation().isWithinDistance(target.getLocation(), 2) || p.getLocation().equals(target.getLocation())) {
+			p.sendForcedMessage("I am a target"); 
+			magicAttack(player, p);
+			player.getActionSender().sendMessage("Multispells");
+		}
+	}
+} else*/
     private static void meleeAttack(Player player, Entity target) {
-        if (!touches(player, target))
+        if (!touches(player, target)) {
+        	System.out.println("We can't touch this npc.");
             return;
-        if (!attackable(player, target))
+        }
+        
+        if (!attackable(player, target)) {
             return;
+        }
 
         if (usingHalberd(player) && player.goodDistance(player.getX(), player.getY(), target.getX(), target.getY(), 2) && !target.moving()) {
             player.getWalkingQueue().reset();
@@ -236,8 +224,8 @@ public class Combat {
             dam1 = 0;
         }
         
-		if (player.getUsername().equalsIgnoreCase("patrick"))
-			dam1 = 2000;
+		/*if (player.getUsername().equalsIgnoreCase("patrick") && player.inDebugMode())
+			dam1 = 2000;*/
 
         //setup the Hit
         target.take_hit(player, dam1, CombatStyle.MELEE).giveXP(player).send();
@@ -285,8 +273,6 @@ public class Combat {
                 return;
             }
         }
-
-        // Magic attack anim
         player.playAnimation(Animation.create(player.MAGIC_SPELLS[spell][2]));
 
         int hitDelay = wepId == -1 ? 4 : CombatData.getHitDelay(player, ItemDefinition.get(wepId).getName().toLowerCase());
@@ -317,7 +303,6 @@ public class Combat {
 
         boolean splash = !CombatFormulae.getAccuracy(player, target, 2, 1.0);
         if (!target.frozen() && !splash) {
-        	//After the damage was taken we activate our spell effects.
 			SpellHandler.handleSpellEffect(player, target);
             if (target.isPlayer() && target.frozen()) {
                 target.getWalkingQueue().reset();
@@ -363,7 +348,7 @@ public class Combat {
             }
         }
         
-        if(player.getUsername().equalsIgnoreCase("patrick"))
+        if(player.getUsername().equalsIgnoreCase("patrick") && player.inDebugMode())
         	dam1 = 2000;
 
         target.take_hit(player, dam1, CombatStyle.MAGIC).giveXP(player).send(hitDelay);
@@ -608,7 +593,7 @@ public class Combat {
         }
         player.removeAttribute("ignore defence");
         
-        if (player.getUsername().equalsIgnoreCase("patrick"))
+        if (player.getUsername().equalsIgnoreCase("patrick") && player.inDebugMode())
 			dam1 = 2000;
 
 		// Apply dmg.
@@ -676,7 +661,7 @@ public class Combat {
 		Item drop = null;
 
 		// Establish do we wanna drop
-		if (player.getEquipment().contains(BLOWPIPE)) {
+		if (player.getEquipment().contains(BLOWPIPE) || player.getEquipment().contains(4222)) {
 			// if we have dart/scales support, handle that here
 		} else if (bow) {
 			if (dropArrows) {
@@ -698,7 +683,7 @@ public class Combat {
 			System.err.println("UNKNOWN RANGE AMMO SITUATION"); // what wep u using?
 		}
 		// 30% chance the arrow goes to ground, otherwise its just lost forever deleted
-		if (drop != null /*&& RandomGenerator.nextInt(3) == 1*/) { // fuck rng yo
+		if (drop != null /*&& RandomGenerator.nextInt(3) == 1*/&& !drop.equals(3024)) { // fuck rng yo
 			GroundItemHandler.createGroundItem(new GroundItem(drop, target.getLocation(), player));
 		}
 	}
@@ -726,7 +711,13 @@ public class Combat {
 			return false;
 		}
 		
-		if (!Area.inWilderness(player) || !Area.inWilderness(target)) {
+		if (BoundaryManager.isWithinBoundary(player.getLocation(), "DuelArenaFight") && BoundaryManager.isWithinBoundary(target.getLocation(), "DuelArenaFight")) {
+			if (player.getAttributes().get("duel_stage") != null && player.getAttributes().get("duel_stage") == DuelStage.FIGHTING_STAGE && Objects.equals(player.getDuelArena().getOtherPlayer(), target)) {
+				return true;
+			}
+		}
+		
+		if (!BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone") || !BoundaryManager.isWithinBoundary(target.getLocation(), "PvP Zone")) {
 			Combat.resetCombat(player);
 			player.getWalkingQueue().reset();
 			return false;
@@ -739,7 +730,7 @@ public class Combat {
 		boolean bypassCosImTheBest = player.getUsername().equalsIgnoreCase("test") || player.getUsername().equalsIgnoreCase("patrick");
 		int myCB = player.getCombatLevel();
 		int target_CB = target.getCombatLevel();
-		if (Area.inWilderness(player)) {
+		if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
 			if (!bypassCosImTheBest && ((myCB > target_CB + target.getWildLevel()) || (myCB < target_CB - target.getWildLevel()))) {
 				player.message("You can't attack "+target.getUsername()+" - your level difference is too great.");
 				player.getWalkingQueue().reset();
@@ -755,7 +746,7 @@ public class Combat {
 				return false;
 			}
 		}
-		if (!Area.inMultiCombatZone(target)) { // single combat zones
+		if (!BoundaryManager.isWithinBoundaryNoZ(target.getLocation(), "multi_combat")) { // single combat zones
 			if (target.lastAttacker != player && Combat.hitRecently(target, 4000)) {
 				player.message("Someone else is already fighting your opponent.");
 				player.getWalkingQueue().reset();
@@ -770,10 +761,6 @@ public class Combat {
 				return false;
 			}
 		}
-		if (!player.getController().canAttackPlayer(player, target)) {
-			player.getWalkingQueue().reset();
-			return false;
-		}
 		return true;
 	}
 
@@ -782,6 +769,7 @@ public class Combat {
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
             if (!validateAttack(player, ptarg)) {
+            	player.message("Block for w/e reason.");
                 return false;
             }
         } else {
@@ -855,7 +843,7 @@ public class Combat {
         // Add a skull if needed
         if (target.isPlayer()) {
             Player ptarg = (Player) target;
-            if (player != null && player.attackedPlayers != null && ptarg.attackedPlayers != null && !Area.inDuelArena(ptarg)) {
+            if (player != null && player.attackedPlayers != null && ptarg.attackedPlayers != null && !BoundaryManager.isWithinBoundary(ptarg.getLocation(), "DuelArenaFight")) {
                 if (!player.attackedPlayers.contains(target.getIndex()) && !ptarg.attackedPlayers.contains(player.getIndex())) {
                     player.attackedPlayers.add(target.getIndex());
                     skull(player, SkullType.SKULL, 300);
@@ -929,8 +917,8 @@ public class Combat {
 
         if (target.isNPC()) {
             NPC npc = (NPC) target;
-            npc.underAttackBy = player.getIndex();
-            npc.lastDamageTaken = System.currentTimeMillis();
+            npc.getCombatState().setUnderAttackBy(player);
+            npc.getCombatState().setLastHit(System.currentTimeMillis());
         }
         if (target.isPlayer()) {
             ((Player) target).putInCombat(player.getIndex());
@@ -1226,7 +1214,7 @@ public class Combat {
         boolean samespot = Location.standingOn(player, target);
         if (!com.venenatis.game.world.pathfinder.impl.ProjectilePathFinder.hasLineOfSight(player, target)) {
             if (!samespot) {
-                player.debug("no line of sight");
+                player.debug("no line of sight (style: "+player.getCombatType()+")");
                 return false;
             } else if (samespot) {
                 if (player.frozen()) {

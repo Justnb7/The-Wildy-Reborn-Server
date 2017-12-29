@@ -267,4 +267,8 @@ public class ItemDefinition {
 		return "ITEM[" + id + "," + name + "]";
 	}
 
+	public static int getMaximumItems() {
+		return DEFINITIONS.length;
+	}
+
 }

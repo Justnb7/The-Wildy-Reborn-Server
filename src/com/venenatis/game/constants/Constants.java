@@ -10,7 +10,7 @@ public class Constants {
 	 */
 	public static boolean MYSQL_ENABLED = true;
 	
-	public static int OSRS_REVISION_LOADING = 156;
+	public static int OSRS_REVISION_LOADING = 160;
 
 	public static String OSRS_MAP_INDEX_LOCATION = "./map_index_osrs"
 			+ OSRS_REVISION_LOADING;
@@ -92,12 +92,12 @@ public class Constants {
 	/**
 	 * The name of the server
 	 */
-	public static final String SERVER_NAME = "Venenatis";
+	public static final String SERVER_NAME = "The Wildy Reborn";
 
 	/**
 	 * The port in which this server is bound upon
 	 */
-	public static final int SERVER_PORT = 5555;
+	public static final int SERVER_PORT = 43594;
 
 	/**
 	 * the speed of world in ms

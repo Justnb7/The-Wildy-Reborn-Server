@@ -1,19 +1,19 @@
 package com.venenatis.game.model.entity.player.controller.impl;
 
 import com.venenatis.game.constants.StringConstants;
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
-import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControl;
 import com.venenatis.game.content.bounty.BountyHunter;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
-import com.venenatis.game.location.Area;
+import com.venenatis.game.content.minigames.multiplayer.duel_arena.DuelArena.DuelStage;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsHandler;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsPrayerDrainEvent;
 import com.venenatis.game.location.Location;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.combat.PrayerHandler.PrayerData;
-import com.venenatis.game.model.entity.Boundary;
 import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.player.Player;
-import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.model.entity.player.controller.Controller;
+import com.venenatis.game.net.packet.ActionSender.MinimapState;
+import com.venenatis.game.world.World;
 
 public class DefaultController extends Controller {
 
@@ -138,11 +138,6 @@ public class DefaultController extends Controller {
 	@Override
 	public void onStartup(Player player) {
 		onStep(player);
-
-		if (player.getClanChat() != null || player.getClanChat() == "") {
-			ClanManager.join(player, player.getClanChat());
-		}
-
 	}
 
 	@Override
@@ -153,59 +148,47 @@ public class DefaultController extends Controller {
 	@Override
 	public void onStep(Player player) {
 		
-		if(player.isJailed() && !Area.inside_jail(player)) {
+		if(player.isJailed() && !BoundaryManager.isWithinBoundary(player.getLocation(), "Jail")) {
 			player.setTeleportTarget(new Location(3015, 3194, 0));
 		}
 		
-		player.getActionSender().sendMultiIcon(Area.inMultiCombatZone(player) ? 1 : -1);
-		
-		/* Minigame */
-		if (MinigameHandler.search(player).isPresent()) {
-			MinigameHandler.search(player).ifPresent(m -> m.onDisplay(player));
-		/* Wilderness */
-		} else if (Area.inWilderness(player)) {
-			if (Area.inDaganothMotherCave(player)) {
-				player.setWildLevel(20);
-			} else {
-				int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
-				player.setWildLevel(((modY - 3521) / 8) + 1);
-			}
+		if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
+			int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
+			player.setWildLevel(((modY - 3521) / 8) + 1);
+			player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
 			player.getActionSender().sendInteractionOption(StringConstants.ATTACK_ACTION, 3, true);
 			player.getActionSender().sendInteractionOption("null", 2, false);
-			player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
-
 			player.setAttribute("left_wild_delay", 0L);
 			BountyHunter.writeBountyStrings(player);
 			player.getActionSender().sendWalkableInterface(BountyHunterConstants.BOUNTY_INTERFACE_ID);
-			/* Duel Arena */
-		} else if (Area.inDuelArena(player) || player.getDuelArena().getStage() == DuelStage.ARENA) {
-
-			/*for (int option = 0; option < 8; i++)
-				player.getActionSender().sendInteractionOption("option"+option, option, false);*/
-			if (player.getDuelArena().getStage() != DuelStage.ARENA) {
-				player.getActionSender().sendInteractionOption(StringConstants.DUEL_ACTION, 1, false);
-			} else {
-				player.getActionSender().sendInteractionOption("Fight", 3, true);
-				player.getActionSender().sendInteractionOption("null", 1, false);
-			}
-			player.getActionSender().sendWalkableInterface(player.getDuelArena().getStage() == DuelStage.ARENA ? -1 : 201);
+		} else if (player.getAttributes().get("duel_stage") != null && player.getAttributes().get("duel_stage") == DuelStage.FIGHTING_STAGE) {
+			player.getActionSender().sendMinimapState(MinimapState.NORMAL);
+			player.getActionSender().sendInteractionOption(StringConstants.DUEL_FIGHT, 3, true);
+			player.getActionSender().sendInteractionOption("null", 2, false);
+			player.getActionSender().sendWalkableInterface(201);
+		} else if (BoundaryManager.isWithinBoundary(player.getLocation(), "DuelArena")) {
+			player.getActionSender().sendInteractionOption(StringConstants.DUEL_ACTION, 2, false);
+			player.getActionSender().sendWalkableInterface(201);
 		} else {
-			player.getActionSender().sendWalkableInterface(-1);
-			player.getActionSender().sendInteractionOption("null", 1, true);
-			for(int option = 2; option < 4; option++)
-			player.getActionSender().sendInteractionOption("null", option, false);
+			player.getActionSender().sendMinimapState(MinimapState.NORMAL);
+			player.getActionSender().sendInteractionOption("null", 3, false);
+			player.getActionSender().sendInteractionOption("null", 1, false);
+			if (BarrowsHandler.getSingleton().withinBarrows(player)) {
+				player.getActionSender().sendWalkableInterface(4535); //4535 for default Kill Count: 0 42050
+				if (BarrowsHandler.getSingleton().withinCrypt(player)) {
+					World.getWorld().schedule(new BarrowsPrayerDrainEvent(player));
+				}
+			}/* else if (Wintertodt.inWintertodt(this)) {
+				getActionSender().sendWalkableInterface(57100);
+			}*/ else {
+				player.getActionSender().sendWalkableInterface(-1);
+			}
 		}
+		player.getActionSender().sendMultiIcon(BoundaryManager.isWithinBoundaryNoZ(player.getLocation(), "multi_combat") ? 1 : -1);
 	}
 
 	@Override
 	public void process(Player player) {
-		if (Boundary.isIn(player, PestControl.LOBBY_BOUNDARY)) {
-			player.getActionSender().sendWalkableInterface(21119);
-			PestControl.drawInterface(player, "lobby");
-		} else if (Boundary.isIn(player, PestControl.GAME_BOUNDARY)) {
-			player.getActionSender().sendWalkableInterface(21100);
-			PestControl.drawInterface(player, "game");
-		}
 		if (!(player.getWalkingQueue().isMoving() && player.getWalkingQueue().isRunning()) && player.getRunEnergy() != 100) {
 			player.setRunRestore(player.getRunRestore() + 1);
 

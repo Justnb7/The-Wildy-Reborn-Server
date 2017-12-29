@@ -6,7 +6,7 @@ import java.util.List;
 import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.skills.SkillData;
 import com.venenatis.game.content.skills.prayer.Prayer;
-import com.venenatis.game.location.Area;
+import com.venenatis.game.model.boudary.BoundaryManager;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.Graphic;
@@ -415,7 +415,7 @@ public class Skills {
         int oldLevel = getLevelForExperience(skillId);
         
         //Whilst training in the wilderness you'll gain double experience.
-        if(Area.inWilderness(player)) {
+        if(BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
         	multi *= 2;
         }
         
@@ -491,7 +491,13 @@ public class Skills {
 			setLevel(skill, levels[skill] - modification <= 0 ? 0 : levels[skill] - modification);
 		}
 	}
-    
+	/**
+	 * Decreases a level to 1.
+	 *
+	 * @param skill        The skill id.
+	 * @param modification The modification amount.
+	 */
+	
     public void increaseLevelToSetMaximum(int skill, int modification, int max) {
 		if (levels[skill] < getLevelForExperience(skill) + max) {
 			int level = levels[skill] + modification >= max ? max : levels[skill] + modification;

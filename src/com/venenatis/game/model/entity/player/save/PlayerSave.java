@@ -28,6 +28,7 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.Rights;
 import com.venenatis.game.model.entity.player.account.Account;
 import com.venenatis.game.model.entity.player.account.AccountType;
+import com.venenatis.server.Server;
 
 /**
  * Handles saving a player's container and details into a json file.
@@ -170,7 +171,6 @@ public class PlayerSave {
 				player.unlockRngGod(details.rng_god);
 				player.setLucky(details.lucky);
 				player.setVotePoints(details.votePoints);
-				player.setVotePoints(details.votePoints);
 				player.setTotalVotes(details.totalVotes);
 				player.setPkPoints(details.pkPoints);
 				player.setSlayerPoints(details.slayerPoints);
@@ -191,7 +191,9 @@ public class PlayerSave {
 				player.setCanTeleportToTask(details.teleportToTaskUnlocked);
 				player.setSlayerStreak(details.slayerStreak);
 				player.setSlayerStreakRecord(details.slayerStreakRecord);
-				player.setClanChat(details.clan);
+				if (details.clan != null && details.clan != "" && Server.getClanManager().clanExists(details.clan)) {
+					player.setClan(Server.getClanManager().getClan(details.clan));
+				}
 				player.setPreserveUnlocked(details.unlockedPreserve);
 				player.setRigourUnlocked(details.unlockedRigour);
 				player.setAuguryUnlocked(details.unlockedAugury);
@@ -210,21 +212,16 @@ public class PlayerSave {
 				player.setAutoRetaliating(details.retaliating);
 				player.setAttackStyle(details.attackStyle);
 				player.setAttackStyleConfig(details.attackStyleConfig);
-				player.setScreenBrightness(details.brightness);
-				player.setSplitPrivateChat(details.splitPrivateChat);
 				player.setRunEnergy(details.runEnergy);
 				player.getWalkingQueue().setRunningToggled(details.runToggled);
 				player.setEnableMusic(details.music);
 				player.setAttribute("music_volume", details.musicVolume);
 				player.setEnableSound(details.sounds);
 				player.setAttribute("sound_volume", details.soundsVolume);
-				player.setDataOrbs(details.dataOrbs);
-				player.setRoofsToggled(details.roofs);
-				player.setLeftClickAttack(details.leftClickAttack);
-				player.setGameTimers(details.gameTimers);
-				player.setTargetTracking(details.targetTracking);
-				player.setGroundItems(details.groundItems);
-				player.setShiftDrops(details.shiftDrop);
+				
+				
+				//player.setPureEssencePouch(details.smallEsspouch, player.getPureEssencePouch(0) + 1);
+				
 				if (details.killTracker != null) {
 					player.getKillTracker().setKillTracker(details.killTracker);
 				}
@@ -254,6 +251,14 @@ public class PlayerSave {
 				}
 				if (details.quickPrayers != null) {
 					player.getQuickPrayers().setPrayers(details.quickPrayers);
+				}
+				
+				if (details.favoriteTeleports != null) {
+					player.setFavoriteTeleports(details.favoriteTeleports);
+				}
+				
+				if (details.insuredPets != null) {
+					player.getPetInsurance().setInsuredPets(details.insuredPets);
 				}
 				return true;
 
@@ -334,21 +339,12 @@ public class PlayerSave {
 		private final boolean retaliating;
 		private final int attackStyle;
 		private final int attackStyleConfig;
-		private final byte brightness;
-		private final boolean splitPrivateChat;
 		private final int runEnergy;
 		private boolean runToggled;
 		private final boolean music;
 		private final int musicVolume;
 		private final boolean sounds;
 		private final int soundsVolume;
-		private final boolean dataOrbs;
-		private final boolean roofs;
-		private final boolean leftClickAttack;
-		private final boolean gameTimers;
-		private final boolean targetTracking;
-		private final boolean groundItems;
-		private final boolean shiftDrop;
 		private CopyOnWriteArrayList<KillEntry> killTracker = new CopyOnWriteArrayList<KillEntry>();
 		private final HashMap<Achievement, Integer> playerAchievements;
 		private final int achievementsPoints;
@@ -363,7 +359,11 @@ public class PlayerSave {
 		private final HashMap<Integer, String> slayerUnlocks;
 		private final HashMap<Integer, Integer> slayerExtensions;
 		private final PrayerData[] quickPrayers;
-
+		private ArrayList<Integer> favoriteTeleports;
+		private ArrayList<Integer> insuredPets;
+		private final int smallEsspouch;
+		//private final int mediumEssPouch;
+		//private final int LargeEssPouch;
 		
 		public String user() {
 			return this.username;
@@ -422,7 +422,7 @@ public class PlayerSave {
 			teleportToTaskUnlocked = player.canTeleportToSlayerTask();
 			slayerStreak = player.getSlayerStreak();
 			slayerStreakRecord = player.getSlayerStreakRecord();
-			clan = player.getClanChat();
+			clan = player.getClan() != null ? player.getClan().getFounder() : "";
 			unlockedPreserve = player.isPreserveUnlocked();
 			unlockedRigour = player.isRigourUnlocked();
 			unlockedAugury = player.isAuguryUnlocked();
@@ -439,21 +439,12 @@ public class PlayerSave {
 			retaliating = player.isAutoRetaliating();
 			attackStyle = player.getAttackStyle();
 			attackStyleConfig = player.getAttackStyleConfig();
-			brightness = player.getScreenBrightness();
-			splitPrivateChat = player.getSplitPrivateChat();
 			runEnergy = player.getRunEnergy();
 			runToggled = player.getWalkingQueue().isRunningToggled();
 			music = player.isEnableMusic();
 			musicVolume = player.getAttribute("music_volume", 3);
 			sounds = player.isEnableSound();
 			soundsVolume = player.getAttribute("sound_volume", 3);
-			dataOrbs = player.getDataOrbs();
-			roofs = player.getRoofsToggled();
-			leftClickAttack = player.getLeftClickAttack();
-			gameTimers = player.getGameTimers();
-			targetTracking = player.toggleTargetTracking();
-			groundItems = player.toggleGroundItems();
-			shiftDrop = player.toggleShiftClick();
 			killTracker = player.getKillTracker().getKillTracker();
 			playerAchievements = player.getPlayerAchievements();
 			achievementsPoints = player.getAchievementsPoints();
@@ -468,6 +459,11 @@ public class PlayerSave {
 			slayerUnlocks = player.getSlayerInterface().getUnlocks();
 			slayerExtensions = player.getSlayerInterface().getExtensions();
 			quickPrayers = player.getQuickPrayers().getPrayers();
+			favoriteTeleports = player.getFavoriteTeleports();
+			insuredPets = player.getPetInsurance().getInsuredPets();
+			smallEsspouch = player.getPureEssencePouch(0);
+			//mediumEssPouch = player.getPureEssencePouch(5510);
+			//LargeEssPouch = player.getPureEssencePouch(5511);
 		}
 
 		public void parseDetails() throws Exception {

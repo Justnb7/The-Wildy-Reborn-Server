@@ -453,6 +453,11 @@ public class SlayerInterface {
 			} else
 			// block
 			if (player.getSlayerAction() == 1) {
+				if(player.getSlayerTask().equalsIgnoreCase("none")) {
+					player.message("You have no task to block.");
+					return false;
+				}
+				
 				if (!purchase(player, 100)) {
 					player.getActionSender().sendMessage("@red@You don't have enough points");
 					player.setSlayerAction(0);
@@ -474,6 +479,8 @@ public class SlayerInterface {
 					blockedTasks.add(player.getSlayerTask());
 					TaskInterface task1 = new TaskInterface();
 					task1.write(player);
+					player.setSlayerTask("none");
+					player.setSlayerTaskAmount(0);
 					player.getActionSender().sendInterface(getPreviousInterface());
 					player.setSlayerAction(0);
 					return true;

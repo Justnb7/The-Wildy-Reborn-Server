@@ -230,6 +230,15 @@ public class WalkingQueue {
 		// Set the base point as this Location.
 		waypoints.add(new Point(entity.getX(), entity.getY(), -1));
 	}
+	
+	/**
+	 * Checks if the queue is empty.
+	 * 
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean isEmpty() {
+		return waypoints.isEmpty();
+	}
 
 	/**
 	 * Removes the first waypoint which is only used for calculating directions.

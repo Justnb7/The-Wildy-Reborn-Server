@@ -1,10 +1,7 @@
 package com.venenatis.game.task.impl;
 
-import com.venenatis.game.constants.Constants;
 import com.venenatis.game.content.KillTracker.KillEntry;
-import com.venenatis.game.content.activity.minigames.impl.warriors_guild.AnimatedArmour;
 import com.venenatis.game.content.skills.slayer.SlayerTaskManagement;
-import com.venenatis.game.content.skills.slayer.SuperiorMonster;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Skills;
@@ -16,7 +13,6 @@ import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
 import com.venenatis.game.model.masks.UpdateFlags.UpdateFlag;
 import com.venenatis.game.task.Task;
-import com.venenatis.game.util.Location3D;
 import com.venenatis.game.world.World;
 import com.venenatis.server.Server;
 
@@ -150,7 +146,8 @@ public class NPCDeathTask extends Task {
 			//killer.debug(String.format("we killed a %s and we have %s as slayer task.", npc.getName(), killer.getSlayerTask()));
 			if (npc.getName().contains(killer.getSlayerTask())) {
 				SlayerTaskManagement.decreaseTask(killer, npc);
-				SuperiorMonster.spawnSuperior(killer, npc);
+				killer.getSuperiorMonster().spawnSuperior(npc);
+				killer.getSuperiorMonster().grantExperience(npc);
 			} else if(npc.getName().equalsIgnoreCase("whirlpool") && killer.getSlayerTask().equalsIgnoreCase("kraken")) {
 				killer.setSlayerTaskAmount(killer.getSlayerTaskAmount() - 1);
 				killer.getSkills().addExperience(Skills.SLAYER, npc.getMaxHitpoints());
@@ -168,7 +165,7 @@ public class NPCDeathTask extends Task {
     
     public static void reset(NPC npc) {
         npc.freeze(0);
-        npc.targetId = 0;
+        npc.getCombatState().reset();
         npc.resetFaceTile();
         npc.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
     }
@@ -202,20 +199,8 @@ public class NPCDeathTask extends Task {
     		System.out.printf("Killer is null (tried '"+killerName+"'), killed %s%n", npc.getName());
     		return;
     	}
-    	
-    	int x = npc.getX();
-    	int y = npc.getY();
-    	int z = npc.getZ();
-    	
+
 		if (npc != null) {
-			
-			/**
-			 * Warriors guild
-			 */
-			killer.getWarriorsGuild().dropDefender(npc.getLocation());
-			if (AnimatedArmour.isAnimatedArmourNpc(npc)) {
-                AnimatedArmour.dropTokens(killer, npc, new Location(npc.getX(), npc.getY(), 0));
-			}
 			
 			/* Add kills to tracker */
 			for (int id : killer.getKillTracker().BOSSES) {
@@ -231,13 +216,8 @@ public class NPCDeathTask extends Task {
 				boss.dropLoot(killer, npc);
 			}
 			
-			Location3D location = new Location3D(x, y, z);
-			// get the drop table
-			int amountOfDrops = 1;
-			if (Constants.DOUBLE_DROPS) {
-				amountOfDrops++;
-			}
-			Server.getDropManager().create(killer, npc, location, amountOfDrops);
+			npc.processNPCDrop();
+			
 		}
 	}
 

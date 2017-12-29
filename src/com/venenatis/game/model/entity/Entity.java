@@ -3,7 +3,6 @@ package com.venenatis.game.model.entity;
 import com.google.common.base.Preconditions;
 import com.venenatis.game.action.ActionQueue;
 import com.venenatis.game.constants.EquipmentConstants;
-import com.venenatis.game.content.activity.minigames.impl.pest_control.PestControl;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
@@ -431,11 +430,6 @@ public abstract class Entity {
     private PoisonType poisonType;
 
 	public abstract Hit decrementHP(Hit hit);
-	
-	/**
-     * The method called when an entity dies.
-     */
-    public abstract void onDeath();
 
 	public long lastWasHitTime;
 	public Entity lastAttacker;
@@ -582,6 +576,85 @@ public abstract class Entity {
 		});
 	}
 	
+	/**
+	 * A map that contains all timed attributes
+	 */
+	private final Map<String, Integer> timedAttributes = new HashMap<String, Integer>();
+	
+	/**
+	 * Field that checks if the timed attribute sequence has been invoked.
+	 */
+	private boolean timedAttributeSequenceInvoked;
+	
+	/**
+	 * @return the timedAttributeSequenceInvoked
+	 */
+	public boolean isTimedAttributeSequenceInvoked() {
+		return timedAttributeSequenceInvoked;
+	}
+
+	/**
+	 * @param timedAttributeSequenceInvoked
+	 *            the timedAttributeSequenceInvoked to set
+	 */
+	public void setTimedAttributeSequenceInvoked(boolean timedAttributeSequenceInvoked) {
+		this.timedAttributeSequenceInvoked = timedAttributeSequenceInvoked;
+	}
+	
+	/**
+	 * Fetches the Integer from the timed attribute
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public final Integer getTimedAttribute(final String key) {
+		return timedAttributes.get(key);
+	}
+	
+	/**
+	 * Creates a timed attribute
+	 * 
+	 * @param key
+	 * @param value
+	 * @param ticks
+	 */
+	public final void createTimedAttribute(final String key, final int ticks) {
+		if (!timedAttributes.containsKey(key)) {
+			timedAttributes.put(key, ticks);
+		}
+		if (!isTimedAttributeSequenceInvoked()) {
+			invokeTimedAttributeSequence();
+		}
+	}
+	
+	/**
+	 * Invokes the entity event that processes the timed attributes
+	 */
+	public final void invokeTimedAttributeSequence() {
+		setTimedAttributeSequenceInvoked(true);
+		World.getWorld().schedule(new Task(1) {
+
+			@Override
+			public void execute() {
+				if (timedAttributes.isEmpty()) {
+					setTimedAttributeSequenceInvoked(false);
+					stop();
+					return;
+				}
+				final Iterator<String> iterator = timedAttributes.keySet().iterator();
+				while (iterator.hasNext()) {
+					final String key = iterator.next();
+					final int value = timedAttributes.get(key).intValue();
+					timedAttributes.replace(key, value - 1);
+					if (value <= 0) {
+						iterator.remove();
+					}
+					System.out.println("Timed attribute: " + key + " = " + value);
+				}
+			}
+		});
+	}
+	
 	public boolean hasAttribute(String string) {
 		return attributes.containsKey(string);
 	}
@@ -609,6 +682,7 @@ public abstract class Entity {
 		if (attributes != null && attributes.size() > 0 && attributes.keySet().size() > 0) {
 			attributes = new HashMap<String, Object>();
 		}
+		timedAttributes.clear();
 	}
 
 	/**
@@ -777,7 +851,7 @@ public abstract class Entity {
 				if (combat_type == CombatStyle.RANGE && PrayerHandler.isActivated(player_me, PrayerHandler.PROTECT_FROM_MISSILES)) {
 					damage *= prayProtection;
 				}
-				if (combat_type == CombatStyle.MAGIC && combat_type == CombatStyle.GREEN_BOMB && PrayerHandler.isActivated(player_me, PrayerHandler.PROTECT_FROM_MAGIC)) {
+				if (combat_type == CombatStyle.MAGIC && PrayerHandler.isActivated(player_me, PrayerHandler.PROTECT_FROM_MAGIC)|| combat_type == CombatStyle.MAGIC && combat_type == CombatStyle.GREEN_BOMB && PrayerHandler.isActivated(player_me, PrayerHandler.PROTECT_FROM_MAGIC)) {
 					damage *= prayProtection;
 				}
 			}
@@ -815,12 +889,6 @@ public abstract class Entity {
 			}
 			if (victim_npc.getId() == 5535) {
 				damage = 0;
-			}
-			
-			if (Boundary.isIn(attacker, PestControl.GAME_BOUNDARY)) {
-				if (damage > 0) {
-					((Player)attacker).pestControlDamage += damage;
-				}
 			}
 			
 			//Rex and Prime do not take melee damage
@@ -985,7 +1053,8 @@ public abstract class Entity {
 	 */
 	public void face(Location location) {
 		this.faceTile = location;
-		this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
+		if (location != null) // only put this flag if the location isnt null, if its null we're just resetting
+			this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
 	}
 
 	/**
@@ -1002,6 +1071,10 @@ public abstract class Entity {
 	 */
 	public void resetFaceTile() {
 		face(null);
+	}
+	
+	public void resetInteractingEntity() {
+		this.interactingEntity = null;
 	}
 
 	/**
@@ -1255,10 +1328,6 @@ public abstract class Entity {
 	public boolean canTrade() {
     	return true;
     }
-	
-	public boolean canDuel() {
-    	return true;
-    }
 
 	private Coverage coverage = null;
 
@@ -1498,8 +1567,10 @@ public abstract class Entity {
 	 * @param addToWalking
 	 * @return
 	 */
+
+	
 	public PathState doPath(final PathFinder pathFinder, final Entity target, final int x, final int y, final boolean ignoreLastStep, boolean addToWalking) {
-		if (getCombatState().isDead()) {
+		if (getCombatState().isDead() || this.asNpc().pathStop ) {
 			PathState state = new PathState();
 			state.routeFailed();
 			return state;
@@ -1514,7 +1585,9 @@ public abstract class Entity {
 		if (state != null && addToWalking) {
 				getWalkingQueue().reset();
 				for (BasicPoint step : state.getPoints()) {
-					//p.sendForcedMessage("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
+					if(this.asNpc().pathStop)
+						break;
+					//System.out.println("point: "+step.getX()+","+step.getY()+","+step.getZ()+" from "+srcX+","+srcY+" to "+destX+","+destY);
 					//p.getActionSender().sendGroundItem(new GroundItem(new Item(item, 1), step.getX(), step.getY(), step.getZ(), p));
 					getWalkingQueue().addStep(step.getX(), step.getY());
 				}
@@ -1560,6 +1633,24 @@ public abstract class Entity {
 		}
 		// Make the hit show on the victim, and reduce their HP
         this.renderDamage(hit);
+	}
+	
+	public int distanceTo(Entity otherEntity) {
+		if (otherEntity == null) {
+			return -1;
+		}
+		int minDistance = (int) Math.hypot(otherEntity.getLocation().getX() - getLocation().getX(),
+				otherEntity.getLocation().getY() - getLocation().getY());
+		for (int x = getLocation().getX(); x < getLocation().getX() + size() - 1; x++) {
+			for (int y = getLocation().getY(); y < getLocation().getY() + size() - 1; y++) {
+				int distance = (int) Math.hypot(otherEntity.getLocation().getX() - x,
+						otherEntity.getLocation().getChunkY() - y);
+				if (distance < minDistance) {
+					minDistance = distance;
+				}
+			}
+		}
+		return minDistance;
 	}
 
 }

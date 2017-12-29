@@ -1,15 +1,14 @@
 package com.venenatis.game.net.packet.in;
 
-import com.venenatis.game.content.Emotes;
-import com.venenatis.game.content.SetSkill;
 import com.venenatis.game.content.achievements.AchievementButtons;
-import com.venenatis.game.content.activity.minigames.MinigameHandler;
-import com.venenatis.game.content.activity.minigames.impl.duelarena.DuelArena.DuelStage;
+
 import com.venenatis.game.content.clicking.Buttons;
+import com.venenatis.game.content.emotes.Emotes;
 import com.venenatis.game.content.help.HelpDatabase;
 import com.venenatis.game.content.quest_tab.QuestTabPage;
 import com.venenatis.game.content.quest_tab.QuestTabPageHandler;
 import com.venenatis.game.content.quest_tab.QuestTabPages;
+import com.venenatis.game.content.skill_guides.SkillGuide;
 import com.venenatis.game.content.skills.cooking.Cooking;
 import com.venenatis.game.content.skills.crafting.Crafting;
 import com.venenatis.game.content.skills.fletching.Fletching;
@@ -19,13 +18,11 @@ import com.venenatis.game.model.combat.PrayerHandler;
 import com.venenatis.game.model.combat.data.AttackStyle.FightType;
 import com.venenatis.game.model.combat.magic.Autocast;
 import com.venenatis.game.model.combat.special_attacks.SpecialAttackHandler;
-import com.venenatis.game.model.entity.npc.drop_system.DropManager;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.entity.player.clan.ClanButtons;
 import com.venenatis.game.net.packet.IncomingPacketListener;
 import com.venenatis.game.net.packet.in.button.ActionButtonEventListener;
 import com.venenatis.game.util.Utility;
-import com.venenatis.server.Server;
 
 /**
  * Handles clicking on most buttons in the interface.
@@ -73,6 +70,23 @@ public class ActionButtonPacketHandler implements IncomingPacketListener {
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */
+		
+		/* Duel arena */
+		if(player.getDuelArena().actionButtons(button)) {
+			return;
+		}
+		
+		/* Staff panel */
+		if (player.getStaffControlPanel().handleActionButtonClick(button)) {
+			return;
+		}
+		
+		/* Skill guides */
+		if (button >= 220190 && button <= 220203) {
+			SkillGuide.openOption(player, button - 220190);
+			return;
+		}
+
 		/* Help database */
 		if (button >= 232182 && button <= 233022) {
 			HelpDatabase.getDatabase().view(player, button);
@@ -101,9 +115,9 @@ public class ActionButtonPacketHandler implements IncomingPacketListener {
 		}
 		
 		/* Set Skills */
-		if (SetSkill.handle(player, button)) {
+		/*if (SetSkill.handle(player, button)) {
 			return;
-		}
+		}*/
 		
 		/* Cooking */
 		if (Cooking.cook(player, button)) {
@@ -114,15 +128,6 @@ public class ActionButtonPacketHandler implements IncomingPacketListener {
 		if (AchievementButtons.handleButtons(player, button)) {
 			return;
 		}
-		
-		/* Dueling */
-		if (player.getDuelArena().isInSession() || player.getDuelArena().getStage() == DuelStage.REWARD) {
-			player.getDuelArena().handleButton(button);
-			return;
-		}
-		
-		/* Minigames */
-		MinigameHandler.execute(player, $it -> $it.onButtonClick(player, button));
 		
 		/* Trading */
 		if (player.getTradeSession().isTrading()) {
@@ -137,12 +142,6 @@ public class ActionButtonPacketHandler implements IncomingPacketListener {
 		
 		/* Price checker */
 		if(player.getPriceChecker().buttonAction(button)) {
-			return;
-		}
-		
-		/* Drop Tables */
-		if (button >= 166035 && button < 166035 + DropManager.AMOUNT_OF_TABLES) {
-			Server.getDropManager().select(player, button);
 			return;
 		}
 		
@@ -199,11 +198,6 @@ public class ActionButtonPacketHandler implements IncomingPacketListener {
 		
 		/* Handle clickable spells such as Vengeance */
 		if(player.getMagic().handleButton(player, button)) {
-			return;
-		}
-		
-		/* The pest control reward interface */
-		if(player.getPestControlRewards().click(button)) {
 			return;
 		}
 		

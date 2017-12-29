@@ -302,6 +302,8 @@ public class CombatFormulae {
         tar_block_chance = Utility.getRandom((int) tar_block_chance);
         if (attacker.isPlayer())
         	attacker.asPlayer().debug(String.format("target %s hit = %s >? %s%n", target, att_hit_chance, tar_block_chance));
+        else target.asPlayer().debug(String.format("target %s hit = %s >? %s%n", target, att_hit_chance, tar_block_chance));
+        
         return (int) att_hit_chance > (int) tar_block_chance;
     }
     

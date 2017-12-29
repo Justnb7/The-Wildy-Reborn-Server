@@ -8,6 +8,7 @@ import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.Skills;
+import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.CombatState;
 import com.venenatis.game.model.combat.NpcCombat;
 import com.venenatis.game.model.combat.PrayerHandler;
@@ -835,6 +836,17 @@ public abstract class Entity {
 	 */
 	public Hit take_hit(Entity attacker, int damage, CombatStyle combat_type, boolean applyInstantly, boolean throughPrayer, HitType type) {
 		
+		
+		if(attacker.isNPC()) {
+		if(combat_type == CombatStyle.MELEE || combat_type == CombatStyle.RANGE || combat_type == CombatStyle.MAGIC) {
+		if (!(CombatFormulae.getAccuracy(attacker, this, combat_type == CombatStyle.MELEE ? 0 : combat_type == CombatStyle.RANGE ? 1 : 2, 1.0))) {
+			damage = 0;
+			this.getActionSender().sendMessage("Blocked this bitch");
+			
+			//return null;
+		}
+				}
+			}
 		// ALWAYS: FIRST APPLY DAMAGE REDUCTIONS, ABSORBS ETC. Protection pray/ely.
 		// The entity taking damage is a player. 
 		if (this.isPlayer()) {

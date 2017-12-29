@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.venenatis.game.model.combat.CombatFormulae;
 import com.venenatis.game.model.combat.npcs.impl.*;
 import com.venenatis.game.model.combat.npcs.impl.barrows.*;
 import com.venenatis.game.model.combat.npcs.impl.dagannoths.*;

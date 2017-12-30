@@ -224,8 +224,8 @@ public class Combat {
             dam1 = 0;
         }
         
-		/*if (player.getUsername().equalsIgnoreCase("patrick") && player.inDebugMode())
-			dam1 = 2000;*/
+		if (player.getUsername().equalsIgnoreCase("Mopar") && player.inDebugMode())
+			dam1 = 2000;
 
         //setup the Hit
         target.take_hit(player, dam1, CombatStyle.MELEE).giveXP(player).send();
@@ -1194,7 +1194,7 @@ public class Combat {
 			boolean ignoreTouches = npc.getName().equalsIgnoreCase("Whirlpool")
 					|| npc.getName().equalsIgnoreCase("Zulrah") || npc.getName().equalsIgnoreCase("Portal")
 					|| npc.getName().equalsIgnoreCase("Kraken") || npc.getName().equalsIgnoreCase("Spinolyp")
-					|| npc.getName().equalsIgnoreCase("Enormous Tentacle");
+					|| npc.getName().equalsIgnoreCase("Enormous Tentacle") || npc.getName().equalsIgnoreCase("Corporeal Beast");
 
 			if (ignoreTouches && player.getCombatType() != CombatStyle.MELEE)
 				return true;

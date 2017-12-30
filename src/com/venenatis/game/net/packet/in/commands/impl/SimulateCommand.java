@@ -27,6 +27,7 @@ public class SimulateCommand extends Command {
 		if (args.length < 3) {
 			return;
 		}
+		player.getActionSender().sendMessage("Yes");
 		final String simulatorType = args[1];
 		final int simulationAmount = Integer.parseInt(args[2]);
 		ArrayList<Item> simulatedItems = new ArrayList<Item>();

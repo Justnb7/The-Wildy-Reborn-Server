@@ -84,7 +84,7 @@ public final class NPCMovementTask extends Task {
 				} else {
 					if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance)) {
 						npc.walkingHome = true;
-						npc.sendForcedMessage("home time");
+						npc.sendForcedMessage("home time "+npc.getId());
 						//npc.doPath(new SizedPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());
 					}
 				}
@@ -125,12 +125,12 @@ public final class NPCMovementTask extends Task {
 			npc.getUpdateFlags().flag(UpdateFlag.FACE_ENTITY);
 			npc.doPath(new SizedPathFinder(), x, y);
 			npc.walkingHome = true;
-			System.out.println("Going home..");
+			//System.out.println("Going home..");
 		
 		}
 	
 		if (!npc.walkingHome && npc.randomWalk && (npc.getDefinition() == null || npc.strollRange > 0) && !npc.isInteracting()) {
-			int random = Utility.getRandom(8);
+			int random = Utility.getRandom(10);
 			if (random == 1) {
 				int strollRange = npc.getDefinition() == null ? 1 : npc.strollRange;
 				Location toTile = null;

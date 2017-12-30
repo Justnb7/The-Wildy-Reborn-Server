@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.venenatis.game.model.entity.player.clan.ClanManager;
 import com.venenatis.game.task.TaskQueue;
 import com.venenatis.game.util.Stopwatch;
@@ -142,5 +141,6 @@ public class Server {
 	public static ClanManager getClanManager() {
 		return clanManager;
 	}
+	
 	
 }

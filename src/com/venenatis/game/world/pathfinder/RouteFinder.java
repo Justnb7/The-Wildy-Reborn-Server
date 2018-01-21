@@ -221,8 +221,6 @@ public class RouteFinder {
 		final int localX = entity.getX() - 8 * ((entity.getX() >> 3) - 6);
 		final int localY = entity.getY() - 8 * ((entity.getY() >> 3) - 6);
 		
-		NPC player = (NPC) entity;
-
 		if (destX == localX && destY == localY && !moveNear) {
 			//player.debug("Pathfinder: Target non-close match");
 			return;

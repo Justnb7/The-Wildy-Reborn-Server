@@ -82,7 +82,7 @@ public final class NPCMovementTask extends Task {
 						npc.resetFaceTile();
 					}
 				} else {
-					if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance)) {
+					if (!npc.getLocation().withinDistance(npc.spawnTile, maxDistance) && !npc.getCombatState().isDead()) {
 						npc.walkingHome = true;
 						npc.sendForcedMessage("home time "+npc.getId());
 						//npc.doPath(new SizedPathFinder(), npc.spawnTile.getX(), npc.spawnTile.getY());

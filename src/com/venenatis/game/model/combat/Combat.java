@@ -1057,7 +1057,6 @@ public class Combat {
         	player.setSpellId(53);
             player.setCombatType(CombatStyle.MAGIC);
         }
-
 		// Check if we are using ranged
         if (player.getCombatType() != CombatStyle.MAGIC) {
             if (isCrossBow(bowType) || isBow(bowType) || isHandWeapon(rangeWeaponType) || player.getEquipment().contains(BLOWPIPE)) {

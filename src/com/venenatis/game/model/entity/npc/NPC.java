@@ -1,11 +1,14 @@
 package com.venenatis.game.model.entity.npc;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
 import com.venenatis.game.location.Location;
 import com.venenatis.game.model.Item;
 import com.venenatis.game.model.combat.Combat;
@@ -38,6 +41,75 @@ public class NPC extends Entity {
 		this(_npcType, null, -1);
 	}
 	
+	
+	public static void declare() {
+        loadAutoSpawn("./Data/text_files/npc_spawns.txt");
+	}
+
+	public static boolean loadAutoSpawn(String FileName) {
+		String line = "";
+		String token = "";
+		String token2 = "";
+		String token2_2 = "";
+		String[] token3 = new String[4];
+		boolean EndOfFile = false;
+		BufferedReader characterfile = null;
+		try {
+			characterfile = Files.newBufferedReader(Paths.get(FileName));
+		} catch (IOException fileex) {
+			fileex.printStackTrace();
+		}
+		try {
+			line = characterfile.readLine();
+		} catch (IOException ioexception) {
+			ioexception.printStackTrace();
+		}
+		while (!EndOfFile && line != null) {
+			line = line.trim();
+			int spot = line.indexOf("-");
+			if (spot > -1) {
+				token = line.substring(0, spot);
+				token = token.trim();
+				token2 = line.substring(spot + 1);
+				token2 = token2.trim();
+				token2_2 = token2.replaceAll("\t\t", "\t");
+				token2_2 = token2_2.replaceAll("\t\t", "\t");
+				token2_2 = token2_2.replaceAll("\t\t", "\t");
+				token2_2 = token2_2.replaceAll("\t\t", "\t");
+				token2_2 = token2_2.replaceAll("\t\t", "\t");
+				token3 = token2_2.split("\t");
+				if (token.equals("spawn")) {
+					Location loc = new Location(Integer.parseInt(token3[1]), Integer.parseInt(token3[2]), Integer.parseInt(token3[3]));
+					NPC npc = new NPC(Integer.parseInt(token3[0]), loc, 1);
+					World.getWorld().register(npc);
+					if(Integer.parseInt(token3[4]) > 0) {
+						npc.strollRange = 6;
+					}
+					
+				//	System.out.println("Spawning location: "+loc.toString()+" Spawning ID: "+token3[0]);
+					}
+			} else {
+				if (line.equals("[ENDOFSPAWNLIST]")) {
+					try {
+						characterfile.close();
+					} catch (IOException ignored) {
+						ignored.printStackTrace();
+					}
+				}
+			}
+			try {
+				line = characterfile.readLine();
+			} catch (IOException ioexception1) {
+				EndOfFile = true;
+			}
+		}
+		try {
+			characterfile.close();
+		} catch (IOException ignored) {
+		}
+		return false;
+	}
+
 	public boolean pathStop = false;
 	
 	 public void npcWalk(int x, int y) {
@@ -47,6 +119,7 @@ public class NPC extends Entity {
 	public NPC(int id, Location spawn, int direction) {
 		super(EntityType.NPC);
 		if (spawn != null) {
+			//System.out.println("Spawning "+id);
 			setLocation(spawn);
 			asNpc().spawnTile = spawn;
 			setOnTile(spawn.getX(), spawn.getY(), spawn.getZ());
@@ -470,24 +543,7 @@ public class NPC extends Entity {
 		return NPC.spawnNpc(p, id, location, direction, attackPlayer, head_icon);
 	}
 	
-	/**
-	 * Resets players in combat
-	 */
-	public static NPC getNpc(int id) {
-		for (NPC npc : World.getWorld().getNPCs())
-			if (npc != null && npc.getId() == id)
-				return npc;
-		return null;
-	}
 	
-	public static NPC getNpc(int id, int x, int y, int height) {
-		for (NPC npc : World.getWorld().getNPCs()) {
-			if (npc != null && npc.getId() == id && npc.getX() == x && npc.getY() == y && npc.getZ() == height) {
-				return npc;
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public void process() {

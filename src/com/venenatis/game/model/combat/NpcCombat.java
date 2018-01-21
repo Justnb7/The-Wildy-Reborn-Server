@@ -157,13 +157,13 @@ public class NpcCombat {
 			System.out.println("Slayer level says no.");
 			return false;
 		}
-		
-		if (npc.getId() == 3162 || npc.getId() == 3163 || npc.getId() == 3164 || npc.getId() == 3165 && player.getCombatType() == CombatStyle.MELEE) {
+		//need to readd
+		/*if (npc.getId() == 3162 || npc.getId() == 3163 || npc.getId() == 3164 || npc.getId() == 3165 && player.getCombatType() == CombatStyle.MELEE) {
 			if (player.getActionSender() != null) {
 				player.getActionSender().sendMessage("That NPC is flying too high to be attaked!");
 			}
 			return false;
-		}
+		}*/
 		
 		if (npc.getId() == 496 && npc.getId() != 494) {
 			KrakenInstance i = player.getKraken();

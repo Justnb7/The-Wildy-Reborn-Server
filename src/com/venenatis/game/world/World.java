@@ -228,7 +228,8 @@ public class World implements Service {
 			}
 			getNPCs().add(npc);
 			npc.setVisible(true);
-			npc.setOnTile(npc.getX(), npc.getY(), npc.getZ());
+			npc.setOnTile(
+					npc.getX(), npc.getY(), npc.getZ());
 			return true;
 		}
 		return false;

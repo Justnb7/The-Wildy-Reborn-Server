@@ -168,6 +168,19 @@ public abstract class AbstractBossCombat {
 		bosses.put(7744, lizardman_shaman);
 		bosses.put(7745, lizardman_shaman);
 		
+		AbstractBossCombat barrows_crypt_npc = new BarrowsCryptNPC();
+		bosses.put(1678, barrows_crypt_npc);
+		bosses.put(1679, barrows_crypt_npc);
+		bosses.put(1680, barrows_crypt_npc);
+		bosses.put(1681, barrows_crypt_npc);
+		bosses.put(1682, barrows_crypt_npc);
+		bosses.put(1683, barrows_crypt_npc);
+		bosses.put(1684, barrows_crypt_npc);
+		bosses.put(1685, barrows_crypt_npc);
+		bosses.put(1686, barrows_crypt_npc);
+		bosses.put(1687, barrows_crypt_npc);
+		bosses.put(1688, barrows_crypt_npc);
+		
 	}
 	
 	public static AbstractBossCombat get(int npcId) {

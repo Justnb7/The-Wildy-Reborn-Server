@@ -222,33 +222,33 @@ public class ActionSender {
 	 * 
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender setSideBarInterfaces() {
-		sendSidebarInterface(Constants.SKILL_TAB, 3917);
-		sendSidebarInterface(Constants.QUEST_TAB, 638);
-		sendSidebarInterface(Constants.INVENTORY_TAB, 3213);
-		sendSidebarInterface(Constants.EQUIPMENT_TAB, 1644);
-		boolean curses = false;
-		if (curses)
-			sendSidebarInterface(Constants.PRAYER_TAB, 21356);
-		else
-			sendSidebarInterface(Constants.PRAYER_TAB, 5608);
-		if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
-			sendSidebarInterface(Constants.MAGIC_TAB, 1151);
-		} else if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
-			sendSidebarInterface(Constants.MAGIC_TAB, 12855);
-		} else {
-			sendSidebarInterface(Constants.MAGIC_TAB, 29999);
-		}
-		sendSidebarInterface(Constants.CLAN_TAB, 28128/*33800*/);
-		sendSidebarInterface(Constants.FRIENDS_TAB, 5065);
-		sendSidebarInterface(Constants.IGNORE_TAB, 5715);
-		sendSidebarInterface(Constants.WRENCH_TAB, 45580);
-		sendSidebarInterface(Constants.EMOTE_TAB, 147);
-		sendSidebarInterface(Constants.MUSIC_TAB, 42150);
-		sendSidebarInterface(Constants.ATTACK_TAB, 2423);
-		sendSidebarInterface(Constants.LOGOUT_TAB, 2449);
-		return this;
-	}
+	  public ActionSender setSideBarInterfaces() {
+	        sendSidebarInterface(Constants.SKILL_TAB, 3917);
+	        sendSidebarInterface(Constants.QUEST_TAB, 638);
+	        sendSidebarInterface(Constants.INVENTORY_TAB, 3213);
+	        sendSidebarInterface(Constants.EQUIPMENT_TAB, 1644);
+	        boolean curses = false;
+	        if (curses)
+	            sendSidebarInterface(Constants.PRAYER_TAB, 21356);
+	        else
+	            sendSidebarInterface(Constants.PRAYER_TAB, 5608);
+	        if (player.getSpellBook() == SpellBook.MODERN_MAGICS) {
+	            sendSidebarInterface(Constants.MAGIC_TAB, 1151);
+	        } else if (player.getSpellBook() == SpellBook.ANCIENT_MAGICKS) {
+	            sendSidebarInterface(Constants.MAGIC_TAB, 12855);
+	        } else {
+	            sendSidebarInterface(Constants.MAGIC_TAB, 29999);
+	        }
+	        sendSidebarInterface(Constants.CLAN_TAB, 28128/*33800*/);
+	        sendSidebarInterface(Constants.FRIENDS_TAB, 5065);
+	        sendSidebarInterface(Constants.IGNORE_TAB, 5715);
+	        sendSidebarInterface(Constants.WRENCH_TAB, 11000);
+	        sendSidebarInterface(Constants.EMOTE_TAB, 147);
+	        sendSidebarInterface(Constants.MUSIC_TAB, 42150);
+	        sendSidebarInterface(Constants.ATTACK_TAB, 2423);
+	        sendSidebarInterface(Constants.LOGOUT_TAB, 2449);
+	        return this;
+	    }
 
 	public ActionSender hideAllSideBars() {
 		for (int i = 0; i < 14; i++)

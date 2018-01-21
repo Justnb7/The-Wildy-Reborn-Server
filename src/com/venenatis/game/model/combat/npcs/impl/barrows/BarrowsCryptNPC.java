@@ -8,10 +8,9 @@ import com.venenatis.game.model.entity.Entity;
 import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.player.Player;
 import com.venenatis.game.model.masks.Animation;
+import com.venenatis.game.util.Utility;
 
-public class DharokTheWretched extends AbstractBossCombat {
-	
-	private final int DHAROK_STRENGTH = 100;
+public class BarrowsCryptNPC extends AbstractBossCombat {
 
 	@Override
 	public void execute(Entity attacker, Entity victim) {
@@ -21,17 +20,17 @@ public class DharokTheWretched extends AbstractBossCombat {
 		
 		NPC npc = (NPC)attacker;
 		
-		int startHp = 100;
-		attacker.playAnimation(Animation.create(2066));
-		double dharokMultiplier = (startHp - npc.getMaxHitpoints() / 2);
-		double base = 0;
-		base += 1.05D + (double) (DHAROK_STRENGTH * 121.77) * 0.00175D;
-		base += (double) 121.77 * 0.09D;
-		base += dharokMultiplier;
-		int finalDamage = (int) base;
-		attacker.getCombatState().setAttackDelay(5);
+		// Each monster has a different attack animation because the range from
+		// crypt npcs is between 1678 and 1688
+		npc.playAnimation(Animation.create(npc.getDefinition().getAttackAnimation()));
 		
-		victim.take_hit(attacker, finalDamage, CombatStyle.MELEE).send(1);
+		//The max hit is similar aswell
+		int randomHit = Utility.random(npc.getDefinition().getMaxHit());
+		
+		victim.take_hit(attacker, randomHit, CombatStyle.MELEE).send(1);
+		
+		//And the attack speed
+		attacker.getCombatState().setAttackDelay(npc.getDefinition().getAttackSpeed());
 	}
 
 	@Override
@@ -40,11 +39,11 @@ public class DharokTheWretched extends AbstractBossCombat {
 	}
 
 	@Override
-	public void dropLoot(Player player, NPC npc) {		
+	public void dropLoot(Player player, NPC npc) {
 		BarrowsDetails details = player.getBarrowsDetails();
 		details.setCryptKillCount(details.getCryptKillCount() + 1);
 		details.setCryptCombatKill(details.getCryptCombatKill() + npc.getDefinition().getCombatLevel());
 		BarrowsHandler.getSingleton().updateOverlayInterface(player);
- 	}
+	}
 
 }

@@ -1,5 +1,7 @@
 package com.venenatis.game.model.combat.npcs.impl.barrows;
 
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsDetails;
+import com.venenatis.game.content.minigames.singleplayer.barrows.BarrowsHandler;
 import com.venenatis.game.model.Projectile;
 import com.venenatis.game.model.combat.data.CombatStyle;
 import com.venenatis.game.model.combat.npcs.AbstractBossCombat;
@@ -51,8 +53,11 @@ public class AhrimTheBlighted extends AbstractBossCombat {
 	}
 
 	@Override
-	public void dropLoot(Player player, NPC npc) {
-		
-	}
+	public void dropLoot(Player player, NPC npc) {		
+				BarrowsDetails details = player.getBarrowsDetails();
+				details.setCryptKillCount(details.getCryptKillCount() + 1);
+				details.setCryptCombatKill(details.getCryptCombatKill() + npc.getDefinition().getCombatLevel());
+				BarrowsHandler.getSingleton().updateOverlayInterface(player);
+		 	}
 
 }

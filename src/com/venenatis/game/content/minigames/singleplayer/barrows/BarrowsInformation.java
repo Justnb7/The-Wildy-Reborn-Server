@@ -17,13 +17,13 @@ import com.venenatis.game.util.Utility;
  */
 public enum BarrowsInformation {
 	
-	DHAROK(0, 1673, Boundary.create(new Location(3572, 3295), new Location(3578, 3300)), new Location(3556, 9718, 3), 20720, 4763),
-	GUTHAN(1, 1674, Boundary.create(new Location(3574, 3279), new Location(3580, 3284)), new Location(3534, 9704, 3), 20722, 4765),
-	VERAC(2, 1677, Boundary.create(new Location(3553, 3294), new Location(3560, 3300)), new Location(3578, 9706, 3), 20772, 4771),
-	TORAG(3, 1676, Boundary.create(new Location(3550, 3280), new Location(3557, 3286)), new Location(3568, 9683, 3), 20721, 4769),
-	AHRIM(4, 1672, Boundary.create(new Location(3562, 3285), new Location(3568, 3291)), new Location(3557, 9703, 3), 20770, 4761),
-	KARIL(5, 1675, Boundary.create(new Location(3562, 3273), new Location(3568, 3278)), new Location(3546, 9684, 3), 20771, 4767);
-	
+	DHAROK(0, 1673, Boundary.create(new Location(3572, 3295), new Location(3578, 3300)), new Location(3556, 9718, 3), new Location[] {new Location(3558, 9717, 3)}, 20720, 4763),
+		GUTHAN(1, 1674, Boundary.create(new Location(3574, 3279), new Location(3580, 3284)), new Location(3534, 9704, 3), new Location[] {new Location(3536, 9703, 3)}, 20722, 4765),
+		VERAC(2, 1677, Boundary.create(new Location(3553, 3294), new Location(3560, 3300)), new Location(3578, 9706, 3), new Location[] {new Location(3575, 9705, 3)}, 20772, 4771),
+		TORAG(3, 1676, Boundary.create(new Location(3550, 3280), new Location(3557, 3286)), new Location(3568, 9683, 3), new Location[] {new Location(3567, 9684, 3)}, 20721, 4769),
+		AHRIM(4, 1672, Boundary.create(new Location(3562, 3285), new Location(3568, 3291)), new Location(3557, 9703, 3), new Location[] {new Location(3554, 9702, 3)}, 20770, 4761),
+		KARIL(5, 1675, Boundary.create(new Location(3562, 3273), new Location(3568, 3278)), new Location(3546, 9684, 3), new Location[] {new Location(3547, 9683, 3), new Location(3549, 9686, 3)}, 20771, 4767);
+	 	
 	/**
 	 * The identifier of the barrows brother.
 	 */
@@ -45,20 +45,27 @@ public enum BarrowsInformation {
 	private final Location teleportLocation;
 
 	/**
+	* {@link Location} that the barrows brother will be moved to after opening the crypt.
+	*/
+	
+	private final Location[] spawn;
+	
+	/**
 	 * The crypts objectId.
 	 */
 	private final int objectId;
 	
 	private final int purpleHead;
 	
-	private BarrowsInformation(final int identifier, int npcId, Boundary hillBoundary, Location teleportLocation, int objectId, int purpleHead) {
-		this.identifier = identifier;
-		this.npcId = npcId;
-		this.hillBoundary = hillBoundary;
-		this.teleportLocation = teleportLocation;
-		this.objectId = objectId;
-		this.purpleHead = purpleHead;
-	}
+	private BarrowsInformation(final int identifier, int npcId, Boundary hillBoundary, Location teleportLocation, Location[] spawnLocation, int objectId, int purpleHead) {
+		 		this.identifier = identifier;
+		 		this.npcId = npcId;
+		 		this.hillBoundary = hillBoundary;
+		 		this.teleportLocation = teleportLocation;
+				this.spawn = spawnLocation;
+		 		this.objectId = objectId;
+		 		this.purpleHead = purpleHead;
+		 	}
 
 	public static final Set<BarrowsInformation> VALUES = Collections.unmodifiableSet(EnumSet.allOf(BarrowsInformation.class));
 	
@@ -133,7 +140,12 @@ public enum BarrowsInformation {
 	public Location getTeleportLocation() {
 		return teleportLocation;
 	}
-
+	public Location[] getSpawnLocation() {
+		return spawn;
+	}
+	public int getPurpleHead() {
+		return purpleHead;
+	}
 	public int getObjectId() {
 		return objectId;
 	}
@@ -147,8 +159,6 @@ public enum BarrowsInformation {
 		return Utility.optimizeText(name().toLowerCase());
 	}
 
-	public int getPurpleHead() {
-		return purpleHead;
-	}
+	
 	
 }

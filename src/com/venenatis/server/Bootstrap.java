@@ -22,6 +22,7 @@ import com.venenatis.game.content.skills.fletching.fletchable.impl.Featherable;
 import com.venenatis.game.content.skills.fletching.fletchable.impl.Stringable;
 import com.venenatis.game.content.sounds_and_music.sounds.MobAttackSounds;
 import com.venenatis.game.content.sounds_and_music.sounds.PlayerSounds;
+import com.venenatis.game.model.entity.npc.NPC;
 import com.venenatis.game.model.entity.npc.drops.NPCDropDefinitions;
 import com.venenatis.game.model.entity.player.Sanctions;
 import com.venenatis.game.net.network.NettyChannelHandler;
@@ -127,6 +128,7 @@ public class Bootstrap {
 			new WeaponDefinitionParser().run();
 			new EquipmentDefinitionParser().run();
 			new NPCDefinitionParser().run();
+			NPC.declare();
 			new NpcSpawnDefinitionParser().run();
 	        NPCDropDefinitions.loadNPCDropDefs();
 			new ShopParser().run();

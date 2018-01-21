@@ -113,12 +113,7 @@ public class BarrowsHandler {
 			return true;
 		}
 		
-		/*if(player.getBarrowsDetails().getSpawnedBrother() > 0) {
-			player.message("already spawned.");
-			//This doesn't work either because it will no longer spawn other barrows borthers
-			return false;
-		}*/
-		
+	
 		if (World.getWorld().getNPCs().get(player.getBarrowsDetails().getSpawnedBrother()) != null) {
 			return false;
 		}
@@ -152,8 +147,8 @@ public class BarrowsHandler {
 				player.getActionSender().sendMessage("It's empty....");
 				return true;
 			}
-			player.getBarrowsDetails().setSpawnedBrother(NPC.spawnNpc(player, brother.getNpcId(), new Location(player.getX(), player.getY(), player.getZ()), 1, true, true).getIndex());
-			return true;
+			player.getBarrowsDetails().setSpawnedBrother(NPC.spawnNpc(player, brother.getNpcId(), brother.getSpawnLocation()[(int) (Math.random() * brother.getSpawnLocation().length)], 1, true, true).getIndex());
+				return true;
 		}
 	}
 

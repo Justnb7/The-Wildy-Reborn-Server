@@ -148,7 +148,7 @@ public class TeleportMenuConstants {
 						new TeleportAction(player, new Location(2998, 3850, 0))));
 
 		teleportOptions.put(31, new OptionMenu("Kraken Cave", new String[] { "Boss", "Kraken" },
-				new TeleportAction(player, new Location(2444, 9825, 0))));
+				new TeleportAction(player, new Location(2276, 9988, 0))));
 
 		teleportOptions.put(32, new OptionMenu("Smoke Devil Cave", new String[] { "Boss", "Thermonuclear Smoke Devil" },
 				new TeleportAction(player, new Location(3723, 5798, 0))));

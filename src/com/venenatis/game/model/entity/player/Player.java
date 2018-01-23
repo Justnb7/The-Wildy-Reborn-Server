@@ -14,6 +14,7 @@ import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.HerbSack;
 import com.venenatis.game.content.Jewellery;
 import com.venenatis.game.content.KillTracker;
+import com.venenatis.game.content.Perks.BuyPerkHandler;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.gamble.Gamble;
 import com.venenatis.game.content.minigames.multiplayer.MultiplayerMinigame;
@@ -111,6 +112,24 @@ public class Player extends Entity {
 	public AbyssalRift getRift() {
 		return rift;
 	}
+	/*
+	 * Perk Info
+	 */
+	BuyPerkHandler buyPerkInterface = new BuyPerkHandler();
+	
+	public BuyPerkHandler getPerkBuyInterface() {
+		return buyPerkInterface;
+	}
+	
+	private int perkPoints = 5000;
+	
+	public int getPerkPoints() {
+		return perkPoints;
+	}
+	public void setPerkPoints(int i) {
+		this.perkPoints = i;
+	}
+	
 	/**
 	 * Barrows puzzle information
 	 */

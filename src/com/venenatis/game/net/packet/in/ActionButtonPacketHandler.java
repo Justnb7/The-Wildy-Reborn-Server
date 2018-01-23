@@ -67,6 +67,16 @@ public class ActionButtonPacketHandler implements IncomingPacketListener {
 		
 		player.debug(String.format("ActionButtonPacket: button %d - packet %d - packetSize %d%n", button, id, size));
 		
+		/* Perk interface */
+		if (player.getPerkBuyInterface().execute(player, button)) {
+			return;
+		}
+		
+		/* Perk interface */
+		if (player.getPerkBuyInterface().executeAssign(player, button)) {
+			return;
+		}
+		
 		/**
 		 * We've passed all checks now we can activate our actions
 		 */

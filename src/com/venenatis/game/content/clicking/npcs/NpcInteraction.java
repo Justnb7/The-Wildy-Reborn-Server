@@ -51,6 +51,8 @@ public class NpcInteraction {
 			break;
 		
 		/* General store */
+		case 515:
+		case 514:
 		case 506:
 			ShopManager.open(player, 0);
 			break;

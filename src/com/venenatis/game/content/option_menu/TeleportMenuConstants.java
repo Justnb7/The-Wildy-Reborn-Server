@@ -20,19 +20,19 @@ public class TeleportMenuConstants {
 		teleportOptions.put(0,
 				new OptionMenu("Taverley Dungeon",
 						new String[] { "Blue Dragon", "Chaos Druid", "Baby Blue Dragon", "Black Demon", "Black Dragon",
-								"Hellhound", "Hill Giant", "Lesser Demon", "Skeleton", "Ghost", "Chaos Dwarf", "Train" },
+								"Hellhound", "Hill Giant", "Lesser Demon", "Skeleton", "Ghost", "Chaos Dwarf", "Dungeon", "Talvery","Slayer" },
 						new TeleportAction(player, new Location(2884, 9798))));
 
 		teleportOptions.put(1, new OptionMenu("Edgeville Dungeon",
 				new String[] { "Chaos Druid", "Black Demon", "Rat", "Giant Rat", "Giant Spider", "Zombie", "Skeleton",
-						"Hobgoblin", "Hill Giant", "Moss Giant", "Thug", "Deadly Red Spider", "Earth Warrior", "Train",
-						"Poison Spider" },
+						"Hobgoblin", "Hill Giant", "Moss Giant", "Thug", "Deadly Red Spider", "Earth Warrior", "Dungeon",
+						"Poison Spider","Slayer" },
 				new TeleportAction(player, new Location(3097, 9868))));
 
 		teleportOptions.put(2,
 				new OptionMenu("Slayer Tower",
 						new String[] { "Crawling Hand", "Banshee", "Infernal mage", "Bloodveld", "Aberrant Spectre",
-								"Gargoyle", "Nechryael", "Abyssal Demon", "Train" },
+								"Gargoyle", "Nechryael", "Abyssal Demon", "Train","Slayer" },
 						new TeleportAction(player, new Location(3097, 9868))));
 
 		teleportOptions.put(3, new OptionMenu("Mourmer Tunnel", new String[] { "Dark Beast" },
@@ -40,19 +40,19 @@ public class TeleportMenuConstants {
 
 		teleportOptions.put(4,
 				new OptionMenu("Asgarnian Ice Dungeon",
-						new String[] { "Skeletal Wyvern", "Ice Giant", "Ice warrior", "Pirate", "Hobgoblin", "Train" },
+						new String[] { "Skeletal Wyvern", "Ice Giant", "Ice warrior", "Pirate", "Hobgoblin", "Train", "Dungeon","Slayer", "train" },
 						new TeleportAction(player, new Location(3007, 9550))));
 
 		teleportOptions.put(5,
 				new OptionMenu("Brimhaven Dungeon",
 						new String[] { "Wild Dog", "Moss Giant", "Fire Giant", "Greater Demon", "Black Demon",
-								"Baby Green Dragon", "Baby Red dragon", "Red dragon", "Bronze Dragon", "Iron Dragon", "Train",
-								"Steel Dragon" },
+								"Baby Green Dragon", "Baby Red dragon", "Red dragon", "Bronze Dragon", "Iron Dragon", "Dungeon",
+								"Steel Dragon","Slayer" },
 						new TeleportAction(player, new Location(2713, 9564))));
 
 		teleportOptions.put(6,
 				new OptionMenu("Lumbridge Swamp Caves",
-						new String[] { "Cave Crawler", "Cave Slime", "Cave Bug", "Rockslug", "Wall Beast", "Train" },
+						new String[] { "Cave Crawler", "Cave Slime", "Cave Bug", "Rockslug", "Wall Beast", "Dungeon","Slayer" },
 						new TeleportAction(player, new Location(3168, 9572))));
 
 		teleportOptions.put(7,
@@ -60,7 +60,7 @@ public class TeleportMenuConstants {
 						new String[] { "Aberrant Spectre", "Abyssal Demon", "Ankou", "Baby Black Dragon", "Black Demon",
 								"Black Dragon", "Bloodveld", "Blue Dragon", "Bronze Dragon", "Fire Giant", "Gargoyle",
 								"Greater Demon", "Hellhound", "Iron Dragon", "Kalphite", "Nechryael", "Steel Dragon",
-								"Waterfiend", "Train" },
+								"Waterfiend", "Dungeon","Slayer" },
 						new TeleportAction(player, new Location(2444, 9825))));
 
 		teleportOptions.put(8,
@@ -93,10 +93,10 @@ public class TeleportMenuConstants {
 				new OptionMenu("Home", new String[] { "Trade", "Trading", "Market", "Pking", "Edgeville", "Train" },
 						new TeleportAction(player, new Location(3087, 3500, 0))));
 
-		teleportOptions.put(16, new OptionMenu("<img=28>Graveyard", new String[] { "Wilderness", "Graveyard" },
+		teleportOptions.put(16, new OptionMenu("<img=28>Graveyard", new String[] { "Wilderness", "Graveyard","Wild" },
 				new TeleportAction(player, new Location(2974, 3748))));
 
-		teleportOptions.put(17, new OptionMenu("Varrock Multi", new String[] { "Wilderness", "Varrock Multi", "Train" },
+		teleportOptions.put(17, new OptionMenu("Varrock Multi", new String[] { "Wilderness", "Varrock Multi" },
 				new TeleportAction(player, new Location(3243, 3518))));
 
 		teleportOptions.put(18, new OptionMenu("Edgeville", new String[] { "Wilderness", "Edgeville" },
@@ -145,7 +145,7 @@ public class TeleportMenuConstants {
 
 		teleportOptions.put(30,
 				new OptionMenu("King Black Dragon Lair", new String[] { "Boss", "KBD", "King Black Dragon" },
-						new TeleportAction(player, new Location(2271, 4680, 0))));
+						new TeleportAction(player, new Location(2998, 3850, 0))));
 
 		teleportOptions.put(31, new OptionMenu("Kraken Cave", new String[] { "Boss", "Kraken" },
 				new TeleportAction(player, new Location(2444, 9825, 0))));
@@ -196,9 +196,9 @@ public class TeleportMenuConstants {
 		teleportOptions.put(46, new OptionMenu("Wintertodt", new String[] { "Wintertodt", "Minigames", "Firemaking" },
 				new TeleportAction(player, new Location(1630, 3947))));
 		
-		teleportOptions.put(47, new OptionMenu("Lleyta", new String[] { "Cities", "Elvs", "Crystal Bow", "Elf" },
+		teleportOptions.put(47, new OptionMenu("Lleyta", new String[] { "Cities", "Elvs", "Crystal Bow", "Elf", "train" },
 				new TeleportAction(player, new Location(1630, 3947))));
-		teleportOptions.put(47, new OptionMenu("Waterbirth", new String[] { "waterbirth", "rock crab", "dagganoth", "dks" },
+		teleportOptions.put(47, new OptionMenu("Waterbirth", new String[] { "waterbirth", "rock crab", "dagganoth", "dks", "train" },
 				new TeleportAction(player, new Location(2250, 3757))));
 		return teleportOptions;
 	}

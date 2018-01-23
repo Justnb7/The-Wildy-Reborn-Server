@@ -155,6 +155,9 @@ public class DefaultController extends Controller {
 		if (BoundaryManager.isWithinBoundaryNoZ(player.getLocation(), "PvP Zone")) {
 			int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
 			player.setWildLevel(((modY - 3521) / 8) + 1);
+			if(player.getWildLevel() > 70) {
+				return;
+			}
 			player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);
 			player.getActionSender().sendInteractionOption(StringConstants.ATTACK_ACTION, 3, true);
 			player.getActionSender().sendInteractionOption("null", 2, false);

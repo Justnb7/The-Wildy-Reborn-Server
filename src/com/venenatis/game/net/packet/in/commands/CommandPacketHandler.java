@@ -82,6 +82,8 @@ public class CommandPacketHandler implements IncomingPacketListener {
 	}
 
 	private static void reload() {
+		COMMAND_MAP.put("perk1", new AssignPerk());
+		COMMAND_MAP.put("perk2", new BuyPerk());
 		COMMAND_MAP.put("sd", new NpcJsonSpawn());
 		COMMAND_MAP.put("anim", new AnimationCommand());
 		COMMAND_MAP.put("auth", new AuthCommand());

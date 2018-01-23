@@ -31,7 +31,7 @@ public class Levers {
 		if (lever == null) {
 			return false;
 		}
-		if (!player.getLocation().isNextTo(obj.getLocation()) || player.getLocation().equals(obj.getLocation())) {
+		if (player.getLocation().isNextTo(obj.getLocation()) && !player.getLocation().equals(obj.getLocation())) {
 			return false;
 		}
 		/*

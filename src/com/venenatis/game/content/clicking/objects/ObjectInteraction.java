@@ -64,6 +64,11 @@ public class ObjectInteraction {
 			player.debug("No valid object at "+location+" with id "+objectId);
 			return;
 		}
+		/** Levers */
+		if (Levers.handle(player, obj)) {
+			player.getActionSender().sendMessage("SDfsdf");
+			return;
+		}
 		if(player.getRift().obstical(player, obj))
 			return;
 		
@@ -108,6 +113,7 @@ public class ObjectInteraction {
 			return;
 		}*/
 		
+		
 		if (SmithingConstants.clickAnvil(player, objectId)) {
 			return;
 		} else if (Runecrafting.startAction(player, obj)) {
@@ -149,10 +155,6 @@ public class ObjectInteraction {
 			return;
 		}
 		
-		/** Levers */
-		if (Levers.handle(player, obj) && obj != null) {
-			return;
-		}
 		
 		/** Spider Webs */
 		if (SlashWebObject.slash(player, obj) && obj != null) {
@@ -388,7 +390,12 @@ public class ObjectInteraction {
 				player.setTeleportTarget(Location.create(gwdLoc.getX(), gwdLoc.getY() + 2, location.getZ()));
 			}
 			break;
-		
+			//kbd ladder red spiders
+		case 18988:
+			if (player.getLocation().isNextTo(obj.getLocation())) {
+				player.setTeleportTarget(new Location(3017, 3848, 0));
+			}
+			break;
 		/**
 		 * Slayer tower
 		 */
@@ -446,7 +453,7 @@ public class ObjectInteraction {
 			break;
 			
 		case 18987:
-			player.setTeleportTarget(new Location(2271, 4698, 0));
+			player.setTeleportTarget(new Location(3069, 10255, 0));
 			break;
 		
 		case 10229:

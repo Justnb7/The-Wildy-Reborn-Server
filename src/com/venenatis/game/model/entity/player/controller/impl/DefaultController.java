@@ -152,7 +152,7 @@ public class DefaultController extends Controller {
 			player.setTeleportTarget(new Location(3015, 3194, 0));
 		}
 		
-		if (BoundaryManager.isWithinBoundary(player.getLocation(), "PvP Zone")) {
+		if (BoundaryManager.isWithinBoundaryNoZ(player.getLocation(), "PvP Zone")) {
 			int modY = player.getLocation().getY() > 6400 ? player.getLocation().getY() - 6400 : player.getLocation().getY();
 			player.setWildLevel(((modY - 3521) / 8) + 1);
 			player.getActionSender().sendString("@yel@Level: " + player.getWildLevel(), 199);

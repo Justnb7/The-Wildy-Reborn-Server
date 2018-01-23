@@ -130,7 +130,7 @@ public final class NPCMovementTask extends Task {
 		}
 	
 		if (!npc.walkingHome && npc.randomWalk && (npc.getDefinition() == null || npc.strollRange > 0) && !npc.isInteracting()) {
-			int random = Utility.getRandom(10);
+			int random = Utility.getRandom(15);
 			if (random == 1) {
 				int strollRange = npc.getDefinition() == null ? 1 : npc.strollRange;
 				Location toTile = null;

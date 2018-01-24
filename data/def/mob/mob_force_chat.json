@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1011,
+    "name": "Gambler",
+    "type": "RANDOM",
+    "time": 5,
+    "lines": [
+      "Wanna gamble?!",
+      "Come test your luck!",
+      "Come here for bead gambling or flower gambling!",
+      "Who's feeling lucky?!"
+    ]
+  },
+  {
+    "id": 5362,
+    "name": "Gambler",
+    "type": "RANDOM",
+    "time": 5,
+    "lines": [
+      "Remember to vote every 12 hours!",
+    ]
+  }
+]

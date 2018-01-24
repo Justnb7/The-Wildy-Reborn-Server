@@ -1,0 +1,187 @@
+{
+"id": 6616,
+"position": {
+"x": 3222,
+"y": 10336,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3222,
+"y": 10340,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3224,
+"y": 10342,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3224,
+"y": 10346,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3227,
+"y": 10348,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3233,
+"y": 10348,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3235,
+"y": 10348,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3239,
+"y": 10348,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3241,
+"y": 10348,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3243,
+"y": 10342,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3243,
+"y": 10340,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3243,
+"y": 10338,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3237,
+"y": 10338,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3235,
+"y": 10340,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3232,
+"y": 10343,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3232,
+"y": 10339,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},
+{
+"id": 6616,
+"position": {
+"x": 3232,
+"y": 10337,
+"z": 0
+},
+"facing": "NORTH",
+"radius": "3",
+"name": "Scorpia's Offspring"
+},

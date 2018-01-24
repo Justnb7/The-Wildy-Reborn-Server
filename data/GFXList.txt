@@ -1,0 +1,104 @@
+ID: 1201 - Description: spikes, arma range projectile
+ID: 1202 - Description: white waves idk maybe bandos boss range projectile
+ID: 1203 - Description: big splash - maybe zammy boss spec/bandos end
+ID: 1204 - Description: sword swipe sara spec?
+ID: 1205 - Description: zammy spec
+ID: 1206 - Description: bgs spec or sword white swipe
+ID: 1207 - Description: blue swipe
+ID: 1208 - Description: splash on ground
+ID: 1209 - Description: sgs spec
+ID: 1210 - Description: zgs spec
+ID: 1211 - Description: ags spec
+ID: 1212 - Description: bgs spec
+ID: 1213 - Description: ss lightening
+ID: 1214 - Description: d2h spec gfx
+ID: 1215 - Description: animates bandos mage minion wtf
+ID: 1216 - Description: two yellow slashes
+ID: 1217 - Description: bandos mage minion projectile
+ID: 1218 - Description: bandos mage minion end gfx? no green explosion
+ID: 1219 - Description: ranger attack
+ID: 1220 - Description: axe projectile
+ID: 1221 - Description: lightening
+ID: 1222 - Description: zammy ranger gfx
+ID: 1223 - Description: zammy ranger projectile
+ID: 1224 - Description: sort of fire, zammy minion gfx
+ID: 1225 - Description: bandos
+ID: 1227 - Description: zammy mage projectile
+ID: 1228 - Description: ghost head
+ID: 1229 - Description: ghost head
+ID: 1230 - Description: snare cast green gfx - spider wild boss?
+ID: 1231 - Description: halberd gfx
+ID: 1232 - Description: crystal hally gfx
+ID: 1233 - Description: crytal hally gfx backwards
+ID: 1234 - Description: xtal hal sideways
+ID: 1235 - Description: xtal hal front
+ID: 1236 - Description: new teleport
+ID: 1237 - Description: new teleport
+ID: 1238 - Description: new teleport
+ID: 1239 - Description: music emote
+ID: 1240 - Description: smolding stone
+ID: 1241 - Description: ice something a long way in front of the player
+ID: 1242 - Description: cerb projectile mage
+ID: 1243 - Description: cerb projectile mage end
+ID: 1244 - Description: cerb range end
+ID: 1245 - Description: cerb range projectile
+ID: 1246 - Description: cerb lava
+ID: 1247 - Description: cerb expplosion
+ID: 1248 - Description: cerb flying ghost 1
+ID: 1249 - Description: new tele
+ID: 1250 - Description: sara strike recoloured ...
+ID: 1251 - Description: trident
+ID: 1252 - Description: trident
+ID: 1253 - Description: trident
+ID: 1254 - Description: spider web throw wildy boss venenatis
+ID: 1255 - Description: callisto bear healing gfx
+ID: 1256 - Description: calisto drain projectile
+ID: 1257 - Description: callisto gfx
+ID: 1258 - Description: hammer
+ID: 1259 - Description: crazyarchprojectile
+ID: 1260 - Description: crazy_arch_proejctile_orange
+ID: 1261 - Description: death_rune_ground
+ID: 1262 - Description: water_rune_ground
+ID: 1263 - Description: earth_rune_ground
+ID: 1264 - Description: fire_rune_ground
+ID: 1265 - Description: mind_rune_ground
+ID: 1266 - Description: body_rune_ground
+ID: 1267 - Description: chaos_rune_ground
+ID: 1268 - Description: death_rune_ground
+ID: 1269 - Description: blood_rune_ground
+ID: 1270 - Description: cosmic_rune_ground
+ID: 1271 - Description: nature_rune_ground
+ID: 1272 - Description: black_chinchompa_gfx
+ID: 1273 - Description: new tele
+ID: 1274 - Description: projectile_aby_boss
+ID: 1275 - Description: aby_gfx_boss_or_bludgeon
+ID: 1276 - Description: abyboss_projectile
+ID: 1277 - Description: easter
+ID: 1278 - Description: easter_blue
+ID: 1279 - Description: easter_bl
+ID: 1280 - Description: easter_red
+ID: 1281 - Description: easter_purple
+ID: 1282 - Description: easter_yellow
+ID: 1283 - Description: aby
+ID: 1284 - Description: abby bludgeon spec gfx
+ID: 1285 - Description: aby
+ID: 1286 - Description: max cape
+ID: 1288 - Description: some purple thing above player
+ID: 1289 - Description: purple projectile
+ID: 1290 - Description: purple drain thing
+ID: 1291 - Description: projectile
+ID: 1292 - Description: Dragon warhammer gfx
+ID: 1293 - Description: Shaman poison projectile
+ID: 1294 - Description: Shaman green splash
+ID: 1295 - Description: shaman minion explosion
+ID: 1296 - Description: new teleport
+ID: 1297 - Description: teleport gfx?
+ID: 1298 - Description: idk some zeah gfx?
+ID: 1299 - Description: Some teleport gfx?
+ID: 1300 - Description: Some end gfx?
+ID: 1301 - Description: Crash
+ID: 1302 - Description: Crash
+ID: 1303 - Description: -
+ID: 1304 - Description: Some green puff
+ID: 1305 - Description: Some green puff
+-- End of 114 revision

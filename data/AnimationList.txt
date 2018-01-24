@@ -1,0 +1,9 @@
+ID: 1376 - Description: fletching
+ID: 1377 - Description: fletching
+ID: 1378 - Description: dwh
+ID: 1379 - Description: jump death or something
+ID: 1381 - Description: npc
+ID: 1382 - Description: npcanim
+ID: 1383 - Description: npcanim
+ID: 1384 - Description: npc
+ID: 1385 - Description: npc

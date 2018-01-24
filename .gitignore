@@ -1,4 +1,14 @@
-data/
+data/characters
+data/bans
+data/clans
+data/logs
+data/osrs156
+data/osrs156xtea
+data/osrs160
+data/osrs160xtea
+data/scripts
+data/server
+data/starters
 bin/
 lib/
 .settings/

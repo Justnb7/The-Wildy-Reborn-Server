@@ -2,8 +2,11 @@ package com.venenatis.game.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.venenatis.game.constants.Constants;
+import com.venenatis.game.content.Perks.PerkHandler.PlayerPerks;
 import com.venenatis.game.content.skills.SkillData;
 import com.venenatis.game.content.skills.prayer.Prayer;
 import com.venenatis.game.model.boudary.BoundaryManager;
@@ -425,6 +428,11 @@ public class Skills {
         if (!player.showDamage()) {
 			player.getActionSender().sendExperienceCounter(skillId, (int) (experience * multi));
 		}
+        if(player.getPerkHandler().getAssignedPerkTest().containsKey("MONEYBAGS")) {
+        	player.getPerkHandler().reduceFuel(player, "MONEYBAGS");
+        	double i = expCounter/100;
+        	player.getInventory().add(new Item(995, (int) (experience * .35)));
+        }
         //player.getActionSender().sendMessage("Exp received: "+experience+ " times "+multi+" so "+(experience*multi));
        
 		if (exps[skillId] > MAXIMUM_EXP) {

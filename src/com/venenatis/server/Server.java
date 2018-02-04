@@ -90,9 +90,10 @@ public class Server {
 			Server server = new Server();
 
 			System.setErr(new SystemLogger(System.err, new File("./err")));
-			server.getBootstrap().build().bind();
+			
 			GameEngine.start();
 			XMLController.loadAllFiles();
+			server.getBootstrap().build().bind();
 		} catch (Throwable t) {
 			LOGGER.log(Level.SEVERE, "A problem has been encountered while starting the server.", t);
 			System.exit(0);

@@ -1,5 +1,6 @@
 package com.venenatis.game.content.Perks;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -11,7 +12,7 @@ import com.venenatis.game.model.entity.player.Player;
  * @author Harambe_ Class represents and handles the Slayer Interface
  *
  */
-public class BuyPerkHandler {
+public class PerkHandler {
 	
 	public enum Type {
 		COMBAT, SKILLING, OTHER;
@@ -29,27 +30,29 @@ public class BuyPerkHandler {
 	
 	
 	public enum PlayerPerks {
-		CMB_EXP_MULTIPLIER(0, 100, "Cmb Boost", "Receive 5% increased experience\\non all combat skills." + "\\n", "Does not apply to\\nPrayer Skill", "None", Type.COMBAT),
-		SKILL_EXP_MULTIPLIER(0, 100, "Skill Exp Booster", "Receive 5% increased experience\\non all non-combat skills." + "\\n", "Does not apply to\\nPrayer Skill", "None", Type.SKILLING),
-		LIFESTEAL(0, 100, "Life Steal I", "Receive .01 lifesteal on all npcs" + "\\n", "Does not apply to\\nPlayers", "None", Type.COMBAT),
-		ANTIFIRE(0, 100, "AntiFire", "No longer require anti-dragon shield" + "\\n", "None", "None", Type.COMBAT),
-		HERB_DROP(0, 100, "Herb Drop", "Receive double Herbs from NPC's" + "\\n", "None", "None", Type.COMBAT),
-		EXP_INCREASE(0, 100, "Herb Drop", "Receive double Herbs from NPC's" + "\\n", "None", "None", Type.SKILLING),
-		YOUR_A_WIZARD(0, 100, "You're a wizard Harry", "20% Chance to not have runes deducted\\n when casting magic spells." + "\\n", "None", "None", Type.COMBAT),
-		SLAYING_GP(0, 100, "Slaying GP", "40% Chance to receive cash reward\\n when completeing slayer tasks." + "\\n", "None", "50 Slayer", Type.OTHER),
-		MONEYBAGS(0, 100, "Money Bags", "Receive 2 GP per 1 exp gained." + "\\n", "Does not apply to\\n combat skills.", "None", Type.OTHER);
+		CMB_EXP_MULTIPLIER(0, 100, 1, "Cmb Boost", "Receive 5% increased experience\\non all combat skills." + "\\n", "Does not apply to\\nPrayer Skill", "None", Type.COMBAT),
+		SKILL_EXP_MULTIPLIER(0, 100, 1, "Skill Exp Booster", "Receive 5% increased experience\\non all non-combat skills." + "\\n", "Does not apply to\\nPrayer Skill", "None", Type.SKILLING),
+		LIFESTEAL(0, 100, 1, "Life Steal I", "Receive .01 lifesteal on all npcs" + "\\n", "Does not apply to\\nPlayers", "None", Type.COMBAT),
+		ANTIFIRE(0, 100, 1, "AntiFire", "No longer require anti-dragon shield" + "\\n", "None", "None", Type.COMBAT),
+		HERB_DROP(0, 100, 1, "Herb Drop", "Receive double Herbs from NPC's" + "\\n", "None", "None", Type.COMBAT),
+		EXP_INCREASE(0, 100, 1, "Herb Drop", "Receive double Herbs from NPC's" + "\\n", "None", "None", Type.SKILLING),
+		YOUR_A_WIZARD(0, 100, 1, "You're a wizard Harry", "20% Chance to not have runes deducted\\n when casting magic spells." + "\\n", "None", "None", Type.COMBAT),
+		SLAYING_GP(0, 100, 1, "Slaying GP", "40% Chance to receive cash reward\\n when completeing slayer tasks." + "\\n", "None", "50 Slayer", Type.OTHER),
+		MONEYBAGS(0, 100, 1, "Money Bags", "Transform 35% of your experience gained\\n into gold.." + "\\n", "Does not apply to\\n combat skills.", "None", Type.OTHER);
 
 		private int button;
 		private int price;
+		private double fuel;
 		private String name;
 		private String description;
 		private String restrictions;
 		private String requirements;
 		private Type type;
 		
-		private PlayerPerks(int button, int price, String name, String description, String restrictions, String requirements, Type type) {
+		private PlayerPerks(int button, int price, double fuel, String name, String description, String restrictions, String requirements, Type type) {
 			this.button = button;
 			this.price = price;
+			this.fuel = fuel;
 			this.name = name;
 			this.description = description;
 			this.restrictions = restrictions;
@@ -86,23 +89,56 @@ public class BuyPerkHandler {
 		public Type getType() {
 			return type;
 		}
+
+		public double getFuel() {
+			return fuel;
+		}
+
+		public void setFuel(double fuel) {
+			this.fuel = fuel;
+		}
 		
 	}
 	/**
+	 * Blocked task getter method
+	 * 
+	 * @return
+	 */
+
+	private HashMap<String, Double> assignedPerksTest = new HashMap<String, Double>();
+	
+	public HashMap<String, Double> getAssignedPerkTest() {
+		return assignedPerksTest;
+	}
+	
+	public void setAssignedPerkTest(HashMap<String, Double> buttons) {
+		this.assignedPerksTest = buttons;
+	}
+	
+	public ArrayList<String> getAssignedPerksList() {
+		return assignedPerksList;
+	}
+	private ArrayList<String> assignedPerksList = new ArrayList<String>(6);
+
+	public void setAssignedPerksList(ArrayList<String> blockedTasks) {
+		this.assignedPerksList = blockedTasks;
+	}
+
+	/**
 	 * Retuns the extension HashMaps
 	 * 
 	 * @return
 	 */
-	public HashMap<PlayerPerks, Integer> getAssignedPerks() {
-		return playerSavedPerks;
+	public HashMap<PlayerPerks, Integer> getOwnedPerks() {
+		return playerOwnedPerks;
 	}
 	/**
 	 * Retuns the extension HashMaps
 	 * 
 	 * @return
 	 */
-	public HashMap<PlayerPerks, Integer> setAssignedPerks() {
-		return playerSavedPerks;
+	public HashMap<PlayerPerks, Integer> setOwnedPerks() {
+		return playerOwnedPerks;
 	}
 	/**
 	 * Retuns the extension HashMaps
@@ -110,7 +146,7 @@ public class BuyPerkHandler {
 	 * @return
 	 */
 	public HashMap<PlayerPerks, Integer> getPerks() {
-		return playerSavedPerks;
+		return playerOwnedPerks;
 	}
 
 	/**
@@ -118,20 +154,16 @@ public class BuyPerkHandler {
 	 * 
 	 * @param extension
 	 */
-	public void setPerks(HashMap<PlayerPerks, Integer> buttons) {
-		this.playerSavedPerks = buttons;
+	public void setPerkButton(HashMap<PlayerPerks, Integer> buttons) {
+		this.playerOwnedPerks = buttons;
 	}
 	/**
-	 * Stores Player's Purchased Perk
-	 * 
-	 */
-	private HashMap<PlayerPerks, Integer> assignedPerks = new HashMap<PlayerPerks, Integer>();
-	
+
 	/**
 	 * Stores Player's Purchased Perk
 	 * 
 	 */
-	private HashMap<PlayerPerks, Integer> playerSavedPerks = new HashMap<PlayerPerks, Integer>();
+	private HashMap<PlayerPerks, Integer> playerOwnedPerks = new HashMap<PlayerPerks, Integer>();
 	
 	/**
 	 * Stores and lists all perks
@@ -189,7 +221,7 @@ public class BuyPerkHandler {
 		buttons.clear();
 		for (PlayerPerks buttonData : PlayerPerks.values()) {
 			if(buttonData.getType() == type) {
-				if(!player.getPerkBuyInterface().hasPerk(buttonData, player)) {	
+				if(!player.getPerkHandler().hasPerk(buttonData, player)) {	
 				buttonData.setButton(214219 + i);
 				buttons.put(buttonData.getButton(), buttonData);
 			player.getActionSender().sendString("" + buttonData.getName() /*ADD HERE FOR IXI LEVEL*/, 55006 + i); 
@@ -220,7 +252,9 @@ public class BuyPerkHandler {
 		} else
 		
 		if(buttonId == PURCHASE) {
+			System.out.println("Selected Perk: "+selectedPerk.toString());
 			purchasePerk(player, selectedPerk);
+			return true;
 		} 
 		PlayerPerks button = buttons.get(buttonId);
 		
@@ -244,10 +278,11 @@ public class BuyPerkHandler {
 	 */
 	public boolean purchasePerk(Player player, PlayerPerks perk){
 		 if(player.getPerkPoints() >= perk.getPrice()) {
-		if(!playerSavedPerks.containsKey(perk)) {
+		if(!playerOwnedPerks.containsKey(perk)) {
 			 player.getActionSender().sendMessage("You have successfully purcahsed "+perk.getName());
 			 player.setPerkPoints(player.getPerkPoints() - perk.getPrice());
-			 playerSavedPerks.put(perk, 1);
+			 playerOwnedPerks.put(perk, 1);
+			// playerAssignedPerks.put(perk, 1);
 		} else {
 			player.getActionSender().sendMessage("You already own this perk "+perk);
 		}
@@ -261,60 +296,70 @@ public class BuyPerkHandler {
 	 * 
 	 */
 	public void writeAssign(Player player) {
-		int i = 0;
-		for (Entry<PlayerPerks, Integer> entrys : player.getPerkBuyInterface().getPerks().entrySet()) {
-		player.getActionSender().sendString(""+ entrys.getKey().getName().toString(), 65113 + i ); 
-		entrys.getKey().setButton(254086 + i);
-		i += 4;
+			int i = 0;
+		for (Entry<PlayerPerks, Integer> entrys : player.getPerkHandler().getPerks().entrySet()) {
+			player.getActionSender().sendString(""+entrys.getKey().getName().toString(), 65113 + i ); 
+			entrys.getKey().setButton(254086 + i);
+			selectedPerk = entrys.getKey();
+			i += 4;
 		}
-		int i2=0;
-		for (Entry<PlayerPerks, Integer> entrys : player.getPerkBuyInterface().getAssignedPerks().entrySet()) {
-		player.getActionSender().sendString(""+ entrys.getKey().getName().toString(), 65506 + i2 ); //assigned perks
-		i2 += 4;
+			int i2=0;
+		for (Entry<PlayerPerks, Integer> entrys : player.getPerkHandler().getOwnedPerks().entrySet()) {
+			player.getActionSender().sendString(""+ entrys.getKey().getName().toString(), 65506 + i2 ); //assigned perks
+			i2 += 4;
 		}
 	}
 	public boolean executeAssign(Player player, int buttonId) {
 		/*if (buttonId <= 254086 && buttonId >= 255070 || buttonId != 253239) {
 			return false;
 		}*/
-		PlayerPerks button = buttons.get(buttonId);
-		for (Entry<PlayerPerks, Integer> entrys : player.getPerkBuyInterface().getPerks().entrySet()) {
-			if(entrys.getKey().getButton() == buttonId) {
-				button = entrys.getKey();
-				break;
-			} 
-		}
-		
-		if (button == null) {
-			player.getActionSender().sendMessage("HERE");
-			return false;
-		}
-		selectedPerk = button;
-		
 		if(buttonId == 253239) {
-			player.getActionSender().sendMessage("HERE");
-			assign(player, button);
+			player.getActionSender().sendMessage("HERE2");
+			player.getActionSender().sendMessage("Selected perk: "+selectedPerk.toString());
+			assign(player, selectedPerk);
 			writeAssign(player);
 			return true;
 		}
 		
+		PlayerPerks button = null;
 		
+		for (Entry<PlayerPerks, Integer> entrys : player.getPerkHandler().getPerks().entrySet()) {
+			if(entrys.getKey().getButton() == buttonId) {
+				button = entrys.getKey();
+				System.out.println(button.toString());
+				break;
+			} 
+		}
+		PlayerPerks newButton = button;
+		selectedPerk = newButton;
+		if (button == null) {
+			player.getActionSender().sendMessage("HERE1");
+			return false;
+		}
 		player.getActionSender().sendString(button.getName(), 65004);
 		player.getActionSender().sendString(button.getDescription(), 65051);
 		player.getActionSender().sendString("Price: "+button.getPrice(), 58527 );	
 		return true;
+	
+
+}
+	public void assign(Player player, PlayerPerks perks) {
+		//if(!assignedPerksList.contains(perks.getName())) {
+		assignedPerksTest.put(perks.toString(), perks.getFuel());	
+		assignedPerksList.add(perks.toString());
+			player.getActionSender().sendMessage("Successfully assigned");
+		//} else 
+			//player.getActionSender().sendMessage("You already have this perk assigned");
+	}	
+	
+	public double reduceFuel(Player player, String string) {
+		switch(string) {
+			case "MONEYBAGS":
+				player.getActionSender().sendMessage("@red@Reducing fuel");
+				return 1;
+			}
+		return 0.0;
 	}
 	
-	public void assign(Player player, PlayerPerks perks) {
-		if(player.getPerkBuyInterface().getAssignedPerks().entrySet().size() < 6) {
-			player.getPerkBuyInterface().getAssignedPerks().put(perks, perks.getPrice());
-			player.getActionSender().sendMessage("Successfully assigned");
-			/*for (Entry<PlayerPerks, Integer> entrys : player.getPerkBuyInterface().getAssignedPerks().entrySet()) {
-			if(entrys.getKey() == null) {
-
-				}
-			}*/
-		}
-	}
-
+	
 }

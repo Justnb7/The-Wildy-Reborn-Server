@@ -17,7 +17,7 @@ public class PerkInterface {
 		Server.getTaskScheduler().schedule(new Task(1) {
 			@Override
 			public void execute() {
-				BuyPerkHandler perk = new BuyPerkHandler();
+				PerkHandler perk = new PerkHandler();
 				perk.openBuyInterface(player);
 				this.stop();
 			}
@@ -28,7 +28,7 @@ public class PerkInterface {
 		Server.getTaskScheduler().schedule(new Task(1) {
 			@Override
 			public void execute() {
-				BuyPerkHandler perk = new BuyPerkHandler();
+				PerkHandler perk = new PerkHandler();
 				perk.openAssignInterface(player);
 				this.stop();
 			}

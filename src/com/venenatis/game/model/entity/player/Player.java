@@ -14,7 +14,7 @@ import com.venenatis.game.content.FriendAndIgnoreList;
 import com.venenatis.game.content.HerbSack;
 import com.venenatis.game.content.Jewellery;
 import com.venenatis.game.content.KillTracker;
-import com.venenatis.game.content.Perks.BuyPerkHandler;
+import com.venenatis.game.content.Perks.PerkHandler;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.gamble.Gamble;
 import com.venenatis.game.content.minigames.multiplayer.MultiplayerMinigame;
@@ -115,11 +115,13 @@ public class Player extends Entity {
 	/*
 	 * Perk Info
 	 */
-	BuyPerkHandler buyPerkInterface = new BuyPerkHandler();
+	PerkHandler buyPerkInterface = new PerkHandler();
 	
-	public BuyPerkHandler getPerkBuyInterface() {
+	public PerkHandler getPerkHandler() {
 		return buyPerkInterface;
 	}
+	
+	
 	
 	private int perkPoints = 5000;
 	

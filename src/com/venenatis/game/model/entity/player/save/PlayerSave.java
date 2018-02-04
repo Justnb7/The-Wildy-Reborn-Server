@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.venenatis.game.content.KillTracker.KillEntry;
-import com.venenatis.game.content.Perks.BuyPerkHandler.PlayerPerks;
+import com.venenatis.game.content.Perks.PerkHandler.PlayerPerks;
 import com.venenatis.game.content.achievements.Achievements.Achievement;
 import com.venenatis.game.content.bounty.BountyHunterConstants;
 import com.venenatis.game.content.titles.Title;
@@ -253,8 +253,12 @@ public class PlayerSave {
 				player.setPerkPoints(details.perkPoints);
 				
 				if(details.playerPerks != null) {
-					player.getPerkBuyInterface().setPerks(details.playerPerks);
+					player.getPerkHandler().setPerkButton(details.playerPerks);
 				}
+				if(details.assignedPerks != null) {
+					player.getPerkHandler().setAssignedPerkTest(details.assignedPerks);
+				}
+				
 				if (details.quickPrayers != null) {
 					player.getQuickPrayers().setPrayers(details.quickPrayers);
 				}
@@ -365,6 +369,9 @@ public class PlayerSave {
 		private final HashMap<Integer, String> slayerUnlocks;
 		private final HashMap<Integer, Integer> slayerExtensions;
 		private final HashMap<PlayerPerks, Integer> playerPerks;
+		private final HashMap<String, Double> assignedPerks;
+	//	private final ArrayList<String> assignedPerks;
+		
 		private final PrayerData[] quickPrayers;
 		private ArrayList<Integer> favoriteTeleports;
 		private ArrayList<Integer> insuredPets;
@@ -470,7 +477,8 @@ public class PlayerSave {
 			favoriteTeleports = player.getFavoriteTeleports();
 			insuredPets = player.getPetInsurance().getInsuredPets();
 			smallEsspouch = player.getPureEssencePouch(0);
-			playerPerks = player.getPerkBuyInterface().getPerks();
+			playerPerks = player.getPerkHandler().getPerks();
+			assignedPerks = player.getPerkHandler().getAssignedPerkTest();
 			perkPoints = player.getPerkPoints();
 			//mediumEssPouch = player.getPureEssencePouch(5510);
 			//LargeEssPouch = player.getPureEssencePouch(5511);
